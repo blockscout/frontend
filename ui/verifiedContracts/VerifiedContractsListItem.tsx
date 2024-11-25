@@ -64,7 +64,7 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Txs count</Skeleton>
         <Skeleton isLoaded={ !isLoading } color="text_secondary">
-          <span>{ data.tx_count ? data.tx_count.toLocaleString() : '0' }</span>
+          <span>{ data.transaction_count ? data.transaction_count.toLocaleString() : '0' }</span>
         </Skeleton>
       </Flex>
       <Flex columnGap={ 3 }>

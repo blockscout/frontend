@@ -11,7 +11,7 @@ import WithdrawalsTableItem from './WithdrawalsTableItem';
    items: Array<ShibariumWithdrawalsItem>;
    top: number;
    isLoading?: boolean;
- }
+ };
 
 const WithdrawalsTable = ({ items, top, isLoading }: Props) => {
   return (

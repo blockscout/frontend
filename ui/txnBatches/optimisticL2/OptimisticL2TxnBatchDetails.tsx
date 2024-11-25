@@ -104,7 +104,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
           <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'txs' } }) }>
-            { data.tx_count.toLocaleString() } transaction{ data.tx_count === 1 ? '' : 's' }
+            { data.transaction_count.toLocaleString() } transaction{ data.transaction_count === 1 ? '' : 's' }
           </LinkInternal>
           { ' ' }in this batch
         </Skeleton>
@@ -137,7 +137,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
           <OptimisticL2TxnBatchBlobEip4844 blobs={ data.blobs } isLoading={ isPlaceholderData }/> }
         { data.batch_data_container === 'in_calldata' && (
           <OptimisticL2TxnBatchBlobCallData
-            l1TxHashes={ data.l1_tx_hashes }
+            l1TxHashes={ data.l1_transaction_hashes }
             l1Timestamp={ data.l1_timestamp }
             isLoading={ isPlaceholderData }
           />

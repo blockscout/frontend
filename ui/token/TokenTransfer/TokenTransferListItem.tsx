@@ -18,7 +18,7 @@ type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
 const TokenTransferListItem = ({
   token,
   total,
-  tx_hash: txHash,
+  transaction_hash: txHash,
   from,
   to,
   method,
@@ -26,9 +26,9 @@ const TokenTransferListItem = ({
   tokenId,
   isLoading,
 }: Props) => {
-  const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
+  const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
-    exchangeRate: token.exchange_rate,
+    exchangeRate: token?.exchange_rate,
     accuracy: 8,
     accuracyUsd: 2,
     decimals: total.decimals || '0',
@@ -58,11 +58,11 @@ const TokenTransferListItem = ({
         from={ from }
         to={ to }
         isLoading={ isLoading }
-        tokenHash={ token.address }
+        tokenHash={ token?.address }
         w="100%"
         fontWeight="500"
       />
-      { valueStr && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
+      { valueStr && token && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Grid gap={ 2 } templateColumns={ `1fr auto auto${ usd ? ' auto' : '' }` }>
           <Skeleton isLoaded={ !isLoading } flexShrink={ 0 } fontWeight={ 500 }>
             Value
@@ -89,7 +89,7 @@ const TokenTransferListItem = ({
           ) }
         </Grid>
       ) }
-      { 'token_id' in total && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
+      { total && 'token_id' in total && token && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
         <NftEntity
           hash={ token.address }
           id={ total.token_id }

@@ -28,6 +28,8 @@ const init = () => {
       },
       featuredWalletIds: [],
       allowUnsupportedChain: true,
+      enableOnramp: false,
+      enableSwaps: false,
     });
   } catch (error) {}
 };

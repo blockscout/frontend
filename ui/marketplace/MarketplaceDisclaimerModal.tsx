@@ -8,7 +8,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   appId: string;
-}
+};
 
 const MarketplaceDisclaimerModal = ({ isOpen, onClose, appId }: Props) => {
 

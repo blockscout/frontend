@@ -17,7 +17,7 @@ export default function useFetchXStarScore({ hash }: Params) {
     pathParams: { hash },
     queryOptions: {
       select: (response) => {
-        const parsedResponse = v.safeParse(v.object({ data: v.string() }), response);
+        const parsedResponse = v.safeParse(v.object({ data: v.object({ level: v.nullable(v.string()) }) }), response);
 
         if (!parsedResponse.success) {
           throw Error(ERROR_NAME);
@@ -27,7 +27,7 @@ export default function useFetchXStarScore({ hash }: Params) {
       },
       enabled: Boolean(hash) && config.features.xStarScore.isEnabled,
       placeholderData: {
-        data: 'Base' as const,
+        data: { level: 'Base' },
       },
       retry: 0,
     },

@@ -27,7 +27,7 @@ type Fields = RootFields & AddressVerificationFormSecondStepFields;
 
 type SignMethod = 'wallet' | 'manual';
 
-interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess{
+interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess {
   onContinue: (newItem: VerifiedAddress, signMethod: SignMethod) => void;
   noWeb3Provider?: boolean;
 }
@@ -189,7 +189,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         <Box mb={ 8 }>
           <span>Please select the address to sign and copy the message and sign it using the Blockscout message provider of your choice. </span>
           <Link href="https://docs.blockscout.com/for-users/my-account/verified-addresses/copy-and-sign-message" target="_blank">
-          Additional instructions
+            Additional instructions
           </Link>
           <span>. If you do not see your address here but are sure that you are the owner of the contract, kindly </span>
           { contactUsLink }

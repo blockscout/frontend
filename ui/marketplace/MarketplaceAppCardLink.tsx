@@ -10,7 +10,7 @@ type Props = {
   title: string;
   onClick?: (event: MouseEvent, id: string) => void;
   className?: string;
-}
+};
 
 const MarketplaceAppCardLink = ({ url, external, id, title, onClick, className }: Props) => {
   const handleClick = React.useCallback((event: MouseEvent) => {

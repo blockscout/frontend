@@ -23,7 +23,7 @@ type Props = {
   onIntervalChange: (newInterval: StatsIntervalIds) => void;
   isLoading?: boolean;
   selectTagSize?: TagProps['size'];
-}
+};
 
 const ChartIntervalSelect = ({ interval, onIntervalChange, isLoading, selectTagSize }: Props) => {
   return (

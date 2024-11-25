@@ -19,7 +19,7 @@ type Params<R extends ResourceName> = (
   }
 ) & {
   timeout?: number;
-}
+};
 
 export default async function fetchApi<R extends ResourceName = never, S = ResourcePayload<R>>(params: Params<R>): Promise<S | undefined> {
   const controller = new AbortController();

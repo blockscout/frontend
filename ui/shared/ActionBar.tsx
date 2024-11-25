@@ -8,7 +8,7 @@ type Props = {
   children: React.ReactNode;
   className?: string;
   showShadow?: boolean;
-}
+};
 
 const TOP_UP = 106;
 const TOP_DOWN = 0;

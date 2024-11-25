@@ -18,7 +18,7 @@ type Props = {
   addressHash: string;
   addressData?: Address;
   isLoading?: boolean;
-}
+};
 
 const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
   const { data, isError, isPending } = useFetchTokens({ hash: addressData?.hash, enabled: addressData?.has_tokens });

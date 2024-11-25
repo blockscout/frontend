@@ -111,7 +111,7 @@ const VerifiedAddresses = () => {
     if (userWithoutEmail) {
       return (
         <Button size="lg" isDisabled mt={ 8 }>
-            Add address
+          Add address
         </Button>
       );
     }
@@ -119,7 +119,7 @@ const VerifiedAddresses = () => {
     return (
       <Skeleton mt={ 8 } isLoaded={ !isLoading } display="inline-block">
         <Button size="lg" onClick={ modalProps.onOpen }>
-            Add address
+          Add address
         </Button>
       </Skeleton>
     );

@@ -9,7 +9,7 @@ import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 type Props = {
   renderSearchBar?: () => React.ReactNode;
-}
+};
 
 const HeaderDesktop = ({ renderSearchBar }: Props) => {
 

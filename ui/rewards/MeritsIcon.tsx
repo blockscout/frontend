@@ -8,7 +8,7 @@ import meritsIcon from 'icons/merits_colored.svg';
 
 type Props = {
   className?: string;
-}
+};
 
 const MeritsIcon = ({ className }: Props) => {
   const shadow = useColorModeValue('drop-shadow(0px 4px 2px rgba(141, 179, 204, 0.25))', 'none');

@@ -100,7 +100,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
     <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 2 }}>
       <Flex alignItems="center" mb={ 3 }>
         <Skeleton fontWeight={{ base: 700, lg: 500 }} isLoaded={ !isLoading }>
-            Blob data
+          Blob data
         </Skeleton>
         <Skeleton ml={ 5 } isLoaded={ !isLoading }>
           <Select

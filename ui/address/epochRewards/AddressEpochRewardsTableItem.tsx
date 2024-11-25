@@ -8,6 +8,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
  type Props = {
    item: AddressEpochRewardsItem;
@@ -20,17 +21,18 @@ const AddressEpochRewardsTableItem = ({ item, isLoading }: Props) => {
     <Tr>
       <Td verticalAlign="middle">
         <Flex alignItems="center" gap={ 3 }>
-          <BlockEntity number={ item.block_number } isLoading={ isLoading } noIcon/>
-          <Text color="text_secondary" fontWeight={ 600 }>{ `Epoch # ${ item.epoch_number }` }</Text>
-          { /* no timestamp from API, will be added later */ }
-          { /* <TimeAgoWithTooltip timestamp={ item } isLoading={ isLoading }/> */ }
+          <BlockEntity number={ item.block_number } isLoading={ isLoading } noIcon fontWeight={ 600 }/>
+          <Skeleton isLoaded={ !isLoading }>
+            <Text color="text_secondary" fontWeight={ 600 }>{ `Epoch # ${ item.epoch_number }` }</Text>
+          </Skeleton>
+          <TimeAgoWithTooltip timestamp={ item.block_timestamp } isLoading={ isLoading } textColor="text_secondary" fontWeight={ 400 }/>
         </Flex>
       </Td>
       <Td verticalAlign="middle">
         <EpochRewardTypeTag type={ item.type } isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle">
-        <AddressEntity address={ item.associated_account } isLoading={ isLoading }/>
+        <AddressEntity address={ item.associated_account } isLoading={ isLoading } truncation="constant"/>
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <Skeleton isLoaded={ !isLoading } display="flex" alignItems="center" gap={ 2 } justifyContent="flex-end">

@@ -302,14 +302,13 @@ const AddressPageContent = () => {
         undefined,
       ...formatUserTags(addressQuery.data),
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
-      !addressQuery.data?.is_contract && xScoreFeature.isEnabled && xStarQuery.data?.data ?
+      !addressQuery.data?.is_contract && xScoreFeature.isEnabled && xStarQuery.data?.data.level ?
         {
           slug: 'xstar',
-          name: `XHS ${ xStarQuery.data.data } level`,
+          name: `XHS ${ xStarQuery.data.data.level } level`,
           tagType: 'custom' as const,
           ordinal: 12,
           meta: {
-            tagUrl: xScoreFeature.url,
             tooltipTitle: 'XStar humanity levels',
             tooltipDescription:
               'XStar looks for off-chain information about an address and interpret it as a XHS score. Different score means different humanity levels.',

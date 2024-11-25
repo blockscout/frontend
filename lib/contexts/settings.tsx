@@ -22,7 +22,7 @@ export function SettingsContextProvider({ children }: SettingsProviderProps) {
   const initialAddressFormat = cookies.get(cookies.NAMES.ADDRESS_FORMAT, appCookies);
 
   const [ addressFormat, setAddressFormat ] = React.useState<AddressFormat>(
-    initialAddressFormat && ADDRESS_FORMATS.includes(initialAddressFormat) ? initialAddressFormat as AddressFormat : 'base16',
+    initialAddressFormat && ADDRESS_FORMATS.includes(initialAddressFormat as AddressFormat) ? initialAddressFormat as AddressFormat : 'base16',
   );
 
   const toggleAddressFormat = React.useCallback(() => {

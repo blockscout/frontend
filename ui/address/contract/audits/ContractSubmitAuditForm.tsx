@@ -29,11 +29,11 @@ export type Inputs = {
   audit_report_url: string;
   audit_publish_date: string;
   comment?: string;
-}
+};
 
 type AuditSubmissionErrors = {
   errors: Record<keyof Inputs, Array<string>>;
-}
+};
 
 const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
   const containerRef = React.useRef<HTMLFormElement>(null);
@@ -126,7 +126,7 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
           loadingText="Send request"
           isDisabled={ !formState.isDirty }
         >
-        Send request
+          Send request
         </Button>
       </form>
     </FormProvider>

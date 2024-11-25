@@ -58,7 +58,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     token: null,
     watchlist_address_id: null,
     watchlist_names: null,
-    creation_tx_hash: null,
+    creation_transaction_hash: null,
     block_number_balance_updated_at: null,
     name: null,
     exchange_rate: null,
@@ -147,7 +147,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
 
         <AddressNameInfo data={ data } isLoading={ addressQuery.isPlaceholderData }/>
 
-        { data.is_contract && data.creation_tx_hash && (creatorAddressHash) && (
+        { data.is_contract && data.creation_transaction_hash && (creatorAddressHash) && (
           <>
             <DetailsInfoItem.Label
               hint="Transaction and address of creation"
@@ -162,7 +162,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
                 noIcon
               />
               <Text whiteSpace="pre"> at txn </Text>
-              <TxEntity hash={ data.creation_tx_hash } truncation="constant" noIcon noCopy={ false }/>
+              <TxEntity hash={ data.creation_transaction_hash } truncation="constant" noIcon noCopy={ false }/>
             </DetailsInfoItem.Value>
           </>
         ) }

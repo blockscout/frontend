@@ -11,7 +11,7 @@ import OptimisticDepositsTableItem from './OptimisticDepositsTableItem';
    items: Array<OptimisticL2DepositsItem>;
    top: number;
    isLoading?: boolean;
- }
+ };
 
 const OptimisticDepositsTable = ({ items, top, isLoading }: Props) => {
   return (
@@ -28,7 +28,7 @@ const OptimisticDepositsTable = ({ items, top, isLoading }: Props) => {
       </Thead>
       <Tbody>
         { items.map((item, index) => (
-          <OptimisticDepositsTableItem key={ item.l2_tx_hash + (isLoading ? index : '') } item={ item } isLoading={ isLoading }/>
+          <OptimisticDepositsTableItem key={ item.l2_transaction_hash + (isLoading ? index : '') } item={ item } isLoading={ isLoading }/>
         )) }
       </Tbody>
     </Table>

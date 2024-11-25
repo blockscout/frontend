@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import type { JestConfigWithTsJest } from 'ts-jest';
 
 /*

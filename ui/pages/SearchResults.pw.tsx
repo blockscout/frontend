@@ -7,7 +7,7 @@ import { test, expect } from 'playwright/lib';
 
 import SearchResults from './SearchResults';
 
-test.describe('search by name ', () => {
+test.describe('search by name', () => {
   test('+@mobile +@dark-mode', async({ render, mockApiResponse, mockAssetResponse, mockEnvs }) => {
     const hooksConfig = {
       router: {
@@ -87,14 +87,14 @@ test('search by block hash +@mobile', async({ render, mockApiResponse }) => {
 test('search by tx hash +@mobile', async({ render, mockApiResponse }) => {
   const hooksConfig = {
     router: {
-      query: { q: searchMock.tx1.tx_hash },
+      query: { q: searchMock.tx1.transaction_hash },
     },
   };
   const data = {
     items: [ searchMock.tx1 ],
     next_page_params: null,
   };
-  await mockApiResponse('search', data, { queryParams: { q: searchMock.tx1.tx_hash } });
+  await mockApiResponse('search', data, { queryParams: { q: searchMock.tx1.transaction_hash } });
   const component = await render(<SearchResults/>, { hooksConfig });
 
   await expect(component.locator('main')).toHaveScreenshot();
@@ -169,7 +169,7 @@ test.describe('with apps', () => {
         items_count: 1,
         name: 'foo',
         q: 'o',
-        tx_hash: null,
+        transaction_hash: null,
       },
     };
     await mockEnvs([

@@ -67,7 +67,7 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
         isLoading={ isLoading }
       >
         <Skeleton isLoaded={ !isLoading }>
-            View UML diagram
+          View UML diagram
         </Skeleton>
       </LinkInternal>
     </Tooltip>

@@ -17,7 +17,7 @@ type Props = {
   index: number;
   page: number;
   isLoading?: boolean;
-}
+};
 
 const PAGE_SIZE = 50;
 

@@ -11,7 +11,7 @@ import RewardsReadOnlyInputWithCopy from '../../RewardsReadOnlyInputWithCopy';
 
 type Props = {
   isReferral: boolean;
-}
+};
 
 const CongratsStepContent = ({ isReferral }: Props) => {
   const { referralsQuery, rewardsConfigQuery } = useRewardsContext();

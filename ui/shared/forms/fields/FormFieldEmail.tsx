@@ -31,6 +31,6 @@ const FormFieldEmail = <FormFields extends FieldValues>(
 export type WrappedComponent = <
   FormFields extends FieldValues,
   Name extends Path<FormFields> = Path<FormFields>,
->(props: PartialBy<FormFieldPropsBase<FormFields, Name>, 'placeholder'> & ChakraProps) => JSX.Element;
+>(props: PartialBy<FormFieldPropsBase<FormFields, Name>, 'placeholder'> & ChakraProps) => React.JSX.Element;
 
 export default React.memo(FormFieldEmail) as WrappedComponent;

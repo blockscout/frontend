@@ -50,7 +50,7 @@ UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
   onFilterChange: <R extends PaginatedResources = Resource>(filters: PaginationFilters<R>) => void;
   onSortingChange: (sorting?: PaginationSorting<Resource>) => void;
   pagination: PaginationParams;
-}
+};
 
 export default function useQueryWithPages<Resource extends PaginatedResources>({
   resourceName,

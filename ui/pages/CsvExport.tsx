@@ -59,6 +59,11 @@ const EXPORT_TYPES: Record<CsvExportParams['type'], ExportTypeEntity> = {
     resource: 'csv_export_token_holders',
     fileNameTemplate: 'holders',
   },
+  'epoch-rewards': {
+    text: 'epoch rewards',
+    resource: 'csv_export_epoch_rewards',
+    fileNameTemplate: 'epoch_rewards',
+  },
 };
 
 const isCorrectExportType = (type: string): type is CsvExportParams['type'] => Object.keys(EXPORT_TYPES).includes(type);

@@ -19,7 +19,7 @@ type Props = {
   content: React.ReactNode;
   className?: string;
   filterProps?: FilterProps;
-}
+};
 
 const DataListDisplay = (props: Props) => {
   if (props.isError) {

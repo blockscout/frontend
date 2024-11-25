@@ -10,7 +10,7 @@ test.use({ viewport: { width: 180, height: 30 } });
 
 test.describe('icon sizes', () => {
   iconSizes.forEach((size) => {
-    test(size, async({ render }) => {
+    test(`${ size }`, async({ render }) => {
       const component = await render(
         <BlockEntity
           number={ 17943507 }

@@ -88,7 +88,6 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
         px={ dataExists ? 2.5 : 4 }
         fontWeight={ dataExists ? 700 : 600 }
         isLoading={ isButtonLoading }
-        loadingText={ isMobile ? undefined : 'Log in' }
       >
         { content }
       </Button>

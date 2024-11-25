@@ -15,7 +15,7 @@ import Burger from './Burger';
 type Props = {
   hideSearchBar?: boolean;
   renderSearchBar?: () => React.ReactNode;
-}
+};
 
 const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
   const bgColor = useColorModeValue('white', 'black');

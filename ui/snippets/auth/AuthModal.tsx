@@ -25,16 +25,17 @@ interface Props {
   initialScreen: Screen;
   onClose: (isSuccess?: boolean) => void;
   mixpanelConfig?: {
-    'wallet_connect'?: {
+    wallet_connect?: {
       source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
     };
-    'account_link_info': {
+    account_link_info: {
       source: mixpanel.EventPayload<mixpanel.EventTypes.ACCOUNT_LINK_INFO>['Source'];
     };
   };
+  closeOnError?: boolean;
 }
 
-const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
+const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Props) => {
   const [ steps, setSteps ] = React.useState<Array<Screen>>([ initialScreen ]);
   const [ isSuccess, setIsSuccess ] = React.useState(false);
 
@@ -66,8 +67,8 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
   }, []);
 
   const onReset = React.useCallback((isAuth?: boolean) => {
-    isAuth ? onClose() : setSteps([ initialScreen ]);
-  }, [ initialScreen, onClose ]);
+    isAuth || closeOnError ? onClose() : setSteps([ initialScreen ]);
+  }, [ initialScreen, onClose, closeOnError ]);
 
   const onAuthSuccess = React.useCallback(async(screen: ScreenSuccess) => {
     setIsSuccess(true);

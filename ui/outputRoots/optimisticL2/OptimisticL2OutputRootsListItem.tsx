@@ -52,7 +52,7 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Value py="3px">
         <TxEntityL1
           isLoading={ isLoading }
-          hash={ item.l1_tx_hash }
+          hash={ item.l1_transaction_hash }
           fontSize="sm"
           lineHeight={ 5 }
           truncation="constant_long"

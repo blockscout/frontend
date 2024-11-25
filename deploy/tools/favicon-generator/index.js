@@ -61,7 +61,8 @@ async function generateFavicons() {
 
       console.log('Favicons generated successfully!');
     } catch (faviconError) {
-      console.warn('Error generating favicons:', faviconError);
+      console.error('Error generating favicons:', faviconError);
+      process.exit(1);
     }
   } catch (error) {
     console.error('Error in favicon generation process:', error);

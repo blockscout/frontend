@@ -18,7 +18,7 @@ type Props = {
   l2TxHash: string | null;
   timestamp: string | null;
   isLoading?: boolean;
-}
+};
 
 const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLoading }: Props) => {
   const isMobile = useIsMobile();

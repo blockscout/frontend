@@ -41,14 +41,14 @@ const AdbutlerBanner = ({ className, platform }: BannerProps) => {
         window.AdButler.ads = [];
       }
       const adButlerConfig = isMobile ? feature.adButler.config.mobile : feature.adButler.config.desktop;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore:
       let plc = window[`plc${ adButlerConfig.id }`] || 0;
       const banner = document.getElementById('ad-banner');
       if (banner) {
         banner.innerHTML = '<' + 'div id="placement_' + adButlerConfig?.id + '_' + plc + '"></' + 'div>';
       }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore:
       window.AdButler.ads.push({ handler: function(opt) {
         window.AdButler.register(

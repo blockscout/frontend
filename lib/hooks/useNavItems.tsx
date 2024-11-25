@@ -120,7 +120,7 @@ export default function useNavItems(): ReturnType {
           blocks,
           rollupTxnBatches,
           rollupDisputeGames,
-          rollupFeature.type === 'optimistic' ? rollupOutputRoots : undefined,
+          rollupFeature.outputRootsEnabled ? rollupOutputRoots : undefined,
         ].filter(Boolean),
         [
           userOps,
@@ -184,7 +184,7 @@ export default function useNavItems(): ReturnType {
         text: 'Tokens',
         nextRoute: { pathname: '/tokens' as const },
         icon: 'token',
-        isActive: pathname.startsWith('/token'),
+        isActive: pathname === '/tokens' || pathname.startsWith('/token/'),
       },
       {
         text: 'Token transfers',

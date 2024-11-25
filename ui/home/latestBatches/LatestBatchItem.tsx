@@ -18,7 +18,7 @@ type Props = {
   txCount: number;
   status?: React.ReactNode;
   isLoading: boolean;
-}
+};
 
 const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading }: Props) => {
   return (

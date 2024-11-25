@@ -41,7 +41,6 @@ export default function useAddOrSwitchChain() {
           blockExplorerUrls: [ config.app.baseUrl ],
         } ] as never;
         // in wagmi types for wallet_addEthereumChain method is not provided
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
         return await provider.request({
           method: 'wallet_addEthereumChain',

@@ -13,7 +13,7 @@ interface Props {
   selectedFile: string;
   mainFile?: string;
   isActive: boolean;
-  setActionBarRenderer: React.Dispatch<React.SetStateAction<(() => JSX.Element) | undefined>>;
+  setActionBarRenderer: React.Dispatch<React.SetStateAction<(() => React.JSX.Element) | undefined>>;
 }
 
 const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile, mainFile, isActive, setActionBarRenderer }: Props) => {

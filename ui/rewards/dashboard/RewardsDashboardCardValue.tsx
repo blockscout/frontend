@@ -11,7 +11,7 @@ type Props = {
   withIcon?: boolean;
   hint?: string | React.ReactNode;
   isLoading?: boolean;
-}
+};
 
 const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading }: Props) => (
   <Flex key={ label } flexDirection="column" alignItems="center" gap={ 2 }>
