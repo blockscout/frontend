@@ -19,6 +19,7 @@ import TxsTable from './TxsTable';
 const SORT_SEQUENCE: Record<TransactionsSortingField, Array<TransactionsSortingValue | undefined>> = {
   value: [ 'value-desc', 'value-asc', undefined ],
   fee: [ 'fee-desc', 'fee-asc', undefined ],
+  block_number: [ 'block_number-asc', undefined ],
 };
 
 type Props = {

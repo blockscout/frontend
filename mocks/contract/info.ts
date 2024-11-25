@@ -24,7 +24,7 @@ export const verified: SmartContract = {
   verified_at: '2021-08-03T10:40:41.679421Z',
   decoded_constructor_args: [
     [ '0xc59615da2da226613b1c78f0c6676cac497910bc', { internalType: 'address', name: '_token', type: 'address' } ],
-    [ '1800', { internalType: 'uint256', name: '_duration', type: 'uint256' } ],
+    [ [ 1800, 3600, 7200 ], { internalType: 'uint256[]', name: '_durations', type: 'uint256[]' } ],
     [ '900000000', { internalType: 'uint256', name: '_totalSupply', type: 'uint256' } ],
   ],
   external_libraries: [

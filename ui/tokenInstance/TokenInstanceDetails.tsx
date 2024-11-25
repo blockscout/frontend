@@ -110,13 +110,12 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
           ) }
         </Grid>
         <NftMedia
-          animationUrl={ data.animation_url }
-          imageUrl={ data.image_url }
+          data={ data }
+          isLoading={ isLoading }
+          withFullscreen
           w="250px"
           flexShrink={ 0 }
           alignSelf={{ base: 'center', lg: 'flex-start' }}
-          isLoading={ isLoading }
-          withFullscreen
         />
       </Flex>
       <Grid

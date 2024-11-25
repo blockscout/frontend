@@ -340,6 +340,33 @@ export const celoTxn: Transaction = {
   },
 };
 
+export const arbitrumTxn: Transaction = {
+  ...base,
+  arbitrum: {
+    batch_number: 743991,
+    commitment_transaction: {
+      hash: '0x71a25e01dde129a308704de217d200ea42e0f5b8c221c8ba8b2b680ff347f708',
+      status: 'unfinalized',
+      timestamp: '2024-11-19T14:26:23.000000Z',
+    },
+    confirmation_transaction: {
+      hash: null,
+      status: null,
+      timestamp: null,
+    },
+    contains_message: null,
+    gas_used_for_l1: '129773',
+    gas_used_for_l2: '128313',
+    message_related_info: {
+      associated_l1_transaction: null,
+      message_status: 'Relayed',
+    },
+    network_fee: '1283130000000',
+    poster_fee: '1297730000000',
+    status: 'Sent to base',
+  },
+};
+
 export const base2 = {
   ...base,
   hash: '0x02d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',

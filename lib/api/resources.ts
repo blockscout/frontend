@@ -1069,6 +1069,9 @@ export const RESOURCES = {
   csv_export_logs: {
     path: '/api/v1/logs-csv',
   },
+  csv_export_epoch_rewards: {
+    path: '/api/v1/celo-election-rewards-csv',
+  },
   graphql: {
     path: '/api/v1/graphql',
   },

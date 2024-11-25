@@ -43,6 +43,7 @@ test('all methods +@dark-mode +@mobile', async({ render }) => {
   const abi: Array<SmartContractMethod> = [ ...methodsMock.read, ...methodsMock.write ];
   const component = await render(<ContractMethodsRegular abi={ abi }/>, { hooksConfig });
   await component.getByText(/expand all/i).click();
+  await expect(component.getByText('HTTP request failed')).toBeVisible();
 
   await expect(component).toHaveScreenshot();
 });
