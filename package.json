@@ -4,8 +4,8 @@
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
-    "node": "20.17.0",
-    "npm": "10.8.2"
+    "node": "22.11.0",
+    "npm": "10.9.0"
   },
   "scripts": {
     "dev": "./tools/scripts/dev.sh",
@@ -26,8 +26,8 @@
     "svg:build-sprite": "icons build -i ./icons -o ./public/icons --optimize",
     "test:pw": "./tools/scripts/pw.sh",
     "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && yarn test:pw",
-    "test:pw:docker": "docker run --rm --ipc=host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.47.2-focal ./tools/scripts/pw.docker.sh",
-    "test:pw:docker:deps": "docker run --rm --ipc=host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.47.2-focal ./tools/scripts/pw.docker.deps.sh",
+    "test:pw:docker": "docker run --rm --ipc=host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.49.0-noble ./tools/scripts/pw.docker.sh",
+    "test:pw:docker:deps": "docker run --rm --ipc=host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.49.0-noble ./tools/scripts/pw.docker.deps.sh",
     "test:pw:ci": "yarn test:pw --project=$PW_PROJECT",
     "test:pw:detect-affected": "node ./deploy/tools/affected-tests/index.js",
     "test:jest": "jest",
@@ -121,8 +121,8 @@
     "@eslint/compat": "1.2.2",
     "@eslint/js": "9.14.0",
     "@next/eslint-plugin-next": "15.0.3",
-    "@playwright/experimental-ct-react": "1.47.2",
-    "@playwright/test": "1.47.2",
+    "@playwright/experimental-ct-react": "1.49.0",
+    "@playwright/test": "1.49.0",
     "@stylistic/eslint-plugin": "2.10.1",
     "@svgr/webpack": "^6.5.1",
     "@tanstack/eslint-plugin-query": "5.60.1",
