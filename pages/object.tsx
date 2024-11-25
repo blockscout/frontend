@@ -58,12 +58,18 @@ const ObjectDetails: NextPage = () => {
         'bucket_name',
         'creator_address',
       ],
+      where: {
+        removed: { _eq: false },
+      },
       order: { update_time: 'desc' },
       limit: 21,
       offset: 0,
     },
     {
       tableName: 'objects_aggregate',
+      where: {
+        removed: { _eq: false },
+      },
       aggregate: [
         'count',
       ],
@@ -89,7 +95,10 @@ const ObjectDetails: NextPage = () => {
             { object_name: { _ilike: `${ queryParams.searchTerm }%` } },
             { object_id: { _eq: queryParams.searchTerm } },
           ],
-        } : undefined,
+          _and: [
+            { removed: { _eq: false } },
+          ],
+        } : { removed: { _eq: false } },
         order: { update_time: 'desc' },
         limit: 21,
         offset: queryParams.offset,
@@ -101,7 +110,10 @@ const ObjectDetails: NextPage = () => {
             { object_name: { _ilike: `${ queryParams.searchTerm }%` } },
             { object_id: { _eq: queryParams.searchTerm } },
           ],
-        } : undefined,
+          _and: [
+            { removed: { _eq: false } },
+          ],
+        } : { removed: { _eq: false } },
         aggregate: [
           'count',
         ],

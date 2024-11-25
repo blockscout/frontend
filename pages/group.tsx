@@ -59,12 +59,18 @@ const Page: NextPage = () => {
         // }`,
         'owner_address',
       ],
+      where: {
+        removed: { _eq: false },
+      },
       limit: 21,
       offset: 0,
       order: { update_at: 'desc' },
     },
     {
       tableName: 'groups_aggregate',
+      where: {
+        removed: { _eq: false },
+      },
       aggregate: [
         'count',
       ],
@@ -93,7 +99,10 @@ const Page: NextPage = () => {
             { group_name: { _ilike: `${ queryParams.searchTerm }%` } },
             { group_id: { _eq: queryParams.searchTerm } },
           ],
-        } : undefined,
+          _and: [
+            { removed: { _eq: false } },
+          ],
+        } : { removed: { _eq: false } },
         order: { update_at: 'desc' },
       },
       {
@@ -103,7 +112,10 @@ const Page: NextPage = () => {
             { group_name: { _ilike: `${ queryParams.searchTerm }%` } },
             { group_id: { _eq: queryParams.searchTerm } },
           ],
-        } : undefined,
+          _and: [
+            { removed: { _eq: false } },
+          ],
+        } : { removed: { _eq: false } },
         aggregate: [
           'count',
         ],

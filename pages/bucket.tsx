@@ -56,13 +56,20 @@ const Page: NextPage = () => {
         }
       }`,
       'owner_address',
+      'removed',
     ],
+    where: {
+      removed: { _eq: false },
+    },
     limit: 21,
     offset: 0,
     order: { update_time: 'desc' },
   },
   {
     tableName: 'buckets_aggregate',
+    where: {
+      removed: { _eq: false },
+    },
     aggregate: [
       'count',
     ],
@@ -91,7 +98,10 @@ const Page: NextPage = () => {
             { bucket_name: { _ilike: `${ queryParams.searchTerm }%` } },
             { bucket_id: { _eq: queryParams.searchTerm } },
           ],
-        } : undefined,
+          _and: [
+            { removed: { _eq: false } },
+          ],
+        } : { removed: { _eq: false } },
         order: { update_time: 'desc' },
       },
       {
@@ -101,7 +111,10 @@ const Page: NextPage = () => {
             { bucket_name: { _ilike: `${ queryParams.searchTerm }%` } },
             { bucket_id: { _eq: queryParams.searchTerm } },
           ],
-        } : undefined,
+          _and: [
+            { removed: { _eq: false } },
+          ],
+        } : { removed: { _eq: false } },
         aggregate: [
           'count',
         ],
