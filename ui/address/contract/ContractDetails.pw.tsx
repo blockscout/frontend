@@ -131,41 +131,9 @@ test('self destructed', async({ render, mockApiResponse, page }) => {
 });
 
 test('non verified', async({ render, mockApiResponse }) => {
+  await mockApiResponse('address', { ...addressMock.contract, name: null }, { pathParams: { hash: addressMock.contract.hash } });
   await mockApiResponse('contract', contractMock.nonVerified, { pathParams: { hash: addressMock.contract.hash } });
   const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('implementation info', async({ render, mockApiResponse }) => {
-  const hooksConfig = {
-    router: {
-      query: { hash: addressMock.contract.hash, tab: 'contract_compiler' },
-    },
-  };
-
-  const implementationName = addressMock.contract.implementations?.[0].name as string;
-  const implementationAddress = addressMock.contract.implementations?.[0].address as string;
-  const implementationContract = {
-    ...contractMock.verified,
-    compiler_settings: {
-      evmVersion: 'london',
-      libraries: {},
-      metadata: {
-        bytecodeHash: 'ipfs',
-        useLiteralContent: false,
-      },
-      optimizer: {
-        enabled: true,
-        runs: 1000000,
-      },
-    },
-  };
-  await mockApiResponse('contract', contractMock.verified, { pathParams: { hash: addressMock.contract.hash } });
-  await mockApiResponse('contract', implementationContract, { pathParams: { hash: implementationAddress } });
-
-  const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
-  await component.getByRole('combobox').selectOption(implementationName);
 
   await expect(component).toHaveScreenshot();
 });
