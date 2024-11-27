@@ -45,7 +45,6 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
         return isRefetchEnabled ? 15 * SECOND : false;
       },
     },
-    logError: true,
   });
 
   const rpcQuery = useQuery<RpcResponseType, unknown, Address | null>({
