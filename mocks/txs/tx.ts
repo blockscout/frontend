@@ -8,7 +8,7 @@ import * as decodedInputDataMock from 'mocks/txs/decodedInputData';
 
 export const base: Transaction = {
   base_fee_per_gas: '10000000000',
-  block: 29611750,
+  block_number: 29611750,
   confirmation_duration: [
     0,
     6364,
@@ -61,14 +61,14 @@ export const base: Transaction = {
   token_transfers: [],
   token_transfers_overflow: false,
   tx_burnt_fee: '461030000000000',
-  tx_tag: null,
-  tx_types: [
+  transaction_tag: null,
+  transaction_types: [
     'contract_call',
   ],
   type: 2,
   value: '42000000000000000000',
   actions: [],
-  has_error_in_internal_txs: false,
+  has_error_in_internal_transactions: false,
 };
 
 export const withWatchListNames: Transaction = {
@@ -102,7 +102,7 @@ export const withContractCreation: Transaction = {
     watchlist_names: [],
     ens_domain_name: null,
   },
-  tx_types: [
+  transaction_types: [
     'contract_creation',
   ],
 };
@@ -132,7 +132,7 @@ export const withTokenTransfer: Transaction = {
     tokenTransferMock.erc404B,
   ],
   token_transfers_overflow: true,
-  tx_types: [
+  transaction_types: [
     'token_transfer',
   ],
 };
@@ -182,7 +182,7 @@ export const withRawRevertReason: Transaction = {
 export const pending: Transaction = {
   ...base,
   base_fee_per_gas: null,
-  block: null,
+  block_number: null,
   confirmation_duration: [],
   confirmations: 0,
   decoded_input: null,
@@ -197,7 +197,7 @@ export const pending: Transaction = {
   status: null,
   timestamp: null,
   tx_burnt_fee: null,
-  tx_tag: null,
+  transaction_tag: null,
   type: null,
   value: '0',
 };
@@ -373,7 +373,7 @@ export const withBlob = {
   ],
   burnt_blob_fee: '2820464441688064',
   max_fee_per_blob_gas: '60000000000',
-  tx_types: [ 'blob_transaction' as const ],
+  transaction_types: [ 'blob_transaction' as const ],
   type: 3,
 };
 

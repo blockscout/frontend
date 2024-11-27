@@ -30,7 +30,7 @@ export type Transaction = {
   result: string;
   confirmations: number;
   status: 'ok' | 'error' | null | undefined;
-  block: number | null;
+  block_number: number | null;
   timestamp: string | null;
   confirmation_duration: Array<number> | null;
   from: AddressParam;
@@ -54,14 +54,14 @@ export type Transaction = {
   token_transfers_overflow: boolean;
   exchange_rate: string | null;
   method: string | null;
-  tx_types: Array<TransactionType>;
-  tx_tag: string | null;
+  transaction_types: Array<TransactionType>;
+  transaction_tag: string | null;
   actions: Array<TxAction>;
   l1_fee?: string;
   l1_fee_scalar?: string;
   l1_gas_price?: string;
   l1_gas_used?: string;
-  has_error_in_internal_txs: boolean | null;
+  has_error_in_internal_transactions: boolean | null;
   // optimism fields
   op_withdrawals?: Array<OpWithdrawal>;
   // SUAVE fields

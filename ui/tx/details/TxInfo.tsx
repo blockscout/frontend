@@ -282,11 +282,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         Block
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        { data.block === null ?
+        { data.block_number === null ?
           <Text>Pending</Text> : (
             <BlockEntity
               isLoading={ isLoading }
-              number={ data.block }
+              number={ data.block_number }
               noIcon
             />
           ) }
