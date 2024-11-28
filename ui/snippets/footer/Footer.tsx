@@ -30,50 +30,50 @@ const Footer = () => {
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
   const issueUrl = useIssueUrl(backendVersionData?.backend_version);
-  const BLOCKSCOUT_LINKS = [
-    {
-      icon: 'edit' as const,
-      iconSize: '16px',
-      text: 'Submit an issue',
-      url: issueUrl,
-    },
-    {
-      icon: 'social/canny' as const,
-      iconSize: '20px',
-      text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
-    },
-    {
-      icon: 'social/git' as const,
-      iconSize: '18px',
-      text: 'Contribute',
-      url: 'https://github.com/blockscout/blockscout',
-    },
-    {
-      icon: 'social/twitter' as const,
-      iconSize: '18px',
-      text: 'X (ex-Twitter)',
-      url: 'https://www.twitter.com/blockscoutcom',
-    },
-    {
-      icon: 'social/discord' as const,
-      iconSize: '24px',
-      text: 'Discord',
-      url: 'https://discord.gg/blockscout',
-    },
-    {
-      icon: 'discussions' as const,
-      iconSize: '20px',
-      text: 'Discussions',
-      url: 'https://github.com/orgs/blockscout/discussions',
-    },
-    {
-      icon: 'donate' as const,
-      iconSize: '20px',
-      text: 'Donate',
-      url: 'https://github.com/sponsors/blockscout',
-    },
-  ];
+  // const BLOCKSCOUT_LINKS = [
+  //   {
+  //     icon: 'edit' as const,
+  //     iconSize: '16px',
+  //     text: 'Submit an issue',
+  //     url: issueUrl,
+  //   },
+  //   {
+  //     icon: 'social/canny' as const,
+  //     iconSize: '20px',
+  //     text: 'Feature request',
+  //     url: 'https://blockscout.canny.io/feature-requests',
+  //   },
+  //   {
+  //     icon: 'social/git' as const,
+  //     iconSize: '18px',
+  //     text: 'Contribute',
+  //     url: 'https://github.com/blockscout/blockscout',
+  //   },
+  //   {
+  //     icon: 'social/twitter' as const,
+  //     iconSize: '18px',
+  //     text: 'X (ex-Twitter)',
+  //     url: 'https://www.twitter.com/blockscoutcom',
+  //   },
+  //   {
+  //     icon: 'social/discord' as const,
+  //     iconSize: '24px',
+  //     text: 'Discord',
+  //     url: 'https://discord.gg/blockscout',
+  //   },
+  //   {
+  //     icon: 'discussions' as const,
+  //     iconSize: '20px',
+  //     text: 'Discussions',
+  //     url: 'https://github.com/orgs/blockscout/discussions',
+  //   },
+  //   {
+  //     icon: 'donate' as const,
+  //     iconSize: '20px',
+  //     text: 'Donate',
+  //     url: 'https://github.com/sponsors/blockscout',
+  //   },
+  // ];
 
   const frontendLink = (() => {
     if (config.UI.footer.frontendVersion) {
@@ -115,28 +115,28 @@ const Footer = () => {
     );
   }, []);
 
-  const renderProjectInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
-    return (
-      <Box gridArea={ gridArea }>
-        <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
-        <Text mt={ 3 } fontSize="xs">
-          Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
-        </Text>
-        <VStack spacing={ 1 } mt={ 6 } alignItems="start">
-          { apiVersionUrl && (
-            <Text fontSize="xs">
-              Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
-            </Text>
-          ) }
-          { frontendLink && (
-            <Text fontSize="xs">
-              Frontend: { frontendLink }
-            </Text>
-          ) }
-        </VStack>
-      </Box>
-    );
-  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink ]);
+  // const renderProjectInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
+  //   return (
+  //     <Box gridArea={ gridArea }>
+  //       <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
+  //       <Text mt={ 3 } fontSize="xs">
+  //         Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
+  //       </Text>
+  //       <VStack spacing={ 1 } mt={ 6 } alignItems="start">
+  //         { apiVersionUrl && (
+  //           <Text fontSize="xs">
+  //             Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
+  //           </Text>
+  //         ) }
+  //         { frontendLink && (
+  //           <Text fontSize="xs">
+  //             Frontend: { frontendLink }
+  //           </Text>
+  //         ) }
+  //       </VStack>
+  //     </Box>
+  //   );
+  // }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink ]);
 
   const containerProps: GridProps = {
     as: 'footer',
@@ -153,7 +153,7 @@ const Footer = () => {
       <Grid { ...containerProps }>
         <div>
           { renderNetworkInfo() }
-          { renderProjectInfo() }
+          {/* { renderProjectInfo() } */}
         </div>
 
         <Grid
@@ -168,7 +168,7 @@ const Footer = () => {
         >
           {
             ([
-              { title: 'Blockscout', links: BLOCKSCOUT_LINKS },
+              // { title: 'Blockscout', links: BLOCKSCOUT_LINKS },
               ...(linksData || []),
             ])
               .slice(0, colNum)
@@ -198,9 +198,9 @@ const Footer = () => {
     >
 
       { renderNetworkInfo({ lg: 'network' }) }
-      { renderProjectInfo({ lg: 'info' }) }
+      {/* { renderProjectInfo({ lg: 'info' }) } */}
 
-      <Grid
+      {/* <Grid
         gridArea={{ lg: 'links-bottom' }}
         gap={ 1 }
         gridTemplateColumns={{
@@ -219,7 +219,7 @@ const Footer = () => {
         mt={{ base: 8, lg: 0 }}
       >
         { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };

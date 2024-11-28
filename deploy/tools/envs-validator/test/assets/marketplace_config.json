@@ -17,9 +17,9 @@
 		"title": "Token Approval Tracker",
 		"logo": "https://example.com/logo.svg",
 		"categories": ["Infra & Dev tooling"],
-		"shortDescription": "Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.",
+		"shortDescription": "Token Approval Tracker shows all approvals for any DRC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.",
 		"site": "https://example.com",
-		"description": "Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.",
+		"description": "Token Approval Tracker shows all approvals for any DRC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.",
 		"url": "https://example.com"
 	}
 	]

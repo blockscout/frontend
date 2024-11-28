@@ -149,7 +149,7 @@ test.describe('sourcify', () => {
       status: 'error',
       errors: {
         // eslint-disable-next-line max-len
-        files: [ 'Detected 5 contracts (ERC20, IERC20, IERC20Metadata, Context, MockERC20), but can only verify 1 at a time. Please choose a main contract and click Verify again.' ],
+        files: [ 'Detected 5 contracts (DRC20, IERC20, IERC20Metadata, Context, MockERC20), but can only verify 1 at a time. Please choose a main contract and click Verify again.' ],
       },
     });
 

@@ -67,7 +67,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
   return (
     <DetailsInfoItem
       title="Balance"
-      hint={ `Address balance in ${ currencyUnits.ether }. Doesn't include ERC20, ERC721 and ERC1155 tokens` }
+      hint={ `Address balance in ${ currencyUnits.ether }. Doesn't include DRC20, ERC721 and ERC1155 tokens` }
       flexWrap="nowrap"
       alignItems="flex-start"
       isLoading={ isLoading }

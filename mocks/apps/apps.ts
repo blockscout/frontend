@@ -21,9 +21,9 @@ export const apps = [
     title: 'Token Approval Tracker',
     logo: 'https://approval-tracker.apps.blockscout.com/icon-192.png',
     categories: [ 'Infra & Dev tooling' ],
-    shortDescription: 'Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.',
+    shortDescription: 'Token Approval Tracker shows all approvals for any DRC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.',
     site: 'https://docs.blockscout.com/for-users/blockscout-apps/token-approval-tracker',
-    description: 'Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.',
+    description: 'Token Approval Tracker shows all approvals for any DRC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.',
     url: 'https://approval-tracker.apps.blockscout.com/',
   },
 ];
