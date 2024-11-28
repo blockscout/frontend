@@ -27,6 +27,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import { useArweaveId } from 'lib/hooks/useArweaveId';
+import { useBlobScan } from 'lib/hooks/useBlobScan';
 import { useWvmArchiver } from 'lib/hooks/useWvmArchiver';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
@@ -46,6 +47,7 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
+import BlobScanTag from 'ui/shared/statusTag/BlobScanTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import WvmArchiverTag from 'ui/shared/statusTag/WvmArchiverTag';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -75,6 +77,7 @@ interface Props {
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const size = useWindowSize();
   const { colorMode } = useColorMode();
+  const isBlobScan = useBlobScan({ address: data?.from.hash });
   const isWvmArchiver = useWvmArchiver({ address: data?.from.hash });
   const isSmallDevice = size.width && size.width < 768;
   const wvmIconPath =
@@ -320,10 +323,24 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             hint="The external application source that generated this transaction"
             isLoading={ isLoading }
           >
-          Application
+            Application
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <WvmArchiverTag/>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
+      { isBlobScan && (
+        <>
+          <DetailsInfoItem.Label
+            hint="The external application source that generated this transaction"
+            isLoading={ isLoading }
+          >
+            Application
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <BlobScanTag/>
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -438,7 +455,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             hint="The Arweave TXID of the WeaveVM block"
             isLoading={ isLoading }
           >
-              Block archive proof
+            Block archive proof
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <IconSvg
@@ -451,7 +468,13 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             />
             { arweaveId === 'block_not_archived_or_backfilled' ? (
               <>
-                <Text color={ colorMode === 'dark' ? '#1AFFB1' : '#00B774' } marginLeft="5px" marginRight="12px">Pending </Text>
+                <Text
+                  color={ colorMode === 'dark' ? '#1AFFB1' : '#00B774' }
+                  marginLeft="5px"
+                  marginRight="12px"
+                >
+                  Pending{ ' ' }
+                </Text>
 
                 <RotatingLines
                   strokeColor="grey"
@@ -470,7 +493,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                   color={ colorMode === 'dark' ? '#1AFFB1' : '#00B774' }
                   marginLeft="5px"
                 >
-                  <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
+                  <EntityBase.Content
+                    text={
+                      isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId
+                    }
+                  />
                 </Link>
 
                 <CopyToClipboard text={ arweaveId }/>

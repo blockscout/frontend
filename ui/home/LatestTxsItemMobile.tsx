@@ -11,11 +11,13 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
+import { useBlobScan } from 'lib/hooks/useBlobScan';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { useWvmArchiver } from 'lib/hooks/useWvmArchiver';
 import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import BlobScanTag from 'ui/shared/statusTag/BlobScanTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import WvmArchiverTag from 'ui/shared/statusTag/WvmArchiverTag';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
@@ -30,6 +32,7 @@ type Props = {
 
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const isWvmArchiver = useWvmArchiver({ address: tx.from.hash });
+  const isBlobScan = useBlobScan({ address: tx.from.hash });
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
 
@@ -48,6 +51,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
           { isWvmArchiver && <WvmArchiverTag/> }
+          { isBlobScan && <BlobScanTag/> }
         </HStack>
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
       </Flex>

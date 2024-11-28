@@ -11,6 +11,7 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
+import { useBlobScan } from 'lib/hooks/useBlobScan';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { useWvmArchiver } from 'lib/hooks/useWvmArchiver';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
@@ -18,6 +19,7 @@ import Tag from 'ui/shared/chakra/Tag';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import BlobScanTag from 'ui/shared/statusTag/BlobScanTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import WvmArchiverTag from 'ui/shared/statusTag/WvmArchiverTag';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
@@ -39,6 +41,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
+  const isBlobScan = useBlobScan({ address: tx.from.hash });
   const isWvmArchiver = useWvmArchiver({ address: tx.from.hash });
 
   return (
@@ -75,6 +78,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
             }
 
             { isWvmArchiver && <WvmArchiverTag/> }
+            { isBlobScan && <BlobScanTag/> }
           </HStack>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
