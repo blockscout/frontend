@@ -20,7 +20,7 @@ export function SocketProvider({ children, options, url }: SocketProviderProps) 
     }
 
     const socketInstance = new Socket(url, options);
-    socketInstance.connect();
+    //socketInstance.connect();
     setSocket(socketInstance);
 
     return () => {
