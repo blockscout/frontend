@@ -14,7 +14,7 @@ import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
-import { enrichWithMethodId, isMethod } from './utils';
+import { formatAbi } from './utils';
 
 interface Props {
   items: Array<SmartContractMudSystemItem>;
@@ -42,10 +42,7 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
     setSelectedItem(item as SmartContractMudSystemItem);
   }, []);
 
-  const abi = React.useMemo(() => {
-    return systemInfoQuery.data?.abi?.filter(isMethod).map(enrichWithMethodId) || [];
-  }, [ systemInfoQuery.data?.abi ]);
-
+  const abi = React.useMemo(() => formatAbi(systemInfoQuery.data?.abi || []), [ systemInfoQuery.data?.abi ]);
   const filters = useMethodsFilters({ abi });
 
   return (

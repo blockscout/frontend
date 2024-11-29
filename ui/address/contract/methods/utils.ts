@@ -42,6 +42,25 @@ export const enrichWithMethodId = (method: AbiFunction | AbiFallback | AbiReceiv
   }
 };
 
+const getNameForSorting = (method: SmartContractMethod | AbiFallback | AbiReceive) => {
+  if ('name' in method) {
+    return method.name;
+  }
+
+  return method.type === 'fallback' ? 'fallback' : 'receive';
+};
+
+export const formatAbi = (abi: Abi) => {
+  return abi
+    .filter(isMethod)
+    .map(enrichWithMethodId)
+    .sort((a, b) => {
+      const aName = getNameForSorting(a);
+      const bName = getNameForSorting(b);
+      return aName.localeCompare(bName);
+    });
+};
+
 export const TYPE_FILTER_OPTIONS: Array<{ value: MethodType; title: string }> = [
   { value: 'all', title: 'All' },
   { value: 'read', title: 'Read' },

@@ -13,7 +13,7 @@ import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
-import { enrichWithMethodId, isMethod } from './utils';
+import { formatAbi } from './utils';
 
 interface Props {
   implementations: Array<AddressImplementation>;
@@ -36,10 +36,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: 
     },
   });
 
-  const abi = React.useMemo(() => {
-    return contractQuery.data?.abi?.filter(isMethod).map(enrichWithMethodId) || [];
-  }, [ contractQuery.data?.abi ]);
-
+  const abi = React.useMemo(() => formatAbi(contractQuery.data?.abi || []), [ contractQuery.data?.abi ]);
   const filters = useMethodsFilters({ abi });
 
   return (

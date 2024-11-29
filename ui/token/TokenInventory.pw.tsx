@@ -2,12 +2,17 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { tokenInfoERC721a } from 'mocks/tokens/tokenInfo';
-import { base as tokenInstanse } from 'mocks/tokens/tokenInstance';
+import { base as tokenInstance } from 'mocks/tokens/tokenInstance';
 import { test, expect } from 'playwright/lib';
 
 import TokenInventory from './TokenInventory';
 
-test('base view +@mobile', async({ render }) => {
+test('base view +@mobile', async({ render, mockAssetResponse }) => {
+
+  const item = { ...tokenInstance, image_url: null };
+
+  await mockAssetResponse(tokenInstance.image_url as string, './playwright/mocks/image_s.jpg');
+
   const component = await render(
     <Box pt={{ base: '134px', lg: 0 }}>
       <TokenInventory
@@ -15,7 +20,7 @@ test('base view +@mobile', async({ render }) => {
         // @ts-ignore:
         inventoryQuery={{
           data: {
-            items: [ tokenInstanse, tokenInstanse, tokenInstanse ],
+            items: [ tokenInstance, item, item ],
             next_page_params: { unique_token: 1 },
           },
 

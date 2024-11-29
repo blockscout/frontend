@@ -6,9 +6,27 @@ import * as pwConfig from 'playwright/utils/config';
 
 import TxsTable from './TxsTable';
 
-test.describe('base view', () => {
+test('base view +@dark-mode', async({ render }) => {
+  const component = await render(
+    <TxsTable
+      txs={ [ txMock.base, txMock.withWatchListNames ] }
+      // eslint-disable-next-line react/jsx-no-bind
+      sort={ () => () => {} }
+      top={ 0 }
+      showBlockInfo
+      showSocketInfo={ false }
+    />,
+  );
 
-  test('+@dark-mode', async({ render }) => {
+  await component.getByText('kitty').first().hover();
+
+  await expect(component).toHaveScreenshot();
+});
+
+test.describe('screen xl', () => {
+  test.use({ viewport: pwConfig.viewport.xl });
+
+  test('base view', async({ render }) => {
     const component = await render(
       <TxsTable
         txs={ [ txMock.base, txMock.withWatchListNames ] }
@@ -23,26 +41,5 @@ test.describe('base view', () => {
     await component.getByText('kitty').first().hover();
 
     await expect(component).toHaveScreenshot();
-  });
-
-  test.describe('screen xl', () => {
-    test.use({ viewport: pwConfig.viewport.xl });
-
-    test('', async({ render }) => {
-      const component = await render(
-        <TxsTable
-          txs={ [ txMock.base, txMock.withWatchListNames ] }
-          // eslint-disable-next-line react/jsx-no-bind
-          sort={ () => () => {} }
-          top={ 0 }
-          showBlockInfo
-          showSocketInfo={ false }
-        />,
-      );
-
-      await component.getByText('kitty').first().hover();
-
-      await expect(component).toHaveScreenshot();
-    });
   });
 });

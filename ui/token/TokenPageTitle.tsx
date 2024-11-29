@@ -27,6 +27,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 import TokenVerifiedInfo from './TokenVerifiedInfo';
 
+const PREDEFINED_TAG_PRIORITY = 100;
+
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
   addressQuery: UseQueryResult<Address, ResourceError<unknown>>;
@@ -69,13 +71,18 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
 
   const tags: Array<EntityTag> = React.useMemo(() => {
     return [
-      tokenQuery.data ? { slug: tokenQuery.data?.type, name: getTokenTypeName(tokenQuery.data.type), tagType: 'custom' as const, ordinal: -20 } : undefined,
+      tokenQuery.data ? {
+        slug: tokenQuery.data?.type,
+        name: getTokenTypeName(tokenQuery.data.type),
+        tagType: 'custom' as const,
+        ordinal: PREDEFINED_TAG_PRIORITY,
+      } : undefined,
       config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?
         {
           slug: 'bridged',
           name: 'Bridged',
           tagType: 'custom' as const,
-          ordinal: -10,
+          ordinal: PREDEFINED_TAG_PRIORITY,
           meta: { bgColor: bridgedTokenTagBgColor, textColor: bridgedTokenTagTextColor },
         } :
         undefined,

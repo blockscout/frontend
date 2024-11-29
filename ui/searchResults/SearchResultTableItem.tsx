@@ -75,7 +75,8 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                     dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
                   />
                 </LinkInternal>
-                { data.is_verified_via_admin_panel && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+                { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
+                { data.is_verified_via_admin_panel && !data.certified && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
@@ -154,7 +155,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                         <chakra.span color="text_secondary">{ expiresText }</chakra.span>
                     ) }
                   </Text>
-                  { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } mx={ 1 }/> }
+                  { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } mx={ 1 }/> }
                 </Flex>
               </Td>
             ) }
