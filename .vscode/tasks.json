@@ -376,7 +376,9 @@
               "shibarium",
               "stability_testnet",
               "zkevm",
+              "zilliqa_prototestnet",
               "zksync",
+              "zora",
             ],
             "default": "main"
         },

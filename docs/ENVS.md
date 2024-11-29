@@ -282,7 +282,7 @@ Settings for meta tags, OG tags and SEO
 | Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES | `Array<NftMarketplace>` where `NftMarketplace` can have following [properties](#nft-marketplace-properties) | Used to build up links to NFT collections and NFT instances in external marketplaces. | - | - | `[{'name':'OpenSea','collection_url':'https://opensea.io/assets/ethereum/{hash}','instance_url':'https://opensea.io/assets/ethereum/{hash}/{id}','logo_url':'https://opensea.io/static/images/logos/opensea-logo.svg'}]` | v1.15.0+ |
-
+| NEXT_PUBLIC_HELIA_VERIFIED_FETCH_ENABLED | `boolean` | Indicates that the [Helia verified fetch](https://github.com/ipfs/helia-verified-fetch/tree/main/packages/verified-fetch) should be used for retrieving content of NFT assets (currently limited to images) directly from IPFS network using trustless gateways. | - | `true` | `false` | v1.37.0+ |
 
 ##### NFT marketplace properties
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
@@ -442,6 +442,8 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | NEXT_PUBLIC_FAULT_PROOF_ENABLED | `boolean` | Set to `true` for chains with fault proof system enabled (Optimistic stack only) | - | - | `true` | v1.31.0+ |
 | NEXT_PUBLIC_HAS_MUD_FRAMEWORK | `boolean` | Set to `true` for instances that use MUD framework (Optimistic stack only) | - | - | `true` | v1.33.0+ |
 | NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS | `boolean` | Set to `true` to display "Latest blocks" widget instead of "Latest batches" on the home page | - | - | `true` | v1.36.0+ |
+| NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED | `boolean` | Enables "Output roots" page (Optimistic stack only)  | - | `true` | `false` | v1.37.0+ |
+| NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME | `string` | Set to customize L1 transaction status labels in the UI (e.g., "Sent to <chain-name>"). This setting is applicable only for Arbitrum-based chains.  | - | - | `DuckChain` | v1.37.0+ |
 
 &nbsp;
 
@@ -703,6 +705,17 @@ For blockchains that implement SUAVE architecture additional fields will be show
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_SUAVE_CHAIN | `boolean` | Set to true for blockchains with [SUAVE architecture](https://writings.flashbots.net/mevm-suave-centauri-and-beyond) | Required | - | `true` | v1.14.0+ |
+
+&nbsp;
+
+### Celo chain
+
+For blockchains that use the Celo platform. _Note_, that once the Celo mainnet becomes an L2 chain, these variables will be migrated to the Rollup configuration section.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_CELO_ENABLED | `boolean` | Indicates that it is a Celo-based chain. | - | - | `true` | v1.37.0+ |
+| NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK | `number` | Indicates the block number when the Celo-type chain transitioned to L2. This is used to display links to the Epoch block page from a regular block page. | - | - | `26369280` | v1.37.0+ |
 
 &nbsp;
 

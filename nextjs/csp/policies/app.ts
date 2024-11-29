@@ -104,6 +104,7 @@ export function app(): CspDev.DirectiveDescriptor {
     ],
 
     'media-src': [
+      KEY_WORDS.BLOB,
       '*', // see comment for img-src directive
     ],
 
@@ -128,6 +129,9 @@ export function app(): CspDev.DirectiveDescriptor {
 
     'frame-ancestors': [
       KEY_WORDS.SELF,
+
+      // allow remix.ethereum.org to embed our contract page in iframe
+      'remix.ethereum.org',
     ],
   };
 }

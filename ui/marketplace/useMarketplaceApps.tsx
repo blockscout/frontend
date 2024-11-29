@@ -114,8 +114,11 @@ export default function useMarketplaceApps(
         if (sorting === 'security_score') {
           return (b.securityReport?.overallInfo.securityScore || 0) - (a.securityReport?.overallInfo.securityScore || 0);
         }
-        if (sorting === 'rating') {
+        if (sorting === 'rating_score') {
           return (b.rating?.value || 0) - (a.rating?.value || 0);
+        }
+        if (sorting === 'rating_count') {
+          return (b.rating?.count || 0) - (a.rating?.count || 0);
         }
         return 0;
       }) || [];

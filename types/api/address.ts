@@ -16,6 +16,7 @@ export interface Address extends UserTags {
   exchange_rate: string | null;
   ens_domain_name: string | null;
   filecoin?: AddressFilecoinParams;
+  zilliqa?: AddressZilliqaParams;
   // TODO: if we are happy with tabs-counters method, should we delete has_something fields?
   has_beacon_chain_withdrawals?: boolean;
   has_decompiled_code: boolean;
@@ -30,6 +31,10 @@ export interface Address extends UserTags {
   name: string | null;
   token: TokenInfo | null;
   watchlist_address_id: number | null;
+}
+
+export interface AddressZilliqaParams {
+  is_scilla_contract: boolean;
 }
 
 export interface AddressCounters {

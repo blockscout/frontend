@@ -29,8 +29,7 @@ const NFTItem = ({ token, value, isLoading, withTokenLink, ...tokenInstance }: P
       <Link href={ isLoading ? undefined : tokenInstanceLink }>
         <NftMedia
           mb="18px"
-          animationUrl={ tokenInstance?.animation_url ?? null }
-          imageUrl={ tokenInstance?.image_url ?? null }
+          data={ tokenInstance }
           isLoading={ isLoading }
           autoplayVideo={ false }
         />

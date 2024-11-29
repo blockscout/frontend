@@ -55,7 +55,7 @@ const NameDomainDetails = ({ query }: Props) => {
           <>
             <DetailsInfoItem.Label
             // eslint-disable-next-line max-len
-              hint="The date the name expires, upon which there is a 90 day grace period for the owner to renew. After the 90 days, the name is released to the market"
+              hint="The date the name expires, upon which there is a grace period for the owner to renew. After grace period ends, the name is released to the market"
               isLoading={ isLoading }
             >
               Expiration date

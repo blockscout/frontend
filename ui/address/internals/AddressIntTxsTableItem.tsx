@@ -24,7 +24,7 @@ const AddressIntTxsTableItem = ({
   error,
   created_contract: createdContract,
   transaction_hash: txnHash,
-  block,
+  block_number: blockNumber,
   timestamp,
   currentAddress,
   isLoading,
@@ -66,7 +66,7 @@ const AddressIntTxsTableItem = ({
       <Td verticalAlign="middle">
         <BlockEntity
           isLoading={ isLoading }
-          number={ block }
+          number={ blockNumber }
           noIcon
           fontSize="sm"
           lineHeight={ 5 }
