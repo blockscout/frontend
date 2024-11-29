@@ -29,8 +29,8 @@ const Stats = () => {
     if (!isPlaceholderData && !data?.gas_prices?.average) {
       setHasGasTracker(false);
     }
-  // should run only after initial fetch
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // should run only after initial fetch
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
 
   const zkEvmLatestBatchQuery = useApiQuery('homepage_zkevm_latest_batch', {
