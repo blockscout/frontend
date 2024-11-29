@@ -19,7 +19,7 @@ export type InternalTransaction = (
   from: AddressParam;
   value: string;
   index: number;
-  block: number;
+  block_number: number;
   timestamp: string;
   gas_limit: string;
 };
