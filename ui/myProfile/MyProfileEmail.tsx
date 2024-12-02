@@ -1,7 +1,6 @@
 import { Button, chakra, Heading, useDisclosure } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -85,11 +84,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
             isReadOnly={ !config.services.reCaptchaV3.siteKey || Boolean(profileQuery.data?.email) }
             defaultValue={ profileQuery.data?.email || undefined }
           />
-          { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && (
-            <GoogleReCaptchaProvider reCaptchaKey={ config.services.reCaptchaV3.siteKey }>
-              <FormFieldReCaptcha/>
-            </GoogleReCaptchaProvider>
-          ) }
+          { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && <FormFieldReCaptcha/> }
           { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && (
             <Button
               mt={ 6 }

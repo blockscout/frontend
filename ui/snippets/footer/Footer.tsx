@@ -8,6 +8,7 @@ import type { CustomLinksGroup } from 'types/footerLinks';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import { RECAPTCHA_CONTAINER_ID } from 'lib/contexts/reCaptcha';
 import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
 import { copy } from 'lib/html-entities';
@@ -170,6 +171,24 @@ const Footer = () => {
     m: '0 auto',
   };
 
+  const renderRecaptcha = (gridArea?: GridProps['gridArea']) => {
+    if (!config.services.reCaptchaV3.siteKey) {
+      return <Box gridArea={ gridArea }/>;
+    }
+
+    return (
+      <Box
+        gridArea={ gridArea }
+        id={ RECAPTCHA_CONTAINER_ID }
+        mt={ 6 }
+        mb={ -6 }
+        transform="scale(0.6)"
+        transformOrigin="top left"
+        sx={{ '& .grecaptcha-badge': { boxShadow: 'none !important' } }}
+      />
+    );
+  };
+
   if (config.UI.footer.links) {
     return (
       <Box { ...containerProps }>
@@ -177,6 +196,7 @@ const Footer = () => {
           <div>
             { renderNetworkInfo() }
             { renderProjectInfo() }
+            { renderRecaptcha() }
           </div>
 
           <Grid
@@ -218,12 +238,14 @@ const Footer = () => {
           lg: `
           "network links-top"
           "info links-bottom"
+          "recaptcha links-bottom"
         `,
         }}
       >
 
         { renderNetworkInfo({ lg: 'network' }) }
         { renderProjectInfo({ lg: 'info' }) }
+        { renderRecaptcha({ lg: 'recaptcha' }) }
 
         <Grid
           gridArea={{ lg: 'links-bottom' }}

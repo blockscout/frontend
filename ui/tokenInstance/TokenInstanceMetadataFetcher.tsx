@@ -2,7 +2,7 @@ import type { ToastId } from '@chakra-ui/react';
 import { chakra, Alert, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, Center } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
-import { GoogleReCaptcha, GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import { GoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { TokenInstance } from 'types/api/token';
@@ -163,15 +163,16 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
         <ModalBody mb={ 0 } minH="78px">
           { config.services.reCaptchaV3.siteKey ? (
             <>
-              <GoogleReCaptchaProvider reCaptchaKey={ config.services.reCaptchaV3.siteKey }>
+              <>
                 <Center h="80px">
                   <Spinner size="lg"/>
                 </Center>
+                { /* TODO @tom2drum migrate to common form field component */ }
                 <GoogleReCaptcha
                   onVerify={ handleReCaptchaChange }
                   refreshReCaptcha
                 />
-              </GoogleReCaptchaProvider>
+              </>
               { /* ONLY FOR TEST PURPOSES */ }
               <chakra.form noValidate onSubmit={ handleFormSubmit } display="none">
                 <chakra.input

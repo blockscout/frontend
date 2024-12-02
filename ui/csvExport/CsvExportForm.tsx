@@ -1,6 +1,5 @@
 import { Alert, Button, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
@@ -88,31 +87,29 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   }
 
   return (
-    <GoogleReCaptchaProvider reCaptchaKey={ config.services.reCaptchaV3.siteKey }>
-      <FormProvider { ...formApi }>
-        <chakra.form
-          noValidate
-          onSubmit={ handleSubmit(onFormSubmit) }
+    <FormProvider { ...formApi }>
+      <chakra.form
+        noValidate
+        onSubmit={ handleSubmit(onFormSubmit) }
+      >
+        <Flex columnGap={ 5 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }} alignItems={{ base: 'flex-start', lg: 'center' }} flexWrap="wrap">
+          { exportType !== 'holders' && <CsvExportFormField name="from" formApi={ formApi }/> }
+          { exportType !== 'holders' && <CsvExportFormField name="to" formApi={ formApi }/> }
+          <FormFieldReCaptcha/>
+        </Flex>
+        <Button
+          variant="solid"
+          size="lg"
+          type="submit"
+          mt={ 8 }
+          isLoading={ formState.isSubmitting }
+          loadingText="Download"
+          isDisabled={ Boolean(formState.errors.from || formState.errors.to) }
         >
-          <Flex columnGap={ 5 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }} alignItems={{ base: 'flex-start', lg: 'center' }} flexWrap="wrap">
-            { exportType !== 'holders' && <CsvExportFormField name="from" formApi={ formApi }/> }
-            { exportType !== 'holders' && <CsvExportFormField name="to" formApi={ formApi }/> }
-            <FormFieldReCaptcha/>
-          </Flex>
-          <Button
-            variant="solid"
-            size="lg"
-            type="submit"
-            mt={ 8 }
-            isLoading={ formState.isSubmitting }
-            loadingText="Download"
-            isDisabled={ Boolean(formState.errors.from || formState.errors.to) }
-          >
-            Download
-          </Button>
-        </chakra.form>
-      </FormProvider>
-    </GoogleReCaptchaProvider>
+          Download
+        </Button>
+      </chakra.form>
+    </FormProvider>
   );
 };
 
