@@ -64,6 +64,8 @@ import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
+import TxInfoScrollFees from './TxInfoScrollFees';
+
 const rollupFeature = config.features.rollup;
 
 interface Props {
@@ -789,136 +791,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           ) }
         </>
       ) }
-
-      { data.scroll?.l1_fee !== undefined && (
-        <>
-          <DetailsInfoItem.Label
-
-            hint="L1 fee that pays for rollup costs."
-            isLoading={ isLoading }
-          >
-            L1 data fee
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <CurrencyValue
-              value={ data.scroll?.l1_fee }
-              currency={ currencyUnits.ether }
-              exchangeRate={ data.exchange_rate }
-              flexWrap="wrap"
-            />
-          </DetailsInfoItem.Value>
-        </>
-      ) }
-
-      { data.scroll?.l2_fee !== undefined && (
-        <>
-          <DetailsInfoItem.Label
-            hint="L2 execution fee"
-            isLoading={ isLoading }
-          >
-            Execution fee
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <CurrencyValue
-              value={ data.scroll?.l2_fee.value }
-              currency={ currencyUnits.ether }
-              exchangeRate={ data.exchange_rate }
-              flexWrap="wrap"
-            />
-          </DetailsInfoItem.Value>
-        </>
-      ) }
-
-      { data.scroll?.l1_fee_commit_scalar !== undefined && (
-        <>
-          <DetailsInfoItem.Label
-            hint="Commitment scalar"
-            isLoading={ isLoading }
-          >
-            L1 commit scalar
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <CurrencyValue
-              value={ data.scroll?.l1_fee_commit_scalar }
-              currency={ currencyUnits.ether }
-              exchangeRate={ data.exchange_rate }
-              flexWrap="wrap"
-            />
-          </DetailsInfoItem.Value>
-        </>
-      ) }
-
-      { data.scroll?.l1_fee_overhead !== undefined && (
-        <>
-          <DetailsInfoItem.Label
-            hint="Additional gas overhead of a data commitment transaction"
-            isLoading={ isLoading }
-          >
-            L1 Fee Overhead
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isLoading }>
-              <CurrencyValue
-                value={ data.scroll?.l1_fee_overhead }
-                currency={ currencyUnits.ether }
-                exchangeRate={ data.exchange_rate }
-                flexWrap="wrap"
-              />
-            </Skeleton>
-          </DetailsInfoItem.Value>
-        </>
-      ) }
-      { (data.scroll?.l1_base_fee !== undefined || data.scroll?.l1_fee_scalar !== undefined) && (
-        <>
-          <DetailsInfoItem.Label
-            hint="L1 gas fees"
-            isLoading={ isLoading }
-          >
-            L1 gas fees
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            { data.scroll?.l1_base_fee !== undefined && (
-              <Skeleton isLoaded={ !isLoading }>
-                <Text as="span" fontWeight="500">Base: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.scroll?.l1_base_fee || 0).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
-              </Skeleton>
-            ) }
-            { data.scroll?.l1_fee_scalar !== undefined && (
-              <Skeleton isLoaded={ !isLoading }>
-                <TextSeparator/>
-                <Text as="span" fontWeight="500">Scalar: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.scroll?.l1_fee_scalar || 0).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
-              </Skeleton>
-            ) }
-          </DetailsInfoItem.Value>
-        </>
-      ) }
-
-      { (data.scroll?.l1_blob_base_fee !== undefined || data.scroll?.l1_fee_blob_scalar !== undefined) && (
-        <>
-          <DetailsInfoItem.Label
-            hint="L1 blob fees"
-            isLoading={ isLoading }
-          >
-            L1 blob fees
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            { data.scroll?.l1_blob_base_fee !== undefined && (
-              <Skeleton isLoaded={ !isLoading }>
-                <Text as="span" fontWeight="500">Base: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.scroll?.l1_blob_base_fee || 0).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
-              </Skeleton>
-            ) }
-            { data.scroll?.l1_fee_blob_scalar !== undefined && (
-              <Skeleton isLoaded={ !isLoading }>
-                <TextSeparator/>
-                <Text as="span" fontWeight="500">Scalar: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.scroll?.l1_fee_blob_scalar || 0).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
-              </Skeleton>
-            ) }
-          </DetailsInfoItem.Value>
-        </>
-      ) }
+      <TxInfoScrollFees data={ data } isLoading={ isLoading }/>
 
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
         <Element name="TxInfo__cutLink">
