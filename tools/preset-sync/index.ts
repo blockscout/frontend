@@ -18,6 +18,7 @@ const PRESETS = {
   optimism_sepolia: 'https://optimism-sepolia.blockscout.com',
   polygon: 'https://polygon.blockscout.com',
   rootstock_testnet: 'https://rootstock-testnet.blockscout.com',
+  scroll_sepolia: 'https://scroll-sepolia.blockscout.com',
   shibarium: 'https://www.shibariumscan.io',
   stability_testnet: 'https://stability-testnet.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',

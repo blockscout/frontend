@@ -67,7 +67,7 @@ export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
   return account(context);
 };
 
-const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum' ];
+const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
 export const deposits: GetServerSideProps<Props> = async(context) => {
   if (!(rollupFeature.isEnabled && DEPOSITS_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
@@ -78,7 +78,7 @@ export const deposits: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum' ];
+const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
 export const withdrawals: GetServerSideProps<Props> = async(context) => {
   if (
     !config.features.beaconChain.isEnabled &&
@@ -112,7 +112,7 @@ export const outputRoots: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum', 'optimistic' ];
+const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum', 'optimistic', 'scroll' ];
 export const batch: GetServerSideProps<Props> = async(context) => {
   if (!(rollupFeature.isEnabled && BATCH_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
