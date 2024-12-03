@@ -1,7 +1,7 @@
 const styles = () => {
   return {
     '.grecaptcha-badge': {
-      zIndex: 'toast',
+      visibility: 'hidden',
     },
   };
 };

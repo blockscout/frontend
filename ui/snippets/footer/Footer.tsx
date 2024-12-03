@@ -8,7 +8,6 @@ import type { CustomLinksGroup } from 'types/footerLinks';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
-import { RECAPTCHA_CONTAINER_ID } from 'lib/contexts/reCaptcha';
 import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
 import { copy } from 'lib/html-entities';
@@ -177,15 +176,13 @@ const Footer = () => {
     }
 
     return (
-      <Box
-        gridArea={ gridArea }
-        id={ RECAPTCHA_CONTAINER_ID }
-        mt={ 6 }
-        mb={ -6 }
-        transform="scale(0.6)"
-        transformOrigin="top left"
-        sx={{ '& .grecaptcha-badge': { boxShadow: 'none !important' } }}
-      />
+      <Box gridArea={ gridArea } fontSize="xs" lineHeight={ 5 } mt={ 6 } color="text">
+        <span>This site is protected by reCAPTCHA and the Google </span>
+        <Link href="https://policies.google.com/privacy" isExternal>Privacy Policy</Link>
+        <span> and </span>
+        <Link href="https://policies.google.com/terms" isExternal>Terms of Service</Link>
+        <span> apply.</span>
+      </Box>
     );
   };
 
