@@ -85,7 +85,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
 
   }, [ recaptcha, resource, hash, exportType, filterType, filterValue, fileNameTemplate, toast ]);
 
-  if (!config.services.reCaptchaV3.siteKey) {
+  if (!config.services.reCaptchaV2.siteKey) {
     return (
       <Alert status="error">
         CSV export is not available at the moment since reCaptcha is not configured for this application.

@@ -9,7 +9,6 @@ export interface FormFields {
   addresses: Array<{ hash: string }>;
   tags: Array<FormFieldTag>;
   description: string | undefined;
-  reCaptcha: string;
 }
 
 export interface FormFieldTag {

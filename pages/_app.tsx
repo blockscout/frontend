@@ -12,7 +12,6 @@ import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ChakraProvider } from 'lib/contexts/chakra';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
-import ReCaptchaProvider from 'lib/contexts/reCaptcha';
 import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { SettingsContextProvider } from 'lib/contexts/settings';
@@ -67,20 +66,18 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             <AppContextProvider pageProps={ pageProps }>
               <QueryClientProvider client={ queryClient }>
                 <GrowthBookProvider growthbook={ growthBook }>
-                  <ReCaptchaProvider>
-                    <ScrollDirectionProvider>
-                      <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
-                        <RewardsContextProvider>
-                          <MarketplaceContextProvider>
-                            <SettingsContextProvider>
-                              { getLayout(<Component { ...pageProps }/>) }
-                              { config.features.rewards.isEnabled && <RewardsLoginModal/> }
-                            </SettingsContextProvider>
-                          </MarketplaceContextProvider>
-                        </RewardsContextProvider>
-                      </SocketProvider>
-                    </ScrollDirectionProvider>
-                  </ReCaptchaProvider>
+                  <ScrollDirectionProvider>
+                    <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
+                      <RewardsContextProvider>
+                        <MarketplaceContextProvider>
+                          <SettingsContextProvider>
+                            { getLayout(<Component { ...pageProps }/>) }
+                            { config.features.rewards.isEnabled && <RewardsLoginModal/> }
+                          </SettingsContextProvider>
+                        </MarketplaceContextProvider>
+                      </RewardsContextProvider>
+                    </SocketProvider>
+                  </ScrollDirectionProvider>
                 </GrowthBookProvider>
                 <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
                 <GoogleAnalytics/>

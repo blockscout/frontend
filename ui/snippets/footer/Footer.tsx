@@ -171,7 +171,7 @@ const Footer = () => {
   };
 
   const renderRecaptcha = (gridArea?: GridProps['gridArea']) => {
-    if (!config.services.reCaptchaV3.siteKey) {
+    if (!config.services.reCaptchaV2.siteKey) {
       return <Box gridArea={ gridArea }/>;
     }
 

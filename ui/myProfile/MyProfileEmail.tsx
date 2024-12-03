@@ -85,11 +85,11 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
         >
           <FormFieldText<FormFields> name="name" placeholder="Name" isReadOnly mb={ 3 }/>
           <MyProfileFieldsEmail
-            isReadOnly={ !config.services.reCaptchaV3.siteKey || Boolean(profileQuery.data?.email) }
+            isReadOnly={ !config.services.reCaptchaV2.siteKey || Boolean(profileQuery.data?.email) }
             defaultValue={ profileQuery.data?.email || undefined }
           />
-          { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/> }
-          { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && (
+          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/> }
+          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && (
             <Button
               mt={ 6 }
               size="sm"

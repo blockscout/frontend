@@ -80,7 +80,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
     onSubmitResult(result);
   }, [ apiFetch, onSubmitResult, recaptcha ]);
 
-  if (!appConfig.services.reCaptchaV3.siteKey) {
+  if (!appConfig.services.reCaptchaV2.siteKey) {
     return null;
   }
 

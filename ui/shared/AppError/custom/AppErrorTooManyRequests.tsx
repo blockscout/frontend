@@ -43,8 +43,8 @@ const AppErrorTooManyRequests = () => {
     }
   }, [ recaptcha, toast, fetch ]);
 
-  if (!config.services.reCaptchaV3.siteKey) {
-    throw new Error('reCAPTCHA V3 site key is not set');
+  if (!config.services.reCaptchaV2.siteKey) {
+    throw new Error('reCAPTCHA V2 site key is not set');
   }
 
   return (

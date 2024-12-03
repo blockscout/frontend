@@ -168,7 +168,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
         <ModalHeader fontWeight="500" textStyle="h3" mb={ 4 }>Sending request</ModalHeader>
         <ModalCloseButton/>
         <ModalBody mb={ 0 } minH="78px">
-          { config.services.reCaptchaV3.siteKey ? (
+          { config.services.reCaptchaV2.siteKey ? (
             <>
               <>
                 <Center h="80px">
