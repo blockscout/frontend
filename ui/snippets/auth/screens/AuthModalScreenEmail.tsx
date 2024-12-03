@@ -1,6 +1,5 @@
 import { chakra, Button, Text } from '@chakra-ui/react';
 import React from 'react';
-import type ReCAPTCHA from 'react-google-recaptcha';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -13,6 +12,7 @@ import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
 import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
 import FormFieldReCaptchaInvisible from 'ui/shared/forms/fields/FormFieldReCaptchaInvisible';
+import useReCaptcha from 'ui/shared/forms/fields/useReCaptcha';
 
 interface Props {
   onSubmit: (screen: Screen) => void;
@@ -28,7 +28,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
 
   const apiFetch = useApiFetch();
   const toast = useToast();
-  const recaptchaRef = React.useRef<ReCAPTCHA>(null);
+  const recaptcha = useReCaptcha();
 
   const formApi = useForm<EmailFormFields>({
     mode: 'onBlur',
@@ -39,7 +39,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
 
   const onFormSubmit: SubmitHandler<EmailFormFields> = React.useCallback(async(formData) => {
     try {
-      const token = await recaptchaRef.current?.executeAsync();
+      const token = await recaptcha.executeAsync();
 
       await apiFetch('auth_send_otp', {
         fetchParams: {
@@ -70,7 +70,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         description: getErrorObjPayload<{ message: string }>(error)?.message || getErrorMessage(error) || 'Something went wrong',
       });
     }
-  }, [ apiFetch, isAuth, onSubmit, mixpanelConfig?.account_link_info.source, toast ]);
+  }, [ recaptcha, apiFetch, isAuth, onSubmit, mixpanelConfig?.account_link_info.source, toast ]);
 
   return (
     <FormProvider { ...formApi }>
@@ -95,7 +95,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         >
           Send a code
         </Button>
-        <FormFieldReCaptchaInvisible ref={ recaptchaRef }/>
+        <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/>
       </chakra.form>
     </FormProvider>
   );
