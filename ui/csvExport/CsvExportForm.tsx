@@ -1,5 +1,6 @@
 import { Alert, Button, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
+import type ReCAPTCHA from 'react-google-recaptcha';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
@@ -12,7 +13,7 @@ import type { ResourceName } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
 import useToast from 'lib/hooks/useToast';
-import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
+import FormFieldReCaptchaInvisible from 'ui/shared/forms/fields/FormFieldReCaptchaInvisible';
 
 import CsvExportFormField from './CsvExportFormField';
 
@@ -35,16 +36,19 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   });
   const { handleSubmit, formState } = formApi;
   const toast = useToast();
+  const recaptchaRef = React.useRef<ReCAPTCHA>(null);
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     try {
+      const token = await recaptchaRef.current?.executeAsync();
+
       const url = buildUrl(resource, { hash } as never, {
         address_id: hash,
         from_period: exportType !== 'holders' ? data.from : null,
         to_period: exportType !== 'holders' ? data.to : null,
         filter_type: filterType,
         filter_value: filterValue,
-        recaptcha_v3_response: data.reCaptcha,
+        recaptcha_response: token,
       });
 
       const response = await fetch(url, {
@@ -95,7 +99,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         <Flex columnGap={ 5 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }} alignItems={{ base: 'flex-start', lg: 'center' }} flexWrap="wrap">
           { exportType !== 'holders' && <CsvExportFormField name="from" formApi={ formApi }/> }
           { exportType !== 'holders' && <CsvExportFormField name="to" formApi={ formApi }/> }
-          <FormFieldReCaptcha/>
+          <FormFieldReCaptchaInvisible ref={ recaptchaRef }/>
         </Flex>
         <Button
           variant="solid"
