@@ -55,12 +55,12 @@ const defaultColorTheme = (() => {
 const UI = Object.freeze({
   navigation: {
     logo: {
-      'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO'),
-      dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO_DARK'),
+      'default': 'https://www.sintrop.com/assets/images/logo-chain-light.png',
+      dark: 'https://www.sintrop.com/assets/images/logo-chain-dark.png',
     },
     icon: {
-      'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON'),
-      dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON_DARK'),
+      'default': 'https://www.sintrop.com/assets/images/icon-chain.png',
+      dark: 'https://www.sintrop.com/assets/images/icon-chain.png',
     },
     hiddenLinks,
     highlightedRoutes,
