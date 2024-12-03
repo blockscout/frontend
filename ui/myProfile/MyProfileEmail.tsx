@@ -13,8 +13,9 @@ import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
-import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
+import FormFieldReCaptchaInvisible from 'ui/shared/forms/fields/FormFieldReCaptchaInvisible';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import useReCaptcha from 'ui/shared/forms/fields/useReCaptcha';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 
 import MyProfileFieldsEmail from './fields/MyProfileFieldsEmail';
@@ -33,6 +34,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
   const authModal = useDisclosure();
   const apiFetch = useApiFetch();
   const toast = useToast();
+  const recaptcha = useReCaptcha();
 
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
@@ -44,12 +46,14 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(formData) => {
     try {
+      const token = await recaptcha.executeAsync();
+
       await apiFetch('auth_send_otp', {
         fetchParams: {
           method: 'POST',
           body: {
             email: formData.email,
-            recaptcha_v3_response: formData.reCaptcha,
+            recaptcha_response: token,
           },
         },
       });
@@ -67,7 +71,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
         description: apiError?.message || getErrorMessage(error) || 'Something went wrong',
       });
     }
-  }, [ apiFetch, authModal, toast ]);
+  }, [ apiFetch, authModal, toast, recaptcha ]);
 
   const hasDirtyFields = Object.keys(formApi.formState.dirtyFields).length > 0;
 
@@ -84,7 +88,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
             isReadOnly={ !config.services.reCaptchaV3.siteKey || Boolean(profileQuery.data?.email) }
             defaultValue={ profileQuery.data?.email || undefined }
           />
-          { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && <FormFieldReCaptcha/> }
+          { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/> }
           { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && (
             <Button
               mt={ 6 }

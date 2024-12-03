@@ -14,9 +14,10 @@ import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
-import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
+import FormFieldReCaptchaInvisible from 'ui/shared/forms/fields/FormFieldReCaptchaInvisible';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
+import useReCaptcha from 'ui/shared/forms/fields/useReCaptcha';
 import Hint from 'ui/shared/Hint';
 
 import PublicTagsSubmitFieldAddresses from './fields/PublicTagsSubmitFieldAddresses';
@@ -33,6 +34,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const apiFetch = useApiFetch();
+  const recaptcha = useReCaptcha();
 
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
@@ -55,13 +57,16 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
     const requestsBody = convertFormDataToRequestsBody(data);
 
     const result = await Promise.all(requestsBody.map(async(body) => {
-      return apiFetch<'public_tag_application', unknown, { message: string }>('public_tag_application', {
-        pathParams: { chainId: appConfig.chain.id },
-        fetchParams: {
-          method: 'POST',
-          body: { submission: body },
-        },
-      })
+      return recaptcha.executeAsync()
+        .then(() => {
+          return apiFetch<'public_tag_application', unknown, { message: string }>('public_tag_application', {
+            pathParams: { chainId: appConfig.chain.id },
+            fetchParams: {
+              method: 'POST',
+              body: { submission: body },
+            },
+          });
+        })
         .then(() => ({ error: null, payload: body }))
         .catch((error: unknown) => {
           const errorObj = getErrorObj(error);
@@ -73,7 +78,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
     }));
 
     onSubmitResult(result);
-  }, [ apiFetch, onSubmitResult ]);
+  }, [ apiFetch, onSubmitResult, recaptcha ]);
 
   if (!appConfig.services.reCaptchaV3.siteKey) {
     return null;
@@ -128,7 +133,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
           </GridItem>
 
           <GridItem colSpan={{ base: 1, lg: 3 }}>
-            <FormFieldReCaptcha/>
+            <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/>
           </GridItem>
 
           <Button
