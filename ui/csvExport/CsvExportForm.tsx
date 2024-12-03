@@ -12,8 +12,8 @@ import type { ResourceName } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
 import useToast from 'lib/hooks/useToast';
-import FormFieldReCaptchaInvisible from 'ui/shared/forms/fields/FormFieldReCaptchaInvisible';
-import useReCaptcha from 'ui/shared/forms/fields/useReCaptcha';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import CsvExportFormField from './CsvExportFormField';
 
@@ -103,7 +103,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         <Flex columnGap={ 5 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }} alignItems={{ base: 'flex-start', lg: 'center' }} flexWrap="wrap">
           { exportType !== 'holders' && <CsvExportFormField name="from" formApi={ formApi }/> }
           { exportType !== 'holders' && <CsvExportFormField name="to" formApi={ formApi }/> }
-          <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/>
+          <ReCaptcha ref={ recaptcha.ref }/>
         </Flex>
         <Button
           variant="solid"

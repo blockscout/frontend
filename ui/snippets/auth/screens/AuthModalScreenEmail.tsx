@@ -11,8 +11,8 @@ import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
 import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
-import FormFieldReCaptchaInvisible from 'ui/shared/forms/fields/FormFieldReCaptchaInvisible';
-import useReCaptcha from 'ui/shared/forms/fields/useReCaptcha';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 interface Props {
   onSubmit: (screen: Screen) => void;
@@ -95,7 +95,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         >
           Send a code
         </Button>
-        <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/>
+        <ReCaptcha ref={ recaptcha.ref }/>
       </chakra.form>
     </FormProvider>
   );

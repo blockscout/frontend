@@ -13,9 +13,9 @@ import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
-import FormFieldReCaptchaInvisible from 'ui/shared/forms/fields/FormFieldReCaptchaInvisible';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import useReCaptcha from 'ui/shared/forms/fields/useReCaptcha';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 
 import MyProfileFieldsEmail from './fields/MyProfileFieldsEmail';
@@ -88,7 +88,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
             isReadOnly={ !config.services.reCaptchaV2.siteKey || Boolean(profileQuery.data?.email) }
             defaultValue={ profileQuery.data?.email || undefined }
           />
-          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/> }
+          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && <ReCaptcha ref={ recaptcha.ref }/> }
           { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && (
             <Button
               mt={ 6 }

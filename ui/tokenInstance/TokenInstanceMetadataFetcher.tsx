@@ -14,8 +14,8 @@ import getErrorMessage from 'lib/errors/getErrorMessage';
 import useToast from 'lib/hooks/useToast';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
-import FormFieldReCaptchaInvisible from 'ui/shared/forms/fields/FormFieldReCaptchaInvisible';
-import useReCaptcha from 'ui/shared/forms/fields/useReCaptcha';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import { useMetadataUpdateContext } from './contexts/metadataUpdate';
 
@@ -174,7 +174,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
                 <Center h="80px">
                   <Spinner size="lg"/>
                 </Center>
-                <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/>
+                <ReCaptcha ref={ recaptcha.ref }/>
               </>
               { /* ONLY FOR TEST PURPOSES */ }
               <chakra.form noValidate onSubmit={ handleFormSubmit } display="none">

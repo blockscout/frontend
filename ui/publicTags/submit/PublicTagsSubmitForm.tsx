@@ -14,11 +14,11 @@ import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
-import FormFieldReCaptchaInvisible from 'ui/shared/forms/fields/FormFieldReCaptchaInvisible';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
-import useReCaptcha from 'ui/shared/forms/fields/useReCaptcha';
 import Hint from 'ui/shared/Hint';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import PublicTagsSubmitFieldAddresses from './fields/PublicTagsSubmitFieldAddresses';
 import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
@@ -133,7 +133,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
           </GridItem>
 
           <GridItem colSpan={{ base: 1, lg: 3 }}>
-            <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/>
+            <ReCaptcha ref={ recaptcha.ref }/>
           </GridItem>
 
           <Button

@@ -10,9 +10,9 @@ import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
-import FormFieldReCaptchaInvisible from 'ui/shared/forms/fields/FormFieldReCaptchaInvisible';
-import useReCaptcha from 'ui/shared/forms/fields/useReCaptcha';
 import IconSvg from 'ui/shared/IconSvg';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import AuthModalFieldOtpCode from '../fields/AuthModalFieldOtpCode';
 
@@ -111,7 +111,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
           and enter your code below.
         </Text>
         <AuthModalFieldOtpCode isDisabled={ isCodeSending }/>
-        <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/>
+        <ReCaptcha ref={ recaptcha.ref }/>
         <Button
           variant="link"
           display="flex"

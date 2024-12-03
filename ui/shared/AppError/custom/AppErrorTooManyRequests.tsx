@@ -5,8 +5,8 @@ import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import useFetch from 'lib/hooks/useFetch';
 import useToast from 'lib/hooks/useToast';
-import FormFieldReCaptchaInvisible from 'ui/shared/forms/fields/FormFieldReCaptchaInvisible';
-import useReCaptcha from 'ui/shared/forms/fields/useReCaptcha';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import AppErrorIcon from '../AppErrorIcon';
 import AppErrorTitle from '../AppErrorTitle';
@@ -54,7 +54,7 @@ const AppErrorTooManyRequests = () => {
       <Text variant="secondary" mt={ 3 }>
         You have exceeded the request rate for a given time period. Please reduce the number of requests and try again soon.
       </Text>
-      <FormFieldReCaptchaInvisible ref={ recaptcha.ref }/>
+      <ReCaptcha ref={ recaptcha.ref }/>
       <Button onClick={ handleSubmit } mt={ 8 }>Try again</Button>
     </>
   );

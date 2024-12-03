@@ -7,7 +7,7 @@ interface Props {
   disabledFeatureMessage?: React.ReactNode;
 }
 
-const FormFieldReCaptchaInvisible = ({ disabledFeatureMessage }: Props, ref: React.Ref<ReCaptcha>) => {
+const ReCaptchaInvisible = ({ disabledFeatureMessage }: Props, ref: React.Ref<ReCaptcha>) => {
   if (!config.services.reCaptchaV2.siteKey) {
     return disabledFeatureMessage ?? null;
   }
@@ -21,4 +21,4 @@ const FormFieldReCaptchaInvisible = ({ disabledFeatureMessage }: Props, ref: Rea
   );
 };
 
-export default React.forwardRef(FormFieldReCaptchaInvisible);
+export default React.forwardRef(ReCaptchaInvisible);
