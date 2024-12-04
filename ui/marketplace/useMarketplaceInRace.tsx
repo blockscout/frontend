@@ -60,6 +60,7 @@ export default function useMarketplace() {
   }, []);
 
   const showAppInfo = React.useCallback((id: string) => {
+    
     setSelectedAppId(id);
     setIsAppInfoModalOpen(true);
   }, []);

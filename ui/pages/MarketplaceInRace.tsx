@@ -110,7 +110,7 @@ const Marketplace = () => {
     return index === -1 ? 0 : index;
   }, [categoryTabs, selectedCategoryId]);
 
-  const selectedApp = displayedApps.find(app => app.id === selectedAppId);
+  const selectedApp = displayedAppsInRace.find(app => app.id === selectedAppId);
 
   const handleCategoryChange = React.useCallback((index: number) => {
     onCategoryChange(categoryTabs[index].id);
@@ -136,6 +136,8 @@ const Marketplace = () => {
   if (!feature.isEnabled) {
     return null;
   }
+
+  
 
   return (
     <>
@@ -237,7 +239,7 @@ const Marketplace = () => {
 
       {(selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl) ? (
         <MarketplaceListWithScores
-          apps={displayedApps}
+          apps={displayedAppsInRace}
           showAppInfo={showAppInfo}
           favoriteApps={favoriteApps}
           onFavoriteClick={onFavoriteClick}
