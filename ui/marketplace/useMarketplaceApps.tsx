@@ -20,8 +20,8 @@ function isAppNameMatches(q: string, app: MarketplaceAppWithSecurityReport) {
 
 function isAppCategoryMatches(category: string, app: MarketplaceAppWithSecurityReport, favoriteApps: Array<string> = []) {
   return category === MarketplaceCategory.ALL ||
-      (category === MarketplaceCategory.FAVORITES && favoriteApps.includes(app.id)) ||
-      app.categories.includes(category);
+    (category === MarketplaceCategory.FAVORITES && favoriteApps.includes(app.id)) ||
+    app.categories.includes(category);
 }
 
 function sortApps(apps: Array<MarketplaceAppWithSecurityReport>, favoriteApps: Array<string> = []) {
@@ -61,7 +61,7 @@ export default function useMarketplaceApps(
   const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
 
   // Set the value only 1 time to avoid unnecessary useQuery calls and re-rendering of all applications
-  const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
+  const [snapshotFavoriteApps, setSnapshotFavoriteApps] = React.useState<Array<string> | undefined>();
   const isInitialSetup = React.useRef(true);
 
   React.useEffect(() => {
@@ -69,11 +69,11 @@ export default function useMarketplaceApps(
       setSnapshotFavoriteApps(favoriteApps || []);
       isInitialSetup.current = false;
     }
-  }, [ isFavoriteAppsLoaded, favoriteApps ]);
+  }, [isFavoriteAppsLoaded, favoriteApps]);
 
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
-    queryKey: [ 'marketplace-dapps', snapshotFavoriteApps ],
-    queryFn: async() => {
+    queryKey: ['marketplace-dapps', snapshotFavoriteApps],
+    queryFn: async () => {
       if (!feature.isEnabled) {
         return [];
       } else if ('configUrl' in feature) {
@@ -88,13 +88,36 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
+
+  const { isPlaceholderData: isGPURacePlaceholderData, isError: isGPURaceError, error: gpuRaceError, data: gpuRaceData } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
+    queryKey: ['gpu_race-dapps', snapshotFavoriteApps],
+    queryFn: async () => {
+      if (!feature.isEnabled) {
+        return [];
+      } else if ('configUrl' in feature) {
+        return fetch<Array<MarketplaceAppWithSecurityReport>, unknown>("/assets/gpu_race_config.json", undefined, { resource: 'marketplace-dapps' });
+      } else {
+        return apiFetch('marketplace_dapps', { pathParams: { chainId: config.chain.id } });
+      }
+    },
+    select: (data) => sortApps(data as Array<MarketplaceAppWithSecurityReport>, snapshotFavoriteApps),
+    placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
+    staleTime: Infinity,
+    enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
+  });
+
+
   const appsWithSecurityReports = React.useMemo(() =>
     data?.map((app) => ({ ...app, securityReport: securityReports?.[app.id] })),
-  [ data, securityReports ]);
+    [data, securityReports]);
 
   const displayedApps = React.useMemo(() => {
     return appsWithSecurityReports?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
-  }, [ selectedCategoryId, appsWithSecurityReports, filter, favoriteApps ]);
+  }, [selectedCategoryId, appsWithSecurityReports, filter, favoriteApps]);
+
+  const displayedAppsInRace = React.useMemo(() => {
+    return gpuRaceData?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
+  }, [selectedCategoryId, appsWithSecurityReports, filter, favoriteApps]);
 
   return React.useMemo(() => ({
     data,
@@ -102,6 +125,8 @@ export default function useMarketplaceApps(
     error,
     isError,
     isPlaceholderData: isPlaceholderData || isSecurityReportsPlaceholderData,
+    gpuRaceData,
+    displayedAppsInRace
   }), [
     data,
     displayedApps,
@@ -109,5 +134,8 @@ export default function useMarketplaceApps(
     isError,
     isPlaceholderData,
     isSecurityReportsPlaceholderData,
+    gpuRaceData,
+    displayedAppsInRace,
+
   ]);
 }

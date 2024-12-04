@@ -45,6 +45,8 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/op/[hash]", { "hash": string }>
     | StaticRoute<"/ops">
     | StaticRoute<"/output-roots">
+    | DynamicRoute<"/race/[id]", { "id": string }>
+    | StaticRoute<"/race">
     | StaticRoute<"/search-results">
     | StaticRoute<"/stats">
     | DynamicRoute<"/token/[hash]", { "hash": string }>

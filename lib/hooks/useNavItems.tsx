@@ -211,6 +211,12 @@ export default function useNavItems(): ReturnType {
         icon: 'apps',
         isActive: pathname.startsWith('/app'),
       } : null,
+      config.features.marketplace.isEnabled ? {
+        text: 'GPU Race',
+        nextRoute: { pathname: '/race' as const },
+        icon: 'race',
+        isActive: pathname.startsWith('/race'),
+      } : null,
       config.features.stats.isEnabled ? {
         text: 'Charts & stats',
         nextRoute: { pathname: '/stats' as const },

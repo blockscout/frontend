@@ -93,6 +93,7 @@
 	| "publictags_slim"
 	| "publictags"
 	| "qr_code"
+	| "race"
 	| "repeat_arrow"
 	| "restAPI"
 	| "rocket_xl"
