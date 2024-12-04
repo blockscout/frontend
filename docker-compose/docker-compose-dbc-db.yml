@@ -1,0 +1,20 @@
+version: '3.8'
+
+networks:
+  default:
+    name: postgres-db
+services:
+  postgres-db:
+    image: postgres:15-alpine
+    shm_size: 2gb
+    container_name: 'postgres-db'
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: passwd
+    command: ["postgres", "-c", "max_connections=200"]
+
+volumes:
+  postgres-db:

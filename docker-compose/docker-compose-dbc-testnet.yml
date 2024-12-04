@@ -1,0 +1,224 @@
+version: '3.9'
+
+services:
+  redis-db:
+    # extends:
+    #   file: ./services/redis.yml
+    #   service: redis-db
+    image: 'redis:7.2.4'
+    container_name: redis-db
+    command: redis-server
+    volumes:
+      - redis-data:/data
+
+  # db-init:
+  #   extends:
+  #     file: ./services/db.yml
+  #     service: db-init
+
+  # db:
+  #   extends:
+  #     file: ./services/db.yml
+  #     service: db
+
+  backend:
+    depends_on:
+      # - db
+      - redis-db
+    # extends:
+    #   file: ./services/backend.yml
+    #   service: backend
+    # build:
+    #   context: ..
+    #   dockerfile: ./docker/Dockerfile
+    #   args:
+    #     CACHE_EXCHANGE_RATES_PERIOD: ""
+    #     API_V1_READ_METHODS_DISABLED: "false"
+    #     DISABLE_WEBAPP: "false"
+    #     API_V1_WRITE_METHODS_DISABLED: "false"
+    #     CACHE_TOTAL_GAS_USAGE_COUNTER_ENABLED: ""
+    #     CACHE_ADDRESS_WITH_BALANCES_UPDATE_INTERVAL: ""
+    #     ADMIN_PANEL_ENABLED: ""
+    #     RELEASE_VERSION: 6.6.0
+    # links:
+    #   - db:database
+    image: blockscout/blockscout:6.6.0.commit.3e551ba2
+    restart: always
+    stop_grace_period: 5m
+    container_name: 'backend'
+    command: sh -c "bin/blockscout eval \"Elixir.Explorer.ReleaseTasks.create_and_migrate()\" && bin/blockscout start"
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    env_file:
+      -  ./envs/common-blockscout.env
+    environment:
+        ETHEREUM_JSONRPC_HTTP_URL: https://rpc-testnet.dbcwallet.io
+        #ETHEREUM_JSONRPC_TRACE_URL: http://host.docker.internal:18545/
+        DATABASE_URL: postgresql://postgres:passwd@host.docker.internal:5432/blockscout
+        ACCOUNT_REDIS_URL: redis://redis-db:6379
+        COIN: DBC
+        COIN_NAME: DeepBrainChain
+        CHAIN_ID: 19850818
+        SECRET_KEY_BASE: 
+        ACCOUNT_POOL_SIZE: 20
+        FIRST_BLOCK: 500000
+        TRACE_FIRST_BLOCK: 500000
+        INDEXER_EMPTY_BLOCKS_SANITIZER_BATCH_SIZE: 10
+        INDEXER_CATCHUP_BLOCKS_BATCH_SIZE: 10
+        INDEXER_CATCHUP_BLOCKS_CONCURRENCY: 1
+        INDEXER_CATCHUP_BLOCK_INTERVAL: 30s
+        INDEXER_BLOCK_REWARD_BATCH_SIZE: 10
+        INDEXER_BLOCK_REWARD_CONCURRENCY: 1
+        INDEXER_RECEIPTS_BATCH_SIZE: 10
+        INDEXER_RECEIPTS_CONCURRENCY: 1
+        INDEXER_COIN_BALANCES_BATCH_SIZE: 10
+        INDEXER_COIN_BALANCES_CONCURRENCY: 1
+        INDEXER_TOKEN_CONCURRENCY: 1
+        INDEXER_TOKEN_BALANCES_BATCH_SIZE: 10
+        INDEXER_TOKEN_BALANCES_CONCURRENCY: 1
+        INDEXER_CATCHUP_MISSING_RANGES_BATCH_SIZE: 10
+        MIN_MISSING_BLOCK_NUMBER_BATCH_SIZE: 10
+
+        TOKEN_ID_MIGRATION_BATCH_SIZE: 1
+        TOKEN_ID_MIGRATION_CONCURRENCY: 1
+        TOKEN_INSTANCE_OWNER_MIGRATION_BATCH_SIZE: 1
+        TOKEN_INSTANCE_OWNER_MIGRATION_CONCURRENCY: 1
+        DENORMALIZATION_MIGRATION_BATCH_SIZE: 1
+        DENORMALIZATION_MIGRATION_CONCURRENCY: 1
+
+        INDEXER_DISABLE_PENDING_TRANSACTIONS_FETCHER: false
+        INDEXER_DISABLE_INTERNAL_TRANSACTIONS_FETCHER: true
+
+        RE_CAPTCHA_CLIENT_KEY:
+        RE_CAPTCHA_SECRET_KEY:
+
+        DISABLE_EXCHANGE_RATES: false
+        EXCHANGE_RATES_COINGECKO_PLATFORM_ID: deepbrain-chain
+        EXCHANGE_RATES_COINGECKO_COIN_ID: deepbrain-chain
+        #EXCHANGE_RATES_COINGECKO_API_KEY:
+        TOKEN_EXCHANGE_RATE_INTERVAL: 2m
+        EXCHANGE_RATES_MARKET_CAP_SOURCE: coin_gecko
+    volumes:
+      - logs:/app/logs/
+
+  visualizer:
+    extends:
+      file: ./services/visualizer.yml
+      service: visualizer
+    # image: ghcr.io/blockscout/visualizer:${VISUALIZER_DOCKER_TAG:-latest}
+
+  sig-provider:
+    extends:
+      file: ./services/sig-provider.yml
+      service: sig-provider
+    # image: ghcr.io/blockscout/sig-provider:${SIG_PROVIDER_DOCKER_TAG:-latest}
+
+  frontend:
+    depends_on:
+      - backend
+    # extends:
+    #   file: ./services/frontend.yml
+    #   service: frontend
+    image: dbcscan-frontend:latest
+    restart: always
+    container_name: 'frontend'
+    env_file:
+      -  ./envs/common-frontend.env
+    environment:
+      NEXT_PUBLIC_NETWORK_NAME: "DeepBrainChain Testnet"
+      NEXT_PUBLIC_NETWORK_SHORT_NAME: "DeepBrainChain"
+      NEXT_PUBLIC_NETWORK_RPC_URL: "https://rpc-testnet.dbcwallet.io"
+      NEXT_PUBLIC_NETWORK_ID: 19850818
+      NEXT_PUBLIC_NETWORK_CURRENCY_NAME: "DeepBrainChain"
+      NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: "DBC"
+      NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: 18
+      NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: "05d82f45050fea2bb071b65b98828503"
+      NEXT_PUBLIC_IS_TESTNET: true
+      NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: false
+      NEXT_PUBLIC_APP_PROTOCOL: "https"
+      NEXT_PUBLIC_APP_HOST: "testnet.dbcscan.io"
+      NEXT_PUBLIC_APP_PORT: 443
+      NEXT_PUBLIC_API_PROTOCOL: "https"
+      NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL: "wss"
+      NEXT_PUBLIC_API_HOST: "testnet.dbcscan.io"
+      NEXT_PUBLIC_API_PORT: 443
+      NEXT_PUBLIC_STATS_API_HOST: "https://stats-testnet.dbcscan.io"
+      NEXT_PUBLIC_VISUALIZE_API_HOST: "https://visualize-testnet.dbcscan.io"
+      NEXT_PUBLIC_NETWORK_LOGO: "https://test.dbcscan.io/config-assets/DeepBrainChainLogo.png"
+      NEXT_PUBLIC_NETWORK_LOGO_DARK: ""
+      FAVICON_GENERATOR_API_KEY: "87811573d5c5518da21c7c0b669f568bdd9e7004"
+      NEXT_PUBLIC_NETWORK_ICON: "https://test.dbcscan.io/config-assets/DBC.png"
+      NEXT_PUBLIC_NETWORK_ICON_DARK: ""
+      NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS: '["eth_rpc_api","rpc_api"]'
+      NEXT_PUBLIC_HOMEPAGE_CHARTS: '["daily_txs","coin_price","market_cap"]'
+      NEXT_PUBLIC_FEATURED_NETWORKS: "https://test.dbcscan.io/config-assets/featured_networks_config.json"
+      NEXT_PUBLIC_MARKETPLACE_ENABLED: true
+      NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: "https://test.dbcscan.io/config-assets/marketplace_mainnet_config.json"
+      NEXT_PUBLIC_GPU_RACE_CONFIG_URL: "https://test.dbcscan.io/config-assets/gpu_race_config.json"
+      NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: "https://github.com/DeepBrainChain/DBCPublicChainScan"
+      NEXT_PUBLIC_FOOTER_LINKS: "https://test.dbcscan.io/config-assets/footer_links.json"
+      NEXT_PUBLIC_OTHER_LINKS: '[{"text": "Faucet","url": "https://faucet.dbcscan.io"}]'
+      NEXT_PUBLIC_AD_BANNER_PROVIDER: "none"
+      NEXT_PUBLIC_AD_TEXT_PROVIDER: "none"
+      NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: ""
+
+  # stats-db-init:
+  #   extends:
+  #     file: ./services/stats.yml
+  #     service: stats-db-init
+
+  # stats-db:
+  #   depends_on:
+  #     - backend
+  #   extends:
+  #     file: ./services/stats.yml
+  #     service: stats-db
+
+  stats:
+    # depends_on:
+    #   - stats-db
+    # extends:
+    #   file: ./services/stats.yml
+    #   service: stats
+    image: ghcr.io/blockscout/stats:v1.5.2
+    restart: always
+    container_name: 'stats'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    env_file:
+      -  ./envs/common-stats.env
+    environment:
+      STATS__DB_URL: postgresql://postgres:passwd@host.docker.internal:5432/stats
+      STATS__BLOCKSCOUT_DB_URL: postgresql://postgres:passwd@host.docker.internal:5432/blockscout
+      STATS__CREATE_DATABASE: true
+      STATS__RUN_MIGRATIONS: true
+      STATS_CHARTS__TEMPLATE_VALUES__NATIVE_COIN_SYMBOL: DBC
+
+  proxy:
+    depends_on:
+      - backend
+      - frontend
+      - stats
+    # extends:
+    #   file: ./services/nginx.yml
+    #   service: proxy
+    image: nginx:alpine3.18
+    container_name: proxy
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - "./nginx.default.conf.template:/etc/nginx/templates/default.conf.template"
+    environment:
+      BACK_PROXY_PASS: ${BACK_PROXY_PASS:-http://backend:4000}
+      FRONT_PROXY_PASS: ${FRONT_PROXY_PASS:-http://frontend:3000}
+    ports:
+      - target: 80
+        published: 8000
+      - target: 8080
+        published: 8080
+      - target: 8081
+        published: 8081
+
+volumes:
+  ? redis-data
+  ? logs

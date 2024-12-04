@@ -1,0 +1,14 @@
+[
+    {
+        "title": "DeepBrainChain Testnet",
+        "url": "http://testnet.dbcscan.io",
+        "group": "Testnets",
+        "icon": "https://github.com/DeepBrainChain/DBCPublicChainScan/blob/develop/docker-compose/configs/DBC.png?raw=true"
+    },
+    {
+      "title": "DeepBrainChain Mainnet",
+      "url": "https://www.dbcscan.io",
+      "group": "Mainnets",
+      "icon": "https://github.com/DeepBrainChain/DBCPublicChainScan/blob/develop/docker-compose/configs/DBC.png?raw=true"
+    }
+  ]
