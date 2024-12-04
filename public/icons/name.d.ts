@@ -127,7 +127,6 @@
 	| "search"
 	| "share"
 	| "sign_out"
-	| "social/canny"
 	| "social/coingecko"
 	| "social/coinmarketcap"
 	| "social/defi_llama"

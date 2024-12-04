@@ -16,6 +16,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import { SCROLL_L2_BLOCK_STATUSES } from 'types/api/scrollL2';
 import type { Transaction } from 'types/api/transaction';
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
@@ -62,6 +63,8 @@ import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
+
+import TxInfoScrollFees from './TxInfoScrollFees';
 
 const rollupFeature = config.features.rollup;
 
@@ -166,7 +169,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         isLoading={ isLoading }
       >
         {
-          rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum') ?
+          rollupFeature.isEnabled &&
+          (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'scroll') ?
             'L2 status and method' :
             'Status and method'
         }
@@ -295,6 +299,12 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             <Skeleton isLoaded={ !isLoading } color="text_secondary">
               <span>{ data.confirmations } Block confirmations</span>
             </Skeleton>
+          </>
+        ) }
+        { data.scroll?.l2_block_status && (
+          <>
+            <TextSeparator color="gray.500"/>
+            <VerificationSteps steps={ SCROLL_L2_BLOCK_STATUSES } currentStep={ data.scroll.l2_block_status } isLoading={ isLoading }/>
           </>
         ) }
       </DetailsInfoItem.Value>
@@ -661,6 +671,20 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
+      { data.scroll?.l1_gas_used !== undefined && (
+        <>
+          <DetailsInfoItem.Label
+            hint="Total gas used on L1"
+            isLoading={ isLoading }
+          >
+            L1 Gas used
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.scroll?.l1_gas_used || 0).toFormat() }</Skeleton>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
       { !config.UI.views.tx.hiddenFields?.gas_fees &&
             (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
         <>
@@ -767,6 +791,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           ) }
         </>
       ) }
+      <TxInfoScrollFees data={ data } isLoading={ isLoading }/>
 
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
         <Element name="TxInfo__cutLink">
@@ -870,7 +895,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             </>
           ) }
 
-          <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position }/>
+          <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position } queueIndex={ data.scroll?.queue_index }/>
 
           <DetailsInfoItem.Label
             hint="Binary data included with the transaction. See logs tab for additional info"
