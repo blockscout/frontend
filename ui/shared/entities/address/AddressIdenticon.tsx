@@ -56,6 +56,15 @@ const Icon = dynamic(
         };
       }
 
+      case 'nouns': {
+        const Noun = (await import('@cloudnouns/kit'));
+
+        return (props: IconProps) => {
+          const noun = Noun.NounFactory.createFromString(props.hash, { size: props.size });
+          return <Image src={ noun.svg } alt={ `Identicon for ${ props.hash }}` }/>;
+        };
+      }
+
       default: {
         return () => null;
       }

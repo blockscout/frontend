@@ -5,6 +5,7 @@ export const IDENTICON_TYPES = [
   'jazzicon',
   'gradient_avatar',
   'blockie',
+  'nouns',
 ] as const;
 
 export type IdenticonType = ArrayElement<typeof IDENTICON_TYPES>;
