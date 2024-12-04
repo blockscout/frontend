@@ -103,8 +103,8 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         <Flex columnGap={ 5 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }} alignItems={{ base: 'flex-start', lg: 'center' }} flexWrap="wrap">
           { exportType !== 'holders' && <CsvExportFormField name="from" formApi={ formApi }/> }
           { exportType !== 'holders' && <CsvExportFormField name="to" formApi={ formApi }/> }
-          <ReCaptcha ref={ recaptcha.ref }/>
         </Flex>
+        <ReCaptcha ref={ recaptcha.ref }/>
         <Button
           variant="solid"
           size="lg"
