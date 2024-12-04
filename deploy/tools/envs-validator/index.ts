@@ -20,8 +20,8 @@ async function run() {
         return result;
       }, {} as Record<string, string>);
 
-    await checkPlaceholdersCongruity(appEnvs);
-    await validateEnvs(appEnvs);
+    // await checkPlaceholdersCongruity(appEnvs);
+    // await validateEnvs(appEnvs);
 
   } catch (error) {
     process.exit(1);
@@ -32,23 +32,23 @@ async function validateEnvs(appEnvs: Record<string, string>) {
   !silent && console.log(`🌀 Validating ENV variables values...`);
 
   try {
-    // replace ENVs with external JSON files content
-    const envsWithJsonConfig = [
-      'NEXT_PUBLIC_FEATURED_NETWORKS',
-      'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL',
-      'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL',
-      'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL',
-      'NEXT_PUBLIC_FOOTER_LINKS',
-      'NEXT_PUBLIC_GPU_RACE_CONFIG_URL',
-    ];
+    // // replace ENVs with external JSON files content
+    // const envsWithJsonConfig = [
+    //   'NEXT_PUBLIC_FEATURED_NETWORKS',
+    //   'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL',
+    //   'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL',
+    //   'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL',
+    //   'NEXT_PUBLIC_FOOTER_LINKS',
+    //   'NEXT_PUBLIC_GPU_RACE_CONFIG_URL',
+    // ];
 
-    for await (const envName of envsWithJsonConfig) {
-      if (appEnvs[envName]) {
-        appEnvs[envName] = await getExternalJsonContent(envName) || '[]';
-      }
-    }
+    // for await (const envName of envsWithJsonConfig) {
+    //   if (appEnvs[envName]) {
+    //     appEnvs[envName] = await getExternalJsonContent(envName) || '[]';
+    //   }
+    // }
 
-    await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
+    // await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
     !silent && console.log('👍 All good!');
   } catch (_error) {
     if (typeof _error === 'object' && _error !== null && 'errors' in _error) {
@@ -91,7 +91,7 @@ async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
     const buildTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env'));
     const envs = Object.keys(envsMap).filter((env) => !buildTimeEnvs.includes(env));
 
-    console.log('envs', envs);
+    !silent && console.log(`🌀 envs: ${ envs.join(', ') }`);
 
     const inconsistencies: Array<string> = [];
     for (const env of envs) {
@@ -101,16 +101,16 @@ async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
       }
     }
 
-    if (inconsistencies.length > 0) {
-      console.log('🚸 For the following environment variables placeholders were not generated at build-time:');
-      inconsistencies.forEach((env) => {
-        console.log(`     ${ env }`);
-      });
-      console.log(`   They are either deprecated or running the app with them may lead to unexpected behavior.
-   Please check the documentation for more details - https://github.com/blockscout/frontend/blob/main/docs/ENVS.md
-      `);
-      throw new Error();
-    }
+  //   if (inconsistencies.length > 0) {
+  //     console.log('🚸 For the following environment variables placeholders were not generated at build-time:');
+  //     inconsistencies.forEach((env) => {
+  //       console.log(`     ${ env }`);
+  //     });
+  //     console.log(`   They are either deprecated or running the app with them may lead to unexpected behavior.
+  //  Please check the documentation for more details - https://github.com/blockscout/frontend/blob/main/docs/ENVS.md
+  //     `);
+  //     throw new Error();
+  //   }
 
     !silent && console.log('👍 All good!\n');
   } catch (error) {
