@@ -91,6 +91,8 @@ async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
     const buildTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env'));
     const envs = Object.keys(envsMap).filter((env) => !buildTimeEnvs.includes(env));
 
+    console.log('envs', envs);
+
     const inconsistencies: Array<string> = [];
     for (const env of envs) {
       const hasPlaceholder = runTimeEnvs.includes(env);
