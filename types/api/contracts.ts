@@ -24,9 +24,11 @@ export interface VerifiedContractsResponse {
   } | null;
 }
 
+export type VerifiedContractsFilter = 'solidity' | 'vyper' | 'yul' | 'scilla';
+
 export interface VerifiedContractsFilters {
   q: string | undefined;
-  filter: 'vyper' | 'solidity' | 'yul' | undefined;
+  filter: VerifiedContractsFilter | undefined;
 }
 
 export type VerifiedContractsCounters = {
