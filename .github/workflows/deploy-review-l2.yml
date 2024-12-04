@@ -12,6 +12,7 @@ on:
             - none
             - arbitrum
             - arbitrum_nova
+            - arbitrum_sepolia
             - base
             - celo_alfajores
             - garnet
