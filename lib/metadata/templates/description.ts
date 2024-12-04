@@ -59,6 +59,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/healthz': DEFAULT_TEMPLATE,
   '/auth/auth0': DEFAULT_TEMPLATE,
   '/auth/unverified-email': DEFAULT_TEMPLATE,
+  '/race/[id]': DEFAULT_TEMPLATE,
+  '/race': DEFAULT_TEMPLATE,
 };
 
 export function make(pathname: Route['pathname']) {

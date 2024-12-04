@@ -17,6 +17,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/token/[hash]/instance/[id]': 'NFT instance',
   '/apps': 'apps marketplace',
   '/apps/[id]': 'marketplace app',
+  '/race/[id]': 'GPU Race',
+  '/race': 'GPU Race',
   '/stats': 'statistics',
   '/api-docs': 'REST API',
   '/graphiql': 'GraphQL',
@@ -54,6 +56,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/healthz': 'node API health check',
   '/auth/auth0': 'authentication',
   '/auth/unverified-email': 'unverified email',
+
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {

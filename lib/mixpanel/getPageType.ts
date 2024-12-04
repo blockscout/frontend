@@ -17,6 +17,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/token/[hash]/instance/[id]': 'Token Instance',
   '/apps': 'DApps',
   '/apps/[id]': 'DApp',
+  '/race/[id]': 'GPU Race',
+  '/race': 'GPU Race',
   '/stats': 'Stats',
   '/api-docs': 'REST API',
   '/graphiql': 'GraphQL',
