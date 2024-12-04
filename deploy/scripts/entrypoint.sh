@@ -22,6 +22,7 @@ export_envs_from_preset() {
     "NEXT_PUBLIC_APP_PORT"
     "NEXT_PUBLIC_APP_ENV"
     "NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL"
+    "NEXT_PUBLIC_GPU_RACE_CONFIG_URL"
   )
 
   while IFS='=' read -r name value; do
