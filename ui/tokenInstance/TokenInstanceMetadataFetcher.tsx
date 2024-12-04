@@ -1,5 +1,5 @@
 import type { ToastId } from '@chakra-ui/react';
-import { chakra, Alert, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, Center } from '@chakra-ui/react';
+import { Alert, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, Center } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -79,13 +79,6 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
   const handleModalClose = React.useCallback(() => {
     setStatus?.('INITIAL');
   }, [ setStatus ]);
-
-  const handleFormSubmit: React.FormEventHandler<HTMLFormElement> = React.useCallback((event) => {
-    event.preventDefault();
-    const data = new FormData(event.target as HTMLFormElement);
-    const token = data.get('recaptcha_token');
-    typeof token === 'string' && initializeUpdate(token);
-  }, [ initializeUpdate ]);
 
   const handleSocketMessage: SocketMessage.TokenInstanceMetadataFetched['handler'] = React.useCallback((payload) => {
     if (String(payload.token_id) !== id) {
@@ -170,20 +163,10 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
         <ModalBody mb={ 0 } minH="78px">
           { config.services.reCaptchaV2.siteKey ? (
             <>
-              <>
-                <Center h="80px">
-                  <Spinner size="lg"/>
-                </Center>
-                <ReCaptcha ref={ recaptcha.ref }/>
-              </>
-              { /* ONLY FOR TEST PURPOSES */ }
-              <chakra.form noValidate onSubmit={ handleFormSubmit } display="none">
-                <chakra.input
-                  name="recaptcha_token"
-                  placeholder="reCaptcha token"
-                />
-                <chakra.button type="submit">Submit</chakra.button>
-              </chakra.form>
+              <Center h="80px">
+                <Spinner size="lg"/>
+              </Center>
+              <ReCaptcha ref={ recaptcha.ref }/>
             </>
           ) : (
             <Alert status="error">
