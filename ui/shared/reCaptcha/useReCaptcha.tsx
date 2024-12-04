@@ -9,7 +9,7 @@ export default function useReCaptcha() {
 
   const executeAsync = React.useCallback(async() => {
     setIsOpen(true);
-    const tokenPromise = ref.current?.executeAsync();
+    const tokenPromise = ref.current?.executeAsync() || Promise.reject(new Error('Unable to execute ReCaptcha'));
     const modalOpenPromise = new Promise<void>((resolve, reject) => {
       rejectCb.current = reject;
     });
