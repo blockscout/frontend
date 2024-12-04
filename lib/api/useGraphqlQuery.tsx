@@ -5,6 +5,7 @@ interface QueryConfig {
   fields?: Array<string>;
   limit?: number;
   offset?: number;
+  distinctOn?: string;
   where?: Record<string, any>;
   order?: Record<string, string>;
   aggregate?: Array<string>;
@@ -79,12 +80,13 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?
     query ${ aliasName }($limit: Int, $offset: Int) {
       ${ queries
     .map(
-      ({ tableName, fields, limit, offset, where, order, aggregate }) => {
+      ({ tableName, fields, limit, offset, where, order, aggregate, distinctOn }) => {
         // Handle aggregation queries
         if (aggregate && aggregate.length > 0) {
           return `
             ${ tableName }(
-              where: { ${ formatWhereCondition(where) } }
+              where: { ${ formatWhereCondition(where) } },
+              ${ distinctOn ? `distinct_on: [${ distinctOn }],` : '' }
             ) {
               aggregate {
                 ${ buildAggregationFields(aggregate) }
@@ -96,6 +98,7 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?
         return `
           ${ tableName }(
             where: { ${ formatWhereCondition(where) } },
+            ${ distinctOn ? `distinct_on: [${ distinctOn }],` : '' }
             ${ order ? `order_by: { ${ Object.keys(order)[0] }: ${ Object.values(order) } },` : '' }
             ${ limit !== undefined ? `limit: $limit,` : '' }
             ${ offset !== undefined ? `offset: $offset` : '' }

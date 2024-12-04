@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import { debounce, orderBy } from 'lodash';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -64,12 +64,14 @@ const ObjectDetails: NextPage = () => {
       order: { update_time: 'desc' },
       limit: 21,
       offset: 0,
+      distinctOn: 'object_id',
     },
     {
       tableName: 'objects_aggregate',
       where: {
         removed: { _eq: false },
       },
+      distinctOn: 'object_id',
       aggregate: [
         'count',
       ],
@@ -99,9 +101,10 @@ const ObjectDetails: NextPage = () => {
             { removed: { _eq: false } },
           ],
         } : { removed: { _eq: false } },
-        order: { update_time: 'desc' },
+        // order: { update_time: 'desc' },
         limit: 21,
         offset: queryParams.offset,
+        distinctOn: 'object_id',
       },
       {
         tableName: 'objects_aggregate',
@@ -114,6 +117,7 @@ const ObjectDetails: NextPage = () => {
             { removed: { _eq: false } },
           ],
         } : { removed: { _eq: false } },
+        distinctOn: 'object_id',
         aggregate: [
           'count',
         ],
@@ -180,7 +184,7 @@ const ObjectDetails: NextPage = () => {
         propsPage={ propsPage }
         error={ error }
         loading={ loading }
-        tableList={ tableList }
+        tableList={ orderBy(tableList, [ 'update_time' ], [ 'desc' ]) }
         tabThead={ tabThead }
         page="object"
         handleSearchChange={ handleSearchChange }
