@@ -3,34 +3,21 @@ import React from 'react';
 import type { FormFields } from '../types';
 
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 import ContractVerificationMethod from '../ContractVerificationMethod';
+import ContractVerificationFieldCommit from '../fields/ContractVerificationFieldCommit';
 import ContractVerificationFieldCompiler from '../fields/ContractVerificationFieldCompiler';
+import ContractVerificationFieldGitHubRepo from '../fields/ContractVerificationFieldGitHubRepo';
 
 const ContractVerificationStylusGitHubRepo = () => {
+  const [ latestCommitHash, setLatestCommitHash ] = React.useState<string | undefined>(undefined);
+
   return (
     <ContractVerificationMethod title="Contract verification via Stylus (GitHub repository) ">
       <ContractVerificationFieldCompiler isStylus/>
-
-      <ContractVerificationFormRow>
-        <FormFieldUrl<FormFields>
-          name="repository_url"
-          placeholder="GitHub repository URL"
-          isRequired
-          size={{ base: 'md', lg: 'lg' }}
-        />
-      </ContractVerificationFormRow>
-
-      <ContractVerificationFormRow>
-        <FormFieldText<FormFields>
-          name="commit_hash"
-          placeholder="Commit hash"
-          isRequired
-          size={{ base: 'md', lg: 'lg' }}
-        />
-      </ContractVerificationFormRow>
+      <ContractVerificationFieldGitHubRepo onCommitHashChange={ setLatestCommitHash }/>
+      <ContractVerificationFieldCommit latestCommitHash={ latestCommitHash }/>
 
       <ContractVerificationFormRow>
         <FormFieldText<FormFields>

@@ -56,6 +56,9 @@ export function app(): CspDev.DirectiveDescriptor {
 
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
+
+      // github api (used for Stylus contract verification)
+      'api.github.com',
     ].filter(Boolean),
 
     'script-src': [

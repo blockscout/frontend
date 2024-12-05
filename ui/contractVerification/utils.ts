@@ -20,6 +20,7 @@ import type {
 import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/client/contract';
 
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
+import stripLeadingSlash from 'lib/stripLeadingSlash';
 
 export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMethod> = [
   'flattened-code',
@@ -391,4 +392,17 @@ export function formatSocketErrors(errors: SmartContractVerificationError): Arra
 
     return [ API_ERROR_TO_FORM_FIELD[_key], { message: value.join(',') } ];
   });
+}
+
+export function getGitHubOwnerAndRepo(repositoryUrl: string) {
+  try {
+    const urlObj = new URL(repositoryUrl);
+    if (urlObj.hostname !== 'github.com') {
+      throw new Error();
+    }
+    const [ owner, repo ] = stripLeadingSlash(urlObj.pathname).split('/');
+    return { owner, repo };
+  } catch (error) {
+    return;
+  }
 }
