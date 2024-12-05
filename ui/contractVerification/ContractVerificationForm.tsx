@@ -11,6 +11,7 @@ import type { SmartContractVerificationConfig } from 'types/client/contract';
 import { route } from 'nextjs-routes';
 
 import useApiFetch from 'lib/api/useApiFetch';
+import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import delay from 'lib/delay';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import useToast from 'lib/hooks/useToast';
@@ -106,7 +107,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
         existingErrors.forEach(([ field, error ]) => setError(field, error));
       } else {
         const globalErrors = Object.entries(payload.errors).map(([ , value ]) => value.join(', '));
-        setError('root', { message: globalErrors.join('\n\n') });
+        setError('root', { message: capitalizeFirstLetter(globalErrors.join('\n\n')) });
       }
 
       await delay(100); // have to wait a little bit, otherwise isSubmitting status will not be updated
