@@ -92,13 +92,14 @@ export interface SmartContractExternalLibrary {
 // VERIFICATION
 
 export type SmartContractVerificationMethodApi = 'flattened-code' | 'standard-input' | 'sourcify' | 'multi-part'
-| 'vyper-code' | 'vyper-multi-part' | 'vyper-standard-input';
+| 'vyper-code' | 'vyper-multi-part' | 'vyper-standard-input' | 'stylus-github-repository';
 
 export interface SmartContractVerificationConfigRaw {
   solidity_compiler_versions: Array<string>;
   solidity_evm_versions: Array<string>;
   verification_options: Array<string>;
   vyper_compiler_versions: Array<string>;
+  stylus_compiler_versions?: Array<string>;
   vyper_evm_versions: Array<string>;
   is_rust_verifier_microservice_enabled: boolean;
   license_types: Record<SmartContractLicenseType, number>;
