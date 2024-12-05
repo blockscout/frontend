@@ -73,6 +73,12 @@ export interface SmartContract {
   license_type: SmartContractLicenseType | null;
   certified?: boolean;
   zk_compiler_version?: string;
+  github_repository_metadata?: {
+    commit?: string;
+    path_prefix?: string;
+    repository_url?: string;
+  };
+  package_name?: string;
 }
 
 export type SmartContractDecodedConstructorArg = [
