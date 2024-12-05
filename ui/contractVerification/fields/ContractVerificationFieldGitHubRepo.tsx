@@ -45,10 +45,13 @@ const ContractVerificationFieldGitHubRepo = ({ onCommitHashChange }: Props) => {
         trigger('repository_url');
         onCommitHashChange(_get(response, '[0].sha'));
         return;
-      } catch (error) {}
+      } catch (error) {
+        repoErrorRef.current = 'GitHub repository not found';
+      }
+    } else {
+      repoErrorRef.current = 'Invalid GitHub repository URL';
     }
 
-    repoErrorRef.current = 'GitHub repository not found';
     trigger('repository_url');
     onCommitHashChange();
   }, [ fetch, getValues, getFieldState, onCommitHashChange, trigger ]);
