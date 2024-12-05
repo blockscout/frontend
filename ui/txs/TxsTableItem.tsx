@@ -35,7 +35,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   const getTxStatus = () => {
-    if (!tx.block && tx.error) {
+    if (!tx.block_number && tx.error) {
       return 'error';
     } else {
       return tx.status;

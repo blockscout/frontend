@@ -128,7 +128,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   ) : null;
 
   const getTxStatus = () => {
-    if (!data.block && data.error) {
+    if (!data.block_number && data.error) {
       return 'error';
     } else {
       return data.status;
@@ -273,7 +273,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
-      { !data.block && data.error && (
+      { !data.block_number && data.error && (
         <>
           <DetailsInfoItem.Label
             hint="The revert reason of the transaction"
