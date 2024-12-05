@@ -105,6 +105,13 @@ import type {
   RewardsUserDailyClaimResponse,
   RewardsUserReferralsResponse,
 } from 'types/api/rewards';
+import type {
+  ScrollL2BatchesResponse,
+  ScrollL2TxnBatch,
+  ScrollL2TxnBatchTxs,
+  ScrollL2TxnBatchBlocks,
+  ScrollL2MessagesResponse,
+} from 'types/api/scrollL2';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
 import type { HomeStats } from 'types/api/stats';
@@ -983,6 +990,51 @@ export const RESOURCES = {
     path: '/api/v2/shibarium/withdrawals/count',
   },
 
+  // SCROLL L2
+  scroll_l2_deposits: {
+    path: '/api/v2/scroll/deposits',
+    filterFields: [],
+  },
+
+  scroll_l2_deposits_count: {
+    path: '/api/v2/scroll/deposits/count',
+  },
+
+  scroll_l2_withdrawals: {
+    path: '/api/v2/scroll/withdrawals',
+    filterFields: [],
+  },
+
+  scroll_l2_withdrawals_count: {
+    path: '/api/v2/scroll/withdrawals/count',
+  },
+
+  scroll_l2_txn_batches: {
+    path: '/api/v2/scroll/batches',
+    filterFields: [],
+  },
+
+  scroll_l2_txn_batches_count: {
+    path: '/api/v2/scroll/batches/count',
+  },
+
+  scroll_l2_txn_batch: {
+    path: '/api/v2/scroll/batches/:number',
+    pathParams: [ 'number' as const ],
+  },
+
+  scroll_l2_txn_batch_txs: {
+    path: '/api/v2/transactions/scroll-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
+  },
+
+  scroll_l2_txn_batch_blocks: {
+    path: '/api/v2/blocks/scroll-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
+  },
+
   // NOVES-FI
   noves_transaction: {
     path: '/api/v2/proxy/noves-fi/transactions/:hash',
@@ -1130,7 +1182,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
 'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history' |
-'token_transfers_all';
+'token_transfers_all' | 'scroll_l2_txn_batches' | 'scroll_l2_txn_batch_txs' | 'scroll_l2_txn_batch_blocks' |
+'scroll_l2_deposits' | 'scroll_l2_withdrawals';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -1278,6 +1331,8 @@ Q extends 'zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
 Q extends 'zksync_l2_txn_batches_count' ? number :
 Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :
 Q extends 'zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
+Q extends 'scroll_l2_txn_batch_txs' ? ScrollL2TxnBatchTxs :
+Q extends 'scroll_l2_txn_batch_blocks' ? ScrollL2TxnBatchBlocks :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
 Q extends 'addresses_lookup' ? bens.LookupAddressResponse :
 Q extends 'address_domain' ? bens.GetAddressResponse :
@@ -1313,6 +1368,13 @@ Q extends 'rewards_user_daily_claim' ? RewardsUserDailyClaimResponse :
 Q extends 'rewards_user_referrals' ? RewardsUserReferralsResponse :
 Q extends 'token_transfers_all' ? TokenTransferResponse :
 Q extends 'address_xstar_score' ? AddressXStarResponse :
+Q extends 'scroll_l2_txn_batches' ? ScrollL2BatchesResponse :
+Q extends 'scroll_l2_txn_batches_count' ? number :
+Q extends 'scroll_l2_txn_batch' ? ScrollL2TxnBatch :
+Q extends 'scroll_l2_deposits' ? ScrollL2MessagesResponse :
+Q extends 'scroll_l2_deposits_count' ? number :
+Q extends 'scroll_l2_withdrawals' ? ScrollL2MessagesResponse :
+Q extends 'scroll_l2_withdrawals_count' ? number :
 never;
 /* eslint-enable @stylistic/indent */
 

@@ -12,7 +12,7 @@ export const TX: Transaction = {
     value: '2100000000000000',
   },
   gas_limit: '21000',
-  block: 9004925,
+  block_number: 9004925,
   status: 'ok',
   method: 'placeholder',
   confirmations: 71,
@@ -28,14 +28,14 @@ export const TX: Transaction = {
   base_fee_per_gas: '24',
   from: ADDRESS_PARAMS,
   token_transfers: null,
-  tx_types: [
+  transaction_types: [
     'coin_transfer',
   ],
   gas_used: '21000',
   created_contract: null,
   position: 0,
   nonce: 295929,
-  has_error_in_internal_txs: false,
+  has_error_in_internal_transactions: false,
   actions: [],
   decoded_input: null,
   token_transfers_overflow: false,
@@ -47,7 +47,7 @@ export const TX: Transaction = {
     0,
     14545,
   ],
-  tx_tag: null,
+  transaction_tag: null,
 };
 
 export const TX_ZKEVM_L2: Transaction = {

@@ -26,6 +26,7 @@ on:
             - polygon
             - rootstock
             - shibarium
+            - scroll_sepolia
             - stability
             - zkevm
             - zilliqa_prototestnet

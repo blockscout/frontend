@@ -210,8 +210,8 @@ const Footer = () => {
           gap={ 1 }
           gridTemplateColumns={{
             base: 'repeat(auto-fill, 160px)',
-            lg: 'repeat(3, 160px)',
-            xl: 'repeat(4, 160px)',
+            lg: 'repeat(2, 160px)',
+            xl: 'repeat(3, 160px)',
           }}
           gridTemplateRows={{
             base: 'auto',
