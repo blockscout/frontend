@@ -55,7 +55,7 @@ type TxTableColumn = {
   name: string;
   width: string;
   isNumeric?: boolean;
-}
+};
 export const TABLE_COLUMNS: Array<TxTableColumn> = [
   {
     id: 'tx_hash',
@@ -106,6 +106,7 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
   {
     id: 'fee',
     name: 'Fee',
+    isNumeric: true,
     width: '120px',
   },
 ] as const;
@@ -199,7 +200,7 @@ const AdvancedFilter = () => {
     setFilters(prevState => {
       const newState = { ...prevState };
       // fixme
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore:
       newState[field] = val;
       onFilterChange(newState.age ? omit(newState, [ 'age_from', 'age_to' ]) : newState);
@@ -242,7 +243,7 @@ const AdvancedFilter = () => {
   const content = (
     <AddressHighlightProvider>
       <Box maxW="100%" overflowX="scroll" whiteSpace="nowrap">
-        <Table variant="simple" style={{ tableLayout: 'fixed' }} minWidth="950px" size="xs" w="100%">
+        <Table style={{ tableLayout: 'fixed' }} minWidth="950px" w="100%">
           <Thead w="100%" display="table">
             <Tr>
               { columnsToShow.map(column => {
