@@ -56,6 +56,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/gas-tracker': DEFAULT_TEMPLATE,
   '/mud-worlds': DEFAULT_TEMPLATE,
   '/token-transfers': DEFAULT_TEMPLATE,
+  '/advanced-filter': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,
