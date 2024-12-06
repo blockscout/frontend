@@ -360,6 +360,7 @@
               "main",
               "localhost",
               "arbitrum",
+              "arbitrum_sepolia",
               "base",
               "celo_alfajores",
               "garnet",

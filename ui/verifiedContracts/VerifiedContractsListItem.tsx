@@ -5,6 +5,7 @@ import React from 'react';
 import type { VerifiedContract } from 'types/api/contracts';
 
 import config from 'configs/app';
+import formatLanguageName from 'lib/contracts/formatLanguageName';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import { currencyUnits } from 'lib/units';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
@@ -68,9 +69,9 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
         </Skeleton>
       </Flex>
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink="0">Compiler</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink="0">Language</Skeleton>
         <Skeleton isLoaded={ !isLoading } display="flex" flexWrap="wrap">
-          <Box textTransform="capitalize">{ data.language }</Box>
+          <Box>{ formatLanguageName(data.language) }</Box>
           <Box color="text_secondary" wordBreak="break-all" whiteSpace="pre-wrap"> ({ data.compiler_version })</Box>
         </Skeleton>
       </Flex>
