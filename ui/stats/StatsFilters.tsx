@@ -1,4 +1,4 @@
-import { Grid, GridItem, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as stats from '@blockscout/stats-types';
@@ -6,8 +6,7 @@ import type { StatsIntervalIds } from 'types/client/stats';
 
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
 import FilterInput from 'ui/shared/filters/FilterInput';
-
-import StatsDropdownMenu from './StatsDropdownMenu';
+import Select from 'ui/shared/select/Select';
 
 type Props = {
   sections?: Array<stats.LineChartSection>;
@@ -30,10 +29,13 @@ const StatsFilters = ({
   isLoading,
   initialFilterValue,
 }: Props) => {
-  const sectionsList = [ {
-    id: 'all',
-    title: 'All stats',
-  }, ... (sections || []) ];
+
+  const options = React.useMemo(() => {
+    return [
+      { value: 'all', label: 'All stats' },
+      ...(sections || []).map((section) => ({ value: section.id, label: section.title })),
+    ];
+  }, [ sections ]);
 
   return (
     <Grid
@@ -50,13 +52,14 @@ const StatsFilters = ({
         w={{ base: '100%', lg: 'auto' }}
         area="section"
       >
-        { isLoading ? <Skeleton w={{ base: '100%', lg: '103px' }} h="32px" borderRadius="base"/> : (
-          <StatsDropdownMenu
-            items={ sectionsList }
-            selectedId={ currentSection }
-            onSelect={ onSectionChange }
-          />
-        ) }
+        <Select
+          options={ options }
+          defaultValue={ currentSection }
+          onChange={ onSectionChange }
+          isLoading={ isLoading }
+          w={{ base: '100%', lg: '136px' }}
+          fontWeight={ 600 }
+        />
       </GridItem>
 
       <GridItem

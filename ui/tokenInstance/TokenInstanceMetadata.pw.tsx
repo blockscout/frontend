@@ -23,6 +23,7 @@ test('base view +@mobile', async({ render }) => {
 
 test('raw view', async({ render }) => {
   const component = await render(<TokenInstanceMetadata data={ tokenInstanceMock.withRichMetadata.metadata }/>);
-  await component.locator('select').selectOption('JSON');
+  await component.getByRole('button', { name: 'Table' }).click();
+  await component.getByText('JSON').click();
   await expect(component).toHaveScreenshot();
 });

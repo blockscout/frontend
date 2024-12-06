@@ -3,15 +3,16 @@ import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { StatsInterval, StatsIntervalIds } from 'types/client/stats';
+import type { SelectOption } from 'ui/shared/select/types';
 
+import Select from 'ui/shared/select/Select';
 import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 import { STATS_INTERVALS } from 'ui/stats/constants';
-import StatsDropdownMenu from 'ui/stats/StatsDropdownMenu';
 
 const intervalList = Object.keys(STATS_INTERVALS).map((id: string) => ({
-  id: id,
-  title: STATS_INTERVALS[id as StatsIntervalIds].title,
-})) as Array<StatsInterval>;
+  value: id,
+  label: STATS_INTERVALS[id as StatsIntervalIds].title,
+})) as Array<SelectOption>;
 
 const intervalListShort = Object.keys(STATS_INTERVALS).map((id: string) => ({
   id: id,
@@ -31,13 +32,16 @@ const ChartIntervalSelect = ({ interval, onIntervalChange, isLoading, selectTagS
       <Skeleton display={{ base: 'none', lg: 'flex' }} borderRadius="base" isLoaded={ !isLoading }>
         <TagGroupSelect<StatsIntervalIds> items={ intervalListShort } onChange={ onIntervalChange } value={ interval } tagSize={ selectTagSize }/>
       </Skeleton>
-      <Skeleton display={{ base: 'block', lg: 'none' }} borderRadius="base" isLoaded={ !isLoading }>
-        <StatsDropdownMenu
-          items={ intervalList }
-          selectedId={ interval }
-          onSelect={ onIntervalChange }
-        />
-      </Skeleton>
+      <Select
+        options={ intervalList }
+        defaultValue={ interval }
+        onChange={ onIntervalChange }
+        isLoading={ isLoading }
+        w={{ base: '100%', lg: '136px' }}
+        display={{ base: 'flex', lg: 'none' }}
+        flexShrink={ 0 }
+        fontWeight={ 600 }
+      />
     </>
   );
 };
