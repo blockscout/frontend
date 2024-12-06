@@ -25,8 +25,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_PAT }}  # Use a PAT with access to private repos
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -72,5 +70,3 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             VERSION=${{ env.VERSION }}
-          secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.GH_PAT }}

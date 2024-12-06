@@ -2,8 +2,8 @@ name: Release
 
 on:
     workflow_dispatch:
-    release:
-        types: [ released ]
+    # release:
+    #     types: [ released ]
 
 jobs:
     remove_prerelease_label:
