@@ -4,17 +4,24 @@ import React from 'react';
 
 import type { SmartContractMethod } from './types';
 
+import { route } from 'nextjs-routes';
+
+import { apos } from 'lib/html-entities';
+import LinkInternal from 'ui/shared/links/LinkInternal';
+
 import ContractAbiItem from './ContractAbiItem';
 import useFormSubmit from './useFormSubmit';
 import useScrollToMethod from './useScrollToMethod';
 
 interface Props {
   abi: Array<SmartContractMethod>;
+  visibleItems?: Array<number>;
   addressHash: string;
   tab: string;
+  sourceAddress?: string;
 }
 
-const ContractAbi = ({ abi, addressHash, tab }: Props) => {
+const ContractAbi = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Props) => {
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(abi.length === 1 ? [ 0 ] : []);
   const [ id, setId ] = React.useState(0);
 
@@ -42,8 +49,10 @@ const ContractAbi = ({ abi, addressHash, tab }: Props) => {
     setId((id) => id + 1);
   }, []);
 
+  const hasVisibleItems = !visibleItems || visibleItems.length > 0;
+
   return (
-    <>
+    <div>
       <Flex mb={ 3 }>
         <Box fontWeight={ 500 } mr="auto">Contract information</Box>
         { abi.length > 1 && (
@@ -57,16 +66,33 @@ const ContractAbi = ({ abi, addressHash, tab }: Props) => {
         { abi.map((item, index) => (
           <ContractAbiItem
             key={ index }
-            data={ item }
             id={ id }
             index={ index }
+            data={ item }
+            isVisible={ !visibleItems || visibleItems.includes(index) }
             addressHash={ addressHash }
+            sourceAddress={ sourceAddress }
             tab={ tab }
             onSubmit={ handleFormSubmit }
           />
         )) }
       </Accordion>
-    </>
+      { !hasVisibleItems && (
+        <div>
+          <div>Couldn{ apos }t find any method that matches your query.</div>
+          <div>
+            You can use custom ABI for this contract without verifying the contract in the{ ' ' }
+            <LinkInternal
+              href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'read_write_custom_methods' } }) }
+              scroll={ false }
+            >
+              Custom ABI
+            </LinkInternal>
+            { ' ' }tab.
+          </div>
+        </div>
+      ) }
+    </div>
   );
 };
 

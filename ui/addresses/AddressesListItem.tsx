@@ -16,7 +16,7 @@ type Props = {
   index: number;
   totalSupply: BigNumber;
   isLoading?: boolean;
-}
+};
 
 const AddressesListItem = ({
   item,
@@ -25,7 +25,7 @@ const AddressesListItem = ({
   isLoading,
 }: Props) => {
 
-  const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** config.chain.currency.decimals));
+  const addressBalance = BigNumber(item.coin_balance || 0).div(BigNumber(10 ** config.chain.currency.decimals));
 
   return (
     <ListItemMobile rowGap={ 3 }>
@@ -61,7 +61,7 @@ const AddressesListItem = ({
       <HStack spacing={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Txn count</Skeleton>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
-          <span>{ Number(item.tx_count).toLocaleString() }</span>
+          <span>{ Number(item.transaction_count).toLocaleString() }</span>
         </Skeleton>
       </HStack>
     </ListItemMobile>

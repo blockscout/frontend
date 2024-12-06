@@ -64,7 +64,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       <DetailsInfoItem.Label
         isLoading={ isPlaceholderData }
       >
-        Tx batch number
+        Txn batch number
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -73,8 +73,8 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         <PrevNext
           ml={ 6 }
           onClick={ handlePrevNextClick }
-          prevLabel="View previous tx batch"
-          nextLabel="View next tx batch"
+          prevLabel="View previous txn batch"
+          nextLabel="View next txn batch"
           isPrevDisabled={ data.number === 0 }
           isLoading={ isPlaceholderData }
         />
@@ -104,10 +104,10 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         Verify tx hash
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        { data.verify_tx_hash ? (
+        { data.verify_transaction_hash ? (
           <TxEntityL1
             isLoading={ isPlaceholderData }
-            hash={ data.verify_tx_hash }
+            hash={ data.verify_transaction_hash }
             maxW="100%"
           />
         ) : <Text>Pending</Text> }
@@ -162,10 +162,10 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         Sequence tx hash
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        { data.sequence_tx_hash ? (
+        { data.sequence_transaction_hash ? (
           <TxEntityL1
             isLoading={ isPlaceholderData }
-            hash={ data.sequence_tx_hash }
+            hash={ data.sequence_transaction_hash }
             maxW="100%"
           />
         ) : <Text>Pending</Text> }

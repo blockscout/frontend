@@ -52,7 +52,7 @@ type Props = {
   isQueryEnabled?: boolean;
   // for tests only
   overloadCount?: number;
-}
+};
 
 const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();

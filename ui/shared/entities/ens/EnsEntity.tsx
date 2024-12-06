@@ -1,5 +1,5 @@
+import type { As } from '@chakra-ui/react';
 import { Box, chakra, Flex, Image, PopoverBody, PopoverContent, PopoverTrigger, Portal, Skeleton, Text } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
@@ -12,12 +12,12 @@ import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
-import { getIconProps } from '../base/utils';
+import { distributeEntityProps, getIconProps } from '../base/utils';
 
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'name'>;
+type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'domain'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/name-domains/[name]', query: { name: props.name } });
+  const defaultHref = route({ pathname: '/name-domains/[name]', query: { name: props.domain } });
 
   return (
     <EntityBase.Link
@@ -29,15 +29,13 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & Pick<EntityProps, 'protocol'> & {
-  iconName?: EntityBase.IconBaseProps['name'];
-};
+type IconProps = Pick<EntityProps, 'protocol'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
-  const icon = <EntityBase.Icon { ...props } name={ props.iconName ?? 'ENS_slim' }/>;
+  const icon = <EntityBase.Icon { ...props } name={ props.name ?? 'ENS_slim' }/>;
 
   if (props.protocol) {
-    const styles = getIconProps(props.iconSize);
+    const styles = getIconProps(props.size);
 
     if (props.isLoading) {
       return <Skeleton boxSize={ styles.boxSize } borderRadius="sm" mr={ 2 }/>;
@@ -98,24 +96,24 @@ const Icon = (props: IconProps) => {
   return icon;
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'name'>;
+type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'domain'>;
 
 const Content = chakra((props: ContentProps) => {
   return (
     <TruncatedValue
       isLoading={ props.isLoading }
-      value={ props.name }
+      value={ props.domain }
     />
   );
 });
 
-type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'name'>;
+type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'domain'>;
 
 const Copy = (props: CopyProps) => {
   return (
     <EntityBase.Copy
       { ...props }
-      text={ props.name }
+      text={ props.domain }
     />
   );
 };
@@ -123,26 +121,25 @@ const Copy = (props: CopyProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  name: string;
+  domain: string;
   protocol?: bens.ProtocolInfo | null;
 }
 
 const EnsEntity = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const partsProps = distributeEntityProps(props);
 
   return (
-    <Container className={ props.className }>
-      <Icon { ...partsProps }/>
-      <Link { ...linkProps }>
-        <Content { ...partsProps }/>
+    <Container { ...partsProps.container }>
+      <Icon { ...partsProps.icon }/>
+      <Link { ...partsProps.link }>
+        <Content { ...partsProps.content }/>
       </Link>
-      <Copy { ...partsProps }/>
+      <Copy { ...partsProps.copy }/>
     </Container>
   );
 };
 
-export default React.memo(chakra(EnsEntity));
+export default React.memo(chakra<As, EntityProps>(EnsEntity));
 
 export {
   Container,

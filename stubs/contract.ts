@@ -1,7 +1,9 @@
-import type { SmartContract, SolidityscanReport } from 'types/api/contract';
+import type { SmartContract, SmartContractMudSystemsResponse } from 'types/api/contract';
 import type { VerifiedContract, VerifiedContractsCounters } from 'types/api/contracts';
 
-import { ADDRESS_PARAMS } from './addressParams';
+import type { SolidityScanReport } from 'lib/solidityScan/schema';
+
+import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
 
 export const CONTRACT_CODE_UNVERIFIED = {
   creation_bytecode: '0x60806040526e',
@@ -44,6 +46,7 @@ export const CONTRACT_CODE_VERIFIED = {
     remappings: [],
   },
   compiler_version: 'v0.8.7+commit.e28d00a7',
+  constructor_args: '0000000000000000000000005c7bcd6e7de5423a257d81b442095a1a6ced35c5000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
   creation_bytecode: '0x6080604052348',
   deployed_bytecode: '0x60806040',
   evm_version: 'london',
@@ -66,7 +69,7 @@ export const VERIFIED_CONTRACT_INFO: VerifiedContract = {
   language: 'solidity',
   market_cap: null,
   optimization_enabled: false,
-  tx_count: 565058,
+  transaction_count: 565058,
   verified_at: '2023-04-10T13:16:33.884921Z',
   license_type: 'mit',
 };
@@ -78,7 +81,7 @@ export const VERIFIED_CONTRACTS_COUNTERS: VerifiedContractsCounters = {
   new_verified_smart_contracts_24h: '1234',
 };
 
-export const SOLIDITYSCAN_REPORT: SolidityscanReport = {
+export const SOLIDITY_SCAN_REPORT: SolidityScanReport = {
   scan_report: {
     contractname: 'BullRunners',
     scan_status: 'scan_done',
@@ -91,12 +94,17 @@ export const SOLIDITYSCAN_REPORT: SolidityscanReport = {
         low: 2,
         medium: 0,
       },
-      lines_analyzed_count: 18,
-      scan_time_taken: 1,
-      score: '3.61',
       score_v2: '72.22',
-      threat_score: '94.74',
     },
     scanner_reference_url: 'https://solidityscan.com/quickscan/0xc1EF7811FF2ebFB74F80ed7423f2AdAA37454be2/blockscout/eth-goerli?ref=blockscout',
   },
+};
+
+export const MUD_SYSTEMS: SmartContractMudSystemsResponse = {
+  items: [
+    {
+      name: 'sy.AccessManagement',
+      address: ADDRESS_HASH,
+    },
+  ],
 };

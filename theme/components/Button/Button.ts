@@ -2,6 +2,8 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 import { runIfFn } from '@chakra-ui/utils';
 
+import config from 'configs/app';
+
 const variantSolid = defineStyle((props) => {
   const { colorScheme: c } = props;
 
@@ -92,6 +94,45 @@ const variantOutline = defineStyle((props) => {
   };
 });
 
+const variantRadioGroup = defineStyle((props) => {
+  const outline = runIfFn(variantOutline, props);
+  const bgColor = mode('blue.50', 'gray.800')(props);
+  const selectedTextColor = mode('blue.700', 'gray.50')(props);
+
+  return {
+    ...outline,
+    fontWeight: 500,
+    cursor: 'pointer',
+    bgColor: 'none',
+    borderColor: bgColor,
+    _hover: {
+      borderColor: bgColor,
+      color: 'link_hovered',
+    },
+    _active: {
+      bgColor: 'none',
+    },
+    _notFirst: {
+      borderLeftWidth: 0,
+    },
+    // We have a special state for this button variant that serves as a popover trigger.
+    // When any items (filters) are selected in the popover, the button should change its background and text color.
+    // The last CSS selector is for redefining styles for the TabList component.
+    [`
+      &[data-selected=true],
+      &[data-selected=true][aria-selected=true]
+    `]: {
+      cursor: 'initial',
+      bgColor,
+      borderColor: bgColor,
+      color: selectedTextColor,
+      _hover: {
+        color: selectedTextColor,
+      },
+    },
+  };
+});
+
 const variantSimple = defineStyle((props) => {
   const outline = runIfFn(variantOutline, props);
 
@@ -150,12 +191,78 @@ const variantSubtle = defineStyle((props) => {
   };
 });
 
+// for buttons in the hero banner
+const variantHero = defineStyle((props) => {
+  const buttonConfig = config.UI.homepage.heroBanner?.button;
+  return {
+    bg: mode(
+      buttonConfig?._default?.background?.[0] || 'blue.600',
+      buttonConfig?._default?.background?.[1] || buttonConfig?._default?.background?.[0] || 'blue.600',
+    )(props),
+    color: mode(
+      buttonConfig?._default?.text_color?.[0] || 'white',
+      buttonConfig?._default?.text_color?.[1] || buttonConfig?._default?.text_color?.[0] || 'white',
+    )(props),
+    _hover: {
+      bg: mode(
+        buttonConfig?._hover?.background?.[0] || 'blue.400',
+        buttonConfig?._hover?.background?.[1] || buttonConfig?._hover?.background?.[0] || 'blue.400',
+      )(props),
+      color: mode(
+        buttonConfig?._hover?.text_color?.[0] || 'white',
+        buttonConfig?._hover?.text_color?.[1] || buttonConfig?._hover?.text_color?.[0] || 'white',
+      )(props),
+    },
+    '&[data-selected=true]': {
+      bg: mode(
+        buttonConfig?._selected?.background?.[0] || 'blue.50',
+        buttonConfig?._selected?.background?.[1] || buttonConfig?._selected?.background?.[0] || 'blue.50',
+      )(props),
+      color: mode(
+        buttonConfig?._selected?.text_color?.[0] || 'blackAlpha.800',
+        buttonConfig?._selected?.text_color?.[1] || buttonConfig?._selected?.text_color?.[0] || 'blackAlpha.800',
+      )(props),
+    },
+  };
+});
+
+// for buttons in the page header
+const variantHeader = defineStyle((props) => {
+
+  return {
+    bgColor: 'transparent',
+    color: mode('blackAlpha.800', 'gray.400')(props),
+    borderColor: mode('gray.300', 'gray.600')(props),
+    borderWidth: props.borderWidth || '2px',
+    borderStyle: 'solid',
+    _hover: {
+      color: 'link_hovered',
+      borderColor: 'link_hovered',
+    },
+    '&[data-selected=true]': {
+      bgColor: mode('blackAlpha.50', 'whiteAlpha.100')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      borderColor: 'transparent',
+      borderWidth: props.borderWidth || '0px',
+    },
+    '&[data-selected=true][data-warning=true]': {
+      bgColor: mode('orange.100', 'orange.900')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      borderColor: 'transparent',
+      borderWidth: props.borderWidth || '0px',
+    },
+  };
+});
+
 const variants = {
   solid: variantSolid,
   outline: variantOutline,
   simple: variantSimple,
   ghost: variantGhost,
   subtle: variantSubtle,
+  hero: variantHero,
+  header: variantHeader,
+  radio_group: variantRadioGroup,
 };
 
 const baseStyle = defineStyle({

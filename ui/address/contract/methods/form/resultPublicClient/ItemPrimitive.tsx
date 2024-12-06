@@ -5,6 +5,7 @@ import type { AbiParameter } from 'viem';
 
 import { route } from 'nextjs-routes';
 
+import { WEI } from 'lib/consts';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
@@ -51,7 +52,7 @@ const ItemPrimitive = ({ abiParameter, data, level, hideLabel }: Props) => {
 
     const intMatch = matchInt(abiParameter.type);
     if (intMatch && typeof data === 'bigint' && intMatch.max > INT_TOOLTIP_THRESHOLD && data > INT_TOOLTIP_THRESHOLD) {
-      const dividedValue = BigNumber(data.toString()).div(BigNumber(INT_TOOLTIP_THRESHOLD));
+      const dividedValue = BigNumber(data.toString()).div(WEI);
       return (
         <Tooltip label={ dividedValue.toLocaleString() + ' ETH' }>
           <span>{ castValueToString(data) }</span>

@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react';
 import { useQuery } from '@tanstack/react-query';
 
 import buildUrl from 'lib/api/buildUrl';
@@ -6,11 +5,13 @@ import isNeedProxy from 'lib/api/isNeedProxy';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
+import { useRollbar } from 'lib/rollbar';
 
 export default function useGetCsrfToken() {
   const nodeApiFetch = useFetch();
+  const rollbar = useRollbar();
 
-  useQuery({
+  return useQuery({
     queryKey: getResourceKey('csrf'),
     queryFn: async() => {
       if (!isNeedProxy()) {
@@ -19,12 +20,11 @@ export default function useGetCsrfToken() {
         const csrfFromHeader = apiResponse.headers.get('x-bs-account-csrf');
 
         if (!csrfFromHeader) {
-          Sentry.captureException(new Error('Client fetch failed'), { tags: {
-            source: 'fetch',
-            'source.resource': 'csrf',
-            'status.code': 500,
-            'status.text': 'Unable to obtain csrf token from header',
-          } });
+          rollbar?.warn('Client fetch failed', {
+            resource: 'csrf',
+            status_code: 500,
+            status_text: 'Unable to obtain csrf token from header',
+          });
           return;
         }
 

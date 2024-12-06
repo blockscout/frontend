@@ -13,9 +13,12 @@ test.use({ viewport: { width: 150, height: 350 } });
   { variant: 'ghost', withDarkMode: true, states: [ 'default', 'hovered', 'active' ] },
   { variant: 'subtle', states: [ 'default', 'hovered' ] },
   { variant: 'subtle', colorScheme: 'gray', states: [ 'default', 'hovered' ], withDarkMode: true },
+  { variant: 'hero', states: [ 'default', 'hovered' ], withDarkMode: true },
+  { variant: 'header', states: [ 'default', 'hovered', 'selected' ], withDarkMode: true },
+  { variant: 'radio_group', states: [ 'default', 'hovered', 'selected' ], withDarkMode: true },
 ].forEach(({ variant, colorScheme, withDarkMode, states }) => {
   test.describe(`variant ${ variant }${ colorScheme ? ` with ${ colorScheme } color scheme` : '' }${ withDarkMode ? ' +@dark-mode' : '' }`, () => {
-    test('', async({ render }) => {
+    test('base view', async({ render }) => {
       const component = await render(
         <Flex p={ 2 } flexDir="column" rowGap={ 3 }>
           { states?.map((state) => {

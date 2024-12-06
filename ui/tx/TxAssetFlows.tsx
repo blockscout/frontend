@@ -54,7 +54,7 @@ export default function TxAssetFlows(props: FlowViewProps) {
       <Box display="flex" alignItems="center" gap={ 1 }>
         <Skeleton borderRadius="sm" isLoaded={ !isPlaceholderData } >
           <Text fontWeight="400" mr={ 1 }>
-              Wallet
+            Wallet
           </Text>
         </Skeleton>
 
@@ -82,14 +82,14 @@ export default function TxAssetFlows(props: FlowViewProps) {
       </Hide>
 
       <Show above="lg">
-        <Table variant="simple" size="sm">
+        <Table>
           <TheadSticky top={ 75 }>
             <Tr>
               <Th>
-                  Actions
+                Actions
               </Th>
               <Th width="450px">
-                  From/To
+                From/To
               </Th>
             </Tr>
           </TheadSticky>

@@ -41,14 +41,14 @@ const TxDetailsAction = ({ action }: Props) => {
       const token0 = {
         address: data.symbol0 === 'Ether' ? '' : data.address0,
         name: data.symbol0 === 'Ether' ? config.chain.currency.symbol || null : data.symbol0,
-        type: 'ERC-20',
+        type: 'ERC-20' as const,
         symbol: null,
         icon_url: null,
       };
       const token1 = {
         address: data.symbol1 === 'Ether' ? '' : data.address1,
         name: data.symbol1 === 'Ether' ? config.chain.currency.symbol || null : data.symbol1,
-        type: 'ERC-20',
+        type: 'ERC-20' as const,
         symbol: null,
         icon_url: null,
       };
@@ -99,7 +99,7 @@ const TxDetailsAction = ({ action }: Props) => {
       const token = {
         address: data.address,
         name: data.name,
-        type: 'ERC-20',
+        type: 'ERC-20' as const,
         symbol: null,
         icon_url: null,
       };
@@ -133,7 +133,7 @@ const TxDetailsAction = ({ action }: Props) => {
                   <Flex key={ data.address + id } whiteSpace="pre-wrap" columnGap={ 2 }>
                     <chakra.span flexShrink={ 0 }>1</chakra.span>
                     <chakra.span color="text_secondary" flexShrink={ 0 }>of token ID</chakra.span>
-                    <NftEntity hash={ data.address } id={ id } w="min-content" iconSize="md"/>
+                    <NftEntity hash={ data.address } id={ id } w="min-content" icon={{ size: 'md' }}/>
                   </Flex>
                 );
               })

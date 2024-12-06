@@ -8,7 +8,7 @@ import React from 'react';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { SocketProvider } from 'lib/socket/context';
-import theme from 'theme';
+import theme from 'theme/theme';
 
 import 'lib/setLocale';
 
@@ -20,7 +20,7 @@ const PAGE_PROPS = {
   apiData: null,
 };
 
-const TestApp = ({ children }: {children: React.ReactNode}) => {
+const TestApp = ({ children }: { children: React.ReactNode }) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {

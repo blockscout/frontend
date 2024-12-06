@@ -33,7 +33,7 @@ const Row = ({ name, type, indexed, value, isLoading }: ArrayElement<DecodedInpu
     if (type === 'address' && typeof value === 'string') {
       return (
         <AddressEntity
-          address={{ hash: value, name: '', implementation_name: null, is_contract: false, is_verified: false }}
+          address={{ hash: value, name: '' }}
           isLoading={ isLoading }
         />
       );

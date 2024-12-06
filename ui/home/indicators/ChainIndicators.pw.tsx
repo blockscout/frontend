@@ -21,6 +21,7 @@ test.describe('daily txs chart', () => {
     await mockApiResponse('stats', statsMock.withSecondaryCoin);
     await mockApiResponse('stats_charts_txs', dailyTxsMock.base);
     await mockAssetResponse(statsMock.withSecondaryCoin.coin_image as string, './playwright/mocks/image_svg.svg');
+    await mockAssetResponse(statsMock.withSecondaryCoin.secondary_coin_image as string, './playwright/mocks/image_s.jpg');
     component = await render(<ChainIndicators/>);
     await page.waitForFunction(() => {
       return document.querySelector('path[data-name="gradient-chart-area"]')?.getAttribute('opacity') === '1';
@@ -56,7 +57,7 @@ test('partial data', async({ page, mockApiResponse, mockAssetResponse, render })
 test('no data', async({ mockApiResponse, mockAssetResponse, render }) => {
   await mockApiResponse('stats', statsMock.noChartData);
   await mockApiResponse('stats_charts_txs', dailyTxsMock.noData);
-  await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(statsMock.noChartData.coin_image as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(<ChainIndicators/>);
   await expect(component).toHaveScreenshot();

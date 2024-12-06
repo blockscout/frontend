@@ -8,6 +8,12 @@ const metrics = (() => {
 
   promClient.register.clear();
 
+  const invalidApiSchema = new promClient.Counter({
+    name: 'invalid_api_schema',
+    help: 'Number of invalid external API schema events',
+    labelNames: [ 'resource', 'url' ] as const,
+  });
+
   const socialPreviewBotRequests = new promClient.Counter({
     name: 'social_preview_bot_requests_total',
     help: 'Number of incoming requests from social preview bots',
@@ -27,7 +33,7 @@ const metrics = (() => {
     buckets: [ 0.2, 0.5, 1, 3, 10 ],
   });
 
-  return { socialPreviewBotRequests, searchEngineBotRequests, apiRequestDuration };
+  return { invalidApiSchema, socialPreviewBotRequests, searchEngineBotRequests, apiRequestDuration };
 })();
 
 export default metrics;

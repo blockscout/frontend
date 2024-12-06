@@ -1,6 +1,8 @@
+import { apps } from './apps';
+
 export const securityReports = [
   {
-    appName: 'token-approval-tracker',
+    appName: apps[0].id,
     doc: 'http://docs.li.fi/smart-contracts/deployments#mainnet',
     chainsData: {
       '1': {

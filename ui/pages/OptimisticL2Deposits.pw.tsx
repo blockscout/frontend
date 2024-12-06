@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { data as depositsData } from 'mocks/l2deposits/deposits';
+import { data as depositsData } from 'mocks/optimism/deposits';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

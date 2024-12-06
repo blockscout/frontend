@@ -10,7 +10,7 @@ export const sealed: ZkSyncBatchesItem = {
   prove_transaction_timestamp: null,
   status: 'Sealed on L2',
   timestamp: '2022-03-19T12:53:36.000000Z',
-  tx_count: 738,
+  transaction_count: 738,
 };
 
 export const sent: ZkSyncBatchesItem = {
@@ -23,7 +23,7 @@ export const sent: ZkSyncBatchesItem = {
   prove_transaction_timestamp: null,
   status: 'Sent to L1',
   timestamp: '2022-03-19T11:36:45.000000Z',
-  tx_count: 766,
+  transaction_count: 766,
 };
 
 export const executed: ZkSyncBatchesItem = {
@@ -36,7 +36,7 @@ export const executed: ZkSyncBatchesItem = {
   prove_transaction_timestamp: '2022-03-19T13:28:16.603104Z',
   status: 'Executed on L1',
   timestamp: '2022-03-19T10:01:52.000000Z',
-  tx_count: 1071,
+  transaction_count: 1071,
 };
 
 export const baseResponse: ZkSyncBatchesResponse = {

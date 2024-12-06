@@ -24,10 +24,12 @@ const init = () => {
         '--w3m-font-family': `${ BODY_TYPEFACE }, sans-serif`,
         '--w3m-accent': colors.blue[600],
         '--w3m-border-radius-master': '2px',
-        '--w3m-z-index': zIndices.modal,
+        '--w3m-z-index': zIndices.popover,
       },
       featuredWalletIds: [],
       allowUnsupportedChain: true,
+      enableOnramp: false,
+      enableSwaps: false,
     });
   } catch (error) {}
 };

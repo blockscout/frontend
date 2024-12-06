@@ -27,6 +27,9 @@ const MetadataItemPrimitive = ({ name, value, isItem = true, isFlat, level }: Pr
         if (url) {
           return <LinkExternal href={ url.toString() }>{ value }</LinkExternal>;
         }
+        if (value === '') {
+          return <div>&quot;&quot;</div>;
+        }
       }
       // eslint-disable-next-line no-fallthrough
       default: {
@@ -36,7 +39,7 @@ const MetadataItemPrimitive = ({ name, value, isItem = true, isFlat, level }: Pr
   })();
 
   return (
-    <Component level={ level } isFlat={ isFlat }>
+    <Component level={ level } { ...(isItem ? { isFlat } : {}) }>
       { name && <MetadataAccordionItemTitle name={ name }/> }
       { content }
     </Component>

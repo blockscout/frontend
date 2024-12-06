@@ -16,6 +16,6 @@
     "incremental": true,
     "baseUrl": ".",
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.node.ts", "**/*.tsx", "decs.d.ts", "global.d.ts"],
-  "exclude": ["node_modules", "node_modules_linux", "./deploy/tools/envs-validator"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.node.ts", "**/*.tsx", "**/*.pw.tsx", "decs.d.ts", "global.d.ts"],
+  "exclude": ["node_modules", "node_modules_linux", "./deploy/tools/envs-validator", "./deploy/tools/favicon-generator"],
 }

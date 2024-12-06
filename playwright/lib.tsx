@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { test as base } from '@playwright/experimental-ct-react';
+import type { Page } from '@playwright/test';
 
 import * as injectMetaMaskProvider from './fixtures/injectMetaMaskProvider';
 import * as mockApiResponse from './fixtures/mockApiResponse';
@@ -13,7 +14,7 @@ import * as mockTextAd from './fixtures/mockTextAd';
 import * as render from './fixtures/render';
 import * as socketServer from './fixtures/socketServer';
 
-interface Fixtures {
+export interface Fixtures {
   render: render.RenderFixture;
   mockApiResponse: mockApiResponse.MockApiResponseFixture;
   mockAssetResponse: mockAssetResponse.MockAssetResponseFixture;
@@ -26,6 +27,8 @@ interface Fixtures {
   injectMetaMaskProvider: injectMetaMaskProvider.InjectMetaMaskProvider;
   mockTextAd: mockTextAd.MockTextAdFixture;
 }
+
+export type TestFnArgs = Fixtures & { page: Page };
 
 const test = base.extend<Fixtures>({
   render: render.default,

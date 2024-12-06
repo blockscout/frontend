@@ -20,7 +20,7 @@ type Props = {
   collectionsQuery: QueryWithPagesResult<'address_collections'>;
   address: string;
   hasActiveFilters: boolean;
-}
+};
 
 const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Props) => {
   const isMobile = useIsMobile();

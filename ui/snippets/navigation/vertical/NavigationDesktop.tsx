@@ -4,16 +4,17 @@ import React from 'react';
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
-import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import IconSvg from 'ui/shared/IconSvg';
+import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
 import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
+import NavLinkRewards from './NavLinkRewards';
 
 const NavigationDesktop = () => {
   const appProps = useAppContext();
@@ -30,7 +31,7 @@ const NavigationDesktop = () => {
 
   const { mainNavItems, accountNavItems } = useNavItems();
 
-  const hasAccount = useHasAccount();
+  const isAuth = useIsAuth();
 
   const [ isCollapsed, setCollapsedState ] = React.useState<boolean | undefined>(isNavBarCollapsed);
 
@@ -56,6 +57,7 @@ const NavigationDesktop = () => {
   return (
     <Flex
       display={{ base: 'none', lg: 'flex' }}
+      role="group"
       position="relative"
       flexDirection="column"
       alignItems="stretch"
@@ -65,11 +67,6 @@ const NavigationDesktop = () => {
       py={ 12 }
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
-      sx={{
-        '&:hover #expand-icon': {
-          display: 'block',
-        },
-      }}
       onClick={ handleContainerClick }
     >
       <TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
@@ -101,9 +98,10 @@ const NavigationDesktop = () => {
           }) }
         </VStack>
       </Box>
-      { hasAccount && (
+      { isAuth && (
         <Box as="nav" borderTopWidth="1px" borderColor="divider" w="100%" mt={ 3 } pt={ 3 }>
           <VStack as="ul" spacing="1" alignItems="flex-start">
+            <NavLinkRewards isCollapsed={ isCollapsed }/>
             { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>) }
           </VStack>
         </Box>
@@ -125,8 +123,8 @@ const NavigationDesktop = () => {
         cursor="pointer"
         onClick={ handleTogglerClick }
         aria-label="Expand/Collapse menu"
-        id="expand-icon"
         display="none"
+        _groupHover={{ display: 'block' }}
       />
     </Flex>
   );

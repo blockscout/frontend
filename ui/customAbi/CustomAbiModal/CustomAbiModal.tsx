@@ -4,23 +4,24 @@ import type { CustomAbi } from 'types/api/account';
 
 import FormModal from 'ui/shared/FormModal';
 
-import CustomAbiForm from './CustomAbiForm';
+import CustomAbiForm, { type FormData } from './CustomAbiForm';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  data?: CustomAbi;
-}
+  onSuccess?: () => Promise<void>;
+  data: FormData;
+};
 
-const CustomAbiModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
-  const title = data ? 'Edit custom ABI' : 'New custom ABI';
-  const text = !data ? 'Double check the ABI matches the contract to prevent errors or incorrect results.' : '';
+const CustomAbiModal: React.FC<Props> = ({ isOpen, onClose, data, onSuccess }) => {
+  const title = data && 'id' in data ? 'Edit custom ABI' : 'New custom ABI';
+  const text = !(data && 'id' in data) ? 'Double check the ABI matches the contract to prevent errors or incorrect results.' : '';
 
   const [ isAlertVisible, setAlertVisible ] = useState(false);
 
   const renderForm = useCallback(() => {
-    return <CustomAbiForm data={ data } onClose={ onClose } setAlertVisible={ setAlertVisible }/>;
-  }, [ data, onClose ]);
+    return <CustomAbiForm data={ data } onClose={ onClose } onSuccess={ onSuccess } setAlertVisible={ setAlertVisible }/>;
+  }, [ data, onClose, onSuccess ]);
   return (
     <FormModal<CustomAbi>
       isOpen={ isOpen }

@@ -65,7 +65,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
       return {
         height: Number(block.number),
         timestamp: dayjs.unix(Number(block.timestamp)).format(),
-        tx_count: block.transactions.length,
+        transaction_count: block.transactions.length,
         miner: { ...unknownAddress, hash: block.miner },
         size: Number(block.size),
         hash: block.hash,
@@ -84,7 +84,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
         gas_used_percentage: null,
         burnt_fees_percentage: null,
         type: 'block', // we can't get this type from RPC, so it will always be a regular block
-        tx_fees: null,
+        transaction_fees: null,
         uncles_hashes: block.uncles,
         withdrawals_count: block.withdrawals?.length,
       };

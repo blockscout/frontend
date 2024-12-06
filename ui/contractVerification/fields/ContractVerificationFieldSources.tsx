@@ -6,25 +6,26 @@ import { Controller, useFormContext } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import { Mb } from 'lib/consts';
-import DragAndDropArea from 'ui/shared/forms/DragAndDropArea';
-import FieldError from 'ui/shared/forms/FieldError';
-import FileInput from 'ui/shared/forms/FileInput';
-import FileSnippet from 'ui/shared/forms/FileSnippet';
+import FieldError from 'ui/shared/forms/components/FieldError';
+import DragAndDropArea from 'ui/shared/forms/inputs/file/DragAndDropArea';
+import FileInput from 'ui/shared/forms/inputs/file/FileInput';
+import FileSnippet from 'ui/shared/forms/inputs/file/FileSnippet';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-type FileTypes = '.sol' | '.yul' | '.json' | '.vy'
+type FileTypes = '.sol' | '.yul' | '.json' | '.vy';
 
 interface Props {
   name?: 'sources' | 'interfaces';
   fileTypes: Array<FileTypes>;
+  fullFilePath?: boolean;
   multiple?: boolean;
   required?: boolean;
   title: string;
   hint: string | React.ReactNode;
 }
 
-const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title, hint, name = 'sources' }: Props) => {
+const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title, hint, name = 'sources', fullFilePath }: Props) => {
   const { setValue, getValues, control, formState, clearErrors } = useFormContext<FormFields>();
 
   const error = (() => {
@@ -56,7 +57,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title
       <div>
         <Text fontWeight={ 500 } color="text_secondary" mb={ 3 }>{ title }</Text>
         <Button size="sm" variant="outline">
-            Drop file{ multiple ? 's' : '' } or click here
+          Drop file{ multiple ? 's' : '' } or click here
         </Button>
       </div>
     );
@@ -89,7 +90,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title
     );
   }, [ formState.isSubmitting, handleFileRemove, fileError ]);
 
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, typeof name>}) => {
+  const renderControl = React.useCallback(({ field }: { field: ControllerRenderProps<FormFields, typeof name> }) => {
     const hasValue = field.value && field.value.length > 0;
 
     const errorElement = (() => {
@@ -114,7 +115,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title
               rowGap={ 2 }
               w="100%"
             >
-              <DragAndDropArea onDrop={ onChange } p={{ base: 3, lg: 6 }} isDisabled={ formState.isSubmitting }>
+              <DragAndDropArea onDrop={ onChange } fullFilePath={ fullFilePath } p={{ base: 3, lg: 6 }} isDisabled={ formState.isSubmitting }>
                 { hasValue ? renderFiles(field.value) : renderUploadButton() }
               </DragAndDropArea>
             </Flex>
@@ -123,7 +124,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title
         { errorElement }
       </>
     );
-  }, [ fileTypes, multiple, commonError, formState.isSubmitting, renderFiles, renderUploadButton ]);
+  }, [ fileTypes, multiple, commonError, formState.isSubmitting, renderFiles, renderUploadButton, fullFilePath ]);
 
   const validateFileType = React.useCallback(async(value: FieldPathValue<FormFields, typeof name>): Promise<ValidateResult> => {
     if (Array.isArray(value)) {

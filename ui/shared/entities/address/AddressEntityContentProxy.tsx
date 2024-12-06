@@ -21,6 +21,8 @@ const AddressEntityContentProxy = (props: ContentProps) => {
   }
 
   const colNum = Math.min(implementations.length, 3);
+  const nameTag = props.address.metadata?.tags.find(tag => tag.tagType === 'name')?.name;
+
   const implementationName = implementations.length === 1 && implementations[0].name ? implementations[0].name : undefined;
 
   return (
@@ -29,8 +31,9 @@ const AddressEntityContentProxy = (props: ContentProps) => {
         <Box display="inline-flex" w="100%">
           <EntityBase.Content
             { ...props }
-            truncation={ implementationName || props.address.name ? 'tail' : 'dynamic' }
-            text={ implementationName || props.address.name || props.address.hash }
+            truncation={ nameTag || implementationName || props.address.name ? 'tail' : props.truncation }
+            text={ nameTag || implementationName || props.address.name || props.altHash || props.address.hash }
+            isTooltipDisabled
           />
         </Box>
       </PopoverTrigger>
@@ -43,7 +46,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
                 Proxy contract
                 { props.address.name ? ` (${ props.address.name })` : '' }
               </Box>
-              <AddressEntity address={{ hash: props.address.hash }} noLink noIcon noHighlight justifyContent="center"/>
+              <AddressEntity address={{ hash: props.address.hash, filecoin: props.address.filecoin }} noLink noIcon noHighlight justifyContent="center"/>
               <Box fontWeight={ 600 } mt={ 2 }>
                 Implementation{ implementations.length > 1 ? 's' : '' }
                 { implementationName ? ` (${ implementationName })` : '' }
@@ -52,7 +55,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
                 { implementations.map((item) => (
                   <AddressEntity
                     key={ item.address }
-                    address={{ hash: item.address }}
+                    address={{ hash: item.address, filecoin: { robust: item.filecoin_robust_address } }}
                     noLink
                     noIcon
                     noHighlight

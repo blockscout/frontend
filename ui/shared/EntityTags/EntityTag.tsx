@@ -15,15 +15,16 @@ interface Props {
   data: TEntityTag;
   isLoading?: boolean;
   maxW?: ResponsiveValue<string>;
+  noLink?: boolean;
 }
 
-const EntityTag = ({ data, isLoading, maxW }: Props) => {
+const EntityTag = ({ data, isLoading, maxW, noLink }: Props) => {
 
   if (isLoading) {
     return <Skeleton borderRadius="sm" w="100px" h="24px"/>;
   }
 
-  const hasLink = Boolean(getTagLinkParams(data));
+  const hasLink = !noLink && Boolean(getTagLinkParams(data));
   const iconColor = data.meta?.textColor ?? 'gray.400';
 
   const name = (() => {
@@ -63,7 +64,7 @@ const EntityTag = ({ data, isLoading, maxW }: Props) => {
         colorScheme={ hasLink ? 'gray-blue' : 'gray' }
         _hover={ hasLink ? { opacity: 0.76 } : undefined }
       >
-        <EntityTagLink data={ data }>
+        <EntityTagLink data={ data } noLink={ noLink }>
           { icon }
           <TruncatedValue value={ name } tooltipPlacement="top"/>
         </EntityTagLink>

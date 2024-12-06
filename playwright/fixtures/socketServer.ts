@@ -20,7 +20,7 @@ export interface SocketServerFixture {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const createSocket: TestFixture<CreateSocketFixture, { page: Page}> = async({ page }, use) => {
+export const createSocket: TestFixture<CreateSocketFixture, { page: Page }> = async({ page }, use) => {
   const socketServer = new WebSocketServer({ port: socketPort });
 
   const connectionPromise = new Promise<WebSocket>((resolve) => {
@@ -70,7 +70,7 @@ export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_t
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: { pending_transactions: Array<Transaction> }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'new_block', payload: NewBlockSocketResponse): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'verification_result', payload: SmartContractVerificationResponse): void;
-export function sendMessage(socket: WebSocket, channel: Channel, msg: 'total_supply', payload: { total_supply: number}): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'total_supply', payload: { total_supply: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'changed_bytecode', payload: Record<string, never>): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'fetched_bytecode', payload: { fetched_bytecode: string }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'smart_contract_was_verified', payload: Record<string, never>): void;

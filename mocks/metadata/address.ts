@@ -90,3 +90,26 @@ export const warpcastTag: AddressMetadataTagApi = {
     warpcastHandle: 'duckYduck',
   },
 };
+
+export const noteTag: AddressMetadataTagApi = {
+  slug: 'scam-tag',
+  name: 'Phish 🐟',
+  tagType: 'note',
+  ordinal: 100,
+  meta: {
+    alertBgColor: 'deeppink',
+    alertTextColor: 'white',
+    data: '<b>Warning!</b> This is scam! See the <a href="https://example.com" target="_blank">report</a>',
+  },
+};
+
+export const noteTag2: AddressMetadataTagApi = {
+  slug: 'note0',
+  name: 'note_0',
+  tagType: 'note',
+  ordinal: 0,
+  meta: {
+    alertStatus: 'info',
+    data: 'The token MILF was launched on May 13, 2021. The maximum total supply of the token is 100 billion.',
+  },
+};
