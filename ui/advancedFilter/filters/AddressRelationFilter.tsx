@@ -15,7 +15,7 @@ type Props = {
   columnName: string;
   isLoading?: boolean;
   onClose?: () => void;
-}
+};
 
 const AddressRelationFilter = ({ value = DEFAULT_VALUE, handleFilterChange, onClose }: Props) => {
   const onFilter = React.useCallback((val: Value) => {

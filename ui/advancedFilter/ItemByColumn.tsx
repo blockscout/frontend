@@ -19,7 +19,8 @@ type Props = {
   item: AdvancedFilterResponseItem;
   column: ColumnsIds;
   isLoading?: boolean;
-}
+};
+
 const ItemByColumn = ({ item, column, isLoading }: Props) => {
   switch (column) {
     case 'tx_hash':
@@ -41,8 +42,13 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
           <AddressEntity address={ item.from } truncation="constant" isLoading={ isLoading }/>
         </Flex>
       );
-    case 'to':
-      return <AddressEntity address={ item.to ? item.to : item.created_contract } truncation="constant" isLoading={ isLoading }/>;
+    case 'to': {
+      const address = item.to ? item.to : item.created_contract;
+      if (!address) {
+        return null;
+      }
+      return <AddressEntity address={ address } truncation="constant" isLoading={ isLoading }/>;
+    }
     case 'or_and':
       return (
         <AddressFromToIcon

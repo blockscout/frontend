@@ -39,13 +39,13 @@ const PRESETS = [
 ];
 
 const defaultValue = { from: '', to: '' };
-type AmountValue = { from?: string; to?: string }
+type AmountValue = { from?: string; to?: string };
 
 type Props = {
   value?: AmountValue;
   handleFilterChange: (filed: keyof AdvancedFilterParams, value?: string) => void;
   onClose?: () => void;
-}
+};
 
 const AmountFilter = ({ value = {}, handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<AmountValue>(value || defaultValue);

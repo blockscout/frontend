@@ -25,7 +25,7 @@ type Props = {
   type: 'from' | 'to';
   isLoading?: boolean;
   onClose?: () => void;
-}
+};
 
 type InputProps = {
   address?: string;
@@ -35,7 +35,7 @@ type InputProps = {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onClear: () => void;
   onAddFieldClick: () => void;
-}
+};
 
 const AddressFilterInput = ({ address, mode, onModeChange, onChange, onClear, isLast, onAddFieldClick }: InputProps) => {
   return (

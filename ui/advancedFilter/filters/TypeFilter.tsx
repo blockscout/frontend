@@ -18,7 +18,7 @@ type Props = {
   value?: Array<AdvancedFilterType>;
   handleFilterChange: (filed: keyof AdvancedFilterParams, value: Array<AdvancedFilterType>) => void;
   onClose?: () => void;
-}
+};
 
 const TypeFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterType>>([ ...value ]);

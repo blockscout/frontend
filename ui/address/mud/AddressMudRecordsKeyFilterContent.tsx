@@ -9,7 +9,7 @@ type Props = {
   title: string;
   columnName: string;
   onClose?: () => void;
-}
+};
 
 const AddressMudRecordsKeyFilter = ({ value = '', handleFilterChange, columnName, title, onClose }: Props) => {
   const [ filterValue, setFilterValue ] = React.useState<string>(value);

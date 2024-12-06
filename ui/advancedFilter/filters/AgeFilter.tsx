@@ -16,7 +16,7 @@ const FILTER_PARAM_TO = 'age_to';
 const FILTER_PARAM_AGE = 'age';
 
 const defaultValue = { age: '', from: '', to: '' } as const;
-type AgeFromToValue = { age: AdvancedFilterAge | ''; from: string; to: string }
+type AgeFromToValue = { age: AdvancedFilterAge | ''; from: string; to: string };
 
 type Props = {
   value?: AgeFromToValue;
@@ -24,7 +24,7 @@ type Props = {
   columnName: string;
   isLoading?: boolean;
   onClose?: () => void;
-}
+};
 
 const AgeFilter = ({ value = defaultValue, handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<AgeFromToValue>(value);

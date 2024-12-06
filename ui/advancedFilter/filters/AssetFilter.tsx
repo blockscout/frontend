@@ -30,7 +30,7 @@ type Props = {
   columnName: string;
   isLoading?: boolean;
   onClose?: () => void;
-}
+};
 
 const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Value>([ ...value ]);
