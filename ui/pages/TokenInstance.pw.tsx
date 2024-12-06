@@ -62,12 +62,6 @@ test('metadata update', async({ render, page, createSocket, mockApiResponse, moc
   // open the menu, click the button and submit form
   await page.getByLabel('Address menu').click();
   await page.getByRole('menuitem', { name: 'Refresh metadata' }).click();
-  await page.evaluate(() => {
-    const form = document.querySelector('form');
-    form && (form.style.display = 'block');
-  });
-  await page.getByPlaceholder('reCaptcha token').fill('xxx');
-  await page.getByRole('button', { name: 'Submit' }).click();
 
   // join socket channel
   const channel = await socketServer.joinChannel(socket, `token_instances:${ hash.toLowerCase() }`);
@@ -116,12 +110,6 @@ test('metadata update failed', async({ render, page }) => {
   // open the menu, click the button and submit form
   await page.getByLabel('Address menu').click();
   await page.getByRole('menuitem', { name: 'Refresh metadata' }).click();
-  await page.evaluate(() => {
-    const form = document.querySelector('form');
-    form && (form.style.display = 'block');
-  });
-  await page.getByPlaceholder('reCaptcha token').fill('xxx');
-  await page.getByRole('button', { name: 'Submit' }).click();
 
   // check that button is not disabled
   await page.getByLabel('Address menu').click();

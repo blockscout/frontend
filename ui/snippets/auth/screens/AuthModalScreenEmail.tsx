@@ -1,6 +1,5 @@
 import { chakra, Button, Text } from '@chakra-ui/react';
 import React from 'react';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -12,6 +11,8 @@ import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
 import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 interface Props {
   onSubmit: (screen: Screen) => void;
@@ -27,7 +28,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
 
   const apiFetch = useApiFetch();
   const toast = useToast();
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const recaptcha = useReCaptcha();
 
   const formApi = useForm<EmailFormFields>({
     mode: 'onBlur',
@@ -38,13 +39,14 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
 
   const onFormSubmit: SubmitHandler<EmailFormFields> = React.useCallback(async(formData) => {
     try {
-      const token = await executeRecaptcha?.();
+      const token = await recaptcha.executeAsync();
+
       await apiFetch('auth_send_otp', {
         fetchParams: {
           method: 'POST',
           body: {
             email: formData.email,
-            recaptcha_v3_response: token,
+            recaptcha_response: token,
           },
         },
       });
@@ -68,7 +70,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         description: getErrorObjPayload<{ message: string }>(error)?.message || getErrorMessage(error) || 'Something went wrong',
       });
     }
-  }, [ executeRecaptcha, apiFetch, isAuth, onSubmit, mixpanelConfig?.account_link_info.source, toast ]);
+  }, [ recaptcha, apiFetch, isAuth, onSubmit, mixpanelConfig?.account_link_info.source, toast ]);
 
   return (
     <FormProvider { ...formApi }>
@@ -93,6 +95,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         >
           Send a code
         </Button>
+        <ReCaptcha ref={ recaptcha.ref }/>
       </chakra.form>
     </FormProvider>
   );

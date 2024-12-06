@@ -6,11 +6,11 @@ import { getEnvValue } from '../utils';
 const title = 'My account';
 
 const config: Feature<{ isEnabled: true; recaptchaSiteKey: string }> = (() => {
-  if (getEnvValue('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED') === 'true' && services.reCaptchaV3.siteKey) {
+  if (getEnvValue('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED') === 'true' && services.reCaptchaV2.siteKey) {
     return Object.freeze({
       title,
       isEnabled: true,
-      recaptchaSiteKey: services.reCaptchaV3.siteKey,
+      recaptchaSiteKey: services.reCaptchaV2.siteKey,
     });
   }
 

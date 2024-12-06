@@ -143,7 +143,7 @@ function printDeprecationWarning(envsMap: Record<string, string>) {
   if (envsMap.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY && envsMap.NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY) {
     console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗');
     // eslint-disable-next-line max-len
-    console.warn('The NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY variables are now deprecated and will be removed in the next release. Please migrate to the NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY variable.');
+    console.warn('The NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY variable is now deprecated and will be removed in the next release. Please migrate to the NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY variable.');
     console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗\n');
   }
 
@@ -182,9 +182,9 @@ function printDeprecationWarning(envsMap: Record<string, string>) {
 function checkDeprecatedEnvs(envsMap: Record<string, string>) {
   !silent && console.log(`🌀 Checking deprecated environment variables...`);
 
-  if (envsMap.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY && !envsMap.NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY) {
+  if (!envsMap.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY && envsMap.NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY) {
     // eslint-disable-next-line max-len
-    console.log('🚨 The NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY variable is no longer supported. Please pass NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY or remove it completely.');
+    console.log('🚨 The NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY variable is no longer supported. Please pass NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY or remove it completely.');
     throw new Error();
   }
 
