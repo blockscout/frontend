@@ -1,4 +1,4 @@
-import { Flex, GridItem, Select, Skeleton, Button } from '@chakra-ui/react';
+import { Flex, GridItem, Skeleton, Button } from '@chakra-ui/react';
 import React from 'react';
 
 import * as blobUtils from 'lib/blob';
@@ -10,12 +10,18 @@ import hexToBytes from 'lib/hexToBytes';
 import hexToUtf8 from 'lib/hexToUtf8';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
+import Select from 'ui/shared/select/Select';
 
 import BlobDataImage from './BlobDataImage';
 
-const FORMATS = [ 'Image', 'Raw', 'UTF-8', 'Base64' ] as const;
+const FORMATS = [
+  { label: 'Image', value: 'Image' as const },
+  { label: 'Raw', value: 'Raw' as const },
+  { label: 'UTF-8', value: 'UTF-8' as const },
+  { label: 'Base64', value: 'Base64' as const },
+];
 
-type Format = typeof FORMATS[number];
+type Format = typeof FORMATS[number]['value'];
 
 interface Props {
   data: string;
@@ -34,17 +40,13 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
   }, [ data, isLoading ]);
 
   const isImage = guessedType?.mime?.startsWith('image/');
-  const formats = isImage ? FORMATS : FORMATS.filter((format) => format !== 'Image');
+  const formats = isImage ? FORMATS : FORMATS.filter((format) => format.value !== 'Image');
 
   React.useEffect(() => {
     if (isImage) {
       setFormat('Image');
     }
   }, [ isImage ]);
-
-  const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormat(event.target.value as Format);
-  }, []);
 
   const handleDownloadButtonClick = React.useCallback(() => {
     const fileBlob = (() => {
@@ -104,16 +106,13 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
         </Skeleton>
         <Skeleton ml={ 5 } isLoaded={ !isLoading }>
           <Select
-            size="xs"
-            borderRadius="base"
-            value={ format }
-            onChange={ handleSelectChange }
-            w="auto"
-          >
-            { formats.map((format) => (
-              <option key={ format } value={ format }>{ format }</option>
-            )) }
-          </Select>
+            options={ formats }
+            name="format"
+            defaultValue={ format }
+            onChange={ setFormat }
+            isLoading={ isLoading }
+            w="95px"
+          />
         </Skeleton>
         <Skeleton ml="auto" mr={ 3 } isLoaded={ !isLoading }>
           <Button
