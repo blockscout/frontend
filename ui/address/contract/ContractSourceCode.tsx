@@ -78,7 +78,9 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
     </Tooltip>
   ) : null;
 
-  const ides = <ContractCodeIdes hash={ sourceAddress } isLoading={ isLoading }/>;
+  const ides = data?.language && [ 'solidity', 'vyper', 'yul' ].includes(data.language) ?
+    <ContractCodeIdes hash={ sourceAddress } isLoading={ isLoading }/> :
+    null;
 
   const copyToClipboard = data && editorData?.length === 1 ? (
     <CopyToClipboard
