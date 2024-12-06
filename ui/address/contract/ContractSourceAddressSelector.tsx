@@ -64,6 +64,7 @@ const ContractSourceAddressSelector = ({ className, selectedItem, onItemSelect, 
         onChange={ handleItemSelect }
         isLoading={ isLoading }
         maxW={{ base: '180px', lg: 'none' }}
+        fontWeight={ 600 }
       />
       <Flex columnGap={ 2 } alignItems="center">
         <CopyToClipboard text={ selectedItem.address } ml={ 0 }/>

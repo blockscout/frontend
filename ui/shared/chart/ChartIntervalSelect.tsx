@@ -40,6 +40,7 @@ const ChartIntervalSelect = ({ interval, onIntervalChange, isLoading, selectTagS
         w={{ base: '100%', lg: '136px' }}
         display={{ base: 'flex', lg: 'none' }}
         flexShrink={ 0 }
+        fontWeight={ 600 }
       />
     </>
   );

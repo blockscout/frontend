@@ -58,6 +58,7 @@ const StatsFilters = ({
           onChange={ onSectionChange }
           isLoading={ isLoading }
           w={{ base: '100%', lg: '136px' }}
+          fontWeight={ 600 }
         />
       </GridItem>
 

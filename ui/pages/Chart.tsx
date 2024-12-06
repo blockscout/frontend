@@ -202,6 +202,7 @@ const Chart = () => {
                 onChange={ onResolutionChange }
                 isLoading={ isInfoLoading }
                 w={{ base: 'fit-content', lg: '160px' }}
+                fontWeight={ 600 }
               />
             </Flex>
           ) }
