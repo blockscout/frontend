@@ -8,16 +8,22 @@ import Popover from 'ui/shared/chakra/Popover';
 import SelectButton from './SelectButton';
 import SelectContent from './SelectContent';
 
-interface Props<Value extends string> {
+interface InjectedProps {
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+export interface Props<Value extends string> {
   className?: string;
   isLoading?: boolean;
   options: Array<SelectOption<Value>>;
   name: string;
   defaultValue?: Value;
   onChange: (value: Value) => void;
+  children?: (props: InjectedProps) => React.ReactNode;
 }
 
-const Select = <Value extends string>({ className, isLoading, options, name, defaultValue, onChange }: Props<Value>) => {
+const Select = <Value extends string>({ className, isLoading, options, name, defaultValue, onChange, children }: Props<Value>) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const handleChange = React.useCallback((value: Value) => {
@@ -40,13 +46,15 @@ const Select = <Value extends string>({ className, isLoading, options, name, def
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
-        <SelectButton
-          className={ className }
-          onClick={ onToggle }
-          isOpen={ isOpen }
-          isLoading={ isLoading }
-          label={ options.find((option) => option.value === value)?.label || String(value) }
-        />
+        { children?.({ isOpen, onToggle }) || (
+          <SelectButton
+            className={ className }
+            onClick={ onToggle }
+            isOpen={ isOpen }
+            isLoading={ isLoading }
+            label={ options.find((option) => option.value === value)?.label || String(value) }
+          />
+        ) }
       </PopoverTrigger>
       <SelectContent options={ options } getRootProps={ getRootProps } getRadioProps={ getRadioProps } value={ value }/>
     </Popover>
