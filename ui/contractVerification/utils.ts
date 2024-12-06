@@ -400,8 +400,8 @@ export function getGitHubOwnerAndRepo(repositoryUrl: string) {
     if (urlObj.hostname !== 'github.com') {
       throw new Error();
     }
-    const [ owner, repo ] = stripLeadingSlash(urlObj.pathname).split('/');
-    return { owner, repo };
+    const [ owner, repo, ...rest ] = stripLeadingSlash(urlObj.pathname).split('/');
+    return { owner, repo, rest, url: urlObj };
   } catch (error) {
     return;
   }

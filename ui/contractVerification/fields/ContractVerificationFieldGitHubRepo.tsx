@@ -38,7 +38,7 @@ const ContractVerificationFieldGitHubRepo = ({ onCommitHashChange }: Props) => {
 
     const gitHubData = getGitHubOwnerAndRepo(repositoryUrl);
 
-    if (gitHubData) {
+    if (gitHubData && gitHubData.rest.length === 0 && !gitHubData.url.search && !gitHubData.url.hash) {
       try {
         const response = await fetch(`https://api.github.com/repos/${ gitHubData.owner }/${ gitHubData.repo }/commits?per_page=1`);
         repoErrorRef.current = undefined;
