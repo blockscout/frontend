@@ -42,12 +42,12 @@ export type AdvancedFilterResponseItem = {
   } | null;
   type: string;
   value: string | null;
-}
+};
 
 export type AdvancedFiltersSearchParams = {
   methods: Record<string, string>;
   tokens: Record<string, TokenInfo>;
-}
+};
 
 export type AdvancedFilterResponse = {
   items: Array<AdvancedFilterResponseItem>;
@@ -59,11 +59,11 @@ export type AdvancedFilterResponse = {
     transaction_index: number;
     items_count: number;
   };
-}
+};
 
 export type AdvancedFilterMethodsResponse = Array<AdvancedFilterMethodInfo>;
 
 export type AdvancedFilterMethodInfo = {
   method_id: string;
   name?: string;
-}
+};

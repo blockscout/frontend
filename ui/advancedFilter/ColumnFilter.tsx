@@ -20,7 +20,7 @@ type Props = {
   isLoading?: boolean;
   className?: string;
   children: React.ReactNode;
-}
+};
 
 type ContentProps = {
   title: string;
@@ -29,7 +29,7 @@ type ContentProps = {
   onReset?: () => void;
   onClose?: () => void;
   children: React.ReactNode;
-}
+};
 
 const ColumnFilterContent = ({ title, isFilled, onFilter, onReset, onClose, children }: ContentProps) => {
   const onFilterClick = React.useCallback(() => {
@@ -48,7 +48,7 @@ const ColumnFilterContent = ({ title, isFilled, onFilter, onReset, onClose, chil
             color: isFilled ? 'link_hovered' : 'none',
           }}
         >
-            Reset
+          Reset
         </Link>
       </Flex>
       { children }

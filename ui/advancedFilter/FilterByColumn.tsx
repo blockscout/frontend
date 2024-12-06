@@ -23,7 +23,7 @@ type Props = {
   columnName: string;
   handleFilterChange: (field: keyof AdvancedFilterParams, val: unknown) => void;
   isLoading?: boolean;
-}
+};
 
 const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searchParams, isLoading }: Props) => {
   const commonProps = { columnName, handleFilterChange, isLoading };
