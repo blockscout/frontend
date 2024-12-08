@@ -1,7 +1,8 @@
 import type { NovesResponseData, NovesClassificationData, NovesRawTransactionData } from 'types/api/noves';
+import config from 'configs/app';
 
 const NOVES_TRANSLATE_CLASSIFIED: NovesClassificationData = {
-  description: 'Sent 0.04 ETH',
+  description: `Sent 0.04 ${ config.chain.currency.name }`,
   received: [ {
     action: 'Sent Token',
     actionFormatted: 'Sent Token',
@@ -10,9 +11,9 @@ const NOVES_TRANSLATE_CLASSIFIED: NovesClassificationData = {
     to: { name: '', address: '0xa0393A76b132526a70450273CafeceB45eea6dEE' },
     token: {
       address: '',
-      name: 'ETH',
-      symbol: 'ETH',
-      decimals: 18,
+      name: config.chain.currency.name ?? '',
+      symbol: config.chain.currency.symbol ?? '',
+      decimals: config.chain.currency.decimals,
     },
   } ],
   sent: [],
