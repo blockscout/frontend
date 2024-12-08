@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { currencyUnits } from 'lib/units';
 import type { TimeChartItem } from './types';
 
 import { test, expect } from 'playwright/lib';
@@ -25,7 +26,7 @@ const props: Props = {
   ],
   title: 'Native coin circulating supply',
   description: 'Amount of token circulating supply for the period',
-  units: 'ETH',
+  units: currencyUnits.ether,
   isLoading: false,
   isError: false,
   noAnimation: true,
