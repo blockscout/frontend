@@ -104,13 +104,6 @@ const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
           isLoading={ isLoading }
         />
       ) }
-      { sourceCodeLink && (
-        <ContractDetailsInfoItem
-          label="Source code"
-          content={ sourceCodeLink }
-          isLoading={ isLoading }
-        />
-      ) }
       { typeof data.optimization_enabled === 'boolean' && !isStylusContract && (
         <ContractDetailsInfoItem
           label="Optimization enabled"
@@ -145,6 +138,13 @@ const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
           label="Contract file path"
           content={ data.file_path }
           wordBreak="break-word"
+          isLoading={ isLoading }
+        />
+      ) }
+      { sourceCodeLink && (
+        <ContractDetailsInfoItem
+          label="Source code"
+          content={ sourceCodeLink }
           isLoading={ isLoading }
         />
       ) }
