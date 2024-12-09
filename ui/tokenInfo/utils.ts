@@ -1,3 +1,4 @@
+import { EntityTag } from 'ui/shared/EntityTags/types';
 import type { Fields } from './types';
 import type { TokenInfoApplication } from 'types/api/account';
 
@@ -63,5 +64,41 @@ export function prepareRequestBody(data: Fields): Omit<TokenInfoApplication, 'id
     tokenAddress: data.address,
     twitter: data.twitter,
     comment: data.comment,
+  };
+}
+
+
+
+export function formatAgreementText(text: string): string {
+  switch (text) {
+    case 'ERC-20':
+      return 'DRC-20';
+    case 'ERC-721':
+      return 'DRC-721';
+    case 'ERC-1155':
+      return 'DRC-1155';
+    case 'ERC-404':
+      return 'DRC-404';
+    default:
+      return text;
+  }
+}
+
+
+
+// [
+//   {
+//       "slug": "ERC-20",
+//       "name": "ERC-20",
+//       "tagType": "custom",
+//       "ordinal": -20
+//   }
+// ]
+
+export function formatAgreementTag(tag: EntityTag): EntityTag {
+  return {
+    ...tag,
+    name: formatAgreementText(tag.name),
+    slug: formatAgreementText(tag.slug)
   };
 }

@@ -24,6 +24,7 @@ import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import TokenVerifiedInfo from './TokenVerifiedInfo';
+import { formatAgreementTag, formatAgreementText } from 'ui/tokenInfo/utils';
 
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
@@ -66,7 +67,6 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
   const bridgedTokenTagTextColor = useToken('colors', 'white');
 
   const tags: Array<EntityTag> = React.useMemo(() => {
-    debugger
     return [
       tokenQuery.data ? { slug: tokenQuery.data?.type, name: tokenQuery.data?.type, tagType: 'custom' as const, ordinal: -20 } : undefined,
       config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?
@@ -83,7 +83,8 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
         { slug: verifiedInfoQuery.data.projectSector, name: verifiedInfoQuery.data.projectSector, tagType: 'custom' as const, ordinal: -30 } :
         undefined,
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags || []),
-    ].filter(Boolean).sort(sortEntityTags);
+    ].filter(Boolean).sort(sortEntityTags)
+    .map((tag) => (formatAgreementTag(tag)));
   }, [
     addressMetadataQuery.data?.addresses,
     addressQuery.data,
@@ -93,6 +94,9 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
     verifiedInfoQuery.data?.projectSector,
     hash,
   ]);
+
+  console.log('tags', tags);
+  
 
   const contentAfter = (
     <>
