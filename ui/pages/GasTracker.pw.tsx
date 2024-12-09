@@ -11,7 +11,10 @@ test.beforeEach(async({ mockTextAd }) => {
   await mockTextAd();
 });
 
-test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, page }) => {
+test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_SEO_ENHANCED_DATA_ENABLED', 'true' ],
+  ]);
   await mockApiResponse('stats', { ...statsMock.base, coin_price: '2442.789' });
   await mockApiResponse('stats_lines', statsLinesMock.base);
   const chartApiUrl = await mockApiResponse(
