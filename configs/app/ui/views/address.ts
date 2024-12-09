@@ -67,7 +67,9 @@ const extraVerificationMethods: Array<SmartContractVerificationMethodExtra> = ((
 const languageFilters: Array<VerifiedContractsFilter> = (() => {
   const envValue = parseEnvJson<Array<VerifiedContractsFilter>>(getEnvValue('NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS'));
   if (!envValue) {
-    return SMART_CONTRACT_LANGUAGE_FILTERS.filter((filter) => filter !== 'scilla');
+    // "Scilla" is chain specific language, so we don't want to show it in default scenario
+    const DEFAULT_LANGUAGE_FILTERS = SMART_CONTRACT_LANGUAGE_FILTERS.filter((filter) => filter !== 'scilla');
+    return DEFAULT_LANGUAGE_FILTERS;
   }
 
   return envValue.filter((filter) => SMART_CONTRACT_LANGUAGE_FILTERS.includes(filter));
