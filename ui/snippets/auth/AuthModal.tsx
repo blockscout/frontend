@@ -2,7 +2,6 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOve
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 import type { Screen, ScreenSuccess } from './types';
 
@@ -183,9 +182,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
         </ModalHeader>
         <ModalCloseButton top={ 6 } right={ 6 } color="gray.400"/>
         <ModalBody mb={ 0 }>
-          <GoogleReCaptchaProvider reCaptchaKey={ feature.recaptchaSiteKey }>
-            { content }
-          </GoogleReCaptchaProvider>
+          { content }
         </ModalBody>
       </ModalContent>
     </Modal>

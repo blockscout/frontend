@@ -164,6 +164,22 @@ const Footer = () => {
     m: '0 auto',
   };
 
+  const renderRecaptcha = (gridArea?: GridProps['gridArea']) => {
+    if (!config.services.reCaptchaV2.siteKey) {
+      return <Box gridArea={ gridArea }/>;
+    }
+
+    return (
+      <Box gridArea={ gridArea } fontSize="xs" lineHeight={ 5 } mt={ 6 } color="text">
+        <span>This site is protected by reCAPTCHA and the Google </span>
+        <Link href="https://policies.google.com/privacy" isExternal>Privacy Policy</Link>
+        <span> and </span>
+        <Link href="https://policies.google.com/terms" isExternal>Terms of Service</Link>
+        <span> apply.</span>
+      </Box>
+    );
+  };
+
   if (config.UI.footer.links) {
     return (
       <Box { ...containerProps }>
@@ -171,6 +187,7 @@ const Footer = () => {
           <div>
             { renderNetworkInfo() }
             { renderProjectInfo() }
+            { renderRecaptcha() }
           </div>
 
           <Grid
@@ -212,12 +229,14 @@ const Footer = () => {
           lg: `
           "network links-top"
           "info links-bottom"
+          "recaptcha links-bottom"
         `,
         }}
       >
 
         { renderNetworkInfo({ lg: 'network' }) }
         { renderProjectInfo({ lg: 'info' }) }
+        { renderRecaptcha({ lg: 'recaptcha' }) }
 
         <Grid
           gridArea={{ lg: 'links-bottom' }}
