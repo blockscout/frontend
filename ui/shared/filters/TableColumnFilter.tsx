@@ -7,11 +7,10 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import TableColumnFilterWrapper from './TableColumnFilterWrapper';
-
-type ContentProps = {
+type Props = {
   title: string;
   isFilled?: boolean;
+  isTouched?: boolean;
   hasReset?: boolean;
   onFilter: () => void;
   onReset?: () => void;
@@ -19,14 +18,7 @@ type ContentProps = {
   children: React.ReactNode;
 };
 
-type Props = ContentProps & {
-  columnName: string;
-  isActive?: boolean;
-  isLoading?: boolean;
-  className?: string;
-};
-
-const TableColumnFilterContent = ({ title, isFilled, hasReset, onFilter, onReset, onClose, children }: ContentProps) => {
+const TableColumnFilter = ({ title, isFilled, isTouched, hasReset, onFilter, onReset, onClose, children }: Props) => {
   const onFilterClick = React.useCallback(() => {
     onClose && onClose();
     onFilter();
@@ -50,26 +42,13 @@ const TableColumnFilterContent = ({ title, isFilled, hasReset, onFilter, onReset
       </Flex>
       { children }
       <Button
-        isDisabled={ !isFilled }
+        isDisabled={ !isTouched }
         onClick={ onFilterClick }
         w="fit-content"
       >
         Filter
       </Button>
     </>
-  );
-};
-
-const TableColumnFilter = ({ columnName, isActive, className, isLoading, ...props }: Props) => {
-  return (
-    <TableColumnFilterWrapper
-      isActive={ isActive }
-      columnName={ columnName }
-      className={ className }
-      isLoading={ isLoading }
-    >
-      <TableColumnFilterContent { ...props }/>
-    </TableColumnFilterWrapper>
   );
 };
 
