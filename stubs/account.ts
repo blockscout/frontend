@@ -40,15 +40,15 @@ export const WATCH_LIST_ITEM_WITH_TOKEN_INFO: WatchlistAddress = {
     email: false,
   },
   notification_settings: {
-    'ERC-20': {
+    'DRC-20': {
       incoming: true,
       outcoming: true,
     },
-    'ERC-721': {
+    'DRC-721': {
       incoming: true,
       outcoming: true,
     },
-    'ERC-404': {
+    'DRC-404': {
       incoming: true,
       outcoming: true,
     },

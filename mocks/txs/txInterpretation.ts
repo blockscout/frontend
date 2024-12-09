@@ -11,7 +11,7 @@ export const txInterpretation: TxInterpretationResponse = {
           type: 'token',
           value: {
             name: 'Duck',
-            type: 'ERC-20',
+            type: 'DRC-20',
             symbol: 'DUCK',
             address: '0x486a3c5f34cDc4EF133f248f1C81168D78da52e8',
             holders: '1152',

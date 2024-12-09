@@ -52,7 +52,7 @@ const Icon = (props: IconProps) => {
   return (
     <Image
       { ...styles }
-      borderRadius={ props.token.type === 'ERC-20' ? 'full' : 'base' }
+      borderRadius={ props.token.type === 'DRC-20' ? 'full' : 'base' }
       className={ props.className }
       src={ props.token.icon_url ?? undefined }
       alt={ `${ props.token.name || 'token' } logo` }

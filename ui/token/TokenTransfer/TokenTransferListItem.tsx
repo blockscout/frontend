@@ -61,7 +61,7 @@ const TokenTransferListItem = ({
         w="100%"
         fontWeight="500"
       />
-      { valueStr && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
+      { valueStr && (token.type === 'DRC-20' || token.type === 'DRC-1155') && (
         <Grid gap={ 2 } templateColumns={ `1fr auto auto${ usd ? ' auto' : '' }` }>
           <Skeleton isLoaded={ !isLoading } flexShrink={ 0 } fontWeight={ 500 }>
             Value

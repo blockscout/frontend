@@ -15,7 +15,7 @@ const DefaultView = () => {
   const tokenData: TokenInfo = {
     address: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
     circulating_market_cap: '117629601.61913824',
-    type: 'ERC-20',
+    type: 'DRC-20',
     symbol: 'SHAAAAAAAAAAAAA',
     name: null,
     decimals: '18',

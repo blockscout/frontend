@@ -85,21 +85,21 @@ export const ADDRESS_TOKEN_BALANCE_ERC_20: AddressTokenBalance = {
 };
 
 export const ADDRESS_NFT_721: AddressNFT = {
-  token_type: 'ERC-721',
+  token_type: 'DRC-721',
   token: TOKEN_INFO_ERC_721,
   value: '1',
   ...TOKEN_INSTANCE,
 };
 
 export const ADDRESS_NFT_1155: AddressNFT = {
-  token_type: 'ERC-1155',
+  token_type: 'DRC-1155',
   token: TOKEN_INFO_ERC_1155,
   value: '10',
   ...TOKEN_INSTANCE,
 };
 
 export const ADDRESS_NFT_404: AddressNFT = {
-  token_type: 'ERC-404',
+  token_type: 'DRC-404',
   token: TOKEN_INFO_ERC_404,
   value: '10',
   ...TOKEN_INSTANCE,

@@ -19,7 +19,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
     icon_url: '',
     symbol: '',
     address: '',
-    type: 'ERC-20' as const,
+    type: 'DRC-20' as const,
   }), [ ]);
 
   const { usdBn: usdNative } = getCurrencyValue({ value: item.address_balance, accuracy: 2, accuracyUsd: 2, exchangeRate: item.exchange_rate });

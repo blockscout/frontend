@@ -175,7 +175,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         </DetailsInfoItem>
       ) }
 
-      { type !== 'ERC-20' && (
+      { type !== 'DRC-20' && (
         <TokenNftMarketplaces
           hash={ hash }
           isLoading={ tokenQuery.isPlaceholderData }
@@ -185,7 +185,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         />
       ) }
 
-      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && appActionData && isActionButtonExperiment) && (
+      { (type !== 'DRC-20' && config.UI.views.nft.marketplaces.length === 0 && appActionData && isActionButtonExperiment) && (
         <DetailsInfoItem
           title="Dapp"
           hint="Link to the dapp"

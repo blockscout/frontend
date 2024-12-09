@@ -5,7 +5,7 @@ import type { UserOp } from 'types/api/userOps';
 
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
-// order is taken from the ERC-4337 standard
+// order is taken from the DRC-4337 standard
 // eslint-disable-next-line max-len
 const KEYS_ORDER: Array<keyof UserOp['raw']> = [ 'sender', 'nonce', 'init_code', 'call_data', 'account_gas_limits', 'call_gas_limit', 'verification_gas_limit', 'pre_verification_gas', 'gas_fees', 'max_fee_per_gas', 'max_priority_fee_per_gas', 'paymaster_and_data', 'signature' ];
 

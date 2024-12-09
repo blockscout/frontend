@@ -63,7 +63,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
   const erc20Query = useQueryWithPages({
     resourceName: 'address_tokens',
     pathParams: { hash },
-    filters: { type: 'ERC-20' },
+    filters: { type: 'DRC-20' },
     scrollRef,
     options: {
       enabled: !tab || tab === 'tokens_erc20',
@@ -118,7 +118,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
   const hasActiveFilters = Boolean(tokenTypes?.length);
 
   const tabs = [
-    { id: 'tokens_erc20', title: 'ERC-20', component: <ERC20Tokens tokensQuery={ erc20Query }/> },
+    { id: 'tokens_erc20', title: 'DRC-20', component: <ERC20Tokens tokensQuery={ erc20Query }/> },
     {
       id: 'tokens_nfts',
       title: 'NFTs',

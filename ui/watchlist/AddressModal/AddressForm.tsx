@@ -22,7 +22,7 @@ import TagInput from 'ui/shared/TagInput';
 import AddressFormNotifications from './AddressFormNotifications';
 
 // does it depend on the network?
-const NOTIFICATIONS = [ 'native', 'ERC-20', 'ERC-721', 'ERC-404' ] as const;
+const NOTIFICATIONS = [ 'native', 'DRC-20', 'DRC-721', 'DRC-404' ] as const;
 
 const TAG_MAX_LENGTH = 35;
 
@@ -42,15 +42,15 @@ type Inputs = {
       outcoming: boolean;
       incoming: boolean;
     };
-    'ERC-721': {
+    'DRC-721': {
       outcoming: boolean;
       incoming: boolean;
     };
-    'ERC-20': {
+    'DRC-20': {
       outcoming: boolean;
       incoming: boolean;
     };
-    'ERC-404': {
+    'DRC-404': {
       outcoming: boolean;
       incoming: boolean;
     };
@@ -60,12 +60,12 @@ type Inputs = {
 type Checkboxes = 'notification' |
 'notification_settings.native.outcoming' |
 'notification_settings.native.incoming' |
-'notification_settings.ERC-20.outcoming' |
-'notification_settings.ERC-20.incoming' |
-'notification_settings.ERC-721.outcoming' |
-'notification_settings.ERC-721.incoming' |
-'notification_settings.ERC-404.outcoming' |
-'notification_settings.ERC-404.incoming';
+'notification_settings.DRC-20.outcoming' |
+'notification_settings.DRC-20.incoming' |
+'notification_settings.DRC-721.outcoming' |
+'notification_settings.DRC-721.incoming' |
+'notification_settings.DRC-404.outcoming' |
+'notification_settings.DRC-404.incoming';
 
 const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd }) => {
   const [ pending, setPending ] = useState(false);

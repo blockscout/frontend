@@ -17,8 +17,8 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
 
   const tokenIdContent = (() => {
     if (tokenId === null) {
-      // ERC-404 may not have an ID
-      if (token.type === 'ERC-404') {
+      // DRC-404 may not have an ID
+      if (token.type === 'DRC-404') {
         return null;
       }
       return <chakra.span color="text_secondary"> N/A </chakra.span>;

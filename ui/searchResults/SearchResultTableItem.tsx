@@ -83,8 +83,8 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
             <Td fontSize="sm" verticalAlign="middle" isNumeric>
               <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden">
                 <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
-                  { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
-                  { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+                  { data.token_type === 'DRC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+                  { data.token_type !== 'DRC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
                 </Text>
               </Skeleton>
             </Td>

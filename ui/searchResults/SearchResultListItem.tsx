@@ -275,7 +275,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
     switch (data.type) {
       case 'token': {
         const templateCols = `1fr
-        ${ (data.token_type === 'ERC-20' && data.exchange_rate) || (data.token_type !== 'ERC-20' && data.total_supply) ? ' auto' : '' }`;
+        ${ (data.token_type === 'DRC-20' && data.exchange_rate) || (data.token_type !== 'DRC-20' && data.total_supply) ? ' auto' : '' }`;
 
         return (
           <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
@@ -286,8 +286,8 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
             </Skeleton>
             <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
-              { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
-              { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+              { data.token_type === 'DRC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+              { data.token_type !== 'DRC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
             </Skeleton>
           </Grid>
         );

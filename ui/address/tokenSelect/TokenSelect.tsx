@@ -32,7 +32,7 @@ const TokenSelect = ({ onClick }: Props) => {
   const addressQueryData = queryClient.getQueryData<Address>(addressResourceKey);
 
   const { data, isError, isPending } = useFetchTokens({ hash: addressQueryData?.hash });
-  const tokensResourceKey = getResourceKey('address_tokens', { pathParams: { hash: addressQueryData?.hash }, queryParams: { type: 'ERC-20' } });
+  const tokensResourceKey = getResourceKey('address_tokens', { pathParams: { hash: addressQueryData?.hash }, queryParams: { type: 'DRC-20' } });
   const tokensIsFetching = useIsFetching({ queryKey: tokensResourceKey });
 
   const handleIconButtonClick = React.useCallback(() => {

@@ -179,11 +179,11 @@ test.describe('socket', () => {
   test('without overload, with filters', async({ mount, page, createSocket }) => {
     const hooksConfigWithFilter = {
       router: {
-        query: { hash: CURRENT_ADDRESS, type: 'ERC-1155' },
+        query: { hash: CURRENT_ADDRESS, type: 'DRC-1155' },
       },
     };
 
-    const API_URL_WITH_FILTER = buildApiUrl('address_token_transfers', { hash: CURRENT_ADDRESS }) + '?type=ERC-1155';
+    const API_URL_WITH_FILTER = buildApiUrl('address_token_transfers', { hash: CURRENT_ADDRESS }) + '?type=DRC-1155';
 
     await page.route(API_URL_WITH_FILTER, (route) => route.fulfill({
       status: 200,
@@ -215,11 +215,11 @@ test.describe('socket', () => {
   test('with overload, with filters', async({ mount, page, createSocket }) => {
     const hooksConfigWithFilter = {
       router: {
-        query: { hash: CURRENT_ADDRESS, type: 'ERC-1155' },
+        query: { hash: CURRENT_ADDRESS, type: 'DRC-1155' },
       },
     };
 
-    const API_URL_WITH_FILTER = buildApiUrl('address_token_transfers', { hash: CURRENT_ADDRESS }) + '?type=ERC-1155';
+    const API_URL_WITH_FILTER = buildApiUrl('address_token_transfers', { hash: CURRENT_ADDRESS }) + '?type=DRC-1155';
 
     await page.route(API_URL_WITH_FILTER, (route) => route.fulfill({
       status: 200,

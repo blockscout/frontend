@@ -45,7 +45,7 @@ const nativeTokenData = {
   icon_url: '',
   symbol: '',
   address: '',
-  type: 'ERC-20' as const,
+  type: 'DRC-20' as const,
 };
 
 const coinPriceIndicator: TChainIndicator<'stats_charts_market'> = {

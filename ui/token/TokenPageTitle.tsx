@@ -66,6 +66,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
   const bridgedTokenTagTextColor = useToken('colors', 'white');
 
   const tags: Array<EntityTag> = React.useMemo(() => {
+    debugger
     return [
       tokenQuery.data ? { slug: tokenQuery.data?.type, name: tokenQuery.data?.type, tagType: 'custom' as const, ordinal: -20 } : undefined,
       config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?

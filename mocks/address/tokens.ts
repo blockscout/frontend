@@ -155,19 +155,19 @@ export const nfts: AddressNFTsResponse = {
     {
       ...tokenInstance.base,
       token: tokens.tokenInfoERC1155a,
-      token_type: 'ERC-1155',
+      token_type: 'DRC-1155',
       value: '11',
     },
     {
       ...tokenInstance.unique,
       token: tokens.tokenInfoERC721a,
-      token_type: 'ERC-721',
+      token_type: 'DRC-721',
       value: '1',
     },
     {
       ...tokenInstance.unique,
       token: tokens.tokenInfoERC404,
-      token_type: 'ERC-404',
+      token_type: 'DRC-404',
       value: '11000',
     },
   ],
@@ -176,7 +176,7 @@ export const nfts: AddressNFTsResponse = {
 
 const nftInstance = {
   ...tokenInstance.base,
-  token_type: 'ERC-1155',
+  token_type: 'DRC-1155',
   value: '11',
 };
 
@@ -200,6 +200,6 @@ export const collections: AddressCollectionsResponse = {
   ],
   next_page_params: {
     token_contract_address_hash: '123',
-    token_type: 'ERC-1155',
+    token_type: 'DRC-1155',
   },
 };

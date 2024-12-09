@@ -14,7 +14,7 @@ export const SEARCH_RESULT_ITEM: SearchResultItem = {
   is_smart_contract_verified: false,
   exchange_rate: '1.11',
   total_supply: null,
-  token_type: 'ERC-20',
+  token_type: 'DRC-20',
 };
 
 export const SEARCH_RESULT_NEXT_PAGE_PARAMS: SearchResult['next_page_params'] = {
