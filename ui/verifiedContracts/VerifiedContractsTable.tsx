@@ -45,7 +45,7 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
               Txs
             </Link>
           </Th>
-          <Th width="50%">Compiler / version</Th>
+          <Th width="50%">Language / Compiler version</Th>
           <Th width="80px">Settings</Th>
           <Th width="150px">Verified</Th>
           <Th width="130px">License</Th>
