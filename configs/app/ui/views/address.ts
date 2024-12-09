@@ -1,5 +1,6 @@
+import type { VerifiedContractsFilter } from 'types/api/contracts';
 import type { SmartContractVerificationMethodExtra } from 'types/client/contract';
-import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS } from 'types/client/contract';
+import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, SMART_CONTRACT_LANGUAGE_FILTERS } from 'types/client/contract';
 import type { AddressFormat, AddressViewId, IdenticonType } from 'types/views/address';
 import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'types/views/address';
 
@@ -58,9 +59,20 @@ const extraVerificationMethods: Array<SmartContractVerificationMethodExtra> = ((
     return SMART_CONTRACT_EXTRA_VERIFICATION_METHODS;
   }
 
-  const parsedMethods = parseEnvJson<Array<SmartContractVerificationMethodExtra>>(getEnvValue('NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS')) || [];
+  const parsedMethods = parseEnvJson<Array<SmartContractVerificationMethodExtra>>(envValue) || [];
 
-  return SMART_CONTRACT_EXTRA_VERIFICATION_METHODS.filter((method) => parsedMethods.includes(method));
+  return parsedMethods.filter((method) => SMART_CONTRACT_EXTRA_VERIFICATION_METHODS.includes(method));
+})();
+
+const languageFilters: Array<VerifiedContractsFilter> = (() => {
+  const envValue = parseEnvJson<Array<VerifiedContractsFilter>>(getEnvValue('NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS'));
+  if (!envValue) {
+    // "Scilla" is chain specific language, so we don't want to show it in default scenario
+    const DEFAULT_LANGUAGE_FILTERS = SMART_CONTRACT_LANGUAGE_FILTERS.filter((filter) => filter !== 'scilla');
+    return DEFAULT_LANGUAGE_FILTERS;
+  }
+
+  return envValue.filter((filter) => SMART_CONTRACT_LANGUAGE_FILTERS.includes(filter));
 })();
 
 const config = Object.freeze({
@@ -72,6 +84,7 @@ const config = Object.freeze({
   hiddenViews,
   solidityscanEnabled: getEnvValue('NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED') === 'true',
   extraVerificationMethods,
+  languageFilters,
 });
 
 export default config;
