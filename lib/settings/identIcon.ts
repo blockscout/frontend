@@ -21,4 +21,9 @@ export const IDENTICONS: Array<{ label: string; id: IdenticonType; sampleBg: str
     id: 'gradient_avatar',
     sampleBg: 'url("/static/identicon_logos/gradient_avatar.png") center / contain no-repeat',
   },
+  {
+    label: 'Nouns',
+    id: 'nouns',
+    sampleBg: 'url("/static/identicon_logos/nouns.svg") center / contain no-repeat',
+  },
 ];
