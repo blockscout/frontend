@@ -70,7 +70,7 @@ export interface GroupTalbeListType {
   'Group Name': string;
   'Group ID': string;
   'Last Updated': string;
-  'Active Group Member Count': string;
+  // 'Active Group Member Count': string;
   Owner: string;
 }
 

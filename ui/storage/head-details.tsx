@@ -100,10 +100,16 @@ const Page = (props: HeadProps) => {
                 </Td>
                 <Td border="none" fontWeight="500" fontSize="12px" color="#000000" p="12px 0" textAlign="right">
                   {
-                    key === 'Bucket Status' || key === 'Deleted' || key === 'Object Status' || key === 'Source Type' ? (
+                    key === 'Deleted' ? (
                       <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
                         <Box bg="#30D3BF" display="inline-block" padding="4px 12px" color="#FFFFFF" borderRadius="23px">
                           { value || '-' }
+                        </Box>
+                      </Skeleton>
+                    ) : key === 'Object Status' || key === 'Bucket Status' || key === 'Source Type' ? (
+                      <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                        <Box textTransform="capitalize" bg="#30D3BF" display="inline-block" padding="4px 12px" color="#FFFFFF" borderRadius="23px">
+                          { value ? value.split('_').splice(-1).toString().toLowerCase() : '-' }
                         </Box>
                       </Skeleton>
                     ) :
@@ -308,8 +314,9 @@ const Page = (props: HeadProps) => {
                                     textAlign="right"
                                     justifyItems="right"
                                     display="flex"
+                                    textTransform={ key === 'Visibility' ? 'capitalize' : 'none' }
                                   >
-                                    { values.value || '-' }
+                                    { values.value ? key === 'Visibility' ? values.value.split('_').splice(-1).toString().toLowerCase() : values.value : '-' }
                                   </Box>
                                 </Skeleton>
                               ) }

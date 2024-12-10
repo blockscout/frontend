@@ -134,7 +134,6 @@ const Page: NextPage = () => {
       'Group Name': v.group_name,
       'Group ID': v.group_id,
       'Last Updated': v.update_at,
-      'Active Group Member Count': '0',
       Owner: v.owner_address,
     });
   });
@@ -146,7 +145,7 @@ const Page: NextPage = () => {
       setToNext(true);
     }
   }, [ tableLength ]);
-  const tabThead = [ 'Group Name', 'Group ID', 'Last Updated', 'Active Group Member Count', 'Owner' ];
+  const tabThead = [ 'Group Name', 'Group ID', 'Last Updated', 'Owner' ];
 
   const debouncedHandleSearchChange = React.useMemo(
     () => debounce((event: React.ChangeEvent<HTMLInputElement> | null) => {
