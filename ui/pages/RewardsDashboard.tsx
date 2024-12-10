@@ -93,17 +93,19 @@ const RewardsDashboard = () => {
           </RewardsDashboardCard>
           <RewardsDashboardCard
             title="Streak"
-            description={ `Current number of consecutive days you${ apos }ve claimed your daily Merits.` }
-            direction="column-reverse"
-            contentAfter={ (
-              <LinkExternal
-                href={ `https://x.com/intent/tweet?text=${ encodeURIComponent(shareText) }` }
-                fontSize="md"
-                fontWeight="500"
-              >
-                Share on X
-              </LinkExternal>
+            description={ (
+              <>
+                Current number of consecutive days you{ apos }ve claimed your daily Merits.{ ' ' }
+                The longer your streak, the more daily Merits you can earn.{ ' ' }
+                <LinkExternal
+                  href={ `https://x.com/intent/tweet?text=${ encodeURIComponent(shareText) }` }
+                  fontWeight="500"
+                >
+                  Share on X
+                </LinkExternal>
+              </>
             ) }
+            direction="column-reverse"
           >
             <RewardsDashboardCardValue
               label="Streak"
