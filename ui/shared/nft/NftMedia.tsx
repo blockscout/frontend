@@ -64,14 +64,23 @@ const NftMedia = ({ data, className, isLoading, withFullscreen, autoplayVideo }:
       ...(withFullscreen ? { onClick: onOpen } : {}),
     };
 
-    switch (mediaInfo.type) {
+    switch (mediaInfo.mediaType) {
       case 'video': {
         return <NftVideo { ...props } src={ mediaInfo.src } autoPlay={ autoplayVideo } instance={ data }/>;
       }
       case 'html':
         return <NftHtml { ...props } src={ mediaInfo.src }/>;
-      case 'image':
+      case 'image': {
+        if (mediaInfo.srcType === 'url' && data.thumbnails) {
+          const srcSet = data.thumbnails['250x250'] && data.thumbnails['500x500'] ? `${ data.thumbnails['500x500'] } 2x` : undefined;
+          const src = (srcSet ? data.thumbnails['250x250'] : undefined) || data.thumbnails['500x500'] || data.thumbnails.original;
+          if (src) {
+            return <NftImage { ...props } src={ src } srcSet={ srcSet }/>;
+          }
+        }
+
         return <NftImage { ...props } src={ mediaInfo.src }/>;
+      }
       default:
         return null;
     }
@@ -87,13 +96,15 @@ const NftMedia = ({ data, className, isLoading, withFullscreen, autoplayVideo }:
       onClose,
     };
 
-    switch (mediaInfo.type) {
+    switch (mediaInfo.mediaType) {
       case 'video':
         return <NftVideoFullscreen { ...props } src={ mediaInfo.src }/>;
       case 'html':
         return <NftHtmlFullscreen { ...props } src={ mediaInfo.src }/>;
-      case 'image':
-        return <NftImageFullscreen { ...props } src={ mediaInfo.src }/>;
+      case 'image': {
+        const src = mediaInfo.srcType === 'url' && data.thumbnails?.original ? data.thumbnails.original : mediaInfo.src;
+        return <NftImageFullscreen { ...props } src={ src }/>;
+      }
       default:
         return null;
     }

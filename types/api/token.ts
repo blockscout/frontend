@@ -51,6 +51,8 @@ export type TokenHoldersPagination = {
   value: string;
 };
 
+export type ThumbnailSize = '60x60' | '250x250' | '500x500' | 'original';
+
 export interface TokenInstance {
   is_unique: boolean;
   id: string;
@@ -60,6 +62,7 @@ export interface TokenInstance {
   external_app_url: string | null;
   metadata: Record<string, unknown> | null;
   owner: AddressParam | null;
+  thumbnails: Partial<Record<ThumbnailSize, string>> | null;
 }
 
 export interface TokenInstanceMetadataSocketMessage {
