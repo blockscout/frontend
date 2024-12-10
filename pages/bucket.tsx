@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import { debounce, orderBy } from 'lodash';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -63,7 +63,8 @@ const Page: NextPage = () => {
     },
     limit: 21,
     offset: 0,
-    order: { update_time: 'desc' },
+    distinctOn: 'bucket_id',
+    // order: { update_time: 'desc' },
   },
   {
     tableName: 'buckets_aggregate',
@@ -93,6 +94,7 @@ const Page: NextPage = () => {
         ],
         limit: 21,
         offset: queryParams.offset,
+        distinctOn: 'bucket_id',
         where: queryParams.searchTerm ? {
           _or: [
             { bucket_name: { _ilike: `${ queryParams.searchTerm }%` } },
@@ -102,7 +104,7 @@ const Page: NextPage = () => {
             { removed: { _eq: false } },
           ],
         } : { removed: { _eq: false } },
-        order: { update_time: 'desc' },
+        // order: { update_time: 'desc' },
       },
       {
         tableName: 'buckets_aggregate',
@@ -115,6 +117,7 @@ const Page: NextPage = () => {
             { removed: { _eq: false } },
           ],
         } : { removed: { _eq: false } },
+        distinctOn: 'bucket_id',
         aggregate: [
           'count',
         ],
@@ -181,7 +184,7 @@ const Page: NextPage = () => {
         propsPage={ propsPage }
         error={ error }
         loading={ loading }
-        tableList={ tableList }
+        tableList={ orderBy(tableList, [ 'update_time' ], [ 'desc' ]) }
         tabThead={ tabThead }
         page="bucket"
         handleSearchChange={ handleSearchChange }/>

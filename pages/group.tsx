@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import { debounce, orderBy } from 'lodash';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -56,7 +56,7 @@ const Page: NextPage = () => {
         //   aggregate {
         //     count
         //   }
-        // }`,
+        // }`,'
         'owner_address',
       ],
       where: {
@@ -64,7 +64,8 @@ const Page: NextPage = () => {
       },
       limit: 21,
       offset: 0,
-      order: { update_at: 'desc' },
+      distinctOn: 'group_id',
+      // order: { update_at: 'desc' },
     },
     {
       tableName: 'groups_aggregate',
@@ -94,6 +95,7 @@ const Page: NextPage = () => {
         ],
         limit: 21,
         offset: queryParams.offset,
+        distinctOn: 'group_id',
         where: queryParams.searchTerm ? {
           _or: [
             { group_name: { _ilike: `${ queryParams.searchTerm }%` } },
@@ -103,7 +105,7 @@ const Page: NextPage = () => {
             { removed: { _eq: false } },
           ],
         } : { removed: { _eq: false } },
-        order: { update_at: 'desc' },
+        // order: { update_at: 'desc' },
       },
       {
         tableName: 'groups_aggregate',
@@ -116,6 +118,7 @@ const Page: NextPage = () => {
             { removed: { _eq: false } },
           ],
         } : { removed: { _eq: false } },
+        distinctOn: 'group_id',
         aggregate: [
           'count',
         ],
@@ -180,7 +183,7 @@ const Page: NextPage = () => {
         propsPage={ propsPage }
         error={ error }
         loading={ loading }
-        tableList={ tableList }
+        tableList={ orderBy(tableList, [ 'update_at' ], [ 'desc' ]) }
         tabThead={ tabThead }
         page="group"
         handleSearchChange={ handleSearchChange }/>
