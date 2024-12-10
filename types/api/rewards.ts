@@ -39,6 +39,7 @@ export type RewardsUserDailyCheckResponse = {
   pending_referral_rewards: string;
   date: string;
   reset_at: string;
+  streak: string;
 };
 
 export type RewardsUserDailyClaimResponse = {

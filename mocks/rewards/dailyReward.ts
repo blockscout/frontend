@@ -6,4 +6,5 @@ export const base: RewardsUserDailyCheckResponse = {
   pending_referral_rewards: '0',
   date: '',
   reset_at: '',
+  streak: '5',
 };
