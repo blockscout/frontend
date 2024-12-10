@@ -7,7 +7,7 @@ type Props<T extends string> = {
   tagSize?: TagProps['size'];
 } & (
   {
-    value: T;
+    value?: T;
     onChange: (value: T) => void;
     isMulti?: false;
   } | {

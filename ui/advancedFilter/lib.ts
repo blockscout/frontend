@@ -3,6 +3,7 @@ import castArray from 'lodash/castArray';
 import type { AdvancedFilterAge, AdvancedFilterParams } from 'types/api/advancedFilter';
 
 import { HOUR, DAY, MONTH } from 'lib/consts';
+import dayjs from 'lib/date/dayjs';
 
 import { ADVANCED_FILTER_TYPES } from './constants';
 
@@ -85,6 +86,14 @@ export function getFilterTags(filters: AdvancedFilterParams) {
       }
       case 'token_contract_address_hashes_to_include': {
         valueStr = getFilterValueWithNames(filtersToShow.token_contract_address_hashes_to_include, filtersToShow.token_contract_symbols_to_include);
+        break;
+      }
+      case 'age_from': {
+        valueStr = dayjs(filtersToShow.age_from).format('YYYY-MM-DD');
+        break;
+      }
+      case 'age_to': {
+        valueStr = dayjs(filtersToShow.age_to).format('YYYY-MM-DD');
         break;
       }
       default: {
