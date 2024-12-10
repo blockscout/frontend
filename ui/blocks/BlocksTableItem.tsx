@@ -85,6 +85,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
             address={ data.miner }
             isLoading={ isLoading }
             truncation="constant"
+            maxW="min-content"
           />
         </Td>
       ) }
