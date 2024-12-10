@@ -8,14 +8,12 @@ import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton'
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
 import RewardsReadOnlyInputWithCopy from 'ui/rewards/RewardsReadOnlyInputWithCopy';
-import useShareTextForStreak from 'ui/rewards/useShareTextForStreak';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
 const RewardsDashboard = () => {
   const { balancesQuery, apiToken, referralsQuery, rewardsConfigQuery, dailyRewardQuery, isInitialized } = useRewardsContext();
-  const shareText = useShareTextForStreak();
 
   const [ isError, setIsError ] = useState(false);
 
@@ -33,6 +31,12 @@ const RewardsDashboard = () => {
 
   if (!config.features.rewards.isEnabled) {
     return null;
+  }
+
+  let shareText = `Claim your free @blockscoutcom #Merits and start building your daily streak today! #Blockscout #Merits #IYKYK\n\nBoost your rewards instantly by using my referral code: ${ referralsQuery.data?.link }`; // eslint-disable-line max-len
+  if (Number(dailyRewardQuery.data?.streak) > 0) {
+    const days = `day${ Number(dailyRewardQuery.data?.streak) === 1 ? '' : 's' }`;
+    shareText = `I${ apos }ve claimed Merits ${ dailyRewardQuery.data?.streak } ${ days } in a row!\n\n` + shareText;
   }
 
   return (
