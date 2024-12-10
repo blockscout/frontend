@@ -107,7 +107,8 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
         existingErrors.forEach(([ field, error ]) => setError(field, error));
       } else {
         const globalErrors = Object.entries(payload.errors).map(([ , value ]) => value.join(', '));
-        setError('root', { message: capitalizeFirstLetter(globalErrors.join('\n\n')) });
+        const rootError = capitalizeFirstLetter(globalErrors.join('\n\n'));
+        setError('root', { message: rootError });
       }
 
       await delay(100); // have to wait a little bit, otherwise isSubmitting status will not be updated
@@ -210,7 +211,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
           <ContractVerificationFieldMethod methods={ config.verification_options }/>
         </Grid>
         { content }
-        { formState.errors.root?.message && <Text color="error"mt={ 4 } fontSize="sm">{ formState.errors.root.message }</Text> }
+        { formState.errors.root?.message && <Text color="error"mt={ 4 } fontSize="sm" whiteSpace="pre-wrap">{ formState.errors.root.message }</Text> }
         { Boolean(method) && method.value !== 'solidity-hardhat' && method.value !== 'solidity-foundry' && (
           <Button
             variant="solid"
