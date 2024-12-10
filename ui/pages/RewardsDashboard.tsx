@@ -34,9 +34,10 @@ const RewardsDashboard = () => {
   }
 
   let shareText = `Claim your free @blockscoutcom #Merits and start building your daily streak today! #Blockscout #Merits #IYKYK\n\nBoost your rewards instantly by using my referral code: ${ referralsQuery.data?.link }`; // eslint-disable-line max-len
-  if (Number(dailyRewardQuery.data?.streak) > 0) {
-    const days = `day${ Number(dailyRewardQuery.data?.streak) === 1 ? '' : 's' }`;
-    shareText = `I${ apos }ve claimed Merits ${ dailyRewardQuery.data?.streak } ${ days } in a row!\n\n` + shareText;
+
+  if (dailyRewardQuery.data?.streak && Number(dailyRewardQuery.data.streak) > 0) {
+    const days = `day${ Number(dailyRewardQuery.data.streak) === 1 ? '' : 's' }`;
+    shareText = `I${ apos }ve claimed Merits ${ dailyRewardQuery.data.streak } ${ days } in a row!\n\n` + shareText;
   }
 
   return (
