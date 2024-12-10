@@ -185,7 +185,7 @@ const RewardsDashboard = () => {
                 fallback={ <Skeleton w="260px" h="86px"/> }
               />
               <LinkExternal
-                href="https://merits.blockscout.com/?tab=badges"
+                href="https://merits.blockscout.com/?tab=badges&utm_source=blockscout&utm_medium=dashboard"
                 fontSize="md"
                 fontWeight="500"
               >
