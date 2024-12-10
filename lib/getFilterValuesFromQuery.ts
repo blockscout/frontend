@@ -1,14 +1,10 @@
-export default function getFilterValue<FilterType>(filterValues: ReadonlyArray<FilterType>, val: string | Array<string> | undefined) {
-  if (val === undefined) {
-    return;
-  }
+import getValuesArrayFromQuery from './getValuesArrayFromQuery';
 
-  const valArray = [];
-  if (typeof val === 'string') {
-    valArray.push(...val.split(','));
-  }
-  if (Array.isArray(val)) {
-    val.forEach(el => valArray.push(...el.split(',')));
+export default function getFilterValue<FilterType>(filterValues: ReadonlyArray<FilterType>, val: string | Array<string> | undefined) {
+  const valArray = getValuesArrayFromQuery(val);
+
+  if (!valArray) {
+    return;
   }
 
   return valArray.filter(el => filterValues.includes(el as unknown as FilterType)) as unknown as Array<FilterType>;
