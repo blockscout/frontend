@@ -11,7 +11,7 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useFetch from 'lib/hooks/useFetch';
 
-import type { MediaType } from './utils';
+import type { MediaType, SrcType } from './utils';
 import { getPreliminaryMediaType } from './utils';
 
 interface Params {
@@ -28,11 +28,12 @@ type TransportType = 'http' | 'ipfs';
 
 type ReturnType =
 {
-  type: MediaType;
   src: string;
+  mediaType: MediaType;
+  srcType: SrcType;
 } |
 {
-  type: undefined;
+  mediaType: undefined;
 } |
 null;
 
@@ -42,14 +43,14 @@ export default function useNftMediaInfo({ data, isEnabled }: Params): ReturnType
   const httpPrimaryQuery = useNftMediaTypeQuery(assetsData.http.animationUrl, isEnabled);
   const ipfsPrimaryQuery = useFetchAssetViaIpfs(
     assetsData.ipfs.animationUrl,
-    httpPrimaryQuery.data?.type,
-    isEnabled && (httpPrimaryQuery.data === null || Boolean(httpPrimaryQuery.data?.type)),
+    httpPrimaryQuery.data?.mediaType,
+    isEnabled && (httpPrimaryQuery.data === null || Boolean(httpPrimaryQuery.data?.mediaType)),
   );
   const httpSecondaryQuery = useNftMediaTypeQuery(assetsData.http.imageUrl, isEnabled && !httpPrimaryQuery.data && !ipfsPrimaryQuery);
   const ipfsSecondaryQuery = useFetchAssetViaIpfs(
     assetsData.ipfs.imageUrl,
-    httpSecondaryQuery.data?.type,
-    isEnabled && (httpSecondaryQuery.data === null || Boolean(httpSecondaryQuery.data?.type)),
+    httpSecondaryQuery.data?.mediaType,
+    isEnabled && (httpSecondaryQuery.data === null || Boolean(httpSecondaryQuery.data?.mediaType)),
   );
 
   return React.useMemo(() => {
@@ -72,8 +73,8 @@ function composeAssetsData(data: TokenInstance): Record<TransportType, AssetsDat
 
 // As of now we fetch only images via IPFS because video streaming has performance issues
 // Also, we don't want to store the entire file content in the ReactQuery cache, so we don't use useQuery hook here
-function useFetchAssetViaIpfs(url: string | undefined, type: MediaType | undefined, isEnabled: boolean): ReturnType | null {
-  const [ result, setResult ] = React.useState<ReturnType | null>({ type: undefined });
+function useFetchAssetViaIpfs(url: string | undefined, mediaType: MediaType | undefined, isEnabled: boolean): ReturnType | null {
+  const [ result, setResult ] = React.useState<ReturnType | null>({ mediaType: undefined });
   const controller = React.useRef<AbortController | null>(null);
 
   const fetchAsset = React.useCallback(async(url: string) => {
@@ -83,7 +84,7 @@ function useFetchAssetViaIpfs(url: string | undefined, type: MediaType | undefin
       if (response.status === 200) {
         const blob = await response.blob();
         const src = URL.createObjectURL(blob);
-        setResult({ type: 'image', src });
+        setResult({ mediaType: 'image', src, srcType: 'blob' });
         return;
       }
     } catch (error) {}
@@ -92,15 +93,15 @@ function useFetchAssetViaIpfs(url: string | undefined, type: MediaType | undefin
 
   React.useEffect(() => {
     if (isEnabled) {
-      if (config.UI.views.nft.verifiedFetch.isEnabled && type === 'image' && url && url.includes('ipfs')) {
+      if (config.UI.views.nft.verifiedFetch.isEnabled && mediaType === 'image' && url && url.includes('ipfs')) {
         fetchAsset(url);
       } else {
         setResult(null);
       }
     } else {
-      setResult({ type: undefined });
+      setResult({ mediaType: undefined });
     }
-  }, [ fetchAsset, url, type, isEnabled ]);
+  }, [ fetchAsset, url, mediaType, isEnabled ]);
 
   React.useEffect(() => {
     return () => {
@@ -114,7 +115,7 @@ function useFetchAssetViaIpfs(url: string | undefined, type: MediaType | undefin
 function useNftMediaTypeQuery(url: string | undefined, enabled: boolean) {
   const fetch = useFetch();
 
-  return useQuery<unknown, ResourceError<unknown>, ReturnType | null>({
+  return useQuery<ReturnType | null, ResourceError<unknown>, ReturnType | null>({
     queryKey: [ 'nft-media-type', url ],
     queryFn: async() => {
       if (!url) {
@@ -130,10 +131,10 @@ function useNftMediaTypeQuery(url: string | undefined, enabled: boolean) {
       const preliminaryType = getPreliminaryMediaType(url);
 
       if (preliminaryType) {
-        return { type: preliminaryType, src: url };
+        return { mediaType: preliminaryType, src: url, srcType: 'url' };
       }
 
-      const type = await (async() => {
+      const mediaType = await (async() => {
         try {
           const mediaTypeResourceUrl = route({ pathname: '/node-api/media-type' as StaticRoute<'/api/media-type'>['pathname'], query: { url } });
           const response = await fetch<{ type: MediaType | undefined }, ResourceError>(mediaTypeResourceUrl, undefined, { resource: 'media-type' });
@@ -144,14 +145,14 @@ function useNftMediaTypeQuery(url: string | undefined, enabled: boolean) {
         }
       })();
 
-      if (!type) {
+      if (!mediaType) {
         return null;
       }
 
-      return { type, src: url };
+      return { mediaType, src: url, srcType: 'url' };
     },
     enabled,
-    placeholderData: { type: undefined },
+    placeholderData: { mediaType: undefined },
     staleTime: Infinity,
   });
 }

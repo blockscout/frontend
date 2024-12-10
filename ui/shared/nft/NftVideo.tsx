@@ -44,8 +44,9 @@ const NftVideo = ({ src, instance, autoPlay = true, onLoad, onError, onClick }: 
       // otherwise, the skeleton will be shown underneath the element until the video is loaded
       onLoad();
     } catch (error) {
-      if (instance.image_url) {
-        ref.current.poster = instance.image_url;
+      const src = instance.thumbnails?.['500x500'] || instance.thumbnails?.original || instance.image_url;
+      if (src) {
+        ref.current.poster = src;
 
         // we want to call onLoad right after the poster is loaded
         // otherwise, the skeleton will be shown underneath the element until the video is loaded
@@ -54,10 +55,10 @@ const NftVideo = ({ src, instance, autoPlay = true, onLoad, onError, onClick }: 
         poster.onload = onLoad;
       }
     }
-  }, [ instance.image_url, instance.metadata?.image, onLoad ]);
+  }, [ instance.image_url, instance.metadata?.image, instance.thumbnails, onLoad ]);
 
   React.useEffect(() => {
-    fetchVideoPoster();
+    !autoPlay && fetchVideoPoster();
     return () => {
       controller.current?.abort();
     };

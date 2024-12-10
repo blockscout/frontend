@@ -72,6 +72,24 @@ test.describe('image', () => {
     await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 250 } });
   });
 
+  test('preview with thumbnails', async({ render, page, mockAssetResponse }) => {
+    const THUMBNAIL_URL = 'https://localhost:3000/my-image-250.jpg';
+    const data = {
+      animation_url: MEDIA_URL,
+      image_url: null,
+      thumbnails: {
+        '500x500': THUMBNAIL_URL,
+      },
+    } as TokenInstance;
+    await mockAssetResponse(THUMBNAIL_URL, './playwright/mocks/image_md.jpg');
+    await render(
+      <Box boxSize="250px">
+        <NftMedia data={ data }/>
+      </Box>,
+    );
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 250 } });
+  });
+
   test('preview hover', async({ render, page }) => {
     const data = {
       animation_url: MEDIA_URL,
