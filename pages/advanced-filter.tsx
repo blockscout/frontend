@@ -7,7 +7,7 @@ import AdvancedFilter from 'ui/pages/AdvancedFilter';
 
 const Page: NextPage = () => {
   return (
-    <PageNextJs pathname="/csv-export">
+    <PageNextJs pathname="/advanced-filter">
       <AdvancedFilter/>
     </PageNextJs>
   );

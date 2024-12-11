@@ -38,7 +38,7 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
       return <TimeAgoWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text_secondary" fontWeight={ 400 }/>;
     case 'from':
       return (
-        <Flex w="100%" justifyContent="space-between">
+        <Flex w="100%">
           <AddressEntity address={ item.from } truncation="constant" isLoading={ isLoading }/>
         </Flex>
       );
@@ -47,7 +47,11 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
       if (!address) {
         return null;
       }
-      return <AddressEntity address={ address } truncation="constant" isLoading={ isLoading }/>;
+      return (
+        <Flex w="100%">
+          <AddressEntity address={ address } truncation="constant" isLoading={ isLoading }/>
+        </Flex>
+      );
     }
     case 'or_and':
       return (

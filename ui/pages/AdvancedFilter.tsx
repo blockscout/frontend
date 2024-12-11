@@ -196,12 +196,10 @@ const AdvancedFilter = () => {
   //   }
   // }, [ downloadCSV ]);
 
-  const handleFilterChange = React.useCallback((field: keyof AdvancedFilterParams, val: unknown) => {
+  const handleFilterChange = React.useCallback(<T extends keyof AdvancedFilterParams>(field: T, val: AdvancedFilterParams[T]) => {
     setFilters(prevState => {
       const newState = { ...prevState };
-      // fixme
 
-      // @ts-ignore:
       newState[field] = val;
       onFilterChange(newState.age ? omit(newState, [ 'age_from', 'age_to' ]) : newState);
       return newState;
@@ -230,9 +228,7 @@ const AdvancedFilter = () => {
     onFilterChange({});
   }, [ onFilterChange ]);
 
-  const columnsToShow = React.useMemo(() => {
-    return TABLE_COLUMNS.filter(c => columns[c.id]);
-  }, [ columns ]);
+  const columnsToShow = TABLE_COLUMNS.filter(c => columns[c.id]);
 
   if (isLoading) {
     return null;

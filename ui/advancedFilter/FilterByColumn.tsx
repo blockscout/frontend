@@ -21,7 +21,7 @@ type Props = {
   searchParams?: AdvancedFiltersSearchParams;
   column: ColumnsIds;
   columnName: string;
-  handleFilterChange: (field: keyof AdvancedFilterParams, val: unknown) => void;
+  handleFilterChange: <T extends keyof AdvancedFilterParams>(field: T, val: AdvancedFilterParams[T]) => void;
   isLoading?: boolean;
 };
 

@@ -54,7 +54,7 @@ const ColumnsButton = ({ columns, onChange }: Props) => {
                 id={ col.id }
                 size="lg"
               >
-                { col.name }
+                { col.id === 'or_and' ? 'And/Or' : col.name }
               </Checkbox>
             )) }
           </Grid>
