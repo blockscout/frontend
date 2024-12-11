@@ -13,7 +13,6 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
-import { formatAgreementText } from 'ui/tokenInfo/utils';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
@@ -55,7 +54,7 @@ const TokenTransferListItem = ({
             noCopy
             w="auto"
           />
-          <Tag flexShrink={ 0 } isLoading={ isLoading }>{ formatAgreementText(token.type) }</Tag>
+          <Tag flexShrink={ 0 } isLoading={ isLoading }>{ token.type }</Tag>
           <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
         </Flex>
         { showTxInfo && txHash && (
