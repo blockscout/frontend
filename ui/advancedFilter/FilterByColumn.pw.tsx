@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { test, expect } from 'playwright/lib';
-import type { ColumnsIds } from 'ui/pages/AdvancedFilter';
+import type { ColumnsIds } from 'ui/advancedFilter/constants';
 
 import FilterByColumn from './FilterByColumn';
 

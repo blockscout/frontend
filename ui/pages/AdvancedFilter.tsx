@@ -20,23 +20,26 @@ import {
 import omit from 'lodash/omit';
 import { useRouter } from 'next/router';
 import React from 'react';
-// import ReCaptcha from 'react-google-recaptcha';
+import ReCaptcha from 'react-google-recaptcha';
 
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 import { ADVANCED_FILTER_TYPES, ADVANCED_FILTER_AGES } from 'types/api/advancedFilter';
 
-// import useApiFetch from 'lib/api/useApiFetch';
+import config from 'configs/app';
+import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import dayjs from 'lib/date/dayjs';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import getValuesArrayFromQuery from 'lib/getValuesArrayFromQuery';
-// import useToast from 'lib/hooks/useToast';
+import useToast from 'lib/hooks/useToast';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADVANCED_FILTER_ITEM } from 'stubs/advancedFilter';
 import { generateListStub } from 'stubs/utils';
 import ColumnsButton from 'ui/advancedFilter/ColumnsButton';
+import type { ColumnsIds } from 'ui/advancedFilter/constants';
+import { TABLE_COLUMNS } from 'ui/advancedFilter/constants';
 import FilterByColumn from 'ui/advancedFilter/FilterByColumn';
 import ItemByColumn from 'ui/advancedFilter/ItemByColumn';
 import { getDurationFromAge, getFilterTags } from 'ui/advancedFilter/lib';
@@ -46,78 +49,14 @@ import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-// import config from 'configs/app';
-
-export type ColumnsIds = 'tx_hash' | 'type' | 'method' | 'age' | 'from' | 'or_and' | 'to' | 'amount' | 'asset' | 'fee';
-
-type TxTableColumn = {
-  id: ColumnsIds;
-  name: string;
-  width: string;
-  isNumeric?: boolean;
-};
-export const TABLE_COLUMNS: Array<TxTableColumn> = [
-  {
-    id: 'tx_hash',
-    name: 'Tx hash',
-    width: '180px',
-  },
-  {
-    id: 'type',
-    name: 'Type',
-    width: '160px',
-  },
-  {
-    id: 'method',
-    name: 'Method',
-    width: '160px',
-  },
-  {
-    id: 'age',
-    name: 'Age',
-    width: '80px',
-  },
-  {
-    id: 'from',
-    name: 'From',
-    width: '160px',
-  },
-  {
-    id: 'or_and',
-    name: '',
-    width: '60px',
-  },
-  {
-    id: 'to',
-    name: 'To',
-    width: '160px',
-  },
-  {
-    id: 'amount',
-    name: 'Amount',
-    isNumeric: true,
-    width: '150px',
-  },
-  {
-    id: 'asset',
-    name: 'Asset',
-    width: '120px',
-  },
-  {
-    id: 'fee',
-    name: 'Fee',
-    isNumeric: true,
-    width: '120px',
-  },
-] as const;
 
 const COLUMNS_CHECKED = {} as Record<ColumnsIds, boolean>;
 TABLE_COLUMNS.forEach(c => COLUMNS_CHECKED[c.id] = true);
 
 const AdvancedFilter = () => {
   const router = useRouter();
-  // const apiFetch = useApiFetch();
-  // const toast = useToast();
+  const apiFetch = useApiFetch();
+  const toast = useToast();
 
   const [ filters, setFilters ] = React.useState<AdvancedFilterParams>(() => {
     const age = getFilterValueFromQuery(ADVANCED_FILTER_AGES, router.query.age);
@@ -170,31 +109,31 @@ const AdvancedFilter = () => {
   useApiQuery('tokens', { queryParams: { limit: '7', q: '' }, queryOptions: { refetchOnMount: false } });
   useApiQuery('advanced_filter_methods', { queryParams: { q: '' }, queryOptions: { refetchOnMount: false } });
 
-  // const downloadCSV = React.useCallback((reCaptchaToken: string) => {
-  //   apiFetch<'advanced_filter_csv', unknown, unknown>('advanced_filter_csv', {
-  //     queryParams: { recaptcha_response: reCaptchaToken },
-  //   })
-  //     .then(() => {
-  //       toast({
-  //         title: 'Please wait',
-  //         description: 'Download will start when data is ready',
-  //         status: 'warning',
-  //       });
-  //     })
-  //     .catch(() => {
-  //       toast({
-  //         title: 'Error',
-  //         description: 'Unable to download CSV',
-  //         status: 'warning',
-  //       });
-  //     });
-  // }, [ apiFetch, toast ]);
+  const downloadCSV = React.useCallback((reCaptchaToken: string) => {
+    apiFetch<'advanced_filter_csv', unknown, unknown>('advanced_filter_csv', {
+      queryParams: { recaptcha_response: reCaptchaToken },
+    })
+      .then(() => {
+        toast({
+          title: 'Please wait',
+          description: 'Download will start when data is ready',
+          status: 'warning',
+        });
+      })
+      .catch(() => {
+        toast({
+          title: 'Error',
+          description: 'Unable to download CSV',
+          status: 'warning',
+        });
+      });
+  }, [ apiFetch, toast ]);
 
-  // const handleReCaptchaChange = React.useCallback((token: string | null) => {
-  //   if (token) {
-  //     downloadCSV(token);
-  //   }
-  // }, [ downloadCSV ]);
+  const handleReCaptchaChange = React.useCallback((token: string | null) => {
+    if (token) {
+      downloadCSV(token);
+    }
+  }, [ downloadCSV ]);
 
   const handleFilterChange = React.useCallback(<T extends keyof AdvancedFilterParams>(field: T, val: AdvancedFilterParams[T]) => {
     setFilters(prevState => {
@@ -295,13 +234,13 @@ const AdvancedFilter = () => {
   const actionBar = (
     <ActionBar mt={ -6 }>
       <ColumnsButton columns={ columns } onChange={ setColumns }/>
-      { /* { config.services.reCaptcha.siteKey && (
+      { config.services.reCaptcha.siteKey && (
         <ReCaptcha
           className="recaptcha"
           sitekey={ config.services.reCaptcha.siteKey }
           onChange={ handleReCaptchaChange }
         />
-      ) } */ }
+      ) }
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );

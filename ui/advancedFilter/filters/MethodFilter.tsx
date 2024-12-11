@@ -7,6 +7,7 @@ import React from 'react';
 import type { AdvancedFilterMethodInfo, AdvancedFilterParams } from 'types/api/advancedFilter';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import useDebounce from 'lib/hooks/useDebounce';
 import Tag from 'ui/shared/chakra/Tag';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
@@ -25,6 +26,7 @@ type Props = {
 const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterMethodInfo>>([ ...value ]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [ methodsList, setMethodsList ] = React.useState<Array<AdvancedFilterMethodInfo>>([]);
 
   const onSearchChange = React.useCallback((value: string) => {
@@ -32,7 +34,7 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
   }, []);
 
   const methodsQuery = useApiQuery('advanced_filter_methods', {
-    queryParams: { q: searchTerm },
+    queryParams: { q: debouncedSearchTerm },
     queryOptions: { refetchOnMount: false },
   });
 
@@ -44,7 +46,7 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
-    const id = event.target.id as string | 'all';
+    const id = event.target.id as string | typeof RESET_VALUE;
     if (id === RESET_VALUE) {
       setCurrentValue([]);
       setMethodsList(methodsQuery.data || []);
@@ -89,7 +91,7 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
       { methodsQuery.data && (
         // added negative margin because of checkbox focus styles & overflow hidden
         <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll" ml="-4px">
-          <CheckboxGroup value={ currentValue.length ? currentValue.map(i => i.method_id) : [ 'all' ] }>
+          <CheckboxGroup value={ currentValue.length ? currentValue.map(i => i.method_id) : [ RESET_VALUE ] }>
             { (searchTerm ? methodsQuery.data : (methodsList || [])).map(method => (
               <Checkbox
                 key={ method.method_id }
@@ -99,9 +101,6 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
                 pl={ 1 }
                 sx={{
                   '.chakra-checkbox__label': {
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
                     flexGrow: 1,
                   },
                 }}

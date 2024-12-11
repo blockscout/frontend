@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { AdvancedFilterParams, AdvancedFiltersSearchParams } from 'types/api/advancedFilter';
 
-import type { ColumnsIds } from 'ui/pages/AdvancedFilter';
+import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import TableColumnFilterWrapper from 'ui/shared/filters/TableColumnFilterWrapper';
 
 import { NATIVE_TOKEN } from './constants';

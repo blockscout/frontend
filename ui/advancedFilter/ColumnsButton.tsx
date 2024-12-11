@@ -10,8 +10,8 @@ import {
 import React from 'react';
 import type { ChangeEvent } from 'react';
 
-import type { ColumnsIds } from 'ui/pages/AdvancedFilter';
-import { TABLE_COLUMNS } from 'ui/pages/AdvancedFilter';
+import type { ColumnsIds } from 'ui/advancedFilter/constants';
+import { TABLE_COLUMNS } from 'ui/advancedFilter/constants';
 import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 

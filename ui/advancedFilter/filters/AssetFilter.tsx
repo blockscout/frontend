@@ -6,11 +6,13 @@ import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 import type { TokenInfo } from 'types/api/token';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import useDebounce from 'lib/hooks/useDebounce';
 import Tag from 'ui/shared/chakra/Tag';
 import ClearButton from 'ui/shared/ClearButton';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
+import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 
 import { NATIVE_TOKEN } from '../constants';
 
@@ -35,6 +37,7 @@ type Props = {
 const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Value>([ ...value ]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const onSearchChange = React.useCallback((value: string) => {
     setSearchTerm(value);
@@ -43,8 +46,9 @@ const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
   const handleModeSelectChange = React.useCallback((index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value as AssetFilterMode;
     setCurrentValue(prev => {
-      prev[index] = { ...prev[index], mode: value };
-      return [ ...prev ];
+      const newValue = [ ...prev ];
+      newValue[index] = { ...prev[index], mode: value };
+      return newValue;
     });
   }, []);
 
@@ -56,7 +60,7 @@ const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
   }, []);
 
   const tokensQuery = useApiQuery('tokens', {
-    queryParams: { limit: '7', q: searchTerm },
+    queryParams: { limit: debouncedSearchTerm ? undefined : '7', q: debouncedSearchTerm },
     queryOptions: {
       refetchOnMount: false,
     },
@@ -124,7 +128,7 @@ const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
                 variant="select"
               >
                 <Flex flexGrow={ 1 } alignItems="center">
-                  <TokenEntity.Icon token={ token }/>
+                  { token.address === NATIVE_TOKEN.address ? <NativeTokenIcon boxSize={ 5 }/> : <TokenEntity.Icon token={ token }/> }
                   { token.symbol || token.name || token.address }
                 </Flex>
               </Tag>
@@ -137,7 +141,7 @@ const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
         <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll" mt={ 3 } ml="-4px">
           <CheckboxGroup value={ currentValue.map(i => i.token.address) }>
             { tokensQuery.data.items.map(token => (
-              <Flex justifyContent="space-between" alignItems="center" key={ token.address }>
+              <Flex key={ token.address }>
                 <Checkbox
                   value={ token.address }
                   id={ token.address }
@@ -147,9 +151,6 @@ const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
                   pl={ 1 }
                   sx={{
                     '.chakra-checkbox__label': {
-                      overflow: 'hidden',
-                      whiteSpace: 'nowrap',
-                      textOverflow: 'ellipsis',
                       flexGrow: 1,
                     },
                   }}

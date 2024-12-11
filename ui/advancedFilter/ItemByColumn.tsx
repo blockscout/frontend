@@ -5,7 +5,7 @@ import type { AdvancedFilterResponseItem } from 'types/api/advancedFilter';
 
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import type { ColumnsIds } from 'ui/pages/AdvancedFilter';
+import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

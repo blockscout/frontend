@@ -25,7 +25,7 @@ const TypeFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
-    const id = event.target.id as AdvancedFilterType | 'all';
+    const id = event.target.id as AdvancedFilterType | typeof RESET_VALUE;
     if (id === RESET_VALUE) {
       setCurrentValue([]);
     } else {
@@ -50,7 +50,7 @@ const TypeFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
       hasReset
     >
       <Flex display="flex" flexDir="column" rowGap={ 3 }>
-        <CheckboxGroup value={ currentValue.length ? currentValue : [ 'all' ] }>
+        <CheckboxGroup value={ currentValue.length ? currentValue : [ RESET_VALUE ] }>
           { ADVANCED_FILTER_TYPES_WITH_ALL.map(type => (
             <Checkbox
               key={ type.id }
