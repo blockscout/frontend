@@ -9,7 +9,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import { sizeTool } from 'ui/storage/utils';
+import { sizeTool, filtersName } from 'ui/storage/utils';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const ObjectDetails: NextPage = () => {
@@ -135,7 +135,7 @@ const ObjectDetails: NextPage = () => {
       Type: v.content_type,
       'Object Size': sizeTool(v.payload_size),
       Status: v.status,
-      Visibility: v.visibility,
+      Visibility: filtersName(v.visibility),
       'Last Updated Time': v.update_time,
       Bucket: v.bucket_name,
       Creator: v.creator_address,

@@ -314,9 +314,8 @@ const Page = (props: HeadProps) => {
                                     textAlign="right"
                                     justifyItems="right"
                                     display="flex"
-                                    textTransform={ key === 'Visibility' ? 'capitalize' : 'none' }
                                   >
-                                    { values.value ? key === 'Visibility' ? values.value.split('_').splice(-1).toString().toLowerCase() : values.value : '-' }
+                                    { values.value || '-' }
                                   </Box>
                                 </Skeleton>
                               ) }
