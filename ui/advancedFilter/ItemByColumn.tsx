@@ -33,7 +33,7 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
       return <Tag isLoading={ isLoading }>{ type.name }</Tag>;
     }
     case 'method':
-      return item.method ? <Tag isLoading={ isLoading } isTruncated colorScheme="gray-blue">{ item.method }</Tag> : null;
+      return item.method ? <Tag isLoading={ isLoading } isTruncated colorScheme="gray">{ item.method }</Tag> : null;
     case 'age':
       return <TimeAgoWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text_secondary" fontWeight={ 400 }/>;
     case 'from':

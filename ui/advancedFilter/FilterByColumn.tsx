@@ -130,7 +130,7 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
 
       const value = tokens ?
         Object.entries(tokens).map(([ address, token ]) => {
-          const mode = filters.token_contract_address_hashes_to_include?.find(i => i.toLowerCase() === address) ?
+          const mode = filters.token_contract_address_hashes_to_include?.find(i => i.toLowerCase() === address.toLowerCase()) ?
             'include' as AssetFilterMode :
             'exclude' as AssetFilterMode;
           return ({ token, mode });

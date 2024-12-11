@@ -37,6 +37,15 @@ type InputProps = {
   onAddFieldClick: () => void;
 };
 
+type AddressFilter = {
+  address: string;
+  mode: AddressFilterMode;
+};
+
+function addressFilterToKey(filter: AddressFilter) {
+  return `${ filter.address.toLowerCase() }-${ filter.mode }`;
+}
+
 const AddressFilterInput = ({ address, mode, onModeChange, onChange, onClear, isLast, onAddFieldClick }: InputProps) => {
   return (
     <Flex alignItems="center" w="100%">
@@ -78,7 +87,7 @@ const emptyItem = { address: '', mode: 'include' as AddressFilterMode };
 
 const AddressFilter = ({ type, value = [], handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] =
-    React.useState<Array<{ address: string; mode: AddressFilterMode }>>([ ...value, emptyItem ]);
+    React.useState<Array<AddressFilter>>([ ...value, emptyItem ]);
 
   const handleModeSelectChange = React.useCallback((index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value as AddressFilterMode;
@@ -126,7 +135,7 @@ const AddressFilter = ({ type, value = [], handleFilterChange, onClose }: Props)
     <TableColumnFilter
       title={ type === 'from' ? 'From address' : 'To address' }
       isFilled={ Boolean(currentValue[0].address) }
-      isTouched={ !isEqual(currentValue.filter(i => i.address).map(i => JSON.stringify(i)).sort(), value.map(i => JSON.stringify(i)).sort()) }
+      isTouched={ !isEqual(currentValue.filter(i => i.address).map(addressFilterToKey).sort(), value.map(addressFilterToKey).sort()) }
       onFilter={ onFilter }
       onReset={ onReset }
       onClose={ onClose }
