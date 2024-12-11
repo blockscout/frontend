@@ -4,6 +4,7 @@ import path from 'path';
 /* eslint-disable no-console */
 const PRESETS = {
   arbitrum: 'https://arbitrum.blockscout.com',
+  arbitrum_sepolia: 'https://arbitrum-sepolia.blockscout.com',
   base: 'https://base.blockscout.com',
   blackfort_testnet: 'https://blackfort-testnet.blockscout.com',
   celo_alfajores: 'https://celo-alfajores.blockscout.com',

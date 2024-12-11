@@ -6,7 +6,7 @@ export interface VerifiedContract {
   certified?: boolean;
   coin_balance: string;
   compiler_version: string | null;
-  language: 'vyper' | 'yul' | 'solidity';
+  language: 'vyper' | 'yul' | 'solidity' | 'stylus_rust';
   has_constructor_args: boolean;
   optimization_enabled: boolean;
   transaction_count: number | null;

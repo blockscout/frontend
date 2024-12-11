@@ -106,6 +106,19 @@ export const zkSync: SmartContract = {
   optimization_runs: 's',
 };
 
+export const stylusRust: SmartContract = {
+  ...verified,
+  language: 'stylus_rust',
+  github_repository_metadata: {
+    commit: 'af5029f822815e32def0015bf8e591e769c62f34',
+    path_prefix: 'examples/erc20',
+    repository_url: 'https://github.com/blockscout/cargo-stylus-test-examples',
+  },
+  compiler_version: 'v0.5.6',
+  package_name: 'erc20',
+  evm_version: null,
+};
+
 export const nonVerified: SmartContract = {
   is_verified: false,
   is_blueprint: false,
