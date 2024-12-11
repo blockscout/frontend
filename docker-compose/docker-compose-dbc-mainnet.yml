@@ -155,6 +155,7 @@ services:
       NEXT_PUBLIC_MARKETPLACE_ENABLED: true
       NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: https://test.dbcscan.io/config-assets/marketplace_mainnet_config.json
       NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://github.com/DeepBrainChain/DBCPublicChainScan
+      NEXT_PUBLIC_GPU_RACE_CONFIG_URL: https://test.dbcscan.io/config-assets/gpu_race_config.json
       NEXT_PUBLIC_FOOTER_LINKS: https://test.dbcscan.io/config-assets/footer_links.json
       NEXT_PUBLIC_OTHER_LINKS:
       NEXT_PUBLIC_AD_BANNER_PROVIDER: none
