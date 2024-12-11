@@ -12,6 +12,7 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
+import { formatAgreementTag, formatAgreementText } from 'ui/tokenInfo/utils';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
@@ -60,7 +61,7 @@ const TokenTransferTableItem = ({
           mt={ 1 }
         />
         <Flex columnGap={ 2 } rowGap={ 2 } mt={ 2 } flexWrap="wrap">
-          <Tag isLoading={ isLoading }>{ token.type }</Tag>
+          <Tag isLoading={ isLoading }>{ formatAgreementText(token.type) }</Tag>
           <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
         </Flex>
       </Td>
