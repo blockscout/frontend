@@ -113,3 +113,16 @@ export const skeletonList = (storageName: string) => {
 export const isNumberOnly = (str: string) => {
   return /^\d+$/.test(str);
 };
+
+export const filtersName = (value: string) => {
+  if (value.includes('INHERIT')) {
+    return 'Inherit';
+  } else if (value.includes('PRIVATE')) {
+    return 'private';
+  } else if (value.includes('PUBLIC')) {
+    return 'PublicRed';
+  } else if (value.includes('SPECIFIED')) {
+    return 'UnSpecified';
+  }
+  return '-';
+};

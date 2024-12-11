@@ -14,7 +14,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import TableDetails from 'ui/storage/table-details';
 import { Requires } from 'ui/storage/tabs-requires';
-import { formatPubKey, sizeTool, timeText, timeTool } from 'ui/storage/utils';
+import { formatPubKey, sizeTool, timeText, timeTool, filtersName } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
 
@@ -106,7 +106,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   };
   const more = {
     Visibility: {
-      value: details?.visibility,
+      value: filtersName(details?.visibility || '-'),
       status: 'none',
     },
     'Bucket Name': {

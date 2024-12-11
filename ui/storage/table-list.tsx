@@ -273,13 +273,6 @@ function TableList(props: Props<string>) {
                                                     { title[value].split('_').splice(-1).toString().toLowerCase() }
                                                   </Skeleton></Box>
                                                 </Box>
-                                              ) : value === 'Visibility' ? (
-                                                <Box
-                                                  color="#000000"
-                                                  textTransform="capitalize"
-                                                >
-                                                  { title[value].split('_').splice(-1).toString().toLowerCase() }
-                                                </Box>
                                               ) : (
                                                 <Box color="#000000" overflow="hidden">
                                                   <Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton>
