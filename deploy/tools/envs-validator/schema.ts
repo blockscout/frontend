@@ -844,6 +844,7 @@ const schema = yup
     NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
     NEXT_PUBLIC_GAS_TRACKER_UNITS: yup.array().transform(replaceQuotes).json().of(yup.string<GasUnit>().oneOf(GAS_UNITS)),
     NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_ADVANCED_FILTER_ENABLED: yup.boolean(),
     NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: yup
       .array()
       .transform(replaceQuotes)

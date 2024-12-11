@@ -244,6 +244,16 @@ export const gasTracker: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const advancedFilter: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.advancedFilter.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const dataAvailability: GetServerSideProps<Props> = async(context) => {
   if (!config.features.dataAvailability.isEnabled) {
     return {
