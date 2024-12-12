@@ -124,7 +124,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
     ],
     refetchOnMount: false,
     enabled: !txQuery.isPlaceholderData,
-    retry: 2,
+    retry: 8,
     retryDelay: 5 * SECOND,
   });
 
