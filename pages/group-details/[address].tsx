@@ -54,15 +54,28 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         'hash',
       ],
     },
+  ];
+
+  const groupCount = [
     {
-      tableName: 'groups_aggregate',
-      where: { group_name: { _eq: router.query.address } },
-      aggregate: [
-        'count',
+      tableName: 'groups',
+      where: {
+        _and: [
+          {
+            account_address: { _neq: '' },
+          },
+        ],
+        removed: { _eq: false },
+        group_name: { _ilike: router.query.address },
+      },
+      fields: [
+        'account_address',
       ],
     },
   ];
+
   const { loading, data } = useGraphqlQuery('Group', router.query.address ? queries : []);
+  const groupCountReq = useGraphqlQuery('Group', router.query.address ? groupCount : []);
   const details = data?.groups && data?.groups[0];
   const [ loadsing, setLoadsing ] = React.useState(true);
   React.useEffect(() => {
@@ -92,7 +105,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'none',
     },
     'Active Group Member Count': {
-      value: data?.groups_aggregate?.aggregate?.count || '0',
+      value: groupCountReq?.data?.groups.length || '0',
       status: 'none',
     },
     Owner: {
