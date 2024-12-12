@@ -40,6 +40,7 @@ const fixture: TestFixture<MockContractReadResponseFixture, { page: Page }> = as
           args,
         }),
         to: address,
+        value: params?.value,
       };
 
       if (_isEqual(params, callParams) && id) {

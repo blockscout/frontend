@@ -13,7 +13,7 @@ import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import type { AddressProfileAPIConfig } from '../../../types/client/addressProfileAPIConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders, AdBannerAdditionalProviders } from '../../../types/client/adProviders';
-import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type ContractCodeIde, type SmartContractVerificationMethodExtra } from '../../../types/client/contract';
+import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, SMART_CONTRACT_LANGUAGE_FILTERS, type ContractCodeIde, type SmartContractVerificationMethodExtra } from '../../../types/client/contract';
 import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
 import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
@@ -42,6 +42,7 @@ import type { BlockFieldId } from '../../../types/views/block';
 import type { NftMarketplaceItem } from '../../../types/views/nft';
 import type { TxAdditionalFieldsId, TxFieldsId } from '../../../types/views/tx';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from '../../../types/views/tx';
+import type { VerifiedContractsFilter } from '../../../types/api/contracts';
 
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../lib/regexp';
@@ -287,6 +288,28 @@ const rollupSchema = yup
         then: (schema) => schema.test(urlTest).required(),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL can be used only if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' '),
       }),
+    NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED: yup
+      .boolean()
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: 'optimistic',
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME: yup
+      .string()
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: 'arbitrum',
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' ',
+          value => value === undefined,
+        ),
+      }),
     NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS: yup
       .boolean()
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
@@ -296,6 +319,22 @@ const rollupSchema = yup
           'not-exist',
           'NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined',
           value => value === undefined,
+        ),
+      }),
+  });
+
+const celoSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_CELO_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK: yup
+      .string()
+      .when('NEXT_PUBLIC_CELO_ENABLED', {
+        is: (value: boolean) => value,
+        then: (schema) => schema.min(0).optional(),
+        otherwise: (schema) => schema.max(
+          -1,
+          'NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK cannot not be used if NEXT_PUBLIC_CELO_ENABLED is not set to "true"',
         ),
       }),
   });
@@ -334,6 +373,7 @@ const adsBannerSchema = yup
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: adButlerConfigSchema,
   });
 
+// DEPRECATED
 const sentrySchema = yup
   .object()
   .shape({
@@ -350,20 +390,6 @@ const sentrySchema = yup
       .when('NEXT_PUBLIC_SENTRY_DSN', {
         is: (value: string) => Boolean(value),
         then: (schema) => schema,
-      }),
-    NEXT_PUBLIC_APP_INSTANCE: yup
-      .string()
-      .when('NEXT_PUBLIC_SENTRY_DSN', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_APP_INSTANCE cannot not be used without NEXT_PUBLIC_SENTRY_DSN'),
-      }),
-    NEXT_PUBLIC_APP_ENV: yup
-      .string()
-      .when('NEXT_PUBLIC_SENTRY_DSN', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_APP_ENV cannot not be used without NEXT_PUBLIC_SENTRY_DSN'),
       }),
   });
 
@@ -554,6 +580,8 @@ const schema = yup
     NEXT_PUBLIC_APP_HOST: yup.string().required(),
     NEXT_PUBLIC_APP_PROTOCOL: yup.string().oneOf(protocols),
     NEXT_PUBLIC_APP_PORT: yup.number().positive().integer(),
+    NEXT_PUBLIC_APP_ENV: yup.string(),
+    NEXT_PUBLIC_APP_INSTANCE: yup.string(),
 
     // 2. Blockchain parameters
     NEXT_PUBLIC_NETWORK_NAME: yup.string().required(),
@@ -692,6 +720,12 @@ const schema = yup
 
           return isNoneSchema.isValidSync(data) || isArrayOfMethodsSchema.isValidSync(data);
         }),
+    NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<VerifiedContractsFilter>().oneOf(SMART_CONTRACT_LANGUAGE_FILTERS)),
+
     NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS: yup
       .array()
       .transform(replaceQuotes)
@@ -707,6 +741,7 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(nftMarketplaceSchema),
+    NEXT_PUBLIC_HELIA_VERIFIED_FETCH_ENABLED: yup.boolean(),
 
     //     e. misc
     NEXT_PUBLIC_NETWORK_EXPLORERS: yup
@@ -854,11 +889,12 @@ const schema = yup
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),
-    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(), // DEPRECATED
-    NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY: yup.string(),
+    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(),
+    NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY: yup.string(), // DEPRECATED
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
+    NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: yup.string(),
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
@@ -867,6 +903,7 @@ const schema = yup
   .concat(adsBannerSchema)
   .concat(marketplaceSchema)
   .concat(rollupSchema)
+  .concat(celoSchema)
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
   .concat(sentrySchema);

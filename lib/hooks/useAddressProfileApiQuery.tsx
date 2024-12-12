@@ -27,7 +27,7 @@ export default function useAddressProfileApiQuery(hash: string | undefined, isEn
         return Promise.reject();
       }
 
-      return fetch(feature.apiUrlTemplate.replace('{address}', hash), undefined, { omitSentryErrorLog: true });
+      return fetch(feature.apiUrlTemplate.replace('{address}', hash));
     },
     enabled: isEnabled && Boolean(hash),
     refetchOnMount: false,

@@ -12,6 +12,7 @@ on:
             - none
             - arbitrum
             - arbitrum_nova
+            - arbitrum_sepolia
             - base
             - celo_alfajores
             - garnet
@@ -25,10 +26,13 @@ on:
             - optimism_sepolia
             - polygon
             - rootstock
+            - scroll_sepolia
             - shibarium
             - stability
-            - zkevm
+            - zkevm 
+            - zilliqa_prototestnet
             - zksync
+            - zora
 
 jobs:
   make_slug:

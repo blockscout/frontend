@@ -1,7 +1,6 @@
 import { Button, chakra, Heading, useDisclosure } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -14,8 +13,9 @@ import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
-import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 
 import MyProfileFieldsEmail from './fields/MyProfileFieldsEmail';
@@ -34,6 +34,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
   const authModal = useDisclosure();
   const apiFetch = useApiFetch();
   const toast = useToast();
+  const recaptcha = useReCaptcha();
 
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
@@ -45,12 +46,14 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(formData) => {
     try {
+      const token = await recaptcha.executeAsync();
+
       await apiFetch('auth_send_otp', {
         fetchParams: {
           method: 'POST',
           body: {
             email: formData.email,
-            recaptcha_v3_response: formData.reCaptcha,
+            recaptcha_response: token,
           },
         },
       });
@@ -68,7 +71,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
         description: apiError?.message || getErrorMessage(error) || 'Something went wrong',
       });
     }
-  }, [ apiFetch, authModal, toast ]);
+  }, [ apiFetch, authModal, toast, recaptcha ]);
 
   const hasDirtyFields = Object.keys(formApi.formState.dirtyFields).length > 0;
 
@@ -82,15 +85,11 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
         >
           <FormFieldText<FormFields> name="name" placeholder="Name" isReadOnly mb={ 3 }/>
           <MyProfileFieldsEmail
-            isReadOnly={ !config.services.reCaptchaV3.siteKey || Boolean(profileQuery.data?.email) }
+            isReadOnly={ !config.services.reCaptchaV2.siteKey || Boolean(profileQuery.data?.email) }
             defaultValue={ profileQuery.data?.email || undefined }
           />
-          { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && (
-            <GoogleReCaptchaProvider reCaptchaKey={ config.services.reCaptchaV3.siteKey }>
-              <FormFieldReCaptcha/>
-            </GoogleReCaptchaProvider>
-          ) }
-          { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && (
+          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && <ReCaptcha ref={ recaptcha.ref }/> }
+          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && (
             <Button
               mt={ 6 }
               size="sm"

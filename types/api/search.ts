@@ -16,6 +16,7 @@ export interface SearchResultToken {
   is_verified_via_admin_panel: boolean;
   is_smart_contract_verified: boolean;
   filecoin_robust_address?: string | null;
+  certified?: boolean;
 }
 
 export interface SearchResultAddressOrContract {

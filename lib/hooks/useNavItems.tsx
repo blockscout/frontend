@@ -109,7 +109,12 @@ export default function useNavItems(): ReturnType {
 
     const rollupFeature = config.features.rollup;
 
-    if (rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'zkEvm')) {
+    if (rollupFeature.isEnabled && (
+      rollupFeature.type === 'optimistic' ||
+      rollupFeature.type === 'arbitrum' ||
+      rollupFeature.type === 'zkEvm' ||
+      rollupFeature.type === 'scroll'
+    )) {
       blockchainNavItems = [
         [
           txs,
@@ -120,7 +125,7 @@ export default function useNavItems(): ReturnType {
           blocks,
           rollupTxnBatches,
           rollupDisputeGames,
-          rollupFeature.type === 'optimistic' ? rollupOutputRoots : undefined,
+          rollupFeature.outputRootsEnabled ? rollupOutputRoots : undefined,
         ].filter(Boolean),
         [
           userOps,

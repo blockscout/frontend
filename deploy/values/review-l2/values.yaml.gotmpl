@@ -47,8 +47,7 @@ frontend:
       memory: 384Mi
       cpu: 250m
   env:
-    NEXT_PUBLIC_APP_ENV: development
-    NEXT_PUBLIC_APP_INSTANCE: review_L2
+    NEXT_PUBLIC_APP_ENV: review
     NEXT_PUBLIC_NETWORK_LOGO: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/base.svg
     NEXT_PUBLIC_NETWORK_ICON: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/base.svg
     NEXT_PUBLIC_FEATURED_NETWORKS: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/featured-networks/base-mainnet.json
@@ -73,10 +72,8 @@ frontend:
     NEXT_PUBLIC_NAVIGATION_LAYOUT: horizontal
     NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES: "['/blocks','/name-domains']"
   envFromSecret:
-    NEXT_PUBLIC_SENTRY_DSN: ref+vault://deployment-values/blockscout/dev/review-l2?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_SENTRY_DSN
-    SENTRY_CSP_REPORT_URI: ref+vault://deployment-values/blockscout/dev/review-l2?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SENTRY_CSP_REPORT_URI
     NEXT_PUBLIC_AUTH0_CLIENT_ID: ref+vault://deployment-values/blockscout/dev/review-l2?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_AUTH0_CLIENT_ID
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ref+vault://deployment-values/blockscout/dev/review-l2?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: ref+vault://deployment-values/blockscout/dev/review-l2?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID
     NEXT_PUBLIC_OG_IMAGE_URL: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/og-images/base-mainnet.png
-    NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY
+    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: ref+vault://deployment-values/blockscout/eth-sepolia/testnet?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_CLIENT_KEY

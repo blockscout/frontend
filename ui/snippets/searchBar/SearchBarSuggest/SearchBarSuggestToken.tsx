@@ -6,6 +6,7 @@ import type { SearchResultToken } from 'types/api/search';
 
 import { toBech32Address } from 'lib/address/bech32';
 import highlightText from 'lib/highlightText';
+import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
@@ -13,6 +14,7 @@ import IconSvg from 'ui/shared/IconSvg';
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultToken>) => {
   const icon = <TokenEntity.Icon token={{ ...data, type: data.token_type }}/>;
   const verifiedIcon = <IconSvg name="certified" boxSize={ 4 } color="green.500" ml={ 1 }/>;
+  const certifiedIcon = <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/>;
   const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
   const name = (
@@ -49,7 +51,8 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat }: It
         <Flex alignItems="center">
           { icon }
           { name }
-          { data.is_verified_via_admin_panel && verifiedIcon }
+          { data.certified && certifiedIcon }
+          { data.is_verified_via_admin_panel && !data.certified && verifiedIcon }
         </Flex>
         <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
           <Flex alignItems="center" overflow="hidden">
@@ -67,7 +70,8 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat }: It
       <Flex alignItems="center">
         { icon }
         { name }
-        { data.is_verified_via_admin_panel && verifiedIcon }
+        { data.certified && certifiedIcon }
+        { data.is_verified_via_admin_panel && !data.certified && verifiedIcon }
       </Flex>
       <Flex alignItems="center" overflow="hidden">
         { address }

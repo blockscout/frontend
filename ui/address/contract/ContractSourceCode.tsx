@@ -5,6 +5,7 @@ import type { SmartContract } from 'types/api/contract';
 
 import { route } from 'nextjs-routes';
 
+import formatLanguageName from 'lib/contracts/formatLanguageName';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import CodeEditor from 'ui/shared/monaco/CodeEditor';
@@ -24,6 +25,10 @@ function getEditorData(contractInfo: SmartContract | undefined) {
         return 'vy';
       case 'yul':
         return 'yul';
+      case 'scilla':
+        return 'scilla';
+      case 'stylus_rust':
+        return 'rs';
       default:
         return 'sol';
     }
@@ -51,7 +56,7 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
     <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>
       <span>Contract source code</span>
       { data?.language &&
-        <Text whiteSpace="pre" as="span" variant="secondary" textTransform="capitalize"> ({ data.language })</Text> }
+        <Text whiteSpace="pre" as="span" variant="secondary"> ({ formatLanguageName(data.language) })</Text> }
     </Skeleton>
   );
 
@@ -73,7 +78,9 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
     </Tooltip>
   ) : null;
 
-  const ides = <ContractCodeIdes hash={ sourceAddress } isLoading={ isLoading }/>;
+  const ides = data?.language && [ 'solidity', 'vyper', 'yul' ].includes(data.language) ?
+    <ContractCodeIdes hash={ sourceAddress } isLoading={ isLoading }/> :
+    null;
 
   const copyToClipboard = data && editorData?.length === 1 ? (
     <CopyToClipboard
