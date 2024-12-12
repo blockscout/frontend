@@ -3,7 +3,7 @@
 exports[`generates correct metadata for: dynamic route 1`] = `
 {
   "canonical": undefined,
-  "description": "View transaction 0x12345 on Game7 Explorer",
+  "description": "View transaction 0x12345 on G7 Explorer",
   "opengraph": {
     "description": "",
     "imageUrl": "",
@@ -16,7 +16,7 @@ exports[`generates correct metadata for: dynamic route 1`] = `
 exports[`generates correct metadata for: dynamic route with API data 1`] = `
 {
   "canonical": undefined,
-  "description": "0x12345, balances and analytics on the Game7 Explorer",
+  "description": "0x12345, balances and analytics on the G7 Explorer",
   "opengraph": {
     "description": "",
     "imageUrl": "",
@@ -29,12 +29,12 @@ exports[`generates correct metadata for: dynamic route with API data 1`] = `
 exports[`generates correct metadata for: static route 1`] = `
 {
   "canonical": "http://localhost:3000/txs",
-  "description": "Discover the Game7 Chain with our blockchain explorer. Access real-time data on transactions, blocks, and smart contracts to stay informed on the Game7 ecosystem.",
+  "description": "Discover the G7 Network with our blockchain explorer. Access real-time data on transactions, blocks, and smart contracts to stay informed on the network.",
   "opengraph": {
     "description": "",
     "imageUrl": "http://localhost:3000/static/og_placeholder.png",
-    "title": "Game7 explorer",
+    "title": "G7 Explorer",
   },
-  "title": "Game7 explorer",
+  "title": "G7 Explorer",
 }
 `;
