@@ -36,7 +36,9 @@ export type RewardsUserBalancesResponse = {
 export type RewardsUserDailyCheckResponse = {
   available: boolean;
   daily_reward: string;
+  streak_reward: string;
   pending_referral_rewards: string;
+  total_reward: string;
   date: string;
   reset_at: string;
   streak: string;
@@ -44,7 +46,10 @@ export type RewardsUserDailyCheckResponse = {
 
 export type RewardsUserDailyClaimResponse = {
   daily_reward: string;
+  streak_reward: string;
   pending_referral_rewards: string;
+  total_reward: string;
+  streak: string;
 };
 
 export type RewardsUserReferralsResponse = {
