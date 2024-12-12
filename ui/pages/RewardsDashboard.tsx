@@ -116,6 +116,18 @@ const RewardsDashboard = () => {
                   'N/A'
               }
               isLoading={ dailyRewardQuery.isPending }
+              hint={ (
+                <>
+                  See the{ ' ' }
+                  <LinkExternal
+                    href="https://docs.blockscout.com/using-blockscout/merits/streak-number-and-daily-rewards"
+                    isExternal
+                  >
+                    docs
+                  </LinkExternal>{ ' ' }
+                  to learn how your streak number affects daily rewards
+                </>
+              ) }
             />
           </RewardsDashboardCard>
         </Flex>
