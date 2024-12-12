@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@0xfacet/sdk@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@0xfacet/sdk/-/sdk-0.2.1.tgz#b5ad525c333baf461e80b8e577a1725c170bbe26"
-  integrity sha512-nPMgS9ecxkuvxGECbaXnbVau8ubco88X3IFHae6ed2uJVZmeXIyfuW+O3lXiRLe/uQXgGGVYybPAKD1BHDtDUA==
+"@0xfacet/sdk@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@0xfacet/sdk/-/sdk-0.2.2.tgz#1444099b31c8a684382973f841841f6fe3a87d66"
+  integrity sha512-noTTdj+tuOv7x/Umps9XOv0X8Cz3NizUNcWaA04IF1xlqSd6/ixBAssyJxp39anhp8q/hKJl5oJQPqByPcJv5A==
 
 "@adraffy/ens-normalize@1.10.0":
   version "1.10.0"
