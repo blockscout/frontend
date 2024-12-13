@@ -143,7 +143,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   const changeTable = React.useCallback((value: 'Transactions' | 'Versions') => {
     setTabName(value);
   }, []);
-  const tabRequires = Requires(tabName, 1, 2);
+  const tabRequires = Requires(tabName, 1, details?.object_id);
   const [ queryParams, setQueryParams ] = React.useState<{offset: number; searchTerm: string; page: number}>({
     offset: 0,
     searchTerm: '',

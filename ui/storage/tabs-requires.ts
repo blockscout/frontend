@@ -37,7 +37,7 @@ const map = (id: number, page: number) => {
 };
 
 export const Requires = (payload: TokenType, page: number, id: number) => {
-  const queries = map(id, page)[payload];
+  const queries = id ? map(id, page)[payload] : [];
 
   const { loading, data } = useGraphqlQuery('Objects', queries);
   return { loading, data };
