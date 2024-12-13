@@ -46,6 +46,7 @@ const Page: NextPage = () => {
   const [ queries, setQueries ] = React.useState<Array<any>>([ {
     tableName: 'buckets',
     fields: [
+      'bucket_id',
       'bucket_name',
       'bucket_id',
       'update_time',
@@ -81,6 +82,7 @@ const Page: NextPage = () => {
       {
         tableName: 'buckets',
         fields: [
+          'bucket_id',
           'bucket_name',
           'bucket_id',
           'update_time',
@@ -140,6 +142,7 @@ const Page: NextPage = () => {
       Status: v.status,
       'Active Objects Count': v.active_object_count.aggregate.count,
       Creator: v.owner_address,
+      id: v.bucket_id,
     });
   });
   React.useEffect(() => {

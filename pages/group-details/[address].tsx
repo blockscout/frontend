@@ -40,7 +40,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         // }`,
         'owner_address',
       ],
-      where: { _and: [ { group_name: { _eq: router.query.address } }, { account_address: { _neq: '' } }, { removed: { _eq: false } } ] },
+      where: { _and: [ { group_id: { _eq: router.query.address } }, { account_address: { _neq: '' } }, { removed: { _eq: false } } ] },
     },
     {
       tableName: 'transaction',

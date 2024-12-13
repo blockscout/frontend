@@ -53,7 +53,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
           }
         }`,
       ],
-      where: { _and: [ { object_name: { _ilike: router.query.address } }, { removed: { _eq: false } } ] },
+      where: { _and: [ { object_id: { _eq: router.query.address } }, { removed: { _eq: false } } ] },
     },
   ];
   const { loading, data } = useGraphqlQuery('Objects', router.query.address ? queries : []);

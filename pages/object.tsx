@@ -49,6 +49,7 @@ const ObjectDetails: NextPage = () => {
     {
       tableName: 'objects',
       fields: [
+        'object_id',
         'object_name',
         'content_type',
         'payload_size',
@@ -83,6 +84,7 @@ const ObjectDetails: NextPage = () => {
       {
         tableName: 'objects',
         fields: [
+          'object_id',
           'object_name',
           'content_type',
           'payload_size',
@@ -140,6 +142,7 @@ const ObjectDetails: NextPage = () => {
       'Last Updated Time': v.update_time,
       Bucket: v.bucket_name,
       Creator: v.creator_address,
+      id: v.object_id,
     });
   });
 

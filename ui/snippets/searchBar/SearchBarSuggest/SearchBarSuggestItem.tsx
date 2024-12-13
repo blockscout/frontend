@@ -54,13 +54,13 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, isFirst }: 
         return route({ pathname: '/address/[hash]', query: { hash: data.address } });
       }
       case 'buckets': {
-        return route({ pathname: '/bucket-details/[address]', query: { address: data.bucket_name } });
+        return route({ pathname: '/bucket-details/[address]', query: { address: data.bucket_id } });
       }
       case 'objects': {
-        return route({ pathname: '/object-details/[address]', query: { address: data.object_name } });
+        return route({ pathname: '/object-details/[address]', query: { address: data.object_id } });
       }
       case 'groups': {
-        return route({ pathname: '/group-details/[address]', query: { address: data.group_name } });
+        return route({ pathname: '/group-details/[address]', query: { address: data.group_id } });
       }
     }
   })();
