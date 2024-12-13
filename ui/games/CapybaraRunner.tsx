@@ -1,7 +1,11 @@
-/* eslint-disable max-len */
-import { Box, Text } from '@chakra-ui/react';
+/* eslint-disable @next/next/no-img-element */
+import { Box, Text, Button, Flex } from '@chakra-ui/react';
 import Script from 'next/script';
 import React from 'react';
+
+import config from 'configs/app';
+
+const easterEggBadgeFeature = config.features.easterEggBadge;
 
 const CapybaraRunner = () => {
   const [ hasReachedHighScore, setHasReachedHighScore ] = React.useState(false);
@@ -38,7 +42,13 @@ const CapybaraRunner = () => {
           </div>
         </div>
       </Box>
-      { hasReachedHighScore && <Text>You&apos;ve reached a high score!</Text> }
+      { easterEggBadgeFeature.isEnabled && hasReachedHighScore && (
+        <Flex flexDirection="column" alignItems="center" justifyContent="center" gap={ 4 }>
+          <Text fontSize="2xl" fontWeight="bold">You unlocked a hidden badge!</Text>
+          <Text fontSize="lg">Congratulations! You’re eligible to claim an epic hidden badge!</Text>
+          <Button as="a" href={ easterEggBadgeFeature.badgeClaimLink } target="_blank">Claim</Button>
+        </Flex>
+      ) }
     </>
   );
 };
