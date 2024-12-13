@@ -1,13 +1,12 @@
 import type { VerifiedContractsSortingValue, VerifiedContractsSortingField } from 'types/api/verifiedContracts';
+import type { SelectOption } from 'ui/shared/select/types';
 
-import type { TOption } from 'ui/shared/sort/Option';
-
-export const SORT_OPTIONS: Array<TOption<VerifiedContractsSortingValue>> = [
-  { title: 'Default', id: undefined },
-  { title: 'Balance descending', id: 'balance-desc' },
-  { title: 'Balance ascending', id: 'balance-asc' },
-  { title: 'Txs count descending', id: 'txs_count-desc' },
-  { title: 'Txs count ascending', id: 'txs_count-asc' },
+export const SORT_OPTIONS: Array<SelectOption<VerifiedContractsSortingValue>> = [
+  { label: 'Default', value: undefined },
+  { label: 'Balance descending', value: 'balance-desc' },
+  { label: 'Balance ascending', value: 'balance-asc' },
+  { label: 'Txs count descending', value: 'txs_count-desc' },
+  { label: 'Txs count ascending', value: 'txs_count-asc' },
 ];
 
 export const SORT_SEQUENCE: Record<VerifiedContractsSortingField, Array<VerifiedContractsSortingValue | undefined>> = {

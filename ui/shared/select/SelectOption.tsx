@@ -1,21 +1,14 @@
-import {
-  useRadio,
-  Box,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import type { useRadioGroup } from '@chakra-ui/react';
+import type { UseRadioProps } from '@chakra-ui/react';
+import { Box, useRadio, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import IconSvg from '../IconSvg';
 
-export interface TOption<Sort extends string> {
-  id: Sort | undefined;
-  title: string;
+interface Props extends UseRadioProps {
+  children: React.ReactNode;
 }
 
-type OptionProps = ReturnType<ReturnType<typeof useRadioGroup>['getRadioProps']>;
-
-const Option = (props: OptionProps) => {
+const SelectOption = (props: Props) => {
   const { getInputProps, getRadioProps } = useRadio(props);
 
   const input = getInputProps();
@@ -35,13 +28,13 @@ const Option = (props: OptionProps) => {
         bgColor: bgColorHover,
       }}
     >
+      { props.isChecked ? <IconSvg name="check" boxSize={ 5 }/> : <Box boxSize={ 5 }/> }
       <input { ...input }/>
       <Box { ...checkbox }>
         { props.children }
       </Box>
-      { props.isChecked && <IconSvg name="check" boxSize={ 4 } color="blue.600"/> }
     </Box>
   );
 };
 
-export default Option;
+export default React.memo(SelectOption);

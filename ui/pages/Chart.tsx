@@ -18,13 +18,14 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
 import ChartMenu from 'ui/shared/chart/ChartMenu';
-import ChartResolutionSelect from 'ui/shared/chart/ChartResolutionSelect';
 import ChartWidgetContent from 'ui/shared/chart/ChartWidgetContent';
 import useChartQuery from 'ui/shared/chart/useChartQuery';
 import useZoom from 'ui/shared/chart/useZoom';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import Select from 'ui/shared/select/Select';
+import { STATS_RESOLUTIONS } from 'ui/stats/constants';
 
 const DEFAULT_RESOLUTION = Resolution.DAY;
 
@@ -68,8 +69,9 @@ const Chart = () => {
   const id = getQueryParamString(router.query.id);
   const intervalFromQuery = getIntervalFromQuery(router);
   const resolutionFromQuery = getResolutionFromQuery(router);
+  const defaultResolution = resolutionFromQuery || DEFAULT_RESOLUTION;
   const [ intervalState, setIntervalState ] = React.useState<StatsIntervalIds | undefined>(intervalFromQuery);
-  const [ resolution, setResolution ] = React.useState<Resolution>(resolutionFromQuery || DEFAULT_RESOLUTION);
+  const [ resolution, setResolution ] = React.useState<Resolution>(defaultResolution);
   const { zoomRange, handleZoom, handleZoomReset } = useZoom();
 
   const interval = intervalState || getIntervalByResolution(resolution);
@@ -163,6 +165,13 @@ const Chart = () => {
     </Button>
   );
 
+  const resolutionOptions = React.useMemo(() => {
+    const resolutions = lineQuery.data?.info?.resolutions || [];
+    return STATS_RESOLUTIONS
+      .filter((resolution) => resolutions.includes(resolution.id))
+      .map((resolution) => ({ value: resolution.id, label: resolution.title }));
+  }, [ lineQuery.data?.info?.resolutions ]);
+
   return (
     <>
       <PageTitle
@@ -174,7 +183,7 @@ const Chart = () => {
         withTextAd
       />
       <Flex alignItems="center" justifyContent="space-between">
-        <Flex alignItems="center" gap={{ base: 3, lg: 6 }} maxW="100%" overflow="hidden">
+        <Flex alignItems="center" gap={{ base: 3, lg: 6 }} maxW="100%">
           <Flex alignItems="center" gap={ 3 }>
             { !isMobile && <Text>Period</Text> }
             <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange }/>
@@ -187,11 +196,13 @@ const Chart = () => {
               <Skeleton isLoaded={ !isInfoLoading }>
                 { isMobile ? 'Res.' : 'Resolution' }
               </Skeleton>
-              <ChartResolutionSelect
-                resolution={ resolution }
-                onResolutionChange={ onResolutionChange }
-                resolutions={ lineQuery.data?.info?.resolutions || [] }
+              <Select
+                options={ resolutionOptions }
+                defaultValue={ defaultResolution }
+                onChange={ onResolutionChange }
                 isLoading={ isInfoLoading }
+                w={{ base: 'fit-content', lg: '160px' }}
+                fontWeight={ 600 }
               />
             </Flex>
           ) }

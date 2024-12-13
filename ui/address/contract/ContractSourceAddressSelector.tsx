@@ -1,4 +1,4 @@
-import { chakra, Flex, Select, Skeleton } from '@chakra-ui/react';
+import { chakra, Flex, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -6,6 +6,7 @@ import { route } from 'nextjs-routes';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkNewTab from 'ui/shared/links/LinkNewTab';
+import Select from 'ui/shared/select/Select';
 
 export interface Item {
   address: string;
@@ -23,12 +24,16 @@ interface Props {
 
 const ContractSourceAddressSelector = ({ className, selectedItem, onItemSelect, items, isLoading, label }: Props) => {
 
-  const handleItemSelect = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    const nextOption = items.find(({ address }) => address === event.target.value);
+  const handleItemSelect = React.useCallback((value: string) => {
+    const nextOption = items.find(({ address }) => address === value);
     if (nextOption) {
       onItemSelect(nextOption);
     }
   }, [ items, onItemSelect ]);
+
+  const options = React.useMemo(() => {
+    return items.map(({ address, name }) => ({ label: name || address, value: address }));
+  }, [ items ]);
 
   if (isLoading) {
     return <Skeleton h={ 6 } w={{ base: '300px', lg: '500px' }} className={ className }/>;
@@ -53,19 +58,14 @@ const ContractSourceAddressSelector = ({ className, selectedItem, onItemSelect, 
     <Flex columnGap={ 3 } rowGap={ 2 } alignItems="center" className={ className }>
       <chakra.span fontWeight={ 500 } fontSize="sm">{ label }</chakra.span>
       <Select
-        size="xs"
-        value={ selectedItem.address }
+        options={ options }
+        name="contract-source-address"
+        defaultValue={ options[0].value }
         onChange={ handleItemSelect }
-        w="auto"
+        isLoading={ isLoading }
+        maxW={{ base: '180px', lg: 'none' }}
         fontWeight={ 600 }
-        borderRadius="base"
-      >
-        { items.map((item) => (
-          <option key={ item.address } value={ item.address }>
-            { item.name }
-          </option>
-        )) }
-      </Select>
+      />
       <Flex columnGap={ 2 } alignItems="center">
         <CopyToClipboard text={ selectedItem.address } ml={ 0 }/>
         <LinkNewTab
