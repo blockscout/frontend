@@ -53,7 +53,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
           }
         }`,
       ],
-      where: { object_name: { _ilike: router.query.address } },
+      where: { _and: [ { object_name: { _ilike: router.query.address } }, { removed: { _eq: false } } ] },
     },
   ];
   const { loading, data } = useGraphqlQuery('Objects', router.query.address ? queries : []);
@@ -75,7 +75,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       where: { primary_sp_id: { _eq: details?.primary_sp?.global_virtual_group_family?.primary_sp.sp_id } },
     },
   ];
-  const rp = useGraphqlQuery('ObjectByName', req);
+  const rp = useGraphqlQuery('ObjectByName', details?.primary_sp?.global_virtual_group_family?.primary_sp.sp_id ? req : []);
   const [ oldTimeText, setoldTimeText ] = React.useState<string>('');
 
   React.useEffect(() => {

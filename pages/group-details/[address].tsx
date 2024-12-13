@@ -40,7 +40,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         // }`,
         'owner_address',
       ],
-      where: { group_name: { _eq: router.query.address } },
+      where: { _and: [ { group_name: { _eq: router.query.address } }, { account_address: { _neq: '' } }, { removed: { _eq: false } } ] },
     },
     {
       tableName: 'transaction',
@@ -105,7 +105,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'none',
     },
     'Active Group Member Count': {
-      value: groupCountReq?.data?.groups.length || '0',
+      value: groupCountReq?.data?.groups ? groupCountReq?.data?.groups.length : '0',
       status: 'none',
     },
     Owner: {
@@ -124,7 +124,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   const changeTable = React.useCallback((value: 'Transactions' | 'Versions') => {
     setTabName(value);
   }, []);
-  const tabRequires = Requires(tabName, 1, 2);
+  const tabRequires = Requires(tabName, 1, details?.object_id);
   const [ queryParams, setQueryParams ] = React.useState<{offset: number; searchTerm: string; page: number}>({
     offset: 0,
     searchTerm: '',

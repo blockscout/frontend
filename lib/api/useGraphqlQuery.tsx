@@ -2,7 +2,7 @@ import { useQuery, gql } from '@apollo/client';
 
 interface QueryConfig {
   tableName: string;
-  fields?: Array<string>;
+  fields?: Array<string | FieldConfig>;
   limit?: number;
   offset?: number;
   distinctOn?: string;
@@ -16,6 +16,12 @@ interface QueryResult {
   loading: boolean;
   error: Error | undefined;
   data: Record<string, any> | null;
+}
+
+interface FieldConfig {
+  field: string;
+  where?: Record<string, any>;
+  subfields?: Array<string>;
 }
 
 /**
@@ -76,6 +82,26 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?
     return aggregates.map(aggregate => `${ aggregate }`).join(' ');
   };
 
+  const formatFields = (fields?: Array<string | FieldConfig>): string => {
+    if (!fields) {
+      return '';
+    }
+    return fields
+      .map(field => {
+        if (typeof field === 'string') {
+          return field; // 普通字段，直接返回
+        } else if (typeof field === 'object' && field.field) {
+          const whereCondition = field.where ? `(where: { ${ formatWhereCondition(field.where) } })` : '';
+          const subfields = field.subfields?.length ?
+            `{ ${ field.subfields.join(' ') } }` :
+            '';
+          return `${ field.field }${ whereCondition } ${ subfields }`;
+        }
+        return '';
+      })
+      .join(' ');
+  };
+
   const query = queries.length ? gql`
     query ${ aliasName }($limit: Int, $offset: Int) {
       ${ queries
@@ -103,7 +129,7 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?
             ${ limit !== undefined ? `limit: $limit,` : '' }
             ${ offset !== undefined ? `offset: $offset` : '' }
           ) {
-            ${ fields?.join(' ') }
+            ${ formatFields(fields) }
           }
         `;
       })

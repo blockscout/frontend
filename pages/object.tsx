@@ -95,7 +95,7 @@ const ObjectDetails: NextPage = () => {
         where: queryParams.searchTerm ? {
           _or: [
             { object_name: { _ilike: `${ queryParams.searchTerm }%` } },
-            { object_id: { _eq: queryParams.searchTerm } },
+            { object_id: { _eq: queryParams.searchTerm.toString() } },
           ],
           _and: [
             { removed: { _eq: false } },
@@ -112,7 +112,7 @@ const ObjectDetails: NextPage = () => {
         where: queryParams.searchTerm ? {
           _or: [
             { object_name: { _ilike: `${ queryParams.searchTerm }%` } },
-            { object_id: { _eq: queryParams.searchTerm } },
+            { object_id: { _eq: queryParams.searchTerm.toString() } },
           ],
           _and: [
             { removed: { _eq: false } },

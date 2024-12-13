@@ -85,11 +85,11 @@ const Page: NextPage = () => {
           'bucket_id',
           'update_time',
           'status',
-          `active_object_count: objects_aggregate {
-            aggregate {
-              count
-            }
-          }`,
+          {
+            field: 'active_object_count: objects_aggregate',
+            where: { removed: { _eq: false } },
+            subfields: [ 'aggregate { count }' ],
+          },
           'owner_address',
         ],
         limit: 21,
