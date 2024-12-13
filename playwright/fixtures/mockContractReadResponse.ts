@@ -46,7 +46,7 @@ const fixture: TestFixture<MockContractReadResponseFixture, { page: Page }> = as
       if (_isEqual(params, callParams) && id) {
         return route.fulfill({
           status: 200,
-          body: JSON.stringify({
+          json: {
             id,
             jsonrpc: '2.0',
             result: encodeFunctionResult({
@@ -54,7 +54,7 @@ const fixture: TestFixture<MockContractReadResponseFixture, { page: Page }> = as
               functionName: abiItem.name,
               result,
             }),
-          }),
+          },
         });
       }
     });
