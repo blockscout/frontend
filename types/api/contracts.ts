@@ -6,7 +6,7 @@ export interface VerifiedContract {
   certified?: boolean;
   coin_balance: string;
   compiler_version: string | null;
-  language: 'vyper' | 'yul' | 'solidity';
+  language: 'vyper' | 'yul' | 'solidity' | 'stylus_rust';
   has_constructor_args: boolean;
   optimization_enabled: boolean;
   transaction_count: number | null;
@@ -24,9 +24,11 @@ export interface VerifiedContractsResponse {
   } | null;
 }
 
+export type VerifiedContractsFilter = 'solidity' | 'vyper' | 'yul' | 'scilla';
+
 export interface VerifiedContractsFilters {
   q: string | undefined;
-  filter: 'vyper' | 'solidity' | 'yul' | undefined;
+  filter: VerifiedContractsFilter | undefined;
 }
 
 export type VerifiedContractsCounters = {

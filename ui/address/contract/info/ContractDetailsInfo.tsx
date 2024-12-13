@@ -6,6 +6,7 @@ import type { SmartContract } from 'types/api/contract';
 import config from 'configs/app';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
+import { getGitHubOwnerAndRepo } from 'ui/contractVerification/utils';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 
@@ -44,6 +45,25 @@ const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
       </LinkExternal>
     );
   })();
+
+  const sourceCodeLink = (() => {
+    if (!data.github_repository_metadata?.repository_url || !data.github_repository_metadata?.commit) {
+      return null;
+    }
+
+    const { owner, repo } = getGitHubOwnerAndRepo(data.github_repository_metadata.repository_url) || {};
+
+    const repoUrl = data.github_repository_metadata.repository_url;
+    const commit = data.github_repository_metadata.commit;
+    const pathPrefix = data.github_repository_metadata.path_prefix;
+    return (
+      <LinkExternal href={ `${ repoUrl }/tree/${ commit }${ pathPrefix ? `/${ pathPrefix }` : '' }` }>
+        { owner && repo ? `${ owner }/${ repo }` : data.github_repository_metadata.repository_url }
+      </LinkExternal>
+    );
+  })();
+
+  const isStylusContract = data.language === 'stylus_rust';
 
   return (
     <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
@@ -84,17 +104,24 @@ const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
           isLoading={ isLoading }
         />
       ) }
-      { typeof data.optimization_enabled === 'boolean' && (
+      { typeof data.optimization_enabled === 'boolean' && !isStylusContract && (
         <ContractDetailsInfoItem
           label="Optimization enabled"
           content={ data.optimization_enabled ? 'true' : 'false' }
           isLoading={ isLoading }
         />
       ) }
-      { data.optimization_runs !== null && (
+      { data.optimization_runs !== null && !isStylusContract && (
         <ContractDetailsInfoItem
           label={ rollupFeature.isEnabled && rollupFeature.type === 'zkSync' ? 'Optimization mode' : 'Optimization runs' }
           content={ String(data.optimization_runs) }
+          isLoading={ isLoading }
+        />
+      ) }
+      { data.package_name && (
+        <ContractDetailsInfoItem
+          label="Package name"
+          content={ data.package_name }
           isLoading={ isLoading }
         />
       ) }
@@ -106,11 +133,18 @@ const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
           isLoading={ isLoading }
         />
       ) }
-      { data.file_path && (
+      { data.file_path && !isStylusContract && (
         <ContractDetailsInfoItem
           label="Contract file path"
           content={ data.file_path }
           wordBreak="break-word"
+          isLoading={ isLoading }
+        />
+      ) }
+      { sourceCodeLink && (
+        <ContractDetailsInfoItem
+          label="Source code"
+          content={ sourceCodeLink }
           isLoading={ isLoading }
         />
       ) }
