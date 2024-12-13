@@ -18,8 +18,10 @@ export interface TalbeListType {
   Status?: string;
   'Object Size'?: string;
   'Last Updated Time'?: string;
+  id?: string;
 }
 export interface ObjetTalbeListType {
+  id: string;
   'Object Name': string;
   Type: string;
   'Object Size': string;
@@ -41,7 +43,7 @@ export interface ObjectDetailsOverviewType {
 }
 
 export interface ObjetRequestType {
-  id: string;
+  object_id: string;
   object_name: string;
   bucket_name: string;
   owner: string;
@@ -67,6 +69,7 @@ export interface ObjetRequestType {
 }
 
 export interface GroupTalbeListType {
+  id: string;
   'Group Name': string;
   'Group ID': string;
   'Last Updated': string;
@@ -86,6 +89,7 @@ export interface GroupRequestType {
   owner_address: string;
 }
 export interface BucketTalbeListType {
+  id: string;
   'Bucket Name': string;
   'Bucket ID': string;
   'Last Updated Time': string;

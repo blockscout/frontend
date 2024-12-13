@@ -139,6 +139,7 @@ const Page: NextPage = () => {
       'Group ID': v.group_id,
       'Last Updated': v.update_at,
       Owner: v.owner_address,
+      id: v.group_id,
     });
   });
 

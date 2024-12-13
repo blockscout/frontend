@@ -53,7 +53,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       limit: 10, // Example: set limit to 10
       offset: 0, // Example: set offset to 0
       // If you need to add where or order conditions, you can do so here
-      where: { bucket_name: { _ilike: router.query.address } }, // Example filter condition
+      where: { bucket_id: { _eq: router.query.address } }, // Example filter condition
       // order: { create_at: "DESC" } // Example order condition
     },
     {
