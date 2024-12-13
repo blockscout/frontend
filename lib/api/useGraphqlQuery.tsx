@@ -89,7 +89,7 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?
     return fields
       .map(field => {
         if (typeof field === 'string') {
-          return field; // 普通字段，直接返回
+          return field;
         } else if (typeof field === 'object' && field.field) {
           const whereCondition = field.where ? `(where: { ${ formatWhereCondition(field.where) } })` : '';
           const subfields = field.subfields?.length ?
