@@ -103,7 +103,7 @@ test.describe('page', () => {
     await mockAssetResponse(MEDIA_URL, './playwright/mocks/page.html');
     await page.route(MEDIA_TYPE_API_URL, (route) => route.fulfill({
       status: 200,
-      json: JSON.stringify({ type: 'html' }),
+      json: { type: 'html' },
     }));
   });
 
