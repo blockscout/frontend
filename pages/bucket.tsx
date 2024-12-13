@@ -105,6 +105,7 @@ const Page: NextPage = () => {
           ],
         } : { removed: { _eq: false } },
         // order: { update_time: 'desc' },
+        order: { bucket_id: 'desc' },
       },
       {
         tableName: 'buckets_aggregate',
@@ -131,7 +132,7 @@ const Page: NextPage = () => {
   const tableLength = data?.buckets?.length || 0;
   const totleDate = data?.buckets_aggregate?.aggregate?.count || 0;
 
-  data?.buckets?.slice(0, 20).forEach((v: BucketRequestType) => {
+  orderBy(data?.buckets?.slice(0, 20), [ 'update_time' ], [ 'desc' ]).forEach((v: BucketRequestType) => {
     tableList.push({
       'Bucket Name': v.bucket_name,
       'Bucket ID': v.bucket_id,

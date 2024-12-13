@@ -106,6 +106,7 @@ const Page: NextPage = () => {
           ],
         } : { removed: { _eq: false } },
         // order: { update_at: 'desc' },
+        order: { group_id: 'desc' },
       },
       {
         tableName: 'groups_aggregate',
@@ -132,7 +133,7 @@ const Page: NextPage = () => {
   const tableLength = data?.groups?.length || 0;
   const totleDate = data?.groups_aggregate?.aggregate?.count || 0;
 
-  data?.groups?.slice(0, 20).forEach((v: GroupRequestType) => {
+  orderBy(data?.groups?.slice(0, 20), [ 'update_at' ], [ 'desc' ]).forEach((v: GroupRequestType) => {
     tableList.push({
       'Group Name': v.group_name,
       'Group ID': v.group_id,

@@ -102,6 +102,7 @@ const ObjectDetails: NextPage = () => {
           ],
         } : { removed: { _eq: false } },
         // order: { update_time: 'desc' },
+        order: { object_id: 'desc' },
         limit: 21,
         offset: queryParams.offset,
         distinctOn: 'object_id',
@@ -129,7 +130,7 @@ const ObjectDetails: NextPage = () => {
   const { loading, data, error } = useGraphqlQuery('Objects', queries);
   const tableLength = data?.objects?.length || 0;
   const totleDate = data?.objects_aggregate?.aggregate?.count || 0;
-  data?.objects?.slice(0, 20).forEach((v: ObjetRequestType) => {
+  orderBy(data?.objects?.slice(0, 20), [ 'update_time' ], [ 'desc' ]).forEach((v: ObjetRequestType) => {
     tableList.push({
       'Object Name': v.object_name,
       Type: v.content_type,
@@ -141,6 +142,7 @@ const ObjectDetails: NextPage = () => {
       Creator: v.creator_address,
     });
   });
+
   React.useEffect(() => {
     if (typeof tableLength === 'number' && tableLength !== 21) {
       setToNext(false);
