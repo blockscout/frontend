@@ -20,7 +20,11 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import CapybaraRunner from '../games/CapybaraRunner';
 
-const BlockCountdown = () => {
+type Props = {
+  hideCapybaraRunner?: boolean;
+};
+
+const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
   const router = useRouter();
   const height = getQueryParamString(router.query.height);
   const iconColor = useColorModeValue('gray.300', 'gray.600');
@@ -114,7 +118,7 @@ const BlockCountdown = () => {
           <StatsWidget label="Remaining blocks" value={ data.result.RemainingBlock } icon="apps_slim"/>
           <StatsWidget label="Current block" value={ data.result.CurrentBlock } icon="block_slim"/>
         </Grid>
-        <CapybaraRunner/>
+        { !hideCapybaraRunner && <CapybaraRunner/> }
       </Flex>
     </Center>
   );
