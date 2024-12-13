@@ -315,3 +315,13 @@ export const mud: GetServerSideProps<Props> = async(context) => {
 
   return base(context);
 };
+
+export const pools: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.pools.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};

@@ -94,6 +94,7 @@ import type {
   OptimismL2BatchTxs,
   OptimismL2BatchBlocks,
 } from 'types/api/optimisticL2';
+import type { Pool, PoolsResponse } from 'types/api/pools';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type {
   RewardsConfigResponse,
@@ -1128,6 +1129,22 @@ export const RESOURCES = {
     path: '/api/v2/advanced-filters/csv',
   },
 
+  // POOLS
+  pools: {
+    path: '/api/v1/chains/:chainId/pools',
+    pathParams: [ 'chainId' as const ],
+    filterFields: [ 'query' as const ],
+    endpoint: getFeaturePayload(config.features.pools)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.pools)?.api.basePath,
+  },
+
+  pool: {
+    path: '/api/v1/chains/:chainId/pools/:hash',
+    pathParams: [ 'chainId' as const, 'hash' as const ],
+    endpoint: getFeaturePayload(config.features.pools)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.pools)?.api.basePath,
+  },
+
   // CONFIGS
   config_backend_version: {
     path: '/api/v2/config/backend-version',
@@ -1222,7 +1239,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
 'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history' |
 'token_transfers_all' | 'scroll_l2_txn_batches' | 'scroll_l2_txn_batch_txs' | 'scroll_l2_txn_batch_blocks' |
-'scroll_l2_deposits' | 'scroll_l2_withdrawals' | 'advanced_filter';
+'scroll_l2_deposits' | 'scroll_l2_withdrawals' | 'advanced_filter' | 'pools';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -1416,6 +1433,8 @@ Q extends 'scroll_l2_withdrawals' ? ScrollL2MessagesResponse :
 Q extends 'scroll_l2_withdrawals_count' ? number :
 Q extends 'advanced_filter' ? AdvancedFilterResponse :
 Q extends 'advanced_filter_methods' ? AdvancedFilterMethodsResponse :
+Q extends 'pools' ? PoolsResponse :
+Q extends 'pool' ? Pool :
 never;
 /* eslint-enable @stylistic/indent */
 
@@ -1452,6 +1471,7 @@ Q extends 'address_mud_tables' ? AddressMudTablesFilter :
 Q extends 'address_mud_records' ? AddressMudRecordsFilter :
 Q extends 'token_transfers_all' ? TokenTransferFilters :
 Q extends 'advanced_filter' ? AdvancedFilterParams :
+Q extends 'pools' ? { query: string } :
 never;
 /* eslint-enable @stylistic/indent */
 

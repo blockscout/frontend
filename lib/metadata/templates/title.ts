@@ -54,6 +54,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/mud-worlds': '%network_name% MUD worlds list',
   '/token-transfers': '%network_name% token transfers',
   '/advanced-filter': '%network_name% advanced filter',
+  '/pools': '%network_name% DEX pools',
+  '/pools/[hash]': '%network_name% pool details',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',

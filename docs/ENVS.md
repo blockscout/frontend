@@ -68,6 +68,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Get gas button](ENVS.md#get-gas-button)
   - [Save on gas with GasHawk](ENVS.md#save-on-gas-with-gashawk)
   - [Rewards service API](ENVS.md#rewards-service-api)
+  - [DEX pools](ENVS.md#dex-pools)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -851,6 +852,15 @@ This feature enables Blockscout Merits program. It requires that the [My account
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_REWARDS_SERVICE_API_HOST | `string` | API URL | - | - | `https://example.com` | v1.36.0+ |
+
+&nbsp;
+
+### DEX pools
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_DEX_POOLS_ENABLED | `boolean` | Set to true to enable the feature | Required | - | `true` | v1.37.0+ |
+| NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` | v1.0.x+ |
 
 ## External services configuration
 

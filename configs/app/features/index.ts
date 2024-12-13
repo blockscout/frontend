@@ -23,6 +23,7 @@ export { default as mixpanel } from './mixpanel';
 export { default as mudFramework } from './mudFramework';
 export { default as multichainButton } from './multichainButton';
 export { default as nameService } from './nameService';
+export { default as pools } from './pools';
 export { default as publicTagsSubmission } from './publicTagsSubmission';
 export { default as restApiDocs } from './restApiDocs';
 export { default as rewards } from './rewards';
