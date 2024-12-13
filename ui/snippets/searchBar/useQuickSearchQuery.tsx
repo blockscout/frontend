@@ -59,10 +59,14 @@ export default function useQuickSearchQuery() {
         limit: 6,
         offset: 0,
         where: {
-          _or: [
-            { object_name: { _ilike: `${ debouncedSearchTerm }%` } },
-            { object_id: { _eq: debouncedSearchTerm } },
-          ],
+          _and: [
+            { removed: { _eq: false } },
+            {
+              _or: [
+                { object_name: { _ilike: `${ debouncedSearchTerm }%` } },
+                { object_id: { _eq: debouncedSearchTerm } },
+              ],
+            } ],
         },
         order: { update_time: 'desc' },
       },
@@ -76,9 +80,14 @@ export default function useQuickSearchQuery() {
         limit: 6,
         offset: 0,
         where: {
-          _or: [
-            { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
-            { bucket_id: { _eq: debouncedSearchTerm } },
+          _and: [
+            { removed: { _eq: false } },
+            {
+              _or: [
+                { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
+                { bucket_id: { _eq: debouncedSearchTerm } },
+              ],
+            },
           ],
         },
         order: { update_time: 'desc' },
@@ -93,9 +102,14 @@ export default function useQuickSearchQuery() {
         limit: 6,
         offset: 0,
         where: {
-          _or: [
-            { group_name: { _ilike: `${ debouncedSearchTerm }%` } },
-            { group_id: { _eq: debouncedSearchTerm } },
+          _and: [
+            { removed: { _eq: false } },
+            {
+              _or: [
+                { group_name: { _ilike: `${ debouncedSearchTerm }%` } },
+                { group_id: { _eq: debouncedSearchTerm } },
+              ],
+            },
           ],
         },
         order: { update_time: 'desc' },
@@ -118,10 +132,14 @@ export default function useQuickSearchQuery() {
             limit: 50,
             offset: 0,
             where: {
-              _or: [
-                { object_name: { _ilike: `${ debouncedSearchTerm }%` } },
-                { object_id: { _eq: debouncedSearchTerm } },
-              ],
+              _and: [
+                { removed: { _eq: false } },
+                {
+                  _or: [
+                    { object_name: { _ilike: `${ debouncedSearchTerm }%` } },
+                    { object_id: { _eq: debouncedSearchTerm } },
+                  ],
+                } ],
             },
             order: { update_time: 'desc' },
           },
@@ -139,9 +157,14 @@ export default function useQuickSearchQuery() {
             limit: 50,
             offset: 0,
             where: {
-              _or: [
-                { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
-                { bucket_id: { _eq: debouncedSearchTerm } },
+              _and: [
+                { removed: { _eq: false } },
+                {
+                  _or: [
+                    { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
+                    { bucket_id: { _eq: debouncedSearchTerm } },
+                  ],
+                },
               ],
             },
             order: { update_time: 'desc' },
@@ -160,9 +183,14 @@ export default function useQuickSearchQuery() {
             limit: 50,
             offset: 0,
             where: {
-              _or: [
-                { group_name: { _ilike: `${ debouncedSearchTerm }%` } },
-                { group_id: { _eq: debouncedSearchTerm } },
+              _and: [
+                { removed: { _eq: false } },
+                {
+                  _or: [
+                    { group_name: { _ilike: `${ debouncedSearchTerm }%` } },
+                    { group_id: { _eq: debouncedSearchTerm } },
+                  ],
+                },
               ],
             },
             order: { update_time: 'desc' },
