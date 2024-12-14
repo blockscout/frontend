@@ -20,7 +20,7 @@ interface Props {
   links: Array<React.ReactNode>;
   label: string;
   longText: string;
-  shortText: string;
+  shortText?: string;
 }
 
 const VerifyWith = ({ className, links, label, longText, shortText }: Props) => {
@@ -38,7 +38,7 @@ const VerifyWith = ({ className, links, label, longText, shortText }: Props) => 
             isActive={ isOpen }
             aria-label={ label }
             fontWeight={ 500 }
-            px={ 2 }
+            px={ shortText ? 2 : 1 }
             h="32px"
             flexShrink={ 0 }
           >
@@ -46,9 +46,11 @@ const VerifyWith = ({ className, links, label, longText, shortText }: Props) => 
             <Show above="xl">
               <chakra.span ml={ 1 }>{ longText }</chakra.span>
             </Show>
-            <Hide above="xl">
-              <chakra.span ml={ 1 }>{ shortText }</chakra.span>
-            </Hide>
+            { shortText && (
+              <Hide above="xl">
+                <chakra.span ml={ 1 }>{ shortText }</chakra.span>
+              </Hide>
+            ) }
           </Button>
         </PopoverTriggerTooltip>
       </PopoverTrigger>

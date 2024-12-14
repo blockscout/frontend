@@ -6,6 +6,7 @@ import type { Pool } from 'types/api/pools';
 
 import { route } from 'nextjs-routes';
 
+import { getPoolTitle } from 'lib/pools/getPoolTitle';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
@@ -30,7 +31,6 @@ const Link = chakra((props: LinkProps) => {
 type IconProps = Pick<EntityProps, 'pool' | 'className'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
-  // const bgColor = useColorModeValue('gray.200', 'gray.600');
   const bgColor = useColorModeValue('white', 'black');
   const borderColor = useColorModeValue('whiteAlpha.800', 'blackAlpha.800');
   return (
@@ -81,7 +81,7 @@ const Icon = (props: IconProps) => {
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'pool'>;
 
 const Content = chakra((props: ContentProps) => {
-  const nameString = `${ props.pool.base_token_symbol } / ${ props.pool.quote_token_symbol }`;
+  const nameString = getPoolTitle(props.pool);
 
   return (
     <TruncatedTextTooltip label={ nameString }>

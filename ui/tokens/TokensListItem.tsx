@@ -5,6 +5,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
+import getItemIndex from 'lib/getItemIndex';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import Tag from 'ui/shared/chakra/Tag';
@@ -18,8 +19,6 @@ type Props = {
   page: number;
   isLoading?: boolean;
 };
-
-const PAGE_SIZE = 50;
 
 const bridgedTokensFeature = config.features.bridgedTokens;
 
@@ -65,7 +64,7 @@ const TokensTableItem = ({
             { bridgedChainTag && <Tag isLoading={ isLoading }>{ bridgedChainTag }</Tag> }
           </Flex>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" ml="auto" color="text_secondary" minW="24px" textAlign="right" lineHeight={ 6 }>
-            <span>{ (page - 1) * PAGE_SIZE + index + 1 }</span>
+            <span>{ getItemIndex(index, page) }</span>
           </Skeleton>
         </GridItem>
       </Grid>

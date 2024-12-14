@@ -13,6 +13,7 @@ export const base: Pool = {
   market_cap_usd: '139312819076.195',
   liquidity: '2099941.2238',
   dex: { id: 'sushiswap', name: 'SushiSwap' },
+  fee: '0.03',
   coin_gecko_terminal_url: 'https://www.geckoterminal.com/eth/pools/0x06da0fd433c1a5d7a4faa01111c044910a184553',
 };
 

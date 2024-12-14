@@ -26,15 +26,15 @@ const InfoButton = ({ children }: Props) => {
       colorScheme="gray"
       onClick={ onToggle }
       isActive={ isOpen }
-      aria-label="Show project info"
+      aria-label="Show info"
       fontWeight={ 500 }
       lineHeight={ 6 }
       pl={ 1 }
-      pr={ 2 }
+      pr={ isMobile ? 1 : 2 }
       h="32px"
     >
-      <IconSvg name="info" boxSize={ 6 } mr={ 1 }/>
-      <span>Info</span>
+      <IconSvg name="info" boxSize={ 6 } mr={ isMobile ? 0 : 1 }/>
+      { !isMobile && <span>Info</span> }
     </Button>
   );
 

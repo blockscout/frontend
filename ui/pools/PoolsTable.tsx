@@ -1,10 +1,10 @@
-import { Table, Tbody, Th, Tr, Flex, Tooltip } from '@chakra-ui/react';
+import { Table, Tbody, Th, Tr, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Pool } from 'types/api/pools';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import IconSvg from 'ui/shared/IconSvg';
+import Hint from 'ui/shared/Hint';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import PoolsTableItem from './PoolsTableItem';
@@ -24,18 +24,18 @@ const PoolsTable = ({ items, page, isLoading, top }: Props) => {
           <Th width="70%">Pool</Th>
           <Th width="30%">DEX </Th>
           <Th width="120px" isNumeric>
-            <Flex align="center">
+            <Flex alignItems="center" justifyContent="end">
               FDV
-              <Tooltip
+              <Hint
                 label="Fully Diluted Valuation: theoretical market cap if all tokens were in circulation"
-                placement="bottom"
-              >
-                <IconSvg name="info" boxSize={ 5 } ml={ 1 } color="text_secondary"/>
-              </Tooltip>
+                boxSize={ 5 }
+                ml={ 1 }
+              />
             </Flex>
           </Th>
           <Th width="120px" isNumeric>Market cap</Th>
           <Th width="120px" isNumeric>Liquidity</Th>
+          <Th width="75px" isNumeric>View in</Th>
         </Tr>
       </Thead>
       <Tbody>

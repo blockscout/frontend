@@ -1,4 +1,4 @@
-import { Tag, Box, Flex, Image } from '@chakra-ui/react';
+import { Tag, Box, Flex, Image, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -6,6 +6,8 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import getPoolLinks from 'lib/pools/getPoolLinks';
+import { getPoolTitle } from 'lib/pools/getPoolTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import * as addressStubs from 'stubs/address';
 import { POOL } from 'stubs/pools';
@@ -61,12 +63,7 @@ const Pool = () => {
     );
   })();
 
-  // More links can be added here
-  const externalLinks = [ {
-    url: data?.coin_gecko_terminal_url,
-    image: '/static/gecko_terminal.png',
-    title: 'GeckoTerminal',
-  } ].filter(link => Boolean(link.url));
+  const externalLinks = getPoolLinks(data);
   const hasLinks = externalLinks.length > 0;
 
   const externalLinksComponents = React.useMemo(() => {
@@ -91,7 +88,7 @@ const Pool = () => {
         { hasLinks && (
           <VerifyWith
             links={ externalLinksComponents }
-            label=""
+            label="Verify with"
             longText="View in"
             shortText=""
           />
@@ -113,7 +110,7 @@ const Pool = () => {
     };
   }, [ appProps.referrer ]);
 
-  const poolTitle = data ? `${ data.base_token_symbol } / ${ data.quote_token_symbol }` : '';
+  const poolTitle = data ? getPoolTitle(data) : '';
 
   return (
     <>
@@ -127,7 +124,7 @@ const Pool = () => {
             size="lg"
           />
         ) : null }
-        contentAfter={ <Tag>Pool</Tag> }
+        contentAfter={ <Skeleton isLoaded={ !isPlaceholderData }><Tag>Pool</Tag></Skeleton> }
         secondRow={ titleSecondRow }
         isLoading={ isPlaceholderData }
         withTextAd

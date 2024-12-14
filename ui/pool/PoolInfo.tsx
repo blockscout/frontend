@@ -16,7 +16,7 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
   return (
     <Grid
       columnGap={ 8 }
-      rowGap={{ base: 3, lg: 3 }}
+      rowGap={{ base: 1, lg: 3 }}
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
       overflow="hidden"
     >

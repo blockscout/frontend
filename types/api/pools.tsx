@@ -22,5 +22,6 @@ export type Pool = {
     id: string;
     name: string;
   };
+  fee?: string;
   coin_gecko_terminal_url: string;
 };

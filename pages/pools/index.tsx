@@ -8,7 +8,7 @@ const Pools = dynamic(() => import('ui/pages/Pools'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageNextJs pathname="/name-domains">
+    <PageNextJs pathname="/pools">
       <Pools/>
     </PageNextJs>
   );

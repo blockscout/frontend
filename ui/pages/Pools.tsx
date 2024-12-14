@@ -1,4 +1,4 @@
-import { Show, Hide } from '@chakra-ui/react';
+import { Show, Hide, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -28,7 +28,7 @@ const Pools = () => {
     pathParams: { chainId: config.chain.id },
     filters: { query: debouncedSearchTerm },
     options: {
-      placeholderData: { items: Array(50).fill(POOL), next_page_params: null },
+      placeholderData: { items: Array(50).fill(POOL), next_page_params: { page_token: 'a', page_size: 50 } },
     },
   });
 
@@ -70,10 +70,20 @@ const Pools = () => {
   );
 
   const actionBar = (
-    <ActionBar mt={ -6 }>
-      { filter }
-      <Pagination { ...poolsQuery.pagination }/>
-    </ActionBar>
+    <>
+      <Flex mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
+        { filter }
+      </Flex>
+      <ActionBar
+        mt={ -6 }
+        display={{ base: poolsQuery.pagination.isVisible ? 'flex' : 'none', lg: 'flex' }}
+      >
+        <Hide below="lg">
+          { filter }
+        </Hide>
+        <Pagination { ...poolsQuery.pagination } ml="auto"/>
+      </ActionBar>
+    </>
   );
 
   return (
@@ -90,7 +100,7 @@ const Pools = () => {
         actionBar={ actionBar }
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find pools that matches your filter query.`,
-          hasActiveFilters: Boolean(searchTerm),
+          hasActiveFilters: Boolean(debouncedSearchTerm),
         }}
       />
     </>
