@@ -42,7 +42,7 @@ test.describe('no url', () => {
     await page.route(ANIMATION_MEDIA_TYPE_API_URL, (route) => {
       return route.fulfill({
         status: 200,
-        body: JSON.stringify({ type: undefined }),
+        json: { type: undefined },
       });
     });
     await mockAssetResponse(IMAGE_URL, './playwright/mocks/image_long.jpg');
@@ -121,7 +121,7 @@ test.describe('page', () => {
     await mockAssetResponse(MEDIA_URL, './playwright/mocks/page.html');
     await page.route(MEDIA_TYPE_API_URL, (route) => route.fulfill({
       status: 200,
-      body: JSON.stringify({ type: 'html' }),
+      json: { type: 'html' },
     }));
   });
 

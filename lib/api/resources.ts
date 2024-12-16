@@ -263,6 +263,9 @@ export const RESOURCES = {
   auth_link_address: {
     path: '/api/account/v2/address/link',
   },
+  auth_logout: {
+    path: '/api/account/auth/logout',
+  },
 
   // STATS MICROSERVICE API
   stats_counters: {

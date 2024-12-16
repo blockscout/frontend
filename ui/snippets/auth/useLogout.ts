@@ -4,13 +4,17 @@ import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
+import config from 'configs/app';
+import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
+import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
 
 const PROTECTED_ROUTES: Array<Route['pathname']> = [
   '/account/api-key',
   '/account/custom-abi',
+  '/account/rewards',
   '/account/tag-address',
   '/account/verified-addresses',
   '/account/watchlist',
@@ -20,26 +24,46 @@ const PROTECTED_ROUTES: Array<Route['pathname']> = [
 export default function useLogout() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const toast = useToast();
+  const apiFetch = useApiFetch();
 
   return React.useCallback(async() => {
-    cookies.remove(cookies.NAMES.API_TOKEN);
+    try {
+      await apiFetch('auth_logout');
+      cookies.remove(cookies.NAMES.API_TOKEN);
 
-    queryClient.resetQueries({
-      queryKey: getResourceKey('user_info'),
-      exact: true,
-    });
-    queryClient.resetQueries({
-      queryKey: getResourceKey('custom_abi'),
-      exact: true,
-    });
+      if (config.features.rewards.isEnabled) {
+        const rewardsToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
+        await apiFetch('rewards_logout', { fetchParams: {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${ rewardsToken }` },
+        } });
+        cookies.remove(cookies.NAMES.REWARDS_API_TOKEN);
+      }
 
-    mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
+      queryClient.resetQueries({
+        queryKey: getResourceKey('user_info'),
+        exact: true,
+      });
+      queryClient.resetQueries({
+        queryKey: getResourceKey('custom_abi'),
+        exact: true,
+      });
 
-    if (
-      PROTECTED_ROUTES.includes(router.pathname) ||
-        (router.pathname === '/txs' && router.query.tab === 'watchlist')
-    ) {
-      router.push({ pathname: '/' }, undefined, { shallow: true });
+      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
+
+      if (
+        PROTECTED_ROUTES.includes(router.pathname) ||
+          (router.pathname === '/txs' && router.query.tab === 'watchlist')
+      ) {
+        router.push({ pathname: '/' }, undefined, { shallow: true });
+      }
+    } catch (error) {
+      toast({
+        status: 'error',
+        title: 'Logout failed',
+        description: 'Please try again later',
+      });
     }
-  }, [ queryClient, router ]);
+  }, [ apiFetch, queryClient, router, toast ]);
 }
