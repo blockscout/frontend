@@ -86,10 +86,10 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
       return 'Connect wallet';
     }
     if (isLoggedIntoAccountWithWallet) {
-      return 'Get started';
+      return isSignUp ? 'Get started' : 'Continue';
     }
     return profileQuery.data?.email ? 'Add wallet to account' : 'Log in to account';
-  }, [ isConnected, isLoggedIntoAccountWithWallet, profileQuery.data ]);
+  }, [ isConnected, isLoggedIntoAccountWithWallet, profileQuery.data, isSignUp ]);
 
   return (
     <>

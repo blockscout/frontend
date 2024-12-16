@@ -14,6 +14,7 @@ import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInval
 
 const RewardsDashboard = () => {
   const { balancesQuery, apiToken, referralsQuery, rewardsConfigQuery, dailyRewardQuery, isInitialized } = useRewardsContext();
+
   const [ isError, setIsError ] = useState(false);
 
   useRedirectForInvalidAuthToken();
@@ -32,6 +33,13 @@ const RewardsDashboard = () => {
     return null;
   }
 
+  let shareText = `Claim your free @blockscoutcom #Merits and start building your daily streak today! #Blockscout #Merits #IYKYK\n\nBoost your rewards instantly by using my referral code: ${ referralsQuery.data?.link }`; // eslint-disable-line max-len
+
+  if (dailyRewardQuery.data?.streak && Number(dailyRewardQuery.data.streak) > 0) {
+    const days = `day${ Number(dailyRewardQuery.data.streak) === 1 ? '' : 's' }`;
+    shareText = `I${ apos }ve claimed Merits ${ dailyRewardQuery.data.streak } ${ days } in a row!\n\n` + shareText;
+  }
+
   return (
     <>
       <PageTitle
@@ -48,8 +56,9 @@ const RewardsDashboard = () => {
       />
       <Flex flexDirection="column" alignItems="flex-start" w="full" gap={ 6 }>
         { isError && <Alert status="error">Failed to load some data. Please try again later.</Alert> }
-        <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
+        <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }} w="full">
           <RewardsDashboardCard
+            title="All Merits"
             description="Claim your daily Merits and any Merits received from referrals."
             direction="column-reverse"
             contentAfter={ <DailyRewardClaimButton/> }
@@ -81,56 +90,122 @@ const RewardsDashboard = () => {
                 'N/A'
               }
               isLoading={ referralsQuery.isPending }
-              hint="The number of referrals who registered with your code/link."
             />
           </RewardsDashboardCard>
           <RewardsDashboardCard
-            title="Streaks"
-            description={ `Current number of consecutive days you${ apos }ve claimed your daily Merits.` }
+            title="Streak"
+            description={ (
+              <>
+                Current number of consecutive days you{ apos }ve claimed your daily Merits.{ ' ' }
+                The longer your streak, the more daily Merits you can earn.{ ' ' }
+                <LinkExternal
+                  href={ `https://x.com/intent/tweet?text=${ encodeURIComponent(shareText) }` }
+                  fontWeight="500"
+                >
+                  Share on X
+                </LinkExternal>
+              </>
+            ) }
             direction="column-reverse"
-            availableSoon
-            blurFilter
           >
-            <RewardsDashboardCardValue label="Streaks" value="5 days"/>
+            <RewardsDashboardCardValue
+              label="Streak"
+              value={
+                dailyRewardQuery.data?.streak ?
+                  `${ dailyRewardQuery.data?.streak } day${ Number(dailyRewardQuery.data?.streak) === 1 ? '' : 's' }` :
+                  'N/A'
+              }
+              isLoading={ dailyRewardQuery.isPending }
+              hint={ (
+                <>
+                  See the{ ' ' }
+                  <LinkExternal
+                    href="https://docs.blockscout.com/using-blockscout/merits/streak-number-and-daily-rewards"
+                    isExternal
+                  >
+                    docs
+                  </LinkExternal>{ ' ' }
+                  to learn how your streak number affects daily rewards
+                </>
+              ) }
+            />
           </RewardsDashboardCard>
         </Flex>
-        <RewardsDashboardCard
-          title="Referral program"
-          description={ (
-            <>
-              Refer friends and boost your Merits! You receive a{ ' ' }
-              <Skeleton as="span" isLoaded={ !rewardsConfigQuery.isPending }>
-                { rewardsConfigQuery.data?.rewards.referral_share ?
-                  `${ Number(rewardsConfigQuery.data?.rewards.referral_share) * 100 }%` :
-                  'N/A'
-                }
-              </Skeleton>
-              { ' ' }bonus on all Merits earned by your referrals.
-            </>
-          ) }
-          direction="row"
-        >
-          <Flex
-            flex={ 1 }
-            gap={{ base: 2, md: 6 }}
-            px={{ base: 4, md: 6 }}
-            py={{ base: 4, md: 0 }}
-            flexDirection={{ base: 'column', md: 'row' }}
+        <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
+          <RewardsDashboardCard
+            title="Referral program"
+            description={ (
+              <>
+                Refer friends and boost your Merits! You receive a{ ' ' }
+                <Skeleton as="span" isLoaded={ !rewardsConfigQuery.isPending }>
+                  { rewardsConfigQuery.data?.rewards.referral_share ?
+                    `${ Number(rewardsConfigQuery.data?.rewards.referral_share) * 100 }%` :
+                    'N/A'
+                  }
+                </Skeleton>
+                { ' ' }bonus on all Merits earned by your referrals.
+              </>
+            ) }
           >
-            <RewardsReadOnlyInputWithCopy
-              label="Referral link"
-              value={ referralsQuery.data?.link || 'N/A' }
-              isLoading={ referralsQuery.isPending }
-              flex={ 2 }
-            />
-            <RewardsReadOnlyInputWithCopy
-              label="Referral code"
-              value={ referralsQuery.data?.code || 'N/A' }
-              isLoading={ referralsQuery.isPending }
+            <Flex
               flex={ 1 }
-            />
-          </Flex>
-        </RewardsDashboardCard>
+              gap={{ base: 2, lg: 6 }}
+              px={{ base: 4, lg: 6 }}
+              py={{ base: 4, lg: 0 }}
+              flexDirection={{ base: 'column', lg: 'row' }}
+            >
+              <RewardsReadOnlyInputWithCopy
+                label="Referral link"
+                value={ referralsQuery.data?.link || 'N/A' }
+                isLoading={ referralsQuery.isPending }
+                flex={ 2 }
+              />
+              <RewardsReadOnlyInputWithCopy
+                label="Referral code"
+                value={ referralsQuery.data?.code || 'N/A' }
+                isLoading={ referralsQuery.isPending }
+                flex={ 1 }
+              />
+            </Flex>
+          </RewardsDashboardCard>
+          <RewardsDashboardCard
+            title="Badges"
+            description={ (
+              <Flex flexDir="column" gap={ 2 }>
+                <span>
+                  Collect limited and legendary badges by completing different Blockscout related tasks.
+                  Go to the badges website to see what{ apos }s available and start your collection today.
+                </span>
+              </Flex>
+            ) }
+          >
+            <Flex
+              flex={ 1 }
+              gap={ 4 }
+              pl={ 10 }
+              pr={ 7 }
+              py={{ base: 4, lg: 0 }}
+              flexDirection={{ base: 'column', lg: 'row' }}
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Image
+                src="/static/badges.svg"
+                alt="Badges"
+                w="260px"
+                h="86px"
+                fallback={ <Skeleton w="260px" h="86px"/> }
+              />
+              <LinkExternal
+                href="https://merits.blockscout.com/?tab=badges&utm_source=blockscout&utm_medium=dashboard"
+                fontSize="md"
+                fontWeight="500"
+              >
+                View badges
+              </LinkExternal>
+            </Flex>
+          </RewardsDashboardCard>
+        </Flex>
         <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
           <RewardsDashboardCard
             title="Activity"
@@ -151,55 +226,6 @@ const RewardsDashboard = () => {
             <RewardsDashboardCardValue label="Received" value="0" withIcon/>
           </RewardsDashboardCard>
         </Flex>
-        <RewardsDashboardCard
-          title="Badges"
-          description={ (
-            <Flex flexDir="column" gap={ 2 }>
-              <span>
-                Collect limited and legendary badges by completing different Blockscout related tasks.
-                Go to the badges website to see what{ apos }s available and start your collection today.
-              </span>
-              <LinkExternal
-                href="https://badges.blockscout.com?utm_source=blockscout&utm_medium=merits-dashboard"
-                fontSize="md"
-                fontWeight="500"
-              >
-                Go to website
-              </LinkExternal>
-            </Flex>
-          ) }
-          direction="row"
-          availableSoon
-        >
-          <Flex
-            flex={ 1 }
-            px={{ base: 4, md: 6 }}
-            py={{ base: 4, md: 0 }}
-            justifyContent="space-between"
-            gap={ 2 }
-          >
-            { Array(5).fill(null).map((_, index) => (
-              <Image
-                key={ index }
-                display={{ base: index > 2 ? 'none' : 'block', sm: 'block' }}
-                src={ `/static/badges/badge_${ index + 1 }.svg` }
-                alt={ `Badge ${ index + 1 }` }
-                w={{ base: 'calc((100% - 16px) / 3)', sm: 'calc((100% - 32px) / 5)' }}
-                maxW={{ base: '80px', md: '100px' }}
-                maxH={{ base: '80px', md: '100px' }}
-                fallback={ (
-                  <Skeleton
-                    display={{ base: index > 2 ? 'none' : 'block', sm: 'block' }}
-                    w={{ base: 'calc((100% - 16px) / 3)', sm: 'calc((100% - 32px) / 5)' }}
-                    maxW={{ base: '80px', md: '100px' }}
-                    maxH={{ base: '80px', md: '100px' }}
-                    aspectRatio={ 1 }
-                  />
-                ) }
-              />
-            )) }
-          </Flex>
-        </RewardsDashboardCard>
       </Flex>
     </>
   );
