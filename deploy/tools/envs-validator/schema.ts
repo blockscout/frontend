@@ -870,6 +870,16 @@ const schema = yup
           value => value === undefined,
         ),
       }),
+    NEXT_PUBLIC_DEX_POOLS_ENABLED: yup.boolean()
+      .when('NEXT_PUBLIC_CONTRACT_INFO_API_HOST', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_DEX_POOLS_ENABLED can only be used with NEXT_PUBLIC_CONTRACT_INFO_API_HOST',
+          value => value === undefined,
+        ),
+      }),
     NEXT_PUBLIC_SAVE_ON_GAS_ENABLED: yup.boolean(),
     NEXT_PUBLIC_ADDRESS_USERNAME_TAG: yup
       .mixed()

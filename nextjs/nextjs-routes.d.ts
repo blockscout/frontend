@@ -52,6 +52,8 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/op/[hash]", { "hash": string }>
     | StaticRoute<"/ops">
     | StaticRoute<"/output-roots">
+    | DynamicRoute<"/pools/[hash]", { "hash": string }>
+    | StaticRoute<"/pools">
     | StaticRoute<"/public-tags/submit">
     | StaticRoute<"/search-results">
     | StaticRoute<"/sprite">

@@ -56,7 +56,7 @@ test('with verified info', async({ render, page, createSocket, mockApiResponse, 
   const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
-  await page.getByRole('button', { name: /project info/i }).click();
+  await page.getByLabel('Show info').click();
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],

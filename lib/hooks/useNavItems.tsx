@@ -197,7 +197,13 @@ export default function useNavItems(): ReturnType {
         icon: 'token-transfers',
         isActive: pathname === '/token-transfers',
       },
-    ];
+      config.features.pools.isEnabled && {
+        text: 'DEX tracker',
+        nextRoute: { pathname: '/pools' as const },
+        icon: 'dex-tracker',
+        isActive: pathname === '/pools' || pathname.startsWith('/pool/'),
+      },
+    ].filter(Boolean);
 
     const apiNavItems: Array<NavItem> = [
       config.features.restApiDocs.isEnabled ? {

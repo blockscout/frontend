@@ -54,6 +54,8 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/mud-worlds': 'Root page',
   '/token-transfers': 'Root page',
   '/advanced-filter': 'Root page',
+  '/pools': 'Root page',
+  '/pools/[hash]': 'Regular page',
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',
