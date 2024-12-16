@@ -2,7 +2,7 @@ import type { Feature } from './types';
 
 import { getEnvValue } from '../utils';
 
-const badgeClaimLink = getEnvValue('NEXT_PUBLIC_BADGE_CLAIM_LINK');
+const badgeClaimLink = getEnvValue('NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK');
 
 const title = 'Easter egg badge';
 

@@ -34,18 +34,18 @@ const CapybaraRunner = () => {
     <>
       <Script strategy="lazyOnload" src="/static/capibara/index.js"/>
       <Box width={{ base: '100%', lg: '600px' }} height="300px" p="50px 0">
-        <div id="main-frame-error" className="interstitial-wrapper">
+        <div id="main-frame-error" className="interstitial-wrapper" style={{ marginTop: '20px' }}>
           <div id="main-content"></div>
-          <div id="offline-resources">
+          <div id="offline-resources" style={{ display: 'none' }}>
             <img id="offline-resources-1x" src="/static/capibara/capybaraSprite.png"/>
             <img id="offline-resources-2x" src="/static/capibara/capybaraSpriteX2.png"/>
           </div>
         </div>
       </Box>
       { easterEggBadgeFeature.isEnabled && hasReachedHighScore && (
-        <Flex flexDirection="column" alignItems="center" justifyContent="center" gap={ 4 }>
+        <Flex flexDirection="column" alignItems="center" justifyContent="center" gap={ 4 } mt={ 10 }>
           <Text fontSize="2xl" fontWeight="bold">You unlocked a hidden badge!</Text>
-          <Text fontSize="lg">Congratulations! You’re eligible to claim an epic hidden badge!</Text>
+          <Text fontSize="lg" textAlign="center">Congratulations! You’re eligible to claim an epic hidden badge!</Text>
           <Button as="a" href={ easterEggBadgeFeature.badgeClaimLink } target="_blank">Claim</Button>
         </Flex>
       ) }
