@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -11,6 +12,8 @@ import getNetworkValidationActionText from 'lib/networks/getNetworkValidationAct
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
+import IconSvg from 'ui/shared/IconSvg';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -145,6 +148,35 @@ const Transactions = () => {
     }
   })();
 
+  const rightSlot = (() => {
+    if (isMobile) {
+      return null;
+    }
+
+    const isAdvancedFilterEnabled = config.features.advancedFilter.isEnabled;
+
+    if (!isAdvancedFilterEnabled && !pagination.isVisible) {
+      return null;
+    }
+
+    return (
+      <Flex alignItems="center" gap={ 6 }>
+        { isAdvancedFilterEnabled && (
+          <LinkInternal
+            href="/advanced-filter"
+            alignItems="center"
+            display="flex"
+            gap={ 1 }
+          >
+            <IconSvg name="filter" boxSize={ 5 }/>
+            Advanced filter
+          </LinkInternal>
+        ) }
+        { pagination.isVisible && <Pagination my={ 1 } { ...pagination }/> }
+      </Flex>
+    );
+  })();
+
   return (
     <>
       <PageTitle
@@ -155,9 +187,7 @@ const Transactions = () => {
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ (
-          pagination.isVisible && !isMobile ? <Pagination my={ 1 } { ...pagination }/> : null
-        ) }
+        rightSlot={ rightSlot }
         stickyEnabled={ !isMobile }
       />
     </>
