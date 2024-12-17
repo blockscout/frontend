@@ -40,7 +40,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         // }`,
         'owner_address',
       ],
-      where: { _and: [ { group_id: { _eq: router.query.address } }, { account_address: { _neq: '' } }, { removed: { _eq: false } } ] },
+      where: { _and: [ { group_id: { _eq: router.query.address } }, { removed: { _eq: false } } ] },
     },
     {
       tableName: 'transaction',
@@ -60,13 +60,8 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     {
       tableName: 'groups',
       where: {
-        _and: [
-          {
-            account_address: { _neq: '' },
-          },
-        ],
         removed: { _eq: false },
-        group_name: { _ilike: router.query.address },
+        group_id: { _ilike: router.query.address },
       },
       fields: [
         'account_address',
