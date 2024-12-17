@@ -34,11 +34,13 @@ export default function useLogout() {
 
       if (config.features.rewards.isEnabled) {
         const rewardsToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
-        await apiFetch('rewards_logout', { fetchParams: {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${ rewardsToken }` },
-        } });
-        cookies.remove(cookies.NAMES.REWARDS_API_TOKEN);
+        if (rewardsToken) {
+          await apiFetch('rewards_logout', { fetchParams: {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${ rewardsToken }` },
+          } });
+          cookies.remove(cookies.NAMES.REWARDS_API_TOKEN);
+        }
       }
 
       queryClient.resetQueries({
