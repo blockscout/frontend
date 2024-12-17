@@ -53,6 +53,7 @@ export default function useLogout() {
       });
 
       mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
+      mixpanel.reset();
 
       if (
         PROTECTED_ROUTES.includes(router.pathname) ||
