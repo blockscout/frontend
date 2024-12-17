@@ -56,18 +56,18 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       where: { bucket_id: { _eq: router.query.address } }, // Example filter condition
       // order: { create_at: "DESC" } // Example order condition
     },
-    {
-      tableName: 'transaction',
-      fields: [
-        'gas_used',
-        'gas_wanted',
-        'logs',
-        'memo',
-        'raw_log',
-        'messages',
-        'hash',
-      ],
-    },
+    // {
+    //   tableName: 'transaction',
+    //   fields: [
+    //     'gas_used',
+    //     'gas_wanted',
+    //     'logs',
+    //     'memo',
+    //     'raw_log',
+    //     'messages',
+    //     'hash',
+    //   ],
+    // },
   ];
   const { loading, data } = useGraphqlQuery('Bucket', router.query.address ? queries : []);
   const details = data?.buckets && data?.buckets[0];
