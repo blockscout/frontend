@@ -1,4 +1,4 @@
-name: Publish Docker image of Game7 testnet to public registry
+name: Publish Docker image of Game7 to public registry
 
 on:
     push:
