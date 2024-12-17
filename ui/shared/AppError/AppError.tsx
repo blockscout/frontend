@@ -24,6 +24,10 @@ interface Props {
 }
 
 const ERROR_TEXTS: Record<string, { title: string; text: string }> = {
+  '403': {
+    title: 'Forbidden',
+    text: 'Access to this resource is restricted.',
+  },
   '404': {
     title: 'Page not found',
     text: 'This page is no longer explorable! If you are lost, use the search bar to find what you are looking for.',
