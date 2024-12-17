@@ -31,6 +31,7 @@ const wagmi = (() => {
     projectId: feature.walletConnect.projectId,
     ssr: true,
     batch: { multicall: { wait: 100 } },
+    syncConnectedChain: false,
   });
 
   return { config: wagmiAdapter.wagmiConfig, adapter: wagmiAdapter };
