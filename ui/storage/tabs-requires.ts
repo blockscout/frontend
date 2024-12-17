@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import useGraphqlQuery from 'lib/api/useGraphqlQuery';
+// import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 
 type TokenType = 'Transactions' | 'Versions'
 
@@ -39,6 +39,6 @@ const map = (id: number, page: number) => {
 export const Requires = (payload: TokenType, page: number, id: number) => {
   const queries = id ? map(id, page)[payload] : [];
 
-  const { loading, data } = useGraphqlQuery('Objects', queries);
-  return { loading, data };
+  // const { loading, data } = useGraphqlQuery('Objects', queries);
+  return queries;
 };

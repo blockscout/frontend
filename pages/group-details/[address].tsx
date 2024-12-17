@@ -42,18 +42,18 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       ],
       where: { _and: [ { group_id: { _eq: router.query.address } }, { removed: { _eq: false } } ] },
     },
-    {
-      tableName: 'transaction',
-      fields: [
-        'gas_used',
-        'gas_wanted',
-        'logs',
-        'memo',
-        'raw_log',
-        'messages',
-        'hash',
-      ],
-    },
+    // {
+    //   tableName: 'transaction',
+    //   fields: [
+    //     'gas_used',
+    //     'gas_wanted',
+    //     'logs',
+    //     'memo',
+    //     'raw_log',
+    //     'messages',
+    //     'hash',
+    //   ],
+    // },
   ];
 
   const groupCount = [
