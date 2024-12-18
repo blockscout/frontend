@@ -4,6 +4,7 @@ import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
 const ICONS: Record<string, IconName> = {
+  '403': 'error-pages/403',
   '404': 'error-pages/404',
   '422': 'error-pages/422',
   '429': 'error-pages/429',
