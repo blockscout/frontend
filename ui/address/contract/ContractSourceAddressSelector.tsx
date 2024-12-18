@@ -60,7 +60,7 @@ const ContractSourceAddressSelector = ({ className, selectedItem, onItemSelect, 
       <Select
         options={ options }
         name="contract-source-address"
-        defaultValue={ options[0].value }
+        defaultValue={ selectedItem.address }
         onChange={ handleItemSelect }
         isLoading={ isLoading }
         maxW={{ base: '180px', lg: 'none' }}
