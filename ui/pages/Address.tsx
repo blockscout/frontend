@@ -206,7 +206,7 @@ const AddressPageContent = () => {
       {
         id: 'internal_txns',
         title: 'Internal txns',
-        count: addressTabsCountersQuery.data?.internal_txs_count,
+        count: addressTabsCountersQuery.data?.internal_transactions_count,
         component: <AddressInternalTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       },
       addressTabsCountersQuery.data?.celo_election_rewards_count ? {
