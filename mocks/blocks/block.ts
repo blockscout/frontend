@@ -215,7 +215,7 @@ export const withBlobTxs: Block = {
   blob_gas_used: '393216',
   burnt_blob_fees: '8461393325064192',
   excess_blob_gas: '79429632',
-  blob_tx_count: 1,
+  blob_transaction_count: 1,
 };
 
 export const withWithdrawals: Block = {
