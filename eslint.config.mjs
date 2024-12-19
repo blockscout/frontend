@@ -428,6 +428,7 @@ export default tseslint.config(
       'pages/**',
       'nextjs/**',
       'playwright/**',
+      'deploy/scripts/**',
       'deploy/tools/**',
       'middleware.ts',
       'instrumentation*.ts',
