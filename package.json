@@ -23,7 +23,7 @@
     "lint:envs-validator:test": "cd ./deploy/tools/envs-validator && ./test.sh",
     "prepare": "husky install",
     "svg:format": "svgo -r ./icons",
-    "svg:build-sprite": "icons build -i ./icons -o ./public/icons --optimize",
+    "svg:build-sprite": "./deploy/scripts/build_sprite.sh",
     "test:pw": "./tools/scripts/pw.sh",
     "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && yarn test:pw",
     "test:pw:docker": "docker run --rm --ipc=host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.49.0-noble ./tools/scripts/pw.docker.sh",

@@ -56,9 +56,11 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Generate .env.registry with ENVs list and save build args into .env file
-COPY --chmod=755 ./deploy/scripts/collect_envs.sh ./
-RUN ./collect_envs.sh ./docs/ENVS.md
+# Build SVG sprite and generate .env.registry with ENVs list and save build args into .env file
+RUN set -a && \
+    source ./deploy/scripts/build_sprite.sh && \
+    ./deploy/scripts/collect_envs.sh ./docs/ENVS.md && \
+    set +a
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -66,7 +68,6 @@ RUN ./collect_envs.sh ./docs/ENVS.md
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 # Build app for production
-RUN yarn svg:build-sprite
 RUN yarn build
 
 
