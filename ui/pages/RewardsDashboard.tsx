@@ -120,7 +120,7 @@ const RewardsDashboard = () => {
                 <>
                   See the{ ' ' }
                   <LinkExternal
-                    href="https://docs.blockscout.com/using-blockscout/merits/streak-number-and-daily-rewards"
+                    href="https://docs.blockscout.com/using-blockscout/merits/streak-rewards"
                     isExternal
                   >
                     docs
