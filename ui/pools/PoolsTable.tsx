@@ -23,7 +23,7 @@ const PoolsTable = ({ items, page, isLoading, top }: Props) => {
         <Tr>
           <Th width="70%">Pool</Th>
           <Th width="30%">DEX </Th>
-          <Th width="120px" isNumeric>
+          <Th width="130px" isNumeric>
             <Flex alignItems="center" justifyContent="end">
               FDV
               <Hint
@@ -33,8 +33,8 @@ const PoolsTable = ({ items, page, isLoading, top }: Props) => {
               />
             </Flex>
           </Th>
-          <Th width="120px" isNumeric>Market cap</Th>
-          <Th width="120px" isNumeric>Liquidity</Th>
+          <Th width="130px" isNumeric>Market cap</Th>
+          <Th width="130px" isNumeric>Liquidity</Th>
           <Th width="75px" isNumeric>View in</Th>
         </Tr>
       </Thead>

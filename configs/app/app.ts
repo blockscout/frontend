@@ -10,6 +10,7 @@ const baseUrl = [
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
 const isDev = getEnvValue('NEXT_PUBLIC_APP_ENV') === 'development';
+const spriteHash = getEnvValue('NEXT_PUBLIC_ICON_SPRITE_HASH');
 
 const app = Object.freeze({
   isDev,
@@ -18,6 +19,7 @@ const app = Object.freeze({
   port: appPort,
   baseUrl,
   useProxy: getEnvValue('NEXT_PUBLIC_USE_NEXT_JS_PROXY') === 'true',
+  spriteHash,
 });
 
 export default app;
