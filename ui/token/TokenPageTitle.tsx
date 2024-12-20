@@ -135,7 +135,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
       <AccountActionsMenu isLoading={ isLoading }/>
       <Flex ml={{ base: 0, lg: 'auto' }} columnGap={ 2 } flexGrow={{ base: 1, lg: 0 }}>
         <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery }/>
-        <NetworkExplorers type="token" pathParam={ addressHash } ml={{ base: 'auto', lg: 0 }}/>
+        <NetworkExplorers type="token" pathParam={ addressHash.toLowerCase() } ml={{ base: 'auto', lg: 0 }}/>
       </Flex>
     </Flex>
   );
