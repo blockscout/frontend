@@ -92,6 +92,16 @@ export const withdrawals: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const txnWithdrawals: GetServerSideProps<Props> = async(context) => {
+  if (!(rollupFeature.isEnabled && rollupFeature.type === 'arbitrum')) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const rollup: GetServerSideProps<Props> = async(context) => {
   if (!config.features.rollup.isEnabled) {
     return {
