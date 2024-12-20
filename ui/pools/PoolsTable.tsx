@@ -18,7 +18,7 @@ type Props = {
 
 const PoolsTable = ({ items, page, isLoading, top }: Props) => {
   return (
-    <Table>
+    <Table minWidth="900px">
       <Thead top={ top ?? ACTION_BAR_HEIGHT_DESKTOP }>
         <Tr>
           <Th width="70%">Pool</Th>
