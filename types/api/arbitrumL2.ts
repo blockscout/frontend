@@ -12,6 +12,8 @@ export interface ArbitrumLatestDepositsResponse {
   items: Array<ArbitrumLatestDepositsItem>;
 }
 
+export type ArbitrumL2MessageStatus = 'initiated' | 'sent' | 'confirmed' | 'relayed';
+
 export type ArbitrumL2MessagesItem = {
   completion_transaction_hash: string | null;
   id: number;
@@ -19,7 +21,7 @@ export type ArbitrumL2MessagesItem = {
   origination_timestamp: string | null;
   origination_transaction_block_number: number | null;
   origination_transaction_hash: string;
-  status: 'initiated' | 'sent' | 'confirmed' | 'relayed';
+  status: ArbitrumL2MessageStatus;
 };
 
 export type ArbitrumL2MessagesResponse = {
@@ -107,6 +109,24 @@ export type ArbitrumL2BatchBlocks = {
     items_count: number;
   } | null;
 };
+
+export interface ArbitrumL2TxnWithdrawalsItem {
+  // TODO @tom2drum check if all fields are required + token not-null case
+  arb_block_number: number;
+  caller: string;
+  callvalue: number;
+  data: string;
+  destination: string;
+  eth_block_number: number;
+  id: number;
+  l2_timestamp: number;
+  status: ArbitrumL2MessageStatus;
+  token: null;
+}
+
+export interface ArbitrumL2TxnWithdrawalsResponse {
+  items: Array<ArbitrumL2TxnWithdrawalsItem>;
+}
 
 export const ARBITRUM_L2_TX_BATCH_STATUSES = [
   'Processed on rollup' as const,

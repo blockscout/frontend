@@ -246,6 +246,11 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/public-tags/submit' as const },
         isActive: pathname.startsWith('/public-tags/submit'),
       },
+      rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && {
+        text: 'Txn withdrawals',
+        nextRoute: { pathname: '/txn-withdrawals' as const },
+        isActive: pathname.startsWith('/txn-withdrawals'),
+      },
       ...config.UI.navigation.otherLinks,
     ].filter(Boolean);
 
