@@ -31,9 +31,14 @@ const PoolsTableItem = ({
           <Skeleton isLoaded={ !isLoading }>
             <Text px={ 2 }>{ getItemIndex(index, page) }</Text>
           </Skeleton>
-          <Box>
+          <Box overflow="hidden">
             <PoolEntity pool={ item } fontWeight={ 700 } mb={ 2 } isLoading={ isLoading }/>
-            <AddressEntity address={{ hash: item.contract_address }} noIcon isLoading={ isLoading }/>
+            <AddressEntity
+              address={{ hash: item.contract_address }}
+              noIcon
+              isLoading={ isLoading }
+              truncation="constant_long"
+            />
           </Box>
         </Flex>
       </Td>

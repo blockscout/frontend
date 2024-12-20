@@ -136,7 +136,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       ) }
       { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && Boolean(baseFeeValue) && (
         <Td fontSize="sm" isNumeric>
-          <Skeleton isLoaded={ !isLoading } display="inline-block">
+          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre-wrap" wordBreak="break-word">
             { baseFeeValue }
           </Skeleton>
         </Td>

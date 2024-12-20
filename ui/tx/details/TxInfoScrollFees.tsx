@@ -22,7 +22,7 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
         <>
           <DetailsInfoItem.Label
 
-            hint="L1 fee that pays for rollup costs."
+            hint="L1 fee that pays for rollup costs"
             isLoading={ isLoading }
           >
             L1 data fee
