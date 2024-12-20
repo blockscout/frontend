@@ -4,9 +4,9 @@ import React from 'react';
 import type { Abi } from 'viem';
 
 import getQueryParamString from 'lib/router/getQueryParamString';
+import ConnectWalletAlert from 'ui/shared/ConnectWalletAlert';
 
 import ContractAbi from './ContractAbi';
-import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
@@ -29,7 +29,7 @@ const ContractMethodsRegular = ({ abi, isLoading }: Props) => {
 
   return (
     <Flex flexDir="column" rowGap={ 6 }>
-      <ContractConnectWallet isLoading={ isLoading }/>
+      <ConnectWalletAlert isLoading={ isLoading }/>
       <ContractMethodsFilters
         defaultMethodType={ filters.methodType }
         defaultSearchTerm={ filters.searchTerm }

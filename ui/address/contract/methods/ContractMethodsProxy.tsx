@@ -6,10 +6,10 @@ import type { AddressImplementation } from 'types/api/addressParams';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import ConnectWalletAlert from 'ui/shared/ConnectWalletAlert';
 
 import ContractSourceAddressSelector from '../ContractSourceAddressSelector';
 import ContractAbi from './ContractAbi';
-import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
@@ -41,7 +41,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: 
 
   return (
     <Flex flexDir="column" rowGap={ 6 }>
-      <ContractConnectWallet isLoading={ isInitialLoading }/>
+      <ConnectWalletAlert isLoading={ isInitialLoading }/>
       <div>
         <ContractSourceAddressSelector
           items={ implementations }

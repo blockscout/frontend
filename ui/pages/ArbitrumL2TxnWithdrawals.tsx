@@ -6,6 +6,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ARBITRUM_L2_TXN_WITHDRAWALS_ITEM } from 'stubs/arbitrumL2';
+import ConnectWalletAlert from 'ui/shared/ConnectWalletAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import FieldError from 'ui/shared/forms/components/FieldError';
@@ -52,10 +53,11 @@ const ArbitrumL2TxnWithdrawals = () => {
 
   const content = data?.items ? (
     <>
-      <Box display={{ base: 'block', lg: 'none' }}>
+      <ConnectWalletAlert isLoading={ isPlaceholderData }/>
+      <Box display={{ base: 'block', lg: 'none' }} mt={ 6 }>
         <ArbitrumL2TxnWithdrawalsList data={ data.items } isLoading={ isPlaceholderData }/>
       </Box>
-      <Box display={{ base: 'none', lg: 'block' }}>
+      <Box display={{ base: 'none', lg: 'block' }} mt={ 6 }>
         <ArbitrumL2TxnWithdrawalsTable data={ data.items } isLoading={ isPlaceholderData }/>
       </Box>
     </>
