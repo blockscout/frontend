@@ -45,11 +45,16 @@ const ArbitrumL2TxnWithdrawals = () => {
     if (!value || TRANSACTION_HASH_REGEXP.test(value)) {
       setSearchTerm(value);
       setError(null);
+      router.push(
+        { pathname: router.pathname, query: value ? { q: value } : undefined },
+        undefined,
+        { shallow: true },
+      );
     } else {
       setError('Invalid transaction hash');
       setSearchTerm(undefined);
     }
-  }, []);
+  }, [ router ]);
 
   const content = data?.items ? (
     <>
