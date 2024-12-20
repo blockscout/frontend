@@ -406,7 +406,7 @@ const AddressPageContent = () => {
         <SolidityscanReport hash={ hash }/> }
       { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
         <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
-      <NetworkExplorers type="address" pathParam={ hash }/>
+      <NetworkExplorers type="address" pathParam={ hash.toLowerCase() }/>
     </Flex>
   );
 
