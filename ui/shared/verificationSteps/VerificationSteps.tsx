@@ -36,6 +36,7 @@ const VerificationSteps = ({ currentStep, currentStepPending, steps, isLoading, 
           isLast={ index === steps.length - 1 && !rightSlot }
           isPassed={ index <= currentStepIndex }
           isPending={ index === currentStepIndex && currentStepPending }
+          noIcon={ typeof step !== 'string' && index === currentStepIndex }
         />
       )) }
       { rightSlot }
