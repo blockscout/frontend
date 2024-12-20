@@ -3,7 +3,7 @@ import type { Route } from 'nextjs-routes';
 
 // equal og:description
 // eslint-disable-next-line max-len
-const DEFAULT_TEMPLATE = ' Discover the G7 Network with our blockchain explorer. Access real-time data on transactions, blocks, and smart contracts to stay informed on the network.';
+const DEFAULT_TEMPLATE = 'Discover the G7 Network with our blockchain explorer. Access real-time data on transactions, blocks, and smart contracts to stay informed on the network.';
 
 // FIXME all page descriptions will be updated later
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
