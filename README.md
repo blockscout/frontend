@@ -1,4 +1,4 @@
-<h1 align="center">Blockscout frontend</h1>
+<h1 align="center">Blockscout frontend for Autonomy Network</h1>
 
 <p align="center">
     <span>Frontend application for </span>
