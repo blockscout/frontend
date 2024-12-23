@@ -22,16 +22,11 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId }: Props) => {
   const [ txHash, setTxHash ] = React.useState<`0x${ string }` | undefined>(undefined);
   const apiFetch = useApiFetch();
   const toast = useToast();
-  const { address } = useWallet({ source: 'Smart contracts' });
 
   const { sendTransactionAsync } = useSendTransaction();
 
-  const handleClaim = React.useCallback(async() => {
+  const sendClaimTx = React.useCallback(async() => {
     try {
-      if (!address) {
-        throw new Error('Wallet not connected');
-      }
-
       setIsPending(true);
 
       const response = await apiFetch<'arbitrum_l2_message_claim', ArbitrumL2MessageClaimResponse, ResourceError<unknown>>(
@@ -57,18 +52,30 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId }: Props) => {
     } finally {
       setIsPending(false);
     }
-  }, [ address, apiFetch, messageId, sendTransactionAsync, toast ]);
+  }, [ apiFetch, messageId, sendTransactionAsync, toast ]);
+
+  const web3Wallet = useWallet({ source: 'Smart contracts', onConnect: sendClaimTx });
+
+  const handleClaimClick = React.useCallback(async() => {
+    if (!web3Wallet.address) {
+      web3Wallet.connect();
+    } else {
+      sendClaimTx();
+    }
+  }, [ sendClaimTx, web3Wallet ]);
 
   if (txHash) {
     return <TxEntityL1 hash={ txHash } noIcon maxW="160px"/>;
   }
 
+  const isLoading = isPending || web3Wallet.isOpen;
+
   return (
     <Button
       size="sm"
       variant="outline"
-      onClick={ handleClaim }
-      isLoading={ isPending }
+      onClick={ handleClaimClick }
+      isLoading={ isLoading }
       loadingText="Claim"
     >
       Claim
