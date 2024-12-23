@@ -4,7 +4,7 @@ import React from 'react';
 import { WagmiProvider } from 'wagmi';
 
 import config from 'configs/app';
-import currentChain from 'lib/web3/currentChain';
+import { currentChain } from 'lib/web3/chains';
 import wagmiConfig from 'lib/web3/wagmiConfig';
 import colors from 'theme/foundations/colors';
 import { BODY_TYPEFACE } from 'theme/foundations/typography';

@@ -3,7 +3,7 @@ import { http } from 'viem';
 import { createConfig } from 'wagmi';
 
 import config from 'configs/app';
-import currentChain from 'lib/web3/currentChain';
+import { currentChain } from 'lib/web3/chains';
 const feature = config.features.blockchainInteraction;
 
 const wagmi = (() => {
