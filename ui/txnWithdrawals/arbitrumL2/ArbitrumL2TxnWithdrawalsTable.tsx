@@ -15,10 +15,10 @@ const ArbitrumL2TxnWithdrawalsTable = ({ data, isLoading }: Props) => {
     <Table minW="900px">
       <Thead>
         <Tr>
-          <Th width="25%">Message #</Th>
-          <Th width="25%">Receiver</Th>
-          <Th width="25%" isNumeric>Value</Th>
-          <Th width="25%">Status</Th>
+          <Th width="150px">Message #</Th>
+          <Th width="30%">Receiver</Th>
+          <Th width="30%" isNumeric>Value</Th>
+          <Th width="40%">Status</Th>
         </Tr>
       </Thead>
       <Tbody>

@@ -1,4 +1,4 @@
-import { Button, Skeleton } from '@chakra-ui/react';
+import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ArbitrumL2TxnWithdrawalsItem } from 'types/api/arbitrumL2';
@@ -7,6 +7,8 @@ import config from 'configs/app';
 import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ArbitrumL2MessageStatus from 'ui/shared/statusTag/ArbitrumL2MessageStatus';
+
+import ArbitrumL2TxnWithdrawalsClaimButton from './ArbitrumL2TxnWithdrawalsClaimButton';
 
 const rollupFeature = config.features.rollup;
 
@@ -43,12 +45,13 @@ const ArbitrumL2TxnWithdrawalsListItem = ({ data, isLoading }: Props) => {
         display="flex"
         alignItems="center"
         justifyContent="space-between"
+        flexWrap="wrap"
+        rowGap={ 2 }
+        columnGap={ 3 }
         py={ 0 }
       >
         <ArbitrumL2MessageStatus status={ data.status } isLoading={ isLoading }/>
-        <Button size="sm" variant="outline">
-          Claim
-        </Button>
+        <ArbitrumL2TxnWithdrawalsClaimButton messageId={ data.id }/>
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>

@@ -128,6 +128,11 @@ export interface ArbitrumL2TxnWithdrawalsResponse {
   items: Array<ArbitrumL2TxnWithdrawalsItem>;
 }
 
+export interface ArbitrumL2MessageClaimResponse {
+  calldata: string;
+  outbox_address: string;
+}
+
 export const ARBITRUM_L2_TX_BATCH_STATUSES = [
   'Processed on rollup' as const,
   'Sent to base' as const,
