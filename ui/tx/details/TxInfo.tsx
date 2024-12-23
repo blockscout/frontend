@@ -24,6 +24,7 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import useApiQuery from 'lib/api/useApiQuery';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
@@ -61,6 +62,7 @@ import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxDetailsWithdrawalStatus from 'ui/tx/details/TxDetailsWithdrawalStatus';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
+import TxExternalTxs from 'ui/tx/TxExternalTxs';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
@@ -74,8 +76,20 @@ interface Props {
   socketStatus?: 'close' | 'error';
 }
 
+const externalTxFeature = config.features.externalTxs;
+
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
+
+  const externalTxsQuery = useApiQuery('tx_external_transactions', {
+    pathParams: {
+      hash: data?.hash,
+    },
+    queryOptions: {
+      enabled: externalTxFeature.isEnabled,
+      placeholderData: [ '1', '2', '3' ],
+    },
+  });
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -161,6 +175,13 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             <TextSeparator color="gray.500" flexShrink={ 0 } display="none" id="meta-suites__tx-explorer-separator"/>
             <Box display="none" flexShrink={ 0 } id="meta-suites__tx-explorer-link"/>
           </>
+        ) }
+
+        { config.features.externalTxs.isEnabled && externalTxsQuery.data && externalTxsQuery.data.length > 0 && (
+          <Skeleton isLoaded={ !isLoading && !externalTxsQuery.isPlaceholderData } display="inline-flex" alignItems="center">
+            <TextSeparator color="gray.500" flexShrink={ 0 }/>
+            <TxExternalTxs data={ externalTxsQuery.data }/>
+          </Skeleton>
         ) }
       </DetailsInfoItem.Value>
 
