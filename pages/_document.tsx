@@ -52,11 +52,11 @@ class MyDocument extends Document {
           <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"/>
           <link rel="preload" as="image" href={ svgSprite.href }/>
           { /* OG TAGS */ }
-          <meta property="og:title" content="Subspace Nova Explorer"/>
+          <meta property="og:title" content="Autonomys Auto EVM Explorer"/>
           <meta
             property="og:description"
             // eslint-disable-next-line max-len
-            content="Subspace Labs Gemini Nova Block Explorer"
+            content="Autonomys Network Auto EVM Explorer"
           />
           <meta property="og:image" content={ config.app.baseUrl + '/static/og.png' }/>
           <meta property="og:site_name" content="Blockscout"/>
