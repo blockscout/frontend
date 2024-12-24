@@ -1,11 +1,11 @@
 blank_issues_enabled: true
 contact_links:
   - name: Feature Request
-    url: https://github.com/subspace/blockscout-frontend/issues
+    url: https://github.com/autonomys/blockscout-frontend/issues
     about: Request a feature or enhancement
   - name: Ask a question
-    url: https://forum.subspace.network
+    url: https://https://forum.autonomys.xyz/
     about: Ask questions and discuss topics with other community members
   - name: Join our Discord Server
-    url: https://discord.com/invite/subspace-network
-    about: The official Subspace Network Discord community
+    url: https://autonomys.xyz/discord
+    about: The official Autonomys Discord community
