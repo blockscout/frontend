@@ -37,10 +37,6 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
       placeholderData: ADDRESS_INFO,
       refetchOnMount: false,
       retry: (failureCount, error) => {
-        if (error.status < 500) {
-          return false;
-        }
-
         if (isRefetchEnabled) {
           return false;
         }
