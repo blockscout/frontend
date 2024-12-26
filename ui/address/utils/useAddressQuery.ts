@@ -37,10 +37,6 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
       placeholderData: ADDRESS_INFO,
       refetchOnMount: false,
       retry: (failureCount, error) => {
-        if (error.status < 500) {
-          return false;
-        }
-
         if (isRefetchEnabled) {
           return false;
         }
@@ -98,7 +94,7 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
       };
     },
     placeholderData: [ GET_BALANCE ],
-    enabled: (apiQuery.isError || apiQuery.errorUpdateCount > 0) && !NO_RPC_FALLBACK_ERROR_CODES.includes(apiQuery.error?.status ?? 999),
+    enabled: (apiQuery.isError || apiQuery.errorUpdateCount > 0) && !(apiQuery.error?.status && NO_RPC_FALLBACK_ERROR_CODES.includes(apiQuery.error?.status)),
     retry: false,
     refetchOnMount: false,
   });
