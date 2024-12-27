@@ -1,7 +1,7 @@
 import { Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SearchResultBlock } from 'types/api/search';
+import type { SearchResultBlock } from 'types/client/search';
 
 import IconSvg from 'ui/shared/IconSvg';
 

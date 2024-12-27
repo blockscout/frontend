@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
   Portal,
-  Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
   // PopoverFooter,
   useDisclosure,
   useOutsideClick,
+  // eslint-disable-next-line no-restricted-imports
+  Popover,
 } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import { useRouter } from 'next/router';
@@ -30,7 +32,7 @@ import useQuickSearchQuery from './useQuickSearchQuery';
 
 type Props = {
   isHomepage?: boolean;
-}
+};
 
 const SCROLL_CONTAINER_ID = 'search_bar_popover_content';
 
@@ -45,7 +47,7 @@ const SearchBar = ({ isHomepage }: Props) => {
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname, setType, type } = useQuickSearchQuery();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, setType, type } = useQuickSearchQuery();
 
   const firstQueryData = React.useRef<any>(null);
 
@@ -127,17 +129,23 @@ const SearchBar = ({ isHomepage }: Props) => {
   const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
     mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
       'Search query': searchTerm,
-      'Source page type': mixpanel.getPageType(pathname),
+      'Source page type': mixpanel.getPageType(router.pathname),
       'Result URL': event.currentTarget.href,
     });
     saveToRecentKeywords(searchTerm);
     onClose();
-  }, [ pathname, searchTerm, onClose ]);
+  }, [ router.pathname, searchTerm, onClose ]);
 
   const menuPaddingX = isMobile && !isHomepage ? 24 : 0;
   const calculateMenuWidth = React.useCallback(() => {
     menuWidth.current = (inputRef.current?.getBoundingClientRect().width || 0) - menuPaddingX;
   }, [ menuPaddingX ]);
+
+  // clear input on page change
+  React.useEffect(() => {
+    handleSearchTermChange('');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ router.asPath?.split('?')?.[0] ]);
 
   React.useEffect(() => {
     const inputEl = inputRef.current;
@@ -162,7 +170,7 @@ const SearchBar = ({ isHomepage }: Props) => {
         autoFocus={ false }
         onClose={ onClose }
         placement="bottom-start"
-        offset={ isMobile && !isHomepage ? [ 12, -4 ] : undefined }
+        offset={ isMobile && !isHomepage ? [ 12, -4 ] : [ 0, 8 ] }
         isLazy
       >
         <PopoverTrigger>
@@ -182,6 +190,7 @@ const SearchBar = ({ isHomepage }: Props) => {
           <PopoverContent
             w={ `${ menuWidth.current }px` }
             ref={ menuRef }
+            overflow="hidden"
           >
             <PopoverBody
               p={ 0 }
@@ -219,7 +228,7 @@ const SearchBar = ({ isHomepage }: Props) => {
                   href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }
                   fontSize="sm"
                 >
-                View all results
+                  View all results
                 </LinkInternal>
               </PopoverFooter>
             ) } */ }

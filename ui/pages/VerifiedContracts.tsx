@@ -97,9 +97,11 @@ const VerifiedContracts = () => {
 
   const sortButton = (
     <Sort
+      name="verified_contracts_sorting"
+      defaultValue={ sort }
       options={ SORT_OPTIONS }
-      sort={ sort }
-      setSort={ handleSortChange }
+      onChange={ handleSortChange }
+      isLoading={ isPlaceholderData }
     />
   );
 

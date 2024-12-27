@@ -4,15 +4,18 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { http } from 'viem';
 import { WagmiProvider, createConfig } from 'wagmi';
-import { sepolia } from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
 
 import type { Props as PageProps } from 'nextjs/getServerSideProps';
 
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
+import { MarketplaceContext } from 'lib/contexts/marketplace';
+import { RewardsContextProvider } from 'lib/contexts/rewards';
+import { SettingsContextProvider } from 'lib/contexts/settings';
 import { SocketProvider } from 'lib/socket/context';
-import theme from 'theme';
+import currentChain from 'lib/web3/currentChain';
+import theme from 'theme/theme';
 
 import { port as socketPort } from './utils/socket';
 
@@ -23,7 +26,11 @@ export type Props = {
   appContext?: {
     pageProps: PageProps;
   };
-}
+  marketplaceContext?: {
+    isAutoConnectDisabled: boolean;
+    setIsAutoConnectDisabled: (isAutoConnectDisabled: boolean) => void;
+  };
+};
 
 const defaultAppContext = {
   pageProps: {
@@ -35,8 +42,13 @@ const defaultAppContext = {
   },
 };
 
+const defaultMarketplaceContext = {
+  isAutoConnectDisabled: false,
+  setIsAutoConnectDisabled: () => {},
+};
+
 const wagmiConfig = createConfig({
-  chains: [ sepolia ],
+  chains: [ currentChain ],
   connectors: [
     mock({
       accounts: [
@@ -45,24 +57,11 @@ const wagmiConfig = createConfig({
     }),
   ],
   transports: {
-    [sepolia.id]: http(),
+    [currentChain.id]: http(),
   },
 });
 
-const WalletClientProvider = ({ children, withWalletClient }: { children: React.ReactNode; withWalletClient?: boolean }) => {
-  if (withWalletClient) {
-    return (
-      <WagmiProvider config={ wagmiConfig }>
-        { children }
-      </WagmiProvider>
-    );
-  }
-
-  // eslint-disable-next-line react/jsx-no-useless-fragment
-  return <>{ children }</>;
-};
-
-const TestApp = ({ children, withSocket, withWalletClient = true, appContext = defaultAppContext }: Props) => {
+const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketplaceContext = defaultMarketplaceContext }: Props) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -77,11 +76,17 @@ const TestApp = ({ children, withSocket, withWalletClient = true, appContext = d
       <QueryClientProvider client={ queryClient }>
         <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ socketPort }` : undefined }>
           <AppContextProvider { ...appContext }>
-            <GrowthBookProvider>
-              <WalletClientProvider withWalletClient={ withWalletClient }>
-                { children }
-              </WalletClientProvider>
-            </GrowthBookProvider>
+            <MarketplaceContext.Provider value={ marketplaceContext }>
+              <SettingsContextProvider>
+                <GrowthBookProvider>
+                  <WagmiProvider config={ wagmiConfig }>
+                    <RewardsContextProvider>
+                      { children }
+                    </RewardsContextProvider>
+                  </WagmiProvider>
+                </GrowthBookProvider>
+              </SettingsContextProvider>
+            </MarketplaceContext.Provider>
           </AppContextProvider>
         </SocketProvider>
       </QueryClientProvider>

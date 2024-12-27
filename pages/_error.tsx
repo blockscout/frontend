@@ -7,7 +7,7 @@ import type { Props as ServerSidePropsCommon } from 'nextjs/getServerSideProps';
 
 type Props = ServerSidePropsCommon & {
   statusCode: number;
-}
+};
 
 const CustomErrorComponent = (props: Props) => {
   // const colorModeCookie = cookies.getFromCookieString(props.cookies || '', cookies.NAMES.COLOR_MODE);

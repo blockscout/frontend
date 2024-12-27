@@ -1,58 +1,38 @@
-import {
-  chakra,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuOptionGroup,
-  MenuItemOption,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import SortButton from './SortButton';
+import type { SelectOption } from 'ui/shared/select/types';
 
-export interface Option<Sort extends string> {
-  title: string;
-  id: Sort | undefined;
-}
+import useIsMobile from 'lib/hooks/useIsMobile';
+import Select, { type Props as SelectProps } from 'ui/shared/select/Select';
 
-interface Props<Sort extends string> {
-  options: Array<Option<Sort>>;
-  sort: Sort | undefined;
-  setSort: (value: Sort | undefined) => void;
-  isLoading?: boolean;
-}
+import SortButtonDesktop from './ButtonDesktop';
+import SortButtonMobile from './ButtonMobile';
 
-const Sort = <Sort extends string>({ sort, setSort, options, isLoading }: Props<Sort>) => {
-  const { isOpen, onToggle } = useDisclosure();
+type Props<Value extends string> = Omit<SelectProps<Value>, 'children'>;
 
-  const setSortingFromMenu = React.useCallback((val: string | Array<string>) => {
-    const value = val as Sort | Array<Sort>;
-    setSort(Array.isArray(value) ? value[0] : value);
-  }, [ setSort ]);
+const Sort = <Sort extends string>({ name, options, isLoading, onChange, defaultValue }: Props<Sort>) => {
+  const isMobile = useIsMobile(false);
 
   return (
-    <Menu>
-      <MenuButton as="div">
-        <SortButton
-          isActive={ isOpen || Boolean(sort) }
-          onClick={ onToggle }
-          isLoading={ isLoading }
-        />
-      </MenuButton>
-      <MenuList minWidth="240px" zIndex="popover">
-        <MenuOptionGroup value={ sort } title="Sort by" type="radio" onChange={ setSortingFromMenu }>
-          { options.map((option) => (
-            <MenuItemOption
-              key={ option.id || 'default' }
-              value={ option.id }
-            >
-              { option.title }
-            </MenuItemOption>
-          )) }
-        </MenuOptionGroup>
-      </MenuList>
-    </Menu>
+    <Select
+      options={ options }
+      name={ name }
+      defaultValue={ defaultValue }
+      onChange={ onChange }
+    >
+      { ({ isOpen, onToggle, value }) => {
+        return (
+          isMobile ? (
+            <SortButtonMobile isActive={ isOpen || Boolean(value) } onClick={ onToggle } isLoading={ isLoading }/>
+          ) : (
+            <SortButtonDesktop isActive={ isOpen } isLoading={ isLoading } onClick={ onToggle }>
+              { options.find((option: SelectOption<Sort>) => option.value === value || (!option.value && !value))?.label }
+            </SortButtonDesktop>
+          )
+        );
+      } }
+    </Select>
   );
 };
 

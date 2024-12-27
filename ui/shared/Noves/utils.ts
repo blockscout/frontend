@@ -38,7 +38,7 @@ export const getFromTo = (txData: NovesResponseData, currentAddress: string): Fr
     }
     if (sentFound.length > receivedFound.length) {
       // already filtered if null
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
       return { text: 'Sent to', address: sentFound[0].to.address! } ;
     } else {
       return { text: 'Received from', address: receivedFound[0].from.address } ;
@@ -47,7 +47,7 @@ export const getFromTo = (txData: NovesResponseData, currentAddress: string): Fr
 
   if (sent && sentFound[0]) {
     // already filtered if null
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
     return { text: 'Sent to', address: sentFound[0].to.address! } ;
   }
 

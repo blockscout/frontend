@@ -1,4 +1,4 @@
-import type { SolidityscanReport } from 'types/api/contract';
+import type { SolidityScanReport, SolidityScanReportSeverityDistribution } from 'lib/solidityScan/schema';
 
 export type MarketplaceAppPreview = {
   id: string;
@@ -11,24 +11,31 @@ export type MarketplaceAppPreview = {
   url: string;
   internalWallet?: boolean;
   priority?: number;
-}
+};
 
 export type MarketplaceAppSocialInfo = {
   twitter?: string;
   telegram?: string;
   github?: string | Array<string>;
   discord?: string;
-}
+};
 
 export type MarketplaceAppOverview = MarketplaceAppPreview & MarketplaceAppSocialInfo & {
   author: string;
   description: string;
   site?: string;
-}
+};
+
+export type AppRating = {
+  recordId: string;
+  value: number | undefined;
+  count?: number;
+};
 
 export type MarketplaceAppWithSecurityReport = MarketplaceAppOverview & {
   securityReport?: MarketplaceAppSecurityReport;
-}
+  rating?: AppRating;
+};
 
 export enum MarketplaceCategory {
   ALL = 'All',
@@ -41,11 +48,6 @@ export enum ContractListTypes {
   VERIFIED = 'Verified',
 }
 
-export enum MarketplaceDisplayType {
-  DEFAULT = 'default',
-  SCORES = 'scores',
-}
-
 export type MarketplaceAppSecurityReport = {
   overallInfo: {
     verifiedNumber: number;
@@ -53,18 +55,18 @@ export type MarketplaceAppSecurityReport = {
     solidityScanContractsNumber: number;
     securityScore: number;
     totalIssues?: number;
-    issueSeverityDistribution: SolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
+    issueSeverityDistribution: SolidityScanReportSeverityDistribution;
   };
   contractsData: Array<{
     address: string;
     isVerified: boolean;
-    solidityScanReport?: SolidityscanReport['scan_report'] | null;
+    solidityScanReport?: SolidityScanReport['scan_report'] | null;
   }>;
-}
+};
 
 export type MarketplaceAppSecurityReportRaw = {
   appName: string;
   chainsData: {
     [chainId: string]: MarketplaceAppSecurityReport;
   };
-}
+};

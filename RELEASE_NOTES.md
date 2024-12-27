@@ -14,6 +14,10 @@
 -  Updated dependency: PackageName 1 to version x.x.x.
 -  Updated dependency: PackageName 2 to version x.x.x.
 
+## 🎨 Design updates
+-  New style 1.
+-  New style 2.
+
 ## ✨ Other Changes
 - Another minor change 1.
 - Another minor change 2.

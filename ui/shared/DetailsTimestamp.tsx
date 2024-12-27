@@ -9,7 +9,7 @@ type Props = {
   // should be string, will be fixed on the back-end
   timestamp: string | number;
   isLoading?: boolean;
-}
+};
 
 const DetailsTimestamp = ({ timestamp, isLoading }: Props) => {
   return (

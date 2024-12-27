@@ -52,8 +52,8 @@ const PrivateTransactionTags = () => {
 
   const description = (
     <AccountPageDescription>
-        Use private transaction tags to label any transactions of interest.
-        Private tags are saved in your account and are only visible when you are logged in.
+      Use private transaction tags to label any transactions of interest.
+      Private tags are saved in your account and are only visible when you are logged in.
     </AccountPageDescription>
   );
 
@@ -62,7 +62,7 @@ const PrivateTransactionTags = () => {
       <Box display={{ base: 'block', lg: 'none' }}>
         { transactionTagsData?.items.map((item, index) => (
           <TransactionTagListItem
-            key={ item.id + (isPlaceholderData ? index : '') }
+            key={ item.id + (isPlaceholderData ? String(index) : '') }
             item={ item }
             isLoading={ isPlaceholderData }
             onDeleteClick={ onDeleteClick }

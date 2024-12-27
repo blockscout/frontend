@@ -11,17 +11,17 @@ type Props = {
   items: Array<ArbitrumL2TxnBatchesItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const ArbitrumL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" minW="1000px" style={{ tableLayout: 'auto' }}>
+    <Table minW="1000px" style={{ tableLayout: 'auto' }}>
       <Thead top={ top }>
         <Tr>
           <Th>Batch #</Th>
           <Th>L1 status</Th>
           <Th>L1 block</Th>
-          <Th>L2 block txn count</Th>
+          <Th>Block count</Th>
           <Th>L1 transaction</Th>
           <Th>Age</Th>
           <Th>Txn count</Th>

@@ -15,7 +15,7 @@ export const ARBITRUM_MESSAGES_ITEM: ArbitrumL2MessagesItem = {
 
 export const ARBITRUM_L2_TXN_BATCHES_ITEM: ArbitrumL2TxnBatchesItem = {
   number: 12345,
-  block_count: 12345,
+  blocks_count: 12345,
   transactions_count: 10000,
   commitment_transaction: {
     block_number: 12345,
@@ -23,6 +23,7 @@ export const ARBITRUM_L2_TXN_BATCHES_ITEM: ArbitrumL2TxnBatchesItem = {
     hash: TX_HASH,
     status: 'finalized',
   },
+  batch_data_container: 'in_blob4844',
 };
 
 export const ARBITRUM_L2_TXN_BATCH: ArbitrumL2TxnBatch = {
@@ -31,4 +32,7 @@ export const ARBITRUM_L2_TXN_BATCH: ArbitrumL2TxnBatch = {
   before_acc: '0x2ed7c4985eb778d76ec400a43805e7feecc8c2afcdb492dbe5caf227de6d37bc',
   start_block: 1245209,
   end_block: 1245490,
+  data_availability: {
+    batch_data_container: 'in_blob4844',
+  },
 };

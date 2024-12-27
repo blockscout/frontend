@@ -1,7 +1,6 @@
 import {
   Link,
   chakra,
-  Popover,
   PopoverTrigger,
   Portal,
   PopoverContent,
@@ -14,25 +13,22 @@ import {
   Box,
 } from '@chakra-ui/react';
 import React from 'react';
-import type { ControllerRenderProps, Control } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/api/contract';
+import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/client/contract';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import FancySelect from 'ui/shared/FancySelect/FancySelect';
+import Popover from 'ui/shared/chakra/Popover';
+import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { METHOD_LABELS } from '../utils';
 
 interface Props {
-  control: Control<FormFields>;
-  isDisabled?: boolean;
   methods: SmartContractVerificationConfig['verification_options'];
 }
 
-const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props) => {
+const ContractVerificationFieldMethod = ({ methods }: Props) => {
   const tooltipBg = useColorModeValue('gray.700', 'gray.900');
   const isMobile = useIsMobile();
 
@@ -41,24 +37,10 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
     label: METHOD_LABELS[method],
   })), [ methods ]);
 
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'method'>}) => {
-    return (
-      <FancySelect
-        { ...field }
-        options={ options }
-        size={ isMobile ? 'md' : 'lg' }
-        placeholder="Verification method (compiler type)"
-        isDisabled={ isDisabled }
-        isRequired
-        isAsync={ false }
-      />
-    );
-  }, [ isDisabled, isMobile, options ]);
-
   const renderPopoverListItem = React.useCallback((method: SmartContractVerificationMethod) => {
     switch (method) {
       case 'flattened-code':
-        return <ListItem key={ method }>Verification through flattened source code.</ListItem>;
+        return <ListItem key={ method }>Verification through a single file.</ListItem>;
       case 'multi-part':
         return <ListItem key={ method }>Verification of multi-part Solidity files.</ListItem>;
       case 'sourcify':
@@ -93,6 +75,12 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
             <span> file.</span>
           </ListItem>
         );
+      case 'solidity-hardhat':
+        return <ListItem key={ method }>Verification through Hardhat plugin.</ListItem>;
+      case 'solidity-foundry':
+        return <ListItem key={ method }>Verification through Foundry.</ListItem>;
+      case 'stylus-github-repository':
+        return <ListItem key={ method }>Verification of Stylus contract via GitHub repository.</ListItem>;
     }
   }, []);
 
@@ -105,7 +93,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
         <Popover trigger="hover" isLazy placement={ isMobile ? 'bottom-end' : 'right-start' } offset={ [ -8, 8 ] }>
           <PopoverTrigger>
             <chakra.span display="inline-block" ml={ 1 } cursor="pointer" verticalAlign="middle" h="22px">
-              <IconSvg name="info" boxSize={ 5 } color="link" _hover={{ color: 'link_hovered' }}/>
+              <IconSvg name="info" boxSize={ 5 } color="icon_info" _hover={{ color: 'link_hovered' }}/>
             </chakra.span>
           </PopoverTrigger>
           <Portal>
@@ -123,11 +111,13 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
           </Portal>
         </Popover>
       </Box>
-      <Controller
+      <FormFieldFancySelect<FormFields, 'method'>
         name="method"
-        control={ control }
-        render={ renderControl }
-        rules={{ required: true }}
+        placeholder="Verification method (compiler type)"
+        options={ options }
+        isRequired
+        isAsync={ false }
+        isReadOnly={ options.length === 1 }
       />
     </>
   );

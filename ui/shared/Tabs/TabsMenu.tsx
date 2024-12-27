@@ -1,6 +1,6 @@
 import type {
   ButtonProps } from '@chakra-ui/react';
-import { Popover,
+import {
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
@@ -11,6 +11,8 @@ import type { StyleProps } from '@chakra-ui/styled-system';
 import React from 'react';
 
 import type { MenuButton, TabItem } from './types';
+
+import Popover from 'ui/shared/chakra/Popover';
 
 import TabCounter from './TabCounter';
 import { menuButton } from './utils';
@@ -41,6 +43,8 @@ const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, act
     <Popover isLazy placement="bottom-end" key="more" isOpen={ isOpen } onClose={ onClose } onOpen={ onOpen } closeDelay={ 0 }>
       <PopoverTrigger>
         <Button
+          as="div"
+          role="button"
           variant="ghost"
           isActive={ isOpen || isActive }
           ref={ buttonRef }
@@ -54,7 +58,7 @@ const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, act
         <PopoverBody display="flex" flexDir="column">
           { tabs.slice(tabsCut).map((tab, index) => (
             <Button
-              key={ tab.id }
+              key={ tab.id?.toString() }
               variant="ghost"
               onClick={ handleItemClick }
               isActive={ activeTab ? activeTab.id === tab.id : false }

@@ -2,8 +2,7 @@
 import type { Route } from 'nextjs-routes';
 
 // equal og:description
-// eslint-disable-next-line max-len
-const DEFAULT_TEMPLATE = 'Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.';
+const DEFAULT_TEMPLATE = 'Open-source block explorer by Blockscout. Search transactions, verify smart contracts, analyze addresses, and track network activity. Complete blockchain data and APIs for the %network_title% network.';
 
 // FIXME all page descriptions will be updated later
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
@@ -13,7 +12,10 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/tx/[hash]': 'View transaction %hash% on %network_title%',
   '/blocks': DEFAULT_TEMPLATE,
   '/block/[height_or_hash]': 'View the transactions, token transfers, and uncles for block %height_or_hash%',
+  '/block/countdown': DEFAULT_TEMPLATE,
+  '/block/countdown/[height]': DEFAULT_TEMPLATE,
   '/accounts': DEFAULT_TEMPLATE,
+  '/accounts/label/[slug]': DEFAULT_TEMPLATE,
   '/address/[hash]': 'View the account balance, transactions, and other data for %hash% on the %network_title%',
   '/verified-contracts': DEFAULT_TEMPLATE,
   '/contract-verification': DEFAULT_TEMPLATE,
@@ -24,10 +26,12 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/apps': DEFAULT_TEMPLATE,
   '/apps/[id]': DEFAULT_TEMPLATE,
   '/stats': DEFAULT_TEMPLATE,
+  '/stats/[id]': DEFAULT_TEMPLATE,
   '/api-docs': DEFAULT_TEMPLATE,
   '/graphiql': DEFAULT_TEMPLATE,
   '/search-results': DEFAULT_TEMPLATE,
   '/auth/profile': DEFAULT_TEMPLATE,
+  '/account/rewards': DEFAULT_TEMPLATE,
   '/account/watchlist': DEFAULT_TEMPLATE,
   '/account/api-key': DEFAULT_TEMPLATE,
   '/account/custom-abi': DEFAULT_TEMPLATE,
@@ -49,7 +53,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/name-domains': DEFAULT_TEMPLATE,
   '/name-domains/[name]': DEFAULT_TEMPLATE,
   '/validators': DEFAULT_TEMPLATE,
-  '/gas-tracker': DEFAULT_TEMPLATE,
+  // '/gas-tracker': DEFAULT_TEMPLATE,
   '/bucket-details/[address]': DEFAULT_TEMPLATE,
   '/group-details/[address]': DEFAULT_TEMPLATE,
   '/object-details/[address]': DEFAULT_TEMPLATE,
@@ -57,10 +61,18 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/bucket': DEFAULT_TEMPLATE,
   '/group': DEFAULT_TEMPLATE,
   '/object': DEFAULT_TEMPLATE,
+  '/gas-tracker': 'Explore real-time %network_title% gas fees with Blockscout\'s advanced gas fee tracker. Get accurate %network_gwei% estimates and track transaction costs live.',
+  '/mud-worlds': DEFAULT_TEMPLATE,
+  '/token-transfers': DEFAULT_TEMPLATE,
+  '/advanced-filter': DEFAULT_TEMPLATE,
+  '/pools': DEFAULT_TEMPLATE,
+  '/pools/[hash]': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,
+  '/sprite': DEFAULT_TEMPLATE,
   '/api/metrics': DEFAULT_TEMPLATE,
+  '/api/monitoring/invalid-api-schema': DEFAULT_TEMPLATE,
   '/api/log': DEFAULT_TEMPLATE,
   '/api/media-type': DEFAULT_TEMPLATE,
   '/api/proxy': DEFAULT_TEMPLATE,
@@ -70,12 +82,15 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/auth/callback/discord': DEFAULT_TEMPLATE,
   '/api/auth/session': DEFAULT_TEMPLATE,
   '/api/faucet': DEFAULT_TEMPLATE,
-  '/auth/auth0': DEFAULT_TEMPLATE,
-  '/auth/unverified-email': DEFAULT_TEMPLATE,
+  // '/auth/auth0': DEFAULT_TEMPLATE,
+  // '/auth/unverified-email': DEFAULT_TEMPLATE,
+  '/api/sprite': DEFAULT_TEMPLATE,
 };
 
-export function make(pathname: Route['pathname']) {
-  const template = TEMPLATE_MAP[pathname];
+const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
+  '/stats/[id]': '%description%',
+};
 
-  return template ?? '';
+export function make(pathname: Route['pathname'], isEnriched = false) {
+  return (isEnriched ? TEMPLATE_MAP_ENHANCED[pathname] : undefined) ?? TEMPLATE_MAP[pathname] ?? '';
 }

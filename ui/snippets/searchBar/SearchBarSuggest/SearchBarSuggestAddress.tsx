@@ -5,10 +5,9 @@ import type { SearchResultAddressOrContract } from 'types/api/search';
 
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
-import { ADDRESS_REGEXP } from 'lib/validations/address';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
-// import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import { ADDRESS_REGEXP } from 'ui/shared/forms/validators/address';
 import IconSvg from 'ui/shared/IconSvg';
 import { formatPubKey } from 'ui/storage/utils';
 
@@ -30,6 +29,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, isFirst }: Props)
         name: '',
         is_verified: data.is_smart_contract_verified,
         ens_domain_name: null,
+        implementations: null,
       }}
     />
   );
@@ -51,7 +51,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, isFirst }: Props)
             <span>{ expiresText }</span>
         ) }
       </Text>
-      { data.certified && <ContractCertifiedLabel boxSize={ 5 } iconSize={ 5 } ml={ 1 }/> }
+      { data.certified && <ContractCertifiedLabel boxSize={ 4 } iconSize={ 4 } ml={ 1 }/> }
     </Flex>
   );
   // const addressEl = <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>;

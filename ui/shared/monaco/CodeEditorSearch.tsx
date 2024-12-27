@@ -17,7 +17,7 @@ interface Props {
   onFileSelect: (index: number, lineNumber?: number) => void;
   isInputStuck: boolean;
   isActive: boolean;
-  setActionBarRenderer: React.Dispatch<React.SetStateAction<(() => JSX.Element) | undefined>>;
+  setActionBarRenderer: React.Dispatch<React.SetStateAction<(() => React.JSX.Element) | undefined>>;
   defaultValue: string;
 }
 

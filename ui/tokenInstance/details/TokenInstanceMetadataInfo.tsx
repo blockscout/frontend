@@ -10,6 +10,8 @@ import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
+import { useMetadataUpdateContext } from '../contexts/metadataUpdate';
+
 interface Props {
   data?: TokenInstance;
   isLoading?: boolean;
@@ -35,8 +37,9 @@ const Item = ({ data, isLoading }: ItemProps) => {
           href={ data.value }
           fontSize="sm"
           lineHeight={ 5 }
+          isLoading={ isLoading }
         >
-          <TruncatedValue value={ data.value } w="calc(100% - 16px)"/>
+          <TruncatedValue value={ data.value } w="calc(100% - 16px)" isLoading={ isLoading }/>
         </LinkExternal>
       );
     }
@@ -54,21 +57,32 @@ const Item = ({ data, isLoading }: ItemProps) => {
       flexDir="column"
       alignItems="flex-start"
     >
-      <Skeleton isLoaded={ !isLoading } fontSize="xs" lineHeight={ 4 } color="text_secondary" fontWeight={ 500 } mb={ 1 }>
-        <span>{ data.trait_type }</span>
-      </Skeleton>
+      <TruncatedValue
+        value={ data.trait_type }
+        fontSize="xs"
+        w="100%"
+        lineHeight={ 4 }
+        color="text_secondary"
+        fontWeight={ 500 }
+        mb={ 1 }
+        isLoading={ isLoading }
+      />
       { value }
     </GridItem>
   );
 };
 
-const TokenInstanceMetadataInfo = ({ data, isLoading }: Props) => {
-  const metadata = React.useMemo(() => parseMetadata(data?.metadata), [ data ]);
-  const hasMetadata = metadata && Boolean((metadata.name || metadata.description || metadata.attributes));
+const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) => {
+  const { status: refetchStatus } = useMetadataUpdateContext() || {};
 
+  const metadata = React.useMemo(() => parseMetadata(data?.metadata), [ data ]);
+
+  const hasMetadata = metadata && Boolean((metadata.name || metadata.description || metadata.attributes));
   if (!hasMetadata) {
     return null;
   }
+
+  const isLoading = isLoadingProp || refetchStatus === 'WAITING_FOR_RESPONSE';
 
   return (
     <>
@@ -109,7 +123,7 @@ const TokenInstanceMetadataInfo = ({ data, isLoading }: Props) => {
           </DetailsInfoItem.Value>
         </>
       ) }
-      { metadata?.attributes && (
+      { metadata?.attributes && metadata.attributes.length > 0 && (
         <>
           <DetailsInfoItem.Label
             hint="NFT attributes"
@@ -119,7 +133,9 @@ const TokenInstanceMetadataInfo = ({ data, isLoading }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <Grid gap={ 2 } templateColumns="repeat(auto-fill,minmax(160px, 1fr))" w="100%" whiteSpace="normal">
-              { metadata.attributes.map((attribute, index) => <Item key={ index } data={ attribute } isLoading={ isLoading }/>) }
+              { metadata.attributes
+                .filter((attribute) => attribute.value)
+                .map((attribute, index) => <Item key={ index } data={ attribute } isLoading={ isLoading }/>) }
             </Grid>
           </DetailsInfoItem.Value>
         </>

@@ -25,6 +25,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   arbitrumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'arbitrum' ],
     [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
+    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME', 'DuckChain' ],
   ],
   shibariumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'shibarium' ],
@@ -36,6 +37,11 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   zkSyncRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'zkSync' ],
+    [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
+    [ 'NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS', 'none' ],
+  ],
+  scrollRollup: [
+    [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'scroll' ],
     [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
   ],
   bridgedTokens: [
@@ -79,5 +85,12 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   nameService: [
     [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'https://localhost:3101' ],
+  ],
+  rewardsService: [
+    [ 'NEXT_PUBLIC_REWARDS_SERVICE_API_HOST', 'http://localhost:3003' ],
+  ],
+  addressBech32Format: [
+    [ 'NEXT_PUBLIC_ADDRESS_FORMAT', '["bech32","base16"]' ],
+    [ 'NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX', 'tom' ],
   ],
 };

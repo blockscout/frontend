@@ -1,3 +1,5 @@
+import type { EntityBaseProps } from './components';
+
 export type IconSize = 'md' | 'lg';
 
 export function getIconProps(size: IconSize = 'md') {
@@ -13,4 +15,17 @@ export function getIconProps(size: IconSize = 'md') {
       };
     }
   }
+}
+
+export function distributeEntityProps<Props extends EntityBaseProps>(props: Props) {
+  const { className, onClick, icon, ...restProps } = props;
+
+  return {
+    container: { className },
+    icon: { ...restProps, ...icon },
+    link: { ...restProps, onClick },
+    content: restProps,
+    symbol: restProps,
+    copy: restProps,
+  };
 }

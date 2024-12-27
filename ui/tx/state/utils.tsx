@@ -105,7 +105,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
         const changeSign = differenceBn.isGreaterThanOrEqualTo(0) ? '+' : '-';
 
         return (
-          <Skeleton isLoaded={ !isLoading } display="inline-block" color={ changeColor }>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" color={ changeColor } wordBreak="break-all">
             <span>{ changeSign }{ nbsp }{ differenceBn.abs().toFormat() }</span>
           </Skeleton>
         );
@@ -132,14 +132,14 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
       return {
         before: data.balance_before ? (
           <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }} flexWrap="wrap">
-            <Skeleton isLoaded={ !isLoading }>{ beforeBn.toFormat() }</Skeleton>
+            <Skeleton isLoaded={ !isLoading } wordBreak="break-all">{ beforeBn.toFormat() }</Skeleton>
             <span>{ space }</span>
             { tokenLink }
           </Flex>
         ) : null,
         after: data.balance_after ? (
           <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }} flexWrap="wrap">
-            <Skeleton isLoaded={ !isLoading }>{ afterBn.toFormat() }</Skeleton>
+            <Skeleton isLoaded={ !isLoading } wordBreak="break-all">{ afterBn.toFormat() }</Skeleton>
             <span>{ space }</span>
             { tokenLink }
           </Flex>

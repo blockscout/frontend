@@ -37,7 +37,7 @@ const PublicTagsSubmitResultSuccess = ({ data }: Props) => {
             .map((tag) => (
               <EntityTag
                 key={ tag.name }
-                truncate
+                maxW={{ base: '100%', lg: '300px' }}
                 data={{
                   ...tag,
                   slug: '',

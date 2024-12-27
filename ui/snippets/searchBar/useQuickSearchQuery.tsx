@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import BigNumber from 'bignumber.js';
 import { isAddress, isHexString } from 'ethers';
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
 
@@ -17,19 +17,11 @@ export interface QueryResult {
 }
 
 export default function useQuickSearchQuery() {
-  const router = useRouter();
-
   const [ searchTerm, setSearchTerm ] = React.useState('');
   // For show more filter
   const [ type, setType ] = React.useState('default');
   const graphqlSearchOnly = React.useRef(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-
-  const pathname = router.pathname;
-
-  useEffect(() => {
-
-  }, [ debouncedSearchTerm ]);
 
   React.useEffect(() => {
     setType('default');
@@ -251,8 +243,7 @@ export default function useQuickSearchQuery() {
     handleSearchTermChange: setSearchTerm,
     query,
     redirectCheckQuery,
-    pathname,
     setType,
     type,
-  }), [ debouncedSearchTerm, pathname, query, redirectCheckQuery, searchTerm, setType, type ]);
+  }), [ debouncedSearchTerm, query, redirectCheckQuery, searchTerm, setType, type ]);
 }

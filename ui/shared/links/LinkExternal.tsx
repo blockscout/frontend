@@ -30,7 +30,7 @@ const LinkExternal = ({ href, children, className, isLoading, variant, iconColor
       return (
         <Skeleton className={ className } { ...styleProps } bgColor="inherit">
           { children }
-          <Box boxSize={ 4 } display="inline-block"/>
+          <Box boxSize={ 3 } display="inline-block"/>
         </Skeleton>
       );
     }
@@ -38,7 +38,7 @@ const LinkExternal = ({ href, children, className, isLoading, variant, iconColor
     return (
       <Box className={ className } { ...styleProps }>
         { children }
-        <Skeleton boxSize={ 4 } verticalAlign="middle" display="inline-block"/>
+        <Skeleton boxSize={ 3 } verticalAlign="middle" display="inline-block"/>
       </Box>
     );
   }
@@ -46,7 +46,7 @@ const LinkExternal = ({ href, children, className, isLoading, variant, iconColor
   return (
     <Link className={ className } { ...styleProps } target="_blank" href={ href } onClick={ onClick }>
       { children }
-      <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" color={ iconColor ?? 'gray.400' } flexShrink={ 0 }/>
+      <IconSvg name="link_external" boxSize={ 3 } verticalAlign="middle" color={ iconColor ?? 'icon_link_external' } flexShrink={ 0 }/>
     </Link>
   );
 };

@@ -1,3 +1,4 @@
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 
 import { isValidVerificationMethod, sortVerificationMethods } from './utils';
@@ -8,7 +9,10 @@ export default function useFormConfigQuery(enabled: boolean) {
       select: (data) => {
         return {
           ...data,
-          verification_options: data.verification_options.filter(isValidVerificationMethod).sort(sortVerificationMethods),
+          verification_options: [
+            ...data.verification_options,
+            ...config.UI.views.address.extraVerificationMethods,
+          ].filter(isValidVerificationMethod).sort(sortVerificationMethods),
         };
       },
       enabled,

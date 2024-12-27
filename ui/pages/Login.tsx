@@ -1,5 +1,4 @@
 import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Code, Flex, Box } from '@chakra-ui/react';
-import * as Sentry from '@sentry/react';
 import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -9,13 +8,13 @@ import * as cookies from 'lib/cookies';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import useToast from 'lib/hooks/useToast';
+import { useRollbar } from 'lib/rollbar';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-{ /* will be deleted when we fix login in preview CI stands */ }
 const Login = () => {
+  const rollbar = useRollbar();
   const toast = useToast();
   const [ num, setNum ] = useGradualIncrement(0);
-
   const testFeature = useFeatureValue('test_value', 'fallback');
 
   const [ isFormVisible, setFormVisibility ] = React.useState(false);
@@ -24,12 +23,12 @@ const Login = () => {
   React.useEffect(() => {
     const token = cookies.get(cookies.NAMES.API_TOKEN);
     setFormVisibility(Boolean(!token && config.features.account.isEnabled));
-    // throw new Error('Test error');
+    // throw new Error('Render error');
   }, []);
 
-  const checkSentry = React.useCallback(() => {
-    Sentry.captureException(new Error('Test error'), { tags: { source: 'test' } });
-  }, []);
+  const checkRollbar = React.useCallback(() => {
+    rollbar?.error('Test error', { payload: 'foo' });
+  }, [ rollbar ]);
 
   const checkMixpanel = React.useCallback(() => {
     mixpanel.track('Test event', { my_prop: 'foo bar' });
@@ -68,12 +67,12 @@ const Login = () => {
         <>
           <Alert status="error" flexDirection="column" alignItems="flex-start">
             <AlertTitle fontSize="md">
-                !!! Temporary solution for authentication on localhost !!!
+              !!! Temporary solution for authentication on localhost !!!
             </AlertTitle>
             <AlertDescription mt={ 3 }>
-                    To Sign in go to production instance first, sign in there, copy obtained API token from cookie
+              To Sign in go to production instance first, sign in there, copy obtained API token from cookie
               <Code ml={ 1 }>{ cookies.NAMES.API_TOKEN }</Code> and paste it in the form below. After submitting the form you should be successfully
-                    authenticated in current environment
+              authenticated in current environment
             </AlertDescription>
           </Alert>
           <Textarea value={ token } onChange={ handleTokenChange } placeholder="API token"/>
@@ -81,7 +80,7 @@ const Login = () => {
         </>
       ) }
       <Flex columnGap={ 2 }>
-        <Button colorScheme="red" onClick={ checkSentry }>Check Sentry</Button>
+        <Button colorScheme="red" onClick={ checkRollbar }>Check Rollbar</Button>
         <Button colorScheme="teal" onClick={ checkMixpanel }>Check Mixpanel</Button>
       </Flex>
       <Flex columnGap={ 2 } alignItems="center">

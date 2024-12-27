@@ -1,28 +1,21 @@
-import { Text, Flex } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ItemsProps } from './types';
 import type { SearchResultTx } from 'types/api/search';
 
 // import dayjs from 'lib/date/dayjs';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 // import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
-import { formatPubKey } from 'ui/storage/utils';
 
-interface Props {
-  data: SearchResultTx;
-  isMobile: boolean | undefined;
-  searchTerm: string;
-  isFirst?: boolean;
-}
-
-const SearchBarSuggestTx = ({ data, isMobile, isFirst }: Props) => {
+const SearchBarSuggestTx = ({ data, isMobile, isFirst }: ItemsProps<SearchResultTx>) => {
   const icon = <TxEntity.Icon/>;
   const hash = (
-    // <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
-    //   <HashStringShortenDynamic hash={ formatPubKey(data.tx_hash, 8, 9) || '' } isTooltipDisabled/>
-    // </chakra.mark>
-    <Text color="#8A55FD">{ formatPubKey(data.tx_hash, 8, 9) || '' }</Text>
+    <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
+      <HashStringShortenDynamic hash={ data.transaction_hash } isTooltipDisabled/>
+    </chakra.mark>
   );
   // const date = dayjs(data.timestamp).format('llll');
 

@@ -26,7 +26,7 @@ type Props = {
   setSorting: (val?: TokensSortingValue) => void;
   isLoading?: boolean;
   top?: number;
-}
+};
 
 const TokensTable = ({ items, page, isLoading, sorting, setSorting, top }: Props) => {
   const sortIconTransform = sorting?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';

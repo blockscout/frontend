@@ -17,7 +17,7 @@ export type MessagesDirection = 'from-rollup' | 'to-rollup';
 
 type Props = {
   direction: MessagesDirection;
-}
+};
 
 const ArbitrumL2Messages = ({ direction }: Props) => {
   const type = direction === 'from-rollup' ? 'withdrawals' : 'deposits';

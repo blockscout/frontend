@@ -26,5 +26,5 @@ export const SEARCH_RESULT_NEXT_PAGE_PARAMS: SearchResult['next_page_params'] = 
   items_count: 50,
   name: 'USDCTest',
   q: 'usd',
-  tx_hash: null,
+  transaction_hash: null,
 };

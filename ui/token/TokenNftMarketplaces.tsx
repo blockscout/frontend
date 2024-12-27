@@ -14,10 +14,9 @@ interface Props {
   isLoading?: boolean;
   appActionData?: AddressMetadataTagFormatted['meta'];
   source: 'NFT collection' | 'NFT item';
-  isActionButtonExperiment?: boolean;
 }
 
-const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source, isActionButtonExperiment }: Props) => {
+const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Props) => {
   if (!hash || config.UI.views.nft.marketplaces.length === 0) {
     return null;
   }
@@ -31,7 +30,7 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source, isAc
         Marketplaces
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value
-        py={ (appActionData && isActionButtonExperiment) ? '1px' : '6px' }
+        py={ appActionData ? '1px' : '6px' }
       >
         <Skeleton isLoaded={ !isLoading } display="flex" columnGap={ 3 } flexWrap="wrap" alignItems="center">
           { config.UI.views.nft.marketplaces.map((item) => {
@@ -52,7 +51,7 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source, isAc
               </Tooltip>
             );
           }) }
-          { (appActionData && isActionButtonExperiment) && (
+          { appActionData && (
             <>
               <TextSeparator color="gray.500" margin={ 0 }/>
               <AppActionButton data={ appActionData } height="30px" source={ source }/>

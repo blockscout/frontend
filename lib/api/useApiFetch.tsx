@@ -19,8 +19,9 @@ import type { ApiResource, ResourceName, ResourcePathParams } from './resources'
 
 export interface Params<R extends ResourceName> {
   pathParams?: ResourcePathParams<R>;
-  queryParams?: Record<string, string | Array<string> | number | boolean | undefined>;
+  queryParams?: Record<string, string | Array<string> | number | boolean | undefined | null>;
   fetchParams?: Pick<FetchParams, 'body' | 'method' | 'signal' | 'headers'>;
+  logError?: boolean;
 }
 
 export default function useApiFetch() {
@@ -30,7 +31,7 @@ export default function useApiFetch() {
 
   return React.useCallback(<R extends ResourceName, SuccessType = unknown, ErrorType = unknown>(
     resourceName: R,
-    { pathParams, queryParams, fetchParams }: Params<R> = {},
+    { pathParams, queryParams, fetchParams, logError }: Params<R> = {},
   ) => {
     const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
 
@@ -58,7 +59,7 @@ export default function useApiFetch() {
       },
       {
         resource: resource.path,
-        omitSentryErrorLog: true, // disable logging of API errors to Sentry
+        logError,
       },
     );
   }, [ fetch, csrfToken ]);

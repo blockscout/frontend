@@ -13,9 +13,11 @@ const hash = addressMock.contract.hash;
 
 test.beforeEach(async({ mockApiResponse }) => {
   await mockApiResponse('address', addressMock.contract, { pathParams: { hash } });
-  await mockApiResponse('contract', contractInfoMock.verified, { pathParams: { hash } });
-  await mockApiResponse('contract_methods_read', contractMethodsMock.read, { pathParams: { hash }, queryParams: { is_custom_abi: 'false' } });
-  await mockApiResponse('contract_methods_write', contractMethodsMock.write, { pathParams: { hash }, queryParams: { is_custom_abi: 'false' } });
+  await mockApiResponse(
+    'contract',
+    { ...contractInfoMock.verified, abi: [ ...contractMethodsMock.read, ...contractMethodsMock.write ] },
+    { pathParams: { hash } },
+  );
 });
 
 test.describe('ABI functionality', () => {
@@ -41,7 +43,7 @@ test.describe('ABI functionality', () => {
       },
     };
     await mockEnvs(ENVS_MAP.noWalletClient);
-    const component = await render(<AddressContract/>, { hooksConfig }, { withSocket: true, withWalletClient: false });
+    const component = await render(<AddressContract/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 
@@ -62,8 +64,8 @@ test.describe('ABI functionality', () => {
 
     await expect(component.getByRole('button', { name: 'Connect wallet' })).toBeVisible();
     await component.getByText('setReserveInterestRateStrategyAddress').click();
-    await expect(component.getByLabel('2.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
-    await expect(component.getByLabel('2.').getByRole('button', { name: 'Write' })).toBeEnabled();
+    await expect(component.getByLabel('9.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
+    await expect(component.getByLabel('9.').getByRole('button', { name: 'Write' })).toBeEnabled();
 
     await component.getByText('pause').click();
     await expect(component.getByLabel('5.').getByRole('button', { name: 'Simulate' })).toBeHidden();
@@ -78,14 +80,14 @@ test.describe('ABI functionality', () => {
     };
     await mockEnvs(ENVS_MAP.noWalletClient);
 
-    const component = await render(<AddressContract/>, { hooksConfig }, { withSocket: true, withWalletClient: false });
+    const component = await render(<AddressContract/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 
     await expect(component.getByRole('button', { name: 'Connect wallet' })).toBeHidden();
     await component.getByText('setReserveInterestRateStrategyAddress').click();
-    await expect(component.getByLabel('2.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
-    await expect(component.getByLabel('2.').getByRole('button', { name: 'Write' })).toBeDisabled();
+    await expect(component.getByLabel('9.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
+    await expect(component.getByLabel('9.').getByRole('button', { name: 'Write' })).toBeDisabled();
 
     await component.getByText('pause').click();
     await expect(component.getByLabel('5.').getByRole('button', { name: 'Simulate' })).toBeHidden();

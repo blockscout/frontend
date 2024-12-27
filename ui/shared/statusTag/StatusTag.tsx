@@ -1,6 +1,7 @@
 import { TagLabel, Tooltip, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import Tag from 'ui/shared/chakra/Tag';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
@@ -19,7 +20,7 @@ const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
   let icon: IconName;
   let colorScheme;
 
-  const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1);
+  const capitalizedText = capitalizeFirstLetter(text);
 
   switch (type) {
     case 'ok':

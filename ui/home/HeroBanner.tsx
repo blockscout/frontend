@@ -8,8 +8,10 @@ import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
-const BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
-const TEXT_COLOR_DEFAULT = 'white';
+// const BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%,
+//  rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
+const BACKGROUND_DEFAULT = 'rgba(160, 126, 255, 0.10)';
+const TEXT_COLOR_DEFAULT = '#8A55FD';
 const BORDER_DEFAULT = 'none';
 
 const HeroBanner = () => {

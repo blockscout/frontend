@@ -1,19 +1,14 @@
 import { chakra, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ItemsProps } from './types';
 import type { SearchResultUserOp } from 'types/api/search';
 
 import dayjs from 'lib/date/dayjs';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
-interface Props {
-  data: SearchResultUserOp;
-  isMobile: boolean | undefined;
-  searchTerm: string;
-}
-
-const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
+const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserOp>) => {
   const icon = <UserOpEntity.Icon/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
@@ -45,4 +40,4 @@ const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
   );
 };
 
-export default React.memo(SearchBarSuggestTx);
+export default React.memo(SearchBarSuggestUserOp);

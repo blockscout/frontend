@@ -11,7 +11,7 @@ type Props = {
   holder: TokenHolder;
   token: TokenInfo;
   isLoading?: boolean;
-}
+};
 
 const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
   const quantity = BigNumber(holder.value).div(BigNumber(10 ** Number(token.decimals))).toFormat();

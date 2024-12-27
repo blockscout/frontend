@@ -61,7 +61,7 @@ const PrivateAddressTags = () => {
         { addressTagsData?.items.map((item: AddressTag, index: number) => (
           <AddressTagListItem
             item={ item }
-            key={ item.id + (isPlaceholderData ? index : '') }
+            key={ item.id + (isPlaceholderData ? String(index) : '') }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
             isLoading={ isPlaceholderData }
@@ -104,7 +104,7 @@ const PrivateAddressTags = () => {
           size="lg"
           onClick={ addressModalProps.onOpen }
         >
-            Add address tag
+          Add address tag
         </Button>
       </Skeleton>
       <AddressModal

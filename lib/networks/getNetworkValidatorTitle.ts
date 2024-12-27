@@ -1,5 +1,21 @@
 import config from 'configs/app';
 
 export default function getNetworkValidatorTitle() {
-  return config.chain.verificationType === 'validation' ? 'validator' : 'miner';
+  switch (config.chain.verificationType) {
+    case 'validation': {
+      return 'validator';
+    }
+    case 'mining': {
+      return 'miner';
+    }
+    case 'posting': {
+      return 'poster';
+    }
+    case 'sequencing': {
+      return 'sequencer';
+    }
+    default: {
+      return 'miner';
+    }
+  }
 }
