@@ -28,6 +28,12 @@ interface Props {
 }
 
 const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, isFirst }: Props) => {
+  if (data.type === 'transaction') {
+    if (data['transaction_hash']) {
+      data.tx_hash = data['transaction_hash'];
+    }
+  }
+
   const url = (() => {
     switch (data.type) {
       case 'token': {
