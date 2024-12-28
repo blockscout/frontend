@@ -2,7 +2,7 @@
   "name": "@luxfi/explore",
   "version": "1.0.0",
   "private": false,
-  "homepage": "https://github.com/luxfi/explorer-app#readme",
+  "homepage": "https://github.com/luxfi/explore#readme",
   "engines": {
     "node": "18",
     "npm": "8"
