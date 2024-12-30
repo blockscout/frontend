@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-restricted-imports */
 import { debounce, orderBy } from 'lodash';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
@@ -13,7 +15,7 @@ import { sizeTool, filtersName } from 'ui/storage/utils';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const ObjectDetails: NextPage = () => {
-  const [ queryParams, setQueryParams ] = React.useState<{offset: number; searchTerm: string; page: number}>({
+  const [ queryParams, setQueryParams ] = React.useState<{ offset: number; searchTerm: string; page: number }>({
     offset: 0,
     searchTerm: '',
     page: 1,

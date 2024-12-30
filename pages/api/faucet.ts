@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Wallet, NonceManager, isAddress, JsonRpcProvider, parseEther } from 'ethers';
 import { getIronSession } from 'iron-session';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -15,7 +16,7 @@ const provider = new JsonRpcProvider(
     staticNetwork: true,
   },
 );
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
 const _signer = new Wallet(getEnvValue('NEXT_PUBLIC_FAUCET_KEY')!, provider);
 const signer = new NonceManager(_signer);
 
@@ -62,7 +63,7 @@ export default async function faucetHandler(
 
     const txRp = await signer.sendTransaction({
       to: userWallet,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
       value: parseEther(getEnvValue('NEXT_PUBLIC_FAUCET_VALUE')!),
     });
     const txReceipt = await txRp.wait();
@@ -83,7 +84,6 @@ export default async function faucetHandler(
     requestLock.delete(user.id);
 
     res.status(200).json({ hash: txReceipt.hash });
-    //
   } catch (error: any) {
     requestLock.delete(user?.id);
 

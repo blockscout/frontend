@@ -42,7 +42,6 @@ const NavLinkRewards = ({ isCollapsed, onClick }: Props) => {
       }}
       onClick={ handleClick }
       isCollapsed={ isCollapsed }
-      isDisabled={ !isInitialized }
     />
   );
 };

@@ -71,8 +71,8 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/api/auth/callback/discord': 'Regular page',
   '/api/auth/session': 'Regular page',
   '/api/faucet': 'Regular page',
-  '/auth/auth0': 'Regular page',
-  '/auth/unverified-email': 'Regular page',
+  // '/auth/auth0': 'Regular page',
+  // '/auth/unverified-email': 'Regular page',
   '/bucket-details/[address]': 'Root page',
   '/group-details/[address]': 'Root page',
   '/object-details/[address]': 'Root page',
@@ -81,6 +81,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/group': 'Root page',
   '/object': 'Root page',
   '/api/sprite': 'Regular page',
+  '/advanced-filter': 'Homepage',
 };
 
 export default function getPageOgType(pathname: Route['pathname']) {
