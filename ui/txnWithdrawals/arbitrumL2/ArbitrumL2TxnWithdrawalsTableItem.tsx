@@ -9,11 +9,12 @@ import ArbitrumL2MessageStatus from 'ui/shared/statusTag/ArbitrumL2MessageStatus
 import ArbitrumL2TxnWithdrawalsClaimButton from './ArbitrumL2TxnWithdrawalsClaimButton';
 
 interface Props {
+  txHash: string | undefined;
   data: ArbitrumL2TxnWithdrawalsItem;
   isLoading?: boolean;
 }
 
-const ArbitrumL2TxnWithdrawalsTableItem = ({ data, isLoading }: Props) => {
+const ArbitrumL2TxnWithdrawalsTableItem = ({ data, isLoading, txHash }: Props) => {
   return (
     <Tr>
       <Td verticalAlign="middle">
@@ -28,7 +29,7 @@ const ArbitrumL2TxnWithdrawalsTableItem = ({ data, isLoading }: Props) => {
       <Td verticalAlign="middle">
         <Flex alignItems="center" justifyContent="space-between" columnGap={ 8 }>
           <ArbitrumL2MessageStatus status={ data.status } isLoading={ isLoading }/>
-          <ArbitrumL2TxnWithdrawalsClaimButton messageId={ data.id }/>
+          <ArbitrumL2TxnWithdrawalsClaimButton messageId={ data.id } txHash={ txHash }/>
         </Flex>
       </Td>
     </Tr>

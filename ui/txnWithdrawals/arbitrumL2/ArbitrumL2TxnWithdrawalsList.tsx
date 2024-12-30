@@ -8,9 +8,10 @@ import ArbitrumL2TxnWithdrawalsListItem from './ArbitrumL2TxnWithdrawalsListItem
 interface Props {
   data: Array<ArbitrumL2TxnWithdrawalsItem>;
   isLoading: boolean;
+  txHash: string | undefined;
 }
 
-const ArbitrumL2TxnWithdrawalsList = ({ data, isLoading }: Props) => {
+const ArbitrumL2TxnWithdrawalsList = ({ data, isLoading, txHash }: Props) => {
   return (
     <Box>
       { data.map((item, index) => (
@@ -18,6 +19,7 @@ const ArbitrumL2TxnWithdrawalsList = ({ data, isLoading }: Props) => {
           key={ String(item.id) + (isLoading ? index : '') }
           data={ item }
           isLoading={ isLoading }
+          txHash={ txHash }
         />
       )) }
     </Box>

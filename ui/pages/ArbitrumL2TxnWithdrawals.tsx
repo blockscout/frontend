@@ -58,10 +58,10 @@ const ArbitrumL2TxnWithdrawals = () => {
   const content = data?.items ? (
     <>
       <Box display={{ base: 'block', lg: 'none' }} mt={ 6 }>
-        <ArbitrumL2TxnWithdrawalsList data={ data.items } isLoading={ isPlaceholderData }/>
+        <ArbitrumL2TxnWithdrawalsList data={ data.items } txHash={ searchTerm } isLoading={ isPlaceholderData }/>
       </Box>
       <Box display={{ base: 'none', lg: 'block' }} mt={ 6 }>
-        <ArbitrumL2TxnWithdrawalsTable data={ data.items } isLoading={ isPlaceholderData }/>
+        <ArbitrumL2TxnWithdrawalsTable data={ data.items } txHash={ searchTerm } isLoading={ isPlaceholderData }/>
       </Box>
     </>
   ) : null;

@@ -15,9 +15,10 @@ const rollupFeature = config.features.rollup;
 interface Props {
   data: ArbitrumL2TxnWithdrawalsItem;
   isLoading: boolean;
+  txHash: string | undefined;
 }
 
-const ArbitrumL2TxnWithdrawalsListItem = ({ data, isLoading }: Props) => {
+const ArbitrumL2TxnWithdrawalsListItem = ({ data, isLoading, txHash }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'arbitrum') {
     return null;
   }
@@ -51,7 +52,7 @@ const ArbitrumL2TxnWithdrawalsListItem = ({ data, isLoading }: Props) => {
         py={ 0 }
       >
         <ArbitrumL2MessageStatus status={ data.status } isLoading={ isLoading }/>
-        <ArbitrumL2TxnWithdrawalsClaimButton messageId={ data.id }/>
+        <ArbitrumL2TxnWithdrawalsClaimButton messageId={ data.id } txHash={ txHash }/>
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>
