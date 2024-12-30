@@ -14,7 +14,7 @@ const BlockEntityL1 = (props: BlockEntity.EntityProps) => {
     return null;
   }
 
-  const defaultHref = rollupFeature.L1BaseUrl + route({
+  const defaultHref = rollupFeature.parentChain.baseUrl + route({
     pathname: '/block/[height_or_hash]',
     query: { height_or_hash: props.hash ?? String(props.number) },
   });
