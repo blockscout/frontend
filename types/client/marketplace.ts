@@ -24,6 +24,7 @@ export type MarketplaceAppOverview = MarketplaceAppPreview & MarketplaceAppSocia
   author: string;
   description: string;
   site?: string;
+  rating?: number;
 };
 
 export type AppRating = {

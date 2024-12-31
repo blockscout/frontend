@@ -8,15 +8,17 @@ import highlightText from 'lib/highlightText';
 import IconSvg from 'ui/shared/IconSvg';
 
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
-
+import SearchBarSuggestExternalAppModal from './SearchBarSuggestExternalAppModal';
+import SearchBarSuggestItemButton from './SearchBarSuggestItemButton';
 interface Props {
   data: MarketplaceAppOverview;
   isMobile: boolean | undefined;
   searchTerm: string;
   onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  handleData: (data: MarketplaceAppOverview) => void;
 }
 
-const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => {
+const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick, handleData }: Props) => {
 
   const logo = (
     <Image
@@ -42,7 +44,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
             >
               <span dangerouslySetInnerHTML={{ __html: highlightText(data.title, searchTerm) }}/>
             </Text>
-            { data.external && <IconSvg name="link_external" color="icon_link_external" boxSize={ 3 } verticalAlign="middle" flexShrink={ 0 }/> }
+            {/* { data.external && <IconSvg name="link_external" color="icon_link_external" boxSize={ 3 } verticalAlign="middle" flexShrink={ 0 }/> } */}
           </Flex>
           <Text
             variant="secondary"
@@ -81,7 +83,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
         >
           { data.description }
         </Text>
-        { data.external && (
+        {/* { data.external && (
           <IconSvg
             name="link_external"
             color="icon_link_external"
@@ -89,16 +91,16 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
             verticalAlign="middle"
             flexShrink={ 0 }
           />
-        ) }
+        ) } */}
       </Flex>
     );
   })();
 
   if (data.external) {
     return (
-      <SearchBarSuggestItemLink onClick={ onClick } href={ data.url } target="_blank">
-        { content }
-      </SearchBarSuggestItemLink>
+      <SearchBarSuggestItemButton data={data} handleData={handleData}>
+         {content}
+      </SearchBarSuggestItemButton>
     );
   }
 
