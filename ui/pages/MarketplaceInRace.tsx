@@ -137,6 +137,9 @@ const Marketplace = () => {
     return null;
   }
 
+
+  console.log('displayedAppsInRace', displayedAppsInRace);
+
   
 
   return (

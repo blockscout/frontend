@@ -92,16 +92,20 @@ export default function useMarketplaceApps(
   const { isPlaceholderData: isGPURacePlaceholderData, isError: isGPURaceError, error: gpuRaceError, data: gpuRaceData } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
     queryKey: ['gpu_race-dapps', snapshotFavoriteApps],
     queryFn: async () => {
-      if (!feature.isEnabled) {
+      try {
+        const response = await fetch<Array<MarketplaceAppWithSecurityReport>, unknown>(
+          "/assets/gpu_race_config.json", 
+          undefined, 
+          { resource: 'marketplace-dapps' }
+        );
+        return response;
+      } catch (error) {
+        console.error('GPU Race data fetch error:', error);
         return [];
-      } else if ('configUrl' in feature) {
-        return fetch<Array<MarketplaceAppWithSecurityReport>, unknown>("/assets/gpu_race_config.json", undefined, { resource: 'marketplace-dapps' });
-      } else {
-        return apiFetch('marketplace_dapps', { pathParams: { chainId: config.chain.id } });
       }
     },
     select: (data) => sortApps(data as Array<MarketplaceAppWithSecurityReport>, snapshotFavoriteApps),
-    placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
+    // placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
@@ -116,8 +120,18 @@ export default function useMarketplaceApps(
   }, [selectedCategoryId, appsWithSecurityReports, filter, favoriteApps]);
 
   const displayedAppsInRace = React.useMemo(() => {
-    return gpuRaceData?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
-  }, [selectedCategoryId, appsWithSecurityReports, filter, favoriteApps]);
+    console.log('Filter conditions:', {
+      gpuRaceData,
+      filter,
+      selectedCategoryId,
+      favoriteApps
+    });
+    
+    return gpuRaceData?.filter(app => 
+      isAppNameMatches(filter, app) && 
+      isAppCategoryMatches(selectedCategoryId, app, favoriteApps)
+    ) || [];
+  }, [selectedCategoryId, gpuRaceData, filter, favoriteApps]);
 
   return React.useMemo(() => ({
     data,
