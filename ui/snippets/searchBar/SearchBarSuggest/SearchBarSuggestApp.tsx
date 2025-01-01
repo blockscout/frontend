@@ -5,11 +5,9 @@ import React from 'react';
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import highlightText from 'lib/highlightText';
-import IconSvg from 'ui/shared/IconSvg';
 
-import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
-import SearchBarSuggestExternalAppModal from './SearchBarSuggestExternalAppModal';
 import SearchBarSuggestItemButton from './SearchBarSuggestItemButton';
+import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 interface Props {
   data: MarketplaceAppOverview;
   isMobile: boolean | undefined;
@@ -44,7 +42,6 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick, handleData }
             >
               <span dangerouslySetInnerHTML={{ __html: highlightText(data.title, searchTerm) }}/>
             </Text>
-            {/* { data.external && <IconSvg name="link_external" color="icon_link_external" boxSize={ 3 } verticalAlign="middle" flexShrink={ 0 }/> } */}
           </Flex>
           <Text
             variant="secondary"
@@ -83,23 +80,14 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick, handleData }
         >
           { data.description }
         </Text>
-        {/* { data.external && (
-          <IconSvg
-            name="link_external"
-            color="icon_link_external"
-            boxSize={ 3 }
-            verticalAlign="middle"
-            flexShrink={ 0 }
-          />
-        ) } */}
       </Flex>
     );
   })();
 
   if (data.external) {
     return (
-      <SearchBarSuggestItemButton data={data} handleData={handleData}>
-         {content}
+      <SearchBarSuggestItemButton data={ data } handleData={ handleData }>
+        { content }
       </SearchBarSuggestItemButton>
     );
   }

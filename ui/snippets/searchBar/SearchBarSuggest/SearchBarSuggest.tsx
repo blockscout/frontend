@@ -5,6 +5,7 @@ import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { SearchResultItem } from 'types/api/search';
+import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import type { ResourceError } from 'lib/api/resources';
 import { useSettingsContext } from 'lib/contexts/settings';
@@ -19,13 +20,12 @@ import { getItemCategory, searchCategories } from 'ui/shared/search/utils';
 import SearchBarSuggestApp from './SearchBarSuggestApp';
 import SearchBarSuggestBlockCountdown from './SearchBarSuggestBlockCountdown';
 import SearchBarSuggestItem from './SearchBarSuggestItem';
-import { MarketplaceAppOverview } from 'types/client/marketplace';
 interface Props {
   query: UseQueryResult<Array<SearchResultItem>, ResourceError<unknown>>;
   searchTerm: string;
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   containerId: string;
-  handleData :(data:MarketplaceAppOverview) => void;
+  handleData: (data: MarketplaceAppOverview) => void;
 }
 
 const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId, handleData }: Props) => {
@@ -180,8 +180,10 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId, handleD
                   addressFormat={ settingsContext?.addressFormat }
                 />
               )) }
-              { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) =>
-                <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick } handleData={handleData}/>,
+              { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) => (
+                <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile }
+                  searchTerm={ searchTerm } onClick={ onItemClick } handleData={ handleData }/>
+              ),
               ) }
             </Element>
           );
