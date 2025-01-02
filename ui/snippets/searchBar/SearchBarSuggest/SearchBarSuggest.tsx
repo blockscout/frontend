@@ -179,9 +179,8 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
                   addressFormat={ settingsContext?.addressFormat }
                 />
               )) }
-              { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) => (
-                <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>
-              ),
+              { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) =>
+                <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
               ) }
             </Element>
           );
