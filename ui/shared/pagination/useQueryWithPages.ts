@@ -7,6 +7,8 @@ import { animateScroll } from 'react-scroll';
 
 import type { PaginationParams } from './types';
 
+import type { Route } from 'nextjs-routes';
+
 import type { PaginatedResources, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'lib/api/resources';
 import { RESOURCES, SORTING_FIELDS } from 'lib/api/resources';
 import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
@@ -25,6 +27,10 @@ export interface Params<Resource extends PaginatedResources> {
 type NextPageParams = Record<string, unknown>;
 
 const INITIAL_PAGE_PARAMS = { '1': {} };
+
+function getPageFromQuery(query: Route['query']) {
+  return query?.page && !Array.isArray(query.page) ? Number(query.page) : 1;
+}
 
 function getPaginationParamsFromQuery(queryString: string | Array<string> | undefined) {
   if (queryString) {
@@ -64,7 +70,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const [ page, setPage ] = React.useState<number>(router.query.page && !Array.isArray(router.query.page) ? Number(router.query.page) : 1);
+  const [ page, setPage ] = React.useState<number>(getPageFromQuery(router.query));
   const [ pageParams, setPageParams ] = React.useState<Record<number, NextPageParams>>({
     [page]: getPaginationParamsFromQuery(router.query.next_page_params),
   });
@@ -220,6 +226,18 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
       isMounted.current = true;
     }, 0);
   }, []);
+
+  React.useEffect(() => {
+    const pageFromQuery = getPageFromQuery(router.query);
+    const nextPageParamsFromQuery = getPaginationParamsFromQuery(router.query.next_page_params);
+
+    setPage(pageFromQuery);
+    setPageParams(prev => ({
+      ...prev,
+      [pageFromQuery]: nextPageParamsFromQuery,
+    }));
+    setHasPages(pageFromQuery > 1);
+  }, [ router.query ]);
 
   return { ...queryResult, pagination, onFilterChange, onSortingChange };
 }
