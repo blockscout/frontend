@@ -5,11 +5,9 @@ import isNeedProxy from 'lib/api/isNeedProxy';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
-import { useRollbar } from 'lib/rollbar';
 
 export default function useGetCsrfToken() {
   const nodeApiFetch = useFetch();
-  const rollbar = useRollbar();
 
   return useQuery({
     queryKey: getResourceKey('csrf'),
@@ -20,11 +18,13 @@ export default function useGetCsrfToken() {
         const csrfFromHeader = apiResponse.headers.get('x-bs-account-csrf');
 
         if (!csrfFromHeader) {
-          rollbar?.warn('Client fetch failed', {
-            resource: 'csrf',
-            status_code: 500,
-            status_text: 'Unable to obtain csrf token from header',
-          });
+          // I am not sure should we log this error or not
+          // so I commented it out for now
+          // rollbar?.warn('Client fetch failed', {
+          //   resource: 'csrf',
+          //   status_code: 500,
+          //   status_text: 'Unable to obtain csrf token from header',
+          // });
           return;
         }
 
