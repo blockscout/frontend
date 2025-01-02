@@ -11,25 +11,9 @@ export interface Props {
   icon: IconName;
   title: string;
   href?: string;
-  showIconsOnly?: boolean;
 }
 
-const SocialLink = ({ href, icon, title, showIconsOnly }: Props) => {
-  if (showIconsOnly) {
-    return (
-      <Link
-        href={ href }
-        aria-label={ title }
-        title={ title }
-        target="_blank"
-        display="inline-flex"
-        alignItems="center"
-        mt={ 3 }
-      >
-        <IconSvg name={ icon } boxSize={ 5 } mr={ 2 } color="text_secondary"/>
-      </Link>
-    );
-  }
+const SocialLink = ({ href, icon, title }: Props) => {
   return (
     <Link
       href={ href }

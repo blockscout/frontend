@@ -19,6 +19,7 @@ import { getItemCategory, searchCategories } from 'ui/shared/search/utils';
 import SearchBarSuggestApp from './SearchBarSuggestApp';
 import SearchBarSuggestBlockCountdown from './SearchBarSuggestBlockCountdown';
 import SearchBarSuggestItem from './SearchBarSuggestItem';
+
 interface Props {
   query: UseQueryResult<Array<SearchResultItem>, ResourceError<unknown>>;
   searchTerm: string;
@@ -179,8 +180,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
                 />
               )) }
               { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) => (
-                <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile }
-                  searchTerm={ searchTerm } onClick={ onItemClick }/>
+                <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>
               ),
               ) }
             </Element>

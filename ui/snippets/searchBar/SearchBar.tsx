@@ -43,6 +43,7 @@ const SearchBar = ({ isHomepage }: Props) => {
   const menuWidth = React.useRef<number>(0);
   const isMobile = useIsMobile();
   const router = useRouter();
+
   const recentSearchKeywords = getRecentSearchKeywords();
 
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query } = useQuickSearchQuery();
@@ -95,6 +96,7 @@ const SearchBar = ({ isHomepage }: Props) => {
     saveToRecentKeywords(searchTerm);
     onClose();
   }, [ router.pathname, searchTerm, onClose ]);
+
   const menuPaddingX = isMobile && !isHomepage ? 24 : 0;
   const calculateMenuWidth = React.useCallback(() => {
     menuWidth.current = (inputRef.current?.getBoundingClientRect().width || 0) - menuPaddingX;
