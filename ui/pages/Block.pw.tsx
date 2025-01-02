@@ -28,7 +28,7 @@ test('degradation view, details tab', async({ render, mockApiResponse, mockRpcRe
   });
 
   const component = await render(<Block/>, { hooksConfig });
-  await page.waitForResponse(config.chain.rpcUrl as string);
+  await page.waitForResponse(config.chain.rpcUrls[0]);
 
   await expect(component).toHaveScreenshot();
 });
@@ -49,7 +49,7 @@ test('degradation view, txs tab', async({ render, mockApiResponse, mockRpcRespon
   });
 
   const component = await render(<Block/>, { hooksConfig });
-  await page.waitForResponse(config.chain.rpcUrl as string);
+  await page.waitForResponse(config.chain.rpcUrls[0]);
 
   await expect(component).toHaveScreenshot();
 });
@@ -71,7 +71,7 @@ test('degradation view, withdrawals tab', async({ render, mockApiResponse, mockR
   });
 
   const component = await render(<Block/>, { hooksConfig });
-  await page.waitForResponse(config.chain.rpcUrl as string);
+  await page.waitForResponse(config.chain.rpcUrls[0]);
 
   await expect(component).toHaveScreenshot();
 });

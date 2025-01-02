@@ -15,7 +15,7 @@ const ContractVerificationSolidityFoundry = () => {
   const address = watch('address');
 
   const codeSnippet = `forge verify-contract \\
-  --rpc-url ${ config.chain.rpcUrl || `${ config.api.endpoint }/api/eth-rpc` } \\
+  --rpc-url ${ config.chain.rpcUrls[0] || `${ config.api.endpoint }/api/eth-rpc` } \\
   --verifier blockscout \\
   --verifier-url '${ config.api.endpoint }/api/' \\
   ${ address || '<address>' } \\

@@ -17,7 +17,7 @@ const config: Feature<{ walletConnect: { projectId: string } }> = (() => {
     chain.currency.name &&
     chain.currency.symbol &&
     chain.currency.decimals &&
-    chain.rpcUrl &&
+    chain.rpcUrls.length > 0 &&
     walletConnectProjectId
   ) {
     return Object.freeze({

@@ -51,7 +51,7 @@ test('degradation view', async({ render, page, mockRpcResponse, mockApiResponse 
   });
 
   const component = await render(<Address/>, { hooksConfig });
-  await page.waitForResponse(config.chain.rpcUrl as string);
+  await page.waitForResponse(config.chain.rpcUrls[0]);
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],

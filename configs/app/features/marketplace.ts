@@ -33,7 +33,7 @@ const config: Feature<(
   rating: { airtableApiKey: string; airtableBaseId: string } | undefined;
   graphLinksUrl: string | undefined;
 }> = (() => {
-  if (enabled === 'true' && chain.rpcUrl && submitFormUrl) {
+  if (enabled === 'true' && chain.rpcUrls.length > 0 && submitFormUrl) {
     const props = {
       submitFormUrl,
       categoriesUrl,

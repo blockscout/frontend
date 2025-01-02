@@ -65,7 +65,7 @@ const MarketplaceAppContent = ({ address, data, isPending, appUrl }: Props) => {
         blockscoutNetworkName: config.chain.name,
         blockscoutNetworkId: Number(config.chain.id),
         blockscoutNetworkCurrency: config.chain.currency,
-        blockscoutNetworkRpc: config.chain.rpcUrl,
+        blockscoutNetworkRpc: config.chain.rpcUrls[0],
       };
 
       iframeRef?.current?.contentWindow?.postMessage(message, data.url);
@@ -159,7 +159,7 @@ const MarketplaceApp = () => {
       <DappscoutIframeProvider
         address={ address }
         appUrl={ appUrl }
-        rpcUrl={ config.chain.rpcUrl }
+        rpcUrl={ config.chain.rpcUrls[0] }
         sendTransaction={ sendTransaction }
         signMessage={ signMessage }
         signTypedData={ signTypedData }
