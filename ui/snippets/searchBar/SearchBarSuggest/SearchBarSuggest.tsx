@@ -5,7 +5,6 @@ import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { SearchResultItem } from 'types/api/search';
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import type { ResourceError } from 'lib/api/resources';
 import { useSettingsContext } from 'lib/contexts/settings';
@@ -25,10 +24,9 @@ interface Props {
   searchTerm: string;
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   containerId: string;
-  handleData: (data: MarketplaceAppOverview) => void;
 }
 
-const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId, handleData }: Props) => {
+const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props) => {
   const isMobile = useIsMobile();
 
   const marketplaceApps = useMarketplaceApps(searchTerm);
@@ -182,7 +180,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId, handleD
               )) }
               { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) => (
                 <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile }
-                  searchTerm={ searchTerm } onClick={ onItemClick } handleData={ handleData }/>
+                  searchTerm={ searchTerm } onClick={ onItemClick }/>
               ),
               ) }
             </Element>

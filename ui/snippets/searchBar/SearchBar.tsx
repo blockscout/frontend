@@ -11,10 +11,8 @@ import {
 import _debounce from 'lodash/debounce';
 import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Element } from 'react-scroll';
-
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
@@ -29,8 +27,8 @@ import SearchBarBackdrop from './SearchBarBackdrop';
 import SearchBarInput from './SearchBarInput';
 import SearchBarRecentKeywords from './SearchBarRecentKeywords';
 import SearchBarSuggest from './SearchBarSuggest/SearchBarSuggest';
-import SearchBarSuggestExternalAppModal from './SearchBarSuggest/SearchBarSuggestExternalAppModal';
 import useQuickSearchQuery from './useQuickSearchQuery';
+
 type Props = {
   isHomepage?: boolean;
 };
@@ -39,14 +37,12 @@ const SCROLL_CONTAINER_ID = 'search_bar_popover_content';
 
 const SearchBar = ({ isHomepage }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const modal = useDisclosure();
   const inputRef = React.useRef<HTMLFormElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
   const isMobile = useIsMobile();
   const router = useRouter();
-
   const recentSearchKeywords = getRecentSearchKeywords();
 
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query } = useQuickSearchQuery();
@@ -99,16 +95,6 @@ const SearchBar = ({ isHomepage }: Props) => {
     saveToRecentKeywords(searchTerm);
     onClose();
   }, [ router.pathname, searchTerm, onClose ]);
-  const [ dappDetails, setDappDetails ] = React.useState<MarketplaceAppOverview | null>(null);
-  const handleData = useCallback(
-    (data: MarketplaceAppOverview) => {
-      setDappDetails(data);
-      onClose();
-      modal.onOpen();
-    },
-    [ setDappDetails, onClose, modal ], // Dependencies
-  );
-
   const menuPaddingX = isMobile && !isHomepage ? 24 : 0;
   const calculateMenuWidth = React.useCallback(() => {
     menuWidth.current = (inputRef.current?.getBoundingClientRect().width || 0) - menuPaddingX;
@@ -186,7 +172,6 @@ const SearchBar = ({ isHomepage }: Props) => {
                     searchTerm={ debouncedSearchTerm }
                     onItemClick={ handleItemClick }
                     containerId={ SCROLL_CONTAINER_ID }
-                    handleData={ handleData }
                   />
                 ) }
               </Box>
@@ -204,7 +189,6 @@ const SearchBar = ({ isHomepage }: Props) => {
           </PopoverContent>
         </Portal>
       </Popover>
-      <SearchBarSuggestExternalAppModal isModalOpen={ modal.isOpen } onModalClose={ modal.onClose } dappDetails={ dappDetails }/>
       <SearchBarBackdrop isOpen={ isOpen }/>
     </>
   );

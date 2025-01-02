@@ -1,22 +1,22 @@
 import { Image, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import router from 'next/router';
 import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import highlightText from 'lib/highlightText';
+import IconSvg from 'ui/shared/IconSvg';
 
-import SearchBarSuggestItemButton from './SearchBarSuggestItemButton';
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 interface Props {
   data: MarketplaceAppOverview;
   isMobile: boolean | undefined;
   searchTerm: string;
   onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
-  handleData: (data: MarketplaceAppOverview) => void;
 }
 
-const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick, handleData }: Props) => {
+const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => {
 
   const logo = (
     <Image
@@ -42,6 +42,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick, handleData }
             >
               <span dangerouslySetInnerHTML={{ __html: highlightText(data.title, searchTerm) }}/>
             </Text>
+            { data.external && <IconSvg name="link_external" color="icon_link_external" boxSize={ 3 } verticalAlign="middle" flexShrink={ 0 }/> }
           </Flex>
           <Text
             variant="secondary"
@@ -80,15 +81,37 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick, handleData }
         >
           { data.description }
         </Text>
+        { data.external && (
+          <IconSvg
+            name="link_external"
+            color="icon_link_external"
+            boxSize={ 3 }
+            verticalAlign="middle"
+            flexShrink={ 0 }
+          />
+        ) }
       </Flex>
     );
   })();
 
   if (data.external) {
     return (
-      <SearchBarSuggestItemButton data={ data } handleData={ handleData }>
-        { content }
-      </SearchBarSuggestItemButton>
+      <NextLink
+        href={{
+          pathname: '/apps',
+          query: {
+            selectedAppId: data.id,
+          },
+        }}
+        passHref
+        shallow={ router.pathname === '/apps' }
+        legacyBehavior
+      >
+        <SearchBarSuggestItemLink onClick={ onClick }>
+          { content }
+        </SearchBarSuggestItemLink>
+      </NextLink>
+
     );
   }
 

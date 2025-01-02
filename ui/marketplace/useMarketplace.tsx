@@ -106,6 +106,23 @@ export default function useMarketplace() {
     // run only when data is loaded
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
+  React.useEffect(() => {
+    const selectedAppId = getQueryParamString(router.query.selectedAppId);
+    if (selectedAppId) {
+      setSelectedAppId(selectedAppId);
+      setIsAppInfoModalOpen(true);
+      const newQuery = { ...router.query };
+      delete newQuery.selectedAppId;
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: newQuery,
+        },
+        undefined,
+        { shallow: true },
+      );
+    }
+  }, [ router.query.selectedAppId, router ]);
 
   React.useEffect(() => {
     if (isPlaceholderData) {
