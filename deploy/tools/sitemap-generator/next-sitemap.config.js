@@ -41,6 +41,7 @@ const apiUrl = (() => {
 module.exports = {
   siteUrl,
   generateIndexSitemap: false,
+  generateRobotsTxt: true,
   sourceDir: path.resolve(process.cwd(), '../../../.next'),
   outDir: path.resolve(process.cwd(), '../../../public'),
   exclude: [

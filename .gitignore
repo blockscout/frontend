@@ -18,6 +18,7 @@
 /public/icons/sprite.*.svg
 /public/icons/README.md
 /public/sitemap.xml
+/public/robots.txt
 /analyze
 
 # production

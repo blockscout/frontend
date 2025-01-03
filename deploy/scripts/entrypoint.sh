@@ -61,7 +61,7 @@ echo
 # Create envs.js file with run-time environment variables for the client app
 ./make_envs_script.sh
 
-# Create sitemap.xml file
+# Generate sitemap.xml and robots.txt files
 ./sitemap_generator.sh
 
 # Print list of enabled features
