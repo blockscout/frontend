@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, AlertTitle, Skeleton } from '@chakra-ui/react';
+import { Alert, AlertIcon, AlertTitle } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -12,6 +12,7 @@ import * as cookies from 'lib/cookies';
 import { nbsp, ndash } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 const IndexingBlocksAlert = () => {
   const appProps = useAppContext();

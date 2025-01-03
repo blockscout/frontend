@@ -1,6 +1,7 @@
-import { Divider, Flex, Skeleton, VStack } from '@chakra-ui/react';
+import { Divider, Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 
 interface Props {

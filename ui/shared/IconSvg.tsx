@@ -1,9 +1,10 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
-import { Skeleton, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import { type IconName } from 'public/icons/name';
 import React from 'react';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 export const href = config.app.spriteHash ? `/icons/sprite.${ config.app.spriteHash }.svg` : '/icons/sprite.svg';
 

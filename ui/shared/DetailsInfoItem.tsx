@@ -1,6 +1,7 @@
-import { chakra, GridItem, Flex, Text, Skeleton } from '@chakra-ui/react';
+import { chakra, GridItem, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 import Hint from 'ui/shared/Hint';
 import HintPopover from 'ui/shared/HintPopover';
