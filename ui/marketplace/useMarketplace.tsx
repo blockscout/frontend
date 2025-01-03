@@ -7,6 +7,7 @@ import { MarketplaceCategory } from 'types/client/marketplace';
 import useDebounce from 'lib/hooks/useDebounce';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import removeQueryParam from 'lib/router/removeQueryParam';
 
 import useRatings from './Rating/useRatings';
 import useMarketplaceApps from './useMarketplaceApps';
@@ -111,16 +112,7 @@ export default function useMarketplace() {
     if (selectedAppId) {
       setSelectedAppId(selectedAppId);
       setIsAppInfoModalOpen(true);
-      const newQuery = { ...router.query };
-      delete newQuery.selectedAppId;
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: newQuery,
-        },
-        undefined,
-        { shallow: true },
-      );
+      removeQueryParam(router, 'selectedAppId');
     }
   }, [ router.query.selectedAppId, router ]);
 
