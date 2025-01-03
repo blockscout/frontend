@@ -1,8 +1,9 @@
-import { Flex, Skeleton, chakra, Box, useColorModeValue } from '@chakra-ui/react';
+import { Flex, chakra, Box, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { RoutedTab } from '../Tabs/types';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 
 type TabSize = 'sm' | 'md';

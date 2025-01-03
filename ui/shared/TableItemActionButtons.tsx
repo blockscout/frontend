@@ -1,7 +1,8 @@
-import { Tooltip, IconButton, HStack, Skeleton } from '@chakra-ui/react';
+import { Tooltip, IconButton, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {

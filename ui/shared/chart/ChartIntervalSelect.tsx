@@ -1,10 +1,10 @@
 import type { TagProps } from '@chakra-ui/react';
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { StatsInterval, StatsIntervalIds } from 'types/client/stats';
 import type { SelectOption } from 'ui/shared/select/types';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Select from 'ui/shared/select/Select';
 import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 import { STATS_INTERVALS } from 'ui/stats/constants';
