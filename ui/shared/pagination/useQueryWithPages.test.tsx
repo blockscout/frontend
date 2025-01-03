@@ -367,7 +367,7 @@ describe('if there are multiple pages', () => {
 
 describe('if there is page query param in URL', () => {
   it('sets this param as the page number', async() => {
-    useRouter.mockReturnValueOnce({ ...router, query: { page: '3' } });
+    useRouter.mockReturnValue({ ...router, query: { page: '3' } });
 
     const params: Params<'address_txs'> = {
       resourceName: 'address_txs',
@@ -611,6 +611,56 @@ describe('queries with sorting', () => {
       undefined,
       { shallow: true },
     );
+  });
+});
+
+describe('router query changes', () => {
+  it('refetches correct page when page number changes in URL', async() => {
+    const routerPush = jest.fn(() => Promise.resolve());
+    const router = {
+      pathname: '/current-route',
+      push: routerPush,
+      query: {
+        page: '3',
+        next_page_params: encodeURIComponent(JSON.stringify(responses.page_2.next_page_params)),
+      },
+    };
+    useRouter.mockReturnValue(router);
+
+    const params: Params<'address_txs'> = {
+      resourceName: 'address_txs',
+      pathParams: { hash: addressMock.hash },
+    };
+
+    fetch.once(JSON.stringify(responses.page_3), responseInit);
+    fetch.once(JSON.stringify(responses.page_2), responseInit);
+
+    const { result, rerender } = renderHook(() => useQueryWithPages(params), { wrapper });
+    await waitForApiResponse();
+
+    expect(result.current.data).toEqual(responses.page_3);
+    expect(result.current.pagination.page).toBe(3);
+
+    // Simulate URL change to page 2
+    useRouter.mockReturnValue({
+      ...router,
+      query: {
+        page: '2',
+        next_page_params: encodeURIComponent(JSON.stringify(responses.page_1.next_page_params)),
+      },
+    });
+
+    rerender();
+    await waitForApiResponse();
+
+    expect(result.current.data).toEqual(responses.page_2);
+    expect(result.current.pagination).toMatchObject({
+      page: 2,
+      canGoBackwards: false,
+      hasNextPage: true,
+      isLoading: false,
+      isVisible: true,
+    });
   });
 });
 
