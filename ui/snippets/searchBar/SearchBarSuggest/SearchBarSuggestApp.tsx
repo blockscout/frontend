@@ -1,5 +1,6 @@
 import { Image, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import router from 'next/router';
 import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
@@ -8,7 +9,6 @@ import highlightText from 'lib/highlightText';
 import IconSvg from 'ui/shared/IconSvg';
 
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
-
 interface Props {
   data: MarketplaceAppOverview;
   isMobile: boolean | undefined;
@@ -96,9 +96,22 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
 
   if (data.external) {
     return (
-      <SearchBarSuggestItemLink onClick={ onClick } href={ data.url } target="_blank">
-        { content }
-      </SearchBarSuggestItemLink>
+      <NextLink
+        href={{
+          pathname: '/apps',
+          query: {
+            selectedAppId: data.id,
+          },
+        }}
+        passHref
+        shallow={ router.pathname === '/apps' }
+        legacyBehavior
+      >
+        <SearchBarSuggestItemLink onClick={ onClick }>
+          { content }
+        </SearchBarSuggestItemLink>
+      </NextLink>
+
     );
   }
 

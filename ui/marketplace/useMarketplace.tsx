@@ -7,6 +7,7 @@ import { MarketplaceCategory } from 'types/client/marketplace';
 import useDebounce from 'lib/hooks/useDebounce';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import removeQueryParam from 'lib/router/removeQueryParam';
 
 import useRatings from './Rating/useRatings';
 import useMarketplaceApps from './useMarketplaceApps';
@@ -106,6 +107,14 @@ export default function useMarketplace() {
     // run only when data is loaded
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
+  React.useEffect(() => {
+    const selectedAppId = getQueryParamString(router.query.selectedAppId);
+    if (selectedAppId) {
+      setSelectedAppId(selectedAppId);
+      setIsAppInfoModalOpen(true);
+      removeQueryParam(router, 'selectedAppId');
+    }
+  }, [ router.query.selectedAppId, router ]);
 
   React.useEffect(() => {
     if (isPlaceholderData) {
