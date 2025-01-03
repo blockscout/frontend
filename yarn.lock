@@ -2377,6 +2377,11 @@
     eventemitter3 "^5.0.1"
     preact "^10.24.2"
 
+"@corex/deepmerge@^4.0.43":
+  version "4.0.43"
+  resolved "https://registry.yarnpkg.com/@corex/deepmerge/-/deepmerge-4.0.43.tgz#9bd42559ebb41cc5a7fb7cfeea5f231c20977dca"
+  integrity sha512-N8uEMrMPL0cu/bdboEWpQYb/0i2K5Qn8eCsxzOmxSggJbbQte7ljMRoXm917AbntqTGOzdTu+vP3KOOzoC70HQ==
+
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@cspotcode/source-map-support/-/source-map-support-0.8.1.tgz#00629c35a688e05a88b1cda684fb9d5e73f000a1"
@@ -4263,6 +4268,11 @@
   version "15.0.3"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-15.0.3.tgz#a2e9bf274743c52b74d30f415f3eba750d51313a"
   integrity sha512-t9Xy32pjNOvVn2AS+Utt6VmyrshbpfUMhIjFO60gI58deSo/KgLOp31XZ4O+kY/Is8WAGYwA5gR7kOb1eORDBA==
+
+"@next/env@^13.4.3":
+  version "13.5.8"
+  resolved "https://registry.yarnpkg.com/@next/env/-/env-13.5.8.tgz#404d3b3e5881b6a0510500c6cc97e3589a2e6371"
+  integrity sha512-YmiG58BqyZ2FjrF2+5uZExL2BrLr8RTQzLXNDJ8pJr0O+rPlOeDPXp1p1/4OrR3avDidzZo3D8QO2cuDv1KCkw==
 
 "@next/eslint-plugin-next@15.0.3":
   version "15.0.3"
@@ -10924,7 +10934,7 @@ fast-glob@^3.2.11, fast-glob@^3.2.9:
     merge2 "^1.3.0"
     micromatch "^4.0.4"
 
-fast-glob@^3.3.2:
+fast-glob@^3.2.12, fast-glob@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.3.2.tgz#a904501e57cfdd2ffcded45e99a54fef55e46129"
   integrity sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==
@@ -13822,7 +13832,7 @@ minimatch@^9.0.4:
   dependencies:
     brace-expansion "^2.0.1"
 
-minimist@^1.1.0, minimist@^1.2.3, minimist@^1.2.6:
+minimist@^1.1.0, minimist@^1.2.3, minimist@^1.2.6, minimist@^1.2.8:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
   integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
@@ -13972,6 +13982,16 @@ netmask@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/netmask/-/netmask-2.0.2.tgz#8b01a07644065d536383835823bc52004ebac5e7"
   integrity sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==
+
+next-sitemap@4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-4.2.3.tgz#5db3f650351a51e84b9fd6b58c5af2f9257b5058"
+  integrity sha512-vjdCxeDuWDzldhCnyFCQipw5bfpl4HmZA7uoo3GAaYGjGgfL4Cxb1CiztPuWGmS+auYs7/8OekRS8C2cjdAsjQ==
+  dependencies:
+    "@corex/deepmerge" "^4.0.43"
+    "@next/env" "^13.4.3"
+    fast-glob "^3.2.12"
+    minimist "^1.2.8"
 
 next@15.0.3:
   version "15.0.3"

@@ -61,6 +61,9 @@ echo
 # Create envs.js file with run-time environment variables for the client app
 ./make_envs_script.sh
 
+# Create sitemap.xml file
+yarn next-sitemap
+
 # Print list of enabled features
 node ./feature-reporter.js
 
