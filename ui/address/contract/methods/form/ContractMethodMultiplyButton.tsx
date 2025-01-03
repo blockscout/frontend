@@ -20,10 +20,12 @@ import IconSvg from 'ui/shared/IconSvg';
 interface Props {
   onClick: (power: number) => void;
   isDisabled?: boolean;
+  initialValue: number;
+  onChange: (power: number) => void;
 }
 
-const ContractMethodMultiplyButton = ({ onClick, isDisabled }: Props) => {
-  const [ selectedOption, setSelectedOption ] = React.useState<number | undefined>(18);
+const ContractMethodMultiplyButton = ({ onClick, isDisabled, initialValue, onChange }: Props) => {
+  const [ selectedOption, setSelectedOption ] = React.useState<number | undefined>(initialValue);
   const [ customValue, setCustomValue ] = React.useState<number>();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
@@ -35,13 +37,16 @@ const ContractMethodMultiplyButton = ({ onClick, isDisabled }: Props) => {
       setSelectedOption((prev) => prev === id ? undefined : id);
       setCustomValue(undefined);
       onClose();
+      onChange(id);
     }
-  }, [ onClose ]);
+  }, [ onClose, onChange ]);
 
   const handleInputChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setCustomValue(Number(event.target.value));
+    const value = Number(event.target.value);
+    setCustomValue(value);
     setSelectedOption(undefined);
-  }, []);
+    onChange(value);
+  }, [ onChange ]);
 
   const value = selectedOption || customValue;
 
