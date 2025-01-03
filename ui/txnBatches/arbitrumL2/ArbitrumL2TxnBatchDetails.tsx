@@ -1,4 +1,4 @@
-import { Grid, GridItem, Link, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Link } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -12,6 +12,7 @@ import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ArbitrumL2TxnBatchDA from 'ui/shared/batch/ArbitrumL2TxnBatchDA';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';

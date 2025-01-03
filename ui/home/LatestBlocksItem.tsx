@@ -2,7 +2,6 @@ import {
   Box,
   Flex,
   Grid,
-  Skeleton,
   Tooltip,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
@@ -13,6 +12,7 @@ import type { Block } from 'types/api/block';
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';

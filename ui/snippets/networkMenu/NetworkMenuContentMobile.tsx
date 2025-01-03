@@ -1,8 +1,10 @@
-import { Box, Select, VStack, Skeleton, Flex } from '@chakra-ui/react';
+import { Box, Select, VStack, Flex } from '@chakra-ui/react';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import type { NetworkGroup, FeaturedNetwork } from 'types/networks';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import NetworkMenuLink from './NetworkMenuLink';
 

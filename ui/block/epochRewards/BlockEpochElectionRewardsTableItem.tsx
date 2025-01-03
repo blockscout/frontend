@@ -1,9 +1,10 @@
-import { Flex, IconButton, Skeleton, Td, Tr, useDisclosure } from '@chakra-ui/react';
+import { Flex, IconButton, Td, Tr, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import type { BlockEpoch, BlockEpochElectionReward } from 'types/api/block';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import IconSvg from 'ui/shared/IconSvg';

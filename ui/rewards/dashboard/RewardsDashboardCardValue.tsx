@@ -1,6 +1,7 @@
-import { Flex, Text, Skeleton } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import HintPopover from 'ui/shared/HintPopover';
 
 import MeritsIcon from '../MeritsIcon';

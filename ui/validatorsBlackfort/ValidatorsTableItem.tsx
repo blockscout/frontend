@@ -1,10 +1,11 @@
-import { Tr, Td, Skeleton, Flex } from '@chakra-ui/react';
+import { Tr, Td, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { ValidatorBlackfort } from 'types/api/validators';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 

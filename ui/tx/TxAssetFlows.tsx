@@ -1,4 +1,4 @@
-import { Table, Tbody, Tr, Th, Box, Skeleton, Text, Show, Hide } from '@chakra-ui/react';
+import { Table, Tbody, Tr, Th, Box, Text, Show, Hide } from '@chakra-ui/react';
 import _chunk from 'lodash/chunk';
 import React, { useMemo, useState } from 'react';
 
@@ -7,6 +7,7 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import useApiQuery from 'lib/api/useApiQuery';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import ActionBar from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Pagination from 'ui/shared/pagination/Pagination';

@@ -1,4 +1,4 @@
-import { Hide, Show, Skeleton } from '@chakra-ui/react';
+import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -6,6 +6,7 @@ import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { generateListStub } from 'stubs/utils';
 import { ZKEVM_WITHDRAWALS_ITEM } from 'stubs/zkEvmL2';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

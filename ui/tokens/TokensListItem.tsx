@@ -1,4 +1,4 @@
-import { Flex, HStack, Grid, GridItem, Skeleton } from '@chakra-ui/react';
+import { Flex, HStack, Grid, GridItem } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import config from 'configs/app';
 import getItemIndex from 'lib/getItemIndex';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';

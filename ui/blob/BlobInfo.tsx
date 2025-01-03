@@ -1,8 +1,9 @@
-import { Alert, Grid, GridItem, Skeleton } from '@chakra-ui/react';
+import { Alert, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Blob } from 'types/api/blobs';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';

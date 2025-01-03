@@ -1,9 +1,10 @@
-import { Tr, Td, Skeleton } from '@chakra-ui/react';
+import { Tr, Td } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TxBlob } from 'types/api/blobs';
 
 import BlobDataType from 'ui/shared/blob/BlobDataType';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 
 interface Props {

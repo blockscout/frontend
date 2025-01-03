@@ -1,4 +1,4 @@
-import { Divider, Text, Skeleton, useBoolean, Flex, Link, VStack, chakra, Box, Grid, GridItem } from '@chakra-ui/react';
+import { Divider, Text, useBoolean, Flex, Link, VStack, chakra, Box, Grid, GridItem } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -6,6 +6,7 @@ import type { AddressMudTableItem } from 'types/api/address';
 
 import { route } from 'nextjs-routes';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import IconSvg from 'ui/shared/IconSvg';

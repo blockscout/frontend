@@ -1,4 +1,4 @@
-import { Flex, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { AddressesItem } from 'types/api/addresses';
 import config from 'configs/app';
 import { ZERO } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';

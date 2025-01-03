@@ -1,4 +1,4 @@
-import { Flex, GridItem, Skeleton, Button } from '@chakra-ui/react';
+import { Flex, GridItem, Button } from '@chakra-ui/react';
 import React from 'react';
 
 import * as blobUtils from 'lib/blob';
@@ -8,6 +8,7 @@ import downloadBlob from 'lib/downloadBlob';
 import hexToBase64 from 'lib/hexToBase64';
 import hexToBytes from 'lib/hexToBytes';
 import hexToUtf8 from 'lib/hexToUtf8';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import Select from 'ui/shared/select/Select';

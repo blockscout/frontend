@@ -1,4 +1,4 @@
-import { Box, chakra, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
+import { Box, chakra, IconButton, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -9,6 +9,7 @@ import * as mixpanel from 'lib/mixpanel/index';
 import useAddOrSwitchChain from 'lib/web3/useAddOrSwitchChain';
 import useProvider from 'lib/web3/useProvider';
 import { WALLETS_INFO } from 'lib/web3/wallets';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 const feature = config.features.web3Wallet;

@@ -1,4 +1,4 @@
-import { Box, Flex, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Tooltip } from '@chakra-ui/react';
 import { useQueryClient, useIsFetching } from '@tanstack/react-query';
 import _sumBy from 'lodash/sumBy';
 import NextLink from 'next/link';
@@ -11,6 +11,7 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import useFetchTokens from '../utils/useFetchTokens';

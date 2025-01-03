@@ -1,4 +1,4 @@
-import { Td, Tr, Flex, Skeleton } from '@chakra-ui/react';
+import { Td, Tr, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { Block } from 'types/api/block';
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 

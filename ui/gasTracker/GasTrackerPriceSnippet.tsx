@@ -1,10 +1,11 @@
-import { Box, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { GasPriceInfo, GasPrices } from 'types/api/stats';
 
 import { SECOND } from 'lib/consts';
 import { asymp } from 'lib/html-entities';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';

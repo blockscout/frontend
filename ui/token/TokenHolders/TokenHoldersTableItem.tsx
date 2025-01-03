@@ -1,9 +1,10 @@
-import { Tr, Td, Skeleton } from '@chakra-ui/react';
+import { Tr, Td } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Utilization from 'ui/shared/Utilization/Utilization';
 

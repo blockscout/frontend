@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Grid, HStack, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Text, Grid, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -6,6 +6,7 @@ import { route } from 'nextjs-routes';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
 import ActionBar from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import LinkInternal from 'ui/shared/links/LinkInternal';

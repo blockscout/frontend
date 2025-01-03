@@ -1,9 +1,10 @@
-import { Skeleton, Image } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Pool } from 'types/api/pools';
 
 import getPoolLinks from 'lib/pools/getPoolLinks';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PoolEntity from 'ui/shared/entities/pool/PoolEntity';
 import LinkExternal from 'ui/shared/links/LinkExternal';

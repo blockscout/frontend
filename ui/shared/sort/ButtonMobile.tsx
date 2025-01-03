@@ -1,6 +1,7 @@
-import { IconButton, chakra, Skeleton } from '@chakra-ui/react';
+import { IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {

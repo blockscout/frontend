@@ -1,9 +1,10 @@
-import { Td, Tr, Link, Tooltip, IconButton, Skeleton } from '@chakra-ui/react';
+import { Td, Tr, Link, Tooltip, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
 
 import dayjs from 'lib/date/dayjs';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';

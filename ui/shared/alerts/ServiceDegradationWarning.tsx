@@ -1,5 +1,7 @@
-import { Alert, Skeleton, Spinner, chakra } from '@chakra-ui/react';
+import { Alert, Spinner, chakra } from '@chakra-ui/react';
 import React from 'react';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 interface Props {
   isLoading?: boolean;

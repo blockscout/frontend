@@ -1,9 +1,9 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressEpochRewardsItem } from 'types/api/address';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';

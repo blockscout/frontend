@@ -1,10 +1,11 @@
-import { Box, Button, Skeleton, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FormattedData } from './types';
 
 import { space } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { getTokensTotalInfo } from '../utils/tokenUtils';

@@ -3,7 +3,6 @@ import type {
   PopoverContentProps,
   PopoverProps } from '@chakra-ui/react';
 import {
-  Skeleton,
   DarkMode,
   PopoverArrow,
   PopoverBody,
@@ -16,6 +15,7 @@ import {
 import React from 'react';
 
 import Popover from 'ui/shared/chakra/Popover';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import IconSvg from './IconSvg';
 

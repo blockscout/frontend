@@ -1,6 +1,8 @@
-import { Grid, chakra, GridItem, Skeleton } from '@chakra-ui/react';
+import { Grid, chakra, GridItem } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 interface ContainerProps {
   className?: string;

@@ -1,4 +1,4 @@
-import { Flex, Link, Skeleton, chakra } from '@chakra-ui/react';
+import { Flex, Link, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -6,6 +6,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import TextSeparator from 'ui/shared/TextSeparator';

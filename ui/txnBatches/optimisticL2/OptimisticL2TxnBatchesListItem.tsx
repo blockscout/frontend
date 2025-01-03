@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
@@ -7,6 +6,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';

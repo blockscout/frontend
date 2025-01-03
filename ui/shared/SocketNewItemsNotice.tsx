@@ -1,6 +1,8 @@
-import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Skeleton, Tr, Td } from '@chakra-ui/react';
+import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Tr, Td } from '@chakra-ui/react';
 import { transparentize } from '@chakra-ui/theme-tools';
 import React from 'react';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 interface InjectedProps {
   content: React.ReactNode;

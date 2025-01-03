@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
+import { Flex, Text, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
@@ -6,6 +6,7 @@ import type { SmartContract } from 'types/api/contract';
 import { route } from 'nextjs-routes';
 
 import formatLanguageName from 'lib/contracts/formatLanguageName';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import CodeEditor from 'ui/shared/monaco/CodeEditor';

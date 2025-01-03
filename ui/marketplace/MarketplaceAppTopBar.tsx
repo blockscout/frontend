@@ -1,4 +1,4 @@
-import { chakra, Flex, Tooltip, Skeleton } from '@chakra-ui/react';
+import { chakra, Flex, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReport, ContractListTypes } from 'types/client/marketplace';
@@ -9,6 +9,7 @@ import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import RewardsButton from 'ui/rewards/RewardsButton';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';

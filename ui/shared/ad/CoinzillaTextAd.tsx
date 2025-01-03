@@ -1,8 +1,9 @@
-import { Box, Image, Link, Text, chakra, Skeleton } from '@chakra-ui/react';
+import { Box, Image, Link, Text, chakra } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
 import { ndash } from 'lib/html-entities';
 import isBrowser from 'lib/isBrowser';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 type AdData = {
   ad: {

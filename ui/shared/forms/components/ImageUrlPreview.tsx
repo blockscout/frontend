@@ -1,6 +1,8 @@
 import type { ColorMode } from '@chakra-ui/react';
-import { Image, Skeleton, chakra, DarkMode } from '@chakra-ui/react';
+import { Image, chakra, DarkMode } from '@chakra-ui/react';
 import React from 'react';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 interface Props {
   src: string | undefined;

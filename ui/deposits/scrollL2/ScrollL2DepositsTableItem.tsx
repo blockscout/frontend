@@ -1,10 +1,11 @@
-import { Td, Tr, Skeleton, chakra } from '@chakra-ui/react';
+import { Td, Tr, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ScrollL2MessageItem } from 'types/api/scrollL2';
 
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';

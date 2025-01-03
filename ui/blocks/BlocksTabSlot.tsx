@@ -1,4 +1,4 @@
-import { Flex, Box, Text, Skeleton } from '@chakra-ui/react';
+import { Flex, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
@@ -8,6 +8,7 @@ import { route } from 'nextjs-routes';
 import useApiQuery from 'lib/api/useApiQuery';
 import { nbsp } from 'lib/html-entities';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import Pagination from 'ui/shared/pagination/Pagination';

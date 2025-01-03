@@ -1,4 +1,4 @@
-import { HStack, VStack, Flex, Skeleton, Text } from '@chakra-ui/react';
+import { HStack, VStack, Flex, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { nbsp } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';

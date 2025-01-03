@@ -1,9 +1,10 @@
-import { Image, Skeleton } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import * as v from 'valibot';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 

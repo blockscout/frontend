@@ -1,7 +1,9 @@
-import { Button, Skeleton } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 interface Props {
   isLoading: boolean;

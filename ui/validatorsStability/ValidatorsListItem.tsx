@@ -1,8 +1,8 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ValidatorStability } from 'types/api/validators';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ValidatorStatus from 'ui/shared/statusTag/ValidatorStabilityStatus';

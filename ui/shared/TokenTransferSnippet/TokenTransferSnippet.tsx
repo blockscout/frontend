@@ -1,4 +1,4 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type {
@@ -10,6 +10,7 @@ import type {
 } from 'types/api/tokenTransfer';
 
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import TokenTransferSnippetFiat from './TokenTransferSnippetFiat';
 import TokenTransferSnippetNft from './TokenTransferSnippetNft';

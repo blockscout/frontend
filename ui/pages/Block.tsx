@@ -1,4 +1,4 @@
-import { chakra, Skeleton } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -23,6 +23,7 @@ import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
 import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';

@@ -1,9 +1,10 @@
-import { Flex, Button, Select, Skeleton } from '@chakra-ui/react';
+import { Flex, Button, Select } from '@chakra-ui/react';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import hexToAddress from 'lib/hexToAddress';
 import hexToUtf8 from 'lib/hexToUtf8';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';

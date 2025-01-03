@@ -1,4 +1,4 @@
-import { Grid, Text, Skeleton } from '@chakra-ui/react';
+import { Grid, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -11,6 +11,7 @@ import { route } from 'nextjs-routes';
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';

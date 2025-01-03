@@ -1,4 +1,4 @@
-import { Flex, Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Flex, Td, Tr } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import config from 'configs/app';
 import getItemIndex from 'lib/getItemIndex';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

@@ -1,6 +1,7 @@
-import { Center, Link, Skeleton } from '@chakra-ui/react';
+import { Center, Link } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 

@@ -1,9 +1,9 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 

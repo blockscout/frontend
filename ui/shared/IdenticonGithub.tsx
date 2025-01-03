@@ -1,6 +1,8 @@
-import { useColorModeValue, useToken, Box, chakra, Skeleton } from '@chakra-ui/react';
+import { useColorModeValue, useToken, Box, chakra } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 const Identicon = dynamic<{ bg: string; string: string; size: number }>(
   async() => {

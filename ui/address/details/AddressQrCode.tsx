@@ -12,7 +12,6 @@ import {
   useDisclosure,
   Tooltip,
   IconButton,
-  Skeleton,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import QRCode from 'qrcode';
@@ -23,6 +22,7 @@ import type { Address as AddressType } from 'types/api/address';
 import getPageType from 'lib/mixpanel/getPageType';
 import * as mixpanel from 'lib/mixpanel/index';
 import { useRollbar } from 'lib/rollbar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 

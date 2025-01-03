@@ -1,9 +1,10 @@
-import { Flex, Grid, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Grid, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { DecodedInput } from 'types/api/decodedInput';
 import type { ArrayElement } from 'types/utils';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TruncatedValue from 'ui/shared/TruncatedValue';

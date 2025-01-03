@@ -1,7 +1,8 @@
 import type { LinkProps } from '@chakra-ui/react';
-import { Link, chakra, Box, Skeleton } from '@chakra-ui/react';
+import { Link, chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import type { Variants } from './useLinkStyles';

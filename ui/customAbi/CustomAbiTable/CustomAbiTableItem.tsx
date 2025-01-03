@@ -2,12 +2,12 @@ import {
   Tr,
   Td,
   Box,
-  Skeleton,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { CustomAbi } from 'types/api/account';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 

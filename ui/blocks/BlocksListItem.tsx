@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Text, Box, Tooltip } from '@chakra-ui/react';
+import { Flex, Text, Box, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
@@ -13,6 +13,7 @@ import { WEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';

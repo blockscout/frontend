@@ -1,9 +1,10 @@
-import { Alert, Button, Flex, Skeleton } from '@chakra-ui/react';
+import { Alert, Button, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useWeb3Wallet from 'lib/web3/useWallet';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {

@@ -1,6 +1,7 @@
-import { chakra, useColorModeValue, Flex, GridItem, Skeleton } from '@chakra-ui/react';
+import { chakra, useColorModeValue, Flex, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Hint from 'ui/shared/Hint';
 
 interface Props {

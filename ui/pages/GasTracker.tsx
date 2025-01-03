@@ -3,7 +3,6 @@ import {
   Box,
   Flex,
   Heading,
-  Skeleton,
   chakra,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -16,6 +15,7 @@ import GasTrackerChart from 'ui/gasTracker/GasTrackerChart';
 import GasTrackerFaq from 'ui/gasTracker/GasTrackerFaq';
 import GasTrackerNetworkUtilization from 'ui/gasTracker/GasTrackerNetworkUtilization';
 import GasTrackerPrices from 'ui/gasTracker/GasTrackerPrices';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import GasInfoUpdateTimer from 'ui/shared/gas/GasInfoUpdateTimer';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 import PageTitle from 'ui/shared/Page/PageTitle';

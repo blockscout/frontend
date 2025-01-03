@@ -1,4 +1,4 @@
-import { chakra, Flex, Hide, Show, Skeleton } from '@chakra-ui/react';
+import { chakra, Flex, Hide, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,6 +10,7 @@ import { generateListStub } from 'stubs/utils';
 import AddressesLabelSearchListItem from 'ui/addressesLabelSearch/AddressesLabelSearchListItem';
 import AddressesLabelSearchTable from 'ui/addressesLabelSearch/AddressesLabelSearchTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import PageTitle from 'ui/shared/Page/PageTitle';

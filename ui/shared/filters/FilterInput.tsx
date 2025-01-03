@@ -1,7 +1,8 @@
-import { chakra, Input, InputGroup, InputLeftElement, InputRightElement, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Input, InputGroup, InputLeftElement, InputRightElement, useColorModeValue } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import ClearButton from 'ui/shared/ClearButton';
 import IconSvg from 'ui/shared/IconSvg';
 

@@ -1,4 +1,4 @@
-import { chakra, Alert, Box, Flex, Skeleton } from '@chakra-ui/react';
+import { chakra, Alert, Box, Flex } from '@chakra-ui/react';
 import type { Channel } from 'phoenix';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import type { SmartContract } from 'types/api/contract';
 import { route } from 'nextjs-routes';
 
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
