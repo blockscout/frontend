@@ -9,4 +9,4 @@ fi
 
 dotenv \
   -e $config_file \
-  yarn next-sitemap
+  -- bash -c 'cd ./deploy/tools/sitemap-generator && yarn && yarn next-sitemap'

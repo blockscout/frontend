@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+const path = require('path');
+
 const stripTrailingSlash = (str) => str[str.length - 1] === '/' ? str.slice(0, -1) : str;
 
 const fetchResource = async(url, formatter) => {
@@ -39,6 +41,8 @@ const apiUrl = (() => {
 module.exports = {
   siteUrl,
   generateIndexSitemap: false,
+  sourceDir: path.resolve(process.cwd(), '../../../.next'),
+  outDir: path.resolve(process.cwd(), '../../../public'),
   exclude: [
     '/account/*',
     '/auth/*',
@@ -95,6 +99,36 @@ module.exports = {
         break;
       case '/advanced-filter':
         if (process.env.NEXT_PUBLIC_ADVANCED_FILTER_ENABLED === 'false') {
+          return null;
+        }
+        break;
+      case '/apps':
+        if (process.env.NEXT_PUBLIC_MARKETPLACE_ENABLED !== 'true') {
+          return null;
+        }
+        break;
+      case '/api-docs':
+        if (process.env.NEXT_PUBLIC_API_SPEC_URL === 'none') {
+          return null;
+        }
+        break;
+      case '/gas-tracker':
+        if (process.env.NEXT_PUBLIC_GAS_TRACKER_ENABLED === 'false') {
+          return null;
+        }
+        break;
+      case '/graphql':
+        if (process.env.NEXT_PUBLIC_GRAPHIQL_TRANSACTION === 'none') {
+          return null;
+        }
+        break;
+      case '/stats':
+        if (!process.env.NEXT_PUBLIC_STATS_API_HOST) {
+          return null;
+        }
+        break;
+      case '/validators':
+        if (!process.env.NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE) {
           return null;
         }
         break;

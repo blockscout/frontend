@@ -62,7 +62,7 @@ echo
 ./make_envs_script.sh
 
 # Create sitemap.xml file
-yarn next-sitemap
+./sitemap_generator.sh
 
 # Print list of enabled features
 node ./feature-reporter.js
