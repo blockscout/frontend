@@ -15,7 +15,7 @@ import {
   HStack,
   Link,
 } from '@chakra-ui/react';
-import omit from 'lodash/omit';
+import { omit } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
