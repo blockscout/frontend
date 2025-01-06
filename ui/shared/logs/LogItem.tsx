@@ -1,4 +1,4 @@
-import { Grid, GridItem, Tooltip, Button, useColorModeValue, Alert, Link, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Tooltip, Button, useColorModeValue, Alert, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Log } from 'types/api/log';
@@ -7,6 +7,7 @@ import { route } from 'nextjs-routes';
 
 // import searchIcon from 'icons/search.svg';
 import { space } from 'lib/html-entities';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';

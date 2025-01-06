@@ -1,8 +1,10 @@
-import { AspectRatio, chakra, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { AspectRatio, chakra, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import type { TokenInstance } from 'types/api/token';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import NftFallback from './NftFallback';
 import NftHtml from './NftHtml';

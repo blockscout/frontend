@@ -1,10 +1,11 @@
-import { Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressWithdrawalsItem } from 'types/api/address';
 import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';

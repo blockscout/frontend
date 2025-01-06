@@ -1,7 +1,9 @@
-import { PopoverContent, PopoverBody, Tabs, TabList, TabPanels, TabPanel, Tab, VStack, Skeleton, Flex, useColorModeValue } from '@chakra-ui/react';
+import { PopoverContent, PopoverBody, Tabs, TabList, TabPanels, TabPanel, Tab, VStack, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FeaturedNetwork, NetworkGroup } from 'types/networks';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import NetworkMenuLink from './NetworkMenuLink';
 

@@ -1,8 +1,9 @@
-import { Button, Skeleton, Flex, IconButton, chakra } from '@chakra-ui/react';
+import { Button, Flex, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from './types';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends PaginationParams {

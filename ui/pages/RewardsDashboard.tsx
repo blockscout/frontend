@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Image, Alert } from '@chakra-ui/react';
+import { Flex, Image, Alert } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import config from 'configs/app';
@@ -8,6 +8,7 @@ import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton'
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
 import RewardsReadOnlyInputWithCopy from 'ui/rewards/RewardsReadOnlyInputWithCopy';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';

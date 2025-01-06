@@ -1,10 +1,11 @@
-import { Image, Link, Skeleton, Tooltip } from '@chakra-ui/react';
+import { Image, Link, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 
 import config from 'configs/app';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TextSeparator from 'ui/shared/TextSeparator';
 

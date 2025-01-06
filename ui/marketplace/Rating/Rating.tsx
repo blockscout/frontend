@@ -1,4 +1,4 @@
-import { Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Skeleton, useOutsideClick, Box } from '@chakra-ui/react';
+import { Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, useOutsideClick, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AppRating } from 'types/client/marketplace';
@@ -6,6 +6,7 @@ import type { AppRating } from 'types/client/marketplace';
 import config from 'configs/app';
 import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import Popover from 'ui/shared/chakra/Popover';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import Content from './PopoverContent';
 import Stars from './Stars';
