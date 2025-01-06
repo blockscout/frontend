@@ -41,7 +41,7 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
       </Td>
       <Td>
         <Skeleton isLoaded={ !props.isLoading } display="inline-block" fontWeight="500">
-          <span>{ props.tx_count }</span>
+          <span>{ props.transaction_count }</span>
         </Skeleton>
       </Td>
       <Td>
@@ -57,7 +57,7 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
         </Flex>
       </Td>
       { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
-        <Td isNumeric display="flex" justifyContent="end">
+        <Td isNumeric>
           <Skeleton isLoaded={ !props.isLoading } display="inline-block">
             <span>{ totalReward.toFixed() }</span>
           </Skeleton>

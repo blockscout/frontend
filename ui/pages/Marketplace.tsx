@@ -7,6 +7,7 @@ import type { TabItem } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import useGraphLinks from 'lib/hooks/useGraphLinks';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Banner from 'ui/marketplace/Banner';
 import ContractListModal from 'ui/marketplace/ContractListModal';
@@ -80,6 +81,8 @@ const Marketplace = () => {
 
   const isMobile = useIsMobile();
 
+  const graphLinksQuery = useGraphLinks();
+
   const categoryTabs = React.useMemo(() => {
     const tabs: Array<TabItem> = categories.map(category => ({
       id: category.name,
@@ -113,7 +116,10 @@ const Marketplace = () => {
   const selectedApp = displayedApps.find(app => app.id === selectedAppId);
 
   const handleCategoryChange = React.useCallback((index: number) => {
-    onCategoryChange(categoryTabs[index].id);
+    const tabId = categoryTabs[index].id;
+    if (typeof tabId === 'string') {
+      onCategoryChange(tabId);
+    }
   }, [ categoryTabs, onCategoryChange ]);
 
   const handleAppClick = React.useCallback((event: MouseEvent, id: string) => {
@@ -236,6 +242,7 @@ const Marketplace = () => {
         isRatingSending={ isRatingSending }
         isRatingLoading={ isRatingLoading }
         canRate={ canRate }
+        graphLinksQuery={ graphLinksQuery }
       />
 
       { (selectedApp && isAppInfoModalOpen) && (
@@ -250,6 +257,7 @@ const Marketplace = () => {
           isRatingSending={ isRatingSending }
           isRatingLoading={ isRatingLoading }
           canRate={ canRate }
+          graphLinks={ graphLinksQuery.data?.[selectedApp.id] }
         />
       ) }
 

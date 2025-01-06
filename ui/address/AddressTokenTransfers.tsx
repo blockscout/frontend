@@ -37,7 +37,7 @@ import AddressCsvExportLink from './AddressCsvExportLink';
 type Filters = {
   type: Array<TokenType>;
   filter: AddressFromToFilter | undefined;
-}
+};
 
 const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPE_IDS);
 const getAddressFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
@@ -54,7 +54,7 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
     }
   }
   if (filters.type && filters.type.length) {
-    if (!filters.type.includes(tokenTransfer.token.type)) {
+    if (!tokenTransfer.token || !filters.type.includes(tokenTransfer.token.type)) {
       return false;
     }
   }
@@ -68,7 +68,7 @@ type Props = {
   isQueryEnabled?: boolean;
   // for tests only
   overloadCount?: number;
-}
+};
 
 const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();

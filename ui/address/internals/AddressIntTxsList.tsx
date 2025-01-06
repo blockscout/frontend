@@ -9,7 +9,7 @@ type Props = {
   data: Array<InternalTransaction>;
   currentAddress: string;
   isLoading?: boolean;
-}
+};
 
 const AddressIntTxsList = ({ data, currentAddress, isLoading }: Props) => {
   return (

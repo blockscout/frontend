@@ -73,7 +73,7 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
           />
         ) : (
           <chakra.span>
-          Pending Claim
+            Pending Claim
           </chakra.span>
         ) }
       </ListItemMobileGrid.Value>

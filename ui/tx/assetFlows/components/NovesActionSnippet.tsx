@@ -25,9 +25,11 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
     const symbol = action.nft?.symbol || action.token?.symbol;
 
     const token = {
-      name: name,
-      symbol: symbol?.toLowerCase() === name?.toLowerCase() ? undefined : symbol,
-      address: action.nft?.address || action.token?.address,
+      name: name || '',
+      symbol: (symbol?.toLowerCase() === name?.toLowerCase() ? undefined : symbol) || '',
+      address: action.nft?.address || action.token?.address || '',
+      icon_url: '',
+      type: action.nft ? 'ERC-721' as const : 'ERC-20' as const,
     };
 
     return token;

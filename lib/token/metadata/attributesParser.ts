@@ -75,5 +75,6 @@ export default function attributesParser(attributes: Array<unknown>): Metadata['
         trait_type: upperFirst(trait || 'property'),
       };
     })
+    .filter((item) => item?.value)
     .filter(Boolean);
 }

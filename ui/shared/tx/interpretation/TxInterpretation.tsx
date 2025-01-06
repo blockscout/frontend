@@ -19,16 +19,23 @@ import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import { extractVariables, getStringChunks, fillStringVariables, checkSummary, NATIVE_COIN_SYMBOL_VAR_NAME } from './utils';
+import {
+  extractVariables,
+  getStringChunks,
+  fillStringVariables,
+  checkSummary,
+  NATIVE_COIN_SYMBOL_VAR_NAME,
+  WEI_VAR_NAME,
+} from './utils';
 
 type Props = {
   summary?: TxInterpretationSummary;
   isLoading?: boolean;
   addressDataMap?: Record<string, AddressParam>;
   className?: string;
-}
+};
 
-type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>
+type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>;
 
 const TxInterpretationElementByType = (
   { variable, addressDataMap }: { variable?: NonStringTxInterpretationVariable; addressDataMap?: Record<string, AddressParam> },
@@ -56,6 +63,7 @@ const TxInterpretationElementByType = (
         <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
           <AddressEntity
             address={ addressDataMap?.[value.hash] || value }
+            icon={{ marginRight: 1 }}
             truncation="constant"
             onClick={ onAddressClick }
             whiteSpace="initial"
@@ -68,6 +76,7 @@ const TxInterpretationElementByType = (
         <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
           <TokenEntity
             token={ value }
+            icon={{ marginRight: 1 }}
             onlySymbol
             noCopy
             width="fit-content"
@@ -83,7 +92,8 @@ const TxInterpretationElementByType = (
         return (
           <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
             <EnsEntity
-              name={ value }
+              domain={ value }
+              icon={{ marginRight: 1 }}
               width="fit-content"
               _notFirst={{ marginLeft: 1 }}
               whiteSpace="initial"
@@ -146,22 +156,26 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className }: Pro
   return (
     <Skeleton isLoaded={ !isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
       <Tooltip label="Transaction summary">
-        <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 2 } verticalAlign="text-top"/>
+        <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 1 } verticalAlign="text-top"/>
       </Tooltip>
       { chunks.map((chunk, index) => {
+        let content = null;
+        if (variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME) {
+          content = <chakra.span>{ currencyUnits.ether + ' ' }</chakra.span>;
+        } else if (variablesNames[index] === WEI_VAR_NAME) {
+          content = <chakra.span>{ currencyUnits.wei + ' ' }</chakra.span>;
+        } else {
+          content = (
+            <TxInterpretationElementByType
+              variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }
+              addressDataMap={ addressDataMap }
+            />
+          );
+        }
         return (
           <chakra.span key={ chunk + index }>
             <chakra.span color="text_secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</chakra.span>
-            { index < variablesNames.length && (
-              variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME ?
-                <chakra.span>{ currencyUnits.ether + ' ' }</chakra.span> :
-                (
-                  <TxInterpretationElementByType
-                    variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }
-                    addressDataMap={ addressDataMap }
-                  />
-                )
-            ) }
+            { index < variablesNames.length && content }
           </chakra.span>
         );
       }) }

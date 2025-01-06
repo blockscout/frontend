@@ -2,8 +2,7 @@
 import type { Route } from 'nextjs-routes';
 
 // equal og:description
-// eslint-disable-next-line max-len
-const DEFAULT_TEMPLATE = 'Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.';
+const DEFAULT_TEMPLATE = 'Open-source block explorer by Blockscout. Search transactions, verify smart contracts, analyze addresses, and track network activity. Complete blockchain data and APIs for the %network_title% network.';
 
 // FIXME all page descriptions will be updated later
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
@@ -27,10 +26,12 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/apps': DEFAULT_TEMPLATE,
   '/apps/[id]': DEFAULT_TEMPLATE,
   '/stats': DEFAULT_TEMPLATE,
+  '/stats/[id]': DEFAULT_TEMPLATE,
   '/api-docs': DEFAULT_TEMPLATE,
   '/graphiql': DEFAULT_TEMPLATE,
   '/search-results': DEFAULT_TEMPLATE,
   '/auth/profile': DEFAULT_TEMPLATE,
+  '/account/rewards': DEFAULT_TEMPLATE,
   '/account/watchlist': DEFAULT_TEMPLATE,
   '/account/api-key': DEFAULT_TEMPLATE,
   '/account/custom-abi': DEFAULT_TEMPLATE,
@@ -52,8 +53,12 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/name-domains': DEFAULT_TEMPLATE,
   '/name-domains/[name]': DEFAULT_TEMPLATE,
   '/validators': DEFAULT_TEMPLATE,
-  '/gas-tracker': DEFAULT_TEMPLATE,
+  '/gas-tracker': 'Explore real-time %network_title% gas fees with Blockscout\'s advanced gas fee tracker. Get accurate %network_gwei% estimates and track transaction costs live.',
   '/mud-worlds': DEFAULT_TEMPLATE,
+  '/token-transfers': DEFAULT_TEMPLATE,
+  '/advanced-filter': DEFAULT_TEMPLATE,
+  '/pools': DEFAULT_TEMPLATE,
+  '/pools/[hash]': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,
@@ -67,12 +72,12 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/healthz': DEFAULT_TEMPLATE,
   '/api/config': DEFAULT_TEMPLATE,
   '/api/sprite': DEFAULT_TEMPLATE,
-  '/auth/auth0': DEFAULT_TEMPLATE,
-  '/auth/unverified-email': DEFAULT_TEMPLATE,
 };
 
-export function make(pathname: Route['pathname']) {
-  const template = TEMPLATE_MAP[pathname];
+const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
+  '/stats/[id]': '%description%',
+};
 
-  return template ?? '';
+export function make(pathname: Route['pathname'], isEnriched = false) {
+  return (isEnriched ? TEMPLATE_MAP_ENHANCED[pathname] : undefined) ?? TEMPLATE_MAP[pathname] ?? '';
 }

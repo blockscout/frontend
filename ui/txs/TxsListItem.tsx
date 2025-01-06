@@ -30,7 +30,7 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-}
+};
 
 const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
@@ -39,9 +39,14 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
     <ListItemMobile display="block" width="100%" isAnimated key={ tx.hash }>
       <Flex justifyContent="space-between" mt={ 4 }>
         <HStack flexWrap="wrap">
-          { tx.translation ?
-            <TxTranslationType types={ tx.tx_types } isLoading={ isLoading || tx.translation.isLoading } translatationType={ tx.translation.data?.type }/> :
-            <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          { tx.translation ? (
+            <TxTranslationType
+              types={ tx.transaction_types }
+              isLoading={ isLoading || tx.translation.isLoading }
+              translatationType={ tx.translation.data?.type }
+            />
+          ) :
+            <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
           }
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
@@ -54,7 +59,9 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           hash={ tx.hash }
           truncation="constant_long"
           fontWeight="700"
-          iconName={ tx.tx_types.includes('blob_transaction') ? 'blob' : undefined }
+          icon={{
+            name: tx.transaction_types.includes('blob_transaction') ? 'blob' : undefined,
+          }}
         />
         <TimeAgoWithTooltip
           timestamp={ tx.timestamp }
@@ -79,12 +86,12 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           </Skeleton>
         </Flex>
       ) }
-      { showBlockInfo && tx.block !== null && (
+      { showBlockInfo && tx.block_number !== null && (
         <Flex mt={ 2 }>
           <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Block </Skeleton>
           <BlockEntity
             isLoading={ isLoading }
-            number={ tx.block }
+            number={ tx.block_number }
             noIcon
           />
         </Flex>

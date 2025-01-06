@@ -21,6 +21,7 @@ const variants = {
     container: {
       bg: mode('gray.100', 'gray.800')(props),
       color: mode('gray.500', 'whiteAlpha.800')(props),
+      cursor: 'pointer',
       _hover: {
         color: 'blue.400',
         opacity: 0.76,
@@ -44,6 +45,16 @@ const sizes = {
       fontSize: 'sm',
       px: 1,
       py: '2px',
+      lineHeight: 5,
+    },
+  }),
+  md: definePartsStyle({
+    container: {
+      minH: 8,
+      minW: 8,
+      fontSize: 'sm',
+      px: '6px',
+      py: '6px',
       lineHeight: 5,
     },
   }),

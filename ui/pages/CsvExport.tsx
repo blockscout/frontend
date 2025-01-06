@@ -59,6 +59,11 @@ const EXPORT_TYPES: Record<CsvExportParams['type'], ExportTypeEntity> = {
     resource: 'csv_export_token_holders',
     fileNameTemplate: 'holders',
   },
+  'epoch-rewards': {
+    text: 'epoch rewards',
+    resource: 'csv_export_epoch_rewards',
+    fileNameTemplate: 'epoch_rewards',
+  },
 };
 
 const isCorrectExportType = (type: string): type is CsvExportParams['type'] => Object.keys(EXPORT_TYPES).includes(type);
@@ -88,7 +93,13 @@ const CsvExport = () => {
     },
   });
 
-  const isLoading = addressQuery.isPending || (exportTypeParam === 'holders' && tokenQuery.isPending);
+  const configQuery = useApiQuery('config_csv_export', {
+    queryOptions: {
+      enabled: Boolean(addressHash),
+    },
+  });
+
+  const isLoading = addressQuery.isPending || configQuery.isPending || (exportTypeParam === 'holders' && tokenQuery.isPending);
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/address');
@@ -147,7 +158,9 @@ const CsvExport = () => {
       return null;
     }
 
-    if (exportTypeParam === 'holders') {
+    const limit = (configQuery.data?.limit || 10_000).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' });
+
+    if (exportTypeParam === 'holders' && tokenQuery.data) {
       return (
         <Flex mb={ 10 } whiteSpace="pre-wrap" flexWrap="wrap">
           <span>Export { exportType.text } for token </span>
@@ -160,9 +173,13 @@ const CsvExport = () => {
             noSymbol
           />
           <span> to CSV file. </span>
-          <span>Exports are limited to the top 10K holders by amount held.</span>
+          <span>Exports are limited to the top { limit } holders by amount held.</span>
         </Flex>
       );
+    }
+
+    if (!addressQuery.data) {
+      return null;
     }
 
     return (
@@ -176,7 +193,7 @@ const CsvExport = () => {
         <span>{ nbsp }</span>
         { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue }) </span> }
         <span>to CSV file. </span>
-        <span>Exports are limited to the last 10K { exportType.text }.</span>
+        <span>Exports are limited to the last { limit } { exportType.text }.</span>
       </Flex>
     );
   })();

@@ -15,7 +15,7 @@ type Props = {
   className?: string;
   txHash?: string;
   source: 'Txn' | 'NFT collection' | 'NFT item';
-}
+};
 
 const AppActionButton = ({ data, className, txHash, source }: Props) => {
   const defaultTextColor = useColorModeValue('blue.600', 'blue.300');

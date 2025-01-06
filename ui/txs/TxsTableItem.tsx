@@ -29,7 +29,7 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-}
+};
 
 const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
@@ -67,9 +67,14 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       </Td>
       <Td>
         <VStack alignItems="start">
-          { tx.translation ?
-            <TxTranslationType types={ tx.tx_types } isLoading={ isLoading || tx.translation.isLoading } translatationType={ tx.translation.data?.type }/> :
-            <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          { tx.translation ? (
+            <TxTranslationType
+              types={ tx.transaction_types }
+              isLoading={ isLoading || tx.translation.isLoading }
+              translatationType={ tx.translation.data?.type }
+            />
+          ) :
+            <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
           }
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
@@ -84,10 +89,10 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       </Td>
       { showBlockInfo && (
         <Td>
-          { tx.block && (
+          { tx.block_number && (
             <BlockEntity
               isLoading={ isLoading }
-              number={ tx.block }
+              number={ tx.block_number }
               noIcon
               fontSize="sm"
               lineHeight={ 6 }
@@ -112,7 +117,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
         </Td>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
-        <Td isNumeric>
+        <Td isNumeric maxW="220px">
           <TxFee
             tx={ tx }
             accuracy={ 8 }

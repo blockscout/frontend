@@ -14,8 +14,9 @@ const NEXT_ROUTER_MOCK = {
 
 beforeMount(async({ hooksConfig }) => {
   // Before mount, redefine useRouter to return mock value from test.
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
   // @ts-ignore: I really want to redefine this property :)
+  // eslint-disable-next-line no-import-assign
   router.useRouter = () => _defaultsDeep(hooksConfig?.router, NEXT_ROUTER_MOCK);
 
   // set current date

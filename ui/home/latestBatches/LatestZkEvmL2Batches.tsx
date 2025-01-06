@@ -70,7 +70,7 @@ const LatestZkEvmL2Batches = () => {
                 <LatestBatchItem
                   key={ batch.number + (isPlaceholderData ? String(index) : '') }
                   number={ batch.number }
-                  txCount={ batch.tx_count }
+                  txCount={ batch.transaction_count }
                   timestamp={ batch.timestamp }
                   status={ status }
                   isLoading={ isPlaceholderData }

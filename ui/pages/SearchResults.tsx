@@ -6,6 +6,7 @@ import React from 'react';
 import type { SearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
+import { useSettingsContext } from 'lib/contexts/settings';
 import * as regexp from 'lib/regexp';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
@@ -36,6 +37,7 @@ const SearchResultsPageContent = () => {
   const [ showContent, setShowContent ] = React.useState(!withRedirectCheck);
 
   const marketplaceApps = useMarketplaceApps(debouncedSearchTerm);
+  const settingsContext = useSettingsContext();
 
   React.useEffect(() => {
     if (showContent) {
@@ -144,11 +146,12 @@ const SearchResultsPageContent = () => {
               data={ item }
               searchTerm={ debouncedSearchTerm }
               isLoading={ isLoading }
+              addressFormat={ settingsContext?.addressFormat }
             />
           )) }
         </Show>
         <Hide below="lg" ssr={ false }>
-          <Table variant="simple" size="md" fontWeight={ 500 }>
+          <Table fontWeight={ 500 }>
             <Thead top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
               <Tr>
                 <Th width="30%">Search result</Th>
@@ -164,6 +167,7 @@ const SearchResultsPageContent = () => {
                   data={ item }
                   searchTerm={ debouncedSearchTerm }
                   isLoading={ isLoading }
+                  addressFormat={ settingsContext?.addressFormat }
                 />
               )) }
             </Tbody>

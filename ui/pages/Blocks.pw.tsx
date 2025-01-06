@@ -45,7 +45,7 @@ test('hidden fields', async({ render, mockApiResponse, mockEnvs }) => {
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
-  test(' base view', async({ render, mockApiResponse }) => {
+  test('base view', async({ render, mockApiResponse }) => {
     await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
     await mockApiResponse('stats', statsMock.base);
 

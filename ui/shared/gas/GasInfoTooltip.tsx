@@ -74,7 +74,7 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen, placement }: Pr
                   <GasInfoTooltipRow name="Slow" info={ data.gas_prices.slow }/>
                 </Grid>
                 <LinkInternal href={ route({ pathname: '/gas-tracker' }) }>
-                    Gas tracker overview
+                  Gas tracker overview
                 </LinkInternal>
               </Flex>
             </DarkMode>

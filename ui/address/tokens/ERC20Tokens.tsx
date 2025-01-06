@@ -12,7 +12,7 @@ import ERC20TokensTable from './ERC20TokensTable';
 
 type Props = {
   tokensQuery: QueryWithPagesResult<'address_tokens'>;
-}
+};
 
 const ERC20Tokens = ({ tokensQuery }: Props) => {
   const isMobile = useIsMobile();

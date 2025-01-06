@@ -1,16 +1,16 @@
-import { chakra, Flex, FormControl, Grid, GridItem, IconButton, Input, Textarea, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, Grid, GridItem, IconButton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
-import { type FieldError, type FieldErrorsImpl, type Merge, type UseFormRegister } from 'react-hook-form';
+import { type FieldError, type FieldErrorsImpl, type Merge } from 'react-hook-form';
 
 import type { FormFields, FormFieldTag } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { validator as colorValidator } from 'lib/validations/color';
-import { validator as urlValidator } from 'lib/validations/url';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
+import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
+import { validator as colorValidator } from 'ui/shared/forms/validators/color';
 import IconSvg from 'ui/shared/IconSvg';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 import PublicTagsSubmitFieldTagColor from './PublicTagsSubmitFieldTagColor';
 import PublicTagsSubmitFieldTagType from './PublicTagsSubmitFieldTagType';
@@ -19,14 +19,13 @@ interface Props {
   index: number;
   field: FormFieldTag;
   tagTypes: Array<PublicTagType> | undefined;
-  register: UseFormRegister<FormFields>;
   errors: Merge<FieldError, FieldErrorsImpl<FormFieldTag>> | undefined;
   isDisabled: boolean;
   onAddClick?: (index: number) => void;
   onRemoveClick?: (index: number) => void;
 }
 
-const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddClick, onRemoveClick, tagTypes, field }: Props) => {
+const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRemoveClick, tagTypes, field }: Props) => {
   const isMobile = useIsMobile();
   const bgColorDefault = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
   const bgColorError = useColorModeValue('red.50', 'red.900');
@@ -39,6 +38,10 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
     onRemoveClick?.(index);
   }, [ index, onRemoveClick ]);
 
+  const fieldProps = {
+    size: { base: 'md', lg: 'lg' },
+  };
+
   return (
     <>
       <GridItem colSpan={{ base: 1, lg: 2 }} p="10px" borderRadius="base" bgColor={ errors ? bgColorError : bgColorDefault }>
@@ -48,62 +51,45 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
           templateColumns={{ base: '1fr', lg: 'repeat(4, 1fr)' }}
         >
           <GridItem colSpan={{ base: 1, lg: 2 }}>
-            <FormControl variant="floating" isRequired size={{ base: 'md', lg: 'lg' }}>
-              <Input
-                { ...register(`tags.${ index }.name`, { required: true, maxLength: 35 }) }
-                isInvalid={ Boolean(errors?.name) }
-                isDisabled={ isDisabled }
-                autoComplete="off"
-              />
-              <InputPlaceholder text="Tag (max 35 characters)" error={ errors?.name }/>
-            </FormControl>
+            <FormFieldText<FormFields>
+              name={ `tags.${ index }.name` }
+              placeholder="Tag (max 35 characters)"
+              isRequired
+              rules={{ maxLength: 35 }}
+              { ...fieldProps }
+            />
           </GridItem>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
-            <PublicTagsSubmitFieldTagType index={ index } tagTypes={ tagTypes } isDisabled={ isDisabled }/>
+            <PublicTagsSubmitFieldTagType index={ index } tagTypes={ tagTypes }/>
           </GridItem>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
-            <FormControl variant="floating" size={{ base: 'md', lg: 'lg' }}>
-              <Input
-                { ...register(`tags.${ index }.url`, { validate: urlValidator }) }
-                isInvalid={ Boolean(errors?.url) }
-                isDisabled={ isDisabled }
-                autoComplete="off"
-              />
-              <InputPlaceholder text="Label URL" error={ errors?.url }/>
-            </FormControl>
+            <FormFieldUrl<FormFields>
+              name={ `tags.${ index }.url` }
+              placeholder="Label URL"
+              { ...fieldProps }
+            />
           </GridItem>
           <PublicTagsSubmitFieldTagColor
             fieldType="bgColor"
             fieldName={ `tags.${ index }.bgColor` }
             placeholder="Background (Hex)"
-            index={ index }
-            register={ register }
             error={ errors?.bgColor }
-            isDisabled={ isDisabled }
           />
           <PublicTagsSubmitFieldTagColor
             fieldType="textColor"
             fieldName={ `tags.${ index }.textColor` }
             placeholder="Text (Hex)"
-            index={ index }
-            register={ register }
             error={ errors?.textColor }
-            isDisabled={ isDisabled }
           />
           <GridItem colSpan={{ base: 1, lg: 4 }}>
-            <FormControl variant="floating" size={{ base: 'md', lg: 'lg' }}>
-              <Textarea
-                { ...register(`tags.${ index }.tooltipDescription`, { maxLength: 80 }) }
-                isInvalid={ Boolean(errors?.tooltipDescription) }
-                isDisabled={ isDisabled }
-                autoComplete="off"
-                maxH="160px"
-              />
-              <InputPlaceholder
-                text="Label description (max 80 characters)"
-                error={ errors?.tooltipDescription }
-              />
-            </FormControl>
+            <FormFieldText<FormFields>
+              name={ `tags.${ index }.tooltipDescription` }
+              placeholder="Label description (max 80 characters)"
+              maxH="160px"
+              rules={{ maxLength: 80 }}
+              asComponent="Textarea"
+              { ...fieldProps }
+            />
           </GridItem>
         </Grid>
       </GridItem>

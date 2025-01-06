@@ -13,7 +13,7 @@ type AdData = {
     cta_button: string;
     impressionUrl?: string;
   };
-}
+};
 
 // const MOCK: AdData = {
 //   ad: {
@@ -25,7 +25,7 @@ type AdData = {
 //   },
 // };
 
-const CoinzillaTextAd = ({ className }: {className?: string}) => {
+const CoinzillaTextAd = ({ className }: { className?: string }) => {
   const [ adData, setAdData ] = React.useState<AdData | null>(null);
   const [ isLoading, setIsLoading ] = React.useState(true);
 

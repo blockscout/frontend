@@ -11,11 +11,11 @@ type Props = {
   items: Array<OptimisticL2TxnBatchesItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const OptimisticL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" minW="850px" layout="auto">
+    <Table minW="850px" layout="auto">
       <Thead top={ top }>
         <Tr>
           <Th>Batch ID</Th>

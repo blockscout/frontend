@@ -5,7 +5,6 @@ describe('function convertFormDataToRequestsBody()', () => {
   it('should convert form data to requests body', () => {
     const formData = {
       ...mocks.baseFields,
-      reCaptcha: 'xxx',
       addresses: [ { hash: mocks.address1 }, { hash: mocks.address2 } ],
       tags: [ convertTagApiFieldsToFormFields(mocks.tag1), convertTagApiFieldsToFormFields(mocks.tag2) ],
     };

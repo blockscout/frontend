@@ -22,7 +22,7 @@ interface Props {
 
 const AddressTagTable = ({ data, onDeleteClick, onEditClick, isLoading, top }: Props) => {
   return (
-    <Table variant="simple" minWidth="600px">
+    <Table minWidth="600px">
       <TheadSticky top={ top }>
         <Tr>
           <Th width="60%">Address</Th>

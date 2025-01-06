@@ -51,7 +51,7 @@ const LogTopic = ({ hex, index, isLoading }: Props) => {
       case 'address': {
         return (
           <AddressEntity
-            address={{ hash: value, name: '', implementation_name: null, is_contract: false, is_verified: false }}
+            address={{ hash: value, name: '' }}
             isLoading={ isLoading }
           />
         );

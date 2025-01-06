@@ -1,3 +1,4 @@
+import type React from 'react';
 import { animateScroll } from 'react-scroll';
 
 import fetch from 'jest-fetch-mock';
@@ -55,12 +56,18 @@ beforeEach(() => {
   fetch.resetMocks();
 });
 
+const responseInit = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
+
 it('returns correct data if there is only one page', async() => {
   const params: Params<'address_txs'> = {
     resourceName: 'address_txs',
     pathParams: { hash: addressMock.hash },
   };
-  fetch.mockResponse(JSON.stringify(responses.page_empty));
+  fetch.mockResponse(JSON.stringify(responses.page_empty), responseInit);
 
   const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
   await waitForApiResponse();
@@ -83,7 +90,7 @@ describe('if there are multiple pages', () => {
   };
 
   it('return correct data for the first page', async() => {
-    fetch.mockResponse(JSON.stringify(responses.page_1));
+    fetch.mockResponse(JSON.stringify(responses.page_1), responseInit);
 
     const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();
@@ -108,10 +115,10 @@ describe('if there are multiple pages', () => {
       routerPush.mockClear();
       useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush });
 
-      fetch.once(JSON.stringify(responses.page_1));
-      fetch.once(JSON.stringify(responses.page_2));
-      fetch.once(JSON.stringify(responses.page_3));
-      fetch.once(JSON.stringify(responses.page_1));
+      fetch.once(JSON.stringify(responses.page_1), responseInit);
+      fetch.once(JSON.stringify(responses.page_2), responseInit);
+      fetch.once(JSON.stringify(responses.page_3), responseInit);
+      fetch.once(JSON.stringify(responses.page_1), responseInit);
 
       // INITIAL LOAD
       const { result: r } = renderHook(() => useQueryWithPages(params), { wrapper });
@@ -284,10 +291,10 @@ describe('if there are multiple pages', () => {
     const routerPush = jest.fn(() => Promise.resolve());
     useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush });
 
-    fetch.once(JSON.stringify(responses.page_1));
-    fetch.once(JSON.stringify(responses.page_2));
-    fetch.once(JSON.stringify(responses.page_3));
-    fetch.once(JSON.stringify(responses.page_1));
+    fetch.once(JSON.stringify(responses.page_1), responseInit);
+    fetch.once(JSON.stringify(responses.page_2), responseInit);
+    fetch.once(JSON.stringify(responses.page_3), responseInit);
+    fetch.once(JSON.stringify(responses.page_1), responseInit);
 
     const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();
@@ -342,8 +349,8 @@ describe('if there are multiple pages', () => {
       pathParams: { hash: addressMock.hash },
       scrollRef: scrollRef as unknown as React.RefObject<HTMLDivElement>,
     };
-    fetch.once(JSON.stringify(responses.page_1));
-    fetch.once(JSON.stringify(responses.page_2));
+    fetch.once(JSON.stringify(responses.page_1), responseInit);
+    fetch.once(JSON.stringify(responses.page_2), responseInit);
 
     const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();
@@ -366,7 +373,7 @@ describe('if there is page query param in URL', () => {
       resourceName: 'address_txs',
       pathParams: { hash: addressMock.hash },
     };
-    fetch.mockResponse(JSON.stringify(responses.page_empty));
+    fetch.mockResponse(JSON.stringify(responses.page_empty), responseInit);
 
     const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();
@@ -390,8 +397,8 @@ describe('if there is page query param in URL', () => {
       resourceName: 'address_txs',
       pathParams: { hash: addressMock.hash },
     };
-    fetch.once(JSON.stringify(responses.page_2));
-    fetch.once(JSON.stringify(responses.page_3));
+    fetch.once(JSON.stringify(responses.page_2), responseInit);
+    fetch.once(JSON.stringify(responses.page_3), responseInit);
 
     const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();
@@ -434,13 +441,13 @@ describe('queries with filters', () => {
     const params: Params<'address_txs'> = {
       resourceName: 'address_txs',
       pathParams: { hash: addressMock.hash },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore:
       sorting: { sort: 'val-desc' },
     };
-    fetch.once(JSON.stringify(responses.page_1));
-    fetch.once(JSON.stringify(responses.page_2));
-    fetch.once(JSON.stringify(responses.page_filtered));
+    fetch.once(JSON.stringify(responses.page_1), responseInit);
+    fetch.once(JSON.stringify(responses.page_2), responseInit);
+    fetch.once(JSON.stringify(responses.page_filtered), responseInit);
 
     const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();
@@ -487,8 +494,8 @@ describe('queries with filters', () => {
       resourceName: 'address_txs',
       pathParams: { hash: addressMock.hash },
     };
-    fetch.once(JSON.stringify(responses.page_1));
-    fetch.once(JSON.stringify(responses.page_2));
+    fetch.once(JSON.stringify(responses.page_1), responseInit);
+    fetch.once(JSON.stringify(responses.page_2), responseInit);
 
     const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();
@@ -525,9 +532,9 @@ describe('queries with sorting', () => {
       pathParams: { hash: addressMock.hash },
       filters: { filter: 'from' },
     };
-    fetch.once(JSON.stringify(responses.page_1));
-    fetch.once(JSON.stringify(responses.page_2));
-    fetch.once(JSON.stringify(responses.page_sorted));
+    fetch.once(JSON.stringify(responses.page_1), responseInit);
+    fetch.once(JSON.stringify(responses.page_2), responseInit);
+    fetch.once(JSON.stringify(responses.page_sorted), responseInit);
 
     const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();
@@ -538,7 +545,7 @@ describe('queries with sorting', () => {
     await waitForApiResponse();
 
     await act(async() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore:
       result.current.onSortingChange({ sort: 'val-desc' });
     });
@@ -575,12 +582,12 @@ describe('queries with sorting', () => {
     const params: Params<'address_txs'> = {
       resourceName: 'address_txs',
       pathParams: { hash: addressMock.hash },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore:
       sorting: { sort: 'val-desc' },
     };
-    fetch.once(JSON.stringify(responses.page_1));
-    fetch.once(JSON.stringify(responses.page_2));
+    fetch.once(JSON.stringify(responses.page_1), responseInit);
+    fetch.once(JSON.stringify(responses.page_2), responseInit);
 
     const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();

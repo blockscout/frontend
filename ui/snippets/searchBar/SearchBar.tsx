@@ -31,7 +31,7 @@ import useQuickSearchQuery from './useQuickSearchQuery';
 
 type Props = {
   isHomepage?: boolean;
-}
+};
 
 const SCROLL_CONTAINER_ID = 'search_bar_popover_content';
 
@@ -106,7 +106,7 @@ const SearchBar = ({ isHomepage }: Props) => {
   React.useEffect(() => {
     handleSearchTermChange('');
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ router.pathname ]);
+  }, [ router.asPath?.split('?')?.[0] ]);
 
   React.useEffect(() => {
     const inputEl = inputRef.current;
@@ -151,6 +151,7 @@ const SearchBar = ({ isHomepage }: Props) => {
           <PopoverContent
             w={ `${ menuWidth.current }px` }
             ref={ menuRef }
+            overflow="hidden"
           >
             <PopoverBody
               p={ 0 }
@@ -183,7 +184,7 @@ const SearchBar = ({ isHomepage }: Props) => {
                   href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }
                   fontSize="sm"
                 >
-                View all results
+                  View all results
                 </LinkInternal>
               </PopoverFooter>
             ) }

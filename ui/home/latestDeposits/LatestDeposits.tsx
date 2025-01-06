@@ -2,6 +2,7 @@ import {
   Box,
   Flex,
   Grid,
+  GridItem,
   Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -17,28 +18,28 @@ import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type DepositsItem = {
-  l1BlockNumber: number;
-  l1TxHash: string;
-  l2TxHash: string | null;
+  l1BlockNumber: number | null;
+  l1TxHash: string | null;
+  l2TxHash: string;
   timestamp: string | null;
-}
+};
 
 type Props = {
   isLoading?: boolean;
   items: Array<DepositsItem>;
   socketItemsNum: number;
   socketAlert?: string;
-}
+};
 
 type ItemProps = {
   item: DepositsItem;
   isLoading?: boolean;
-}
+};
 
 const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
   const isMobile = useIsMobile();
 
-  const l1BlockLink = (
+  const l1BlockLink = item.l1BlockNumber ? (
     <BlockEntityL1
       number={ item.l1BlockNumber }
       isLoading={ isLoading }
@@ -46,9 +47,18 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
       lineHeight={ 5 }
       fontWeight={ 700 }
     />
+  ) : (
+    <BlockEntityL1
+      number="TBD"
+      isLoading={ isLoading }
+      fontSize="sm"
+      lineHeight={ 5 }
+      fontWeight={ 700 }
+      noLink
+    />
   );
 
-  const l1TxLink = (
+  const l1TxLink = item.l1TxHash ? (
     <TxEntityL1
       isLoading={ isLoading }
       hash={ item.l1TxHash }
@@ -56,9 +66,18 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
       lineHeight={ 5 }
       truncation={ isMobile ? 'constant_long' : 'dynamic' }
     />
+  ) : (
+    <TxEntityL1
+      isLoading={ isLoading }
+      hash="To be determined"
+      fontSize="sm"
+      lineHeight={ 5 }
+      truncation="none"
+      noLink
+    />
   );
 
-  const l2TxLink = item.l2TxHash ? (
+  const l2TxLink = (
     <TxEntity
       isLoading={ isLoading }
       hash={ item.l2TxHash }
@@ -66,7 +85,7 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
       lineHeight={ 5 }
       truncation={ isMobile ? 'constant_long' : 'dynamic' }
     />
-  ) : null;
+  );
 
   const content = (() => {
     if (isMobile) {
@@ -74,11 +93,13 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
         <>
           <Flex justifyContent="space-between" alignItems="center" mb={ 1 }>
             { l1BlockLink }
-            <TimeAgoWithTooltip
-              timestamp={ item.timestamp }
-              isLoading={ isLoading }
-              color="text_secondary"
-            />
+            { item.timestamp ? (
+              <TimeAgoWithTooltip
+                timestamp={ item.timestamp }
+                isLoading={ isLoading }
+                color="text_secondary"
+              />
+            ) : <GridItem/> }
           </Flex>
           <Grid gridTemplateColumns="56px auto">
             <Skeleton isLoaded={ !isLoading } my="5px" w="fit-content">
@@ -101,14 +122,16 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
           L1 txn
         </Skeleton>
         { l1TxLink }
-        <TimeAgoWithTooltip
-          timestamp={ item.timestamp }
-          isLoading={ isLoading }
-          color="text_secondary"
-          w="fit-content"
-          h="fit-content"
-          my="2px"
-        />
+        { item.timestamp ? (
+          <TimeAgoWithTooltip
+            timestamp={ item.timestamp }
+            isLoading={ isLoading }
+            color="text_secondary"
+            w="fit-content"
+            h="fit-content"
+            my="2px"
+          />
+        ) : <GridItem/> }
         <Skeleton isLoaded={ !isLoading } w="fit-content" h="fit-content" my="2px">
           L2 txn
         </Skeleton>

@@ -29,7 +29,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile, m
   const [ isDrawerOpen, setIsDrawerOpen ] = useBoolean(false);
   const [ tabIndex, setTabIndex ] = React.useState(0);
   const [ searchValue, setSearchValue ] = React.useState('');
-  const [ actionBarRenderer, setActionBarRenderer ] = React.useState<() => JSX.Element>();
+  const [ actionBarRenderer, setActionBarRenderer ] = React.useState<() => React.JSX.Element>();
 
   const themeColors = useThemeColors();
 

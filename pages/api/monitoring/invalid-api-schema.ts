@@ -12,8 +12,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const payload = JSON.parse(req.body);
     metrics?.invalidApiSchema.inc(v.parse(PayloadSchema, payload));
-  } catch (error) {
-
-  }
+  } catch (error) {}
   res.status(200).json({ status: 'ok' });
 }

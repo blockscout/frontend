@@ -20,6 +20,12 @@ test('status code 422', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('status code 403', async({ render }) => {
+  const error = { message: 'Test', cause: { status: 403 } } as Error;
+  const component = await render(<AppError error={ error }/>);
+  await expect(component).toHaveScreenshot();
+});
+
 test('status code 500', async({ render }) => {
   const error = { message: 'Unknown error', cause: { status: 500 } } as Error;
   const component = await render(<AppError error={ error }/>);
@@ -41,14 +47,11 @@ test('block lost consensus', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('too many requests +@mobile', async({ render, page }) => {
+test('too many requests +@mobile', async({ render }) => {
   const error = {
     message: 'Too many requests',
     cause: { status: 429 },
   } as Error;
   const component = await render(<AppError error={ error }/>);
-  await expect(component).toHaveScreenshot({
-    mask: [ page.locator('.recaptcha') ],
-    maskColor: pwConfig.maskColor,
-  });
+  await expect(component).toHaveScreenshot();
 });

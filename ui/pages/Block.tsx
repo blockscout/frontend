@@ -1,4 +1,4 @@
-import { chakra, Skeleton, Tooltip } from '@chakra-ui/react';
+import { chakra, Skeleton } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -13,6 +13,7 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockEpochRewards from 'ui/block/BlockEpochRewards';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
@@ -22,7 +23,6 @@ import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
 import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
-import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -77,7 +77,7 @@ const BlockPageContent = () => {
         </>
       ),
     },
-    config.features.dataAvailability.isEnabled && blockQuery.data?.blob_tx_count ?
+    config.features.dataAvailability.isEnabled && blockQuery.data?.blob_transaction_count ?
       {
         id: 'blob_txs',
         title: 'Blob txns',
@@ -146,28 +146,10 @@ const BlockPageContent = () => {
         return `Block #${ blockQuery.data?.height }`;
     }
   })();
-  const contentAfter = (() => {
-    if (!blockQuery.data?.celo) {
-      return null;
-    }
 
-    if (!blockQuery.data.celo.is_epoch_block) {
-      return (
-        <Tooltip label="Displays the epoch this block belongs to before the epoch is finalized" maxW="280px" textAlign="center">
-          <Tag>Epoch #{ blockQuery.data.celo.epoch_number }</Tag>
-        </Tooltip>
-      );
-    }
-
-    return (
-      <Tooltip label="Displays the epoch finalized by this block" maxW="280px" textAlign="center">
-        <Tag bgColor="celo" color="blackAlpha.800">Finalized epoch #{ blockQuery.data.celo.epoch_number }</Tag>
-      </Tooltip>
-    );
-  })();
   const titleSecondRow = (
     <>
-      { !config.UI.views.block.hiddenFields?.miner && (
+      { !config.UI.views.block.hiddenFields?.miner && blockQuery.data?.miner && (
         <Skeleton
           isLoaded={ !blockQuery.isPlaceholderData }
           fontFamily="heading"
@@ -179,7 +161,7 @@ const BlockPageContent = () => {
           <chakra.span flexShrink={ 0 }>
             { `${ capitalize(getNetworkValidationActionText()) } by` }
           </chakra.span>
-          <AddressEntity address={ blockQuery.data?.miner }/>
+          <AddressEntity address={ blockQuery.data.miner }/>
         </Skeleton>
       ) }
       <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: config.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}/>
@@ -192,7 +174,7 @@ const BlockPageContent = () => {
       <PageTitle
         title={ title }
         backLink={ backLink }
-        contentAfter={ contentAfter }
+        contentAfter={ <BlockCeloEpochTag blockQuery={ blockQuery }/> }
         secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }
       />

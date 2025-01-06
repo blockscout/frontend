@@ -94,6 +94,45 @@ const variantOutline = defineStyle((props) => {
   };
 });
 
+const variantRadioGroup = defineStyle((props) => {
+  const outline = runIfFn(variantOutline, props);
+  const bgColor = mode('blue.50', 'gray.800')(props);
+  const selectedTextColor = mode('blue.700', 'gray.50')(props);
+
+  return {
+    ...outline,
+    fontWeight: 500,
+    cursor: 'pointer',
+    bgColor: 'none',
+    borderColor: bgColor,
+    _hover: {
+      borderColor: bgColor,
+      color: 'link_hovered',
+    },
+    _active: {
+      bgColor: 'none',
+    },
+    _notFirst: {
+      borderLeftWidth: 0,
+    },
+    // We have a special state for this button variant that serves as a popover trigger.
+    // When any items (filters) are selected in the popover, the button should change its background and text color.
+    // The last CSS selector is for redefining styles for the TabList component.
+    [`
+      &[data-selected=true],
+      &[data-selected=true][aria-selected=true]
+    `]: {
+      cursor: 'initial',
+      bgColor,
+      borderColor: bgColor,
+      color: selectedTextColor,
+      _hover: {
+        color: selectedTextColor,
+      },
+    },
+  };
+});
+
 const variantSimple = defineStyle((props) => {
   const outline = runIfFn(variantOutline, props);
 
@@ -154,33 +193,34 @@ const variantSubtle = defineStyle((props) => {
 
 // for buttons in the hero banner
 const variantHero = defineStyle((props) => {
+  const buttonConfig = config.UI.homepage.heroBanner?.button;
   return {
     bg: mode(
-      config.UI.homepage.heroBanner?.button?._default?.background?.[0] || 'blue.600',
-      config.UI.homepage.heroBanner?.button?._default?.background?.[1] || 'blue.600',
+      buttonConfig?._default?.background?.[0] || 'blue.600',
+      buttonConfig?._default?.background?.[1] || buttonConfig?._default?.background?.[0] || 'blue.600',
     )(props),
     color: mode(
-      config.UI.homepage.heroBanner?.button?._default?.text_color?.[0] || 'white',
-      config.UI.homepage.heroBanner?.button?._default?.text_color?.[1] || 'white',
+      buttonConfig?._default?.text_color?.[0] || 'white',
+      buttonConfig?._default?.text_color?.[1] || buttonConfig?._default?.text_color?.[0] || 'white',
     )(props),
     _hover: {
       bg: mode(
-        config.UI.homepage.heroBanner?.button?._hover?.background?.[0] || 'blue.400',
-        config.UI.homepage.heroBanner?.button?._hover?.background?.[1] || 'blue.400',
+        buttonConfig?._hover?.background?.[0] || 'blue.400',
+        buttonConfig?._hover?.background?.[1] || buttonConfig?._hover?.background?.[0] || 'blue.400',
       )(props),
       color: mode(
-        config.UI.homepage.heroBanner?.button?._hover?.text_color?.[0] || 'white',
-        config.UI.homepage.heroBanner?.button?._hover?.text_color?.[1] || 'white',
+        buttonConfig?._hover?.text_color?.[0] || 'white',
+        buttonConfig?._hover?.text_color?.[1] || buttonConfig?._hover?.text_color?.[0] || 'white',
       )(props),
     },
     '&[data-selected=true]': {
       bg: mode(
-        config.UI.homepage.heroBanner?.button?._selected?.background?.[0] || 'blue.50',
-        config.UI.homepage.heroBanner?.button?._selected?.background?.[1] || 'blue.50',
+        buttonConfig?._selected?.background?.[0] || 'blue.50',
+        buttonConfig?._selected?.background?.[1] || buttonConfig?._selected?.background?.[0] || 'blue.50',
       )(props),
       color: mode(
-        config.UI.homepage.heroBanner?.button?._selected?.text_color?.[0] || 'blackAlpha.800',
-        config.UI.homepage.heroBanner?.button?._selected?.text_color?.[1] || 'blackAlpha.800',
+        buttonConfig?._selected?.text_color?.[0] || 'blackAlpha.800',
+        buttonConfig?._selected?.text_color?.[1] || buttonConfig?._selected?.text_color?.[0] || 'blackAlpha.800',
       )(props),
     },
   };
@@ -222,6 +262,7 @@ const variants = {
   subtle: variantSubtle,
   hero: variantHero,
   header: variantHeader,
+  radio_group: variantRadioGroup,
 };
 
 const baseStyle = defineStyle({

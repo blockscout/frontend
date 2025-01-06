@@ -17,7 +17,7 @@ import IconSvg from 'ui/shared/IconSvg';
 type ItemProps = BlockBaseFeeCelo['breakdown'][number] & {
   addressFrom: AddressParam;
   token: TokenInfo;
-}
+};
 
 const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: ItemProps) => {
   const isBurning = address.hash === ZERO_ADDRESS;

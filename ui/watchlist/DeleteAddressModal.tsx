@@ -12,7 +12,7 @@ type Props = {
   onClose: () => void;
   onSuccess: () => Promise<void>;
   data: Pick<WatchlistAddress, 'address_hash' | 'id'>;
-}
+};
 
 const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data }) => {
   const isMobile = useIsMobile();

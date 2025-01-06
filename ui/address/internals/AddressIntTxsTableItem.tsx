@@ -13,7 +13,7 @@ import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-type Props = InternalTransaction & { currentAddress: string; isLoading?: boolean }
+type Props = InternalTransaction & { currentAddress: string; isLoading?: boolean };
 
 const AddressIntTxsTableItem = ({
   type,
@@ -24,7 +24,7 @@ const AddressIntTxsTableItem = ({
   error,
   created_contract: createdContract,
   transaction_hash: txnHash,
-  block,
+  block_number: blockNumber,
   timestamp,
   currentAddress,
   isLoading,
@@ -66,7 +66,7 @@ const AddressIntTxsTableItem = ({
       <Td verticalAlign="middle">
         <BlockEntity
           isLoading={ isLoading }
-          number={ block }
+          number={ blockNumber }
           noIcon
           fontSize="sm"
           lineHeight={ 5 }

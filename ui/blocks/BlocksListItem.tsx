@@ -21,6 +21,8 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
+import { getBaseFeeValue } from './utils';
+
 interface Props {
   data: Block;
   isLoading?: boolean;
@@ -32,7 +34,8 @@ const isRollup = config.features.rollup.isEnabled;
 const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
-  const txFees = BigNumber(data.tx_fees || 0);
+  const txFees = BigNumber(data.transaction_fees || 0);
+  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas);
 
   return (
     <ListItemMobile rowGap={ 3 } key={ String(data.height) } isAnimated>
@@ -78,14 +81,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       ) }
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
-        { data.tx_count > 0 ? (
+        { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height), tab: 'txs' } }) }>
-              { data.tx_count }
+              { data.transaction_count }
             </LinkInternal>
           </Skeleton>
         ) :
-          <Text variant="secondary">{ data.tx_count }</Text>
+          <Text variant="secondary">{ data.transaction_count }</Text>
         }
       </Flex>
       <Box>
@@ -123,6 +126,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
             <Utilization ml={ 4 } value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
           </Flex>
         </Box>
+      ) }
+      { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && baseFeeValue && (
+        <Flex columnGap={ 2 }>
+          <Text fontWeight={ 500 }>Base fee</Text>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
+            <span>{ baseFeeValue }</span>
+          </Skeleton>
+        </Flex>
       ) }
     </ListItemMobile>
   );

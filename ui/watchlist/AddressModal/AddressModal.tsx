@@ -12,7 +12,7 @@ type Props = {
   onClose: () => void;
   onSuccess: () => Promise<void>;
   data?: Partial<WatchlistAddress>;
-}
+};
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data, isAdd }) => {
   const title = !isAdd ? 'Edit watch list address' : 'New address to watch list';

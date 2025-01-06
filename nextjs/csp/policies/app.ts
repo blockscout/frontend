@@ -11,25 +11,6 @@ const MAIN_DOMAINS = [
   config.app.host,
 ].filter(Boolean);
 
-const getCspReportUrl = () => {
-  try {
-    const sentryFeature = config.features.sentry;
-    if (!sentryFeature.isEnabled || !process.env.SENTRY_CSP_REPORT_URI) {
-      return;
-    }
-
-    const url = new URL(process.env.SENTRY_CSP_REPORT_URI);
-
-    // https://docs.sentry.io/product/security-policy-reporting/#additional-configuration
-    url.searchParams.set('sentry_environment', sentryFeature.environment);
-    sentryFeature.release && url.searchParams.set('sentry_release', sentryFeature.release);
-
-    return url.toString();
-  } catch (error) {
-    return;
-  }
-};
-
 const externalFontsDomains = (() => {
   try {
     return [
@@ -67,6 +48,7 @@ export function app(): CspDev.DirectiveDescriptor {
       getFeaturePayload(config.features.addressVerification)?.api.endpoint,
       getFeaturePayload(config.features.nameService)?.api.endpoint,
       getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
+      getFeaturePayload(config.features.rewards)?.api.endpoint,
 
       // chain RPC server
       config.chain.rpcUrl,
@@ -74,6 +56,9 @@ export function app(): CspDev.DirectiveDescriptor {
 
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
+
+      // github api (used for Stylus contract verification)
+      'api.github.com',
     ].filter(Boolean),
 
     'script-src': [
@@ -87,6 +72,9 @@ export function app(): CspDev.DirectiveDescriptor {
       // hash of ColorModeScript: system + dark
       '\'sha256-e7MRMmTzLsLQvIy1iizO1lXf7VWYoQ6ysj5fuUzvRwE=\'',
       '\'sha256-9A7qFFHmxdWjZMQmfzYD2XWaNHLu1ZmQB0Ds4Go764k=\'',
+
+      // CapybaraRunner
+      '\'sha256-5+YTmTcBwCYdJ8Jetbr6kyjGp0Ry/H7ptpoun6CrSwQ=\'',
     ],
 
     'style-src': [
@@ -122,6 +110,7 @@ export function app(): CspDev.DirectiveDescriptor {
     ],
 
     'media-src': [
+      KEY_WORDS.BLOB,
       '*', // see comment for img-src directive
     ],
 
@@ -146,18 +135,9 @@ export function app(): CspDev.DirectiveDescriptor {
 
     'frame-ancestors': [
       KEY_WORDS.SELF,
+
+      // allow remix.ethereum.org to embed our contract page in iframe
+      'remix.ethereum.org',
     ],
-
-    ...((() => {
-      if (!config.features.sentry.isEnabled) {
-        return {};
-      }
-
-      return {
-        'report-uri': [
-          getCspReportUrl(),
-        ].filter(Boolean),
-      };
-    })()),
   };
 }

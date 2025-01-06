@@ -12,22 +12,22 @@ type Params<R extends ResourceName> = (
   {
     resource: R;
     pathParams?: ResourcePathParams<R>;
+    queryParams?: Record<string, string | number | undefined>;
   } | {
     url: string;
     route: string;
   }
 ) & {
   timeout?: number;
-}
+};
 
 export default async function fetchApi<R extends ResourceName = never, S = ResourcePayload<R>>(params: Params<R>): Promise<S | undefined> {
   const controller = new AbortController();
-
   const timeout = setTimeout(() => {
     controller.abort();
   }, params.timeout || SECOND);
 
-  const url = 'url' in params ? params.url : buildUrl(params.resource, params.pathParams);
+  const url = 'url' in params ? params.url : buildUrl(params.resource, params.pathParams, params.queryParams);
   const route = 'route' in params ? params.route : RESOURCES[params.resource]['path'];
 
   const end = metrics?.apiRequestDuration.startTimer();

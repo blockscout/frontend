@@ -4,7 +4,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
-import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
+import { FEATURED_NETWORKS } from 'mocks/config/network';
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -24,9 +24,10 @@ const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
 
 test.beforeEach(async({ mockEnvs, mockConfigResponse }) => {
   await mockEnvs([
+    ...ENVS_MAP.rewardsService,
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS_MOCK);
+  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS);
 });
 
 test.describe('no auth', () => {
@@ -88,7 +89,7 @@ authTest.describe('auth', () => {
 test.describe('with tooltips', () => {
   test.use({ viewport: pwConfig.viewport.xl });
 
-  test('', async({ render, page }) => {
+  test('base view', async({ render, page }) => {
     const component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">
         <NavigationDesktop/>
@@ -99,7 +100,7 @@ test.describe('with tooltips', () => {
 
     await component.locator('header').hover();
     await page.locator('div[aria-label="Expand/Collapse menu"]').click();
-    await page.locator('a[aria-label="Tokens link"]').hover();
+    await page.locator('a[aria-label="DApps link"]').hover();
 
     await expect(component).toHaveScreenshot();
   });
@@ -116,17 +117,17 @@ test.describe('with submenu', () => {
       </Flex>,
       { hooksConfig },
     );
-    await page.locator('a[aria-label="Blockchain link group"]').hover();
+    await page.locator('div[aria-label="Blockchain link group"]').hover();
   });
 
-  test('', async() => {
+  test('base view', async() => {
     await expect(component).toHaveScreenshot();
   });
 
   test.describe('xl screen', () => {
     test.use({ viewport: pwConfig.viewport.xl });
 
-    test('', async() => {
+    test('base view', async() => {
       await expect(component).toHaveScreenshot();
     });
   });
@@ -185,7 +186,7 @@ sideBarCookieTest.describe('cookie set to true', () => {
     );
 
     const networkMenu = component.locator('button[aria-label="Network menu"]');
-    expect(await networkMenu.isVisible()).toBe(false);
+    await expect(networkMenu).toBeHidden();
   });
 });
 
@@ -239,7 +240,7 @@ test.describe('with highlighted routes', () => {
   });
 
   test('with submenu', async({ page }) => {
-    await page.locator('a[aria-label="Blockchain link group"]').hover();
+    await page.locator('div[aria-label="Blockchain link group"]').hover();
     await expect(component).toHaveScreenshot();
   });
 

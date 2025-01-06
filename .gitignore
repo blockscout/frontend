@@ -15,6 +15,7 @@
 /public/assets/envs.js
 /public/assets/configs
 /public/icons/sprite.svg
+/public/icons/sprite.*.svg
 /public/icons/README.md
 /analyze
 
@@ -42,9 +43,6 @@ yarn-error.log*
 *.tsbuildinfo
 
 .eslintcache
-
-# Sentry
-.sentryclirc
 
 **.decrypted~**
 /test-results/

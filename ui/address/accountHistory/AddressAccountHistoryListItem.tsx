@@ -37,7 +37,7 @@ const AddressAccountHistoryListItem = (props: Props) => {
             />
 
             <Text fontSize="sm" fontWeight={ 500 }>
-                Action
+              Action
             </Text>
           </Flex>
           <TimeAgoWithTooltip

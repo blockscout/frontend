@@ -25,7 +25,7 @@ import TxType from 'ui/txs/TxType';
 type Props = {
   tx: Transaction;
   isLoading?: boolean;
-}
+};
 
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
@@ -50,7 +50,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         <TxAdditionalInfo tx={ tx } isLoading={ isLoading } my="3px"/>
         <Box ml={ 3 } w="calc(100% - 40px)">
           <HStack flexWrap="wrap" my="3px">
-            <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+            <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
             <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
             <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
           </HStack>

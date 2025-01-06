@@ -12,11 +12,11 @@ type Props = {
   items: Array<MudWorldItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const MudWorldsTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }}>
+    <Table style={{ tableLayout: 'auto' }}>
       <Thead top={ top }>
         <Tr>
           <Th>Address</Th>

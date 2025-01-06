@@ -3,7 +3,7 @@ import React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
 
-const NftFallback = ({ className }: {className?: string}) => {
+const NftFallback = ({ className }: { className?: string }) => {
   return (
     <IconSvg
       className={ className }

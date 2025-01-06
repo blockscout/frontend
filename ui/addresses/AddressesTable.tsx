@@ -21,7 +21,7 @@ interface Props {
 const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading }: Props) => {
   const hasPercentage = !totalSupply.eq(ZERO);
   return (
-    <Table variant="simple" size="sm">
+    <Table>
       <Thead top={ top }>
         <Tr>
           <Th width="64px">Rank</Th>

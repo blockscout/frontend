@@ -1,12 +1,13 @@
-import { Box, Button, Flex, Tooltip, chakra } from '@chakra-ui/react';
+import { Box, Button, Flex, Tooltip, chakra, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
-import type { AbiFunction } from 'viem';
+import { encodeFunctionData, type AbiFunction } from 'viem';
 
 import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '../types';
 
 import config from 'configs/app';
+import { SECOND } from 'lib/consts';
 import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -43,16 +44,41 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     shouldUnregister: true,
   });
 
+  const calldataButtonTooltip = useDisclosure();
+
   const handleButtonClick = React.useCallback((event: React.MouseEvent) => {
     const callStrategy = event?.currentTarget.getAttribute('data-call-strategy');
     setCallStrategy(callStrategy as MethodCallStrategy);
     callStrategyRef.current = callStrategy as MethodCallStrategy;
-  }, []);
+
+    if (callStrategy === 'copy_calldata') {
+      calldataButtonTooltip.onOpen();
+      window.setTimeout(() => {
+        calldataButtonTooltip.onClose();
+      }, SECOND);
+    }
+  }, [ calldataButtonTooltip ]);
 
   const methodType = isReadMethod(data) ? 'read' : 'write';
 
   const onFormSubmit: SubmitHandler<ContractMethodFormFields> = React.useCallback(async(formData) => {
     const args = transformFormDataToMethodArgs(formData);
+
+    if (callStrategyRef.current === 'copy_calldata') {
+      if (!('name' in data) || !data.name) {
+        return;
+      }
+
+      const callData = encodeFunctionData({
+        abi: [ data ],
+        functionName: data.name,
+        // since we have added additional input for native coin value
+        // we need to slice it off
+        args: args.slice(0, data.inputs.length),
+      });
+      await navigator.clipboard.writeText(callData);
+      return;
+    }
 
     setResult(undefined);
     setLoading(true);
@@ -166,6 +192,50 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     );
   })();
 
+  const copyCallDataButton = (() => {
+    if (inputs.length === 0) {
+      return null;
+    }
+
+    if (inputs.length === 1) {
+      const [ input ] = inputs;
+      if ('fieldType' in input && input.fieldType === 'native_coin') {
+        return null;
+      }
+    }
+
+    const text = 'Copy calldata';
+    const buttonCallStrategy = 'copy_calldata';
+    const isDisabled = isLoading || !formApi.formState.isValid;
+
+    return (
+      <Tooltip
+        isDisabled={ isDisabled }
+        label="Copied"
+        closeDelay={ SECOND }
+        isOpen={ calldataButtonTooltip.isOpen }
+        onClose={ calldataButtonTooltip.onClose }
+      >
+        <Button
+          isLoading={ callStrategy === buttonCallStrategy && isLoading }
+          isDisabled={ isDisabled }
+          onClick={ handleButtonClick }
+          loadingText={ text }
+          variant="outline"
+          size="sm"
+          flexShrink={ 0 }
+          width="min-content"
+          px={ 4 }
+          ml={ 3 }
+          type="submit"
+          data-call-strategy={ buttonCallStrategy }
+        >
+          { text }
+        </Button>
+      </Tooltip>
+    );
+  })();
+
   return (
     <Box>
       <FormProvider { ...formApi }>
@@ -214,6 +284,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
           </Flex>
           { secondaryButton }
           { primaryButton }
+          { copyCallDataButton }
           { result && !isLoading && (
             <Button
               variant="simple"
@@ -223,7 +294,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
               ml={ 1 }
             >
               <IconSvg name="repeat" boxSize={ 5 } mr={ 1 }/>
-            Reset
+              Reset
             </Button>
           ) }
         </chakra.form>

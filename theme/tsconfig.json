@@ -13,7 +13,8 @@
 		"../types/**/*.ts", 
 		"../configs/app/**/*.ts", 
 		"../global.d.ts", 
-		"./theme.ts"
+		"./theme.ts",
+		"./components/**/*.pw.tsx",
 	],
 	"tsc-alias": {
 	  "verbose": true,

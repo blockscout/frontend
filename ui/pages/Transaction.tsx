@@ -77,7 +77,7 @@ const TransactionPageContent = () => {
   const tags = (
     <EntityTags
       isLoading={ isPlaceholderData }
-      tags={ data?.tx_tag ? [ { slug: data.tx_tag, name: data.tx_tag, tagType: 'private_tag' as const } ] : [] }
+      tags={ data?.transaction_tag ? [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const } ] : [] }
     />
   );
 
@@ -94,7 +94,7 @@ const TransactionPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.tx_tag) } txQuery={ txQuery }/>;
+  const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.transaction_tag) } txQuery={ txQuery }/>;
 
   const content = (() => {
     if (isPlaceholderData && !showDegradedView) {

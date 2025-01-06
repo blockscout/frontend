@@ -2,11 +2,12 @@ import { Box, Flex, Text, VStack, useColorModeValue } from '@chakra-ui/react';
 import { animate, motion, useMotionValue } from 'framer-motion';
 import React, { useCallback } from 'react';
 
-import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
+import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import NavLink from '../vertical/NavLink';
+import NavLinkRewards from '../vertical/NavLinkRewards';
 import NavLinkGroup from './NavLinkGroup';
 
 const DRAWER_WIDTH = 330;
@@ -35,7 +36,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
     animate(subX, DRAWER_WIDTH, { ease: 'easeInOut', onComplete: () => setOpenedGroupIndex(-1) });
   }, [ mainX, subX ]);
 
-  const hasAccount = useHasAccount();
+  const isAuth = useIsAuth();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
 
@@ -73,7 +74,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
             }) }
           </VStack>
         </Box>
-        { hasAccount && (
+        { isAuth && (
           <Box
             as="nav"
             mt={ 3 }
@@ -82,6 +83,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
             borderColor="divider"
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">
+              <NavLinkRewards onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>
               { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
             </VStack>
           </Box>
@@ -120,8 +122,11 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
                 >
                   { item.map(subItem => <NavLink key={ subItem.text } item={ subItem } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
                 </Box>
-              ) :
-                <NavLink key={ item.text } item={ item } mb={ 1 } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>,
+              ) : (
+                <Box key={ item.text } mb={ 1 }>
+                  <NavLink item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>
+                </Box>
+              ),
             ) }
           </Box>
         </Box>

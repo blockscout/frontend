@@ -7,7 +7,7 @@ test('base view +@dark-mode', async({ render, page }) => {
   const component = await render(
     <Box m={ 10 }>
       <Tooltip label="Tooltip content">
-          trigger
+        trigger
       </Tooltip>
     </Box>,
   );
@@ -31,8 +31,8 @@ test.fixme('with icon', async({ render, page }) => {
   );
 
   const tooltip = page.getByText(/tooltip content/i);
-  expect(await tooltip.isVisible()).toBe(false);
+  await expect(tooltip).toBeHidden();
 
   await component.locator('svg[aria-label="Trigger"]').hover();
-  expect(await tooltip.isVisible()).toBe(true);
+  await expect(tooltip).toBeVisible();
 });

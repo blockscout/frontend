@@ -14,7 +14,7 @@ type Props = {
   searchTerm: string;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
   handleSearchTermChange: (value: string) => void;
-}
+};
 
 const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();

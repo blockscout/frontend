@@ -10,7 +10,7 @@ import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 
 type Props = bens.Domain & {
   isLoading?: boolean;
-}
+};
 
 const NameDomainsTableItem = ({
   isLoading,
@@ -24,7 +24,7 @@ const NameDomainsTableItem = ({
   return (
     <Tr>
       <Td verticalAlign="middle">
-        <EnsEntity name={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 600 }/>
+        <EnsEntity domain={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 600 }/>
       </Td>
       <Td verticalAlign="middle">
         { resolvedAddress && <AddressEntity address={ resolvedAddress } isLoading={ isLoading } fontWeight={ 500 }/> }

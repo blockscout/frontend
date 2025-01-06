@@ -43,12 +43,6 @@ const Footer = () => {
       url: issueUrl,
     },
     {
-      icon: 'social/canny' as const,
-      iconSize: '20px',
-      text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
-    },
-    {
       icon: 'social/git' as const,
       iconSize: '18px',
       text: 'Contribute',
@@ -162,12 +156,28 @@ const Footer = () => {
   };
 
   const contentProps: GridProps = {
-    px: { base: 4, lg: config.UI.navigation.layout === 'horizontal' ? 6 : 12 },
+    px: { base: 4, lg: config.UI.navigation.layout === 'horizontal' ? 6 : 12, '2xl': 6 },
     py: { base: 4, lg: 8 },
     gridTemplateColumns: { base: '1fr', lg: 'minmax(auto, 470px) 1fr' },
     columnGap: { lg: '32px', xl: '100px' },
     maxW: `${ CONTENT_MAX_WIDTH }px`,
     m: '0 auto',
+  };
+
+  const renderRecaptcha = (gridArea?: GridProps['gridArea']) => {
+    if (!config.services.reCaptchaV2.siteKey) {
+      return <Box gridArea={ gridArea }/>;
+    }
+
+    return (
+      <Box gridArea={ gridArea } fontSize="xs" lineHeight={ 5 } mt={ 6 } color="text">
+        <span>This site is protected by reCAPTCHA and the Google </span>
+        <Link href="https://policies.google.com/privacy" isExternal>Privacy Policy</Link>
+        <span> and </span>
+        <Link href="https://policies.google.com/terms" isExternal>Terms of Service</Link>
+        <span> apply.</span>
+      </Box>
+    );
   };
 
   if (config.UI.footer.links) {
@@ -177,6 +187,7 @@ const Footer = () => {
           <div>
             { renderNetworkInfo() }
             { renderProjectInfo() }
+            { renderRecaptcha() }
           </div>
 
           <Grid
@@ -218,20 +229,22 @@ const Footer = () => {
           lg: `
           "network links-top"
           "info links-bottom"
+          "recaptcha links-bottom"
         `,
         }}
       >
 
         { renderNetworkInfo({ lg: 'network' }) }
         { renderProjectInfo({ lg: 'info' }) }
+        { renderRecaptcha({ lg: 'recaptcha' }) }
 
         <Grid
           gridArea={{ lg: 'links-bottom' }}
           gap={ 1 }
           gridTemplateColumns={{
             base: 'repeat(auto-fill, 160px)',
-            lg: 'repeat(3, 160px)',
-            xl: 'repeat(4, 160px)',
+            lg: 'repeat(2, 160px)',
+            xl: 'repeat(3, 160px)',
           }}
           gridTemplateRows={{
             base: 'auto',
