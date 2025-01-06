@@ -4,11 +4,13 @@ import Script from 'next/script';
 import React from 'react';
 
 import config from 'configs/app';
-
+import useIsMobile from 'lib/hooks/useIsMobile';
 const easterEggBadgeFeature = config.features.easterEggBadge;
 
 const CapybaraRunner = () => {
   const [ hasReachedHighScore, setHasReachedHighScore ] = React.useState(false);
+
+  const isMobile = useIsMobile();
 
   React.useEffect(() => {
     const preventDefaultKeys = (e: KeyboardEvent) => {
@@ -32,6 +34,8 @@ const CapybaraRunner = () => {
 
   return (
     <>
+      <Box as="h2" mt={ 12 } mb={ 2 } fontWeight={ 600 } fontSize="xl">Score 1000 to win a special prize!</Box>
+      <Box mb={ 4 }>{ isMobile ? 'Tap below to start' : 'Press space to start' }</Box>
       <Script strategy="lazyOnload" src="/static/capibara/index.js"/>
       <Box width={{ base: '100%', lg: '600px' }} height="300px" p="50px 0">
         <div id="main-frame-error" className="interstitial-wrapper" style={{ marginTop: '20px' }}>
