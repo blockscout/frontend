@@ -1,6 +1,6 @@
 import { Image, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => {
-
+  const router = useRouter();
   const logo = (
     <Image
       borderRadius="base"
