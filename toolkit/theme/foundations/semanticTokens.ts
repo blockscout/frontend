@@ -13,7 +13,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           DEFAULT: { value: '{colors.blue.400}' },
         },
       },
-      anchor: {
+      dropdown: {
         fg: {
           DEFAULT: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
           selected: { value: { base: '{colors.blue.600}', _dark: '{colors.gray.50}' } },
@@ -27,28 +27,39 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
       },
     },
+    links: {
+      primary: {
+        DEFAULT: { value: { base: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
+        hover: { value: { base: '{colors.blue.400}' } },
+      },
+      secondary: {
+        DEFAULT: { value: { base: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
+      },
+      subtle: {
+        DEFAULT: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.gray.400}' } },
+        hover: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.gray.400}' } },
+      },
+    },
+    text: {
+      primary: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+      secondary: { value: { base: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
+    },
     globals: {
       body: {
-        bg: {
-          DEFAULT: { value: { base: '{colors.white}', _dark: '{colors.black}' } },
-        },
+        bg: { value: { base: '{colors.white}', _dark: '{colors.black}' } },
+        fg: { value: '{colors.text.primary}' },
       },
       mark: {
-        bg: {
-          DEFAULT: { value: { base: '{colors.green.100}', _dark: '{colors.green.800}' } },
-        },
+        bg: { value: { base: '{colors.green.100}', _dark: '{colors.green.800}' } },
       },
     },
 
     // OLD TOKENS
-    divider: {
-      DEFAULT: { value: '{colors.blackAlpha.200}' },
-      _dark: { value: '{colors.whiteAlpha.200}' },
-    },
-    text: {
-      DEFAULT: { value: '{colors.blackAlpha.800}' },
-      _dark: { value: '{colors.whiteAlpha.800}' },
-    },
+    divider: { value: { base: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.200}' } },
+    // text: {
+    //   DEFAULT: { value: '{colors.blackAlpha.800}' },
+    //   _dark: { value: '{colors.whiteAlpha.800}' },
+    // },
     text_secondary: {
       DEFAULT: { value: '{colors.gray.500}' },
       _dark: { value: '{colors.gray.400}' },

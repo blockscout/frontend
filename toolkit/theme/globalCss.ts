@@ -10,6 +10,7 @@ import scrollbar from './globals/scrollbar';
 const globalCss: Record<string, SystemStyleObject> = {
   body: {
     bg: 'globals.body.bg',
+    color: 'globals.body.fg',
     '-webkit-tap-highlight-color': 'transparent',
     'font-variant-ligatures': 'no-contextual',
   },
