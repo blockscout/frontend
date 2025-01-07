@@ -1,7 +1,34 @@
-import type { SemanticTokenDefinition } from '@chakra-ui/react/dist/types/styled-system/types';
+import type { ThemingConfig } from '@chakra-ui/react';
 
-const semanticTokens: SemanticTokenDefinition = {
+const semanticTokens: ThemingConfig['semanticTokens'] = {
+  // TODO @tom2drum remove *_hover in favor of conditional selectors
   colors: {
+    // NEW TOKENS
+    buttons: {
+      outline: {
+        fg: {
+          DEFAULT: { value: { base: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
+        },
+        hover: {
+          DEFAULT: { value: '{colors.blue.400}' },
+        },
+      },
+      anchor: {
+        fg: {
+          DEFAULT: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+          selected: { value: { base: '{colors.blue.600}', _dark: '{colors.gray.50}' } },
+        },
+        border: {
+          DEFAULT: { value: { base: '{colors.gray.200}', _dark: '{colors.gray.600}' } },
+          selected: { value: { base: '{colors.blue.50}', _dark: '{colors.gray.600}' } },
+        },
+        hover: {
+          DEFAULT: { value: '{colors.blue.400}' },
+        },
+      },
+    },
+
+    // OLD TOKENS
     divider: {
       DEFAULT: { value: '{colors.blackAlpha.200}' },
       _dark: { value: '{colors.whiteAlpha.200}' },

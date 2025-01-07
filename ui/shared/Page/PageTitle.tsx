@@ -137,7 +137,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
               <Heading
                 ref={ headingRef }
                 as="h1"
-                size="lg"
+                textStyle="heading.lg"
                 whiteSpace="normal"
                 wordBreak="break-all"
                 style={{

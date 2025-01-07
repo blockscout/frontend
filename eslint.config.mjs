@@ -406,7 +406,6 @@ export default tseslint.config(
         'boolean': true,
         string: true,
       } ],
-      'no-nested-ternary': 'error',
       'no-multi-str': 'error',
       'no-spaced-func': 'error',
       'no-with': 'error',

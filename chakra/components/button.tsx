@@ -12,13 +12,22 @@ interface ButtonLoadingProps {
   loadingText?: React.ReactNode;
 }
 
-export interface ButtonProps extends ChakraButtonProps, ButtonLoadingProps {}
+export interface ButtonProps extends ChakraButtonProps, ButtonLoadingProps {
+  active?: boolean;
+  selected?: boolean;
+}
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(props, ref) {
-    const { loading, disabled, loadingText, children, ...rest } = props;
+    const { loading, disabled, loadingText, children, active, selected, ...rest } = props;
     return (
-      <ChakraButton disabled={ loading || disabled } ref={ ref } { ...rest }>
+      <ChakraButton
+        { ...(active ? { 'data-active': true } : {}) }
+        { ...(selected ? { 'data-selected': true } : {}) }
+        disabled={ loading || disabled }
+        ref={ ref }
+        { ...rest }
+      >
         { loading && !loadingText ? (
           <>
             <AbsoluteCenter display="inline-flex">
