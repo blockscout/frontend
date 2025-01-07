@@ -4,11 +4,11 @@ import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
+import { toaster } from 'chakra/components/toaster';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
-import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
 
 const PROTECTED_ROUTES: Array<Route['pathname']> = [
@@ -24,7 +24,6 @@ const PROTECTED_ROUTES: Array<Route['pathname']> = [
 export default function useLogout() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const toast = useToast();
   const apiFetch = useApiFetch();
 
   return React.useCallback(async() => {
@@ -62,11 +61,10 @@ export default function useLogout() {
         router.push({ pathname: '/' }, undefined, { shallow: true });
       }
     } catch (error) {
-      toast({
-        status: 'error',
+      toaster.error({
         title: 'Logout failed',
         description: 'Please try again later',
       });
     }
-  }, [ apiFetch, queryClient, router, toast ]);
+  }, [ apiFetch, queryClient, router ]);
 }

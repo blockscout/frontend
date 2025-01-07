@@ -1,6 +1,7 @@
-import { useColorModeValue, Button, forwardRef, chakra } from '@chakra-ui/react';
+import { Button, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import { useColorModeValue } from 'chakra/components/color-mode';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -44,4 +45,4 @@ const NetworkMenuButton = ({ isMobile, isActive, onClick, className }: Props, re
   );
 };
 
-export default chakra(forwardRef(NetworkMenuButton));
+export default chakra(React.forwardRef(NetworkMenuButton));

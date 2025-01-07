@@ -1,6 +1,4 @@
 import { chakra, Flex } from '@chakra-ui/react';
-import type { GroupBase, SelectComponentsConfig, SingleValueProps } from 'chakra-react-select';
-import { chakraComponents } from 'chakra-react-select';
 import _capitalize from 'lodash/capitalize';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -9,6 +7,8 @@ import type { FormFields } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
 import type { Option } from 'ui/shared/forms/inputs/select/types';
 
+import { chakraComponents } from 'chakra-react-select';
+import type { GroupBase, SelectComponentsConfig, SingleValueProps } from 'chakra-react-select';
 import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
 import IconSvg from 'ui/shared/IconSvg';
 

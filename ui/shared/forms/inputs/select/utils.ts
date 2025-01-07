@@ -1,8 +1,8 @@
 import type { ColorMode } from '@chakra-ui/react';
-import type { Size, ChakraStylesConfig } from 'chakra-react-select';
 
 import type { Option } from './types';
 
+import type { Size, ChakraStylesConfig } from 'chakra-react-select';
 import theme from 'theme/theme';
 import getFormStyles from 'theme/utils/getFormStyles';
 

@@ -1,7 +1,8 @@
-import { Heading, Flex, Tooltip, Link, chakra, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Heading, Flex, Link, chakra, Skeleton, useDisclosure } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import React from 'react';
 
+import { Tooltip } from 'chakra/components/tooltip';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
@@ -38,7 +39,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
         mr={ 3 }
         my={ 2 }
         verticalAlign="text-bottom"
-        isLoaded={ !props.isLoading }
+        loading={ props.isLoading }
       />
     );
   }
@@ -47,7 +48,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
 
   if ('url' in props) {
     return (
-      <Tooltip label={ props.label }>
+      <Tooltip content={ props.label }>
         <LinkInternal display="inline-flex" href={ props.url } h="40px" mr={ 3 }>
           { icon }
         </LinkInternal>
@@ -56,7 +57,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   }
 
   return (
-    <Tooltip label={ props.label }>
+    <Tooltip content={ props.label }>
       <Link display="inline-flex" onClick={ props.onClick } h="40px" mr={ 3 }>
         { icon }
       </Link>
@@ -64,7 +65,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   );
 };
 
-const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading, afterTitle, beforeTitle, secondRow }: Props) => {
+const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading = false, afterTitle, beforeTitle, secondRow }: Props) => {
   const tooltip = useDisclosure();
   const isMobile = useIsMobile();
   const [ isTextTruncated, setIsTextTruncated ] = React.useState(false);
@@ -101,6 +102,14 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
     };
   }, [ updatedTruncateState ]);
 
+  const handleTooltipOpenChange = React.useCallback((details: { open: boolean }) => {
+    if (details.open) {
+      tooltip.onOpen();
+    } else {
+      tooltip.onClose();
+    }
+  }, [ tooltip ]);
+
   return (
     <Flex className={ className } flexDir="column" rowGap={ 3 } mb={ 6 }>
       <Flex
@@ -114,16 +123,16 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
           { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
           { beforeTitle }
           <Skeleton
-            isLoaded={ !isLoading }
+            loading={ isLoading }
             overflow="hidden"
           >
             <Tooltip
-              label={ title }
-              isOpen={ tooltip.isOpen }
-              onClose={ tooltip.onClose }
-              maxW={{ base: 'calc(100vw - 32px)', lg: '500px' }}
+              content={ title }
+              open={ tooltip.open }
+              onOpenChange={ handleTooltipOpenChange }
+              contentProps={{ maxW: { base: 'calc(100vw - 32px)', lg: '500px' } }}
               closeOnScroll={ isMobile ? true : false }
-              isDisabled={ !isTextTruncated }
+              disabled={ !isTextTruncated }
             >
               <Heading
                 ref={ headingRef }
@@ -154,7 +163,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> }
       </Flex>
       { secondRow && (
-        <Skeleton isLoaded={ !isLoading } alignItems="center" minH={ 10 } overflow="hidden" display="flex" _empty={{ display: 'none' }}>
+        <Skeleton loading={ isLoading } alignItems="center" minH={ 10 } overflow="hidden" display="flex" _empty={{ display: 'none' }}>
           { secondRow }
         </Skeleton>
       ) }

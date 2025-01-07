@@ -6,10 +6,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { OtpCodeFormFields, ScreenSuccess } from '../types';
 import type { UserInfo } from 'types/api/account';
 
+import { toaster } from 'chakra/components/toaster';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import useToast from 'lib/hooks/useToast';
 import IconSvg from 'ui/shared/IconSvg';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
@@ -25,7 +25,6 @@ interface Props {
 const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
 
   const apiFetch = useApiFetch();
-  const toast = useToast();
   const recaptcha = useReCaptcha();
   const [ isCodeSending, setIsCodeSending ] = React.useState(false);
 
@@ -61,13 +60,12 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
           return;
         }
 
-        toast({
-          status: 'error',
+        toaster.error({
           title: 'Error',
           description: getErrorMessage(error) || 'Something went wrong',
         });
       });
-  }, [ apiFetch, email, onSuccess, isAuth, toast, formApi ]);
+  }, [ apiFetch, email, onSuccess, isAuth, formApi ]);
 
   const handleResendCodeClick = React.useCallback(async() => {
     try {
@@ -81,23 +79,21 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         },
       });
 
-      toast({
-        status: 'success',
+      toaster.success({
         title: 'Success',
         description: 'Code has been sent to your email',
       });
     } catch (error) {
       const apiError = getErrorObjPayload<{ message: string }>(error);
 
-      toast({
-        status: 'error',
+      toaster.error({
         title: 'Error',
         description: apiError?.message || getErrorMessage(error) || 'Something went wrong',
       });
     } finally {
       setIsCodeSending(false);
     }
-  }, [ apiFetch, email, formApi, toast, recaptcha ]);
+  }, [ apiFetch, email, formApi, recaptcha ]);
 
   return (
     <FormProvider { ...formApi }>

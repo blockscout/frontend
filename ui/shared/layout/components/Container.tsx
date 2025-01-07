@@ -1,5 +1,7 @@
-import { Box, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
+
+import { useColorModeValue } from 'chakra/components/color-mode';
 
 interface Props {
   children: React.ReactNode;

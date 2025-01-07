@@ -1,6 +1,7 @@
-import { Box, Flex, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Drawer, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
+import { useColorModeValue } from 'chakra/components/color-mode';
 import config from 'configs/app';
 import IconSvg from 'ui/shared/IconSvg';
 import NavigationMobile from 'ui/snippets/navigation/mobile/NavigationMobile';
@@ -39,15 +40,15 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
           aria-label="Menu button"
         />
       </Box>
-      <Drawer
+      <Drawer.Root
         isOpen={ isOpen }
         placement="left"
         onClose={ onClose }
         autoFocus={ false }
       >
-        <DrawerOverlay/>
-        <DrawerContent maxWidth="330px">
-          <DrawerBody p={ 6 } display="flex" flexDirection="column">
+        <Drawer.Backdrop/>
+        <Drawer.Content maxWidth="330px">
+          <Drawer.Body p={ 6 } display="flex" flexDirection="column">
             <TestnetBadge alignSelf="flex-start"/>
             <Flex alignItems="center" justifyContent="space-between">
               <NetworkLogo onClick={ handleNetworkLogoClick }/>
@@ -63,9 +64,9 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
               <NetworkMenuContentMobile tabs={ networkMenu.availableTabs } items={ networkMenu.data }/> :
               <NavigationMobile onNavLinkClick={ onClose } isMarketplaceAppPage={ isMarketplaceAppPage }/>
             }
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+          </Drawer.Body>
+        </Drawer.Content>
+      </Drawer.Root>
     </>
   );
 };

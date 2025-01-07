@@ -1,10 +1,10 @@
 import { Button, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import { toaster } from 'chakra/components/toaster';
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import useFetch from 'lib/hooks/useFetch';
-import useToast from 'lib/hooks/useToast';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -12,7 +12,6 @@ import AppErrorIcon from '../AppErrorIcon';
 import AppErrorTitle from '../AppErrorTitle';
 
 const AppErrorTooManyRequests = () => {
-  const toast = useToast();
   const fetch = useFetch();
   const recaptcha = useReCaptcha();
 
@@ -32,16 +31,14 @@ const AppErrorTooManyRequests = () => {
       window.location.reload();
 
     } catch (error) {
-      toast({
-        position: 'top-right',
+      toaster.create({
+        placement: 'top-end',
         title: 'Error',
         description: 'Unable to get client key.',
-        status: 'error',
-        variant: 'subtle',
-        isClosable: true,
+        type: 'error',
       });
     }
-  }, [ recaptcha, toast, fetch ]);
+  }, [ recaptcha, fetch ]);
 
   if (!config.services.reCaptchaV2.siteKey) {
     throw new Error('reCAPTCHA V2 site key is not set');

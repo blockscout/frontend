@@ -1,9 +1,9 @@
-import type { ColorMode } from '@chakra-ui/react';
-import { useColorMode } from '@chakra-ui/react';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ColorMode } from 'chakra/components/color-mode';
+import { useColorMode } from 'chakra/components/color-mode';
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 import getQueryParamString from 'lib/router/getQueryParamString';

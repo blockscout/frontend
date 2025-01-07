@@ -1,11 +1,11 @@
 import { FormControl, useToken, useColorMode } from '@chakra-ui/react';
-import type { CSSObjectWithLabel, GroupBase, SingleValue, MultiValue, AsyncProps, Props as SelectProps } from 'chakra-react-select';
-import { Select, AsyncSelect } from 'chakra-react-select';
 import React from 'react';
 import type { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 
 import type { Option } from './types';
 
+import { Select, AsyncSelect } from 'chakra-react-select';
+import type { CSSObjectWithLabel, GroupBase, SingleValue, MultiValue, AsyncProps, Props as SelectProps } from 'chakra-react-select';
 import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
 import { getChakraStyles } from 'ui/shared/forms/inputs/select/utils';
 

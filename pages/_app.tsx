@@ -1,4 +1,4 @@
-import { type ChakraProps } from '@chakra-ui/react';
+import type { HTMLChakraProps } from '@chakra-ui/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -7,10 +7,11 @@ import React from 'react';
 
 import type { NextPageWithLayout } from 'nextjs/types';
 
+import { Provider as ChakraProvider } from 'chakra/components/provider';
+import { Toaster } from 'chakra/components/toaster';
 import config from 'configs/app';
 import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
-import { ChakraProvider } from 'lib/contexts/chakra';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
 import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
@@ -34,7 +35,7 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-const ERROR_SCREEN_STYLES: ChakraProps = {
+const ERROR_SCREEN_STYLES: HTMLChakraProps<'div'> = {
   h: '100vh',
   display: 'flex',
   flexDirection: 'column',
@@ -56,7 +57,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
 
   return (
-    <ChakraProvider cookies={ pageProps.cookies }>
+    <ChakraProvider>
       <RollbarProvider config={ rollbarConfig }>
         <AppErrorBoundary
           { ...ERROR_SCREEN_STYLES }
@@ -72,6 +73,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                         <MarketplaceContextProvider>
                           <SettingsContextProvider>
                             { getLayout(<Component { ...pageProps }/>) }
+                            <Toaster/>
                             { config.features.rewards.isEnabled && <RewardsLoginModal/> }
                           </SettingsContextProvider>
                         </MarketplaceContextProvider>

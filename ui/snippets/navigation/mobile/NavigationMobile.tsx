@@ -1,7 +1,8 @@
-import { Box, Flex, Text, VStack, useColorModeValue } from '@chakra-ui/react';
-import { animate, motion, useMotionValue } from 'framer-motion';
+import { Box, Flex, Text, VStack } from '@chakra-ui/react';
+// import { animate, motion, useMotionValue } from 'framer-motion';
 import React, { useCallback } from 'react';
 
+import { useColorModeValue } from 'chakra/components/color-mode';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
@@ -10,7 +11,7 @@ import NavLink from '../vertical/NavLink';
 import NavLinkRewards from '../vertical/NavLinkRewards';
 import NavLinkGroup from './NavLinkGroup';
 
-const DRAWER_WIDTH = 330;
+// const DRAWER_WIDTH = 330;
 
 interface Props {
   onNavLinkClick?: () => void;
@@ -22,19 +23,20 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
 
   const [ openedGroupIndex, setOpenedGroupIndex ] = React.useState(-1);
 
-  const mainX = useMotionValue(0);
-  const subX = useMotionValue(DRAWER_WIDTH);
+  // const mainX = useMotionValue(0);
+  // const subX = useMotionValue(DRAWER_WIDTH);
 
   const onGroupItemOpen = (index: number) => () => {
     setOpenedGroupIndex(index);
-    animate(mainX, -DRAWER_WIDTH, { ease: 'easeInOut' });
-    animate(subX, 0, { ease: 'easeInOut' });
+    // TODO @tom2drum animate navigation group menu
+    // animate(mainX, -DRAWER_WIDTH, { ease: 'easeInOut' });
+    // animate(subX, 0, { ease: 'easeInOut' });
   };
 
   const onGroupItemClose = useCallback(() => {
-    animate(mainX, 0, { ease: 'easeInOut' });
-    animate(subX, DRAWER_WIDTH, { ease: 'easeInOut', onComplete: () => setOpenedGroupIndex(-1) });
-  }, [ mainX, subX ]);
+    // animate(mainX, 0, { ease: 'easeInOut' });
+    // animate(subX, DRAWER_WIDTH, { ease: 'easeInOut', onComplete: () => setOpenedGroupIndex(-1) });
+  }, []);
 
   const isAuth = useIsAuth();
 
@@ -50,8 +52,8 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
         display="flex"
         flexDirection="column"
         flexGrow={ 1 }
-        as={ motion.div }
-        style={{ x: mainX }}
+        // as={ motion.div }
+        // style={{ x: mainX }}
         maxHeight={ openedGroupIndex > -1 ? '100vh' : 'unset' }
         overflowY={ openedGroupIndex > -1 ? 'hidden' : 'unset' }
       >
@@ -91,12 +93,12 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
       </Box>
       { openedGroupIndex >= 0 && (
         <Box
-          as={ motion.nav }
+          // as={ motion.nav }
           w="100%"
           mt={ 6 }
           position="absolute"
           top={ 0 }
-          style={{ x: subX }}
+          // style={{ x: subX }}
           key="sub"
         >
           <Flex alignItems="center" px={ 2 } py={ 2.5 } w="100%" h="50px" onClick={ onGroupItemClose } mb={ 1 }>

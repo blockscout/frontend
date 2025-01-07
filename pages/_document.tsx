@@ -1,4 +1,3 @@
-import { ColorModeScript } from '@chakra-ui/react';
 import type { DocumentContext } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
@@ -7,7 +6,6 @@ import logRequestFromBot from 'nextjs/utils/logRequestFromBot';
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
 import config from 'configs/app';
-import theme from 'theme/theme';
 import * as svgSprite from 'ui/shared/IconSvg';
 
 class MyDocument extends Document {
@@ -57,7 +55,6 @@ class MyDocument extends Document {
           <link rel="preload" as="image" href={ svgSprite.href }/>
         </Head>
         <body>
-          <ColorModeScript initialColorMode={ theme.config.initialColorMode }/>
           <Main/>
           <NextScript/>
         </body>

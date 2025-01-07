@@ -1,8 +1,9 @@
-import { InputGroup, Input, InputLeftElement, chakra, useColorModeValue, forwardRef, InputRightElement, Center } from '@chakra-ui/react';
+import { InputGroup, Input, InputLeftElement, chakra, InputRightElement, Center } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
+import { useColorModeValue } from 'chakra/components/color-mode';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ClearButton from 'ui/shared/ClearButton';
@@ -179,4 +180,4 @@ const SearchBarInput = (
   );
 };
 
-export default React.memo(forwardRef(SearchBarInput));
+export default React.memo(React.forwardRef(SearchBarInput));

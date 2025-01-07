@@ -1,6 +1,6 @@
-import { useBoolean } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
+import { useToggle } from '@uidotdev/usehooks';
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useMemo, useCallback } from 'react';
 import { useSignMessage } from 'wagmi';
@@ -13,6 +13,7 @@ import type {
   RewardsConfigResponse,
 } from 'types/api/rewards';
 
+import { toaster } from 'chakra/components/toaster';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
@@ -22,7 +23,6 @@ import * as cookies from 'lib/cookies';
 import decodeJWT from 'lib/decodeJWT';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import useToast from 'lib/hooks/useToast';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
 import useAccount from 'lib/web3/useAccount';
@@ -114,13 +114,12 @@ export function RewardsContextProvider({ children }: Props) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
-  const toast = useToast();
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const profileQuery = useProfileQuery();
 
-  const [ isLoginModalOpen, setIsLoginModalOpen ] = useBoolean(false);
-  const [ isInitialized, setIsInitialized ] = useBoolean(false);
+  const [ isLoginModalOpen, setIsLoginModalOpen ] = useToggle(false);
+  const [ isInitialized, setIsInitialized ] = useToggle(false);
   const [ apiToken, setApiToken ] = React.useState<string | undefined>();
 
   // Initialize state with the API token from cookies
@@ -131,7 +130,7 @@ export function RewardsContextProvider({ children }: Props) {
       if (registeredAddress === profileQuery.data?.address_hash) {
         setApiToken(token);
       }
-      setIsInitialized.on();
+      setIsInitialized(true);
     }
   }, [ setIsInitialized, profileQuery ]);
 
@@ -187,22 +186,18 @@ export function RewardsContextProvider({ children }: Props) {
       cookies.set(cookies.NAMES.REWARDS_REFERRAL_CODE, refCode);
       removeQueryParam(router, 'ref');
       if (!apiToken) {
-        setIsLoginModalOpen.on();
+        setIsLoginModalOpen(true);
       }
     }
   }, [ router, apiToken, isInitialized, setIsLoginModalOpen ]);
 
   const errorToast = useCallback((error: unknown) => {
     const apiError = getErrorObjPayload<{ message: string }>(error);
-    toast({
-      position: 'top-right',
+    toaster.error({
       title: 'Error',
       description: apiError?.message || getErrorMessage(error) || 'Something went wrong. Try again later.',
-      status: 'error',
-      variant: 'subtle',
-      isClosable: true,
     });
-  }, [ toast ]);
+  }, [ ]);
 
   // Login to the rewards program
   const login = useCallback(async(refCode: string) => {
@@ -254,6 +249,14 @@ export function RewardsContextProvider({ children }: Props) {
     }
   }, [ apiFetch, errorToast, fetchParams ]);
 
+  const openLoginModal = React.useCallback(() => {
+    setIsLoginModalOpen(true);
+  }, [ setIsLoginModalOpen ]);
+
+  const closeLoginModal = React.useCallback(() => {
+    setIsLoginModalOpen(false);
+  }, [ setIsLoginModalOpen ]);
+
   const value = useMemo(() => {
     if (!feature.isEnabled) {
       return initialState;
@@ -267,14 +270,15 @@ export function RewardsContextProvider({ children }: Props) {
       apiToken,
       isInitialized,
       isLoginModalOpen,
-      openLoginModal: setIsLoginModalOpen.on,
-      closeLoginModal: setIsLoginModalOpen.off,
+      openLoginModal,
+      closeLoginModal,
       login,
       claim,
     };
   }, [
-    isLoginModalOpen, setIsLoginModalOpen, balancesQuery, dailyRewardQuery, checkUserQuery,
+    balancesQuery, dailyRewardQuery, checkUserQuery,
     apiToken, login, claim, referralsQuery, rewardsConfigQuery, isInitialized,
+    isLoginModalOpen, openLoginModal, closeLoginModal,
   ]);
 
   return (
