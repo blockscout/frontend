@@ -2,10 +2,10 @@ import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';
 import { WagmiProvider } from 'wagmi';
 
-import { useColorMode } from 'chakra/components/color-mode';
-import colors from 'chakra/theme/foundations/colors';
-import { BODY_TYPEFACE } from 'chakra/theme/foundations/typography';
-import zIndex from 'chakra/theme/foundations/zIndex';
+import { useColorMode } from 'toolkit/chakra/color-mode';
+import colors from 'toolkit/theme/foundations/colors';
+import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
+import zIndex from 'toolkit/theme/foundations/zIndex';
 import config from 'configs/app';
 import currentChain from 'lib/web3/currentChain';
 import wagmiConfig from 'lib/web3/wagmiConfig';

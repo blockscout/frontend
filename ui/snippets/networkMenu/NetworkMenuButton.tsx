@@ -1,7 +1,7 @@
 import { Button, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import { useColorModeValue } from 'chakra/components/color-mode';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import IconSvg from 'ui/shared/IconSvg';
 

@@ -283,7 +283,6 @@ export default tseslint.config(
             '/types/',
             [ '/^nextjs/' ],
             [
-              '/^chakra/',
               '/^configs/',
               '/^data/',
               '/^deploy/',
@@ -295,6 +294,7 @@ export default tseslint.config(
               '/^playwright/',
               '/^stubs/',
               '/^theme/',
+              '/^toolkit/',
               '/^ui/',
             ],
             [ 'parent', 'sibling', 'index' ],

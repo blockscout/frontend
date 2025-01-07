@@ -1,7 +1,7 @@
 import { Button, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { toaster } from 'chakra/components/toaster';
+import { toaster } from 'toolkit/chakra/toaster';
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import useFetch from 'lib/hooks/useFetch';

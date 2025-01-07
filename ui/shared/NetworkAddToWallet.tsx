@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/react';
 import React from 'react';
 
-import { toaster } from 'chakra/components/toaster';
+import { toaster } from 'toolkit/chakra/toaster';
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 import useAddOrSwitchChain from 'lib/web3/useAddOrSwitchChain';

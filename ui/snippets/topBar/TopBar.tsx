@@ -1,7 +1,7 @@
 import { Flex, Divider, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { useColorModeValue } from 'chakra/components/color-mode';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import config from 'configs/app';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 

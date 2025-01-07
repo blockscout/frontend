@@ -1,7 +1,7 @@
 import { Box, Flex, Drawer, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
-import { useColorModeValue } from 'chakra/components/color-mode';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import config from 'configs/app';
 import IconSvg from 'ui/shared/IconSvg';
 import NavigationMobile from 'ui/snippets/navigation/mobile/NavigationMobile';

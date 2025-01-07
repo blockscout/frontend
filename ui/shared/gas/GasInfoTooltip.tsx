@@ -15,7 +15,7 @@ import type { HomeStats } from 'types/api/stats';
 
 import { route } from 'nextjs-routes';
 
-import { useColorModeValue } from 'chakra/components/color-mode';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import Popover from 'ui/shared/chakra/Popover';

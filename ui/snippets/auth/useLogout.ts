@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
-import { toaster } from 'chakra/components/toaster';
+import { toaster } from 'toolkit/chakra/toaster';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';

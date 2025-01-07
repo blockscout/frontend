@@ -1,9 +1,9 @@
 import { Heading, HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import { Button } from 'chakra/components/button';
-import { useColorMode } from 'chakra/components/color-mode';
-import { Switch } from 'chakra/components/switch';
+import { Button } from 'toolkit/chakra/button';
+import { useColorMode } from 'toolkit/chakra/color-mode';
+import { Switch } from 'toolkit/chakra/switch';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ChakraShowcases = () => {

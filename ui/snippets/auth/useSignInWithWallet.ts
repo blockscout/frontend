@@ -3,7 +3,7 @@ import { useSignMessage } from 'wagmi';
 
 import type { UserInfo } from 'types/api/account';
 
-import { toaster } from 'chakra/components/toaster';
+import { toaster } from 'toolkit/chakra/toaster';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';

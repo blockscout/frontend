@@ -3,13 +3,13 @@ import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import { Button } from 'chakra/components/button';
-import { toaster } from 'chakra/components/toaster';
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import { useRollbar } from 'lib/rollbar';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
 import PageTitle from 'ui/shared/Page/PageTitle';
 const Login = () => {
   const rollbar = useRollbar();

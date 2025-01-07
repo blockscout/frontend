@@ -15,7 +15,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import type { FontFace } from 'use-font-face-observer';
 import useFontFaceObserver from 'use-font-face-observer';
 
-import { BODY_TYPEFACE, HEADING_TYPEFACE } from 'chakra/theme/foundations/typography';
+import { BODY_TYPEFACE, HEADING_TYPEFACE } from 'toolkit/theme/foundations/typography';
 
 const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;

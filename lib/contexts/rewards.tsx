@@ -13,7 +13,7 @@ import type {
   RewardsConfigResponse,
 } from 'types/api/rewards';
 
-import { toaster } from 'chakra/components/toaster';
+import { toaster } from 'toolkit/chakra/toaster';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';

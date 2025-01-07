@@ -4,7 +4,7 @@ import debounce from 'lodash/debounce';
 import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
 
-import { BODY_TYPEFACE } from 'chakra/theme/foundations/typography';
+import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 
 interface Props {
   children: React.ReactNode;

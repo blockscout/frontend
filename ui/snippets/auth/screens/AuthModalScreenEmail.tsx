@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import type { EmailFormFields, Screen } from '../types';
 
-import { toaster } from 'chakra/components/toaster';
+import { toaster } from 'toolkit/chakra/toaster';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';

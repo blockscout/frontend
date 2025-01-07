@@ -7,8 +7,6 @@ import React from 'react';
 
 import type { NextPageWithLayout } from 'nextjs/types';
 
-import { Provider as ChakraProvider } from 'chakra/components/provider';
-import { Toaster } from 'chakra/components/toaster';
 import config from 'configs/app';
 import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
@@ -21,6 +19,8 @@ import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
 import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
 import { SocketProvider } from 'lib/socket/context';
+import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
+import { Toaster } from 'toolkit/chakra/toaster';
 import RewardsLoginModal from 'ui/rewards/login/RewardsLoginModal';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';

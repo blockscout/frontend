@@ -3,7 +3,7 @@ import throttle from 'lodash/throttle';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
-import { useColorModeValue } from 'chakra/components/color-mode';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ClearButton from 'ui/shared/ClearButton';

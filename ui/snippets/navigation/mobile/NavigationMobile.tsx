@@ -2,7 +2,7 @@ import { Box, Flex, Text, VStack } from '@chakra-ui/react';
 // import { animate, motion, useMotionValue } from 'framer-motion';
 import React, { useCallback } from 'react';
 
-import { useColorModeValue } from 'chakra/components/color-mode';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';

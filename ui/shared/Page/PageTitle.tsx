@@ -2,7 +2,7 @@ import { Heading, Flex, Link, chakra, Skeleton, useDisclosure } from '@chakra-ui
 import _debounce from 'lodash/debounce';
 import React from 'react';
 
-import { Tooltip } from 'chakra/components/tooltip';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
