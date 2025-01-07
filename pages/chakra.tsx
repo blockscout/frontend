@@ -1,9 +1,10 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import Chakra from 'ui/pages/Chakra';
+const Chakra = dynamic(() => import('ui/pages/Chakra'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

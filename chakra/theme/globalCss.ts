@@ -1,20 +1,20 @@
 import type { StyleFunctionProps, SystemStyleObject } from '@chakra-ui/theme-tools';
 import { mode } from '@chakra-ui/theme-tools';
 
-import scrollbar from './foundations/scrollbar';
+// TODO @tom2drum check address highlight feature
 import addressEntity from './globals/address-entity';
 import recaptcha from './globals/recaptcha';
-// import getDefaultTransitionProps from './utils/getDefaultTransitionProps';
+// TODO @tom2drum check custom scrollbar colors
+import scrollbar from './globals/scrollbar';
 
 const globalCss: Record<string, SystemStyleObject> = {
   body: {
-    // bg: mode('white', 'black')(props),
-    // ...getDefaultTransitionProps(),
+    bg: 'globals.body.bg',
     '-webkit-tap-highlight-color': 'transparent',
     'font-variant-ligatures': 'no-contextual',
   },
   mark: {
-    // bgColor: mode('green.100', 'green.800')(props),
+    bg: 'globals.mark.bg',
     color: 'inherit',
   },
   'svg *::selection': {

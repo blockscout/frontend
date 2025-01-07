@@ -27,6 +27,18 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
       },
     },
+    globals: {
+      body: {
+        bg: {
+          DEFAULT: { value: { base: '{colors.white}', _dark: '{colors.black}' } },
+        },
+      },
+      mark: {
+        bg: {
+          DEFAULT: { value: { base: '{colors.green.100}', _dark: '{colors.green.800}' } },
+        },
+      },
+    },
 
     // OLD TOKENS
     divider: {
