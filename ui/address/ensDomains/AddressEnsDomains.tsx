@@ -8,7 +8,6 @@ import {
   PopoverContent,
   PopoverTrigger,
   Show,
-  Skeleton,
   useDisclosure,
   chakra,
 } from '@chakra-ui/react';
@@ -23,6 +22,7 @@ import { route } from 'nextjs-routes';
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import Popover from 'ui/shared/chakra/Popover';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';

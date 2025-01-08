@@ -1,9 +1,10 @@
-import { Box, Skeleton } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import type { FC } from 'react';
 import React from 'react';
 
 import type { NovesResponseData } from 'types/api/noves';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import type { NovesFlowViewItem } from 'ui/tx/assetFlows/utils/generateFlowViewData';
 
 import Tag from '../chakra/Tag';

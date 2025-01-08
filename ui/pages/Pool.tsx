@@ -1,4 +1,4 @@
-import { Tag, Box, Flex, Image, Skeleton } from '@chakra-ui/react';
+import { Tag, Box, Flex, Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -13,6 +13,7 @@ import * as addressStubs from 'stubs/address';
 import { POOL } from 'stubs/pools';
 import PoolInfo from 'ui/pool/PoolInfo';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as PoolEntity from 'ui/shared/entities/pool/PoolEntity';

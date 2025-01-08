@@ -1,4 +1,4 @@
-import { Skeleton, Text, Flex } from '@chakra-ui/react';
+import { Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
@@ -6,6 +6,7 @@ import type { Address } from 'types/api/address';
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import * as mixpanel from 'lib/mixpanel/index';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 import { getTokensTotalInfo } from '../utils/tokenUtils';

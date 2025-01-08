@@ -1,4 +1,4 @@
-import { Text, Flex, Box, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Text, Flex, Box, useColorModeValue } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -6,6 +6,7 @@ import type { HomeStats } from 'types/api/stats';
 import type { ChainIndicatorId } from 'types/homepage';
 
 import type { ResourceError } from 'lib/api/resources';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 interface Props {
   id: ChainIndicatorId;

@@ -1,6 +1,7 @@
-import { FormControl, Input, InputGroup, InputRightElement, Skeleton, chakra } from '@chakra-ui/react';
+import { FormControl, Input, InputGroup, InputRightElement, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
 

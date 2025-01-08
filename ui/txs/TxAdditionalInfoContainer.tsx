@@ -1,7 +1,8 @@
-import { Box, Divider, Skeleton } from '@chakra-ui/react';
+import { Box, Divider } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TxAdditionalInfoContent from './TxAdditionalInfoContent';
