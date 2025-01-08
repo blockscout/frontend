@@ -25,6 +25,9 @@ const ChakraShowcases = () => {
             <Button visual="outline">Outline</Button>
             <Button visual="dropdown">Dropdown</Button>
             <Button visual="dropdown" selected>Dropdown selected</Button>
+            <Button visual="header">Header</Button>
+            <Button visual="header" selected>Header selected</Button>
+            <Button visual="header" selected highlighted>Header highlighted</Button>
           </HStack>
         </section>
 
@@ -43,7 +46,7 @@ const ChakraShowcases = () => {
             <Tooltip content="Tooltip content">
               <span>Default</span>
             </Tooltip>
-            <Tooltip content="Tooltip content" visual="navigation" selected open>
+            <Tooltip content="Tooltip content" visual="navigation">
               <span>Navigation</span>
             </Tooltip>
           </HStack>

@@ -28,8 +28,8 @@ export const recipe = defineRecipe({
         borderColor: 'button.outline.fg',
         _hover: {
           bg: 'transparent',
-          color: 'button.outline.hover',
-          borderColor: 'button.outline.hover',
+          color: 'blue.400',
+          borderColor: 'blue.400',
         },
       },
       dropdown: {
@@ -40,14 +40,14 @@ export const recipe = defineRecipe({
         borderColor: 'button.dropdown.border',
         _hover: {
           bg: 'transparent',
-          color: 'button.dropdown.hover',
-          borderColor: 'button.dropdown.hover',
+          color: 'blue.400',
+          borderColor: 'blue.400',
         },
         // When the dropdown is open, the button should be active
         _active: {
           bg: 'transparent',
-          color: 'button.dropdown.hover',
-          borderColor: 'button.dropdown.hover',
+          color: 'blue.400',
+          borderColor: 'blue.400',
         },
         // We have a special state for this button variant that serves as a popover trigger.
         // When any items (filters) are selected in the popover, the button should change its background and text color.
@@ -60,6 +60,38 @@ export const recipe = defineRecipe({
             bg: 'button.dropdown.border.selected',
             color: 'button.dropdown.fg.selected',
             borderColor: 'button.dropdown.border.selected',
+          },
+        },
+      },
+      header: {
+        bg: 'transparent',
+        color: 'button.header.fg',
+        borderColor: 'button.header.border',
+        borderWidth: '2px',
+        borderStyle: 'solid',
+        _hover: {
+          bg: 'transparent',
+          color: 'blue.400',
+          borderColor: 'blue.400',
+        },
+        _selected: {
+          bg: 'button.header.bg.selected',
+          color: 'button.header.fg.selected',
+          borderColor: 'transparent',
+          borderWidth: '0px',
+          _hover: {
+            bg: 'button.header.bg.selected',
+            color: 'button.header.fg.selected',
+          },
+          _highlighted: {
+            bg: 'button.header.bg.highlighted',
+            color: 'button.header.fg.highlighted',
+            borderColor: 'transparent',
+            borderWidth: '0px',
+            _hover: {
+              bg: 'button.header.bg.highlighted',
+              color: 'button.header.fg.highlighted',
+            },
           },
         },
       },

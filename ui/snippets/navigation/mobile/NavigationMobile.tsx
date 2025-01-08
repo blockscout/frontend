@@ -82,7 +82,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
             mt={ 3 }
             pt={ 3 }
             borderTopWidth="1px"
-            borderColor="divider"
+            borderColor="border.divider"
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">
               <NavLinkRewards onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>
@@ -119,7 +119,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
                     mb: 2,
                     pb: 2,
                     borderBottomWidth: '1px',
-                    borderColor: 'divider',
+                    borderColor: 'border.divider',
                   }}
                 >
                   { item.map(subItem => <NavLink key={ subItem.text } item={ subItem } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }

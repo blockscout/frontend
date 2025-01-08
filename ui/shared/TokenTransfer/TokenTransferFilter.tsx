@@ -45,7 +45,7 @@ const TokenTransferFilter = ({
             defaultValue={ defaultAddressFilter || 'all' }
             paddingBottom={ 4 }
             borderBottom="1px solid"
-            borderColor="divider"
+            borderColor="border.divider"
           >
             <Stack spacing={ 4 }>
               <Radio value="all"><Text fontSize="md">All</Text></Radio>

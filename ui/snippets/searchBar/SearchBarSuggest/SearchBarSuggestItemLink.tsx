@@ -16,7 +16,7 @@ const SearchBarSuggestItemLink = ({ onClick, href, target, children }: Props) =>
       display="flex"
       flexDir="column"
       rowGap={ 2 }
-      borderColor="divider"
+      borderColor="border.divider"
       borderBottomWidth="1px"
       _last={{
         borderBottomWidth: '0',

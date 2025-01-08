@@ -1,5 +1,6 @@
-import { useColorModeValue } from '@chakra-ui/react';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 
+// TODO @tom2drum remove this
 export default function useColors() {
   return {
     text: {
@@ -12,7 +13,7 @@ export default function useColors() {
       active: useColorModeValue('blue.50', 'gray.800'),
     },
     border: {
-      'default': 'divider',
+      'default': 'border.divider',
       active: useColorModeValue('blue.50', 'gray.800'),
     },
   };

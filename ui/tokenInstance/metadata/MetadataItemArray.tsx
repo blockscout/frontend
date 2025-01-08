@@ -27,7 +27,7 @@ const MetadataItemArray = ({ name, value, level }: Props) => {
         fontSize="sm"
         textAlign="left"
         _expanded={{
-          borderColor: 'divider',
+          borderColor: 'border.divider',
           borderBottomWidth: '1px',
         }}
       >
@@ -75,7 +75,7 @@ const MetadataItemArray = ({ name, value, level }: Props) => {
             <Flex
               key={ index }
               py={ 2 }
-              _notFirst={{ borderColor: 'divider', borderTopWidth: '1px' }}
+              _notFirst={{ borderColor: 'border.divider', borderTopWidth: '1px' }}
               flexDir="column"
               rowGap={ 2 }
             >

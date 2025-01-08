@@ -9,7 +9,7 @@ export const recipe = defineSlotRecipe({
       borderRadius: 'sm',
       fontWeight: '500',
       textStyle: 'sm',
-      boxShadow: 'md',
+      boxShadow: 'size.md',
       zIndex: 'tooltip',
       maxW: '320px',
       transformOrigin: 'var(--transform-origin)',

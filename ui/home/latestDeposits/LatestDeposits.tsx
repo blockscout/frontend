@@ -144,10 +144,10 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
     <Box
       width="100%"
       borderTop="1px solid"
-      borderColor="divider"
+      borderColor="border.divider"
       py={ 4 }
       px={{ base: 0, lg: 4 }}
-      _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
+      _last={{ borderBottom: '1px solid', borderColor: 'border.divider' }}
       fontSize="sm"
       lineHeight={ 5 }
     >

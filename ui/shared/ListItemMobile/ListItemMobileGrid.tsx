@@ -22,7 +22,7 @@ const Container = chakra(({ isAnimated, children, className }: ContainerProps) =
       gridTemplateColumns="86px auto"
       alignItems="start"
       paddingY={ 4 }
-      borderColor="divider"
+      borderColor="border.divider"
       borderTopWidth="1px"
       _last={{
         borderBottomWidth: '1px',

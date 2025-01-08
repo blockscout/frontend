@@ -1,5 +1,6 @@
 import { recipe as button } from './button.recipe';
 import { recipe as link } from './link.recipe';
+import { recipe as popover } from './popover.recipe';
 import { recipe as tooltip } from './tooltip.recipe';
 
 export const recipes = {
@@ -9,4 +10,5 @@ export const recipes = {
 
 export const slotRecipes = {
   tooltip,
+  popover,
 };

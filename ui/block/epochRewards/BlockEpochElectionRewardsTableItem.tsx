@@ -25,7 +25,7 @@ const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) =>
     decimals: data.token.decimals,
   });
 
-  const mainRowBorderColor = section.isOpen ? 'transparent' : 'divider';
+  const mainRowBorderColor = section.isOpen ? 'transparent' : 'border.divider';
 
   return (
     <>

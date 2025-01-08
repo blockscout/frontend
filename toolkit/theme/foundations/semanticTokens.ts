@@ -9,9 +9,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         fg: {
           DEFAULT: { value: { base: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
         },
-        hover: {
-          DEFAULT: { value: '{colors.blue.400}' },
-        },
       },
       dropdown: {
         fg: {
@@ -22,8 +19,19 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           DEFAULT: { value: { base: '{colors.gray.200}', _dark: '{colors.gray.600}' } },
           selected: { value: { base: '{colors.blue.50}', _dark: '{colors.gray.600}' } },
         },
-        hover: {
-          DEFAULT: { value: '{colors.blue.400}' },
+      },
+      header: {
+        fg: {
+          DEFAULT: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.gray.400}' } },
+          selected: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+          highlighted: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+        },
+        bg: {
+          selected: { value: { base: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.100}' } },
+          highlighted: { value: { base: '{colors.orange.100}', _dark: '{colors.orange.900}' } },
+        },
+        border: {
+          DEFAULT: { value: { base: '{colors.gray.300}', _dark: '{colors.gray.600}' } },
         },
       },
     },
@@ -39,6 +47,22 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         DEFAULT: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.gray.400}' } },
         hover: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.gray.400}' } },
       },
+      navigation: {
+        fg: {
+          DEFAULT: { value: { base: '{colors.gray.600}', _dark: '{colors.gray.400}' } },
+          selected: { value: { base: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
+          hover: { value: { base: '{colors.link.primary.hover}' } },
+          active: { value: { base: '{colors.link.primary.hover}' } },
+        },
+        bg: {
+          DEFAULT: { value: 'transparent' },
+          selected: { value: { base: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
+        },
+        border: {
+          DEFAULT: { value: '{colors.border.divider}' },
+          selected: { value: { base: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
+        },
+      },
     },
     tooltip: {
       DEFAULT: {
@@ -53,9 +77,18 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
       },
     },
+    popover: {
+      DEFAULT: {
+        bg: { value: { base: '{colors.white}', _dark: '{colors.gray.900}' } },
+        shadow: { value: { base: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.300}' } },
+      },
+    },
     text: {
       primary: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       secondary: { value: { base: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
+    },
+    border: {
+      divider: { value: { base: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.200}' } },
     },
     global: {
       body: {
@@ -68,7 +101,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
 
     // OLD TOKENS
-    divider: { value: { base: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.200}' } },
     // text: {
     //   DEFAULT: { value: '{colors.blackAlpha.800}' },
     //   _dark: { value: '{colors.whiteAlpha.800}' },
@@ -99,6 +131,14 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     dialog_bg: {
       DEFAULT: { value: '{colors.white}' },
       _dark: { value: '{colors.gray.900}' },
+    },
+  },
+  shadows: {
+    popover: {
+      DEFAULT: { value: {
+        base: '{shadows.size.2xl}',
+        _dark: '0px 15px 40px 0px rgba(0, 0, 0, 0.4), 0px 5px 10px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 1px rgba(0, 0, 0, 0.1)',
+      } },
     },
   },
 };

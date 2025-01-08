@@ -34,7 +34,7 @@ const GetGasButton = () => {
 
       return (
         <>
-          <Box h="1px" w="8px" bg="divider" mx={ 1 }/>
+          <Box h="1px" w="8px" bg="border.divider" mx={ 1 }/>
           <Link
             href={ href }
             display="flex"

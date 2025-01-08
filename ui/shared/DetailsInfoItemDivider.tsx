@@ -17,7 +17,7 @@ const DetailsInfoItemDivider = ({ className, id, colSpan }: Props) => {
       mt={{ base: 2, lg: 3 }}
       mb={{ base: 0, lg: 3 }}
       borderBottom="1px solid"
-      borderColor="divider"
+      borderColor="border.divider"
     />
   );
 };

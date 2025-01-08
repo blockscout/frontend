@@ -1,9 +1,10 @@
-import { Box, Image, useColorModeValue, Skeleton, chakra } from '@chakra-ui/react';
+import { Box, Image, Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

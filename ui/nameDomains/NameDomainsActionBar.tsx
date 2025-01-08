@@ -63,7 +63,7 @@ const NameDomainsActionBar = ({
     onProtocolsFilterChange([]);
   }, [ onProtocolsFilterChange ]);
 
-  const filterGroupDivider = <Box w="100%" borderBottomWidth="1px" borderBottomColor="divider" my={ 4 }/>;
+  const filterGroupDivider = <Box w="100%" borderBottomWidth="1px" borderBottomColor="border.divider" my={ 4 }/>;
 
   const appliedFiltersNum = filterValue.length + (protocolsData && protocolsData.length > 1 ? protocolsFilterValue.length : 0);
 

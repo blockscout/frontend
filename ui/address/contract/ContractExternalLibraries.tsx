@@ -84,7 +84,7 @@ const ContractExternalLibraries = ({ className, data, isLoading }: Props) => {
         Check the source code at the library address (if any) if you want to be sure in case if there is any library linked
       </Alert>
       <VStack
-        divider={ <StackDivider borderColor="divider"/> }
+        divider={ <StackDivider borderColor="border.divider"/> }
         spacing={ 2 }
         mt={ 4 }
         maxH={{ lg: '50vh' }}

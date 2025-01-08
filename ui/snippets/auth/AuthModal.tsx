@@ -1,4 +1,3 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -9,6 +8,7 @@ import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
+import { DialogBackdrop, DialogBody, DialogCloseTrigger, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';
@@ -18,6 +18,7 @@ import AuthModalScreenSelectMethod from './screens/AuthModalScreenSelectMethod';
 import AuthModalScreenSuccessEmail from './screens/AuthModalScreenSuccessEmail';
 import AuthModalScreenSuccessWallet from './screens/AuthModalScreenSuccessWallet';
 
+// TODO @tom2drum fix auth modal
 const feature = config.features.account;
 
 interface Props {
@@ -94,6 +95,10 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
     onClose(isSuccess);
   }, [ isSuccess, onClose ]);
 
+  const onModalOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    open && onClose();
+  }, [ onClose ]);
+
   const header = (() => {
     const currentStep = steps[steps.length - 1];
     switch (currentStep.type) {
@@ -163,10 +168,10 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   }
 
   return (
-    <Modal isOpen onClose={ onModalClose } size={{ base: 'full', lg: 'sm' }}>
-      <ModalOverlay/>
-      <ModalContent p={ 6 } maxW={{ lg: '400px' }}>
-        <ModalHeader fontWeight="500" textStyle="h3" mb={ 2 } display="flex" alignItems="center" columnGap={ 2 }>
+    <DialogRoot open onOpenChange={ onModalOpenChange } size={{ base: 'full', lg: 'sm' }}>
+      <DialogBackdrop/>
+      <DialogContent p={ 6 } maxW={{ lg: '400px' }}>
+        <DialogHeader fontWeight="500" textStyle="h3" mb={ 2 } display="flex" alignItems="center" columnGap={ 2 }>
           { steps.length > 1 && !steps[steps.length - 1].type.startsWith('success') && (
             <IconSvg
               name="arrows/east"
@@ -179,13 +184,13 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
             />
           ) }
           { header }
-        </ModalHeader>
-        <ModalCloseButton top={ 6 } right={ 6 } color="gray.400"/>
-        <ModalBody mb={ 0 }>
+        </DialogHeader>
+        <DialogCloseTrigger top={ 6 } right={ 6 } color="gray.400"/>
+        <DialogBody mb={ 0 }>
           { content }
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 

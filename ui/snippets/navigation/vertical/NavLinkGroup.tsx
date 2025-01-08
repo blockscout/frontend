@@ -90,7 +90,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
                     mb: 2,
                     pb: 2,
                     borderBottomWidth: '1px',
-                    borderColor: 'divider',
+                    borderColor: 'border.divider',
                   }}
                 >
                   { subItem.map(subSubItem => <NavLink key={ subSubItem.text } item={ subSubItem } isCollapsed={ false }/>) }

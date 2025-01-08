@@ -107,7 +107,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
       </Box>
       { isSignUp && isLoggedIntoAccountWithWallet && (
         <Box mb={ 6 }>
-          <Divider bgColor="divider" mb={ 6 }/>
+          <Divider bgColor="border.divider" mb={ 6 }/>
           <Flex w="full" alignItems="center" justifyContent="space-between">
             I have a referral code
             <Switch

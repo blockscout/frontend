@@ -44,7 +44,7 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
   return (
     <Box py={ 6 }>
       { !isMobile && (
-        <Box pb={ 4 } mb={ 5 } borderColor="divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
+        <Box pb={ 4 } mb={ 5 } borderColor="border.divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
           <TextAd/>
         </Box>
       ) }
@@ -57,7 +57,7 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
           key={ kw }
           py={ 3 }
           px={ 1 }
-          borderColor="divider"
+          borderColor="border.divider"
           borderBottomWidth="1px"
           _last={{
             borderBottomWidth: '0',

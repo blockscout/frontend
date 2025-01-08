@@ -1,4 +1,4 @@
-import { PopoverBody, PopoverContent, PopoverTrigger, useDisclosure, type ButtonProps } from '@chakra-ui/react';
+import { useDisclosure, type ButtonProps } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,7 +7,7 @@ import type { Screen } from 'ui/snippets/auth/types';
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel';
 import useAccount from 'lib/web3/useAccount';
-import Popover from 'ui/shared/chakra/Popover';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
@@ -16,14 +16,14 @@ import UserProfileContent from './UserProfileContent';
 
 interface Props {
   buttonSize?: ButtonProps['size'];
-  buttonVariant?: ButtonProps['variant'];
+  buttonVisual?: ButtonProps['visual'];
 }
 
 const initialScreen = {
   type: config.features.blockchainInteraction.isEnabled ? 'select_method' as const : 'email' as const,
 };
 
-const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
+const UserProfileDesktop = ({ buttonSize, buttonVisual = 'header' }: Props) => {
   const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>(initialScreen);
   const router = useRouter();
 
@@ -62,14 +62,22 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
     authModal.onClose();
   }, [ authModal ]);
 
+  const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    if (open) {
+      profileMenu.onOpen();
+    } else {
+      profileMenu.onClose();
+    }
+  }, [ profileMenu ]);
+
   return (
     <>
-      <Popover openDelay={ 300 } placement="bottom-end" isLazy isOpen={ profileMenu.isOpen } onClose={ profileMenu.onClose }>
+      <PopoverRoot positioning={{ placement: 'bottom-end' }} lazyMount open={ profileMenu.open } onOpenChange={ handleOpenChange }>
         <PopoverTrigger>
           <UserProfileButton
             profileQuery={ profileQuery }
             size={ buttonSize }
-            variant={ buttonVariant }
+            visual={ buttonVisual }
             onClick={ handleProfileButtonClick }
           />
         </PopoverTrigger>
@@ -86,8 +94,8 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
             </PopoverBody>
           </PopoverContent>
         ) }
-      </Popover>
-      { authModal.isOpen && (
+      </PopoverRoot>
+      { authModal.open && (
         <AuthModal
           onClose={ handleAuthModalClose }
           initialScreen={ authInitialScreen }

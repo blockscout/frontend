@@ -15,7 +15,7 @@ export default function useColors() {
       active: useColorModeValue('blue.50', 'whiteAlpha.100'),
     },
     border: {
-      'default': 'divider',
+      'default': 'border.divider',
       active: useColorModeValue('blue.50', 'whiteAlpha.100'),
     },
   };

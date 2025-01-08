@@ -14,6 +14,7 @@ interface Props {
   buttonVariant?: ButtonProps['variant'];
 }
 
+// TODO @tom2drum check this component
 const UserWalletDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   const walletMenu = useDisclosure();
 

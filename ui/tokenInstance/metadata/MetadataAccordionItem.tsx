@@ -19,7 +19,7 @@ const MetadataAccordionItem = ({ children, className, level, isFlat }: Props) =>
       pl={ isFlat ? 0 : 6 }
       columnGap={ 3 }
       borderTopWidth="1px"
-      borderColor="divider"
+      borderColor="border.divider"
       wordBreak="break-all"
       rowGap={ 1 }
       _last={{

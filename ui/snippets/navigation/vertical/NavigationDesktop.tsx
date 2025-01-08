@@ -49,7 +49,7 @@ const NavigationDesktop = () => {
   const chevronIconStyles = {
     bgColor: useColorModeValue('white', 'black'),
     color: useColorModeValue('blackAlpha.400', 'whiteAlpha.400'),
-    borderColor: 'divider',
+    borderColor: 'border.divider',
   };
 
   const isExpanded = isCollapsed === false;
@@ -62,7 +62,7 @@ const NavigationDesktop = () => {
       flexDirection="column"
       alignItems="stretch"
       borderRight="1px solid"
-      borderColor="divider"
+      borderColor="border.divider"
       px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}
       py={ 12 }
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
@@ -99,7 +99,7 @@ const NavigationDesktop = () => {
         </VStack>
       </Box>
       { isAuth && (
-        <Box as="nav" borderTopWidth="1px" borderColor="divider" w="100%" mt={ 3 } pt={ 3 }>
+        <Box as="nav" borderTopWidth="1px" borderColor="border.divider" w="100%" mt={ 3 } pt={ 3 }>
           <VStack as="ul" spacing="1" alignItems="flex-start">
             <NavLinkRewards isCollapsed={ isCollapsed }/>
             { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>) }

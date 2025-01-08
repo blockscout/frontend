@@ -30,7 +30,7 @@ const NeverShowInfoPlugin = () => {
 
 const SwaggerUI = () => {
   const mainColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
-  const borderColor = useToken('colors', 'divider');
+  const borderColor = useToken('colors', 'border.divider');
   const mainBgColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
 
   const swaggerStyle: SystemStyleObject = {

@@ -192,7 +192,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
   return (
     <Box mt={ 5 } mb={ 5 }>
       { !isMobile && (
-        <Box pb={ 4 } mb={ 5 } borderColor="divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
+        <Box pb={ 4 } mb={ 5 } borderColor="border.divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
           <TextAd/>
         </Box>
       ) }

@@ -29,7 +29,7 @@ const BlockEpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => 
     <Box
       py={ 3 }
       borderBottomWidth="1px"
-      borderColor="divider"
+      borderColor="border.divider"
       fontSize="sm"
       onClick={ isLoading || !data.count ? undefined : section.onToggle }
       cursor={ isLoading || !data.count ? undefined : 'pointer' }

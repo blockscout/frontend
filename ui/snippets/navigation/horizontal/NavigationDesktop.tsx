@@ -17,7 +17,7 @@ const NavigationDesktop = () => {
   const { mainNavItems } = useNavItems();
 
   return (
-    <Box borderColor="divider" borderBottomWidth="1px">
+    <Box borderColor="border.divider" borderBottomWidth="1px">
       <Flex
         display={{ base: 'none', lg: 'flex' }}
         alignItems="center"

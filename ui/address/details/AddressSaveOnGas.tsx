@@ -74,7 +74,7 @@ const AddressSaveOnGas = ({ gasUsed, address }: Props) => {
 
   return (
     <>
-      <TextSeparator color="divider"/>
+      <TextSeparator color="border.divider"/>
       <Skeleton isLoaded={ !query.isPlaceholderData } display="flex" alignItems="center" columnGap={ 2 }>
         <Image src="/static/gas_hawk_logo.svg" w="15px" h="20px" alt="GasHawk logo"/>
         <LinkExternal href="https://www.gashawk.io?utm_source=blockscout&utm_medium=address" fontSize="sm">

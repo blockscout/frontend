@@ -154,7 +154,7 @@ const Footer = () => {
   const containerProps: HTMLChakraProps<'div'> = {
     as: 'footer',
     borderTopWidth: '1px',
-    borderTopColor: 'divider',
+    borderTopColor: 'border.divider',
   };
 
   const contentProps: GridProps = {

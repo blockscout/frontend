@@ -14,6 +14,8 @@ type Props = {
   variant?: ButtonProps['variant'];
 };
 
+// TODO @tom2drum chekc this component
+
 const RewardsButton = ({ variant = 'header', size }: Props) => {
   const { isInitialized, apiToken, openLoginModal, dailyRewardQuery, balancesQuery } = useRewardsContext();
   const isMobile = useIsMobile();

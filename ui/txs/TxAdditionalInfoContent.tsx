@@ -18,7 +18,7 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
   const sectionProps = {
     borderBottom: '1px solid',
-    borderColor: 'divider',
+    borderColor: 'border.divider',
     paddingBottom: 4,
   };
 

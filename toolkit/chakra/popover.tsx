@@ -51,10 +51,33 @@ export const PopoverCloseTrigger = React.forwardRef<
   );
 });
 
+export const PopoverRoot = (props: ChakraPopover.RootProps) => {
+  const positioning = {
+    ...props.positioning,
+    offset: {
+      mainAxis: 4,
+      ...props.positioning?.offset,
+    },
+  };
+
+  return (
+    <ChakraPopover.Root
+      autoFocus={ false }
+      { ...props }
+      positioning={ positioning }
+    />
+  );
+};
+
+export const PopoverTrigger = React.forwardRef<
+  HTMLButtonElement,
+  ChakraPopover.TriggerProps
+>(function PopoverTrigger(props, ref) {
+  return <ChakraPopover.Trigger as="div" asChild ref={ ref } { ...props }/>;
+});
+
 export const PopoverTitle = ChakraPopover.Title;
 export const PopoverDescription = ChakraPopover.Description;
 export const PopoverFooter = ChakraPopover.Footer;
 export const PopoverHeader = ChakraPopover.Header;
-export const PopoverRoot = ChakraPopover.Root;
 export const PopoverBody = ChakraPopover.Body;
-export const PopoverTrigger = ChakraPopover.Trigger;

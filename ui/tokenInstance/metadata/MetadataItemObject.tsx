@@ -37,7 +37,7 @@ const MetadataItemObject = ({ name, value, level }: Props) => {
         fontSize="sm"
         textAlign="left"
         _expanded={{
-          borderColor: 'divider',
+          borderColor: 'border.divider',
           borderBottomWidth: '1px',
         }}
       >

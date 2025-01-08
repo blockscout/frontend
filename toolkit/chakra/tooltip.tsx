@@ -63,6 +63,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
       >
         <ChakraTooltip.Trigger
           ref={ triggerRef }
+          as="div"
           asChild
           onClick={ isMobile ? handleTriggerClick : undefined }
         >
