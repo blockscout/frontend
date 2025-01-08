@@ -9,13 +9,13 @@ import scrollbar from './globals/scrollbar';
 
 const globalCss: Record<string, SystemStyleObject> = {
   body: {
-    bg: 'globals.body.bg',
-    color: 'globals.body.fg',
+    bg: 'global.body.bg',
+    color: 'global.body.fg',
     '-webkit-tap-highlight-color': 'transparent',
     'font-variant-ligatures': 'no-contextual',
   },
   mark: {
-    bg: 'globals.mark.bg',
+    bg: 'global.mark.bg',
     color: 'inherit',
   },
   'svg *::selection': {

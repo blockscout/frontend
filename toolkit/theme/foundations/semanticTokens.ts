@@ -4,7 +4,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
   // TODO @tom2drum remove *_hover in favor of conditional selectors
   colors: {
     // NEW TOKENS
-    buttons: {
+    button: {
       outline: {
         fg: {
           DEFAULT: { value: { base: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
@@ -27,7 +27,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
       },
     },
-    links: {
+    link: {
       primary: {
         DEFAULT: { value: { base: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
         hover: { value: { base: '{colors.blue.400}' } },
@@ -40,11 +40,24 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         hover: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.gray.400}' } },
       },
     },
+    tooltip: {
+      DEFAULT: {
+        bg: { value: { base: '{colors.gray.700}', _dark: '{colors.gray.200}' } },
+        fg: { value: { base: '{colors.white}', _dark: '{colors.black}' } },
+      },
+      navigation: {
+        bg: { value: { base: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
+        fg: {
+          DEFAULT: { value: '{colors.blue.400}' },
+          selected: { value: { base: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
+        },
+      },
+    },
     text: {
       primary: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       secondary: { value: { base: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
     },
-    globals: {
+    global: {
       body: {
         bg: { value: { base: '{colors.white}', _dark: '{colors.black}' } },
         fg: { value: '{colors.text.primary}' },
@@ -64,10 +77,10 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       DEFAULT: { value: '{colors.gray.500}' },
       _dark: { value: '{colors.gray.400}' },
     },
-    link: {
-      DEFAULT: { value: '{colors.blue.600}' },
-      _dark: { value: '{colors.blue.300}' },
-    },
+    // link: {
+    //   DEFAULT: { value: '{colors.blue.600}' },
+    //   _dark: { value: '{colors.blue.300}' },
+    // },
     link_hovered: {
       DEFAULT: { value: '{colors.blue.400}' },
     },

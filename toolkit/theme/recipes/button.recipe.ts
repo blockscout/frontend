@@ -24,42 +24,42 @@ export const recipe = defineRecipe({
         borderWidth: '2px',
         borderStyle: 'solid',
         bg: 'transparent',
-        color: 'buttons.outline.fg',
-        borderColor: 'buttons.outline.fg',
+        color: 'button.outline.fg',
+        borderColor: 'button.outline.fg',
         _hover: {
           bg: 'transparent',
-          color: 'buttons.outline.hover',
-          borderColor: 'buttons.outline.hover',
+          color: 'button.outline.hover',
+          borderColor: 'button.outline.hover',
         },
       },
       dropdown: {
         borderWidth: '2px',
         borderStyle: 'solid',
         bg: 'transparent',
-        color: 'buttons.dropdown.fg',
-        borderColor: 'buttons.dropdown.border',
+        color: 'button.dropdown.fg',
+        borderColor: 'button.dropdown.border',
         _hover: {
           bg: 'transparent',
-          color: 'buttons.dropdown.hover',
-          borderColor: 'buttons.dropdown.hover',
+          color: 'button.dropdown.hover',
+          borderColor: 'button.dropdown.hover',
         },
         // When the dropdown is open, the button should be active
         _active: {
           bg: 'transparent',
-          color: 'buttons.dropdown.hover',
-          borderColor: 'buttons.dropdown.hover',
+          color: 'button.dropdown.hover',
+          borderColor: 'button.dropdown.hover',
         },
         // We have a special state for this button variant that serves as a popover trigger.
         // When any items (filters) are selected in the popover, the button should change its background and text color.
         // The last CSS selector is for redefining styles for the TabList component.
         _selected: {
-          bg: 'buttons.dropdown.border.selected',
-          color: 'buttons.dropdown.fg.selected',
-          borderColor: 'buttons.dropdown.border.selected',
+          bg: 'button.dropdown.border.selected',
+          color: 'button.dropdown.fg.selected',
+          borderColor: 'button.dropdown.border.selected',
           _hover: {
-            bg: 'buttons.dropdown.border.selected',
-            color: 'buttons.dropdown.fg.selected',
-            borderColor: 'buttons.dropdown.border.selected',
+            bg: 'button.dropdown.border.selected',
+            color: 'button.dropdown.fg.selected',
+            borderColor: 'button.dropdown.border.selected',
           },
         },
       },

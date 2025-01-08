@@ -4,24 +4,24 @@ export const recipe = defineRecipe({
   variants: {
     visual: {
       primary: {
-        color: 'links.primary',
+        color: 'link.primary',
         _hover: {
           textDecoration: 'none',
-          color: 'links.primary.hover',
+          color: 'link.primary.hover',
         },
       },
       secondary: {
-        color: 'links.secondary',
+        color: 'link.secondary',
         _hover: {
           textDecoration: 'none',
-          color: 'links.primary.hover',
+          color: 'link.primary.hover',
         },
       },
       subtle: {
-        color: 'links.subtle',
+        color: 'link.subtle',
         _hover: {
-          color: 'links.subtle.hover',
-          textDecorationColor: 'links.subtle.hover',
+          color: 'link.subtle.hover',
+          textDecorationColor: 'link.subtle.hover',
         },
       },
     },

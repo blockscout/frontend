@@ -5,6 +5,7 @@ import * as React from 'react';
 import useIsMobile from 'lib/hooks/useIsMobile';
 
 export interface TooltipProps extends ChakraTooltip.RootProps {
+  selected?: boolean;
   showArrow?: boolean;
   portalled?: boolean;
   portalRef?: React.RefObject<HTMLElement>;
@@ -17,6 +18,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
   function Tooltip(props, ref) {
     const {
       showArrow = true,
+      selected,
       children,
       disabled,
       portalled,
@@ -36,7 +38,6 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     }, []);
 
     const handleTriggerClick = React.useCallback(() => {
-      // FIXME on mobile tooltip will open and close simultaneously
       setOpen((prev) => !prev);
     }, [ ]);
 
@@ -55,10 +56,10 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         openDelay={ 100 }
         closeDelay={ 100 }
         open={ open }
-        onOpenChange={ handleOpenChange }
+        onOpenChange={ isMobile ? undefined : handleOpenChange }
+        closeOnClick={ false }
         { ...rest }
         positioning={ positioning }
-        closeOnClick={ false }
       >
         <ChakraTooltip.Trigger
           ref={ triggerRef }
@@ -69,7 +70,11 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         </ChakraTooltip.Trigger>
         <Portal disabled={ !portalled } container={ portalRef }>
           <ChakraTooltip.Positioner>
-            <ChakraTooltip.Content ref={ ref } p={ 2 } { ...contentProps }>
+            <ChakraTooltip.Content
+              ref={ ref }
+              { ...(selected ? { 'data-selected': true } : {}) }
+              { ...contentProps }
+            >
               { showArrow && (
                 <ChakraTooltip.Arrow>
                   <ChakraTooltip.ArrowTip/>

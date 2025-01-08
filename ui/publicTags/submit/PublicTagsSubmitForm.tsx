@@ -112,7 +112,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
 
           <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4" mt={{ base: 3, lg: 5 }}>
             Public tags/labels
-            <Hint label="Submit a public tag proposal for our moderation team to review" ml={ 1 } color="link"/>
+            <Hint label="Submit a public tag proposal for our moderation team to review" ml={ 1 } color="link.primary"/>
           </GridItem>
           <PublicTagsSubmitFieldAddresses/>
           <PublicTagsSubmitFieldTags tagTypes={ config?.tagTypes }/>

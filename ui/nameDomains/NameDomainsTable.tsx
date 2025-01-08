@@ -33,7 +33,7 @@ const NameDomainsTable = ({ data, isLoading, sort, onSortToggle }: Props) => {
                   name="arrows/east"
                   boxSize={ 4 }
                   transform={ sortIconTransform }
-                  color="link"
+                  color="link.primary"
                   position="absolute"
                   left={ -5 }
                   top={ 0 }

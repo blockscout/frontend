@@ -4,6 +4,7 @@ import React from 'react';
 import { Button } from 'toolkit/chakra/button';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Switch } from 'toolkit/chakra/switch';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ChakraShowcases = () => {
@@ -19,7 +20,7 @@ const ChakraShowcases = () => {
       <VStack align="flex-start" gap={ 6 }>
         <section>
           <Heading textStyle="heading.md" mb={ 2 }>Buttons</Heading>
-          <HStack gap={ 4 }>
+          <HStack gap={ 4 } flexWrap="wrap">
             <Button>Solid</Button>
             <Button visual="outline">Outline</Button>
             <Button visual="dropdown">Dropdown</Button>
@@ -33,6 +34,18 @@ const ChakraShowcases = () => {
             <Link>Primary</Link>
             <Link visual="secondary">Secondary</Link>
             <Link visual="subtle">Subtle</Link>
+          </HStack>
+        </section>
+
+        <section>
+          <Heading textStyle="heading.md" mb={ 2 }>Tooltips</Heading>
+          <HStack gap={ 4 }>
+            <Tooltip content="Tooltip content">
+              <span>Default</span>
+            </Tooltip>
+            <Tooltip content="Tooltip content" visual="navigation" selected open>
+              <span>Navigation</span>
+            </Tooltip>
           </HStack>
         </section>
       </VStack>

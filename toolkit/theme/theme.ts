@@ -12,13 +12,14 @@ import shadows from './foundations/shadows';
 import { fonts, textStyles } from './foundations/typography';
 import zIndex from './foundations/zIndex';
 import globalCss from './globalCss';
-import * as recipes from './recipes';
+import { recipes, slotRecipes } from './recipes';
 
 const customConfig = defineConfig({
   globalCss,
   theme: {
     breakpoints,
     recipes,
+    slotRecipes,
     semanticTokens,
     textStyles,
     tokens: {
