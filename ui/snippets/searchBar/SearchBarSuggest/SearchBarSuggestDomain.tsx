@@ -49,7 +49,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: I
   if (isMobile) {
     return (
       <>
-        <Flex alignItems="center" overflow="hidden" gap={ 2 }>
+        <Flex alignItems="center" overflow="hidden">
           { icon }
           { name }
         </Flex>
@@ -64,7 +64,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: I
 
   return (
     <Grid alignItems="center" gridTemplateColumns="228px minmax(auto, max-content) auto" gap={ 2 }>
-      <Flex alignItems="center" gap={ 2 }>
+      <Flex alignItems="center">
         { icon }
         { name }
       </Flex>
