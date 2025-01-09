@@ -1,13 +1,15 @@
-import { CircularProgress, chakra, useColorModeValue } from '@chakra-ui/react';
+import type { ProgressCircle } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import dayjs from 'lib/date/dayjs';
+import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
 
 interface Props {
   startTime: number;
   duration: number;
   className?: string;
-  size?: number;
+  size?: ProgressCircle.RootProps['size'];
 }
 
 const getValue = (startDate: dayjs.Dayjs, duration: number) => {
@@ -22,9 +24,8 @@ const getValue = (startDate: dayjs.Dayjs, duration: number) => {
   return value;
 };
 
-const GasInfoUpdateTimer = ({ startTime, duration, className, size = 4 }: Props) => {
+const GasInfoUpdateTimer = ({ startTime, duration, className, size = 'sm' }: Props) => {
   const [ value, setValue ] = React.useState(getValue(dayjs(startTime), duration));
-  const trackColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
 
   React.useEffect(() => {
     const startDate = dayjs(startTime);
@@ -42,7 +43,15 @@ const GasInfoUpdateTimer = ({ startTime, duration, className, size = 4 }: Props)
     };
   }, [ startTime, duration ]);
 
-  return <CircularProgress className={ className } value={ value } trackColor={ trackColor } size={ size }/>;
+  return (
+    <ProgressCircleRoot
+      className={ className }
+      value={ value }
+      size={ size }
+    >
+      <ProgressCircleRing/>
+    </ProgressCircleRoot>
+  );
 };
 
 export default React.memo(chakra(GasInfoUpdateTimer));

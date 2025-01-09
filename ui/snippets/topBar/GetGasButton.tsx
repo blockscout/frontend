@@ -39,8 +39,7 @@ const GetGasButton = () => {
             href={ href }
             display="flex"
             alignItems="center"
-            fontSize="xs"
-            lineHeight={ 5 }
+            textStyle="xs"
             onClick={ onGetGasClick }
           >
             { getGasFeature.logoUrl && (

@@ -46,7 +46,7 @@ export const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(
 
 export const Skeleton = React.forwardRef<HTMLDivElement, ChakraSkeletonProps>(
   function Skeleton(props, ref) {
-    const { loading = false, variant = 'shine', ...rest } = props;
-    return <ChakraSkeleton loading={ loading } variant={ variant } { ...rest } ref={ ref }/>;
+    const { loading = false, ...rest } = props;
+    return <ChakraSkeleton loading={ loading } { ...rest } ref={ ref }/>;
   },
 );

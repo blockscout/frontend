@@ -3,6 +3,7 @@ import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 // TODO @tom2drum migrate this to the new recipe system
 // import components from './components/index';
 // import config from './config';
+import { keyframes } from './foundations/animations';
 import * as borders from './foundations/borders';
 import breakpoints from './foundations/breakpoints';
 import colors from './foundations/colors';
@@ -18,6 +19,7 @@ const customConfig = defineConfig({
   globalCss,
   theme: {
     breakpoints,
+    keyframes,
     recipes,
     slotRecipes,
     semanticTokens,

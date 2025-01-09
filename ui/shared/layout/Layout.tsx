@@ -13,7 +13,7 @@ import * as Layout from './components';
 const LayoutDefault = ({ children }: Props) => {
   return (
     <Layout.Container>
-      { /* <Layout.TopRow/> */ }
+      <Layout.TopRow/>
       <Layout.NavBar/>
       { /* <HeaderMobile/> */ }
       <Layout.MainArea>

@@ -1,8 +1,8 @@
-import { Flex, Divider, Box } from '@chakra-ui/react';
+import { Flex, Separator, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import config from 'configs/app';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
 import DeFiDropdown from './DeFiDropdown';
@@ -25,19 +25,19 @@ const TopBar = () => {
       >
         <TopBarStats/>
         <Flex alignItems="center">
-          { config.features.deFiDropdown.isEnabled && (
+          { /* { config.features.deFiDropdown.isEnabled && (
             <>
               <DeFiDropdown/>
-              <Divider mr={ 3 } ml={{ base: 2, sm: 3 }} height={ 4 } orientation="vertical"/>
+              <Separator mr={ 3 } ml={{ base: 2, sm: 3 }} height={ 4 } orientation="vertical"/>
             </>
-          ) }
-          <Settings/>
-          { config.UI.navigation.layout === 'horizontal' && Boolean(config.UI.navigation.featuredNetworks) && (
+          ) } */ }
+          { /* <Settings/> */ }
+          { /* { config.UI.navigation.layout === 'horizontal' && Boolean(config.UI.navigation.featuredNetworks) && (
             <Box display={{ base: 'none', lg: 'flex' }}>
-              <Divider mx={ 3 } height={ 4 } orientation="vertical"/>
+              <Separator mx={ 3 } height={ 4 } orientation="vertical"/>
               <NetworkMenu/>
             </Box>
-          ) }
+          ) } */ }
         </Flex>
       </Flex>
     </Box>

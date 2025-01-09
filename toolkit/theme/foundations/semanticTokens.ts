@@ -83,6 +83,17 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         shadow: { value: { base: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.300}' } },
       },
     },
+    progressCircle: {
+      trackColor: {
+        DEFAULT: { value: { base: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.100}' } },
+      },
+    },
+    skeleton: {
+      bg: {
+        start: { value: { base: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.50}' } },
+        end: { value: { base: '{colors.blackAlpha.100}', _dark: '{colors.whiteAlpha.100}' } },
+      },
+    },
     text: {
       primary: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       secondary: { value: { base: '{colors.gray.500}', _dark: '{colors.gray.400}' } },

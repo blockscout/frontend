@@ -3,8 +3,11 @@ import React from 'react';
 
 import { Button } from 'toolkit/chakra/button';
 import { useColorMode } from 'toolkit/chakra/color-mode';
+import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import ContentLoader from 'ui/shared/ContentLoader';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ChakraShowcases = () => {
@@ -49,6 +52,29 @@ const ChakraShowcases = () => {
             <Tooltip content="Tooltip content" visual="navigation">
               <span>Navigation</span>
             </Tooltip>
+          </HStack>
+        </section>
+
+        <section>
+          <Heading textStyle="heading.md" mb={ 2 }>Progress Circle</Heading>
+          <HStack gap={ 4 }>
+            <ProgressCircleRoot
+              value={ 45 }
+              colorPalette="blue"
+            >
+              <ProgressCircleRing/>
+            </ProgressCircleRoot>
+          </HStack>
+        </section>
+
+        { /* TODO @tom2drum check skeleton styles */ }
+        <section>
+          <Heading textStyle="heading.md" mb={ 2 }>Skeleton & Loaders</Heading>
+          <HStack gap={ 4 }>
+            <Skeleton loading>
+              <span>Skeleton</span>
+            </Skeleton>
+            <ContentLoader/>
           </HStack>
         </section>
       </VStack>

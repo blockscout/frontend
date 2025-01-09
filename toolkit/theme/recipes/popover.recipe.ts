@@ -1,7 +1,6 @@
 import { defineSlotRecipe } from '@chakra-ui/react';
 
 export const recipe = defineSlotRecipe({
-  className: 'chakra-popover',
   slots: [ 'content', 'header', 'body', 'footer', 'arrow', 'arrowTip' ],
   base: {
     content: {

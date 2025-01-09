@@ -18,8 +18,7 @@ const ContentLoader = ({ className, text }: Props) => {
           position: 'absolute',
           width: '60px',
           height: '6px',
-          // TODO @tom2drum check this animation
-          animation: `slide-from-left-full 700ms ease-in-out infinite alternate`,
+          animation: `fromLeftToRight 700ms ease-in-out infinite alternate`,
           left: '100%',
           top: 0,
           backgroundColor: 'blue.300',
