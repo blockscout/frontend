@@ -384,7 +384,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           <>
             <Td fontSize="sm">
               <EnsEntity.Container>
-                <EnsEntity.Icon/>
+                <EnsEntity.Icon protocol={ data.ens_info.protocol }/>
                 <LinkInternal
                   href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
                   fontWeight={ 700 }

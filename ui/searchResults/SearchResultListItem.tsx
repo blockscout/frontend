@@ -265,7 +265,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'ens_domain': {
         return (
           <EnsEntity.Container>
-            <EnsEntity.Icon/>
+            <EnsEntity.Icon protocol={ data.ens_info.protocol }/>
             <LinkInternal
               href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
               fontWeight={ 700 }
