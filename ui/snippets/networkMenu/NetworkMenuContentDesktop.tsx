@@ -1,7 +1,9 @@
-import { PopoverContent, PopoverBody, Tabs, TabList, TabPanels, TabPanel, Tab, VStack, Skeleton, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Tabs, VStack, Skeleton, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FeaturedNetwork, NetworkGroup } from 'types/networks';
+
+import { PopoverBody, PopoverContent } from 'toolkit/chakra/popover';
 
 import NetworkMenuLink from './NetworkMenuLink';
 
@@ -12,20 +14,18 @@ interface Props {
 
 const NetworkMenuPopup = ({ items, tabs }: Props) => {
   const selectedNetwork = items?.find(({ isActive }) => isActive);
-  const defaultTab = tabs.findIndex((tab) => selectedNetwork?.group === tab);
+  const defaultTab = tabs.find((tab) => selectedNetwork?.group === tab);
 
-  const [ tabIndex, setTabIndex ] = React.useState(defaultTab > -1 ? defaultTab : 0);
+  const [ value, setValue ] = React.useState<NetworkGroup>(defaultTab ?? 'Mainnets');
 
-  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-
-  const handleTabChange = React.useCallback((index: number) => {
-    setTabIndex(index);
+  const handleTabChange = React.useCallback(({ value }: { value: string }) => {
+    setValue(value as NetworkGroup);
   }, []);
 
   const content = !items || items.length === 0 ? (
     <>
       <Flex alignItems="center">
-        <Flex h="32px" w="105px" bgColor={ bgColor } borderRadius="base" px={ 4 } py={ 2 }>
+        <Flex h="32px" w="105px" bgColor={{ base: 'blackAlpha.50', _dark: 'whiteAlpha.50' }} borderRadius="base" px={ 4 } py={ 2 }>
           <Skeleton h="16px" w="100%"/>
         </Flex>
         <Skeleton h="16px" w="68px" mx={ 4 }/>
@@ -47,27 +47,30 @@ const NetworkMenuPopup = ({ items, tabs }: Props) => {
       </Flex>
     </>
   ) : (
-    <Tabs
-      variant="outline"
-      colorScheme="gray"
+    <Tabs.Root
+      variant="secondary"
       size="sm"
-      isLazy
-      index={ tabIndex }
-      onChange={ handleTabChange }
+      lazyMount
+      value={ value }
+      onValueChange={ handleTabChange }
     >
       { tabs.length > 1 && (
-        <TabList columnGap={ 2 }>
-          { tabs.map((tab, index) => (
-            <Tab key={ tab } textTransform="capitalize" { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
+        <Tabs.List columnGap={ 2 } mb={ 4 }>
+          { tabs.map((tab) => (
+            <Tabs.Trigger
+              key={ tab }
+              textTransform="capitalize"
+              value={ tab }
+            >
               { tab }
-            </Tab>
+            </Tabs.Trigger>
           )) }
-        </TabList>
+        </Tabs.List>
       ) }
-      <TabPanels mt={ 3 }>
+      <Box>
         { tabs.map((tab) => (
-          <TabPanel key={ tab } p={ 0 }>
-            <VStack as="ul" spacing={ 1 } alignItems="stretch" mt={ 4 } maxH="516px" overflowY="scroll">
+          <Tabs.Content key={ tab } value={ tab } p={ 0 }>
+            <VStack as="ul" gap={ 1 } alignItems="stretch" maxH="516px" overflowY="scroll">
               { items
                 .filter((network) => network.group === tab)
                 .map((network) => (
@@ -77,10 +80,10 @@ const NetworkMenuPopup = ({ items, tabs }: Props) => {
                   />
                 )) }
             </VStack>
-          </TabPanel>
+          </Tabs.Content>
         )) }
-      </TabPanels>
-    </Tabs>
+      </Box>
+    </Tabs.Root>
   );
 
   return (

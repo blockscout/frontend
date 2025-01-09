@@ -10,23 +10,32 @@ import type { ResourceError } from 'lib/api/resources';
 import useFetch from 'lib/hooks/useFetch';
 
 export default function useNetworkMenu() {
-  const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
+  const { open, onClose, onOpen, onToggle } = useDisclosure();
 
   const fetch = useFetch();
   const { isPending, data } = useQuery<unknown, ResourceError<unknown>, Array<FeaturedNetwork>>({
     queryKey: [ 'featured-network' ],
     queryFn: async() => fetch(config.UI.navigation.featuredNetworks || '', undefined, { resource: 'featured-network' }),
-    enabled: Boolean(config.UI.navigation.featuredNetworks) && isOpen,
+    enabled: Boolean(config.UI.navigation.featuredNetworks) && open,
     staleTime: Infinity,
   });
 
+  const onOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    if (open) {
+      onOpen();
+    } else {
+      onClose();
+    }
+  }, [ onOpen, onClose ]);
+
   return React.useMemo(() => ({
-    isOpen,
+    open,
     onClose,
     onOpen,
     onToggle,
+    onOpenChange,
     isPending,
     data,
     availableTabs: NETWORK_GROUPS.filter((tab) => data?.some(({ group }) => group === tab)),
-  }), [ isOpen, onClose, onOpen, onToggle, data, isPending ]);
+  }), [ open, onClose, onOpen, onToggle, onOpenChange, data, isPending ]);
 }

@@ -95,6 +95,14 @@ export const recipe = defineRecipe({
           },
         },
       },
+      plain: {
+        bg: 'transparent',
+        color: 'inherit',
+        border: 'none',
+        _hover: {
+          bg: 'transparent',
+        },
+      },
     },
     size: {
       xs: { px: 2, h: 6, fontSize: '12px' },

@@ -1,4 +1,4 @@
-import { Heading, HStack, Link, VStack } from '@chakra-ui/react';
+import { Heading, HStack, Link, Tabs, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { Button } from 'toolkit/chakra/button';
@@ -67,7 +67,6 @@ const ChakraShowcases = () => {
           </HStack>
         </section>
 
-        { /* TODO @tom2drum check skeleton styles */ }
         <section>
           <Heading textStyle="heading.md" mb={ 2 }>Skeleton & Loaders</Heading>
           <HStack gap={ 4 }>
@@ -75,6 +74,28 @@ const ChakraShowcases = () => {
               <span>Skeleton</span>
             </Skeleton>
             <ContentLoader/>
+          </HStack>
+        </section>
+
+        <section>
+          <Heading textStyle="heading.md" mb={ 2 }>Tabs</Heading>
+          <HStack gap={ 4 }>
+            <Tabs.Root defaultValue="tab1" variant="solid">
+              <Tabs.List>
+                <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+                <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+              </Tabs.List>
+              <Tabs.Content value="tab1">Content 1</Tabs.Content>
+              <Tabs.Content value="tab2">Content 2</Tabs.Content>
+            </Tabs.Root>
+            <Tabs.Root defaultValue="tab1" variant="secondary" size="sm">
+              <Tabs.List>
+                <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+                <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+              </Tabs.List>
+              <Tabs.Content value="tab1">Content 1</Tabs.Content>
+              <Tabs.Content value="tab2">Content 2</Tabs.Content>
+            </Tabs.Root>
           </HStack>
         </section>
       </VStack>

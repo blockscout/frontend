@@ -94,6 +94,29 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         end: { value: { base: '{colors.blackAlpha.100}', _dark: '{colors.whiteAlpha.100}' } },
       },
     },
+    tabs: {
+      solid: {
+        fg: {
+          DEFAULT: { value: { base: '{colors.blue.700}', _dark: '{colors.gray.400}' } },
+          selected: { value: { base: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
+        },
+        bg: {
+          selected: { value: { base: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
+        },
+      },
+      secondary: {
+        fg: {
+          DEFAULT: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+          selected: { value: { base: '{colors.blue.600}', _dark: '{colors.gray.50}' } },
+        },
+        bg: {
+          selected: { value: { base: '{colors.blue.50}', _dark: '{colors.gray.600}' } },
+        },
+        border: {
+          DEFAULT: { value: { base: '{colors.gray.200}', _dark: '{colors.gray.600}' } },
+        },
+      },
+    },
     text: {
       primary: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       secondary: { value: { base: '{colors.gray.500}', _dark: '{colors.gray.400}' } },

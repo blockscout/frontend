@@ -1,7 +1,7 @@
-import { IconButton, PopoverTrigger } from '@chakra-ui/react';
 import React from 'react';
 
-import Popover from 'ui/shared/chakra/Popover';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkMenuContentDesktop from 'ui/snippets/networkMenu/NetworkMenuContentDesktop';
 import useNetworkMenu from 'ui/snippets/networkMenu/useNetworkMenu';
@@ -10,21 +10,26 @@ const NetworkMenu = () => {
   const menu = useNetworkMenu();
 
   return (
-    <Popover placement="bottom-start" trigger="click" isLazy isOpen={ menu.isOpen } onClose={ menu.onClose }>
+    <PopoverRoot
+      positioning={{ placement: 'bottom-start' }}
+      lazyMount
+      open={ menu.open }
+      onOpenChange={ menu.onOpenChange }
+    >
       <PopoverTrigger>
         <IconButton
-          variant="simple"
-          colorScheme="blue"
+          visual="plain"
+          color="link.primary"
+          _hover={{ color: 'link.primary.hover' }}
           aria-label="Network menu"
-          icon={ <IconSvg name="networks" boxSize={ 4 }/> }
-          p="1px"
-          boxSize={ 4 }
           borderRadius="none"
           onClick={ menu.onToggle }
-        />
+        >
+          <IconSvg name="networks" boxSize={ 4 } p="1px"/>
+        </IconButton>
       </PopoverTrigger>
       <NetworkMenuContentDesktop items={ menu.data } tabs={ menu.availableTabs }/>
-    </Popover>
+    </PopoverRoot>
   );
 };
 

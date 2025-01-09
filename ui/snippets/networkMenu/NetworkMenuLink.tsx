@@ -1,11 +1,10 @@
-import { Box, Flex, Text, Image, useColorModeValue } from '@chakra-ui/react';
+import { Box, Text, Image, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FeaturedNetwork } from 'types/networks';
 
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import IconSvg from 'ui/shared/IconSvg';
-
-import useColors from './useColors';
 
 interface Props extends FeaturedNetwork {
   isActive?: boolean;
@@ -13,7 +12,6 @@ interface Props extends FeaturedNetwork {
 }
 
 const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDarkMode }: Props) => {
-  const colors = useColors();
   const darkModeFilter = { filter: 'brightness(0) invert(1)' };
   const style = useColorModeValue({}, invertIconInDarkMode ? darkModeFilter : {});
 
@@ -23,14 +21,14 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
     <IconSvg
       name="networks/icon-placeholder"
       boxSize="30px"
-      color={ colors.iconPlaceholder.default }
+      color={{ base: 'blackAlpha.100', _dark: 'whiteAlpha.300' }}
     />
   );
 
   return (
     <Box as="li" listStyleType="none">
-      <Flex
-        as="a"
+      <chakra.a
+        display="flex"
         href={ url }
         px={ 3 }
         py="9px"
@@ -38,9 +36,9 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
         cursor="pointer"
         pointerEvents={ isActive ? 'none' : 'initial' }
         borderRadius="base"
-        color={ isActive ? colors.text.active : colors.text.default }
-        bgColor={ isActive ? colors.bg.active : colors.bg.default }
-        _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
+        color={ isActive ? { base: 'blackAlpha.900', _dark: 'whiteAlpha.900' } : { base: 'gray.600', _dark: 'gray.400' } }
+        bgColor={ isActive ? { base: 'blue.50', _dark: 'whiteAlpha.100' } : 'transparent' }
+        _hover={{ color: isActive ? { base: 'blackAlpha.900', _dark: 'whiteAlpha.900' } : 'link.primary.hover' }}
       >
         { iconEl }
         <Text
@@ -59,7 +57,7 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
             marginLeft="auto"
           />
         ) }
-      </Flex>
+      </chakra.a>
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, Image, Skeleton, chakra } from '@chakra-ui/react';
+import { Image, Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -42,6 +42,7 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
   );
 };
 
+// TODO @tom2drum implement image with fallback
 const NetworkLogo = ({ isCollapsed, onClick, className }: Props) => {
 
   const logoSrc = useColorModeValue(config.UI.navigation.logo.default, config.UI.navigation.logo.dark || config.UI.navigation.logo.default);
@@ -51,9 +52,8 @@ const NetworkLogo = ({ isCollapsed, onClick, className }: Props) => {
   const iconStyle = useColorModeValue({}, !config.UI.navigation.icon.dark ? darkModeFilter : {});
 
   return (
-    <Box
+    <chakra.a
       className={ className }
-      as="a"
       href={ route({ pathname: '/' }) }
       width={{ base: '120px', lg: isCollapsed === false ? '120px' : '30px', xl: isCollapsed ? '30px' : '120px' }}
       height={{ base: '24px', lg: isCollapsed === false ? '24px' : '30px', xl: isCollapsed ? '30px' : '24px' }}
@@ -83,7 +83,7 @@ const NetworkLogo = ({ isCollapsed, onClick, className }: Props) => {
         display={{ base: 'none', lg: isCollapsed === false ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}
         style={ iconStyle }
       />
-    </Box>
+    </chakra.a>
   );
 };
 

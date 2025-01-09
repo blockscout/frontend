@@ -32,12 +32,12 @@ const TopBar = () => {
             </>
           ) } */ }
           { /* <Settings/> */ }
-          { /* { config.UI.navigation.layout === 'horizontal' && Boolean(config.UI.navigation.featuredNetworks) && (
+          { config.UI.navigation.layout === 'horizontal' && Boolean(config.UI.navigation.featuredNetworks) && (
             <Box display={{ base: 'none', lg: 'flex' }}>
               <Separator mx={ 3 } height={ 4 } orientation="vertical"/>
               <NetworkMenu/>
             </Box>
-          ) } */ }
+          ) }
         </Flex>
       </Flex>
     </Box>
