@@ -1,7 +1,8 @@
-import { Box, IconButton, PopoverBody, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react';
+import { Box, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
-import Popover from 'ui/shared/chakra/Popover';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import IconSvg from 'ui/shared/IconSvg';
 
 import SettingsAddressFormat from './SettingsAddressFormat';
@@ -9,30 +10,44 @@ import SettingsColorTheme from './SettingsColorTheme';
 import SettingsIdentIcon from './SettingsIdentIcon';
 
 const Settings = () => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  // TODO tom2drum refactor to separate hook
+  const { open, onOpen, onClose } = useDisclosure();
+
+  const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    if (open) {
+      onOpen();
+    } else {
+      onClose();
+    }
+  }, [ onOpen, onClose ]);
 
   return (
-    <Popover placement="bottom-start" trigger="click" isOpen={ isOpen } onClose={ onClose }>
+    <PopoverRoot
+      positioning={{ placement: 'bottom-start' }}
+      lazyMount
+      open={ open }
+      onOpenChange={ handleOpenChange }
+    >
       <PopoverTrigger>
         <IconButton
-          variant="simple"
-          colorScheme="blue"
+          visual="plain"
+          color="link.primary"
+          _hover={{ color: 'link.primary.hover' }}
+          borderRadius="none"
           aria-label="User settings"
-          icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
-          p="1px"
-          boxSize={ 5 }
-          onClick={ onToggle }
-        />
+        >
+          <IconSvg name="gear_slim" boxSize={ 5 } p="1px"/>
+        </IconButton>
       </PopoverTrigger>
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">
-        <PopoverBody boxShadow="2xl" p={ 4 }>
+        <PopoverBody>
           <SettingsColorTheme onSelect={ onClose }/>
           <Box borderColor="border.divider" borderWidth="1px" my={ 3 }/>
           <SettingsIdentIcon/>
           <SettingsAddressFormat/>
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   );
 };
 

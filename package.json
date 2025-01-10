@@ -17,6 +17,8 @@
     "start": "next start",
     "start:docker:local": "docker run -p 3000:3000 --env-file .env.local blockscout-frontend:local",
     "start:docker:preset": "./tools/scripts/docker.preset.sh",
+    "chakra:snippets:add": "chakra snippet add --outdir ./toolkit/chakra",
+    "chakra:typegen": "chakra typegen ./toolkit/theme/theme.ts",
     "lint:eslint": "eslint .",
     "lint:eslint:fix": "eslint . --fix",
     "lint:tsc": "tsc -p ./tsconfig.json",

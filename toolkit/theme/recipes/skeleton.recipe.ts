@@ -6,7 +6,7 @@ export const recipe = defineRecipe({
   variants: {
     loading: {
       'true': {
-        borderRadius: 'l2',
+        borderRadius: 'sm',
         boxShadow: 'none',
         backgroundClip: 'padding-box',
         cursor: 'default',

@@ -31,7 +31,7 @@ const TopBar = () => {
               <Separator mr={ 3 } ml={{ base: 2, sm: 3 }} height={ 4 } orientation="vertical"/>
             </>
           ) } */ }
-          { /* <Settings/> */ }
+          <Settings/>
           { config.UI.navigation.layout === 'horizontal' && Boolean(config.UI.navigation.featuredNetworks) && (
             <Box display={{ base: 'none', lg: 'flex' }}>
               <Separator mx={ 3 } height={ 4 } orientation="vertical"/>

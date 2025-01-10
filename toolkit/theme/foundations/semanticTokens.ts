@@ -117,6 +117,15 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
       },
     },
+    'switch': {
+      primary: {
+        bg: {
+          DEFAULT: { value: { base: '{colors.gray.300}', _dark: '{colors.whiteAlpha.400}' } },
+          checked: { value: { base: '{colors.blue.500}', _dark: '{colors.blue.300}' } },
+          hover: { value: { base: '{colors.blue.600}', _dark: '{colors.blue.400}' } },
+        },
+      },
+    },
     text: {
       primary: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       secondary: { value: { base: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
