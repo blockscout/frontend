@@ -3,6 +3,7 @@ import { defineRecipe } from '@chakra-ui/react';
 export const recipe = defineRecipe({
   base: {
     display: 'flex',
+    gap: 0,
     borderRadius: 'base',
     fontWeight: 600,
     overflow: 'hidden',
@@ -13,6 +14,7 @@ export const recipe = defineRecipe({
   variants: {
     visual: {
       solid: {
+        gap: 0,
         bg: 'blue.600',
         color: 'white',
         _hover: {

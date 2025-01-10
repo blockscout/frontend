@@ -1,13 +1,16 @@
-import { Button, Box, Flex, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure, chakra } from '@chakra-ui/react';
+import { Box, Flex, Link, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { space } from 'lib/html-entities';
 import getPageType from 'lib/mixpanel/getPageType';
 import * as mixpanel from 'lib/mixpanel/index';
-import Popover from 'ui/shared/chakra/Popover';
+import { Button } from 'toolkit/chakra/button';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 
 import DeFiDropdownItem from './DeFiDropdownItem';
@@ -17,7 +20,7 @@ const feature = config.features.deFiDropdown;
 const DeFiDropdown = () => {
   const router = useRouter();
   const source = getPageType(router.pathname);
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { open, onToggle, onOpenChange } = useDisclosure();
 
   const handleClick = React.useCallback((content: string) => {
     mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: content, Source: source });
@@ -28,9 +31,9 @@ const DeFiDropdown = () => {
   }
 
   const buttonStyles = {
-    variant: 'solid',
-    size: 'xs',
+    visual: 'solid' as const,
     borderRadius: 'sm',
+    textStyle: 'xs',
     height: 5,
     px: 1.5,
     fontWeight: '500',
@@ -42,15 +45,15 @@ const DeFiDropdown = () => {
   }));
 
   return items.length > 1 ? (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+    <PopoverRoot open={ open } onOpenChange={ onOpenChange } positioning={{ placement: 'bottom-start' }} lazyMount>
       <PopoverTrigger>
         <Button
           onClick={ onToggle }
-          isActive={ isOpen }
+          active={ open }
           { ...buttonStyles }
         >
-          <chakra.span display={{ base: 'none', lg: 'inline' }} mr={ 1 }>
-            Blockscout
+          <chakra.span display={{ base: 'none', lg: 'inline' }} whiteSpace="pre-wrap">
+            Blockscout{ space }
           </chakra.span>
           DeFi
           <IconSvg name="arrows/east-mini" boxSize={ 4 } ml={ 1 } transform="rotate(-90deg)"/>
@@ -65,19 +68,29 @@ const DeFiDropdown = () => {
           </Flex>
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   ) : (
     <Button
-      as="a"
-      href={ items[0].dappId ? route({ pathname: '/apps/[id]', query: { id: items[0].dappId, action: 'connect' } }) : items[0].url }
-      target={ items[0].dappId ? '_self' : '_blank' }
+      asChild
       onClick={ items[0].onClick }
+      _hover={{
+        color: 'white',
+      }}
       { ...buttonStyles }
     >
-      <IconSvg name={ items[0].icon } boxSize={ 3 } mr={{ base: 0, sm: 1 }}/>
-      <Box display={{ base: 'none', sm: 'inline' }}>
-        { items[0].text }
-      </Box>
+      <Link
+        href={
+          items[0].dappId ?
+            route({ pathname: '/apps/[id]', query: { id: items[0].dappId, action: 'connect' } }) :
+            items[0].url
+        }
+        target={ items[0].dappId ? '_self' : '_blank' }
+      >
+        <IconSvg name={ items[0].icon } boxSize={ 3 } mr={{ base: 0, sm: 1 }}/>
+        <Box display={{ base: 'none', sm: 'inline' }}>
+          { items[0].text }
+        </Box>
+      </Link>
     </Button>
   );
 };

@@ -1,4 +1,4 @@
-import { Text, useColorModeValue } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { DeFiDropdownItem as TDeFiDropdownItem } from 'types/client/deFiDropdown';
@@ -19,11 +19,11 @@ const DeFiDropdownItem = ({ item }: Props) => {
     height: '34px',
     display: 'inline-flex',
     alignItems: 'center',
-    color: useColorModeValue('blackAlpha.800', 'gray.400'),
+    color: { base: 'blackAlpha.800', _dark: 'gray.400' },
     _hover: {
       textDecoration: 'none',
       '& *': {
-        color: 'link_hovered',
+        color: 'link.primary.hover',
       },
     },
   };
@@ -35,19 +35,27 @@ const DeFiDropdownItem = ({ item }: Props) => {
     </>
   );
 
-  return item.dappId ? (
-    <LinkInternal
-      href={ route({ pathname: '/apps/[id]', query: { id: item.dappId, action: 'connect' } }) }
-      target="_self"
-      { ...styles }
-    >
-      { content }
-    </LinkInternal>
-  ) : (
-    <LinkExternal href={ item.url } { ...styles }>
-      { content }
-    </LinkExternal>
-  );
+  if (item.dappId) {
+    return (
+      <LinkInternal
+        href={ route({ pathname: '/apps/[id]', query: { id: item.dappId, action: 'connect' } }) }
+        target="_self"
+        { ...styles }
+      >
+        { content }
+      </LinkInternal>
+    );
+  }
+
+  if (item.url) {
+    return (
+      <LinkExternal href={ item.url } { ...styles }>
+        { content }
+      </LinkExternal>
+    );
+  }
+
+  return null;
 };
 
 export default React.memo(DeFiDropdownItem);

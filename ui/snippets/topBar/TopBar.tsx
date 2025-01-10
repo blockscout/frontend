@@ -25,12 +25,12 @@ const TopBar = () => {
       >
         <TopBarStats/>
         <Flex alignItems="center">
-          { /* { config.features.deFiDropdown.isEnabled && (
+          { config.features.deFiDropdown.isEnabled && (
             <>
               <DeFiDropdown/>
               <Separator mr={ 3 } ml={{ base: 2, sm: 3 }} height={ 4 } orientation="vertical"/>
             </>
-          ) } */ }
+          ) }
           <Settings/>
           { config.UI.navigation.layout === 'horizontal' && Boolean(config.UI.navigation.featuredNetworks) && (
             <Box display={{ base: 'none', lg: 'flex' }}>

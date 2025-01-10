@@ -22,7 +22,7 @@ const NetworkMenu = () => {
           color="link.primary"
           _hover={{ color: 'link.primary.hover' }}
           aria-label="Network menu"
-          borderRadius="none"
+          borderRadius="sm"
           onClick={ menu.onToggle }
         >
           <IconSvg name="networks" boxSize={ 4 } p="1px"/>

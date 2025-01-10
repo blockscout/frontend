@@ -25,7 +25,7 @@ const Settings = () => {
           visual="plain"
           color="link.primary"
           _hover={{ color: 'link.primary.hover' }}
-          borderRadius="none"
+          borderRadius="sm"
           aria-label="User settings"
         >
           <IconSvg name="gear_slim" boxSize={ 5 } p="1px"/>
