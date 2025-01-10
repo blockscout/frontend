@@ -17,7 +17,9 @@ export interface TooltipProps extends ChakraTooltip.RootProps {
 export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
   function Tooltip(props, ref) {
     const {
-      showArrow = true,
+      showArrow: showArrowProp,
+      onOpenChange,
+      visual,
       selected,
       children,
       disabled,
@@ -33,15 +35,19 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     const isMobile = useIsMobile();
     const triggerRef = useClickAway<HTMLButtonElement>(() => setOpen(false));
 
-    const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
-      setOpen(open);
-    }, []);
+    const handleOpenChange = React.useCallback((details: { open: boolean }) => {
+      setOpen(details.open);
+      onOpenChange?.(details);
+    }, [ onOpenChange ]);
 
     const handleTriggerClick = React.useCallback(() => {
       setOpen((prev) => !prev);
     }, [ ]);
 
     if (disabled) return children;
+
+    const defaultShowArrow = visual === 'popover' ? false : true;
+    const showArrow = showArrowProp !== undefined ? showArrowProp : defaultShowArrow;
 
     const positioning = {
       ...rest.positioning,
@@ -58,6 +64,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         open={ open }
         onOpenChange={ isMobile ? undefined : handleOpenChange }
         closeOnClick={ false }
+        visual={ visual }
         { ...rest }
         positioning={ positioning }
       >

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { NavGroupItem } from 'types/client/navigation';
 
-import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel from '../LightningLabel';
@@ -24,80 +24,80 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
 
   const isHighlighted = checkRouteHighlight(item.subItems);
 
+  const content = (
+    <Box width="220px" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
+      <Text color="text.secondary" fontSize="sm" mb={ 1 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>
+        { item.text }
+      </Text>
+      <VStack gap={ 1 } alignItems="start" as="ul">
+        { item.subItems.map((subItem, index) => Array.isArray(subItem) ? (
+          <Box
+            key={ index }
+            w="100%"
+            as="ul"
+            _notLast={{
+              mb: 2,
+              pb: 2,
+              borderBottomWidth: '1px',
+              borderColor: 'border.divider',
+            }}
+          >
+            { subItem.map(subSubItem => <NavLink key={ subSubItem.text } item={ subSubItem } isCollapsed={ false }/>) }
+          </Box>
+        ) :
+          <NavLink key={ subItem.text } item={ subItem } isCollapsed={ false }/>,
+        ) }
+      </VStack>
+    </Box>
+  );
+
   return (
     <Box as="li" listStyleType="none" w="100%">
-      <PopoverRoot
-        // TODO @tom2drum fix trigger
-        // trigger="hover"
-        positioning={{ placement: 'right-start', offset: { crossAxis: 8, mainAxis: 8 } }}
+      <Tooltip
+        content={ content }
+        positioning={{ placement: 'right-start', offset: { crossAxis: 0, mainAxis: 8 } }}
         // should not be lazy to help google indexing pages
         lazyMount={ false }
+        visual="popover"
+        interactive
       >
-        <PopoverTrigger>
-          <Box
-            { ...styleProps.itemProps }
-            w={{ lg: isExpanded ? '180px' : '60px', xl: isCollapsed ? '60px' : '180px' }}
-            pl={{ lg: isExpanded ? 2 : '15px', xl: isCollapsed ? '15px' : 2 }}
-            pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
-            aria-label={ `${ item.text } link group` }
-            position="relative"
-            bgColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
-          >
-            <HStack gap={ 0 } overflow="hidden">
-              <NavLinkIcon item={ item }/>
-              <Text
-                { ...styleProps.textProps }
-                ml={ 3 }
-              >
-                { item.text }
-              </Text>
-              { isHighlighted && (
-                <LightningLabel
-                  iconColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
-                  isCollapsed={ isCollapsed }
-                />
-              ) }
-              <IconSvg
-                name="arrows/east-mini"
-                position="absolute"
-                right="7px"
-                transform="rotate(180deg)"
-                boxSize={ 6 }
-                opacity={{ lg: isExpanded ? '1' : '0', xl: isCollapsed ? '0' : '1' }}
-                transitionProperty="opacity"
-                transitionDuration="normal"
-                transitionTimingFunction="ease"
-              />
-            </HStack>
-          </Box>
-        </PopoverTrigger>
-        <PopoverContent width="252px" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
-          <PopoverBody p={ 4 }>
-            <Text color="text.secondary" fontSize="sm" mb={ 1 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>
+        <Box
+          { ...styleProps.itemProps }
+          w={{ lg: isExpanded ? '180px' : '60px', xl: isCollapsed ? '60px' : '180px' }}
+          pl={{ lg: isExpanded ? 2 : '15px', xl: isCollapsed ? '15px' : 2 }}
+          pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
+          aria-label={ `${ item.text } link group` }
+          position="relative"
+          bgColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
+        >
+          <HStack gap={ 0 } overflow="hidden">
+            <NavLinkIcon item={ item }/>
+            <Text
+              { ...styleProps.textProps }
+              ml={ 3 }
+            >
               { item.text }
             </Text>
-            <VStack gap={ 1 } alignItems="start" as="ul">
-              { item.subItems.map((subItem, index) => Array.isArray(subItem) ? (
-                <Box
-                  key={ index }
-                  w="100%"
-                  as="ul"
-                  _notLast={{
-                    mb: 2,
-                    pb: 2,
-                    borderBottomWidth: '1px',
-                    borderColor: 'border.divider',
-                  }}
-                >
-                  { subItem.map(subSubItem => <NavLink key={ subSubItem.text } item={ subSubItem } isCollapsed={ false }/>) }
-                </Box>
-              ) :
-                <NavLink key={ subItem.text } item={ subItem } isCollapsed={ false }/>,
-              ) }
-            </VStack>
-          </PopoverBody>
-        </PopoverContent>
-      </PopoverRoot>
+            { isHighlighted && (
+              <LightningLabel
+                iconColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
+                isCollapsed={ isCollapsed }
+              />
+            ) }
+            <IconSvg
+              name="arrows/east-mini"
+              position="absolute"
+              right="7px"
+              transform="rotate(180deg)"
+              boxSize={ 6 }
+              opacity={{ lg: isExpanded ? '1' : '0', xl: isCollapsed ? '0' : '1' }}
+              transitionProperty="opacity"
+              transitionDuration="normal"
+              transitionTimingFunction="ease"
+            />
+          </HStack>
+        </Box>
+      </Tooltip>
     </Box>
   );
 };

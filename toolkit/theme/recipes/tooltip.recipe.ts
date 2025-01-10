@@ -63,6 +63,16 @@ export const recipe = defineSlotRecipe({
           display: 'none',
         },
       },
+      popover: {
+        content: {
+          bg: 'popover.bg',
+          color: 'popover.fg',
+          p: '4',
+          boxShadow: 'popover',
+          boxShadowColor: 'popover.shadow',
+          borderRadius: 'md',
+        },
+      },
     },
   },
   defaultVariants: {

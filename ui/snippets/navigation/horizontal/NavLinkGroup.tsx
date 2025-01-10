@@ -3,7 +3,8 @@ import React from 'react';
 
 import type { NavGroupItem } from 'types/client/navigation';
 
-import { PopoverRoot, PopoverBody, PopoverContent, PopoverTrigger } from 'toolkit/chakra/popover';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel from '../LightningLabel';
@@ -14,83 +15,73 @@ interface Props {
 }
 
 const NavLinkGroup = ({ item }: Props) => {
-  const [ isOpen, setIsOpen ] = React.useState(false);
-  // const bgColor = item.isActive ? colors.bg.active : colors.bg.default;
-  // const color = item.isActive ? colors.text.active : colors.text.default;
+  const { open, onOpenChange } = useDisclosure();
 
   const isHighlighted = checkRouteHighlight(item.subItems);
   const hasGroups = item.subItems.some((subItem) => Array.isArray(subItem));
 
-  const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
-    setIsOpen(open);
-  }, []);
+  const content = hasGroups ? (
+    <HStack separator={ <Separator/> } alignItems="flex-start">
+      { item.subItems.map((subItem, index) => {
+        if (!Array.isArray(subItem)) {
+          return <NavLink key={ subItem.text } item={ subItem }/>;
+        }
+
+        return (
+          <chakra.ul key={ index } display="flex" flexDir="column" rowGap={ 1 }>
+            { subItem.map((navItem) => <NavLink key={ navItem.text } item={ navItem }/>) }
+          </chakra.ul>
+        );
+      }) }
+    </HStack>
+  ) : (
+    <chakra.ul display="flex" flexDir="column" rowGap={ 1 }>
+      { item.subItems.map((subItem) => {
+        if (Array.isArray(subItem)) {
+          return null;
+        }
+        return <NavLink key={ subItem.text } item={ subItem }/>;
+      }) }
+    </chakra.ul>
+  );
 
   return (
-    <PopoverRoot
-      // TODO @tom2drum make menu open on hover
-      // trigger="hover"
-      onOpenChange={ handleOpenChange }
+    <Tooltip
+      visual="popover"
+      content={ content }
+      onOpenChange={ onOpenChange }
       lazyMount
       positioning={{
         placement: 'bottom',
         offset: { mainAxis: 8 },
       }}
+      interactive
     >
-      <PopoverTrigger>
-        <Link
-          as="li"
-          listStyleType="none"
-          display="flex"
-          alignItems="center"
-          px={ 2 }
-          py={ 1.5 }
-          textStyle="sm"
-          fontWeight={ 500 }
-          visual="navigation"
-          { ...(item.isActive ? { 'data-selected': true } : {}) }
-          { ...(isOpen ? { 'data-active': true } : {}) }
-          borderRadius="base"
-        >
-          { item.text }
-          { isHighlighted && (
-            <LightningLabel
-              iconColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
-              position={{ lg: 'static' }}
-              ml={{ lg: '2px' }}
-            />
-          ) }
-          <IconSvg name="arrows/east-mini" boxSize={ 5 } transform="rotate(-90deg)" ml={ 1 }/>
-        </Link>
-      </PopoverTrigger>
-      <PopoverContent>
-        <PopoverBody>
-          { hasGroups ? (
-            <HStack separator={ <Separator/> } alignItems="flex-start">
-              { item.subItems.map((subItem, index) => {
-                if (!Array.isArray(subItem)) {
-                  return <NavLink key={ subItem.text } item={ subItem }/>;
-                }
-
-                return (
-                  <chakra.ul key={ index } display="flex" flexDir="column" rowGap={ 1 }>
-                    { subItem.map((navItem) => <NavLink key={ navItem.text } item={ navItem }/>) }
-                  </chakra.ul>
-                );
-              }) }
-            </HStack>
-          ) : (
-            <chakra.ul display="flex" flexDir="column" rowGap={ 1 }>
-              { item.subItems.map((subItem) => {
-                if (Array.isArray(subItem)) {
-                  return null;
-                }
-                return <NavLink key={ subItem.text } item={ subItem }/>;
-              }) }
-            </chakra.ul>
-          ) }
-        </PopoverBody>
-      </PopoverContent>
-    </PopoverRoot>
+      <Link
+        as="li"
+        listStyleType="none"
+        display="flex"
+        alignItems="center"
+        px={ 2 }
+        py={ 1.5 }
+        textStyle="sm"
+        fontWeight={ 500 }
+        visual="navigation"
+        { ...(item.isActive ? { 'data-selected': true } : {}) }
+        { ...(open ? { 'data-active': true } : {}) }
+        borderRadius="base"
+      >
+        { item.text }
+        { isHighlighted && (
+          <LightningLabel
+            iconColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
+            position={{ lg: 'static' }}
+            ml={{ lg: '2px' }}
+          />
+        ) }
+        <IconSvg name="arrows/east-mini" boxSize={ 5 } transform="rotate(-90deg)" ml={ 1 }/>
+      </Link>
+    </Tooltip>
   );
 };
 
