@@ -1,8 +1,9 @@
-import { Box, useDisclosure } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 
 import SettingsAddressFormat from './SettingsAddressFormat';
@@ -10,23 +11,14 @@ import SettingsColorTheme from './SettingsColorTheme';
 import SettingsIdentIcon from './SettingsIdentIcon';
 
 const Settings = () => {
-  // TODO tom2drum refactor to separate hook
-  const { open, onOpen, onClose } = useDisclosure();
-
-  const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
-    if (open) {
-      onOpen();
-    } else {
-      onClose();
-    }
-  }, [ onOpen, onClose ]);
+  const { open, onOpenChange, onClose } = useDisclosure();
 
   return (
     <PopoverRoot
       positioning={{ placement: 'bottom-start' }}
       lazyMount
       open={ open }
-      onOpenChange={ handleOpenChange }
+      onOpenChange={ onOpenChange }
     >
       <PopoverTrigger>
         <IconButton
