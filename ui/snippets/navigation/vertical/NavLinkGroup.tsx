@@ -1,17 +1,9 @@
-import {
-  Text,
-  HStack,
-  Box,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  VStack,
-} from '@chakra-ui/react';
+import { Text, HStack, Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavGroupItem } from 'types/client/navigation';
 
-import Popover from 'ui/shared/chakra/Popover';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel from '../LightningLabel';
@@ -34,12 +26,12 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
 
   return (
     <Box as="li" listStyleType="none" w="100%">
-      <Popover
-        trigger="hover"
-        placement="right-start"
+      <PopoverRoot
+        // TODO @tom2drum fix trigger
+        // trigger="hover"
+        positioning={{ placement: 'right-start', offset: { crossAxis: 8, mainAxis: 8 } }}
         // should not be lazy to help google indexing pages
-        isLazy={ false }
-        gutter={ 8 }
+        lazyMount={ false }
       >
         <PopoverTrigger>
           <Box
@@ -49,8 +41,9 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
             pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
             aria-label={ `${ item.text } link group` }
             position="relative"
+            bgColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
           >
-            <HStack spacing={ 0 } overflow="hidden">
+            <HStack gap={ 0 } overflow="hidden">
               <NavLinkIcon item={ item }/>
               <Text
                 { ...styleProps.textProps }
@@ -59,7 +52,10 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
                 { item.text }
               </Text>
               { isHighlighted && (
-                <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
+                <LightningLabel
+                  iconColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
+                  isCollapsed={ isCollapsed }
+                />
               ) }
               <IconSvg
                 name="arrows/east-mini"
@@ -77,10 +73,10 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
         </PopoverTrigger>
         <PopoverContent width="252px" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
           <PopoverBody p={ 4 }>
-            <Text variant="secondary" fontSize="sm" mb={ 1 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>
+            <Text color="text.secondary" fontSize="sm" mb={ 1 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>
               { item.text }
             </Text>
-            <VStack spacing={ 1 } alignItems="start" as="ul">
+            <VStack gap={ 1 } alignItems="start" as="ul">
               { item.subItems.map((subItem, index) => Array.isArray(subItem) ? (
                 <Box
                   key={ index }
@@ -101,7 +97,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
             </VStack>
           </PopoverBody>
         </PopoverContent>
-      </Popover>
+      </PopoverRoot>
     </Box>
   );
 };

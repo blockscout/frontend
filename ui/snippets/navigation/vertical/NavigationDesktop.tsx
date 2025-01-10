@@ -1,4 +1,4 @@
-import { Flex, Box, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -46,18 +46,12 @@ const NavigationDesktop = () => {
     }
   }, [ handleTogglerClick ]);
 
-  const chevronIconStyles = {
-    bgColor: useColorModeValue('white', 'black'),
-    color: useColorModeValue('blackAlpha.400', 'whiteAlpha.400'),
-    borderColor: 'border.divider',
-  };
-
   const isExpanded = isCollapsed === false;
 
   return (
     <Flex
       display={{ base: 'none', lg: 'flex' }}
-      role="group"
+      className="group"
       position="relative"
       flexDirection="column"
       alignItems="stretch"
@@ -88,7 +82,7 @@ const NavigationDesktop = () => {
         { Boolean(config.UI.navigation.featuredNetworks) && <NetworkMenu isCollapsed={ isCollapsed }/> }
       </Box>
       <Box as="nav" mt={ 6 } w="100%">
-        <VStack as="ul" spacing="1" alignItems="flex-start">
+        <VStack as="ul" gap="1" alignItems="flex-start">
           { mainNavItems.map((item) => {
             if (isGroupItem(item)) {
               return <NavLinkGroup key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
@@ -100,7 +94,7 @@ const NavigationDesktop = () => {
       </Box>
       { isAuth && (
         <Box as="nav" borderTopWidth="1px" borderColor="border.divider" w="100%" mt={ 3 } pt={ 3 }>
-          <VStack as="ul" spacing="1" alignItems="flex-start">
+          <VStack as="ul" gap="1" alignItems="flex-start">
             <NavLinkRewards isCollapsed={ isCollapsed }/>
             { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>) }
           </VStack>
@@ -110,10 +104,12 @@ const NavigationDesktop = () => {
         name="arrows/east-mini"
         width={ 6 }
         height={ 6 }
-        border="1px"
-        _hover={{ color: 'link_hovered' }}
+        _hover={{ color: 'link.primary.hover' }}
         borderRadius="base"
-        { ...chevronIconStyles }
+        bgColor={{ base: 'white', _dark: 'black' }}
+        color={{ base: 'blackAlpha.400', _dark: 'whiteAlpha.400' }}
+        borderWidth="1px"
+        borderColor="border.divider"
         transform={{ lg: isExpanded ? 'rotate(0)' : 'rotate(180deg)', xl: isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }}
         { ...getDefaultTransitionProps({ transitionProperty: 'transform, left' }) }
         transformOrigin="center"

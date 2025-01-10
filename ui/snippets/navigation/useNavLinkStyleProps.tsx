@@ -1,7 +1,5 @@
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
-import useColors from './useColors';
-
 type Props = {
   isExpanded?: boolean;
   isCollapsed?: boolean;
@@ -9,15 +7,12 @@ type Props = {
 };
 
 export default function useNavLinkProps({ isExpanded, isCollapsed, isActive }: Props) {
-  const colors = useColors();
-
   return {
     itemProps: {
+      visual: 'navigation' as const,
       py: '9px',
       display: 'flex',
-      color: isActive ? colors.text.active : colors.text.default,
-      bgColor: isActive ? colors.bg.active : colors.bg.default,
-      _hover: { color: isActive ? colors.text.active : colors.text.hover },
+      ...(isActive ? { 'data-selected': true } : {}),
       borderRadius: 'base',
       ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }),
     },

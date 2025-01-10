@@ -1,8 +1,7 @@
-import { Button, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import { useColorModeValue } from 'toolkit/chakra/color-mode';
-import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
+import { IconButton } from 'toolkit/chakra/icon-button';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -13,35 +12,28 @@ interface Props {
 }
 
 const NetworkMenuButton = ({ isMobile, isActive, onClick, className }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
-  const defaultIconColor = useColorModeValue('gray.600', 'gray.400');
-  const bgColorMobile = useColorModeValue('blue.50', 'gray.800');
-  const iconColorMobile = useColorModeValue('blue.700', 'blue.50');
-
   return (
-    <Button
+    <IconButton
       className={ className }
-      variant="unstyled"
+      visual="plain"
       display="inline-flex"
       alignItems="center"
       ref={ ref }
-      h="36px"
+      h={ 9 }
       borderRadius="base"
-      backgroundColor={ isActive ? bgColorMobile : 'none' }
+      backgroundColor={ isActive ? { _light: 'blue.50', _dark: 'gray.400' } : 'none' }
       onClick={ onClick }
       aria-label="Network menu"
       aria-roledescription="menu"
     >
       <IconSvg
         name="networks"
-        width="36px"
-        height="36px"
-        padding="10px"
-        color={ isActive ? iconColorMobile : defaultIconColor }
+        boxSize={ 4 }
+        color={ isActive ? { _light: 'blue.700', _dark: 'blue.50' } : { _light: 'gray.600', _dark: 'gray.400' } }
         _hover={{ color: isMobile ? undefined : 'link_hovered' }}
         cursor="pointer"
-        { ...getDefaultTransitionProps({ transitionProperty: 'margin' }) }
       />
-    </Button>
+    </IconButton>
   );
 };
 

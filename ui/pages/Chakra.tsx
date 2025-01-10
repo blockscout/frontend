@@ -41,6 +41,8 @@ const ChakraShowcases = () => {
             <Link>Primary</Link>
             <Link visual="secondary">Secondary</Link>
             <Link visual="subtle">Subtle</Link>
+            <Link visual="navigation">Navigation</Link>
+            <Link visual="navigation" data-selected p={ 3 } borderRadius="base">Navigation selected</Link>
           </HStack>
         </section>
 

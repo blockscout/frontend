@@ -1,4 +1,4 @@
-import { Link, Text, HStack, Tooltip, Box, useBreakpointValue } from '@chakra-ui/react';
+import { Link, HStack, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -8,11 +8,11 @@ import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
-import useColors from '../useColors';
 import useNavLinkStyleProps from '../useNavLinkStyleProps';
 import { checkRouteHighlight } from '../utils';
 
@@ -25,7 +25,6 @@ type Props = {
 
 const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
   const isMobile = useIsMobile();
-  const colors = useColors();
 
   const isInternalLink = isInternalItem(item);
   const href = isInternalLink ? route(item.nextRoute) : item.url;
@@ -51,28 +50,36 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
       onClick={ onClick }
       _hover={{
         [`& *:not(.${ LIGHTNING_LABEL_CLASS_NAME }, .${ LIGHTNING_LABEL_CLASS_NAME } *)`]: {
-          color: isDisabled ? 'inherit' : 'link_hovered',
+          color: isDisabled ? 'inherit' : 'link.primary.hover',
         },
       }}
     >
       <Tooltip
-        label={ item.text }
-        hasArrow={ false }
-        isDisabled={ isMobile || isCollapsed === false || (isCollapsed === undefined && isXLScreen) }
-        placement="right"
-        variant="nav"
-        gutter={ 20 }
-        color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
-        margin={ 0 }
+        content={ item.text }
+        showArrow={ false }
+        disabled={ isMobile || isCollapsed === false || (isCollapsed === undefined && isXLScreen) }
+        positioning={{ placement: 'right', offset: { crossAxis: 0, mainAxis: 20 } }}
+        visual="navigation"
+        contentProps={{
+          color: isInternalLink && item.isActive ? 'link.navigation.fg.selected' : 'link.navigation.fg.hover',
+        }}
+        interactive
       >
-        <HStack spacing={ 0 } overflow="hidden">
+        <HStack gap={ 0 } overflow="hidden">
           <NavLinkIcon item={ item }/>
-          <Text { ...styleProps.textProps } as="span" ml={ 3 }>
+          <chakra.span
+            { ...styleProps.textProps }
+            ml={ 3 }
+            display={{ base: 'inline', lg: isExpanded ? 'inline' : 'none', xl: isCollapsed ? 'none' : 'inline' }}
+          >
             <span>{ item.text }</span>
             { !isInternalLink && <IconSvg name="link_external" boxSize={ 3 } color="icon_link_external" verticalAlign="middle"/> }
-          </Text>
+          </chakra.span>
           { isHighlighted && (
-            <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
+            <LightningLabel
+              iconColor={ isInternalLink && item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
+              isCollapsed={ isCollapsed }
+            />
           ) }
         </HStack>
       </Tooltip>
