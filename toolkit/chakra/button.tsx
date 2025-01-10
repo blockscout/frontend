@@ -21,6 +21,31 @@ export interface ButtonProps extends ChakraButtonProps, ButtonLoadingProps {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(props, ref) {
     const { loading, disabled, loadingText, children, active, selected, highlighted, ...rest } = props;
+
+    const content = (() => {
+      if (loading && !loadingText) {
+        return (
+          <>
+            <AbsoluteCenter display="inline-flex">
+              <Spinner size="inherit" color="inherit"/>
+            </AbsoluteCenter>
+            <Span opacity={ 0 }>{ children }</Span>
+          </>
+        );
+      }
+
+      if (loading && loadingText) {
+        return (
+          <>
+            <Spinner size="inherit" color="inherit"/>
+            { loadingText }
+          </>
+        );
+      }
+
+      return children;
+    })();
+
     return (
       <ChakraButton
         { ...(active ? { 'data-active': true } : {}) }
@@ -30,21 +55,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ ref }
         { ...rest }
       >
-        { loading && !loadingText ? (
-          <>
-            <AbsoluteCenter display="inline-flex">
-              <Spinner size="inherit" color="inherit"/>
-            </AbsoluteCenter>
-            <Span opacity={ 0 }>{ children }</Span>
-          </>
-        ) : loading && loadingText ? (
-          <>
-            <Spinner size="inherit" color="inherit"/>
-            { loadingText }
-          </>
-        ) : (
-          children
-        ) }
+        { content }
       </ChakraButton>
     );
   },
