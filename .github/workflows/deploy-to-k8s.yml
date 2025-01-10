@@ -1,0 +1,64 @@
+# Actions Template for deploy to kubernetes(Deployment)
+name: Deploy to Kubernetes
+
+on:
+  workflow_call:
+    inputs:
+      namespace_k8s:
+        description: deploy environment tag, example. mechain-dev/mechain-test
+        required: true
+        type: string
+      release_name:
+        description: Deployment name in kubernetes.
+        required: true
+        type: string
+      version_info:
+        description: The version of the release. example. develop(commit=123456)
+        required: true
+        type: string
+      commit_info:
+        description: The commit of the release. example. 123456
+        required: true
+        type: string
+
+jobs:
+  deploy_to_k8s:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Deploy new Deployment"
+        uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBECONFIG_DEV }}
+        with:
+          args: -n ${{ inputs.namespace_k8s }} rollout restart deployment ${{ inputs.release_name }}
+
+      - name: "Check Deployment"
+        uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBECONFIG_DEV }}
+        with:
+          args: -n ${{ inputs.namespace_k8s }} rollout status deployment ${{ inputs.release_name }} --timeout=600s
+
+      - name: "Notify message to Lark(Success)"
+        uses: kevin-rd/lark-notify@v1.8
+        if: success()
+        env:
+          LARK_WEBHOOK: ${{ secrets.LARK_WEBHOOK }}
+        with:
+          header_template: "green"
+          header_content: "${{ github.repository }} 部署完成"
+          message_env_tag: "devint"
+          message_version: "${{ inputs.version_info }}"
+          message_commit_logs: "${{ inputs.commit_info }}"
+
+      - name: "Notify message to Lark(Failure)"
+        uses: kevin-rd/lark-notify@v1.8
+        if: failure()
+        env:
+          LARK_WEBHOOK: ${{ secrets.LARK_WEBHOOK }}
+        with:
+          header_template: "red"
+          header_content: "${{ github.repository }} 部署失败"
+          message_env_tag: "devint"
+          message_version: "${{ inputs.version_info }}"
+          message_commit_logs: "${{ inputs.commit_info }}"
