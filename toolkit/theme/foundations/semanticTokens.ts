@@ -126,6 +126,18 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
       },
     },
+    alert: {
+      fg: {
+        DEFAULT: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+      },
+      bg: {
+        info: { value: { base: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.100}' } },
+        warning: { value: { base: '{colors.orange.100}', _dark: '{colors.orange.800/60}' } },
+        success: { value: { base: '{colors.green.100}', _dark: '{colors.green.900}' } },
+        error: { value: { base: '{colors.red.100}', _dark: '{colors.red.900}' } },
+        neutral: { value: { base: '{colors.gray.100}', _dark: '{colors.gray.900}' } },
+      },
+    },
     text: {
       primary: { value: { base: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       secondary: { value: { base: '{colors.gray.500}', _dark: '{colors.gray.400}' } },

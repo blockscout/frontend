@@ -80,6 +80,7 @@
 	| "heart_filled"
 	| "heart_outline"
 	| "hourglass"
+	| "info_filled"
 	| "info"
 	| "integration/full"
 	| "integration/partial"

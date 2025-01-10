@@ -1,3 +1,4 @@
+import { recipe as alert } from './alert.recipe';
 import { recipe as button } from './button.recipe';
 import { recipe as link } from './link.recipe';
 import { recipe as popover } from './popover.recipe';
@@ -14,6 +15,7 @@ export const recipes = {
 };
 
 export const slotRecipes = {
+  alert,
   popover,
   progressCircle,
   'switch': switchRecipe,

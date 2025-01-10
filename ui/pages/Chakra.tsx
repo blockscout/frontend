@@ -1,6 +1,7 @@
 import { Heading, HStack, Link, Tabs, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
@@ -96,6 +97,16 @@ const ChakraShowcases = () => {
               <Tabs.Content value="tab1">Content 1</Tabs.Content>
               <Tabs.Content value="tab2">Content 2</Tabs.Content>
             </Tabs.Root>
+          </HStack>
+        </section>
+
+        <section>
+          <Heading textStyle="heading.md" mb={ 2 }>Alerts</Heading>
+          <HStack gap={ 4 } whiteSpace="nowrap">
+            <Alert visual="info" title="Info"> Alert content </Alert>
+            <Alert visual="warning" title="Warning"> Alert content </Alert>
+            <Alert visual="success" title="Success"> Alert content </Alert>
+            <Alert visual="error" title="Error"> Alert content </Alert>
           </HStack>
         </section>
       </VStack>
