@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import { Heading, HStack, Link, Tabs, VStack } from '@chakra-ui/react';
 import React from 'react';
 
@@ -7,6 +8,7 @@ import { useColorMode } from 'toolkit/chakra/color-mode';
 import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
+import { toaster } from 'toolkit/chakra/toaster';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import ContentLoader from 'ui/shared/ContentLoader';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -17,7 +19,7 @@ const ChakraShowcases = () => {
   return (
     <>
       <PageTitle title="Chakra UI Showcase"/>
-      <Switch onCheckedChange={ colorMode.toggleColorMode } checked={ colorMode.colorMode === 'dark' } mb={ 4 }>
+      <Switch onCheckedChange={ colorMode.toggleColorMode } checked={ colorMode.colorMode === 'dark' } mb={ 10 }>
         Color mode: { colorMode.colorMode }
       </Switch>
 
@@ -106,9 +108,17 @@ const ChakraShowcases = () => {
           <Heading textStyle="heading.md" mb={ 2 }>Alerts</Heading>
           <HStack gap={ 4 } whiteSpace="nowrap">
             <Alert visual="info" title="Info"> Alert content </Alert>
+            <Alert visual="neutral" title="Neutral"> Alert content </Alert>
             <Alert visual="warning" title="Warning"> Alert content </Alert>
             <Alert visual="success" title="Success"> Alert content </Alert>
-            <Alert visual="error" title="Error"> Alert content </Alert>
+            <Alert visual="error" title="Error" startElement={ null }> Alert content </Alert>
+          </HStack>
+        </section>
+
+        <section>
+          <Heading textStyle="heading.md" mb={ 2 }>Toasts</Heading>
+          <HStack gap={ 4 } whiteSpace="nowrap">
+            <Button onClick={ () => toaster.success({ title: 'Success', description: 'Toast content' }) }>Success</Button>
           </HStack>
         </section>
       </VStack>

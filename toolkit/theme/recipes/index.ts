@@ -6,6 +6,7 @@ import { recipe as progressCircle } from './progress-circle.recipe';
 import { recipe as skeleton } from './skeleton.recipe';
 import { recipe as switchRecipe } from './switch.recipe';
 import { recipe as tabs } from './tabs.recipe';
+import { recipe as toast } from './toast.recipe';
 import { recipe as tooltip } from './tooltip.recipe';
 
 export const recipes = {
@@ -20,5 +21,6 @@ export const slotRecipes = {
   progressCircle,
   'switch': switchRecipe,
   tabs,
+  toast,
   tooltip,
 };

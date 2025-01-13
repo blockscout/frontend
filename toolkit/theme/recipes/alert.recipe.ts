@@ -76,7 +76,8 @@ export const recipe = defineSlotRecipe({
       md: {
         root: {
           gap: '2',
-          p: '3',
+          px: '3',
+          py: '2',
           textStyle: 'md',
         },
         indicator: {
@@ -87,8 +88,7 @@ export const recipe = defineSlotRecipe({
   },
 
   defaultVariants: {
-    // status: 'info',
-    visual: 'info',
+    visual: 'neutral',
     size: 'md',
     inline: true,
   },

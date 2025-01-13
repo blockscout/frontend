@@ -31,7 +31,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
     return (
       <ChakraAlert.Root ref={ ref } { ...rest }>
-        { startElement || <ChakraAlert.Indicator>{ icon || defaultIcon }</ChakraAlert.Indicator> }
+        { startElement !== undefined || icon !== undefined ? startElement : <ChakraAlert.Indicator>{ icon || defaultIcon }</ChakraAlert.Indicator> }
         { children ? (
           <ChakraAlert.Content>
             { title && <ChakraAlert.Title>{ title }</ChakraAlert.Title> }
