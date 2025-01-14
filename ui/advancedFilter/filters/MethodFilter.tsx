@@ -1,6 +1,5 @@
 import { Flex, Checkbox, CheckboxGroup, Spinner, chakra } from '@chakra-ui/react';
-import differenceBy from 'lodash/differenceBy';
-import isEqual from 'lodash/isEqual';
+import { isEqual, differenceBy } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 

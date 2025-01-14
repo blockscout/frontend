@@ -1,6 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import _omit from 'lodash/omit';
-import _pickBy from 'lodash/pickBy';
+import { omit, pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { CsrfData } from 'types/client/account';
@@ -38,7 +37,7 @@ export default function useApiFetch() {
     const resource: ApiResource = RESOURCES[resourceName];
     const url = buildUrl(resourceName, pathParams, queryParams);
     const withBody = isBodyAllowed(fetchParams?.method);
-    const headers = _pickBy({
+    const headers = pickBy({
       'x-endpoint': resource.endpoint && isNeedProxy() ? resource.endpoint : undefined,
       Authorization: resource.endpoint && resource.needAuth ? apiToken : undefined,
       'x-csrf-token': withBody && csrfToken ? csrfToken : undefined,
@@ -55,7 +54,7 @@ export default function useApiFetch() {
         // change condition here if something is changed
         credentials: config.features.account.isEnabled ? 'include' : 'same-origin',
         headers,
-        ..._omit(fetchParams, 'headers'),
+        ...(fetchParams ? omit(fetchParams, [ 'headers' ]) : {}),
       },
       {
         resource: resource.path,

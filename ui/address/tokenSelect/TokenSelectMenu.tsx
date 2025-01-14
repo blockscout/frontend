@@ -1,5 +1,5 @@
 import { Text, Box, Input, InputGroup, InputLeftElement, useColorModeValue, Flex, Link } from '@chakra-ui/react';
-import _sumBy from 'lodash/sumBy';
+import { sumBy } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
@@ -26,7 +26,7 @@ interface Props {
 const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onInputChange, onSortClick, searchTerm }: Props) => {
   const searchIconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
 
-  const hasFilteredResult = _sumBy(Object.values(filteredData), ({ items }) => items.length) > 0;
+  const hasFilteredResult = sumBy(Object.values(filteredData), ({ items }) => items.length) > 0;
 
   return (
     <>

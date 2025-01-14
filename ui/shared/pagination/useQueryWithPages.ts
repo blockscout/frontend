@@ -1,6 +1,6 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
-import omit from 'lodash/omit';
+import { omit } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { animateScroll } from 'react-scroll';
@@ -154,7 +154,14 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   }, [ queryClient, resourceName, router, scrollToTop ]);
 
   const onFilterChange = useCallback(<R extends PaginatedResources = Resource>(newFilters: PaginationFilters<R> | undefined) => {
-    const newQuery = omit<typeof router.query>(router.query, 'next_page_params', 'page', 'filterFields' in resource ? resource.filterFields : []);
+    const newQuery: typeof router.query = omit(
+      router.query,
+      [
+        'next_page_params',
+        'page',
+        ...('filterFields' in resource ? resource.filterFields : []),
+      ],
+    );
     if (newFilters) {
       Object.entries(newFilters).forEach(([ key, value ]) => {
         const isValidValue = typeof value === 'boolean' || (value && value.length);
@@ -179,8 +186,8 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   }, [ router, resource, scrollToTop ]);
 
   const onSortingChange = useCallback((newSorting: PaginationSorting<Resource> | undefined) => {
-    const newQuery = {
-      ...omit<typeof router.query>(router.query, 'next_page_params', 'page', SORTING_FIELDS),
+    const newQuery: typeof router.query = {
+      ...omit(router.query, [ 'next_page_params', 'page', ...SORTING_FIELDS ]),
       ...newSorting,
     };
     scrollToTop();

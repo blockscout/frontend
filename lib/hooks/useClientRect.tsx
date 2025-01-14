@@ -1,4 +1,4 @@
-import _debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import type { LegacyRef } from 'react';
 import React from 'react';
 
@@ -19,7 +19,7 @@ export default function useClientRect<E extends Element>(): [ DOMRect | null, Le
       return;
     }
 
-    const resizeHandler = _debounce(() => {
+    const resizeHandler = debounce(() => {
       setRect(nodeRef.current?.getBoundingClientRect() ?? null);
     }, 100);
 

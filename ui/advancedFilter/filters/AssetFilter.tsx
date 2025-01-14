@@ -1,5 +1,5 @@
 import { Flex, Checkbox, CheckboxGroup, Text, Spinner, Select } from '@chakra-ui/react';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import React from 'react';
 
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
