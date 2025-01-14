@@ -4,13 +4,12 @@ export const recipe = defineRecipe({
   base: {
     width: '100%',
     minWidth: '0',
+    minHeight: '160px',
     outline: '0',
     position: 'relative',
     appearance: 'none',
     textAlign: 'start',
     borderRadius: 'base',
-    height: 'var(--input-height)',
-    minW: 'var(--input-height)',
     color: 'input.fg',
     '--focus-color': 'colors.border.error',
     '--error-color': 'colors.border.error',
@@ -18,33 +17,14 @@ export const recipe = defineRecipe({
       focusRingColor: 'var(--error-color)',
       borderColor: 'var(--error-color)',
     },
-    _autofill: {
-    //   FIXME: this is not working
-    //   WebkitTextFillColor: '{colors.input.fg}',
-    },
   },
-
   variants: {
     size: {
-      sm: {
-        textStyle: 'sm',
-        px: '2',
-        '--input-height': 'sizes.8',
-      },
-      md: {
+      xxl: {
         textStyle: 'md',
-        px: '2',
-        '--input-height': 'sizes.10',
-      },
-      lg: {
-        textStyle: 'md',
-        px: '3',
-        '--input-height': 'sizes.12',
-      },
-      xl: {
-        textStyle: 'md',
-        px: '4',
-        '--input-height': '60px',
+        px: '6',
+        py: '4',
+        scrollPaddingBottom: '4',
       },
     },
 
@@ -89,23 +69,14 @@ export const recipe = defineRecipe({
     },
 
     floating: {
-      'true': {},
+      'true': {
+        paddingTop: '40px',
+      },
     },
   },
 
-  compoundVariants: [
-    {
-      size: 'xl',
-      floating: true,
-      css: {
-        padding: '26px 10px 10px 16px',
-      },
-    },
-  ],
-
   defaultVariants: {
-    size: 'md',
+    size: 'xxl',
     variant: 'outline',
-    floating: false,
   },
 });

@@ -180,6 +180,9 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       mark: {
         bg: { value: { _light: '{colors.green.100}', _dark: '{colors.green.800}' } },
       },
+      scrollbar: {
+        thumb: { value: { _light: '{colors.blackAlpha.300}', _dark: '{colors.whiteAlpha.300}' } },
+      },
     },
 
     // OLD TOKENS

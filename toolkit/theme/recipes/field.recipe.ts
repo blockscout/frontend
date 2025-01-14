@@ -51,7 +51,7 @@ export const recipe = defineSlotRecipe({
           bg: 'bg',
           top: '2px',
           left: '2px',
-          w: 'calc(100% - 4px)',
+          width: 'calc(100% - 4px)',
           borderRadius: 'base',
           pointerEvents: 'none',
           transformOrigin: 'top left',
@@ -78,6 +78,12 @@ export const recipe = defineSlotRecipe({
         },
       },
       xl: {
+        label: {
+          fontSize: 'md',
+        },
+      },
+      // special size for textarea
+      xxl: {
         label: {
           fontSize: 'md',
         },
@@ -117,6 +123,31 @@ export const recipe = defineSlotRecipe({
           },
           _peerFocusVisible: {
             padding: '10px 16px 0px 16px',
+            textStyle: 'xs',
+          },
+          _readOnly: {
+            bg: 'input.bg.readOnly',
+          },
+        },
+        errorText: {
+          fontSize: 'inherit',
+          lineHeight: 'inherit',
+        },
+      },
+    },
+    {
+      size: 'xxl',
+      floating: true,
+      css: {
+        label: {
+          // 16px = scrollbar width
+          width: 'calc(100% - 4px - 20px)',
+          padding: '20px 24px 0px 24px',
+          textStyle: 'xs',
+          _peerPlaceholderShown: {
+            textStyle: 'md',
+          },
+          _peerFocusVisible: {
             textStyle: 'xs',
           },
           _readOnly: {

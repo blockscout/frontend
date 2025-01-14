@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/jsx-no-bind */
 import { Heading, HStack, Link, Tabs, VStack } from '@chakra-ui/react';
 import React from 'react';
@@ -10,10 +11,13 @@ import { Input } from 'toolkit/chakra/input';
 import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
+import { Textarea } from 'toolkit/chakra/textarea';
 import { toaster } from 'toolkit/chakra/toaster';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import ContentLoader from 'ui/shared/ContentLoader';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
+const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
 const ChakraShowcases = () => {
   const colorMode = useColorMode();
@@ -91,6 +95,18 @@ const ChakraShowcases = () => {
             </Field>
             <Field label="Email" required floating readOnly size="xl" w="300px">
               <Input type="email" value="me@example.com"/>
+            </Field>
+          </HStack>
+        </section>
+
+        <section>
+          <Heading textStyle="heading.md" mb={ 2 }>Textarea</Heading>
+          <HStack gap={ 4 }>
+            <Field label="Description" required floating size="xxl" w="400px">
+              <Textarea/>
+            </Field>
+            <Field label="Description" required floating size="xxl" w="400px">
+              <Textarea value={ TEXT }/>
             </Field>
           </HStack>
         </section>

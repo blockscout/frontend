@@ -1,10 +1,8 @@
-import type { StyleFunctionProps, SystemStyleObject } from '@chakra-ui/theme-tools';
-import { mode } from '@chakra-ui/theme-tools';
+import type { SystemStyleObject } from '@chakra-ui/theme-tools';
 
 // TODO @tom2drum check address highlight feature
 import addressEntity from './globals/address-entity';
 import recaptcha from './globals/recaptcha';
-// TODO @tom2drum check custom scrollbar colors
 import scrollbar from './globals/scrollbar';
 
 const globalCss: Record<string, SystemStyleObject> = {
@@ -25,9 +23,9 @@ const globalCss: Record<string, SystemStyleObject> = {
   form: {
     w: '100%',
   },
-  // ...scrollbar(props),
+  ...recaptcha,
+  ...scrollbar,
   // ...addressEntity(props),
-  ...recaptcha(),
 };
 
 export default globalCss;
