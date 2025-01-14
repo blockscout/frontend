@@ -11,18 +11,6 @@ function copyPlaceholderImage() {
   fs.copyFileSync(sourceFile, targetFile);
 }
 
-function getAppUrl() {
-  const appPort = process.env.NEXT_PUBLIC_APP_PORT;
-  const appSchema = process.env.NEXT_PUBLIC_APP_PROTOCOL;
-  const appHost = process.env.NEXT_PUBLIC_APP_HOST;
-  return [
-    appSchema || 'https',
-    '://',
-    appHost,
-    appPort && ':' + appPort,
-  ].filter(Boolean).join('');
-}
-
 if (process.env.NEXT_PUBLIC_OG_IMAGE_URL) {
   console.log('⏩ NEXT_PUBLIC_OG_IMAGE_URL is set. Skipping OG image generation...');
 } else if (!process.env.NEXT_PUBLIC_NETWORK_NAME) {
@@ -40,7 +28,6 @@ if (process.env.NEXT_PUBLIC_OG_IMAGE_URL) {
       background: bannerConfig.background?.[0],
       title_color: bannerConfig.text_color?.[0],
       invert_logo: !process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK,
-      app_url: getAppUrl(),
     };
 
     console.log('⏳ Making request to OG image generator service...');
