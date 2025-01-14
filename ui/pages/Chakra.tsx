@@ -5,6 +5,8 @@ import React from 'react';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { useColorMode } from 'toolkit/chakra/color-mode';
+import { Field } from 'toolkit/chakra/field';
+import { Input } from 'toolkit/chakra/input';
 import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
@@ -34,6 +36,62 @@ const ChakraShowcases = () => {
             <Button visual="header">Header</Button>
             <Button visual="header" selected>Header selected</Button>
             <Button visual="header" selected highlighted>Header highlighted</Button>
+          </HStack>
+        </section>
+
+        <section>
+          <Heading textStyle="heading.md" mb={ 2 }>Inputs</Heading>
+          <Heading textStyle="heading.sm" mb={ 2 }>Regular</Heading>
+          <HStack gap={ 4 } whiteSpace="nowrap">
+            <Field label="Email" required>
+              <Input type="email"/>
+            </Field>
+            <Field label="Email">
+              <Input value="me@example.com"/>
+            </Field>
+            <Field label="Email" invalid>
+              <Input value="duck"/>
+            </Field>
+            <Field label="Email" readOnly>
+              <Input value="duck"/>
+            </Field>
+            <Field label="Email" disabled>
+              <Input value="duck"/>
+            </Field>
+          </HStack>
+          <HStack gap={ 4 } whiteSpace="nowrap" mt={ 4 } alignItems="flex-start">
+            <Field label="Email" required size="sm">
+              <Input/>
+            </Field>
+            <Field label="Email" required size="md">
+              <Input/>
+            </Field>
+            <Field label="Email" required size="lg">
+              <Input/>
+            </Field>
+            <Field label="Email" required size="xl">
+              <Input/>
+            </Field>
+          </HStack>
+          <Heading textStyle="heading.sm" mb={ 2 } mt={ 6 }>Floating (only XL size)</Heading>
+          <HStack gap={ 4 } mt={ 4 } alignItems="flex-start">
+            <Field label="Email" required floating size="xl" w="300px">
+              <Input type="email"/>
+            </Field>
+            <Field label="Email" required floating invalid errorText="Something went wrong" size="xl" w="300px">
+              <Input type="email"/>
+            </Field>
+          </HStack>
+          <HStack p={ 6 } mt={ 4 } gap={ 4 } bgColor={{ _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' }} >
+            <Field label="Email" required floating size="xl" w="300px">
+              <Input type="email"/>
+            </Field>
+            <Field label="Email" required floating disabled size="xl" w="300px">
+              <Input type="email" value="me@example.com"/>
+            </Field>
+            <Field label="Email" required floating readOnly size="xl" w="300px">
+              <Input type="email" value="me@example.com"/>
+            </Field>
           </HStack>
         </section>
 

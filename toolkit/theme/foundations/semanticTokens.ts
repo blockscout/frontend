@@ -138,12 +138,39 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         neutral: { value: { _light: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.100}' } },
       },
     },
+    input: {
+      fg: {
+        DEFAULT: { value: { _light: '{colors.blue.800}', _dark: '{colors.gray.50}' } },
+        error: { value: '{colors.text.error}' },
+      },
+      bg: {
+        DEFAULT: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
+        readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
+      },
+      border: {
+        DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
+        hover: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.500}' } },
+        focus: { value: '{colors.blue.400}' },
+        filled: { value: { _light: '{colors.gray.300}', _dark: '{colors.gray.600}' } },
+        readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
+        error: { value: '{colors.red.500}' },
+      },
+    },
+    field: {
+      placeholder: {
+        DEFAULT: { value: '{colors.gray.500}' },
+        disabled: { value: '{colors.gray.500/20}' },
+        error: { value: '{colors.red.500}' },
+      },
+    },
     text: {
       primary: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       secondary: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
+      error: { value: '{colors.red.500}' },
     },
     border: {
       divider: { value: { _light: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.200}' } },
+      error: { value: '{colors.red.500}' },
     },
     global: {
       body: {
