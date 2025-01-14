@@ -134,6 +134,8 @@ COPY --chmod=755 ./deploy/scripts/validate_envs.sh .
 COPY --chmod=755 ./deploy/scripts/make_envs_script.sh .
 ## Assets downloader
 COPY --chmod=755 ./deploy/scripts/download_assets.sh .
+## OG image generator
+COPY ./deploy/scripts/og_image_generator.js .
 ## Favicon generator
 COPY --chmod=755 ./deploy/scripts/favicon_generator.sh .
 COPY --from=builder /app/deploy/tools/favicon-generator ./deploy/tools/favicon-generator
