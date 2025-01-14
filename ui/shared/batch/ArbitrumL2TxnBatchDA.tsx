@@ -1,7 +1,9 @@
-import { Skeleton, Tag } from '@chakra-ui/react';
+import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ArbitrumL2TxnBatchesItem } from 'types/api/arbitrumL2';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 export interface Props {
   dataContainer: ArbitrumL2TxnBatchesItem['batch_data_container'];

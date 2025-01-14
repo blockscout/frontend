@@ -1,4 +1,4 @@
-import { Tr, Td, Box, Flex, Skeleton } from '@chakra-ui/react';
+import { Tr, Td, Box, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -6,6 +6,7 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import config from 'configs/app';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';

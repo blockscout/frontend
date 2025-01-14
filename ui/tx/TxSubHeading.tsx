@@ -94,7 +94,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
       return (
         <TxInterpretation
           summary={{
-            summary_template: `{sender_hash} called {method} on {receiver_hash}`,
+            summary_template: `{sender_hash} ${ txQuery.data.status === 'error' ? 'failed to call' : 'called' } {method} on {receiver_hash}`,
             summary_template_variables: {
               sender_hash: {
                 type: 'address',

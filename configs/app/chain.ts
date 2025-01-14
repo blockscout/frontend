@@ -1,7 +1,9 @@
 import type { RollupType } from 'types/client/rollup';
 import type { NetworkVerificationType, NetworkVerificationTypeEnvs } from 'types/networks';
 
-import { getEnvValue } from './utils';
+import { urlValidator } from 'ui/shared/forms/validators/url';
+
+import { getEnvValue, parseEnvJson } from './utils';
 
 const DEFAULT_CURRENCY_DECIMALS = 18;
 
@@ -15,6 +17,19 @@ const verificationType: NetworkVerificationType = (() => {
     return 'sequencing';
   }
   return getEnvValue('NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE') as NetworkVerificationTypeEnvs || 'mining';
+})();
+
+const rpcUrls = (() => {
+  const envValue = getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL');
+  const isUrl = urlValidator(envValue);
+
+  if (envValue && isUrl === true) {
+    return [ envValue ];
+  }
+
+  const parsedValue = parseEnvJson<Array<string>>(envValue);
+
+  return Array.isArray(parsedValue) ? parsedValue : [];
 })();
 
 const chain = Object.freeze({
@@ -32,7 +47,7 @@ const chain = Object.freeze({
   },
   hasMultipleGasCurrencies: getEnvValue('NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES') === 'true',
   tokenStandard: getEnvValue('NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME') || 'ERC',
-  rpcUrl: getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL'),
+  rpcUrls,
   isTestnet: getEnvValue('NEXT_PUBLIC_IS_TESTNET') === 'true',
   verificationType,
 });

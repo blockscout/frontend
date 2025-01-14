@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Link, Box, Tooltip, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Link, Box, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
@@ -20,6 +20,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
@@ -126,11 +127,11 @@ const BlockDetails = ({ query }: Props) => {
       </LinkInternal>
     );
 
-    const blockBlobTxsNum = (config.features.dataAvailability.isEnabled && data.blob_tx_count) ? (
+    const blockBlobTxsNum = (config.features.dataAvailability.isEnabled && data.blob_transaction_count) ? (
       <>
         <span> including </span>
         <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'blob_txs' } }) }>
-          { data.blob_tx_count } blob txn{ data.blob_tx_count === 1 ? '' : 's' }
+          { data.blob_transaction_count } blob txn{ data.blob_transaction_count === 1 ? '' : 's' }
         </LinkInternal>
       </>
     ) : null;
