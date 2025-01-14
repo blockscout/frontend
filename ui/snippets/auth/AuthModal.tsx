@@ -8,8 +8,8 @@ import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
-import { DialogBackdrop, DialogBody, DialogCloseTrigger, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
-import IconSvg from 'ui/shared/IconSvg';
+import { DialogBackdrop, DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
+import ButtonBackTo from 'ui/shared/buttons/ButtonBackTo';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';
 import AuthModalScreenEmail from './screens/AuthModalScreenEmail';
@@ -96,7 +96,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   }, [ isSuccess, onClose ]);
 
   const onModalOpenChange = React.useCallback(({ open }: { open: boolean }) => {
-    open && onClose();
+    !open && onClose();
   }, [ onClose ]);
 
   const header = (() => {
@@ -170,23 +170,13 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   return (
     <DialogRoot open onOpenChange={ onModalOpenChange } size={{ base: 'full', lg: 'sm' }}>
       <DialogBackdrop/>
-      <DialogContent p={ 6 } maxW={{ lg: '400px' }}>
-        <DialogHeader fontWeight="500" textStyle="h3" mb={ 2 } display="flex" alignItems="center" columnGap={ 2 }>
-          { steps.length > 1 && !steps[steps.length - 1].type.startsWith('success') && (
-            <IconSvg
-              name="arrows/east"
-              boxSize={ 6 }
-              transform="rotate(180deg)"
-              color="gray.400"
-              flexShrink={ 0 }
-              onClick={ onPrevStep }
-              cursor="pointer"
-            />
-          ) }
+      <DialogContent>
+        <DialogHeader
+          startElement={ steps.length > 1 && !steps[steps.length - 1].type.startsWith('success') && <ButtonBackTo onClick={ onPrevStep }/> }
+        >
           { header }
         </DialogHeader>
-        <DialogCloseTrigger top={ 6 } right={ 6 } color="gray.400"/>
-        <DialogBody mb={ 0 }>
+        <DialogBody>
           { content }
         </DialogBody>
       </DialogContent>

@@ -1,15 +1,16 @@
-import { chakra, Button, Text } from '@chakra-ui/react';
+import { chakra, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import type { EmailFormFields, Screen } from '../types';
 
-import { toaster } from 'toolkit/chakra/toaster';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import * as mixpanel from 'lib/mixpanel';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
 import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
@@ -79,16 +80,16 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         <Text>Account email, used for transaction notifications from your watchlist.</Text>
         <FormFieldEmail<EmailFormFields>
           name="email"
-          isRequired
+          required
           placeholder="Email"
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
           mt={ 6 }
         />
         <Button
           mt={ 6 }
           type="submit"
           disabled={ formApi.formState.isSubmitting }
-          isLoading={ formApi.formState.isSubmitting }
+          loading={ formApi.formState.isSubmitting }
           loadingText="Send a code"
         >
           Send a code

@@ -25,12 +25,13 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
         placeholder: ' ',
         size: props.size,
         floating: props.floating,
+        bgColor: rest.bgColor,
       });
 
       return (
         <ChakraField.Root pos="relative" w="full" ref={ ref } { ...rest }>
           { clonedChild }
-          <ChakraField.Label>
+          <ChakraField.Label bgColor={ rest.bgColor }>
             { label }
             <ChakraField.RequiredIndicator fallback={ optionalText }/>
             { errorText && (

@@ -40,6 +40,7 @@ const ChakraShowcases = () => {
             <Button visual="header">Header</Button>
             <Button visual="header" selected>Header selected</Button>
             <Button visual="header" selected highlighted>Header highlighted</Button>
+            <Button visual="link">Link</Button>
           </HStack>
         </section>
 
@@ -102,10 +103,10 @@ const ChakraShowcases = () => {
         <section>
           <Heading textStyle="heading.md" mb={ 2 }>Textarea</Heading>
           <HStack gap={ 4 }>
-            <Field label="Description" required floating size="xxl" w="400px">
+            <Field label="Description" required floating size="2xl" w="400px">
               <Textarea/>
             </Field>
-            <Field label="Description" required floating size="xxl" w="400px">
+            <Field label="Description" required floating size="2xl" w="400px">
               <Textarea value={ TEXT }/>
             </Field>
           </HStack>

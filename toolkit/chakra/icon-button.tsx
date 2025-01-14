@@ -12,8 +12,10 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         py="0"
         height="auto"
         minW="auto"
+        flexShrink="0"
         ref={ ref }
         { ...props }
+        visual={ props.visual ?? 'plain' }
       />
     );
   },

@@ -1,5 +1,7 @@
 import { recipe as alert } from './alert.recipe';
 import { recipe as button } from './button.recipe';
+import { recipe as closeButton } from './close-button.recipe';
+import { recipe as dialog } from './dialog.recipe';
 import { recipe as field } from './field.recipe';
 import { recipe as input } from './input.recipe';
 import { recipe as link } from './link.recipe';
@@ -14,6 +16,7 @@ import { recipe as tooltip } from './tooltip.recipe';
 
 export const recipes = {
   button,
+  closeButton,
   input,
   link,
   skeleton,
@@ -22,6 +25,7 @@ export const recipes = {
 
 export const slotRecipes = {
   alert,
+  dialog,
   field,
   popover,
   progressCircle,

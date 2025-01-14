@@ -51,6 +51,7 @@ export const recipe = defineSlotRecipe({
           bg: 'bg',
           top: '2px',
           left: '2px',
+          color: 'gray.500',
           width: 'calc(100% - 4px)',
           borderRadius: 'base',
           pointerEvents: 'none',
@@ -83,7 +84,7 @@ export const recipe = defineSlotRecipe({
         },
       },
       // special size for textarea
-      xxl: {
+      '2xl': {
         label: {
           fontSize: 'md',
         },
@@ -136,7 +137,7 @@ export const recipe = defineSlotRecipe({
       },
     },
     {
-      size: 'xxl',
+      size: '2xl',
       floating: true,
       css: {
         label: {

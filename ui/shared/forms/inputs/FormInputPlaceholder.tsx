@@ -9,6 +9,7 @@ interface Props {
   isFancy?: boolean;
 }
 
+// TODO @tom2drum remove this component
 const FormInputPlaceholder = ({ text, icon, error, isFancy }: Props) => {
   let errorMessage = error?.message;
 

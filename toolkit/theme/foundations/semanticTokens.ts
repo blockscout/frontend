@@ -140,7 +140,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     input: {
       fg: {
-        DEFAULT: { value: { _light: '{colors.blue.800}', _dark: '{colors.gray.50}' } },
+        DEFAULT: { value: { _light: '{colors.gray.800}', _dark: '{colors.gray.50}' } },
         error: { value: '{colors.text.error}' },
       },
       bg: {
@@ -163,6 +163,14 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         error: { value: '{colors.red.500}' },
       },
     },
+    dialog: {
+      bg: {
+        DEFAULT: { value: { _light: '{colors.white}', _dark: '{colors.gray.900}' } },
+      },
+      fg: {
+        DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+      },
+    },
     text: {
       primary: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       secondary: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
@@ -171,6 +179,9 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     border: {
       divider: { value: { _light: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.200}' } },
       error: { value: '{colors.red.500}' },
+    },
+    icon: {
+      backTo: { value: '{colors.gray.400}' },
     },
     global: {
       body: {

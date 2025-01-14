@@ -105,6 +105,16 @@ export const recipe = defineRecipe({
           bg: 'transparent',
         },
       },
+      link: {
+        bg: 'transparent',
+        color: 'link.primary',
+        border: 'none',
+        fontWeight: '400',
+        _hover: {
+          bg: 'transparent',
+          color: 'link.primary.hovered',
+        },
+      },
     },
     size: {
       xs: { px: 2, h: 6, fontSize: '12px' },

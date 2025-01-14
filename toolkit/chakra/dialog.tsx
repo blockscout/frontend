@@ -39,22 +39,37 @@ export const DialogCloseTrigger = React.forwardRef<
 >(function DialogCloseTrigger(props, ref) {
   return (
     <ChakraDialog.CloseTrigger
-      position="absolute"
-      top="2"
-      insetEnd="2"
       { ...props }
       asChild
     >
-      <CloseButton size="sm" ref={ ref }>
+      <CloseButton ref={ ref }>
         { props.children }
       </CloseButton>
     </ChakraDialog.CloseTrigger>
   );
 });
 
+export interface DialogHeaderProps extends ChakraDialog.HeaderProps {
+  startElement?: React.ReactNode;
+}
+
+export const DialogHeader = React.forwardRef<
+  HTMLDivElement,
+  DialogHeaderProps
+>(function DialogHeader(props, ref) {
+  const { startElement, ...rest } = props;
+
+  return (
+    <ChakraDialog.Header ref={ ref } { ...rest }>
+      { startElement }
+      <ChakraDialog.Title>{ props.children }</ChakraDialog.Title>
+      <DialogCloseTrigger ml="auto"/>
+    </ChakraDialog.Header>
+  );
+});
+
 export const DialogRoot = ChakraDialog.Root;
 export const DialogFooter = ChakraDialog.Footer;
-export const DialogHeader = ChakraDialog.Header;
 export const DialogBody = ChakraDialog.Body;
 export const DialogBackdrop = ChakraDialog.Backdrop;
 export const DialogTitle = ChakraDialog.Title;

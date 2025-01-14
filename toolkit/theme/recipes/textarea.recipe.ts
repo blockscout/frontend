@@ -20,7 +20,7 @@ export const recipe = defineRecipe({
   },
   variants: {
     size: {
-      xxl: {
+      '2xl': {
         textStyle: 'md',
         px: '6',
         py: '4',
@@ -76,7 +76,7 @@ export const recipe = defineRecipe({
   },
 
   defaultVariants: {
-    size: 'xxl',
+    size: '2xl',
     variant: 'outline',
   },
 });

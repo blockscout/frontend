@@ -1,6 +1,5 @@
-import type { ChakraProps } from '@chakra-ui/react';
 import React from 'react';
-import type { FieldValues, Path } from 'react-hook-form';
+import type { FieldValues } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
 import type { PartialBy } from 'types/utils';
@@ -28,9 +27,4 @@ const FormFieldEmail = <FormFields extends FieldValues>(
   );
 };
 
-export type WrappedComponent = <
-  FormFields extends FieldValues,
-  Name extends Path<FormFields> = Path<FormFields>,
->(props: PartialBy<FormFieldPropsBase<FormFields, Name>, 'placeholder'> & ChakraProps) => React.JSX.Element;
-
-export default React.memo(FormFieldEmail) as WrappedComponent;
+export default React.memo(FormFieldEmail) as typeof FormFieldEmail;
