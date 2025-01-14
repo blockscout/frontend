@@ -45,7 +45,7 @@ if (process.env.NEXT_PUBLIC_OG_IMAGE_URL) {
 
     console.log('⏳ Making request to OG image generator service...');
 
-    const response = await fetch('http://localhost:3003/generate/og', {
+    const response = await fetch('https://bigs.services.blockscout.com/generate/og', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -61,9 +61,13 @@ if (process.env.NEXT_PUBLIC_OG_IMAGE_URL) {
     } else {
       const payload = response.headers.get('Content-type')?.includes('application/json') ? await response.json() : await response.text();
       console.error('🛑 Failed to generate OG image. Response:', payload);
+      console.log('Copying placeholder image...');
+      copyPlaceholderImage();
     }
   } catch (error) {
     console.error('🛑 Failed to generate OG image. Error:', error?.message);
+    console.log('Copying placeholder image...');
+    copyPlaceholderImage();
   }
 }
 
