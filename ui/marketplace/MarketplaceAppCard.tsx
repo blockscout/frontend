@@ -1,4 +1,4 @@
-import { IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue, chakra, Flex } from '@chakra-ui/react';
+import { IconButton, Image, Link, LinkBox, useColorModeValue, chakra, Flex } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -6,6 +6,7 @@ import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } f
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import isBrowser from 'lib/isBrowser';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import AppSecurityReport from './AppSecurityReport';

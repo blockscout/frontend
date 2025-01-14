@@ -1,10 +1,11 @@
-import { Tr, Td, Text, Skeleton } from '@chakra-ui/react';
+import { Tr, Td, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 type Props = {

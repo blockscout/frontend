@@ -1,10 +1,11 @@
-import { Skeleton, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { ZkEvmL2WithdrawalsItem } from 'types/api/zkEvmL2';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';

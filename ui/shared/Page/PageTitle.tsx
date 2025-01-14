@@ -1,9 +1,10 @@
-import { Heading, Flex, Tooltip, Link, chakra, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Heading, Flex, Tooltip, Link, chakra, useDisclosure } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import TextAd from 'ui/shared/ad/TextAd';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 

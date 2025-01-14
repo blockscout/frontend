@@ -1,4 +1,4 @@
-import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl, Alert, Skeleton, Divider } from '@chakra-ui/react';
+import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl, Alert, Divider } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
@@ -7,6 +7,7 @@ import { useRewardsContext } from 'lib/contexts/rewards';
 import * as cookies from 'lib/cookies';
 import { apos } from 'lib/html-entities';
 import useWallet from 'lib/web3/useWallet';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';

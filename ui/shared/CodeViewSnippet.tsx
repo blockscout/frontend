@@ -1,6 +1,7 @@
-import { Box, chakra, Flex, Skeleton } from '@chakra-ui/react';
+import { Box, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CodeEditor from 'ui/shared/monaco/CodeEditor';
 

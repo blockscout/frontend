@@ -118,8 +118,10 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
   }, [ rpcQuery.data, rpcQuery.isPlaceholderData ]);
 
   const isRpcQuery = Boolean(
+
     (apiQuery.isError || apiQuery.isPlaceholderData) &&
     !(apiQuery.error?.status && NO_RPC_FALLBACK_ERROR_CODES.includes(apiQuery.error?.status)) &&
+    !NO_RPC_FALLBACK_ERROR_CODES.includes(apiQuery.error?.status ?? 999) &&
     apiQuery.errorUpdateCount > 0 &&
     rpcQuery.data &&
     publicClient,

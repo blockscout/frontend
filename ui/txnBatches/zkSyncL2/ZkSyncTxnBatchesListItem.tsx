@@ -1,4 +1,4 @@
-import { Skeleton, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
@@ -6,6 +6,7 @@ import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/links/LinkInternal';

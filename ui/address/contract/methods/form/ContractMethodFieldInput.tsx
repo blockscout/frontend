@@ -28,7 +28,9 @@ interface Props {
 }
 
 const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDisabled, isOptional: isOptionalProp, level }: Props) => {
-  const ref = React.useRef<HTMLInputElement>(null);
+  const ref = React.useRef<HTMLInputElement>();
+
+  const [ intPower, setIntPower ] = React.useState<number>(18);
 
   const isNativeCoin = data.fieldType === 'native_coin';
   const isOptional = isOptionalProp || isNativeCoin;
@@ -45,6 +47,8 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
   const nativeCoinRowBgColor = useColorModeValue('gray.100', 'gray.700');
 
   const hasMultiplyButton = argTypeMatchInt && Number(argTypeMatchInt.power) >= 64;
+
+  React.useImperativeHandle(field.ref, () => ref.current);
 
   const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const formattedValue = format(event.target.value);
@@ -83,6 +87,42 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
     setValue(name, newValue, { shouldValidate: true });
   }, [ format, name, setValue ]);
 
+  const handlePaste = React.useCallback((event: React.ClipboardEvent<HTMLInputElement>) => {
+    if (!argTypeMatchInt || !hasMultiplyButton) {
+      return;
+    }
+
+    const value = Number(event.clipboardData.getData('text'));
+
+    if (Object.is(value, NaN)) {
+      return;
+    }
+
+    const isFloat = Number.isFinite(value) && !Number.isInteger(value);
+
+    if (!isFloat) {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (field.value) {
+      return;
+    }
+
+    const newValue = value * 10 ** intPower;
+    const formattedValue = format(newValue.toString());
+
+    field.onChange(formattedValue);
+    setValue(name, formattedValue, { shouldValidate: true });
+    window.setTimeout(() => {
+      // move cursor to the end of the input
+      // but we have to wait for the input to get the new value
+      const END_OF_INPUT = 100;
+      ref.current?.setSelectionRange(END_OF_INPUT, END_OF_INPUT);
+    }, 100);
+  }, [ argTypeMatchInt, hasMultiplyButton, intPower, format, field, setValue, name ]);
+
   const error = fieldState.error;
 
   return (
@@ -107,9 +147,14 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
               thousandSeparator: ' ',
               decimalScale: 0,
               allowNegative: !argTypeMatchInt.isUnsigned,
+              getInputRef: (element: HTMLInputElement) => {
+                ref.current = element;
+              },
             } : {}) }
-            ref={ ref }
+            // as we use mutable ref, we have to cast it to React.LegacyRef<HTMLInputElement> to trick chakra and typescript
+            ref={ ref as React.LegacyRef<HTMLInputElement> | undefined }
             onChange={ handleChange }
+            onPaste={ handlePaste }
             required={ !isOptional }
             isInvalid={ Boolean(error) }
             placeholder={ data.type }
@@ -148,7 +193,14 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
                 Max
               </Button>
             )) }
-            { hasMultiplyButton && <ContractMethodMultiplyButton onClick={ handleMultiplyButtonClick } isDisabled={ isDisabled }/> }
+            { hasMultiplyButton && (
+              <ContractMethodMultiplyButton
+                onClick={ handleMultiplyButtonClick }
+                isDisabled={ isDisabled }
+                initialValue={ intPower }
+                onChange={ setIntPower }
+              />
+            ) }
           </InputRightElement>
         </InputGroup>
         { error && <Box color="error" fontSize="sm" lineHeight={ 5 } mt={ 1 }>{ error.message }</Box> }

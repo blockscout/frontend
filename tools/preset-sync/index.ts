@@ -41,6 +41,7 @@ const LOCAL_ENVS = {
 const IGNORED_ENVS = [
   'NEXT_PUBLIC_GIT_COMMIT_SHA',
   'NEXT_PUBLIC_GIT_TAG',
+  'NEXT_PUBLIC_ICON_SPRITE_HASH',
 ];
 
 function parseScriptArgs() {

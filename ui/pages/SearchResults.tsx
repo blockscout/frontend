@@ -1,4 +1,4 @@
-import { Box, chakra, Table, Tbody, Tr, Th, Skeleton, Show, Hide } from '@chakra-ui/react';
+import { Box, chakra, Table, Tbody, Tr, Th, Show, Hide } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
@@ -16,6 +16,7 @@ import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as Layout from 'ui/shared/layout/components';

@@ -2,7 +2,6 @@ import {
   chakra,
   Flex,
   IconButton,
-  Skeleton,
   Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -14,6 +13,7 @@ import type { TimeChartItem } from './types';
 import { route, type Route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChartMenu from './ChartMenu';
