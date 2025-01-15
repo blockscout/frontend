@@ -1,12 +1,14 @@
-import { Flex, Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Flex, Td, Tr } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
+import getItemIndex from 'lib/getItemIndex';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -18,8 +20,6 @@ type Props = {
   page: number;
   isLoading?: boolean;
 };
-
-const PAGE_SIZE = 50;
 
 const bridgedTokensFeature = config.features.bridgedTokens;
 
@@ -70,7 +70,7 @@ const TokensTableItem = ({
             mr={ 3 }
             minW="28px"
           >
-            { (page - 1) * PAGE_SIZE + index + 1 }
+            { getItemIndex(index, page) }
           </Skeleton>
           <Flex overflow="hidden" flexDir="column" rowGap={ 2 }>
             <TokenEntity

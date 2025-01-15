@@ -47,6 +47,9 @@ export default function useFetch() {
     };
 
     return fetch(path, reqParams).then(response => {
+
+      const isJson = response.headers.get('content-type')?.includes('application/json');
+
       if (!response.ok) {
         const error = {
           status: response.status,
@@ -61,6 +64,16 @@ export default function useFetch() {
           });
         }
 
+        if (!isJson) {
+          return response.text().then(
+            (textError) => Promise.reject({
+              payload: textError,
+              status: response.status,
+              statusText: response.statusText,
+            }),
+          );
+        }
+
         return response.json().then(
           (jsonError) => Promise.reject({
             payload: jsonError as Error,
@@ -73,7 +86,11 @@ export default function useFetch() {
         );
 
       } else {
-        return response.json() as Promise<Success>;
+        if (isJson) {
+          return response.json() as Promise<Success>;
+        }
+
+        return Promise.resolve() as Promise<Success>;
       }
     });
   }, [ rollbar ]);

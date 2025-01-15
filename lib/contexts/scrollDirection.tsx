@@ -1,5 +1,4 @@
-import clamp from 'lodash/clamp';
-import throttle from 'lodash/throttle';
+import { throttle, clamp } from 'es-toolkit';
 import React from 'react';
 
 const ScrollDirectionContext = React.createContext<'up' | 'down' | null>(null);

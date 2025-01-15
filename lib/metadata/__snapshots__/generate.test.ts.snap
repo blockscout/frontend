@@ -29,10 +29,10 @@ exports[`generates correct metadata for: dynamic route with API data 1`] = `
 exports[`generates correct metadata for: static route 1`] = `
 {
   "canonical": "http://localhost:3000/txs",
-  "description": "Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.",
+  "description": "Open-source block explorer by Blockscout. Search transactions, verify smart contracts, analyze addresses, and track network activity. Complete blockchain data and APIs for the Blockscout (Blockscout) Explorer network.",
   "opengraph": {
     "description": "",
-    "imageUrl": "http://localhost:3000/static/og_placeholder.png",
+    "imageUrl": "http://localhost:3000/static/og_image.png",
     "title": "Blockscout transactions - Blockscout explorer | Blockscout",
   },
   "title": "Blockscout transactions - Blockscout explorer | Blockscout",

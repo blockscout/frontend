@@ -3,7 +3,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Skeleton,
   useClipboard,
   useColorModeValue,
   VisuallyHidden,
@@ -18,6 +17,7 @@ import dayjs from 'lib/date/dayjs';
 import isBrowser from 'lib/isBrowser';
 import saveAsCSV from 'lib/saveAsCSV';
 import Menu from 'ui/shared/chakra/Menu';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import FullscreenChartModal from './FullscreenChartModal';

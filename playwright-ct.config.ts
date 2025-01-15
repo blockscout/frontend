@@ -78,10 +78,13 @@ const config: PlaywrightTestConfig = defineConfig({
           // Mock for growthbook to test feature flags
           { find: 'lib/growthbook/useFeatureValue', replacement: './playwright/mocks/lib/growthbook/useFeatureValue.js' },
 
+          // Mock for reCaptcha hook
+          { find: 'ui/shared/reCaptcha/useReCaptcha', replacement: './playwright/mocks/ui/shared/recaptcha/useReCaptcha.js' },
+
           // The createWeb3Modal() function from web3modal/wagmi/react somehow pollutes the global styles which causes the tests to fail
           // We don't call this function in TestApp and since we use useWeb3Modal() and useWeb3ModalState() hooks in the code, we have to mock the module
           // Otherwise it will complain that createWeb3Modal() is no called before the hooks are used
-          { find: /^@web3modal\/wagmi\/react$/, replacement: './playwright/mocks/modules/@web3modal/wagmi/react.js' },
+          { find: /^@reown\/appkit\/react$/, replacement: './playwright/mocks/modules/@reown/appkit/react.js' },
 
           { find: '/playwright/index.ts', replacement: './playwright/index.ts' },
           { find: '/playwright/envs.js', replacement: './playwright/envs.js' },

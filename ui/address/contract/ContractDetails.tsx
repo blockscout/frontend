@@ -24,6 +24,7 @@ import ContractDetailsInfo from './info/ContractDetailsInfo';
 import useContractDetailsTabs from './useContractDetailsTabs';
 
 const TAB_LIST_PROPS = { flexWrap: 'wrap', rowGap: 2 };
+const LEFT_SLOT_PROPS = { w: { base: '100%', lg: 'auto' } };
 
 type Props = {
   addressHash: string;
@@ -117,6 +118,7 @@ const ContractDetails = ({ addressHash, channel, mainContractQuery }: Props) => 
           size="sm"
           leftSlot={ addressSelector }
           tabListProps={ TAB_LIST_PROPS }
+          leftSlotProps={ LEFT_SLOT_PROPS }
         />
       ) : (
         <>

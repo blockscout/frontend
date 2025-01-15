@@ -1,11 +1,13 @@
-import { Tr, Td, Flex, chakra, Tooltip, Skeleton } from '@chakra-ui/react';
+import { Tr, Td, Flex, chakra, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
 
 import config from 'configs/app';
+import formatLanguageName from 'lib/contracts/formatLanguageName';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -65,7 +67,7 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
       </Td>
       <Td>
         <Flex flexWrap="wrap" columnGap={ 2 }>
-          <Skeleton isLoaded={ !isLoading } textTransform="capitalize" my={ 1 }>{ data.language }</Skeleton>
+          <Skeleton isLoaded={ !isLoading } my={ 1 }>{ formatLanguageName(data.language) }</Skeleton>
           { data.compiler_version && (
             <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all" my={ 1 } cursor="pointer">
               <Tooltip label={ data.compiler_version }>

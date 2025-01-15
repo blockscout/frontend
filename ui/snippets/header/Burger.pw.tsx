@@ -1,7 +1,7 @@
 import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
-import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
+import { FEATURED_NETWORKS } from 'mocks/config/network';
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { test, expect, devices } from 'playwright/lib';
 
@@ -24,7 +24,7 @@ test.beforeEach(async({ mockEnvs, mockConfigResponse, mockAssetResponse }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS_MOCK);
+  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS);
   await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
 });
 

@@ -1,9 +1,10 @@
-import { Box, Flex, Text, Skeleton, useColorModeValue, chakra } from '@chakra-ui/react';
+import { Box, Flex, Text, useColorModeValue, chakra } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Hint from 'ui/shared/Hint';
 import IconSvg, { type IconName } from 'ui/shared/IconSvg';
 import TruncatedValue from 'ui/shared/TruncatedValue';

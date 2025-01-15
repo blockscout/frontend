@@ -11,27 +11,33 @@ RUN ln -sf /usr/bin/python3 /usr/bin/python
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN apk add git
-RUN yarn --frozen-lockfile
+RUN yarn --frozen-lockfile --network-timeout 100000
 
 
 ### FEATURE REPORTER
 # Install dependencies
 WORKDIR /feature-reporter
 COPY ./deploy/tools/feature-reporter/package.json ./deploy/tools/feature-reporter/yarn.lock ./
-RUN yarn --frozen-lockfile
+RUN yarn --frozen-lockfile --network-timeout 100000
 
 
 ### ENV VARIABLES CHECKER
 # Install dependencies
 WORKDIR /envs-validator
 COPY ./deploy/tools/envs-validator/package.json ./deploy/tools/envs-validator/yarn.lock ./
-RUN yarn --frozen-lockfile
+RUN yarn --frozen-lockfile --network-timeout 100000
 
 ### FAVICON GENERATOR
 # Install dependencies
 WORKDIR /favicon-generator
 COPY ./deploy/tools/favicon-generator/package.json ./deploy/tools/favicon-generator/yarn.lock ./
-RUN yarn --frozen-lockfile
+RUN yarn --frozen-lockfile --network-timeout 100000
+
+### SITEMAP GENERATOR
+# Install dependencies
+WORKDIR /sitemap-generator
+COPY ./deploy/tools/sitemap-generator/package.json ./deploy/tools/sitemap-generator/yarn.lock ./
+RUN yarn --frozen-lockfile --network-timeout 100000
 
 
 # *****************************
@@ -56,9 +62,11 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Generate .env.registry with ENVs list and save build args into .env file
-COPY --chmod=755 ./deploy/scripts/collect_envs.sh ./
-RUN ./collect_envs.sh ./docs/ENVS.md
+# Build SVG sprite and generate .env.registry with ENVs list and save build args into .env file
+RUN set -a && \
+    source ./deploy/scripts/build_sprite.sh && \
+    ./deploy/scripts/collect_envs.sh ./docs/ENVS.md && \
+    set +a
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -66,7 +74,6 @@ RUN ./collect_envs.sh ./docs/ENVS.md
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 # Build app for production
-RUN yarn svg:build-sprite
 RUN yarn build
 
 
@@ -86,6 +93,12 @@ RUN cd ./deploy/tools/envs-validator && yarn build
 ### FAVICON GENERATOR
 # Copy dependencies and source code
 COPY --from=deps /favicon-generator/node_modules ./deploy/tools/favicon-generator/node_modules
+
+
+### SITEMAP GENERATOR
+# Copy dependencies and source code
+COPY --from=deps /sitemap-generator/node_modules ./deploy/tools/sitemap-generator/node_modules
+
 
 # *****************************
 # ******* STAGE 3: Run ********
@@ -121,11 +134,16 @@ COPY --chmod=755 ./deploy/scripts/validate_envs.sh .
 COPY --chmod=755 ./deploy/scripts/make_envs_script.sh .
 ## Assets downloader
 COPY --chmod=755 ./deploy/scripts/download_assets.sh .
+## OG image generator
+COPY ./deploy/scripts/og_image_generator.js .
 ## Favicon generator
 COPY --chmod=755 ./deploy/scripts/favicon_generator.sh .
 COPY --from=builder /app/deploy/tools/favicon-generator ./deploy/tools/favicon-generator
 RUN ["chmod", "-R", "777", "./deploy/tools/favicon-generator"]
 RUN ["chmod", "-R", "777", "./public"]
+## Sitemap generator
+COPY --chmod=755 ./deploy/scripts/sitemap_generator.sh .
+COPY --from=builder /app/deploy/tools/sitemap-generator ./deploy/tools/sitemap-generator
 
 # Copy ENVs files
 COPY --from=builder /app/.env.registry .

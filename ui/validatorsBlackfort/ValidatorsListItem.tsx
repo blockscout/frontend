@@ -1,4 +1,4 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -6,6 +6,7 @@ import type { ValidatorBlackfort } from 'types/api/validators';
 
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TruncatedValue from 'ui/shared/TruncatedValue';

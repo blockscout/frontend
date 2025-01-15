@@ -47,10 +47,36 @@ export const contract2: VerifiedContract = {
   license_type: 'bsd_3_clause',
 };
 
+export const contract3: VerifiedContract = {
+  address: {
+    ens_domain_name: null,
+    hash: '0xf145e3A26c6706F64d95Dc8d9d45022D8b3D676B',
+    implementations: [],
+    is_contract: true,
+    is_verified: true,
+    metadata: null,
+    name: 'StylusTestToken',
+    private_tags: [],
+    public_tags: [],
+    watchlist_names: [],
+  },
+  certified: false,
+  coin_balance: '0',
+  compiler_version: 'v0.5.6',
+  has_constructor_args: false,
+  language: 'stylus_rust',
+  license_type: 'none',
+  market_cap: null,
+  optimization_enabled: false,
+  transaction_count: 0,
+  verified_at: '2024-12-03T14:05:42.796224Z',
+};
+
 export const baseResponse: VerifiedContractsResponse = {
   items: [
     contract1,
     contract2,
+    contract3,
   ],
   next_page_params: {
     items_count: '50',

@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
-import _pickBy from 'lodash/pickBy';
+import { pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { FormSubmitResultGrouped } from '../types';
@@ -23,7 +23,7 @@ const PublicTagsSubmitResultWithErrors = ({ data }: Props) => {
     <Flex flexDir="column" rowGap={ 3 }>
       { data.items.map((item, index) => {
 
-        const startOverButtonQuery = _pickBy({
+        const startOverButtonQuery = pickBy({
           addresses: item.addresses,
           requesterName: data.requesterName,
           requesterEmail: data.requesterEmail,

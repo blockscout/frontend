@@ -13,7 +13,7 @@ import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import type { AddressProfileAPIConfig } from '../../../types/client/addressProfileAPIConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders, AdBannerAdditionalProviders } from '../../../types/client/adProviders';
-import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type ContractCodeIde, type SmartContractVerificationMethodExtra } from '../../../types/client/contract';
+import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, SMART_CONTRACT_LANGUAGE_FILTERS, type ContractCodeIde, type SmartContractVerificationMethodExtra } from '../../../types/client/contract';
 import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
 import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
@@ -42,6 +42,7 @@ import type { BlockFieldId } from '../../../types/views/block';
 import type { NftMarketplaceItem } from '../../../types/views/nft';
 import type { TxAdditionalFieldsId, TxFieldsId } from '../../../types/views/tx';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from '../../../types/views/tx';
+import type { VerifiedContractsFilter } from '../../../types/api/contracts';
 
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../lib/regexp';
@@ -586,7 +587,21 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_NAME: yup.string().required(),
     NEXT_PUBLIC_NETWORK_SHORT_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_ID: yup.number().positive().integer().required(),
-    NEXT_PUBLIC_NETWORK_RPC_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_NETWORK_RPC_URL: yup
+    .mixed()
+    .test(
+      'shape',
+      'Invalid schema were provided for NEXT_PUBLIC_NETWORK_RPC_URL, it should be either array of URLs or URL string',
+      (data) => {
+        const isUrlSchema = yup.string().test(urlTest);
+        const isArrayOfUrlsSchema = yup
+          .array()
+          .transform(replaceQuotes)
+          .json()
+          .of(yup.string().test(urlTest));
+
+        return isUrlSchema.isValidSync(data) || isArrayOfUrlsSchema.isValidSync(data);
+      }),
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: yup.string(),
@@ -720,6 +735,12 @@ const schema = yup
 
           return isNoneSchema.isValidSync(data) || isArrayOfMethodsSchema.isValidSync(data);
         }),
+    NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<VerifiedContractsFilter>().oneOf(SMART_CONTRACT_LANGUAGE_FILTERS)),
+
     NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS: yup
       .array()
       .transform(replaceQuotes)
@@ -838,6 +859,7 @@ const schema = yup
     NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
     NEXT_PUBLIC_GAS_TRACKER_UNITS: yup.array().transform(replaceQuotes).json().of(yup.string<GasUnit>().oneOf(GAS_UNITS)),
     NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_ADVANCED_FILTER_ENABLED: yup.boolean(),
     NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: yup
       .array()
       .transform(replaceQuotes)
@@ -863,6 +885,16 @@ const schema = yup
           value => value === undefined,
         ),
       }),
+    NEXT_PUBLIC_DEX_POOLS_ENABLED: yup.boolean()
+      .when('NEXT_PUBLIC_CONTRACT_INFO_API_HOST', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_DEX_POOLS_ENABLED can only be used with NEXT_PUBLIC_CONTRACT_INFO_API_HOST',
+          value => value === undefined,
+        ),
+      }),
     NEXT_PUBLIC_SAVE_ON_GAS_ENABLED: yup.boolean(),
     NEXT_PUBLIC_ADDRESS_USERNAME_TAG: yup
       .mixed()
@@ -880,11 +912,12 @@ const schema = yup
       }),
     NEXT_PUBLIC_REWARDS_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_XSTAR_SCORE_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK: yup.string().test(urlTest),
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),
-    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(), // DEPRECATED
-    NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY: yup.string(),
+    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(),
+    NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY: yup.string(), // DEPRECATED
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),

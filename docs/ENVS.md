@@ -29,6 +29,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 - [App features](ENVS.md#app-features)
   - [My account](ENVS.md#my-account)
   - [Gas tracker](ENVS.md#gas-tracker)
+  - [Advanced filter](ENVS.md#advanced-filter)
   - [Address verification](ENVS.md#address-verification-in-my-account) in "My account"
   - [Blockchain interaction](ENVS.md#blockchain-interaction-writing-to-contract-etc) (writing to contract, etc.)
   - [Banner ads](ENVS.md#banner-ads)
@@ -67,6 +68,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Get gas button](ENVS.md#get-gas-button)
   - [Save on gas with GasHawk](ENVS.md#save-on-gas-with-gashawk)
   - [Rewards service API](ENVS.md#rewards-service-api)
+  - [DEX pools](ENVS.md#dex-pools)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -93,7 +95,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_NETWORK_NAME | `string` | Displayed name of the network | Required | - | `Gnosis Chain` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_SHORT_NAME | `string` | Used for SEO attributes (e.g, page description) | - | -  | `OoG` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org](https://chainlist.org) for the reference | Required | -  | `99` | v1.0.x+ |
-| NEXT_PUBLIC_NETWORK_RPC_URL | `string` | Chain public RPC server url, see [https://chainlist.org](https://chainlist.org) for the reference | - | - | `https://core.poa.network` | v1.0.x+ |
+| NEXT_PUBLIC_NETWORK_RPC_URL | `string \| Array<string>` | Chain public RPC server url, see [https://chainlist.org](https://chainlist.org) for the reference. Can contain a single string value, or an array of urls. | - | - | `https://core.poa.network` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | - | - | `Ether` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME | `string` | Name of network currency subdenomination | - | `wei` | `duck` | v1.23.0+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | - | - | `ETH` | v1.0.x+ |
@@ -205,7 +207,7 @@ Settings for meta tags, OG tags and SEO
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE | `boolean` | Set to `true` to promote Blockscout in meta and OG titles | - | `true` | `true` | v1.12.0+ |
-| NEXT_PUBLIC_OG_DESCRIPTION | `string` | Custom OG description | - | - | `Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.` | v1.12.0+ |
+| NEXT_PUBLIC_OG_DESCRIPTION | `string` | Custom OG description | - | - | `Open-source block explorer by Blockscout. Search transactions, verify smart contracts, analyze addresses, and track network activity. Complete blockchain data and APIs for the %network_title% network.` | v1.12.0+ |
 | NEXT_PUBLIC_OG_IMAGE_URL | `string` | OG image url. Minimum image size is 200 x 20 pixels (recommended: 1200 x 600); maximum supported file size is 8 MB; 2:1 aspect ratio; supported formats: image/jpeg, image/gif, image/png | - | `static/og_placeholder.png` | `https://placekitten.com/1200/600` | v1.12.0+ |
 | NEXT_PUBLIC_OG_ENHANCED_DATA_ENABLED | `boolean` | Set to `true` to populate OG tags (title, description) with API data for social preview robot requests | - | `false` | `true` | v1.29.0+ |
 | NEXT_PUBLIC_SEO_ENHANCED_DATA_ENABLED | `boolean` | Set to `true` to pre-render page titles (e.g Token page) on the server side and inject page h1-tag to the markup before it is sent to the browser. | - | `false` | `true` | v1.30.0+ |
@@ -238,12 +240,13 @@ Settings for meta tags, OG tags and SEO
 
 | Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE | `"github" \| "jazzicon" \| "gradient_avatar" \| "blockie"` | Default style of address identicon appearance. Choose between [GitHub](https://github.blog/2013-08-14-identicons/), [Metamask Jazzicon](https://metamask.github.io/jazzicon/), [Gradient Avatar](https://github.com/varld/gradient-avatar) and [Ethereum Blocky](https://mycryptohq.github.io/ethereum-blockies-base64/) | - | `jazzicon` | `gradient_avatar` | v1.12.0+ |
+| NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE | `"github" \| "jazzicon" \| "gradient_avatar" \| "blockie" \| "nouns"` | Default style of address identicon appearance. Choose between [GitHub](https://github.blog/2013-08-14-identicons/), [Metamask Jazzicon](https://metamask.github.io/jazzicon/), [Gradient Avatar](https://github.com/varld/gradient-avatar), [Ethereum Blocky](https://mycryptohq.github.io/ethereum-blockies-base64/) and [Nouns](https://nouns.wtf) | - | `jazzicon` | `gradient_avatar` | v1.12.0+ |
 | NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT | `Array<"base16" \| "bech32">` | Displayed address format, could be either `base16` standard or [`bech32`](https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#bech32) standard. If the array contains multiple values, the address format toggle will appear in the UI, allowing the user to switch between formats. The first item in the array will be the default format. | - | `'["base16"]'` | `'["bech32", "base16"]'` | v1.36.0+ |
 | NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX | `string` | Human-readable prefix of `bech32` address format. | Required, if `NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT` contains "bech32" value | - | `duck` | v1.36.0+ |
 | NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS | `Array<AddressViewId>` | Address views that should not be displayed. See below the list of the possible id values.  | - | - | `'["top_accounts"]'` | v1.15.0+ |
 | NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED | `boolean` | Set to `true` if SolidityScan reports are supported | - | - | `true` | v1.19.0+ |
 | NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS | `Array<'solidity-hardhat' \| 'solidity-foundry'>` | Pass an array of additional methods from which users can choose while verifying a smart contract. Both methods are available by default, pass `'none'` string to disable them all. | - | - | `['solidity-hardhat']` | v1.33.0+ |
+| NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS | `Array<'solidity' \| 'vyper' \| 'yul' \| 'scilla'>` | Pass an array of contract languages that will be displayed as options in the filter on the verified contract page. | - | `['solidity','vyper','yul']` | `['solidity','vyper','yul','scilla']` | v1.37.0+ |
 
 ##### Address views list
 | Id | Description |
@@ -349,7 +352,7 @@ Settings for meta tags, OG tags and SEO
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
-| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `boolean` | See [below](ENVS.md#google-recaptcha) | Required | - | `<your-secret>` | v1.36.0+ |
+| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `boolean` | See [below](ENVS.md#google-recaptcha) | Required | - | `<your-secret>` | v1.0.x+ |
 | NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | **DEPRECATED** Client id for [Auth0](https://auth0.com/) provider | - | - | `<your-secret>` | v1.0.x+ |
 | NEXT_PUBLIC_AUTH_URL | `string` | **DEPRECATED** Account auth base url; it is used for building login URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/auth0`) and logout return URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/logout`); if not provided the base app URL will be used instead | - | - | `https://blockscout.com` | v1.0.x+ |
 | NEXT_PUBLIC_LOGOUT_URL | `string` | **DEPRECATED** Account logout url. Required if account is supported for the app instance. | - | - | `https://blockscoutcom.us.auth0.com/v2/logout` | v1.0.x+ |
@@ -364,6 +367,16 @@ This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_GAS_T
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_GAS_TRACKER_ENABLED | `boolean` | Set to true to enable "Gas tracker" in the app | Required | `true` | `false` | v1.25.0+ |
 | NEXT_PUBLIC_GAS_TRACKER_UNITS | Array<`usd` \| `gwei`> | Array of units for displaying gas prices on the Gas Tracker page, in the stats snippet on the Home page, and in the top bar. The first value in the array will take priority over the second one in all mentioned views. If only one value is provided, gas prices will be displayed only in that unit. | - | `[ 'usd', 'gwei' ]` | `[ 'gwei' ]` | v1.25.0+ |
+
+&nbsp;
+
+### Advanced filter
+
+This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_ADVANCED_FILTER_ENABLED=false`.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_ADVANCED_FILTER_ENABLED | `boolean` | Set to true to enable "Advanced filter" page in the app | Required | `true` | `false` | v1.37.0+ |
 
 &nbsp;
 
@@ -443,7 +456,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | NEXT_PUBLIC_FAULT_PROOF_ENABLED | `boolean` | Set to `true` for chains with fault proof system enabled (Optimistic stack only) | - | - | `true` | v1.31.0+ |
 | NEXT_PUBLIC_HAS_MUD_FRAMEWORK | `boolean` | Set to `true` for instances that use MUD framework (Optimistic stack only) | - | - | `true` | v1.33.0+ |
 | NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS | `boolean` | Set to `true` to display "Latest blocks" widget instead of "Latest batches" on the home page | - | - | `true` | v1.36.0+ |
-| NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED | `boolean` | Enables "Output roots" page (Optimistic stack only)  | - | `true` | `false` | v1.37.0+ |
+| NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED | `boolean` | Enables "Output roots" page (Optimistic stack only)  | - | `false` | `true` | v1.37.0+ |
 | NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME | `string` | Set to customize L1 transaction status labels in the UI (e.g., "Sent to <chain-name>"). This setting is applicable only for Arbitrum-based chains.  | - | - | `DuckChain` | v1.37.0+ |
 
 &nbsp;
@@ -452,7 +465,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | See [below](ENVS.md#google-recaptcha) | true | - | `<your-secret>` | v1.36.0+ |
+| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | See [below](ENVS.md#google-recaptcha) | true | - | `<your-secret>` | v1.0.x+ |
 
 &nbsp;
 
@@ -614,6 +627,7 @@ This feature allows you to submit an application with a public address tag.
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_METADATA_SERVICE_API_HOST | `string` | Metadata Service API endpoint url | Required | - | `https://metadata.services.blockscout.com` | v1.30.0+ |
 | NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url | Required | - | `https://admin-rs.services.blockscout.com` | v1.1.0+ |
+| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | See [below](ENVS.md#google-recaptcha) | true | - | `<your-secret>` | v1.0.x+ |
 
 &nbsp;
 
@@ -840,6 +854,25 @@ This feature enables Blockscout Merits program. It requires that the [My account
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_REWARDS_SERVICE_API_HOST | `string` | API URL | - | - | `https://example.com` | v1.36.0+ |
 
+&nbsp;
+
+### DEX pools
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_DEX_POOLS_ENABLED | `boolean` | Set to true to enable the feature | Required | - | `true` | v1.37.0+ |
+| NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` | v1.0.x+ |
+
+&nbsp;
+
+### Badge claim link
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK | `string` | Provide to enable the easter egg badge feature | - | - | `https://example.com` | v1.37.0+ |
+
+&nbsp;
+
 ## External services configuration
 
 ### Google ReCaptcha
@@ -848,5 +881,5 @@ For obtaining the variables values please refer to [reCAPTCHA documentation](htt
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | Google reCAPTCHA v3 site key | - | - | `<your-secret>` | v1.36.0+ |
-| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | **DEPRECATED** Google reCAPTCHA v2 site key | - | - | `<your-secret>` | v1.0.x+ |
+| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | **DEPRECATED** Google reCAPTCHA v3 site key | - | - | `<your-secret>` | v1.36.0+ |
+| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Google reCAPTCHA v2 site key | - | - | `<your-secret>` | v1.0.x+ |

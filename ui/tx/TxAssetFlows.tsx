@@ -1,5 +1,5 @@
-import { Table, Tbody, Tr, Th, Box, Skeleton, Text, Show, Hide } from '@chakra-ui/react';
-import _chunk from 'lodash/chunk';
+import { Table, Tbody, Tr, Th, Box, Text, Show, Hide } from '@chakra-ui/react';
+import { chunk } from 'es-toolkit';
 import React, { useMemo, useState } from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
@@ -7,6 +7,7 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import useApiQuery from 'lib/api/useApiQuery';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import ActionBar from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -33,7 +34,7 @@ export default function TxAssetFlows(props: FlowViewProps) {
   const [ page, setPage ] = useState<number>(1);
 
   const ViewData = useMemo(() => (queryData ? generateFlowViewData(queryData) : []), [ queryData ]);
-  const chunkedViewData = _chunk(ViewData, 50);
+  const chunkedViewData = chunk(ViewData, 50);
 
   const paginationProps: PaginationParams = useMemo(() => ({
     onNextPageClick: () => setPage(page + 1),

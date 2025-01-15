@@ -51,11 +51,14 @@ export function app(): CspDev.DirectiveDescriptor {
       getFeaturePayload(config.features.rewards)?.api.endpoint,
 
       // chain RPC server
-      config.chain.rpcUrl,
+      ...config.chain.rpcUrls,
       'https://infragrid.v.network', // RPC providers
 
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
+
+      // github api (used for Stylus contract verification)
+      'api.github.com',
     ].filter(Boolean),
 
     'script-src': [
@@ -69,6 +72,9 @@ export function app(): CspDev.DirectiveDescriptor {
       // hash of ColorModeScript: system + dark
       '\'sha256-e7MRMmTzLsLQvIy1iizO1lXf7VWYoQ6ysj5fuUzvRwE=\'',
       '\'sha256-9A7qFFHmxdWjZMQmfzYD2XWaNHLu1ZmQB0Ds4Go764k=\'',
+
+      // CapybaraRunner
+      '\'sha256-5+YTmTcBwCYdJ8Jetbr6kyjGp0Ry/H7ptpoun6CrSwQ=\'',
     ],
 
     'style-src': [

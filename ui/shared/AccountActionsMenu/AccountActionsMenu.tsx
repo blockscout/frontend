@@ -1,4 +1,4 @@
-import { Box, IconButton, MenuButton, MenuList, Skeleton, chakra } from '@chakra-ui/react';
+import { Box, IconButton, MenuButton, MenuList, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import Menu from 'ui/shared/chakra/Menu';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 

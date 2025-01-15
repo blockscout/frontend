@@ -1,8 +1,9 @@
-import { Tag, Flex, HStack, Text, Skeleton } from '@chakra-ui/react';
+import { Tag, Flex, HStack, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';

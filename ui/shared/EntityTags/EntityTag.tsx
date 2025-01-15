@@ -1,9 +1,10 @@
 import type { ResponsiveValue } from '@chakra-ui/react';
-import { chakra, Image, Skeleton, Tag } from '@chakra-ui/react';
+import { chakra, Image, Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
