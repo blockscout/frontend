@@ -16,11 +16,11 @@ const UserProfileContentNavLink = ({ href, icon, text, onClick }: NavLink) => {
       columnGap={ 3 }
       py="14px"
       color="inherit"
-      _hover={{ textDecoration: 'none', color: 'link_hovered' }}
+      _hover={{ textDecoration: 'none', color: 'link.primary.hover' }}
       onClick={ onClick }
     >
       <IconSvg name={ icon } boxSize={ 5 } flexShrink={ 0 }/>
-      <Box fontSize="14px" fontWeight="500" lineHeight={ 5 }>{ text }</Box>
+      <Box textStyle="sm" fontWeight="500">{ text }</Box>
     </LinkInternal>
   );
 };

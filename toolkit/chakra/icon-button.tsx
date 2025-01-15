@@ -8,6 +8,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
   function IconButton(props, ref) {
     return (
       <Button
+        display="inline-flex"
         px="0"
         py="0"
         height="auto"

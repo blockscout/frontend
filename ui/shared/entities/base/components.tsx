@@ -1,7 +1,8 @@
-import { chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
-import type { As, IconProps } from '@chakra-ui/react';
+import { chakra, Flex } from '@chakra-ui/react';
+import type { IconProps } from '@chakra-ui/react';
 import React from 'react';
 
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
@@ -21,6 +22,7 @@ export interface EntityBaseProps {
   icon?: EntityIconProps;
   isExternal?: boolean;
   isLoading?: boolean;
+  isTooltipDisabled?: boolean;
   noCopy?: boolean;
   noIcon?: boolean;
   noLink?: boolean;
@@ -62,7 +64,7 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
   };
 
   if (noLink) {
-    return <Skeleton isLoaded={ !isLoading } { ...styles }>{ children }</Skeleton>;
+    return <Skeleton loading={ isLoading } { ...styles }>{ children }</Skeleton>;
   }
 
   const Component = isExternal ? LinkExternal : LinkInternal;
@@ -87,8 +89,6 @@ interface EntityIconProps extends Pick<IconProps, 'color' | 'borderRadius' | 'ma
 export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon'>, EntityIconProps {}
 
 const Icon = ({ isLoading, noIcon, size, name, color, borderRadius, marginRight, boxSize }: IconBaseProps) => {
-  const defaultColor = useColorModeValue('gray.500', 'gray.400');
-
   if (noIcon || !name) {
     return null;
   }
@@ -102,7 +102,7 @@ const Icon = ({ isLoading, noIcon, size, name, color, borderRadius, marginRight,
       borderRadius={ borderRadius ?? 'base' }
       display="block"
       mr={ marginRight ?? 2 }
-      color={ color ?? defaultColor }
+      color={ color ?? { _light: 'gray.500', _dark: 'gray.400' } }
       minW={ 0 }
       flexShrink={ 0 }
     />
@@ -110,9 +110,8 @@ const Icon = ({ isLoading, noIcon, size, name, color, borderRadius, marginRight,
 };
 
 export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength'> {
-  asProp?: As;
+  asProp?: React.ElementType;
   text: string;
-  isTooltipDisabled?: boolean;
 }
 
 const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, isTooltipDisabled }: ContentBaseProps) => {
@@ -154,7 +153,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
   return (
     <Skeleton
       className={ className }
-      isLoaded={ !isLoading }
+      loading={ isLoading }
       overflow="hidden"
       whiteSpace="nowrap"
       textOverflow={ truncation === 'tail' ? 'ellipsis' : undefined }

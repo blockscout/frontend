@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, Link, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Separator, Flex, Link, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavLink } from './types';
@@ -9,6 +9,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import shortenString from 'lib/shortenString';
+import { Button } from 'toolkit/chakra/button';
 import Hint from 'ui/shared/Hint';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 import useLogout from 'ui/snippets/auth/useLogout';
@@ -62,8 +63,6 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
   const { isAutoConnectDisabled } = useMarketplaceContext();
   const logout = useLogout();
 
-  const accountTextColor = useColorModeValue('gray.500', 'gray.300');
-
   if (!data) {
     return (
       <Box>
@@ -78,15 +77,14 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
     <Box>
       { isAutoConnectDisabled && <UserWalletAutoConnectAlert/> }
 
-      <Box fontSize="xs" lineHeight={ 6 } fontWeight="500" px={ 1 } mb="2px">Account</Box>
+      <Box textStyle="xs" fontWeight="500" px={ 1 } mb="1">Account</Box>
       <Box
-        fontSize="xs"
-        lineHeight={ 4 }
+        textStyle="xs"
         fontWeight="500"
         borderColor="border.divider"
         borderWidth="1px"
         borderRadius="base"
-        color={ accountTextColor }
+        color={{ _light: 'gray.500', _dark: 'gray.300' }}
       >
         { config.features.blockchainInteraction.isEnabled && (
           <Flex p={ 2 } borderColor="border.divider" borderBottomWidth="1px">
@@ -95,11 +93,10 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
               label={ `This wallet address is linked to your Blockscout account. It can be used to login ${ config.features.rewards.isEnabled ? 'and is used for Merits Program participation' : '' }` } // eslint-disable-line max-len
               boxSize={ 4 }
               ml={ 1 }
-              mr="auto"
             />
             { data?.address_hash ?
-              <Box>{ shortenString(data?.address_hash) }</Box> :
-              <Link onClick={ onAddAddress } _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add address</Link>
+              <Box ml="auto">{ shortenString(data?.address_hash) }</Box> :
+              <Link ml="auto" onClick={ onAddAddress } _hover={{ color: 'link.primary.hover' }}>Add address</Link>
             }
           </Flex>
         ) }
@@ -107,14 +104,14 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
           <Box mr="auto">Email</Box>
           { data?.email ?
             <TruncatedValue value={ data.email }/> :
-            <Link onClick={ onAddEmail } _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add email</Link>
+            <Link onClick={ onAddEmail } _hover={{ color: 'link.primary.hover' }}>Add email</Link>
           }
         </Flex>
       </Box>
 
       { config.features.blockchainInteraction.isEnabled && <UserProfileContentWallet onClose={ onClose } mt={ 3 }/> }
 
-      <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden" mt={ 4 }>
+      <VStack as="ul" gap="0" alignItems="flex-start" overflow="hidden" mt={ 4 }>
         { navLinks.map((item) => (
           <UserProfileContentNavLink
             key={ item.text }
@@ -124,7 +121,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
         )) }
       </VStack>
 
-      <Divider my={ 1 }/>
+      <Separator my={ 1 }/>
 
       <UserProfileContentNavLink
         text="Sign out"

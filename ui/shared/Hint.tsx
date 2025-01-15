@@ -1,7 +1,10 @@
-import type { TooltipProps } from '@chakra-ui/react';
-import { chakra, IconButton, Tooltip, useDisclosure, Skeleton } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import type { TooltipProps } from 'toolkit/chakra/tooltip';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -12,13 +15,14 @@ interface Props {
 }
 
 const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
+  // TODO @tom2drum check and remove this
   // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
-  const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
+  // const { open, onOpen, onToggle, onClose } = useDisclosure();
 
-  const handleClick = React.useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-    onToggle();
-  }, [ onToggle ]);
+  // const handleClick = React.useCallback((event: React.MouseEvent) => {
+  //   event.stopPropagation();
+  //   onToggle();
+  // }, [ onToggle ]);
 
   if (isLoading) {
     return <Skeleton className={ className } boxSize={ 5 } borderRadius="sm"/>;
@@ -26,25 +30,21 @@ const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
 
   return (
     <Tooltip
-      label={ label }
-      placement="top"
-      maxW={{ base: 'calc(100vw - 8px)', lg: '320px' }}
-      isOpen={ isOpen }
+      content={ label }
+      positioning={{ placement: 'top' }}
       { ...tooltipProps }
     >
       <IconButton
-        colorScheme="none"
         aria-label="hint"
-        icon={ <IconSvg name="info" w="100%" h="100%" color="icon_info" _hover={{ color: 'link_hovered' }}/> }
         boxSize={ 5 }
-        variant="simple"
         display="inline-block"
-        flexShrink={ 0 }
         className={ className }
-        onMouseEnter={ onOpen }
-        onMouseLeave={ onClose }
-        onClick={ handleClick }
-      />
+        // onMouseEnter={ onOpen }
+        // onMouseLeave={ onClose }
+        // onClick={ handleClick }
+      >
+        <IconSvg name="info" w="100%" h="100%" color="icon_info" _hover={{ color: 'link.primary.hover' }}/>
+      </IconButton>
     </Tooltip>
   );
 };

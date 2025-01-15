@@ -1,14 +1,15 @@
 import type { LinkProps } from '@chakra-ui/react';
-import { Link, chakra, Box, Skeleton } from '@chakra-ui/react';
+import { Link, chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import type { Variants } from './useLinkStyles';
 import { useLinkStyles } from './useLinkStyles';
 
 interface Props {
-  href: string;
+  href: string | undefined;
   className?: string;
   children: React.ReactNode;
   isLoading?: boolean;

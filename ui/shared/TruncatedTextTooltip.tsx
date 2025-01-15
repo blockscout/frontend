@@ -1,21 +1,22 @@
-import type { PlacementWithLogical } from '@chakra-ui/react';
-import { Tooltip, useDisclosure } from '@chakra-ui/react';
+import type { Placement } from '@floating-ui/dom';
 import debounce from 'lodash/debounce';
 import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
 
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 
 interface Props {
   children: React.ReactNode;
   label: string;
-  placement?: PlacementWithLogical;
+  placement?: Placement;
 }
 
 const TruncatedTextTooltip = ({ children, label, placement }: Props) => {
   const childRef = React.useRef<HTMLElement>(null);
   const [ isTruncated, setTruncated ] = React.useState(false);
-  const { isOpen, onToggle, onOpen, onClose } = useDisclosure();
+  const { open, onToggle, onOpen, onClose } = useDisclosure();
 
   const isFontFaceLoaded = useFontFaceObserver([
     { family: BODY_TYPEFACE },
@@ -78,10 +79,10 @@ const TruncatedTextTooltip = ({ children, label, placement }: Props) => {
   if (isTruncated) {
     return (
       <Tooltip
-        label={ label }
-        maxW={{ base: 'calc(100vw - 8px)', lg: '400px' }}
-        placement={ placement }
-        isOpen={ isOpen }
+        content={ label }
+        contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
+        positioning={{ placement }}
+        open={ open }
       >
         { modifiedChildren }
       </Tooltip>

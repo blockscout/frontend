@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports */
 import { Tooltip as ChakraTooltip, Portal } from '@chakra-ui/react';
 import { useClickAway } from '@uidotdev/usehooks';
 import * as React from 'react';

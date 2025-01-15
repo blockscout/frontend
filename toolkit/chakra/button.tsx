@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports */
 import type { ButtonProps as ChakraButtonProps } from '@chakra-ui/react';
 import {
   AbsoluteCenter,

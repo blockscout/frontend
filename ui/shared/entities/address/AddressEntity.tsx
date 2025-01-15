@@ -1,5 +1,4 @@
-import type { As } from '@chakra-ui/react';
-import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
+import { Box, Flex, chakra, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
@@ -9,6 +8,8 @@ import { route } from 'nextjs-routes';
 import { toBech32Address } from 'lib/address/bech32';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
 import { useSettingsContext } from 'lib/contexts/settings';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { distributeEntityProps, getIconProps } from '../base/utils';
@@ -62,7 +63,7 @@ const Icon = (props: IconProps) => {
     const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract');
 
     return (
-      <Tooltip label={ label.slice(0, 1).toUpperCase() + label.slice(1) }>
+      <Tooltip content={ label.slice(0, 1).toUpperCase() + label.slice(1) }>
         <span>
           <EntityBase.Icon
             { ...props }
@@ -106,8 +107,8 @@ const Content = chakra((props: ContentProps) => {
     );
 
     return (
-      <Tooltip label={ label } maxW={{ base: 'calc(100vw - 8px)', lg: '400px' }}>
-        <Skeleton isLoaded={ !props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
+      <Tooltip content={ label } contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}>
+        <Skeleton loading={ props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
           { nameText }
         </Skeleton>
       </Tooltip>
@@ -172,7 +173,7 @@ const AddressEntry = (props: EntityProps) => {
   );
 };
 
-export default React.memo(chakra<As, EntityProps>(AddressEntry));
+export default React.memo(chakra(AddressEntry));
 
 export {
   Container,

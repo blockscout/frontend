@@ -1,6 +1,11 @@
-import { IconButton, Tooltip, useClipboard, chakra, useDisclosure, Skeleton, useColorModeValue } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import { chakra } from '@chakra-ui/react';
+import React from 'react';
 
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import useClipboard from 'toolkit/hooks/useClipboard';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -12,55 +17,59 @@ export interface Props {
   size?: number;
   type?: 'link';
   icon?: IconName;
-  variant?: string;
+  // TODO @tom2drum check if we need this
+  visual?: string;
+  // TODO @tom2drum check if we need this
   colorScheme?: string;
 }
 
-const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, icon, variant = 'simple', colorScheme }: Props) => {
-  const { hasCopied, onCopy } = useClipboard(text, 1000);
-  const [ copied, setCopied ] = useState(false);
+const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, icon, colorScheme }: Props) => {
+  const { hasCopied, copy } = useClipboard(text, 1000);
+  // const [ copiedText, copyToClipboard ] = useCopyToClipboard();
+  // const [ copied, setCopied ] = useState(false);
+  // TODO @tom2drum check if we need this
   // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const iconColor = useColorModeValue('gray.400', 'gray.500');
-  const colorProps = colorScheme ? {} : { color: iconColor };
+  const { open, onOpen, onClose } = useDisclosure();
+  const colorProps = colorScheme ? {} : { color: { _light: 'gray.400', _dark: 'gray.500' } };
   const iconName = icon || (type === 'link' ? 'link' : 'copy');
 
-  useEffect(() => {
-    if (hasCopied) {
-      setCopied(true);
-    } else {
-      setCopied(false);
-    }
-  }, [ hasCopied ]);
+  // useEffect(() => {
+  //   if (hasCopied) {
+  //     setCopied(true);
+  //   } else {
+  //     setCopied(false);
+  //   }
+  // }, [ hasCopied ]);
 
   const handleClick = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
-    onCopy();
+    copy();
     onClick?.(event);
-  }, [ onClick, onCopy ]);
+  }, [ onClick, copy ]);
 
   if (isLoading) {
     return <Skeleton boxSize={ size } className={ className } borderRadius="sm" flexShrink={ 0 } ml={ 2 } display="inline-block"/>;
   }
 
   return (
-    <Tooltip label={ copied ? 'Copied' : `Copy${ type === 'link' ? ' link ' : ' ' }to clipboard` } isOpen={ isOpen || copied }>
+    <Tooltip
+      content={ hasCopied ? 'Copied' : `Copy${ type === 'link' ? ' link ' : ' ' }to clipboard` }
+      // open={ hasCopied }
+    >
       <IconButton
         { ...colorProps }
         aria-label="copy"
-        icon={ <IconSvg name={ iconName } boxSize={ size }/> }
         boxSize={ size }
-        variant={ variant }
         colorScheme={ colorScheme }
-        display="inline-block"
-        flexShrink={ 0 }
         onClick={ handleClick }
         className={ className }
-        onMouseEnter={ onOpen }
-        onMouseLeave={ onClose }
+        // onMouseEnter={ onOpen }
+        // onMouseLeave={ onClose }
         ml={ 2 }
-        borderRadius={ 0 }
-      />
+        borderRadius="none"
+      >
+        <IconSvg name={ iconName } boxSize={ size }/>
+      </IconButton>
     </Tooltip>
   );
 };

@@ -1,8 +1,12 @@
-import { FormControl, Input, InputGroup, InputRightElement, Skeleton, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
+import { InputGroup } from 'toolkit/chakra/input-group';
+import Input from 'theme/components/Input';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
+import { Field } from 'toolkit/chakra/field';
 
 type Props = {
   label: string;
@@ -12,8 +16,8 @@ type Props = {
 };
 
 const RewardsReadOnlyInputWithCopy = ({ label, value, className, isLoading }: Props) => (
-  <FormControl variant="floating" id={ label } className={ className }>
-    <Skeleton isLoaded={ !isLoading }>
+  <Field floating id={ label } className={ className }>
+    <Skeleton loading={ isLoading }>
       <InputGroup>
         <Input
           readOnly
