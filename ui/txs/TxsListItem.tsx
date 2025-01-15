@@ -33,6 +33,14 @@ type Props = {
   isLoading?: boolean;
 };
 
+const getTxStatus = (tx: Transaction) => {
+  if (!tx.block_number && tx.error) {
+    return 'error';
+  } else {
+    return tx.status;
+  }
+};
+
 const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
@@ -49,7 +57,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           ) :
             <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
           }
-          <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
+          <TxStatus status={ getTxStatus(tx) } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </HStack>
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
