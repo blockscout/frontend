@@ -37,6 +37,7 @@ const DeFiDropdown = () => {
     height: 5,
     px: 1.5,
     fontWeight: '500',
+    gap: 0,
   };
 
   const items = feature.items.map((item) => ({

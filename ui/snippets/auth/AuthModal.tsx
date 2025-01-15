@@ -8,7 +8,7 @@ import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
-import { DialogBackdrop, DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
+import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import ButtonBackTo from 'ui/shared/buttons/ButtonBackTo';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';
@@ -99,8 +99,9 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
     !open && onClose();
   }, [ onClose ]);
 
+  const currentStep = steps[steps.length - 1];
+
   const header = (() => {
-    const currentStep = steps[steps.length - 1];
     switch (currentStep.type) {
       case 'select_method':
         return 'Select a way to login';
@@ -117,7 +118,6 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   })();
 
   const content = (() => {
-    const currentStep = steps[steps.length - 1];
     switch (currentStep.type) {
       case 'select_method':
         return <AuthModalScreenSelectMethod onSelectMethod={ onNextStep }/>;
@@ -168,8 +168,15 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   }
 
   return (
-    <DialogRoot open onOpenChange={ onModalOpenChange } size={{ base: 'full', lg: 'sm' }}>
-      <DialogBackdrop/>
+    <DialogRoot
+      open
+      onOpenChange={ onModalOpenChange }
+      size={{ base: 'full', lg: 'sm' }}
+      // we need to allow user interact with element outside of dialog otherwise they can't click on recaptcha
+      modal={ false }
+      // FIXME if we allow to close on interact outside, the dialog will be closed when user click on recaptcha
+      closeOnInteractOutside={ ![ 'email', 'otp_code' ].includes(currentStep.type) }
+    >
       <DialogContent>
         <DialogHeader
           startElement={ steps.length > 1 && !steps[steps.length - 1].type.startsWith('success') && <ButtonBackTo onClick={ onPrevStep }/> }

@@ -14,13 +14,19 @@ export const recipe = defineRecipe({
   variants: {
     visual: {
       solid: {
-        gap: 0,
         bg: 'blue.600',
         color: 'white',
         _hover: {
           bg: 'blue.400',
         },
         _active: { bg: 'blue.400' },
+        _loading: {
+          '& .chakra-spinner': {
+            borderColor: 'white',
+            borderBottomColor: 'spinner.track',
+            borderInlineStartColor: 'spinner.track',
+          },
+        },
       },
       outline: {
         borderWidth: '2px',
@@ -110,6 +116,8 @@ export const recipe = defineRecipe({
         color: 'link.primary',
         border: 'none',
         fontWeight: '400',
+        px: 0,
+        h: 'auto',
         _hover: {
           bg: 'transparent',
           color: 'link.primary.hovered',

@@ -5,9 +5,11 @@ import { recipe as dialog } from './dialog.recipe';
 import { recipe as field } from './field.recipe';
 import { recipe as input } from './input.recipe';
 import { recipe as link } from './link.recipe';
+import { recipe as pinInput } from './pin-input.recipe';
 import { recipe as popover } from './popover.recipe';
 import { recipe as progressCircle } from './progress-circle.recipe';
 import { recipe as skeleton } from './skeleton.recipe';
+import { recipe as spinner } from './spinner.recipe';
 import { recipe as switchRecipe } from './switch.recipe';
 import { recipe as tabs } from './tabs.recipe';
 import { recipe as textarea } from './textarea.recipe';
@@ -20,6 +22,7 @@ export const recipes = {
   input,
   link,
   skeleton,
+  spinner,
   textarea,
 };
 
@@ -27,6 +30,7 @@ export const slotRecipes = {
   alert,
   dialog,
   field,
+  pinInput,
   popover,
   progressCircle,
   'switch': switchRecipe,

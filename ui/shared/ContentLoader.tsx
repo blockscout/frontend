@@ -19,7 +19,7 @@ const ContentLoader = ({ className, text }: Props) => {
           width: '60px',
           height: '6px',
           animation: `fromLeftToRight 700ms ease-in-out infinite alternate`,
-          left: '100%',
+          left: '0%',
           top: 0,
           backgroundColor: 'blue.300',
           borderRadius: 'full',

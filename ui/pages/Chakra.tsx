@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-no-bind */
-import { Heading, HStack, Link, Tabs, VStack } from '@chakra-ui/react';
+import { Heading, HStack, Link, Spinner, Tabs, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { Alert } from 'toolkit/chakra/alert';
@@ -8,6 +8,7 @@ import { Button } from 'toolkit/chakra/button';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Field } from 'toolkit/chakra/field';
 import { Input } from 'toolkit/chakra/input';
+import { PinInput } from 'toolkit/chakra/pin-input';
 import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
@@ -41,6 +42,8 @@ const ChakraShowcases = () => {
             <Button visual="header" selected>Header selected</Button>
             <Button visual="header" selected highlighted>Header highlighted</Button>
             <Button visual="link">Link</Button>
+            <Button loading loadingText="Solid">Solid</Button>
+            <Button loading loadingText="Outline" visual="outline">Outline</Button>
           </HStack>
         </section>
 
@@ -98,6 +101,10 @@ const ChakraShowcases = () => {
               <Input type="email" value="me@example.com"/>
             </Field>
           </HStack>
+          <HStack mt={ 4 }>
+            <PinInput otp count={ 3 }/>
+            <PinInput otp count={ 3 } value={ [ '1', '2', '3' ] } disabled bgColor="dialog.bg"/>
+          </HStack>
         </section>
 
         <section>
@@ -154,6 +161,7 @@ const ChakraShowcases = () => {
               <span>Skeleton</span>
             </Skeleton>
             <ContentLoader/>
+            <Spinner/>
           </HStack>
         </section>
 

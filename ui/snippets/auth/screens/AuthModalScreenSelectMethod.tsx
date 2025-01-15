@@ -28,9 +28,9 @@ const AuthModalScreenSelectMethod = ({ onSelectMethod }: Props) => {
   }, [ onSelectMethod ]);
 
   return (
-    <VStack spacing={ 3 } mt={ 4 } align="stretch">
-      <Button variant="outline" onClick={ handleConnectWalletClick }>Continue with Web3 wallet</Button>
-      <Button variant="outline" onClick={ handleEmailClick }>Continue with email</Button>
+    <VStack gap={ 3 } mt={ 4 } align="stretch">
+      <Button visual="outline" onClick={ handleConnectWalletClick }>Continue with Web3 wallet</Button>
+      <Button visual="outline" onClick={ handleEmailClick }>Continue with email</Button>
     </VStack>
   );
 };

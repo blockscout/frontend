@@ -51,6 +51,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         { ...(active ? { 'data-active': true } : {}) }
         { ...(selected ? { 'data-selected': true } : {}) }
         { ...(highlighted ? { 'data-highlighted': true } : {}) }
+        { ...(loading ? { 'data-loading': true } : {}) }
         disabled={ loading || disabled }
         ref={ ref }
         { ...rest }

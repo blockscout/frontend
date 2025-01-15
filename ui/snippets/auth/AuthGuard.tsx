@@ -1,5 +1,6 @@
-import { useDisclosure } from '@chakra-ui/react';
 import React from 'react';
+
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 import AuthModal from './AuthModal';
 import useIsAuth from './useIsAuth';
@@ -31,7 +32,7 @@ const AuthGuard = ({ children, onAuthSuccess }: Props) => {
   return (
     <>
       { children({ onClick: handleClick }) }
-      { authModal.isOpen && <AuthModal onClose={ handleModalClose } initialScreen={{ type: 'select_method' }}/> }
+      { authModal.open && <AuthModal onClose={ handleModalClose } initialScreen={{ type: 'select_method' }}/> }
     </>
   );
 };

@@ -31,7 +31,7 @@ const AuthModalScreenSuccessWallet = ({ address, onAddEmail, onClose, isAuth, pr
         </Text>
         <Button
           mt={ 6 }
-          variant="outline"
+          visual="outline"
           onClick={ onClose }
         >
           Got it!
@@ -55,13 +55,13 @@ const AuthModalScreenSuccessWallet = ({ address, onAddEmail, onClose, isAuth, pr
           </Text>
           <Flex mt={ 6 } gap={ 2 }>
             <Button onClick={ handleAddEmailClick }>Add email</Button>
-            <Button variant="simple" onClick={ onClose }>I{ apos }ll do it later</Button>
+            <Button visual="link" onClick={ onClose }>I{ apos }ll do it later</Button>
           </Flex>
         </>
       ) : (
         <Button
           mt={ 6 }
-          variant="outline"
+          visual="outline"
           onClick={ onClose }
         >
           Got it!

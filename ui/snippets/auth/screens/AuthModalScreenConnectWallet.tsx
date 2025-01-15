@@ -35,7 +35,7 @@ const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth, source }: Pr
     }
   }, [ start ]);
 
-  return <Center h="100px"><Spinner/></Center>;
+  return <Center h="100px"><Spinner size="xl"/></Center>;
 };
 
 export default React.memo(AuthModalScreenConnectWallet);

@@ -29,7 +29,7 @@ const AuthModalScreenSuccessEmail = ({ email, onConnectWallet, onClose, isAuth, 
         </Text>
         <Button
           mt={ 6 }
-          variant="outline"
+          visual="outline"
           onClick={ onClose }
         >
           Got it!
@@ -51,7 +51,7 @@ const AuthModalScreenSuccessEmail = ({ email, onConnectWallet, onClose, isAuth, 
         </>
       ) : (
         <Button
-          variant="outline"
+          visual="outline"
           mt={ 6 }
           onClick={ onClose }
         >

@@ -1,4 +1,4 @@
-import { chakra, Box, Text, Button } from '@chakra-ui/react';
+import { chakra, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -6,10 +6,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { OtpCodeFormFields, ScreenSuccess } from '../types';
 import type { UserInfo } from 'types/api/account';
 
-import { toaster } from 'toolkit/chakra/toaster';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
 import IconSvg from 'ui/shared/IconSvg';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
@@ -31,7 +32,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
   const formApi = useForm<OtpCodeFormFields>({
     mode: 'onBlur',
     defaultValues: {
-      code: '',
+      code: [],
     },
   });
 
@@ -41,7 +42,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
       fetchParams: {
         method: 'POST',
         body: {
-          otp: formData.code,
+          otp: formData.code.join(''),
           email,
         },
       },
@@ -109,14 +110,10 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         <AuthModalFieldOtpCode isDisabled={ isCodeSending }/>
         <ReCaptcha ref={ recaptcha.ref }/>
         <Button
-          variant="link"
-          display="flex"
-          alignItems="center"
+          visual="link"
           columnGap={ 2 }
           mt={ 3 }
-          fontWeight="400"
-          w="fit-content"
-          isDisabled={ isCodeSending }
+          disabled={ isCodeSending }
           onClick={ handleResendCodeClick }
         >
           <IconSvg name="repeat" boxSize={ 5 }/>
@@ -125,8 +122,8 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         <Button
           mt={ 6 }
           type="submit"
-          isLoading={ formApi.formState.isSubmitting }
-          isDisabled={ formApi.formState.isSubmitting || isCodeSending }
+          loading={ formApi.formState.isSubmitting }
+          disabled={ formApi.formState.isSubmitting || isCodeSending }
           loadingText="Submit"
           onClick={ formApi.handleSubmit(onFormSubmit) }
         >

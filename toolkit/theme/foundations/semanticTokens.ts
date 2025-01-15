@@ -171,6 +171,11 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       },
     },
+    spinner: {
+      track: {
+        DEFAULT: { value: { _light: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.200}' } },
+      },
+    },
     text: {
       primary: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       secondary: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },

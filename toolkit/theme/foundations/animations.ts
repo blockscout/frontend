@@ -1,10 +1,12 @@
 export const keyframes = {
   fromLeftToRight: {
     from: {
-      left: '100%',
+      left: '0%',
+      transform: 'translateX(0%)',
     },
     to: {
-      left: '0%',
+      left: '100%',
+      transform: 'translateX(-100%)',
     },
   },
 };
