@@ -136,7 +136,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
               size="xl"
               mt={ 3 }
               invalid={ refCodeError }
-              helperText={ !refCodeError ? 'The code should be in format XXXXXX' : undefined }
+              helperText="The code should be in format XXXXXX"
               errorText={ refCodeError ? 'Incorrect code or format' : undefined }
             >
               <Input
@@ -164,7 +164,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
       >
         { buttonText }
       </Button>
-      <Text fontSize="sm" color={{ _light: 'blackAlpha.500', _dark: 'whiteAlpha.500' }} textAlign="center">
+      <Text textStyle="sm" color="text_secondary" textAlign="center">
         Already registered for Blockscout Merits on another network or chain? Connect the same wallet here.
       </Text>
     </>

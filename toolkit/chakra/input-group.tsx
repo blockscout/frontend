@@ -2,6 +2,9 @@ import type { BoxProps, InputElementProps } from '@chakra-ui/react';
 import { Group, InputElement } from '@chakra-ui/react';
 import * as React from 'react';
 
+import getComponentDisplayName from '../utils/getComponentDisplayName';
+import type { InputProps } from './input';
+
 export interface InputGroupProps extends BoxProps {
   startElementProps?: InputElementProps;
   endElementProps?: InputElementProps;
@@ -20,27 +23,25 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
       endElement,
       endElementProps,
       children,
-      startOffset = '6px',
-      endOffset = '6px',
+      startOffset,
+      endOffset,
       ...rest
     } = props;
-
-    const child =
-      React.Children.only<React.ReactElement<InputElementProps>>(children);
-
     return (
-      <Group ref={ ref } { ...rest }>
+      <Group ref={ ref } w="100%" { ...rest }>
         { startElement && (
           <InputElement pointerEvents="none" { ...startElementProps }>
             { startElement }
           </InputElement>
         ) }
-        { React.cloneElement(child, {
-          ...(startElement && {
-            ps: `calc(var(--input-height) - ${ startOffset })`,
-          }),
-          ...(endElement && { pe: `calc(var(--input-height) - ${ endOffset })` }),
-          ...children.props,
+        { React.Children.map(children, (child: React.ReactElement<InputProps>) => {
+          if (getComponentDisplayName(child.type) !== 'FieldInput') {
+            return child;
+          }
+          return React.cloneElement(child, {
+            ...(startElement && { ps: startOffset ?? `calc(var(--input-height) - 6px)` }),
+            ...(endElement && { pe: endOffset ?? `calc(var(--input-height) - 6px)` }),
+          });
         }) }
         { endElement && (
           <InputElement placement="end" { ...endElementProps }>
@@ -51,3 +52,5 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
     );
   },
 );
+
+InputGroup.displayName = 'InputGroup';

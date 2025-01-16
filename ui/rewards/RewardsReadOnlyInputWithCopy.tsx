@@ -1,12 +1,11 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
-import { InputGroup } from 'toolkit/chakra/input-group';
-import Input from 'theme/components/Input';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
 import { Field } from 'toolkit/chakra/field';
+import { Input } from 'toolkit/chakra/input';
+import { InputGroup } from 'toolkit/chakra/input-group';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 type Props = {
   label: string;
@@ -15,29 +14,16 @@ type Props = {
   isLoading?: boolean;
 };
 
-const RewardsReadOnlyInputWithCopy = ({ label, value, className, isLoading }: Props) => (
-  <Field floating id={ label } className={ className }>
-    <Skeleton loading={ isLoading }>
-      <InputGroup>
-        <Input
-          readOnly
-          fontWeight="500"
-          value={ value }
-          overflow="hidden"
-          textOverflow="ellipsis"
-          sx={{
-            '&:not(:placeholder-shown)': {
-              pr: '40px',
-            },
-          }}
-        />
-        <FormInputPlaceholder text={ label }/>
-        <InputRightElement w="40px" display="flex" justifyContent="flex-end" pr={ 2 }>
-          <CopyToClipboard text={ value }/>
-        </InputRightElement>
-      </InputGroup>
+const RewardsReadOnlyInputWithCopy = ({ label, value, className, isLoading }: Props) => {
+  return (
+    <Skeleton loading={ isLoading } className={ className }>
+      <Field label={ label } floating size="xl" readOnly>
+        <InputGroup endElement={ <CopyToClipboard text={ value }/> } endOffset="40px">
+          <Input value={ value } fontWeight="500" overflow="hidden" textOverflow="ellipsis"/>
+        </InputGroup>
+      </Field>
     </Skeleton>
-  </FormControl>
-);
+  );
+};
 
 export default chakra(RewardsReadOnlyInputWithCopy);

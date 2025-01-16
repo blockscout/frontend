@@ -3,14 +3,16 @@ import * as React from 'react';
 
 import { space } from 'lib/html-entities';
 
+import getComponentDisplayName from '../utils/getComponentDisplayName';
 import type { InputProps } from './input';
+import type { InputGroupProps } from './input-group';
 
 export interface FieldProps extends Omit<ChakraField.RootProps, 'label' | 'children'> {
   label?: React.ReactNode;
   helperText?: React.ReactNode;
   errorText?: React.ReactNode;
   optionalText?: React.ReactNode;
-  children: React.ReactElement<InputProps>;
+  children: React.ReactElement<InputProps> | React.ReactElement<InputGroupProps>;
 }
 
 export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
@@ -19,28 +21,58 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 
     // A floating field cannot be without a label.
     if (props.floating && label) {
-      const child = React.Children.only<React.ReactElement<InputProps>>(children);
-      const clonedChild = React.cloneElement(child, {
+      const injectedProps = {
         className: 'peer',
         placeholder: ' ',
         size: props.size,
         floating: props.floating,
         bgColor: rest.bgColor,
-      });
+      };
+
+      const labelElement = (
+        <ChakraField.Label bgColor={ rest.bgColor }>
+          { label }
+          <ChakraField.RequiredIndicator fallback={ optionalText }/>
+          { errorText && (
+            <ChakraField.ErrorText ml="2px">-{ space }{ errorText }</ChakraField.ErrorText>
+          ) }
+        </ChakraField.Label>
+      );
+
+      const helperTextElement = helperText && (
+        <ChakraField.HelperText>{ helperText }</ChakraField.HelperText>
+      );
+
+      const child = React.Children.only<React.ReactElement<InputProps | InputGroupProps>>(children);
+      const isInputGroup = getComponentDisplayName(child.type) === 'InputGroup';
+
+      if (isInputGroup) {
+        const inputElement = React.cloneElement(
+          React.Children.only<React.ReactElement<InputProps>>(child.props.children as React.ReactElement<InputProps>),
+          injectedProps,
+        );
+
+        const groupInputElement = React.cloneElement(child,
+          {},
+          inputElement,
+          labelElement,
+        );
+
+        return (
+          <ChakraField.Root pos="relative" w="full" ref={ ref } { ...rest }>
+            { groupInputElement }
+            { helperTextElement }
+          </ChakraField.Root>
+        );
+      }
+
+      const inputElement = React.cloneElement(child, injectedProps);
 
       return (
         <ChakraField.Root pos="relative" w="full" ref={ ref } { ...rest }>
-          { clonedChild }
-          <ChakraField.Label bgColor={ rest.bgColor }>
-            { label }
-            <ChakraField.RequiredIndicator fallback={ optionalText }/>
-            { errorText && (
-              <ChakraField.ErrorText ml="2px">-{ space }{ errorText }</ChakraField.ErrorText>
-            ) }
-          </ChakraField.Label>
-          { helperText && (
-            <ChakraField.HelperText>{ helperText }</ChakraField.HelperText>
-          ) }
+          { inputElement }
+          { labelElement }
+          { helperTextElement }
         </ChakraField.Root>
       );
     }

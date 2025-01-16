@@ -56,7 +56,7 @@ export const recipe = defineSlotRecipe({
     inline: {
       'true': {
         root: {
-          alignItems: 'center',
+          alignItems: 'flex-start',
         },
         content: {
           display: 'inline-flex',
@@ -82,6 +82,7 @@ export const recipe = defineSlotRecipe({
         },
         indicator: {
           boxSize: '5',
+          mt: '2px',
         },
       },
     },

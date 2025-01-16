@@ -1,4 +1,4 @@
-import { Text, Box, Flex } from '@chakra-ui/react';
+import { Text, Box, Flex, Center } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -6,7 +6,6 @@ import { route } from 'nextjs-routes';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { Tag } from 'toolkit/chakra/tag';
 import IconSvg from 'ui/shared/IconSvg';
 
 import MeritsIcon from '../../MeritsIcon';
@@ -16,7 +15,6 @@ type Props = {
   isReferral: boolean;
 };
 
-// TODO @tom2drum fix this component
 const CongratsStepContent = ({ isReferral }: Props) => {
   const { referralsQuery, rewardsConfigQuery } = useRewardsContext();
 
@@ -78,9 +76,14 @@ const CongratsStepContent = ({ isReferral }: Props) => {
       </Flex>
       <Flex flexDirection="column" alignItems="flex-start" px={ 3 } mb={ 8 }>
         <Flex alignItems="center" gap={ 2 }>
-          <Tag colorScheme="blue" w={ 8 } h={ 8 } display="flex" alignItems="center" justifyContent="center" borderRadius="8px">
+          <Center
+            boxSize={ 8 }
+            borderRadius="8px"
+            color={{ _light: 'blue.500', _dark: 'blue.100' }}
+            bgColor={{ _light: 'blue.50', _dark: 'blue.800' }}
+          >
             <IconSvg name="profile" boxSize={ 5 }/>
-          </Tag>
+          </Center>
           <Text fontSize="lg" fontWeight="500">
             Referral program
           </Text>
@@ -95,27 +98,31 @@ const CongratsStepContent = ({ isReferral }: Props) => {
           </Skeleton>
           { ' ' }bonus on all Merits earned by your referrals
         </Text>
-        { /* <RewardsReadOnlyInputWithCopy
+        <RewardsReadOnlyInputWithCopy
           label="Referral link"
           value={ refLink }
           isLoading={ referralsQuery.isLoading }
           mt={ 3 }
-        /> */ }
-        <Button
-          as="a"
-          _target="_blank"
-          mt={ 6 }
-          loading={ referralsQuery.isLoading }
-          href={ `https://x.com/intent/tweet?text=${ encodeURIComponent(shareText) }` }
-        >
-          Share on <IconSvg name="social/twitter" boxSize={ 6 } ml={ 1 }/>
-        </Button>
+          w="100%"
+        />
+        <Skeleton loading={ referralsQuery.isLoading } mt={ 6 }>
+          <Button asChild>
+            <a href={ `https://x.com/intent/tweet?text=${ encodeURIComponent(shareText) }` } target="_blank">
+              Share on <IconSvg name="social/twitter" boxSize={ 6 } ml={ 1 }/>
+            </a>
+          </Button>
+        </Skeleton>
       </Flex>
       <Flex flexDirection="column" alignItems="flex-start" px={ 3 }>
         <Flex alignItems="center" gap={ 2 }>
-          <Tag colorScheme="blue" w={ 8 } h={ 8 } display="flex" alignItems="center" justifyContent="center" borderRadius="8px">
+          <Center
+            boxSize={ 8 }
+            borderRadius="8px"
+            color={{ _light: 'blue.500', _dark: 'blue.100' }}
+            bgColor={{ _light: 'blue.50', _dark: 'blue.800' }}
+          >
             <IconSvg name="stats" boxSize={ 6 }/>
-          </Tag>
+          </Center>
           <Text fontSize="lg" fontWeight="500">
             Dashboard
           </Text>
@@ -124,8 +131,8 @@ const CongratsStepContent = ({ isReferral }: Props) => {
           Explore your current Merits balance, find activities to boost your Merits,
           and view your capybara NFT badge collection on the dashboard
         </Text>
-        <Button mt={ 3 } as="a" href={ route({ pathname: '/account/rewards' }) }>
-          Open
+        <Button asChild mt={ 3 }>
+          <a href={ route({ pathname: '/account/rewards' }) }>Open</a>
         </Button>
       </Flex>
     </>

@@ -22,6 +22,7 @@ export const recipe = defineSlotRecipe({
       fontWeight: '500',
       gap: '0',
       userSelect: 'none',
+      zIndex: '1',
       _disabled: {
         opacity: '0.5',
       },

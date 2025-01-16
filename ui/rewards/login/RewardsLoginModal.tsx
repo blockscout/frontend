@@ -1,9 +1,8 @@
-import { DialogHeader } from '@chakra-ui/react';
 import React, { useCallback, useEffect } from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
 import useWallet from 'lib/web3/useWallet';
-import { DialogBody, DialogContent, DialogRoot } from 'toolkit/chakra/dialog';
+import { DialogBody, DialogContent, DialogRoot, DialogHeader } from 'toolkit/chakra/dialog';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 
@@ -65,7 +64,7 @@ const RewardsLoginModal = () => {
       <DialogRoot
         open={ isLoginModalOpen && !isWalletModalOpen && !authModal.open }
         onOpenChange={ handleOpenChange }
-        size={{ base: 'full', md: isLoginStep ? 'sm' : 'md' }}
+        size={{ base: 'full', lg: isLoginStep ? 'sm' : 'md' }}
       >
         <DialogContent>
           <DialogHeader>

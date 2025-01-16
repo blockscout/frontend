@@ -8,6 +8,7 @@ import { Button } from 'toolkit/chakra/button';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Field } from 'toolkit/chakra/field';
 import { Input } from 'toolkit/chakra/input';
+import { InputGroup } from 'toolkit/chakra/input-group';
 import { PinInput } from 'toolkit/chakra/pin-input';
 import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -16,6 +17,7 @@ import { Textarea } from 'toolkit/chakra/textarea';
 import { toaster } from 'toolkit/chakra/toaster';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import ContentLoader from 'ui/shared/ContentLoader';
+import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
@@ -44,6 +46,7 @@ const ChakraShowcases = () => {
             <Button visual="link">Link</Button>
             <Button loading loadingText="Solid">Solid</Button>
             <Button loading loadingText="Outline" visual="outline">Outline</Button>
+            <Button loading>Loading</Button>
           </HStack>
         </section>
 
@@ -83,7 +86,7 @@ const ChakraShowcases = () => {
           </HStack>
           <Heading textStyle="heading.sm" mb={ 2 } mt={ 6 }>Floating (only XL size)</Heading>
           <HStack gap={ 4 } mt={ 4 } alignItems="flex-start">
-            <Field label="Email" required floating size="xl" w="300px">
+            <Field label="Email" required floating size="xl" helperText="Helper text" w="300px">
               <Input type="email"/>
             </Field>
             <Field label="Email" required floating invalid errorText="Something went wrong" size="xl" w="300px">
@@ -101,6 +104,18 @@ const ChakraShowcases = () => {
               <Input type="email" value="me@example.com"/>
             </Field>
           </HStack>
+          <Heading textStyle="heading.sm" mb={ 2 } mt={ 6 }>Input group</Heading>
+          <HStack gap={ 4 } mt={ 4 } alignItems="flex-start" w="fit-content">
+            <Field label="Referral code" required floating size="xl" w="300px" flexShrink={ 0 } helperText="Helper text">
+              <InputGroup endElement={ <IconSvg name="copy" boxSize={ 5 }/> }>
+                <Input/>
+              </InputGroup>
+            </Field>
+            <InputGroup startElement={ <IconSvg name="search" boxSize={ 5 }/> }>
+              <Input placeholder="Search"/>
+            </InputGroup>
+          </HStack>
+          <Heading textStyle="heading.sm" mb={ 2 } mt={ 6 }>Pin input</Heading>
           <HStack mt={ 4 }>
             <PinInput otp count={ 3 }/>
             <PinInput otp count={ 3 } value={ [ '1', '2', '3' ] } disabled bgColor="dialog.bg"/>

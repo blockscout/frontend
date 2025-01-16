@@ -16,8 +16,6 @@ type Props = {
   visual?: ButtonProps['visual'];
 };
 
-// TODO @tom2drum check this component
-
 const RewardsButton = ({ visual = 'header', size }: Props) => {
   const { isInitialized, apiToken, openLoginModal, dailyRewardQuery, balancesQuery } = useRewardsContext();
   const isMobile = useIsMobile();
@@ -32,7 +30,6 @@ const RewardsButton = ({ visual = 'header', size }: Props) => {
       content="Earn Merits for using Blockscout"
       openDelay={ 500 }
       disabled={ isMobile || isLoading || Boolean(apiToken) }
-      // width="150px"
     >
       <Button
         visual={ visual }
