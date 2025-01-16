@@ -28,7 +28,7 @@ const SearchBarSuggestLabel = ({ data, isMobile, searchTerm, addressFormat }: It
     <Text
       overflow="hidden"
       whiteSpace="nowrap"
-      variant="secondary"
+      color="text.secondary"
     >
       <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>
     </Text>

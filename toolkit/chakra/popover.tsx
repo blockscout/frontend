@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports */
 import { Popover as ChakraPopover, Portal } from '@chakra-ui/react';
 import * as React from 'react';
 
@@ -53,6 +54,7 @@ export const PopoverCloseTrigger = React.forwardRef<
 
 export const PopoverRoot = (props: ChakraPopover.RootProps) => {
   const positioning = {
+    placement: 'bottom-start' as const,
     ...props.positioning,
     offset: {
       mainAxis: 4,

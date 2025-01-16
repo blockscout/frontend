@@ -1,10 +1,12 @@
-import { Image, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import highlightText from 'lib/highlightText';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { Image } from 'toolkit/chakra/image';
 import IconSvg from 'ui/shared/IconSvg';
 
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
@@ -45,7 +47,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
             { data.external && <IconSvg name="link_external" color="icon_link_external" boxSize={ 3 } verticalAlign="middle" flexShrink={ 0 }/> }
           </Flex>
           <Text
-            variant="secondary"
+            color="text.secondary"
             overflow="hidden"
             textOverflow="ellipsis"
             style={{
@@ -73,7 +75,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
           <span dangerouslySetInnerHTML={{ __html: highlightText(data.title, searchTerm) }}/>
         </Text>
         <Text
-          variant="secondary"
+          color="text.secondary"
           overflow="hidden"
           whiteSpace="nowrap"
           textOverflow="ellipsis"

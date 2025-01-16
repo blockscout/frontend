@@ -1,4 +1,4 @@
-import { Box, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Text, Tabs } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import throttle from 'lodash/throttle';
 import React from 'react';
@@ -13,7 +13,7 @@ import * as regexp from 'lib/regexp';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
-import type { ApiCategory, ItemsCategoriesMap } from 'ui/shared/search/utils';
+import type { ApiCategory, Category, ItemsCategoriesMap } from 'ui/shared/search/utils';
 import { getItemCategory, searchCategories } from 'ui/shared/search/utils';
 
 import SearchBarSuggestApp from './SearchBarSuggestApp';
@@ -36,7 +36,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
   const categoriesRefs = React.useRef<Array<HTMLParagraphElement>>([]);
   const tabsRef = React.useRef<HTMLDivElement>(null);
 
-  const [ tabIndex, setTabIndex ] = React.useState(0);
+  const [ currentTab, setCurrentTab ] = React.useState<Category | undefined>(undefined);
 
   const handleScroll = React.useCallback(() => {
     const container = document.getElementById(containerId);
@@ -45,12 +45,20 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     }
     const topLimit = container.getBoundingClientRect().y + (tabsRef.current?.clientHeight || 0) + 24;
     if (categoriesRefs.current[categoriesRefs.current.length - 1].getBoundingClientRect().y <= topLimit) {
-      setTabIndex(categoriesRefs.current.length - 1);
+      const lastCategory = categoriesRefs.current[categoriesRefs.current.length - 1];
+      const lastCategoryId = lastCategory.getAttribute('data-id');
+      if (lastCategoryId) {
+        setCurrentTab(lastCategoryId as Category);
+      }
       return;
     }
     for (let i = 0; i < categoriesRefs.current.length - 1; i++) {
       if (categoriesRefs.current[i].getBoundingClientRect().y <= topLimit && categoriesRefs.current[i + 1].getBoundingClientRect().y > topLimit) {
-        setTabIndex(i);
+        const currentCategory = categoriesRefs.current[i];
+        const currentCategoryId = currentCategory.getAttribute('data-id');
+        if (currentCategoryId) {
+          setCurrentTab(currentCategoryId as Category);
+        }
         break;
       }
     }
@@ -106,19 +114,19 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
 
   React.useEffect(() => {
     categoriesRefs.current = Array(Object.keys(itemsGroups).length).fill('').map((_, i) => categoriesRefs.current[i] || React.createRef());
+    const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
+    setCurrentTab(resultCategories[0]?.id);
   }, [ itemsGroups ]);
 
-  const scrollToCategory = React.useCallback((index: number) => () => {
-    setTabIndex(index);
-    scroller.scrollTo(`cat_${ index }`, {
+  const handleTabsValueChange = React.useCallback(({ value }: { value: string }) => {
+    setCurrentTab(value as Category);
+    scroller.scrollTo(`cat_${ value }`, {
       duration: 250,
       smooth: true,
       offset: -(tabsRef.current?.clientHeight || 0),
       containerId: containerId,
     });
   }, [ containerId ]);
-
-  const bgColor = useColorModeValue('white', 'gray.900');
 
   const content = (() => {
     if (query.isPending || marketplaceApps.isPlaceholderData) {
@@ -142,30 +150,39 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     return (
       <>
         { resultCategories.length > 1 && (
-          <Box position="sticky" top="0" width="100%" background={ bgColor } py={ 5 } my={ -5 } ref={ tabsRef }>
-            <Tabs variant="outline" colorScheme="gray" size="sm" index={ tabIndex }>
-              <TabList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
-                { resultCategories.map((cat, index) => (
-                  <Tab key={ cat.id } onClick={ scrollToCategory(index) } { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
+          <Box position="sticky" top="0" width="100%" background={{ _light: 'white', _dark: 'gray.900' }} py={ 5 } my={ -5 } ref={ tabsRef }>
+            <Tabs.Root
+              variant="secondary"
+              size="sm"
+              value={ currentTab }
+              onValueChange={ handleTabsValueChange }
+            >
+              <Tabs.List columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
+                { resultCategories.map((cat) => (
+                  <Tabs.Trigger
+                    key={ cat.id }
+                    value={ cat.id }
+                  >
                     { cat.title }
-                  </Tab>
+                  </Tabs.Trigger>
                 )) }
-              </TabList>
-            </Tabs>
+              </Tabs.List>
+            </Tabs.Root>
           </Box>
         ) }
-        { resultCategories.map((cat, indx) => {
+        { resultCategories.map((cat, index) => {
           return (
-            <Element name={ `cat_${ indx }` } key={ cat.id }>
+            <Element name={ `cat_${ cat.id }` } key={ cat.id }>
               <Text
-                fontSize="sm"
+                textStyle="sm"
                 fontWeight={ 600 }
-                variant="secondary"
+                color="text.secondary"
                 mt={ 6 }
                 mb={ 3 }
                 ref={ (el: HTMLParagraphElement) => {
-                  categoriesRefs.current[indx] = el;
+                  categoriesRefs.current[index] = el;
                 } }
+                data-id={ cat.id }
               >
                 { cat.title }
               </Text>

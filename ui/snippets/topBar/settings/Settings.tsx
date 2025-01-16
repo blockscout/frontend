@@ -16,7 +16,6 @@ const Settings = () => {
   return (
     <PopoverRoot
       positioning={{ placement: 'bottom-start' }}
-      lazyMount
       open={ open }
       onOpenChange={ onOpenChange }
     >

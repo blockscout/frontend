@@ -1,9 +1,10 @@
-import { Tabs, VStack, Skeleton, Flex, Box } from '@chakra-ui/react';
+import { Tabs, VStack, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FeaturedNetwork, NetworkGroup } from 'types/networks';
 
 import { PopoverBody, PopoverContent } from 'toolkit/chakra/popover';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import NetworkMenuLink from './NetworkMenuLink';
 

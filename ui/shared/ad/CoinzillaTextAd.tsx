@@ -1,8 +1,10 @@
-import { Box, Image, Link, Text, chakra, Skeleton } from '@chakra-ui/react';
+import { Box, Link, Text, chakra } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
 import { ndash } from 'lib/html-entities';
 import isBrowser from 'lib/isBrowser';
+import { Image } from 'toolkit/chakra/image';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 type AdData = {
   ad: {
@@ -78,9 +80,13 @@ const CoinzillaTextAd = ({ className }: { className?: string }) => {
         Ads:
       </Text>
       { urlObject.hostname === 'nifty.ink' ?
-        <Text as="span" mr={ 1 }>🎨</Text> :
-        <Image src={ adData.ad.thumbnail } width="20px" height="20px" mb="-4px" mr={ 1 } display="inline" alt=""/>
-      }
+        <Text as="span" mr={ 1 }>🎨</Text> : (
+          <Image
+            src={ adData.ad.thumbnail }
+            containerProps={{ width: '20px', height: '20px', mb: '-4px', mr: 1, display: 'inline-block' }}
+            alt=""
+          />
+        ) }
       <Text as="span" whiteSpace="pre-wrap">{ `${ adData.ad.name } ${ ndash } ${ adData.ad.description_short } ` }</Text>
       <Link href={ adData.ad.url }>{ adData.ad.cta_button }</Link>
     </Box>

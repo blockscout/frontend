@@ -20,7 +20,7 @@ const LayoutDefault = ({ children }: Props) => {
         <Layout.SideBar/>
         <Layout.MainColumn>
           <HeaderAlert/>
-          { /* <HeaderDesktop/> */ }
+          <HeaderDesktop/>
           <AppErrorBoundary>
             <Layout.Content>
               { children }

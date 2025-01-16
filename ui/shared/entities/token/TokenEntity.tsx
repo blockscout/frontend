@@ -1,11 +1,12 @@
-import type { As } from '@chakra-ui/react';
-import { Image, Skeleton, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
 import { route } from 'nextjs-routes';
 
+import { Image } from 'toolkit/chakra/image';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
@@ -48,11 +49,15 @@ const Icon = (props: IconProps) => {
   return (
     <Image
       { ...styles }
-      className={ props.className }
+      containerProps={{
+        className: props.className,
+        ...styles,
+      }}
       src={ props.token.icon_url ?? undefined }
       alt={ `${ props.token.name || 'token' } logo` }
       fallback={ <TokenLogoPlaceholder { ...styles }/> }
-      fallbackStrategy={ props.token.icon_url ? 'onError' : 'beforeLoadOrError' }
+      // TODO @tom2drum implement fallbackStrategy in Image component
+      // fallbackStrategy={ props.token.icon_url ? 'onError' : 'beforeLoadOrError' }
     />
   );
 };
@@ -69,7 +74,7 @@ const Content = chakra((props: ContentProps) => {
   return (
     <TruncatedTextTooltip label={ nameString }>
       <Skeleton
-        isLoaded={ !props.isLoading }
+        loading={ props.isLoading }
         display="inline-block"
         whiteSpace="nowrap"
         overflow="hidden"
@@ -93,7 +98,7 @@ const Symbol = (props: SymbolProps) => {
 
   return (
     <Skeleton
-      isLoaded={ !props.isLoading }
+      loading={ props.isLoading }
       display="inline-flex"
       alignItems="center"
       maxW="20%"
@@ -152,7 +157,7 @@ const TokenEntity = (props: EntityProps) => {
   );
 };
 
-export default React.memo(chakra<As, EntityProps>(TokenEntity));
+export default React.memo(chakra(TokenEntity));
 
 export {
   Container,

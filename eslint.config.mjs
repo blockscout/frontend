@@ -29,7 +29,7 @@ const RESTRICTED_MODULES = {
       name: '@chakra-ui/react',
       importNames: [
         'Menu', 'useToast', 'useDisclosure', 'useClipboard', 'Tooltip', 'Skeleton', 'IconButton', 'Button',
-        'Image',
+        'Image', 'Popover', 'PopoverTrigger', 'PopoverContent', 'PopoverBody', 'PopoverFooter',
       ],
       message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
     },

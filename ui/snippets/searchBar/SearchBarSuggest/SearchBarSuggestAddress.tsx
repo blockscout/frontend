@@ -34,7 +34,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
   const nameEl = addressName && (
     <Flex alignItems="center">
       <Text
-        variant="secondary"
+        color="text.secondary"
         overflow="hidden"
         whiteSpace="nowrap"
         textOverflow="ellipsis"

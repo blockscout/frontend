@@ -1,14 +1,14 @@
-import { InputGroup, Input, InputLeftElement, chakra, InputRightElement, Center } from '@chakra-ui/react';
+import { chakra, Center } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
-import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { Input } from 'toolkit/chakra/input';
+import { InputGroup } from 'toolkit/chakra/input-group';
 import ClearButton from 'ui/shared/ClearButton';
 import IconSvg from 'ui/shared/IconSvg';
-
 interface Props {
   onChange: (value: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
@@ -98,10 +98,17 @@ const SearchBarInput = (
     };
   }, [ handleKeyPress ]);
 
-  const bgColor = useColorModeValue('white', 'black');
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
 
-  const rightElement = (() => {
+  const startElement = (
+    <IconSvg
+      name="search"
+      boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }}
+      color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }}
+    />
+  );
+
+  const endElement = (() => {
     if (value) {
       return <ClearButton onClick={ onClear }/>;
     }
@@ -132,9 +139,8 @@ const SearchBarInput = (
       noValidate
       onSubmit={ onSubmit }
       onBlur={ onBlur }
-      onFocus={ onFocus }
       w="100%"
-      backgroundColor={ bgColor }
+      backgroundColor={{ _light: 'white', _dark: 'black' }}
       borderRadius={{ base: isHomepage ? 'base' : 'none', lg: 'base' }}
       position={{ base: isHomepage ? 'static' : 'absolute', lg: 'relative' }}
       top={{ base: isHomepage ? 0 : 55, lg: 0 }}
@@ -149,7 +155,24 @@ const SearchBarInput = (
       transitionDuration="normal"
       transitionTimingFunction="ease"
     >
-      <InputGroup size={{ base: 'sm', lg: isHomepage ? 'sm_md' : 'sm' }}>
+      <InputGroup
+        startElement={ startElement }
+        startOffset={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
+        endElement={ endElement }
+      >
+        <Input
+          placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
+          value={ value }
+          onChange={ handleChange }
+          border={ isHomepage ? 'none' : '2px solid' }
+          borderColor={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' }}
+          color={{ _light: 'black', _dark: 'white' }}
+          _hover={{ borderColor: 'input.border.hover' }}
+          _focusWithin={{ _placeholder: { color: 'gray.300' }, borderColor: 'input.border.focus', _hover: { borderColor: 'input.border.focus' } }}
+        />
+      </InputGroup>
+      { /* TODO @tom2drum migrate icon styles */ }
+      { /* <InputGroup size={{ base: 'sm', lg: isHomepage ? 'sm_md' : 'sm' }}>
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
           <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
         </InputLeftElement>
@@ -175,7 +198,7 @@ const SearchBarInput = (
         <InputRightElement top={{ base: 2, lg: isHomepage ? 3 : 2 }} right={ 2 }>
           { rightElement }
         </InputRightElement>
-      </InputGroup>
+      </InputGroup> */ }
     </chakra.form>
   );
 };

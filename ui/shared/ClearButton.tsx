@@ -1,6 +1,7 @@
-import { chakra, IconButton, useColorModeValue } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import { IconButton } from 'toolkit/chakra/icon-button';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -10,21 +11,22 @@ interface Props {
 }
 
 const ClearButton = ({ onClick, isDisabled, className }: Props) => {
-  const iconColor = useColorModeValue('gray.300', 'gray.600');
-  const iconColorHover = useColorModeValue('gray.200', 'gray.500');
-
   return (
     <IconButton
-      isDisabled={ isDisabled }
+      disabled={ isDisabled }
       className={ className }
-      colorScheme="none"
       aria-label="Clear input"
       title="Clear input"
-      boxSize={ 6 }
-      icon={ <IconSvg name="status/error" boxSize={ 3 } color={ iconColor } _hover={{ color: iconColorHover }}/> }
       size="sm"
       onClick={ onClick }
-    />
+    >
+      <IconSvg
+        name="status/error"
+        boxSize={ 3 }
+        color={{ _light: 'gray.300', _dark: 'gray.600' }}
+        _hover={{ color: { _light: 'gray.200', _dark: 'gray.500' } }}
+      />
+    </IconButton>
   );
 };
 
