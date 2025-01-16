@@ -217,6 +217,12 @@ export default function useNavItems(): ReturnType {
         icon: 'race',
         isActive: pathname.startsWith('/race'),
       } : null,
+      {
+        text: 'GPU Mining',
+        nextRoute: { pathname: '/mining' as const },
+        icon: 'mining',
+        isActive: pathname.startsWith('/mining'),
+      },
       config.features.stats.isEnabled ? {
         text: 'Charts & stats',
         nextRoute: { pathname: '/stats' as const },

@@ -61,6 +61,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/auth/unverified-email': DEFAULT_TEMPLATE,
   '/race/[id]': DEFAULT_TEMPLATE,
   '/race': DEFAULT_TEMPLATE,
+  '/mining/[id]': DEFAULT_TEMPLATE,
+  '/mining': DEFAULT_TEMPLATE,
 };
 
 export function make(pathname: Route['pathname']) {

@@ -111,6 +111,29 @@ export default function useMarketplaceApps(
   });
 
 
+  const { isPlaceholderData: isGPUMiningPlaceholderData, isError: isGPUMiningError, error: gpuMiningError, data: gpuMiningData } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
+    queryKey: ['gpu_mining-dapps', snapshotFavoriteApps],
+    queryFn: async () => {
+      try {
+        const response = await fetch<Array<MarketplaceAppWithSecurityReport>, unknown>(
+          "/assets/gpu_mining-dapps.json", 
+          undefined, 
+          { resource: 'marketplace-dapps' }
+        );
+        return response;
+      } catch (error) {
+        console.error('GPU Mining data fetch error:', error);
+        return [];
+      }
+    },
+    select: (data) => sortApps(data as Array<MarketplaceAppWithSecurityReport>, snapshotFavoriteApps),
+    placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
+    staleTime: Infinity,
+    enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
+  });
+
+
+
   const appsWithSecurityReports = React.useMemo(() =>
     data?.map((app) => ({ ...app, securityReport: securityReports?.[app.id] })),
     [data, securityReports]);
@@ -133,6 +156,13 @@ export default function useMarketplaceApps(
     ) || [];
   }, [selectedCategoryId, gpuRaceData, filter, favoriteApps]);
 
+  const displayedAppsInMining = React.useMemo(() => {
+    return gpuMiningData?.filter(app => 
+      isAppNameMatches(filter, app) && 
+      isAppCategoryMatches(selectedCategoryId, app, favoriteApps)
+    ) || [];
+  }, [selectedCategoryId, gpuMiningData, filter, favoriteApps]);
+
   return React.useMemo(() => ({
     data,
     displayedApps,
@@ -140,7 +170,9 @@ export default function useMarketplaceApps(
     isError,
     isPlaceholderData: isPlaceholderData || isSecurityReportsPlaceholderData,
     gpuRaceData,
-    displayedAppsInRace
+    displayedAppsInRace,
+    gpuMiningData,
+    displayedAppsInMining
   }), [
     data,
     displayedApps,
@@ -150,6 +182,7 @@ export default function useMarketplaceApps(
     isSecurityReportsPlaceholderData,
     gpuRaceData,
     displayedAppsInRace,
-
+    gpuMiningData,
+    displayedAppsInMining
   ]);
 }

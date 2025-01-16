@@ -11,6 +11,8 @@ export type MarketplaceAppPreview = {
   url: string;
   internalWallet?: boolean;
   priority?: number;
+  miningInfo?: any;
+  tokenInfo?: any;
 }
 
 export type MarketplaceAppSocialInfo = {

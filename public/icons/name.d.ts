@@ -74,6 +74,7 @@
 	| "lightning"
 	| "link"
 	| "lock"
+	| "mining"
 	| "minus"
 	| "monaco/file"
 	| "monaco/folder-open"

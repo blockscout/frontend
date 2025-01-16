@@ -45,6 +45,21 @@
         "internalWallet": false
       },
       {
+        "author": "XAIAgent",
+        "id": "XAIAgent",
+        "title": "XAIAgent",
+        "logo": "https://raw.githubusercontent.com/DeepBrainChain/DBCPublicChainScan/develop/docker-compose/configs/XAIAgentLogo.png",
+        "categories": [
+          "GPU Cloud"
+        ],
+        "shortDescription": "AI Agent + GPU + DePIN",
+        "site": "https://www.hibaocloud.com/",
+        "description": ".",
+        "url": "https://www.hibaocloud.com/",
+        "external": true,
+        "internalWallet": false
+      },
+      {
         "author": "HibaoCloud",
         "id": "HibaoCloud",
         "title": "HibaoCloud",
