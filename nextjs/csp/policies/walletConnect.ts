@@ -18,12 +18,19 @@ export function walletConnect(): CspDev.DirectiveDescriptor {
       'wss://www.walletlink.org',
     ],
     'frame-ancestors': [
+      "'self'",
+      'http://localhost:*',
+      'https://*.pages.dev',
+      'https://*.vercel.app',
+      'https://*.ngrok-free.app',
+      'https://secure-mobile.walletconnect.com',
+      'https://secure-mobile.walletconnect.org',
       '*.walletconnect.org',
       '*.walletconnect.com',
+      'https://*.dbcscan.io',
+      'https://test.dbcscan.io',
     ],
-    'img-src': [
-      KEY_WORDS.BLOB,
-      '*.walletconnect.com',
-    ],
+    'frame-src': ["'self'", 'https://secure.walletconnect.com', '*.walletconnect.com', '*.walletconnect.org'],
+    'img-src': [KEY_WORDS.BLOB, '*.walletconnect.com'],
   };
 }

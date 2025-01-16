@@ -125,7 +125,17 @@ export function app(): CspDev.DirectiveDescriptor {
       '*',
     ],
 
-    'frame-ancestors': [KEY_WORDS.SELF],
+    'frame-ancestors': [
+      KEY_WORDS.SELF,
+      'http://localhost:*',
+      'https://*.pages.dev',
+      'https://*.vercel.app',
+      'https://*.ngrok-free.app',
+      'https://secure-mobile.walletconnect.com',
+      'https://secure-mobile.walletconnect.org',
+      'https://*.dbcscan.io',
+      'https://test.dbcscan.io',
+    ],
 
     ...(() => {
       if (!config.features.sentry.isEnabled) {
