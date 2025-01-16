@@ -1,4 +1,4 @@
-import castArray from 'lodash/castArray';
+import { castArray } from 'es-toolkit/compat';
 
 import type { AdvancedFilterAge, AdvancedFilterParams } from 'types/api/advancedFilter';
 

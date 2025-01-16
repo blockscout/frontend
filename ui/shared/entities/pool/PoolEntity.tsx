@@ -1,5 +1,5 @@
 import type { As } from '@chakra-ui/react';
-import { Flex, Skeleton, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Flex, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Pool } from 'types/api/pools';
@@ -7,6 +7,7 @@ import type { Pool } from 'types/api/pools';
 import { route } from 'nextjs-routes';
 
 import { getPoolTitle } from 'lib/pools/getPoolTitle';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 

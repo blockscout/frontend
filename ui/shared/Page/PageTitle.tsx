@@ -1,10 +1,12 @@
-import { Heading, Flex, Link, chakra, Skeleton, useDisclosure } from '@chakra-ui/react';
-import _debounce from 'lodash/debounce';
+import { Heading, Flex, Link, chakra } from '@chakra-ui/react';
+import { debounce } from 'es-toolkit';
 import React from 'react';
 
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import TextAd from 'ui/shared/ad/TextAd';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
@@ -94,7 +96,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
   }, [ isLoading, updatedTruncateState ]);
 
   React.useEffect(() => {
-    const handleResize = _debounce(updatedTruncateState, 1000);
+    const handleResize = debounce(updatedTruncateState, 1000);
     window.addEventListener('resize', handleResize);
 
     return function cleanup() {

@@ -33,14 +33,9 @@ const RESTRICTED_MODULES = {
       ],
       message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
     },
-    {
-      name: 'lodash',
-      message: 'Please use `import [package] from \'lodash/[package]\'` instead.',
-    },
   ],
   patterns: [
     'icons/*',
-    '!lodash/*',
   ],
 };
 
@@ -432,6 +427,7 @@ export default tseslint.config(
       'pages/**',
       'nextjs/**',
       'playwright/**',
+      'deploy/scripts/**',
       'deploy/tools/**',
       'middleware.ts',
       'instrumentation*.ts',

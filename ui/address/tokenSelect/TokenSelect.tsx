@@ -1,6 +1,6 @@
-import { Box, Flex, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Tooltip } from '@chakra-ui/react';
 import { useQueryClient, useIsFetching } from '@tanstack/react-query';
-import _sumBy from 'lodash/sumBy';
+import { sumBy } from 'es-toolkit';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -11,6 +11,7 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import useFetchTokens from '../utils/useFetchTokens';
@@ -49,7 +50,7 @@ const TokenSelect = ({ onClick }: Props) => {
     );
   }
 
-  const hasTokens = _sumBy(Object.values(data), ({ items }) => items.length) > 0;
+  const hasTokens = sumBy(Object.values(data), ({ items }) => items.length) > 0;
   if (isError || !hasTokens) {
     return <Box py="6px">0</Box>;
   }

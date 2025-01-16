@@ -1,5 +1,5 @@
 import type { Placement } from '@floating-ui/dom';
-import debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
 

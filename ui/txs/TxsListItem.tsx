@@ -1,7 +1,7 @@
 import {
   HStack,
   Flex,
-  Skeleton,
+
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -12,6 +12,7 @@ import getValueWithUnit from 'lib/getValueWithUnit';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';

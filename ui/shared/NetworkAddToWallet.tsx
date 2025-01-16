@@ -41,7 +41,7 @@ const NetworkAddToWallet = () => {
     }
   }, [ addOrSwitchChain, provider, wallet ]);
 
-  if (!provider || !wallet || !config.chain.rpcUrl || !feature.isEnabled) {
+  if (!provider || !wallet || !config.chain.rpcUrls.length || !feature.isEnabled) {
     return null;
   }
 

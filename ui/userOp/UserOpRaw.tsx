@@ -1,8 +1,8 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { UserOp } from 'types/api/userOps';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 // order is taken from the ERC-4337 standard

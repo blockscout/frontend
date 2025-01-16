@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { useClickAway } from '@uidotdev/usehooks';
-import _debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
@@ -111,7 +111,7 @@ const SearchBar = ({ isHomepage }: Props) => {
     }
     calculateMenuWidth();
 
-    const resizeHandler = _debounce(calculateMenuWidth, 200);
+    const resizeHandler = debounce(calculateMenuWidth, 200);
     const resizeObserver = new ResizeObserver(resizeHandler);
     resizeObserver.observe(inputRef.current);
 

@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
-import _maxBy from 'lodash/maxBy';
-import _unique from 'lodash/uniq';
+import { maxBy, uniq } from 'es-toolkit';
 
 import type { AxesConfig, AxisConfig, TimeChartData } from '../types';
 
@@ -88,8 +87,8 @@ function getYLabelFormatParams(ticks: Array<number>, maximumSignificantDigits = 
     notation: 'compact' as const,
   };
 
-  const uniqTicksStr = _unique(ticks.map((tick) => tick.toLocaleString(undefined, params)));
-  const maxLabelLength = _maxBy(uniqTicksStr, (items) => items.length)?.length ?? DEFAULT_LABEL_LENGTH;
+  const uniqTicksStr = uniq(ticks.map((tick) => tick.toLocaleString(undefined, params)));
+  const maxLabelLength = maxBy(uniqTicksStr, (items) => items.length)?.length ?? DEFAULT_LABEL_LENGTH;
 
   if (uniqTicksStr.length === ticks.length || maximumSignificantDigits === MAXIMUM_SIGNIFICANT_DIGITS_LIMIT) {
     return { ...params, maxLabelLength };

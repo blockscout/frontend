@@ -1,5 +1,5 @@
 import { chakra, Center } from '@chakra-ui/react';
-import throttle from 'lodash/throttle';
+import { throttle } from 'es-toolkit';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
