@@ -1,78 +1,315 @@
-import type { GetServerSideProps } from 'next';
-import dynamic from 'next/dynamic';
 import React from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Image,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Skeleton,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 
-import type { NextPageWithLayout } from 'nextjs/types';
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import useMarketplaceApps from '../../ui/marketplace/useMarketplaceApps';
+import LinkExternal from '../../ui/shared/LinkExternal';
 
-import type { Route } from 'nextjs-routes';
-import * as gSSP from 'nextjs/getServerSideProps';
-import type { Props } from 'nextjs/getServerSideProps';
-import PageNextJs from 'nextjs/PageNextJs';
-import detectBotRequest from 'nextjs/utils/detectBotRequest';
-import fetchApi from 'nextjs/utils/fetchApi';
+interface MiningAppDetail {
+  id: string;
+  title: string;
+  logo: string;
+  description: string;
+  miningInfo: {
+    dailyReward: string;
+    gpuCount: string;
+    totalMiners: string;
+    hashRate: string;
+  };
+  tokenInfo: {
+    symbol: string;
+    price: string;
+    priceChange: string;
+    marketCap: string;
+    volume24h: string;
+  };
+}
 
-import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import LayoutApp from 'ui/shared/layout/LayoutApp';
+interface InfoItemProps {
+  label: string;
+  value?: string;
+  isLoading: boolean;
+}
 
-const MarketplaceApp = dynamic(() => import('ui/pages/MarketplaceApp'), { ssr: false });
-
-const pathname: Route['pathname'] = '/apps/[id]';
-const feature = config.features.marketplace;
-
-const Page: NextPageWithLayout<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
+function InfoItem({ label, value, isLoading }: InfoItemProps) {
   return (
-    <PageNextJs pathname="/apps/[id]" query={ props.query } apiData={ props.apiData }>
-      <MarketplaceApp/>
-    </PageNextJs>
+    <Box>
+      <Text color="gray.500" fontSize="sm">
+        {label}
+      </Text>
+      <Skeleton isLoaded={!isLoading}>
+        <Text fontWeight="medium">
+          {value || '-'}
+        </Text>
+      </Skeleton>
+    </Box>
   );
-};
+}
 
-Page.getLayout = function getLayout(page: React.ReactElement) {
-  return (
-    <LayoutApp>
-      { page }
-    </LayoutApp>
-  );
-};
+export default function MiningAppDetail() {
+  const router = useRouter();
+  const { id } = router.query;
+  const [isLoading, setIsLoading] = useState(true);
+  const [appData, setAppData] = useState<MiningAppDetail | null>(null);
+  const { isOpen: isPledgeModalOpen, onOpen: onPledgeModalOpen, onClose: onPledgeModalClose } = useDisclosure();
+  const [nftNodeCount, setNftNodeCount] = useState('');
+  const [machineId, setMachineId] = useState('');
+  const [privateKey, setPrivateKey] = useState('');
 
-export default Page;
+  const { gpuMiningData } = useMarketplaceApps('', 'all');
 
-export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
-  const baseResponse = await gSSP.marketplace<typeof pathname>(ctx);
+  useEffect(() => {
+    if (id && gpuMiningData) {
+      const matchedApp = gpuMiningData.find((app) => app.id === id || app.title === id);
 
-  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse && feature.isEnabled) {
-    const botInfo = detectBotRequest(ctx.req);
-
-    if (botInfo?.type === 'social_preview') {
-
-      const appData = await(async() => {
-        if ('configUrl' in feature) {
-          const appList = await fetchApi<never, Array<MarketplaceAppOverview>>({
-            url: config.app.baseUrl + feature.configUrl,
-            route: '/marketplace_config',
-            timeout: 1_000,
-          });
-
-          if (appList && Array.isArray(appList)) {
-            return appList.find(app => app.id === getQueryParamString(ctx.query.id));
-          }
-
-        } else {
-          return await fetchApi({
-            resource: 'marketplace_dapp',
-            pathParams: { dappId: getQueryParamString(ctx.query.id), chainId: config.chain.id },
-            timeout: 1_000,
-          });
-        }
-      })();
-
-      (await baseResponse.props).apiData = appData && appData.title ? {
-        app_name: appData.title,
-      } : null;
+      if (matchedApp) {
+        setAppData({
+          id: matchedApp.id,
+          title: matchedApp.title,
+          logo: matchedApp.logo,
+          description: matchedApp.description,
+          miningInfo: {
+            dailyReward: matchedApp.miningInfo?.dailyReward || '0',
+            gpuCount: matchedApp.miningInfo?.gpuCount || '0',
+            totalMiners: matchedApp.miningInfo?.totalMiners || '0',
+            hashRate: matchedApp.miningInfo?.hashRate || '0',
+          },
+          tokenInfo: {
+            symbol: matchedApp.tokenInfo?.symbol || '',
+            price: matchedApp.tokenInfo?.price || '0',
+            priceChange: matchedApp.tokenInfo?.priceChange || '0',
+            marketCap: matchedApp.tokenInfo?.marketCap || '0',
+            volume24h: matchedApp.tokenInfo?.volume24h || '0',
+          },
+        });
+      }
+      setIsLoading(false);
     }
-  }
+  }, [id, gpuMiningData]);
 
-  return baseResponse;
-};
+  const handlePledgeSubmit = () => {
+    onPledgeModalClose();
+  };
+
+  return (
+    <Container maxW="container.xl" py={4}>
+      <Flex direction="column" gap={4}>
+        <Flex gap={6} align="start">
+          <Skeleton isLoaded={!isLoading} w="80px" h="80px" borderRadius="xl">
+            <Image
+              src={appData?.logo}
+              alt={`${appData?.title} logo`}
+              w="80px"
+              h="80px"
+              borderRadius="xl"
+              objectFit="cover"
+            />
+          </Skeleton>
+
+          <Flex direction="column" gap={3} flex={1}>
+            <Skeleton isLoaded={!isLoading}>
+              <Text fontSize="3xl" fontWeight="bold">
+                {appData?.title || 'DeepLink'}
+              </Text>
+            </Skeleton>
+          </Flex>
+        </Flex>
+
+        <Box>
+          <Tabs>
+            <TabList>
+              <Tab>Long Mining</Tab>
+              <Tab>Short Mining</Tab>
+            </TabList>
+
+            <TabPanels>
+              <TabPanel>
+                <Box mb={4}>
+                  <Text color="gray.600">
+                    Note: The long-term rental mode requires the GPU server to be hosted in a professional data center,
+                    and to maintain 365 days of power and network can not be interrupted, otherwise it will be punished DBC Token
+                  </Text>
+                </Box>
+
+                <Flex direction="column" gap={6}>
+                  <Flex gap={4}>
+                    <Box
+                      w="24px"
+                      h="24px"
+                      borderRadius="full"
+                      bg="blue.500"
+                      color="white"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      flexShrink={0}
+                    >
+                      1
+                    </Box>
+                    <Box>
+                      <Text mb={2}>First, add the GPU machine to the DBC network</Text>
+                      <Text mb={2}>
+                        Reference document:{' '}
+                        <LinkExternal href="https://deepbrainchain.github.io/DBC-Wiki/install-update-dbc-node/install-update-dbc/dbc-bare-metal-node.html">
+                          https://deepbrainchain.github.io/DBC-Wiki/install-update-dbc-node/install-update-dbc/dbc-bare-metal-node.html
+                        </LinkExternal>
+                      </Text>
+                    </Box>
+                  </Flex>
+
+                  <Flex gap={4}>
+                    <Box
+                      w="24px"
+                      h="24px"
+                      borderRadius="full"
+                      bg="blue.500"
+                      color="white"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      flexShrink={0}
+                    >
+                      2
+                    </Box>
+                    <Box>
+                      <Text mb={2}>
+                        The machine in DBC network rent down, rent to the end of the Orion competition at this stage time.
+                      </Text>
+                      <Text mb={2}>
+                        View the competition information:{' '}
+                        <LinkExternal href="https://orion.deeplink.cloud">
+                          https://orion.deeplink.cloud
+                        </LinkExternal>
+                      </Text>
+                      <Text>
+                        Reference document:{' '}
+                        <LinkExternal href="https://deepbrainchain.github.io/DBC-Wiki/onchain-guide/rent-machine.html">
+                          https://deepbrainchain.github.io/DBC-Wiki/onchain-guide/rent-machine.html
+                        </LinkExternal>
+                      </Text>
+                    </Box>
+                  </Flex>
+
+                  <Flex gap={4}>
+                    <Box
+                      w="24px"
+                      h="24px"
+                      borderRadius="full"
+                      bg="blue.500"
+                      color="white"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      flexShrink={0}
+                    >
+                      3
+                    </Box>
+                    <Box>
+                      <Text mb={4}>Add rented GPU machines to the Deeplink network</Text>
+                      <Flex direction="column" gap={4}>
+                        <Button colorScheme="blue" variant="outline" w="fit-content" onClick={onPledgeModalOpen}>
+                          Pledge NFT nodes
+                        </Button>
+                        <Button colorScheme="blue" variant="outline" w="fit-content">
+                          Pledge DLC
+                        </Button>
+                        <Text color="gray.600" fontSize="sm">
+                          This step can also be skipped without pledging DLC, refer to the rules:{' '}
+                          <LinkExternal href="https://orion.deeplink.cloud/longterm">
+                            https://orion.deeplink.cloud/longterm
+                          </LinkExternal>
+                        </Text>
+                        <Text mt={2}>
+                          View machine information that has been added to the Deeplink network:{' '}
+                          <LinkExternal href="https://orion.deeplink.cloud/device">
+                            https://orion.deeplink.cloud/device
+                          </LinkExternal>
+                        </Text>
+                      </Flex>
+                    </Box>
+                  </Flex>
+                </Flex>
+              </TabPanel>
+
+              <TabPanel>
+                <Text>Short Mining content here...</Text>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </Box>
+      </Flex>
+
+      <Modal isOpen={isPledgeModalOpen} onClose={onPledgeModalClose} size="sm">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader fontSize="lg">Pledge NFT Nodes</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl mb={4} size="sm">
+              <FormLabel fontSize="sm">Number of NFT nodes to pledge</FormLabel>
+              <Input
+                value={nftNodeCount}
+                onChange={(e) => setNftNodeCount(e.target.value)}
+                placeholder="Enter number of nodes"
+                size="sm"
+              />
+              <FormHelperText fontSize="xs">
+                A minimum of 1 NFT and a maximum of 20 NFT need to be pledged
+              </FormHelperText>
+            </FormControl>
+
+            <FormControl mb={4} size="sm">
+              <FormLabel fontSize="sm">ID of the machine you want to pledge</FormLabel>
+              <Input
+                value={machineId}
+                onChange={(e) => setMachineId(e.target.value)}
+                placeholder="Enter machine ID"
+                size="sm"
+              />
+            </FormControl>
+
+            <FormControl mb={6} size="sm">
+              <FormLabel fontSize="sm">Machine private key you want to pledge</FormLabel>
+              <Input
+                value={privateKey}
+                onChange={(e) => setPrivateKey(e.target.value)}
+                placeholder="Enter private key"
+                type="password"
+                size="sm"
+              />
+            </FormControl>
+
+            <Button colorScheme="blue" width="full" size="sm" onClick={handlePledgeSubmit}>
+              Submit
+            </Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </Container>
+  );
+}

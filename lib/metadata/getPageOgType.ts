@@ -48,6 +48,8 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/race/[id]': 'Regular page',
   '/race': 'Root page',
   '/auth/unverified-email': 'Regular page',
+  '/mining': 'Root page',
+  '/mining/[id]': 'Regular page',
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',
