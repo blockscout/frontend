@@ -144,19 +144,19 @@ services:
       NEXT_PUBLIC_API_PORT: 443
       NEXT_PUBLIC_STATS_API_HOST: "https://stats-testnet.dbcscan.io"
       NEXT_PUBLIC_VISUALIZE_API_HOST: "https://visualize-testnet.dbcscan.io"
-      NEXT_PUBLIC_NETWORK_LOGO: https://test.dbcscan.io/assets/configs/DeepBrainChainLogo.png
+      NEXT_PUBLIC_NETWORK_LOGO: /assets/configs/DeepBrainChainLogo.png
       NEXT_PUBLIC_NETWORK_LOGO_DARK:
       FAVICON_GENERATOR_API_KEY: 87811573d5c5518da21c7c0b669f568bdd9e7004
-      NEXT_PUBLIC_NETWORK_ICON: https://test.dbcscan.io/assets/configs/DBC.png
+      NEXT_PUBLIC_NETWORK_ICON: /assets/configs/DBC.png
       NEXT_PUBLIC_NETWORK_ICON_DARK:
       NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS: '["eth_rpc_api","rpc_api"]'
       NEXT_PUBLIC_HOMEPAGE_CHARTS: '["daily_txs","coin_price","market_cap"]'
-      NEXT_PUBLIC_FEATURED_NETWORKS: https://test.dbcscan.io/assets/configs/featured_networks_config.json
+      NEXT_PUBLIC_FEATURED_NETWORKS: /assets/configs/featured_networks_config.json
       NEXT_PUBLIC_MARKETPLACE_ENABLED: true
-      NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: https://test.dbcscan.io/assets/configs/marketplace_mainnet_config.json
+      NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: /assets/configs/marketplace_mainnet_config.json
       NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://github.com/DeepBrainChain/DBCPublicChainScan
-      NEXT_PUBLIC_GPU_RACE_CONFIG_URL: https://test.dbcscan.io/assets/configs/gpu_race_config.json
-      NEXT_PUBLIC_FOOTER_LINKS: https://test.dbcscan.io/assets/configs/footer_links.json
+      NEXT_PUBLIC_GPU_RACE_CONFIG_URL: /assets/configs/gpu_race_config.json
+      NEXT_PUBLIC_FOOTER_LINKS: /assets/configs/footer_links.json
       NEXT_PUBLIC_OTHER_LINKS: '[{"text": "Faucet","url": "https://faucet.dbcscan.io"}]'
       NEXT_PUBLIC_AD_BANNER_PROVIDER: "none"
       NEXT_PUBLIC_AD_TEXT_PROVIDER: "none"
