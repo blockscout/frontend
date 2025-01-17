@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
         if ('configUrl' in feature) {
           const appList = await fetchApi<never, Array<MarketplaceAppOverview>>({
             url: config.app.baseUrl + feature.configUrl,
-            route: '/marketplace_config',
+            route: '/configs/marketplace_config',
             timeout: 1_000,
           });
 
