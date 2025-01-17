@@ -14,6 +14,7 @@ import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { distributeEntityProps, getIconProps } from '../base/utils';
 import AddressEntityContentProxy from './AddressEntityContentProxy';
+import AddressIconDelegated from './AddressIconDelegated';
 import AddressIdenticon from './AddressIdenticon';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'address'>;
@@ -51,7 +52,9 @@ const Icon = (props: IconProps) => {
     return <Skeleton { ...styles } borderRadius="full" flexShrink={ 0 }/>;
   }
 
-  if (props.address.is_contract) {
+  const isDelegatedAddress = props.address.proxy_type === 'eip7702';
+
+  if (props.address.is_contract && !isDelegatedAddress) {
     if (props.isSafeAddress) {
       return (
         <EntityBase.Icon
@@ -80,13 +83,22 @@ const Icon = (props: IconProps) => {
     );
   }
 
+  const label = (() => {
+    if (isDelegatedAddress) {
+      return props.address.is_verified ? 'EOA + verified code' : 'EOA + code';
+    }
+  })();
+
   return (
-    <Flex marginRight={ styles.marginRight }>
-      <AddressIdenticon
-        size={ props.size === 'lg' ? 30 : 20 }
-        hash={ getDisplayedAddress(props.address) }
-      />
-    </Flex>
+    <Tooltip label={ label }>
+      <Flex marginRight={ styles.marginRight } position="relative">
+        <AddressIdenticon
+          size={ props.size === 'lg' ? 30 : 20 }
+          hash={ getDisplayedAddress(props.address) }
+        />
+        { isDelegatedAddress && <AddressIconDelegated isVerified={ Boolean(props.address.is_verified) }/> }
+      </Flex>
+    </Tooltip>
   );
 };
 

@@ -59,6 +59,7 @@ export type AddressParamBasic = {
     tags: Array<AddressMetadataTagApi>;
   } | null;
   filecoin?: AddressFilecoinParams;
+  proxy_type?: 'eip7702' | null;
 };
 
 export type AddressParam = UserTags & AddressParamBasic;
