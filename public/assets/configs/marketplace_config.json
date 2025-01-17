@@ -3,7 +3,7 @@
         "author": "DeepLink",
         "id": "DeepLink",
         "title": "DeepLink",
-        "logo": "https://test.dbcscan.io/config-assets/DeepLinkLogo.jpg",
+        "logo": "https://test.dbcscan.io/assets/configs/DeepLinkLogo.jpg",
         "categories": [
           "DeAI"
         ],
@@ -18,7 +18,7 @@
         "author": "DecentralGPT",
         "id": "DecentralGPT",
         "title": "DecentralGPT",
-        "logo": "https://test.dbcscan.io/config-assets/DecentralGPTLogo.jpg",
+        "logo": "https://test.dbcscan.io/assets/configs/DecentralGPTLogo.jpg",
         "categories": [
           "DeAI"
         ],
@@ -33,7 +33,7 @@
         "author": "SuperImage",
         "id": "SuperImage",
         "title": "SuperImage",
-        "logo": "https://test.dbcscan.io/config-assets/SuperimageLogo.jpg",
+        "logo": "https://test.dbcscan.io/assets/configs/SuperimageLogo.jpg",
         "categories": [
           "DeAI"
         ],
@@ -48,7 +48,7 @@
         "author": "HibaoCloud",
         "id": "HibaoCloud",
         "title": "HibaoCloud",
-        "logo": "https://test.dbcscan.io/config-assets/HibaoCloudLogo.svg",
+        "logo": "https://test.dbcscan.io/assets/configs/HibaoCloudLogo.svg",
         "categories": [
           "GPU Cloud"
         ],
@@ -63,7 +63,7 @@
         "author": "Hycons",
         "id": "Hycons",
         "title": "Hycons",
-        "logo": "https://test.dbcscan.io/config-assets/HYCON.jpg",
+        "logo": "https://test.dbcscan.io/assets/configs/HYCON.jpg",
         "categories": [
           "GPU Cloud"
         ],
@@ -78,7 +78,7 @@
         "author": "DRCPad",
         "id": "DRCPad",
         "title": "DRCPad",
-        "logo": "https://test.dbcscan.io/config-assets/DRCPadLogo.jpg",
+        "logo": "https://test.dbcscan.io/assets/configs/DRCPadLogo.jpg",
         "categories": [
           "Luanchpad"
         ],
@@ -93,7 +93,7 @@
         "author": "DeepBrainChain",
         "id": "DeepBrainChain-wallet",
         "title": "DeepBrainChain Wallet",
-        "logo": "https://test.dbcscan.io/config-assets/DBC.png",
+        "logo": "https://test.dbcscan.io/assets/configs/DBC.png",
         "categories": [
           "Wallet"
         ],

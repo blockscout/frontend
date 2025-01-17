@@ -3,7 +3,7 @@
     "author": "DeepLink",
     "id": "DeepLink",
     "title": "DeepLink",
-    "logo": "https://test.dbcscan.io/config-assets/DeepLinkLogo.jpg",
+    "logo": "https://test.dbcscan.io/assets/configs/DeepLinkLogo.jpg",
     "categories": [],
     "miningInfo": {
       "dailyReward": "0",
@@ -24,7 +24,7 @@
     "author": "DecentralGPT",
     "id": "Andromeda",
     "title": "DecentralGPT",
-    "logo": "https://test.dbcscan.io/config-assets/DecentralGPTLogo.jpg",
+    "logo": "https://test.dbcscan.io/assets/configs/DecentralGPTLogo.jpg",
     "categories": [],
     "miningInfo": {
       "dailyReward": "0",

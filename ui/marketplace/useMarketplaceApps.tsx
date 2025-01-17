@@ -94,7 +94,7 @@ export default function useMarketplaceApps(
     queryFn: async () => {
       try {
         const response = await fetch<Array<MarketplaceAppWithSecurityReport>, unknown>(
-          "/assets/gpu_race_config.json", 
+          "/assets/configs/gpu_race_config.json", 
           undefined, 
           { resource: 'marketplace-dapps' }
         );
@@ -116,7 +116,7 @@ export default function useMarketplaceApps(
     queryFn: async () => {
       try {
         const response = await fetch<Array<MarketplaceAppWithSecurityReport>, unknown>(
-          "/assets/gpu_mining-dapps.json", 
+          "/assets/configs/gpu_mining-dapps.json", 
           undefined, 
           { resource: 'marketplace-dapps' }
         );
