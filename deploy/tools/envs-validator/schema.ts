@@ -1,3 +1,5 @@
+import * as yup from 'yup';
+
 declare module 'yup' {
   interface StringSchema {
     // Yup's URL validator is not perfect so we made our own
@@ -5,8 +7,6 @@ declare module 'yup' {
     url(): never;
   }
 }
-
-import * as yup from 'yup';
 
 import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from '../../../types/client/adProviders';
@@ -85,6 +85,8 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     discord: yup.string().test(urlTest),
     internalWallet: yup.boolean(),
     priority: yup.number(),
+    miningInfo: yup.object(),
+    tokenInfo: yup.object()
   });
 
 const issueSeverityDistributionSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['overallInfo']['issueSeverityDistribution']> = yup
