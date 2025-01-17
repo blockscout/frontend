@@ -6,7 +6,7 @@ type Props = {
   isActive?: boolean;
 };
 
-export default function useNavLinkProps({ isExpanded, isCollapsed, isActive }: Props) {
+export default function useNavLinkStyleProps({ isExpanded, isCollapsed, isActive }: Props) {
   return {
     itemProps: {
       visual: 'navigation' as const,

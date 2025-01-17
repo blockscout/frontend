@@ -126,6 +126,7 @@ const SearchBar = ({ isHomepage }: Props) => {
         open={ open && (searchTerm.trim().length > 0 || recentSearchKeywords.length > 0) }
         autoFocus={ false }
         onOpenChange={ handleOpenChange }
+        // TODO @tom2drum fix positioning on mobile
         positioning={{ offset: isMobile && !isHomepage ? { mainAxis: -4, crossAxis: 12 } : { mainAxis: 8, crossAxis: 0 } }}
         lazyMount
         closeOnInteractOutside={ false }

@@ -1,4 +1,4 @@
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -18,7 +18,6 @@ type Props = {
 };
 
 const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
-  const bgColor = useColorModeValue('white', 'black');
   const scrollDirection = useScrollDirection();
   const { ref, inView } = useInView({ threshold: 1 });
 
@@ -27,7 +26,7 @@ const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
   return (
     <Box
       ref={ ref }
-      bgColor={ bgColor }
+      bgColor={{ _light: 'white', _dark: 'black' }}
       display={{ base: 'block', lg: 'none' }}
       position="sticky"
       top="-1px"
@@ -39,7 +38,7 @@ const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
         as="header"
         paddingX={ 3 }
         paddingY={ 2 }
-        bgColor={ bgColor }
+        bgColor={{ _light: 'white', _dark: 'black' }}
         width="100%"
         alignItems="center"
         transitionProperty="box-shadow"

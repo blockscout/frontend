@@ -4,7 +4,6 @@ import type { Props } from './types';
 
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import HeaderAlert from 'ui/snippets/header/HeaderAlert';
-// TODO @tom2drum fix main layout
 import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
 import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 
@@ -15,7 +14,7 @@ const LayoutDefault = ({ children }: Props) => {
     <Layout.Container>
       <Layout.TopRow/>
       <Layout.NavBar/>
-      { /* <HeaderMobile/> */ }
+      <HeaderMobile/>
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn>

@@ -171,6 +171,23 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       },
     },
+    drawer: {
+      bg: {
+        DEFAULT: { value: { _light: '{colors.white}', _dark: '{colors.gray.900}' } },
+      },
+    },
+    select: {
+      fg: {
+        DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+        hover: { value: '{colors.blue.400}' },
+        error: { value: '{colors.red.500}' },
+      },
+      border: {
+        DEFAULT: { value: { _light: '{colors.gray.300}', _dark: '{colors.gray.600}' } },
+        hover: { value: '{colors.blue.400}' },
+        error: { value: '{colors.red.500}' },
+      },
+    },
     spinner: {
       track: {
         DEFAULT: { value: { _light: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.200}' } },
@@ -236,10 +253,10 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
   },
   shadows: {
     popover: {
-      DEFAULT: { value: {
-        _light: '{shadows.size.2xl}',
-        _dark: '0px 15px 40px 0px rgba(0, 0, 0, 0.4), 0px 5px 10px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 1px rgba(0, 0, 0, 0.1)',
-      } },
+      DEFAULT: { value: { _light: '{shadows.size.2xl}', _dark: '{shadows.dark-lg}' } },
+    },
+    drawer: {
+      DEFAULT: { value: { _light: '{shadows.size.lg}', _dark: '{shadows.dark-lg}' } },
     },
   },
 };

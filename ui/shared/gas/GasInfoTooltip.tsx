@@ -57,7 +57,7 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen, placement }: Pr
         <GasInfoTooltipRow name="Normal" info={ data.gas_prices.average }/>
         <GasInfoTooltipRow name="Slow" info={ data.gas_prices.slow }/>
       </Grid>
-      <LinkInternal href={ route({ pathname: '/gas-tracker' }) }>
+      <LinkInternal href={ route({ pathname: '/gas-tracker' }) } className="dark">
         Gas tracker overview
       </LinkInternal>
     </Flex>
@@ -67,11 +67,10 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen, placement }: Pr
     <Tooltip
       content={ content }
       positioning={{ placement }}
-      open={ isOpen }
+      { ...(isOpen ? { open: true } : { }) }
       lazyMount
       interactive
       showArrow={ false }
-      // TODO @tom2drum forced light mode doesn't work for now
       contentProps={{ p: 4, borderRadius: 'md', className: 'light' }}
     >
       { children }

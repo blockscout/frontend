@@ -41,7 +41,7 @@ const RewardsButton = ({ visual = 'header', size }: Props) => {
         onFocus={ handleFocus }
         fontSize="sm"
         size={ size }
-        px={ !isLoading && Boolean(apiToken) ? 2.5 : 4 }
+        px={{ base: '10px', lg: !isLoading && Boolean(apiToken) ? 2.5 : 4 }}
         loading={ isLoading }
         _hover={{
           textDecoration: 'none',

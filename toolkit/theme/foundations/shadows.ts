@@ -13,6 +13,7 @@ const shadows: ExcludeUndefined<ThemingConfig['tokens']>['shadows'] = {
     xl: { value: '0px 10px 10px -5px rgba(0, 0, 0, 0.04), 0px 20px 25px -5px rgba(0, 0, 0, 0.1)' },
     '2xl': { value: '0px 15px 50px -12px rgba(0, 0, 0, 0.25)' },
   },
+  'dark-lg': { value: '0px 15px 40px 0px rgba(0, 0, 0, 0.4), 0px 5px 10px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 1px rgba(0, 0, 0, 0.1)' },
 };
 
 export default shadows;

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-no-bind */
-import { Heading, HStack, Link, Spinner, Tabs, VStack } from '@chakra-ui/react';
+import { createListCollection, Heading, HStack, Link, Spinner, Tabs, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { Alert } from 'toolkit/chakra/alert';
@@ -9,8 +9,10 @@ import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Field } from 'toolkit/chakra/field';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
+import { NativeSelectField, NativeSelectRoot } from 'toolkit/chakra/native-select';
 import { PinInput } from 'toolkit/chakra/pin-input';
 import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
+import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
 import { Textarea } from 'toolkit/chakra/textarea';
@@ -24,6 +26,15 @@ const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do ei
 
 const ChakraShowcases = () => {
   const colorMode = useColorMode();
+
+  const frameworks = createListCollection({
+    items: [
+      { label: 'React.js', value: 'react' },
+      { label: 'Vue.js', value: 'vue' },
+      { label: 'Angular', value: 'angular' },
+      { label: 'Svelte', value: 'svelte' },
+    ],
+  });
 
   return (
     <>
@@ -53,39 +64,39 @@ const ChakraShowcases = () => {
         <section>
           <Heading textStyle="heading.md" mb={ 2 }>Inputs</Heading>
           <Heading textStyle="heading.sm" mb={ 2 }>Regular</Heading>
-          <HStack gap={ 4 } whiteSpace="nowrap">
-            <Field label="Email" required>
+          <HStack gap={ 4 } whiteSpace="nowrap" flexWrap="wrap">
+            <Field label="Email" required maxWidth="300px">
               <Input type="email"/>
             </Field>
-            <Field label="Email">
+            <Field label="Email" maxWidth="300px">
               <Input value="me@example.com"/>
             </Field>
-            <Field label="Email" invalid>
+            <Field label="Email" invalid maxWidth="300px">
               <Input value="duck"/>
             </Field>
-            <Field label="Email" readOnly>
+            <Field label="Email" readOnly maxWidth="300px">
               <Input value="duck"/>
             </Field>
-            <Field label="Email" disabled>
+            <Field label="Email" disabled maxWidth="300px">
               <Input value="duck"/>
             </Field>
           </HStack>
-          <HStack gap={ 4 } whiteSpace="nowrap" mt={ 4 } alignItems="flex-start">
-            <Field label="Email" required size="sm">
+          <HStack gap={ 4 } whiteSpace="nowrap" mt={ 4 } alignItems="flex-start" flexWrap="wrap">
+            <Field label="Email" required size="sm" maxWidth="300px">
               <Input/>
             </Field>
-            <Field label="Email" required size="md">
+            <Field label="Email" required size="md" maxWidth="300px">
               <Input/>
             </Field>
-            <Field label="Email" required size="lg">
+            <Field label="Email" required size="lg" maxWidth="300px">
               <Input/>
             </Field>
-            <Field label="Email" required size="xl">
+            <Field label="Email" required size="xl" maxWidth="300px">
               <Input/>
             </Field>
           </HStack>
           <Heading textStyle="heading.sm" mb={ 2 } mt={ 6 }>Floating (only XL size)</Heading>
-          <HStack gap={ 4 } mt={ 4 } alignItems="flex-start">
+          <HStack gap={ 4 } mt={ 4 } alignItems="flex-start" flexWrap="wrap">
             <Field label="Email" required floating size="xl" helperText="Helper text" w="300px">
               <Input type="email"/>
             </Field>
@@ -93,7 +104,7 @@ const ChakraShowcases = () => {
               <Input type="email"/>
             </Field>
           </HStack>
-          <HStack p={ 6 } mt={ 4 } gap={ 4 } bgColor={{ _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' }} >
+          <HStack p={ 6 } mt={ 4 } gap={ 4 } bgColor={{ _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' }} flexWrap="wrap">
             <Field label="Email" required floating size="xl" w="300px">
               <Input type="email"/>
             </Field>
@@ -105,7 +116,7 @@ const ChakraShowcases = () => {
             </Field>
           </HStack>
           <Heading textStyle="heading.sm" mb={ 2 } mt={ 6 }>Input group</Heading>
-          <HStack gap={ 4 } mt={ 4 } alignItems="flex-start" w="fit-content">
+          <HStack gap={ 4 } mt={ 4 } alignItems="flex-start" w="fit-content" flexWrap="wrap">
             <Field label="Referral code" required floating size="xl" w="300px" flexShrink={ 0 } helperText="Helper text">
               <InputGroup endElement={ <IconSvg name="copy" boxSize={ 5 }/> }>
                 <Input/>
@@ -124,11 +135,11 @@ const ChakraShowcases = () => {
 
         <section>
           <Heading textStyle="heading.md" mb={ 2 }>Textarea</Heading>
-          <HStack gap={ 4 }>
-            <Field label="Description" required floating size="2xl" w="400px">
+          <HStack gap={ 4 } flexWrap="wrap">
+            <Field label="Description" required floating size="2xl" w="360px">
               <Textarea/>
             </Field>
-            <Field label="Description" required floating size="2xl" w="400px">
+            <Field label="Description" required floating size="2xl" w="360px">
               <Textarea value={ TEXT }/>
             </Field>
           </HStack>
@@ -136,7 +147,7 @@ const ChakraShowcases = () => {
 
         <section>
           <Heading textStyle="heading.md" mb={ 2 }>Links</Heading>
-          <HStack gap={ 4 }>
+          <HStack gap={ 4 } flexWrap="wrap">
             <Link>Primary</Link>
             <Link visual="secondary">Secondary</Link>
             <Link visual="subtle">Subtle</Link>
@@ -204,12 +215,12 @@ const ChakraShowcases = () => {
 
         <section>
           <Heading textStyle="heading.md" mb={ 2 }>Alerts</Heading>
-          <HStack gap={ 4 } whiteSpace="nowrap">
-            <Alert visual="info" title="Info"> Alert content </Alert>
-            <Alert visual="neutral" title="Neutral"> Alert content </Alert>
-            <Alert visual="warning" title="Warning"> Alert content </Alert>
-            <Alert visual="success" title="Success"> Alert content </Alert>
-            <Alert visual="error" title="Error" startElement={ null }> Alert content </Alert>
+          <HStack gap={ 4 } whiteSpace="nowrap" flexWrap="wrap">
+            <Alert visual="info" title="Info" maxWidth="300px"> Alert content </Alert>
+            <Alert visual="neutral" title="Neutral" maxWidth="300px"> Alert content </Alert>
+            <Alert visual="warning" title="Warning" maxWidth="300px"> Alert content </Alert>
+            <Alert visual="success" title="Success" maxWidth="300px"> Alert content </Alert>
+            <Alert visual="error" title="Error" startElement={ null } maxWidth="300px"> Alert content </Alert>
           </HStack>
         </section>
 
@@ -217,6 +228,30 @@ const ChakraShowcases = () => {
           <Heading textStyle="heading.md" mb={ 2 }>Toasts</Heading>
           <HStack gap={ 4 } whiteSpace="nowrap">
             <Button onClick={ () => toaster.success({ title: 'Success', description: 'Toast content' }) }>Success</Button>
+          </HStack>
+        </section>
+
+        <section>
+          <Heading textStyle="heading.md" mb={ 2 }>Select</Heading>
+          <HStack gap={ 4 } whiteSpace="nowrap" flexWrap="wrap">
+            <SelectRoot collection={ frameworks }>
+              <SelectTrigger w="350px">
+                <SelectValueText placeholder="Select framework"/>
+              </SelectTrigger>
+              <SelectContent>
+                { frameworks.items.map((framework) => (
+                  <SelectItem item={ framework } key={ framework.value }>
+                    { framework.label }
+                  </SelectItem>
+                )) }
+              </SelectContent>
+            </SelectRoot>
+            <NativeSelectRoot w="350px">
+              <NativeSelectField>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+              </NativeSelectField>
+            </NativeSelectRoot>
           </HStack>
         </section>
       </VStack>

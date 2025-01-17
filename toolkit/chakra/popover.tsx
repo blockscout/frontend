@@ -75,7 +75,7 @@ export const PopoverTrigger = React.forwardRef<
   HTMLButtonElement,
   ChakraPopover.TriggerProps
 >(function PopoverTrigger(props, ref) {
-  return <ChakraPopover.Trigger as="div" asChild ref={ ref } { ...props }/>;
+  return <ChakraPopover.Trigger as="div" display="flex" asChild ref={ ref } { ...props }/>;
 });
 
 export const PopoverTitle = ChakraPopover.Title;

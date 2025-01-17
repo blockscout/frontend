@@ -1,6 +1,8 @@
-import type { TokenDefinition } from '@chakra-ui/react/dist/types/styled-system/types';
+import type { ThemingConfig } from '@chakra-ui/react';
 
-const durations: TokenDefinition['durations'] = {
+import type { ExcludeUndefined } from 'types/utils';
+
+const durations: ExcludeUndefined<ThemingConfig['tokens']>['durations'] = {
   'ultra-fast': { value: '50ms' },
   faster: { value: '100ms' },
   fast: { value: '150ms' },
