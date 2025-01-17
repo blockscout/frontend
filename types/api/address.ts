@@ -31,6 +31,7 @@ export interface Address extends UserTags {
   name: string | null;
   token: TokenInfo | null;
   watchlist_address_id: number | null;
+  proxy_type?: 'eip7702' | null;
 }
 
 export interface AddressZilliqaParams {
