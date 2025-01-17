@@ -105,6 +105,8 @@ export type Transaction = {
   translation?: NovesTxTranslation;
   arbitrum?: ArbitrumTransactionData;
   scroll?: ScrollTransactionData;
+  // EIP-7702
+  authorization_list?: Array<TxAuthorization>;
 };
 
 type ArbitrumTransactionData = {
@@ -206,3 +208,10 @@ export type ScrollTransactionData = {
   l2_block_status: ScrollL2BlockStatus;
   queue_index: number;
 };
+
+export interface TxAuthorization {
+  address: string;
+  authority: string;
+  chain_id: number;
+  nonce: number;
+}
