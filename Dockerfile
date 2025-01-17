@@ -108,12 +108,17 @@ COPY --chmod=+x ./deploy/scripts/entrypoint.sh .
 COPY --chmod=+x ./deploy/scripts/validate_envs.sh .
 COPY --chmod=+x ./deploy/scripts/make_envs_script.sh .
 ## Assets downloader
-COPY --chmod=+x ./deploy/scripts/download_assets.sh .
+# COPY --chmod=+x ./deploy/scripts/download_assets.sh .
+
 ## Favicon generator
 COPY --chmod=+x ./deploy/scripts/favicon_generator.sh .
 COPY ./deploy/tools/favicon-generator ./deploy/tools/favicon-generator
 RUN ["chmod", "-R", "777", "./deploy/tools/favicon-generator"]
 RUN ["chmod", "-R", "777", "./public"]
+
+# Copy all assets files
+COPY ./public/assets /app/public/assets
+RUN ["chmod", "-R", "777", "/app/public/assets"]
 
 # Copy ENVs files
 COPY --from=builder /app/.env.registry .
