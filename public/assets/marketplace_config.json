@@ -1,0 +1,107 @@
+[
+    {
+        "author": "DeepLink",
+        "id": "DeepLink",
+        "title": "DeepLink",
+        "logo": "https://test.dbcscan.io/config-assets/DeepLinkLogo.jpg",
+        "categories": [
+          "DeAI"
+        ],
+        "shortDescription": "AI + DePIN + Cloud Gaming + GPU",
+        "site": "https://www.deeplink.cloud",
+        "description": "DeepLink is a decentralized cloud gaming protocol driven by AI and blockchain technology. The ultimate combination of narratives, bringing Artificial Intelligence, Gaming, GPUs, Real World Asset Tokenization, and Decentralized Physical Infrastructure Networks together into ONE project. DEEPLINK offers ultra-low latency gaming rendering technology that supports a wide array of applications, such as cloud esports, cloud internet cafes, cloud-based 3A games, blockchain integrated gaming and cloud VR/AR/XR, among others. The Deeplink protocol, enhanced by AI technology, can improve the rendering resolution and clarity of games.",
+        "url": "https://www.deeplink.cloud",
+        "external": true,
+        "internalWallet": false
+      },
+      {
+        "author": "DecentralGPT",
+        "id": "DecentralGPT",
+        "title": "DecentralGPT",
+        "logo": "https://test.dbcscan.io/config-assets/DecentralGPTLogo.jpg",
+        "categories": [
+          "DeAI"
+        ],
+        "shortDescription": "AI + DePIN + GPU + AGI",
+        "site": "https://www.decentralgpt.org",
+        "description": "DecentralGPT supports a variety of open-source large language models. It is committed to building a safe, privacy-protective, democratic, transparent, open-source, and universally accessible AGI.",
+        "url": "https://www.decentralgpt.org",
+        "external": true,
+        "internalWallet": false
+      },
+      {
+        "author": "SuperImage",
+        "id": "SuperImage",
+        "title": "SuperImage",
+        "logo": "https://test.dbcscan.io/config-assets/SuperimageLogo.jpg",
+        "categories": [
+          "DeAI"
+        ],
+        "shortDescription": "AI + DePIN + GPU + Image",
+        "site": "https://www.superimage.ai",
+        "description": "SuperImage has multiple latent text-to-image diffusion models of generating photo-realistic images given any text input, cultivates autonomous freedom to produce incredible imagery, empowers billions of people to create stunning art within seconds.",
+        "url": "https://www.superimage.ai",
+        "external": true,
+        "internalWallet": false
+      },
+      {
+        "author": "HibaoCloud",
+        "id": "HibaoCloud",
+        "title": "HibaoCloud",
+        "logo": "https://test.dbcscan.io/config-assets/HibaoCloudLogo.svg",
+        "categories": [
+          "GPU Cloud"
+        ],
+        "shortDescription": ".",
+        "site": "https://www.hibaocloud.com/",
+        "description": ".",
+        "url": "https://www.hibaocloud.com/",
+        "external": true,
+        "internalWallet": false
+      },
+      {
+        "author": "Hycons",
+        "id": "Hycons",
+        "title": "Hycons",
+        "logo": "https://test.dbcscan.io/config-assets/HYCON.jpg",
+        "categories": [
+          "GPU Cloud"
+        ],
+        "shortDescription": ".",
+        "site": "https://www.hycons.ai",
+        "description": ".",
+        "url": "https://www.hycons.ai",
+        "external": true,
+        "internalWallet": false
+      },
+      {
+        "author": "DRCPad",
+        "id": "DRCPad",
+        "title": "DRCPad",
+        "logo": "https://test.dbcscan.io/config-assets/DRCPadLogo.jpg",
+        "categories": [
+          "Luanchpad"
+        ],
+        "shortDescription": "Node launchpad",
+        "site": "https://www.drcpad.io",
+        "description": "DRCPad - the first primary market for trading AI nodes. It is a fundraising, promotion, and marketing platform for new projects based on the Deepbrain AI market. DBC and USDT are two mainnet tokens of DRCPad",
+        "url": "https://www.drcpad.io",
+        "external": true,
+        "internalWallet": false
+      },
+      {
+        "author": "DeepBrainChain",
+        "id": "DeepBrainChain-wallet",
+        "title": "DeepBrainChain Wallet",
+        "logo": "https://test.dbcscan.io/config-assets/DBC.png",
+        "categories": [
+          "Wallet"
+        ],
+        "shortDescription": "AI + DePIN + GPU",
+        "site": "https://www.deepbrainchain.org",
+        "description": "DeepBrain Chain 2.0 is an AI public chain. AI developers can develop decentralized AI products based on DBC.",
+        "url": "https://www.dbcwallet.io",
+        "external": true,
+        "internalWallet": false
+      }
+]
