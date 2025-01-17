@@ -1,8 +1,8 @@
-import { useColorModeValue, useToken, Box, chakra } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const Identicon = dynamic<{ bg: string; string: string; size: number }>(
   async() => {
@@ -17,26 +17,25 @@ const Identicon = dynamic<{ bg: string; string: string; size: number }>(
 
 interface Props {
   className?: string;
-  size: number;
+  iconSize: number;
   seed: string;
 }
 
-const IdenticonGithub = ({ size, seed }: Props) => {
-  const bgColor = useToken('colors', useColorModeValue('gray.100', 'white'));
-
+const IdenticonGithub = ({ iconSize, seed }: Props) => {
   return (
     <Box
-      boxSize={ `${ size * 2 }px` }
+      boxSize={ `${ iconSize * 2 }px` }
       transformOrigin="left top"
       transform="scale(0.5)"
       borderRadius="full"
       overflow="hidden"
+      bg={{ _light: 'gray.100', _dark: 'white' }}
     >
       <Identicon
-        bg={ bgColor }
+        bg="transparent"
         string={ seed }
         // the displayed size is doubled for retina displays and then scaled down
-        size={ size * 2 }
+        size={ iconSize * 2 }
       />
     </Box>
   );

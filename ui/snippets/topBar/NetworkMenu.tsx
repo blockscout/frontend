@@ -11,7 +11,7 @@ const NetworkMenu = () => {
 
   return (
     <PopoverRoot
-      positioning={{ placement: 'bottom-start' }}
+      positioning={{ placement: 'bottom-start', offset: { mainAxis: 6 } }}
       lazyMount
       open={ menu.open }
       onOpenChange={ menu.onOpenChange }
