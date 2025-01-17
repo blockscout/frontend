@@ -1,0 +1,44 @@
+[
+  {
+    "author": "DeepLink",
+    "id": "DeepLink",
+    "title": "DeepLink",
+    "logo": "https://test.dbcscan.io/config-assets/DeepLinkLogo.jpg",
+    "categories": [],
+    "miningInfo": {
+      "dailyReward": "0",
+      "gpuCount": "0"
+    },
+    "tokenInfo": {
+      "symbol": "DLC",
+      "price": "0",
+      "priceChange": "+24%"
+    },
+    "site": "https://orion.deeplink.cloud",
+    "description": "DeepLink Network",
+    "url": "https://orion.deeplink.cloud",
+    "external": true,
+    "internalWallet": false
+  },
+  {
+    "author": "DecentralGPT",
+    "id": "Andromeda",
+    "title": "DecentralGPT",
+    "logo": "https://test.dbcscan.io/config-assets/DecentralGPTLogo.jpg",
+    "categories": [],
+    "miningInfo": {
+      "dailyReward": "0",
+      "gpuCount": "0"
+    },
+    "tokenInfo": {
+      "symbol": "DGC",
+      "price": "0",
+      "priceChange": "+24%"
+    },
+    "site": "https://and.decentralgpt.org",
+    "description": "DecentralGPT Andromeda Project",
+    "url": "https://and.decentralgpt.org",
+    "external": true,
+    "internalWallet": false
+  }
+]

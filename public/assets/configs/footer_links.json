@@ -1,0 +1,41 @@
+[
+  {
+    "title": "DeepBrainChain",
+    "links": [
+      {
+        "text": "Home",
+        "url": "https://www.deepbrainchain.org"
+      }
+    ]
+  },
+  {
+    "title": "Developers",
+    "links": [
+      {
+        "text": "Wiki",
+        "url": "https://deepbrainchain.github.io/DBC-Wiki/"
+      },
+      {
+        "text": "GitHub",
+        "url": "https://github.com/DeepBrainChain"
+      }
+    ]
+  },
+  {
+    "title": "Community",
+    "links": [
+      {
+        "text": "Twitter",
+        "url": "https://twitter.com/DeepBrainChain"
+      },
+      {
+        "text": "Telegram",
+        "url": "https://t.me/deepbrainchainglobal"
+      },
+      {
+        "text": "Reddit",
+        "url": "https://www.reddit.com/r/DBC_Council"
+      }
+    ]
+  }
+]

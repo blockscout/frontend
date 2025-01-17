@@ -1,0 +1,41 @@
+[
+  {
+    "author": "DecentralGPT",
+    "id": "Andromeda",
+    "title": "Andromeda",
+    "logo": "https://test.dbcscan.io/config-assets/DecentralGPTLogo.jpg",
+    "categories": ["DeAI"],
+    "shortDescription": "AI + DePIN + GPU + AGI",
+    "site": "https://and.decentralgpt.org",
+    "description": "DecentralGPT Andromeda Project",
+    "url": "https://and.decentralgpt.org",
+    "external": true,
+    "internalWallet": false
+  },
+  {
+    "author": "DeepLink",
+    "id": "Orion",
+    "title": "Orion",
+    "logo": "https://test.dbcscan.io/config-assets/DeepLinkLogo.jpg",
+    "categories": ["DeAI"],
+    "shortDescription": "AI + DePIN + GPU",
+    "site": "https://orion.deeplink.cloud",
+    "description": "DeepLink Orion Project",
+    "url": "https://orion.deeplink.cloud",
+    "external": true,
+    "internalWallet": false
+  },
+  {
+    "author": "DeepBrainChain",
+    "id": "GalaxyRace",
+    "title": "Galaxy Race",
+    "logo": "https://test.dbcscan.io/config-assets/DBC.png",
+    "categories": ["DeAI"],
+    "shortDescription": "AI + DePIN + GPU",
+    "site": "https://galaxyrace.deepbrainchain.org",
+    "description": "DeepBrain Chain Galaxy Race Project",
+    "url": "https://galaxyrace.deepbrainchain.org",
+    "external": true,
+    "internalWallet": false
+  }
+]

@@ -12,7 +12,7 @@
 # next.js
 /.next/
 /out/
-/public/assets/
+# /public/assets/
 /public/envs.js
 /public/icons/sprite.svg
 /public/icons/README.md
