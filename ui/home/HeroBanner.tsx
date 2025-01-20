@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -13,34 +13,38 @@ const TEXT_COLOR_DEFAULT = 'white';
 const BORDER_DEFAULT = 'none';
 
 const HeroBanner = () => {
-  const background = useColorModeValue(
-    // light mode
-    config.UI.homepage.heroBanner?.background?.[0] ||
-    config.UI.homepage.plate.background ||
-    BACKGROUND_DEFAULT,
-    // dark mode
-    config.UI.homepage.heroBanner?.background?.[1] ||
-    config.UI.homepage.heroBanner?.background?.[0] ||
-    config.UI.homepage.plate.background ||
-    BACKGROUND_DEFAULT,
-  );
+  const background = {
+    _light:
+      config.UI.homepage.heroBanner?.background?.[0] ||
+      config.UI.homepage.plate.background ||
+      BACKGROUND_DEFAULT,
+    _dark:
+      config.UI.homepage.heroBanner?.background?.[1] ||
+      config.UI.homepage.heroBanner?.background?.[0] ||
+      config.UI.homepage.plate.background ||
+      BACKGROUND_DEFAULT,
+  };
 
-  const textColor = useColorModeValue(
-    // light mode
-    config.UI.homepage.heroBanner?.text_color?.[0] ||
-    config.UI.homepage.plate.textColor ||
-    TEXT_COLOR_DEFAULT,
+  const textColor = {
+    _light:
+      // light mode
+      config.UI.homepage.heroBanner?.text_color?.[0] ||
+      config.UI.homepage.plate.textColor ||
+      TEXT_COLOR_DEFAULT,
     // dark mode
-    config.UI.homepage.heroBanner?.text_color?.[1] ||
-    config.UI.homepage.heroBanner?.text_color?.[0] ||
-    config.UI.homepage.plate.textColor ||
-    TEXT_COLOR_DEFAULT,
-  );
+    _dark:
+      config.UI.homepage.heroBanner?.text_color?.[1] ||
+      config.UI.homepage.heroBanner?.text_color?.[0] ||
+      config.UI.homepage.plate.textColor ||
+      TEXT_COLOR_DEFAULT,
+  };
 
-  const border = useColorModeValue(
-    config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
-    config.UI.homepage.heroBanner?.border?.[1] || config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
-  );
+  const border = {
+    _light:
+      config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
+    _dark:
+      config.UI.homepage.heroBanner?.border?.[1] || config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
+  };
 
   return (
     <Flex
@@ -69,10 +73,10 @@ const HeroBanner = () => {
           </Heading>
           { config.UI.navigation.layout === 'vertical' && (
             <Box display={{ base: 'none', lg: 'flex' }} gap={ 2 }>
-              { config.features.rewards.isEnabled && <RewardsButton variant="hero"/> }
+              { config.features.rewards.isEnabled && <RewardsButton visual="hero"/> }
               {
-                (config.features.account.isEnabled && <UserProfileDesktop buttonVariant="hero"/>) ||
-                (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonVariant="hero"/>)
+                (config.features.account.isEnabled && <UserProfileDesktop buttonVisual="hero"/>) ||
+                (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonVisual="hero"/>)
               }
             </Box>
           ) }

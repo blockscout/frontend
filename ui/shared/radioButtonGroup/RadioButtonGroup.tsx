@@ -31,7 +31,7 @@ const RadioButton = (props: RadioButtonProps) => {
         as="label"
         aria-label={ props.title }
         variant="radio_group"
-        data-selected={ props.isChecked }
+        selected={ props.isChecked }
       >
         <input { ...input }/>
         <Flex
@@ -48,7 +48,7 @@ const RadioButton = (props: RadioButtonProps) => {
       as="label"
       leftIcon={ props.icon ? <IconSvg name={ props.icon } boxSize={ 5 } mr={ -1 }/> : undefined }
       variant="radio_group"
-      data-selected={ props.isChecked }
+      selected={ props.isChecked }
     >
       <input { ...input }/>
       <Flex

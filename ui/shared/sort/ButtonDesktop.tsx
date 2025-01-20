@@ -33,7 +33,7 @@ const ButtonDesktop = ({ children, isActive, onClick, isLoading, className }: Bu
         fontWeight="600"
         borderColor="transparent"
         px={ 2 }
-        data-selected={ isActive }
+        selected={ isActive }
       >
         <Box
           as={ isActive ? 'div' : 'span' }

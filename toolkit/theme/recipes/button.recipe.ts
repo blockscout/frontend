@@ -108,6 +108,22 @@ export const recipe = defineRecipe({
           },
         },
       },
+      hero: {
+        bg: 'button.hero.bg',
+        color: 'button.hero.fg',
+        _hover: {
+          bg: 'button.hero.bg.hover',
+          color: 'button.hero.fg.hover',
+        },
+        _selected: {
+          bg: 'button.hero.bg.selected',
+          color: 'button.hero.fg.selected',
+          _hover: {
+            bg: 'button.hero.bg.selected',
+            color: 'button.hero.fg.selected',
+          },
+        },
+      },
       plain: {
         bg: 'transparent',
         color: 'inherit',

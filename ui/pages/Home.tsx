@@ -15,23 +15,23 @@ const rollupFeature = config.features.rollup;
 
 const Home = () => {
 
-  const leftWidget = (() => {
-    if (rollupFeature.isEnabled && !rollupFeature.homepage.showLatestBlocks) {
-      switch (rollupFeature.type) {
-        case 'zkEvm':
-          return <LatestZkEvmL2Batches/>;
-        case 'arbitrum':
-          return <LatestArbitrumL2Batches/>;
-      }
-    }
+  // const leftWidget = (() => {
+  //   if (rollupFeature.isEnabled && !rollupFeature.homepage.showLatestBlocks) {
+  //     switch (rollupFeature.type) {
+  //       case 'zkEvm':
+  //         return <LatestZkEvmL2Batches/>;
+  //       case 'arbitrum':
+  //         return <LatestArbitrumL2Batches/>;
+  //     }
+  //   }
 
-    return <LatestBlocks/>;
-  })();
+  //   return <LatestBlocks/>;
+  // })();
 
   return (
     <Box as="main">
       <HeroBanner/>
-      <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 2 } rowGap={ 1 } mt={ 3 } _empty={{ mt: 0 }}>
+      { /* <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 2 } rowGap={ 1 } mt={ 3 } _empty={{ mt: 0 }}>
         <Stats/>
         <ChainIndicators/>
       </Flex>
@@ -41,7 +41,7 @@ const Home = () => {
         <Box flexGrow={ 1 }>
           <Transactions/>
         </Box>
-      </Flex>
+      </Flex> */ }
     </Box>
   );
 };

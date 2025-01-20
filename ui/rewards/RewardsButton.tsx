@@ -33,7 +33,7 @@ const RewardsButton = ({ visual = 'header', size }: Props) => {
     >
       <Button
         visual={ visual }
-        data-selected={ !isLoading && Boolean(apiToken) }
+        selected={ !isLoading && Boolean(apiToken) }
         flexShrink={ 0 }
         as={ apiToken ? LinkInternal : 'button' }
         { ...(apiToken ? { href: route({ pathname: '/account/rewards' }) } : {}) }

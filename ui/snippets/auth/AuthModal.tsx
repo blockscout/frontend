@@ -18,7 +18,6 @@ import AuthModalScreenSelectMethod from './screens/AuthModalScreenSelectMethod';
 import AuthModalScreenSuccessEmail from './screens/AuthModalScreenSuccessEmail';
 import AuthModalScreenSuccessWallet from './screens/AuthModalScreenSuccessWallet';
 
-// TODO @tom2drum fix auth modal
 const feature = config.features.account;
 
 interface Props {

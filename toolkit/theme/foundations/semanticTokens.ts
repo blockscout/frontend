@@ -1,5 +1,9 @@
 import type { ThemingConfig } from '@chakra-ui/react';
 
+import config from 'configs/app';
+
+const heroBannerButton = config.UI.homepage.heroBanner?.button;
+
 const semanticTokens: ThemingConfig['semanticTokens'] = {
   // TODO @tom2drum remove *_hover in favor of conditional selectors
   colors: {
@@ -32,6 +36,48 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
         border: {
           DEFAULT: { value: { _light: '{colors.gray.300}', _dark: '{colors.gray.600}' } },
+        },
+      },
+      hero: {
+        bg: {
+          DEFAULT: {
+            value: {
+              _light: heroBannerButton?._default?.background?.[0] || '{colors.blue.600}',
+              _dark: heroBannerButton?._default?.background?.[1] || heroBannerButton?._default?.background?.[0] || '{colors.blue.600}',
+            },
+          },
+          hover: {
+            value: {
+              _light: heroBannerButton?._hover?.background?.[0] || '{colors.blue.400}',
+              _dark: heroBannerButton?._hover?.background?.[1] || heroBannerButton?._hover?.background?.[0] || '{colors.blue.400}',
+            },
+          },
+          selected: {
+            value: {
+              _light: heroBannerButton?._selected?.background?.[0] || '{colors.blue.50}',
+              _dark: heroBannerButton?._selected?.background?.[1] || heroBannerButton?._selected?.background?.[0] || '{colors.blue.50}',
+            },
+          },
+        },
+        fg: {
+          DEFAULT: {
+            value: {
+              _light: heroBannerButton?._default?.text_color?.[0] || '{colors.white}',
+              _dark: heroBannerButton?._default?.text_color?.[1] || heroBannerButton?._default?.text_color?.[0] || '{colors.white}',
+            },
+          },
+          hover: {
+            value: {
+              _light: heroBannerButton?._hover?.text_color?.[0] || '{colors.white}',
+              _dark: heroBannerButton?._hover?.text_color?.[1] || heroBannerButton?._hover?.text_color?.[0] || '{colors.white}',
+            },
+          },
+          selected: {
+            value: {
+              _light: heroBannerButton?._selected?.text_color?.[0] || '{colors.blackAlpha.800}',
+              _dark: heroBannerButton?._selected?.text_color?.[1] || heroBannerButton?._selected?.text_color?.[0] || '{colors.blackAlpha.800}',
+            },
+          },
         },
       },
     },
