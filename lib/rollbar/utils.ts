@@ -1,3 +1,4 @@
+import _get from 'lodash/get';
 import type { Dictionary } from 'rollbar';
 
 export function isBot(userAgent: string | undefined) {
@@ -55,4 +56,10 @@ export function getRequestInfo(item: Dictionary): { url: string } | undefined {
     return undefined;
   }
   return { url: item.request.url };
+}
+
+export function getExceptionClass(item: Dictionary) {
+  const exceptionClass = _get(item, 'body.trace.exception.class');
+
+  return typeof exceptionClass === 'string' ? exceptionClass : undefined;
 }
