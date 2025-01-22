@@ -1,6 +1,7 @@
-import { Tooltip, chakra, useColorModeValue } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 import type { TxCourseType } from './utils';
@@ -14,19 +15,19 @@ interface Props {
 const AddressFromToIcon = ({ isLoading, type, className }: Props) => {
   const styles = {
     'in': {
-      color: useColorModeValue('green.500', 'green.200'),
-      bgColor: useColorModeValue('green.50', 'green.800'),
+      color: { _light: 'green.500', _dark: 'green.200' },
+      bgColor: { _light: 'green.50', _dark: 'green.800' },
     },
     out: {
-      color: useColorModeValue('yellow.600', 'yellow.500'),
-      bgColor: useColorModeValue('orange.50', 'yellow.900'),
+      color: { _light: 'yellow.600', _dark: 'yellow.500' },
+      bgColor: { _light: 'orange.50', _dark: 'yellow.900' },
     },
     self: {
-      color: useColorModeValue('blackAlpha.400', 'whiteAlpha.400'),
-      bgColor: useColorModeValue('blackAlpha.50', 'whiteAlpha.50'),
+      color: { _light: 'blackAlpha.400', _dark: 'whiteAlpha.400' },
+      bgColor: { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' },
     },
     unspecified: {
-      color: useColorModeValue('gray.500', 'gray.300'),
+      color: { _light: 'gray.500', _dark: 'gray.300' },
       bgColor: 'transparent',
     },
   };
@@ -53,7 +54,7 @@ const AddressFromToIcon = ({ isLoading, type, className }: Props) => {
   }
 
   return (
-    <Tooltip label={ labels[type] }>
+    <Tooltip content={ labels[type] }>
       { icon }
     </Tooltip>
   );

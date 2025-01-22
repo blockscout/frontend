@@ -1,10 +1,10 @@
-import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -39,8 +39,6 @@ const ChainIndicators = () => {
     },
   });
 
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
-
   if (indicators.length === 0) {
     return null;
   }
@@ -74,7 +72,7 @@ const ChainIndicators = () => {
     const diffColor = diff >= 0 ? 'green.500' : 'red.500';
 
     return (
-      <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } display="flex" alignItems="center" color={ diffColor } ml={ 2 }>
+      <Skeleton loading={ statsQueryResult.isPlaceholderData } display="flex" alignItems="center" color={ diffColor } ml={ 2 }>
         <IconSvg name="arrows/up-head" boxSize={ 5 } mr={ 1 } transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
         <Text color={ diffColor } fontWeight={ 600 }>{ diff }%</Text>
       </Skeleton>
@@ -86,7 +84,7 @@ const ChainIndicators = () => {
       px={{ base: 3, lg: 4 }}
       py={ 3 }
       borderRadius="base"
-      bgColor={ bgColor }
+      bgColor={{ _light: 'gray.50', _dark: 'whiteAlpha.100' }}
       columnGap={{ base: 3, lg: 4 }}
       rowGap={ 0 }
       flexBasis="50%"

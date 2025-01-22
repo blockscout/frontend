@@ -54,6 +54,9 @@ const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, 
   return (
     <Tooltip
       content={ hasCopied ? 'Copied' : `Copy${ type === 'link' ? ' link ' : ' ' }to clipboard` }
+      contentProps={{
+        zIndex: 'tooltip2',
+      }}
       // open={ hasCopied }
     >
       <IconButton

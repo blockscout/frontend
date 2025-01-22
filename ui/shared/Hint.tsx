@@ -37,7 +37,6 @@ const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
       <IconButton
         aria-label="hint"
         boxSize={ 5 }
-        display="inline-block"
         className={ className }
         // onMouseEnter={ onOpen }
         // onMouseLeave={ onClose }

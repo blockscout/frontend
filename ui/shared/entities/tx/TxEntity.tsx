@@ -1,4 +1,3 @@
-import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -77,7 +76,7 @@ const TxEntity = (props: EntityProps) => {
   );
 };
 
-export default React.memo(chakra<As, EntityProps>(TxEntity));
+export default React.memo(chakra(TxEntity));
 
 export {
   Container,

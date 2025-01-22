@@ -1,12 +1,14 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-no-bind */
-import { createListCollection, Heading, HStack, Link, Spinner, Tabs, VStack } from '@chakra-ui/react';
+import { createListCollection, HStack, Link, Spinner, Tabs, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { Alert } from 'toolkit/chakra/alert';
+import { Badge } from 'toolkit/chakra/badge';
 import { Button } from 'toolkit/chakra/button';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Field } from 'toolkit/chakra/field';
+import { Heading } from 'toolkit/chakra/heading';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import { NativeSelectField, NativeSelectRoot } from 'toolkit/chakra/native-select';
@@ -221,6 +223,20 @@ const ChakraShowcases = () => {
             <Alert visual="warning" title="Warning" maxWidth="300px"> Alert content </Alert>
             <Alert visual="success" title="Success" maxWidth="300px"> Alert content </Alert>
             <Alert visual="error" title="Error" startElement={ null } maxWidth="300px"> Alert content </Alert>
+          </HStack>
+        </section>
+
+        <section>
+          <Heading textStyle="heading.md" mb={ 2 }>Badges</Heading>
+          <HStack gap={ 4 } whiteSpace="nowrap" flexWrap="wrap">
+            <Badge colorPalette="gray">Gray</Badge>
+            <Badge colorPalette="green">Green</Badge>
+            <Badge colorPalette="red">Red</Badge>
+            <Badge colorPalette="purple">Purple</Badge>
+            <Badge colorPalette="orange">Orange</Badge>
+            <Badge colorPalette="blue">Blue</Badge>
+            <Badge colorPalette="yellow">Yellow</Badge>
+            <Badge colorPalette="teal">Teal</Badge>
           </HStack>
         </section>
 

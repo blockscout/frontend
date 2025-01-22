@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import { Popover as ChakraPopover, Portal } from '@chakra-ui/react';
 import * as React from 'react';
 
@@ -61,11 +60,14 @@ export const PopoverRoot = (props: ChakraPopover.RootProps) => {
       ...props.positioning?.offset,
     },
   };
+  const { lazyMount = true, unmountOnExit = true, ...rest } = props;
 
   return (
     <ChakraPopover.Root
       autoFocus={ false }
-      { ...props }
+      lazyMount={ lazyMount }
+      unmountOnExit={ unmountOnExit }
+      { ...rest }
       positioning={ positioning }
     />
   );
@@ -75,7 +77,7 @@ export const PopoverTrigger = React.forwardRef<
   HTMLButtonElement,
   ChakraPopover.TriggerProps
 >(function PopoverTrigger(props, ref) {
-  return <ChakraPopover.Trigger as="div" display="flex" asChild ref={ ref } { ...props }/>;
+  return <ChakraPopover.Trigger asChild ref={ ref } { ...props }/>;
 });
 
 export const PopoverTitle = ChakraPopover.Title;

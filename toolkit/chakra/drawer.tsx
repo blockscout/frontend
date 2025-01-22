@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import { Drawer as ChakraDrawer, Portal } from '@chakra-ui/react';
 import * as React from 'react';
 
@@ -50,7 +49,11 @@ export const DrawerRoot = (props: ChakraDrawer.RootProps) => {
   return <ChakraDrawer.Root { ...rest } initialFocusEl={ initialFocusEl }/>;
 };
 
-export const DrawerTrigger = ChakraDrawer.Trigger;
+export const DrawerTrigger = (props: ChakraDrawer.TriggerProps) => {
+  const { asChild = true, ...rest } = props;
+  return <ChakraDrawer.Trigger asChild={ asChild } { ...rest }/>;
+};
+
 export const DrawerFooter = ChakraDrawer.Footer;
 export const DrawerHeader = ChakraDrawer.Header;
 export const DrawerBody = ChakraDrawer.Body;

@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import { Tooltip as ChakraTooltip, Portal } from '@chakra-ui/react';
 import { useClickAway } from '@uidotdev/usehooks';
 import * as React from 'react';
@@ -24,14 +23,17 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
       selected,
       children,
       disabled,
-      portalled,
+      portalled = true,
       content,
       contentProps,
       portalRef,
+      defaultOpen = false,
+      lazyMount = true,
+      unmountOnExit = true,
       ...rest
     } = props;
 
-    const [ open, setOpen ] = React.useState(false);
+    const [ open, setOpen ] = React.useState(defaultOpen);
 
     const isMobile = useIsMobile();
     const triggerRef = useClickAway<HTMLButtonElement>(() => setOpen(false));
@@ -66,12 +68,13 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         onOpenChange={ isMobile ? undefined : handleOpenChange }
         closeOnClick={ false }
         visual={ visual }
+        lazyMount={ lazyMount }
+        unmountOnExit={ unmountOnExit }
         { ...rest }
         positioning={ positioning }
       >
         <ChakraTooltip.Trigger
           ref={ triggerRef }
-          as="div"
           asChild
           onClick={ isMobile ? handleTriggerClick : undefined }
         >

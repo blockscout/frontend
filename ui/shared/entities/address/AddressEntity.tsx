@@ -115,7 +115,7 @@ const Content = chakra((props: ContentProps) => {
 
     return (
       <Tooltip content={ label } contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}>
-        <Skeleton loading={ props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
+        <Skeleton loading={ props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           { nameText }
         </Skeleton>
       </Tooltip>
@@ -160,6 +160,8 @@ const AddressEntry = (props: EntityProps) => {
   const settingsContext = useSettingsContext();
   const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
 
+  const content = <Content { ...partsProps.content } altHash={ altHash }/>;
+
   return (
     <Container
       // we have to use the global classnames here, see theme/global.ts
@@ -172,9 +174,7 @@ const AddressEntry = (props: EntityProps) => {
       zIndex={ 0 }
     >
       <Icon { ...partsProps.icon }/>
-      <Link { ...partsProps.link }>
-        <Content { ...partsProps.content } altHash={ altHash }/>
-      </Link>
+      { props.noLink ? content : (<Link { ...partsProps.link }> { content } </Link>) }
       <Copy { ...partsProps.copy } altHash={ altHash }/>
     </Container>
   );

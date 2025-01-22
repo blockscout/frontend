@@ -2,10 +2,10 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 interface Props {
-  value: string;
+  value: string | null;
   currency?: string;
   exchangeRate?: string | null;
   className?: string;

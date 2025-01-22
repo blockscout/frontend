@@ -35,7 +35,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         { children ? (
           <ChakraAlert.Content>
             { title && <ChakraAlert.Title>{ title }</ChakraAlert.Title> }
-            <ChakraAlert.Description>{ children }</ChakraAlert.Description>
+            <ChakraAlert.Description display="inline-flex">{ children }</ChakraAlert.Description>
           </ChakraAlert.Content>
         ) : (
           <ChakraAlert.Title flex="1">{ title }</ChakraAlert.Title>

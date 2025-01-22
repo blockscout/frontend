@@ -1,10 +1,11 @@
-import { Heading, Flex, Link, chakra } from '@chakra-ui/react';
+import { Flex, Link, chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React from 'react';
 
-import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import { Tooltip } from 'toolkit/chakra/tooltip';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { Heading } from 'toolkit/chakra/heading';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import TextAd from 'ui/shared/ad/TextAd';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
@@ -139,7 +140,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
               <Heading
                 ref={ headingRef }
                 as="h1"
-                textStyle="heading.lg"
+                level="1"
                 whiteSpace="normal"
                 wordBreak="break-all"
                 style={{

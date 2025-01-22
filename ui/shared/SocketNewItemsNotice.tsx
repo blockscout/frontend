@@ -1,8 +1,8 @@
-import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Tr, Td } from '@chakra-ui/react';
-import { transparentize } from '@chakra-ui/theme-tools';
+import { Link, Text, chakra, Table } from '@chakra-ui/react';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Alert } from 'toolkit/chakra/alert';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 interface InjectedProps {
   content: React.ReactNode;
@@ -19,8 +19,6 @@ interface Props {
 }
 
 const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, type = 'transaction', isLoading }: Props) => {
-  const theme = useTheme();
-
   const alertContent = (() => {
     if (alert) {
       return alert;
@@ -55,24 +53,18 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
     );
   })();
 
-  const color = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
-  const bgColor = useColorModeValue('orange.50', transparentize('orange.200', 0.16)(theme));
-
   const content = !isLoading ? (
     <Alert
       className={ className }
-      status="warning"
+      visual="warning_table"
       px={ 4 }
       py="6px"
-      fontWeight={ 400 }
       fontSize="sm"
-      lineHeight={ 5 }
-      bgColor={ bgColor }
-      color={ color }
+      startElement={ null }
     >
       { alertContent }
     </Alert>
-  ) : <Skeleton className={ className } h="33px"/>;
+  ) : <Skeleton className={ className } h="36px" loading/>;
 
   return children ? children({ content }) : content;
 });
@@ -90,7 +82,7 @@ export const Desktop = ({ ...props }: Props) => {
       my={ props.isLoading ? '6px' : 0 }
       { ...props }
     >
-      { ({ content }) => <Tr><Td colSpan={ 100 } p={ 0 } _first={{ p: 0 }} _last={{ p: 0 }}>{ content }</Td></Tr> }
+      { ({ content }) => <Table.Row><Table.Cell colSpan={ 100 } p={ 0 } _first={{ p: 0 }} _last={{ p: 0 }}>{ content }</Table.Cell></Table.Row> }
     </SocketNewItemsNotice>
   );
 };

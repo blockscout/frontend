@@ -32,6 +32,8 @@ const RESTRICTED_MODULES = {
         'Menu', 'useToast', 'useDisclosure', 'useClipboard', 'Tooltip', 'Skeleton', 'IconButton', 'Button',
         'Image', 'Popover', 'PopoverTrigger', 'PopoverContent', 'PopoverBody', 'PopoverFooter',
         'DrawerRoot', 'DrawerBody', 'DrawerContent', 'DrawerOverlay', 'DrawerBackdrop', 'DrawerTrigger', 'Drawer',
+        'Alert', 'AlertIcon', 'AlertTitle', 'AlertDescription',
+        'Heading', 'Badge',
       ],
       message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
     },
@@ -439,6 +441,15 @@ export default tseslint.config(
     rules: {
       // for configs allow to consume env variables from process.env directly
       'no-restricted-properties': 'off',
+    },
+  },
+  {
+    files: [
+      'toolkit/chakra/**',
+    ],
+    rules: {
+      // for toolkit components allow to import @chakra-ui/react directly
+      'no-restricted-imports': 'off',
     },
   },
 );

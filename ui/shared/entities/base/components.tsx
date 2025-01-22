@@ -64,7 +64,7 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
   };
 
   if (noLink) {
-    return <Skeleton loading={ isLoading } { ...styles }>{ children }</Skeleton>;
+    return null;
   }
 
   const Component = isExternal ? LinkExternal : LinkInternal;
@@ -109,7 +109,7 @@ const Icon = ({ isLoading, noIcon, size, name, color, borderRadius, marginRight,
   );
 };
 
-export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength'> {
+export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'isTooltipDisabled'> {
   asProp?: React.ElementType;
   text: string;
 }
@@ -157,6 +157,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
       overflow="hidden"
       whiteSpace="nowrap"
       textOverflow={ truncation === 'tail' ? 'ellipsis' : undefined }
+      w="100%"
     >
       { children }
     </Skeleton>

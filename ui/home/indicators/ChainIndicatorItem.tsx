@@ -1,4 +1,4 @@
-import { Text, Flex, Box, useColorModeValue } from '@chakra-ui/react';
+import { Text, Flex, Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -6,7 +6,7 @@ import type { HomeStats } from 'types/api/stats';
 import type { ChainIndicatorId } from 'types/homepage';
 
 import type { ResourceError } from 'lib/api/resources';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 interface Props {
   id: ChainIndicatorId;
@@ -20,20 +20,17 @@ interface Props {
 }
 
 const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onClick, stats }: Props) => {
-  const activeColor = useColorModeValue('gray.500', 'gray.400');
-  const activeBgColor = useColorModeValue('white', 'black');
-
   const handleClick = React.useCallback(() => {
     onClick(id);
   }, [ id, onClick ]);
 
   const valueContent = (() => {
     if (!stats.data) {
-      return <Text variant="secondary" fontWeight={ 400 }>no data</Text>;
+      return <Text color="text.secondary" fontWeight={ 400 }>no data</Text>;
     }
 
     return (
-      <Skeleton isLoaded={ !stats.isPlaceholderData } variant="secondary" fontWeight={ 600 } minW="30px">
+      <Skeleton loading={ stats.isPlaceholderData } fontWeight={ 600 } minW="30px">
         { value(stats.data) }
       </Skeleton>
     );
@@ -51,7 +48,7 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
     const diffColor = diff >= 0 ? 'green.500' : 'red.500';
 
     return (
-      <Skeleton isLoaded={ !stats.isPlaceholderData } ml={ 1 } display="flex" alignItems="center" color={ diffColor }>
+      <Skeleton loading={ stats.isPlaceholderData } ml={ 1 } display="flex" alignItems="center" color={ diffColor }>
         <span>{ diff >= 0 ? '+' : '-' }</span>
         <Text color={ diffColor } fontWeight={ 600 }>{ Math.abs(diff) }%</Text>
       </Skeleton>
@@ -68,14 +65,14 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
       as="li"
       borderRadius="base"
       cursor="pointer"
-      color={ isSelected ? activeColor : 'link' }
-      bgColor={ isSelected ? activeBgColor : undefined }
+      color={ isSelected ? { _light: 'gray.500', _dark: 'gray.400' } : 'link' }
+      bgColor={ isSelected ? { _light: 'white', _dark: 'black' } : undefined }
       onClick={ handleClick }
       fontSize="xs"
       fontWeight={ 500 }
       _hover={{
-        bgColor: activeBgColor,
-        color: isSelected ? activeColor : 'link_hovered',
+        bgColor: { _light: 'white', _dark: 'black' },
+        color: isSelected ? { _light: 'gray.500', _dark: 'gray.400' } : 'link.primary.hover',
         zIndex: 1,
       }}
     >

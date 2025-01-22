@@ -6,7 +6,7 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { currencyUnits } from 'lib/units';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
@@ -32,7 +32,7 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
       accuracyUsd,
     });
     return (
-      <Skeleton whiteSpace="pre-wrap" wordBreak="break-word" isLoaded={ !isLoading } display="flex" flexWrap="wrap" className={ className }>
+      <Skeleton whiteSpace="pre-wrap" wordBreak="break-word" loading={ isLoading } display="flex" flexWrap="wrap" className={ className }>
         <span>{ valueStr } </span>
         <TokenEntity token={ token } noCopy onlySymbol w="auto" ml={ 1 }/>
         { usd && withUsd && <chakra.span color="text_secondary"> (${ usd })</chakra.span> }
@@ -51,7 +51,7 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
     });
 
     return (
-      <Skeleton whiteSpace="pre" isLoaded={ !isLoading } display="flex" className={ className }>
+      <Skeleton whiteSpace="pre" loading={ isLoading } display="flex" className={ className }>
         <span>{ valueStr } </span>
         { valueStr !== '0' && <TokenEntity token={ token } noCopy onlySymbol w="auto" ml={ 1 }/> }
         { usd && withUsd && <chakra.span color="text_secondary"> (${ usd })</chakra.span> }

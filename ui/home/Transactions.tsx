@@ -1,7 +1,7 @@
-import { Heading } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import { Heading } from 'toolkit/chakra/heading';
 import LatestOptimisticDeposits from 'ui/home/latestDeposits/LatestOptimisticDeposits';
 import LatestTxs from 'ui/home/LatestTxs';
 import LatestWatchlistTxs from 'ui/home/LatestWatchlistTxs';
@@ -29,7 +29,7 @@ const TransactionsHome = () => {
     ].filter(Boolean);
     return (
       <>
-        <Heading as="h4" size="sm" mb={ 3 }>Transactions</Heading>
+        <Heading level="3" mb={ 3 }>Transactions</Heading>
         <TabsWithScroll tabs={ tabs } lazyBehavior="keepMounted" tabListProps={ TAB_LIST_PROPS }/>
       </>
     );
@@ -37,7 +37,7 @@ const TransactionsHome = () => {
 
   return (
     <>
-      <Heading as="h4" size="sm" mb={ 3 }>Latest transactions</Heading>
+      <Heading level="3" mb={ 3 }>Latest transactions</Heading>
       <LatestTxs/>
     </>
   );

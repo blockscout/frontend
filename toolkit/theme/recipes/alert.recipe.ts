@@ -42,6 +42,9 @@ export const recipe = defineSlotRecipe({
       warning: {
         root: { bg: 'alert.bg.warning', color: 'alert.fg' },
       },
+      warning_table: {
+        root: { bg: 'alert.bg.warning_table', color: 'alert.fg' },
+      },
       success: {
         root: { bg: 'alert.bg.success', color: 'alert.fg' },
       },
@@ -82,7 +85,7 @@ export const recipe = defineSlotRecipe({
         },
         indicator: {
           boxSize: '5',
-          mt: '2px',
+          my: '2px',
         },
       },
     },

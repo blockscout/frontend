@@ -1,4 +1,5 @@
 import { recipe as alert } from './alert.recipe';
+import { recipe as badge } from './badge.recipe';
 import { recipe as button } from './button.recipe';
 import { recipe as closeButton } from './close-button.recipe';
 import { recipe as dialog } from './dialog.recipe';
@@ -20,6 +21,7 @@ import { recipe as toast } from './toast.recipe';
 import { recipe as tooltip } from './tooltip.recipe';
 
 export const recipes = {
+  badge,
   button,
   closeButton,
   input,

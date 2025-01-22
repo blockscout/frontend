@@ -14,6 +14,7 @@ export const zIndex: TokenDefinition['zIndex'] = {
   modal: { value: 1400 },
   popover: { value: 1500 },
   tooltip: { value: 1550 }, // otherwise tooltips will not be visible in modals
+  tooltip2: { value: 1551 }, // for tooltips in tooltips
   skipLink: { value: 1600 },
   toast: { value: 1700 },
 };

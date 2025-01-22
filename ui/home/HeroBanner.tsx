@@ -1,3 +1,5 @@
+// we use custom heading size for hero banner
+// eslint-disable-next-line no-restricted-imports
 import { Box, Flex, Heading } from '@chakra-ui/react';
 import React from 'react';
 

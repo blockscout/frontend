@@ -10,7 +10,7 @@ interface Props {
   className?: string;
 }
 
-const NetworkMenuButton = ({ isActive, onClick, className }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const NetworkMenuButton = ({ isActive, onClick, className, ...rest }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   return (
     <IconButton
       className={ className }
@@ -24,6 +24,7 @@ const NetworkMenuButton = ({ isActive, onClick, className }: Props, ref: React.F
       onClick={ onClick }
       aria-label="Network menu"
       aria-roledescription="menu"
+      { ...rest }
     >
       <IconSvg
         name="networks"

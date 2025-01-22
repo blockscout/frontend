@@ -155,8 +155,10 @@ const ChartTooltip = ({
     <g
       ref={ ref }
       opacity={ 0 }
-      fontSize="12px"
-      fontWeight="500"
+      style={{
+        fontWeight: '500',
+        fontSize: '12px',
+      }}
       { ...props }
     >
       <ChartTooltipLine/>

@@ -179,6 +179,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       bg: {
         info: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.900}' } },
         warning: { value: { _light: '{colors.orange.100}', _dark: '{colors.orange.800/60}' } },
+        warning_table: { value: { _light: '{colors.orange.50}', _dark: '{colors.orange.800/60}' } },
         success: { value: { _light: '{colors.green.100}', _dark: '{colors.green.900}' } },
         error: { value: { _light: '{colors.red.100}', _dark: '{colors.red.900}' } },
         neutral: { value: { _light: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.100}' } },
@@ -238,6 +239,43 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       track: {
         DEFAULT: { value: { _light: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.200}' } },
       },
+    },
+    badge: {
+      gray: {
+        bg: { value: { _light: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.100}' } },
+        fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+      },
+      green: {
+        bg: { value: { _light: '{colors.green.50}', _dark: '{colors.green.800}' } },
+        fg: { value: { _light: '{colors.green.500}', _dark: '{colors.green.200}' } },
+      },
+      red: {
+        bg: { value: { _light: '{colors.red.50}', _dark: '{colors.red.800}' } },
+        fg: { value: { _light: '{colors.red.500}', _dark: '{colors.red.200}' } },
+      },
+      purple: {
+        bg: { value: { _light: '{colors.purple.50}', _dark: '{colors.purple.800}' } },
+        fg: { value: { _light: '{colors.purple.500}', _dark: '{colors.purple.100}' } },
+      },
+      orange: {
+        bg: { value: { _light: '{colors.orange.50}', _dark: '{colors.orange.800}' } },
+        fg: { value: { _light: '{colors.orange.500}', _dark: '{colors.orange.100}' } },
+      },
+      blue: {
+        bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.blue.800}' } },
+        fg: { value: { _light: '{colors.blue.500}', _dark: '{colors.blue.100}' } },
+      },
+      yellow: {
+        bg: { value: { _light: '{colors.yellow.50}', _dark: '{colors.yellow.800}' } },
+        fg: { value: { _light: '{colors.yellow.500}', _dark: '{colors.yellow.100}' } },
+      },
+      teal: {
+        bg: { value: { _light: '{colors.teal.50}', _dark: '{colors.teal.800}' } },
+        fg: { value: { _light: '{colors.teal.500}', _dark: '{colors.teal.100}' } },
+      },
+    },
+    heading: {
+      DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
     },
     text: {
       primary: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },

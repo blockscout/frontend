@@ -16,15 +16,6 @@ export const textStyles: ThemingConfig['textStyles'] = {
   heading: {
     xl: {
       value: {
-        fontSize: '40px',
-        lineHeight: '48px',
-        fontWeight: '500',
-        letterSpacing: '-1px',
-        fontFamily: 'heading',
-      },
-    },
-    lg: {
-      value: {
         fontSize: '32px',
         lineHeight: '40px',
         fontWeight: '500',
@@ -32,7 +23,7 @@ export const textStyles: ThemingConfig['textStyles'] = {
         fontFamily: 'heading',
       },
     },
-    md: {
+    lg: {
       value: {
         fontSize: '24px',
         lineHeight: '32px',
@@ -40,11 +31,27 @@ export const textStyles: ThemingConfig['textStyles'] = {
         fontFamily: 'heading',
       },
     },
-    sm: {
+    md: {
       value: {
         fontSize: '18px',
         lineHeight: '24px',
         fontWeight: '500',
+        fontFamily: 'heading',
+      },
+    },
+    sm: {
+      value: {
+        fontSize: '16px',
+        lineHeight: '24px',
+        fontWeight: '500',
+        fontFamily: 'heading',
+      },
+    },
+    xs: {
+      value: {
+        fontSize: '14px',
+        lineHeight: '20px',
+        fontWeight: '600',
         fontFamily: 'heading',
       },
     },
