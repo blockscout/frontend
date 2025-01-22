@@ -33,6 +33,12 @@ WORKDIR /favicon-generator
 COPY ./deploy/tools/favicon-generator/package.json ./deploy/tools/favicon-generator/yarn.lock ./
 RUN yarn --frozen-lockfile --network-timeout 100000
 
+### SITEMAP GENERATOR
+# Install dependencies
+WORKDIR /sitemap-generator
+COPY ./deploy/tools/sitemap-generator/package.json ./deploy/tools/sitemap-generator/yarn.lock ./
+RUN yarn --frozen-lockfile --network-timeout 100000
+
 
 # *****************************
 # ****** STAGE 2: Build *******
@@ -88,6 +94,12 @@ RUN cd ./deploy/tools/envs-validator && yarn build
 # Copy dependencies and source code
 COPY --from=deps /favicon-generator/node_modules ./deploy/tools/favicon-generator/node_modules
 
+
+### SITEMAP GENERATOR
+# Copy dependencies and source code
+COPY --from=deps /sitemap-generator/node_modules ./deploy/tools/sitemap-generator/node_modules
+
+
 # *****************************
 # ******* STAGE 3: Run ********
 # *****************************
@@ -122,11 +134,16 @@ COPY --chmod=755 ./deploy/scripts/validate_envs.sh .
 COPY --chmod=755 ./deploy/scripts/make_envs_script.sh .
 ## Assets downloader
 COPY --chmod=755 ./deploy/scripts/download_assets.sh .
+## OG image generator
+COPY ./deploy/scripts/og_image_generator.js .
 ## Favicon generator
 COPY --chmod=755 ./deploy/scripts/favicon_generator.sh .
 COPY --from=builder /app/deploy/tools/favicon-generator ./deploy/tools/favicon-generator
 RUN ["chmod", "-R", "777", "./deploy/tools/favicon-generator"]
 RUN ["chmod", "-R", "777", "./public"]
+## Sitemap generator
+COPY --chmod=755 ./deploy/scripts/sitemap_generator.sh .
+COPY --from=builder /app/deploy/tools/sitemap-generator ./deploy/tools/sitemap-generator
 
 # Copy ENVs files
 COPY --from=builder /app/.env.registry .

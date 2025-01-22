@@ -1,5 +1,5 @@
 import { InputGroup, Input, InputLeftElement, chakra, useColorModeValue, forwardRef, InputRightElement, Center } from '@chakra-ui/react';
-import throttle from 'lodash/throttle';
+import { throttle } from 'es-toolkit';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 

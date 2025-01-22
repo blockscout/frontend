@@ -25,7 +25,7 @@ interface Props {
 
 const ERROR_TEXTS: Record<string, { title: string; text: string }> = {
   '403': {
-    title: 'Forbidden',
+    title: 'Alert',
     text: 'Access to this resource is restricted.',
   },
   '404': {

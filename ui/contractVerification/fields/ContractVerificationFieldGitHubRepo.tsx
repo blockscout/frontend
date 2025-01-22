@@ -1,4 +1,4 @@
-import _get from 'lodash/get';
+import { get } from 'es-toolkit/compat';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -43,7 +43,7 @@ const ContractVerificationFieldGitHubRepo = ({ onCommitHashChange }: Props) => {
         const response = await fetch(`https://api.github.com/repos/${ gitHubData.owner }/${ gitHubData.repo }/commits?per_page=1`);
         repoErrorRef.current = undefined;
         trigger('repository_url');
-        onCommitHashChange(_get(response, '[0].sha'));
+        onCommitHashChange(get(response, '[0].sha'));
         return;
       } catch (error) {
         repoErrorRef.current = 'GitHub repository not found';

@@ -7,24 +7,40 @@ import { test, expect } from 'playwright/lib';
 
 import Tokens from './Tokens';
 
-test.beforeEach(async({ mockTextAd }) => {
+test.beforeEach(async({ mockTextAd, mockAssetResponse }) => {
   await mockTextAd();
+  await mockAssetResponse(tokens.tokenInfoERC20a.icon_url as string, './playwright/mocks/image_svg.svg');
 });
 
+const allTokens = {
+  items: [
+    tokens.tokenInfoERC20a, tokens.tokenInfoERC20b, tokens.tokenInfoERC20c, tokens.tokenInfoERC20d,
+    tokens.tokenInfoERC721a, tokens.tokenInfoERC721b, tokens.tokenInfoERC721c,
+    tokens.tokenInfoERC1155a, tokens.tokenInfoERC1155b, tokens.tokenInfoERC1155WithoutName,
+  ],
+  next_page_params: {
+    holder_count: 1,
+    items_count: 1,
+    name: 'a',
+    market_cap: '0',
+  },
+};
+
 test('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
-  const allTokens = {
-    items: [
-      tokens.tokenInfoERC20a, tokens.tokenInfoERC20b, tokens.tokenInfoERC20c, tokens.tokenInfoERC20d,
-      tokens.tokenInfoERC721a, tokens.tokenInfoERC721b, tokens.tokenInfoERC721c,
-      tokens.tokenInfoERC1155a, tokens.tokenInfoERC1155b, tokens.tokenInfoERC1155WithoutName,
-    ],
-    next_page_params: {
-      holder_count: 1,
-      items_count: 1,
-      name: 'a',
-      market_cap: '0',
-    },
-  };
+
+  await mockApiResponse('tokens', allTokens);
+
+  const component = await render(
+    <div>
+      <Box h={{ base: '134px', lg: 6 }}/>
+      <Tokens/>
+    </div>,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('with search +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
   const filteredTokens = {
     items: [
       tokens.tokenInfoERC20a, tokens.tokenInfoERC20b, tokens.tokenInfoERC20c,
@@ -42,10 +58,9 @@ test('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
     </div>,
   );
 
-  await expect(component).toHaveScreenshot();
-
   await component.getByRole('textbox', { name: 'Token name or symbol' }).focus();
   await component.getByRole('textbox', { name: 'Token name or symbol' }).fill('foo');
+  await component.getByRole('textbox', { name: 'Token name or symbol' }).blur();
 
   await expect(component).toHaveScreenshot();
 });

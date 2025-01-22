@@ -1,4 +1,4 @@
-import _mapValues from 'lodash/mapValues';
+import { mapValues } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
@@ -31,7 +31,7 @@ export default function useTokenSelect(data: FormattedData) {
   }, []);
 
   const filteredData = React.useMemo(() => {
-    return _mapValues(data, ({ items, isOverflow }) => ({
+    return mapValues(data, ({ items, isOverflow }) => ({
       isOverflow,
       items: items.filter(filterTokens(searchTerm.toLowerCase())),
     }));
