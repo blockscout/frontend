@@ -60,7 +60,7 @@ export const base: Transaction = {
   },
   token_transfers: [],
   token_transfers_overflow: false,
-  tx_burnt_fee: '461030000000000',
+  transaction_burnt_fee: '461030000000000',
   transaction_tag: null,
   transaction_types: [
     'contract_call',
@@ -196,7 +196,7 @@ export const pending: Transaction = {
   revert_reason: null,
   status: null,
   timestamp: null,
-  tx_burnt_fee: null,
+  transaction_burnt_fee: null,
   transaction_tag: null,
   type: null,
   value: '0',

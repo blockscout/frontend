@@ -52,7 +52,7 @@ const filterParamNames: Record<keyof AdvancedFilterParams, string> = {
   token_contract_symbols_to_exclude: '',
   token_contract_address_hashes_to_include: 'Asset',
   token_contract_symbols_to_include: '',
-  tx_types: 'Type',
+  transaction_types: 'Type',
 };
 
 export function getFilterTags(filters: AdvancedFilterParams) {
@@ -76,7 +76,7 @@ export function getFilterTags(filters: AdvancedFilterParams) {
         valueStr = getFilterValueWithNames(filtersToShow.methods, filtersToShow.methods_names);
         break;
       }
-      case 'tx_types': {
+      case 'transaction_types': {
         valueStr = castArray(value).map(i => ADVANCED_FILTER_TYPES.find(t => t.id === i)?.name).filter(Boolean).join(', ');
         break;
       }

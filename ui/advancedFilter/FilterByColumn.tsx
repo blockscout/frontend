@@ -29,7 +29,7 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
   const commonProps = { columnName, handleFilterChange, isLoading };
   switch (column) {
     case 'type': {
-      const value = filters.tx_types;
+      const value = filters.transaction_types;
       return (
         <TableColumnFilterWrapper
           columnName="Type"

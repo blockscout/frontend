@@ -54,7 +54,7 @@ const AdvancedFilter = () => {
   const [ filters, setFilters ] = React.useState<AdvancedFilterParams>(() => {
     const age = getFilterValueFromQuery(ADVANCED_FILTER_AGES, router.query.age);
     return {
-      tx_types: getFilterValuesFromQuery(ADVANCED_FILTER_TYPES, router.query.tx_types),
+      transaction_types: getFilterValuesFromQuery(ADVANCED_FILTER_TYPES, router.query.transaction_types),
       methods: getValuesArrayFromQuery(router.query.methods),
       methods_names: getValuesArrayFromQuery(router.query.methods_names),
       amount_from: getQueryParamString(router.query.amount_from),

@@ -18,7 +18,7 @@ const columns: Array<ColumnsIds> = [
 ];
 
 const filters = {
-  tx_types: [ 'coin_transfer' as const ],
+  transaction_types: [ 'coin_transfer' as const ],
   methods: [ '0xa9059cbb' ],
   age: '7d' as const,
   address_relation: 'or' as const,
