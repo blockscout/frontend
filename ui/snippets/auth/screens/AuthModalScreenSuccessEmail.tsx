@@ -1,10 +1,11 @@
-import { chakra, Box, Text, Button } from '@chakra-ui/react';
+import { chakra, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Screen } from '../types';
 import type { UserInfo } from 'types/api/account';
 
 import config from 'configs/app';
+import { Button } from 'toolkit/chakra/button';
 
 interface Props {
   email: string;
@@ -29,7 +30,7 @@ const AuthModalScreenSuccessEmail = ({ email, onConnectWallet, onClose, isAuth, 
         </Text>
         <Button
           mt={ 6 }
-          visual="outline"
+          variant="outline"
           onClick={ onClose }
         >
           Got it!
@@ -51,7 +52,7 @@ const AuthModalScreenSuccessEmail = ({ email, onConnectWallet, onClose, isAuth, 
         </>
       ) : (
         <Button
-          visual="outline"
+          variant="outline"
           mt={ 6 }
           onClick={ onClose }
         >

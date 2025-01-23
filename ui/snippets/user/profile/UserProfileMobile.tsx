@@ -75,7 +75,7 @@ const UserProfileMobile = () => {
         <DrawerTrigger>
           <UserProfileButton
             profileQuery={ profileQuery }
-            visual="header"
+            variant="header"
             onClick={ handleProfileButtonClick }
           />
         </DrawerTrigger>

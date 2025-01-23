@@ -1,4 +1,4 @@
-import type { TabsContentProps } from '@chakra-ui/react';
+import type { StackProps, TabsContentProps } from '@chakra-ui/react';
 import { Code, Grid, HStack } from '@chakra-ui/react';
 import React from 'react';
 
@@ -20,9 +20,9 @@ export const SamplesStack = ({ children }: { children: React.ReactNode }) => (
     { children }
   </Grid>
 );
-export const Sample = ({ children, label }: { children: React.ReactNode; label: string }) => (
+export const Sample = ({ children, label, ...props }: { children: React.ReactNode; label: string } & StackProps) => (
   <>
     <Code w="fit-content">{ label }</Code>
-    <HStack gap={ 3 } whiteSpace="pre-wrap" flexWrap="wrap">{ children }</HStack>
+    <HStack gap={ 3 } whiteSpace="pre-wrap" flexWrap="wrap" { ...props }>{ children }</HStack>
   </>
 );

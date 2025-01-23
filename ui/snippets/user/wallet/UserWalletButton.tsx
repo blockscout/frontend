@@ -11,14 +11,14 @@ import UserIdenticon from '../UserIdenticon';
 
 interface Props {
   size?: ButtonProps['size'];
-  visual?: ButtonProps['visual'];
+  variant?: ButtonProps['variant'];
   isPending?: boolean;
   isAutoConnectDisabled?: boolean;
   address?: string;
   domain?: string;
 }
 
-const UserWalletButton = ({ size, visual, isPending, isAutoConnectDisabled, address, domain }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const UserWalletButton = ({ size, variant, isPending, isAutoConnectDisabled, address, domain }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
 
   const isMobile = useIsMobile();
 
@@ -46,7 +46,7 @@ const UserWalletButton = ({ size, visual, isPending, isAutoConnectDisabled, addr
       <Button
         ref={ ref }
         size={ size }
-        visual={ visual }
+        variant={ variant }
         selected={ Boolean(address) }
         highlighted={ isAutoConnectDisabled }
         textStyle="sm"

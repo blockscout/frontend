@@ -110,7 +110,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         <AuthModalFieldOtpCode isDisabled={ isCodeSending }/>
         <ReCaptcha ref={ recaptcha.ref }/>
         <Button
-          visual="link"
+          variant="link"
           columnGap={ 2 }
           mt={ 3 }
           disabled={ isCodeSending }

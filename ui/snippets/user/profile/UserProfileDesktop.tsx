@@ -17,14 +17,14 @@ import UserProfileContent from './UserProfileContent';
 
 interface Props {
   buttonSize?: ButtonProps['size'];
-  buttonVisual?: ButtonProps['visual'];
+  buttonVariant?: ButtonProps['variant'];
 }
 
 const initialScreen = {
   type: config.features.blockchainInteraction.isEnabled ? 'select_method' as const : 'email' as const,
 };
 
-const UserProfileDesktop = ({ buttonSize, buttonVisual = 'header' }: Props) => {
+const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>(initialScreen);
   const router = useRouter();
 
@@ -78,7 +78,7 @@ const UserProfileDesktop = ({ buttonSize, buttonVisual = 'header' }: Props) => {
           <UserProfileButton
             profileQuery={ profileQuery }
             size={ buttonSize }
-            visual={ buttonVisual }
+            variant={ buttonVariant }
             onClick={ handleProfileButtonClick }
           />
         </PopoverTrigger>

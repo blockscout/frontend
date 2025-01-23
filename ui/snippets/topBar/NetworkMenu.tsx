@@ -18,7 +18,6 @@ const NetworkMenu = () => {
     >
       <PopoverTrigger>
         <IconButton
-          visual="plain"
           color="link.primary"
           _hover={{ color: 'link.primary.hover' }}
           aria-label="Network menu"

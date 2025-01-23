@@ -21,7 +21,6 @@ const Settings = () => {
     >
       <PopoverTrigger>
         <IconButton
-          visual="plain"
           color="link.primary"
           _hover={{ color: 'link.primary.hover' }}
           borderRadius="sm"

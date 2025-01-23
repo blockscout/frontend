@@ -13,10 +13,10 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 
 type Props = {
   size?: ButtonProps['size'];
-  visual?: ButtonProps['visual'];
+  variant?: ButtonProps['variant'];
 };
 
-const RewardsButton = ({ visual = 'header', size }: Props) => {
+const RewardsButton = ({ variant = 'header', size }: Props) => {
   const { isInitialized, apiToken, openLoginModal, dailyRewardQuery, balancesQuery } = useRewardsContext();
   const isMobile = useIsMobile();
   const isLoading = !isInitialized || dailyRewardQuery.isLoading || balancesQuery.isLoading;
@@ -32,7 +32,7 @@ const RewardsButton = ({ visual = 'header', size }: Props) => {
       disabled={ isMobile || isLoading || Boolean(apiToken) }
     >
       <Button
-        visual={ visual }
+        variant={ variant }
         selected={ !isLoading && Boolean(apiToken) }
         flexShrink={ 0 }
         as={ apiToken ? LinkInternal : 'button' }
@@ -49,7 +49,7 @@ const RewardsButton = ({ visual = 'header', size }: Props) => {
       >
         <IconSvg
           name={ dailyRewardQuery.data?.available ? 'merits_with_dot_slim' : 'merits_slim' }
-          boxSize={ visual === 'hero' ? 6 : 5 }
+          boxSize={ variant === 'hero' ? 6 : 5 }
           flexShrink={ 0 }
         />
         <chakra.span

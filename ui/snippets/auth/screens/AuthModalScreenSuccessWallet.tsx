@@ -1,4 +1,4 @@
-import { chakra, Box, Text, Button, Flex } from '@chakra-ui/react';
+import { chakra, Box, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Screen } from '../types';
@@ -7,6 +7,7 @@ import type { UserInfo } from 'types/api/account';
 import config from 'configs/app';
 import { apos } from 'lib/html-entities';
 import shortenString from 'lib/shortenString';
+import { Button } from 'toolkit/chakra/button';
 
 interface Props {
   address: string;
@@ -31,7 +32,7 @@ const AuthModalScreenSuccessWallet = ({ address, onAddEmail, onClose, isAuth, pr
         </Text>
         <Button
           mt={ 6 }
-          visual="outline"
+          variant="outline"
           onClick={ onClose }
         >
           Got it!
@@ -55,13 +56,13 @@ const AuthModalScreenSuccessWallet = ({ address, onAddEmail, onClose, isAuth, pr
           </Text>
           <Flex mt={ 6 } gap={ 2 }>
             <Button onClick={ handleAddEmailClick }>Add email</Button>
-            <Button visual="link" onClick={ onClose }>I{ apos }ll do it later</Button>
+            <Button variant="link" onClick={ onClose }>I{ apos }ll do it later</Button>
           </Flex>
         </>
       ) : (
         <Button
           mt={ 6 }
-          visual="outline"
+          variant="outline"
           onClick={ onClose }
         >
           Got it!

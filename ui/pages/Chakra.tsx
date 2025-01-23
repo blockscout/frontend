@@ -24,6 +24,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import AlertsShowcase from 'ui/showcases/Alerts';
 import BadgesShowcase from 'ui/showcases/Badges';
+import ButtonShowcase from 'ui/showcases/Button';
 
 const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
@@ -50,30 +51,15 @@ const ChakraShowcases = () => {
         <TabsList>
           <TabsTrigger value="alerts">Alerts</TabsTrigger>
           <TabsTrigger value="badges">Badges</TabsTrigger>
+          <TabsTrigger value="buttons">Buttons</TabsTrigger>
           <TabsTrigger value="unsorted">Unsorted</TabsTrigger>
         </TabsList>
         <AlertsShowcase/>
         <BadgesShowcase/>
+        <ButtonShowcase/>
 
         <TabsContent value="unsorted">
           <VStack align="flex-start" gap={ 6 }>
-            <section>
-              <Heading textStyle="heading.md" mb={ 2 }>Buttons</Heading>
-              <HStack gap={ 4 } flexWrap="wrap">
-                <Button>Solid</Button>
-                <Button visual="outline">Outline</Button>
-                <Button visual="dropdown">Dropdown</Button>
-                <Button visual="dropdown" selected>Dropdown selected</Button>
-                <Button visual="header">Header</Button>
-                <Button visual="header" selected>Header selected</Button>
-                <Button visual="header" selected highlighted>Header highlighted</Button>
-                <Button visual="link">Link</Button>
-                <Button loading loadingText="Solid">Solid</Button>
-                <Button loading loadingText="Outline" visual="outline">Outline</Button>
-                <Button loading>Loading</Button>
-              </HStack>
-            </section>
-
             <section>
               <Heading textStyle="heading.md" mb={ 2 }>Inputs</Heading>
               <Heading textStyle="heading.sm" mb={ 2 }>Regular</Heading>

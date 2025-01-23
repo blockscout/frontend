@@ -12,10 +12,10 @@ import UserWalletMenuContent from './UserWalletMenuContent';
 
 interface Props {
   buttonSize?: ButtonProps['size'];
-  buttonVisual?: ButtonProps['visual'];
+  buttonVariant?: ButtonProps['variant'];
 }
 
-const UserWalletDesktop = ({ buttonSize, buttonVisual = 'header' }: Props) => {
+const UserWalletDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   const walletMenu = useDisclosure();
 
   const web3Wallet = useWeb3Wallet({ source: 'Header' });
@@ -54,7 +54,7 @@ const UserWalletDesktop = ({ buttonSize, buttonVisual = 'header' }: Props) => {
       <PopoverTrigger>
         <UserWalletButton
           size={ buttonSize }
-          visual={ buttonVisual }
+          variant={ buttonVariant }
           address={ web3AccountWithDomain.address }
           domain={ web3AccountWithDomain.domain }
           isPending={ isPending }

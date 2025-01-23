@@ -19,12 +19,12 @@ import { getUserHandle } from './utils';
 interface Props {
   profileQuery: UseQueryResult<UserInfo, unknown>;
   size?: ButtonProps['size'];
-  visual?: ButtonProps['visual'];
+  variant?: ButtonProps['variant'];
   onClick: () => void;
   isPending?: boolean;
 }
 
-const UserProfileButton = ({ profileQuery, size, visual, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   const [ isFetched, setIsFetched ] = useState(false);
   const isMobile = useIsMobile();
 
@@ -78,7 +78,7 @@ const UserProfileButton = ({ profileQuery, size, visual, onClick, isPending }: P
       <Button
         ref={ ref }
         size={ size }
-        visual={ visual }
+        variant={ variant }
         onClick={ onClick }
         onFocus={ handleFocus }
         selected={ dataExists }

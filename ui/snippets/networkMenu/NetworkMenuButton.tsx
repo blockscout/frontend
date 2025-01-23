@@ -14,7 +14,6 @@ const NetworkMenuButton = ({ isActive, onClick, className, ...rest }: Props, ref
   return (
     <IconButton
       className={ className }
-      visual="plain"
       display="inline-flex"
       alignItems="center"
       ref={ ref }

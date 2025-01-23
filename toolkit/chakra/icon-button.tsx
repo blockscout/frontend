@@ -19,7 +19,7 @@ export const IconButton = React.forwardRef<HTMLDivElement, IconButtonProps>(
           minW="auto"
           flexShrink="0"
           { ...rest }
-          visual={ props.visual ?? 'plain' }
+          variant={ props.variant ?? 'plain' }
         />
       </Skeleton>
     );

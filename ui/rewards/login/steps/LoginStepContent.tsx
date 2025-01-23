@@ -153,7 +153,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
         </Alert>
       ) }
       <Button
-        visual="solid"
+        variant="solid"
         w="full"
         whiteSpace="normal"
         mb={ 4 }

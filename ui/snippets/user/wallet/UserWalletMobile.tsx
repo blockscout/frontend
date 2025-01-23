@@ -51,7 +51,7 @@ const UserWalletMobile = () => {
       <DrawerBackdrop/>
       <DrawerTrigger>
         <UserWalletButton
-          visual="header"
+          variant="header"
           address={ web3AccountWithDomain.address }
           domain={ web3AccountWithDomain.domain }
           isPending={ isPending }

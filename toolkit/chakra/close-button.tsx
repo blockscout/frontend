@@ -5,8 +5,8 @@ import { LuX } from 'react-icons/lu';
 
 import { recipe as closeButtonRecipe } from '../theme/recipes/close-button.recipe';
 
-export interface CloseButtonProps extends Omit<ButtonProps, 'visual' | 'size'> {
-  visual?: 'plain';
+export interface CloseButtonProps extends Omit<ButtonProps, 'variant' | 'size'> {
+  variant?: 'plain';
   size?: 'md';
 }
 

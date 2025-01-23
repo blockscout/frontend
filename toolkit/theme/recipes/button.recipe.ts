@@ -17,14 +17,14 @@ export const recipe = defineRecipe({
     },
   },
   variants: {
-    visual: {
+    variant: {
       solid: {
         bg: 'blue.600',
         color: 'white',
         _hover: {
           bg: 'blue.400',
         },
-        _active: { bg: 'blue.400' },
+        _expanded: { bg: 'blue.400' },
         _loading: {
           '& .chakra-spinner': {
             borderColor: 'white',
@@ -57,7 +57,7 @@ export const recipe = defineRecipe({
           borderColor: 'blue.400',
         },
         // When the dropdown is open, the button should be active
-        _active: {
+        _expanded: {
           bg: 'transparent',
           color: 'blue.400',
           borderColor: 'blue.400',
@@ -111,6 +111,13 @@ export const recipe = defineRecipe({
       hero: {
         bg: 'button.hero.bg',
         color: 'button.hero.fg',
+        _loading: {
+          '& .chakra-spinner': {
+            borderColor: 'white',
+            borderBottomColor: 'spinner.track',
+            borderInlineStartColor: 'spinner.track',
+          },
+        },
         _hover: {
           bg: 'button.hero.bg.hover',
           color: 'button.hero.fg.hover',
@@ -141,7 +148,7 @@ export const recipe = defineRecipe({
         h: 'auto',
         _hover: {
           bg: 'transparent',
-          color: 'link.primary.hovered',
+          color: 'link.primary.hover',
         },
       },
     },
@@ -154,6 +161,6 @@ export const recipe = defineRecipe({
   },
   defaultVariants: {
     size: 'md',
-    visual: 'solid',
+    variant: 'solid',
   },
 });

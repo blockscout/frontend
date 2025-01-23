@@ -31,7 +31,7 @@ const DeFiDropdown = () => {
   }
 
   const buttonStyles = {
-    visual: 'solid' as const,
+    variant: 'solid' as const,
     borderRadius: 'sm',
     textStyle: 'xs',
     height: 5,
@@ -50,7 +50,7 @@ const DeFiDropdown = () => {
       <PopoverTrigger>
         <Button
           onClick={ onToggle }
-          active={ open }
+          expanded={ open }
           { ...buttonStyles }
         >
           <chakra.span display={{ base: 'none', lg: 'inline' }} whiteSpace="pre-wrap">
