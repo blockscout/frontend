@@ -5,12 +5,12 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const UserOp = dynamic(() => import('ui/pages/UserOp'), { ssr: false });
+// const UserOp = dynamic(() => import('ui/pages/UserOp'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageNextJs pathname="/op/[hash]" query={ props.query }>
-      <UserOp/>
+      { /* <UserOp/> */ }
     </PageNextJs>
   );
 };

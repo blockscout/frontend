@@ -4,12 +4,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const PrivateTags = dynamic(() => import('ui/pages/PrivateTags'), { ssr: false });
+// const PrivateTags = dynamic(() => import('ui/pages/PrivateTags'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/account/tag-address">
-      <PrivateTags/>
+      { /* <PrivateTags/> */ }
     </PageNextJs>
   );
 };

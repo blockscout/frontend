@@ -3,12 +3,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import MyProfile from 'ui/pages/MyProfile';
+// import MyProfile from 'ui/pages/MyProfile';
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/auth/profile">
-      <MyProfile/>
+      { /* <MyProfile/> */ }
     </PageNextJs>
   );
 };

@@ -4,7 +4,7 @@ import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import config from 'configs/app';
-import SwaggerUI from 'ui/apiDocs/SwaggerUI';
+// import SwaggerUI from 'ui/apiDocs/SwaggerUI';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const Page: NextPage = () => {
@@ -13,7 +13,7 @@ const Page: NextPage = () => {
       <PageTitle
         title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } API documentation` : 'API documentation' }
       />
-      <SwaggerUI/>
+      { /* <SwaggerUI/> */ }
     </PageNextJs>
   );
 };

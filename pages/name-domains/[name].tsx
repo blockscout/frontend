@@ -5,12 +5,12 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const NameDomain = dynamic(() => import('ui/pages/NameDomain'), { ssr: false });
+// const NameDomain = dynamic(() => import('ui/pages/NameDomain'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageNextJs pathname="/name-domains/[name]" query={ props.query }>
-      <NameDomain/>
+      { /* <NameDomain/> */ }
     </PageNextJs>
   );
 };

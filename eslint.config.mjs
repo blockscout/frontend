@@ -33,7 +33,7 @@ const RESTRICTED_MODULES = {
         'Image', 'Popover', 'PopoverTrigger', 'PopoverContent', 'PopoverBody', 'PopoverFooter',
         'DrawerRoot', 'DrawerBody', 'DrawerContent', 'DrawerOverlay', 'DrawerBackdrop', 'DrawerTrigger', 'Drawer',
         'Alert', 'AlertIcon', 'AlertTitle', 'AlertDescription',
-        'Heading', 'Badge',
+        'Heading', 'Badge', 'Tabs',
       ],
       message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
     },

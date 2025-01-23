@@ -4,12 +4,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const UserOps = dynamic(() => import('ui/pages/UserOps'), { ssr: false });
+// const UserOps = dynamic(() => import('ui/pages/UserOps'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/ops">
-      <UserOps/>
+      { /* <UserOps/> */ }
     </PageNextJs>
   );
 };

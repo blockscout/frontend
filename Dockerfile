@@ -80,14 +80,16 @@ RUN yarn build
 ### FEATURE REPORTER
 # Copy dependencies and source code, then build
 COPY --from=deps /feature-reporter/node_modules ./deploy/tools/feature-reporter/node_modules
-RUN cd ./deploy/tools/feature-reporter && yarn compile_config
-RUN cd ./deploy/tools/feature-reporter && yarn build
+# TODO @tom2drum fix feature reporter build
+# RUN cd ./deploy/tools/feature-reporter && yarn compile_config
+# RUN cd ./deploy/tools/feature-reporter && yarn build
 
 
 ### ENV VARIABLES CHECKER
 # Copy dependencies and source code, then build 
 COPY --from=deps /envs-validator/node_modules ./deploy/tools/envs-validator/node_modules
-RUN cd ./deploy/tools/envs-validator && yarn build
+# TODO @tom2drum fix envs-validator build
+# RUN cd ./deploy/tools/envs-validator && yarn build
 
 
 ### FAVICON GENERATOR
@@ -123,8 +125,10 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/deploy/tools/envs-validator/index.js ./envs-validator.js
-COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-reporter.js
+# TODO @tom2drum fix envs-validator build
+# COPY --from=builder /app/deploy/tools/envs-validator/index.js ./envs-validator.js
+# TODO @tom2drum fix feature reporter build
+# COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-reporter.js
 
 # Copy scripts
 ## Entripoint

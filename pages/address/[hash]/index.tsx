@@ -10,14 +10,14 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import Address from 'ui/pages/Address';
+// import Address from 'ui/pages/Address';
 
 const pathname: Route['pathname'] = '/address/[hash]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      <Address/>
+      { /* <Address/> */ }
     </PageNextJs>
   );
 };

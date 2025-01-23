@@ -4,12 +4,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const Tokens = dynamic(() => import('ui/pages/Tokens'), { ssr: false });
+// const Tokens = dynamic(() => import('ui/pages/Tokens'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/tokens">
-      <Tokens/>
+      { /* <Tokens/> */ }
     </PageNextJs>
   );
 };

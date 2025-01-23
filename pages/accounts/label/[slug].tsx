@@ -4,12 +4,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const AccountsLabelSearch = dynamic(() => import('ui/pages/AccountsLabelSearch'), { ssr: false });
+// const AccountsLabelSearch = dynamic(() => import('ui/pages/AccountsLabelSearch'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/accounts/label/[slug]">
-      <AccountsLabelSearch/>
+      { /* <AccountsLabelSearch/> */ }
     </PageNextJs>
   );
 };

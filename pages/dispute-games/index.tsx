@@ -4,12 +4,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const DisputeGames = dynamic(() => import('ui/pages/OptimisticL2DisputeGames'), { ssr: false });
+// const DisputeGames = dynamic(() => import('ui/pages/OptimisticL2DisputeGames'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/dispute-games">
-      <DisputeGames/>
+      { /* <DisputeGames/> */ }
     </PageNextJs>
   );
 };
