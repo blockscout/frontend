@@ -44,7 +44,7 @@ const RewardsDashboard = () => {
 
   return (
     <>
-      <Flex gap={ 3 }>
+      <Flex gap={ 3 } justifyContent="space-between">
         <PageTitle
           title="Dashboard"
           secondRow={ (
