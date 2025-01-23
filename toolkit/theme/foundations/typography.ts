@@ -57,6 +57,14 @@ export const textStyles: ThemingConfig['textStyles'] = {
     },
   },
   text: {
+    xl: {
+      value: {
+        fontSize: '20px',
+        lineHeight: '28px',
+        fontWeight: '400',
+        fontFamily: 'body',
+      },
+    },
     md: {
       value: {
         fontSize: '16px',

@@ -1,6 +1,5 @@
-import { chakra, Box, Heading, Flex, Text, VStack } from '@chakra-ui/react';
+import { chakra, Box, Flex, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
@@ -10,13 +9,15 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useInitialList from 'lib/hooks/useInitialList';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Heading } from 'toolkit/chakra/heading';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
@@ -34,6 +35,11 @@ const LatestBlocks = () => {
     queryOptions: {
       placeholderData: Array(blocksMaxCount).fill(BLOCK),
     },
+  });
+  const initialList = useInitialList({
+    data: data ?? [],
+    idFn: (block) => block.height,
+    enabled: !isPlaceholderData,
   });
 
   const queryClient = useQueryClient();
@@ -78,16 +84,15 @@ const LatestBlocks = () => {
 
     content = (
       <>
-        <VStack spacing={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
-          <AnimatePresence initial={ false } >
-            { dataToShow.map(((block, index) => (
-              <LatestBlocksItem
-                key={ block.height + (isPlaceholderData ? String(index) : '') }
-                block={ block }
-                isLoading={ isPlaceholderData }
-              />
-            ))) }
-          </AnimatePresence>
+        <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
+          { dataToShow.map(((block, index) => (
+            <LatestBlocksItem
+              key={ block.height + (isPlaceholderData ? String(index) : '') }
+              block={ block }
+              isLoading={ isPlaceholderData }
+              isNew={ initialList.isNew(block) }
+            />
+          ))) }
         </VStack>
         <Flex justifyContent="center">
           <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
@@ -98,9 +103,9 @@ const LatestBlocks = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm">Latest blocks</Heading>
+      <Heading level="3" mb={ 3 }>Latest blocks</Heading>
       { statsQueryResult.data?.network_utilization_percentage !== undefined && (
-        <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } mt={ 1 } display="inline-block">
+        <Skeleton loading={ statsQueryResult.isPlaceholderData } mt={ 1 } display="inline-block">
           <Text as="span" fontSize="sm">
             Network utilization:{ nbsp }
           </Text>

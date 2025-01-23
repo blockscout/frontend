@@ -15,18 +15,18 @@ const rollupFeature = config.features.rollup;
 
 const Home = () => {
 
-  // const leftWidget = (() => {
-  //   if (rollupFeature.isEnabled && !rollupFeature.homepage.showLatestBlocks) {
-  //     switch (rollupFeature.type) {
-  //       case 'zkEvm':
-  //         return <LatestZkEvmL2Batches/>;
-  //       case 'arbitrum':
-  //         return <LatestArbitrumL2Batches/>;
-  //     }
-  //   }
+  const leftWidget = (() => {
+    if (rollupFeature.isEnabled && !rollupFeature.homepage.showLatestBlocks) {
+      switch (rollupFeature.type) {
+        case 'zkEvm':
+          return <LatestZkEvmL2Batches/>;
+        case 'arbitrum':
+          return <LatestArbitrumL2Batches/>;
+      }
+    }
 
-  //   return <LatestBlocks/>;
-  // })();
+    return <LatestBlocks/>;
+  })();
 
   return (
     <Box as="main">
@@ -37,7 +37,7 @@ const Home = () => {
       </Flex>
       <AdBanner mt={ 6 } mx="auto" display={{ base: 'flex', lg: 'none' }} justifyContent="center"/>
       <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 6 }>
-        { /* { leftWidget } */ }
+        { leftWidget }
         <Box flexGrow={ 1 }>
           <Transactions/>
         </Box>

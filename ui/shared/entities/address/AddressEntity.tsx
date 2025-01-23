@@ -174,7 +174,7 @@ const AddressEntry = (props: EntityProps) => {
       zIndex={ 0 }
     >
       <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : (<Link { ...partsProps.link }> { content } </Link>) }
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
       <Copy { ...partsProps.copy } altHash={ altHash }/>
     </Container>
   );

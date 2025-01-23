@@ -19,7 +19,7 @@ const ChainIndicatorChartContainer = ({ data, isError, isPending }: Props) => {
     }
 
     if (isError) {
-      return <DataFetchAlert fontSize="xs" p={ 3 }/>;
+      return <DataFetchAlert fontSize="xs"/>;
     }
 
     if (data[0].items.length === 0) {
