@@ -257,6 +257,10 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         bg: { value: { _light: '{colors.purple.50}', _dark: '{colors.purple.800}' } },
         fg: { value: { _light: '{colors.purple.500}', _dark: '{colors.purple.100}' } },
       },
+      purple_alt: {
+        bg: { value: { _light: '{colors.purple.100}', _dark: '{colors.purple.800}' } },
+        fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+      },
       orange: {
         bg: { value: { _light: '{colors.orange.50}', _dark: '{colors.orange.800}' } },
         fg: { value: { _light: '{colors.orange.500}', _dark: '{colors.orange.100}' } },
@@ -265,6 +269,10 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.blue.800}' } },
         fg: { value: { _light: '{colors.blue.500}', _dark: '{colors.blue.100}' } },
       },
+      blue_alt: {
+        bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.blue.800}' } },
+        fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+      },
       yellow: {
         bg: { value: { _light: '{colors.yellow.50}', _dark: '{colors.yellow.800}' } },
         fg: { value: { _light: '{colors.yellow.500}', _dark: '{colors.yellow.100}' } },
@@ -272,6 +280,10 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       teal: {
         bg: { value: { _light: '{colors.teal.50}', _dark: '{colors.teal.800}' } },
         fg: { value: { _light: '{colors.teal.500}', _dark: '{colors.teal.100}' } },
+      },
+      cyan: {
+        bg: { value: { _light: '{colors.cyan.50}', _dark: '{colors.cyan.800}' } },
+        fg: { value: { _light: '{colors.cyan.500}', _dark: '{colors.cyan.100}' } },
       },
     },
     heading: {

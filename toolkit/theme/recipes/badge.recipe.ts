@@ -47,6 +47,18 @@ export const recipe = defineRecipe({
         bg: 'badge.teal.bg',
         color: 'badge.teal.fg',
       },
+      cyan: {
+        bg: 'badge.cyan.bg',
+        color: 'badge.cyan.fg',
+      },
+      purple_alt: {
+        bg: 'badge.purple_alt.bg',
+        color: 'badge.purple_alt.fg',
+      },
+      blue_alt: {
+        bg: 'badge.blue_alt.bg',
+        color: 'badge.blue_alt.fg',
+      },
     },
     size: {
       md: {
