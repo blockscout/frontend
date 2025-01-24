@@ -4,10 +4,10 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Heading } from 'toolkit/chakra/heading';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import TextAd from 'ui/shared/ad/TextAd';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
@@ -42,7 +42,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
         mr={ 3 }
         my={ 2 }
         verticalAlign="text-bottom"
-        loading={ props.isLoading }
+        loading
       />
     );
   }
@@ -139,7 +139,6 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
             >
               <Heading
                 ref={ headingRef }
-                as="h1"
                 level="1"
                 whiteSpace="normal"
                 wordBreak="break-all"

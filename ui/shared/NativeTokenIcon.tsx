@@ -1,10 +1,11 @@
-import { Image, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Image } from 'toolkit/chakra/image';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import TokenLogoPlaceholder from './TokenLogoPlaceholder';
 
@@ -23,7 +24,7 @@ const NativeTokenIcon = ({ isLoading, className, type }: Props) => {
   });
 
   if (isLoading || statsQueryResult.isPlaceholderData) {
-    return <Skeleton borderRadius="base" className={ className }/>;
+    return <Skeleton borderRadius="base" loading className={ className }/>;
   }
 
   const src = type === 'secondary' ? statsQueryResult.data?.secondary_coin_image : statsQueryResult.data?.coin_image;
@@ -32,10 +33,10 @@ const NativeTokenIcon = ({ isLoading, className, type }: Props) => {
     <Image
       borderRadius="base"
       className={ className }
-      src={ src || '' }
+      src={ src || undefined }
       alt={ `${ config.chain.currency.symbol } logo` }
       fallback={ <TokenLogoPlaceholder borderRadius="base" className={ className }/> }
-      fallbackStrategy={ src ? 'onError' : 'beforeLoadOrError' }
+      // fallbackStrategy={ src ? 'onError' : 'beforeLoadOrError' }
     />
   );
 };

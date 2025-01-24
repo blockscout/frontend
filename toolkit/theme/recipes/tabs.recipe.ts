@@ -15,6 +15,7 @@ export const recipe = defineSlotRecipe({
     },
     list: {
       display: 'inline-flex',
+      width: '100%',
       position: 'relative',
       isolation: 'isolate',
       '--tabs-indicator-shadow': 'shadows.xs',

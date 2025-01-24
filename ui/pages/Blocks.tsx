@@ -7,11 +7,11 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import BlocksTabSlot from 'ui/blocks/BlocksTabSlot';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -70,17 +70,22 @@ const BlocksPageContent = () => {
   })();
 
   const tabs: Array<RoutedTab> = [
-    { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
-    { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
-    { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ unclesQuery }/> },
+    { id: 'blocks', title: 'All', component: <div>All</div> },
+    { id: 'reorgs', title: 'Forked', component: <div>Forked</div> },
+    { id: 'uncles', title: 'Uncles', component: <div>Uncles</div> },
   ];
+  // const tabs: Array<RoutedTab> = [
+  //   { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
+  //   { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
+  //   { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ unclesQuery }/> },
+  // ];
 
   return (
     <>
       <PageTitle title="Blocks" withTextAd/>
       <RoutedTabs
         tabs={ tabs }
-        tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
         rightSlot={ <BlocksTabSlot pagination={ pagination }/> }
         stickyEnabled={ !isMobile }
       />

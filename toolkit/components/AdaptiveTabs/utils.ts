@@ -8,4 +8,10 @@ export const menuButton: TabItemMenu = {
   component: null,
 };
 
-export const getTabValue = (tab: TabItem): string => tab.id.toString();
+export const getTabValue = (tab: TabItem): string => {
+  if (Array.isArray(tab.id)) {
+    return tab.id[0];
+  }
+
+  return tab.id;
+};
