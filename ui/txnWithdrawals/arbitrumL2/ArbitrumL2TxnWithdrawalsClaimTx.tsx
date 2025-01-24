@@ -9,14 +9,14 @@ const rollupFeature = config.features.rollup;
 
 interface Props {
   isPending: boolean;
-  hash: `0x${ string }`;
+  hash: string;
   onSuccess: () => void;
   onError: (error: Error) => void;
 }
 
 const ArbitrumL2TxnWithdrawalsClaimTx = ({ isPending, hash, onSuccess, onError }: Props) => {
   const { status, error } = useWaitForTransactionReceipt({
-    hash,
+    hash: hash as `0x${ string }`,
     chainId: rollupFeature.isEnabled ? Number(rollupFeature.parentChain.id) : undefined,
     query: { enabled: isPending },
   });

@@ -33,7 +33,7 @@ export const parentChain: Chain | undefined = (() => {
     return;
   }
 
-  if (!parentChain.id || !parentChain.name || !parentChain.rpcUrl || !parentChain.baseUrl || !parentChain.currency) {
+  if (!parentChain.id || !parentChain.name || !parentChain.rpcUrls || !parentChain.baseUrl || !parentChain.currency) {
     return;
   }
 
@@ -43,7 +43,7 @@ export const parentChain: Chain | undefined = (() => {
     nativeCurrency: parentChain.currency,
     rpcUrls: {
       'default': {
-        http: [ parentChain.rpcUrl ],
+        http: parentChain.rpcUrls,
       },
     },
     blockExplorers: {

@@ -1,12 +1,14 @@
-import { Tr, Td, Skeleton, Flex } from '@chakra-ui/react';
+import { Tr, Td, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ArbitrumL2TxnWithdrawalsItem } from 'types/api/arbitrumL2';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import ArbitrumL2MessageStatus from 'ui/shared/statusTag/ArbitrumL2MessageStatus';
 
 import ArbitrumL2TxnWithdrawalsClaimButton from './ArbitrumL2TxnWithdrawalsClaimButton';
+import ArbitrumL2TxnWithdrawalsToken from './ArbitrumL2TxnWithdrawalsToken';
 
 interface Props {
   txHash: string | undefined;
@@ -24,12 +26,19 @@ const ArbitrumL2TxnWithdrawalsTableItem = ({ data, isLoading, txHash }: Props) =
         <AddressEntityL1 address={{ hash: data.destination }} isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle" isNumeric>
-        333
+        <Skeleton isLoaded={ !isLoading }>
+          { data.token ? <ArbitrumL2TxnWithdrawalsToken data={ data.token }/> : '-' }
+        </Skeleton>
       </Td>
       <Td verticalAlign="middle">
         <Flex alignItems="center" justifyContent="space-between" columnGap={ 8 }>
           <ArbitrumL2MessageStatus status={ data.status } isLoading={ isLoading }/>
-          <ArbitrumL2TxnWithdrawalsClaimButton messageId={ data.id } txHash={ txHash }/>
+          <ArbitrumL2TxnWithdrawalsClaimButton
+            messageId={ data.id }
+            txHash={ txHash }
+            completionTxHash={ data.completion_transaction_hash || undefined }
+            isLoading={ isLoading }
+          />
         </Flex>
       </Td>
     </Tr>

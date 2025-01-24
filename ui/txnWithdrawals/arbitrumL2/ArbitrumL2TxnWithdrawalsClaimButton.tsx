@@ -15,6 +15,7 @@ import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import getErrorProp from 'lib/errors/getErrorProp';
 import useToast from 'lib/hooks/useToast';
 import useWallet from 'lib/web3/useWallet';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import ArbitrumL2TxnWithdrawalsClaimTx from './ArbitrumL2TxnWithdrawalsClaimTx';
 
@@ -23,12 +24,13 @@ const rollupFeature = config.features.rollup;
 interface Props {
   messageId: number;
   txHash: string | undefined;
+  completionTxHash?: string;
+  isLoading?: boolean;
 }
 
-const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash }: Props) => {
+const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHash, isLoading: isDataLoading }: Props) => {
   const [ isPending, setIsPending ] = React.useState(false);
-  // TODO @tom2drum set initial value for claimed txn
-  const [ claimTxHash, setClaimTxHash ] = React.useState<`0x${ string }` | undefined>();
+  const [ claimTxHash, setClaimTxHash ] = React.useState<string | undefined>(completionTxHash);
   const apiFetch = useApiFetch();
   const toast = useToast();
 
@@ -123,15 +125,17 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash }: Props) => {
   const isLoading = isPending || web3Wallet.isOpen;
 
   return (
-    <Button
-      size="sm"
-      variant="outline"
-      onClick={ handleClaimClick }
-      isLoading={ isLoading }
-      loadingText="Claim"
-    >
-      Claim
-    </Button>
+    <Skeleton isLoaded={ !isDataLoading }>
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={ handleClaimClick }
+        isLoading={ isLoading }
+        loadingText="Claim"
+      >
+        Claim
+      </Button>
+    </Skeleton>
   );
 };
 

@@ -111,17 +111,24 @@ export type ArbitrumL2BatchBlocks = {
 };
 
 export interface ArbitrumL2TxnWithdrawalsItem {
-  // TODO @tom2drum check if all fields are required + token not-null case
   arb_block_number: number;
   caller: string;
   callvalue: number;
+  completion_transaction_hash: string | null;
   data: string;
   destination: string;
   eth_block_number: number;
   id: number;
   l2_timestamp: number;
   status: ArbitrumL2MessageStatus;
-  token: null;
+  token: {
+    address: string;
+    amount: string | null;
+    destination: string | null;
+    name: string | null;
+    symbol: string | null;
+    decimals: number | null;
+  } | null;
 }
 
 export interface ArbitrumL2TxnWithdrawalsResponse {
