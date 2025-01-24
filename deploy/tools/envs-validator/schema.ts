@@ -294,7 +294,7 @@ const parentChainSchema = yup
     id: yup.number(),
     name: yup.string(),
     baseUrl: yup.string().test(urlTest).required(),
-    rpcUrl: yup.string().test(urlTest),
+    rpcUrls: yup.array().of(yup.string().test(urlTest)),
     currency: yup
       .mixed()
       .test(

@@ -466,7 +466,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | id | `number` | Chain id, see [https://chainlist.org](https://chainlist.org) for the reference. | - | - | `42` |
 | name | `string` | Displayed name of the chain. Set to customize L1 transaction status labels in the UI (e.g., "Sent to <chain-name>"). Currently, this setting is applicable only for Arbitrum-based chains. | - | - | `DuckChain` |
 | baseUrl | `string` | Base url of the chain explorer. | Required | - | `https://explorer.duckchain.io` |
-| rpcUrl | `string` | Chain public RPC server url, see [https://chainlist.org](https://chainlist.org) for the reference. | - | - | `https://rpc.duckchain.io` |
+| rpcUrls | `Array<string>` | Chain public RPC server urls, see [https://chainlist.org](https://chainlist.org) for the reference. | - | - | `['https://rpc.duckchain.io']` |
 | currency | `{ name: string; symbol: string; decimals: number; }` | Chain currency config. | - | - | `{ name: Quack, symbol: QUA, decimals: 18 }` |
 | isTestnet | `boolean` | Set to true if network is testnet. | - | - | `true` |
 

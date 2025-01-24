@@ -15,7 +15,7 @@ export interface ParentChain {
   id?: number;
   name?: string;
   baseUrl: string;
-  rpcUrl?: string;
+  rpcUrls?: Array<string>;
   currency?: {
     name: string;
     symbol: string;
