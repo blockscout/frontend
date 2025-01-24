@@ -1,5 +1,5 @@
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
-import { http } from 'viem';
+import { fallback, http } from 'viem';
 import { createConfig } from 'wagmi';
 
 import config from 'configs/app';
@@ -13,7 +13,11 @@ const wagmi = (() => {
     const wagmiConfig = createConfig({
       chains: [ currentChain ],
       transports: {
-        [currentChain.id]: http(config.chain.rpcUrl || `${ config.api.endpoint }/api/eth-rpc`),
+        [currentChain.id]: fallback(
+          config.chain.rpcUrls
+            .map((url) => http(url))
+            .concat(http(`${ config.api.endpoint }/api/eth-rpc`)),
+        ),
       },
       ssr: true,
       batch: { multicall: { wait: 100 } },
@@ -26,7 +30,7 @@ const wagmi = (() => {
     networks: chains,
     multiInjectedProviderDiscovery: true,
     transports: {
-      [currentChain.id]: http(),
+      [currentChain.id]: fallback(config.chain.rpcUrls.map((url) => http(url))),
     },
     projectId: feature.walletConnect.projectId,
     ssr: true,

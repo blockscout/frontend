@@ -1,6 +1,6 @@
 import { Grid, GridItem, Text, Link, Box, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';

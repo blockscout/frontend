@@ -1,6 +1,6 @@
 import type { ChakraProps, ThemingProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
-import _pickBy from 'lodash/pickBy';
+import { pickBy } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef } from 'react';
 
@@ -42,7 +42,7 @@ const RoutedTabs = ({
   const handleTabChange = React.useCallback((index: number) => {
     const nextTab = tabs[index];
 
-    const queryForPathname = _pickBy(router.query, (value, key) => router.pathname.includes(`[${ key }]`));
+    const queryForPathname = pickBy(router.query, (value, key) => router.pathname.includes(`[${ key }]`));
     const tabId = Array.isArray(nextTab.id) ? nextTab.id[0] : nextTab.id;
     router.push(
       { pathname: router.pathname, query: { ...queryForPathname, tab: tabId } },

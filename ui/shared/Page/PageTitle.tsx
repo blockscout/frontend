@@ -1,5 +1,5 @@
 import { Heading, Flex, Tooltip, Link, chakra, useDisclosure } from '@chakra-ui/react';
-import _debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -94,7 +94,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
   }, [ isLoading, updatedTruncateState ]);
 
   React.useEffect(() => {
-    const handleResize = _debounce(updatedTruncateState, 1000);
+    const handleResize = debounce(updatedTruncateState, 1000);
     window.addEventListener('resize', handleResize);
 
     return function cleanup() {

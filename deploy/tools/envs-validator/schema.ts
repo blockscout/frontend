@@ -587,7 +587,21 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_NAME: yup.string().required(),
     NEXT_PUBLIC_NETWORK_SHORT_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_ID: yup.number().positive().integer().required(),
-    NEXT_PUBLIC_NETWORK_RPC_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_NETWORK_RPC_URL: yup
+    .mixed()
+    .test(
+      'shape',
+      'Invalid schema were provided for NEXT_PUBLIC_NETWORK_RPC_URL, it should be either array of URLs or URL string',
+      (data) => {
+        const isUrlSchema = yup.string().test(urlTest);
+        const isArrayOfUrlsSchema = yup
+          .array()
+          .transform(replaceQuotes)
+          .json()
+          .of(yup.string().test(urlTest));
+
+        return isUrlSchema.isValidSync(data) || isArrayOfUrlsSchema.isValidSync(data);
+      }),
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: yup.string(),

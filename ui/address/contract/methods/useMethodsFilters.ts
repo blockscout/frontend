@@ -1,4 +1,4 @@
-import _pickBy from 'lodash/pickBy';
+import { pickBy } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -63,7 +63,7 @@ export default function useMethodsFilters({ abi }: Params) {
       return;
     }
 
-    const queryForPathname = _pickBy(router.query, (value, key) => router.pathname.includes(`[${ key }]`));
+    const queryForPathname = pickBy(router.query, (value, key) => router.pathname.includes(`[${ key }]`));
     router.push(
       { pathname: router.pathname, query: { ...queryForPathname, tab: nextTab } },
       undefined,

@@ -1,7 +1,7 @@
 import { chakra, Flex } from '@chakra-ui/react';
 import type { GroupBase, SelectComponentsConfig, SingleValueProps } from 'chakra-react-select';
 import { chakraComponents } from 'chakra-react-select';
-import _capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -22,7 +22,7 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes }: Props) => {
 
   const typeOptions = React.useMemo(() => tagTypes?.map((type) => ({
     value: type.type,
-    label: _capitalize(type.type),
+    label: capitalize(type.type),
   })) ?? [], [ tagTypes ]);
 
   const fieldValue = watch(`tags.${ index }.type`).value;

@@ -1,6 +1,6 @@
 import { Thead, useColorModeValue } from '@chakra-ui/react';
 import type { TableHeadProps, PositionProps } from '@chakra-ui/react';
-import throttle from 'lodash/throttle';
+import { throttle } from 'es-toolkit';
 import React from 'react';
 
 interface Props extends TableHeadProps {
