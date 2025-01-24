@@ -1,18 +1,12 @@
-import type {
-  ButtonProps } from '@chakra-ui/react';
-import {
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  Button,
-  useDisclosure,
-} from '@chakra-ui/react';
 import type { StyleProps } from '@chakra-ui/styled-system';
 import React from 'react';
 
 import type { MenuButton, TabItem } from './types';
 
-import Popover from 'ui/shared/chakra/Popover';
+import type { ButtonProps } from 'toolkit/chakra/button';
+import { Button } from 'toolkit/chakra/button';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 import TabCounter from './TabCounter';
 import { menuButton } from './utils';
@@ -29,24 +23,24 @@ interface Props {
 }
 
 const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, activeTab, size }: Props) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  // const { isOpen, onClose, onOpen } = useDisclosure();
 
   const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    onClose();
+    // onClose();
     const tabIndex = event.currentTarget.getAttribute('data-index');
     if (tabIndex) {
       onItemClick(tabsCut + Number(tabIndex));
     }
-  }, [ onClose, onItemClick, tabsCut ]);
+  }, [ onItemClick, tabsCut ]);
 
   return (
-    <Popover isLazy placement="bottom-end" key="more" isOpen={ isOpen } onClose={ onClose } onOpen={ onOpen } closeDelay={ 0 }>
+    <PopoverRoot positioning={{ placement: 'bottom-end' }}>
       <PopoverTrigger>
         <Button
           as="div"
           role="button"
           variant="ghost"
-          isActive={ isOpen || isActive }
+          // isActive={ isOpen || isActive }
           ref={ buttonRef }
           size={ size }
           { ...styles }
@@ -61,10 +55,10 @@ const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, act
               key={ tab.id?.toString() }
               variant="ghost"
               onClick={ handleItemClick }
-              isActive={ activeTab ? activeTab.id === tab.id : false }
+              active={ activeTab ? activeTab.id === tab.id : false }
               justifyContent="left"
               data-index={ index }
-              sx={{
+              css={{
                 '&:hover span': {
                   color: 'inherit',
                 },
@@ -76,7 +70,7 @@ const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, act
           )) }
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   );
 };
 

@@ -1,22 +1,17 @@
-import type { LazyMode } from '@chakra-ui/lazy-utils';
-import type { ChakraProps, ThemingProps } from '@chakra-ui/react';
-import {
-  Tabs,
-  TabPanel,
-  TabPanels,
-  chakra,
-} from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React, { useEffect, useRef, useState } from 'react';
 
 import type { TabItem } from './types';
 
 import isBrowser from 'lib/isBrowser';
+import type { TabsProps } from 'toolkit/chakra/tabs';
+import { TabsContent, TabsRoot } from 'toolkit/chakra/tabs';
 
 import AdaptiveTabsList from './AdaptiveTabsList';
-import { menuButton } from './utils';
+import { getTabValue, menuButton } from './utils';
 
-export interface Props extends ThemingProps<'Tabs'> {
+export interface Props extends TabsProps {
   tabs: Array<TabItem>;
   lazyBehavior?: LazyMode;
   tabListProps?: ChakraProps | (({ isSticky, activeTabIndex }: { isSticky: boolean; activeTabIndex: number }) => ChakraProps);
@@ -25,12 +20,13 @@ export interface Props extends ThemingProps<'Tabs'> {
   leftSlot?: React.ReactNode;
   leftSlotProps?: ChakraProps;
   stickyEnabled?: boolean;
-  onTabChange?: (index: number) => void;
-  defaultTabIndex?: number;
+  onTabChange?: (value: string) => void;
+  defaultTab?: string;
   isLoading?: boolean;
   className?: string;
 }
 
+// TODO @tom2drum remove this component
 const TabsWithScroll = ({
   tabs,
   lazyBehavior,
@@ -41,12 +37,12 @@ const TabsWithScroll = ({
   leftSlotProps,
   stickyEnabled,
   onTabChange,
-  defaultTabIndex,
+  defaultTab,
   isLoading,
   className,
   ...themeProps
 }: Props) => {
-  const [ activeTabIndex, setActiveTabIndex ] = useState<number>(defaultTabIndex || 0);
+  const [ activeTab, setActiveTab ] = useState<string>(defaultTab || getTabValue(tabs[0]));
   const [ screenWidth, setScreenWidth ] = React.useState(isBrowser() ? window.innerWidth : 0);
 
   const tabsRef = useRef<HTMLDivElement>(null);
@@ -55,18 +51,18 @@ const TabsWithScroll = ({
     return [ ...tabs, menuButton ];
   }, [ tabs ]);
 
-  const handleTabChange = React.useCallback((index: number) => {
+  const handleTabChange = React.useCallback(({ value }: { value: string }) => {
     if (isLoading) {
       return;
     }
-    onTabChange ? onTabChange(index) : setActiveTabIndex(index);
+    onTabChange ? onTabChange(value) : setActiveTab(value);
   }, [ isLoading, onTabChange ]);
 
   useEffect(() => {
-    if (defaultTabIndex !== undefined) {
-      setActiveTabIndex(defaultTabIndex);
+    if (defaultTab !== undefined) {
+      setActiveTab(defaultTab);
     }
-  }, [ defaultTabIndex ]);
+  }, [ defaultTab ]);
 
   React.useEffect(() => {
     const resizeHandler = debounce(() => {
@@ -85,17 +81,18 @@ const TabsWithScroll = ({
   }
 
   return (
-    <Tabs
+    <TabsRoot
       className={ className }
-      variant={ themeProps.variant || 'soft-rounded' }
-      colorScheme={ themeProps.colorScheme || 'blue' }
-      isLazy
-      onChange={ handleTabChange }
-      index={ activeTabIndex }
+      variant={ themeProps.variant }
+      // colorScheme={ themeProps.colorScheme || 'blue' }
+      lazyMount
+      unmountOnExit
+      onValueChange={ handleTabChange }
+      value={ activeTab }
       position="relative"
-      size={ themeProps.size || 'md' }
+      size={ themeProps.size }
       ref={ tabsRef }
-      lazyBehavior={ lazyBehavior }
+
     >
       <AdaptiveTabsList
         // the easiest and most readable way to achieve correct tab's cut recalculation when
@@ -111,19 +108,17 @@ const TabsWithScroll = ({
         rightSlot={ rightSlot }
         rightSlotProps={ rightSlotProps }
         stickyEnabled={ stickyEnabled }
-        activeTabIndex={ activeTabIndex }
+        activeTab={ activeTab }
         onItemClick={ handleTabChange }
         themeProps={ themeProps }
         isLoading={ isLoading }
       />
-      <TabPanels>
-        { tabsList.map((tab) => (
-          <TabPanel padding={ 0 } key={ tab.id?.toString() || (typeof tab.title === 'string' ? tab.title : undefined) }>
-            { tab.component }
-          </TabPanel>
-        )) }
-      </TabPanels>
-    </Tabs>
+      { tabsList.map((tab) => (
+        <TabsContent padding={ 0 } key={ getTabValue(tab) } value={ getTabValue(tab) }>
+          { tab.component }
+        </TabsContent>
+      )) }
+    </TabsRoot>
   );
 };
 

@@ -20,9 +20,9 @@ export const SamplesStack = ({ children }: { children: React.ReactNode }) => (
     { children }
   </Grid>
 );
-export const Sample = ({ children, label, ...props }: { children: React.ReactNode; label: string } & StackProps) => (
+export const Sample = ({ children, label, ...props }: { children: React.ReactNode; label?: string } & StackProps) => (
   <>
-    <Code w="fit-content">{ label }</Code>
-    <HStack gap={ 3 } whiteSpace="pre-wrap" flexWrap="wrap" { ...props }>{ children }</HStack>
+    { label && <Code w="fit-content">{ label }</Code> }
+    <HStack gap={ 3 } whiteSpace="pre-wrap" flexWrap="wrap" columnSpan={ label ? '1' : '2' } { ...props }>{ children }</HStack>
   </>
 );

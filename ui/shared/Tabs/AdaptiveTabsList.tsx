@@ -1,18 +1,19 @@
 import type { StyleProps, ThemingProps } from '@chakra-ui/react';
-import { Box, Tab, TabList, useColorModeValue } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsSticky from 'lib/hooks/useIsSticky';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TabsList, TabsTrigger } from 'toolkit/chakra/tabs';
 
 import TabCounter from './TabCounter';
 import TabsMenu from './TabsMenu';
 import type { Props as TabsProps } from './TabsWithScroll';
 import useAdaptiveTabs from './useAdaptiveTabs';
 import useScrollToActiveTab from './useScrollToActiveTab';
-import { menuButton } from './utils';
+import { getTabValue, menuButton } from './utils';
 
 const hiddenItemStyles: StyleProps = {
   position: 'absolute',
@@ -22,7 +23,7 @@ const hiddenItemStyles: StyleProps = {
 };
 
 interface Props extends TabsProps {
-  activeTabIndex: number;
+  activeTab: string;
   onItemClick: (index: number) => void;
   themeProps: ThemingProps<'Tabs'>;
   isLoading?: boolean;
@@ -31,19 +32,20 @@ interface Props extends TabsProps {
 const AdaptiveTabsList = (props: Props) => {
 
   const scrollDirection = useScrollDirection();
-  const listBgColor = useColorModeValue('white', 'black');
   const isMobile = useIsMobile();
 
   const tabsList = React.useMemo(() => {
     return [ ...props.tabs, menuButton ];
   }, [ props.tabs ]);
 
-  const { tabsCut, tabsRefs, listRef, rightSlotRef, leftSlotRef } = useAdaptiveTabs(tabsList, isMobile);
+  // TODO @tom2drum remove isMobile || true
+  const { tabsCut, tabsRefs, listRef, rightSlotRef, leftSlotRef } = useAdaptiveTabs(tabsList, isMobile || true);
   const isSticky = useIsSticky(listRef, 5, props.stickyEnabled);
-  useScrollToActiveTab({ activeTabIndex: props.activeTabIndex, listRef, tabsRefs, isMobile, isLoading: props.isLoading });
+  const activeTabIndex = tabsList.findIndex((tab) => getTabValue(tab) === props.activeTab) ?? 0;
+  useScrollToActiveTab({ activeTabIndex, listRef, tabsRefs, isMobile, isLoading: props.isLoading });
 
   return (
-    <TabList
+    <TabsList
       marginBottom={ 6 }
       mx={{ base: '-12px', lg: 'unset' }}
       px={{ base: '12px', lg: 'unset' }}
@@ -63,7 +65,7 @@ const AdaptiveTabsList = (props: Props) => {
         '-ms-overflow-style': 'none', /* IE and Edge */
         'scrollbar-width': 'none', /* Firefox */
       }}
-      bgColor={ listBgColor }
+      bgColor={{ _light: 'white', _dark: 'black' }}
       transitionProperty="top,box-shadow,background-color,color"
       transitionDuration="normal"
       transitionTimingFunction="ease"
@@ -77,13 +79,15 @@ const AdaptiveTabsList = (props: Props) => {
       }
       {
         ...(typeof props.tabListProps === 'function' ?
-          props.tabListProps({ isSticky, activeTabIndex: props.activeTabIndex }) :
+          props.tabListProps({ isSticky, activeTab: props.activeTab }) :
           props.tabListProps)
       }
     >
       { props.leftSlot && <Box ref={ leftSlotRef } { ...props.leftSlotProps }> { props.leftSlot } </Box> }
       { tabsList.slice(0, props.isLoading ? 5 : Infinity).map((tab, index) => {
-        if (!tab.id) {
+        const value = getTabValue(tab);
+
+        if (tab.id === 'menu') {
           if (props.isLoading) {
             return null;
           }
@@ -92,9 +96,9 @@ const AdaptiveTabsList = (props: Props) => {
             <TabsMenu
               key="menu"
               tabs={ props.tabs }
-              activeTab={ props.tabs[props.activeTabIndex] }
+              activeTab={ props.tabs[activeTabIndex] }
               tabsCut={ tabsCut }
-              isActive={ props.activeTabIndex >= tabsCut }
+              isActive={ activeTabIndex >= tabsCut }
               styles={ tabsCut < props.tabs.length ?
               // initially our cut is 0 and we don't want to show the menu button too
               // but we want to keep it in the tabs row so it won't collapse
@@ -110,8 +114,9 @@ const AdaptiveTabsList = (props: Props) => {
         }
 
         return (
-          <Tab
-            key={ tab.id.toString() }
+          <TabsTrigger
+            key={ value }
+            value={ value }
             ref={ tabsRefs[index] }
             { ...(index < tabsCut ? {} : hiddenItemStyles) }
             scrollSnapAlign="start"
@@ -121,13 +126,13 @@ const AdaptiveTabsList = (props: Props) => {
                 color: 'inherit',
               },
             }}
-            { ...(index === props.activeTabIndex ? { 'data-selected': true } : {}) }
+            { ...(value === props.activeTab ? { 'data-selected': true } : {}) }
           >
-            <Skeleton isLoaded={ !props.isLoading }>
+            <Skeleton loading={ props.isLoading }>
               { typeof tab.title === 'function' ? tab.title() : tab.title }
               <TabCounter count={ tab.count }/>
             </Skeleton>
-          </Tab>
+          </TabsTrigger>
         );
       }) }
       {
@@ -135,7 +140,7 @@ const AdaptiveTabsList = (props: Props) => {
           <Box ref={ rightSlotRef } ml="auto" { ...props.rightSlotProps }> { props.rightSlot } </Box> :
           null
       }
-    </TabList>
+    </TabsList>
   );
 };
 

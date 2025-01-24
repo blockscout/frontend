@@ -25,6 +25,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import AlertsShowcase from 'ui/showcases/Alerts';
 import BadgesShowcase from 'ui/showcases/Badges';
 import ButtonShowcase from 'ui/showcases/Button';
+import TabsShowcase from 'ui/showcases/Tabs';
 
 const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
@@ -48,15 +49,17 @@ const ChakraShowcases = () => {
       </Switch>
 
       <TabsRoot defaultValue="alerts">
-        <TabsList>
+        <TabsList flexWrap="wrap">
           <TabsTrigger value="alerts">Alerts</TabsTrigger>
           <TabsTrigger value="badges">Badges</TabsTrigger>
           <TabsTrigger value="buttons">Buttons</TabsTrigger>
+          <TabsTrigger value="tabs">Tabs</TabsTrigger>
           <TabsTrigger value="unsorted">Unsorted</TabsTrigger>
         </TabsList>
         <AlertsShowcase/>
         <BadgesShowcase/>
         <ButtonShowcase/>
+        <TabsShowcase/>
 
         <TabsContent value="unsorted">
           <VStack align="flex-start" gap={ 6 }>
@@ -187,28 +190,6 @@ const ChakraShowcases = () => {
                 </Skeleton>
                 <ContentLoader/>
                 <Spinner/>
-              </HStack>
-            </section>
-
-            <section>
-              <Heading textStyle="heading.md" mb={ 2 }>Tabs</Heading>
-              <HStack gap={ 4 }>
-                <TabsRoot defaultValue="tab1" variant="solid">
-                  <TabsList>
-                    <TabsTrigger value="tab1">Tab 1</TabsTrigger>
-                    <TabsTrigger value="tab2">Tab 2</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="tab1">Content 1</TabsContent>
-                  <TabsContent value="tab2">Content 2</TabsContent>
-                </TabsRoot>
-                <TabsRoot defaultValue="tab1" variant="secondary" size="sm">
-                  <TabsList>
-                    <TabsTrigger value="tab1">Tab 1</TabsTrigger>
-                    <TabsTrigger value="tab2">Tab 2</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="tab1">Content 1</TabsContent>
-                  <TabsContent value="tab2">Content 2</TabsContent>
-                </TabsRoot>
               </HStack>
             </section>
 
