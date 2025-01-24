@@ -41,7 +41,7 @@ export const ARBITRUM_L2_TXN_WITHDRAWALS_ITEM: ArbitrumL2TxnWithdrawalsItem = {
   arb_block_number: 70889261,
   caller: '0x507f55d716340fc836ba52c1a8daebcfeedeef1a',
   completion_transaction_hash: null,
-  callvalue: 100000000000000,
+  callvalue: '100000000000000',
   data: '0x',
   destination: '0x507f55d716340fc836ba52c1a8daebcfeedeef1a',
   eth_block_number: 6494128,
