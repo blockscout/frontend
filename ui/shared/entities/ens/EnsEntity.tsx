@@ -1,5 +1,5 @@
 import type { As } from '@chakra-ui/react';
-import { Box, chakra, Flex, Image, PopoverBody, PopoverContent, PopoverTrigger, Portal, Skeleton, Text } from '@chakra-ui/react';
+import { Box, chakra, Flex, Image, PopoverBody, PopoverContent, PopoverTrigger, Portal, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
@@ -7,6 +7,7 @@ import type * as bens from '@blockscout/bens-types';
 import { route } from 'nextjs-routes';
 
 import Popover from 'ui/shared/chakra/Popover';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';

@@ -12,7 +12,7 @@ export const currentChain: Chain = {
   },
   rpcUrls: {
     'default': {
-      http: [ config.chain.rpcUrl ?? '' ],
+      http: config.chain.rpcUrls,
     },
   },
   blockExplorers: {

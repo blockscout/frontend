@@ -1,4 +1,4 @@
-import { Button, Flex, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -8,6 +8,7 @@ import type { SmartContract } from 'types/api/contract';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import ConnectWalletAlert from 'ui/shared/ConnectWalletAlert';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import AuthGuard from 'ui/snippets/auth/AuthGuard';

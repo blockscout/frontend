@@ -2,10 +2,10 @@ import {
   useColorModeValue,
   chakra,
   Button,
-  Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

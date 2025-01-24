@@ -1,6 +1,5 @@
 import { Flex, Checkbox, CheckboxGroup } from '@chakra-ui/react';
-import isEqual from 'lodash/isEqual';
-import without from 'lodash/without';
+import { isEqual, without } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 

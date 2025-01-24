@@ -19,6 +19,18 @@ const CodeEditorFileIcon = ({ className, fileName }: Props) => {
       return 'monaco/solidity';
     }
 
+    if (/.rs$/.test(fileName)) {
+      return 'monaco/rust';
+    }
+
+    if (/^Cargo\./.test(fileName)) {
+      return 'monaco/cargo';
+    }
+
+    if (/.toml$/.test(fileName)) {
+      return 'monaco/toml';
+    }
+
     return 'monaco/file';
   })();
 

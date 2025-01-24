@@ -1,8 +1,9 @@
-import { chakra, Flex, Skeleton } from '@chakra-ui/react';
+import { chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkNewTab from 'ui/shared/links/LinkNewTab';
@@ -60,7 +61,7 @@ const ContractSourceAddressSelector = ({ className, selectedItem, onItemSelect, 
       <Select
         options={ options }
         name="contract-source-address"
-        defaultValue={ options[0].value }
+        defaultValue={ selectedItem.address }
         onChange={ handleItemSelect }
         isLoading={ isLoading }
         maxW={{ base: '180px', lg: 'none' }}

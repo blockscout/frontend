@@ -10,6 +10,7 @@ import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { contextWithRewards } from 'playwright/fixtures/rewards';
 import { test, expect } from 'playwright/lib';
+import * as pwConfig from 'playwright/utils/config';
 
 import RewardsDashboard from './RewardsDashboard';
 
@@ -24,17 +25,25 @@ testWithAuth.beforeEach(async({ mockEnvs, mockApiResponse }) => {
   await mockApiResponse('user_info', profileMock.withEmailAndWallet);
 });
 
-testWithAuth('base view +@dark-mode +@mobile', async({ render, mockApiResponse }) => {
+testWithAuth('base view +@dark-mode +@mobile', async({ page, render, mockApiResponse }) => {
   await mockApiResponse('rewards_user_balances', rewardsBalanceMock.base);
   await mockApiResponse('rewards_user_daily_check', dailyRewardMock.base);
   await mockApiResponse('rewards_user_referrals', referralsMock.base);
   await mockApiResponse('rewards_config', rewardsConfigMock.base);
 
   const component = await render(<RewardsDashboard/>);
-  await expect(component).toHaveScreenshot();
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
 
-testWithAuth('with error', async({ render }) => {
+testWithAuth('with error', async({ page, render }) => {
   const component = await render(<RewardsDashboard/>);
-  await expect(component).toHaveScreenshot();
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });

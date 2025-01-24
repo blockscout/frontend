@@ -1,4 +1,4 @@
-import { Button, Flex, Link, Skeleton, Text } from '@chakra-ui/react';
+import { Button, Flex, Link, Text } from '@chakra-ui/react';
 import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -16,6 +16,7 @@ import * as metadata from 'lib/metadata';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
 import ChartMenu from 'ui/shared/chart/ChartMenu';
 import ChartWidgetContent from 'ui/shared/chart/ChartWidgetContent';

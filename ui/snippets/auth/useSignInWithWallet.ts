@@ -17,9 +17,10 @@ interface Props {
   onError?: () => void;
   source?: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
   isAuth?: boolean;
+  executeRecaptchaAsync: () => Promise<string | null>;
 }
 
-function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth }: Props) {
+function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, executeRecaptchaAsync }: Props) {
   const [ isPending, setIsPending ] = React.useState(false);
   const isConnectingWalletRef = React.useRef(false);
 
@@ -32,11 +33,17 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth }: P
     try {
       const siweMessage = await apiFetch('auth_siwe_message', { queryParams: { address } }) as { siwe_message: string };
       const signature = await signMessageAsync({ message: siweMessage.siwe_message });
+      const recaptchaToken = await executeRecaptchaAsync();
+
+      if (!recaptchaToken) {
+        throw new Error('ReCaptcha is not solved');
+      }
+
       const resource = isAuth ? 'auth_link_address' : 'auth_siwe_verify';
       const response = await apiFetch<typeof resource, UserInfo, unknown>(resource, {
         fetchParams: {
           method: 'POST',
-          body: { message: siweMessage.siwe_message, signature },
+          body: { message: siweMessage.siwe_message, signature, recaptcha_response: recaptchaToken },
         },
       });
       if (!('name' in response)) {
@@ -56,7 +63,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth }: P
     } finally {
       setIsPending(false);
     }
-  }, [ apiFetch, isAuth, onError, onSuccess, signMessageAsync, toast ]);
+  }, [ apiFetch, isAuth, onError, onSuccess, signMessageAsync, toast, executeRecaptchaAsync ]);
 
   const start = React.useCallback(() => {
     setIsPending(true);

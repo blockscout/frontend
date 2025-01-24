@@ -15,6 +15,7 @@ export const SORT_OPTIONS: Array<SelectOption<TransactionsSortingValue>> = [
   { label: 'Value descending', value: 'value-desc' },
   { label: 'Fee ascending', value: 'fee-asc' },
   { label: 'Fee descending', value: 'fee-desc' },
+  { label: 'Block number ascending', value: 'block_number-asc' },
 ];
 
 type SortingValue = TransactionsSortingValue | undefined;
