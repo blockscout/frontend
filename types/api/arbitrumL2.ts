@@ -113,7 +113,7 @@ export type ArbitrumL2BatchBlocks = {
 export interface ArbitrumL2TxnWithdrawalsItem {
   arb_block_number: number;
   caller: string;
-  callvalue: number;
+  callvalue: string;
   completion_transaction_hash: string | null;
   data: string;
   destination: string;

@@ -18,7 +18,7 @@ const parentChain: ParentChain | undefined = (() => {
   const baseUrl = stripTrailingSlash(getEnvValue('NEXT_PUBLIC_ROLLUP_L1_BASE_URL') || '');
   const chainName = getEnvValue('NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME');
 
-  if (!baseUrl || !envValue?.baseUrl) {
+  if (!baseUrl && !envValue?.baseUrl) {
     return;
   }
 
