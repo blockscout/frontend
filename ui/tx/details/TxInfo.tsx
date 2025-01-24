@@ -9,7 +9,6 @@ import {
   Tooltip,
   chakra,
   useColorModeValue,
-  Skeleton,
   HStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
@@ -30,6 +29,7 @@ import * as arbitrum from 'lib/rollups/arbitrum';
 import { MESSAGE_DESCRIPTIONS } from 'lib/tx/arbitrumMessageStatusDescription';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';

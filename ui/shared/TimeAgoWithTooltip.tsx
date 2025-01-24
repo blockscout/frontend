@@ -1,8 +1,9 @@
-import { Skeleton, Tooltip, chakra } from '@chakra-ui/react';
+import { Tooltip, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import dayjs from 'lib/date/dayjs';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 type Props = {
   timestamp?: string | number | null;

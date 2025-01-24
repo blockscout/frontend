@@ -4,7 +4,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
-import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
+import { FEATURED_NETWORKS } from 'mocks/config/network';
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -27,7 +27,7 @@ test.beforeEach(async({ mockEnvs, mockConfigResponse }) => {
     ...ENVS_MAP.rewardsService,
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS_MOCK);
+  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS);
 });
 
 test.describe('no auth', () => {

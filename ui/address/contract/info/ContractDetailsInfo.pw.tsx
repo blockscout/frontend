@@ -31,6 +31,18 @@ test('zkSync contract', async({ render, mockEnvs }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('stylus rust contract', async({ render, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.zkSyncRollup);
+  const props = {
+    data: contractMock.stylusRust,
+    isLoading: false,
+    addressHash: addressMock.contract.hash,
+  };
+  const component = await render(<ContractDetailsInfo { ...props }/>);
+
+  await expect(component).toHaveScreenshot();
+});
+
 test.describe('with audits feature', () => {
 
   test.beforeEach(async({ mockEnvs }) => {

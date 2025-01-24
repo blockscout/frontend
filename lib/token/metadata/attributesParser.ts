@@ -1,4 +1,4 @@
-import _upperFirst from 'lodash/upperFirst';
+import { upperFirst } from 'es-toolkit';
 
 import type { Metadata, MetadataAttributes } from 'types/client/token';
 
@@ -72,7 +72,7 @@ export default function attributesParser(attributes: Array<unknown>): Metadata['
 
       return {
         ...formatValue(value, display, trait),
-        trait_type: _upperFirst(trait || 'property'),
+        trait_type: upperFirst(trait || 'property'),
       };
     })
     .filter((item) => item?.value)

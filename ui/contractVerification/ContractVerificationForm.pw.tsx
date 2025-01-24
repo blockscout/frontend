@@ -230,3 +230,74 @@ test('verification of zkSync contract', async({ render, mockEnvs }) => {
 
   await expect(component).toHaveScreenshot();
 });
+
+test('verification of stylus rust contract', async({ render, page }) => {
+  const stylusRustFormConfig: SmartContractVerificationConfig = {
+    ...formConfig,
+    stylus_compiler_versions: [ 'v0.5.0', 'v0.5.1', 'v0.5.2', 'v0.5.3' ],
+    verification_options: formConfig.verification_options.concat([ 'stylus-github-repository' ]),
+  };
+
+  const component = await render(<ContractVerificationForm config={ stylusRustFormConfig } hash={ hash }/>, { hooksConfig });
+
+  // select method
+  await component.getByLabel(/verification method/i).focus();
+  await component.getByLabel(/verification method/i).fill('stylus');
+  await page.getByRole('button', { name: /stylus/i }).click();
+
+  // check validation of github repository field
+  const githubRepositoryField = component.getByLabel(/github repository url/i);
+  await githubRepositoryField.focus();
+  await githubRepositoryField.fill('https://example.com');
+  await githubRepositoryField.blur();
+
+  await expect(component.getByText(/invalid github repository url/i)).toBeVisible();
+
+  const DUCK_COMMIT_HASH = '45dd018a19fff2651eb3c23037427a7531af6588';
+  const GOOSE_COMMIT_HASH = 'f7e5629';
+  await page.route('https://api.github.com/repos/tom2drum/not-duck/commits?per_page=1', (route) => {
+    return route.fulfill({ status: 404 });
+  }, { times: 1 });
+  await page.route('https://api.github.com/repos/tom2drum/duck/commits?per_page=1', (route) => {
+    return route.fulfill({ status: 200, json: [ { sha: DUCK_COMMIT_HASH } ] });
+  }, { times: 1 });
+  await githubRepositoryField.focus();
+  await githubRepositoryField.fill('https://github.com/tom2drum/not-duck');
+  await githubRepositoryField.blur();
+
+  await expect(component.getByText(/github repository not found/i)).toBeVisible();
+
+  await githubRepositoryField.focus();
+  await githubRepositoryField.fill('https://github.com/tom2drum/duck');
+  await githubRepositoryField.blur();
+
+  await expect(component.getByText(/github repository not found/i)).toBeHidden();
+  await expect(component.getByText(/we have found the latest commit hash/i)).toBeVisible();
+  await expect(component.getByText(DUCK_COMMIT_HASH.slice(0, 7))).toBeVisible();
+
+  // check validation of commit hash field
+  await page.route(`https://api.github.com/repos/tom2drum/duck/commits/${ GOOSE_COMMIT_HASH }`, (route) => {
+    return route.fulfill({ status: 404 });
+  }, { times: 1 });
+  await page.route(`https://api.github.com/repos/tom2drum/goose/commits/${ GOOSE_COMMIT_HASH }`, (route) => {
+    return route.fulfill({ status: 200, json: { sha: GOOSE_COMMIT_HASH } });
+  }, { times: 1 });
+  await page.route('https://api.github.com/repos/tom2drum/goose/commits?per_page=1', (route) => {
+    return route.fulfill({ status: 200, json: [ { sha: GOOSE_COMMIT_HASH } ] });
+  }, { times: 1 });
+  const commitHashField = component.getByLabel(/commit hash/i);
+
+  await commitHashField.focus();
+  await commitHashField.fill(GOOSE_COMMIT_HASH);
+  await commitHashField.blur();
+
+  await expect(component.getByText(/commit hash not found in the repository/i)).toBeVisible();
+
+  await githubRepositoryField.focus();
+  await githubRepositoryField.fill('https://github.com/tom2drum/goose');
+  await githubRepositoryField.blur();
+
+  await expect(component.getByText(/commit hash not found in the repository/i)).toBeHidden();
+
+  await expect(component).toHaveScreenshot();
+});

@@ -1,4 +1,4 @@
-import _noop from 'lodash/noop';
+import { noop } from 'es-toolkit';
 import React from 'react';
 
 import { test, expect } from 'playwright/lib';
@@ -12,7 +12,7 @@ test('base view +@dark-mode', async({ render }) => {
     <TagGroupSelect
       items={ [ { id: '1', title: 'Option 1' }, { id: '2', title: 'Option 2' }, { id: 'duck', title: 'Cute little duck' } ] }
       value="duck"
-      onChange={ _noop }
+      onChange={ noop }
     />,
   );
 

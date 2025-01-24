@@ -72,6 +72,8 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
         return 'sol';
       case 'scilla':
         return 'scilla';
+      case 'stylus_rust':
+        return 'rust';
       default:
         return 'javascript';
     }

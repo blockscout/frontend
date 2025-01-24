@@ -2,7 +2,7 @@
 import type { Route } from 'nextjs-routes';
 
 // equal og:description
-const DEFAULT_TEMPLATE = 'Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.';
+const DEFAULT_TEMPLATE = 'Open-source block explorer by Blockscout. Search transactions, verify smart contracts, analyze addresses, and track network activity. Complete blockchain data and APIs for the %network_title% network.';
 
 // FIXME all page descriptions will be updated later
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
@@ -53,9 +53,12 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/name-domains': DEFAULT_TEMPLATE,
   '/name-domains/[name]': DEFAULT_TEMPLATE,
   '/validators': DEFAULT_TEMPLATE,
-  '/gas-tracker': DEFAULT_TEMPLATE,
+  '/gas-tracker': 'Explore real-time %network_title% gas fees with Blockscout\'s advanced gas fee tracker. Get accurate %network_gwei% estimates and track transaction costs live.',
   '/mud-worlds': DEFAULT_TEMPLATE,
   '/token-transfers': DEFAULT_TEMPLATE,
+  '/advanced-filter': DEFAULT_TEMPLATE,
+  '/pools': DEFAULT_TEMPLATE,
+  '/pools/[hash]': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,

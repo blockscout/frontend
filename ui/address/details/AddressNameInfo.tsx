@@ -1,8 +1,8 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 

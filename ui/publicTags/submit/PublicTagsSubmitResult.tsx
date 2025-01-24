@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Flex, Grid, GridItem } from '@chakra-ui/react';
-import _pickBy from 'lodash/pickBy';
+import { pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { FormSubmitResult } from './types';
@@ -26,7 +26,7 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
 
   const hasErrors = groupedData.items.some((item) => item.error !== null);
   const companyWebsite = makePrettyLink(groupedData.companyWebsite);
-  const startOverButtonQuery = hasErrors ? _pickBy({
+  const startOverButtonQuery = hasErrors ? pickBy({
     requesterName: groupedData.requesterName,
     requesterEmail: groupedData.requesterEmail,
     companyName: groupedData.companyName,

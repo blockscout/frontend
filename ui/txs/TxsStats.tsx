@@ -49,7 +49,7 @@ const TxsStats = () => {
         href={ config.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'newTxns' } } : undefined }
       />
       <StatsWidget
-        label="Pending transactions"
+        label="Rejected transactions"
         value={ Number(txsStatsQuery.data?.pending_transactions_count).toLocaleString() }
         period="1h"
         isLoading={ txsStatsQuery.isPlaceholderData }

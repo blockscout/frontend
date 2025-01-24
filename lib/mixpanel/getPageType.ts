@@ -51,6 +51,9 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/gas-tracker': 'Gas tracker',
   '/mud-worlds': 'MUD worlds',
   '/token-transfers': 'Token transfers',
+  '/advanced-filter': 'Advanced filter',
+  '/pools': 'DEX pools',
+  '/pools/[hash]': 'Pool details',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',

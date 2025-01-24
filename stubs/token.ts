@@ -175,4 +175,5 @@ export const TOKEN_INSTANCE: TokenInstance = {
   },
   owner: ADDRESS_PARAMS,
   holder_address_hash: ADDRESS_HASH,
+  thumbnails: null,
 };

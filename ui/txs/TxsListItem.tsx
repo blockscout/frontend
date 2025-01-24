@@ -1,7 +1,7 @@
 import {
   HStack,
   Flex,
-  Skeleton,
+
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -12,6 +12,7 @@ import getValueWithUnit from 'lib/getValueWithUnit';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -32,6 +33,14 @@ type Props = {
   isLoading?: boolean;
 };
 
+const getTxStatus = (tx: Transaction) => {
+  if (!tx.block_number && tx.error) {
+    return 'error';
+  } else {
+    return tx.status;
+  }
+};
+
 const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
@@ -48,7 +57,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           ) :
             <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
           }
-          <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
+          <TxStatus status={ getTxStatus(tx) } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </HStack>
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>

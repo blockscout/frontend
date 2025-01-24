@@ -6,7 +6,7 @@ import {
   TabPanels,
   chakra,
 } from '@chakra-ui/react';
-import _debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import React, { useEffect, useRef, useState } from 'react';
 
 import type { TabItem } from './types';
@@ -69,7 +69,7 @@ const TabsWithScroll = ({
   }, [ defaultTabIndex ]);
 
   React.useEffect(() => {
-    const resizeHandler = _debounce(() => {
+    const resizeHandler = debounce(() => {
       setScreenWidth(window.innerWidth);
     }, 100);
     const resizeObserver = new ResizeObserver(resizeHandler);

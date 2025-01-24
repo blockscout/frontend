@@ -13,7 +13,7 @@ test.describe('with custom links, max cols', () => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL ],
     ]);
-    await mockConfigResponse('NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL, JSON.stringify(FOOTER_LINKS));
+    await mockConfigResponse('NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL, FOOTER_LINKS);
     await injectMetaMaskProvider();
     await mockApiResponse('homepage_indexing_status', {
       finished_indexing: false,
@@ -43,7 +43,7 @@ test.describe('with custom links, min cols', () => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL ],
     ]);
-    await mockConfigResponse('NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL, JSON.stringify([ FOOTER_LINKS[0] ]));
+    await mockConfigResponse('NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL, [ FOOTER_LINKS[0] ]);
     await render(<Footer/>);
     await expect(page).toHaveScreenshot();
   });

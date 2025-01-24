@@ -1,10 +1,11 @@
-import { Td, Tr, Text, Stat, StatHelpText, StatArrow, Skeleton } from '@chakra-ui/react';
+import { Td, Tr, Text, Stat, StatHelpText, StatArrow } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 
 import { WEI, ZERO } from 'lib/consts';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';

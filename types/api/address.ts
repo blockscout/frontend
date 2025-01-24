@@ -191,7 +191,7 @@ export type AddressWithdrawalsItem = {
 };
 
 export type AddressTabsCounters = {
-  internal_txs_count: number | null;
+  internal_transactions_count: number | null;
   logs_count: number | null;
   token_balances_count: number | null;
   token_transfers_count: number | null;

@@ -50,7 +50,7 @@ const RewardsDashboardCard = ({
         justifyContent="space-around"
         borderRadius={{ base: 'lg', md: '8px' }}
         backgroundColor={ useColorModeValue('gray.50', 'whiteAlpha.50') }
-        h={{ base: '80px', md: direction === 'row' ? 'auto' : '128px' }}
+        minH={{ base: '80px', md: '128px' }}
         filter="auto"
         blur={ blurFilter ? '4px' : '0' }
         flex={ direction === 'row' ? 1 : '0 1 auto' }

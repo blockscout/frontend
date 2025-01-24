@@ -42,7 +42,7 @@ test.describe('no url', () => {
     await page.route(ANIMATION_MEDIA_TYPE_API_URL, (route) => {
       return route.fulfill({
         status: 200,
-        body: JSON.stringify({ type: undefined }),
+        json: { type: undefined },
       });
     });
     await mockAssetResponse(IMAGE_URL, './playwright/mocks/image_long.jpg');
@@ -64,6 +64,24 @@ test.describe('image', () => {
       animation_url: MEDIA_URL,
       image_url: null,
     } as TokenInstance;
+    await render(
+      <Box boxSize="250px">
+        <NftMedia data={ data }/>
+      </Box>,
+    );
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 250 } });
+  });
+
+  test('preview with thumbnails', async({ render, page, mockAssetResponse }) => {
+    const THUMBNAIL_URL = 'https://localhost:3000/my-image-250.jpg';
+    const data = {
+      animation_url: MEDIA_URL,
+      image_url: null,
+      thumbnails: {
+        '500x500': THUMBNAIL_URL,
+      },
+    } as TokenInstance;
+    await mockAssetResponse(THUMBNAIL_URL, './playwright/mocks/image_md.jpg');
     await render(
       <Box boxSize="250px">
         <NftMedia data={ data }/>
@@ -103,7 +121,7 @@ test.describe('page', () => {
     await mockAssetResponse(MEDIA_URL, './playwright/mocks/page.html');
     await page.route(MEDIA_TYPE_API_URL, (route) => route.fulfill({
       status: 200,
-      body: JSON.stringify({ type: 'html' }),
+      json: { type: 'html' },
     }));
   });
 

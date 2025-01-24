@@ -21,6 +21,7 @@ const variants = {
     container: {
       bg: mode('gray.100', 'gray.800')(props),
       color: mode('gray.500', 'whiteAlpha.800')(props),
+      cursor: 'pointer',
       _hover: {
         color: 'blue.400',
         opacity: 0.76,
