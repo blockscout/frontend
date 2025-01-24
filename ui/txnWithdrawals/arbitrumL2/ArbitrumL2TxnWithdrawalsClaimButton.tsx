@@ -92,7 +92,7 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHa
           return;
         }
 
-        const newItems = prevData.items.map(item => item.id === messageId ? { ...item, status: 'claimed' } : item);
+        const newItems = prevData.items.map(item => item.id === messageId ? { ...item, status: 'relayed' } : item);
 
         return {
           ...prevData,
