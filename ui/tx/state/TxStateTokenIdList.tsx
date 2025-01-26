@@ -4,7 +4,7 @@ import React from 'react';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 
 interface Props {
-  items: Array<{total: { token_id: string | null} }>;
+  items: Array<{ total: { token_id: string | null } }>;
   tokenAddress: string;
   isLoading?: boolean;
 }

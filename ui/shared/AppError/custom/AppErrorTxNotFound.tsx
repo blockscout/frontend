@@ -39,13 +39,13 @@ const AppErrorTxNotFound = () => {
       <AppErrorTitle title="Sorry, we are unable to locate this transaction hash"/>
       <OrderedList mt={ 3 } spacing={ 3 }>
         <ListItem>
-            If you have just submitted this transaction please wait for at least 30 seconds before refreshing this page.
+          If you have just submitted this transaction please wait for at least 30 seconds before refreshing this page.
         </ListItem>
         <ListItem>
-            It could still be in the TX Pool of a different node, waiting to be broadcasted.
+          It could still be in the TX Pool of a different node, waiting to be broadcasted.
         </ListItem>
         <ListItem>
-            During times when the network is busy (i.e during ICOs) it can take a while for your transaction to propagate through the network and for us to index it.
+          During times when the network is busy (i.e during ICOs) it can take a while for your transaction to propagate through the network and for us to index it.
         </ListItem>
         <ListItem>
           <span>If it still does not show up after 1 hour, please check with your </span>

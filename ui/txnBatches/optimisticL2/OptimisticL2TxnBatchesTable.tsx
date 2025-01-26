@@ -11,7 +11,7 @@ type Props = {
   items: Array<OptimisticL2TxnBatchesItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const OptimisticL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (

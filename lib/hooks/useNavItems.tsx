@@ -109,7 +109,12 @@ export default function useNavItems(): ReturnType {
 
     const rollupFeature = config.features.rollup;
 
-    if (rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'zkEvm')) {
+    if (rollupFeature.isEnabled && (
+      rollupFeature.type === 'optimistic' ||
+      rollupFeature.type === 'arbitrum' ||
+      rollupFeature.type === 'zkEvm' ||
+      rollupFeature.type === 'scroll'
+    )) {
       blockchainNavItems = [
         [
           txs,
@@ -120,7 +125,7 @@ export default function useNavItems(): ReturnType {
           blocks,
           rollupTxnBatches,
           rollupDisputeGames,
-          rollupFeature.type === 'optimistic' ? rollupOutputRoots : undefined,
+          rollupFeature.outputRootsEnabled ? rollupOutputRoots : undefined,
         ].filter(Boolean),
         [
           userOps,
@@ -184,7 +189,7 @@ export default function useNavItems(): ReturnType {
         text: 'Tokens',
         nextRoute: { pathname: '/tokens' as const },
         icon: 'token',
-        isActive: pathname.startsWith('/token'),
+        isActive: pathname === '/tokens' || pathname.startsWith('/token/'),
       },
       {
         text: 'Token transfers',
@@ -192,7 +197,13 @@ export default function useNavItems(): ReturnType {
         icon: 'token-transfers',
         isActive: pathname === '/token-transfers',
       },
-    ];
+      config.features.pools.isEnabled && {
+        text: 'DEX tracker',
+        nextRoute: { pathname: '/pools' as const },
+        icon: 'dex-tracker',
+        isActive: pathname === '/pools' || pathname.startsWith('/pool/'),
+      },
+    ].filter(Boolean);
 
     const apiNavItems: Array<NavItem> = [
       config.features.restApiDocs.isEnabled ? {

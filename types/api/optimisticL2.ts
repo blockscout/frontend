@@ -4,30 +4,30 @@ import type { Transaction } from './transaction';
 
 export type OptimisticL2DepositsItem = {
   l1_block_number: number;
-  l1_tx_hash: string;
+  l1_transaction_hash: string;
   l1_block_timestamp: string;
-  l1_tx_origin: string;
-  l2_tx_gas_limit: string;
-  l2_tx_hash: string;
-}
+  l1_transaction_origin: string;
+  l2_transaction_gas_limit: string;
+  l2_transaction_hash: string;
+};
 
 export type OptimisticL2DepositsResponse = {
   items: Array<OptimisticL2DepositsItem>;
   next_page_params: {
     items_count: number;
     l1_block_number: number;
-    tx_hash: string;
+    transaction_hash: string;
   };
-}
+};
 
 export type OptimisticL2OutputRootsItem = {
   l1_block_number: number;
   l1_timestamp: string;
-  l1_tx_hash: string;
+  l1_transaction_hash: string;
   l2_block_number: number;
   l2_output_index: number;
   output_root: string;
-}
+};
 
 export type OptimisticL2OutputRootsResponse = {
   items: Array<OptimisticL2OutputRootsItem>;
@@ -35,7 +35,7 @@ export type OptimisticL2OutputRootsResponse = {
     index: number;
     items_count: number;
   };
-}
+};
 
 export type OptimisticL2BatchDataContainer = 'in_blob4844' | 'in_celestia' | 'in_calldata';
 
@@ -43,11 +43,11 @@ export type OptimisticL2TxnBatchesItem = {
   internal_id: number;
   batch_data_container?: OptimisticL2BatchDataContainer;
   l1_timestamp: string;
-  l1_tx_hashes: Array<string>;
+  l1_transaction_hashes: Array<string>;
   l2_block_start: number;
   l2_block_end: number;
-  tx_count: number;
-}
+  transaction_count: number;
+};
 
 export type OptimisticL2TxnBatchesResponse = {
   items: Array<OptimisticL2TxnBatchesItem>;
@@ -55,7 +55,7 @@ export type OptimisticL2TxnBatchesResponse = {
     id: number;
     items_count: number;
   };
-}
+};
 
 export interface OptimisticL2BlobTypeEip4844 {
   hash: string;
@@ -74,10 +74,10 @@ export interface OptimisticL2BlobTypeCelestia {
 interface OptimismL2TxnBatchBase {
   internal_id: number;
   l1_timestamp: string;
-  l1_tx_hashes: Array<string>;
+  l1_transaction_hashes: Array<string>;
   l2_block_start: number;
   l2_block_end: number;
-  tx_count: number;
+  transaction_count: number;
 }
 
 export interface OptimismL2TxnBatchTypeCallData extends OptimismL2TxnBatchBase {
@@ -103,7 +103,7 @@ export type OptimismL2BatchTxs = {
     index: number;
     items_count: number;
   } | null;
-}
+};
 
 export type OptimismL2BatchBlocks = {
   items: Array<Block>;
@@ -111,18 +111,18 @@ export type OptimismL2BatchBlocks = {
     batch_number: number;
     items_count: number;
   } | null;
-}
+};
 
 export type OptimisticL2WithdrawalsItem = {
-  'challenge_period_end': string | null;
-  'from': AddressParam | null;
-  'l1_tx_hash': string | null;
-  'l2_timestamp': string | null;
-  'l2_tx_hash': string;
-  'msg_nonce': number;
-  'msg_nonce_version': number;
-  'status': string;
-}
+  challenge_period_end: string | null;
+  from: AddressParam | null;
+  l1_transaction_hash: string | null;
+  l2_timestamp: string | null;
+  l2_transaction_hash: string;
+  msg_nonce: number;
+  msg_nonce_version: number;
+  status: string;
+};
 
 export type OptimisticL2WithdrawalStatus =
   'Waiting for state root' |
@@ -136,19 +136,19 @@ export type OptimisticL2WithdrawalStatus =
 
 export type OptimisticL2WithdrawalsResponse = {
   items: Array<OptimisticL2WithdrawalsItem>;
-  'next_page_params': {
-    'items_count': number;
-    'nonce': string;
+  next_page_params: {
+    items_count: number;
+    nonce: string;
   };
-}
+};
 
 export type OptimisticL2DisputeGamesResponse = {
   items: Array<OptimisticL2DisputeGamesItem>;
-  'next_page_params': {
-    'items_count': number;
-    'index': number;
+  next_page_params: {
+    items_count: number;
+    index: number;
   };
-}
+};
 
 export type OptimisticL2DisputeGamesItem = {
   contract_address: string;
@@ -158,4 +158,4 @@ export type OptimisticL2DisputeGamesItem = {
   l2_block_number: number;
   resolved_at: string | null;
   status: string;
-}
+};

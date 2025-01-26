@@ -13,7 +13,7 @@ import TextSeparator from 'ui/shared/TextSeparator';
 
 type Props = {
   dataAvailability: ArbitrumL2TxnBatchDAAnytrust;
-}
+};
 
 const ArbitrumL2TxnBatchDetailsDA = ({ dataAvailability }: Props) => {
   const signersBg = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
@@ -23,7 +23,7 @@ const ArbitrumL2TxnBatchDetailsDA = ({ dataAvailability }: Props) => {
       <DetailsInfoItem.Label
         hint="Aggregated BLS signature of AnyTrust committee members"
       >
-      Signature
+        Signature
       </DetailsInfoItem.Label><DetailsInfoItem.Value wordBreak="break-all" whiteSpace="break-spaces">
         { dataAvailability.bls_signature }
       </DetailsInfoItem.Value><DetailsInfoItem.Label

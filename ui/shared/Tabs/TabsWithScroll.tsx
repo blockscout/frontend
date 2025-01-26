@@ -6,7 +6,7 @@ import {
   TabPanels,
   chakra,
 } from '@chakra-ui/react';
-import _debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import React, { useEffect, useRef, useState } from 'react';
 
 import type { TabItem } from './types';
@@ -69,7 +69,7 @@ const TabsWithScroll = ({
   }, [ defaultTabIndex ]);
 
   React.useEffect(() => {
-    const resizeHandler = _debounce(() => {
+    const resizeHandler = debounce(() => {
       setScreenWidth(window.innerWidth);
     }, 100);
     const resizeObserver = new ResizeObserver(resizeHandler);
@@ -117,7 +117,11 @@ const TabsWithScroll = ({
         isLoading={ isLoading }
       />
       <TabPanels>
-        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id }>{ tab.component }</TabPanel>) }
+        { tabsList.map((tab) => (
+          <TabPanel padding={ 0 } key={ tab.id?.toString() || (typeof tab.title === 'string' ? tab.title : undefined) }>
+            { tab.component }
+          </TabPanel>
+        )) }
       </TabPanels>
     </Tabs>
   );

@@ -20,10 +20,10 @@ import CodeEditorTabs from './CodeEditorTabs';
 import addExternalLibraryWarningDecoration from './utils/addExternalLibraryWarningDecoration';
 import addFileImportDecorations from './utils/addFileImportDecorations';
 import addMainContractCodeDecoration from './utils/addMainContractCodeDecoration';
+import { defScilla, configScilla } from './utils/defScilla';
 import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
 import * as themes from './utils/themes';
 import useThemeColors from './utils/useThemeColors';
-
 const EDITOR_OPTIONS: EditorProps['options'] = {
   readOnly: true,
   minimap: { enabled: false },
@@ -62,7 +62,22 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
 
   const editorWidth = containerRect ? containerRect.width - (isMobile ? 0 : SIDE_BAR_WIDTH) : 0;
 
-  const editorLanguage = language === 'vyper' ? 'elixir' : 'sol';
+  const editorLanguage = (() => {
+    switch (language) {
+      case 'vyper':
+        return 'elixir';
+      case 'json':
+        return 'json';
+      case 'solidity':
+        return 'sol';
+      case 'scilla':
+        return 'scilla';
+      case 'stylus_rust':
+        return 'rust';
+      default:
+        return 'javascript';
+    }
+  })();
 
   React.useEffect(() => {
     instance?.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
@@ -75,6 +90,12 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     monaco.editor.defineTheme('blockscout-light', themes.light);
     monaco.editor.defineTheme('blockscout-dark', themes.dark);
     monaco.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
+
+    if (editorLanguage === 'scilla') {
+      monaco.languages.register({ id: editorLanguage });
+      monaco.languages.setMonarchTokensProvider(editorLanguage, defScilla);
+      monaco.languages.setLanguageConfiguration(editorLanguage, configScilla);
+    }
 
     const loadedModels = monaco.editor.getModels();
     const loadedModelsPaths = loadedModels.map((model) => model.uri.path);

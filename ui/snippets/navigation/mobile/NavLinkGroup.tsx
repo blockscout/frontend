@@ -19,7 +19,7 @@ type Props = {
   item: NavGroupItem;
   onClick: () => void;
   isExpanded?: boolean;
-}
+};
 
 const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
   const styleProps = useNavLinkStyleProps({ isActive: item.isActive, isExpanded });

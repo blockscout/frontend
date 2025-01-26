@@ -294,7 +294,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
               ml={ 1 }
             >
               <IconSvg name="repeat" boxSize={ 5 } mr={ 1 }/>
-                Reset
+              Reset
             </Button>
           ) }
         </chakra.form>

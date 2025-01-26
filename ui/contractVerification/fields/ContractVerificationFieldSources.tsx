@@ -13,7 +13,7 @@ import FileSnippet from 'ui/shared/forms/inputs/file/FileSnippet';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-type FileTypes = '.sol' | '.yul' | '.json' | '.vy'
+type FileTypes = '.sol' | '.yul' | '.json' | '.vy';
 
 interface Props {
   name?: 'sources' | 'interfaces';
@@ -57,7 +57,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title
       <div>
         <Text fontWeight={ 500 } color="text_secondary" mb={ 3 }>{ title }</Text>
         <Button size="sm" variant="outline">
-            Drop file{ multiple ? 's' : '' } or click here
+          Drop file{ multiple ? 's' : '' } or click here
         </Button>
       </div>
     );
@@ -90,7 +90,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title
     );
   }, [ formState.isSubmitting, handleFileRemove, fileError ]);
 
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, typeof name>}) => {
+  const renderControl = React.useCallback(({ field }: { field: ControllerRenderProps<FormFields, typeof name> }) => {
     const hasValue = field.value && field.value.length > 0;
 
     const errorElement = (() => {

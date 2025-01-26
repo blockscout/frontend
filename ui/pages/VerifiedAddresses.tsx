@@ -1,4 +1,4 @@
-import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Link } from '@chakra-ui/react';
+import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Link } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -12,6 +12,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
@@ -111,7 +112,7 @@ const VerifiedAddresses = () => {
     if (userWithoutEmail) {
       return (
         <Button size="lg" isDisabled mt={ 8 }>
-            Add address
+          Add address
         </Button>
       );
     }
@@ -119,7 +120,7 @@ const VerifiedAddresses = () => {
     return (
       <Skeleton mt={ 8 } isLoaded={ !isLoading } display="inline-block">
         <Button size="lg" onClick={ modalProps.onOpen }>
-            Add address
+          Add address
         </Button>
       </Skeleton>
     );

@@ -1,5 +1,5 @@
 import type { GridProps, HTMLChakraProps } from '@chakra-ui/react';
-import { Box, Grid, Flex, Text, Link, VStack, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, Grid, Flex, Text, Link, VStack, useColorModeValue } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -11,6 +11,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
 import { copy } from 'lib/html-entities';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
@@ -41,12 +42,6 @@ const Footer = () => {
       iconSize: '16px',
       text: 'Submit an issue',
       url: issueUrl,
-    },
-    {
-      icon: 'social/canny' as const,
-      iconSize: '20px',
-      text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
     },
     {
       icon: 'social/git' as const,
@@ -170,6 +165,22 @@ const Footer = () => {
     m: '0 auto',
   };
 
+  const renderRecaptcha = (gridArea?: GridProps['gridArea']) => {
+    if (!config.services.reCaptchaV2.siteKey) {
+      return <Box gridArea={ gridArea }/>;
+    }
+
+    return (
+      <Box gridArea={ gridArea } fontSize="xs" lineHeight={ 5 } mt={ 6 } color="text">
+        <span>This site is protected by reCAPTCHA and the Google </span>
+        <Link href="https://policies.google.com/privacy" isExternal>Privacy Policy</Link>
+        <span> and </span>
+        <Link href="https://policies.google.com/terms" isExternal>Terms of Service</Link>
+        <span> apply.</span>
+      </Box>
+    );
+  };
+
   if (config.UI.footer.links) {
     return (
       <Box { ...containerProps }>
@@ -177,6 +188,7 @@ const Footer = () => {
           <div>
             { renderNetworkInfo() }
             { renderProjectInfo() }
+            { renderRecaptcha() }
           </div>
 
           <Grid
@@ -218,20 +230,22 @@ const Footer = () => {
           lg: `
           "network links-top"
           "info links-bottom"
+          "recaptcha links-bottom"
         `,
         }}
       >
 
         { renderNetworkInfo({ lg: 'network' }) }
         { renderProjectInfo({ lg: 'info' }) }
+        { renderRecaptcha({ lg: 'recaptcha' }) }
 
         <Grid
           gridArea={{ lg: 'links-bottom' }}
           gap={ 1 }
           gridTemplateColumns={{
             base: 'repeat(auto-fill, 160px)',
-            lg: 'repeat(3, 160px)',
-            xl: 'repeat(4, 160px)',
+            lg: 'repeat(2, 160px)',
+            xl: 'repeat(3, 160px)',
           }}
           gridTemplateRows={{
             base: 'auto',

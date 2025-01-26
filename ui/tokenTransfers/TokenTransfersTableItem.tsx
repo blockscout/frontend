@@ -1,4 +1,4 @@
-import { Tr, Td, Flex, Skeleton } from '@chakra-ui/react';
+import { Tr, Td, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
@@ -6,6 +6,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
@@ -16,12 +17,12 @@ import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 type Props = {
   item: TokenTransfer;
   isLoading?: boolean;
-}
+};
 
 const TokenTransferTableItem = ({ item, isLoading }: Props) => {
-  const { valueStr } = 'value' in item.total && item.total.value !== null ? getCurrencyValue({
+  const { valueStr } = item.total && 'value' in item.total && item.total.value !== null ? getCurrencyValue({
     value: item.total.value,
-    exchangeRate: item.token.exchange_rate,
+    exchangeRate: item.token?.exchange_rate,
     accuracy: 8,
     accuracyUsd: 2,
     decimals: item.total.decimals || '0',
@@ -31,7 +32,7 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
     <Tr>
       <Td>
         <TxEntity
-          hash={ item.tx_hash }
+          hash={ item.transaction_hash }
           isLoading={ isLoading }
           fontWeight={ 600 }
           noIcon
@@ -62,7 +63,7 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
         />
       </Td>
       <Td>
-        { 'token_id' in item.total && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null ? (
+        { item.total && 'token_id' in item.total && item.token && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null ? (
           <NftEntity
             hash={ item.token.address }
             id={ item.total.token_id }
@@ -72,7 +73,7 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
         ) : '-' }
       </Td>
       <Td isNumeric verticalAlign="top">
-        { valueStr ? (
+        { (item.token && valueStr) ? (
           <Flex gap={ 2 } overflow="hidden" justifyContent="flex-end">
             <Skeleton isLoaded={ !isLoading } wordBreak="break-all">
               { valueStr }

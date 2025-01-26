@@ -1,10 +1,11 @@
-import { Grid, GridItem, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 import type { MetadataAttributes } from 'types/client/token';
 
 import parseMetadata from 'lib/token/parseMetadata';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import LinkExternal from 'ui/shared/links/LinkExternal';
@@ -57,9 +58,16 @@ const Item = ({ data, isLoading }: ItemProps) => {
       flexDir="column"
       alignItems="flex-start"
     >
-      <Skeleton isLoaded={ !isLoading } fontSize="xs" lineHeight={ 4 } color="text_secondary" fontWeight={ 500 } mb={ 1 }>
-        <span>{ data.trait_type }</span>
-      </Skeleton>
+      <TruncatedValue
+        value={ data.trait_type }
+        fontSize="xs"
+        w="100%"
+        lineHeight={ 4 }
+        color="text_secondary"
+        fontWeight={ 500 }
+        mb={ 1 }
+        isLoading={ isLoading }
+      />
       { value }
     </GridItem>
   );
@@ -116,7 +124,7 @@ const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) =>
           </DetailsInfoItem.Value>
         </>
       ) }
-      { metadata?.attributes && (
+      { metadata?.attributes && metadata.attributes.length > 0 && (
         <>
           <DetailsInfoItem.Label
             hint="NFT attributes"
@@ -126,7 +134,9 @@ const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) =>
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <Grid gap={ 2 } templateColumns="repeat(auto-fill,minmax(160px, 1fr))" w="100%" whiteSpace="normal">
-              { metadata.attributes.map((attribute, index) => <Item key={ index } data={ attribute } isLoading={ isLoading }/>) }
+              { metadata.attributes
+                .filter((attribute) => attribute.value)
+                .map((attribute, index) => <Item key={ index } data={ attribute } isLoading={ isLoading }/>) }
             </Grid>
           </DetailsInfoItem.Value>
         </>

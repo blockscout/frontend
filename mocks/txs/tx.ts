@@ -8,7 +8,7 @@ import * as decodedInputDataMock from 'mocks/txs/decodedInputData';
 
 export const base: Transaction = {
   base_fee_per_gas: '10000000000',
-  block: 29611750,
+  block_number: 29611750,
   confirmation_duration: [
     0,
     6364,
@@ -60,15 +60,15 @@ export const base: Transaction = {
   },
   token_transfers: [],
   token_transfers_overflow: false,
-  tx_burnt_fee: '461030000000000',
-  tx_tag: null,
-  tx_types: [
+  transaction_burnt_fee: '461030000000000',
+  transaction_tag: null,
+  transaction_types: [
     'contract_call',
   ],
   type: 2,
   value: '42000000000000000000',
   actions: [],
-  has_error_in_internal_txs: false,
+  has_error_in_internal_transactions: false,
 };
 
 export const withWatchListNames: Transaction = {
@@ -102,7 +102,7 @@ export const withContractCreation: Transaction = {
     watchlist_names: [],
     ens_domain_name: null,
   },
-  tx_types: [
+  transaction_types: [
     'contract_creation',
   ],
 };
@@ -132,7 +132,7 @@ export const withTokenTransfer: Transaction = {
     tokenTransferMock.erc404B,
   ],
   token_transfers_overflow: true,
-  tx_types: [
+  transaction_types: [
     'token_transfer',
   ],
 };
@@ -182,7 +182,7 @@ export const withRawRevertReason: Transaction = {
 export const pending: Transaction = {
   ...base,
   base_fee_per_gas: null,
-  block: null,
+  block_number: null,
   confirmation_duration: [],
   confirmations: 0,
   decoded_input: null,
@@ -196,8 +196,8 @@ export const pending: Transaction = {
   revert_reason: null,
   status: null,
   timestamp: null,
-  tx_burnt_fee: null,
-  tx_tag: null,
+  transaction_burnt_fee: null,
+  transaction_tag: null,
   type: null,
   value: '0',
 };
@@ -340,6 +340,33 @@ export const celoTxn: Transaction = {
   },
 };
 
+export const arbitrumTxn: Transaction = {
+  ...base,
+  arbitrum: {
+    batch_number: 743991,
+    commitment_transaction: {
+      hash: '0x71a25e01dde129a308704de217d200ea42e0f5b8c221c8ba8b2b680ff347f708',
+      status: 'unfinalized',
+      timestamp: '2024-11-19T14:26:23.000000Z',
+    },
+    confirmation_transaction: {
+      hash: null,
+      status: null,
+      timestamp: null,
+    },
+    contains_message: null,
+    gas_used_for_l1: '129773',
+    gas_used_for_l2: '128313',
+    message_related_info: {
+      associated_l1_transaction: null,
+      message_status: 'Relayed',
+    },
+    network_fee: '1283130000000',
+    poster_fee: '1297730000000',
+    status: 'Sent to base',
+  },
+};
+
 export const base2 = {
   ...base,
   hash: '0x02d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
@@ -373,7 +400,7 @@ export const withBlob = {
   ],
   burnt_blob_fee: '2820464441688064',
   max_fee_per_blob_gas: '60000000000',
-  tx_types: [ 'blob_transaction' as const ],
+  transaction_types: [ 'blob_transaction' as const ],
   type: 3,
 };
 

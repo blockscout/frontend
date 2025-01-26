@@ -11,7 +11,7 @@ const CHECK_ADDRESS_URL = buildUrl('address_verification', { chainId: '1', type:
 test('base view', async({ render, page }) => {
   await page.route(CHECK_ADDRESS_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify(mocks.ADDRESS_CHECK_RESPONSE.SUCCESS),
+    json: mocks.ADDRESS_CHECK_RESPONSE.SUCCESS,
   }));
   const props = {
     onContinue: () => {},
@@ -25,7 +25,7 @@ test('base view', async({ render, page }) => {
 test('SOURCE_CODE_NOT_VERIFIED_ERROR view +@mobile', async({ render, page }) => {
   await page.route(CHECK_ADDRESS_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify(mocks.ADDRESS_CHECK_RESPONSE.SOURCE_CODE_NOT_VERIFIED_ERROR),
+    json: mocks.ADDRESS_CHECK_RESPONSE.SOURCE_CODE_NOT_VERIFIED_ERROR,
   }));
 
   const props = {

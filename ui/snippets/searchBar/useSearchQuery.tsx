@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { fromBech32Address, isBech32Address } from 'lib/address/bech32';
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import useUpdateValueEffect from 'lib/hooks/useUpdateValueEffect';
@@ -21,7 +22,7 @@ export default function useSearchQuery(withRedirectCheck?: boolean) {
 
   const query = useQueryWithPages({
     resourceName: 'search',
-    filters: { q: debouncedSearchTerm },
+    filters: { q: isBech32Address(debouncedSearchTerm) ? fromBech32Address(debouncedSearchTerm) : debouncedSearchTerm },
     options: {
       enabled: debouncedSearchTerm.trim().length > 0,
       placeholderData: generateListStub<'search'>(SEARCH_RESULT_ITEM, 50, { next_page_params: SEARCH_RESULT_NEXT_PAGE_PARAMS }),

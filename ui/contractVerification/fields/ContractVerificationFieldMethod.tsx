@@ -79,6 +79,8 @@ const ContractVerificationFieldMethod = ({ methods }: Props) => {
         return <ListItem key={ method }>Verification through Hardhat plugin.</ListItem>;
       case 'solidity-foundry':
         return <ListItem key={ method }>Verification through Foundry.</ListItem>;
+      case 'stylus-github-repository':
+        return <ListItem key={ method }>Verification of Stylus contract via GitHub repository.</ListItem>;
     }
   }, []);
 

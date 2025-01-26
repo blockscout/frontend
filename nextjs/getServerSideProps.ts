@@ -67,7 +67,7 @@ export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
   return account(context);
 };
 
-const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum' ];
+const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
 export const deposits: GetServerSideProps<Props> = async(context) => {
   if (!(rollupFeature.isEnabled && DEPOSITS_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
@@ -78,7 +78,7 @@ export const deposits: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum' ];
+const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
 export const withdrawals: GetServerSideProps<Props> = async(context) => {
   if (
     !config.features.beaconChain.isEnabled &&
@@ -102,8 +102,8 @@ export const rollup: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
-  if (!(rollupFeature.isEnabled && rollupFeature.type === 'optimistic')) {
+export const outputRoots: GetServerSideProps<Props> = async(context) => {
+  if (!(rollupFeature.isEnabled && rollupFeature.outputRootsEnabled)) {
     return {
       notFound: true,
     };
@@ -112,7 +112,7 @@ export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum', 'optimistic' ];
+const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum', 'optimistic', 'scroll' ];
 export const batch: GetServerSideProps<Props> = async(context) => {
   if (!(rollupFeature.isEnabled && BATCH_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
@@ -244,6 +244,16 @@ export const gasTracker: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const advancedFilter: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.advancedFilter.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const dataAvailability: GetServerSideProps<Props> = async(context) => {
   if (!config.features.dataAvailability.isEnabled) {
     return {
@@ -298,6 +308,16 @@ export const disputeGames: GetServerSideProps<Props> = async(context) => {
 
 export const mud: GetServerSideProps<Props> = async(context) => {
   if (!config.features.mudFramework.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const pools: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.pools.isEnabled) {
     return {
       notFound: true,
     };

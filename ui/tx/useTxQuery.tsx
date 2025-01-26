@@ -27,7 +27,7 @@ export type TxQuery = UseQueryResult<Transaction, ResourceError<{ status: number
     off: () => void;
     toggle: () => void;
   };
-}
+};
 
 interface Params {
   hash?: string;

@@ -1,7 +1,7 @@
 import {
   HStack,
   Flex,
-  Skeleton,
+
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -12,6 +12,7 @@ import getValueWithUnit from 'lib/getValueWithUnit';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -30,7 +31,7 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-}
+};
 
 const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
@@ -39,9 +40,14 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
     <ListItemMobile display="block" width="100%" isAnimated key={ tx.hash }>
       <Flex justifyContent="space-between" mt={ 4 }>
         <HStack flexWrap="wrap">
-          { tx.translation ?
-            <TxTranslationType types={ tx.tx_types } isLoading={ isLoading || tx.translation.isLoading } translatationType={ tx.translation.data?.type }/> :
-            <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          { tx.translation ? (
+            <TxTranslationType
+              types={ tx.transaction_types }
+              isLoading={ isLoading || tx.translation.isLoading }
+              translatationType={ tx.translation.data?.type }
+            />
+          ) :
+            <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
           }
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
@@ -55,7 +61,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           truncation="constant_long"
           fontWeight="700"
           icon={{
-            name: tx.tx_types.includes('blob_transaction') ? 'blob' : undefined,
+            name: tx.transaction_types.includes('blob_transaction') ? 'blob' : undefined,
           }}
         />
         <TimeAgoWithTooltip
@@ -81,12 +87,12 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           </Skeleton>
         </Flex>
       ) }
-      { showBlockInfo && tx.block !== null && (
+      { showBlockInfo && tx.block_number !== null && (
         <Flex mt={ 2 }>
           <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Block </Skeleton>
           <BlockEntity
             isLoading={ isLoading }
-            number={ tx.block }
+            number={ tx.block_number }
             noIcon
           />
         </Flex>

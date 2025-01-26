@@ -1,5 +1,4 @@
-import _isEqual from 'lodash/isEqual';
-import _pickBy from 'lodash/pickBy';
+import { pickBy, isEqual } from 'es-toolkit';
 
 import type { FormFieldTag, FormFields, FormSubmitResult, FormSubmitResultGrouped, FormSubmitResultItemGrouped, SubmitRequestBody } from './types';
 import type { UserInfo } from 'types/api/account';
@@ -22,7 +21,7 @@ export function convertFormDataToRequestsBody(data: FormFields): Array<SubmitReq
         name: tag.name,
         tagType: tag.type.value,
         description: data.description,
-        meta: _pickBy({
+        meta: pickBy({
           bgColor: tag.bgColor,
           textColor: tag.textColor,
           tagUrl: tag.url,
@@ -72,7 +71,7 @@ export function groupSubmitResult(data: FormSubmitResult | undefined): FormSubmi
 
   // merge items with the same error and tags
   for (const item of _items) {
-    const existingItem = items.find(({ error, tags }) => error === item.error && _isEqual(tags, item.tags));
+    const existingItem = items.find(({ error, tags }) => error === item.error && isEqual(tags, item.tags));
     if (existingItem) {
       existingItem.addresses.push(...item.addresses);
       continue;

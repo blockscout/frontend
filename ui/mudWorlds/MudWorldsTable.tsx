@@ -12,7 +12,7 @@ type Props = {
   items: Array<MudWorldItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const MudWorldsTable = ({ items, top, isLoading }: Props) => {
   return (

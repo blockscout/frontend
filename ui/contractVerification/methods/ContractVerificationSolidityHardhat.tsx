@@ -22,7 +22,7 @@ const ContractVerificationSolidityHardhat = ({ config: formConfig }: { config: S
   solidity: "${ latestSolidityVersion || '0.8.24' }", // replace if necessary
   networks: {
     '${ chainNameSlug }': {
-      url: '${ config.chain.rpcUrl || `${ config.api.endpoint }/api/eth-rpc` }'
+      url: '${ config.chain.rpcUrls[0] || `${ config.api.endpoint }/api/eth-rpc` }'
     },
   },
   etherscan: {

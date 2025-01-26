@@ -1,5 +1,5 @@
 import { Alert, Box, Button, chakra, Flex, Link, Radio, RadioGroup } from '@chakra-ui/react';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { useAppKit } from '@reown/appkit/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -27,7 +27,7 @@ type Fields = RootFields & AddressVerificationFormSecondStepFields;
 
 type SignMethod = 'wallet' | 'manual';
 
-interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess{
+interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess {
   onContinue: (newItem: VerifiedAddress, signMethod: SignMethod) => void;
   noWeb3Provider?: boolean;
 }
@@ -35,7 +35,7 @@ interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStat
 const AddressVerificationStepSignature = ({ address, signingMessage, contractCreator, contractOwner, onContinue, noWeb3Provider }: Props) => {
   const [ signMethod, setSignMethod ] = React.useState<SignMethod>(noWeb3Provider ? 'manual' : 'wallet');
 
-  const { open: openWeb3Modal } = useWeb3Modal();
+  const { open: openWeb3Modal } = useAppKit();
   const { isConnected } = useAccount();
 
   const formApi = useForm<Fields>({
@@ -189,7 +189,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         <Box mb={ 8 }>
           <span>Please select the address to sign and copy the message and sign it using the Blockscout message provider of your choice. </span>
           <Link href="https://docs.blockscout.com/for-users/my-account/verified-addresses/copy-and-sign-message" target="_blank">
-          Additional instructions
+            Additional instructions
           </Link>
           <span>. If you do not see your address here but are sure that you are the owner of the contract, kindly </span>
           { contactUsLink }

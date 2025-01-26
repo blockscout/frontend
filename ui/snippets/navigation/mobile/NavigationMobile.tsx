@@ -7,6 +7,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import NavLink from '../vertical/NavLink';
+import NavLinkRewards from '../vertical/NavLinkRewards';
 import NavLinkGroup from './NavLinkGroup';
 
 const DRAWER_WIDTH = 330;
@@ -82,6 +83,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
             borderColor="divider"
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">
+              <NavLinkRewards onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>
               { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
             </VStack>
           </Box>
@@ -120,8 +122,11 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
                 >
                   { item.map(subItem => <NavLink key={ subItem.text } item={ subItem } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
                 </Box>
-              ) :
-                <NavLink key={ item.text } item={ item } mb={ 1 } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>,
+              ) : (
+                <Box key={ item.text } mb={ 1 }>
+                  <NavLink item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>
+                </Box>
+              ),
             ) }
           </Box>
         </Box>

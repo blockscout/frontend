@@ -1,4 +1,4 @@
-import _noop from 'lodash/noop';
+import { noop } from 'es-toolkit';
 import React from 'react';
 
 import { test, expect } from 'playwright/lib';
@@ -18,7 +18,7 @@ const defaultProps = {
   isRequired: true,
   placeholder: 'Compiler',
   name: 'compiler',
-  onChange: _noop,
+  onChange: noop,
 };
 
 [ 'md' as const, 'lg' as const ].forEach((size) => {

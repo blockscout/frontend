@@ -7,7 +7,7 @@ import React from 'react';
 import emptySearchResultIcon from 'icons/empty_search_result.svg';
 
 interface Props {
-  text: string | JSX.Element;
+  text: string | React.JSX.Element;
 }
 
 const EmptySearchResult = ({ text }: Props) => {

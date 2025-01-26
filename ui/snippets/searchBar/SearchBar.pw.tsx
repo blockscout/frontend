@@ -103,9 +103,9 @@ test('search by block hash +@mobile', async({ render, page, mockApiResponse }) =
 test('search by tx hash +@mobile', async({ render, page, mockApiResponse }) => {
   const apiUrl = await mockApiResponse('quick_search', [
     searchMock.tx1,
-  ], { queryParams: { q: searchMock.tx1.tx_hash } });
+  ], { queryParams: { q: searchMock.tx1.transaction_hash } });
   await render(<SearchBar/>);
-  await page.getByPlaceholder(/search/i).fill(searchMock.tx1.tx_hash);
+  await page.getByPlaceholder(/search/i).fill(searchMock.tx1.transaction_hash);
   await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
@@ -140,9 +140,9 @@ test('search by user op hash +@mobile', async({ render, page, mockApiResponse, m
   await mockEnvs(ENVS_MAP.userOps);
   const apiUrl = await mockApiResponse('quick_search', [
     searchMock.userOp1,
-  ], { queryParams: { q: searchMock.tx1.tx_hash } });
+  ], { queryParams: { q: searchMock.tx1.transaction_hash } });
   await render(<SearchBar/>);
-  await page.getByPlaceholder(/search/i).fill(searchMock.tx1.tx_hash);
+  await page.getByPlaceholder(/search/i).fill(searchMock.tx1.transaction_hash);
   await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
@@ -206,7 +206,7 @@ test.describe('with apps', () => {
     const apiUrl = await mockApiResponse('quick_search', [
       searchMock.token1,
     ], { queryParams: { q: 'o' } });
-    await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, JSON.stringify(appsMock));
+    await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, appsMock);
     await mockAssetResponse(appsMock[0].logo, './playwright/mocks/image_s.jpg');
     await mockAssetResponse(appsMock[1].logo, './playwright/mocks/image_s.jpg');
 

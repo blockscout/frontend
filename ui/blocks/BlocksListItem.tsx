@@ -1,6 +1,6 @@
-import { Flex, Skeleton, Text, Box, Tooltip } from '@chakra-ui/react';
+import { Flex, Text, Box, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -13,6 +13,7 @@ import { WEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -34,7 +35,7 @@ const isRollup = config.features.rollup.isEnabled;
 const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
-  const txFees = BigNumber(data.tx_fees || 0);
+  const txFees = BigNumber(data.transaction_fees || 0);
   const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas);
 
   return (
@@ -81,14 +82,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       ) }
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
-        { data.tx_count > 0 ? (
+        { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height), tab: 'txs' } }) }>
-              { data.tx_count }
+              { data.transaction_count }
             </LinkInternal>
           </Skeleton>
         ) :
-          <Text variant="secondary">{ data.tx_count }</Text>
+          <Text variant="secondary">{ data.transaction_count }</Text>
         }
       </Flex>
       <Box>

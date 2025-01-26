@@ -1,4 +1,4 @@
-import { chakra, Box, Heading, Flex, Text, VStack, Skeleton } from '@chakra-ui/react';
+import { chakra, Box, Heading, Flex, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
@@ -16,6 +16,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
@@ -101,7 +102,7 @@ const LatestBlocks = () => {
       { statsQueryResult.data?.network_utilization_percentage !== undefined && (
         <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } mt={ 1 } display="inline-block">
           <Text as="span" fontSize="sm">
-              Network utilization:{ nbsp }
+            Network utilization:{ nbsp }
           </Text>
           <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
             { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%

@@ -1,14 +1,15 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressEpochRewardsItem } from 'types/api/address';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = {
   item: AddressEpochRewardsItem;
@@ -31,18 +32,20 @@ const AddressEpochRewardsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Epoch #</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.epoch_number }
+        <Skeleton isLoaded={ !isLoading }>
+          { item.epoch_number }
+        </Skeleton>
       </ListItemMobileGrid.Value>
 
-      { /* <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <TimeAgoWithTooltip
-          timestamp={ item.timestamp }
+          timestamp={ item.block_timestamp }
           isLoading={ isLoading }
           color="text_secondary"
           display="inline-block"
         />
-      </ListItemMobileGrid.Value> */ }
+      </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Reward type</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>

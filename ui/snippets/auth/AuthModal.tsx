@@ -2,7 +2,6 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOve
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 import type { Screen, ScreenSuccess } from './types';
 
@@ -25,16 +24,17 @@ interface Props {
   initialScreen: Screen;
   onClose: (isSuccess?: boolean) => void;
   mixpanelConfig?: {
-    'wallet_connect'?: {
+    wallet_connect?: {
       source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
     };
-    'account_link_info': {
+    account_link_info: {
       source: mixpanel.EventPayload<mixpanel.EventTypes.ACCOUNT_LINK_INFO>['Source'];
     };
   };
+  closeOnError?: boolean;
 }
 
-const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
+const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Props) => {
   const [ steps, setSteps ] = React.useState<Array<Screen>>([ initialScreen ]);
   const [ isSuccess, setIsSuccess ] = React.useState(false);
 
@@ -66,8 +66,8 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
   }, []);
 
   const onReset = React.useCallback((isAuth?: boolean) => {
-    isAuth ? onClose() : setSteps([ initialScreen ]);
-  }, [ initialScreen, onClose ]);
+    isAuth || closeOnError ? onClose() : setSteps([ initialScreen ]);
+  }, [ initialScreen, onClose, closeOnError ]);
 
   const onAuthSuccess = React.useCallback(async(screen: ScreenSuccess) => {
     setIsSuccess(true);
@@ -140,6 +140,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
           <AuthModalScreenSuccessEmail
             email={ currentStep.email }
             onConnectWallet={ onNextStep }
+            onClose={ onModalClose }
             isAuth={ currentStep.isAuth }
             profile={ currentStep.profile }
           />
@@ -149,6 +150,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
           <AuthModalScreenSuccessWallet
             address={ currentStep.address }
             onAddEmail={ onNextStep }
+            onClose={ onModalClose }
             isAuth={ currentStep.isAuth }
             profile={ currentStep.profile }
           />
@@ -180,9 +182,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
         </ModalHeader>
         <ModalCloseButton top={ 6 } right={ 6 } color="gray.400"/>
         <ModalBody mb={ 0 }>
-          <GoogleReCaptchaProvider reCaptchaKey={ feature.recaptchaSiteKey }>
-            { content }
-          </GoogleReCaptchaProvider>
+          { content }
         </ModalBody>
       </ModalContent>
     </Modal>

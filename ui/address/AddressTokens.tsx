@@ -46,7 +46,7 @@ const getTokenFilterValue = (getFilterValuesFromQuery<NFTTokenType>).bind(null, 
 type Props = {
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
-}
+};
 
 const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
@@ -68,7 +68,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
     filters: { type: 'ERC-20' },
     scrollRef,
     options: {
-      enabled: isQueryEnabled && (!tab || tab === 'tokens_erc20'),
+      enabled: isQueryEnabled && (!tab || tab === 'tokens' || tab === 'tokens_erc20'),
       refetchOnMount: false,
       placeholderData: generateListStub<'address_tokens'>(ADDRESS_TOKEN_BALANCE_ERC_20, 10, { next_page_params: null }),
     },

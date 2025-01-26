@@ -7,7 +7,7 @@ import IconSvg from 'ui/shared/IconSvg';
 type Props = {
   internalWallet: boolean | undefined;
   external: boolean | undefined;
-}
+};
 
 const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
   const [ icon, iconColor, text, boxSize ] = React.useMemo(() => {

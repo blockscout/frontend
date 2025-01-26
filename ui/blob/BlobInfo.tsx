@@ -1,8 +1,9 @@
-import { Alert, Grid, GridItem, Skeleton } from '@chakra-ui/react';
+import { Alert, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Blob } from 'types/api/blobs';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
@@ -89,7 +90,7 @@ const BlobInfo = ({ data, isLoading }: Props) => {
             hint="Hash of the transaction with this blob"
             isLoading={ isLoading }
           >
-        Transaction hash
+            Transaction hash
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <TxEntity hash={ data.transaction_hashes[0].transaction_hash } isLoading={ isLoading } noIcon noCopy={ false }/>

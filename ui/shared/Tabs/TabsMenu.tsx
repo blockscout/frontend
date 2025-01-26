@@ -58,7 +58,7 @@ const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, act
         <PopoverBody display="flex" flexDir="column">
           { tabs.slice(tabsCut).map((tab, index) => (
             <Button
-              key={ tab.id }
+              key={ tab.id?.toString() }
               variant="ghost"
               onClick={ handleItemClick }
               isActive={ activeTab ? activeTab.id === tab.id : false }

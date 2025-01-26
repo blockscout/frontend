@@ -6,7 +6,7 @@ import type { Props as PageProps } from 'nextjs/getServerSideProps';
 type Props = {
   children: React.ReactNode;
   pageProps: PageProps;
-}
+};
 
 const AppContext = createContext<PageProps>({
   cookies: '',

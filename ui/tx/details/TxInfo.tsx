@@ -9,14 +9,13 @@ import {
   Tooltip,
   chakra,
   useColorModeValue,
-  Skeleton,
   HStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import { ARBITRUM_L2_TX_BATCH_STATUSES } from 'types/api/arbitrumL2';
+import { SCROLL_L2_BLOCK_STATUSES } from 'types/api/scrollL2';
 import type { Transaction } from 'types/api/transaction';
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
@@ -25,11 +24,12 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
-import getArbitrumVerificationStepStatus from 'lib/getArbitrumVerificationStepStatus';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import * as arbitrum from 'lib/rollups/arbitrum';
 import { MESSAGE_DESCRIPTIONS } from 'lib/tx/arbitrumMessageStatusDescription';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -63,6 +63,8 @@ import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
+
+import TxInfoScrollFees from './TxInfoScrollFees';
 
 const rollupFeature = config.features.rollup;
 
@@ -167,7 +169,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         isLoading={ isLoading }
       >
         {
-          rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum') ?
+          rollupFeature.isEnabled &&
+          (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'scroll') ?
             'L2 status and method' :
             'Status and method'
         }
@@ -239,9 +242,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <VerificationSteps
-              currentStep={ data.arbitrum.status }
-              currentStepPending={ getArbitrumVerificationStepStatus(data.arbitrum) === 'pending' }
-              steps={ ARBITRUM_L2_TX_BATCH_STATUSES }
+              currentStep={ arbitrum.VERIFICATION_STEPS_MAP[data.arbitrum.status] }
+              currentStepPending={ arbitrum.getVerificationStepStatus(data.arbitrum) === 'pending' }
+              steps={ arbitrum.verificationSteps }
               isLoading={ isLoading }
             />
           </DetailsInfoItem.Value>
@@ -282,11 +285,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         Block
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        { data.block === null ?
+        { data.block_number === null ?
           <Text>Pending</Text> : (
             <BlockEntity
               isLoading={ isLoading }
-              number={ data.block }
+              number={ data.block_number }
               noIcon
             />
           ) }
@@ -296,6 +299,12 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             <Skeleton isLoaded={ !isLoading } color="text_secondary">
               <span>{ data.confirmations } Block confirmations</span>
             </Skeleton>
+          </>
+        ) }
+        { data.scroll?.l2_block_status && (
+          <>
+            <TextSeparator color="gray.500"/>
+            <VerificationSteps steps={ SCROLL_L2_BLOCK_STATUSES } currentStep={ data.scroll.l2_block_status } isLoading={ isLoading }/>
           </>
         ) }
       </DetailsInfoItem.Value>
@@ -342,7 +351,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             hint="Index of the batch containing this transaction"
             isLoading={ isLoading }
           >
-          Batch
+            Batch
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             { data.arbitrum.batch_number ?
@@ -526,7 +535,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <DetailsInfoItem.Label
             isLoading={ isLoading }
           >
-        Verify tx hash
+            Verify tx hash
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value flexWrap="nowrap">
             <Skeleton isLoaded={ !isLoading } overflow="hidden">
@@ -662,11 +671,24 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
+      { data.scroll?.l1_gas_used !== undefined && (
+        <>
+          <DetailsInfoItem.Label
+            hint="Total gas used on L1"
+            isLoading={ isLoading }
+          >
+            L1 Gas used
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.scroll?.l1_gas_used || 0).toFormat() }</Skeleton>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
       { !config.UI.views.tx.hiddenFields?.gas_fees &&
             (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
         <>
           <DetailsInfoItem.Label
-            // eslint-disable-next-line max-len
             hint={ `
             Base Fee refers to the network Base Fee at the time of the block, 
             while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay 
@@ -769,6 +791,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           ) }
         </>
       ) }
+      <TxInfoScrollFees data={ data } isLoading={ isLoading }/>
 
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
         <Element name="TxInfo__cutLink">
@@ -872,7 +895,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             </>
           ) }
 
-          <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position }/>
+          <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position } queueIndex={ data.scroll?.queue_index }/>
 
           <DetailsInfoItem.Label
             hint="Binary data included with the transaction. See logs tab for additional info"
@@ -880,7 +903,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             Raw input
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <RawInputData hex={ data.raw_input }/>
+            <RawInputData hex={ data.raw_input } defaultDataType={ data.zilliqa?.is_scilla ? 'UTF-8' : 'Hex' }/>
           </DetailsInfoItem.Value>
 
           { data.decoded_input && (

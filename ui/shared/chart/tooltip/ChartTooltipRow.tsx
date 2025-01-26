@@ -9,7 +9,7 @@ import { calculateRowTransformValue, LABEL_WIDTH, PADDING } from './utils';
 
 type Props = {
   lineNum: number;
-} & ({ label: string; children?: never } | { children: React.ReactNode; label?: never })
+} & ({ label: string; children?: never } | { children: React.ReactNode; label?: never });
 
 const ChartTooltipRow = ({ label, lineNum, children }: Props) => {
   const labelColor = useToken('colors', 'blue.100');

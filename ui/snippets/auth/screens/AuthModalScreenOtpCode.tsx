@@ -1,6 +1,5 @@
 import { chakra, Box, Text, Button } from '@chakra-ui/react';
 import React from 'react';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -12,6 +11,8 @@ import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
 import IconSvg from 'ui/shared/IconSvg';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import AuthModalFieldOtpCode from '../fields/AuthModalFieldOtpCode';
 
@@ -25,7 +26,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
 
   const apiFetch = useApiFetch();
   const toast = useToast();
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const recaptcha = useReCaptcha();
   const [ isCodeSending, setIsCodeSending ] = React.useState(false);
 
   const formApi = useForm<OtpCodeFormFields>({
@@ -72,11 +73,11 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
     try {
       formApi.clearErrors('code');
       setIsCodeSending(true);
-      const token = await executeRecaptcha?.();
+      const token = await recaptcha.executeAsync();
       await apiFetch('auth_send_otp', {
         fetchParams: {
           method: 'POST',
-          body: { email, recaptcha_v3_response: token },
+          body: { email, recaptcha_response: token },
         },
       });
 
@@ -96,7 +97,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
     } finally {
       setIsCodeSending(false);
     }
-  }, [ apiFetch, email, executeRecaptcha, formApi, toast ]);
+  }, [ apiFetch, email, formApi, toast, recaptcha ]);
 
   return (
     <FormProvider { ...formApi }>
@@ -110,6 +111,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
           and enter your code below.
         </Text>
         <AuthModalFieldOtpCode isDisabled={ isCodeSending }/>
+        <ReCaptcha ref={ recaptcha.ref }/>
         <Button
           variant="link"
           display="flex"

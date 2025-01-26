@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,6 +6,7 @@ import type { TokenInfo } from 'types/api/token';
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 

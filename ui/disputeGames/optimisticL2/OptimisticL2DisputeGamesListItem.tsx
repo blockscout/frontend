@@ -1,9 +1,9 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2DisputeGamesItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShorten from 'ui/shared/HashStringShorten';

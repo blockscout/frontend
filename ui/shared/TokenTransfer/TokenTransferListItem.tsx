@@ -1,4 +1,4 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
@@ -6,6 +6,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -21,12 +22,12 @@ type Props = TokenTransfer & {
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-}
+};
 
 const TokenTransferListItem = ({
   token,
   total,
-  tx_hash: txHash,
+  transaction_hash: txHash,
   from,
   to,
   baseAddress,
@@ -36,9 +37,9 @@ const TokenTransferListItem = ({
   enableTimeIncrement,
   isLoading,
 }: Props) => {
-  const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
+  const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
-    exchangeRate: token.exchange_rate,
+    exchangeRate: token?.exchange_rate,
     accuracy: 8,
     accuracyUsd: 2,
     decimals: total.decimals || '0',
@@ -48,21 +49,27 @@ const TokenTransferListItem = ({
     <ListItemMobile rowGap={ 3 } isAnimated>
       <Flex w="100%" justifyContent="space-between">
         <Flex flexWrap="wrap" rowGap={ 1 } mr={ showTxInfo && txHash ? 2 : 0 } columnGap={ 2 } overflow="hidden">
-          <TokenEntity
-            token={ token }
-            isLoading={ isLoading }
-            noSymbol
-            noCopy
-            w="auto"
-          />
-          <Tag flexShrink={ 0 } isLoading={ isLoading }>{ getTokenTypeName(token.type) }</Tag>
+          { token && (
+            <>
+              <TokenEntity
+                token={ token }
+                isLoading={ isLoading }
+                noSymbol
+                noCopy
+                w="auto"
+              />
+              <Tag flexShrink={ 0 } isLoading={ isLoading }>{ getTokenTypeName(token.type) }</Tag>
+            </>
+          ) }
           <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
         </Flex>
         { showTxInfo && txHash && (
           <TxAdditionalInfo hash={ txHash } isMobile isLoading={ isLoading }/>
         ) }
       </Flex>
-      { 'token_id' in total && total.token_id !== null && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
+      { total && 'token_id' in total && total.token_id !== null && token && (
+        <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/>
+      ) }
       { showTxInfo && txHash && (
         <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
           <TxEntity

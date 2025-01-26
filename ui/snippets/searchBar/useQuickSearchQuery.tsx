@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { isBech32Address, fromBech32Address } from 'lib/address/bech32';
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 
@@ -9,7 +10,7 @@ export default function useQuickSearchQuery() {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const query = useApiQuery('quick_search', {
-    queryParams: { q: debouncedSearchTerm },
+    queryParams: { q: isBech32Address(debouncedSearchTerm) ? fromBech32Address(debouncedSearchTerm) : debouncedSearchTerm },
     queryOptions: { enabled: debouncedSearchTerm.trim().length > 0 },
   });
 

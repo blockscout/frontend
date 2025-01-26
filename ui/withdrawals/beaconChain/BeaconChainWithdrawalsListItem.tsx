@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressWithdrawalsItem } from 'types/api/address';
@@ -7,6 +6,7 @@ import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';

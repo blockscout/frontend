@@ -16,6 +16,7 @@ import getNetworkValidationActionText from 'lib/networks/getNetworkValidationAct
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
@@ -40,6 +41,7 @@ import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
 import useAddressQuery from 'ui/address/utils/useAddressQuery';
+import useCheckAddressFormat from 'ui/address/utils/useCheckAddressFormat';
 import useCheckDomainNameParam from 'ui/address/utils/useCheckDomainNameParam';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -55,9 +57,11 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
+const PREDEFINED_TAG_PRIORITY = 100;
 
 const txInterpretation = config.features.txInterpretation;
 const addressProfileAPIFeature = config.features.addressProfileAPI;
+const xScoreFeature = config.features.xStarScore;
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -65,9 +69,10 @@ const AddressPageContent = () => {
 
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
   const hash = getQueryParamString(router.query.hash);
-  const checkSummedHash = React.useMemo(() => getCheckedSummedAddress(hash), [ hash ]);
 
-  const areQueriesEnabled = !useCheckDomainNameParam(hash);
+  const checkDomainName = useCheckDomainNameParam(hash);
+  const checkAddressFormat = useCheckAddressFormat(hash);
+  const areQueriesEnabled = !checkDomainName && !checkAddressFormat;
   const addressQuery = useAddressQuery({ hash, isEnabled: areQueriesEnabled });
 
   const addressTabsCountersQuery = useApiQuery('address_tabs_counters', {
@@ -139,6 +144,8 @@ const AddressPageContent = () => {
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
   const safeIconColor = useColorModeValue('black', 'white');
 
+  const xStarQuery = useFetchXStarScore({ hash });
+
   const contractTabs = useContractTabs(
     addressQuery.data,
     config.features.mudFramework.isEnabled ? (mudTablesCountQuery.isPlaceholderData || addressQuery.isPlaceholderData) : addressQuery.isPlaceholderData,
@@ -198,7 +205,7 @@ const AddressPageContent = () => {
       {
         id: 'internal_txns',
         title: 'Internal txns',
-        count: addressTabsCountersQuery.data?.internal_txs_count,
+        count: addressTabsCountersQuery.data?.internal_transactions_count,
         component: <AddressInternalTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       },
       addressTabsCountersQuery.data?.celo_election_rewards_count ? {
@@ -268,12 +275,12 @@ const AddressPageContent = () => {
   const tags: Array<EntityTag> = React.useMemo(() => {
     return [
       ...(addressQuery.data?.public_tags?.map((tag) => ({ slug: tag.label, name: tag.display_name, tagType: 'custom' as const, ordinal: -1 })) || []),
-      !addressQuery.data?.is_contract ? { slug: 'eoa', name: 'EOA', tagType: 'custom' as const, ordinal: -1 } : undefined,
+      !addressQuery.data?.is_contract ? { slug: 'eoa', name: 'EOA', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } : undefined,
       config.features.validators.isEnabled && addressQuery.data?.has_validated_blocks ?
-        { slug: 'validator', name: 'Validator', tagType: 'custom' as const, ordinal: 10 } :
+        { slug: 'validator', name: 'Validator', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
         undefined,
-      addressQuery.data?.implementations?.length ? { slug: 'proxy', name: 'Proxy', tagType: 'custom' as const, ordinal: -1 } : undefined,
-      addressQuery.data?.token ? { slug: 'token', name: 'Token', tagType: 'custom' as const, ordinal: -1 } : undefined,
+      addressQuery.data?.implementations?.length ? { slug: 'proxy', name: 'Proxy', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } : undefined,
+      addressQuery.data?.token ? { slug: 'token', name: 'Token', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } : undefined,
       isSafeAddress ? { slug: 'safe', name: 'Multisig: Safe', tagType: 'custom' as const, ordinal: -10 } : undefined,
       addressProfileAPIFeature.isEnabled && usernameApiTag ? {
         slug: 'username_api',
@@ -288,15 +295,38 @@ const AddressPageContent = () => {
         },
       } : undefined,
       config.features.userOps.isEnabled && userOpsAccountQuery.data ?
-        { slug: 'user_ops_acc', name: 'Smart contract wallet', tagType: 'custom' as const, ordinal: -10 } :
+        { slug: 'user_ops_acc', name: 'Smart contract wallet', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
         undefined,
       config.features.mudFramework.isEnabled && mudTablesCountQuery.data ?
-        { slug: 'mud', name: 'MUD World', tagType: 'custom' as const, ordinal: -10 } :
+        { slug: 'mud', name: 'MUD World', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
         undefined,
       ...formatUserTags(addressQuery.data),
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
+      !addressQuery.data?.is_contract && xScoreFeature.isEnabled && xStarQuery.data?.data.level ?
+        {
+          slug: 'xstar',
+          name: `XHS ${ xStarQuery.data.data.level } level`,
+          tagType: 'custom' as const,
+          ordinal: 12,
+          meta: {
+            tooltipTitle: 'XStar humanity levels',
+            tooltipDescription:
+              'XStar looks for off-chain information about an address and interpret it as a XHS score. Different score means different humanity levels.',
+            tooltipUrl: xScoreFeature.url,
+          },
+        } :
+        undefined,
     ].filter(Boolean).sort(sortEntityTags);
-  }, [ addressMetadataQuery.data, addressQuery.data, hash, isSafeAddress, userOpsAccountQuery.data, mudTablesCountQuery.data, usernameApiTag ]);
+  }, [
+    addressMetadataQuery.data,
+    addressQuery.data,
+    hash,
+    isSafeAddress,
+    userOpsAccountQuery.data,
+    mudTablesCountQuery.data,
+    usernameApiTag,
+    xStarQuery.data?.data,
+  ]);
 
   const titleContentAfter = (
     <EntityTags
@@ -305,7 +335,8 @@ const AddressPageContent = () => {
         isLoading ||
         (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
         (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending) ||
-        (addressProfileAPIFeature.isEnabled && userPropfileApiQuery.isPending)
+        (addressProfileAPIFeature.isEnabled && userPropfileApiQuery.isPending) ||
+        (xScoreFeature.isEnabled && xStarQuery.isPlaceholderData)
       }
     />
   );
@@ -332,6 +363,10 @@ const AddressPageContent = () => {
     return;
   }, [ appProps.referrer ]);
 
+  // API always returns hash in check-summed format except for addresses that are not in the database
+  // In this case it returns 404 with empty payload, so we calculate check-summed hash on the client
+  const checkSummedHash = React.useMemo(() => addressQuery.data?.hash ?? getCheckedSummedAddress(hash), [ hash, addressQuery.data?.hash ]);
+
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
       { addressQuery.data?.ens_domain_name && (
@@ -346,7 +381,13 @@ const AddressPageContent = () => {
         />
       ) }
       <AddressEntity
-        address={{ ...addressQuery.data, hash: checkSummedHash, name: '', ens_domain_name: '', implementations: null }}
+        address={{
+          ...addressQuery.data,
+          hash: checkSummedHash,
+          name: '',
+          ens_domain_name: '',
+          implementations: null,
+        }}
         isLoading={ isLoading }
         fontFamily="heading"
         fontSize="lg"
@@ -361,14 +402,14 @@ const AddressPageContent = () => {
       { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
       ) }
-      <AddressQrCode address={{ hash: checkSummedHash }} isLoading={ isLoading }/>
+      <AddressQrCode address={{ hash: addressQuery.data?.filecoin?.robust ?? checkSummedHash }} isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
         <SolidityscanReport hash={ hash }/> }
       { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
         <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
-      <NetworkExplorers type="address" pathParam={ hash }/>
+      <NetworkExplorers type="address" pathParam={ hash.toLowerCase() }/>
     </Flex>
   );
 

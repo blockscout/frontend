@@ -16,7 +16,7 @@ const pathname: Route['pathname'] = '/address/[hash]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
-    <PageNextJs pathname="/address/[hash]" query={ props.query } apiData={ props.apiData }>
+    <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
       <Address/>
     </PageNextJs>
   );

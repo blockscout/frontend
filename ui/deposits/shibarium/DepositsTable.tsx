@@ -11,7 +11,7 @@ import DepositsTableItem from './DepositsTableItem';
    items: Array<ShibariumDepositsItem>;
    top: number;
    isLoading?: boolean;
- }
+ };
 
 const DepositsTable = ({ items, top, isLoading }: Props) => {
   return (

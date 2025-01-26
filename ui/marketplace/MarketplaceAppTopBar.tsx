@@ -1,4 +1,4 @@
-import { chakra, Flex, Tooltip, Skeleton, Box } from '@chakra-ui/react';
+import { chakra, Flex, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReport, ContractListTypes } from 'types/client/marketplace';
@@ -8,6 +8,8 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import RewardsButton from 'ui/rewards/RewardsButton';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
@@ -26,7 +28,7 @@ type Props = {
   data: MarketplaceAppOverview | undefined;
   isLoading: boolean;
   securityReport?: MarketplaceAppSecurityReport;
-}
+};
 
 const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props) => {
   const [ contractListType, setContractListType ] = React.useState<ContractListTypes>();
@@ -98,12 +100,13 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
           source="App page"
         />
         { !isMobile && (
-          <Box ml="auto">
+          <Flex ml="auto" gap={ 2 }>
+            { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
             {
               (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
               (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
             }
-          </Box>
+          </Flex>
         ) }
       </Flex>
       { contractListType && (

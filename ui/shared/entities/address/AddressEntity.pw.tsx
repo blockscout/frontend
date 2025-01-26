@@ -1,10 +1,14 @@
 import { Box } from '@chakra-ui/react';
+import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
+import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import * as cookies from 'lib/cookies';
 import * as addressMock from 'mocks/address/address';
 import * as implementationsMock from 'mocks/address/implementations';
 import * as metadataMock from 'mocks/metadata/address';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 
 import AddressEntity from './AddressEntity';
@@ -15,7 +19,7 @@ test.use({ viewport: { width: 180, height: 140 } });
 
 test.describe('icon size', () => {
   iconSizes.forEach((size) => {
-    test(size, async({ render }) => {
+    test(`${ size }`, async({ render }) => {
       const component = await render(
         <AddressEntity
           address={ addressMock.withoutName }
@@ -209,4 +213,22 @@ test('hover', async({ page, render }) => {
 
   await component.getByText(addressMock.hash.slice(0, 4)).hover();
   await expect(page).toHaveScreenshot();
+});
+
+const bech32test = test.extend<{ context: BrowserContext }>({
+  context: async({ context }, use) => {
+    context.addCookies([ { name: cookies.NAMES.ADDRESS_FORMAT, value: 'bech32', domain: config.app.host, path: '/' } ]);
+    use(context);
+  },
+});
+
+bech32test('bech32 format', async({ render, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.addressBech32Format);
+  const component = await render(
+    <AddressEntity
+      address={ addressMock.withoutName }
+    />,
+  );
+
+  await expect(component).toHaveScreenshot();
 });

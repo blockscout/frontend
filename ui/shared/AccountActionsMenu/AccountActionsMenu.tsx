@@ -1,4 +1,4 @@
-import { Box, IconButton, MenuButton, MenuList, Skeleton, chakra } from '@chakra-ui/react';
+import { Box, IconButton, MenuButton, MenuList, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import Menu from 'ui/shared/chakra/Menu';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
@@ -36,10 +37,6 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Address actions (more button)' });
   }, []);
 
-  if (!config.features.account.isEnabled) {
-    return null;
-  }
-
   const userWithoutEmail = profileQuery.data && !profileQuery.data.email;
 
   const items = [
@@ -49,15 +46,15 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     },
     {
       render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
-      enabled: isTokenPage && config.features.addressVerification.isEnabled && !userWithoutEmail,
+      enabled: config.features.account.isEnabled && isTokenPage && config.features.addressVerification.isEnabled && !userWithoutEmail,
     },
     {
       render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,
-      enabled: true,
+      enabled: config.features.account.isEnabled,
     },
     {
       render: (props: ItemProps) => <PublicTagMenuItem { ...props }/>,
-      enabled: !isTxPage && config.features.publicTagsSubmission.isEnabled,
+      enabled: config.features.account.isEnabled && !isTxPage && config.features.publicTagsSubmission.isEnabled,
     },
   ].filter(({ enabled }) => enabled);
 

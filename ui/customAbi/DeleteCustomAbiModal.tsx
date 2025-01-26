@@ -12,7 +12,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   data: CustomAbi;
-}
+};
 
 const DeleteCustomAbiModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
 

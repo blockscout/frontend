@@ -16,9 +16,10 @@ const OPTIONS_LIMIT = 50;
 
 interface Props {
   isVyper?: boolean;
+  isStylus?: boolean;
 }
 
-const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
+const ContractVerificationFieldCompiler = ({ isVyper, isStylus }: Props) => {
   const [ isNightly, setIsNightly ] = React.useState(false);
   const { formState, getValues, resetField } = useFormContext<FormFields>();
   const queryClient = useQueryClient();
@@ -32,9 +33,19 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
     setIsNightly(prev => !prev);
   }, [ getValues, isNightly, resetField ]);
 
-  const options = React.useMemo(() => (
-    (isVyper ? config?.vyper_compiler_versions : config?.solidity_compiler_versions)?.map((option) => ({ label: option, value: option })) || []
-  ), [ config?.solidity_compiler_versions, config?.vyper_compiler_versions, isVyper ]);
+  const options = React.useMemo(() => {
+    const versions = (() => {
+      if (isStylus) {
+        return config?.stylus_compiler_versions;
+      }
+      if (isVyper) {
+        return config?.vyper_compiler_versions;
+      }
+      return config?.solidity_compiler_versions;
+    })();
+
+    return versions?.map((option) => ({ label: option, value: option })) || [];
+  }, [ isStylus, isVyper, config?.solidity_compiler_versions, config?.stylus_compiler_versions, config?.vyper_compiler_versions ]);
 
   const loadOptions = React.useCallback(async(inputValue: string) => {
     return options
@@ -46,7 +57,7 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
   return (
     <ContractVerificationFormRow>
       <>
-        { !isVyper && (
+        { !isVyper && !isStylus && (
           <Checkbox
             size="lg"
             mb={ 2 }
@@ -66,7 +77,7 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
           isAsync
         />
       </>
-      { isVyper ? null : (
+      { isVyper || isStylus ? null : (
         <chakra.div mt={{ base: 0, lg: 8 }}>
           <span >The compiler version is specified in </span>
           <Code color="text_secondary">pragma solidity X.X.X</Code>

@@ -1,4 +1,4 @@
-import throttle from 'lodash/throttle';
+import { throttle } from 'es-toolkit';
 import React from 'react';
 
 export default function useIsSticky(ref: React.RefObject<HTMLDivElement>, offset = 0, isEnabled = true) {

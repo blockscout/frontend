@@ -1,9 +1,10 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2OutputRootsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
@@ -52,7 +53,7 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Value py="3px">
         <TxEntityL1
           isLoading={ isLoading }
-          hash={ item.l1_tx_hash }
+          hash={ item.l1_transaction_hash }
           fontSize="sm"
           lineHeight={ 5 }
           truncation="constant_long"

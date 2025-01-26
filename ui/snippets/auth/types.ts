@@ -10,7 +10,7 @@ export type ScreenSuccess = {
   address: string;
   profile: UserInfo;
   isAuth?: boolean;
-}
+};
 export type Screen = {
   type: 'select_method';
 } | {

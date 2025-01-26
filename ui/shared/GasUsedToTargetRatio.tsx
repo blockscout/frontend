@@ -1,10 +1,12 @@
-import { Skeleton, Tooltip } from '@chakra-ui/react';
+import { Tooltip } from '@chakra-ui/react';
 import React from 'react';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 type Props = {
   value: number;
   isLoading?: boolean;
-}
+};
 
 const GasUsedToTargetRatio = ({ value, isLoading }: Props) => {
   return (

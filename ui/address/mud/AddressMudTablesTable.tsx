@@ -13,7 +13,7 @@ type Props = {
   top: number;
   scrollRef?: React.RefObject<HTMLDivElement>;
   hash: string;
-}
+};
 
 //sorry for the naming
 const AddressMudTablesTable = ({ items, isLoading, top, scrollRef, hash }: Props) => {
