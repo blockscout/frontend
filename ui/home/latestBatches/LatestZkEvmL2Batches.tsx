@@ -80,7 +80,7 @@ const LatestZkEvmL2Batches = () => {
                 timestamp={ batch.timestamp }
                 status={ status }
                 isLoading={ isPlaceholderData }
-                isNew={ initialList.isNew(batch) }
+                animation={ initialList.getAnimationProp(batch) }
               />
             );
           })) }

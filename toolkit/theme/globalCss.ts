@@ -10,7 +10,7 @@ const globalCss: Record<string, SystemStyleObject> = {
     bg: 'global.body.bg',
     color: 'global.body.fg',
     '-webkit-tap-highlight-color': 'transparent',
-    'font-variant-ligatures': 'no-contextual',
+    fontVariantLigatures: 'no-contextual',
   },
   mark: {
     bg: 'global.mark.bg',

@@ -39,9 +39,10 @@ export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
   onMouseLeave?: (event: React.MouseEvent) => void;
 }
 
-const Container = chakra(({ className, children, ...props }: ContainerBaseProps) => {
+const Container = chakra(React.forwardRef(({ className, children, ...props }: ContainerBaseProps, ref: React.Ref<HTMLDivElement>) => {
   return (
     <Flex
+      ref={ ref }
       className={ className }
       alignItems="center"
       minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
@@ -50,7 +51,7 @@ const Container = chakra(({ className, children, ...props }: ContainerBaseProps)
       { children }
     </Flex>
   );
-});
+}));
 
 export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query'> {
   children: React.ReactNode;

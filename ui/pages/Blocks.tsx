@@ -70,15 +70,10 @@ const BlocksPageContent = () => {
   })();
 
   const tabs: Array<RoutedTab> = [
-    { id: 'blocks', title: 'All', component: <div>All</div> },
-    { id: 'reorgs', title: 'Forked', component: <div>Forked</div> },
-    { id: 'uncles', title: 'Uncles', component: <div>Uncles</div> },
+    { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
+    { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
+    { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ unclesQuery }/> },
   ];
-  // const tabs: Array<RoutedTab> = [
-  //   { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
-  //   { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
-  //   { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ unclesQuery }/> },
-  // ];
 
   return (
     <>

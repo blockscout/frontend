@@ -14,13 +14,13 @@ type Props = {
   txCount: number;
   status?: React.ReactNode;
   isLoading: boolean;
-  isNew?: boolean;
+  animation?: string;
 };
 
-const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading, isNew }: Props) => {
+const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading, animation }: Props) => {
   return (
     <Box
-      animation={ isNew ? 'fade-in 500ms linear' : undefined }
+      animation={ animation }
       borderRadius="md"
       border="1px solid"
       borderColor="border.divider"

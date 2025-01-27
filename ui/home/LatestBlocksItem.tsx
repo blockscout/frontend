@@ -16,14 +16,14 @@ import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 type Props = {
   block: Block;
   isLoading?: boolean;
-  isNew?: boolean;
+  animation?: string;
 };
 
-const LatestBlocksItem = ({ block, isLoading, isNew }: Props) => {
+const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
   const totalReward = getBlockTotalReward(block);
   return (
     <Box
-      animation={ isNew ? 'fade-in 500ms linear' : undefined }
+      animation={ animation }
       borderRadius="md"
       border="1px solid"
       borderColor="border.divider"

@@ -126,11 +126,12 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   return (
     <DataListDisplay
       isError={ query.isError }
-      items={ query.data?.items }
+      itemsNum={ query.data?.items?.length }
       emptyText="There are no blocks."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

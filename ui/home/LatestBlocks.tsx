@@ -90,7 +90,7 @@ const LatestBlocks = () => {
               key={ block.height + (isPlaceholderData ? String(index) : '') }
               block={ block }
               isLoading={ isPlaceholderData }
-              isNew={ initialList.isNew(block) }
+              animation={ initialList.getAnimationProp(block) }
             />
           ))) }
         </VStack>

@@ -34,6 +34,7 @@ const RESTRICTED_MODULES = {
         'DrawerRoot', 'DrawerBody', 'DrawerContent', 'DrawerOverlay', 'DrawerBackdrop', 'DrawerTrigger', 'Drawer',
         'Alert', 'AlertIcon', 'AlertTitle', 'AlertDescription',
         'Heading', 'Badge', 'Tabs',
+        'Table', 'TableRoot', 'TableBody', 'TableHeader', 'TableRow', 'TableCell',
       ],
       message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
     },

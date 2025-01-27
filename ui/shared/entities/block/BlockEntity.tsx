@@ -51,20 +51,20 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   hash?: string;
 }
 
-const BlockEntity = (props: EntityProps) => {
+const BlockEntity = (props: EntityProps, ref: React.Ref<HTMLDivElement>) => {
   const partsProps = distributeEntityProps(props);
 
   const content = <Content { ...partsProps.content }/>;
 
   return (
-    <Container { ...partsProps.container }>
+    <Container { ...partsProps.container } ref={ ref }>
       <Icon { ...partsProps.icon }/>
       { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
     </Container>
   );
 };
 
-export default React.memo(chakra(BlockEntity));
+export default React.memo(chakra(React.forwardRef(BlockEntity)));
 
 export {
   Container,

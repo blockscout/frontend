@@ -2,7 +2,7 @@ import React from 'react';
 
 type Id = string | number;
 
-interface Params<T> {
+export interface Params<T> {
   data: Array<T>;
   idFn: (item: T) => Id;
   enabled: boolean;
@@ -22,10 +22,15 @@ export default function useInitialList<T>({ data, idFn, enabled }: Params<T>) {
     return !list.includes(idFn(data));
   }, [ list, idFn ]);
 
+  const getAnimationProp = React.useCallback((data: T) => {
+    return isNew(data) ? 'fade-in 500ms linear' : undefined;
+  }, [ isNew ]);
+
   return React.useMemo(() => {
     return {
       list,
       isNew,
+      getAnimationProp,
     };
-  }, [ list, isNew ]);
+  }, [ list, isNew, getAnimationProp ]);
 }

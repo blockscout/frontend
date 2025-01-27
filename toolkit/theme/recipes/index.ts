@@ -15,6 +15,7 @@ import { recipe as select } from './select.recipe';
 import { recipe as skeleton } from './skeleton.recipe';
 import { recipe as spinner } from './spinner.recipe';
 import { recipe as switchRecipe } from './switch.recipe';
+import { recipe as table } from './table.recipe';
 import { recipe as tabs } from './tabs.recipe';
 import { recipe as textarea } from './textarea.recipe';
 import { recipe as toast } from './toast.recipe';
@@ -42,6 +43,7 @@ export const slotRecipes = {
   progressCircle,
   select,
   'switch': switchRecipe,
+  table,
   tabs,
   toast,
   tooltip,

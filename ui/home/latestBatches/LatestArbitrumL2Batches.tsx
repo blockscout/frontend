@@ -77,7 +77,7 @@ const LatestArbitrumL2Batches = () => {
               timestamp={ batch.commitment_transaction.timestamp }
               txCount={ batch.transactions_count }
               isLoading={ isPlaceholderData }
-              isNew={ initialList.isNew(batch) }
+              animation={ initialList.getAnimationProp(batch) }
             />
           ))) }
         </VStack>
