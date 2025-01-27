@@ -25,6 +25,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import AlertsShowcase from 'ui/showcases/Alerts';
 import BadgesShowcase from 'ui/showcases/Badges';
 import ButtonShowcase from 'ui/showcases/Button';
+import PaginationShowcase from 'ui/showcases/Pagination';
 import TabsShowcase from 'ui/showcases/Tabs';
 
 const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
@@ -53,6 +54,7 @@ const ChakraShowcases = () => {
           <TabsTrigger value="alerts">Alerts</TabsTrigger>
           <TabsTrigger value="badges">Badges</TabsTrigger>
           <TabsTrigger value="buttons">Buttons</TabsTrigger>
+          <TabsTrigger value="pagination">Pagination</TabsTrigger>
           <TabsTrigger value="tabs">Tabs</TabsTrigger>
           <TabsTrigger value="unsorted">Unsorted</TabsTrigger>
         </TabsList>
@@ -60,6 +62,7 @@ const ChakraShowcases = () => {
         <BadgesShowcase/>
         <ButtonShowcase/>
         <TabsShowcase/>
+        <PaginationShowcase/>
 
         <TabsContent value="unsorted">
           <VStack align="flex-start" gap={ 6 }>

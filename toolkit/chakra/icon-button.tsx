@@ -7,19 +7,18 @@ export interface IconButtonProps extends ButtonProps {}
 
 export const IconButton = React.forwardRef<HTMLDivElement, IconButtonProps>(
   function IconButton(props, ref) {
-    const { loading, ...rest } = props;
+    const { loading, size, variant = 'plain', ...rest } = props;
 
     return (
-      <Skeleton loading={ loading } asChild ref={ ref }>
+      <Skeleton loading={ loading } ref={ ref }>
         <Button
           display="inline-flex"
           px="0"
           py="0"
-          height="auto"
-          minW="auto"
+          { ...(size ? { size } : { height: 'auto', minW: 'auto' }) }
           flexShrink="0"
+          variant={ variant }
           { ...rest }
-          variant={ props.variant ?? 'plain' }
         />
       </Skeleton>
     );
