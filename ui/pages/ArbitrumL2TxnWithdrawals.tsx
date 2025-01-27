@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, chakra, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -55,6 +55,13 @@ const ArbitrumL2TxnWithdrawals = () => {
     }
   }, [ router ]);
 
+  const handleSubmit = React.useCallback((event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    const searchTerm = formData.get('tx_hash') as string;
+    handleSearchInputBlur({ target: { value: searchTerm } } as React.FocusEvent<HTMLInputElement>);
+  }, [ handleSearchInputBlur ]);
+
   const content = data?.items ? (
     <>
       <Box display={{ base: 'block', lg: 'none' }} mt={ 6 }>
@@ -70,16 +77,19 @@ const ArbitrumL2TxnWithdrawals = () => {
     <>
       <PageTitle title="Transaction withdrawals" withTextAd/>
       <Text>L2 to L1 message relayer: search for your L2 transaction to execute a manual withdrawal.</Text>
-      <FilterInput
-        w={{ base: '100%', lg: '700px' }}
-        mt={ 6 }
-        size="xs"
-        placeholder="Search by transaction hash"
-        initialValue={ searchTerm }
-        onChange={ handleSearchTermChange }
-        onFocus={ handleSearchInputFocus }
-        onBlur={ handleSearchInputBlur }
-      />
+      <chakra.form onSubmit={ handleSubmit } noValidate>
+        <FilterInput
+          name="tx_hash"
+          w={{ base: '100%', lg: '700px' }}
+          mt={ 6 }
+          size="xs"
+          placeholder="Search by transaction hash"
+          initialValue={ searchTerm }
+          onChange={ handleSearchTermChange }
+          onFocus={ handleSearchInputFocus }
+          onBlur={ handleSearchInputBlur }
+        />
+      </chakra.form>
       { error && <FieldError message={ error }/> }
       <DataListDisplay
         mt={ 6 }

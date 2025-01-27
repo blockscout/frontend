@@ -9,7 +9,7 @@ import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ArbitrumL2MessageStatus from 'ui/shared/statusTag/ArbitrumL2MessageStatus';
 
 import ArbitrumL2TxnWithdrawalsClaimButton from './ArbitrumL2TxnWithdrawalsClaimButton';
-import ArbitrumL2TxnWithdrawalsToken from './ArbitrumL2TxnWithdrawalsToken';
+import ArbitrumL2TxnWithdrawalsValue from './ArbitrumL2TxnWithdrawalsValue';
 
 const rollupFeature = config.features.rollup;
 
@@ -34,13 +34,13 @@ const ArbitrumL2TxnWithdrawalsListItem = ({ data, isLoading, txHash }: Props) =>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Receiver</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <AddressEntityL1 address={{ hash: data.destination }} isLoading={ isLoading }/>
+        <AddressEntityL1 address={{ hash: data.token?.destination || data.destination }} isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton isLoaded={ !isLoading }>
-          { data.token ? <ArbitrumL2TxnWithdrawalsToken data={ data.token }/> : '-' }
+          <ArbitrumL2TxnWithdrawalsValue data={ data }/>
         </Skeleton>
       </ListItemMobileGrid.Value>
 

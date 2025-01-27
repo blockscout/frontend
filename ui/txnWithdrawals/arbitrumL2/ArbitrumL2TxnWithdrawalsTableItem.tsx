@@ -8,7 +8,7 @@ import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import ArbitrumL2MessageStatus from 'ui/shared/statusTag/ArbitrumL2MessageStatus';
 
 import ArbitrumL2TxnWithdrawalsClaimButton from './ArbitrumL2TxnWithdrawalsClaimButton';
-import ArbitrumL2TxnWithdrawalsToken from './ArbitrumL2TxnWithdrawalsToken';
+import ArbitrumL2TxnWithdrawalsValue from './ArbitrumL2TxnWithdrawalsValue';
 
 interface Props {
   txHash: string | undefined;
@@ -23,11 +23,11 @@ const ArbitrumL2TxnWithdrawalsTableItem = ({ data, isLoading, txHash }: Props) =
         <Skeleton isLoaded={ !isLoading }>{ data.id }</Skeleton>
       </Td>
       <Td verticalAlign="middle">
-        <AddressEntityL1 address={{ hash: data.destination }} isLoading={ isLoading }/>
+        <AddressEntityL1 address={{ hash: data.token?.destination || data.destination }} isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <Skeleton isLoaded={ !isLoading }>
-          { data.token ? <ArbitrumL2TxnWithdrawalsToken data={ data.token }/> : '-' }
+          <ArbitrumL2TxnWithdrawalsValue data={ data }/>
         </Skeleton>
       </Td>
       <Td verticalAlign="middle">
