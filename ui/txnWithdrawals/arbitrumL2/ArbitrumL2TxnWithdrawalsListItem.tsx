@@ -55,12 +55,14 @@ const ArbitrumL2TxnWithdrawalsListItem = ({ data, isLoading, txHash }: Props) =>
         py={ 0 }
       >
         <ArbitrumL2MessageStatus status={ data.status } isLoading={ isLoading }/>
-        <ArbitrumL2TxnWithdrawalsClaimButton
-          messageId={ data.id }
-          txHash={ txHash }
-          completionTxHash={ data.completion_transaction_hash || undefined }
-          isLoading={ isLoading }
-        />
+        { (data.status === 'confirmed' || data.status === 'relayed') && (
+          <ArbitrumL2TxnWithdrawalsClaimButton
+            messageId={ data.id }
+            txHash={ txHash }
+            completionTxHash={ data.completion_transaction_hash || undefined }
+            isLoading={ isLoading }
+          />
+        ) }
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>

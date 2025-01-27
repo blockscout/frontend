@@ -33,12 +33,14 @@ const ArbitrumL2TxnWithdrawalsTableItem = ({ data, isLoading, txHash }: Props) =
       <Td verticalAlign="middle">
         <Flex alignItems="center" justifyContent="space-between" columnGap={ 8 }>
           <ArbitrumL2MessageStatus status={ data.status } isLoading={ isLoading }/>
-          <ArbitrumL2TxnWithdrawalsClaimButton
-            messageId={ data.id }
-            txHash={ txHash }
-            completionTxHash={ data.completion_transaction_hash || undefined }
-            isLoading={ isLoading }
-          />
+          { (data.status === 'confirmed' || data.status === 'relayed') && (
+            <ArbitrumL2TxnWithdrawalsClaimButton
+              messageId={ data.id }
+              txHash={ txHash }
+              completionTxHash={ data.completion_transaction_hash || undefined }
+              isLoading={ isLoading }
+            />
+          ) }
         </Flex>
       </Td>
     </Tr>
