@@ -11,7 +11,7 @@ import { ADVANCED_FILTER_TYPES_WITH_ALL } from '../constants';
 
 const RESET_VALUE = 'all';
 
-const FILTER_PARAM = 'tx_types';
+const FILTER_PARAM = 'transaction_types';
 
 type Props = {
   value?: Array<AdvancedFilterType>;

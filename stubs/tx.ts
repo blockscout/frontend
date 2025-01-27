@@ -19,7 +19,7 @@ export const TX: Transaction = {
   type: 0,
   exchange_rate: '1828.71',
   to: ADDRESS_PARAMS,
-  tx_burnt_fee: null,
+  transaction_burnt_fee: null,
   max_fee_per_gas: null,
   result: 'success',
   hash: '0x2b824349b320cfa72f292ab26bf525adb00083ba9fa097141896c3c8c74567cc',

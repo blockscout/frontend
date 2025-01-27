@@ -1098,7 +1098,7 @@ export const RESOURCES = {
   advanced_filter: {
     path: '/api/v2/advanced-filters',
     filterFields: [
-      'tx_types' as const,
+      'transaction_types' as const,
       'methods' as const,
       'methods_names' as const /* frontend only */,
       'age_from' as const,
