@@ -1,12 +1,12 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 type Props = {
   status?: boolean;
   isLoading?: boolean;
-}
+};
 
 const UserOpStatus = ({ status, isLoading }: Props) => {
   if (status === undefined) {

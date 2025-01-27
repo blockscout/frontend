@@ -24,14 +24,6 @@ const variantSubtle = defineStyle((props) => {
       paddingInline: '8px',
     };
   }
-  if (c === 'gray-blue') {
-    return {
-      bg: mode('gray.100', getTransparentColor(colors.grayBlue[300], 0.2, props))(props),
-      color: mode('blackAlpha.800', colors.grayBlue[300])(props),
-      paddingInline: '8px',
-    };
-  }
-
   if (c === 'green') {
     return {
       bg: mode('gray.100', getTransparentColor(colors.success[300], 0.2, props))(props),
@@ -39,7 +31,7 @@ const variantSubtle = defineStyle((props) => {
       paddingInline: '8px',
     };
   }
-  if (c === 'blue') {
+  if (c === 'black-blue') {
     return {
       bg: mode('gray.100', getTransparentColor(colors.blueLight[300], 0.2, props))(props),
       color: mode('blackAlpha.800', colors.blueLight[300])(props),
@@ -67,7 +59,7 @@ const variantSubtle = defineStyle((props) => {
       paddingInline: '8px',
     };
   }
-  if (c === 'purple') {
+  if (c === 'black-purple') {
     return {
       bg: mode('blackAlpha.50', getTransparentColor(colors.violet[300], 0.2, props))(props),
       color: mode('blackAlpha.800', colors.violet[300])(props),
@@ -79,8 +71,12 @@ const variantSubtle = defineStyle((props) => {
       bg: mode('blackAlpha.50', getTransparentColor(colors.grayBlue[300], 0.2, props))(props),
       color: mode('blackAlpha.800', colors.grayBlue[300])(props),
       paddingInline: '8px',
+      _hover: {
+        opacity: 0.76,
+      },
     };
   }
+
   if (c === 'teal') {
     return {
       bg: mode('blackAlpha.50', getTransparentColor(colors.teal[300], 0.2, props))(props),
@@ -95,6 +91,7 @@ const variantSubtle = defineStyle((props) => {
       paddingInline: '8px',
     };
   }
+
   return {
     bg: mode(`${ c }.50`, `${ c }.800`)(props), //mode(`${ c }.50`, `${ c }.800`)(props),
     color: mode(`${ c }.500`, `${ c }.100`)(props),

@@ -10,6 +10,9 @@ import type { Props as PageProps } from 'nextjs/getServerSideProps';
 
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
+import { MarketplaceContext } from 'lib/contexts/marketplace';
+import { RewardsContextProvider } from 'lib/contexts/rewards';
+import { SettingsContextProvider } from 'lib/contexts/settings';
 import { SocketProvider } from 'lib/socket/context';
 import currentChain from 'lib/web3/currentChain';
 import theme from 'theme/theme';
@@ -23,7 +26,11 @@ export type Props = {
   appContext?: {
     pageProps: PageProps;
   };
-}
+  marketplaceContext?: {
+    isAutoConnectDisabled: boolean;
+    setIsAutoConnectDisabled: (isAutoConnectDisabled: boolean) => void;
+  };
+};
 
 const defaultAppContext = {
   pageProps: {
@@ -33,6 +40,11 @@ const defaultAppContext = {
     adBannerProvider: 'slise' as const,
     apiData: null,
   },
+};
+
+const defaultMarketplaceContext = {
+  isAutoConnectDisabled: false,
+  setIsAutoConnectDisabled: () => {},
 };
 
 const wagmiConfig = createConfig({
@@ -49,7 +61,7 @@ const wagmiConfig = createConfig({
   },
 });
 
-const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props) => {
+const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketplaceContext = defaultMarketplaceContext }: Props) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -64,11 +76,17 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props
       <QueryClientProvider client={ queryClient }>
         <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ socketPort }` : undefined }>
           <AppContextProvider { ...appContext }>
-            <GrowthBookProvider>
-              <WagmiProvider config={ wagmiConfig }>
-                { children }
-              </WagmiProvider>
-            </GrowthBookProvider>
+            <MarketplaceContext.Provider value={ marketplaceContext }>
+              <SettingsContextProvider>
+                <GrowthBookProvider>
+                  <WagmiProvider config={ wagmiConfig }>
+                    <RewardsContextProvider>
+                      { children }
+                    </RewardsContextProvider>
+                  </WagmiProvider>
+                </GrowthBookProvider>
+              </SettingsContextProvider>
+            </MarketplaceContext.Provider>
           </AppContextProvider>
         </SocketProvider>
       </QueryClientProvider>

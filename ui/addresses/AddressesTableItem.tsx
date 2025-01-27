@@ -1,10 +1,11 @@
-import { Tr, Td, Text, Skeleton, Flex } from '@chakra-ui/react';
+import { Tr, Td, Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
@@ -14,7 +15,7 @@ type Props = {
   totalSupply: BigNumber;
   hasPercentage: boolean;
   isLoading?: boolean;
-}
+};
 
 const AddressesTableItem = ({
   item,
@@ -60,7 +61,7 @@ const AddressesTableItem = ({
       ) }
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading } display="inline-block" lineHeight="24px">
-          { Number(item.tx_count).toLocaleString() }
+          { Number(item.transaction_count).toLocaleString() }
         </Skeleton>
       </Td>
     </Tr>

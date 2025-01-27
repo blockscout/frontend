@@ -13,8 +13,6 @@ import {
   Box,
 } from '@chakra-ui/react';
 import React from 'react';
-import type { ControllerRenderProps, Control } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/client/contract';
@@ -22,18 +20,16 @@ import type { SmartContractVerificationMethod, SmartContractVerificationConfig }
 import useIsMobile from 'lib/hooks/useIsMobile';
 import colors from 'theme/foundations/colors';
 import Popover from 'ui/shared/chakra/Popover';
-import FancySelect from 'ui/shared/FancySelect/FancySelect';
+import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { METHOD_LABELS } from '../utils';
 
 interface Props {
-  control: Control<FormFields>;
-  isDisabled?: boolean;
   methods: SmartContractVerificationConfig['verification_options'];
 }
 
-const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props) => {
+const ContractVerificationFieldMethod = ({ methods }: Props) => {
   const tooltipBg = useColorModeValue('gray.700', colors.grayTrue[700]);
   const isMobile = useIsMobile();
 
@@ -41,21 +37,6 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
     value: method,
     label: METHOD_LABELS[method],
   })), [ methods ]);
-
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'method'>}) => {
-    return (
-      <FancySelect
-        { ...field }
-        options={ options }
-        size={ isMobile ? 'md' : 'lg' }
-        placeholder="Verification method (compiler type)"
-        isDisabled={ isDisabled }
-        isRequired
-        isAsync={ false }
-        isReadOnly={ options.length === 1 }
-      />
-    );
-  }, [ isDisabled, isMobile, options ]);
 
   const renderPopoverListItem = React.useCallback((method: SmartContractVerificationMethod) => {
     switch (method) {
@@ -99,6 +80,8 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
         return <ListItem key={ method }>Verification through Hardhat plugin.</ListItem>;
       case 'solidity-foundry':
         return <ListItem key={ method }>Verification through Foundry.</ListItem>;
+      case 'stylus-github-repository':
+        return <ListItem key={ method }>Verification of Stylus contract via GitHub repository.</ListItem>;
     }
   }, []);
 
@@ -129,11 +112,13 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
           </Portal>
         </Popover>
       </Box>
-      <Controller
+      <FormFieldFancySelect<FormFields, 'method'>
         name="method"
-        control={ control }
-        render={ renderControl }
-        rules={{ required: true }}
+        placeholder="Verification method (compiler type)"
+        options={ options }
+        isRequired
+        isAsync={ false }
+        isReadOnly={ options.length === 1 }
       />
     </>
   );

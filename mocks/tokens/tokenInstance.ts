@@ -73,6 +73,7 @@ export const base: TokenInstance = {
     name: 'GENESIS #188848, 22a5f8bbb1602995. Blockchain pixel PFP NFT + "on music video" trait inspired by God',
   },
   owner: addressMock.withName,
+  thumbnails: null,
 };
 
 export const withRichMetadata: TokenInstance = {

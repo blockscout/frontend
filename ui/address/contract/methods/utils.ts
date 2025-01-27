@@ -1,8 +1,8 @@
-import type { Abi } from 'abitype';
+import type { Abi, AbiFallback, AbiReceive } from 'abitype';
 import type { AbiFunction } from 'viem';
 import { toFunctionSelector } from 'viem';
 
-import type { SmartContractMethodCustomFields, SmartContractMethodRead, SmartContractMethodWrite } from './types';
+import type { MethodType, SmartContractMethod, SmartContractMethodRead, SmartContractMethodWrite } from './types';
 
 export const getNativeCoinValue = (value: unknown) => {
   if (typeof value !== 'string') {
@@ -12,10 +12,8 @@ export const getNativeCoinValue = (value: unknown) => {
   return BigInt(value);
 };
 
-interface DividedAbi {
-  read: Array<SmartContractMethodRead>;
-  write: Array<SmartContractMethodWrite>;
-}
+export const isMethod = (method: Abi[number]): method is SmartContractMethod =>
+  (method.type === 'function' || method.type === 'fallback' || method.type === 'receive');
 
 export const isReadMethod = (method: Abi[number]): method is SmartContractMethodRead =>
   method.type === 'function' && (
@@ -26,38 +24,45 @@ export const isWriteMethod = (method: Abi[number]): method is SmartContractMetho
   (method.type === 'function' || method.type === 'fallback' || method.type === 'receive') &&
     !isReadMethod(method);
 
-const enrichWithMethodId = (method: AbiFunction): SmartContractMethodCustomFields => {
+export const enrichWithMethodId = (method: AbiFunction | AbiFallback | AbiReceive): SmartContractMethod => {
+  if (method.type !== 'function') {
+    return method;
+  }
+
   try {
     return {
-      method_id: toFunctionSelector(method).slice(2),
+      ...method,
+      method_id: toFunctionSelector(method),
     };
   } catch (error) {
     return {
+      ...method,
       is_invalid: true,
     };
   }
 };
 
-export function divideAbiIntoMethodTypes(abi: Abi): DividedAbi {
-  return {
-    read: abi
-      .filter(isReadMethod)
-      .map((method) => ({
-        ...method,
-        ...enrichWithMethodId(method),
-      })),
-    write: abi
-      .filter(isWriteMethod)
-      .map((method) => {
+const getNameForSorting = (method: SmartContractMethod | AbiFallback | AbiReceive) => {
+  if ('name' in method) {
+    return method.name;
+  }
 
-        if (method.type !== 'function') {
-          return method;
-        }
+  return method.type === 'fallback' ? 'fallback' : 'receive';
+};
 
-        return {
-          ...method,
-          ...enrichWithMethodId(method),
-        };
-      }),
-  };
-}
+export const formatAbi = (abi: Abi) => {
+  return abi
+    .filter(isMethod)
+    .map(enrichWithMethodId)
+    .sort((a, b) => {
+      const aName = getNameForSorting(a);
+      const bName = getNameForSorting(b);
+      return aName.localeCompare(bName);
+    });
+};
+
+export const TYPE_FILTER_OPTIONS: Array<{ value: MethodType; title: string }> = [
+  { value: 'all', title: 'All' },
+  { value: 'read', title: 'Read' },
+  { value: 'write', title: 'Write' },
+];

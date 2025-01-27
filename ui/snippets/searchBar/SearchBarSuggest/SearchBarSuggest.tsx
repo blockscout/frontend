@@ -1,12 +1,13 @@
 import { Box, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import throttle from 'lodash/throttle';
+import { throttle } from 'es-toolkit';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { SearchResultItem } from 'types/api/search';
 
 import type { ResourceError } from 'lib/api/resources';
+import { useSettingsContext } from 'lib/contexts/settings';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as regexp from 'lib/regexp';
 import colors from 'theme/foundations/colors';
@@ -31,6 +32,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
   const isMobile = useIsMobile();
 
   const marketplaceApps = useMarketplaceApps(searchTerm);
+  const settingsContext = useSettingsContext();
 
   const categoriesRefs = React.useRef<Array<HTMLParagraphElement>>([]);
   const tabsRef = React.useRef<HTMLDivElement>(null);
@@ -162,13 +164,22 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
                 variant="secondary"
                 mt={ 6 }
                 mb={ 3 }
-                ref={ (el: HTMLParagraphElement) => categoriesRefs.current[indx] = el }
+                ref={ (el: HTMLParagraphElement) => {
+                  categoriesRefs.current[indx] = el;
+                } }
               >
                 { cat.title }
               </Text>
-              { cat.id !== 'app' && itemsGroups[cat.id]?.map((item, index) =>
-                <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
-              ) }
+              { cat.id !== 'app' && itemsGroups[cat.id]?.map((item, index) => (
+                <SearchBarSuggestItem
+                  key={ index }
+                  data={ item }
+                  isMobile={ isMobile }
+                  searchTerm={ searchTerm }
+                  onClick={ onItemClick }
+                  addressFormat={ settingsContext?.addressFormat }
+                />
+              )) }
               { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) =>
                 <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
               ) }

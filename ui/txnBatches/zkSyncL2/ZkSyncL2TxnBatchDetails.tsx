@@ -1,4 +1,4 @@
-import { Grid, GridItem, Link, Skeleton, Text } from '@chakra-ui/react';
+import { Grid, GridItem, Link, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
@@ -14,6 +14,7 @@ import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { currencyUnits } from 'lib/units';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -67,7 +68,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
-  const txNum = data.l2_tx_count + data.l1_tx_count;
+  const txNum = data.l2_transaction_count + data.l1_transaction_count;
 
   return (
     <Grid
@@ -80,7 +81,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on Ethereum."
         isLoading={ isPlaceholderData }
       >
-        Tx batch number
+        Txn batch number
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -89,8 +90,8 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         <PrevNext
           ml={ 6 }
           onClick={ handlePrevNextClick }
-          prevLabel="View previous tx batch"
-          nextLabel="View next tx batch"
+          prevLabel="View previous txn batch"
+          nextLabel="View next txn batch"
           isPrevDisabled={ data.number === 0 }
           isLoading={ isPlaceholderData }
         />
@@ -178,7 +179,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           </DetailsInfoItem.Value>
 
           <DetailsInfoItem.Label
-            hint={ 'The gas price below which the "baseFee" of the batch should not fall' }
+            hint='The gas price below which the "baseFee" of the batch should not fall'
           >
             L2 fair gas price
           </DetailsInfoItem.Label>

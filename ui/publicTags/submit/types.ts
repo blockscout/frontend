@@ -1,4 +1,5 @@
 import type { AddressMetadataTagType } from 'types/api/addressMetadata';
+import type { Option } from 'ui/shared/forms/inputs/select/types';
 
 export interface FormFields {
   requesterName: string;
@@ -8,15 +9,11 @@ export interface FormFields {
   addresses: Array<{ hash: string }>;
   tags: Array<FormFieldTag>;
   description: string | undefined;
-  reCaptcha: string;
 }
 
 export interface FormFieldTag {
   name: string;
-  type: {
-    label: string;
-    value: AddressMetadataTagType;
-  };
+  type: Option<AddressMetadataTagType>;
   url: string | undefined;
   bgColor: string | undefined;
   textColor: string | undefined;

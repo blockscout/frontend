@@ -3,7 +3,9 @@ import colors from 'theme/foundations/colors';
 export const light = {
   base: 'vs' as const,
   inherit: true,
-  rules: [],
+  rules: [
+    { token: 'predefined', foreground: '#cd3131' },
+  ],
   colors: {
     'editor.background': '#f5f5f6',
     'editorWidget.background': '#f5f5f6',
@@ -47,7 +49,9 @@ export const light = {
 export const dark = {
   base: 'vs-dark' as const,
   inherit: true,
-  rules: [],
+  rules: [
+    { token: 'predefined', foreground: '#f44747' },
+  ],
   colors: {
     'editor.background': colors.grayTrue[800], //'#1a1b1b',
     'editorWidget.background': colors.grayTrue[800], //'#1a1b1b',

@@ -28,6 +28,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/graphiql': 'Regular page',
   '/search-results': 'Regular page',
   '/auth/profile': 'Root page',
+  '/account/rewards': 'Regular page',
   '/account/watchlist': 'Regular page',
   '/account/api-key': 'Regular page',
   '/account/custom-abi': 'Regular page',
@@ -51,6 +52,10 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/validators': 'Root page',
   '/gas-tracker': 'Root page',
   '/mud-worlds': 'Root page',
+  '/token-transfers': 'Root page',
+  '/advanced-filter': 'Root page',
+  '/pools': 'Root page',
+  '/pools/[hash]': 'Regular page',
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',
@@ -64,8 +69,6 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/api/healthz': 'Regular page',
   '/api/config': 'Regular page',
   '/api/sprite': 'Regular page',
-  '/auth/auth0': 'Regular page',
-  '/auth/unverified-email': 'Regular page',
 };
 
 export default function getPageOgType(pathname: Route['pathname']) {

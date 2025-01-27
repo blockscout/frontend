@@ -10,7 +10,7 @@ type Props<T extends TokenType | NFTTokenType> = {
   onChange: (nextValue: Array<T>) => void;
   defaultValue?: Array<T>;
   nftOnly: T extends NFTTokenType ? true : false;
-}
+};
 const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange, defaultValue }: Props<T>) => {
   const { value, setValue } = useCheckboxGroup({ defaultValue });
 

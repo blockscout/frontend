@@ -1,11 +1,10 @@
-import { Grid, GridItem, Text, Link, Box, Tooltip, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Link, Box, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import { ARBITRUM_L2_TX_BATCH_STATUSES } from 'types/api/arbitrumL2';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
@@ -13,15 +12,16 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
-import getArbitrumVerificationStepStatus from 'lib/getArbitrumVerificationStepStatus';
 import { space } from 'lib/html-entities';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import * as arbitrum from 'lib/rollups/arbitrum';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
 import colors from 'theme/foundations/colors';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
@@ -42,6 +42,7 @@ import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchH
 
 import BlockDetailsBaseFeeCelo from './details/BlockDetailsBaseFeeCelo';
 import BlockDetailsBlobInfo from './details/BlockDetailsBlobInfo';
+import BlockDetailsZilliqaQuorumCertificate from './details/BlockDetailsZilliqaQuorumCertificate';
 import type { BlockQuery } from './useBlockQuery';
 
 interface Props {
@@ -123,15 +124,15 @@ const BlockDetails = ({ query }: Props) => {
   const txsNum = (() => {
     const blockTxsNum = (
       <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }) }>
-        { data.tx_count } txn{ data.tx_count === 1 ? '' : 's' }
+        { data.transaction_count } txn{ data.transaction_count === 1 ? '' : 's' }
       </LinkInternal>
     );
 
-    const blockBlobTxsNum = (config.features.dataAvailability.isEnabled && data.blob_tx_count) ? (
+    const blockBlobTxsNum = (config.features.dataAvailability.isEnabled && data.blob_transaction_count) ? (
       <>
         <span> including </span>
         <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'blob_txs' } }) }>
-          { data.blob_tx_count } blob txn{ data.blob_tx_count === 1 ? '' : 's' }
+          { data.blob_transaction_count } blob txn{ data.blob_transaction_count === 1 ? '' : 's' }
         </LinkInternal>
       </>
     ) : null;
@@ -318,9 +319,9 @@ const BlockDetails = ({ query }: Props) => {
               <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/> }
             { rollupFeature.type === 'arbitrum' && data.arbitrum && (
               <VerificationSteps
-                steps={ ARBITRUM_L2_TX_BATCH_STATUSES }
-                currentStep={ data.arbitrum.status }
-                currentStepPending={ getArbitrumVerificationStepStatus(data.arbitrum) === 'pending' }
+                steps={ arbitrum.verificationSteps }
+                currentStep={ arbitrum.VERIFICATION_STEPS_MAP[data.arbitrum.status] }
+                currentStepPending={ arbitrum.getVerificationStepStatus(data.arbitrum) === 'pending' }
                 isLoading={ isPlaceholderData }
               />
             ) }
@@ -390,7 +391,7 @@ const BlockDetails = ({ query }: Props) => {
             }
             isLoading={ isPlaceholderData }
           >
-          Block reward
+            Block reward
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value columnGap={ 1 }>
             <Skeleton isLoaded={ !isPlaceholderData }>
@@ -416,6 +417,22 @@ const BlockDetails = ({ query }: Props) => {
           </React.Fragment>
         ))
       }
+
+      { typeof data.zilliqa?.view === 'number' && (
+        <>
+          <DetailsInfoItem.Label
+            hint="The iteration of the consensus round in which the block was proposed"
+            isLoading={ isPlaceholderData }
+          >
+            View
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !isPlaceholderData }>
+              { data.zilliqa.view }
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
 
       <DetailsInfoItemDivider/>
 
@@ -458,7 +475,7 @@ const BlockDetails = ({ query }: Props) => {
             hint="The minimum gas price a transaction should have in order to be included in this block"
             isLoading={ isPlaceholderData }
           >
-        Minimum gas price
+            Minimum gas price
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <Skeleton isLoaded={ !isPlaceholderData }>
@@ -740,6 +757,19 @@ const BlockDetails = ({ query }: Props) => {
               <DetailsInfoItem.Value>
                 { data.nonce }
               </DetailsInfoItem.Value>
+            </>
+          ) }
+
+          { data.zilliqa && (
+            <>
+              <DetailsInfoItemDivider/>
+              <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.quorum_certificate }/>
+              { data.zilliqa?.aggregate_quorum_certificate && (
+                <>
+                  <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 2 }}/>
+                  <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.aggregate_quorum_certificate }/>
+                </>
+              ) }
             </>
           ) }
         </>

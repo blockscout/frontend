@@ -8,7 +8,7 @@ import IconSvg from './IconSvg';
 type Props = {
   iconSize: number;
   className?: string;
-}
+};
 
 const ContractCertifiedLabel = ({ iconSize, className }: Props) => {
   return (

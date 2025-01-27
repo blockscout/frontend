@@ -1,4 +1,4 @@
-import { Flex, Box, Text, Skeleton } from '@chakra-ui/react';
+import { Flex, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
@@ -9,6 +9,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { nbsp } from 'lib/html-entities';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import colors from 'theme/foundations/colors';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -28,7 +29,7 @@ const BlocksTabSlot = ({ pagination }: Props) => {
       { statsQuery.data?.network_utilization_percentage !== undefined && (
         <Box>
           <Text as="span" fontSize="sm">
-              Network utilization (last 50 blocks):{ nbsp }
+            Network utilization (last 50 blocks):{ nbsp }
           </Text>
           <Skeleton display="inline-block" fontSize="sm" color={ colors.warning[300] } fontWeight={ 600 } isLoaded={ !statsQuery.isPlaceholderData }>
             <span>{ statsQuery.data.network_utilization_percentage.toFixed(2) }%</span>

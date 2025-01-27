@@ -1,4 +1,4 @@
-import { Box, chakra, Table, Tbody, Tr, Th, Skeleton, Show, Hide } from '@chakra-ui/react';
+import { Box, chakra, Table, Tbody, Tr, Th, Show, Hide } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
@@ -6,6 +6,7 @@ import React from 'react';
 import type { SearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
+import { useSettingsContext } from 'lib/contexts/settings';
 import * as regexp from 'lib/regexp';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
@@ -15,6 +16,7 @@ import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as Layout from 'ui/shared/layout/components';
@@ -36,6 +38,7 @@ const SearchResultsPageContent = () => {
   const [ showContent, setShowContent ] = React.useState(!withRedirectCheck);
 
   const marketplaceApps = useMarketplaceApps(debouncedSearchTerm);
+  const settingsContext = useSettingsContext();
 
   React.useEffect(() => {
     if (showContent) {
@@ -144,11 +147,12 @@ const SearchResultsPageContent = () => {
               data={ item }
               searchTerm={ debouncedSearchTerm }
               isLoading={ isLoading }
+              addressFormat={ settingsContext?.addressFormat }
             />
           )) }
         </Show>
         <Hide below="lg" ssr={ false }>
-          <Table variant="simple" size="md" fontWeight={ 500 }>
+          <Table fontWeight={ 500 }>
             <Thead top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
               <Tr>
                 <Th width="30%">Search result</Th>
@@ -164,6 +168,7 @@ const SearchResultsPageContent = () => {
                   data={ item }
                   searchTerm={ debouncedSearchTerm }
                   isLoading={ isLoading }
+                  addressFormat={ settingsContext?.addressFormat }
                 />
               )) }
             </Tbody>

@@ -1,4 +1,4 @@
-import { Link, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldForwardProp } from '@chakra-ui/react';
+import { Link, Text, HStack, Tooltip, Box, useBreakpointValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -18,23 +18,22 @@ import { checkRouteHighlight } from '../utils';
 
 type Props = {
   item: NavItem;
+  onClick?: (e: React.MouseEvent) => void;
   isCollapsed?: boolean;
-  px?: string | number;
-  className?: string;
-  onClick?: () => void;
-  disableActiveState?: boolean;
-}
+  isDisabled?: boolean;
+};
 
-const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState }: Props) => {
+const NavLink = ({ item, onClick, isCollapsed }: Props) => {
   const isMobile = useIsMobile();
   const colors = useColors();
 
-  const isExpanded = isCollapsed === false;
   const isInternalLink = isInternalItem(item);
-
-  const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: isInternalLink && item.isActive && !disableActiveState });
-  const isXLScreen = useBreakpointValue({ base: false, xl: true });
   const href = isInternalLink ? route(item.nextRoute) : item.url;
+
+  const isExpanded = isCollapsed === false;
+
+  const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: isInternalLink && item.isActive });
+  const isXLScreen = useBreakpointValue({ base: false, xl: true });
 
   const isHighlighted = checkRouteHighlight(item);
 
@@ -46,7 +45,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
       w={{ base: '100%', lg: isExpanded ? '100%' : '48px', xl: isCollapsed ? '48px' : '100%' }}
       display="flex"
       position="relative"
-      px={ px || { base: 3, lg: isExpanded ? 3 : '12px', xl: isCollapsed ? '12px' : 3 } }
+      px={{ base: 3, lg: isExpanded ? 3 : '12px', xl: isCollapsed ? '12px' : 3 }}
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
       onClick={ onClick }
@@ -81,7 +80,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
   );
 
   return (
-    <Box as="li" listStyleType="none" w="100%" className={ className }>
+    <Box as="li" listStyleType="none" w="100%">
       { isInternalLink ? (
         <NextLink href={ item.nextRoute } passHref legacyBehavior>
           { content }
@@ -91,16 +90,4 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
   );
 };
 
-const NavLinkChakra = chakra(NavLink, {
-  shouldForwardProp: (prop) => {
-    const isChakraProp = !shouldForwardProp(prop);
-
-    if (isChakraProp && prop !== 'px') {
-      return false;
-    }
-
-    return true;
-  },
-});
-
-export default React.memo(NavLinkChakra);
+export default React.memo(NavLink);

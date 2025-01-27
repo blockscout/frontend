@@ -1,4 +1,4 @@
-import { Text, Stat, StatHelpText, StatArrow, Flex, Skeleton } from '@chakra-ui/react';
+import { Text, Stat, StatHelpText, StatArrow, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import { WEI, ZERO } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
 import colors from 'theme/foundations/colors';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';

@@ -1,4 +1,4 @@
-import { Hide, Show, Skeleton } from '@chakra-ui/react';
+import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -8,6 +8,7 @@ import { generateListStub } from 'stubs/utils';
 import ArbitrumL2MessagesListItem from 'ui/messages/ArbitrumL2MessagesListItem';
 import ArbitrumL2MessagesTable from 'ui/messages/ArbitrumL2MessagesTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -17,7 +18,7 @@ export type MessagesDirection = 'from-rollup' | 'to-rollup';
 
 type Props = {
   direction: MessagesDirection;
-}
+};
 
 const ArbitrumL2Messages = ({ direction }: Props) => {
   const type = direction === 'from-rollup' ? 'withdrawals' : 'deposits';

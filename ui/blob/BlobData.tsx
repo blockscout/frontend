@@ -1,4 +1,4 @@
-import { Flex, GridItem, Select, Skeleton, Button } from '@chakra-ui/react';
+import { Flex, GridItem, Button } from '@chakra-ui/react';
 import React from 'react';
 
 import * as blobUtils from 'lib/blob';
@@ -8,14 +8,21 @@ import downloadBlob from 'lib/downloadBlob';
 import hexToBase64 from 'lib/hexToBase64';
 import hexToBytes from 'lib/hexToBytes';
 import hexToUtf8 from 'lib/hexToUtf8';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
+import Select from 'ui/shared/select/Select';
 
 import BlobDataImage from './BlobDataImage';
 
-const FORMATS = [ 'Image', 'Raw', 'UTF-8', 'Base64' ] as const;
+const FORMATS = [
+  { label: 'Image', value: 'Image' as const },
+  { label: 'Raw', value: 'Raw' as const },
+  { label: 'UTF-8', value: 'UTF-8' as const },
+  { label: 'Base64', value: 'Base64' as const },
+];
 
-type Format = typeof FORMATS[number];
+type Format = typeof FORMATS[number]['value'];
 
 interface Props {
   data: string;
@@ -34,7 +41,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
   }, [ data, isLoading ]);
 
   const isImage = guessedType?.mime?.startsWith('image/');
-  const formats = isImage ? FORMATS : FORMATS.filter((format) => format !== 'Image');
+  const formats = isImage ? FORMATS : FORMATS.filter((format) => format.value !== 'Image');
 
   React.useEffect(() => {
     if (isImage) {
@@ -42,15 +49,11 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
     }
   }, [ isImage ]);
 
-  const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormat(event.target.value as Format);
-  }, []);
-
   const handleDownloadButtonClick = React.useCallback(() => {
     const fileBlob = (() => {
       switch (format) {
         case 'Image': {
-          const bytes = new Uint8Array(hexToBytes(data));
+          const bytes = hexToBytes(data);
           const filteredBytes = removeNonSignificantZeroBytes(bytes);
           return new Blob([ filteredBytes ], { type: guessedType?.mime });
         }
@@ -77,7 +80,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
           return <RawDataSnippet data="Not an image" showCopy={ false } isLoading={ isLoading }/>;
         }
 
-        const bytes = new Uint8Array(hexToBytes(data));
+        const bytes = hexToBytes(data);
         const filteredBytes = removeNonSignificantZeroBytes(bytes);
         const base64 = bytesToBase64(filteredBytes);
 
@@ -100,20 +103,17 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
     <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 2 }}>
       <Flex alignItems="center" mb={ 3 }>
         <Skeleton fontWeight={{ base: 700, lg: 500 }} isLoaded={ !isLoading }>
-            Blob data
+          Blob data
         </Skeleton>
         <Skeleton ml={ 5 } isLoaded={ !isLoading }>
           <Select
-            size="xs"
-            borderRadius="base"
-            value={ format }
-            onChange={ handleSelectChange }
-            w="auto"
-          >
-            { formats.map((format) => (
-              <option key={ format } value={ format }>{ format }</option>
-            )) }
-          </Select>
+            options={ formats }
+            name="format"
+            defaultValue={ format }
+            onChange={ setFormat }
+            isLoading={ isLoading }
+            w="95px"
+          />
         </Skeleton>
         <Skeleton ml="auto" mr={ 3 } isLoaded={ !isLoading }>
           <Button

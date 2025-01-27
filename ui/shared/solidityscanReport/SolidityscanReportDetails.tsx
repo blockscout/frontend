@@ -8,7 +8,7 @@ type DistributionItem = {
   id: keyof SolidityScanReportSeverityDistribution;
   name: string;
   color: string;
-}
+};
 
 const DISTRIBUTION_ITEMS: Array<DistributionItem> = [
   { id: 'critical', name: 'Critical', color: '#891F11' },
@@ -28,7 +28,7 @@ type ItemProps = {
   item: DistributionItem;
   vulnerabilities: SolidityScanReportSeverityDistribution;
   vulnerabilitiesCount: number;
-}
+};
 
 const SolidityScanReportItem = ({ item, vulnerabilities, vulnerabilitiesCount }: ItemProps) => {
   const bgBar = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');

@@ -8,7 +8,7 @@ import BeaconChainWithdrawalsTable from 'ui/withdrawals/beaconChain/BeaconChainW
 
 type Props = {
   blockWithdrawalsQuery: QueryWithPagesResult<'block_withdrawals'>;
-}
+};
 const TABS_HEIGHT = 88;
 
 const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {

@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -8,6 +7,7 @@ import type { AddressCounters } from 'types/api/address';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {

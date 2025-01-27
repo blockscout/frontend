@@ -2,9 +2,10 @@ import { Box, Flex, Heading, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
+import RewardsButton from 'ui/rewards/RewardsButton';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
-import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
+import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 // const BACKGROUND_DEFAULT = 'linear-gradient(180deg, #FE2C2E 0%, #CCA43B 100%)';
 const BACKGROUND_SMALL = 'https://storage.game7test.io/blockscout/homeplate_bg-base.png';
@@ -22,13 +23,20 @@ const HeroBanner = () => {
     config.UI.homepage.heroBanner?.background?.[0] || BACKGROUND_SMALL,
   );
   const textColor = useColorModeValue(
-    config.UI.homepage.heroBanner?.text_color?.[0] || config.UI.homepage.plate.textColor || TEXT_COLOR_DEFAULT,
-    config.UI.homepage.heroBanner?.text_color?.[1] || config.UI.homepage.plate.textColor || TEXT_COLOR_DEFAULT,
+    // light mode
+    config.UI.homepage.heroBanner?.text_color?.[0] ||
+    config.UI.homepage.plate.textColor ||
+    TEXT_COLOR_DEFAULT,
+    // dark mode
+    config.UI.homepage.heroBanner?.text_color?.[1] ||
+    config.UI.homepage.heroBanner?.text_color?.[0] ||
+    config.UI.homepage.plate.textColor ||
+    TEXT_COLOR_DEFAULT,
   );
 
   const border = useColorModeValue(
     config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
-    config.UI.homepage.heroBanner?.border?.[1] || BORDER_DEFAULT,
+    config.UI.homepage.heroBanner?.border?.[1] || config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
   );
 
   return (
@@ -62,9 +70,12 @@ const HeroBanner = () => {
             }
           </Heading>
           { config.UI.navigation.layout === 'vertical' && (
-            <Box display={{ base: 'none', lg: 'flex' }}>
-              { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
-              { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
+            <Box display={{ base: 'none', lg: 'flex' }} gap={ 2 }>
+              { config.features.rewards.isEnabled && <RewardsButton variant="hero"/> }
+              {
+                (config.features.account.isEnabled && <UserProfileDesktop buttonVariant="hero"/>) ||
+                (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonVariant="hero"/>)
+              }
             </Box>
           ) }
         </Flex>

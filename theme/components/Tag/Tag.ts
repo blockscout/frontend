@@ -23,6 +23,7 @@ const variants = {
     container: {
       bg: mode('gray.100', colors.grayTrue[800])(props),
       color: mode('gray.500', colors.grayTrue[50])(props),
+      cursor: 'pointer',
       _hover: {
         color: colors.grayTrue[50], // 'blue.400',
         opacity: 0.76,

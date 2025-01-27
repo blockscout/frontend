@@ -30,7 +30,7 @@ const dailyTxsIndicator: TChainIndicator<'stats_charts_txs'> = {
     resourceName: 'stats_charts_txs',
     dataFn: (response) => ([ {
       items: response.chart_data
-        .map((item) => ({ date: new Date(item.date), value: item.tx_count }))
+        .map((item) => ({ date: new Date(item.date), value: item.transaction_count }))
         .sort(sortByDateDesc)
         .reduceRight(nonNullTailReducer, [] as Array<TimeChartItemRaw>)
         .map(mapNullToZero),
@@ -130,7 +130,6 @@ const tvlIndicator: TChainIndicator<'stats_charts_market'> = {
     '$N/A' :
     '$' + Number(stats.tvl).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
   icon: <IconSvg name="lock" boxSize={ 6 } bgColor="#517FDB" borderRadius="base" color="white"/>,
-  // eslint-disable-next-line max-len
   hint: 'Total value of digital assets locked or staked in a chain',
   api: {
     resourceName: 'stats_charts_market',

@@ -20,7 +20,7 @@ type Props = {
   onBack?: () => void;
   type: ContractListTypes;
   contracts?: MarketplaceAppSecurityReport['contractsData'];
-}
+};
 
 const titles = {
   [ContractListTypes.ALL]: `All app${ apos }s smart contracts`,

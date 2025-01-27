@@ -1,11 +1,12 @@
 import type { As } from '@chakra-ui/react';
-import { Image, Skeleton, chakra } from '@chakra-ui/react';
+import { Image, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
 import { route } from 'nextjs-routes';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
@@ -37,7 +38,7 @@ const Icon = (props: IconProps) => {
   const styles = {
     marginRight: props.marginRight ?? 2,
     boxSize: props.boxSize ?? getIconProps(props.size).boxSize,
-    borderRadius: 'base',
+    borderRadius: props.token.type === 'ERC-20' ? 'full' : 'base',
     flexShrink: 0,
   };
 
@@ -48,7 +49,6 @@ const Icon = (props: IconProps) => {
   return (
     <Image
       { ...styles }
-      borderRadius={ props.token.type === 'ERC-20' ? 'full' : 'base' }
       className={ props.className }
       src={ props.token.icon_url ?? undefined }
       alt={ `${ props.token.name || 'token' } logo` }

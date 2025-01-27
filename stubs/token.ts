@@ -91,6 +91,7 @@ export const getTokenInstanceHoldersStub = (type?: TokenType, pagination: TokenH
 
 export const TOKEN_TRANSFER_ERC_20: TokenTransfer = {
   block_hash: BLOCK_HASH,
+  block_number: '123456',
   from: ADDRESS_PARAMS,
   log_index: '4',
   method: 'addLiquidity',
@@ -101,7 +102,7 @@ export const TOKEN_TRANSFER_ERC_20: TokenTransfer = {
     decimals: '18',
     value: '9851351626684503',
   },
-  tx_hash: TX_HASH,
+  transaction_hash: TX_HASH,
   type: 'token_minting',
 };
 
@@ -174,4 +175,5 @@ export const TOKEN_INSTANCE: TokenInstance = {
   },
   owner: ADDRESS_PARAMS,
   holder_address_hash: ADDRESS_HASH,
+  thumbnails: null,
 };

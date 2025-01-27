@@ -33,7 +33,7 @@ type Props = {
   toggleTableHasHorizontalScroll: () => void;
   scrollRef?: React.RefObject<HTMLDivElement>;
   hash: string;
-}
+};
 
 const AddressMudRecordsTable = ({
   data,
@@ -140,7 +140,7 @@ const AddressMudRecordsTable = ({
   return (
     // can't implement both horizontal table scroll and sticky header
     <Box maxW="100%" overflowX={ hasHorizontalScroll ? 'scroll' : 'unset' } whiteSpace="nowrap" ref={ tableRef }>
-      <Table variant="simple" size="sm" style={{ tableLayout: 'fixed' }}>
+      <Table style={{ tableLayout: 'fixed' }}>
         <Thead top={ hasHorizontalScroll ? 0 : top } display={ hasHorizontalScroll ? 'table' : 'table-header-group' } w="100%">
           <Tr >
             { keys.map((keyName, index) => {

@@ -25,6 +25,8 @@ interface Params {
   isEnabled?: boolean;
 }
 
+const NO_RPC_FALLBACK_ERROR_CODES = [ 403 ];
+
 export default function useAddressQuery({ hash, isEnabled = true }: Params): AddressQuery {
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
@@ -72,7 +74,7 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
         block_number_balance_updated_at: null,
         coin_balance: balance.toString(),
         creator_address_hash: null,
-        creation_tx_hash: null,
+        creation_transaction_hash: null,
         exchange_rate: null,
         ens_domain_name: null,
         has_decompiled_code: false,
@@ -92,7 +94,7 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
       };
     },
     placeholderData: [ GET_BALANCE ],
-    enabled: apiQuery.isError || apiQuery.errorUpdateCount > 0,
+    enabled: (apiQuery.isError || apiQuery.errorUpdateCount > 0) && !(apiQuery.error?.status && NO_RPC_FALLBACK_ERROR_CODES.includes(apiQuery.error?.status)),
     retry: false,
     refetchOnMount: false,
   });
@@ -107,7 +109,7 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
     } else if (!apiQuery.isError) {
       setRefetchEnabled(false);
     }
-  }, [ apiQuery.errorUpdateCount, apiQuery.isError, apiQuery.isPlaceholderData ]);
+  }, [ apiQuery.errorUpdateCount, apiQuery.isError, apiQuery.isPlaceholderData, apiQuery.error?.status ]);
 
   React.useEffect(() => {
     if (!rpcQuery.isPlaceholderData && !rpcQuery.data) {
@@ -115,7 +117,16 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
     }
   }, [ rpcQuery.data, rpcQuery.isPlaceholderData ]);
 
-  const isRpcQuery = Boolean((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0 && rpcQuery.data && publicClient);
+  const isRpcQuery = Boolean(
+
+    (apiQuery.isError || apiQuery.isPlaceholderData) &&
+    !(apiQuery.error?.status && NO_RPC_FALLBACK_ERROR_CODES.includes(apiQuery.error?.status)) &&
+    !NO_RPC_FALLBACK_ERROR_CODES.includes(apiQuery.error?.status ?? 999) &&
+    apiQuery.errorUpdateCount > 0 &&
+    rpcQuery.data &&
+    publicClient,
+  );
+
   const query = isRpcQuery ? rpcQuery as UseQueryResult<Address, ResourceError<{ status: number }>> : apiQuery;
 
   return {

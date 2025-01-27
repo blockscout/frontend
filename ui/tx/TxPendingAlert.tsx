@@ -5,7 +5,7 @@ const TxPendingAlert = () => {
   return (
     <Alert>
       <Spinner size="sm" mr={ 2 }/>
-        This transaction is pending confirmation.
+      This transaction is pending confirmation.
     </Alert>
   );
 };

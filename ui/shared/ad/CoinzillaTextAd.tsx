@@ -1,8 +1,9 @@
-import { Box, Image, Link, Text, chakra, Skeleton } from '@chakra-ui/react';
+import { Box, Image, Link, Text, chakra } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
 import { ndash } from 'lib/html-entities';
 import isBrowser from 'lib/isBrowser';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 type AdData = {
   ad: {
@@ -13,7 +14,7 @@ type AdData = {
     cta_button: string;
     impressionUrl?: string;
   };
-}
+};
 
 // const MOCK: AdData = {
 //   ad: {
@@ -25,7 +26,7 @@ type AdData = {
 //   },
 // };
 
-const CoinzillaTextAd = ({ className }: {className?: string}) => {
+const CoinzillaTextAd = ({ className }: { className?: string }) => {
   const [ adData, setAdData ] = React.useState<AdData | null>(null);
   const [ isLoading, setIsLoading ] = React.useState(true);
 

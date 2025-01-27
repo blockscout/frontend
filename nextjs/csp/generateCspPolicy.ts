@@ -11,11 +11,12 @@ function generateCspPolicy() {
     descriptors.googleFonts(),
     descriptors.googleReCaptcha(),
     descriptors.growthBook(),
+    descriptors.helia(),
     descriptors.marketplace(),
     descriptors.mixpanel(),
     descriptors.monaco(),
+    descriptors.rollbar(),
     descriptors.safe(),
-    descriptors.sentry(),
     descriptors.usernameApi(),
     descriptors.walletConnect(),
   );

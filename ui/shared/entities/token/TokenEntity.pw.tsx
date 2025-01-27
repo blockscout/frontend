@@ -12,7 +12,7 @@ test.use({ viewport: { width: 300, height: 100 } });
 
 test.describe('icon size', () => {
   iconSizes.forEach((size) => {
-    test(size, async({ render }) => {
+    test(`${ size }`, async({ render }) => {
       const component = await render(
         <TokenEntity
           token={ tokenMock.tokenInfo }

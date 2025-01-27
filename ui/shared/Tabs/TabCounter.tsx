@@ -8,7 +8,7 @@ const COUNTER_OVERLOAD = 50;
 
 type Props = {
   count?: number | null;
-}
+};
 
 const TabCounter = ({ count }: Props) => {
 

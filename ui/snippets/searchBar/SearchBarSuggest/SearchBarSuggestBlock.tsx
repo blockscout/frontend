@@ -1,6 +1,7 @@
 import { Text, Flex, Grid, Tag } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ItemsProps } from './types';
 import type { SearchResultBlock } from 'types/client/search';
 
 import dayjs from 'lib/date/dayjs';
@@ -8,13 +9,7 @@ import highlightText from 'lib/highlightText';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
-interface Props {
-  data: SearchResultBlock;
-  isMobile: boolean | undefined;
-  searchTerm: string;
-}
-
-const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: Props) => {
+const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: ItemsProps<SearchResultBlock>) => {
   const icon = <BlockEntity.Icon/>;
   const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
   const isFutureBlock = data.timestamp === undefined;

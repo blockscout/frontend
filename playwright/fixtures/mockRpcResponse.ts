@@ -1,5 +1,5 @@
 import type { TestFixture, Page } from '@playwright/test';
-import _isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import type { PublicRpcSchema } from 'viem';
 
 import { getEnvValue } from 'configs/app/utils';
@@ -34,7 +34,7 @@ const fixture: TestFixture<MockRpcResponseFixture, { page: Page }> = async({ pag
         ...(rpcMock.Parameters ? { params: rpcMock.Parameters } : {}),
       };
 
-      if (_isEqual(json, payload) && id !== undefined) {
+      if (isEqual(json, payload) && id !== undefined) {
         return route.fulfill({
           status: 200,
           json: {

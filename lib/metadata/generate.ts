@@ -5,6 +5,7 @@ import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
+import { currencyUnits } from 'lib/units';
 
 import compileValue from './compileValue';
 import getCanonicalUrl from './getCanonicalUrl';
@@ -17,6 +18,7 @@ export default function generate<Pathname extends Route['pathname']>(route: Rout
     ...apiData,
     network_name: config.chain.name,
     network_title: getNetworkTitle(),
+    network_gwei: currencyUnits.gwei,
   };
 
   const title = compileValue(templates.title.make(route.pathname, Boolean(apiData)), params);

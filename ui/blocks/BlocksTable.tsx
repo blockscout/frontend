@@ -1,6 +1,6 @@
 import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
+import { capitalize } from 'es-toolkit';
 import { AnimatePresence } from 'framer-motion';
-import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -40,7 +40,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
 
   return (
     <AddressHighlightProvider>
-      <Table variant="simple" minWidth="1040px" size="md" fontWeight={ 500 }>
+      <Table minWidth="1040px" fontWeight={ 500 }>
         <Thead top={ top }>
           <Tr>
             <Th width="150px">Block</Th>
@@ -53,6 +53,8 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
               <Th width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>Reward { currencyUnits.ether }</Th> }
             { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees &&
               <Th width={ `${ FEES_COL_WEIGHT / widthBase * 100 }%` }>Burnt fees { currencyUnits.ether }</Th> }
+            { !isRollup && !config.UI.views.block.hiddenFields?.base_fee &&
+              <Th width="150px" isNumeric>Base fee</Th> }
           </Tr>
         </Thead>
         <Tbody>

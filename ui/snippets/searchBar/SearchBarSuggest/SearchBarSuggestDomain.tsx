@@ -1,22 +1,20 @@
 import { Grid, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ItemsProps } from './types';
 import type { SearchResultDomain } from 'types/api/search';
 
+import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import colors from 'theme/foundations/colors';
+import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 
-interface Props {
-  data: SearchResultDomain;
-  isMobile: boolean | undefined;
-  searchTerm: string;
-}
-
-const SearchBarSuggestDomain = ({ data, isMobile, searchTerm }: Props) => {
-  const icon = <IconSvg name="ENS_slim" boxSize={ 5 } color={ colors.grayTrue[200] }/>;
+const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultDomain>) => {
+  const icon = <EnsEntity.Icon protocol={ data.ens_info.protocol }/>;
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
   const name = (
     <Text
@@ -35,7 +33,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm }: Props) => {
       whiteSpace="nowrap"
       variant="secondary"
     >
-      <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>
     </Text>
   );
 
@@ -52,7 +50,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm }: Props) => {
   if (isMobile) {
     return (
       <>
-        <Flex alignItems="center" overflow="hidden" gap={ 2 }>
+        <Flex alignItems="center" overflow="hidden">
           { icon }
           { name }
         </Flex>
@@ -67,7 +65,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm }: Props) => {
 
   return (
     <Grid alignItems="center" gridTemplateColumns="228px minmax(auto, max-content) auto" gap={ 2 }>
-      <Flex alignItems="center" gap={ 2 }>
+      <Flex alignItems="center">
         { icon }
         { name }
       </Flex>

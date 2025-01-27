@@ -1,4 +1,4 @@
-import _set from 'lodash/set';
+import { set } from 'es-toolkit/compat';
 
 import type { ContractAbiItemInput } from '../types';
 
@@ -78,7 +78,7 @@ export function transformFormDataToMethodArgs(formData: ContractMethodFormFields
 
   for (const field in formData) {
     const value = formData[field];
-    _set(result, field.replaceAll(':', '.'), value);
+    set(result, field.replaceAll(':', '.'), value);
   }
 
   const filteredResult = filterOutEmptyItems(result);

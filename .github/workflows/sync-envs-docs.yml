@@ -1,0 +1,41 @@
+name: Sync ENV variables docs
+
+on:
+    workflow_dispatch:
+    workflow_call:
+
+jobs:
+    run:
+        name: Run
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout repo
+                uses: actions/checkout@v4
+
+            -   name: Copy main ENV file to Blockscout Docs repository
+                uses: dmnemec/copy_file_to_another_repo_action@main
+                env:
+                    API_TOKEN_GITHUB: ${{ secrets.GITHIB_BOT_TOKEN }}
+                with:
+                    source_file: 'docs/ENVS.md'
+                    destination_repo: 'blockscout/docs'
+                    destination_folder: 'setup/env-variables/frontend-common-envs'
+                    rename: 'envs.md'
+                    destination_branch: 'master'
+                    user_email: 'bot@blockscout.com'
+                    user_name: 'blockscout-bot'
+                    use_rsync: true
+
+            -   name: Copy deprecated ENV file to Blockscout Docs repository
+                uses: dmnemec/copy_file_to_another_repo_action@main
+                env:
+                    API_TOKEN_GITHUB: ${{ secrets.GITHIB_BOT_TOKEN }}
+                with:
+                    source_file: 'docs/DEPRECATED_ENVS.md'
+                    destination_repo: 'blockscout/docs'
+                    destination_folder: 'setup/env-variables/frontend-common-envs'
+                    rename: 'deprecated-envs.md'
+                    destination_branch: 'master'
+                    user_email: 'bot@blockscout.com'
+                    user_name: 'blockscout-bot'
+                    use_rsync: true

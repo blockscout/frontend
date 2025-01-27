@@ -28,6 +28,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/graphiql': 'GraphQL for %network_name% - %network_name% data query',
   '/search-results': '%network_name% search result for %q%',
   '/auth/profile': '%network_name% - my profile',
+  '/account/rewards': '%network_name% - rewards',
   '/account/watchlist': '%network_name% - watchlist',
   '/account/api-key': '%network_name% - API keys',
   '/account/custom-abi': '%network_name% - custom ABI',
@@ -40,8 +41,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/deposits': '%network_name% deposits (L1 > L2)',
   '/output-roots': '%network_name% output roots',
   '/dispute-games': '%network_name% dispute games',
-  '/batches': '%network_name% tx batches (L2 blocks)',
-  '/batches/[number]': '%network_name% L2 tx batch %number%',
+  '/batches': '%network_name% txn batches',
+  '/batches/[number]': '%network_name% L2 txn batch %number%',
   '/blobs/[hash]': '%network_name% blob %hash% details',
   '/ops': 'User operations on %network_name% - %network_name% Explorer',
   '/op/[hash]': '%network_name% user operation %hash%',
@@ -49,8 +50,12 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/name-domains': '%network_name% name domains - %network_name% Explorer',
   '/name-domains/[name]': '%network_name% %name% domain details',
   '/validators': '%network_name% validators list',
-  '/gas-tracker': '%network_name% gas tracker - Current gas fees',
+  '/gas-tracker': 'Track %network_name% gas fees in %network_gwei%',
   '/mud-worlds': '%network_name% MUD worlds list',
+  '/token-transfers': '%network_name% token transfers',
+  '/advanced-filter': '%network_name% advanced filter',
+  '/pools': '%network_name% DEX pools',
+  '/pools/[hash]': '%network_name% pool details',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',
@@ -64,8 +69,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/healthz': '%network_name% node API health check',
   '/api/config': '%network_name% node API app config',
   '/api/sprite': '%network_name% node API SVG sprite content',
-  '/auth/auth0': '%network_name% authentication',
-  '/auth/unverified-email': '%network_name% unverified email',
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {

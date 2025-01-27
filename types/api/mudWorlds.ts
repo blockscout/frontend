@@ -6,13 +6,13 @@ export type MudWorldsResponse = {
     items_count: number;
     world: string;
   };
-}
+};
 
 export type MudWorldItem = {
   address: AddressParam;
   coin_balance: string;
-  tx_count: number | null;
-}
+  transaction_count: number | null;
+};
 
 export type MudWorldSchema = {
   key_names: Array<string>;
@@ -27,4 +27,4 @@ export type MudWorldTable = {
   table_name: string;
   table_namespace: string;
   table_type: string;
-}
+};

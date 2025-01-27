@@ -1,4 +1,4 @@
-import { Tr, Td, Flex, Skeleton, Box } from '@chakra-ui/react';
+import { Tr, Td, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
@@ -7,17 +7,18 @@ import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import colors from 'theme/foundations/colors';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
-type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
+type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
 
 const TokenTransferTableItem = ({
   token,
   total,
-  tx_hash: txHash,
+  transaction_hash: txHash,
   from,
   to,
   method,
@@ -25,9 +26,9 @@ const TokenTransferTableItem = ({
   tokenId,
   isLoading,
 }: Props) => {
-  const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
+  const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
-    exchangeRate: token.exchange_rate,
+    exchangeRate: token?.exchange_rate,
     accuracy: 8,
     accuracyUsd: 2,
     decimals: total.decimals || '0',
@@ -69,12 +70,12 @@ const TokenTransferTableItem = ({
           isLoading={ isLoading }
           mt="5px"
           mode={{ lg: 'compact', xl: 'long' }}
-          tokenHash={ token.address }
+          tokenHash={ token?.address }
         />
       </Td>
-      { (NFT_TOKEN_TYPE_IDS.includes(token.type)) && (
+      { (token && NFT_TOKEN_TYPE_IDS.includes(token.type)) && (
         <Td>
-          { 'token_id' in total && total.token_id !== null ? (
+          { total && 'token_id' in total && token && total.token_id !== null ? (
             <NftEntity
               hash={ token.address }
               id={ total.token_id }
@@ -85,7 +86,7 @@ const TokenTransferTableItem = ({
           }
         </Td>
       ) }
-      { (token.type === 'ERC-20' || token.type === 'ERC-1155' || token.type === 'ERC-404') && (
+      { token && (token.type === 'ERC-20' || token.type === 'ERC-1155' || token.type === 'ERC-404') && (
         <Td isNumeric verticalAlign="top">
           { valueStr && (
             <Skeleton isLoaded={ !isLoading } display="inline-block" mt="7px" wordBreak="break-all">

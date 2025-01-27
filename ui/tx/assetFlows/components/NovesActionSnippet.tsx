@@ -1,10 +1,11 @@
-import { Box, Hide, PopoverArrow, PopoverContent, PopoverTrigger, Show, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Hide, PopoverArrow, PopoverContent, PopoverTrigger, Show, Text, useColorModeValue } from '@chakra-ui/react';
 import type { FC } from 'react';
 import React from 'react';
 
 import { HEX_REGEXP } from 'lib/regexp';
 import colors from 'theme/foundations/colors';
 import Popover from 'ui/shared/chakra/Popover';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 

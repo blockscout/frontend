@@ -1,14 +1,15 @@
-import { Box, Flex, IconButton, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, IconButton, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import type { BlockEpoch, BlockEpochElectionReward } from 'types/api/block';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import IconSvg from 'ui/shared/IconSvg';
 
 import BlockEpochElectionRewardDetailsMobile from './BlockEpochElectionRewardDetailsMobile';
-import BlockEpochElectionRewardType from './BlockEpochElectionRewardType';
 
 interface Props {
   data: BlockEpochElectionReward;
@@ -34,7 +35,7 @@ const BlockEpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => 
       onClick={ isLoading || !data.count ? undefined : section.onToggle }
       cursor={ isLoading || !data.count ? undefined : 'pointer' }
     >
-      <Flex my="3px" columnGap={ 3 } alignItems="center" flexWrap="wrap" rowGap={ 1 }>
+      <Flex my="3px" columnGap={ 3 } alignItems="center" flexWrap="wrap" rowGap={ 2 }>
         { data.count ? (
           <Skeleton isLoaded={ !isLoading } display="flex" borderRadius="sm">
             <IconButton
@@ -53,9 +54,9 @@ const BlockEpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => 
             />
           </Skeleton>
         ) : <Box boxSize={ 6 }/> }
-        <BlockEpochElectionRewardType type={ type } isLoading={ isLoading }/>
+        <EpochRewardTypeTag type={ type } isLoading={ isLoading }/>
         <Skeleton isLoaded={ !isLoading }>{ data.count }</Skeleton>
-        <Flex columnGap={ 2 } alignItems="center" ml="auto" fontWeight={ 500 }>
+        <Flex columnGap={ 2 } alignItems="center" ml={{ base: 9, lg: 'auto' }} w={{ base: '100%', lg: 'fit-content' }} fontWeight={ 500 }>
           <Skeleton isLoaded={ !isLoading }>{ valueStr }</Skeleton>
           <TokenEntity
             token={ data.token }

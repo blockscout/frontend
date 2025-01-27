@@ -50,14 +50,14 @@ const NetworkAddToWallet = () => {
     }
   }, [ addOrSwitchChain, provider, toast, wallet ]);
 
-  if (!provider || !wallet || !config.chain.rpcUrl || !feature.isEnabled) {
+  if (!provider || !wallet || !config.chain.rpcUrls.length || !feature.isEnabled) {
     return null;
   }
 
   return (
     <Button variant="outline" size="sm" onClick={ handleClick }>
       <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 5 } mr={ 2 }/>
-        Add { config.chain.name }
+      Add { config.chain.name }
     </Button>
   );
 };

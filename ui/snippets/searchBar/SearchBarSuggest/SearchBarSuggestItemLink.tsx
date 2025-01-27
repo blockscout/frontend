@@ -8,7 +8,7 @@ type Props = {
   href?: string;
   target?: string;
   children: React.ReactNode;
-}
+};
 
 const SearchBarSuggestItemLink = ({ onClick, href, target, children }: Props) => {
   return (

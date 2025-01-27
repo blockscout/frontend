@@ -7,11 +7,11 @@ import AddressMudRecord from './mud/AddressMudRecord';
 import AddressMudTable from './mud/AddressMudTable';
 import AddressMudTables from './mud/AddressMudTables';
 
-type Props ={
+type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
-}
+};
 
 const AddressMud = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const isMounted = useIsMounted();

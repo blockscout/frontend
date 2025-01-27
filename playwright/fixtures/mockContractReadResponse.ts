@@ -1,5 +1,5 @@
 import type { TestFixture, Page } from '@playwright/test';
-import _isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import { encodeFunctionData, encodeFunctionResult, type AbiFunction } from 'viem';
 
 import { getEnvValue } from 'configs/app/utils';
@@ -40,12 +40,13 @@ const fixture: TestFixture<MockContractReadResponseFixture, { page: Page }> = as
           args,
         }),
         to: address,
+        value: params?.value,
       };
 
-      if (_isEqual(params, callParams) && id) {
+      if (isEqual(params, callParams) && id) {
         return route.fulfill({
           status: 200,
-          body: JSON.stringify({
+          json: {
             id,
             jsonrpc: '2.0',
             result: encodeFunctionResult({
@@ -53,7 +54,7 @@ const fixture: TestFixture<MockContractReadResponseFixture, { page: Page }> = as
               functionName: abiItem.name,
               result,
             }),
-          }),
+          },
         });
       }
     });

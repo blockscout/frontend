@@ -54,7 +54,7 @@ export default function useMarketplaceApps(
   filter: string,
   selectedCategoryId: string = MarketplaceCategory.ALL,
   favoriteApps: Array<string> | undefined = undefined,
-  isFavoriteAppsLoaded: boolean = false, // eslint-disable-line @typescript-eslint/no-inferrable-types
+  isFavoriteAppsLoaded: boolean = false,
   ratings: Record<string, AppRating> | undefined = undefined,
 ) {
   const fetch = useFetch();
@@ -114,8 +114,11 @@ export default function useMarketplaceApps(
         if (sorting === 'security_score') {
           return (b.securityReport?.overallInfo.securityScore || 0) - (a.securityReport?.overallInfo.securityScore || 0);
         }
-        if (sorting === 'rating') {
+        if (sorting === 'rating_score') {
           return (b.rating?.value || 0) - (a.rating?.value || 0);
+        }
+        if (sorting === 'rating_count') {
+          return (b.rating?.count || 0) - (a.rating?.count || 0);
         }
         return 0;
       }) || [];

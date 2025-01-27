@@ -1,13 +1,13 @@
 import {
   Box,
   Flex,
-  Skeleton,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -18,7 +18,7 @@ type Props = {
   txCount: number;
   status?: React.ReactNode;
   isLoading: boolean;
-}
+};
 
 const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading }: Props) => {
   return (

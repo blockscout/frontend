@@ -11,11 +11,11 @@ import ZkEvmL2WithdrawalsTableItem from './ZkEvmL2WithdrawalsTableItem';
    items: Array<ZkEvmL2WithdrawalsItem>;
    top: number;
    isLoading?: boolean;
- }
+ };
 
 const ZkEvmL2DepositsTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
+    <Table style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
         <Tr>
           <Th>Block</Th>

@@ -1,4 +1,4 @@
-import { Grid, GridItem, Link, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Link } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -12,6 +12,7 @@ import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ArbitrumL2TxnBatchDA from 'ui/shared/batch/ArbitrumL2TxnBatchDA';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -77,7 +78,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         isLoading={ isPlaceholderData }
         hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on L1"
       >
-        Tx batch number
+        Txn batch number
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -86,8 +87,8 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         <PrevNext
           ml={ 6 }
           onClick={ handlePrevNextClick }
-          prevLabel="View previous tx batch"
-          nextLabel="View next tx batch"
+          prevLabel="View previous txn batch"
+          nextLabel="View next txn batch"
           isPrevDisabled={ data.number === 0 }
           isLoading={ isPlaceholderData }
         />

@@ -22,7 +22,7 @@ type Props = {
   hash: string;
   hasTag: boolean;
   txQuery: TxQuery;
-}
+};
 
 const feature = config.features.txInterpretation;
 
@@ -56,10 +56,6 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
 
   const hasViewAllInterpretationsLink =
     !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1;
-
-  const hasAnyInterpretation =
-    (hasNovesInterpretation && novesInterpretationQuery.data && !novesInterpretationQuery.isPlaceholderData) ||
-    (hasInternalInterpretation && !txInterpretationQuery.isPlaceholderData);
 
   const addressDataMap: Record<string, AddressParam> = {};
   [ txQuery.data?.from, txQuery.data?.to ]
@@ -98,7 +94,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
       return (
         <TxInterpretation
           summary={{
-            summary_template: `{sender_hash} called {method} on {receiver_hash}`,
+            summary_template: `{sender_hash} ${ txQuery.data.status === 'error' ? 'failed to call' : 'called' } {method} on {receiver_hash}`,
             summary_template_variables: {
               sender_hash: {
                 type: 'address',
@@ -140,7 +136,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         mt={{ base: 3, lg: 0 }}
       >
         { !hasTag && <AccountActionsMenu isLoading={ isLoading }/> }
-        { (appActionData && hasAnyInterpretation) && (
+        { appActionData && (
           <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
         ) }
         <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }}/>

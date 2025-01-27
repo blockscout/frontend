@@ -1,10 +1,10 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2WithdrawalsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
@@ -50,7 +50,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }
-          hash={ item.l2_tx_hash }
+          hash={ item.l2_transaction_hash }
           fontSize="sm"
           lineHeight={ 5 }
           truncation="constant_long"
@@ -77,13 +77,13 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
           <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton> }
       </ListItemMobileGrid.Value>
 
-      { item.l1_tx_hash && (
+      { item.l1_transaction_hash && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <TxEntityL1
               isLoading={ isLoading }
-              hash={ item.l1_tx_hash }
+              hash={ item.l1_transaction_hash }
               fontSize="sm"
               lineHeight={ 5 }
               truncation="constant_long"

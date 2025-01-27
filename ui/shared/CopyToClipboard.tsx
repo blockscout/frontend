@@ -1,7 +1,8 @@
-import { IconButton, Tooltip, useClipboard, chakra, useDisclosure, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { IconButton, Tooltip, useClipboard, chakra, useDisclosure, useColorModeValue } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import colors from 'theme/foundations/colors';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -35,6 +36,7 @@ const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, 
   }, [ hasCopied ]);
 
   const handleClick = React.useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
     onCopy();
     onClick?.(event);
   }, [ onClick, onCopy ]);

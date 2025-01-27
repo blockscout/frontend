@@ -1,7 +1,8 @@
-import { Box, HStack, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, HStack, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import colors from 'theme/foundations/colors';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 

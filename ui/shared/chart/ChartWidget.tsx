@@ -2,7 +2,6 @@ import {
   chakra,
   Flex,
   IconButton,
-  Skeleton,
   Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -15,6 +14,7 @@ import { route, type Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import colors from 'theme/foundations/colors';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChartMenu from './ChartMenu';
@@ -32,7 +32,7 @@ export type Props = {
   emptyText?: string;
   noAnimation?: boolean;
   href?: Route;
-}
+};
 
 const ChartWidget = ({
   items,

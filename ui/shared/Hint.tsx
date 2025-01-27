@@ -1,8 +1,9 @@
 import type { TooltipProps } from '@chakra-ui/react';
-import { chakra, IconButton, Tooltip, useDisclosure, Skeleton } from '@chakra-ui/react';
+import { chakra, IconButton, Tooltip, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import colors from 'theme/foundations/colors';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

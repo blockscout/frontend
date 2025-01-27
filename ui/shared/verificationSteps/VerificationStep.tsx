@@ -11,7 +11,7 @@ type Props = {
   isLast: boolean;
   isPassed: boolean;
   isPending?: boolean;
-}
+};
 
 const VerificationStep = ({ step, isLast, isPassed, isPending }: Props) => {
   let stepColor = 'text_secondary';

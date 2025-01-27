@@ -11,7 +11,7 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 type Props = {
   onClick: (kw: string) => void;
   onClear: () => void;
-}
+};
 
 const SearchBarSuggest = ({ onClick, onClear }: Props) => {
   const isMobile = useIsMobile();

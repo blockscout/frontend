@@ -1,4 +1,4 @@
-import { Td, Tr, Flex, Skeleton } from '@chakra-ui/react';
+import { Td, Tr, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { Block } from 'types/api/block';
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
@@ -41,7 +42,7 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
       </Td>
       <Td>
         <Skeleton isLoaded={ !props.isLoading } display="inline-block" fontWeight="500">
-          <span>{ props.tx_count }</span>
+          <span>{ props.transaction_count }</span>
         </Skeleton>
       </Td>
       <Td>
@@ -57,7 +58,7 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
         </Flex>
       </Td>
       { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
-        <Td isNumeric display="flex" justifyContent="end">
+        <Td isNumeric>
           <Skeleton isLoaded={ !props.isLoading } display="inline-block">
             <span>{ totalReward.toFixed() }</span>
           </Skeleton>

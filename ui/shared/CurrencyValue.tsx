@@ -1,7 +1,8 @@
-import { chakra, Skeleton } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 interface Props {
   value: string;

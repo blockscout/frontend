@@ -1,12 +1,15 @@
 import type { As } from '@chakra-ui/react';
-import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
+import { Box, Flex, Tooltip, chakra, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
 
 import { route } from 'nextjs-routes';
 
+import { toBech32Address } from 'lib/address/bech32';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
+import { useSettingsContext } from 'lib/contexts/settings';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { distributeEntityProps, getIconProps } from '../base/utils';
@@ -14,6 +17,10 @@ import AddressEntityContentProxy from './AddressEntityContentProxy';
 import AddressIdenticon from './AddressIdenticon';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'address'>;
+
+const getDisplayedAddress = (address: AddressProp, altHash?: string) => {
+  return address.filecoin?.robust ?? address.filecoin?.id ?? altHash ?? address.hash;
+};
 
 const Link = chakra((props: LinkProps) => {
   const defaultHref = route({ pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } });
@@ -77,15 +84,16 @@ const Icon = (props: IconProps) => {
     <Flex marginRight={ styles.marginRight }>
       <AddressIdenticon
         size={ props.size === 'lg' ? 30 : 20 }
-        hash={ props.address.hash }
+        hash={ getDisplayedAddress(props.address) }
       />
     </Flex>
   );
 };
 
-export type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
+export type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'> & { altHash?: string };
 
 const Content = chakra((props: ContentProps) => {
+  const displayedAddress = getDisplayedAddress(props.address, props.altHash);
   const nameTag = props.address.metadata?.tags.find(tag => tag.tagType === 'name')?.name;
   const nameText = nameTag || props.address.ens_domain_name || props.address.name;
 
@@ -99,7 +107,9 @@ const Content = chakra((props: ContentProps) => {
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
         <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
-        <Box whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.hash }</Box>
+        <Box whiteSpace="pre-wrap" wordBreak="break-word">
+          { displayedAddress }
+        </Box>
       </VStack>
     );
 
@@ -115,18 +125,18 @@ const Content = chakra((props: ContentProps) => {
   return (
     <EntityBase.Content
       { ...props }
-      text={ props.address.hash }
+      text={ displayedAddress }
     />
   );
 });
 
-type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'address'>;
+type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'address'> & { altHash?: string };
 
 const Copy = (props: CopyProps) => {
   return (
     <EntityBase.Copy
       { ...props }
-      text={ props.address.hash }
+      text={ getDisplayedAddress(props.address, props.altHash) }
     />
   );
 };
@@ -141,28 +151,31 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   address: AddressProp;
   isSafeAddress?: boolean;
   noHighlight?: boolean;
+  noAltHash?: boolean;
 }
 
 const AddressEntry = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
-  const context = useAddressHighlightContext(props.noHighlight);
+  const highlightContext = useAddressHighlightContext(props.noHighlight);
+  const settingsContext = useSettingsContext();
+  const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
 
   return (
     <Container
       // we have to use the global classnames here, see theme/global.ts
       // otherwise, if we use sx prop, Chakra will generate the same styles for each instance of the component on the page
       className={ `${ props.className } address-entity ${ props.noCopy ? 'address-entity_no-copy' : '' }` }
-      data-hash={ context && !props.isLoading ? props.address.hash : undefined }
-      onMouseEnter={ context?.onMouseEnter }
-      onMouseLeave={ context?.onMouseLeave }
+      data-hash={ highlightContext && !props.isLoading ? props.address.hash : undefined }
+      onMouseEnter={ highlightContext?.onMouseEnter }
+      onMouseLeave={ highlightContext?.onMouseLeave }
       position="relative"
       zIndex={ 0 }
     >
       <Icon { ...partsProps.icon }/>
       <Link { ...partsProps.link }>
-        <Content { ...partsProps.content }/>
+        <Content { ...partsProps.content } altHash={ altHash }/>
       </Link>
-      <Copy { ...partsProps.copy }/>
+      <Copy { ...partsProps.copy } altHash={ altHash }/>
     </Container>
   );
 };

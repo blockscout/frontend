@@ -24,7 +24,7 @@ export const verified: SmartContract = {
   verified_at: '2021-08-03T10:40:41.679421Z',
   decoded_constructor_args: [
     [ '0xc59615da2da226613b1c78f0c6676cac497910bc', { internalType: 'address', name: '_token', type: 'address' } ],
-    [ '1800', { internalType: 'uint256', name: '_duration', type: 'uint256' } ],
+    [ [ 1800, 3600, 7200 ], { internalType: 'uint256[]', name: '_durations', type: 'uint256[]' } ],
     [ '900000000', { internalType: 'uint256', name: '_totalSupply', type: 'uint256' } ],
   ],
   external_libraries: [
@@ -104,6 +104,19 @@ export const zkSync: SmartContract = {
   zk_compiler_version: 'v1.2.5',
   optimization_enabled: true,
   optimization_runs: 's',
+};
+
+export const stylusRust: SmartContract = {
+  ...verified,
+  language: 'stylus_rust',
+  github_repository_metadata: {
+    commit: 'af5029f822815e32def0015bf8e591e769c62f34',
+    path_prefix: 'examples/erc20',
+    repository_url: 'https://github.com/blockscout/cargo-stylus-test-examples',
+  },
+  compiler_version: 'v0.5.6',
+  package_name: 'erc20',
+  evm_version: null,
 };
 
 export const nonVerified: SmartContract = {

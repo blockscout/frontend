@@ -10,17 +10,20 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
+import AddressAlternativeFormat from './details/AddressAlternativeFormat';
 import AddressBalance from './details/AddressBalance';
 import AddressImplementations from './details/AddressImplementations';
 import AddressNameInfo from './details/AddressNameInfo';
 import AddressNetWorth from './details/AddressNetWorth';
 import AddressSaveOnGas from './details/AddressSaveOnGas';
+import FilecoinActorTag from './filecoin/FilecoinActorTag';
 import TokenSelect from './tokenSelect/TokenSelect';
 import useAddressCountersQuery from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
@@ -54,7 +57,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     token: null,
     watchlist_address_id: null,
     watchlist_names: null,
-    creation_tx_hash: null,
+    creation_transaction_hash: null,
     block_number_balance_updated_at: null,
     name: null,
     exchange_rate: null,
@@ -62,6 +65,9 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     has_tokens: true,
     has_token_transfers: true,
     has_validated_blocks: false,
+    filecoin: undefined,
+    creator_filecoin_robust_address: null,
+    creator_address_hash: null,
   }), [ addressHash ]);
 
   // error handling (except 404 codes)
@@ -82,6 +88,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     return null;
   }
 
+  const creatorAddressHash = data.creator_address_hash;
+
   return (
     <>
       { addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={ addressQuery.isPlaceholderData } mb={ 6 }/> }
@@ -90,9 +98,55 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         rowGap={{ base: 1, lg: 3 }}
         templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
       >
+        <AddressAlternativeFormat isLoading={ addressQuery.isPlaceholderData } addressHash={ addressHash }/>
+
+        { data.filecoin?.id && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Short identifier of an address that may change with chain state updates"
+            >
+              ID
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <Text>{ data.filecoin.id }</Text>
+              <CopyToClipboard text={ data.filecoin.id }/>
+            </DetailsInfoItem.Value>
+          </>
+        ) }
+
+        { data.filecoin?.actor_type && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Identifies the purpose and behavior of the address on the Filecoin network"
+            >
+              Actor
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <FilecoinActorTag actorType={ data.filecoin.actor_type }/>
+            </DetailsInfoItem.Value>
+          </>
+        ) }
+
+        { (data.filecoin?.actor_type === 'evm' || data.filecoin?.actor_type === 'ethaccount') && data?.filecoin?.robust && (
+          <>
+            <DetailsInfoItem.Label
+              hint="0x-style address to which the Filecoin address is assigned by the Ethereum Address Manager"
+            >
+              Ethereum Address
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value flexWrap="nowrap">
+              <AddressEntity
+                address={{ hash: data.hash }}
+                noIcon
+                noLink
+              />
+            </DetailsInfoItem.Value>
+          </>
+        ) }
+
         <AddressNameInfo data={ data } isLoading={ addressQuery.isPlaceholderData }/>
 
-        { data.is_contract && data.creation_tx_hash && data.creator_address_hash && (
+        { data.is_contract && data.creation_transaction_hash && (creatorAddressHash) && (
           <>
             <DetailsInfoItem.Label
               hint="Transaction and address of creation"
@@ -102,12 +156,12 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
               <AddressEntity
-                address={{ hash: data.creator_address_hash }}
+                address={{ hash: creatorAddressHash, filecoin: { robust: data.creator_filecoin_robust_address } }}
                 truncation="constant"
                 noIcon
               />
               <Text whiteSpace="pre"> at txn </Text>
-              <TxEntity hash={ data.creation_tx_hash } truncation="constant" noIcon noCopy={ false }/>
+              <TxEntity hash={ data.creation_transaction_hash } truncation="constant" noIcon noCopy={ false }/>
             </DetailsInfoItem.Value>
           </>
         ) }

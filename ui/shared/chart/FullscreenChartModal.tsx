@@ -19,7 +19,7 @@ type Props = {
   zoomRange?: [ Date, Date ];
   handleZoom: (range: [ Date, Date ]) => void;
   handleZoomReset: () => void;
-}
+};
 
 const FullscreenChartModal = ({
   isOpen,

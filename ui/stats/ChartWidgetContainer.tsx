@@ -20,7 +20,7 @@ type Props = {
   isPlaceholderData: boolean;
   className?: string;
   href?: Route;
-}
+};
 
 const ChartWidgetContainer = ({
   id,

@@ -1,10 +1,11 @@
-import { Box, Center, Flex, Link, Skeleton, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Link, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TimeChartItem } from './types';
 import type { Resolution } from '@blockscout/stats-types';
 
 import { apos } from 'lib/html-entities';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import ChartWatermarkIcon from './ChartWatermarkIcon';
 import ChartWidgetGraph from './ChartWidgetGraph';
@@ -21,7 +22,7 @@ export type Props = {
   isEnlarged?: boolean;
   noAnimation?: boolean;
   resolution?: Resolution;
-}
+};
 
 const ChartWidgetContent = ({
   items,

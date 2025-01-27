@@ -29,8 +29,8 @@ const testFn = async({ render, mockConfigResponse, mockAssetResponse, mockEnvs, 
     [ 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY', 'test' ],
     [ 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID', 'test' ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, JSON.stringify(appsMock));
-  await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL, JSON.stringify(securityReportsMock));
+  await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, appsMock);
+  await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL, securityReportsMock);
   await mockAssetResponse(appsMock[0].url, './mocks/apps/app.html');
   await mockRpcResponse({
     Method: 'eth_chainId',
@@ -38,7 +38,7 @@ const testFn = async({ render, mockConfigResponse, mockAssetResponse, mockEnvs, 
   });
   await page.route('https://api.airtable.com/v0/test/apps_ratings?fields%5B%5D=appId&fields%5B%5D=rating&fields%5B%5D=count', (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify(ratingsMock),
+    json: ratingsMock,
   }));
 
   const component = await render(

@@ -1,10 +1,11 @@
-import { Text, Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Text, Td, Tr } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { MudWorldItem } from 'types/api/mudWorlds';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 type Props = { item: MudWorldItem; isLoading?: boolean };
@@ -26,7 +27,7 @@ const MudWorldsTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading } display="inline-block" lineHeight="24px">
-          { Number(item.tx_count).toLocaleString() }
+          { Number(item.transaction_count).toLocaleString() }
         </Skeleton>
       </Td>
     </Tr>

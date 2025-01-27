@@ -57,7 +57,7 @@ const LatestOptimisticDeposits = () => {
     return (
       <LatestDeposits
         items={ data.slice(0, itemsCount).map((item) => (
-          { l1BlockNumber: item.l1_block_number, l1TxHash: item.l1_tx_hash, l2TxHash: item.l2_tx_hash, timestamp: item.l1_block_timestamp }
+          { l1BlockNumber: item.l1_block_number, l1TxHash: item.l1_transaction_hash, l2TxHash: item.l2_transaction_hash, timestamp: item.l1_block_timestamp }
         )) }
         isLoading={ isPlaceholderData }
         socketItemsNum={ num }

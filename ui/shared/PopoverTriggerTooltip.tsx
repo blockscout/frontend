@@ -1,14 +1,15 @@
-import { Skeleton, Tooltip, chakra } from '@chakra-ui/react';
+import { Tooltip, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 type Props = {
   label: string;
   isLoading?: boolean;
   className?: string;
   children: React.ReactNode;
-}
+};
 
 const PopoverTriggerTooltip = ({ label, isLoading, className, children }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   const isMobile = useIsMobile();

@@ -1,4 +1,4 @@
-import { Grid, Skeleton } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -11,6 +11,7 @@ import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
@@ -75,8 +76,8 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
         <PrevNext
           ml={ 6 }
           onClick={ handlePrevNextClick }
-          prevLabel="View previous tx batch"
-          nextLabel="View next tx batch"
+          prevLabel="View previous txn batch"
+          nextLabel="View next txn batch"
           isPrevDisabled={ data.internal_id === 0 }
           isLoading={ isPlaceholderData }
         />
@@ -104,7 +105,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
           <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'txs' } }) }>
-            { data.tx_count.toLocaleString() } transaction{ data.tx_count === 1 ? '' : 's' }
+            { data.transaction_count.toLocaleString() } transaction{ data.transaction_count === 1 ? '' : 's' }
           </LinkInternal>
           { ' ' }in this batch
         </Skeleton>
@@ -137,7 +138,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
           <OptimisticL2TxnBatchBlobEip4844 blobs={ data.blobs } isLoading={ isPlaceholderData }/> }
         { data.batch_data_container === 'in_calldata' && (
           <OptimisticL2TxnBatchBlobCallData
-            l1TxHashes={ data.l1_tx_hashes }
+            l1TxHashes={ data.l1_transaction_hashes }
             l1Timestamp={ data.l1_timestamp }
             isLoading={ isPlaceholderData }
           />

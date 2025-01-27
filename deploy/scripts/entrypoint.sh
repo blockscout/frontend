@@ -35,13 +35,21 @@ export_envs_from_preset() {
 # If there is a preset, load the environment variables from the its file
 export_envs_from_preset
 
+# Generate OG image
+node --no-warnings ./og_image_generator.js
+
 # Download external assets
 ./download_assets.sh ./public/assets/configs
 
 # Check run-time ENVs values
-./validate_envs.sh
-if [ $? -ne 0 ]; then
-  exit 1
+if [ "$SKIP_ENVS_VALIDATION" != "true" ]; then
+  ./validate_envs.sh
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+else
+  echo "😱 Skipping ENVs validation."
+  echo
 fi
 
 # Generate favicons bundle
@@ -55,6 +63,9 @@ echo
 
 # Create envs.js file with run-time environment variables for the client app
 ./make_envs_script.sh
+
+# Generate sitemap.xml and robots.txt files
+./sitemap_generator.sh
 
 # Print list of enabled features
 node ./feature-reporter.js

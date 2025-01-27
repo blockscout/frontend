@@ -1,4 +1,4 @@
-import { Alert, Box, Flex, Select, chakra } from '@chakra-ui/react';
+import { Alert, Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
@@ -6,11 +6,17 @@ import type { TokenInstance } from 'types/api/token';
 import ContentLoader from 'ui/shared/ContentLoader';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
+import Select from 'ui/shared/select/Select';
 
 import { useMetadataUpdateContext } from './contexts/metadataUpdate';
 import MetadataAccordion from './metadata/MetadataAccordion';
 
-type Format = 'JSON' | 'Table'
+const OPTIONS = [
+  { label: 'Table', value: 'Table' as const },
+  { label: 'JSON', value: 'JSON' as const },
+];
+
+type Format = (typeof OPTIONS)[number]['value'];
 
 interface Props {
   data: TokenInstance['metadata'] | undefined;
@@ -21,10 +27,6 @@ const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
   const [ format, setFormat ] = React.useState<Format>('Table');
 
   const { status: refetchStatus } = useMetadataUpdateContext() || {};
-
-  const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormat(event.target.value as Format);
-  }, []);
 
   if (isPlaceholderData || refetchStatus === 'WAITING_FOR_RESPONSE') {
     return <ContentLoader/>;
@@ -48,10 +50,14 @@ const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
       ) }
       <Flex alignItems="center" mb={ 6 }>
         <chakra.span fontWeight={ 500 }>Metadata</chakra.span>
-        <Select size="xs" borderRadius="base" value={ format } onChange={ handleSelectChange } w="auto" ml={ 5 }>
-          <option value="Table">Table</option>
-          <option value="JSON">JSON</option>
-        </Select>
+        <Select
+          options={ OPTIONS }
+          name="metadata-format"
+          defaultValue="Table"
+          onChange={ setFormat }
+          w="85px"
+          ml={ 5 }
+        />
         { format === 'JSON' && <CopyToClipboard text={ JSON.stringify(data) } ml="auto"/> }
       </Flex>
       { content }

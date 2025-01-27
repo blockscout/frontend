@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Link, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Text, Link, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo, TokenInstance } from 'types/api/token';
@@ -7,6 +7,7 @@ import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import colors from 'theme/foundations/colors';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import NftMedia from 'ui/shared/nft/NftMedia';
@@ -21,8 +22,7 @@ const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
   const mediaElement = (
     <NftMedia
       mb="18px"
-      animationUrl={ item.animation_url }
-      imageUrl={ item.image_url }
+      data={ item }
       isLoading={ isLoading }
       autoplayVideo={ false }
     />

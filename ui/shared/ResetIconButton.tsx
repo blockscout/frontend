@@ -6,7 +6,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   onClick: () => void;
-}
+};
 
 const ResetIconButton = ({ onClick }: Props) => {
   const resetTokenIconColor = useColorModeValue('blue.600', colors.grayTrue[200]);
