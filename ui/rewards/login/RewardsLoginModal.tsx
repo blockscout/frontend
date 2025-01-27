@@ -64,7 +64,7 @@ const RewardsLoginModal = () => {
       <DialogRoot
         open={ isLoginModalOpen && !isWalletModalOpen && !authModal.open }
         onOpenChange={ handleOpenChange }
-        size={{ base: 'full', lg: isLoginStep ? 'sm' : 'md' }}
+        size={{ lgDown: 'full', lg: isLoginStep ? 'sm' : 'md' }}
       >
         <DialogContent>
           <DialogHeader>

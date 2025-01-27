@@ -24,7 +24,7 @@ interface Props {
   isPending?: boolean;
 }
 
-const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ...rest }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   const [ isFetched, setIsFetched ] = useState(false);
   const isMobile = useIsMobile();
 
@@ -87,6 +87,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
         px={ dataExists ? 2.5 : 4 }
         fontWeight={ dataExists ? 700 : 600 }
         loading={ isButtonLoading }
+        { ...rest }
       >
         { content }
       </Button>
@@ -94,4 +95,4 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
   );
 };
 
-export default React.memo(React.forwardRef(UserProfileButton));
+export default React.forwardRef(UserProfileButton);

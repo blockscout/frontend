@@ -73,7 +73,7 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
 
   return (
     <>
-      <PopoverRoot positioning={{ placement: 'bottom-end' }} lazyMount open={ profileMenu.open } onOpenChange={ handleOpenChange }>
+      <PopoverRoot positioning={{ placement: 'bottom-end' }} open={ profileMenu.open } onOpenChange={ handleOpenChange }>
         <PopoverTrigger>
           <UserProfileButton
             profileQuery={ profileQuery }

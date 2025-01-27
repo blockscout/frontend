@@ -170,7 +170,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
     <DialogRoot
       open
       onOpenChange={ onModalOpenChange }
-      size={{ base: 'full', lg: 'sm' }}
+      size={{ lgDown: 'full', lg: 'sm' }}
       // we need to allow user interact with element outside of dialog otherwise they can't click on recaptcha
       modal={ false }
       // FIXME if we allow to close on interact outside, the dialog will be closed when user click on recaptcha
