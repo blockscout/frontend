@@ -1,11 +1,11 @@
 import { Image, Flex, Text, useColorModeValue } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import highlightText from 'lib/highlightText';
 import IconSvg from 'ui/shared/IconSvg';
+import NextLink from 'ui/shared/NextLink';
 
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 

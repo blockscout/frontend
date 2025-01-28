@@ -1,11 +1,12 @@
 import type { LinkProps as NextLinkProps } from 'next/link';
-import NextLink from 'next/link';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/client/search';
 import type { AddressFormat } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
+
+import NextLink from 'ui/shared/NextLink';
 
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
 import SearchBarSuggestBlob from './SearchBarSuggestBlob';

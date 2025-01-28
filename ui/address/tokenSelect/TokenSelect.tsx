@@ -1,7 +1,6 @@
 import { Box, Flex, IconButton, Tooltip } from '@chakra-ui/react';
 import { useQueryClient, useIsFetching } from '@tanstack/react-query';
 import { sumBy } from 'es-toolkit';
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -13,6 +12,7 @@ import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
+import NextLink from 'ui/shared/NextLink';
 
 import useFetchTokens from '../utils/useFetchTokens';
 import TokenSelectDesktop from './TokenSelectDesktop';
