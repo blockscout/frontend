@@ -31,7 +31,7 @@ const variantSubtle = defineStyle((props) => {
       paddingInline: '8px',
     };
   }
-  if (c === 'black-blue') {
+  if (c === 'black-blue' || c === 'blue') {
     return {
       bg: mode('gray.100', getTransparentColor(colors.blueLight[300], 0.2, props))(props),
       color: mode('blackAlpha.800', colors.blueLight[300])(props),
@@ -59,7 +59,7 @@ const variantSubtle = defineStyle((props) => {
       paddingInline: '8px',
     };
   }
-  if (c === 'black-purple') {
+  if (c === 'black-purple' || c === 'purple') {
     return {
       bg: mode('blackAlpha.50', getTransparentColor(colors.violet[300], 0.2, props))(props),
       color: mode('blackAlpha.800', colors.violet[300])(props),

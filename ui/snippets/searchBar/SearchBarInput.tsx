@@ -100,6 +100,7 @@ const SearchBarInput = (
 
   const bgColor = useColorModeValue('white', 'black');
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
+  const iconColor = useColorModeValue('whiteAlpha.800', colors.grayTrue[200]);
 
   const rightElement = (() => {
     if (value) {
@@ -109,7 +110,6 @@ const SearchBarInput = (
     if (isMobile) {
       return null;
     }
-
     return (
       <Center
         boxSize="20px"
@@ -117,8 +117,8 @@ const SearchBarInput = (
         mr={{ base: 1, lg: isHomepage ? 2 : 1 }}
         borderRadius="sm"
         borderWidth="1px"
-        borderColor="gray.400"
-        color="gray.400"
+        borderColor={ iconColor }
+        color={ iconColor }
         display={{ base: 'none', lg: 'flex' }}
       >
         /

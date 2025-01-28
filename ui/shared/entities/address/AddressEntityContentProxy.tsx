@@ -1,6 +1,7 @@
 import { Box, DarkMode, PopoverBody, PopoverContent, PopoverTrigger, Portal, useColorModeValue, Flex, PopoverArrow } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
 import Popover from 'ui/shared/chakra/Popover';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
@@ -8,7 +9,7 @@ import type { ContentProps } from './AddressEntity';
 import AddressEntity from './AddressEntity';
 
 const AddressEntityContentProxy = (props: ContentProps) => {
-  const bgColor = useColorModeValue('gray.700', 'gray.900');
+  const bgColor = useColorModeValue('gray.700', colors.grayTrue[700]); //'gray.900'
 
   const implementations = props.address.implementations;
 
