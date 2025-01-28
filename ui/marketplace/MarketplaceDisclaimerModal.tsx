@@ -1,8 +1,8 @@
 import { Heading, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Button, useColorModeValue } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import NextLink from 'ui/shared/NextLink';
 
 type Props = {
   isOpen: boolean;
