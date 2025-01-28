@@ -43,7 +43,7 @@ const Icon = (props: IconProps) => {
   };
 
   if (props.isLoading) {
-    return <Skeleton { ...styles } className={ props.className }/>;
+    return <Skeleton { ...styles } loading className={ props.className }/>;
   }
 
   return (

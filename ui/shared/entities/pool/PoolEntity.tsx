@@ -1,5 +1,4 @@
-import type { As } from '@chakra-ui/react';
-import { Flex, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Pool } from 'types/api/pools';
@@ -7,7 +6,7 @@ import type { Pool } from 'types/api/pools';
 import { route } from 'nextjs-routes';
 
 import { getPoolTitle } from 'lib/pools/getPoolTitle';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
@@ -32,8 +31,8 @@ const Link = chakra((props: LinkProps) => {
 type IconProps = Pick<EntityProps, 'pool' | 'className'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
-  const bgColor = useColorModeValue('white', 'black');
-  const borderColor = useColorModeValue('whiteAlpha.800', 'blackAlpha.800');
+  const bgColor = { _light: 'white', _dark: 'black' };
+  const borderColor = { _light: 'whiteAlpha.800', _dark: 'blackAlpha.800' };
   return (
     <Flex>
       <Flex
@@ -87,7 +86,7 @@ const Content = chakra((props: ContentProps) => {
   return (
     <TruncatedTextTooltip label={ nameString }>
       <Skeleton
-        isLoaded={ !props.isLoading }
+        loading={ props.isLoading }
         display="inline-block"
         whiteSpace="nowrap"
         overflow="hidden"
@@ -119,7 +118,7 @@ const PoolEntity = (props: EntityProps) => {
   );
 };
 
-export default React.memo(chakra<As, EntityProps>(PoolEntity));
+export default React.memo(chakra(PoolEntity));
 
 export {
   Container,

@@ -50,7 +50,7 @@ const NavLinkGroup = ({ item }: Props) => {
       visual="popover"
       content={ content }
       onOpenChange={ onOpenChange }
-      lazyMount
+      lazyMount={ false }
       positioning={{
         placement: 'bottom',
         offset: { mainAxis: 8 },
@@ -66,7 +66,7 @@ const NavLinkGroup = ({ item }: Props) => {
         py={ 1.5 }
         textStyle="sm"
         fontWeight={ 500 }
-        visual="navigation"
+        variant="navigation"
         { ...(item.isActive ? { 'data-selected': true } : {}) }
         { ...(open ? { 'data-active': true } : {}) }
         borderRadius="base"

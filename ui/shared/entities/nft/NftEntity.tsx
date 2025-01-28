@@ -1,4 +1,3 @@
-import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -69,7 +68,7 @@ const NftEntity = (props: EntityProps) => {
   );
 };
 
-export default React.memo(chakra<As, EntityProps>(NftEntity));
+export default React.memo(chakra(NftEntity));
 
 export {
   Container,

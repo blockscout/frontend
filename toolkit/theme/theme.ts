@@ -31,6 +31,12 @@ const customConfig = defineConfig({
       fonts,
       shadows,
       zIndex,
+      fontWeights: {
+        normal: { value: '400' },
+        medium: { value: '500' },
+        semibold: { value: '600' },
+        bold: { value: '700' },
+      },
     },
   },
   // components,

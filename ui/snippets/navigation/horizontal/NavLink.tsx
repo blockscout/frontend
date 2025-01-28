@@ -37,7 +37,7 @@ const NavLink = ({ className, item, noIcon }: Props) => {
         href={ href }
         display="flex"
         alignItems="center"
-        visual="navigation"
+        variant="navigation"
         { ...(isActive ? { 'data-selected': true } : {}) }
         w="224px"
         px={ 2 }

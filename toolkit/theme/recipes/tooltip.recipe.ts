@@ -72,6 +72,8 @@ export const recipe = defineSlotRecipe({
           boxShadow: 'popover',
           boxShadowColor: 'popover.shadow',
           borderRadius: 'md',
+          textAlign: 'left',
+          fontWeight: 'normal',
         },
       },
     },

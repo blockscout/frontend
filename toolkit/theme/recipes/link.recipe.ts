@@ -5,7 +5,7 @@ export const recipe = defineRecipe({
     gap: 0,
   },
   variants: {
-    visual: {
+    variant: {
       primary: {
         color: 'link.primary',
         _hover: {
@@ -24,7 +24,25 @@ export const recipe = defineRecipe({
         color: 'link.subtle',
         _hover: {
           color: 'link.subtle.hover',
+          textDecorationLine: 'underline',
           textDecorationColor: 'link.subtle.hover',
+        },
+      },
+      underlaid: {
+        color: 'link.primary',
+        // css-var to override bg property on loaded skeleton
+        '--layer-bg': '{colors.link.underlaid.bg}',
+        bgColor: 'link.underlaid.bg',
+        px: '8px',
+        py: '6px',
+        borderRadius: 'base',
+        textStyle: 'sm',
+        _hover: {
+          color: 'link.primary.hover',
+          textDecoration: 'none',
+        },
+        _loading: {
+          bgColor: 'transparent',
         },
       },
       navigation: {
@@ -47,6 +65,6 @@ export const recipe = defineRecipe({
     },
   },
   defaultVariants: {
-    visual: 'primary',
+    variant: 'primary',
   },
 });

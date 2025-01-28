@@ -19,7 +19,7 @@ export const recipe = defineRecipe({
         },
       },
       'false': {
-        background: 'unset',
+        background: 'var(--layer-bg)',
         animation: 'fade-in var(--fade-duration, 0.1s) ease-out !important',
       },
     },

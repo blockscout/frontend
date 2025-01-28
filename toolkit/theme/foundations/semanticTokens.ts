@@ -89,6 +89,9 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       secondary: {
         DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
       },
+      underlaid: {
+        bg: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },
+      },
       subtle: {
         DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.gray.400}' } },
         hover: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.gray.400}' } },
@@ -306,6 +309,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     icon: {
       backTo: { value: '{colors.gray.400}' },
+      externalLink: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.400}' } },
     },
     global: {
       body: {

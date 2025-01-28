@@ -26,6 +26,8 @@ const RESTRICTED_MODULES = {
     { name: '@metamask/post-message-stream', message: 'Please lazy-load @metamask/post-message-stream or use useProvider hook instead' },
     { name: 'playwright/TestApp', message: 'Please use render() fixture from test() function of playwright/lib module' },
     { name: 'ui/shared/chakra/Skeleton', message: 'Please use Skeleton component from toolkit/chakra instead' },
+    { name: 'ui/shared/links/LinkInternal', message: 'Please use Link component from toolkit/chakra instead' },
+    { name: 'ui/shared/links/LinkExternal', message: 'Please use Link component from toolkit/chakra instead' },
     {
       name: '@chakra-ui/react',
       importNames: [

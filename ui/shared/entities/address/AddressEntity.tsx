@@ -48,7 +48,7 @@ const Icon = (props: IconProps) => {
   };
 
   if (props.isLoading) {
-    return <Skeleton { ...styles } borderRadius="full" flexShrink={ 0 }/>;
+    return <Skeleton { ...styles } loading borderRadius="full" flexShrink={ 0 }/>;
   }
 
   if (props.address.is_contract) {

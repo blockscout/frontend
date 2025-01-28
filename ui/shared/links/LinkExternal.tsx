@@ -14,12 +14,11 @@ interface Props {
   children: React.ReactNode;
   isLoading?: boolean;
   variant?: Variants;
-  visual?: LinkProps['visual'];
   iconColor?: LinkProps['color'];
   onClick?: LinkProps['onClick'];
 }
 
-const LinkExternal = ({ href, children, className, isLoading, variant, visual, iconColor, onClick }: Props) => {
+const LinkExternal = ({ href, children, className, isLoading, variant, iconColor, onClick }: Props) => {
   const commonProps = {
     display: 'inline-block',
     alignItems: 'center',
@@ -46,7 +45,7 @@ const LinkExternal = ({ href, children, className, isLoading, variant, visual, i
   }
 
   return (
-    <Link className={ className } { ...styleProps } target="_blank" href={ href } onClick={ onClick } visual={ visual }>
+    <Link className={ className } { ...styleProps } target="_blank" href={ href } onClick={ onClick } variant={ variant }>
       { children }
       <IconSvg name="link_external" boxSize={ 3 } verticalAlign="middle" color={ iconColor ?? 'icon_link_external' } flexShrink={ 0 }/>
     </Link>

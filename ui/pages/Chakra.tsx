@@ -25,6 +25,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import AlertsShowcase from 'ui/showcases/Alerts';
 import BadgesShowcase from 'ui/showcases/Badges';
 import ButtonShowcase from 'ui/showcases/Button';
+import LinksShowcase from 'ui/showcases/Links';
 import PaginationShowcase from 'ui/showcases/Pagination';
 import TabsShowcase from 'ui/showcases/Tabs';
 
@@ -54,6 +55,7 @@ const ChakraShowcases = () => {
           <TabsTrigger value="alerts">Alerts</TabsTrigger>
           <TabsTrigger value="badges">Badges</TabsTrigger>
           <TabsTrigger value="buttons">Buttons</TabsTrigger>
+          <TabsTrigger value="links">Links</TabsTrigger>
           <TabsTrigger value="pagination">Pagination</TabsTrigger>
           <TabsTrigger value="tabs">Tabs</TabsTrigger>
           <TabsTrigger value="unsorted">Unsorted</TabsTrigger>
@@ -61,6 +63,7 @@ const ChakraShowcases = () => {
         <AlertsShowcase/>
         <BadgesShowcase/>
         <ButtonShowcase/>
+        <LinksShowcase/>
         <TabsShowcase/>
         <PaginationShowcase/>
 

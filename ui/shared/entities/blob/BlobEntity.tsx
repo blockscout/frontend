@@ -1,4 +1,3 @@
-import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -76,7 +75,7 @@ const BlobEntity = (props: EntityProps) => {
   );
 };
 
-export default React.memo(chakra<As, EntityProps>(BlobEntity));
+export default React.memo(chakra(BlobEntity));
 
 export {
   Container,

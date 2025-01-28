@@ -31,6 +31,7 @@ export interface EntityBaseProps {
   tailLength?: number;
   target?: React.HTMLAttributeAnchorTarget;
   truncation?: Truncation;
+  size?: 'md' | 'lg';
 }
 
 export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
@@ -165,9 +166,9 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
   );
 });
 
-export type CopyBaseProps = Pick<CopyToClipboardProps, 'isLoading' | 'text'> & Pick<EntityBaseProps, 'noCopy'>;
+export type CopyBaseProps = Pick<CopyToClipboardProps, 'isLoading' | 'text'> & Pick<EntityBaseProps, 'noCopy' | 'size'>;
 
-const Copy = (props: CopyBaseProps) => {
+const Copy = ({ size, ...props }: CopyBaseProps) => {
   if (props.noCopy) {
     return null;
   }

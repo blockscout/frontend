@@ -48,7 +48,7 @@ const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, 
   }, [ onClick, copy ]);
 
   if (isLoading) {
-    return <Skeleton boxSize={ size } className={ className } borderRadius="sm" flexShrink={ 0 } ml={ 2 } display="inline-block"/>;
+    return <Skeleton boxSize={ size } className={ className } borderRadius="sm" flexShrink={ 0 } ml={ 2 } display="inline-block" loading/>;
   }
 
   return (
