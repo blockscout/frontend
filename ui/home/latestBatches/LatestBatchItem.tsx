@@ -3,9 +3,9 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = {
@@ -49,14 +49,12 @@ const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading, animat
       <Flex alignItems="center" justifyContent="space-between" w="100%" flexWrap="wrap">
         <Flex alignItems="center">
           <Skeleton loading={ isLoading } mr={ 2 }>Txn</Skeleton>
-          <LinkInternal
+          <Link
             href={ route({ pathname: '/batches/[number]', query: { number: number.toString(), tab: 'txs' } }) }
-            isLoading={ isLoading }
+            loading={ isLoading }
           >
-            <Skeleton loading={ isLoading }>
-              { txCount }
-            </Skeleton>
-          </LinkInternal>
+            { txCount }
+          </Link>
         </Flex>
         { status }
       </Flex>

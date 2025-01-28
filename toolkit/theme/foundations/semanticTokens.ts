@@ -112,6 +112,9 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
         },
       },
+      menu: {
+        DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+      },
     },
     tooltip: {
       DEFAULT: {

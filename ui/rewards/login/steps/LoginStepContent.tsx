@@ -12,9 +12,9 @@ import { Button } from 'toolkit/chakra/button';
 import { Field } from 'toolkit/chakra/field';
 import { Image } from 'toolkit/chakra/image';
 import { Input } from 'toolkit/chakra/input';
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 type Props = {
@@ -111,9 +111,9 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
       />
       <Box mb={ 6 }>
         Merits are awarded for a variety of different Blockscout activities. Connect a wallet to get started.
-        <LinkExternal href="https://docs.blockscout.com/using-blockscout/merits" ml={ 1 } fontWeight="500">
+        <Link external href="https://docs.blockscout.com/using-blockscout/merits" ml={ 1 } fontWeight="500">
           More about Blockscout Merits
-        </LinkExternal>
+        </Link>
       </Box>
       { isSignUp && isLoggedIntoAccountWithWallet && (
         <Box mb={ 6 }>

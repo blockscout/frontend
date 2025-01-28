@@ -3,25 +3,23 @@ import React from 'react';
 
 import type { NavLink } from './types';
 
+import { Link } from 'toolkit/chakra/link';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 const UserProfileContentNavLink = ({ href, icon, text, onClick }: NavLink) => {
-
   return (
-    <LinkInternal
+    <Link
       href={ href }
       display="flex"
       alignItems="center"
       columnGap={ 3 }
       py="14px"
-      color="inherit"
-      _hover={{ textDecoration: 'none', color: 'link.primary.hover' }}
       onClick={ onClick }
+      variant="menu"
     >
       <IconSvg name={ icon } boxSize={ 5 } flexShrink={ 0 }/>
       <Box textStyle="sm" fontWeight="500">{ text }</Box>
-    </LinkInternal>
+    </Link>
   );
 };
 

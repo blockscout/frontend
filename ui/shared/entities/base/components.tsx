@@ -2,6 +2,7 @@ import { chakra, Flex } from '@chakra-ui/react';
 import type { IconProps } from '@chakra-ui/react';
 import React from 'react';
 
+import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -9,8 +10,6 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/links/LinkExternal';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import { getIconProps, type IconSize } from './utils';
 
@@ -40,10 +39,9 @@ export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
   onMouseLeave?: (event: React.MouseEvent) => void;
 }
 
-const Container = chakra(React.forwardRef(({ className, children, ...props }: ContainerBaseProps, ref: React.Ref<HTMLDivElement>) => {
+const Container = chakra(({ className, children, ...props }: ContainerBaseProps) => {
   return (
     <Flex
-      ref={ ref }
       className={ className }
       alignItems="center"
       minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
@@ -52,7 +50,7 @@ const Container = chakra(React.forwardRef(({ className, children, ...props }: Co
       { children }
     </Flex>
   );
-}));
+});
 
 export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query'> {
   children: React.ReactNode;
@@ -69,17 +67,16 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
     return null;
   }
 
-  const Component = isExternal ? LinkExternal : LinkInternal;
-
   return (
-    <Component
+    <LinkToolkit
       { ...styles }
       href={ href }
-      isLoading={ isLoading }
+      loading={ isLoading }
+      external={ isExternal }
       onClick={ onClick }
     >
       { children }
-    </Component>
+    </LinkToolkit>
   );
 });
 

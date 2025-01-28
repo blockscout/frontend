@@ -12,9 +12,9 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
+import { Link } from 'toolkit/chakra/link';
 import type { TooltipProps } from 'toolkit/chakra/tooltip';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import GasInfoTooltipRow from './GasInfoTooltipRow';
 import GasInfoUpdateTimer from './GasInfoUpdateTimer';
@@ -57,9 +57,9 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen, placement }: Pr
         <GasInfoTooltipRow name="Normal" info={ data.gas_prices.average }/>
         <GasInfoTooltipRow name="Slow" info={ data.gas_prices.slow }/>
       </Grid>
-      <LinkInternal href={ route({ pathname: '/gas-tracker' }) } className="dark">
+      <Link href={ route({ pathname: '/gas-tracker' }) } className="dark">
         Gas tracker overview
-      </LinkInternal>
+      </Link>
     </Flex>
   );
 

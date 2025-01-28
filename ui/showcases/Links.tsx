@@ -67,8 +67,15 @@ const LinksShowcase = () => {
             <Link href="/" variant="underlaid" external>Default</Link>
             <Link href="/" variant="underlaid" external data-hover>Hover</Link>
           </Sample>
+          <Sample label="variant: menu">
+            <Link href="/" variant="menu">Default</Link>
+            <Link href="/" variant="menu" data-hover>Hover</Link>
+          </Sample>
         </SamplesStack>
       </Section>
+
+      { /* TODO @tom2drum links with icons */ }
+      <span>??? links with icons</span>
 
       <Section>
         <SectionHeader>Loading</SectionHeader>

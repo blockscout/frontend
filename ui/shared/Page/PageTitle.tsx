@@ -1,15 +1,15 @@
-import { Flex, Link, chakra } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Heading } from 'toolkit/chakra/heading';
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 type BackLinkProp = { label: string; url: string } | { label: string; onClick: () => void };
 
@@ -49,19 +49,9 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
 
   const icon = <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400" flexShrink={ 0 }/>;
 
-  if ('url' in props) {
-    return (
-      <Tooltip content={ props.label }>
-        <LinkInternal display="inline-flex" href={ props.url } h="40px" mr={ 3 }>
-          { icon }
-        </LinkInternal>
-      </Tooltip>
-    );
-  }
-
   return (
     <Tooltip content={ props.label }>
-      <Link display="inline-flex" onClick={ props.onClick } h="40px" mr={ 3 }>
+      <Link display="inline-flex" href={ 'url' in props ? props.url : undefined } onClick={ 'onClick' in props ? props.onClick : undefined } h="40px" mr={ 3 }>
         { icon }
       </Link>
     </Tooltip>

@@ -1,8 +1,9 @@
-import { HStack, chakra, Separator, Link } from '@chakra-ui/react';
+import { HStack, chakra, Separator } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavGroupItem } from 'types/client/navigation';
 
+import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';

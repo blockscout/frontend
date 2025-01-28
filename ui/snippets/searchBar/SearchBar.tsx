@@ -12,9 +12,9 @@ import { route } from 'nextjs-routes';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'lib/recentSearchKeywords';
+import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverFooter, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import SearchBarBackdrop from './SearchBarBackdrop';
 import SearchBarInput from './SearchBarInput';
@@ -130,7 +130,7 @@ const SearchBar = ({ isHomepage }: Props) => {
         lazyMount
         closeOnInteractOutside={ false }
       >
-        <PopoverTrigger>
+        <PopoverTrigger asChild={ false } w="100%">
           <SearchBarInput
             ref={ inputRef }
             onChange={ handleSearchTermChange }
@@ -174,13 +174,13 @@ const SearchBar = ({ isHomepage }: Props) => {
             </Box>
           </PopoverBody>
           { searchTerm.trim().length > 0 && query.data && query.data.length >= 50 && (
-            <PopoverFooter>
-              <LinkInternal
+            <PopoverFooter pt={ 2 } borderTopWidth={ 1 } borderColor="border.divider">
+              <Link
                 href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }
-                fontSize="sm"
+                textStyle="sm"
               >
                 View all results
-              </LinkInternal>
+              </Link>
             </PopoverFooter>
           ) }
         </PopoverContent>

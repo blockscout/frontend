@@ -9,7 +9,6 @@ import type { ButtonProps } from 'toolkit/chakra/button';
 import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 type Props = {
   size?: ButtonProps['size'];
@@ -35,7 +34,7 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         variant={ variant }
         selected={ !isLoading && Boolean(apiToken) }
         flexShrink={ 0 }
-        as={ apiToken ? LinkInternal : 'button' }
+        as={ apiToken ? 'a' : 'button' }
         { ...(apiToken ? { href: route({ pathname: '/account/rewards' }) } : {}) }
         onClick={ apiToken ? undefined : openLoginModal }
         onFocus={ handleFocus }

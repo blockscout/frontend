@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-no-bind */
-import { createListCollection, HStack, Link, Spinner, VStack } from '@chakra-ui/react';
+import { createListCollection, HStack, Spinner, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { Button } from 'toolkit/chakra/button';
@@ -150,17 +150,6 @@ const ChakraShowcases = () => {
                 <Field label="Description" required floating size="2xl" w="360px">
                   <Textarea value={ TEXT }/>
                 </Field>
-              </HStack>
-            </section>
-
-            <section>
-              <Heading textStyle="heading.md" mb={ 2 }>Links</Heading>
-              <HStack gap={ 4 } flexWrap="wrap">
-                <Link>Primary</Link>
-                <Link visual="secondary">Secondary</Link>
-                <Link visual="subtle">Subtle</Link>
-                <Link visual="navigation">Navigation</Link>
-                <Link visual="navigation" data-selected p={ 3 } borderRadius="base">Navigation selected</Link>
               </HStack>
             </section>
 

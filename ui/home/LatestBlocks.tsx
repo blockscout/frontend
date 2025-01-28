@@ -17,8 +17,8 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Heading } from 'toolkit/chakra/heading';
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
 
@@ -95,7 +95,7 @@ const LatestBlocks = () => {
           ))) }
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
+          <Link textStyle="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</Link>
         </Flex>
       </>
     );

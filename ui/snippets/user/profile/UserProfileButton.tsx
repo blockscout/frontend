@@ -75,22 +75,24 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ..
       disabled={ isMobile || isLoading || Boolean(data) }
       openDelay={ 500 }
     >
-      <Button
-        ref={ ref }
-        size={ size }
-        variant={ variant }
-        onClick={ onClick }
-        onFocus={ handleFocus }
-        selected={ dataExists }
-        highlighted={ isAutoConnectDisabled }
-        textStyle="sm"
-        px={ dataExists ? 2.5 : 4 }
-        fontWeight={ dataExists ? 700 : 600 }
-        loading={ isButtonLoading }
-        { ...rest }
-      >
-        { content }
-      </Button>
+      <span>
+        <Button
+          ref={ ref }
+          size={ size }
+          variant={ variant }
+          onClick={ onClick }
+          onFocus={ handleFocus }
+          selected={ dataExists }
+          highlighted={ isAutoConnectDisabled }
+          textStyle="sm"
+          px={ dataExists ? 2.5 : 4 }
+          fontWeight={ dataExists ? 700 : 600 }
+          loading={ isButtonLoading }
+          { ...rest }
+        >
+          { content }
+        </Button>
+      </span>
     </Tooltip>
   );
 };

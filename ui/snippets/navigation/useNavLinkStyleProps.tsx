@@ -9,7 +9,7 @@ type Props = {
 export default function useNavLinkStyleProps({ isExpanded, isCollapsed, isActive }: Props) {
   return {
     itemProps: {
-      visual: 'navigation' as const,
+      variant: 'navigation' as const,
       py: '9px',
       display: 'flex',
       ...(isActive ? { 'data-selected': true } : {}),

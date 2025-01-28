@@ -45,6 +45,13 @@ export const recipe = defineRecipe({
           bgColor: 'transparent',
         },
       },
+      menu: {
+        color: 'link.menu',
+        _hover: {
+          color: 'link.primary.hover',
+          textDecoration: 'none',
+        },
+      },
       navigation: {
         color: 'link.navigation.fg',
         bg: 'link.navigation.bg',

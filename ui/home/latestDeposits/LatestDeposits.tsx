@@ -9,11 +9,11 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
@@ -165,7 +165,7 @@ const LatestDeposits = ({ isLoading, items, socketAlert, socketItemsNum }: Props
         ))) }
       </Box>
       <Flex justifyContent="center">
-        <LinkInternal textStyle="sm" href={ depositsUrl }>View all deposits</LinkInternal>
+        <Link textStyle="sm" href={ depositsUrl }>View all deposits</Link>
       </Flex>
     </>
   );

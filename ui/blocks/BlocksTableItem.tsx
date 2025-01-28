@@ -9,6 +9,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -16,7 +17,6 @@ import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
@@ -46,15 +46,16 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
               <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
             </Tooltip>
           ) }
-          { /* TODO @tom2drum fix tooltip */ }
           <Tooltip disabled={ data.type !== 'reorg' } content="Chain reorganizations">
-            <BlockEntity
-              isLoading={ isLoading }
-              number={ data.height }
-              hash={ data.type !== 'block' ? data.hash : undefined }
-              noIcon
-              fontWeight={ 600 }
-            />
+            <span>
+              <BlockEntity
+                isLoading={ isLoading }
+                number={ data.height }
+                hash={ data.type !== 'block' ? data.hash : undefined }
+                noIcon
+                fontWeight={ 600 }
+              />
+            </span>
           </Tooltip>
         </Flex>
         <TimeAgoWithTooltip
@@ -84,12 +85,12 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
       <TableCell isNumeric >
         { data.transaction_count > 0 ? (
           <Skeleton loading={ isLoading } display="inline-block">
-            <LinkInternal href={ route({
+            <Link href={ route({
               pathname: '/block/[height_or_hash]',
               query: { height_or_hash: String(data.height), tab: 'txs' },
             }) }>
               { data.transaction_count }
-            </LinkInternal>
+            </Link>
           </Skeleton>
         ) : data.transaction_count }
       </TableCell>

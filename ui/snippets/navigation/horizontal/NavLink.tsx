@@ -6,8 +6,7 @@ import type { NavItem } from 'types/client/navigation';
 import { route } from 'nextjs-routes';
 
 import { isInternalItem } from 'lib/hooks/useNavItems';
-import LinkExternal from 'ui/shared/links/LinkExternal';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Link } from 'toolkit/chakra/link';
 
 import LightningLabel from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
@@ -23,8 +22,6 @@ const NavLink = ({ className, item, noIcon }: Props) => {
   const isInternalLink = isInternalItem(item);
 
   const isActive = 'isActive' in item && item.isActive;
-  const Link = isInternalLink ? LinkInternal : LinkExternal;
-  const href = isInternalLink ? route(item.nextRoute) : item.url;
 
   const isHighlighted = checkRouteHighlight(item);
 
@@ -34,7 +31,8 @@ const NavLink = ({ className, item, noIcon }: Props) => {
     >
       <Link
         className={ className }
-        href={ href }
+        href={ isInternalLink ? route(item.nextRoute) : item.url }
+        external={ !isInternalLink }
         display="flex"
         alignItems="center"
         variant="navigation"

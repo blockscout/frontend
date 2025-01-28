@@ -14,7 +14,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { ZKEVM_L2_TXN_BATCHES_ITEM } from 'stubs/zkEvmL2';
 import { Heading } from 'toolkit/chakra/heading';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Link } from 'toolkit/chakra/link';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
 import LatestBatchItem from './LatestBatchItem';
@@ -86,7 +86,7 @@ const LatestZkEvmL2Batches = () => {
           })) }
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/batches' }) }>View all batches</LinkInternal>
+          <Link textStyle="sm" href={ route({ pathname: '/batches' }) }>View all batches</Link>
         </Flex>
       </>
     );
