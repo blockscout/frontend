@@ -286,6 +286,21 @@ export const RESOURCES = {
     endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
     basePath: getFeaturePayload(config.features.stats)?.api.basePath,
   },
+  stats_main: {
+    path: '/api/v1/pages/main',
+    endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.stats)?.api.basePath,
+  },
+  stats_transactions: {
+    path: '/api/v1/pages/transactions',
+    endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.stats)?.api.basePath,
+  },
+  stats_contracts: {
+    path: '/api/v1/pages/contracts',
+    endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.stats)?.api.basePath,
+  },
 
   // NAME SERVICE
   addresses_lookup: {
@@ -1275,6 +1290,9 @@ Q extends 'homepage_arbitrum_latest_batch' ? number :
 Q extends 'stats_counters' ? stats.Counters :
 Q extends 'stats_lines' ? stats.LineCharts :
 Q extends 'stats_line' ? stats.LineChart :
+Q extends 'stats_main' ? stats.MainPageStats :
+Q extends 'stats_transactions' ? stats.TransactionsPageStats :
+Q extends 'stats_contracts' ? stats.ContractsPageStats :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_countdown' ? BlockCountdownResponse :
