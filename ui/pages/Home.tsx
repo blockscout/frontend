@@ -17,6 +17,7 @@ const Home = () => {
     <Box as="main">
       <Box
         w="100%"
+           // :aa
         background={ config.UI.homepage.plate.background }
         borderRadius="24px"
         padding={{ base: '24px', lg: '48px' }}

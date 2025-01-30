@@ -7,12 +7,12 @@ import breakpoints from './foundations/breakpoints';
 import colors from './foundations/colors';
 import semanticTokens from './foundations/semanticTokens';
 import transition from './foundations/transition';
-import typography from './foundations/typography';
+import fonts from './foundations/typography';
 import zIndices from './foundations/zIndices';
 import global from './global';
 
 const overrides = {
-  ...typography,
+  fonts,
   ...borders,
   colors,
   components,

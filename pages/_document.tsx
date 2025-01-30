@@ -7,6 +7,9 @@ import * as serverTiming from 'nextjs/utils/serverTiming';
 
 import theme from 'theme';
 
+
+import { inter, drukWide } from 'theme/foundations/typography';
+
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage;
@@ -25,20 +28,12 @@ class MyDocument extends Document {
     return initialProps;
   }
 
+// className={inter.className}
+
   render() {
     return (
       <Html lang="en">
         <Head>
-          { /* FONTS */ }
-          <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-            rel="stylesheet"
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-            rel="stylesheet"
-          />
-
           { /* eslint-disable-next-line @next/next/no-sync-scripts */ }
           <script src="/envs.js"/>
 
@@ -49,7 +44,7 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" href="/favicon/apple-touch-icon-180x180.png"/>
           <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"/>
         </Head>
-        <body>
+        <body className={`${inter.variable} ${drukWide.variable}`}>
           <ColorModeScript initialColorMode={ theme.config.initialColorMode }/>
           <Main/>
           <NextScript/>

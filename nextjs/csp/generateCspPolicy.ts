@@ -7,7 +7,7 @@ function generateCspPolicy() {
     descriptors.ad(),
     descriptors.cloudFlare(),
     descriptors.googleAnalytics(),
-    descriptors.googleFonts(),
+    //descriptors.googleFonts(),
     descriptors.googleReCaptcha(),
     descriptors.mixpanel(),
     descriptors.monaco(),
