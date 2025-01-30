@@ -1,20 +1,19 @@
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import type { LinkProps } from 'toolkit/chakra/link';
 import { Link } from 'toolkit/chakra/link';
 
-interface Props {
+interface Props extends LinkProps {
   children: React.ReactNode;
   id?: string;
   onClick?: () => void;
-  isLoading?: boolean;
-
 }
 
 const ID = 'CutLink';
 
 const CutLink = (props: Props) => {
-  const { children, id = ID, onClick, isLoading } = props;
+  const { children, id = ID, onClick, ...rest } = props;
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
@@ -27,19 +26,20 @@ const CutLink = (props: Props) => {
     onClick?.();
   }, [ id, onClick ]);
 
+  const text = isExpanded ? 'Hide details' : 'View details';
+
   return (
     <>
-      <Element name={ id }>
-        <Link
-          textStyle="sm"
-          textDecorationLine="underline"
-          textDecorationStyle="dashed"
-          onClick={ handleClick }
-          loading={ isLoading }
-        >
-          { isExpanded ? 'Hide details' : 'View details' }
-        </Link>
-      </Element>
+      <Link
+        textStyle="sm"
+        textDecorationLine="underline"
+        textDecorationStyle="dashed"
+        onClick={ handleClick }
+        asChild
+        { ...rest }
+      >
+        <Element name={ id }>{ text }</Element>
+      </Link>
       { isExpanded && children }
     </>
   );

@@ -1,4 +1,4 @@
-import { Text, Tooltip } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { Block } from 'types/api/block';
 import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import IconSvg from 'ui/shared/IconSvg';
@@ -42,7 +43,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <Text>{ BigNumber(data.blob_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
-            <Text variant="secondary" whiteSpace="pre">
+            <Text color="text.secondary" whiteSpace="pre">
               { space }({ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
             </Text>
           </DetailsInfoItem.Value>
@@ -71,7 +72,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             <IconSvg name="flame" boxSize={ 5 } color="gray.500" mr={ 2 }/>
             { burntBlobFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             { !blobFees.isEqualTo(ZERO) && (
-              <Tooltip label="Blob burnt fees / Txn fees * 100%">
+              <Tooltip content="Blob burnt fees / Txn fees * 100%">
                 <div>
                   <Utilization ml={ 4 } value={ burntBlobFees.dividedBy(blobFees).toNumber() }/>
                 </div>
@@ -89,7 +90,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <Text>{ BigNumber(data.excess_blob_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
-            <Text variant="secondary" whiteSpace="pre">
+            <Text color="text.secondary" whiteSpace="pre">
               { space }({ BigNumber(data.excess_blob_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
             </Text>
           </DetailsInfoItem.Value>

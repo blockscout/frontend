@@ -14,10 +14,10 @@ export interface BadgeProps extends ChakraBadgeProps {
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   function Badge(props, ref) {
-    const { loading, iconStart, children, ...rest } = props;
+    const { loading, iconStart, children, asChild = true, ...rest } = props;
 
     return (
-      <Skeleton loading={ loading }>
+      <Skeleton loading={ loading } asChild={ asChild }>
         <ChakraBadge ref={ ref } display="flex" alignItems="center" gap={ 1 } { ...rest }>
           { iconStart && <IconSvg name={ iconStart } boxSize="10px"/> }
           { children }

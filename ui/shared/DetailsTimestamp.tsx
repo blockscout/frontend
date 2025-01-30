@@ -1,7 +1,7 @@
 import React from 'react';
 
 import dayjs from 'lib/date/dayjs';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import TextSeparator from 'ui/shared/TextSeparator';
 
@@ -15,11 +15,11 @@ const DetailsTimestamp = ({ timestamp, isLoading }: Props) => {
   return (
     <>
       <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
-      <Skeleton isLoaded={ !isLoading } ml={ 2 }>
+      <Skeleton loading={ isLoading } ml={ 2 }>
         { dayjs(timestamp).fromNow() }
       </Skeleton>
       <TextSeparator color="gray.500"/>
-      <Skeleton isLoaded={ !isLoading } whiteSpace="normal">
+      <Skeleton loading={ isLoading } whiteSpace="normal">
         { dayjs(timestamp).format('llll') }
       </Skeleton>
     </>

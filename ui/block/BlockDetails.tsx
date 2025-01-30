@@ -1,9 +1,8 @@
-import { Grid, GridItem, Text, Link, Box, Tooltip } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
 
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
@@ -18,9 +17,12 @@ import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import CutLink from 'toolkit/components/CutLink/CutLink';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
@@ -31,7 +33,6 @@ import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
@@ -51,19 +52,10 @@ interface Props {
 const rollupFeature = config.features.rollup;
 
 const BlockDetails = ({ query }: Props) => {
-  const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
 
   const { data, isPlaceholderData } = query;
-
-  const handleCutClick = React.useCallback(() => {
-    setIsExpanded((flag) => !flag);
-    scroller.scrollTo('BlockDetails__cutLink', {
-      duration: 500,
-      smooth: true,
-    });
-  }, []);
 
   const handlePrevNextClick = React.useCallback((direction: 'prev' | 'next') => {
     if (!data) {
@@ -90,18 +82,18 @@ const BlockDetails = ({ query }: Props) => {
     }
 
     if (isPlaceholderData) {
-      return <Skeleton w="525px" h="20px"/>;
+      return <Skeleton loading w="525px" h="20px"/>;
     }
 
     return (
-      <Text variant="secondary" whiteSpace="break-spaces">
-        <Tooltip label="Static block reward">
+      <Text color="text.secondary" whiteSpace="break-spaces">
+        <Tooltip content="Static block reward">
           <span>{ staticReward.dividedBy(WEI).toFixed() }</span>
         </Tooltip>
         { !txFees.isEqualTo(ZERO) && (
           <>
             { space }+{ space }
-            <Tooltip label="Txn fees">
+            <Tooltip content="Txn fees">
               <span>{ txFees.dividedBy(WEI).toFixed() }</span>
             </Tooltip>
           </>
@@ -109,7 +101,7 @@ const BlockDetails = ({ query }: Props) => {
         { !burntFees.isEqualTo(ZERO) && (
           <>
             { space }-{ space }
-            <Tooltip label="Burnt fees">
+            <Tooltip content="Burnt fees">
               <span>{ burntFees.dividedBy(WEI).toFixed() }</span>
             </Tooltip>
           </>
@@ -122,17 +114,17 @@ const BlockDetails = ({ query }: Props) => {
 
   const txsNum = (() => {
     const blockTxsNum = (
-      <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }) }>
+      <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }) }>
         { data.transaction_count } txn{ data.transaction_count === 1 ? '' : 's' }
-      </LinkInternal>
+      </Link>
     );
 
     const blockBlobTxsNum = (config.features.dataAvailability.isEnabled && data.blob_transaction_count) ? (
       <>
         <span> including </span>
-        <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'blob_txs' } }) }>
+        <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'blob_txs' } }) }>
           { data.blob_transaction_count } blob txn{ data.blob_transaction_count === 1 ? '' : 's' }
-        </LinkInternal>
+        </Link>
       </>
     ) : null;
 
@@ -170,7 +162,7 @@ const BlockDetails = ({ query }: Props) => {
         { blockTypeLabel } height
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { data.height }
         </Skeleton>
         { data.height === 0 && <Text whiteSpace="pre"> - Genesis Block</Text> }
@@ -209,7 +201,7 @@ const BlockDetails = ({ query }: Props) => {
           <DetailsInfoItem.Value>
             { data.arbitrum.batch_number ?
               <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.arbitrum.batch_number }/> :
-              <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+              <Skeleton loading={ isPlaceholderData }>Pending</Skeleton> }
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -225,7 +217,7 @@ const BlockDetails = ({ query }: Props) => {
           <DetailsInfoItem.Value columnGap={ 3 }>
             { data.optimism.internal_id ?
               <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.optimism.internal_id }/> :
-              <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+              <Skeleton loading={ isPlaceholderData }>Pending</Skeleton> }
             { data.optimism.batch_data_container && (
               <OptimisticL2TxnBatchDA
                 container={ data.optimism.batch_data_container }
@@ -243,7 +235,7 @@ const BlockDetails = ({ query }: Props) => {
         Size
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { data.size.toLocaleString() }
         </Skeleton>
       </DetailsInfoItem.Value>
@@ -265,7 +257,7 @@ const BlockDetails = ({ query }: Props) => {
         Transactions
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { txsNum }
         </Skeleton>
       </DetailsInfoItem.Value>
@@ -279,10 +271,10 @@ const BlockDetails = ({ query }: Props) => {
             Withdrawals
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isPlaceholderData }>
-              <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'withdrawals' } }) }>
+            <Skeleton loading={ isPlaceholderData }>
+              <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'withdrawals' } }) }>
                 { data.withdrawals_count } withdrawal{ data.withdrawals_count === 1 ? '' : 's' }
-              </LinkInternal>
+              </Link>
             </Skeleton>
           </DetailsInfoItem.Value>
         </>
@@ -299,7 +291,7 @@ const BlockDetails = ({ query }: Props) => {
           <DetailsInfoItem.Value>
             { data.zksync.batch_number ?
               <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.zksync.batch_number }/> :
-              <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+              <Skeleton loading={ isPlaceholderData }>Pending</Skeleton> }
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -393,7 +385,7 @@ const BlockDetails = ({ query }: Props) => {
             Block reward
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value columnGap={ 1 }>
-            <Skeleton isLoaded={ !isPlaceholderData }>
+            <Skeleton loading={ isPlaceholderData }>
               { totalReward.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </Skeleton>
             { rewardBreakDown }
@@ -426,7 +418,7 @@ const BlockDetails = ({ query }: Props) => {
             View
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isPlaceholderData }>
+            <Skeleton loading={ isPlaceholderData }>
               { data.zilliqa.view }
             </Skeleton>
           </DetailsInfoItem.Value>
@@ -444,15 +436,15 @@ const BlockDetails = ({ query }: Props) => {
         Gas used
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { BigNumber(data.gas_used || 0).toFormat() }
         </Skeleton>
         <BlockGasUsed
-          gasUsed={ data.gas_used }
+          gasUsed={ data.gas_used || undefined }
           gasLimit={ data.gas_limit }
           isLoading={ isPlaceholderData }
           ml={ 4 }
-          gasTarget={ data.gas_target_percentage }
+          gasTarget={ data.gas_target_percentage || undefined }
         />
       </DetailsInfoItem.Value>
 
@@ -463,7 +455,7 @@ const BlockDetails = ({ query }: Props) => {
         Gas limit
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { BigNumber(data.gas_limit).toFormat() }
         </Skeleton>
       </DetailsInfoItem.Value>
@@ -477,7 +469,7 @@ const BlockDetails = ({ query }: Props) => {
             Minimum gas price
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isPlaceholderData }>
+            <Skeleton loading={ isPlaceholderData }>
               { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } { currencyUnits.gwei }
             </Skeleton>
           </DetailsInfoItem.Value>
@@ -494,11 +486,11 @@ const BlockDetails = ({ query }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             { isPlaceholderData ? (
-              <Skeleton isLoaded={ !isPlaceholderData } h="20px" maxW="380px" w="100%"/>
+              <Skeleton loading={ isPlaceholderData } h="20px" maxW="380px" w="100%"/>
             ) : (
               <>
                 <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
-                <Text variant="secondary" whiteSpace="pre">
+                <Text color="text.secondary" whiteSpace="pre">
                   { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
                 </Text>
               </>
@@ -520,11 +512,11 @@ const BlockDetails = ({ query }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-            <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>
+            <Skeleton loading={ isPlaceholderData } ml={ 2 }>
               { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </Skeleton>
             { !txFees.isEqualTo(ZERO) && (
-              <Tooltip label="Burnt fees / Txn fees * 100%">
+              <Tooltip content="Burnt fees / Txn fees * 100%">
                 <Box>
                   <Utilization
                     ml={ 4 }
@@ -547,232 +539,215 @@ const BlockDetails = ({ query }: Props) => {
             Priority fee / Tip
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isPlaceholderData }>
+            <Skeleton loading={ isPlaceholderData }>
               { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </Skeleton>
           </DetailsInfoItem.Value>
         </>
       ) }
 
-      { /* CUT */ }
-      <GridItem colSpan={{ base: undefined, lg: 2 }}>
-        <Element name="BlockDetails__cutLink">
-          <Skeleton isLoaded={ !isPlaceholderData } mt={ 6 } display="inline-block">
-            <Link
-              fontSize="sm"
-              textDecorationLine="underline"
-              textDecorationStyle="dashed"
-              onClick={ handleCutClick }
-            >
-              { isExpanded ? 'Hide details' : 'View details' }
-            </Link>
-          </Skeleton>
-        </Element>
-      </GridItem>
-
       { /* ADDITIONAL INFO */ }
-      { isExpanded && !isPlaceholderData && (
-        <>
-          <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+      <CutLink loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
+        <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
-          { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync &&
-            <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isPlaceholderData }/> }
+        { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync &&
+              <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isPlaceholderData }/> }
 
-          { !isPlaceholderData && <BlockDetailsBlobInfo data={ data }/> }
+        { !isPlaceholderData && <BlockDetailsBlobInfo data={ data }/> }
 
-          { data.bitcoin_merged_mining_header && (
-            <>
-              <DetailsInfoItem.Label
-                hint="Merged-mining field: Bitcoin header"
+        { data.bitcoin_merged_mining_header && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Merged-mining field: Bitcoin header"
+            >
+              Bitcoin merged mining header
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value
+              flexWrap="nowrap"
+              alignSelf="flex-start"
+            >
+              <Box whiteSpace="nowrap" overflow="hidden">
+                <HashStringShortenDynamic hash={ data.bitcoin_merged_mining_header }/>
+              </Box>
+              <CopyToClipboard text={ data.bitcoin_merged_mining_header }/>
+            </DetailsInfoItem.Value>
+          </>
+        ) }
+
+        { data.bitcoin_merged_mining_coinbase_transaction && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Merged-mining field: Coinbase transaction"
+            >
+              Bitcoin merged mining coinbase transaction
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <RawDataSnippet
+                data={ data.bitcoin_merged_mining_coinbase_transaction }
+                isLoading={ isPlaceholderData }
+                showCopy={ false }
+                textareaMaxHeight="100px"
+              />
+            </DetailsInfoItem.Value>
+          </>
+        ) }
+
+        { data.bitcoin_merged_mining_merkle_proof && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Merged-mining field: Merkle proof"
+            >
+              Bitcoin merged mining Merkle proof
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <RawDataSnippet
+                data={ data.bitcoin_merged_mining_merkle_proof }
+                isLoading={ isPlaceholderData }
+                showCopy={ false }
+                textareaMaxHeight="100px"
+              />
+            </DetailsInfoItem.Value>
+          </>
+        ) }
+
+        { data.hash_for_merged_mining && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Merged-mining field: Rootstock block header hash"
+            >
+              Hash for merged mining
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value
+              flexWrap="nowrap"
+              alignSelf="flex-start"
+            >
+              <Box whiteSpace="nowrap" overflow="hidden">
+                <HashStringShortenDynamic hash={ data.hash_for_merged_mining }/>
+              </Box>
+              <CopyToClipboard text={ data.hash_for_merged_mining }/>
+            </DetailsInfoItem.Value>
+          </>
+        ) }
+
+        <DetailsInfoItem.Label
+          hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time` }
+        >
+          Difficulty
+        </DetailsInfoItem.Label>
+        <DetailsInfoItem.Value overflow="hidden">
+          <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
+        </DetailsInfoItem.Value>
+
+        { data.total_difficulty && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Total difficulty of the chain until this block"
+            >
+              Total difficulty
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value overflow="hidden">
+              <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
+            </DetailsInfoItem.Value>
+          </>
+        ) }
+
+        <DetailsInfoItemDivider/>
+
+        <DetailsInfoItem.Label
+          hint="The SHA256 hash of the block"
+        >
+          Hash
+        </DetailsInfoItem.Label>
+        <DetailsInfoItem.Value flexWrap="nowrap">
+          <Box overflow="hidden" >
+            <HashStringShortenDynamic hash={ data.hash }/>
+          </Box>
+          <CopyToClipboard text={ data.hash }/>
+        </DetailsInfoItem.Value>
+
+        { data.height > 0 && (
+          <>
+            <DetailsInfoItem.Label
+              hint="The hash of the block from which this block was generated"
+            >
+              Parent hash
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value flexWrap="nowrap">
+              <Link
+                href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height - 1) } }) }
+                overflow="hidden"
+                whiteSpace="nowrap"
               >
-                Bitcoin merged mining header
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value
-                flexWrap="nowrap"
-                alignSelf="flex-start"
-              >
-                <Box whiteSpace="nowrap" overflow="hidden">
-                  <HashStringShortenDynamic hash={ data.bitcoin_merged_mining_header }/>
-                </Box>
-                <CopyToClipboard text={ data.bitcoin_merged_mining_header }/>
-              </DetailsInfoItem.Value>
-            </>
-          ) }
-
-          { data.bitcoin_merged_mining_coinbase_transaction && (
-            <>
-              <DetailsInfoItem.Label
-                hint="Merged-mining field: Coinbase transaction"
-              >
-                Bitcoin merged mining coinbase transaction
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                <RawDataSnippet
-                  data={ data.bitcoin_merged_mining_coinbase_transaction }
-                  isLoading={ isPlaceholderData }
-                  showCopy={ false }
-                  textareaMaxHeight="100px"
+                <HashStringShortenDynamic
+                  hash={ data.parent_hash }
                 />
-              </DetailsInfoItem.Value>
-            </>
-          ) }
+              </Link>
+              <CopyToClipboard text={ data.parent_hash }/>
+            </DetailsInfoItem.Value>
+          </>
+        ) }
 
-          { data.bitcoin_merged_mining_merkle_proof && (
-            <>
-              <DetailsInfoItem.Label
-                hint="Merged-mining field: Merkle proof"
-              >
-                Bitcoin merged mining Merkle proof
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                <RawDataSnippet
-                  data={ data.bitcoin_merged_mining_merkle_proof }
-                  isLoading={ isPlaceholderData }
-                  showCopy={ false }
-                  textareaMaxHeight="100px"
-                />
-              </DetailsInfoItem.Value>
-            </>
-          ) }
+        { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
+          <>
+            <DetailsInfoItem.Label
+              hint="The cumulative number of L2 to L1 transactions as of this block"
+              isLoading={ isPlaceholderData }
+            >
+              Send count
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              { data.arbitrum.send_count.toLocaleString() }
+            </DetailsInfoItem.Value>
 
-          { data.hash_for_merged_mining && (
-            <>
-              <DetailsInfoItem.Label
-                hint="Merged-mining field: Rootstock block header hash"
-              >
-                Hash for merged mining
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value
-                flexWrap="nowrap"
-                alignSelf="flex-start"
-              >
-                <Box whiteSpace="nowrap" overflow="hidden">
-                  <HashStringShortenDynamic hash={ data.hash_for_merged_mining }/>
-                </Box>
-                <CopyToClipboard text={ data.hash_for_merged_mining }/>
-              </DetailsInfoItem.Value>
-            </>
-          ) }
+            <DetailsInfoItem.Label
+              hint="The root of the Merkle accumulator representing all L2 to L1 transactions as of this block"
+              isLoading={ isPlaceholderData }
+            >
+              Send root
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              { data.arbitrum.send_root }
+            </DetailsInfoItem.Value>
 
-          <DetailsInfoItem.Label
-            hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time` }
-          >
-            Difficulty
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value overflow="hidden">
-            <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
-          </DetailsInfoItem.Value>
+            <DetailsInfoItem.Label
+              hint="The number of delayed L1 to L2 messages read as of this block"
+              isLoading={ isPlaceholderData }
+            >
+              Delayed messages
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              { data.arbitrum.delayed_messages.toLocaleString() }
+            </DetailsInfoItem.Value>
+          </>
+        ) }
 
-          { data.total_difficulty && (
-            <>
-              <DetailsInfoItem.Label
-                hint="Total difficulty of the chain until this block"
-              >
-                Total difficulty
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value overflow="hidden">
-                <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
-              </DetailsInfoItem.Value>
-            </>
-          ) }
+        { !config.UI.views.block.hiddenFields?.nonce && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Block nonce is a value used during mining to demonstrate proof of work for a block"
+            >
+              Nonce
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              { data.nonce }
+            </DetailsInfoItem.Value>
+          </>
+        ) }
 
-          <DetailsInfoItemDivider/>
+        { data.zilliqa && (
+          <>
+            <DetailsInfoItemDivider/>
+            <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.quorum_certificate }/>
+            { data.zilliqa?.aggregate_quorum_certificate && (
+              <>
+                <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 2 }}/>
+                <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.aggregate_quorum_certificate }/>
+              </>
+            ) }
+          </>
+        ) }
+      </CutLink>
 
-          <DetailsInfoItem.Label
-            hint="The SHA256 hash of the block"
-          >
-            Hash
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value flexWrap="nowrap">
-            <Box overflow="hidden" >
-              <HashStringShortenDynamic hash={ data.hash }/>
-            </Box>
-            <CopyToClipboard text={ data.hash }/>
-          </DetailsInfoItem.Value>
-
-          { data.height > 0 && (
-            <>
-              <DetailsInfoItem.Label
-                hint="The hash of the block from which this block was generated"
-              >
-                Parent hash
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value flexWrap="nowrap">
-                <LinkInternal
-                  href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height - 1) } }) }
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                >
-                  <HashStringShortenDynamic
-                    hash={ data.parent_hash }
-                  />
-                </LinkInternal>
-                <CopyToClipboard text={ data.parent_hash }/>
-              </DetailsInfoItem.Value>
-            </>
-          ) }
-
-          { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
-            <>
-              <DetailsInfoItem.Label
-                hint="The cumulative number of L2 to L1 transactions as of this block"
-                isLoading={ isPlaceholderData }
-              >
-                Send count
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                { data.arbitrum.send_count.toLocaleString() }
-              </DetailsInfoItem.Value>
-
-              <DetailsInfoItem.Label
-                hint="The root of the Merkle accumulator representing all L2 to L1 transactions as of this block"
-                isLoading={ isPlaceholderData }
-              >
-                Send root
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                { data.arbitrum.send_root }
-              </DetailsInfoItem.Value>
-
-              <DetailsInfoItem.Label
-                hint="The number of delayed L1 to L2 messages read as of this block"
-                isLoading={ isPlaceholderData }
-              >
-                Delayed messages
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                { data.arbitrum.delayed_messages.toLocaleString() }
-              </DetailsInfoItem.Value>
-            </>
-          ) }
-
-          { !config.UI.views.block.hiddenFields?.nonce && (
-            <>
-              <DetailsInfoItem.Label
-                hint="Block nonce is a value used during mining to demonstrate proof of work for a block"
-              >
-                Nonce
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                { data.nonce }
-              </DetailsInfoItem.Value>
-            </>
-          ) }
-
-          { data.zilliqa && (
-            <>
-              <DetailsInfoItemDivider/>
-              <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.quorum_certificate }/>
-              { data.zilliqa?.aggregate_quorum_certificate && (
-                <>
-                  <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 2 }}/>
-                  <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.aggregate_quorum_certificate }/>
-                </>
-              ) }
-            </>
-          ) }
-        </>
-      ) }
     </Grid>
   );
 };

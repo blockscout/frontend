@@ -26,10 +26,11 @@ const RESTRICTED_MODULES = {
     { name: '@metamask/post-message-stream', message: 'Please lazy-load @metamask/post-message-stream or use useProvider hook instead' },
     { name: 'playwright/TestApp', message: 'Please use render() fixture from test() function of playwright/lib module' },
     { name: 'ui/shared/chakra/Skeleton', message: 'Please use Skeleton component from toolkit/chakra instead' },
+    { name: 'ui/shared/Tabs/RoutedTabs', message: 'Please use RoutedTabs component from toolkit/components/RoutedTabs instead' },
     {
       name: '@chakra-ui/react',
       importNames: [
-        'Menu', 'useToast', 'useDisclosure', 'useClipboard', 'Tooltip', 'Skeleton', 'IconButton', 'Button', 'Link',
+        'Menu', 'useToast', 'useDisclosure', 'useClipboard', 'Tooltip', 'Skeleton', 'IconButton', 'Button', 'Link', 'Tag',
         'Image', 'Popover', 'PopoverTrigger', 'PopoverContent', 'PopoverBody', 'PopoverFooter',
         'DrawerRoot', 'DrawerBody', 'DrawerContent', 'DrawerOverlay', 'DrawerBackdrop', 'DrawerTrigger', 'Drawer',
         'Alert', 'AlertIcon', 'AlertTitle', 'AlertDescription',

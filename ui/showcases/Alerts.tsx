@@ -1,7 +1,8 @@
-import { Box, Table } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { Alert } from 'toolkit/chakra/alert';
+import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
@@ -12,20 +13,20 @@ const AlertsShowcase = () => {
       <Section>
         <SectionHeader>Status</SectionHeader>
         <SamplesStack>
-          <Sample label="visual: info">
-            <Alert visual="info" title="Info"> Alert content </Alert>
+          <Sample label="status: info">
+            <Alert status="info" title="Info"> Alert content </Alert>
           </Sample>
-          <Sample label="visual: neutral">
-            <Alert visual="neutral" title="Neutral"> Alert content </Alert>
+          <Sample label="status: neutral">
+            <Alert status="neutral" title="Neutral"> Alert content </Alert>
           </Sample>
-          <Sample label="visual: warning">
-            <Alert visual="warning" title="Warning"> Alert content </Alert>
+          <Sample label="status: warning">
+            <Alert status="warning" title="Warning"> Alert content </Alert>
           </Sample>
-          <Sample label="visual: success">
-            <Alert visual="success" title="Success"> Alert content </Alert>
+          <Sample label="status: success">
+            <Alert status="success" title="Success"> Alert content </Alert>
           </Sample>
-          <Sample label="visual: error">
-            <Alert visual="error" title="Error"> Alert content </Alert>
+          <Sample label="status: error">
+            <Alert status="error" title="Error"> Alert content </Alert>
           </Sample>
         </SamplesStack>
       </Section>
@@ -33,7 +34,7 @@ const AlertsShowcase = () => {
         <SectionHeader>Variant</SectionHeader>
         <SamplesStack>
           <Sample label="variant: subtle">
-            <Alert visual="info" title="Info"> Alert content </Alert>
+            <Alert status="info" title="Info"> Alert content </Alert>
           </Sample>
         </SamplesStack>
       </Section>
@@ -42,56 +43,56 @@ const AlertsShowcase = () => {
         <SectionSubHeader>Inside table (SocketNewItemsNotice)</SectionSubHeader>
         <SamplesStack>
           <Sample label="loading">
-            <Table.Root>
-              <Table.Header>
-                <Table.Row>
-                  <Table.ColumnHeader w="100px">Block</Table.ColumnHeader>
-                  <Table.ColumnHeader w="100px">Age</Table.ColumnHeader>
-                  <Table.ColumnHeader w="100px">Gas used</Table.ColumnHeader>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
+            <TableRoot tableLayout="auto">
+              <TableHeader>
+                <TableRow>
+                  <TableColumnHeader w="100px">Block</TableColumnHeader>
+                  <TableColumnHeader w="100px">Age</TableColumnHeader>
+                  <TableColumnHeader w="100px">Gas used</TableColumnHeader>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 <SocketNewItemsNotice.Desktop
                   url={ window.location.href }
                   num={ 1234 }
                   type="block"
                   isLoading
                 />
-              </Table.Body>
-            </Table.Root>
+              </TableBody>
+            </TableRoot>
           </Sample>
           <Sample label="success">
-            <Table.Root>
-              <Table.Header>
-                <Table.Row>
-                  <Table.ColumnHeader w="100px">Block</Table.ColumnHeader>
-                  <Table.ColumnHeader w="100px">Age</Table.ColumnHeader>
-                  <Table.ColumnHeader w="100px">Gas used</Table.ColumnHeader>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
+            <TableRoot tableLayout="auto">
+              <TableHeader>
+                <TableRow>
+                  <TableColumnHeader w="100px">Block</TableColumnHeader>
+                  <TableColumnHeader w="100px">Age</TableColumnHeader>
+                  <TableColumnHeader w="100px">Gas used</TableColumnHeader>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 <SocketNewItemsNotice.Desktop
                   url={ window.location.href }
                   num={ 1234 }
                   type="block"
                   isLoading={ false }
                 />
-              </Table.Body>
-            </Table.Root>
+              </TableBody>
+            </TableRoot>
           </Sample>
         </SamplesStack>
 
         <SectionSubHeader>Multiple lines</SectionSubHeader>
         <SamplesStack>
           <Sample label="multiple lines, with title, inline=false">
-            <Alert visual="warning" title="Warning" inline={ false } maxWidth="500px">
+            <Alert status="warning" title="Warning" inline={ false } maxWidth="500px">
               <Box>
                 Participated in our recent Blockscout activities? Check your eligibility and claim your NFT Scout badges. More exciting things are coming soon!
               </Box>
             </Alert>
           </Sample>
           <Sample label="multiple lines, no title">
-            <Alert visual="warning" maxWidth="500px">
+            <Alert status="warning" maxWidth="500px">
               <Box>
                 Participated in our recent Blockscout activities? Check your eligibility and claim your NFT Scout badges. More exciting things are coming soon!
               </Box>

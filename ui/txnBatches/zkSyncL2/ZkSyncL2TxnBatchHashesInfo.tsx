@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { ZkSyncBatch } from 'types/api/zkSyncL2';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
@@ -48,7 +48,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
               </Flex>
             ) }
           </>
-        ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
+        ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
       </DetailsInfoItem.Value>
 
       <DetailsInfoItem.Label
@@ -75,7 +75,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
               </Flex>
             ) }
           </>
-        ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
+        ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
       </DetailsInfoItem.Value>
 
       <DetailsInfoItem.Label
@@ -102,7 +102,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
               </Flex>
             ) }
           </>
-        ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
+        ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
       </DetailsInfoItem.Value>
     </>
   );

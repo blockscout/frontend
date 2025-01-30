@@ -12,6 +12,7 @@ export interface TooltipProps extends ChakraTooltip.RootProps {
   content: React.ReactNode;
   contentProps?: ChakraTooltip.ContentProps;
   disabled?: boolean;
+  disableOnMobile?: boolean;
 }
 
 export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
@@ -23,6 +24,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
       selected,
       children,
       disabled,
+      disableOnMobile,
       portalled = true,
       content,
       contentProps,
@@ -36,6 +38,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     const [ open, setOpen ] = React.useState(defaultOpen);
 
     const isMobile = useIsMobile();
+    // TODO @tom2drum merge refs
     const triggerRef = useClickAway<HTMLButtonElement>(() => setOpen(false));
 
     const handleOpenChange = React.useCallback((details: { open: boolean }) => {
@@ -47,7 +50,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
       setOpen((prev) => !prev);
     }, [ ]);
 
-    if (disabled) return children;
+    if (disabled || (disableOnMobile && isMobile)) return children;
 
     const defaultShowArrow = visual === 'popover' ? false : true;
     const showArrow = showArrowProp !== undefined ? showArrowProp : defaultShowArrow;

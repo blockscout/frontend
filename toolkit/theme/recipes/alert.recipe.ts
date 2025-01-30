@@ -27,6 +27,7 @@ export const recipe = defineSlotRecipe({
       height: '5',
       _icon: { boxSize: 'full' },
       color: 'alert.fg',
+      '--layer-bg': 'transparent',
     },
     content: {
       display: 'flex',
@@ -35,24 +36,48 @@ export const recipe = defineSlotRecipe({
   },
 
   variants: {
-    visual: {
+    status: {
       info: {
-        root: { bg: 'alert.bg.info', color: 'alert.fg' },
+        root: {
+          bg: 'alert.bg.info',
+          '--layer-bg': '{colors.alert.bg.info}',
+          color: 'alert.fg',
+        },
       },
       warning: {
-        root: { bg: 'alert.bg.warning', color: 'alert.fg' },
+        root: {
+          bg: 'alert.bg.warning',
+          '--layer-bg': '{colors.alert.bg.warning}',
+          color: 'alert.fg',
+        },
       },
       warning_table: {
-        root: { bg: 'alert.bg.warning_table', color: 'alert.fg' },
+        root: {
+          bg: 'alert.bg.warning_table',
+          '--layer-bg': '{colors.alert.bg.warning_table}',
+          color: 'alert.fg',
+        },
       },
       success: {
-        root: { bg: 'alert.bg.success', color: 'alert.fg' },
+        root: {
+          bg: 'alert.bg.success',
+          '--layer-bg': '{colors.alert.bg.success}',
+          color: 'alert.fg',
+        },
       },
       error: {
-        root: { bg: 'alert.bg.error', color: 'alert.fg' },
+        root: {
+          bg: 'alert.bg.error',
+          '--layer-bg': '{colors.alert.bg.error}',
+          color: 'alert.fg',
+        },
       },
       neutral: {
-        root: { bg: 'alert.bg.neutral', color: 'alert.fg' },
+        root: {
+          bg: 'alert.bg.neutral',
+          '--layer-bg': '{colors.alert.bg.neutral}',
+          color: 'alert.fg',
+        },
       },
     },
 
@@ -92,7 +117,7 @@ export const recipe = defineSlotRecipe({
   },
 
   defaultVariants: {
-    visual: 'neutral',
+    status: 'neutral',
     size: 'md',
     inline: true,
   },

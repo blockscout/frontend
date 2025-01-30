@@ -102,7 +102,7 @@ const LinksShowcase = () => {
             </CutLink>
           </Sample>
           <Sample label="Loading" flexDirection="column" alignItems="flex-start">
-            <CutLink id="CutLink_2" isLoading>
+            <CutLink id="CutLink_2" loading>
               <Box maxW="500px">{ TEXT }</Box>
             </CutLink>
           </Sample>

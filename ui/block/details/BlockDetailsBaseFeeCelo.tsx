@@ -1,4 +1,4 @@
-import { Box, Flex, Link } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { BlockBaseFeeCelo } from 'types/api/block';
 import type { TokenInfo } from 'types/api/token';
 
 import { WEI, ZERO_ADDRESS } from 'lib/consts';
+import { Link } from 'toolkit/chakra/link';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
@@ -50,7 +51,7 @@ const BlockDetailsBaseFeeCelo = ({ data }: Props) => {
   const totalFeeLabel = (
     <Box whiteSpace="pre-wrap">
       <span>The FeeHandler regularly burns 80% of its tokens. Non-CELO tokens are swapped to CELO beforehand. The remaining 20% are sent to the </span>
-      <Link isExternal href="https://www.ultragreen.money">Green Fund</Link>
+      <Link external href="https://www.ultragreen.money">Green Fund</Link>
       <span>.</span>
     </Box>
   );
@@ -65,10 +66,7 @@ const BlockDetailsBaseFeeCelo = ({ data }: Props) => {
       <DetailsInfoItem.Value>
         <AddressEntity address={ data.recipient }/>
       </DetailsInfoItem.Value>
-      <DetailsInfoItem.Label
-        hint={ totalFeeLabel }
-        type="popover"
-      >
+      <DetailsInfoItem.Label hint={ totalFeeLabel }>
         Base fee total
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value display="block">

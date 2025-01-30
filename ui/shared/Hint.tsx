@@ -32,6 +32,7 @@ const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
     <Tooltip
       content={ label }
       positioning={{ placement: 'top' }}
+      interactive
       { ...tooltipProps }
     >
       <IconButton

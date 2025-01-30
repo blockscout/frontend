@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Step } from './types';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import VerificationStep from './VerificationStep';
 
@@ -25,7 +25,7 @@ const VerificationSteps = ({ currentStep, currentStepPending, steps, isLoading, 
   return (
     <Skeleton
       className={ className }
-      isLoaded={ !isLoading }
+      loading={ isLoading }
       display="flex"
       gap={ 2 }
       alignItems="center"

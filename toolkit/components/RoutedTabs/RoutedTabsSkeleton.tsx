@@ -1,14 +1,14 @@
-import { Flex, chakra, Box, useColorModeValue } from '@chakra-ui/react';
+import { Flex, chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { RoutedTab } from '../Tabs/types';
+import type { TabItemRegular } from '../AdaptiveTabs/types';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import type { TabsProps } from 'toolkit/chakra/tabs';
 
-type TabSize = 'sm' | 'md';
+import useActiveTabFromQuery from './useActiveTabFromQuery';
 
-const SkeletonTabText = ({ size, title }: { size: TabSize; title: RoutedTab['title'] }) => (
+const SkeletonTabText = ({ size, title }: { size: TabsProps['size']; title: TabItemRegular['title'] }) => (
   <Skeleton
     borderRadius="base"
     borderWidth={ size === 'sm' ? '2px' : 0 }
@@ -22,17 +22,18 @@ const SkeletonTabText = ({ size, title }: { size: TabSize; title: RoutedTab['tit
 
 interface Props {
   className?: string;
-  tabs: Array<RoutedTab>;
+  tabs: Array<TabItemRegular>;
   size?: 'sm' | 'md';
 }
 
-const TabsSkeleton = ({ className, tabs, size = 'md' }: Props) => {
-  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const tabIndex = useTabIndexFromQuery(tabs || []);
+const RoutedTabsSkeleton = ({ className, tabs, size = 'md' }: Props) => {
+  const activeTab = useActiveTabFromQuery(tabs);
 
   if (tabs.length === 1) {
     return null;
   }
+
+  const tabIndex = activeTab ? tabs.findIndex((tab) => tab.id === activeTab.id) : 0;
 
   return (
     <Flex className={ className } my={ 8 } alignItems="center" overflow="hidden">
@@ -44,7 +45,13 @@ const TabsSkeleton = ({ className, tabs, size = 'md' }: Props) => {
         />
       )) }
       { tabs.slice(tabIndex, tabIndex + 1).map(({ title, id }) => (
-        <Box key={ id.toString() } bgColor={ bgColor } py={ size === 'sm' ? 1 : 2 } borderRadius="base" flexShrink={ 0 }>
+        <Box
+          key={ id.toString() }
+          bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
+          py={ size === 'sm' ? 1 : 2 }
+          borderRadius="base"
+          flexShrink={ 0 }
+        >
           <SkeletonTabText
             key={ id.toString() }
             title={ title }
@@ -63,4 +70,4 @@ const TabsSkeleton = ({ className, tabs, size = 'md' }: Props) => {
   );
 };
 
-export default chakra(TabsSkeleton);
+export default chakra(RoutedTabsSkeleton);
