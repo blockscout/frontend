@@ -34,7 +34,7 @@ export const recipe = defineSlotRecipe({
     },
   },
   variants: {
-    visual: {
+    variant: {
       regular: {
         content: {
           '--tooltip-bg': 'colors.tooltip.bg',
@@ -79,6 +79,6 @@ export const recipe = defineSlotRecipe({
     },
   },
   defaultVariants: {
-    visual: 'regular',
+    variant: 'regular',
   },
 });

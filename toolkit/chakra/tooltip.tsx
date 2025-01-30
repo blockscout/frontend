@@ -20,7 +20,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     const {
       showArrow: showArrowProp,
       onOpenChange,
-      visual,
+      variant,
       selected,
       children,
       disabled,
@@ -38,7 +38,6 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     const [ open, setOpen ] = React.useState(defaultOpen);
 
     const isMobile = useIsMobile();
-    // TODO @tom2drum merge refs
     const triggerRef = useClickAway<HTMLButtonElement>(() => setOpen(false));
 
     const handleOpenChange = React.useCallback((details: { open: boolean }) => {
@@ -52,7 +51,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
 
     if (disabled || (disableOnMobile && isMobile)) return children;
 
-    const defaultShowArrow = visual === 'popover' ? false : true;
+    const defaultShowArrow = variant === 'popover' ? false : true;
     const showArrow = showArrowProp !== undefined ? showArrowProp : defaultShowArrow;
 
     const positioning = {
@@ -70,7 +69,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         open={ open }
         onOpenChange={ isMobile ? undefined : handleOpenChange }
         closeOnClick={ false }
-        visual={ visual }
+        variant={ variant }
         lazyMount={ lazyMount }
         unmountOnExit={ unmountOnExit }
         { ...rest }

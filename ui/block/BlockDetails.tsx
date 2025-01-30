@@ -517,13 +517,11 @@ const BlockDetails = ({ query }: Props) => {
             </Skeleton>
             { !txFees.isEqualTo(ZERO) && (
               <Tooltip content="Burnt fees / Txn fees * 100%">
-                <Box>
-                  <Utilization
-                    ml={ 4 }
-                    value={ burntFees.dividedBy(txFees).toNumber() }
-                    isLoading={ isPlaceholderData }
-                  />
-                </Box>
+                <Utilization
+                  ml={ 4 }
+                  value={ burntFees.dividedBy(txFees).toNumber() }
+                  isLoading={ isPlaceholderData }
+                />
               </Tooltip>
             ) }
           </DetailsInfoItem.Value>

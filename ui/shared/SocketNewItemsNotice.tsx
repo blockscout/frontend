@@ -1,8 +1,10 @@
-import { Link, Text, chakra, Table } from '@chakra-ui/react';
+import { Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { Alert } from 'toolkit/chakra/alert';
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 
 interface InjectedProps {
   content: React.ReactNode;
@@ -56,7 +58,7 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
   const content = !isLoading ? (
     <Alert
       className={ className }
-      visual="warning_table"
+      status="warning_table"
       px={ 4 }
       py="6px"
       fontSize="sm"
@@ -82,7 +84,7 @@ export const Desktop = ({ ...props }: Props) => {
       my={ props.isLoading ? '6px' : 0 }
       { ...props }
     >
-      { ({ content }) => <Table.Row><Table.Cell colSpan={ 100 } p={ 0 } _first={{ p: 0 }} _last={{ p: 0 }}>{ content }</Table.Cell></Table.Row> }
+      { ({ content }) => <TableRow><TableCell colSpan={ 100 } p={ 0 } _first={{ p: 0 }} _last={{ p: 0 }}>{ content }</TableCell></TableRow> }
     </SocketNewItemsNotice>
   );
 };

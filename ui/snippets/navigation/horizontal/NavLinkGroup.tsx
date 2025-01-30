@@ -48,7 +48,7 @@ const NavLinkGroup = ({ item }: Props) => {
 
   return (
     <Tooltip
-      visual="popover"
+      variant="popover"
       content={ content }
       onOpenChange={ onOpenChange }
       lazyMount={ false }

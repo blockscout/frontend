@@ -1,4 +1,4 @@
-import { chakra, Box } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -31,14 +31,12 @@ const BlockGasUsed = ({ className, gasUsed, gasLimit, gasTarget, isLoading }: Pr
   return (
     <>
       <Tooltip content="Gas Used %" disabled={ isLoading }>
-        <Box>
-          <Utilization
-            colorScheme="gray"
-            value={ BigNumber(gasUsed).dividedBy(BigNumber(gasLimit)).toNumber() }
-            isLoading={ isLoading }
-            className={ className }
-          />
-        </Box>
+        <Utilization
+          colorScheme="gray"
+          value={ BigNumber(gasUsed).dividedBy(BigNumber(gasLimit)).toNumber() }
+          isLoading={ isLoading }
+          className={ className }
+        />
       </Tooltip>
       { gasTarget && (
         <>

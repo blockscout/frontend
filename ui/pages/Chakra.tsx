@@ -28,6 +28,7 @@ import ButtonShowcase from 'ui/showcases/Button';
 import LinksShowcase from 'ui/showcases/Links';
 import PaginationShowcase from 'ui/showcases/Pagination';
 import TabsShowcase from 'ui/showcases/Tabs';
+import TooltipsShowcase from 'ui/showcases/Tooltip';
 
 const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
@@ -58,6 +59,7 @@ const ChakraShowcases = () => {
           <TabsTrigger value="links">Links</TabsTrigger>
           <TabsTrigger value="pagination">Pagination</TabsTrigger>
           <TabsTrigger value="tabs">Tabs</TabsTrigger>
+          <TabsTrigger value="tooltips">Tooltips</TabsTrigger>
           <TabsTrigger value="unsorted">Unsorted</TabsTrigger>
         </TabsList>
         <AlertsShowcase/>
@@ -66,6 +68,7 @@ const ChakraShowcases = () => {
         <LinksShowcase/>
         <TabsShowcase/>
         <PaginationShowcase/>
+        <TooltipsShowcase/>
 
         <TabsContent value="unsorted">
           <VStack align="flex-start" gap={ 6 }>
@@ -150,18 +153,6 @@ const ChakraShowcases = () => {
                 <Field label="Description" required floating size="2xl" w="360px">
                   <Textarea value={ TEXT }/>
                 </Field>
-              </HStack>
-            </section>
-
-            <section>
-              <Heading textStyle="heading.md" mb={ 2 }>Tooltips</Heading>
-              <HStack gap={ 4 }>
-                <Tooltip content="Tooltip content">
-                  <span>Default</span>
-                </Tooltip>
-                <Tooltip content="Tooltip content" visual="navigation">
-                  <span>Navigation</span>
-                </Tooltip>
               </HStack>
             </section>
 

@@ -73,9 +73,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             { burntBlobFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             { !blobFees.isEqualTo(ZERO) && (
               <Tooltip content="Blob burnt fees / Txn fees * 100%">
-                <div>
-                  <Utilization ml={ 4 } value={ burntBlobFees.dividedBy(blobFees).toNumber() }/>
-                </div>
+                <Utilization ml={ 4 } value={ burntBlobFees.dividedBy(blobFees).toNumber() }/>
               </Tooltip>
             ) }
           </DetailsInfoItem.Value>

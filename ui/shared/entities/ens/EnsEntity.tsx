@@ -78,7 +78,7 @@ const Icon = (props: IconProps) => {
     return (
       <Tooltip
         content={ content }
-        visual="popover"
+        variant="popover"
         positioning={{
           placement: 'bottom-start',
         }}

@@ -1,4 +1,4 @@
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -121,9 +121,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
             </Skeleton>
           </Flex>
           <Tooltip content="Burnt fees / Txn fees * 100%" disabled={ isLoading }>
-            <Box w="min-content">
-              <Utilization mt={ 2 } value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
-            </Box>
+            <Utilization mt={ 2 } w="min-content" value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
           </Tooltip>
         </TableCell>
       ) }
