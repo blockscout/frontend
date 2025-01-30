@@ -14,6 +14,8 @@ import NavLinkIcon from './NavLinkIcon';
 import useColors from './useColors';
 import useNavLinkStyleProps from './useNavLinkStyleProps';
 
+import luxColors from 'theme/foundations/lux-colors';
+
 type Props = {
   item: NavItem;
   isCollapsed?: boolean;
@@ -24,7 +26,7 @@ type Props = {
 
 const NavLink = ({ item, isCollapsed, px, className, onClick }: Props) => {
   const isMobile = useIsMobile();
-  const colors = useColors();
+  //const colors = useColors();
 
   const isExpanded = isCollapsed === false;
   const isInternalLink = isInternalItem(item);
@@ -57,7 +59,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick }: Props) => {
         placement="right"
         variant="nav"
         gutter={ 20 }
-        color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
+        //color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
       >
         <HStack spacing={ 3 } overflow="hidden">
           <NavLinkIcon item={ item }/>

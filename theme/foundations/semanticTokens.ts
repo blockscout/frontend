@@ -1,3 +1,5 @@
+import luxColors from './lux-colors';
+
 const semanticTokens = {
   colors: {
     divider: {
@@ -13,11 +15,11 @@ const semanticTokens = {
       _dark: 'gray.400',
     },
     link: {
-      'default': 'blue.600',
-      _dark: 'blue.300',
+      'default': luxColors.colors.muted2,
+      _dark: luxColors.colors.muted2,
     },
     link_hovered: {
-      'default': 'blue.400',
+      'default': luxColors.colors.foreground //'blue.400',
     },
     error: {
       'default': 'red.400',

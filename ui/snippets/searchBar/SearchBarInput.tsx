@@ -8,6 +8,8 @@ import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ClearButton from 'ui/shared/ClearButton';
 
+import luxColors from 'theme/foundations/lux-colors';
+
 interface Props {
   onChange: (value: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
@@ -86,7 +88,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
     >
       <InputGroup size={{ base: isHomepage ? 'md' : 'sm', lg: 'md' }}>
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
-          <Icon as={ searchIcon } boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
+          <Icon as={ searchIcon } boxSize={{ base: isHomepage ? 6 : 6, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
         </InputLeftElement>
         <Input
           pl={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
@@ -99,9 +101,9 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
               paddingRight: '36px',
             },
           }}
-          placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
+          placeholder={ isMobile ? 'Search by address... ' : 'Search by address, txn hash, block, token... ' }
           onChange={ handleChange }
-          border={ isHomepage ? 'none' : '2px solid' }
+          border={ '2px solid ' + luxColors.colors.muted3 }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
           _focusWithin={{ _placeholder: { color: 'gray.300' } }}
           color={ useColorModeValue('black', 'white') }

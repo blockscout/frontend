@@ -55,7 +55,7 @@ const variantOutline = definePartsStyle((props) => {
     addon: {
       border: '2px solid',
       borderColor: 'transparent',
-      bg: mode('blackAlpha.100', 'whiteAlpha.200')(props),
+      bg: mode('blackAlpha.300', 'whiteAlpha.200')(props),
       color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
       ...transitionProps,
     },

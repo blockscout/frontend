@@ -1,5 +1,5 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean } from '@chakra-ui/react';
+import { Button, Popover, PopoverContent, PopoverBody, PopoverTrigger,  Box, useBoolean } from '@chakra-ui/react';
 import React from 'react';
 
 import AddressIdenticon from 'ui/shared/entities/address/AddressIdenticon';
@@ -45,6 +45,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
       color: themedColor,
     };
   }
+//               {/* ...buttonStyles  */}
 
   return (
     <Popover
@@ -59,14 +60,12 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
         <Box ml={ 2 }>
           <PopoverTrigger>
             <Button
-              variant={ variant }
-              colorScheme="blue"
+              variant='primary'
               flexShrink={ 0 }
               isLoading={ isModalOpening || isModalOpen }
               loadingText="Connect wallet"
               onClick={ isWalletConnected ? setIsPopoverOpen.on : connect }
               fontSize="sm"
-              { ...buttonStyles }
             >
               { isWalletConnected ? (
                 <>

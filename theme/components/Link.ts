@@ -4,23 +4,28 @@ import { mode } from '@chakra-ui/theme-tools';
 
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 
+import luxColors from 'theme/foundations/lux-colors';
+
 const baseStyle = defineStyle(getDefaultTransitionProps());
 
 const variantPrimary = defineStyle((props) => {
   return {
-    color: 'link',
+    color: luxColors.colors.muted1,
+
     _hover: {
-      color: 'link_hovered',
-      textDecorationStyle: props.textDecorationStyle || 'solid',
+      color: luxColors.colors.accent,
+      //textDecorationStyle: props.textDecorationStyle || 'solid',
     },
   };
 });
 
 const variantSecondary = defineStyle((props) => {
   return {
-    color: mode('gray.600', 'gray.500')(props),
+    //color: mode('gray.600', 'gray.500')(props),
+    color: luxColors.colors.secondary[2],
     _hover: {
-      color: mode('gray.600', 'gray.400')(props),
+      //color: mode('gray.600', 'gray.400')(props),
+      color: luxColors.colors.secondary.main,
     },
   };
 });

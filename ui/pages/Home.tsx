@@ -12,15 +12,18 @@ import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
+import luxColors from 'theme/foundations/lux-colors'
+
 const Home = () => {
   return (
-    <Box as="main">
+    <Box as="main" background={luxColors.colors.background }>
       <Box
         w="100%"
-           // :aa
-        background={ config.UI.homepage.plate.background }
-        borderRadius="24px"
-        padding={{ base: '24px', lg: '48px' }}
+        background={luxColors.colors.background }
+        borderRadius="16px"
+        borderColor={luxColors.colors.muted3}
+        p={{ base: '24px', lg: '48px' }}
+        pt={{base: '0px !important' }}
         minW={{ base: 'unset', lg: '900px' }}
         data-label="hero plate"
       >

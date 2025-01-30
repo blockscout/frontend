@@ -5,8 +5,12 @@ import {
 } from '@chakra-ui/styled-system';
 import { cssVar, mode } from '@chakra-ui/theme-tools';
 
+import luxColors from 'theme/foundations/lux-colors' 
+
+
 const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(parts.keys);
+
 
 const $popperBg = cssVar('popper-bg');
 
@@ -18,18 +22,21 @@ const baseStylePopper = defineStyle({
 });
 
 const baseStyleContent = defineStyle((props) => {
-  const bg = mode('white', 'gray.900')(props);
-  const shadowColor = mode('blackAlpha.200', 'whiteAlpha.300')(props);
+  //const bg = mode('white', 'gray.900')(props);
+  //const shadowColor = mode('blackAlpha.200', 'whiteAlpha.300')(props);
 
   return {
-    [$popperBg.variable]: `colors.${ bg }`,
-    bg: $popperBg.reference,
-    [$arrowBg.variable]: $popperBg.reference,
-    [$arrowShadowColor.variable]: `colors.${ shadowColor }`,
+    //[$popperBg.variable]: `colors.${ bg }`,
+    bg: luxColors.colors.level1,
+   // [$arrowBg.variable]: $popperBg.reference,
+    //[$arrowShadowColor.variable]: `colors.${ shadowColor }`,
+    _hover: {
+      color: luxColors.colors.foreground
+    },
     _dark: {
-      [$popperBg.variable]: `colors.gray.900`,
-      [$arrowShadowColor.variable]: `colors.whiteAlpha.300`,
-      boxShadow: 'dark-lg',
+     // [$popperBg.variable]: `colors.gray.900`,
+     // [$arrowShadowColor.variable]: `colors.whiteAlpha.300`,
+     // boxShadow: 'dark-lg',
     },
     width: 'xs',
     border: 'none',

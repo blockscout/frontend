@@ -2,53 +2,47 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 import { runIfFn } from '@chakra-ui/utils';
 
-const variantSolid = defineStyle((props) => {
-  const { colorScheme: c } = props;
+import luxColors from 'theme/foundations/lux-colors';
 
-  if (c === 'gray') {
-    const bg = mode(`gray.100`, `whiteAlpha.200`)(props);
-
-    return {
-      bg,
-      _hover: {
-        bg: mode(`gray.200`, `whiteAlpha.300`)(props),
-        _disabled: {
-          bg,
-        },
-      },
-      _active: { bg: mode(`gray.300`, `whiteAlpha.400`)(props) },
-    };
-  }
-
-  const bg = `${ c }.600`;
-  const color = 'white';
-  const hoverBg = `${ c }.400`;
-  const activeBg = `${ c }.700`;
-
-  return {
-    bg,
-    color,
-    _hover: {
-      bg: hoverBg,
-      _disabled: {
-        bg,
-      },
-    },
+const variantPrimary = defineStyle((props) => ({
+  bg: luxColors.colors.primary.main,
+  color: luxColors.colors.primary.fg,
+  _hover: {
+    bg: luxColors.colors.primary.hover,
     _disabled: {
       opacity: 0.2,
     },
-    _active: { bg: activeBg },
-    fontWeight: 600,
-  };
-});
+  },
+  _disabled: {
+    opacity: 0.2,
+  },
+  fontWeight: 600,
+}))
+
+const variantSecondary = defineStyle((props) => ({
+  bg: luxColors.colors.secondary.main,
+  color: luxColors.colors.secondary.fg,
+  _hover: {
+    bg: luxColors.colors.secondary.hover,
+    _disabled: {
+      opacity: 0.2,
+    },
+  },
+  _disabled: {
+    opacity: 0.2,
+  },
+  fontWeight: 600,
+}))
 
 const variantOutline = defineStyle((props) => {
+
   const { colorScheme: c } = props;
 
   const isGrayTheme = c === 'gray' || c === 'gray-dark';
   const color = isGrayTheme ? mode('blackAlpha.800', 'whiteAlpha.800')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
   const borderColor = isGrayTheme ? mode('gray.200', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
   const activeBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
+  
   const activeColor = (() => {
     if (c === 'gray') {
       return mode('blue.600', 'gray.50')(props);
@@ -63,35 +57,21 @@ const variantOutline = defineStyle((props) => {
   })();
 
   return {
-    color,
+    color: luxColors.colors.foreground,
     fontWeight: props.fontWeight || 600,
     borderWidth: props.borderWidth || '2px',
     borderStyle: 'solid',
-    borderColor,
+    borderColor: luxColors.colors.muted4,
     bg: 'transparent',
     _hover: {
-      color: 'link_hovered',
-      borderColor: 'link_hovered',
-      bg: 'transparent',
-      _active: {
-        bg: props.isActive ? activeBg : 'transparent',
-        borderColor: props.isActive ? activeBg : 'link_hovered',
-        color: props.isActive ? activeColor : 'link_hovered',
-        p: {
-          color: 'link_hovered',
-        },
-      },
-      _disabled: {
-        color,
-        borderColor,
-      },
-      p: {
-        color: 'link_hovered',
-      },
+      color: luxColors.colors.accent,
+      borderColor: luxColors.colors.accent,
+      bg: luxColors.colors.level1,
     },
     _disabled: {
       opacity: 0.2,
     },
+    /*
     _active: {
       bg: activeBg,
       borderColor: activeBg,
@@ -104,6 +84,7 @@ const variantOutline = defineStyle((props) => {
         color: activeColor,
       },
     },
+    */
   };
 });
 
@@ -166,7 +147,8 @@ const variantSubtle = defineStyle((props) => {
 });
 
 const variants = {
-  solid: variantSolid,
+  primary: variantPrimary,
+  secondary: variantSecondary,
   outline: variantOutline,
   simple: variantSimple,
   ghost: variantGhost,
@@ -214,9 +196,8 @@ const Button = defineStyleConfig({
   variants,
   sizes,
   defaultProps: {
-    variant: 'solid',
+    variant: 'primary',
     size: 'md',
-    colorScheme: 'blue',
   },
 });
 

@@ -8,7 +8,7 @@ interface Props {
 
 const Content = ({ children, className }: Props) => {
   return (
-    <Box pt={{ base: 0, lg: '52px' }} as="main" className={ className }>
+    <Box id='CONTENT' pt={{ base: '12px' }} as="main" className={ className }>
       { children }
     </Box>
   );

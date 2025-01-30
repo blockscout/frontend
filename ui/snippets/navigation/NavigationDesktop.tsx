@@ -15,6 +15,11 @@ import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 import NavLink from './NavLink';
 import NavLinkGroupDesktop from './NavLinkGroupDesktop';
 
+import luxColors from 'theme/foundations/lux-colors';
+
+const NAV_WIDTH = '320px'
+const NAV_WIDTH_CLOSED = '92px'
+
 const NavigationDesktop = () => {
   const appProps = useAppContext();
   const cookiesString = appProps.cookies;
@@ -40,9 +45,8 @@ const NavigationDesktop = () => {
   }, [ isCollapsed ]);
 
   const chevronIconStyles = {
-    bgColor: useColorModeValue('white', 'black'),
-    color: useColorModeValue('blackAlpha.400', 'whiteAlpha.400'),
-    borderColor: 'divider',
+    bgColor: 'transparent',
+    color: luxColors.colors.muted2,
   };
 
   const isExpanded = isCollapsed === false;
@@ -56,12 +60,13 @@ const NavigationDesktop = () => {
       borderRight="1px solid"
       borderColor="divider"
       px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}
-      py={ 12 }
-      width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
+      pb={ 12 }
+      pt={ { base: '12px' } }
+      width={{ lg: isExpanded ? NAV_WIDTH : NAV_WIDTH_CLOSED, xl: isCollapsed ? NAV_WIDTH_CLOSED : NAV_WIDTH }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
       sx={{
         '&:hover #expand-icon': {
-          display: 'block',
+          opacity: '1.0',
         },
       }}
     >
@@ -105,21 +110,23 @@ const NavigationDesktop = () => {
         as={ chevronIcon }
         width={ 6 }
         height={ 6 }
-        border="1px"
-        _hover={{ color: 'link_hovered' }}
-        borderRadius="base"
-        { ...chevronIconStyles }
+        border="none"
+        _hover={{ color: luxColors.colors.foreground }}
+        bgColor='transparent'
+        color={luxColors.colors.muted2}
+        sx={{
+          opacity: '0.7',   
+        }}
         transform={{ lg: isExpanded ? 'rotate(0)' : 'rotate(180deg)', xl: isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }}
         { ...getDefaultTransitionProps({ transitionProperty: 'transform, left' }) }
         transformOrigin="center"
         position="absolute"
-        top="104px"
-        left={{ lg: isExpanded ? '216px' : '80px', xl: isCollapsed ? '80px' : '216px' }}
+        top="70px"
+        left={{ lg: isExpanded ? '12px' : '64px', xl: isCollapsed ? '64px' : '12px' }}
         cursor="pointer"
         onClick={ handleTogglerClick }
         aria-label="Expand/Collapse menu"
         id="expand-icon"
-        display="none"
       />
     </Flex>
   );

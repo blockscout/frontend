@@ -8,7 +8,6 @@ const LayoutSearchResults = ({ children }: Props) => {
 
   return (
     <Layout.Container>
-      <Layout.TopRow/>
       { children }
     </Layout.Container>
   );
