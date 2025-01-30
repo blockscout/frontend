@@ -3,7 +3,7 @@ name: Publish Docker image of Game7 to public registry
 on:
     push:
         branches:
-            - "dev"
+            - "game7"
 
 concurrency:
     group: ${{ github.head_ref }} || concat(${{ github.ref }}, ${{ github.workflow }})
@@ -13,7 +13,7 @@ env:
     COMPOSE_DOCKER_CLI_BUILD: 1
     DOCKER_BUILDKIT: 1
     RUNNING_ON_ENVIRONMENT_BRANCH: |
-        ${{ github.ref_name == 'dev' }}
+        ${{ github.ref_name == 'game7' }}
 
 jobs:
     deploy:
@@ -24,7 +24,7 @@ jobs:
             - name: Check out the repo
               uses: actions/checkout@v4
               with:
-                  ref: dev
+                  ref: game7
 
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
