@@ -47,6 +47,12 @@ const BadgesShowcase = () => {
         </SamplesStack>
       </Section>
       <Section>
+        <SectionHeader>Loading</SectionHeader>
+        <SamplesStack>
+          <Sample label="loading: true">
+            <Badge colorPalette="purple" loading>Content</Badge>
+          </Sample>
+        </SamplesStack>
         <SectionHeader>Size</SectionHeader>
         <SamplesStack>
           <Sample label="size: md">

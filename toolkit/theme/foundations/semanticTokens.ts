@@ -14,6 +14,14 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
         },
       },
+      subtle: {
+        fg: {
+          DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+        },
+        bg: {
+          DEFAULT: { value: { _light: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.200}' } },
+        },
+      },
       dropdown: {
         fg: {
           DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
@@ -290,6 +298,17 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       cyan: {
         bg: { value: { _light: '{colors.cyan.50}', _dark: '{colors.cyan.800}' } },
         fg: { value: { _light: '{colors.cyan.500}', _dark: '{colors.cyan.100}' } },
+      },
+    },
+    tag: {
+      root: {
+        subtle: {
+          bg: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },
+          fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+        },
+      },
+      closeTrigger: {
+        color: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
       },
     },
     table: {

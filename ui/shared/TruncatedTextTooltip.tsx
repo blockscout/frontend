@@ -9,7 +9,7 @@ import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 
 interface Props {
   children: React.ReactNode;
-  label: string;
+  label: React.ReactNode;
   placement?: Placement;
 }
 

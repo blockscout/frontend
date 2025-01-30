@@ -157,6 +157,12 @@ const ButtonShowcase = () => {
             </PopoverRoot>
           </Sample>
 
+          <Sample label="variant: subtle">
+            <Button variant="subtle" size="xs">Default: Now+1h</Button>
+            <Button variant="subtle" size="xs" data-hover>Hovered: Now+1h</Button>
+            <Button variant="subtle" size="xs" disabled>Disabled: Now+1h</Button>
+          </Sample>
+
           <Sample label="variant: plain">
             <Button variant="plain">Default</Button>
             <Button variant="plain" data-hover>Hovered</Button>

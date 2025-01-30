@@ -18,7 +18,6 @@ import { Switch } from 'toolkit/chakra/switch';
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
 import { Textarea } from 'toolkit/chakra/textarea';
 import { toaster } from 'toolkit/chakra/toaster';
-import { Tooltip } from 'toolkit/chakra/tooltip';
 import ContentLoader from 'ui/shared/ContentLoader';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -28,6 +27,7 @@ import ButtonShowcase from 'ui/showcases/Button';
 import LinksShowcase from 'ui/showcases/Links';
 import PaginationShowcase from 'ui/showcases/Pagination';
 import TabsShowcase from 'ui/showcases/Tabs';
+import TagsShowcase from 'ui/showcases/Tags';
 import TooltipsShowcase from 'ui/showcases/Tooltip';
 
 const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
@@ -59,6 +59,7 @@ const ChakraShowcases = () => {
           <TabsTrigger value="links">Links</TabsTrigger>
           <TabsTrigger value="pagination">Pagination</TabsTrigger>
           <TabsTrigger value="tabs">Tabs</TabsTrigger>
+          <TabsTrigger value="tags">Tags</TabsTrigger>
           <TabsTrigger value="tooltips">Tooltips</TabsTrigger>
           <TabsTrigger value="unsorted">Unsorted</TabsTrigger>
         </TabsList>
@@ -69,6 +70,7 @@ const ChakraShowcases = () => {
         <TabsShowcase/>
         <PaginationShowcase/>
         <TooltipsShowcase/>
+        <TagsShowcase/>
 
         <TabsContent value="unsorted">
           <VStack align="flex-start" gap={ 6 }>

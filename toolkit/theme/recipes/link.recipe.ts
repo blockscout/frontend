@@ -30,8 +30,6 @@ export const recipe = defineRecipe({
       },
       underlaid: {
         color: 'link.primary',
-        // css-var to override bg property on loaded skeleton
-        '--layer-bg': '{colors.link.underlaid.bg}',
         bgColor: 'link.underlaid.bg',
         px: '8px',
         py: '6px',
@@ -42,7 +40,10 @@ export const recipe = defineRecipe({
           textDecoration: 'none',
         },
         _loading: {
-          bgColor: 'transparent',
+          bgColor: 'unset',
+        },
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'link.underlaid.bg',
         },
       },
       menu: {

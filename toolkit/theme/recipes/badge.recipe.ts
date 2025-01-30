@@ -9,6 +9,10 @@ export const recipe = defineRecipe({
     fontWeight: '500',
     whiteSpace: 'nowrap',
     userSelect: 'none',
+    _loading: {
+      borderRadius: 'sm',
+      bgColor: 'unset',
+    },
   },
   variants: {
     variant: {
@@ -16,58 +20,80 @@ export const recipe = defineRecipe({
     },
     colorPalette: {
       gray: {
-        bg: 'badge.gray.bg',
-        '--layer-bg': '{colors.badge.gray.bg}',
+        bgColor: 'badge.gray.bg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'badge.gray.bg',
+        },
         color: 'badge.gray.fg',
       },
       green: {
-        bg: 'badge.green.bg',
-        '--layer-bg': '{colors.badge.green.bg}',
+        bgColor: 'badge.green.bg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'badge.green.bg',
+        },
         color: 'badge.green.fg',
       },
       red: {
-        bg: 'badge.red.bg',
-        '--layer-bg': '{colors.badge.red.bg}',
+        bgColor: 'badge.red.bg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'badge.red.bg',
+        },
         color: 'badge.red.fg',
       },
       purple: {
-        bg: 'badge.purple.bg',
-        '--layer-bg': '{colors.badge.purple.bg}',
+        bgColor: 'badge.purple.bg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'badge.purple.bg',
+        },
         color: 'badge.purple.fg',
       },
       orange: {
-        bg: 'badge.orange.bg',
-        '--layer-bg': '{colors.badge.orange.bg}',
+        bgColor: 'badge.orange.bg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'badge.orange.bg',
+        },
         color: 'badge.orange.fg',
       },
       blue: {
-        bg: 'badge.blue.bg',
-        '--layer-bg': '{colors.badge.blue.bg}',
+        bgColor: 'badge.blue.bg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'badge.blue.bg',
+        },
         color: 'badge.blue.fg',
       },
       yellow: {
-        bg: 'badge.yellow.bg',
-        '--layer-bg': '{colors.badge.yellow.bg}',
+        bgColor: 'badge.yellow.bg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'badge.yellow.bg',
+        },
         color: 'badge.yellow.fg',
       },
       teal: {
-        bg: 'badge.teal.bg',
-        '--layer-bg': '{colors.badge.teal.bg}',
+        bgColor: 'badge.teal.bg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'badge.teal.bg',
+        },
         color: 'badge.teal.fg',
       },
       cyan: {
-        bg: 'badge.cyan.bg',
-        '--layer-bg': '{colors.badge.cyan.bg}',
+        bgColor: 'badge.cyan.bg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'badge.cyan.bg',
+        },
         color: 'badge.cyan.fg',
       },
       purple_alt: {
-        bg: 'badge.purple_alt.bg',
-        '--layer-bg': '{colors.badge.purple_alt.bg}',
+        bgColor: 'badge.purple_alt.bg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'badge.purple_alt.bg',
+        },
         color: 'badge.purple_alt.fg',
       },
       blue_alt: {
-        bg: 'badge.blue_alt.bg',
-        '--layer-bg': '{colors.badge.blue_alt.bg}',
+        bgColor: 'badge.blue_alt.bg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bgColor: 'badge.blue_alt.bg',
+        },
         color: 'badge.blue_alt.fg',
       },
     },

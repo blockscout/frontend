@@ -40,11 +40,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
         <IconButton
           aria-label="prev"
           borderRadius="sm"
-          bg="gray.100"
-          color="gray.600"
-          _hover={{
-            color: 'link.primary.hover',
-          }}
+          variant="subtle"
           onClick={ handelPrevClick }
           disabled={ isPrevDisabled }
         >
@@ -55,11 +51,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
         <IconButton
           aria-label="next"
           borderRadius="sm"
-          bg="gray.100"
-          color="gray.600"
-          _hover={{
-            color: 'link.primary.hover',
-          }}
+          variant="subtle"
           ml="10px"
           onClick={ handelNextClick }
           disabled={ isNextDisabled }

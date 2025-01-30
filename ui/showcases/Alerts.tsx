@@ -39,6 +39,14 @@ const AlertsShowcase = () => {
         </SamplesStack>
       </Section>
       <Section>
+        <SectionHeader>Loading</SectionHeader>
+        <SamplesStack>
+          <Sample label="loading: true">
+            <Alert status="info" title="Info" loading> Alert content </Alert>
+          </Sample>
+        </SamplesStack>
+      </Section>
+      <Section>
         <SectionHeader>Examples</SectionHeader>
         <SectionSubHeader>Inside table (SocketNewItemsNotice)</SectionSubHeader>
         <SamplesStack>

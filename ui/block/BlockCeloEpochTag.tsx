@@ -3,6 +3,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { Badge } from 'toolkit/chakra/badge';
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -23,15 +24,11 @@ const BlockCeloEpochTag = ({ blockQuery }: Props) => {
     const epochBlockNumber = celoConfig.isEnabled && celoConfig.L2UpgradeBlock && blockQuery.data.height <= celoConfig.L2UpgradeBlock ?
       blockQuery.data.celo.epoch_number * celoConfig.BLOCKS_PER_EPOCH :
       undefined;
-    const tag = (
-      // TODO @tom2drum revise tag color scheme
-      <Tag colorScheme={ epochBlockNumber ? 'gray-blue' : 'gray' } >Epoch #{ blockQuery.data.celo.epoch_number }</Tag>
-    );
     const content = epochBlockNumber ? (
       <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(epochBlockNumber) } }) }>
-        { tag }
+        <Tag>Epoch #{ blockQuery.data.celo.epoch_number }</Tag>
       </Link>
-    ) : tag;
+    ) : <Badge>Epoch #{ blockQuery.data.celo.epoch_number }</Badge>;
 
     return (
       <Tooltip

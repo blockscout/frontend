@@ -11,6 +11,9 @@ export const recipe = defineSlotRecipe({
       position: 'relative',
       borderRadius: 'base',
       color: 'alert.fg',
+      _loading: {
+        bgColor: 'unset',
+      },
     },
     title: {
       fontWeight: '600',
@@ -27,7 +30,6 @@ export const recipe = defineSlotRecipe({
       height: '5',
       _icon: { boxSize: 'full' },
       color: 'alert.fg',
-      '--layer-bg': 'transparent',
     },
     content: {
       display: 'flex',
@@ -39,43 +41,55 @@ export const recipe = defineSlotRecipe({
     status: {
       info: {
         root: {
-          bg: 'alert.bg.info',
-          '--layer-bg': '{colors.alert.bg.info}',
+          bgColor: 'alert.bg.info',
+          '&:not([data-loading], [aria-busy=true])': {
+            bgColor: 'alert.bg.info',
+          },
           color: 'alert.fg',
         },
       },
       warning: {
         root: {
-          bg: 'alert.bg.warning',
-          '--layer-bg': '{colors.alert.bg.warning}',
+          bgColor: 'alert.bg.warning',
+          '&:not([data-loading], [aria-busy=true])': {
+            bgColor: 'alert.bg.warning',
+          },
           color: 'alert.fg',
         },
       },
       warning_table: {
         root: {
-          bg: 'alert.bg.warning_table',
-          '--layer-bg': '{colors.alert.bg.warning_table}',
+          bgColor: 'alert.bg.warning_table',
+          '&:not([data-loading], [aria-busy=true])': {
+            bgColor: 'alert.bg.warning_table',
+          },
           color: 'alert.fg',
         },
       },
       success: {
         root: {
-          bg: 'alert.bg.success',
-          '--layer-bg': '{colors.alert.bg.success}',
+          bgColor: 'alert.bg.success',
+          '&:not([data-loading], [aria-busy=true])': {
+            bgColor: 'alert.bg.success',
+          },
           color: 'alert.fg',
         },
       },
       error: {
         root: {
-          bg: 'alert.bg.error',
-          '--layer-bg': '{colors.alert.bg.error}',
+          bgColor: 'alert.bg.error',
+          '&:not([data-loading], [aria-busy=true])': {
+            bgColor: 'alert.bg.error',
+          },
           color: 'alert.fg',
         },
       },
       neutral: {
         root: {
-          bg: 'alert.bg.neutral',
-          '--layer-bg': '{colors.alert.bg.neutral}',
+          bgColor: 'alert.bg.neutral',
+          '&:not([data-loading], [aria-busy=true])': {
+            bgColor: 'alert.bg.neutral',
+          },
           color: 'alert.fg',
         },
       },

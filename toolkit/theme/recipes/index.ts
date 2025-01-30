@@ -17,6 +17,7 @@ import { recipe as spinner } from './spinner.recipe';
 import { recipe as switchRecipe } from './switch.recipe';
 import { recipe as table } from './table.recipe';
 import { recipe as tabs } from './tabs.recipe';
+import { recipe as tag } from './tag.recipe';
 import { recipe as textarea } from './textarea.recipe';
 import { recipe as toast } from './toast.recipe';
 import { recipe as tooltip } from './tooltip.recipe';
@@ -45,6 +46,7 @@ export const slotRecipes = {
   'switch': switchRecipe,
   table,
   tabs,
+  tag,
   toast,
   tooltip,
 };

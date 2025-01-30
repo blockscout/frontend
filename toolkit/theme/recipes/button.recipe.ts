@@ -139,6 +139,21 @@ export const recipe = defineRecipe({
           bg: 'transparent',
         },
       },
+      subtle: {
+        bg: 'button.subtle.bg',
+        color: 'button.subtle.fg',
+        '&:not([data-loading], [aria-busy=true])': {
+          bg: 'button.subtle.bg',
+        },
+        _hover: {
+          bg: 'button.subtle.bg',
+          color: 'link.primary.hover',
+        },
+        _disabled: {
+          bg: 'button.subtle.bg',
+          color: 'button.subtle.fg',
+        },
+      },
       link: {
         bg: 'transparent',
         color: 'link.primary',
