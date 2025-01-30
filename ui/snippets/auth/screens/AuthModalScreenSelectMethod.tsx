@@ -24,7 +24,7 @@ const AuthModalScreenSelectMethod = ({ onSelectMethod }: Props) => {
       Action: 'Wallet',
       Source: 'Options selector',
     });
-    onSelectMethod({ type: 'connect_wallet' });
+    onSelectMethod({ type: 'connect_wallet', loginToRewards: true });
   }, [ onSelectMethod ]);
 
   return (
