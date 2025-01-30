@@ -15,7 +15,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import type { FontFace } from 'use-font-face-observer';
 import useFontFaceObserver from 'use-font-face-observer';
 
-import { BODY_TYPEFACE, HEADING_TYPEFACE } from 'theme/foundations/typography';
+import { drukWide, inter } from 'theme/foundations/typography';
 
 const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;
@@ -33,8 +33,8 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
   const [ displayedString, setDisplayedString ] = React.useState(hash);
 
   const isFontFaceLoaded = useFontFaceObserver([
-    { family: BODY_TYPEFACE, weight: String(fontWeight) as FontFace['weight'] },
-    { family: HEADING_TYPEFACE, weight: String(fontWeight) as FontFace['weight'] },
+    { family: inter.style.fontFamily, weight: String(fontWeight) as FontFace['weight'] },
+    { family: drukWide.style.fontFamily, weight: String(fontWeight) as FontFace['weight'] },
   ]);
 
   const calculateString = useCallback(() => {

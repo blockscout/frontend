@@ -25,6 +25,7 @@ const sdk = new NodeSDK({
       process.env.NEXT_PUBLIC_APP_HOST?.replace('.blockscout.com', '').replaceAll('-', '_') ||
       'unknown_app',
   }),
+  // @ts-ignore
   spanProcessor: new SimpleSpanProcessor(traceExporter),
   traceExporter,
   metricReader: new PeriodicExportingMetricReader({

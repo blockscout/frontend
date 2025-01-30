@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
 
-import { BODY_TYPEFACE } from 'theme/foundations/typography';
+import { inter } from 'theme/foundations/typography';
 
 interface Props {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ const TruncatedTextTooltip = ({ children, label }: Props) => {
   const [ isTruncated, setTruncated ] = React.useState(false);
 
   const isFontFaceLoaded = useFontFaceObserver([
-    { family: BODY_TYPEFACE },
+    { family: inter.style.fontFamily },
   ]);
 
   const updatedTruncateState = React.useCallback(() => {
