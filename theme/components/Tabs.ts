@@ -8,17 +8,20 @@ const { defineMultiStyleConfig, definePartsStyle } =
 
 import Button from './Button/Button';
 
+import luxColors from 'theme/foundations/lux-colors';
+
 const variantSoftRounded = definePartsStyle((props) => {
   return {
     tab: {
       borderRadius: 'base',
       fontWeight: '600',
-      color: mode('blue.700', 'gray.400')(props),
+      color: luxColors.colors.muted2, // mode('blue.700', 'gray.400')(props),
+      bg: 'transparent', // mode('blue.50', 'gray.800')(props), 
       _selected: {
-        color: mode('blue.700', 'gray.50')(props),
-        bg: mode('blue.50', 'gray.800')(props),
+        color: luxColors.colors.foreground, // mode('blue.700', 'gray.50')(props),
+        bg: luxColors.colors.level1, // mode('blue.50', 'gray.800')(props), 
         _hover: {
-          color: mode('blue.700', 'gray.50')(props),
+          color: luxColors.colors.accent // mode('blue.700', 'gray.50')(props),
         },
       },
       _hover: {
@@ -36,7 +39,7 @@ const variantOutline = definePartsStyle((props) => {
     tab: {
       ...Button.variants?.outline(props),
       ...Button.baseStyle,
-      _selected: Button.variants?.outline(props)._active,
+      //_selected: Button.variants?.outline(props)._active,
     },
   };
 });

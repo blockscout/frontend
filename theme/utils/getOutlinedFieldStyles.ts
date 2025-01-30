@@ -4,6 +4,8 @@ import { mode, getColor } from '@chakra-ui/theme-tools';
 import getDefaultFormColors from './getDefaultFormColors';
 import getDefaultTransitionProps from './getDefaultTransitionProps';
 
+import luxColors from 'theme/foundations/lux-colors';
+
 export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
   const { theme, borderColor } = props;
   const { focusBorderColor, errorColor } = getDefaultFormColors(props);
@@ -13,10 +15,10 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
     border: '2px solid',
     // filled input
     backgroundColor: 'transparent',
-    borderColor: mode('gray.300', 'gray.600')(props),
+    borderColor: luxColors.colors.muted3, // mode('gray.300', 'gray.600')(props),
     ...transitionProps,
     _hover: {
-      borderColor: mode('gray.200', 'gray.500')(props),
+      borderColor: luxColors.colors.muted // mode('gray.200', 'gray.500')(props),
     },
     _readOnly: {
       boxShadow: 'none !important',
@@ -24,7 +26,7 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
     },
     _disabled: {
       opacity: 1,
-      backgroundColor: mode('blackAlpha.200', 'whiteAlpha.200')(props),
+      backgroundColor: luxColors.colors.level1, // mode('blackAlpha.200', 'whiteAlpha.200')(props),
       borderColor: 'transparent',
       cursor: 'not-allowed',
       _hover: {
@@ -41,11 +43,13 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
     },
     _focusVisible: {
       zIndex: 1,
-      borderColor: getColor(theme, focusBorderColor),
+      borderColor: luxColors.colors.accent, // getColor(theme, focusBorderColor),
       boxShadow: 'md',
+      color: luxColors.colors.muted2
     },
     _placeholder: {
-      color: mode('blackAlpha.600', 'whiteAlpha.600')(props),
+      // color: mode('blackAlpha.600', 'whiteAlpha.600')(props),
+      color: luxColors.colors.muted2
     },
     // not filled input
     ':placeholder-shown:not(:focus-visible):not(:hover):not([aria-invalid=true])': { borderColor: borderColor || mode('gray.100', 'gray.700')(props) },

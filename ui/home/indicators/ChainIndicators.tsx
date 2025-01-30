@@ -10,6 +10,8 @@ import ChainIndicatorItem from './ChainIndicatorItem';
 import useFetchChartData from './useFetchChartData';
 import INDICATORS from './utils/indicators';
 
+import luxColors from 'theme/foundations/lux-colors';
+
 const indicators = INDICATORS
   .filter(({ id }) => config.UI.homepage.charts.includes(id))
   .sort((a, b) => {
@@ -31,10 +33,10 @@ const ChainIndicators = () => {
   const queryResult = useFetchChartData(indicator);
   const statsQueryResult = useApiQuery('homepage_stats');
 
-  const bgColorDesktop = useColorModeValue('white', 'gray.900');
-  const bgColorMobile = useColorModeValue('white', 'black');
-  const listBgColorDesktop = useColorModeValue('gray.50', 'black');
-  const listBgColorMobile = useColorModeValue('gray.50', 'gray.900');
+  const bgColorDesktop = luxColors.colors.level2 // useColorModeValue('white', 'gray.900');
+  const bgColorMobile = luxColors.colors.level2 // useColorModeValue('white', 'black');
+  const listBgColorDesktop = luxColors.colors.level2 //  useColorModeValue('gray.50', 'black');
+  const listBgColorMobile = luxColors.colors.level2 // useColorModeValue('gray.50', 'gray.900');
 
   if (indicators.length === 0) {
     return null;

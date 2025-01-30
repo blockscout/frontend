@@ -5,6 +5,8 @@ import {
   defineStyle,
 } from '@chakra-ui/styled-system';
 
+import luxColors from 'theme/foundations/lux-colors';
+
 const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(parts.keys);
 
@@ -15,7 +17,7 @@ const baseStyleList = defineStyle({
   [$bg.variable]: '#fff',
   [$shadow.variable]: 'shadows.2xl',
   _dark: {
-    [$bg.variable]: 'colors.gray.900',
+    [$bg.variable]: luxColors.colors.muted, //'colors.gray.900',
     [$shadow.variable]: 'shadows.dark-lg',
   },
   borderWidth: '0',
@@ -25,18 +27,12 @@ const baseStyleList = defineStyle({
 
 const baseStyleItem = defineStyle({
   _focus: {
-    [$bg.variable]: 'colors.blue.50',
-    _dark: {
-      [$bg.variable]: 'colors.gray.800',
-    },
+    [$bg.variable]: luxColors.colors.foreground,
   },
   _hover: {
-    [$bg.variable]: 'colors.blue.50',
-    _dark: {
-      [$bg.variable]: 'colors.gray.800',
-    },
+    [$bg.variable]: luxColors.colors.accent,
   },
-  bg: $bg.reference,
+  bg: luxColors.colors.level1,
 });
 
 const baseStyle = definePartsStyle({

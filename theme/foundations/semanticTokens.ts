@@ -3,16 +3,16 @@ import luxColors from './lux-colors';
 const semanticTokens = {
   colors: {
     divider: {
-      'default': 'blackAlpha.200',
-      _dark: 'whiteAlpha.200',
+      'default': luxColors.colors.muted4,
+      _dark: luxColors.colors.muted4,
     },
     text: {
-      'default': 'blackAlpha.800',
-      _dark: 'whiteAlpha.800',
+      'default': luxColors.colors.foreground,
+      _dark: luxColors.colors.foreground,
     },
     text_secondary: {
-      'default': 'gray.500',
-      _dark: 'gray.400',
+      'default': luxColors.colors.muted,
+      _dark: luxColors.colors.muted,
     },
     link: {
       'default': luxColors.colors.muted2,

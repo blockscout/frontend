@@ -1,22 +1,22 @@
-import { useColorModeValue } from '@chakra-ui/react';
+import luxColors from 'theme/foundations/lux-colors';
 
 export default function useColors() {
   return {
     text: {
-      'default': useColorModeValue('gray.600', 'gray.400'),
-      active: useColorModeValue('blackAlpha.900', 'whiteAlpha.900'),
-      hover: useColorModeValue('blue.600', 'link_hovered'),
+      'default': luxColors.colors.muted,
+      active: luxColors.colors.foreground,
+      hover: luxColors.colors.accent,
     },
     iconPlaceholder: {
-      'default': useColorModeValue('blackAlpha.100', 'whiteAlpha.300'),
+      'default': luxColors.colors.muted,
     },
     bg: {
       'default': 'transparent',
-      active: useColorModeValue('blue.50', 'gray.800'),
+      active: 'transparent',
     },
     border: {
-      'default': 'divider',
-      active: useColorModeValue('blue.50', 'gray.800'),
+      'default': luxColors.colors.muted3,
+      active:  luxColors.colors.muted,
     },
   };
 }

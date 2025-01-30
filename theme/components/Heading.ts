@@ -1,11 +1,12 @@
 import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import type { SystemStyleInterpolation } from '@chakra-ui/theme-tools';
 import { mode } from '@chakra-ui/theme-tools';
+import luxColors from 'theme/foundations/lux-colors';
 
 const baseStyle: SystemStyleInterpolation = (props) => {
   return {
     fontWeight: '500',
-    color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+    color: luxColors.colors.foreground // mode('blackAlpha.800', 'whiteAlpha.800')(props),
   };
 };
 

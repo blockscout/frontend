@@ -9,6 +9,8 @@ import ChartOverlay from 'ui/shared/chart/ChartOverlay';
 import ChartTooltip from 'ui/shared/chart/ChartTooltip';
 import useTimeChartController from 'ui/shared/chart/useTimeChartController';
 
+import luxColors from 'theme/foundations/lux-colors';
+
 interface Props {
   data: TimeChartData;
   caption?: string;
@@ -18,7 +20,8 @@ const CHART_MARGIN = { bottom: 5, left: 10, right: 10, top: 0 };
 
 const ChainIndicatorChart = ({ data }: Props) => {
   const overlayRef = React.useRef<SVGRectElement>(null);
-  const lineColor = useToken('colors', 'blue.500');
+  // const lineColor = useToken('colors', 'blue.500');
+  const lineColor = luxColors.colors.primary.main
 
   const axesConfig = React.useMemo(() => {
     return {

@@ -6,6 +6,8 @@ import breakpoints from 'theme/foundations/breakpoints';
 import Icon from 'ui/shared/chakra/Icon';
 import Hint from 'ui/shared/Hint';
 
+import luxColors from 'theme/foundations/lux-colors';
+
 type Props = {
   icon: React.FC<React.SVGAttributes<SVGElement>>;
   title: string;
@@ -35,8 +37,8 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading
     [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { alignItems: 'center' },
   };
 
-  const bgColor = useColorModeValue('blue.50', 'blue.800');
-  const loadingBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+  const bgColor = luxColors.colors.level3 //useColorModeValue('blue.50', 'blue.800');
+  const loadingBgColor = luxColors.colors.level3 // useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const infoColor = useColorModeValue('gray.600', 'gray.400');
 
   return (

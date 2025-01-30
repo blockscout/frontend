@@ -6,6 +6,8 @@ import {
 } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 
+import luxColors from 'theme/foundations/lux-colors';
+
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(parts.keys);
 
@@ -55,8 +57,8 @@ const variantOutline = definePartsStyle((props) => {
     addon: {
       border: '2px solid',
       borderColor: 'transparent',
-      bg: mode('blackAlpha.300', 'whiteAlpha.200')(props),
-      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      bg: luxColors.colors.muted3, // mode('blackAlpha.300', 'whiteAlpha.200')(props),
+      color: luxColors.colors.muted, // mode('blackAlpha.800', 'whiteAlpha.800')(props),
       ...transitionProps,
     },
   };

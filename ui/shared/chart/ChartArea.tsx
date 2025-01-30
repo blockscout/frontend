@@ -5,6 +5,9 @@ import React from 'react';
 
 import type { TimeChartItem } from 'ui/shared/chart/types';
 
+import luxColors from 'theme/foundations/lux-colors';
+
+
 interface Props extends React.SVGProps<SVGPathElement> {
   id?: string;
   xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
@@ -21,8 +24,8 @@ const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props
   const gradientColorId = `${ id || 'gradient' }-${ color }-color`;
   const gradientStopColor = useToken('colors', useColorModeValue('whiteAlpha.200', 'blackAlpha.100'));
   const defaultGradient = {
-    startColor: useToken('colors', useColorModeValue('blue.100', 'blue.400')),
-    stopColor: useToken('colors', transparentize(useColorModeValue('blue.100', 'blue.400'), 0)(theme)),
+    startColor: luxColors.colors.primary.main,  // useToken('colors', useColorModeValue('blue.100', 'blue.400')),
+    stopColor: luxColors.colors.background // useToken('colors', transparentize(useColorModeValue('blue.100', 'blue.400'), 0)(theme)),
   };
 
   React.useEffect(() => {
