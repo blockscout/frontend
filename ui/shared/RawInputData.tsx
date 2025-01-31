@@ -1,41 +1,51 @@
-import { Box, Flex, Select, Textarea } from '@chakra-ui/react';
 import React from 'react';
 
 import hexToUtf8 from 'lib/hexToUtf8';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import RawDataSnippet from 'ui/shared/RawDataSnippet';
+import Select from 'ui/shared/select/Select';
 
-type DataType = 'Hex' | 'UTF-8'
-const OPTIONS: Array<DataType> = [ 'Hex', 'UTF-8' ];
+const OPTIONS = [
+  { label: 'Hex', value: 'Hex' as const },
+  { label: 'UTF-8', value: 'UTF-8' as const },
+];
+
+export type DataType = (typeof OPTIONS)[number]['value'];
 
 interface Props {
   hex: string;
+  rightSlot?: React.ReactNode;
+  defaultDataType?: DataType;
+  isLoading?: boolean;
+  minHeight?: string;
 }
 
-const RawInputData = ({ hex }: Props) => {
-  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('Hex');
+const RawInputData = ({ hex, rightSlot: rightSlotProp, defaultDataType = 'Hex', isLoading, minHeight }: Props) => {
+  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>(defaultDataType);
 
-  const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedDataType(event.target.value as DataType);
-  }, []);
+  const rightSlot = (
+    <>
+      <Select
+        options={ OPTIONS }
+        name="data-type"
+        defaultValue={ defaultDataType }
+        onChange={ setSelectedDataType }
+        isLoading={ isLoading }
+        w="90px"
+        mr="auto"
+      />
+      { rightSlotProp }
+    </>
+  );
 
   return (
-    <Box w="100%">
-      <Flex justifyContent="space-between" alignItems="center">
-        <Select size="xs" borderRadius="base" value={ selectedDataType } onChange={ handleSelectChange } focusBorderColor="none" w="auto">
-          { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
-        </Select>
-        <CopyToClipboard text={ hex }/>
-      </Flex>
-      <Textarea
-        value={ selectedDataType === 'Hex' ? hex : hexToUtf8(hex) }
-        w="100%"
-        maxH="220px"
-        mt={ 2 }
-        p={ 4 }
-        variant="filledInactive"
-        fontSize="sm"
-      />
-    </Box>
+    <RawDataSnippet
+      data={ selectedDataType === 'Hex' ? hex : hexToUtf8(hex) }
+      rightSlot={ rightSlot }
+      isLoading={ isLoading }
+      textareaMaxHeight="220px"
+      textareaMinHeight={ minHeight || '160px' }
+      w="100%"
+    />
   );
 };
 

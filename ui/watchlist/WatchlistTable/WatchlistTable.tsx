@@ -18,11 +18,12 @@ interface Props {
   onEditClick: (data: WatchlistAddress) => void;
   onDeleteClick: (data: WatchlistAddress) => void;
   top: number;
+  hasEmail: boolean;
 }
 
-const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick, top }: Props) => {
+const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick, top, hasEmail }: Props) => {
   return (
-    <Table variant="simple" minWidth="600px">
+    <Table minWidth="600px">
       <TheadSticky top={ top }>
         <Tr>
           <Th width="70%">Address</Th>
@@ -39,6 +40,7 @@ const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick, top }: Pr
             isLoading={ isLoading }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
+            hasEmail={ hasEmail }
           />
         )) }
       </Tbody>

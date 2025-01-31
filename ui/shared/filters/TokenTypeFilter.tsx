@@ -3,13 +3,14 @@ import React from 'react';
 
 import type { NFTTokenType, TokenType } from 'types/api/token';
 
-import { NFT_TOKEN_TYPES, TOKEN_TYPES } from 'lib/token/tokenTypes';
+import {
+  TOKEN_TYPES, TOKEN_TYPE_IDS, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 
 type Props<T extends TokenType | NFTTokenType> = {
   onChange: (nextValue: Array<T>) => void;
   defaultValue?: Array<T>;
   nftOnly: T extends NFTTokenType ? true : false;
-}
+};
 const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange, defaultValue }: Props<T>) => {
   const { value, setValue } = useCheckboxGroup({ defaultValue });
 
@@ -42,9 +43,9 @@ const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange
         </Link>
       </Flex>
       <CheckboxGroup size="lg" onChange={ handleChange } value={ value }>
-        { (nftOnly ? NFT_TOKEN_TYPES : TOKEN_TYPES).map(({ title, id }) => (
+        { (nftOnly ? NFT_TOKEN_TYPE_IDS : TOKEN_TYPE_IDS).map((id) => (
           <Checkbox key={ id } value={ id }>
-            <Text fontSize="md">{ title }</Text>
+            <Text fontSize="md">{ TOKEN_TYPES[id] }</Text>
           </Checkbox>
         )) }
       </CheckboxGroup>

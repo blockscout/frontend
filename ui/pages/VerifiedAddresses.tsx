@@ -1,4 +1,4 @@
-import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Link } from '@chakra-ui/react';
+import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Link } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -7,16 +7,19 @@ import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, Veri
 
 import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
+import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 import TokenInfoForm from 'ui/tokenInfo/TokenInfoForm';
+import VerifiedAddressesEmailAlert from 'ui/verifiedAddresses/VerifiedAddressesEmailAlert';
 import VerifiedAddressesListItem from 'ui/verifiedAddresses/VerifiedAddressesListItem';
 import VerifiedAddressesTable from 'ui/verifiedAddresses/VerifiedAddressesTable';
 
@@ -37,16 +40,20 @@ const VerifiedAddresses = () => {
   const modalProps = useDisclosure();
   const queryClient = useQueryClient();
 
+  const profileQuery = useProfileQuery();
+
   const addressesQuery = useApiQuery('verified_addresses', {
     pathParams: { chainId: config.chain.id },
     queryOptions: {
       placeholderData: { verifiedAddresses: Array(3).fill(VERIFIED_ADDRESS) },
+      enabled: Boolean(profileQuery.data?.email),
     },
   });
   const applicationsQuery = useApiQuery('token_info_applications', {
     pathParams: { chainId: config.chain.id, id: undefined },
     queryOptions: {
       placeholderData: { submissions: Array(3).fill(TOKEN_INFO_APPLICATION) },
+      enabled: Boolean(profileQuery.data?.email),
       select: (data) => {
         return {
           ...data,
@@ -57,6 +64,7 @@ const VerifiedAddresses = () => {
   });
 
   const isLoading = addressesQuery.isPlaceholderData || applicationsQuery.isPlaceholderData;
+  const userWithoutEmail = profileQuery.data && !profileQuery.data.email;
 
   const handleGoBack = React.useCallback(() => {
     setSelectedAddress(undefined);
@@ -100,13 +108,23 @@ const VerifiedAddresses = () => {
       });
   }, [ queryClient ]);
 
-  const addButton = (
-    <Skeleton mt={ 8 } isLoaded={ !isLoading } display="inline-block">
-      <Button size="lg" onClick={ modalProps.onOpen }>
+  const addButton = (() => {
+    if (userWithoutEmail) {
+      return (
+        <Button size="lg" isDisabled mt={ 8 }>
           Add address
-      </Button>
-    </Skeleton>
-  );
+        </Button>
+      );
+    }
+
+    return (
+      <Skeleton mt={ 8 } isLoaded={ !isLoading } display="inline-block">
+        <Button size="lg" onClick={ modalProps.onOpen }>
+          Add address
+        </Button>
+      </Skeleton>
+    );
+  })();
 
   const backLink = React.useMemo(() => {
     if (!selectedAddress) {
@@ -135,35 +153,49 @@ const VerifiedAddresses = () => {
     );
   }
 
-  const content = addressesQuery.data?.verifiedAddresses ? (
-    <>
-      <Show below="lg" key="content-mobile" ssr={ false }>
-        { addressesQuery.data.verifiedAddresses.map((item, index) => (
-          <VerifiedAddressesListItem
-            key={ item.contractAddress + (isLoading ? index : '') }
-            item={ item }
-            application={ applicationsQuery.data?.submissions?.find(({ tokenAddress }) => tokenAddress.toLowerCase() === item.contractAddress.toLowerCase()) }
-            onAdd={ handleItemAdd }
-            onEdit={ handleItemEdit }
-            isLoading={ isLoading }
-          />
-        )) }
-      </Show>
-      <Hide below="lg" key="content-desktop" ssr={ false }>
-        <VerifiedAddressesTable
-          data={ addressesQuery.data.verifiedAddresses }
-          applications={ applicationsQuery.data?.submissions }
-          onItemEdit={ handleItemEdit }
-          onItemAdd={ handleItemAdd }
-          isLoading={ isLoading }
-        />
-      </Hide>
-    </>
-  ) : null;
+  const content = (() => {
+    if (userWithoutEmail) {
+      return null;
+    }
+
+    if (addressesQuery.data?.verifiedAddresses) {
+      return (
+        <>
+          <Show below="lg" key="content-mobile" ssr={ false }>
+            { addressesQuery.data.verifiedAddresses.map((item, index) => (
+              <VerifiedAddressesListItem
+                key={ item.contractAddress + (isLoading ? index : '') }
+                item={ item }
+                application={
+                  applicationsQuery.data?.submissions
+                    ?.find(({ tokenAddress }) => tokenAddress.toLowerCase() === item.contractAddress.toLowerCase())
+                }
+                onAdd={ handleItemAdd }
+                onEdit={ handleItemEdit }
+                isLoading={ isLoading }
+              />
+            )) }
+          </Show>
+          <Hide below="lg" key="content-desktop" ssr={ false }>
+            <VerifiedAddressesTable
+              data={ addressesQuery.data.verifiedAddresses }
+              applications={ applicationsQuery.data?.submissions }
+              onItemEdit={ handleItemEdit }
+              onItemAdd={ handleItemAdd }
+              isLoading={ isLoading }
+            />
+          </Hide>
+        </>
+      );
+    }
+
+    return null;
+  })();
 
   return (
     <>
       <PageTitle title="My verified addresses"/>
+      { userWithoutEmail && <VerifiedAddressesEmailAlert/> }
       <AccountPageDescription allowCut={ false }>
         <span>
           Verify ownership of a smart contract address to easily update information in Blockscout.
@@ -188,7 +220,7 @@ const VerifiedAddresses = () => {
         <AdminSupportText mt={ 5 }/>
       </AccountPageDescription>
       <DataListDisplay
-        isError={ addressesQuery.isError || applicationsQuery.isError }
+        isError={ profileQuery.isError || addressesQuery.isError || applicationsQuery.isError }
         items={ addressesQuery.data?.verifiedAddresses }
         content={ content }
         emptyText=""

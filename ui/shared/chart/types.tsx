@@ -1,7 +1,15 @@
-export interface TimeChartItem {
+export interface TimeChartItemRaw {
   date: Date;
   dateLabel?: string;
+  value: number | string | null;
+}
+
+export interface TimeChartItem {
+  date: Date;
+  date_to?: Date;
+  dateLabel?: string;
   value: number;
+  isApproximate?: boolean;
 }
 
 export interface ChartMargin {
@@ -29,6 +37,7 @@ export type TimeChartData = Array<TimeChartDataItem>;
 export interface AxisConfig {
   ticks?: number;
   nice?: boolean;
+  noLabel?: boolean;
 }
 
 export interface AxesConfig {

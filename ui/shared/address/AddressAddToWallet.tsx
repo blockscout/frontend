@@ -1,4 +1,4 @@
-import { Box, chakra, Icon, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
+import { Box, chakra, IconButton, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -9,6 +9,8 @@ import * as mixpanel from 'lib/mixpanel/index';
 import useAddOrSwitchChain from 'lib/web3/useAddOrSwitchChain';
 import useProvider from 'lib/web3/useProvider';
 import { WALLETS_INFO } from 'lib/web3/wallets';
+import Skeleton from 'ui/shared/chakra/Skeleton';
+import IconSvg from 'ui/shared/IconSvg';
 
 const feature = config.features.web3Wallet;
 
@@ -95,9 +97,9 @@ const AddressAddToWallet = ({ className, token, isLoading, variant = 'icon', ico
           aria-label="Add token to wallet"
           variant="outline"
           size="sm"
-          px="6px"
+          px={ 1 }
           onClick={ handleClick }
-          icon={ <Icon as={ WALLETS_INFO[wallet].icon } boxSize={ 6 }/> }
+          icon={ <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 6 }/> }
           flexShrink={ 0 }
         />
       </Tooltip>
@@ -106,8 +108,8 @@ const AddressAddToWallet = ({ className, token, isLoading, variant = 'icon', ico
 
   return (
     <Tooltip label={ `Add token to ${ WALLETS_INFO[wallet].name }` }>
-      <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick } flexShrink={ 0 }>
-        <Icon as={ WALLETS_INFO[wallet].icon } boxSize={ iconSize }/>
+      <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick } flexShrink={ 0 } aria-label="Add token to wallet">
+        <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ iconSize }/>
       </Box>
     </Tooltip>
   );

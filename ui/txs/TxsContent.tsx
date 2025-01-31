@@ -1,4 +1,4 @@
-import { Box, Show, Hide } from '@chakra-ui/react';
+import { Show, Hide } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
@@ -6,18 +6,20 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
+import useDescribeTxs from './noves/useDescribeTxs';
 import TxsHeaderMobile from './TxsHeaderMobile';
-import TxsListItem from './TxsListItem';
+import TxsList from './TxsList';
 import TxsTable from './TxsTable';
 
 const SORT_SEQUENCE: Record<TransactionsSortingField, Array<TransactionsSortingValue | undefined>> = {
   value: [ 'value-desc', 'value-asc', undefined ],
   fee: [ 'fee-desc', 'fee-asc', undefined ],
+  block_number: [ 'block_number-asc', undefined ],
 };
 
 type Props = {
@@ -37,7 +39,7 @@ type Props = {
   isError: boolean;
   setSorting: (value: TransactionsSortingValue | undefined) => void;
   sort: TransactionsSortingValue | undefined;
-}
+};
 
 const TxsContent = ({
   query,
@@ -63,40 +65,32 @@ const TxsContent = ({
     setSorting(value);
   }, [ sort, setSorting ]);
 
-  const content = items ? (
+  const itemsWithTranslation = useDescribeTxs(items, currentAddress, query.isPlaceholderData);
+
+  const content = itemsWithTranslation ? (
     <>
       <Show below="lg" ssr={ false }>
-        <Box>
-          { showSocketInfo && (
-            <SocketNewItemsNotice.Mobile
-              url={ window.location.href }
-              num={ socketInfoNum }
-              alert={ socketInfoAlert }
-              isLoading={ isPlaceholderData }
-            />
-          ) }
-          { items.map((tx, index) => (
-            <TxsListItem
-              key={ tx.hash + (isPlaceholderData ? index : '') }
-              tx={ tx }
-              showBlockInfo={ showBlockInfo }
-              currentAddress={ currentAddress }
-              enableTimeIncrement={ enableTimeIncrement }
-              isLoading={ isPlaceholderData }
-            />
-          )) }
-        </Box>
+        <TxsList
+          showBlockInfo={ showBlockInfo }
+          showSocketInfo={ showSocketInfo }
+          socketInfoAlert={ socketInfoAlert }
+          socketInfoNum={ socketInfoNum }
+          isLoading={ isPlaceholderData }
+          enableTimeIncrement={ enableTimeIncrement }
+          currentAddress={ currentAddress }
+          items={ itemsWithTranslation }
+        />
       </Show>
       <Hide below="lg" ssr={ false }>
         <TxsTable
-          txs={ items }
+          txs={ itemsWithTranslation }
           sort={ onSortToggle }
           sorting={ sort }
           showBlockInfo={ showBlockInfo }
           showSocketInfo={ showSocketInfo }
           socketInfoAlert={ socketInfoAlert }
           socketInfoNum={ socketInfoNum }
-          top={ top || query.pagination.isVisible ? 80 : 0 }
+          top={ top || (query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
           currentAddress={ currentAddress }
           enableTimeIncrement={ enableTimeIncrement }
           isLoading={ isPlaceholderData }
@@ -127,7 +121,7 @@ const TxsContent = ({
   return (
     <DataListDisplay
       isError={ isError }
-      items={ items }
+      items={ itemsWithTranslation }
       emptyText="There are no transactions."
       content={ content }
       actionBar={ actionBar }

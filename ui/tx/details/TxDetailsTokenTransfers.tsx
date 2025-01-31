@@ -1,15 +1,14 @@
-import { Icon, GridItem, Show, Flex } from '@chakra-ui/react';
+import { GridItem, Show, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { route } from 'nextjs-routes';
 
-import tokenIcon from 'icons/token.svg';
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import LinkInternal from 'ui/shared/LinkInternal';
-
-import TxDetailsTokenTransfer from './TxDetailsTokenTransfer';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import IconSvg from 'ui/shared/IconSvg';
+import LinkInternal from 'ui/shared/links/LinkInternal';
+import TokenTransferSnippet from 'ui/shared/TokenTransferSnippet/TokenTransferSnippet';
 
 interface Props {
   data: Array<TokenTransfer>;
@@ -40,29 +39,31 @@ const TxDetailsTokenTransfers = ({ data, txHash, isOverflow }: Props) => {
         }
 
         return (
-          <DetailsInfoItem
-            key={ type }
-            title={ title }
-            hint={ hint }
-            position="relative"
-          >
-            <Flex
-              flexDirection="column"
-              alignItems="flex-start"
-              rowGap={ 5 }
-              w="100%"
-              overflow="hidden"
+          <React.Fragment key={ type }>
+            <DetailsInfoItem.Label
+              hint={ hint }
             >
-              { items.map((item, index) => <TxDetailsTokenTransfer key={ index } data={ item }/>) }
-            </Flex>
-          </DetailsInfoItem>
+              { title }
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value position="relative">
+              <Flex
+                flexDirection="column"
+                alignItems="flex-start"
+                rowGap={ 5 }
+                w="100%"
+                overflow="hidden"
+              >
+                { items.map((item, index) => <TokenTransferSnippet key={ index } data={ item }/>) }
+              </Flex>
+            </DetailsInfoItem.Value>
+          </React.Fragment>
         );
       }) }
       { isOverflow && (
         <>
           <Show above="lg" ssr={ false }><GridItem></GridItem></Show>
           <GridItem fontSize="sm" alignItems="center" display="inline-flex" pl={{ base: '28px', lg: 0 }}>
-            <Icon as={ tokenIcon } boxSize={ 6 }/>
+            <IconSvg name="token" boxSize={ 6 }/>
             <LinkInternal href={ viewAllUrl }>
               View all
             </LinkInternal>

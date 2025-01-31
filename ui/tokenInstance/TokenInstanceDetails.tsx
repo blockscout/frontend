@@ -1,10 +1,15 @@
-import { Flex, Grid, Skeleton } from '@chakra-ui/react';
+import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo, TokenInstance } from 'types/api/token';
 
+import config from 'configs/app';
+import useIsMounted from 'lib/hooks/useIsMounted';
+import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
+import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -24,6 +29,9 @@ interface Props {
 }
 
 const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
+  const appActionData = useAppActionData(token?.address, !isLoading);
+  const isMounted = useIsMounted();
+
   const handleCounterItemClick = React.useCallback(() => {
     window.setTimeout(() => {
       // cannot do scroll instantly, have to wait a little
@@ -31,7 +39,7 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
     }, 500);
   }, [ scrollRef ]);
 
-  if (!data || !token) {
+  if (!data || !token || !isMounted) {
     return null;
   }
 
@@ -46,40 +54,69 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
           overflow="hidden"
         >
           { data.is_unique && data.owner && (
-            <DetailsInfoItem
-              title="Owner"
-              hint="Current owner of this token instance"
-              isLoading={ isLoading }
-            >
-              <AddressEntity
-                address={ data.owner }
+            <>
+              <DetailsInfoItem.Label
+                hint="Current owner of this token instance"
                 isLoading={ isLoading }
-              />
-            </DetailsInfoItem>
+              >
+                Owner
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                <AddressEntity
+                  address={ data.owner }
+                  isLoading={ isLoading }
+                />
+              </DetailsInfoItem.Value>
+            </>
           ) }
+
           <TokenInstanceCreatorAddress hash={ isLoading ? '' : token.address }/>
-          <DetailsInfoItem
-            title="Token ID"
+
+          <DetailsInfoItem.Label
             hint="This token instance unique token ID"
             isLoading={ isLoading }
           >
+            Token ID
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
             <Flex alignItems="center" overflow="hidden">
               <Skeleton isLoaded={ !isLoading } overflow="hidden" display="inline-block" w="100%">
                 <HashStringShortenDynamic hash={ data.id }/>
               </Skeleton>
               <CopyToClipboard text={ data.id } isLoading={ isLoading }/>
             </Flex>
-          </DetailsInfoItem>
+          </DetailsInfoItem.Value>
+
           <TokenInstanceTransfersCount hash={ isLoading ? '' : token.address } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
-          <TokenNftMarketplaces isLoading={ isLoading } hash={ token.address } id={ data.id }/>
+
+          <TokenNftMarketplaces
+            isLoading={ isLoading }
+            hash={ token.address }
+            id={ data.id }
+            appActionData={ appActionData }
+            source="NFT item"
+          />
+
+          { (config.UI.views.nft.marketplaces.length === 0 && appActionData) && (
+            <>
+              <DetailsInfoItem.Label
+                hint="Link to the dapp"
+              >
+                Dapp
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value py="1px">
+                <AppActionButton data={ appActionData } height="30px" source="NFT item"/>
+              </DetailsInfoItem.Value>
+            </>
+          ) }
         </Grid>
         <NftMedia
-          url={ data.animation_url || data.image_url }
+          data={ data }
+          isLoading={ isLoading }
+          withFullscreen
           w="250px"
           flexShrink={ 0 }
           alignSelf={{ base: 'center', lg: 'flex-start' }}
-          isLoading={ isLoading }
-          withFullscreen
         />
       </Flex>
       <Grid

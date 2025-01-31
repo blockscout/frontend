@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import { Skeleton as SkeletonComponent } from '@chakra-ui/react';
 import {
   defineStyle,
@@ -6,17 +7,14 @@ import {
 import { keyframes } from '@chakra-ui/system';
 import { getColor, mode } from '@chakra-ui/theme-tools';
 
-import luxColors from 'theme/foundations/lux-colors';
-
-
 const shine = () =>
   keyframes({
     to: { backgroundPositionX: '-200%' },
   });
 
 const baseStyle = defineStyle((props) => {
-  const defaultStartColor = luxColors.colors.muted // mode('blackAlpha.50', 'whiteAlpha.50')(props);
-  const defaultEndColor = luxColors.colors.muted4 // mode('blackAlpha.100', 'whiteAlpha.100')(props);
+  const defaultStartColor = mode('blackAlpha.50', 'whiteAlpha.50')(props);
+  const defaultEndColor = mode('blackAlpha.100', 'whiteAlpha.100')(props);
 
   const {
     startColor = defaultStartColor,

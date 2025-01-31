@@ -1,20 +1,19 @@
-import { Flex, Box, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import config from 'configs/app';
-import eastArrowIcon from 'icons/arrows/east.svg';
-import dayjs from 'lib/date/dayjs';
-import Icon from 'ui/shared/chakra/Icon';
+import { currencyUnits } from 'lib/units';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import InOutTag from 'ui/shared/InOutTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction & { currentAddress: string; isLoading?: boolean };
@@ -28,16 +27,13 @@ const TxInternalsListItem = ({
   error,
   created_contract: createdContract,
   transaction_hash: txnHash,
-  block,
+  block_number: blockNumber,
   timestamp,
   currentAddress,
   isLoading,
 }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
   const toData = to ? to : createdContract;
-
-  const isOut = Boolean(currentAddress && currentAddress === from.hash);
-  const isIn = Boolean(currentAddress && currentAddress === toData?.hash);
 
   return (
     <ListItemMobile rowGap={ 3 }>
@@ -50,46 +46,35 @@ const TxInternalsListItem = ({
           hash={ txnHash }
           isLoading={ isLoading }
           fontWeight={ 700 }
-          truncation="constant"
+          truncation="constant_long"
         />
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
-          <span>{ dayjs(timestamp).fromNow() }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ timestamp }
+          isLoading={ isLoading }
+          color="text_secondary"
+          fontWeight="400"
+          fontSize="sm"
+        />
       </Flex>
       <HStack spacing={ 1 }>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Block</Skeleton>
         <BlockEntity
           isLoading={ isLoading }
-          number={ block }
+          number={ blockNumber }
           noIcon
           fontSize="sm"
           lineHeight={ 5 }
         />
       </HStack>
-      <Box w="100%" display="flex" columnGap={ 3 }>
-        <AddressEntity
-          address={ from }
-          isLoading={ isLoading }
-          noLink={ isOut }
-          noCopy={ isOut }
-          width="calc((100% - 48px) / 2)"
-        />
-        { (isIn || isOut) ?
-          <InOutTag isIn={ isIn } isOut={ isOut } isLoading={ isLoading }/> :
-          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
-        }
-        { toData && (
-          <AddressEntity
-            address={ toData }
-            isLoading={ isLoading }
-            noLink={ isIn }
-            noCopy={ isIn }
-            width="calc((100% - 48px) / 2)"
-          />
-        ) }
-      </Box>
+      <AddressFromTo
+        from={ from }
+        to={ toData }
+        current={ currentAddress }
+        isLoading={ isLoading }
+        w="100%"
+      />
       <HStack spacing={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Value { config.chain.currency.symbol }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Value { currencyUnits.ether }</Skeleton>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" minW={ 6 }>
           <span>{ BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }</span>
         </Skeleton>

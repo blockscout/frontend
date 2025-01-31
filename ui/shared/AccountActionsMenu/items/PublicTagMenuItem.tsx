@@ -1,32 +1,33 @@
-import { MenuItem, Icon, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import iconPublicTags from 'icons/publictags.svg';
+import type { ItemProps } from '../types';
 
-interface Props {
-  className?: string;
-  hash: string;
-  onBeforeClick: () => boolean;
-}
+import IconSvg from 'ui/shared/IconSvg';
 
-const PublicTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
+import ButtonItem from '../parts/ButtonItem';
+import MenuItem from '../parts/MenuItem';
+
+const PublicTagMenuItem = ({ className, hash, type }: ItemProps) => {
   const router = useRouter();
 
   const handleClick = React.useCallback(() => {
-    if (!onBeforeClick()) {
-      return;
+    router.push({ pathname: '/public-tags/submit', query: { addresses: [ hash ] } });
+  }, [ hash, router ]);
+
+  switch (type) {
+    case 'button': {
+      return <ButtonItem label="Add public tag" icon="publictags" onClick={ handleClick } className={ className }/>;
     }
-
-    router.push({ pathname: '/account/public-tags-request', query: { address: hash } });
-  }, [ hash, onBeforeClick, router ]);
-
-  return (
-    <MenuItem className={ className }onClick={ handleClick }>
-      <Icon as={ iconPublicTags } boxSize={ 6 } mr={ 2 }/>
-      <span>Add public tag</span>
-    </MenuItem>
-  );
+    case 'menu_item': {
+      return (
+        <MenuItem className={ className } onClick={ handleClick }>
+          <IconSvg name="publictags" boxSize={ 6 } mr={ 2 }/>
+          <span>Add public tag</span>
+        </MenuItem>
+      );
+    }
+  }
 };
 
-export default React.memo(chakra(PublicTagMenuItem));
+export default React.memo(PublicTagMenuItem);

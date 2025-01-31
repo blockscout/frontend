@@ -8,7 +8,7 @@ import ContractVerification from 'ui/pages/ContractVerification';
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/contract-verification" query={ props }>
+    <PageNextJs pathname="/contract-verification" query={ props.query }>
       <ContractVerification/>
     </PageNextJs>
   );

@@ -4,11 +4,9 @@ import {
   Button,
   Flex,
   Heading,
-  Icon,
   Modal,
   ModalCloseButton,
   ModalContent,
-  Popover,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
@@ -20,15 +18,17 @@ import React from 'react';
 
 import type { SmartContractExternalLibrary } from 'types/api/contract';
 
-import arrowIcon from 'icons/arrows/east-mini.svg';
-import iconWarning from 'icons/status/warning.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
+import Popover from 'ui/shared/chakra/Popover';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
   data: Array<SmartContractExternalLibrary>;
+  isLoading?: boolean;
 }
 
 const Item = (data: SmartContractExternalLibrary) => {
@@ -36,7 +36,7 @@ const Item = (data: SmartContractExternalLibrary) => {
     <Flex flexDir="column" py={ 2 } w="100%" rowGap={ 1 }>
       <Box>{ data.name }</Box>
       <AddressEntity
-        address={{ hash: data.address_hash, is_contract: true, implementation_name: null }}
+        address={{ hash: data.address_hash, is_contract: true }}
         query={{ tab: 'contract' }}
         fontSize="sm"
         fontWeight="500"
@@ -46,9 +46,13 @@ const Item = (data: SmartContractExternalLibrary) => {
   );
 };
 
-const ContractExternalLibraries = ({ className, data }: Props) => {
+const ContractExternalLibraries = ({ className, data, isLoading }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const isMobile = useIsMobile();
+
+  if (isLoading) {
+    return <Skeleton h={ 8 } w="150px" borderRadius="base"/>;
+  }
 
   if (data.length === 0) {
     return null;
@@ -61,13 +65,14 @@ const ContractExternalLibraries = ({ className, data }: Props) => {
       variant="outline"
       colorScheme="gray"
       onClick={ onToggle }
+      isActive={ isOpen }
       fontWeight={ 600 }
       px={ 2 }
       aria-label="View external libraries"
     >
       <span>{ data.length } { data.length > 1 ? 'Libraries' : 'Library' } </span>
-      <Icon as={ iconWarning } boxSize={ 5 } color="orange.400" ml="2px"/>
-      <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 2 }/>
+      <IconSvg name="status/warning" boxSize={ 5 } color="orange.400" ml="2px"/>
+      <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 2 }/>
     </Button>
   );
 
@@ -82,6 +87,8 @@ const ContractExternalLibraries = ({ className, data }: Props) => {
         divider={ <StackDivider borderColor="divider"/> }
         spacing={ 2 }
         mt={ 4 }
+        maxH={{ lg: '50vh' }}
+        overflowY="scroll"
       >
         { data.map((item) => <Item key={ item.address_hash } { ...item }/>) }
       </VStack>

@@ -1,29 +1,39 @@
-import luxColors from './lux-colors';
-
 const semanticTokens = {
   colors: {
     divider: {
-      'default': luxColors.colors.muted4,
-      _dark: luxColors.colors.muted4,
+      'default': 'blackAlpha.200',
+      _dark: 'whiteAlpha.200',
     },
     text: {
-      'default': luxColors.colors.foreground,
-      _dark: luxColors.colors.foreground,
+      'default': 'blackAlpha.800',
+      _dark: 'whiteAlpha.800',
     },
     text_secondary: {
-      'default': luxColors.colors.muted,
-      _dark: luxColors.colors.muted,
+      'default': 'gray.500',
+      _dark: 'gray.400',
     },
     link: {
-      'default': luxColors.colors.muted2,
-      _dark: luxColors.colors.muted2,
+      'default': 'blue.600',
+      _dark: 'blue.300',
     },
     link_hovered: {
-      'default': luxColors.colors.foreground //'blue.400',
+      'default': 'blue.400',
+    },
+    icon_link_external: {
+      'default': 'gray.300',
+      _dark: 'gray.500',
+    },
+    icon_info: {
+      'default': 'gray.400',
+      _dark: 'gray.500',
     },
     error: {
-      'default': 'red.400',
-      _dark: 'red.300',
+      'default': 'red.500',
+      _dark: 'red.500',
+    },
+    dialog_bg: {
+      'default': 'white',
+      _dark: 'gray.900',
     },
   },
   shadows: {

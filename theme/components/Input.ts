@@ -6,8 +6,6 @@ import {
 } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 
-import luxColors from 'theme/foundations/lux-colors';
-
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(parts.keys);
 
@@ -29,6 +27,20 @@ const size = {
     px: '8px',
     py: '12px',
     h: '40px',
+    borderRadius: 'base',
+  }),
+  // TEMPORARY INPUT SIZE!!!
+  // soon we will migrate to the new size and get rid off this one
+  // lg -> 60
+  // md -> 48
+  // sm -> 40
+  // xs ->32
+  sm_md: defineStyle({
+    fontSize: 'md',
+    lineHeight: '24px',
+    px: '8px',
+    py: '12px',
+    h: '48px',
     borderRadius: 'base',
   }),
   md: defineStyle({
@@ -57,8 +69,8 @@ const variantOutline = definePartsStyle((props) => {
     addon: {
       border: '2px solid',
       borderColor: 'transparent',
-      bg: luxColors.colors.muted3, // mode('blackAlpha.300', 'whiteAlpha.200')(props),
-      color: luxColors.colors.muted, // mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      bg: mode('blackAlpha.100', 'whiteAlpha.200')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
       ...transitionProps,
     },
   };
@@ -72,6 +84,10 @@ const sizes = {
   sm: definePartsStyle({
     field: size.sm,
     addon: size.sm,
+  }),
+  sm_md: definePartsStyle({
+    field: size.sm_md,
+    addon: size.sm_md,
   }),
   md: definePartsStyle({
     field: size.md,

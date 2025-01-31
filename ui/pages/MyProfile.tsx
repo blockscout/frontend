@@ -1,54 +1,63 @@
-import { VStack, FormControl, FormLabel, Input } from '@chakra-ui/react';
+import { Flex, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
-import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
-import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
+import type { Screen } from 'ui/snippets/auth/types';
+
+import config from 'configs/app';
+import MyProfileEmail from 'ui/myProfile/MyProfileEmail';
+import MyProfileWallet from 'ui/myProfile/MyProfileWallet';
+import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import UserAvatar from 'ui/shared/UserAvatar';
+import AuthModal from 'ui/snippets/auth/AuthModal';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
+import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
+
+const MIXPANEL_CONFIG = {
+  wallet_connect: {
+    source: 'Profile' as const,
+  },
+  account_link_info: {
+    source: 'Profile' as const,
+  },
+};
 
 const MyProfile = () => {
-  const { data, isPending, isError } = useFetchProfileInfo();
+  const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>();
+  const authModal = useDisclosure();
+
+  const profileQuery = useProfileQuery();
   useRedirectForInvalidAuthToken();
 
+  const handleAddWalletClick = React.useCallback(() => {
+    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true });
+    authModal.onOpen();
+  }, [ authModal ]);
+
   const content = (() => {
-    if (isPending) {
+    if (profileQuery.isPending) {
       return <ContentLoader/>;
     }
 
-    if (isError) {
+    if (profileQuery.isError) {
       return <DataFetchAlert/>;
     }
 
     return (
-      <VStack maxW="412px" mt={ 8 } gap={ 5 } alignItems="stretch">
-        <UserAvatar size={ 64 }/>
-        <FormControl variant="floating" id="name" isRequired size="lg">
-          <Input
-            required
-            disabled
-            value={ data.name || '' }
-          />
-          <FormLabel>Name</FormLabel>
-        </FormControl>
-        <FormControl variant="floating" id="nickname" isRequired size="lg">
-          <Input
-            required
-            disabled
-            value={ data.nickname || '' }
-          />
-          <FormLabel>Nickname</FormLabel>
-        </FormControl>
-        <FormControl variant="floating" id="email" isRequired size="lg">
-          <Input
-            required
-            disabled
-            value={ data.email }
-          />
-          <FormLabel>Email</FormLabel>
-        </FormControl>
-      </VStack>
+      <>
+        <AccountPageDescription>
+          You can add your email to receive watchlist notifications.
+          Additionally, you can manage your wallet address and email, which can be used for logging into your Blockscout account.
+        </AccountPageDescription>
+        <Flex maxW="480px" mt={ 8 } flexDir="column" rowGap={ 12 }>
+          <MyProfileEmail profileQuery={ profileQuery }/>
+          { config.features.blockchainInteraction.isEnabled &&
+            <MyProfileWallet profileQuery={ profileQuery } onAddWallet={ handleAddWalletClick }/> }
+        </Flex>
+        { authModal.isOpen && authInitialScreen &&
+          <AuthModal initialScreen={ authInitialScreen } onClose={ authModal.onClose } mixpanelConfig={ MIXPANEL_CONFIG }/> }
+      </>
     );
   })();
 

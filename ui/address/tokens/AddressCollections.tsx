@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Grid, HStack, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Text, Grid, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -6,9 +6,10 @@ import { route } from 'nextjs-routes';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
 import ActionBar from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import NftFallback from 'ui/shared/nft/NftFallback';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
@@ -20,7 +21,7 @@ type Props = {
   collectionsQuery: QueryWithPagesResult<'address_collections'>;
   address: string;
   hasActiveFilters: boolean;
-}
+};
 
 const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Props) => {
   const isMobile = useIsMobile();
@@ -33,7 +34,7 @@ const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Pro
     </ActionBar>
   );
 
-  const content = data?.items ? data?.items.map((item, index) => {
+  const content = data?.items ? data?.items.filter((item) => item.token_instances.length > 0).map((item, index) => {
     const collectionUrl = route({
       pathname: '/token/[hash]',
       query: {
@@ -64,7 +65,7 @@ const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Pro
         </Flex>
         <Grid
           w="100%"
-          mb={ 7 }
+          mb={ 6 }
           columnGap={{ base: 3, lg: 6 }}
           rowGap={{ base: 3, lg: 6 }}
           gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}

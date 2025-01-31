@@ -7,16 +7,16 @@ import { NETWORK_GROUPS } from 'types/networks';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/hooks/useFetch';
+import useFetch from 'lib/hooks/useFetch';
 
 export default function useNetworkMenu() {
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
 
-  const apiFetch = useApiFetch();
+  const fetch = useFetch();
   const { isPending, data } = useQuery<unknown, ResourceError<unknown>, Array<FeaturedNetwork>>({
     queryKey: [ 'featured-network' ],
-    queryFn: async() => apiFetch(config.UI.sidebar.featuredNetworks || '', undefined, { resource: 'featured-network' }),
-    enabled: Boolean(config.UI.sidebar.featuredNetworks) && isOpen,
+    queryFn: async() => fetch(config.UI.navigation.featuredNetworks || '', undefined, { resource: 'featured-network' }),
+    enabled: Boolean(config.UI.navigation.featuredNetworks) && isOpen,
     staleTime: Infinity,
   });
 

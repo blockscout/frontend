@@ -1,9 +1,10 @@
-import { Flex, Button, Select, Skeleton } from '@chakra-ui/react';
+import { Flex, Button, Select } from '@chakra-ui/react';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import hexToAddress from 'lib/hexToAddress';
 import hexToUtf8 from 'lib/hexToUtf8';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -51,7 +52,7 @@ const LogTopic = ({ hex, index, isLoading }: Props) => {
       case 'address': {
         return (
           <AddressEntity
-            address={{ hash: value, name: '', implementation_name: null, is_contract: false, is_verified: false }}
+            address={{ hash: value, name: '' }}
             isLoading={ isLoading }
           />
         );
@@ -62,7 +63,7 @@ const LogTopic = ({ hex, index, isLoading }: Props) => {
   return (
     <Flex alignItems="center" px={{ base: 0, lg: 3 }} _notFirst={{ mt: 3 }} overflow="hidden" maxW="100%">
       <Skeleton isLoaded={ !isLoading } mr={ 3 } borderRadius="base">
-        <Button variant="outline" colorScheme="gray" isActive size="xs" fontWeight={ 400 } w={ 6 }>
+        <Button variant="outline" colorScheme="gray" data-selected size="xs" fontWeight={ 400 } w={ 6 }>
           { index }
         </Button>
       </Skeleton>

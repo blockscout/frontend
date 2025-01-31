@@ -3,21 +3,20 @@ import {
   Flex,
   HStack,
   Text,
-  Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import rightArrowIcon from 'icons/arrows/east.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Icon from 'ui/shared/chakra/Icon';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import { currencyUnits } from 'lib/units';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
-import TxFeeStability from 'ui/shared/tx/TxFeeStability';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
@@ -25,11 +24,10 @@ import TxType from 'ui/txs/TxType';
 type Props = {
   tx: Transaction;
   isLoading?: boolean;
-}
+};
 
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
-  const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
 
   return (
     <Box
@@ -42,7 +40,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
     >
       <Flex justifyContent="space-between">
         <HStack flexWrap="wrap">
-          <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </HStack>
@@ -59,53 +57,36 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           isLoading={ isLoading }
           hash={ tx.hash }
           fontWeight="700"
-          truncation="constant"
+          truncation="constant_long"
         />
-        { tx.timestamp && (
-          <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm" ml={ 3 }>
-            <span>{ timeAgo }</span>
-          </Skeleton>
-        ) }
-      </Flex>
-      <Flex alignItems="center" mb={ 3 }>
-        <AddressEntity
+        <TimeAgoWithTooltip
+          timestamp={ tx.timestamp }
+          enableIncrement
           isLoading={ isLoading }
-          address={ tx.from }
-          truncation="constant"
+          color="text_secondary"
+          fontWeight="400"
           fontSize="sm"
-          fontWeight="500"
-          mr={ 2 }
+          ml={ 3 }
         />
-        <Icon
-          as={ rightArrowIcon }
-          boxSize={ 6 }
-          color="gray.500"
-          isLoading={ isLoading }
-        />
-        { dataTo && (
-          <AddressEntity
-            isLoading={ isLoading }
-            address={ dataTo }
-            truncation="constant"
-            fontSize="sm"
-            fontWeight="500"
-          />
-        ) }
       </Flex>
+      <AddressFromTo
+        from={ tx.from }
+        to={ dataTo }
+        isLoading={ isLoading }
+        fontSize="sm"
+        fontWeight="500"
+        mb={ 3 }
+      />
       { !config.UI.views.tx.hiddenFields?.value && (
         <Skeleton isLoaded={ !isLoading } mb={ 2 } fontSize="sm" w="fit-content">
-          <Text as="span">Value { config.chain.currency.symbol } </Text>
-          <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
+          <Text as="span">Value </Text>
+          <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
         </Skeleton>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <Skeleton isLoaded={ !isLoading } fontSize="sm" w="fit-content" display="flex" whiteSpace="pre">
-          <Text as="span">Fee { !config.UI.views.tx.hiddenFields?.fee_currency ? `${ config.chain.currency.symbol } ` : '' }</Text>
-          { tx.stability_fee ? (
-            <TxFeeStability data={ tx.stability_fee } accuracy={ 5 } color="text_secondary" hideUsd/>
-          ) : (
-            <Text as="span" variant="secondary">{ tx.fee.value ? getValueWithUnit(tx.fee.value).dp(5).toFormat() : '-' }</Text>
-          ) }
+          <Text as="span">Fee </Text>
+          <TxFee tx={ tx } accuracy={ 5 } color="text_secondary"/>
         </Skeleton>
       ) }
     </Box>

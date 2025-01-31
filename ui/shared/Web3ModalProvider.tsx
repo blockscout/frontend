@@ -1,98 +1,81 @@
-import { useColorModeValue, useToken } from '@chakra-ui/react';
-import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc';
-import { EthereumClient, w3mConnectors } from '@web3modal/ethereum';
-import { Web3Modal } from '@web3modal/react';
+import { useColorMode } from '@chakra-ui/react';
+import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';
-import type { Chain } from 'wagmi';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { WagmiProvider } from 'wagmi';
 
 import config from 'configs/app';
+import currentChain from 'lib/web3/currentChain';
+import wagmiConfig from 'lib/web3/wagmiConfig';
+import colors from 'theme/foundations/colors';
+import { BODY_TYPEFACE } from 'theme/foundations/typography';
+import zIndices from 'theme/foundations/zIndices';
 
 const feature = config.features.blockchainInteraction;
 
-const getConfig = () => {
+const init = () => {
   try {
-    if (!feature.isEnabled) {
-      throw new Error();
+    if (!feature.isEnabled || !wagmiConfig.adapter) {
+      return;
     }
 
-    const currentChain: Chain = {
-      id: Number(config.chain.id),
-      name: config.chain.name || '',
-      network: config.chain.name || '',
-      nativeCurrency: {
-        decimals: config.chain.currency.decimals,
-        name: config.chain.currency.name || '',
-        symbol: config.chain.currency.symbol || '',
+    createAppKit({
+      adapters: [ wagmiConfig.adapter ],
+      networks: [ currentChain ],
+      metadata: {
+        name: `${ config.chain.name } explorer`,
+        description: `${ config.chain.name } explorer`,
+        url: config.app.baseUrl,
+        icons: [ config.UI.navigation.icon.default ].filter(Boolean),
       },
-      rpcUrls: {
-        'public': {
-          http: [ config.chain.rpcUrl || '' ],
-        },
-        'default': {
-          http: [ config.chain.rpcUrl || '' ],
-        },
+      projectId: feature.walletConnect.projectId,
+      features: {
+        analytics: false,
+        email: true,
+        socials: [],
+        onramp: false,
+        swaps: false,
       },
-      blockExplorers: {
-        'default': {
-          name: 'Blockscout',
-          url: config.app.baseUrl,
-        },
+      themeVariables: {
+        '--w3m-font-family': `${ BODY_TYPEFACE }, sans-serif`,
+        '--w3m-accent': colors.blue[600],
+        '--w3m-border-radius-master': '2px',
+        '--w3m-z-index': zIndices.popover,
       },
-    };
-
-    const chains = [ currentChain ];
-
-    const { publicClient } = configureChains(chains, [
-      jsonRpcProvider({
-        rpc: () => ({
-          http: config.chain.rpcUrl || '',
-        }),
-      }),
-    ]);
-    const wagmiConfig = createConfig({
-      autoConnect: true,
-      connectors: w3mConnectors({ projectId: feature.walletConnect.projectId, chains }),
-      publicClient,
+      featuredWalletIds: [],
+      allowUnsupportedChain: true,
     });
-    const ethereumClient = new EthereumClient(wagmiConfig, chains);
-
-    return { wagmiConfig, ethereumClient };
-  } catch (error) {
-    return { wagmiConfig: undefined, ethereumClient: undefined };
-  }
+  } catch (error) {}
 };
 
-const { wagmiConfig, ethereumClient } = getConfig();
+init();
 
 interface Props {
   children: React.ReactNode;
-  fallback?: JSX.Element | (() => JSX.Element);
 }
 
-const Web3ModalProvider = ({ children, fallback }: Props) => {
-  const modalZIndex = useToken<string>('zIndices', 'modal');
-  const web3ModalTheme = useColorModeValue('light', 'dark');
-
-  if (!wagmiConfig || !ethereumClient || !feature.isEnabled) {
-    return typeof fallback === 'function' ? fallback() : (fallback || <>{ children }</>); // eslint-disable-line react/jsx-no-useless-fragment
-  }
-
+const DefaultProvider = ({ children }: Props) => {
   return (
-    <>
-      <WagmiConfig config={ wagmiConfig }>
-        { children }
-      </WagmiConfig>
-      <Web3Modal
-        projectId={ feature.walletConnect.projectId }
-        ethereumClient={ ethereumClient }
-        themeMode={ web3ModalTheme }
-        themeVariables={{
-          '--w3m-z-index': modalZIndex,
-        }}
-      />
-    </>
+    <WagmiProvider config={ wagmiConfig.config }>
+      { children }
+    </WagmiProvider>
   );
 };
 
-export default Web3ModalProvider;
+const Web3ModalProvider = ({ children }: Props) => {
+  const { colorMode } = useColorMode();
+  const { setThemeMode } = useAppKitTheme();
+
+  React.useEffect(() => {
+    setThemeMode(colorMode);
+  }, [ colorMode, setThemeMode ]);
+
+  return (
+    <DefaultProvider>
+      { children }
+    </DefaultProvider>
+  );
+};
+
+const Provider = feature.isEnabled ? Web3ModalProvider : DefaultProvider;
+
+export default Provider;

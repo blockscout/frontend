@@ -1,26 +1,28 @@
 import { Accordion, Hide, Show, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { SECOND } from 'lib/consts';
 import { TX_STATE_CHANGES } from 'stubs/txStateChanges';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxStateList from 'ui/tx/state/TxStateList';
 import TxStateTable from 'ui/tx/state/TxStateTable';
-import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 import TxPendingAlert from './TxPendingAlert';
 import TxSocketAlert from './TxSocketAlert';
+import type { TxQuery } from './useTxQuery';
 
-const TxState = () => {
-  const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
+interface Props {
+  txQuery: TxQuery;
+}
+
+const TxState = ({ txQuery }: Props) => {
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
     resourceName: 'tx_state_changes',
-    pathParams: { hash: txInfo.data?.hash },
+    pathParams: { hash: txQuery.data?.hash },
     options: {
-      enabled: !txInfo.isPlaceholderData && Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
+      enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),
       placeholderData: {
         items: TX_STATE_CHANGES,
         next_page_params: {
@@ -31,14 +33,14 @@ const TxState = () => {
     },
   });
 
-  if (!txInfo.isPending && !txInfo.isPlaceholderData && !txInfo.isError && !txInfo.data.status) {
-    return txInfo.socketStatus ? <TxSocketAlert status={ txInfo.socketStatus }/> : <TxPendingAlert/>;
+  if (!txQuery.isPending && !txQuery.isPlaceholderData && !txQuery.isError && !txQuery.data.status) {
+    return txQuery.socketStatus ? <TxSocketAlert status={ txQuery.socketStatus }/> : <TxPendingAlert/>;
   }
 
   const content = data ? (
     <Accordion allowMultiple defaultIndex={ [] }>
       <Hide below="lg" ssr={ false }>
-        <TxStateTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? 80 : 0 }/>
+        <TxStateTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
       </Hide>
       <Show below="lg" ssr={ false }>
         <TxStateList data={ data.items } isLoading={ isPlaceholderData }/>
@@ -54,12 +56,14 @@ const TxState = () => {
 
   return (
     <>
-      <Text mb={ 6 }>
-        A set of information that represents the current state is updated when a transaction takes place on the network.
-        The below is a summary of those changes.
-      </Text>
+      { !isError && !txQuery.isError && (
+        <Text mb={ 6 }>
+          A set of information that represents the current state is updated when a transaction takes place on the network.
+          The below is a summary of those changes.
+        </Text>
+      ) }
       <DataListDisplay
-        isError={ isError }
+        isError={ isError || txQuery.isError }
         items={ data?.items }
         emptyText="There are no state changes for this transaction."
         content={ content }

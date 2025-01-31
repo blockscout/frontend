@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
+import * as cookies from 'lib/cookies';
 import IdenticonGithub from 'ui/shared/IdenticonGithub';
 
 interface IconProps {
@@ -12,16 +13,16 @@ interface IconProps {
 
 const Icon = dynamic(
   async() => {
-    switch (config.UI.views.address.identiconType) {
+    const type = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.UI.views.address.identiconType;
+    switch (type) {
       case 'github': {
-        // eslint-disable-next-line react/display-name
+
         return (props: IconProps) => <IdenticonGithub size={ props.size } seed={ props.hash }/>;
       }
 
       case 'blockie': {
         const { blo } = (await import('blo'));
 
-        // eslint-disable-next-line react/display-name
         return (props: IconProps) => {
           const data = blo(props.hash as `0x${ string }`, props.size);
           return (
@@ -36,7 +37,6 @@ const Icon = dynamic(
       case 'jazzicon': {
         const Jazzicon = await import('react-jazzicon');
 
-        // eslint-disable-next-line react/display-name
         return (props: IconProps) => {
           return (
             <Jazzicon.default
@@ -50,10 +50,18 @@ const Icon = dynamic(
       case 'gradient_avatar': {
         const GradientAvatar = (await import('gradient-avatar')).default;
 
-        // eslint-disable-next-line react/display-name
         return (props: IconProps) => {
-          const svg = GradientAvatar(props.hash, props.size);
+          const svg = GradientAvatar(props.hash, props.size, 'circle');
           return <div dangerouslySetInnerHTML={{ __html: svg }}/>;
+        };
+      }
+
+      case 'nouns': {
+        const Noun = (await import('@cloudnouns/kit'));
+
+        return (props: IconProps) => {
+          const noun = Noun.NounFactory.createFromString(props.hash, { size: props.size });
+          return <Image src={ noun.svg } alt={ `Identicon for ${ props.hash }}` }/>;
         };
       }
 

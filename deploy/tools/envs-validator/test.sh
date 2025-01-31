@@ -1,6 +1,5 @@
 #!/bin/bash
 
-secrets_file=".env.secrets"
 test_folder="./test"
 common_file="${test_folder}/.env.common"
 
@@ -8,10 +7,9 @@ common_file="${test_folder}/.env.common"
 export NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD)
 export NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0)
 ../../scripts/collect_envs.sh ../../../docs/ENVS.md
-cp ../../../.env.example ${secrets_file}
 
 # Copy test assets
-mkdir -p "./public/assets"
+mkdir -p "./public/assets/configs"
 cp -r ${test_folder}/assets ./public/
 
 # Build validator script
@@ -26,7 +24,6 @@ validate_file() {
     dotenv \
         -e $test_file \
         -e $common_file \
-        -e $secrets_file \
             yarn run validate -- --silent
 
     if [ $? -eq 0 ]; then

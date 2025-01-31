@@ -5,13 +5,13 @@ import React from 'react';
 interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   type: 'left' | 'bottom';
   scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
-  disableAnimation?: boolean;
+  noAnimation?: boolean;
   ticks: number;
   tickFormatGenerator?: (axis: d3.Axis<d3.NumberValue>) => (domainValue: d3.AxisDomain, index: number) => string;
   anchorEl?: SVGRectElement | null;
 }
 
-const ChartAxis = ({ type, scale, ticks, tickFormatGenerator, disableAnimation, anchorEl, ...props }: Props) => {
+const ChartAxis = ({ type, scale, ticks, tickFormatGenerator, noAnimation, anchorEl, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
 
   const textColorToken = useColorModeValue('blackAlpha.600', 'whiteAlpha.500');
@@ -31,7 +31,7 @@ const ChartAxis = ({ type, scale, ticks, tickFormatGenerator, disableAnimation, 
 
     const axisGroup = d3.select(ref.current);
 
-    if (disableAnimation) {
+    if (noAnimation) {
       axisGroup.call(axis);
     } else {
       axisGroup.transition().duration(750).ease(d3.easeLinear).call(axis);
@@ -42,7 +42,7 @@ const ChartAxis = ({ type, scale, ticks, tickFormatGenerator, disableAnimation, 
       .attr('opacity', 1)
       .attr('color', textColor)
       .attr('font-size', '0.75rem');
-  }, [ scale, ticks, tickFormatGenerator, disableAnimation, type, textColor ]);
+  }, [ scale, ticks, tickFormatGenerator, noAnimation, type, textColor ]);
 
   React.useEffect(() => {
     if (!anchorEl) {

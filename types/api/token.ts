@@ -1,7 +1,7 @@
 import type { TokenInfoApplication } from './account';
 import type { AddressParam } from './addressParams';
 
-export type NFTTokenType = 'ERC-721' | 'ERC-1155';
+export type NFTTokenType = 'ERC-721' | 'ERC-1155' | 'ERC-404';
 export type TokenType = 'ERC-20' | NFTTokenType;
 
 export interface TokenInfo<T extends TokenType = TokenType> {
@@ -20,6 +20,7 @@ export interface TokenInfo<T extends TokenType = TokenType> {
   bridge_type?: string | null;
   origin_chain_id?: string | null;
   foreign_address?: string | null;
+  filecoin_robust_address?: string | null;
 }
 
 export interface TokenCounters {
@@ -37,21 +38,20 @@ export type TokenHolder = TokenHolderERC20ERC721 | TokenHolderERC1155;
 export type TokenHolderBase = {
   address: AddressParam;
   value: string;
-}
+};
 
-export type TokenHolderERC20ERC721 = TokenHolderBase & {
-  token: TokenInfo<'ERC-20'> | TokenInfo<'ERC-721'>;
-}
+export type TokenHolderERC20ERC721 = TokenHolderBase;
 
 export type TokenHolderERC1155 = TokenHolderBase & {
-  token: TokenInfo<'ERC-1155'>;
   token_id: string;
-}
+};
 
 export type TokenHoldersPagination = {
   items_count: number;
   value: string;
-}
+};
+
+export type ThumbnailSize = '60x60' | '250x250' | '500x500' | 'original';
 
 export interface TokenInstance {
   is_unique: boolean;
@@ -62,6 +62,12 @@ export interface TokenInstance {
   external_app_url: string | null;
   metadata: Record<string, unknown> | null;
   owner: AddressParam | null;
+  thumbnails: Partial<Record<ThumbnailSize, string>> | null;
+}
+
+export interface TokenInstanceMetadataSocketMessage {
+  token_id: number;
+  fetched_metadata: TokenInstance['metadata'];
 }
 
 export interface TokenInstanceTransfersCount {
@@ -75,10 +81,10 @@ export interface TokenInventoryResponse {
 
 export type TokenInventoryPagination = {
   unique_token: number;
-}
+};
 
 export type TokenVerifiedInfo = Omit<TokenInfoApplication, 'id' | 'status'>;
 
 export type TokenInventoryFilters = {
   holder_address_hash?: string;
-}
+};

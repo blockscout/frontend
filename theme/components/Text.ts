@@ -2,15 +2,12 @@ import type { SystemStyleInterpolation } from '@chakra-ui/styled-system';
 import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 
-import luxColors from 'theme/foundations/lux-colors';
-
 const variantPrimary = defineStyle((props) => ({
-  color: luxColors.colors.foreground // mode('blackAlpha.800', 'whiteAlpha.800')(props),
+  color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
 }));
 
 const variantSecondary = defineStyle((props) => ({
-  //color: mode('gray.500', 'gray.400')(props),
-  color: luxColors.colors.secondary.main 
+  color: mode('gray.500', 'gray.400')(props),
 }));
 
 const variantInherit = {

@@ -1,7 +1,9 @@
 export const light = {
   base: 'vs' as const,
   inherit: true,
-  rules: [],
+  rules: [
+    { token: 'predefined', foreground: '#cd3131' },
+  ],
   colors: {
     'editor.background': '#f5f5f6',
     'editorWidget.background': '#f5f5f6',
@@ -37,13 +39,17 @@ export const light = {
     'custom.fileLink.hoverForeground': '#4299E1', // blue.400
     'custom.riskWarning.primaryBackground': '#FEEBCB', // orange.100
     'custom.riskWarning.background': '#FFFAF0', // orange.50
+    'custom.mainContract.header': 'rgba(233, 216, 253, 1)', // purple.100
+    'custom.mainContract.body': 'rgba(250, 245, 255, 1)', // purple.50
   } as const,
 };
 
 export const dark = {
   base: 'vs-dark' as const,
   inherit: true,
-  rules: [],
+  rules: [
+    { token: 'predefined', foreground: '#f44747' },
+  ],
   colors: {
     'editor.background': '#1a1b1b',
     'editorWidget.background': '#1a1b1b',
@@ -79,5 +85,7 @@ export const dark = {
     'custom.fileLink.hoverForeground': '#4299E1', // blue.400
     'custom.riskWarning.primaryBackground': 'rgba(246, 173, 85, 0.3)', // orange.300
     'custom.riskWarning.background': 'rgba(246, 173, 85, 0.1)', // orange.300
+    'custom.mainContract.header': 'rgba(183, 148, 244, 0.3)', // purple.300
+    'custom.mainContract.body': 'rgba(214, 188, 250, 0.1)', // purple.200
   } as const,
 };

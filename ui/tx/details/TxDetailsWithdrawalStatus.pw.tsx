@@ -1,32 +1,26 @@
-import { test as base, expect } from '@playwright/experimental-ct-react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { L2WithdrawalStatus } from 'types/api/l2Withdrawals';
+import type { OptimisticL2WithdrawalStatus } from 'types/api/optimisticL2';
 
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import TestApp from 'playwright/TestApp';
-import * as configs from 'playwright/utils/configs';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
+import { test, expect } from 'playwright/lib';
 
 import TxDetailsWithdrawalStatus from './TxDetailsWithdrawalStatus';
 
-const statuses: Array<L2WithdrawalStatus> = [
+const statuses: Array<OptimisticL2WithdrawalStatus> = [
   'Waiting for state root',
   'Ready for relay',
   'Relayed',
 ];
 
-const test = base.extend({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.optimisticRollup) as any,
-});
-
 statuses.forEach((status) => {
-  test(`status="${ status }"`, async({ mount }) => {
-
-    const component = await mount(
-      <TestApp>
+  test(`status="${ status }"`, async({ render, mockEnvs }) => {
+    await mockEnvs(ENVS_MAP.optimisticRollup);
+    const component = await render(
+      <Box p={ 2 }>
         <TxDetailsWithdrawalStatus status={ status } l1TxHash="0x7d93a59a228e97d084a635181c3053e324237d07566ec12287eae6da2bcf9456"/>
-      </TestApp>,
+      </Box>,
     );
 
     await expect(component).toHaveScreenshot();

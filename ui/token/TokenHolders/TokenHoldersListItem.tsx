@@ -1,9 +1,9 @@
-import { Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -29,7 +29,7 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      { token.type === 'ERC-1155' && 'token_id' in holder && (
+      { (token.type === 'ERC-1155' || token.type === 'ERC-404') && 'token_id' in holder && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>ID#</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
@@ -47,7 +47,7 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
         </Skeleton>
       </ListItemMobileGrid.Value>
 
-      { token.total_supply && (
+      { token.total_supply && token.type !== 'ERC-404' && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Percentage</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

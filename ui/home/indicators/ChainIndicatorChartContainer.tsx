@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { chakra, Flex, Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -15,17 +15,25 @@ const ChainIndicatorChartContainer = ({ data, isError, isPending }: Props) => {
 
   const content = (() => {
     if (isPending) {
-      return <ContentLoader mt="auto"/>;
+      return <ContentLoader mt="auto" fontSize="xs"/>;
     }
 
     if (isError) {
-      return <DataFetchAlert/>;
+      return <DataFetchAlert fontSize="xs" p={ 3 }/>;
     }
 
-    return <ChainIndicatorChart data={ data }/>;
+    if (data[0].items.length === 0) {
+      return <chakra.span fontSize="xs">no data</chakra.span>;
+    }
+
+    return (
+      <Box mx="-10px" my="-5px" h="calc(100% + 10px)" w="calc(100% + 20px)">
+        <ChainIndicatorChart data={ data }/>
+      </Box>
+    );
   })();
 
-  return <Flex h={{ base: '150px', lg: 'auto' }} minH="150px" alignItems="flex-start" flexGrow={ 1 }>{ content }</Flex>;
+  return <Flex h={{ base: '80px', lg: '110px' }} alignItems="flex-start" flexGrow={ 1 }>{ content }</Flex>;
 };
 
 export default React.memo(ChainIndicatorChartContainer);

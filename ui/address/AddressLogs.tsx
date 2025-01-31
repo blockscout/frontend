@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { LOG } from 'stubs/log';
 import { generateListStub } from 'stubs/utils';
@@ -11,9 +12,17 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import AddressCsvExportLink from './AddressCsvExportLink';
+import useAddressQuery from './utils/useAddressQuery';
 
-const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
+type Props = {
+  scrollRef?: React.RefObject<HTMLDivElement>;
+  shouldRender?: boolean;
+  isQueryEnabled?: boolean;
+};
+
+const AddressLogs = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
+  const isMounted = useIsMounted();
 
   const hash = getQueryParamString(router.query.hash);
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
@@ -21,6 +30,7 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
     pathParams: { hash },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_logs'>(LOG, 3, { next_page_params: {
         block_number: 9005750,
         index: 42,
@@ -29,6 +39,8 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
       } }),
     },
   });
+
+  const addressQuery = useAddressQuery({ hash });
 
   const actionBar = (
     <ActionBar mt={ -6 } showShadow justifyContent={{ base: 'space-between', lg: 'end' }}>
@@ -41,7 +53,19 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
     </ActionBar>
   );
 
-  const content = data?.items ? data.items.map((item, index) => <LogItem key={ index } { ...item } type="address" isLoading={ isPlaceholderData }/>) : null;
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
+
+  const content = data?.items ? data.items.map((item, index) => (
+    <LogItem
+      key={ index }
+      { ...item }
+      type="address"
+      isLoading={ isPlaceholderData }
+      defaultDataType={ addressQuery.data?.zilliqa?.is_scilla_contract ? 'UTF-8' : undefined }
+    />
+  )) : null;
 
   return (
     <DataListDisplay

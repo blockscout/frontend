@@ -1,4 +1,4 @@
-import { Button, Icon } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -7,6 +7,7 @@ import * as mixpanel from 'lib/mixpanel/index';
 import useAddOrSwitchChain from 'lib/web3/useAddOrSwitchChain';
 import useProvider from 'lib/web3/useProvider';
 import { WALLETS_INFO } from 'lib/web3/wallets';
+import IconSvg from 'ui/shared/IconSvg';
 
 const feature = config.features.web3Wallet;
 
@@ -49,14 +50,14 @@ const NetworkAddToWallet = () => {
     }
   }, [ addOrSwitchChain, provider, toast, wallet ]);
 
-  if (!provider || !wallet || !config.chain.rpcUrl || !feature.isEnabled) {
+  if (!provider || !wallet || !config.chain.rpcUrls.length || !feature.isEnabled) {
     return null;
   }
 
   return (
     <Button variant="outline" size="sm" onClick={ handleClick }>
-      <Icon as={ WALLETS_INFO[wallet].icon } boxSize={ 5 } mr={ 2 }/>
-        Add { config.chain.name }
+      <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 5 } mr={ 2 }/>
+      Add { config.chain.name }
     </Button>
   );
 };

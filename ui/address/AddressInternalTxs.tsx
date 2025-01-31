@@ -6,6 +6,7 @@ import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
 
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { INTERNAL_TX } from 'stubs/internalTx';
@@ -22,8 +23,15 @@ import AddressIntTxsList from './internals/AddressIntTxsList';
 
 const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
-const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
+type Props = {
+  scrollRef?: React.RefObject<HTMLDivElement>;
+  shouldRender?: boolean;
+  isQueryEnabled?: boolean;
+};
+const AddressInternalTxs = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
+  const isMounted = useIsMounted();
+
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
   const hash = getQueryParamString(router.query.hash);
@@ -34,6 +42,7 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
     filters: { filter: filterValue },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_internal_txs'>(
         INTERNAL_TX,
         50,
@@ -55,6 +64,10 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
     onFilterChange({ filter: newVal });
   }, [ onFilterChange ]);
 
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
+
   const content = data?.items ? (
     <>
       <Show below="lg" ssr={ false }>
@@ -71,7 +84,7 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
       <AddressTxsFilter
         defaultFilter={ filterValue }
         onFilterChange={ handleFilterChange }
-        isActive={ Boolean(filterValue) }
+        hasActiveFilter={ Boolean(filterValue) }
         isLoading={ pagination.isLoading }
       />
       <AddressCsvExportLink

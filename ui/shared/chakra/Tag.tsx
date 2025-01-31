@@ -1,10 +1,11 @@
-import { Skeleton, Tag as ChakraTag } from '@chakra-ui/react';
+import { Tag as ChakraTag } from '@chakra-ui/react';
 import type { TagProps } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
-interface Props extends TagProps {
+export interface Props extends TagProps {
   isLoading?: boolean;
 }
 

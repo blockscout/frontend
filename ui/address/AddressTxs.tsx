@@ -10,16 +10,18 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue, T
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
+import { sortTxsFromSocket } from 'ui/txs/sortTxs';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 import { SORT_OPTIONS } from 'ui/txs/useTxsSort';
 
@@ -46,13 +48,16 @@ const matchFilter = (filterValue: AddressFromToFilter, transaction: Transaction,
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
+  shouldRender?: boolean;
+  isQueryEnabled?: boolean;
   // for tests only
   overloadCount?: number;
-}
+};
 
-const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
+const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const isMounted = useIsMounted();
 
   const [ socketAlert, setSocketAlert ] = React.useState('');
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
@@ -70,6 +75,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
     sorting: getSortParamsFromValue<TransactionsSortingValue, TransactionsSortingField, TransactionsSorting['order']>(sort),
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_txs'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
@@ -85,7 +91,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
     addressTxsQuery.onFilterChange({ filter: newVal });
   }, [ addressTxsQuery ]);
 
-  const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = (payload) => {
+  const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = React.useCallback((payload) => {
     setSocketAlert('');
 
     queryClient.setQueryData(
@@ -123,10 +129,10 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
           items: [
             ...newItems,
             ...prevData.items,
-          ],
+          ].sort(sortTxsFromSocket(sort)),
         };
       });
-  };
+  }, [ currentAddress, filterValue, overloadCount, queryClient, sort ]);
 
   const handleSocketClose = React.useCallback(() => {
     setSocketAlert('Connection is lost. Please refresh the page to load new transactions.');
@@ -155,11 +161,15 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
     handler: handleNewSocketMessage,
   });
 
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
+
   const filter = (
     <AddressTxsFilter
       defaultFilter={ filterValue }
       onFilterChange={ handleFilterChange }
-      isActive={ Boolean(filterValue) }
+      hasActiveFilter={ Boolean(filterValue) }
       isLoading={ addressTxsQuery.pagination.isLoading }
     />
   );
@@ -191,7 +201,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
         showSocketInfo={ addressTxsQuery.pagination.page === 1 }
         socketInfoAlert={ socketAlert }
         socketInfoNum={ newItemsCount }
-        top={ 80 }
+        top={ ACTION_BAR_HEIGHT_DESKTOP }
         sorting={ sort }
         setSort={ setSort }
       />

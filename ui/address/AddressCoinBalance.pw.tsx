@@ -1,41 +1,41 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as balanceHistoryMock from 'mocks/address/coinBalanceHistory';
-import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
+import { test, expect, devices } from 'playwright/lib';
 
 import AddressCoinBalance from './AddressCoinBalance';
 
-const addressHash = 'hash';
-const BALANCE_HISTORY_API_URL = buildApiUrl('address_coin_balance', { hash: addressHash });
-const BALANCE_HISTORY_CHART_API_URL = buildApiUrl('address_coin_balance_chart', { hash: addressHash });
+const addressHash = '0x1234';
 const hooksConfig = {
   router: {
     query: { hash: addressHash },
   },
 };
 
-test('base view +@dark-mode +@mobile', async({ mount, page }) => {
-  await page.route(BALANCE_HISTORY_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(balanceHistoryMock.baseResponse),
-  }));
-  await page.route(BALANCE_HISTORY_CHART_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(balanceHistoryMock.chartResponse),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <AddressCoinBalance/>
-    </TestApp>,
-    { hooksConfig },
-  );
+test('base view +@dark-mode', async({ render, page, mockApiResponse }) => {
+  await mockApiResponse('address_coin_balance', balanceHistoryMock.baseResponse, { pathParams: { hash: addressHash } });
+  await mockApiResponse('address_coin_balance_chart', balanceHistoryMock.chartResponse, { pathParams: { hash: addressHash } });
+  const component = await render(<AddressCoinBalance/>, { hooksConfig });
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-Balances-small"]')?.getAttribute('opacity') === '1';
   });
+  await page.mouse.move(100, 100);
   await page.mouse.move(240, 100);
-
   await expect(component).toHaveScreenshot();
+});
+
+test.describe('mobile', () => {
+  test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+
+  test('base view', async({ render, page, mockApiResponse }) => {
+    await mockApiResponse('address_coin_balance', balanceHistoryMock.baseResponse, { pathParams: { hash: addressHash } });
+    await mockApiResponse('address_coin_balance_chart', balanceHistoryMock.chartResponse, { pathParams: { hash: addressHash } });
+    const component = await render(<AddressCoinBalance/>, { hooksConfig });
+    await page.waitForFunction(() => {
+      return document.querySelector('path[data-name="chart-Balances-small"]')?.getAttribute('opacity') === '1';
+    });
+    await page.mouse.move(100, 100);
+    await page.mouse.move(240, 100);
+    await expect(component).toHaveScreenshot();
+  });
 });

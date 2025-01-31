@@ -1,10 +1,10 @@
-import { Icon, Box, Flex, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import burgerIcon from 'icons/burger.svg';
-import testnetIcon from 'icons/testnet.svg';
-import NavigationMobile from 'ui/snippets/navigation/NavigationMobile';
+import IconSvg from 'ui/shared/IconSvg';
+import NavigationMobile from 'ui/snippets/navigation/mobile/NavigationMobile';
+import TestnetBadge from 'ui/snippets/navigation/TestnetBadge';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenuButton from 'ui/snippets/networkMenu/NetworkMenuButton';
 import NetworkMenuContentMobile from 'ui/snippets/networkMenu/NetworkMenuContentMobile';
@@ -31,8 +31,8 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
   return (
     <>
       <Box padding={ 2 } onClick={ onOpen } cursor="pointer">
-        <Icon
-          as={ burgerIcon }
+        <IconSvg
+          name="burger"
           boxSize={ 6 }
           display="block"
           color={ iconColor }
@@ -46,12 +46,12 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
         autoFocus={ false }
       >
         <DrawerOverlay/>
-        <DrawerContent maxWidth="260px">
+        <DrawerContent maxWidth="330px">
           <DrawerBody p={ 6 } display="flex" flexDirection="column">
-            { config.chain.isTestnet && <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" alignSelf="flex-start"/> }
+            <TestnetBadge alignSelf="flex-start"/>
             <Flex alignItems="center" justifyContent="space-between">
               <NetworkLogo onClick={ handleNetworkLogoClick }/>
-              { config.UI.sidebar.featuredNetworks ? (
+              { config.UI.navigation.featuredNetworks ? (
                 <NetworkMenuButton
                   isMobile
                   isActive={ networkMenu.isOpen }

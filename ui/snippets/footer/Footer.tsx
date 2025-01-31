@@ -22,8 +22,8 @@ import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 4;
 
-const FRONT_VERSION_URL = `https://github.com/luxfi/explore/tree/${ config.UI.footer.frontendVersion }`;
-const FRONT_COMMIT_URL = `https://github.com/luxfi/explore/commit/${ config.UI.footer.frontendCommit }`;
+const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config.UI.footer.frontendVersion }`;
+const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ config.UI.footer.frontendCommit }`;
 
 const Footer = () => {
 
@@ -47,25 +47,31 @@ const Footer = () => {
       icon: 'social/git' as const,
       iconSize: '18px',
       text: 'Contribute',
-      url: 'https://github.com/luxfi',
+      url: 'https://github.com/blockscout/blockscout',
     },
     {
       icon: 'social/twitter' as const,
       iconSize: '18px',
-      text: 'X',
-      url: 'https://x.com/luxdefi',
+      text: 'X (ex-Twitter)',
+      url: 'https://www.twitter.com/blockscoutcom',
     },
     {
       icon: 'social/discord' as const,
       iconSize: '24px',
       text: 'Discord',
-      url: 'https://discord.gg/luxdefi',
+      url: 'https://discord.gg/blockscout',
+    },
+    {
+      icon: 'brands/blockscout' as const,
+      iconSize: '18px',
+      text: 'All chains',
+      url: 'https://www.blockscout.com/chains-and-projects',
     },
     {
       icon: 'donate' as const,
       iconSize: '20px',
       text: 'Donate',
-      url: 'https://github.com/sponsors/luxfi',
+      url: 'https://github.com/sponsors/blockscout',
     },
   ];
 
@@ -114,7 +120,7 @@ const Footer = () => {
       <Box gridArea={ gridArea }>
         <Flex columnGap={ 2 } fontSize="xs" lineHeight={ 5 } alignItems="center" color="text">
           <span>Made with</span>
-          <Link href="https://explore.lux.network" isExternal display="inline-flex" color={ logoColor } _hover={{ color: logoColor }}>
+          <Link href="https://www.blockscout.com" isExternal display="inline-flex" color={ logoColor } _hover={{ color: logoColor }}>
             <IconSvg
               name="networks/logo-placeholder"
               width="80px"
@@ -123,7 +129,7 @@ const Footer = () => {
           </Link>
         </Flex>
         <Text mt={ 3 } fontSize="xs">
-          Explore is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Lux Network.
+          Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
         </Text>
         <Box mt={ 6 } alignItems="start" fontSize="xs" lineHeight={ 5 }>
           { apiVersionUrl && (
@@ -197,7 +203,7 @@ const Footer = () => {
           >
             {
               ([
-                { title: 'Lux', links: BLOCKSCOUT_LINKS },
+                { title: 'Blockscout', links: BLOCKSCOUT_LINKS },
                 ...(linksData || []),
               ])
                 .slice(0, colNum)

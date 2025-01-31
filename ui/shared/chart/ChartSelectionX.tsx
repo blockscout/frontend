@@ -33,31 +33,31 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
   const drawSelection = React.useCallback((x0: number, x1: number) => {
     const diffX = x1 - x0;
 
-    d3.select(ref.current).attr('opacity', 1);
+    d3.select(ref.current)
+      .attr('opacity', 1);
 
-    d3.select(ref.current).select('.ChartSelectionX__line_left').attr('x1', x0).attr('x2', x0);
+    d3.select(ref.current)
+      .select('.ChartSelectionX__line_left')
+      .attr('x1', x0)
+      .attr('x2', x0);
 
-    d3.select(ref.current).select('.ChartSelectionX__line_right').attr('x1', x1).attr('x2', x1);
+    d3.select(ref.current)
+      .select('.ChartSelectionX__line_right')
+      .attr('x1', x1)
+      .attr('x2', x1);
 
-    d3.select(ref.current).select('.ChartSelectionX__rect').attr('x', diffX > 0 ? x0 : diffX + x0).attr('width', Math.abs(diffX));
+    d3.select(ref.current)
+      .select('.ChartSelectionX__rect')
+      .attr('x', diffX > 0 ? x0 : diffX + x0)
+      .attr('width', Math.abs(diffX));
   }, []);
 
   const handleSelect = React.useCallback((x0: number, x1: number) => {
     const startDate = scale.invert(x0);
     const endDate = scale.invert(x1);
 
-    if (startDate && endDate && Math.abs(dayjs(startDate).diff(endDate, 'day')) > SELECTION_THRESHOLD) {
-      const startDayjs = dayjs(startDate);
-      const endDayjs = dayjs(endDate);
-
-      if (startDayjs.isValid() && endDayjs.isValid()) {
-        const minDate = dayjs.min(startDayjs, endDayjs);
-        const maxDate = dayjs.max(startDayjs, endDayjs);
-
-        if (minDate && maxDate) {
-          onSelect([ minDate.toDate(), maxDate.toDate() ]);
-        }
-      }
+    if (Math.abs(dayjs(startDate).diff(endDate, 'day')) > SELECTION_THRESHOLD) {
+      onSelect([ dayjs.min(dayjs(startDate), dayjs(endDate)).toDate(), dayjs.max(dayjs(startDate), dayjs(endDate)).toDate() ]);
     }
   }, [ onSelect, scale ]);
 
@@ -66,14 +66,14 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
     startX.current = undefined;
     endX.current = undefined;
     d3.select(ref.current).attr('opacity', 0);
-  }, []);
+  }, [ ]);
 
   const handelMouseUp = React.useCallback(() => {
     if (!isActive.current) {
       return;
     }
 
-    if (startX.current !== undefined && endX.current !== undefined) {
+    if (startX.current && endX.current) {
       handleSelect(startX.current, endX.current);
     }
 

@@ -1,3 +1,4 @@
+import { get } from 'es-toolkit/compat';
 import React from 'react';
 
 import config from 'configs/app';
@@ -24,9 +25,10 @@ export default function useAddOrSwitchChain() {
 
       const errorObj = getErrorObj(error);
       const code = errorObj && 'code' in errorObj ? errorObj.code : undefined;
+      const originalErrorCode = get(errorObj, 'data.originalError.code');
 
       // This error code indicates that the chain has not been added to Wallet.
-      if (code === 4902) {
+      if (code === 4902 || originalErrorCode === 4902) {
         const params = [ {
           chainId: hexadecimalChainId,
           chainName: config.chain.name,
@@ -35,11 +37,10 @@ export default function useAddOrSwitchChain() {
             symbol: config.chain.currency.symbol,
             decimals: config.chain.currency.decimals,
           },
-          rpcUrls: [ config.chain.rpcUrl ],
+          rpcUrls: config.chain.rpcUrls,
           blockExplorerUrls: [ config.app.baseUrl ],
         } ] as never;
         // in wagmi types for wallet_addEthereumChain method is not provided
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
         return await provider.request({
           method: 'wallet_addEthereumChain',

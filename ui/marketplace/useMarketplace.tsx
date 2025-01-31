@@ -1,14 +1,16 @@
-import _pickBy from 'lodash/pickBy';
-import _unique from 'lodash/uniq';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ContractListTypes } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import useDebounce from 'lib/hooks/useDebounce';
+import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
+import useRatings from './Rating/useRatings';
 import useMarketplaceApps from './useMarketplaceApps';
+import useMarketplaceCategories from './useMarketplaceCategories';
 
 const favoriteAppsLocalStorageKey = 'favoriteApps';
 
@@ -29,10 +31,15 @@ export default function useMarketplace() {
   const [ selectedCategoryId, setSelectedCategoryId ] = React.useState<string>(MarketplaceCategory.ALL);
   const [ filterQuery, setFilterQuery ] = React.useState(defaultFilterQuery);
   const [ favoriteApps, setFavoriteApps ] = React.useState<Array<string>>([]);
+  const [ isFavoriteAppsLoaded, setIsFavoriteAppsLoaded ] = React.useState<boolean>(false);
   const [ isAppInfoModalOpen, setIsAppInfoModalOpen ] = React.useState<boolean>(false);
   const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
+  const [ contractListModalType, setContractListModalType ] = React.useState<ContractListTypes | null>(null);
+  const [ hasPreviousStep, setHasPreviousStep ] = React.useState<boolean>(false);
 
-  const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean) => {
+  const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean, source: 'Discovery view' | 'Security view' | 'App modal' | 'Banner') => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id, Source: source });
+
     const favoriteApps = getFavoriteApps();
 
     if (isFavorite) {
@@ -56,30 +63,44 @@ export default function useMarketplace() {
     setIsDisclaimerModalOpen(true);
   }, []);
 
+  const showContractList = React.useCallback((id: string, type: ContractListTypes, hasPreviousStep?: boolean) => {
+    setSelectedAppId(id);
+    setContractListModalType(type);
+    if (hasPreviousStep) {
+      setHasPreviousStep(true);
+    }
+  }, []);
+
   const debouncedFilterQuery = useDebounce(filterQuery, 500);
   const clearSelectedAppId = React.useCallback(() => {
     setSelectedAppId(null);
     setIsAppInfoModalOpen(false);
     setIsDisclaimerModalOpen(false);
+    setContractListModalType(null);
+    setHasPreviousStep(false);
   }, []);
 
   const handleCategoryChange = React.useCallback((newCategory: string) => {
+    mixpanel.logEvent(mixpanel.EventTypes.FILTERS, { Source: 'Marketplace', 'Filter name': newCategory });
     setSelectedCategoryId(newCategory);
   }, []);
 
-  const { isPlaceholderData, isError, error, data, displayedApps } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps);
-
-  const categories = React.useMemo(() => {
-    return _unique(data?.map(app => app.categories).flat()) || [];
-  }, [ data ]);
+  const { ratings, userRatings, rateApp, isRatingSending, isRatingLoading, canRate } = useRatings();
+  const {
+    isPlaceholderData, isError, error, data, displayedApps, setSorting,
+  } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps, isFavoriteAppsLoaded, ratings);
+  const {
+    isPlaceholderData: isCategoriesPlaceholderData, data: categories,
+  } = useMarketplaceCategories(data, isPlaceholderData);
 
   React.useEffect(() => {
     setFavoriteApps(getFavoriteApps());
+    setIsFavoriteAppsLoaded(true);
   }, [ ]);
 
   React.useEffect(() => {
     if (!isPlaceholderData && !isError) {
-      const isValidDefaultCategory = categories.includes(defaultCategoryId);
+      const isValidDefaultCategory = categories.map(c => c.name).includes(defaultCategoryId);
       isValidDefaultCategory && setSelectedCategoryId(defaultCategoryId);
     }
     // run only when data is loaded
@@ -87,19 +108,38 @@ export default function useMarketplace() {
   }, [ isPlaceholderData ]);
 
   React.useEffect(() => {
-    const query = _pickBy({
-      category: selectedCategoryId === MarketplaceCategory.ALL ? undefined : selectedCategoryId,
-      filter: debouncedFilterQuery,
-    }, Boolean);
+    if (isPlaceholderData) {
+      return;
+    }
+
+    const { query } = router;
+    const newQuery = { ...query };
+
+    if (selectedCategoryId !== MarketplaceCategory.ALL) {
+      newQuery.category = selectedCategoryId;
+    } else {
+      delete newQuery.category;
+    }
+
+    if (debouncedFilterQuery) {
+      newQuery.filter = debouncedFilterQuery;
+    } else {
+      delete newQuery.filter;
+    }
+
+    if (debouncedFilterQuery.length > 0) {
+      mixpanel.logEvent(mixpanel.EventTypes.LOCAL_SEARCH, { Source: 'Marketplace', 'Search query': debouncedFilterQuery });
+    }
+
     router.replace(
-      { pathname: '/apps', query },
+      { pathname: '/apps', query: newQuery },
       undefined,
       { shallow: true },
     );
   // omit router in the deps because router.push() somehow modifies it
   // and we get infinite re-renders then
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ debouncedFilterQuery, selectedCategoryId ]);
+  }, [ debouncedFilterQuery, selectedCategoryId, isPlaceholderData ]);
 
   return React.useMemo(() => ({
     selectedCategoryId,
@@ -110,6 +150,7 @@ export default function useMarketplace() {
     isError,
     error,
     categories,
+    apps: data,
     displayedApps,
     showAppInfo,
     selectedAppId,
@@ -119,11 +160,23 @@ export default function useMarketplace() {
     isAppInfoModalOpen,
     isDisclaimerModalOpen,
     showDisclaimer,
+    appsTotal: data?.length || 0,
+    isCategoriesPlaceholderData,
+    showContractList,
+    contractListModalType,
+    hasPreviousStep,
+    setSorting,
+    userRatings,
+    rateApp,
+    isRatingSending,
+    isRatingLoading,
+    canRate,
   }), [
     selectedCategoryId,
     categories,
     clearSelectedAppId,
     selectedAppId,
+    data,
     displayedApps,
     error,
     favoriteApps,
@@ -136,5 +189,15 @@ export default function useMarketplace() {
     isAppInfoModalOpen,
     isDisclaimerModalOpen,
     showDisclaimer,
+    isCategoriesPlaceholderData,
+    showContractList,
+    contractListModalType,
+    hasPreviousStep,
+    setSorting,
+    userRatings,
+    rateApp,
+    isRatingSending,
+    isRatingLoading,
+    canRate,
   ]);
 }

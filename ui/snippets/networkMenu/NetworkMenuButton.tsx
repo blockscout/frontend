@@ -1,8 +1,8 @@
-import { Icon, useColorModeValue, Button, forwardRef, chakra } from '@chakra-ui/react';
+import { useColorModeValue, Button, forwardRef, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import networksIcon from 'icons/networks.svg';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   isMobile?: boolean;
@@ -30,8 +30,8 @@ const NetworkMenuButton = ({ isMobile, isActive, onClick, className }: Props, re
       aria-label="Network menu"
       aria-roledescription="menu"
     >
-      <Icon
-        as={ networksIcon }
+      <IconSvg
+        name="networks"
         width="36px"
         height="36px"
         padding="10px"

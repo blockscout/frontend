@@ -1,4 +1,4 @@
-import { Tr, Td, Flex, Box, Tooltip, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Tr, Td, Flex, Box, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -8,17 +8,18 @@ import type { Block } from 'types/api/block';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import flameIcon from 'icons/flame.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
-import BlockTimestamp from 'ui/blocks/BlockTimestamp';
-import Icon from 'ui/shared/chakra/Icon';
+import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
-import LinkInternal from 'ui/shared/LinkInternal';
-import TextSeparator from 'ui/shared/TextSeparator';
+import IconSvg from 'ui/shared/IconSvg';
+import LinkInternal from 'ui/shared/links/LinkInternal';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
+
+import { getBaseFeeValue } from './utils';
 
 interface Props {
   data: Block;
@@ -26,15 +27,16 @@ interface Props {
   enableTimeIncrement?: boolean;
 }
 
-const isRollup = config.features.optimisticRollup.isEnabled || config.features.zkEvmRollup.isEnabled;
+const isRollup = config.features.rollup.isEnabled;
 
 const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
-  const txFees = BigNumber(data.tx_fees || 0);
+  const txFees = BigNumber(data.transaction_fees || 0);
 
-  const separatorColor = useColorModeValue('gray.200', 'gray.700');
   const burntFeesIconColor = useColorModeValue('gray.500', 'inherit');
+
+  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas);
 
   return (
     <Tr
@@ -47,11 +49,16 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
     >
       <Td fontSize="sm">
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
+          { data.celo?.is_epoch_block && (
+            <Tooltip label={ `Finalized epoch #${ data.celo.epoch_number }` }>
+              <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
+            </Tooltip>
+          ) }
           <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations">
             <BlockEntity
               isLoading={ isLoading }
               number={ data.height }
-              hash={ data.type === 'reorg' ? data.hash : undefined }
+              hash={ data.type !== 'block' ? data.hash : undefined }
               noIcon
               fontSize="sm"
               lineHeight={ 5 }
@@ -59,7 +66,14 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
             />
           </Tooltip>
         </Flex>
-        <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement } isLoading={ isLoading }/>
+        <TimeAgoWithTooltip
+          timestamp={ data.timestamp }
+          enableIncrement={ enableTimeIncrement }
+          isLoading={ isLoading }
+          color="text_secondary"
+          fontWeight={ 400 }
+          display="inline-block"
+        />
       </Td>
       <Td fontSize="sm">
         <Skeleton isLoaded={ !isLoading } display="inline-block">
@@ -71,52 +85,45 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <AddressEntity
             address={ data.miner }
             isLoading={ isLoading }
+            truncation="constant"
+            maxW="min-content"
           />
         </Td>
       ) }
       <Td isNumeric fontSize="sm">
-        { data.tx_count > 0 ? (
+        { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             <LinkInternal href={ route({
               pathname: '/block/[height_or_hash]',
               query: { height_or_hash: String(data.height), tab: 'txs' },
             }) }>
-              { data.tx_count }
+              { data.transaction_count }
             </LinkInternal>
           </Skeleton>
-        ) : data.tx_count }
+        ) : data.transaction_count }
+      </Td>
+      <Td fontSize="sm">
+        <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
+        <Flex mt={ 2 }>
+          <BlockGasUsed
+            gasUsed={ data.gas_used }
+            gasLimit={ data.gas_limit }
+            isLoading={ isLoading }
+            gasTarget={ data.gas_target_percentage }
+          />
+        </Flex>
       </Td>
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Td fontSize="sm">
-          <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
-          <Flex mt={ 2 }>
-            <Tooltip label={ isLoading ? undefined : 'Gas Used %' }>
-              <Box>
-                <Utilization
-                  colorScheme="gray"
-                  value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }
-                  isLoading={ isLoading }
-                />
-              </Box>
-            </Tooltip>
-            { data.gas_target_percentage && (
-              <>
-                <TextSeparator color={ separatorColor } mx={ 1 }/>
-                <GasUsedToTargetRatio value={ data.gas_target_percentage } isLoading={ isLoading }/>
-              </>
-            ) }
-          </Flex>
+          <Skeleton isLoaded={ !isLoading } display="inline-block">
+            { totalReward.toFixed(8) }
+          </Skeleton>
         </Td>
       ) }
-      <Td fontSize="sm">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
-          { totalReward.toFixed(8) }
-        </Skeleton>
-      </Td>
       { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
         <Td fontSize="sm">
           <Flex alignItems="center" columnGap={ 2 }>
-            <Icon as={ flameIcon } boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
+            <IconSvg name="flame" boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
             <Skeleton isLoaded={ !isLoading } display="inline-block">
               { burntFees.dividedBy(WEI).toFixed(8) }
             </Skeleton>
@@ -126,6 +133,13 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
               <Utilization mt={ 2 } value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
             </Box>
           </Tooltip>
+        </Td>
+      ) }
+      { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && Boolean(baseFeeValue) && (
+        <Td fontSize="sm" isNumeric>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre-wrap" wordBreak="break-word">
+            { baseFeeValue }
+          </Skeleton>
         </Td>
       ) }
     </Tr>

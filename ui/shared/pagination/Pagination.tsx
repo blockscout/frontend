@@ -1,9 +1,10 @@
-import { Button, Skeleton, Flex, Icon, IconButton, chakra } from '@chakra-ui/react';
+import { Button, Flex, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from './types';
 
-import arrowIcon from 'icons/arrows/east-mini.svg';
+import Skeleton from 'ui/shared/chakra/Skeleton';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends PaginationParams {
   className?: string;
@@ -30,7 +31,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
           onClick={ resetPage }
           isDisabled={ page === 1 || isLoading }
         >
-        First
+          First
         </Button>
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" mr={ 3 } borderRadius="base">
@@ -40,15 +41,15 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
           size="sm"
           aria-label="Prev page"
           w="36px"
-          icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 }/> }
-          isDisabled={ !canGoBackwards || page === 1 || isLoading }
+          icon={ <IconSvg name="arrows/east-mini" w={ 5 } h={ 5 }/> }
+          isDisabled={ !canGoBackwards || isLoading }
         />
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" borderRadius="base">
         <Button
           variant="outline"
           size="sm"
-          isActive
+          data-selected={ true }
           borderWidth="1px"
           fontWeight={ 400 }
           h={ 8 }
@@ -65,7 +66,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
           size="sm"
           aria-label="Next page"
           w="36px"
-          icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 } transform="rotate(180deg)"/> }
+          icon={ <IconSvg name="arrows/east-mini" w={ 5 } h={ 5 } transform="rotate(180deg)"/> }
           isDisabled={ !hasNextPage || isLoading }
         />
       </Skeleton>

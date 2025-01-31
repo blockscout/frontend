@@ -20,7 +20,9 @@ async function run() {
         return result;
       }, {} as Record<string, string>);
 
+    printDeprecationWarning(appEnvs);
     await checkPlaceholdersCongruity(appEnvs);
+    checkDeprecatedEnvs(appEnvs);
     await validateEnvs(appEnvs);
 
   } catch (error) {
@@ -36,11 +38,16 @@ async function validateEnvs(appEnvs: Record<string, string>) {
     const envsWithJsonConfig = [
       'NEXT_PUBLIC_FEATURED_NETWORKS',
       'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL',
+      'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL',
+      'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL',
+      'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL',
       'NEXT_PUBLIC_FOOTER_LINKS',
     ];
 
     for await (const envName of envsWithJsonConfig) {
-      appEnvs[envName] = await(appEnvs[envName] ? getExternalJsonContent(envName) : Promise.resolve()) || '[]';
+      if (appEnvs[envName]) {
+        appEnvs[envName] = await getExternalJsonContent(envName) || '[]';
+      }
     }
 
     await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
@@ -99,7 +106,7 @@ async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
       inconsistencies.forEach((env) => {
         console.log(`     ${ env }`);
       });
-      console.log(`   They are either deprecated or running the app with them may lead to unexpected behavior. 
+      console.log(`   They are either deprecated or running the app with them may lead to unexpected behavior.
    Please check the documentation for more details - https://github.com/blockscout/frontend/blob/main/docs/ENVS.md
       `);
       throw new Error();
@@ -130,4 +137,65 @@ function getEnvsPlaceholders(filePath: string): Promise<Array<string>> {
       resolve(variables.filter(Boolean));
     });
   });
+}
+
+function printDeprecationWarning(envsMap: Record<string, string>) {
+  if (envsMap.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY && envsMap.NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY) {
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗');
+    // eslint-disable-next-line max-len
+    console.warn('The NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY variable is now deprecated and will be removed in the next release. Please migrate to the NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY variable.');
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗\n');
+  }
+
+  if (
+    (envsMap.NEXT_PUBLIC_SENTRY_DSN || envsMap.SENTRY_CSP_REPORT_URI || envsMap.NEXT_PUBLIC_SENTRY_ENABLE_TRACING) &&
+    envsMap.NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN
+  ) {
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗');
+    // eslint-disable-next-line max-len
+    console.warn('The Sentry monitoring is now deprecated and will be removed in the next release. Please migrate to the Rollbar error monitoring.');
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗\n');
+  }
+
+  if (
+    envsMap.NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR ||
+    envsMap.NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND
+  ) {
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗');
+    // eslint-disable-next-line max-len
+    console.warn('The NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR and NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND variables are now deprecated and will be removed in the next release. Please migrate to the NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG variable.');
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗\n');
+  }
+
+  if (
+    envsMap.NEXT_PUBLIC_AUTH0_CLIENT_ID ||
+    envsMap.NEXT_PUBLIC_AUTH_URL ||
+    envsMap.NEXT_PUBLIC_LOGOUT_URL
+  ) {
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗');
+    // eslint-disable-next-line max-len
+    console.warn('The NEXT_PUBLIC_AUTH0_CLIENT_ID, NEXT_PUBLIC_AUTH_URL and NEXT_PUBLIC_LOGOUT_URL variables are now deprecated and will be removed in the next release.');
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗\n');
+  }
+}
+
+function checkDeprecatedEnvs(envsMap: Record<string, string>) {
+  !silent && console.log(`🌀 Checking deprecated environment variables...`);
+
+  if (!envsMap.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY && envsMap.NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY) {
+    // eslint-disable-next-line max-len
+    console.log('🚨 The NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY variable is no longer supported. Please pass NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY or remove it completely.');
+    throw new Error();
+  }
+
+  if (
+    (envsMap.NEXT_PUBLIC_SENTRY_DSN || envsMap.SENTRY_CSP_REPORT_URI || envsMap.NEXT_PUBLIC_SENTRY_ENABLE_TRACING) &&
+    !envsMap.NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN
+  ) {
+    // eslint-disable-next-line max-len
+    console.log('🚨 The Sentry error monitoring is no longer supported. Please migrate to the Rollbar error monitoring.');
+    throw new Error();
+  }
+
+  !silent && console.log('👍 All good!\n');
 }

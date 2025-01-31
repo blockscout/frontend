@@ -10,12 +10,12 @@
 
 import type { As } from '@chakra-ui/react';
 import { Tooltip, chakra } from '@chakra-ui/react';
-import _debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import React, { useCallback, useEffect, useRef } from 'react';
 import type { FontFace } from 'use-font-face-observer';
 import useFontFaceObserver from 'use-font-face-observer';
 
-import { drukWide, inter } from 'theme/foundations/typography';
+import { BODY_TYPEFACE, HEADING_TYPEFACE } from 'theme/foundations/typography';
 
 const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;
@@ -33,8 +33,8 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
   const [ displayedString, setDisplayedString ] = React.useState(hash);
 
   const isFontFaceLoaded = useFontFaceObserver([
-    { family: inter.style.fontFamily, weight: String(fontWeight) as FontFace['weight'] },
-    { family: drukWide.style.fontFamily, weight: String(fontWeight) as FontFace['weight'] },
+    { family: BODY_TYPEFACE, weight: String(fontWeight) as FontFace['weight'] },
+    { family: HEADING_TYPEFACE, weight: String(fontWeight) as FontFace['weight'] },
   ]);
 
   const calculateString = useCallback(() => {
@@ -81,7 +81,7 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
   }, [ calculateString, isFontFaceLoaded ]);
 
   useEffect(() => {
-    const resizeHandler = _debounce(calculateString, 100);
+    const resizeHandler = debounce(calculateString, 100);
     const resizeObserver = new ResizeObserver(resizeHandler);
 
     resizeObserver.observe(document.body);
@@ -95,7 +95,7 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
 
   if (isTruncated) {
     return (
-      <Tooltip label={ hash } isDisabled={ isTooltipDisabled } maxW={{ base: '100vw', lg: '400px' }}>{ content }</Tooltip>
+      <Tooltip label={ hash } isDisabled={ isTooltipDisabled } maxW={{ base: 'calc(100vw - 8px)', lg: '400px' }}>{ content }</Tooltip>
     );
   }
 

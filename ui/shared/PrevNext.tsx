@@ -1,7 +1,8 @@
-import { Box, Icon, IconButton, chakra, Tooltip, Flex, Skeleton } from '@chakra-ui/react';
+import { Box, IconButton, chakra, Tooltip, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import eastArrow from 'icons/arrows/east-mini.svg';
+import Skeleton from 'ui/shared/chakra/Skeleton';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -32,11 +33,11 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
   }
 
   return (
-    <Box className={ className }>
+    <Box className={ className } display="flex">
       <Tooltip label={ prevLabel }>
         <IconButton
           aria-label="prev"
-          icon={ <Icon as={ eastArrow } boxSize={ 6 }/> }
+          icon={ <IconSvg name="arrows/east-mini" boxSize={ 6 }/> }
           h={ 6 }
           borderRadius="sm"
           variant="subtle"
@@ -48,7 +49,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
       <Tooltip label={ nextLabel }>
         <IconButton
           aria-label="next"
-          icon={ <Icon as={ eastArrow }boxSize={ 6 } transform="rotate(180deg)"/> }
+          icon={ <IconSvg name="arrows/east-mini" boxSize={ 6 } transform="rotate(180deg)"/> }
           h={ 6 }
           borderRadius="sm"
           variant="subtle"

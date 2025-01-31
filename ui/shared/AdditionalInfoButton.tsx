@@ -1,13 +1,12 @@
 import {
-  Icon,
   useColorModeValue,
   chakra,
   Button,
-  Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
 
-import infoIcon from 'icons/info.svg';
+import Skeleton from 'ui/shared/chakra/Skeleton';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   isOpen?: boolean;
@@ -38,11 +37,12 @@ const AdditionalInfoButton = ({ isOpen, onClick, className, isLoading }: Props, 
       onClick={ onClick }
       cursor="pointer"
       flexShrink={ 0 }
+      aria-label="Transaction info"
     >
-      <Icon
-        as={ infoIcon }
+      <IconSvg
+        name="info"
         boxSize={ 5 }
-        color="link"
+        color={ isOpen ? 'link_hovered' : 'icon_info' }
         _hover={{ color: 'link_hovered' }}
       />
     </Button>

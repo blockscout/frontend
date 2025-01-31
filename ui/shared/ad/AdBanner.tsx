@@ -1,44 +1,38 @@
-import { chakra, Skeleton } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
+
+import type { BannerPlatform } from './types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 
-import AdbutlerBanner from './AdbutlerBanner';
-import CoinzillaBanner from './CoinzillaBanner';
-import SliseBanner from './SliseBanner';
+import AdBannerContent from './AdBannerContent';
 
 const feature = config.features.adsBanner;
 
-const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: boolean }) => {
+interface Props {
+  className?: string;
+  isLoading?: boolean;
+  platform?: BannerPlatform;
+}
+
+const AdBanner = ({ className, isLoading, platform }: Props) => {
+  const provider = useAppContext().adBannerProvider;
+
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED, useAppContext().cookies);
 
-  if (!feature.isEnabled || hasAdblockCookie) {
+  if (!feature.isEnabled || hasAdblockCookie === 'true' || !provider) {
     return null;
   }
 
-  const content = (() => {
-    switch (feature.provider) {
-      case 'adbutler':
-        return <AdbutlerBanner/>;
-      case 'coinzilla':
-        return <CoinzillaBanner/>;
-      case 'slise':
-        return <SliseBanner/>;
-    }
-  })();
-
   return (
-    <Skeleton
+    <AdBannerContent
       className={ className }
-      isLoaded={ !isLoading }
-      borderRadius="none"
-      maxW={ feature.provider === 'adbutler' ? feature.adButler.config.desktop.width : '728px' }
-      w="100%"
-    >
-      { content }
-    </Skeleton>
+      isLoading={ isLoading }
+      provider={ provider }
+      platform={ platform }
+    />
   );
 };
 

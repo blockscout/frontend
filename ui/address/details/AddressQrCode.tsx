@@ -1,7 +1,6 @@
 import {
   chakra,
   Alert,
-  Icon,
   Modal,
   ModalBody,
   ModalContent,
@@ -13,19 +12,19 @@ import {
   useDisclosure,
   Tooltip,
   IconButton,
-  Skeleton,
 } from '@chakra-ui/react';
-import * as Sentry from '@sentry/react';
 import { useRouter } from 'next/router';
 import QRCode from 'qrcode';
 import React from 'react';
 
 import type { Address as AddressType } from 'types/api/address';
 
-import qrCodeIcon from 'icons/qr_code.svg';
 import getPageType from 'lib/mixpanel/getPageType';
 import * as mixpanel from 'lib/mixpanel/index';
+import { useRollbar } from 'lib/rollbar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
 const SVG_OPTIONS = {
   margin: 0,
@@ -41,6 +40,7 @@ const AddressQrCode = ({ address, className, isLoading }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const router = useRouter();
+  const rollbar = useRollbar();
 
   const [ qr, setQr ] = React.useState('');
   const [ error, setError ] = React.useState('');
@@ -52,7 +52,7 @@ const AddressQrCode = ({ address, className, isLoading }: Props) => {
       QRCode.toString(address.hash, SVG_OPTIONS, (error: Error | null | undefined, svg: string) => {
         if (error) {
           setError('We were unable to generate QR code.');
-          Sentry.captureException(error, { tags: { source: 'qr_code' } });
+          rollbar?.warn('QR code generation failed');
           return;
         }
 
@@ -61,7 +61,7 @@ const AddressQrCode = ({ address, className, isLoading }: Props) => {
         mixpanel.logEvent(mixpanel.EventTypes.QR_CODE, { 'Page type': pageType });
       });
     }
-  }, [ address.hash, isOpen, onClose, pageType ]);
+  }, [ address.hash, isOpen, onClose, pageType, rollbar ]);
 
   if (isLoading) {
     return <Skeleton className={ className } w="36px" h="32px" borderRadius="base"/>;
@@ -78,7 +78,7 @@ const AddressQrCode = ({ address, className, isLoading }: Props) => {
           pl="6px"
           pr="6px"
           onClick={ onOpen }
-          icon={ <Icon as={ qrCodeIcon } boxSize={ 5 }/> }
+          icon={ <IconSvg name="qr_code" boxSize={ 5 }/> }
           flexShrink={ 0 }
         />
       </Tooltip>

@@ -1,4 +1,7 @@
-export const data = {
+import type { AddressParam } from 'types/api/addressParams';
+import type { WithdrawalsResponse } from 'types/api/withdrawals';
+
+export const data: WithdrawalsResponse = {
   items: [
     {
       amount: '192175000000000',
@@ -6,11 +9,11 @@ export const data = {
       index: 11688,
       receiver: {
         hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementation_name: null,
+        implementations: null,
         is_contract: false,
         is_verified: null,
         name: null,
-      },
+      } as AddressParam,
       timestamp: '2022-06-07T18:12:24.000000Z',
       validator_index: 49622,
     },
@@ -20,11 +23,11 @@ export const data = {
       index: 11687,
       receiver: {
         hash: '0xf97e987c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementation_name: null,
+        implementations: null,
         is_contract: false,
         is_verified: null,
         name: null,
-      },
+      } as AddressParam,
       timestamp: '2022-05-07T18:12:24.000000Z',
       validator_index: 49621,
     },
@@ -34,11 +37,11 @@ export const data = {
       index: 11686,
       receiver: {
         hash: '0xf97e123c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementation_name: null,
+        implementations: null,
         is_contract: false,
         is_verified: null,
         name: null,
-      },
+      } as AddressParam,
       timestamp: '2022-04-07T18:12:24.000000Z',
       validator_index: 49620,
     },

@@ -3,31 +3,29 @@ import React from 'react';
 
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import WithdrawalsListItem from 'ui/withdrawals/WithdrawalsListItem';
-import WithdrawalsTable from 'ui/withdrawals/WithdrawalsTable';
+import BeaconChainWithdrawalsList from 'ui/withdrawals/beaconChain/BeaconChainWithdrawalsList';
+import BeaconChainWithdrawalsTable from 'ui/withdrawals/beaconChain/BeaconChainWithdrawalsTable';
 
 type Props = {
   blockWithdrawalsQuery: QueryWithPagesResult<'block_withdrawals'>;
-}
+};
+const TABS_HEIGHT = 88;
 
 const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
   const content = blockWithdrawalsQuery.data?.items ? (
     <>
       <Show below="lg" ssr={ false }>
-        { blockWithdrawalsQuery.data.items.map((item, index) => (
-          <WithdrawalsListItem
-            key={ item.index + (blockWithdrawalsQuery.isPlaceholderData ? String(index) : '') }
-            item={ item }
-            view="block"
-            isLoading={ blockWithdrawalsQuery.isPlaceholderData }
-          />
-        )) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
-        <WithdrawalsTable
+        <BeaconChainWithdrawalsList
           items={ blockWithdrawalsQuery.data.items }
           isLoading={ blockWithdrawalsQuery.isPlaceholderData }
-          top={ blockWithdrawalsQuery.pagination.isVisible ? 80 : 0 }
+          view="block"
+        />
+      </Show>
+      <Hide below="lg" ssr={ false }>
+        <BeaconChainWithdrawalsTable
+          items={ blockWithdrawalsQuery.data.items }
+          isLoading={ blockWithdrawalsQuery.isPlaceholderData }
+          top={ blockWithdrawalsQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
           view="block"
         />
       </Hide>

@@ -5,12 +5,12 @@ import React from 'react';
 interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   type: 'vertical' | 'horizontal';
   scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
-  disableAnimation?: boolean;
+  noAnimation?: boolean;
   size: number;
   ticks: number;
 }
 
-const ChartGridLine = ({ type, scale, ticks, size, disableAnimation, ...props }: Props) => {
+const ChartGridLine = ({ type, scale, ticks, size, noAnimation, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
 
   const strokeColor = useToken('colors', 'divider');
@@ -24,7 +24,7 @@ const ChartGridLine = ({ type, scale, ticks, size, disableAnimation, ...props }:
     const axis = axisGenerator(scale).ticks(ticks).tickSize(-size);
 
     const gridGroup = d3.select(ref.current);
-    if (disableAnimation) {
+    if (noAnimation) {
       gridGroup.call(axis);
     } else {
       gridGroup.transition().duration(750).ease(d3.easeLinear).call(axis);
@@ -32,7 +32,7 @@ const ChartGridLine = ({ type, scale, ticks, size, disableAnimation, ...props }:
     gridGroup.select('.domain').remove();
     gridGroup.selectAll('text').remove();
     gridGroup.selectAll('line').attr('stroke', strokeColor);
-  }, [ scale, ticks, size, disableAnimation, type, strokeColor ]);
+  }, [ scale, ticks, size, noAnimation, type, strokeColor ]);
 
   return <g ref={ ref } { ...props }/>;
 };

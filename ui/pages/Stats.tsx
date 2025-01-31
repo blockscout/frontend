@@ -21,11 +21,14 @@ const Stats = () => {
     handleFilterChange,
     displayedCharts,
     filterQuery,
+    initialFilterQuery,
   } = useStats();
 
   return (
     <>
-      <PageTitle title={ `${ config.chain.name } stats` }/>
+      <PageTitle
+        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } statistic & data` : `${ config.chain.name } stats` }
+      />
 
       <Box mb={{ base: 6, sm: 8 }}>
         <NumberWidgetsList/>
@@ -33,6 +36,8 @@ const Stats = () => {
 
       <Box mb={{ base: 6, sm: 8 }}>
         <StatsFilters
+          isLoading={ isPlaceholderData }
+          initialFilterValue={ initialFilterQuery }
           sections={ sections }
           currentSection={ currentSection }
           onSectionChange={ handleSectionChange }
@@ -44,6 +49,7 @@ const Stats = () => {
 
       <ChartsWidgetsList
         filterQuery={ filterQuery }
+        initialFilterQuery={ initialFilterQuery }
         isError={ isError }
         isPlaceholderData={ isPlaceholderData }
         charts={ displayedCharts }

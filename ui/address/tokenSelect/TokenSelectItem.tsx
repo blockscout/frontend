@@ -1,10 +1,12 @@
-import { chakra, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import getCurrencyValue from 'lib/getCurrencyValue';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import type { TokenEnhancedData } from '../utils/tokenUtils';
@@ -44,14 +46,32 @@ const TokenSelectItem = ({ data }: Props) => {
           </>
         );
       }
+      case 'ERC-404': {
+        return (
+          <>
+            { data.token_id !== null && (
+              <chakra.span textOverflow="ellipsis" overflow="hidden" mr={ 6 }>
+                #{ data.token_id || 0 }
+              </chakra.span>
+            ) }
+            { data.value !== null && (
+              <span>
+                { data.token.decimals ?
+                  getCurrencyValue({ value: data.value, decimals: data.token.decimals, accuracy: 2 }).valueStr :
+                  BigNumber(data.value).toFormat()
+                }
+              </span>
+            ) }
+          </>
+        );
+      }
     }
   })();
 
-  // TODO add filter param when token page is ready
   const url = route({ pathname: '/token/[hash]', query: { hash: data.token.address } });
 
   return (
-    <Flex
+    <LinkInternal
       px={ 1 }
       py="10px"
       display="flex"
@@ -62,9 +82,8 @@ const TokenSelectItem = ({ data }: Props) => {
       _hover={{
         bgColor: useColorModeValue('blue.50', 'gray.800'),
       }}
+      color="unset"
       fontSize="sm"
-      cursor="pointer"
-      as="a"
       href={ url }
     >
       <Flex alignItems="center" w="100%" overflow="hidden">
@@ -74,13 +93,16 @@ const TokenSelectItem = ({ data }: Props) => {
           noCopy
           noLink
           fontWeight={ 700 }
+          mr={ 2 }
         />
-        { data.usd && <Text fontWeight={ 700 } ml="auto">${ data.usd.toFormat(2) }</Text> }
+        { data.usd && (
+          <TruncatedValue value={ `$${ data.usd.toFormat(2) }` } fontWeight={ 700 } minW="120px" ml="auto" textAlign="right"/>
+        ) }
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" w="100%" whiteSpace="nowrap">
         { secondRow }
       </Flex>
-    </Flex>
+    </LinkInternal>
   );
 };
 

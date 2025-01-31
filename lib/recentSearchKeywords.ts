@@ -1,4 +1,4 @@
-import { uniq } from 'lodash';
+import { uniq } from 'es-toolkit';
 
 import isBrowser from './isBrowser';
 

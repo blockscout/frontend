@@ -1,5 +1,4 @@
 import { chakra } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -8,28 +7,19 @@ import config from 'configs/app';
 
 import * as BlockEntity from './BlockEntity';
 
-const feature = config.features.optimisticRollup;
+const rollupFeature = config.features.rollup;
 
 const BlockEntityL1 = (props: BlockEntity.EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
-
-  if (!feature.isEnabled) {
+  if (!rollupFeature.isEnabled) {
     return null;
   }
 
-  return (
-    <BlockEntity.Container className={ props.className }>
-      <BlockEntity.Icon { ...partsProps }/>
-      <BlockEntity.Link
-        { ...linkProps }
-        isExternal
-        href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: props.hash ?? String(props.number) } }) }
-      >
-        <BlockEntity.Content { ...partsProps }/>
-      </BlockEntity.Link>
-    </BlockEntity.Container>
-  );
+  const defaultHref = rollupFeature.L1BaseUrl + route({
+    pathname: '/block/[height_or_hash]',
+    query: { height_or_hash: props.hash ?? String(props.number) },
+  });
+
+  return <BlockEntity.default { ...props } href={ props.href ?? defaultHref } isExternal/>;
 };
 
 export default chakra(BlockEntityL1);

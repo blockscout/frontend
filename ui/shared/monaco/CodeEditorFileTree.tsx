@@ -1,13 +1,13 @@
 import type { ChakraProps } from '@chakra-ui/react';
-import { Box, Accordion, AccordionButton, AccordionItem, AccordionPanel, Icon, chakra } from '@chakra-ui/react';
+import { Box, Accordion, AccordionButton, AccordionItem, AccordionPanel, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FileTree } from './types';
 
+import IconSvg from 'ui/shared/IconSvg';
+
 import CodeEditorFileIcon from './CodeEditorFileIcon';
 import CodeEditorMainFileIndicator from './CodeEditorMainFileIndicator';
-import iconFolderOpen from './icons/folder-open.svg';
-import iconFolder from './icons/folder.svg';
 import useThemeColors from './utils/useThemeColors';
 
 interface Props {
@@ -57,7 +57,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
                         boxSize="16px"
                         mr="2px"
                       />
-                      <Icon as={ isExpanded ? iconFolderOpen : iconFolder } boxSize="16px" mr="4px"/>
+                      <IconSvg name={ isExpanded ? 'monaco/folder-open' : 'monaco/folder' } boxSize="16px" mr="4px"/>
                       { leafName }
                     </AccordionButton>
                     <AccordionPanel p="0">

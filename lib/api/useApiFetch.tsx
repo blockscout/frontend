@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import _pickBy from 'lodash/pickBy';
+import { omit, pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { CsrfData } from 'types/client/account';
@@ -18,8 +18,9 @@ import type { ApiResource, ResourceName, ResourcePathParams } from './resources'
 
 export interface Params<R extends ResourceName> {
   pathParams?: ResourcePathParams<R>;
-  queryParams?: Record<string, string | Array<string> | number | undefined>;
-  fetchParams?: Pick<FetchParams, 'body' | 'method' | 'signal'>;
+  queryParams?: Record<string, string | Array<string> | number | boolean | undefined | null>;
+  fetchParams?: Pick<FetchParams, 'body' | 'method' | 'signal' | 'headers'>;
+  logError?: boolean;
 }
 
 export default function useApiFetch() {
@@ -29,17 +30,19 @@ export default function useApiFetch() {
 
   return React.useCallback(<R extends ResourceName, SuccessType = unknown, ErrorType = unknown>(
     resourceName: R,
-    { pathParams, queryParams, fetchParams }: Params<R> = {},
+    { pathParams, queryParams, fetchParams, logError }: Params<R> = {},
   ) => {
     const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
 
     const resource: ApiResource = RESOURCES[resourceName];
     const url = buildUrl(resourceName, pathParams, queryParams);
     const withBody = isBodyAllowed(fetchParams?.method);
-    const headers = _pickBy({
+    const headers = pickBy({
       'x-endpoint': resource.endpoint && isNeedProxy() ? resource.endpoint : undefined,
       Authorization: resource.endpoint && resource.needAuth ? apiToken : undefined,
       'x-csrf-token': withBody && csrfToken ? csrfToken : undefined,
+      ...resource.headers,
+      ...fetchParams?.headers,
     }, Boolean) as HeadersInit;
 
     return fetch<SuccessType, ErrorType>(
@@ -51,10 +54,11 @@ export default function useApiFetch() {
         // change condition here if something is changed
         credentials: config.features.account.isEnabled ? 'include' : 'same-origin',
         headers,
-        ...fetchParams,
+        ...(fetchParams ? omit(fetchParams, [ 'headers' ]) : {}),
       },
       {
         resource: resource.path,
+        logError,
       },
     );
   }, [ fetch, csrfToken ]);

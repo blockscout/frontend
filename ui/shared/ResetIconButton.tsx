@@ -1,11 +1,11 @@
-import { Tooltip, Flex, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Tooltip, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import crossIcon from 'icons/cross.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   onClick: () => void;
-}
+};
 
 const ResetIconButton = ({ onClick }: Props) => {
   const resetTokenIconColor = useColorModeValue('blue.600', 'blue.300');
@@ -14,8 +14,8 @@ const ResetIconButton = ({ onClick }: Props) => {
   return (
     <Tooltip label="Reset filter">
       <Flex>
-        <Icon
-          as={ crossIcon }
+        <IconSvg
+          name="cross"
           boxSize={ 5 }
           ml={ 1 }
           color={ resetTokenIconColor }

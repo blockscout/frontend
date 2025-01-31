@@ -1,10 +1,9 @@
-import { Box, Flex, Icon, Text, Image, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Text, Image, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FeaturedNetwork } from 'types/networks';
 
-import checkIcon from 'icons/check.svg';
-import placeholderIcon from 'icons/networks/icon-placeholder.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 import useColors from './useColors';
 
@@ -21,8 +20,8 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
   const iconEl = icon ? (
     <Image w="30px" h="30px" src={ icon } alt={ `${ title } network icon` } style={ style }/>
   ) : (
-    <Icon
-      as={ placeholderIcon }
+    <IconSvg
+      name="networks/icon-placeholder"
       boxSize="30px"
       color={ colors.iconPlaceholder.default }
     />
@@ -33,8 +32,8 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
       <Flex
         as="a"
         href={ url }
-        px={ isMobile ? 3 : 4 }
-        py={ 2 }
+        px={ 3 }
+        py="9px"
         alignItems="center"
         cursor="pointer"
         pointerEvents={ isActive ? 'none' : 'initial' }
@@ -54,8 +53,8 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
           { title }
         </Text>
         { isActive && (
-          <Icon
-            as={ checkIcon }
+          <IconSvg
+            name="check"
             boxSize="24px"
             marginLeft="auto"
           />

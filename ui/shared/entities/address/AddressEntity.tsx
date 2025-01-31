@@ -1,21 +1,26 @@
 import type { As } from '@chakra-ui/react';
-import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
+import { Box, Flex, Tooltip, chakra, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
 
 import { route } from 'nextjs-routes';
 
-import iconSafe from 'icons/brands/safe.svg';
-import iconContractVerified from 'icons/contract_verified.svg';
-import iconContract from 'icons/contract.svg';
+import { toBech32Address } from 'lib/address/bech32';
+import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
+import { useSettingsContext } from 'lib/contexts/settings';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
-import { getIconProps } from '../base/utils';
+import { distributeEntityProps, getIconProps } from '../base/utils';
+import AddressEntityContentProxy from './AddressEntityContentProxy';
 import AddressIdenticon from './AddressIdenticon';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'address'>;
+
+const getDisplayedAddress = (address: AddressProp, altHash?: string) => {
+  return address.filecoin?.robust ?? address.filecoin?.id ?? altHash ?? address.hash;
+};
 
 const Link = chakra((props: LinkProps) => {
   const defaultHref = route({ pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } });
@@ -30,9 +35,7 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIcon' | 'isSafeAddress'> & {
-  asProp?: As;
-};
+type IconProps = Pick<EntityProps, 'address' | 'isSafeAddress'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
   if (props.noIcon) {
@@ -40,8 +43,8 @@ const Icon = (props: IconProps) => {
   }
 
   const styles = {
-    ...getIconProps(props.iconSize),
-    marginRight: 2,
+    ...getIconProps(props.size),
+    marginRight: props.marginRight ?? 2,
   };
 
   if (props.isLoading) {
@@ -53,32 +56,23 @@ const Icon = (props: IconProps) => {
       return (
         <EntityBase.Icon
           { ...props }
-          asProp={ iconSafe }
+          name="brands/safe"
         />
       );
     }
 
-    if (props.address.is_verified) {
-      return (
-        <Tooltip label="Verified contract">
-          <span>
-            <EntityBase.Icon
-              { ...props }
-              asProp={ iconContractVerified }
-              color="green.500"
-              borderRadius={ 0 }
-            />
-          </span>
-        </Tooltip>
-      );
-    }
+    const isProxy = Boolean(props.address.implementations?.length);
+    const isVerified = isProxy ? props.address.is_verified && props.address.implementations?.every(({ name }) => Boolean(name)) : props.address.is_verified;
+    const contractIconName: EntityBase.IconBaseProps['name'] = props.address.is_verified ? 'contracts/verified' : 'contracts/regular';
+    const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract');
 
     return (
-      <Tooltip label="Contract">
+      <Tooltip label={ label.slice(0, 1).toUpperCase() + label.slice(1) }>
         <span>
           <EntityBase.Icon
             { ...props }
-            asProp={ iconContract }
+            name={ isProxy ? 'contracts/proxy' : contractIconName }
+            color={ isVerified ? 'green.500' : undefined }
             borderRadius={ 0 }
           />
         </span>
@@ -87,32 +81,42 @@ const Icon = (props: IconProps) => {
   }
 
   return (
-    <Tooltip label={ props.address.implementation_name }>
-      <Flex marginRight={ styles.marginRight }>
-        <AddressIdenticon
-          size={ props.iconSize === 'lg' ? 30 : 20 }
-          hash={ props.address.hash }
-        />
-      </Flex>
-    </Tooltip>
+    <Flex marginRight={ styles.marginRight }>
+      <AddressIdenticon
+        size={ props.size === 'lg' ? 30 : 20 }
+        hash={ getDisplayedAddress(props.address) }
+      />
+    </Flex>
   );
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
+export type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'> & { altHash?: string };
 
 const Content = chakra((props: ContentProps) => {
-  if (props.address.name) {
+  const displayedAddress = getDisplayedAddress(props.address, props.altHash);
+  const nameTag = props.address.metadata?.tags.find(tag => tag.tagType === 'name')?.name;
+  const nameText = nameTag || props.address.ens_domain_name || props.address.name;
+
+  const isProxy = props.address.implementations && props.address.implementations.length > 0;
+
+  if (isProxy) {
+    return <AddressEntityContentProxy { ...props }/>;
+  }
+
+  if (nameText) {
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
-        <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.name }</Box>
-        <Box whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.hash }</Box>
+        <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
+        <Box whiteSpace="pre-wrap" wordBreak="break-word">
+          { displayedAddress }
+        </Box>
       </VStack>
     );
 
     return (
-      <Tooltip label={ label } maxW="100vw">
+      <Tooltip label={ label } maxW={{ base: 'calc(100vw - 8px)', lg: '400px' }}>
         <Skeleton isLoaded={ !props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
-          { props.address.name }
+          { nameText }
         </Skeleton>
       </Tooltip>
     );
@@ -121,45 +125,62 @@ const Content = chakra((props: ContentProps) => {
   return (
     <EntityBase.Content
       { ...props }
-      text={ props.address.hash }
+      text={ displayedAddress }
     />
   );
 });
 
-type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'address'>;
+type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'address'> & { altHash?: string };
 
 const Copy = (props: CopyProps) => {
   return (
     <EntityBase.Copy
       { ...props }
-      text={ props.address.hash }
+      text={ getDisplayedAddress(props.address, props.altHash) }
     />
   );
 };
 
 const Container = EntityBase.Container;
 
+interface AddressProp extends Partial<AddressParam> {
+  hash: string;
+}
+
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name'>;
+  address: AddressProp;
   isSafeAddress?: boolean;
+  noHighlight?: boolean;
+  noAltHash?: boolean;
 }
 
 const AddressEntry = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const partsProps = distributeEntityProps(props);
+  const highlightContext = useAddressHighlightContext(props.noHighlight);
+  const settingsContext = useSettingsContext();
+  const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
 
   return (
-    <Container className={ props.className }>
-      <Icon { ...partsProps }/>
-      <Link { ...linkProps }>
-        <Content { ...partsProps }/>
+    <Container
+      // we have to use the global classnames here, see theme/global.ts
+      // otherwise, if we use sx prop, Chakra will generate the same styles for each instance of the component on the page
+      className={ `${ props.className } address-entity ${ props.noCopy ? 'address-entity_no-copy' : '' }` }
+      data-hash={ highlightContext && !props.isLoading ? props.address.hash : undefined }
+      onMouseEnter={ highlightContext?.onMouseEnter }
+      onMouseLeave={ highlightContext?.onMouseLeave }
+      position="relative"
+      zIndex={ 0 }
+    >
+      <Icon { ...partsProps.icon }/>
+      <Link { ...partsProps.link }>
+        <Content { ...partsProps.content } altHash={ altHash }/>
       </Link>
-      <Copy { ...partsProps }/>
+      <Copy { ...partsProps.copy } altHash={ altHash }/>
     </Container>
   );
 };
 
-export default React.memo(chakra(AddressEntry));
+export default React.memo(chakra<As, EntityProps>(AddressEntry));
 
 export {
   Container,

@@ -1,21 +1,17 @@
 import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import nftPlaceholder from 'icons/nft_shield.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
+import { distributeEntityProps } from '../base/utils';
+
 const Container = EntityBase.Container;
 
-type IconProps = Pick<EntityProps, 'isLoading' | 'noIcon' | 'iconSize'> & {
-  asProp?: As;
-};
-
-const Icon = (props: IconProps) => {
+const Icon = (props: EntityBase.IconBaseProps) => {
   if (props.noIcon) {
     return null;
   }
@@ -23,8 +19,8 @@ const Icon = (props: IconProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      iconSize={ props.iconSize ?? 'lg' }
-      asProp={ props.asProp ?? nftPlaceholder }
+      size={ props.size ?? 'lg' }
+      name={ props.name ?? 'nft_shield' }
     />
   );
 };
@@ -61,20 +57,19 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 }
 
 const NftEntity = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const partsProps = distributeEntityProps(props);
 
   return (
-    <Container className={ props.className } w="100%">
-      <Icon { ...partsProps }/>
-      <Link { ...linkProps }>
-        <Content { ...partsProps }/>
+    <Container w="100%" { ...partsProps.container }>
+      <Icon { ...partsProps.icon }/>
+      <Link { ...partsProps.link }>
+        <Content { ...partsProps.content }/>
       </Link>
     </Container>
   );
 };
 
-export default React.memo(chakra(NftEntity));
+export default React.memo(chakra<As, EntityProps>(NftEntity));
 
 export {
   Container,

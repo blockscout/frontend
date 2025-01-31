@@ -11,16 +11,18 @@ import * as Layout from './components';
 const LayoutHome = ({ children }: Props) => {
   return (
     <Layout.Container>
-      <HeaderMobile isHomePage/>
+      <Layout.TopRow/>
+      <Layout.NavBar/>
+      <HeaderMobile hideSearchBar/>
       <Layout.MainArea>
         <Layout.SideBar/>
-        <Layout.MainColumn>
-          <Layout.Content>
-            <HeaderAlert/>
-            <AppErrorBoundary>
-              { children }
-            </AppErrorBoundary>
-          </Layout.Content>
+        <Layout.MainColumn
+          paddingTop={{ base: 3, lg: 6 }}
+        >
+          <HeaderAlert/>
+          <AppErrorBoundary>
+            { children }
+          </AppErrorBoundary>
         </Layout.MainColumn>
       </Layout.MainArea>
       <Layout.Footer/>

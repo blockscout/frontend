@@ -5,31 +5,28 @@ import React from 'react';
 
 import type { TimeChartItem } from 'ui/shared/chart/types';
 
-import luxColors from 'theme/foundations/lux-colors';
-
-
 interface Props extends React.SVGProps<SVGPathElement> {
   id?: string;
   xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   yScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   color?: string;
   data: Array<TimeChartItem>;
-  disableAnimation?: boolean;
+  noAnimation?: boolean;
 }
 
-const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props }: Props) => {
+const ChartArea = ({ id, xScale, yScale, color, data, noAnimation, ...props }: Props) => {
   const ref = React.useRef(null);
   const theme = useTheme();
 
   const gradientColorId = `${ id || 'gradient' }-${ color }-color`;
   const gradientStopColor = useToken('colors', useColorModeValue('whiteAlpha.200', 'blackAlpha.100'));
   const defaultGradient = {
-    startColor: luxColors.colors.primary.main,  // useToken('colors', useColorModeValue('blue.100', 'blue.400')),
-    stopColor: luxColors.colors.background // useToken('colors', transparentize(useColorModeValue('blue.100', 'blue.400'), 0)(theme)),
+    startColor: useToken('colors', useColorModeValue('blue.100', 'blue.400')),
+    stopColor: useToken('colors', transparentize(useColorModeValue('blue.100', 'blue.400'), 0)(theme)),
   };
 
   React.useEffect(() => {
-    if (disableAnimation) {
+    if (noAnimation) {
       d3.select(ref.current).attr('opacity', 1);
       return;
     }
@@ -37,10 +34,11 @@ const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props
       .duration(750)
       .ease(d3.easeBackIn)
       .attr('opacity', 1);
-  }, [ disableAnimation ]);
+  }, [ noAnimation ]);
 
   const d = React.useMemo(() => {
     const area = d3.area<TimeChartItem>()
+      .defined(({ isApproximate }) => !isApproximate)
       .x(({ date }) => xScale(date))
       .y1(({ value }) => yScale(value))
       .y0(() => yScale(yScale.domain()[0]))
