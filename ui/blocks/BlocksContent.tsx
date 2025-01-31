@@ -87,7 +87,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
 
   const content = query.data?.items ? (
     <>
-      <Box display={{ base: 'block', lg: 'none' }}>
+      <Box hideFrom="lg">
         { query.pagination.page === 1 && enableSocket && (
           <SocketNewItemsNotice.Mobile
             url={ window.location.href }
@@ -99,7 +99,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
         ) }
         <BlocksList data={ query.data.items } isLoading={ query.isPlaceholderData } page={ query.pagination.page }/>
       </Box>
-      <Box display={{ base: 'none', lg: 'block' }}>
+      <Box hideBelow="lg">
         <BlocksTable
           data={ query.data.items }
           top={ top || (query.pagination.isVisible ? TABS_HEIGHT : 0) }

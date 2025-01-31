@@ -68,16 +68,16 @@ const BlockPageContent = () => {
         </>
       ),
     },
-    // {
-    //   id: 'txs',
-    //   title: 'Transactions',
-    //   component: (
-    //     <>
-    //       { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={ 6 }/> }
-    //       <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>
-    //     </>
-    //   ),
-    // },
+    {
+      id: 'txs',
+      title: 'Transactions',
+      component: (
+        <>
+          { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={ 6 }/> }
+          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>
+        </>
+      ),
+    },
     // config.features.dataAvailability.isEnabled && blockQuery.data?.blob_transaction_count ?
     //   {
     //     id: 'blob_txs',

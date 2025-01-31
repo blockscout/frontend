@@ -333,6 +333,12 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       backTo: { value: '{colors.gray.400}' },
       externalLink: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.400}' } },
     },
+    address: {
+      highlighted: {
+        bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.blue.900}' } },
+        border: { value: { _light: '{colors.blue.200}', _dark: '{colors.blue.600}' } },
+      },
+    },
     global: {
       body: {
         bg: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },

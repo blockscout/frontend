@@ -15,6 +15,7 @@ const SkeletonTabText = ({ size, title }: { size: TabsProps['size']; title: TabI
     fontWeight={ 600 }
     mx={ size === 'sm' ? 3 : 4 }
     flexShrink={ 0 }
+    loading
   >
     { typeof title === 'string' ? title : title() }
   </Skeleton>

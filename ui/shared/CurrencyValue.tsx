@@ -18,7 +18,7 @@ interface Props {
 const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className, accuracy, accuracyUsd, isLoading }: Props) => {
   if (isLoading) {
     return (
-      <Skeleton className={ className } display="inline-block">0.00 ($0.00)</Skeleton>
+      <Skeleton className={ className } loading display="inline-block">0.00 ($0.00)</Skeleton>
     );
   }
 

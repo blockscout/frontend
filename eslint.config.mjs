@@ -27,6 +27,7 @@ const RESTRICTED_MODULES = {
     { name: 'playwright/TestApp', message: 'Please use render() fixture from test() function of playwright/lib module' },
     { name: 'ui/shared/chakra/Skeleton', message: 'Please use Skeleton component from toolkit/chakra instead' },
     { name: 'ui/shared/Tabs/RoutedTabs', message: 'Please use RoutedTabs component from toolkit/components/RoutedTabs instead' },
+    { name: 'ui/shared/chakra/Tag', message: 'Please use Tag component from toolkit/chakra instead' },
     {
       name: '@chakra-ui/react',
       importNames: [

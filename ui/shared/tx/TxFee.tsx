@@ -35,7 +35,7 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
       <Skeleton whiteSpace="pre-wrap" wordBreak="break-word" loading={ isLoading } display="flex" flexWrap="wrap" className={ className }>
         <span>{ valueStr } </span>
         <TokenEntity token={ token } noCopy onlySymbol w="auto" ml={ 1 }/>
-        { usd && withUsd && <chakra.span color="text_secondary"> (${ usd })</chakra.span> }
+        { usd && withUsd && <chakra.span color="text.secondary"> (${ usd })</chakra.span> }
       </Skeleton>
     );
   }

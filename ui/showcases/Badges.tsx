@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { Badge } from 'toolkit/chakra/badge';
@@ -53,6 +54,8 @@ const BadgesShowcase = () => {
             <Badge colorPalette="purple" loading>Content</Badge>
           </Sample>
         </SamplesStack>
+      </Section>
+      <Section>
         <SectionHeader>Size</SectionHeader>
         <SamplesStack>
           <Sample label="size: md">
@@ -65,6 +68,18 @@ const BadgesShowcase = () => {
         <SamplesStack>
           <Sample label="variant: subtle">
             <Badge variant="subtle">Content</Badge>
+          </Sample>
+        </SamplesStack>
+      </Section>
+      <Section>
+        <SectionHeader>Truncate</SectionHeader>
+        <SamplesStack>
+          <Sample label="truncated: true">
+            <Box maxW="150px">
+              <Badge truncated>
+                Very long content that should be truncated
+              </Badge>
+            </Box>
           </Sample>
         </SamplesStack>
       </Section>

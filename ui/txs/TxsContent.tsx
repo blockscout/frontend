@@ -1,4 +1,4 @@
-import { Show, Hide } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
@@ -69,7 +69,7 @@ const TxsContent = ({
 
   const content = itemsWithTranslation ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         <TxsList
           showBlockInfo={ showBlockInfo }
           showSocketInfo={ showSocketInfo }
@@ -80,8 +80,8 @@ const TxsContent = ({
           currentAddress={ currentAddress }
           items={ itemsWithTranslation }
         />
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <TxsTable
           txs={ itemsWithTranslation }
           sort={ onSortToggle }
@@ -95,7 +95,7 @@ const TxsContent = ({
           enableTimeIncrement={ enableTimeIncrement }
           isLoading={ isPlaceholderData }
         />
-      </Hide>
+      </Box>
     </>
   ) : null;
 
@@ -121,11 +121,12 @@ const TxsContent = ({
   return (
     <DataListDisplay
       isError={ isError }
-      items={ itemsWithTranslation }
+      itemsNum={ itemsWithTranslation?.length }
       emptyText="There are no transactions."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

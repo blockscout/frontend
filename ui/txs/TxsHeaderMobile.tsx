@@ -29,13 +29,14 @@ const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps
     <ActionBar className={ className }>
       <HStack>
         { filterComponent }
-        <Sort
+        { /* TODO @tom2drum fix sort select */ }
+        { /* <Sort
           name="transactions_sorting"
           defaultValue={ sorting }
           options={ SORT_OPTIONS }
           onChange={ setSorting }
           isLoading={ paginationProps.isLoading }
-        />
+        /> */ }
         { /* api is not implemented */ }
         { /* <FilterInput
           // eslint-disable-next-line react/jsx-no-bind

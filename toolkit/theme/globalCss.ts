@@ -1,15 +1,14 @@
-import type { SystemStyleObject } from '@chakra-ui/theme-tools';
+import type { SystemConfig } from '@chakra-ui/react';
 
-// TODO @tom2drum check address highlight feature
 import addressEntity from './globals/address-entity';
 import recaptcha from './globals/recaptcha';
 import scrollbar from './globals/scrollbar';
 
-const globalCss: Record<string, SystemStyleObject> = {
+const globalCss: SystemConfig['globalCss'] = {
   body: {
     bg: 'global.body.bg',
     color: 'global.body.fg',
-    '-webkit-tap-highlight-color': 'transparent',
+    WebkitTapHighlightColor: 'transparent',
     fontVariantLigatures: 'no-contextual',
   },
   mark: {
@@ -25,7 +24,7 @@ const globalCss: Record<string, SystemStyleObject> = {
   },
   ...recaptcha,
   ...scrollbar,
-  // ...addressEntity(props),
+  ...addressEntity,
 };
 
 export default globalCss;
