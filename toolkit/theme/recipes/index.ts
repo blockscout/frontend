@@ -1,3 +1,4 @@
+import { recipe as accordion } from './accordion.recipe';
 import { recipe as alert } from './alert.recipe';
 import { recipe as badge } from './badge.recipe';
 import { recipe as button } from './button.recipe';
@@ -34,6 +35,7 @@ export const recipes = {
 };
 
 export const slotRecipes = {
+  accordion,
   alert,
   dialog,
   drawer,

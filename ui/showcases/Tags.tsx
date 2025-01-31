@@ -5,6 +5,7 @@ import { Tag } from 'toolkit/chakra/tag';
 import { Section, Container, SectionHeader, SamplesStack, Sample } from './parts';
 
 const TagsShowcase = () => {
+  // TODO @tom2drum CELO tags, public tags, filtered tags
   return (
     <Container value="tags">
       <Section>

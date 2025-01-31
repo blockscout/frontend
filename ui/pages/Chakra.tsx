@@ -21,6 +21,7 @@ import { toaster } from 'toolkit/chakra/toaster';
 import ContentLoader from 'ui/shared/ContentLoader';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import AccordionsShowcase from 'ui/showcases/Accordion';
 import AlertsShowcase from 'ui/showcases/Alerts';
 import BadgesShowcase from 'ui/showcases/Badges';
 import ButtonShowcase from 'ui/showcases/Button';
@@ -53,6 +54,7 @@ const ChakraShowcases = () => {
 
       <TabsRoot defaultValue="alerts">
         <TabsList flexWrap="wrap">
+          <TabsTrigger value="accordions">Accordions</TabsTrigger>
           <TabsTrigger value="alerts">Alerts</TabsTrigger>
           <TabsTrigger value="badges">Badges</TabsTrigger>
           <TabsTrigger value="buttons">Buttons</TabsTrigger>
@@ -63,6 +65,7 @@ const ChakraShowcases = () => {
           <TabsTrigger value="tooltips">Tooltips</TabsTrigger>
           <TabsTrigger value="unsorted">Unsorted</TabsTrigger>
         </TabsList>
+        <AccordionsShowcase/>
         <AlertsShowcase/>
         <BadgesShowcase/>
         <ButtonShowcase/>
