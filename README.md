@@ -2,7 +2,7 @@
 
 <p align="center">
     <span>Frontend application for </span>
-    <a href="https://lux.network">Lux Network</a>
+    <a href="https://github.com/luxfi/explore/blob/master/README.md">Lux Explorer</a>
     <span> blockchain explorer</span>
 </p>
 
@@ -18,6 +18,10 @@ docker run -p 3000:3000 --env-file <path-to-your-env-file> ghcr.io/luxfi/explore
 
 Alternatively, you can build your own docker image and run your app from that. Please follow this [guide](./docs/CUSTOM_BUILD.md).
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c463e20f1 (Update luxfi links)
 ## Contributing
 
 See our [Contribution guide](./docs/CONTRIBUTING.md) for pull request protocol. We expect contributors to follow our [code of conduct](./CODE_OF_CONDUCT.md) when submitting code or comments.
@@ -26,8 +30,6 @@ See our [Contribution guide](./docs/CONTRIBUTING.md) for pull request protocol. 
 - [App ENVs list](./docs/ENVS.md)
 - [Contribution guide](./docs/CONTRIBUTING.md)
 - [Making a custom build](./docs/CUSTOM_BUILD.md)
-- [Frontend migration guide](https://docs.lux.network)
-- [Manual deployment guide with backend and microservices](https://docs.lux.network)
 
 ## License
 

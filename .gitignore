@@ -5,7 +5,7 @@
 /node_modules_linux
 /.pnp
 .pnp.js
-.orig
+*.orig
 
 # testing
 /coverage
