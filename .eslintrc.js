@@ -29,7 +29,6 @@ module.exports = {
     'react',
     'regexp',
     '@typescript-eslint',
-    'react-hooks',
     'jsx-a11y',
     'eslint-plugin-import-helpers',
     'jest',
