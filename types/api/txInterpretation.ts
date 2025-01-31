@@ -19,9 +19,10 @@ export type TxInterpretationVariable =
   TxInterpretationVariableToken |
   TxInterpretationVariableAddress |
   TxInterpretationVariableDomain |
-  TxInterpretationVariableMethod;
+  TxInterpretationVariableMethod |
+  TxInterpretationVariableDex;
 
-export type TxInterpretationVariableType = 'string' | 'currency' | 'timestamp' | 'token' | 'address' | 'domain' | 'method';
+export type TxInterpretationVariableType = 'string' | 'currency' | 'timestamp' | 'token' | 'address' | 'domain' | 'method' | 'dexTag';
 
 export type TxInterpretationVariableString = {
   type: 'string';
@@ -56,4 +57,15 @@ export type TxInterpretationVariableDomain = {
 export type TxInterpretationVariableMethod = {
   type: 'method';
   value: string;
+};
+
+export type TxInterpretationVariableDex = {
+  type: 'dexTag';
+  value: {
+    name: string;
+    icon: string;
+    url: string;
+    app_id?: string;
+    app_icon?: string;
+  };
 };
