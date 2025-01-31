@@ -16,13 +16,23 @@ export type TxInterpretationVariable =
   TxInterpretationVariableString |
   TxInterpretationVariableCurrency |
   TxInterpretationVariableTimestamp |
+  TxInterpretationVariableExternalLink |
   TxInterpretationVariableToken |
   TxInterpretationVariableAddress |
   TxInterpretationVariableDomain |
   TxInterpretationVariableMethod |
   TxInterpretationVariableDex;
 
-export type TxInterpretationVariableType = 'string' | 'currency' | 'timestamp' | 'token' | 'address' | 'domain' | 'method' | 'dexTag';
+export type TxInterpretationVariableType =
+  'string' |
+  'currency' |
+  'timestamp' |
+  'external_link' |
+  'token' |
+  'address' |
+  'domain' |
+  'method' |
+  'dexTag';
 
 export type TxInterpretationVariableString = {
   type: 'string';
@@ -37,6 +47,14 @@ export type TxInterpretationVariableCurrency = {
 export type TxInterpretationVariableTimestamp = {
   type: 'timestamp';
   value: string;
+};
+
+export type TxInterpretationVariableExternalLink = {
+  type: 'external_link';
+  value: {
+    name: string;
+    link: string;
+  };
 };
 
 export type TxInterpretationVariableToken = {
