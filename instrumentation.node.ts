@@ -22,7 +22,7 @@ const sdk = new NodeSDK({
     [SemanticResourceAttributes.SERVICE_VERSION]: process.env.NEXT_PUBLIC_GIT_TAG || process.env.NEXT_PUBLIC_GIT_COMMIT_SHA || 'unknown_version',
     [SemanticResourceAttributes.SERVICE_INSTANCE_ID]:
       process.env.NEXT_PUBLIC_APP_INSTANCE ||
-      process.env.NEXT_PUBLIC_APP_HOST?.replace('.blockscout.com', '').replaceAll('-', '_') ||
+      process.env.NEXT_PUBLIC_APP_HOST?.replace('.lux.network', '').replaceAll('-', '_') ||
       'unknown_app',
   }),
   // @ts-ignore
