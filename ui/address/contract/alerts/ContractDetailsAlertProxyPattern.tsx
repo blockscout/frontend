@@ -9,11 +9,11 @@ interface Props {
   type: NonNullable<SmartContractProxyType>;
 }
 
-const PROXY_TYPES: Record<NonNullable<SmartContractProxyType>, {
+const PROXY_TYPES: Partial<Record<NonNullable<SmartContractProxyType>, {
   name: string;
   link?: string;
   description?: string;
-}> = {
+}>> = {
   eip1167: {
     name: 'EIP-1167',
     link: 'https://eips.ethereum.org/EIPS/eip-1167',
