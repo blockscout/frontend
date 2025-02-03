@@ -10,7 +10,7 @@ import * as cookies from 'lib/cookies';
 import sortTxs from './sortTxs';
 
 export const SORT_OPTIONS: Array<SelectOption<TransactionsSortingValue>> = [
-  { label: 'Default', value: undefined },
+  { label: 'Default', value: 'default' },
   { label: 'Value ascending', value: 'value-asc' },
   { label: 'Value descending', value: 'value-desc' },
   { label: 'Fee ascending', value: 'fee-asc' },
@@ -18,7 +18,7 @@ export const SORT_OPTIONS: Array<SelectOption<TransactionsSortingValue>> = [
   { label: 'Block number ascending', value: 'block_number-asc' },
 ];
 
-type SortingValue = TransactionsSortingValue | undefined;
+type SortingValue = TransactionsSortingValue;
 
 type HookResult = UseQueryResult<TxsResponse, ResourceError<unknown>> & {
   sorting: SortingValue;
@@ -29,11 +29,11 @@ export default function useTxsSort(
   queryResult: UseQueryResult<TxsResponse, ResourceError<unknown>>,
 ): HookResult {
 
-  const [ sorting, setSorting ] = React.useState<SortingValue>(cookies.get(cookies.NAMES.TXS_SORT) as SortingValue);
+  const [ sorting, setSorting ] = React.useState<SortingValue>((cookies.get(cookies.NAMES.TXS_SORT) as SortingValue | undefined) ?? 'default');
 
   const setSortByValue = React.useCallback((value: SortingValue) => {
     setSorting((prevVal: SortingValue) => {
-      let newVal: SortingValue = undefined;
+      let newVal: SortingValue = 'default';
       if (value !== prevVal) {
         newVal = value as SortingValue;
       }

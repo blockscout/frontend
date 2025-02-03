@@ -4,25 +4,43 @@ import type { CollectionItem } from '@chakra-ui/react';
 import { Select as ChakraSelect, Portal } from '@chakra-ui/react';
 import * as React from 'react';
 
-import { CloseButton } from './close-button';
+import IconSvg from 'ui/shared/IconSvg';
 
-interface SelectTriggerProps extends ChakraSelect.ControlProps {
+import { CloseButton } from './close-button';
+import { Skeleton } from './skeleton';
+
+export interface SelectControlProps extends ChakraSelect.ControlProps {
   clearable?: boolean;
+  noIndicator?: boolean;
+  triggerProps?: ChakraSelect.TriggerProps;
+  loading?: boolean;
 }
 
-export const SelectTrigger = React.forwardRef<
+export const SelectControl = React.forwardRef<
   HTMLButtonElement,
-  SelectTriggerProps
->(function SelectTrigger(props, ref) {
-  const { children, clearable, ...rest } = props;
+  SelectControlProps
+>(function SelectControl(props, ref) {
+  const { children, clearable, noIndicator, triggerProps, loading, ...rest } = props;
   return (
-    <ChakraSelect.Control { ...rest }>
-      <ChakraSelect.Trigger ref={ ref }>{ children }</ChakraSelect.Trigger>
-      <ChakraSelect.IndicatorGroup>
-        { clearable && <SelectClearTrigger/> }
-        <ChakraSelect.Indicator/>
-      </ChakraSelect.IndicatorGroup>
-    </ChakraSelect.Control>
+    <Skeleton loading={ loading } asChild>
+      <ChakraSelect.Control { ...rest } className="group">
+        <ChakraSelect.Trigger ref={ ref } { ...triggerProps }>{ children }</ChakraSelect.Trigger>
+        { (!noIndicator || clearable) && (
+          <ChakraSelect.IndicatorGroup>
+            { clearable && <SelectClearTrigger/> }
+            { !noIndicator && (
+              <ChakraSelect.Indicator
+                transform="rotate(-90deg)"
+                _open={{ transform: 'rotate(90deg)' }}
+                flexShrink={ 0 }
+              >
+                <IconSvg name="arrows/east-mini"/>
+              </ChakraSelect.Indicator>
+            ) }
+          </ChakraSelect.IndicatorGroup>
+        ) }
+      </ChakraSelect.Control>
+    </Skeleton>
   );
 });
 
@@ -68,8 +86,10 @@ export const SelectItem = React.forwardRef<
   const { item, children, ...rest } = props;
   return (
     <ChakraSelect.Item key={ item.value } item={ item } { ...rest } ref={ ref }>
+      <ChakraSelect.ItemIndicator asChild>
+        <IconSvg name="check" boxSize={ 5 } flexShrink={ 0 }/>
+      </ChakraSelect.ItemIndicator>
       { children }
-      <ChakraSelect.ItemIndicator/>
     </ChakraSelect.Item>
   );
 });
@@ -100,6 +120,8 @@ export const SelectValueText = React.forwardRef<
   );
 });
 
+export interface SelectRootProps extends ChakraSelect.RootProps {}
+
 export const SelectRoot = React.forwardRef<
   HTMLDivElement,
   ChakraSelect.RootProps
@@ -108,7 +130,7 @@ export const SelectRoot = React.forwardRef<
     <ChakraSelect.Root
       { ...props }
       ref={ ref }
-      positioning={{ sameWidth: true, ...props.positioning }}
+      positioning={{ sameWidth: false, ...props.positioning }}
     >
       { props.asChild ? (
         props.children

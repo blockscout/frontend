@@ -191,7 +191,7 @@ export interface TransactionsSorting {
 
 export type TransactionsSortingField = TransactionsSorting['sort'];
 
-export type TransactionsSortingValue = `${ TransactionsSortingField }-${ TransactionsSorting['order'] }`;
+export type TransactionsSortingValue = `${ TransactionsSortingField }-${ TransactionsSorting['order'] }` | 'default';
 
 export type ScrollTransactionData = {
   l1_fee: string;

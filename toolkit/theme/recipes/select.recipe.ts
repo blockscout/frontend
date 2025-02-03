@@ -13,23 +13,19 @@ export const recipe = defineSlotRecipe({
     trigger: {
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-start',
       width: 'full',
       minH: 'var(--select-trigger-height)',
-      px: 'var(--select-trigger-padding-x)',
+      pr: 'var(--select-trigger-padding-right)',
+      pl: 'var(--select-trigger-padding-left)',
       borderRadius: 'base',
       userSelect: 'none',
       textAlign: 'start',
-      fontWeight: '500',
+      fontWeight: 'semibold',
+      cursor: 'pointer',
       focusVisibleRing: 'none',
-      _placeholderShown: {
-        color: 'gray.500',
-      },
       _disabled: {
         layerStyle: 'disabled',
-      },
-      _invalid: {
-        borderColor: 'select.border.error',
       },
     },
     indicatorGroup: {
@@ -40,7 +36,7 @@ export const recipe = defineSlotRecipe({
       right: '0',
       top: '0',
       bottom: '0',
-      px: 'var(--select-trigger-padding-x)',
+      px: '0',
       pointerEvents: 'none',
     },
     indicator: {
@@ -48,17 +44,27 @@ export const recipe = defineSlotRecipe({
       alignItems: 'center',
       justifyContent: 'center',
       color: 'inherit',
+      _groupHover: {
+        color: 'link.primary.hover',
+      },
+      _open: {
+        color: 'link.primary.hover',
+      },
     },
     content: {
       background: 'popover.bg',
       display: 'flex',
       flexDirection: 'column',
       zIndex: 'dropdown',
-      borderRadius: 'base',
+      borderRadius: 'md',
+      borderWidth: '0',
       outline: 0,
+      boxShadow: 'popover',
+      boxShadowColor: 'colors.popover.shadow',
       maxH: '96',
       overflowY: 'auto',
-      boxShadow: 'md',
+      width: 'max-content',
+      minWidth: '150px',
       _open: {
         animationStyle: 'slide-fade-in',
         animationDuration: 'fast',
@@ -74,14 +80,11 @@ export const recipe = defineSlotRecipe({
       display: 'flex',
       alignItems: 'center',
       gap: '2',
-      cursor: 'option',
-      justifyContent: 'space-between',
+      cursor: 'pointer',
+      justifyContent: 'flex-start',
       flex: '1',
       textAlign: 'start',
-      borderRadius: 'base',
-      _highlighted: {
-        bg: 'bg.emphasized/60',
-      },
+      borderRadius: 'none',
       _disabled: {
         pointerEvents: 'none',
         opacity: '0.5',
@@ -89,6 +92,9 @@ export const recipe = defineSlotRecipe({
       _icon: {
         width: '4',
         height: '4',
+      },
+      _highlighted: {
+        bg: 'select.item.bg.highlighted',
       },
     },
     control: {
@@ -122,76 +128,110 @@ export const recipe = defineSlotRecipe({
     variant: {
       outline: {
         trigger: {
-          bg: 'transparent',
           borderWidth: '2px',
-          borderColor: 'select.border',
+          color: 'select.trigger.outline.fg',
+          bgColor: 'transparent',
+          borderColor: 'select.trigger.outline.border',
           _expanded: {
-            borderColor: 'select.border.hover',
+            color: 'link.primary.hover',
+            borderColor: 'link.primary.hover',
           },
           _hover: {
-            borderColor: 'select.border.hover',
+            color: 'link.primary.hover',
+            borderColor: 'link.primary.hover',
           },
           _focusVisible: {
-            borderColor: 'select.border.hover',
+            borderColor: 'link.primary.hover',
             focusVisibleRing: 'none',
+          },
+          _invalid: {
+            borderColor: 'border.error',
+          },
+        },
+      },
+      filter: {
+        trigger: {
+          borderWidth: '2px',
+          color: 'select.trigger.filter.fg.selected',
+          bgColor: 'select.trigger.filter.border.selected',
+          borderColor: 'select.trigger.filter.border.selected',
+          _expanded: {
+            color: 'link.primary.hover',
+            borderColor: 'link.primary.hover',
+          },
+          _hover: {
+            color: 'select.trigger.filter.fg.selected',
+            borderColor: 'select.trigger.filter.border.selected',
+          },
+          _focusVisible: {
+            borderColor: 'link.primary.hover',
+            focusVisibleRing: 'none',
+          },
+          _placeholderShown: {
+            color: 'select.trigger.filter.fg',
+            borderColor: 'select.trigger.filter.border',
+            bgColor: 'transparent',
+            _hover: {
+              color: 'link.primary.hover',
+              borderColor: 'link.primary.hover',
+            },
+          },
+        },
+      },
+      sort: {
+        trigger: {
+          borderWidth: '2px',
+          borderColor: 'transparent',
+          bgColor: 'transparent',
+          _hover: {
+            color: 'link.primary.hover',
+            borderColor: 'link.primary.hover',
+          },
+          _open: {
+            bg: 'button.dropdown.border.selected',
+            color: 'button.dropdown.fg.selected',
+            borderColor: 'button.dropdown.border.selected',
+            _hover: {
+              bg: 'button.dropdown.border.selected',
+              color: 'button.dropdown.fg.selected',
+              borderColor: 'button.dropdown.border.selected',
+            },
           },
         },
       },
     },
 
     size: {
-      xs: {
-        root: {
-          '--select-trigger-height': 'sizes.8',
-          '--select-trigger-padding-x': 'spacing.2',
-        },
-        content: {
-          p: '1',
-          gap: '1',
-          textStyle: 'xs',
-        },
-        trigger: {
-          textStyle: 'xs',
-          gap: '1',
-        },
-        item: {
-          py: '1',
-          px: '2',
-        },
-        itemGroupLabel: {
-          py: '1',
-          px: '2',
-        },
-        indicator: {
-          _icon: {
-            width: '3.5',
-            height: '3.5',
-          },
-        },
-      },
-
       sm: {
         root: {
-          '--select-trigger-height': 'sizes.9',
-          '--select-trigger-padding-x': 'spacing.2.5',
+          '--select-trigger-height': 'sizes.8',
+          '--select-trigger-padding-right': 'spacing.8',
+          '--select-trigger-padding-left': 'spacing.2',
         },
         content: {
-          p: '1',
-          textStyle: 'sm',
+          px: '0',
+          py: '2',
+          textStyle: 'md',
         },
         trigger: {
           textStyle: 'sm',
           gap: '1',
         },
         indicator: {
-          _icon: {
-            width: '4',
-            height: '4',
-          },
+          width: '5',
+          height: '5',
+        },
+        indicatorGroup: {
+          pr: '2',
+          pl: '1',
         },
         item: {
-          py: '1',
-          px: '1.5',
+          py: '2',
+          pr: '4',
+          pl: '44px',
+          _selected: {
+            px: '4',
+          },
         },
         itemGroup: {
           mt: '1',
@@ -201,81 +241,11 @@ export const recipe = defineSlotRecipe({
           px: '1.5',
         },
       },
-
-      md: {
-        root: {
-          '--select-trigger-height': 'sizes.10',
-          '--select-trigger-padding-x': 'spacing.3',
-        },
-        content: {
-          p: '1',
-          textStyle: 'sm',
-        },
-        itemGroup: {
-          mt: '1.5',
-        },
-        item: {
-          py: '1.5',
-          px: '2',
-        },
-        itemIndicator: {
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-        itemGroupLabel: {
-          py: '1.5',
-          px: '2',
-        },
-        trigger: {
-          textStyle: 'sm',
-          gap: '2',
-        },
-        indicator: {
-          _icon: {
-            width: '4',
-            height: '4',
-          },
-        },
-      },
-
-      lg: {
-        root: {
-          '--select-trigger-height': 'sizes.12',
-          '--select-trigger-padding-x': 'spacing.4',
-        },
-        content: {
-          p: '1.5',
-          textStyle: 'md',
-        },
-        itemGroup: {
-          mt: '2',
-        },
-        item: {
-          py: '2',
-          px: '3',
-        },
-        itemGroupLabel: {
-          py: '2',
-          px: '3',
-        },
-        trigger: {
-          textStyle: 'md',
-          py: '3',
-          gap: '2',
-        },
-        indicator: {
-          _icon: {
-            width: '5',
-            height: '5',
-          },
-        },
-      },
     },
   },
 
   defaultVariants: {
-    size: 'md',
+    size: 'sm',
     variant: 'outline',
   },
 });

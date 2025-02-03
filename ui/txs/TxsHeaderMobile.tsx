@@ -1,4 +1,4 @@
-import { HStack, chakra } from '@chakra-ui/react';
+import { HStack, chakra, createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TransactionsSortingValue } from 'types/api/transaction';
@@ -15,8 +15,8 @@ import { SORT_OPTIONS } from './useTxsSort';
 // import TxsFilters from './TxsFilters';
 
 type Props = {
-  sorting: TransactionsSortingValue | undefined;
-  setSorting: (val: TransactionsSortingValue | undefined) => void;
+  sorting: TransactionsSortingValue;
+  setSorting: (val: TransactionsSortingValue) => void;
   paginationProps: PaginationParams;
   className?: string;
   showPagination?: boolean;
@@ -24,19 +24,26 @@ type Props = {
   linkSlot?: React.ReactNode;
 };
 
+const collection = createListCollection({
+  items: SORT_OPTIONS,
+});
+
 const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps, className, showPagination = true, linkSlot }: Props) => {
+  const handleSortValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setSorting(value[0] as TransactionsSortingValue);
+  }, [ setSorting ]);
+
   return (
     <ActionBar className={ className }>
       <HStack>
         { filterComponent }
-        { /* TODO @tom2drum fix sort select */ }
-        { /* <Sort
+        <Sort
           name="transactions_sorting"
-          defaultValue={ sorting }
-          options={ SORT_OPTIONS }
-          onChange={ setSorting }
+          defaultValue={ [ sorting ] }
+          collection={ collection }
+          onValueChange={ handleSortValueChange }
           isLoading={ paginationProps.isLoading }
-        /> */ }
+        />
         { /* api is not implemented */ }
         { /* <FilterInput
           // eslint-disable-next-line react/jsx-no-bind

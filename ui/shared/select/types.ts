@@ -1,4 +1,4 @@
 export interface SelectOption<Value extends string = string> {
-  value: Value | undefined;
+  value: Value;
   label: string;
 }

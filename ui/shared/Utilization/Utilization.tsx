@@ -13,13 +13,13 @@ interface Props extends Omit<HTMLChakraProps<'div'>, 'direction'> {
 
 const WIDTH = 50;
 
-const Utilization = ({ value, colorScheme = 'green', isLoading, ...rest }: Props) => {
+const Utilization = ({ value, colorScheme = 'green', isLoading, ...rest }: Props, ref: React.Ref<HTMLDivElement>) => {
   const valueString = (clamp(value * 100 || 0, 0, 100)).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '%';
   const colorGrayScheme = { _light: 'gray.500', _dark: 'gray.400' };
   const color = colorScheme === 'gray' ? colorGrayScheme : 'green.500';
 
   return (
-    <Flex alignItems="center" columnGap={ 2 } { ...rest }>
+    <Flex alignItems="center" columnGap={ 2 } { ...rest } ref={ ref }>
       <Skeleton loading={ isLoading } w={ `${ WIDTH }px` } h="4px" borderRadius="full" overflow="hidden">
         <Box bg={{ _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' }} h="100%">
           <Box bg={ color } w={ valueString } h="100%"/>
@@ -34,4 +34,4 @@ const Utilization = ({ value, colorScheme = 'green', isLoading, ...rest }: Props
   );
 };
 
-export default React.memo(Utilization);
+export default React.memo(React.forwardRef(Utilization));

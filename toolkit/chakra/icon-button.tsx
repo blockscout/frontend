@@ -16,6 +16,7 @@ export const IconButton = React.forwardRef<HTMLDivElement, IconButtonProps>(
       <Skeleton loading={ loading } ref={ ref } asChild>
         <Button
           display="inline-flex"
+          justifyContent="center"
           px="0"
           py="0"
           { ...(size ? { size } : { height: 'auto', minW: 'auto' }) }

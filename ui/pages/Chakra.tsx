@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-no-bind */
-import { createListCollection, HStack, Spinner, VStack } from '@chakra-ui/react';
+import { HStack, Spinner, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { Button } from 'toolkit/chakra/button';
@@ -12,7 +12,6 @@ import { InputGroup } from 'toolkit/chakra/input-group';
 import { NativeSelectField, NativeSelectRoot } from 'toolkit/chakra/native-select';
 import { PinInput } from 'toolkit/chakra/pin-input';
 import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
-import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
@@ -27,6 +26,7 @@ import BadgesShowcase from 'ui/showcases/Badges';
 import ButtonShowcase from 'ui/showcases/Button';
 import LinksShowcase from 'ui/showcases/Links';
 import PaginationShowcase from 'ui/showcases/Pagination';
+import SelectsShowcase from 'ui/showcases/Select';
 import TabsShowcase from 'ui/showcases/Tabs';
 import TagsShowcase from 'ui/showcases/Tags';
 import TooltipsShowcase from 'ui/showcases/Tooltip';
@@ -35,15 +35,6 @@ const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do ei
 
 const ChakraShowcases = () => {
   const colorMode = useColorMode();
-
-  const frameworks = createListCollection({
-    items: [
-      { label: 'React.js', value: 'react' },
-      { label: 'Vue.js', value: 'vue' },
-      { label: 'Angular', value: 'angular' },
-      { label: 'Svelte', value: 'svelte' },
-    ],
-  });
 
   return (
     <>
@@ -60,6 +51,7 @@ const ChakraShowcases = () => {
           <TabsTrigger value="buttons">Buttons</TabsTrigger>
           <TabsTrigger value="links">Links</TabsTrigger>
           <TabsTrigger value="pagination">Pagination</TabsTrigger>
+          <TabsTrigger value="selects">Selects</TabsTrigger>
           <TabsTrigger value="tabs">Tabs</TabsTrigger>
           <TabsTrigger value="tags">Tags</TabsTrigger>
           <TabsTrigger value="tooltips">Tooltips</TabsTrigger>
@@ -72,6 +64,7 @@ const ChakraShowcases = () => {
         <LinksShowcase/>
         <TabsShowcase/>
         <PaginationShowcase/>
+        <SelectsShowcase/>
         <TooltipsShowcase/>
         <TagsShowcase/>
 
@@ -194,18 +187,6 @@ const ChakraShowcases = () => {
             <section>
               <Heading textStyle="heading.md" mb={ 2 }>Select</Heading>
               <HStack gap={ 4 } whiteSpace="nowrap" flexWrap="wrap">
-                <SelectRoot collection={ frameworks }>
-                  <SelectTrigger w="350px">
-                    <SelectValueText placeholder="Select framework"/>
-                  </SelectTrigger>
-                  <SelectContent>
-                    { frameworks.items.map((framework) => (
-                      <SelectItem item={ framework } key={ framework.value }>
-                        { framework.label }
-                      </SelectItem>
-                    )) }
-                  </SelectContent>
-                </SelectRoot>
                 <NativeSelectRoot w="350px">
                   <NativeSelectField>
                     <option value="1">Option 1</option>

@@ -16,10 +16,10 @@ import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsList from './TxsList';
 import TxsTable from './TxsTable';
 
-const SORT_SEQUENCE: Record<TransactionsSortingField, Array<TransactionsSortingValue | undefined>> = {
-  value: [ 'value-desc', 'value-asc', undefined ],
-  fee: [ 'fee-desc', 'fee-asc', undefined ],
-  block_number: [ 'block_number-asc', undefined ],
+const SORT_SEQUENCE: Record<TransactionsSortingField, Array<TransactionsSortingValue>> = {
+  value: [ 'value-desc', 'value-asc', 'default' ],
+  fee: [ 'fee-desc', 'fee-asc', 'default' ],
+  block_number: [ 'block_number-asc', 'default' ],
 };
 
 type Props = {
@@ -37,8 +37,8 @@ type Props = {
   items?: Array<Transaction>;
   isPlaceholderData: boolean;
   isError: boolean;
-  setSorting: (value: TransactionsSortingValue | undefined) => void;
-  sort: TransactionsSortingValue | undefined;
+  setSorting: (value: TransactionsSortingValue) => void;
+  sort: TransactionsSortingValue;
 };
 
 const TxsContent = ({

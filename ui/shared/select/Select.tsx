@@ -24,6 +24,7 @@ export interface Props<Value extends string> {
   children?: (props: InjectedProps<Value>) => React.ReactNode;
 }
 
+// TODO @tom2drum remove this component
 const Select = <Value extends string>({ className, isLoading, options, name, defaultValue, onChange, children }: Props<Value>) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 

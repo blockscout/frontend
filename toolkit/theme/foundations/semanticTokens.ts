@@ -238,15 +238,26 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       },
     },
     select: {
-      fg: {
-        DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
-        hover: { value: '{colors.blue.400}' },
-        error: { value: '{colors.red.500}' },
+      trigger: {
+        outline: {
+          fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+          border: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.600}' } },
+        },
+        filter: {
+          fg: {
+            DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+            selected: { value: { _light: '{colors.blue.600}', _dark: '{colors.gray.50}' } },
+          },
+          border: {
+            DEFAULT: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.600}' } },
+            selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.600}' } },
+          },
+        },
       },
-      border: {
-        DEFAULT: { value: { _light: '{colors.gray.300}', _dark: '{colors.gray.600}' } },
-        hover: { value: '{colors.blue.400}' },
-        error: { value: '{colors.red.500}' },
+      item: {
+        bg: {
+          highlighted: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
+        },
       },
     },
     spinner: {

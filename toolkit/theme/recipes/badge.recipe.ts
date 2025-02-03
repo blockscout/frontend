@@ -10,6 +10,7 @@ export const recipe = defineRecipe({
     width: 'fit-content',
     maxWidth: '100%',
     whiteSpace: 'nowrap',
+    fontVariantNumeric: 'normal',
     userSelect: 'none',
     _loading: {
       borderRadius: 'sm',
