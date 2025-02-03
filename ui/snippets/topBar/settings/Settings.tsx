@@ -5,7 +5,7 @@ import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 
 import SettingsAddressFormat from './SettingsAddressFormat';
-import SettingsColorTheme from './SettingsColorTheme';
+// import SettingsColorTheme from './SettingsColorTheme';
 import SettingsIdentIcon from './SettingsIdentIcon';
 
 const Settings = () => {
@@ -26,7 +26,6 @@ const Settings = () => {
       </PopoverTrigger>
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">
         <PopoverBody boxShadow="2xl" p={ 4 }>
-          <SettingsColorTheme onSelect={ onClose }/>
           <Box borderColor="divider" borderWidth="1px" my={ 3 }/>
           <SettingsIdentIcon/>
           <SettingsAddressFormat/>
