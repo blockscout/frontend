@@ -7,7 +7,7 @@ import type { Screen, ScreenSuccess } from './types';
 
 import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
-import * as cookies from 'lib/cookies';
+import { useRewardsContext } from 'lib/contexts/rewards';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
 import IconSvg from 'ui/shared/IconSvg';
@@ -39,6 +39,8 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   const [ steps, setSteps ] = React.useState<Array<Screen>>([ initialScreen ]);
   const [ isSuccess, setIsSuccess ] = React.useState(false);
   const [ rewardsApiToken, setRewardsApiToken ] = React.useState<string | undefined>(undefined);
+
+  const { saveApiToken } = useRewardsContext();
 
   const router = useRouter();
   const csrfQuery = useGetCsrfToken();
@@ -92,11 +94,11 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
 
     if ('rewardsToken' in screen && screen.rewardsToken) {
       setRewardsApiToken(screen.rewardsToken);
-      cookies.set(cookies.NAMES.REWARDS_API_TOKEN, screen.rewardsToken, { expires: 365 });
+      saveApiToken(screen.rewardsToken);
     }
 
     onNextStep(screen);
-  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, csrfQuery, queryClient ]);
+  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, csrfQuery, queryClient, saveApiToken ]);
 
   const onModalClose = React.useCallback(() => {
     onClose(isSuccess, rewardsApiToken);

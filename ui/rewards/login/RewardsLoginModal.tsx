@@ -23,7 +23,7 @@ const MIXPANEL_CONFIG = {
 const RewardsLoginModal = () => {
   const { isOpen: isWalletModalOpen } = useWallet({ source: 'Merits' });
   const isMobile = useIsMobile();
-  const { isLoginModalOpen, closeLoginModal, saveApiToken } = useRewardsContext();
+  const { isLoginModalOpen, closeLoginModal } = useRewardsContext();
 
   const [ isLoginStep, setIsLoginStep ] = useBoolean(true);
   const [ isReferral, setIsReferral ] = useBoolean(false);
@@ -51,12 +51,11 @@ const RewardsLoginModal = () => {
 
   const handleAuthModalClose = useCallback((isSuccess?: boolean, rewardsApiToken?: string) => {
     if (isSuccess && rewardsApiToken) {
-      saveApiToken(rewardsApiToken);
       goNext(false);
     }
     setAuthModalInitialScreen(undefined);
     authModal.onClose();
-  }, [ authModal, setAuthModalInitialScreen, goNext, saveApiToken ]);
+  }, [ authModal, setAuthModalInitialScreen, goNext ]);
 
   return (
     <>
