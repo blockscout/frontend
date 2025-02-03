@@ -16,7 +16,7 @@ const AddressImplementations = ({ data, isLoading, proxyType }: Props) => {
   const hasManyItems = data.length > 1;
   const [ hasScroll, setHasScroll ] = React.useState(false);
 
-  const text = proxyType === 'eip7702' ? 'Delegate address' : `Implementation${ hasManyItems ? 's' : '' }`;
+  const text = proxyType === 'eip7702' ? 'Delegated to' : `Implementation${ hasManyItems ? 's' : '' }`;
   const hint = proxyType === 'eip7702' ?
     'Account\'s executable code address' :
     `Implementation${ hasManyItems ? 's' : '' } address${ hasManyItems ? 'es' : '' } of the proxy contract`;
