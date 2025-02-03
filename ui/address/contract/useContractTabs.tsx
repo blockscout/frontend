@@ -30,7 +30,7 @@ interface ReturnType {
   isLoading: boolean;
 }
 
-export default function useContractTabs(data: Address | undefined, isPlaceholderData: boolean, hasMudTab?: boolean): ReturnType {
+export default function useContractTabs(data: Address | undefined, isPlaceholderData: boolean, hasMudTab: boolean = false): ReturnType {
   const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
 
   const router = useRouter();
