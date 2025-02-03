@@ -48,16 +48,6 @@ const PoolsTableItem = ({
       </Td>
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading }>
-          ${ Number(item.fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
-        </Skeleton>
-      </Td>
-      <Td isNumeric>
-        <Skeleton isLoaded={ !isLoading }>
-          ${ Number(item.market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
-        </Skeleton>
-      </Td>
-      <Td isNumeric>
-        <Skeleton isLoaded={ !isLoading }>
           ${ Number(item.liquidity).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
       </Td>
