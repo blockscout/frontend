@@ -1,9 +1,7 @@
 import {
   Box,
   Flex,
-  Grid,
   Skeleton,
-  Tooltip,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -15,7 +13,6 @@ import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import IconSvg from 'ui/shared/IconSvg';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = {
@@ -33,9 +30,9 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
       exit={{ display: 'none' }}
       transitionDuration="normal"
       transitionTimingFunction="linear"
-      borderRadius="md"
+      borderRadius="12px"
       border="1px solid"
-      borderColor="divider"
+      borderColor="grey.30"
       p={ 3 }
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
@@ -44,20 +41,16 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
           number={ block.height }
           tailLength={ 2 }
           fontSize="xl"
+          color="cyan"
           lineHeight={ 7 }
           fontWeight={ 500 }
           mr="auto"
         />
-        { block.celo?.is_epoch_block && (
-          <Tooltip label={ `Finalized epoch #${ block.celo.epoch_number }` }>
-            <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" ml={ 2 } isLoading={ isLoading } flexShrink={ 0 }/>
-          </Tooltip>
-        ) }
         <TimeAgoWithTooltip
           timestamp={ block.timestamp }
           enableIncrement={ !isLoading }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="grey.50"
           fontWeight={ 400 }
           display="inline-block"
           fontSize="sm"
@@ -65,30 +58,33 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
           ml={ 2 }
         />
       </Flex>
-      <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
-        <Skeleton isLoaded={ !isLoading }>Txn</Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ block.tx_count }</span></Skeleton>
+      <Flex gap={ 2 } direction="column" fontSize="sm">
+        <Flex justify="space-between">
+          <Skeleton isLoaded={ !isLoading } color="grey.50">Txn</Skeleton>
+          <Skeleton isLoaded={ !isLoading } color="white"><span>{ block.tx_count }</span></Skeleton>
+        </Flex>
 
         { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward && (
-          <>
-            <Skeleton isLoaded={ !isLoading }>Reward</Skeleton>
-            <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ totalReward.dp(10).toFixed() }</span></Skeleton>
-          </>
+          <Flex justify="space-between">
+            <Skeleton isLoaded={ !isLoading } color="grey.50">Reward</Skeleton>
+            <Skeleton isLoaded={ !isLoading } color="white"><span>{ totalReward.dp(10).toFixed() }</span></Skeleton>
+          </Flex>
         ) }
 
         { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.miner && (
-          <>
-            <Skeleton isLoaded={ !isLoading } textTransform="capitalize">{ getNetworkValidatorTitle() }</Skeleton>
+          <Flex justify="space-between">
+            <Skeleton isLoaded={ !isLoading } color="grey.50" textTransform="capitalize">{ getNetworkValidatorTitle() }</Skeleton>
             <AddressEntity
               address={ block.miner }
               isLoading={ isLoading }
+              color="white"
               noIcon
               noCopy
               truncation="constant"
             />
-          </>
+          </Flex>
         ) }
-      </Grid>
+      </Flex>
     </Box>
   );
 };

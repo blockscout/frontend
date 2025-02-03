@@ -1,5 +1,4 @@
 import {
-  useColorModeValue,
   chakra,
   Button,
   Skeleton,
@@ -16,9 +15,6 @@ interface Props {
 }
 
 const AdditionalInfoButton = ({ isOpen, onClick, className, isLoading }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
-
-  const infoBgColor = useColorModeValue('blue.50', 'gray.600');
-
   if (isLoading) {
     return <Skeleton boxSize={ 6 } borderRadius="sm" flexShrink={ 0 }/>;
   }
@@ -30,7 +26,6 @@ const AdditionalInfoButton = ({ isOpen, onClick, className, isLoading }: Props, 
       alignItems="center"
       className={ className }
       ref={ ref }
-      background={ isOpen ? infoBgColor : 'unset' }
       borderRadius="8px"
       w="24px"
       h="24px"
@@ -42,8 +37,8 @@ const AdditionalInfoButton = ({ isOpen, onClick, className, isLoading }: Props, 
       <IconSvg
         name="info"
         boxSize={ 5 }
-        color={ isOpen ? 'link_hovered' : 'icon_info' }
-        _hover={{ color: 'link_hovered' }}
+        color={ isOpen ? 'white' : 'white' }
+        _hover={{ color: 'white' }}
       />
     </Button>
   );

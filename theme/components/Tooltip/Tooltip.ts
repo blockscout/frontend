@@ -6,10 +6,10 @@ const $bg = cssVar('tooltip-bg');
 const $fg = cssVar('tooltip-fg');
 const $arrowBg = cssVar('popper-arrow-bg');
 
-const variantNav = defineStyle((props) => {
+const variantNav = defineStyle(() => {
   return {
-    bg: mode('blue.50', 'gray.800')(props),
-    color: 'blue.400',
+    bg: 'grey.10',
+    color: 'grey50',
     padding: '15px 12px',
     minWidth: '120px',
     borderRadius: 'base',

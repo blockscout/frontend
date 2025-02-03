@@ -18,14 +18,16 @@ const CHART_MARGIN = { bottom: 5, left: 10, right: 10, top: 5 };
 
 const ChainIndicatorChart = ({ data }: Props) => {
   const overlayRef = React.useRef<SVGRectElement>(null);
-  const lineColor = useToken('colors', 'blue.500');
+  const lineColor = useToken('colors', 'yellow.400');
+  const gradientStart = useToken('colors', 'orange.600');
+  const gradientEnd = useToken('colors', 'blackAlpha.900');
 
   const axesConfig = React.useMemo(() => {
     return {
       x: { ticks: 4 },
       y: { ticks: 3, nice: true, noLabel: true },
     };
-  }, [ ]);
+  }, []);
 
   const { rect, ref, axes, innerWidth, innerHeight, chartMargin } = useTimeChartController({
     data,
@@ -35,11 +37,19 @@ const ChainIndicatorChart = ({ data }: Props) => {
 
   return (
     <svg width="100%" height="100%" ref={ ref } cursor="pointer">
+      <defs>
+        <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={ gradientStart } stopOpacity="0.8"/>
+          <stop offset="100%" stopColor={ gradientEnd } stopOpacity="0.1"/>
+        </linearGradient>
+      </defs>
+
       <g transform={ `translate(${ chartMargin.left || 0 },${ chartMargin.top || 0 })` } opacity={ rect ? 1 : 0 }>
         <ChartArea
           data={ data[0].items }
           xScale={ axes.x.scale }
           yScale={ axes.y.scale }
+          fill="url(#chartGradient)"
         />
         <ChartLine
           data={ data[0].items }

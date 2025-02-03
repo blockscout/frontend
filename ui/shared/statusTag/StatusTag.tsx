@@ -3,8 +3,6 @@ import React from 'react';
 
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import Tag from 'ui/shared/chakra/Tag';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 
 export type StatusTagType = 'ok' | 'error' | 'pending';
 
@@ -17,31 +15,26 @@ export interface Props {
 }
 
 const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
-  let icon: IconName;
   let colorScheme;
 
   const capitalizedText = capitalizeFirstLetter(text);
 
   switch (type) {
     case 'ok':
-      icon = 'status/success';
       colorScheme = 'green';
       break;
     case 'error':
-      icon = 'status/error';
       colorScheme = 'red';
       break;
     case 'pending':
-      icon = 'status/pending';
       colorScheme = 'gray';
       break;
   }
 
   return (
     <Tooltip label={ errorText }>
-      <Tag colorScheme={ colorScheme } display="flex" isLoading={ isLoading } className={ className }>
-        <IconSvg boxSize={ 2.5 } name={ icon } mr={ 1 } flexShrink={ 0 }/>
-        <TagLabel display="block">{ capitalizedText }</TagLabel>
+      <Tag colorScheme={ colorScheme } display="flex" px="8px" isLoading={ isLoading } className={ className }>
+        <TagLabel display="block" fontSize="12px">{ capitalizedText }</TagLabel>
       </Tag>
     </Tooltip>
   );

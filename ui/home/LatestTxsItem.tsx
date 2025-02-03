@@ -47,8 +47,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
       display={{ base: 'none', lg: 'grid' }}
     >
       <Flex overflow="hidden" w="100%">
-        <TxAdditionalInfo tx={ tx } isLoading={ isLoading } my="3px"/>
-        <Box ml={ 3 } w="calc(100% - 40px)">
+        <Box w="calc(100% - 40px)">
           <HStack flexWrap="wrap" my="3px">
             <TxType types={ tx.tx_types } isLoading={ isLoading }/>
             <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
@@ -67,7 +66,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               timestamp={ tx.timestamp }
               enableIncrement
               isLoading={ isLoading }
-              color="text_secondary"
+              color="grey.50"
               fontWeight="400"
               fontSize="sm"
               flexShrink={ 0 }
@@ -82,19 +81,22 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         isLoading={ isLoading }
         mode="compact"
       />
-      <Flex flexDir="column">
-        { !config.UI.views.tx.hiddenFields?.value && (
-          <Skeleton isLoaded={ !isLoading } my="3px">
-            <Text as="span" whiteSpace="pre">Value </Text>
-            <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
-          </Skeleton>
-        ) }
-        { !config.UI.views.tx.hiddenFields?.tx_fee && (
-          <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre" my="3px">
-            <Text as="span">Fee </Text>
-            <TxFee tx={ tx } accuracy={ 5 } color="text_secondary"/>
-          </Skeleton>
-        ) }
+      <Flex gap="10px" justify="space-between">
+        <Flex flexDir="column" justify="space-between">
+          { !config.UI.views.tx.hiddenFields?.value && (
+            <Skeleton isLoaded={ !isLoading } my="3px">
+              <Text as="span" whiteSpace="pre" fontSize="14px">Value: </Text>
+              <Text as="span" fontSize="14px" variant="secondary" color="grey.50">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
+            </Skeleton>
+          ) }
+          { !config.UI.views.tx.hiddenFields?.tx_fee && (
+            <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre" my="3px">
+              <Text as="span" fontSize="14px">Fee: </Text>
+              <TxFee tx={ tx } accuracy={ 5 } color="grey.50"/>
+            </Skeleton>
+          ) }
+        </Flex>
+        <TxAdditionalInfo tx={ tx } isLoading={ isLoading } my="3px"/>
       </Flex>
     </Grid>
   );

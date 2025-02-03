@@ -1,4 +1,4 @@
-import { Flex, Divider, useColorModeValue, Box } from '@chakra-ui/react';
+import { Flex, Divider, useColorMode, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -6,14 +6,19 @@ import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
 import DeFiDropdown from './DeFiDropdown';
 import NetworkMenu from './NetworkMenu';
-import Settings from './settings/Settings';
 import TopBarStats from './TopBarStats';
 
 const TopBar = () => {
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
+  const { setColorMode } = useColorMode();
+
+  React.useEffect(() => {
+    window.document.documentElement.style.setProperty('--chakra-colors-black', '#000');
+    setColorMode('dark');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <Box bgColor={ bgColor }>
+    <Box bgColor="black">
       <Flex
         py={ 2 }
         px={ 12 }
@@ -38,7 +43,6 @@ const TopBar = () => {
             </Box>
           ) }
         </Flex>
-        <Settings/>
       </Flex>
     </Box>
   );

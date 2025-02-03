@@ -33,7 +33,6 @@ const getCspReportUrl = () => {
 const externalFontsDomains = (() => {
   try {
     return [
-      config.UI.fonts.heading?.url,
       config.UI.fonts.body?.url,
     ]
       .filter(Boolean)

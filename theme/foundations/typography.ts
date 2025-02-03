@@ -3,11 +3,10 @@ import { theme } from '@chakra-ui/react';
 import config from 'configs/app';
 
 export const BODY_TYPEFACE = config.UI.fonts.body?.name ?? 'Inter';
-export const HEADING_TYPEFACE = config.UI.fonts.heading?.name ?? 'Poppins';
 
 const typography = {
   fonts: {
-    heading: `${ HEADING_TYPEFACE }, ${ theme.fonts.heading }`,
+    heading: `"Bossa", sans-serif`,
     body: `${ BODY_TYPEFACE }, ${ theme.fonts.body }`,
   },
   textStyles: {

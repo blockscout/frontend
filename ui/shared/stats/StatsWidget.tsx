@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Skeleton, useColorModeValue, chakra } from '@chakra-ui/react';
+import { Box, Flex, Text, Skeleton, chakra } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -51,9 +51,9 @@ const StatsWidget = ({
   period,
   href,
 }: Props) => {
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
-  const skeletonBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const hintColor = useColorModeValue('gray.600', 'gray.400');
+  const bgColor = 'rgba(255, 255, 255, 0.1)';
+  const skeletonBgColor = 'blackAlpha.50';
+  const hintColor = 'white';
 
   return (
     <Container href={ !isLoading ? href : undefined }>
@@ -61,8 +61,11 @@ const StatsWidget = ({
         className={ className }
         alignItems="center"
         bgColor={ isLoading ? skeletonBgColor : bgColor }
+        border="1px solid transparent"
+        backdropFilter="blur(30px)"
         p={ 3 }
-        borderRadius="base"
+        _hover={ href ? { bg: 'rgba(255, 255, 255, 0.2)', border: '1px solid rgba(255, 255, 255, 0.3)' } : undefined }
+        borderRadius="12px"
         justifyContent="space-between"
         columnGap={ 2 }
         { ...(href && !isLoading ? {
@@ -71,21 +74,24 @@ const StatsWidget = ({
         } : {}) }
       >
         { icon && (
-          <IconSvg
-            name={ icon }
-            p={ 2 }
-            boxSize="40px"
-            isLoading={ isLoading }
-            borderRadius="base"
-            display={{ base: 'none', lg: 'block' }}
-            flexShrink={ 0 }
-          />
+          <Box w={{ base: '36px', lg: '36px' }} borderRadius="10px" bg="black" p="6px">
+            <IconSvg
+              name={ icon }
+              boxSize="24px"
+              isLoading={ isLoading }
+              borderRadius="base"
+              color="rgba(255, 255, 255, 0.5)"
+              display={{ base: 'none', lg: 'block' }}
+              flexShrink={ 0 }
+            />
+          </Box>
         ) }
         <Box w={{ base: '100%', lg: icon ? 'calc(100% - 48px)' : '100%' }}>
           <Skeleton
             isLoaded={ !isLoading }
             color="text_secondary"
             fontSize="xs"
+            mb={ 1 }
             lineHeight="16px"
             w="fit-content"
           >

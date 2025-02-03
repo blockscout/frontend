@@ -114,9 +114,10 @@ export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'i
   asProp?: As;
   text: string;
   isTooltipDisabled?: boolean;
+  color?: string;
 }
 
-const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, isTooltipDisabled }: ContentBaseProps) => {
+const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, isTooltipDisabled, color }: ContentBaseProps) => {
 
   const children = (() => {
     switch (truncation) {
@@ -156,6 +157,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
     <Skeleton
       className={ className }
       isLoaded={ !isLoading }
+      color={ color || 'white' }
       overflow="hidden"
       whiteSpace="nowrap"
       textOverflow={ truncation === 'tail' ? 'ellipsis' : undefined }

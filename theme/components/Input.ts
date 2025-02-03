@@ -44,12 +44,15 @@ const size = {
     borderRadius: 'base',
   }),
   md: defineStyle({
-    fontSize: 'md',
+    fontSize: '12px',
     lineHeight: '20px',
     px: '20px',
     py: '20px',
     h: '60px',
     borderRadius: 'base',
+    placeContent: {
+      color: 'rgba(255, 255, 255, 0.70)',
+    },
   }),
   lg: defineStyle({
     fontSize: 'md',

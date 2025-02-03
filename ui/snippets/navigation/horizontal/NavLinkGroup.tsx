@@ -44,7 +44,7 @@ const NavLinkGroup = ({ item }: Props) => {
               fontWeight={ 500 }
               cursor="pointer"
               color={ isOpen ? colors.text.hover : color }
-              _hover={{ color: colors.text.hover }}
+              _hover={{ color: colors.text.hover, bg: colors.bg.hover }}
               bgColor={ bgColor }
               borderRadius="base"
               { ...getDefaultTransitionProps() }
@@ -55,7 +55,7 @@ const NavLinkGroup = ({ item }: Props) => {
             </chakra.li>
           </PopoverTrigger>
           <PopoverContent w="fit-content">
-            <PopoverBody p={ 4 }>
+            <PopoverBody p={ 4 } bg={ colors.bg.active }>
               { hasGroups ? (
                 <HStack divider={ <StackDivider borderColor="divider"/> } alignItems="flex-start">
                   { item.subItems.map((subItem, index) => {

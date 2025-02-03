@@ -29,7 +29,7 @@ const TransactionsHome = () => {
     ].filter(Boolean);
     return (
       <>
-        <Heading as="h4" size="sm" mb={ 3 }>Transactions</Heading>
+        <Heading as="h3" size="md" mb={ 3 } color="white">Transactions</Heading>
         <TabsWithScroll tabs={ tabs } lazyBehavior="keepMounted" tabListProps={ TAB_LIST_PROPS }/>
       </>
     );
@@ -37,7 +37,7 @@ const TransactionsHome = () => {
 
   return (
     <>
-      <Heading as="h4" size="sm" mb={ 3 }>Latest transactions</Heading>
+      <Heading as="h3" size="md" mb={ 3 } color="white">Latest transactions</Heading>
       <LatestTxs/>
     </>
   );

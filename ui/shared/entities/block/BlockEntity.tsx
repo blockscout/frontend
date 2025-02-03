@@ -41,6 +41,7 @@ const Content = chakra((props: ContentProps) => {
       { ...props }
       text={ String(props.number) }
       tailLength={ props.tailLength ?? 2 }
+      color={ props.color || 'white' }
     />
   );
 });
@@ -57,9 +58,8 @@ const BlockEntity = (props: EntityProps) => {
 
   return (
     <Container { ...partsProps.container }>
-      <Icon { ...partsProps.icon }/>
       <Link { ...partsProps.link }>
-        <Content { ...partsProps.content }/>
+        <Content color="cyan" { ...partsProps.content }/>
       </Link>
     </Container>
   );

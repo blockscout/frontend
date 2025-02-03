@@ -161,11 +161,11 @@ const AddressEntry = (props: EntityProps) => {
       onMouseEnter={ highlightContext?.onMouseEnter }
       onMouseLeave={ highlightContext?.onMouseLeave }
       position="relative"
+      fontSize="14px"
       zIndex={ 0 }
     >
-      <Icon { ...partsProps.icon }/>
       <Link { ...partsProps.link }>
-        <Content { ...partsProps.content } altHash={ altHash }/>
+        <Content color="cyan" { ...partsProps.content } altHash={ altHash }/>
       </Link>
       <Copy { ...partsProps.copy } altHash={ altHash }/>
     </Container>

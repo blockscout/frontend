@@ -6,7 +6,6 @@ import {
 import { mode } from '@chakra-ui/theme-tools';
 
 import getDefaultTransitionProps from '../../utils/getDefaultTransitionProps';
-import Badge from '../Badge';
 
 const transitionProps = getDefaultTransitionProps();
 
@@ -14,9 +13,34 @@ const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(parts.keys);
 
 const variants = {
-  subtle: definePartsStyle((props) => ({
-    container: Badge.variants?.subtle(props),
-  })),
+  subtle: definePartsStyle((props) => {
+    const { colorScheme: c } = props;
+
+    const bgColor = {
+      red: 'rgba(139, 1, 66, 1)',
+      gray: 'rgba(255, 255, 255, 0.10)',
+      green: 'rgba(6, 68, 1, 1)',
+    }[c] || mode(`${ c }.100`, `${ c }.900`)(props);
+
+    const textColor = {
+      red: 'rgba(255, 143, 218, 1)',
+      gray: 'white',
+      green: 'rgba(50, 254, 107, 1)',
+    }[c] || mode(`${ c }.800`, `${ c }.300`)(props);
+
+    return {
+      container: {
+        bg: bgColor,
+        color: textColor,
+        fontSize: '12px',
+        fontWeight: '400',
+        borderRadius: 'md',
+        _hover: {
+          bg: mode(`${ c }.200`, `${ c }.800`)(props),
+        },
+      },
+    };
+  }),
   select: definePartsStyle((props) => ({
     container: {
       bg: mode('gray.100', 'gray.800')(props),

@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Skeleton, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -38,11 +38,11 @@ const ChainIndicators = () => {
     },
   });
 
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
+  const bgColor = 'grey.10';
 
-  if (indicators.length === 0) {
-    return null;
-  }
+  // if (indicators.length === 0) {
+  //   return null;
+  // }
 
   const valueTitle = (() => {
     if (statsQueryResult.isPlaceholderData) {
@@ -84,7 +84,7 @@ const ChainIndicators = () => {
     <Flex
       px={{ base: 3, lg: 4 }}
       py={ 3 }
-      borderRadius="base"
+      borderRadius="12px"
       bgColor={ bgColor }
       columnGap={{ base: 3, lg: 4 }}
       rowGap={ 0 }
@@ -93,7 +93,7 @@ const ChainIndicators = () => {
       alignItems="stretch"
     >
       <Flex flexGrow={ 1 } flexDir="column">
-        <Flex alignItems="center">
+        <Flex alignItems="center" justify="space-between">
           <Text fontWeight={ 500 }>{ indicator?.title }</Text>
           { indicator?.hint && <Hint label={ indicator.hint } ml={ 1 }/> }
         </Flex>

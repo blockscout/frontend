@@ -12,6 +12,9 @@ import zIndices from './foundations/zIndices';
 import global from './global';
 
 const overrides = {
+  initialColorMode: 'dark',
+  colorMode: 'dark',
+  useSystemColorMode: false,
   ...typography,
   ...borders,
   colors,

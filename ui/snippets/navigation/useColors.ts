@@ -3,13 +3,14 @@ import { useColorModeValue } from '@chakra-ui/react';
 export default function useColors() {
   return {
     text: {
-      'default': useColorModeValue('gray.600', 'gray.300'),
-      active: useColorModeValue('purple.100', 'purple.40'),
-      hover: 'link_hovered',
+      'default': 'white',
+      active: 'white',
+      hover: 'white',
     },
     bg: {
       'default': 'transparent',
-      active: 'transparent',
+      active: 'grey.10',
+      hover: 'grey.10',
     },
     border: {
       'default': 'divider',

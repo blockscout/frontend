@@ -8,9 +8,6 @@ import type { EntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
 
-import AddressFromToIcon from './AddressFromToIcon';
-import { getTxCourseType } from './utils';
-
 type Mode = 'compact' | 'long';
 
 interface Props {
@@ -40,11 +37,6 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
     return (
       <Flex className={ className } flexDir="column" rowGap={ 3 }>
         <Flex alignItems="center" columnGap={ 2 }>
-          <AddressFromToIcon
-            isLoading={ isLoading }
-            type={ getTxCourseType(from.hash, to?.hash, current) }
-            transform="rotate(90deg)"
-          />
           <Entity
             address={ from }
             isLoading={ isLoading }
@@ -68,7 +60,6 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
-            ml="28px"
           />
         ) }
       </Flex>
@@ -89,10 +80,6 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         tokenHash={ tokenHash }
         truncation="constant"
         mr={ isOutgoing ? 4 : 2 }
-      />
-      <AddressFromToIcon
-        isLoading={ isLoading }
-        type={ getTxCourseType(from.hash, to?.hash, current) }
       />
       { to && (
         <Entity

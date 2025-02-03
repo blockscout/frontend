@@ -1,4 +1,3 @@
-import { useColorModeValue, useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
@@ -7,8 +6,8 @@ import type { TimeChartData, TimeChartItem } from 'ui/shared/chart/types';
 import { POINT_SIZE } from './utils';
 
 const ChartTooltipPoint = () => {
-  const bgColor = useToken('colors', useColorModeValue('black', 'white'));
-  const borderColor = useToken('colors', useColorModeValue('white', 'black'));
+  const bgColor = 'black';
+  const borderColor = 'white';
 
   return (
     <circle

@@ -16,7 +16,7 @@ const Tag = ({ isLoading, ...props }: Props, ref: React.ForwardedRef<HTMLDivElem
     }
 
     return (
-      <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm" maxW="100%">
+      <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="12px" maxW="100%">
         <TruncatedTextTooltip label={ props.children }>
           <ChakraTag { ...props } ref={ ref }/>
         </TruncatedTextTooltip>
@@ -24,7 +24,7 @@ const Tag = ({ isLoading, ...props }: Props, ref: React.ForwardedRef<HTMLDivElem
     );
   }
   return (
-    <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm" maxW="100%">
+    <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="12px" maxW="100%">
       <ChakraTag { ...props } ref={ ref }/>
     </Skeleton>
   );

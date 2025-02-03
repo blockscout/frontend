@@ -68,9 +68,8 @@ const TxEntity = (props: EntityProps) => {
 
   return (
     <Container { ...partsProps.container }>
-      <Icon { ...partsProps.icon }/>
       <Link { ...partsProps.link }>
-        <Content { ...partsProps.content }/>
+        <Content fontSize="14px" { ...partsProps.content }/>
       </Link>
       <Copy { ...partsProps.copy }/>
     </Container>

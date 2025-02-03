@@ -66,7 +66,7 @@ const TxType = ({ types, isLoading }: Props) => {
   }
 
   return (
-    <Tag colorScheme={ colorScheme } isLoading={ isLoading } variant="surface">
+    <Tag colorScheme={ colorScheme } isLoading={ isLoading } p={ 0 } fontSize="16px" variant="surface">
       { label }
     </Tag>
   );

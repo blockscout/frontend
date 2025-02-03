@@ -89,7 +89,7 @@ const LatestBlocks = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
+          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) } color="white">View all blocks</LinkInternal>
         </Flex>
       </>
     );
@@ -97,13 +97,13 @@ const LatestBlocks = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm">Latest blocks</Heading>
+      <Heading as="h3" size="md" color="white">Latest blocks</Heading>
       { statsQueryResult.data?.network_utilization_percentage !== undefined && (
         <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } mt={ 1 } display="inline-block">
-          <Text as="span" fontSize="sm">
+          <Text as="span" fontSize="sm" color="white">
               Network utilization:{ nbsp }
           </Text>
-          <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
+          <Text as="span" fontSize="sm" color="cyan" fontWeight={ 700 }>
             { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
           </Text>
         </Skeleton>
