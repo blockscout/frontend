@@ -26,7 +26,7 @@ function composeMessage(address: string, nonceBlockscout: string, nonceRewards: 
     `${ urlObj.hostname } wants you to sign in with your Ethereum account:`,
     address,
     '',
-    `Sign in/up to Blockscout Account V2 & Blockscout Merits program.[ Merits nonce: ${ nonceRewards } ]`,
+    `Sign in/up to Blockscout Account V2 & Blockscout Merits program. Merits nonce: ${ nonceRewards }.`,
     '',
     `URI: ${ urlObj.origin }`,
     'Version: 1',

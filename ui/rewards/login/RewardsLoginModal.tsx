@@ -51,11 +51,11 @@ const RewardsLoginModal = () => {
 
   const handleAuthModalClose = useCallback((isSuccess?: boolean, rewardsApiToken?: string) => {
     if (isSuccess && rewardsApiToken) {
-      goNext(false);
+      closeLoginModal();
     }
     setAuthModalInitialScreen(undefined);
     authModal.onClose();
-  }, [ authModal, setAuthModalInitialScreen, goNext ]);
+  }, [ authModal, setAuthModalInitialScreen, closeLoginModal ]);
 
   return (
     <>

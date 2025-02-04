@@ -58,7 +58,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
         setRefCodeError.on();
       } else {
         if (isNewUser) {
-          goNext(Boolean(refCode));
+          goNext(isRefCodeUsed);
         } else {
           closeModal();
           router.push({ pathname: '/account/rewards' }, undefined, { shallow: true });
