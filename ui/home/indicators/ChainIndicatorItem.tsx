@@ -6,6 +6,7 @@ import type { HomeStats } from 'types/api/stats';
 import type { ChainIndicatorId } from 'types/homepage';
 
 import type { ResourceError } from 'lib/api/resources';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 
 interface Props {
@@ -15,32 +16,68 @@ interface Props {
   valueDiff?: (stats?: HomeStats) => number | null | undefined;
   icon: React.ReactNode;
   isSelected: boolean;
-  onClick: (id: ChainIndicatorId) => void;
+  onClick?: (id: ChainIndicatorId) => void;
   stats: UseQueryResult<HomeStats, ResourceError<unknown>>;
 }
 
-const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onClick, stats }: Props) => {
-  const activeColor = useColorModeValue('gray.500', 'gray.400');
-  const activeBgColor = useColorModeValue('white', 'black');
+const ChainIndicatorItem = ({
+  id,
+  title,
+  value,
+  valueDiff,
+  icon,
+  isSelected,
+  onClick,
+  stats,
+}: Props) => {
+  const isMobile = useIsMobile();
+
+  const activeBgColorDesktop = useColorModeValue('white', 'gray.900');
+  const activeBgColorMobile = useColorModeValue('white', 'black');
+  const activeBgColor = isMobile ? activeBgColorMobile : activeBgColorDesktop;
 
   const handleClick = React.useCallback(() => {
+    if (onClick === undefined) {
+      return;
+    }
+
     onClick(id);
   }, [ id, onClick ]);
 
   const valueContent = (() => {
+    if (isMobile) {
+      return null;
+    }
+
+    if (stats.isPlaceholderData) {
+      return (
+        <Skeleton
+          h={ 3 }
+          w="70px"
+          my={ 1.5 }
+          // ssr: isMobile = undefined, isLoading = true
+          display={{ base: 'none', lg: 'block' }}
+        />
+      );
+    }
+
     if (!stats.data) {
-      return <Text variant="secondary" fontWeight={ 400 }>no data</Text>;
+      return (
+        <Text variant="secondary" fontWeight={ 400 }>
+          no data
+        </Text>
+      );
     }
 
     return (
-      <Skeleton isLoaded={ !stats.isPlaceholderData } variant="secondary" fontWeight={ 600 } minW="30px">
+      <Text variant="secondary" fontWeight={ 600 }>
         { value(stats.data) }
-      </Skeleton>
+      </Text>
     );
   })();
 
   const valueDiffContent = (() => {
-    if (!valueDiff) {
+    if (isMobile || !valueDiff) {
       return null;
     }
     const diff = valueDiff(stats.data);
@@ -61,28 +98,27 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
   return (
     <Flex
       alignItems="center"
-      columnGap={ 2 }
-      flexGrow={{ base: 0, lg: 1 }}
-      px={{ base: '6px', lg: 2 }}
-      py="6px"
+      columnGap={ 3 }
+      px={ 4 }
+      py={ 2 }
       as="li"
-      borderRadius="base"
+      borderRadius="md"
       cursor="pointer"
-      color={ isSelected ? activeColor : 'link' }
-      bgColor={ isSelected ? activeBgColor : undefined }
       onClick={ handleClick }
-      fontSize="xs"
-      fontWeight={ 500 }
+      bgColor={ isSelected ? activeBgColor : 'inherit' }
+      boxShadow={ isSelected ? 'lg' : 'none' }
+      zIndex={ isSelected ? 1 : 'initial' }
       _hover={{
-        bgColor: activeBgColor,
-        color: isSelected ? activeColor : 'link_hovered',
+        activeBgColor,
         zIndex: 1,
       }}
     >
       { icon }
-      <Box display={{ base: 'none', lg: 'block' }}>
-        <span>{ title }</span>
-        <Flex alignItems="center" color="text">
+      <Box>
+        <Text fontFamily="heading" fontWeight={ 500 }>
+          { title }
+        </Text>
+        <Flex alignItems="center">
           { valueContent }
           { valueDiffContent }
         </Flex>

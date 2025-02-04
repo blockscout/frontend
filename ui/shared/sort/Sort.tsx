@@ -10,6 +10,10 @@ import SortButtonDesktop from './ButtonDesktop';
 import SortButtonMobile from './ButtonMobile';
 
 type Props<Value extends string> = Omit<SelectProps<Value>, 'children'>;
+export interface Option<Sort extends string> {
+  title: string;
+  id: Sort | undefined;
+}
 
 const Sort = <Sort extends string>({ name, options, isLoading, onChange, defaultValue }: Props<Sort>) => {
   const isMobile = useIsMobile(false);

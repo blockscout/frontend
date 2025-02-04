@@ -23,6 +23,8 @@ export type HomeStats = {
   celo?: {
     epoch_number: number;
   };
+  rwa_total_supply?: number | null;
+  total_rwa_burned?: number | null;
 };
 
 export type GasPrices = {

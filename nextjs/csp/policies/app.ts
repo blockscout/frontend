@@ -57,6 +57,17 @@ export function app(): CspDev.DirectiveDescriptor {
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
 
+      'https://infragrid.v.network', // RPC providers
+      'https://price.assetchain.org/api/v1/price', // RWA stats
+      'https://explorerapi-testnet.assetchain.org:16761/api',
+      'https://explorerapi.assetchain.org:16761/api',
+      'https://scan.assetchain.org/api-docs',
+      'https://scan-testnet.assetchain.org/api-docs',
+      'https://scan.assetchain.org/*',
+      'https://scan-testnet.assetchain.org/*',
+      // github (spec for api-docs page)
+      'raw.githubusercontent.com',
+
       // github api (used for Stylus contract verification)
       'api.github.com',
     ].filter(Boolean),

@@ -11,6 +11,7 @@ import type {
 
 import config from 'configs/app';
 // import useDebounce from 'lib/hooks/useDebounce';
+import { useFetchStakersInfo } from 'lib/getStakersInfo';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -25,41 +26,54 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import Sort from 'ui/shared/sort/Sort';
+import ValidatorsCounters from 'ui/validators/ValidatorsCounters';
+import ValidatorsList from 'ui/validators/ValidatorsList';
+import ValidatorsTable from 'ui/validators/ValidatorsTable';
 import { VALIDATORS_STABILITY_SORT_OPTIONS } from 'ui/validatorsStability/utils';
-import ValidatorsCounters from 'ui/validatorsStability/ValidatorsCounters';
 import ValidatorsFilter from 'ui/validatorsStability/ValidatorsFilter';
-import ValidatorsList from 'ui/validatorsStability/ValidatorsList';
-import ValidatorsTable from 'ui/validatorsStability/ValidatorsTable';
 
 const ValidatorsStability = () => {
   const router = useRouter();
   // const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.address_hash) || undefined);
-  const [ statusFilter, setStatusFilter ] =
-    React.useState(getQueryParamString(router.query.state_filter) as ValidatorsStabilityFilters['state_filter'] || undefined);
-  const [ sort, setSort ] = React.useState<ValidatorsStabilitySortingValue | undefined>(
-    getSortValueFromQuery<ValidatorsStabilitySortingValue>(router.query, VALIDATORS_STABILITY_SORT_OPTIONS),
+  const [ statusFilter, setStatusFilter ] = React.useState(
+    (getQueryParamString(
+      router.query.state_filter,
+    ) as ValidatorsStabilityFilters['state_filter']) || undefined,
+  );
+  const [ sort, setSort ] = React.useState<
+    ValidatorsStabilitySortingValue | undefined
+  >(
+    getSortValueFromQuery<ValidatorsStabilitySortingValue>(
+      router.query,
+      VALIDATORS_STABILITY_SORT_OPTIONS,
+    ),
   );
 
   // const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
 
   const isMobile = useIsMobile();
 
-  const { isError, isPlaceholderData, data, pagination, onFilterChange, onSortingChange } = useQueryWithPages({
-    resourceName: 'validators_stability',
-    filters: {
-      // address_hash: debouncedSearchTerm,
-      state_filter: statusFilter,
-    },
-    sorting: getSortParamsFromValue<ValidatorsStabilitySortingValue, ValidatorsStabilitySortingField, ValidatorsStabilitySorting['order']>(sort),
-    options: {
-      enabled: config.features.validators.isEnabled,
-      placeholderData: generateListStub<'validators_stability'>(
-        VALIDATOR_STABILITY,
-        50,
-        { next_page_params: null },
-      ),
-    },
-  });
+  const { isPlaceholderData, pagination, onFilterChange, onSortingChange } =
+    useQueryWithPages({
+      resourceName: 'validators_stability',
+      filters: {
+        // address_hash: debouncedSearchTerm,
+        state_filter: statusFilter,
+      },
+      sorting: getSortParamsFromValue<
+        ValidatorsStabilitySortingValue,
+        ValidatorsStabilitySortingField,
+        ValidatorsStabilitySorting['order']
+      >(sort),
+      options: {
+        enabled: config.features.validators.isEnabled,
+        placeholderData: generateListStub<'validators_stability'>(
+          VALIDATOR_STABILITY,
+          50,
+          { next_page_params: null },
+        ),
+      },
+    });
 
   // const handleSearchTermChange = React.useCallback((value: string) => {
   //   onFilterChange({
@@ -69,27 +83,43 @@ const ValidatorsStability = () => {
   //   setSearchTerm(value);
   // }, [ statusFilter, onFilterChange ]);
 
-  const handleStateFilterChange = React.useCallback((value: string | Array<string>) => {
-    if (Array.isArray(value)) {
-      return;
-    }
+  const { data: validatorsData } = useFetchStakersInfo();
 
-    const state = value === 'all' ? undefined : value as ValidatorsStabilityFilters['state_filter'];
+  const handleStateFilterChange = React.useCallback(
+    (value: string | Array<string>) => {
+      if (Array.isArray(value)) {
+        return;
+      }
 
-    onFilterChange({
-      // address_hash: debouncedSearchTerm,
-      state_filter: state,
-    });
-    setStatusFilter(state);
-  }, [ onFilterChange ]);
+      const state =
+        value === 'all' ?
+          undefined :
+          (value as ValidatorsStabilityFilters['state_filter']);
 
-  const handleSortChange = React.useCallback((value?: ValidatorsStabilitySortingValue) => {
-    setSort(value);
-    onSortingChange(getSortParamsFromValue(value));
-  }, [ onSortingChange ]);
+      onFilterChange({
+        // address_hash: debouncedSearchTerm,
+        state_filter: state,
+      });
+      setStatusFilter(state);
+    },
+    [ onFilterChange ],
+  );
 
-  const filterMenu =
-    <ValidatorsFilter onChange={ handleStateFilterChange } defaultValue={ statusFilter } hasActiveFilter={ Boolean(statusFilter) }/>;
+  const handleSortChange = React.useCallback(
+    (value?: ValidatorsStabilitySortingValue) => {
+      setSort(value);
+      onSortingChange(getSortParamsFromValue(value));
+    },
+    [ onSortingChange ],
+  );
+
+  const filterMenu = (
+    <ValidatorsFilter
+      onChange={ handleStateFilterChange }
+      defaultValue={ statusFilter }
+      hasActiveFilter={ Boolean(statusFilter) }
+    />
+  );
 
   // const filterInput = (
   //   <FilterInput
@@ -129,25 +159,31 @@ const ValidatorsStability = () => {
     </>
   );
 
-  const content = data?.items ? (
-    <>
-      <Show below="lg" ssr={ false }>
-        <ValidatorsList data={ data.items } isLoading={ isPlaceholderData }/>
-      </Show>
-      <Hide below="lg" ssr={ false }>
-        <ValidatorsTable data={ data.items } sort={ sort } setSorting={ handleSortChange } isLoading={ isPlaceholderData }/>
-      </Hide>
-    </>
-  ) : null;
+  const content =
+    validatorsData?.length > 0 ? (
+      <>
+        <Show below="lg" ssr={ false }>
+          <ValidatorsList data={ validatorsData } isLoading={ isPlaceholderData }/>
+        </Show>
+        <Hide below="lg" ssr={ false }>
+          <ValidatorsTable
+            data={ validatorsData }
+            sort={ sort }
+            setSorting={ handleSortChange }
+            isLoading={ isPlaceholderData }
+          />
+        </Hide>
+      </>
+    ) : null;
 
   return (
     <Box>
       <PageTitle title="Validators" withTextAd/>
       <ValidatorsCounters/>
       <DataListDisplay
-        isError={ isError }
-        items={ data?.items }
-        emptyText="There are no validators."
+        isError={ false }
+        items={ validatorsData }
+        emptyText="There are no verified contracts."
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find any validator that matches your query.`,
           hasActiveFilters: Boolean(
