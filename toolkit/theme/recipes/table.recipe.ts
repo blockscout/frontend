@@ -17,9 +17,10 @@ export const recipe = defineSlotRecipe({
       textAlign: 'start',
       alignItems: 'center',
       verticalAlign: 'top',
+      fontWeight: 'medium',
     },
     columnHeader: {
-      fontWeight: '500',
+      fontWeight: 'medium',
       textAlign: 'start',
     },
   },

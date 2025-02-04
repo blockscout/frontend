@@ -1,11 +1,11 @@
-import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressWithdrawalsItem } from 'types/api/address';
 import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -24,15 +24,15 @@ type Props = ({
 
 const BeaconChainWithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
   return (
-    <Tr>
-      <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.index }</Skeleton>
-      </Td>
-      <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.validator_index }</Skeleton>
-      </Td>
+    <TableRow>
+      <TableCell verticalAlign="middle">
+        <Skeleton loading={ isLoading } display="inline-block">{ item.index }</Skeleton>
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <Skeleton loading={ isLoading } display="inline-block">{ item.validator_index }</Skeleton>
+      </TableCell>
       { view !== 'block' && (
-        <Td verticalAlign="middle">
+        <TableCell verticalAlign="middle">
           <BlockEntity
             number={ item.block_number }
             isLoading={ isLoading }
@@ -40,31 +40,31 @@ const BeaconChainWithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
             lineHeight={ 5 }
             noIcon
           />
-        </Td>
+        </TableCell>
       ) }
       { view !== 'address' && (
-        <Td verticalAlign="middle">
+        <TableCell verticalAlign="middle">
           <AddressEntity
             address={ item.receiver }
             isLoading={ isLoading }
             truncation="constant"
           />
-        </Td>
+        </TableCell>
       ) }
       { view !== 'block' && (
-        <Td verticalAlign="middle" pr={ 12 }>
+        <TableCell verticalAlign="middle" pr={ 12 }>
           <TimeAgoWithTooltip
             timestamp={ item.timestamp }
             isLoading={ isLoading }
             color="text_secondary"
             display="inline-block"
           />
-        </Td>
+        </TableCell>
       ) }
-      <Td verticalAlign="middle">
+      <TableCell verticalAlign="middle">
         <CurrencyValue value={ item.amount } isLoading={ isLoading }/>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

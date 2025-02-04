@@ -95,6 +95,14 @@ export const recipe = defineSlotRecipe({
       },
     },
 
+    variant: {
+      subtle: {
+        root: {
+          color: 'alert.fg',
+        },
+      },
+    },
+
     inline: {
       'true': {
         root: {
@@ -134,5 +142,6 @@ export const recipe = defineSlotRecipe({
     status: 'neutral',
     size: 'md',
     inline: true,
+    variant: 'subtle',
   },
 });

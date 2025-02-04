@@ -62,7 +62,6 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
       px={ 4 }
       py="6px"
       fontSize="sm"
-      startElement={ null }
     >
       { alertContent }
     </Alert>

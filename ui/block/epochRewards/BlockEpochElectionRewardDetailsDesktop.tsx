@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Grid, GridItem, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -24,8 +24,6 @@ const BlockEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
 
-  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-
   const { cutRef, query } = useLazyLoadedList({
     rootRef,
     resourceName: 'block_election_rewards',
@@ -40,7 +38,7 @@ const BlockEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
   return (
     <Box
       p={ 4 }
-      bgColor={ bgColor }
+      bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
       borderRadius="base"
       maxH="360px"
       overflowY="scroll"

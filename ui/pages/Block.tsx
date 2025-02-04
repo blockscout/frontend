@@ -78,30 +78,30 @@ const BlockPageContent = () => {
         </>
       ),
     },
-    // config.features.dataAvailability.isEnabled && blockQuery.data?.blob_transaction_count ?
-    //   {
-    //     id: 'blob_txs',
-    //     title: 'Blob txns',
-    //     component: (
-    //       <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
-    //     ),
-    //   } : null,
-    // config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
-    //   {
-    //     id: 'withdrawals',
-    //     title: 'Withdrawals',
-    //     component: (
-    //       <>
-    //         { blockWithdrawalsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockWithdrawalsQuery.isPlaceholderData } mb={ 6 }/> }
-    //         <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/>
-    //       </>
-    //     ),
-    //   } : null,
-    // blockQuery.data?.celo?.is_epoch_block ? {
-    //   id: 'epoch_rewards',
-    //   title: 'Epoch rewards',
-    //   component: <BlockEpochRewards heightOrHash={ heightOrHash }/>,
-    // } : null,
+    config.features.dataAvailability.isEnabled && blockQuery.data?.blob_transaction_count ?
+      {
+        id: 'blob_txs',
+        title: 'Blob txns',
+        component: (
+          <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
+        ),
+      } : null,
+    config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
+      {
+        id: 'withdrawals',
+        title: 'Withdrawals',
+        component: (
+          <>
+            { blockWithdrawalsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockWithdrawalsQuery.isPlaceholderData } mb={ 6 }/> }
+            <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/>
+          </>
+        ),
+      } : null,
+    blockQuery.data?.celo?.is_epoch_block ? {
+      id: 'epoch_rewards',
+      title: 'Epoch rewards',
+      component: <BlockEpochRewards heightOrHash={ heightOrHash }/>,
+    } : null,
   ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination, heightOrHash ]);
 
   let pagination;

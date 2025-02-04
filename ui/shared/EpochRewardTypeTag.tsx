@@ -1,9 +1,9 @@
-import { Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EpochRewardsType } from 'types/api/block';
 
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 
 type Props = {
   type: EpochRewardsType;
@@ -39,10 +39,10 @@ const EpochRewardTypeTag = ({ type, isLoading }: Props) => {
   const { text, label, color } = TYPE_TAGS[type];
 
   return (
-    <Tooltip label={ label } maxW="322px" textAlign="center">
-      <Tag colorScheme={ color } isLoading={ isLoading }>
+    <Tooltip content={ label }>
+      <Badge colorScheme={ color } loading={ isLoading }>
         { text }
-      </Tag>
+      </Badge>
     </Tooltip>
   );
 };

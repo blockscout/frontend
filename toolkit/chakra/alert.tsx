@@ -14,6 +14,7 @@ export interface AlertProps extends Omit<ChakraAlert.RootProps, 'title'> {
   closable?: boolean;
   onClose?: () => void;
   loading?: boolean;
+  showIcon?: boolean;
 }
 
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
@@ -27,15 +28,28 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       startElement,
       endElement,
       loading,
+      showIcon = false,
       ...rest
     } = props;
 
     const defaultIcon = <IconSvg name="info_filled" w="100%" h="100%"/>;
 
+    const iconElement = (() => {
+      if (startElement !== undefined) {
+        return startElement;
+      }
+
+      if (!showIcon && icon === undefined) {
+        return null;
+      }
+
+      return <ChakraAlert.Indicator>{ icon || defaultIcon }</ChakraAlert.Indicator>;
+    })();
+
     return (
       <Skeleton loading={ loading } asChild>
         <ChakraAlert.Root ref={ ref } { ...rest }>
-          { startElement !== undefined || icon !== undefined ? startElement : <ChakraAlert.Indicator>{ icon || defaultIcon }</ChakraAlert.Indicator> }
+          { iconElement }
           { children ? (
             <ChakraAlert.Content>
               { title && <ChakraAlert.Title>{ title }</ChakraAlert.Title> }

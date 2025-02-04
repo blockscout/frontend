@@ -1,4 +1,4 @@
-import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -25,8 +25,6 @@ const BlockEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
 
-  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-
   const { cutRef, query } = useLazyLoadedList({
     rootRef,
     resourceName: 'block_election_rewards',
@@ -37,7 +35,15 @@ const BlockEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
   });
 
   return (
-    <Flex flexDir="column" rowGap={ 3 } p={ 4 } bgColor={ bgColor } borderRadius="base" maxH="360px" overflowY="scroll">
+    <Flex
+      flexDir="column"
+      rowGap={ 3 }
+      p={ 4 }
+      bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
+      borderRadius="base"
+      maxH="360px"
+      overflowY="scroll"
+    >
 
       { query.data?.pages
         .map((page) => page.items)
