@@ -11,7 +11,7 @@ import { distributeEntityProps } from '../base/utils';
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'id'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/validators', query: { id: props.id } });
+  const defaultHref = route({ pathname: '/validators/[id]', query: { id: props.id } });
 
   return (
     <EntityBase.Link

@@ -83,7 +83,13 @@ export interface ValidatorsZilliqaResponse {
 }
 
 export interface ValidatorZilliqa {
+  added_at_block_number: number;
   balance: string;
   bls_public_key: string;
+  control_address: AddressParam;
   index: number;
+  peer_id: string;
+  reward_address: AddressParam;
+  signing_address: AddressParam;
+  stake_updated_at_block_number: number;
 }

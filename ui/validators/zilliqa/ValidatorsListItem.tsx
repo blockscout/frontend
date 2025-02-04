@@ -36,7 +36,7 @@ const ValidatorsListItem = ({ data, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Balance</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton isLoaded={ !isLoading } display="inline-block">
-          { BigNumber(data.balance).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
+          { BigNumber(data.balance).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() } { config.chain.currency.symbol }
         </Skeleton>
       </ListItemMobileGrid.Value>
     </ListItemMobileGrid.Container>
