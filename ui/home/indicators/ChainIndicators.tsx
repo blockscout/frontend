@@ -1,8 +1,13 @@
 import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
+import type { HomeStats } from 'types/api/stats';
+
 import config from 'configs/app';
+import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useRwaStatsQuery } from 'lib/getRwaStats';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import Hint from 'ui/shared/Hint';
@@ -13,25 +18,45 @@ import ChainIndicatorItem from './ChainIndicatorItem';
 import useFetchChartData from './useFetchChartData';
 import INDICATORS from './utils/indicators';
 
-const indicators = INDICATORS
-  .filter(({ id }) => config.UI.homepage.charts.includes(id))
-  .sort((a, b) => {
-    if (config.UI.homepage.charts.indexOf(a.id) > config.UI.homepage.charts.indexOf(b.id)) {
-      return 1;
-    }
+const indicators = INDICATORS.filter(
+  ({ id }) => config.UI.homepage.charts.includes(id) && id === 'daily_txs',
+).sort((a, b) => {
+  if (
+    config.UI.homepage.charts.indexOf(a.id) >
+    config.UI.homepage.charts.indexOf(b.id)
+  ) {
+    return 1;
+  }
 
-    if (config.UI.homepage.charts.indexOf(a.id) < config.UI.homepage.charts.indexOf(b.id)) {
-      return -1;
-    }
+  if (
+    config.UI.homepage.charts.indexOf(a.id) <
+    config.UI.homepage.charts.indexOf(b.id)
+  ) {
+    return -1;
+  }
 
-    return 0;
-  });
+  return 0;
+});
+
+const coinPriceIndicator = INDICATORS.filter(
+  ({ id }) => config.UI.homepage.charts.includes(id) && id === 'coin_price',
+);
+const marketCapIndicator = INDICATORS.filter(
+  ({ id }) => config.UI.homepage.charts.includes(id) && id === 'market_cap',
+);
+const totalSupplyIndicator = INDICATORS.filter(
+  ({ id }) => id === 'total_supply',
+);
 
 const ChainIndicators = () => {
   const [ selectedIndicator, selectIndicator ] = React.useState(indicators[0]?.id);
   const indicator = indicators.find(({ id }) => id === selectedIndicator);
 
   const queryResult = useFetchChartData(indicator);
+  const rwaStatsQueryResult = useRwaStatsQuery() as unknown as UseQueryResult<
+    HomeStats,
+    ResourceError<unknown>
+  >;
   const statsQueryResult = useApiQuery('stats', {
     queryOptions: {
       refetchOnMount: false,
@@ -104,7 +129,7 @@ const ChainIndicators = () => {
         </Flex>
         <ChainIndicatorChartContainer { ...queryResult }/>
       </Flex>
-      { indicators.length > 1 && (
+      { indicators.length > 0 && (
         <Flex
           flexShrink={ 0 }
           flexDir="column"
@@ -122,6 +147,24 @@ const ChainIndicators = () => {
               stats={ statsQueryResult }
             />
           )) }
+          <ChainIndicatorItem
+            key={ coinPriceIndicator[0].id }
+            { ...coinPriceIndicator[0] }
+            isSelected={ selectedIndicator === coinPriceIndicator[0].id }
+            stats={ rwaStatsQueryResult }
+          />
+          <ChainIndicatorItem
+            key={ marketCapIndicator[0].id }
+            { ...marketCapIndicator[0] }
+            isSelected={ selectedIndicator === marketCapIndicator[0].id }
+            stats={ rwaStatsQueryResult }
+          />
+          <ChainIndicatorItem
+            key={ totalSupplyIndicator[0].id }
+            { ...totalSupplyIndicator[0] }
+            isSelected={ selectedIndicator === totalSupplyIndicator[0].id }
+            stats={ rwaStatsQueryResult }
+          />
         </Flex>
       ) }
     </Flex>

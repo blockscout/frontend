@@ -40,6 +40,7 @@ export const HOMEPAGE_STATS: HomeStats = {
   total_transactions: '193823272',
   transactions_today: '0',
   tvl: '1767425.102766552',
+  total_rwa_burned: 0,
 };
 
 export const STATS_CHARTS_SECTION: stats.LineChartSection = {

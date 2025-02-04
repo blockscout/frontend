@@ -148,6 +148,59 @@ const tvlIndicator: TChainIndicator<'stats_charts_market'> = {
     } ]),
   },
 };
+const totalSupplyIndicator: TChainIndicator<'stats_charts_market'> = {
+  id: 'total_supply',
+  title: 'Total supply',
+  value: (stats) => {
+    return stats.rwa_total_supply === null ?
+      '$N/A' :
+      Number(stats.rwa_total_supply).toLocaleString(undefined, {
+        maximumFractionDigits: 2,
+        notation: 'compact',
+      }) + ' RWA';
+  },
+  icon: (
+    <IconSvg
+      name="stats"
+      boxSize={ 6 }
+      bgColor="#337AFE"
+      borderRadius="base"
+      color="white"
+    />
+  ),
+  // eslint-disable-next-line max-len
+  hint: 'The total market value of a cryptocurrency\'s circulating supply. It is analogous to the free-float capitalization in the stock market. Market Cap = Current Price x Circulating Supply.',
+  api: {
+    resourceName: 'stats_charts_market',
+    dataFn: (response) => [
+      {
+        items: response.chart_data
+          .map((item) => ({
+            date: new Date(item.date),
+            value: (() => {
+              if (item.market_cap !== undefined) {
+                return item.market_cap;
+              }
+
+              if (item.closing_price === null) {
+                return null;
+              }
+
+              return (
+                Number(item.closing_price) * Number(response.available_supply)
+              );
+            })(),
+          }))
+          .sort(sortByDateDesc)
+          .reduceRight(nonNullTailReducer, [] as Array<TimeChartItemRaw>)
+          .map(mapNullToZero),
+        name: 'Market cap',
+        valueFormatter: (x: number) =>
+          '$' + x.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+      },
+    ],
+  },
+};
 
 const INDICATORS = [
   dailyTxsIndicator,
@@ -155,6 +208,7 @@ const INDICATORS = [
   secondaryCoinPriceIndicator,
   marketPriceIndicator,
   tvlIndicator,
+  totalSupplyIndicator,
 ];
 
 export default INDICATORS;

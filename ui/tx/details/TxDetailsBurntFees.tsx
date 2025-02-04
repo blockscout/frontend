@@ -5,6 +5,7 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import { ZERO } from 'lib/consts';
+import { useFetchTransactionByHash } from 'lib/getTransactionInfo';
 import { currencyUnits } from 'lib/units';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -18,12 +19,20 @@ interface Props {
 }
 
 const TxDetailsBurntFees = ({ data, isLoading }: Props) => {
+  const rwaBurnInfoQueryResult = useFetchTransactionByHash(data.hash);
 
-  if (config.UI.views.tx.hiddenFields?.burnt_fees || (rollupFeature.isEnabled && rollupFeature.type === 'optimistic')) {
+  if (
+    config.UI.views.tx.hiddenFields?.burnt_fees ||
+    (rollupFeature.isEnabled && rollupFeature.type === 'optimistic')
+  ) {
     return null;
   }
 
-  const value = BigNumber(data.transaction_burnt_fee || 0).plus(BigNumber(data.blob_gas_used || 0).multipliedBy(BigNumber(data.blob_gas_price || 0)));
+  const value = BigNumber(data.transaction_burnt_fee || 0).plus(
+    BigNumber(data.blob_gas_used || 0).multipliedBy(
+      BigNumber(data.blob_gas_price || 0),
+    ),
+  );
 
   if (value.isEqualTo(ZERO)) {
     return null;
@@ -33,17 +42,21 @@ const TxDetailsBurntFees = ({ data, isLoading }: Props) => {
     <>
       <DetailsInfoItem.Label
         hint={ `
-            Amount of ${ currencyUnits.ether } burned for this transaction. Equals Block Base Fee per Gas * Gas Used
-            ${ data.blob_gas_price && data.blob_gas_used ? ' + Blob Gas Price * Blob Gas Used' : '' }
+            Amount of ${ currencyUnits.ether } burned for this transaction.
           ` }
         isLoading={ isLoading }
       >
         Burnt fees
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
+        <IconSvg
+          name="flame"
+          boxSize={ 5 }
+          color="gray.500"
+          isLoading={ isLoading }
+        />
         <CurrencyValue
-          value={ value.toString() }
+          value={ rwaBurnInfoQueryResult.data?.burn.toString() }
           currency={ currencyUnits.ether }
           exchangeRate={ data.exchange_rate }
           flexWrap="wrap"

@@ -1,4 +1,4 @@
-export const CHAIN_INDICATOR_IDS = [ 'daily_txs', 'coin_price', 'secondary_coin_price', 'market_cap', 'tvl' ] as const;
+export const CHAIN_INDICATOR_IDS = [ 'daily_txs', 'coin_price', 'secondary_coin_price', 'market_cap', 'tvl', 'total_supply' ] as const;
 export type ChainIndicatorId = typeof CHAIN_INDICATOR_IDS[number];
 
 export const HOME_STATS_WIDGET_IDS = [

@@ -62,9 +62,7 @@ const HeroBanner = () => {
             color={ textColor }
           >
             {
-              config.meta.seo.enhancedDataEnabled ?
-                `${ config.chain.name } blockchain explorer` :
-                `${ config.chain.name } explorer`
+              `${ config.chain.name } ${ config.chain.isTestnet ? 'Testnet' : '' } explorer`
             }
           </Heading>
           { config.UI.navigation.layout === 'vertical' && (
