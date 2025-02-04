@@ -1,4 +1,4 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type {
@@ -10,6 +10,7 @@ import type {
 } from 'types/api/tokenTransfer';
 
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import TokenTransferSnippetFiat from './TokenTransferSnippetFiat';
 import TokenTransferSnippetNft from './TokenTransferSnippetNft';
@@ -28,9 +29,12 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
       return <Skeleton w="250px" h={ 6 }/>;
     }
 
-    switch (data.token.type) {
+    switch (data.token?.type) {
       case 'ERC-20': {
-        const total = data.total as Erc20TotalPayload;
+        const total = data.total as Erc20TotalPayload | null;
+        if (total === null || total.value === null) {
+          return null;
+        }
         return <TokenTransferSnippetFiat token={ data.token } value={ total.value } decimals={ total.decimals }/>;
       }
 
@@ -58,7 +62,10 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
       }
 
       case 'ERC-404': {
-        const total = data.total as Erc404TotalPayload;
+        const total = data.total as Erc404TotalPayload | null;
+        if (total === null) {
+          return null;
+        }
 
         if (total.token_id !== null) {
           return (
@@ -75,6 +82,9 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
 
           return <TokenTransferSnippetFiat token={ data.token } value={ total.value } decimals={ total.decimals }/>;
         }
+      }
+      default: {
+        return null;
       }
     }
   })();

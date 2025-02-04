@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -23,12 +24,13 @@ import ContractDetailsInfo from './info/ContractDetailsInfo';
 import useContractDetailsTabs from './useContractDetailsTabs';
 
 const TAB_LIST_PROPS = { flexWrap: 'wrap', rowGap: 2 };
+const LEFT_SLOT_PROPS = { w: { base: '100%', lg: 'auto' } };
 
 type Props = {
   addressHash: string;
   channel: Channel | undefined;
   mainContractQuery: UseQueryResult<SmartContract, ResourceError>;
-}
+};
 
 const ContractDetails = ({ addressHash, channel, mainContractQuery }: Props) => {
   const router = useRouter();
@@ -38,7 +40,8 @@ const ContractDetails = ({ addressHash, channel, mainContractQuery }: Props) => 
   const addressInfo = queryClient.getQueryData<AddressInfo>(getResourceKey('address', { pathParams: { hash: addressHash } }));
 
   const sourceItems: Array<AddressImplementation> = React.useMemo(() => {
-    const currentAddressItem = { address: addressHash, name: addressInfo?.name || 'Contract' };
+    const currentAddressDefaultName = addressInfo?.proxy_type === 'eip7702' ? 'Current address' : 'Current contract';
+    const currentAddressItem = { address: addressHash, name: addressInfo?.name || currentAddressDefaultName };
     if (!addressInfo || !addressInfo.implementations || addressInfo.implementations.length === 0) {
       return [ currentAddressItem ];
     }
@@ -108,14 +111,22 @@ const ContractDetails = ({ addressHash, channel, mainContractQuery }: Props) => 
           addressHash={ addressHash }
         />
       ) }
-      <RoutedTabs
-        tabs={ tabs }
-        isLoading={ isPlaceholderData }
-        variant="radio_group"
-        size="sm"
-        leftSlot={ addressSelector }
-        tabListProps={ TAB_LIST_PROPS }
-      />
+      { tabs.length > 1 ? (
+        <RoutedTabs
+          tabs={ tabs }
+          isLoading={ isPlaceholderData }
+          variant="radio_group"
+          size="sm"
+          leftSlot={ addressSelector }
+          tabListProps={ TAB_LIST_PROPS }
+          leftSlotProps={ LEFT_SLOT_PROPS }
+        />
+      ) : (
+        <>
+          { addressSelector && <Box mb={ 6 }>{ addressSelector }</Box> }
+          <div>{ tabs[0].component }</div>
+        </>
+      ) }
     </>
   );
 };

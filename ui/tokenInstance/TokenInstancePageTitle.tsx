@@ -73,7 +73,7 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
     } catch (error) {
       return (
         <LinkExternal href={ instance.external_app_url } isLoading={ isLoading } ml={{ base: 0, lg: 'auto' }}>
-            View in app
+          View in app
         </LinkExternal>
       );
     }

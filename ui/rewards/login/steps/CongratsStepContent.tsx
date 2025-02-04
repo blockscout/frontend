@@ -1,9 +1,10 @@
-import { Text, Box, Flex, Button, Skeleton, useColorModeValue, Tag } from '@chakra-ui/react';
+import { Text, Box, Flex, Button, useColorModeValue, Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import MeritsIcon from '../../MeritsIcon';
@@ -11,7 +12,7 @@ import RewardsReadOnlyInputWithCopy from '../../RewardsReadOnlyInputWithCopy';
 
 type Props = {
   isReferral: boolean;
-}
+};
 
 const CongratsStepContent = ({ isReferral }: Props) => {
   const { referralsQuery, rewardsConfigQuery } = useRewardsContext();

@@ -1,7 +1,7 @@
 import type { ChakraProps } from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
 
-export type Variants = 'subtle'
+export type Variants = 'subtle';
 
 export function useLinkStyles(commonProps: ChakraProps, variant?: Variants) {
   const subtleLinkBg = useColorModeValue('gray.100', 'gray.700');

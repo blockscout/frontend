@@ -1,4 +1,4 @@
-import { chakra, Alert, Box, Flex, Skeleton } from '@chakra-ui/react';
+import { chakra, Alert, Box, Flex } from '@chakra-ui/react';
 import type { Channel } from 'phoenix';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import type { SmartContract } from 'types/api/contract';
 import { route } from 'nextjs-routes';
 
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
@@ -42,7 +43,7 @@ const ContractDetailsAlerts = ({ data, isLoading, addressHash, channel }: Props)
         <Box>
           <span>This is an </span>
           <LinkExternal href="https://eips.ethereum.org/EIPS/eip-5202">
-              ERC-5202 Blueprint contract
+            ERC-5202 Blueprint contract
           </LinkExternal>
         </Box>
       ) }
@@ -65,7 +66,7 @@ const ContractDetailsAlerts = ({ data, isLoading, addressHash, channel }: Props)
       <ContractDetailsAlertVerificationSource data={ data }/>
       { (data?.is_changed_bytecode || isChangedBytecodeSocket) && (
         <Alert status="warning">
-            Warning! Contract bytecode has been changed and does not match the verified one. Therefore, interaction with this smart contract may be risky.
+          Warning! Contract bytecode has been changed and does not match the verified one. Therefore, interaction with this smart contract may be risky.
         </Alert>
       ) }
       { !data?.is_verified && data?.verified_twin_address_hash && (!data?.proxy_type || data.proxy_type === 'unknown') && (
@@ -79,7 +80,7 @@ const ContractDetailsAlerts = ({ data, isLoading, addressHash, channel }: Props)
           />
           <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
           <LinkInternal href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash } }) }>
-              Verify & Publish
+            Verify & Publish
           </LinkInternal>
           <span> page</span>
         </Alert>

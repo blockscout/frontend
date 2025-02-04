@@ -7,7 +7,7 @@ import type { EntityProps } from './AddressEntity';
 
 type Props = Omit<EntityProps, 'address'> & {
   address: string | AddressParamBasic;
-}
+};
 
 const AddressStringOrParam = ({ address, ...props }: Props) => {
   let addressParam;

@@ -1,7 +1,8 @@
-import { Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import * as blobUtils from 'lib/blob';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -10,7 +11,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const TYPES: Record<string, { iconName: IconName; label: string}> = {
+const TYPES: Record<string, { iconName: IconName; label: string }> = {
   image: { iconName: 'blobs/image', label: 'Image' },
   text: { iconName: 'blobs/text', label: 'Text' },
   raw: { iconName: 'blobs/raw', label: 'Raw' },

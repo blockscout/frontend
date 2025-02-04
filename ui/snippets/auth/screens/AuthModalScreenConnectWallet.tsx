@@ -5,6 +5,8 @@ import type { ScreenSuccess } from '../types';
 import type { UserInfo } from 'types/api/account';
 
 import type * as mixpanel from 'lib/mixpanel';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import useSignInWithWallet from '../useSignInWithWallet';
 
@@ -17,6 +19,7 @@ interface Props {
 
 const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth, source }: Props) => {
   const isStartedRef = React.useRef(false);
+  const recaptcha = useReCaptcha();
 
   const handleSignInSuccess = React.useCallback(({ address, profile }: { address: string; profile: UserInfo }) => {
     onSuccess({ type: 'success_wallet', address, isAuth, profile });
@@ -26,7 +29,13 @@ const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth, source }: Pr
     onError(isAuth);
   }, [ onError, isAuth ]);
 
-  const { start } = useSignInWithWallet({ onSuccess: handleSignInSuccess, onError: handleSignInError, source, isAuth });
+  const { start } = useSignInWithWallet({
+    onSuccess: handleSignInSuccess,
+    onError: handleSignInError,
+    source,
+    isAuth,
+    executeRecaptchaAsync: recaptcha.executeAsync,
+  });
 
   React.useEffect(() => {
     if (!isStartedRef.current) {
@@ -35,7 +44,12 @@ const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth, source }: Pr
     }
   }, [ start ]);
 
-  return <Center h="100px"><Spinner/></Center>;
+  return (
+    <Center h="100px">
+      <Spinner/>
+      <ReCaptcha ref={ recaptcha.ref }/>
+    </Center>
+  );
 };
 
 export default React.memo(AuthModalScreenConnectWallet);

@@ -19,7 +19,7 @@ import { TX_HASH } from './tx';
 export const ADDRESS_INFO: Address = {
   block_number_balance_updated_at: 8774377,
   coin_balance: '810941268802273085757',
-  creation_tx_hash: null,
+  creation_transaction_hash: null,
   creator_address_hash: ADDRESS_HASH,
   exchange_rate: null,
   has_decompiled_code: false,
@@ -48,7 +48,7 @@ export const ADDRESS_COUNTERS: AddressCounters = {
 };
 
 export const ADDRESS_TABS_COUNTERS: AddressTabsCounters = {
-  internal_txs_count: 10,
+  internal_transactions_count: 10,
   logs_count: 10,
   token_balances_count: 10,
   token_transfers_count: 10,
@@ -59,7 +59,7 @@ export const ADDRESS_TABS_COUNTERS: AddressTabsCounters = {
 
 export const TOP_ADDRESS: AddressesItem = {
   coin_balance: '11886682377162664596540805',
-  tx_count: '1835',
+  transaction_count: '1835',
   hash: '0x4f7A67464B5976d7547c860109e4432d50AfB38e',
   implementations: null,
   is_contract: false,
@@ -121,10 +121,11 @@ export const ADDRESS_MUD_TABLE_ITEM: AddressMudTableItem = {
 export const EPOCH_REWARD_ITEM: AddressEpochRewardsItem = {
   amount: '136609473658452408568',
   block_number: 10355938,
+  block_timestamp: '2022-05-15T13:16:24Z',
   type: 'voter',
   token: TOKEN_INFO_ERC_20,
   block_hash: '0x5956a847d8089e254e02e5111cad6992b99ceb9e5c2dc4343fd53002834c4dc6',
   account: ADDRESS_PARAMS,
-  epoch_number: 1526,
+  epoch_number: 1234,
   associated_account: ADDRESS_PARAMS,
 };

@@ -56,6 +56,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
+const PREDEFINED_TAG_PRIORITY = 100;
 
 const txInterpretation = config.features.txInterpretation;
 const addressProfileAPIFeature = config.features.addressProfileAPI;
@@ -67,7 +68,6 @@ const AddressPageContent = () => {
 
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
   const hash = getQueryParamString(router.query.hash);
-  const checkSummedHash = React.useMemo(() => getCheckedSummedAddress(hash), [ hash ]);
 
   const checkDomainName = useCheckDomainNameParam(hash);
   const checkAddressFormat = useCheckAddressFormat(hash);
@@ -204,7 +204,7 @@ const AddressPageContent = () => {
       {
         id: 'internal_txns',
         title: 'Internal txns',
-        count: addressTabsCountersQuery.data?.internal_txs_count,
+        count: addressTabsCountersQuery.data?.internal_transactions_count,
         component: <AddressInternalTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       },
       addressTabsCountersQuery.data?.celo_election_rewards_count ? {
@@ -238,16 +238,18 @@ const AddressPageContent = () => {
       addressQuery.data?.is_contract ? {
         id: 'contract',
         title: () => {
+          const tabName = addressQuery.data.proxy_type === 'eip7702' ? 'Code' : 'Contract';
+
           if (addressQuery.data.is_verified) {
             return (
               <>
-                <span>Contract</span>
+                <span>{ tabName }</span>
                 <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
               </>
             );
           }
 
-          return 'Contract';
+          return tabName;
         },
         component: (
           <AddressContract
@@ -274,12 +276,17 @@ const AddressPageContent = () => {
   const tags: Array<EntityTag> = React.useMemo(() => {
     return [
       ...(addressQuery.data?.public_tags?.map((tag) => ({ slug: tag.label, name: tag.display_name, tagType: 'custom' as const, ordinal: -1 })) || []),
-      !addressQuery.data?.is_contract ? { slug: 'eoa', name: 'EOA', tagType: 'custom' as const, ordinal: -1 } : undefined,
+      !addressQuery.data?.is_contract ? { slug: 'eoa', name: 'EOA', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } : undefined,
       config.features.validators.isEnabled && addressQuery.data?.has_validated_blocks ?
-        { slug: 'validator', name: 'Validator', tagType: 'custom' as const, ordinal: 10 } :
+        { slug: 'validator', name: 'Validator', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
         undefined,
-      addressQuery.data?.implementations?.length ? { slug: 'proxy', name: 'Proxy', tagType: 'custom' as const, ordinal: -1 } : undefined,
-      addressQuery.data?.token ? { slug: 'token', name: 'Token', tagType: 'custom' as const, ordinal: -1 } : undefined,
+      addressQuery.data?.implementations?.length && addressQuery.data?.proxy_type !== 'eip7702' ?
+        { slug: 'proxy', name: 'Proxy', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
+        undefined,
+      addressQuery.data?.implementations?.length && addressQuery.data?.proxy_type === 'eip7702' ?
+        { slug: 'eip7702', name: 'EOA+code', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
+        undefined,
+      addressQuery.data?.token ? { slug: 'token', name: 'Token', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } : undefined,
       isSafeAddress ? { slug: 'safe', name: 'Multisig: Safe', tagType: 'custom' as const, ordinal: -10 } : undefined,
       addressProfileAPIFeature.isEnabled && usernameApiTag ? {
         slug: 'username_api',
@@ -294,21 +301,20 @@ const AddressPageContent = () => {
         },
       } : undefined,
       config.features.userOps.isEnabled && userOpsAccountQuery.data ?
-        { slug: 'user_ops_acc', name: 'Smart contract wallet', tagType: 'custom' as const, ordinal: -10 } :
+        { slug: 'user_ops_acc', name: 'Smart contract wallet', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
         undefined,
       config.features.mudFramework.isEnabled && mudTablesCountQuery.data ?
-        { slug: 'mud', name: 'MUD World', tagType: 'custom' as const, ordinal: -10 } :
+        { slug: 'mud', name: 'MUD World', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
         undefined,
       ...formatUserTags(addressQuery.data),
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
-      !addressQuery.data?.is_contract && xScoreFeature.isEnabled && xStarQuery.data?.data ?
+      !addressQuery.data?.is_contract && xScoreFeature.isEnabled && xStarQuery.data?.data.level ?
         {
           slug: 'xstar',
-          name: `XHS ${ xStarQuery.data.data } level`,
+          name: `XHS ${ xStarQuery.data.data.level } level`,
           tagType: 'custom' as const,
           ordinal: 12,
           meta: {
-            tagUrl: xScoreFeature.url,
             tooltipTitle: 'XStar humanity levels',
             tooltipDescription:
               'XStar looks for off-chain information about an address and interpret it as a XHS score. Different score means different humanity levels.',
@@ -363,6 +369,10 @@ const AddressPageContent = () => {
     return;
   }, [ appProps.referrer ]);
 
+  // API always returns hash in check-summed format except for addresses that are not in the database
+  // In this case it returns 404 with empty payload, so we calculate check-summed hash on the client
+  const checkSummedHash = React.useMemo(() => addressQuery.data?.hash ?? getCheckedSummedAddress(hash), [ hash, addressQuery.data?.hash ]);
+
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
       { addressQuery.data?.ens_domain_name && (
@@ -405,14 +415,14 @@ const AddressPageContent = () => {
         <SolidityscanReport hash={ hash }/> }
       { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
         <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
-      <NetworkExplorers type="address" pathParam={ hash }/>
+      <NetworkExplorers type="address" pathParam={ hash.toLowerCase() }/>
     </Flex>
   );
 
   return (
     <>
       <PageTitle
-        title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
+        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details` }
         backLink={ backLink }
         contentAfter={ titleContentAfter }
         secondRow={ titleSecondRow }

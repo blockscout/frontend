@@ -25,6 +25,7 @@ export type SmartContractProxyType =
   | 'eip1822'
   | 'eip930'
   | 'eip2535'
+  | 'eip7702'
   | 'master_copy'
   | 'basic_implementation'
   | 'basic_get_implementation'
@@ -73,16 +74,22 @@ export interface SmartContract {
   license_type: SmartContractLicenseType | null;
   certified?: boolean;
   zk_compiler_version?: string;
+  github_repository_metadata?: {
+    commit?: string;
+    path_prefix?: string;
+    repository_url?: string;
+  };
+  package_name?: string;
 }
 
 export type SmartContractDecodedConstructorArg = [
-  string,
+  unknown,
   {
     internalType: SmartContractMethodArgType;
     name: string;
     type: SmartContractMethodArgType;
-  }
-]
+  },
+];
 
 export interface SmartContractExternalLibrary {
   address_hash: string;
@@ -92,13 +99,14 @@ export interface SmartContractExternalLibrary {
 // VERIFICATION
 
 export type SmartContractVerificationMethodApi = 'flattened-code' | 'standard-input' | 'sourcify' | 'multi-part'
-| 'vyper-code' | 'vyper-multi-part' | 'vyper-standard-input';
+| 'vyper-code' | 'vyper-multi-part' | 'vyper-standard-input' | 'stylus-github-repository';
 
 export interface SmartContractVerificationConfigRaw {
   solidity_compiler_versions: Array<string>;
   solidity_evm_versions: Array<string>;
   verification_options: Array<string>;
   vyper_compiler_versions: Array<string>;
+  stylus_compiler_versions?: Array<string>;
   vyper_evm_versions: Array<string>;
   is_rust_verifier_microservice_enabled: boolean;
   license_types: Record<SmartContractLicenseType, number>;
@@ -111,7 +119,7 @@ export type SmartContractVerificationResponse = {
   errors: SmartContractVerificationError;
 } | {
   status: 'success';
-}
+};
 
 export interface SmartContractVerificationError {
   contract_source_code?: Array<string>;
@@ -126,24 +134,24 @@ type SmartContractSecurityAudit = {
   audit_company_name: string;
   audit_publish_date: string;
   audit_report_url: string;
-}
+};
 
 export type SmartContractSecurityAudits = {
   items: Array<SmartContractSecurityAudit>;
-}
+};
 
 export type SmartContractSecurityAuditSubmission = {
-  'address_hash': string;
-  'submitter_name': string;
-  'submitter_email': string;
-  'is_project_owner': boolean;
-  'project_name': string;
-  'project_url': string;
-  'audit_company_name': string;
-  'audit_report_url': string;
-  'audit_publish_date': string;
-  'comment'?: string;
-}
+  address_hash: string;
+  submitter_name: string;
+  submitter_email: string;
+  is_project_owner: boolean;
+  project_name: string;
+  project_url: string;
+  audit_company_name: string;
+  audit_report_url: string;
+  audit_publish_date: string;
+  comment?: string;
+};
 
 // MUD SYSTEM
 

@@ -1,16 +1,17 @@
-import { Tr, Td, Text, Skeleton } from '@chakra-ui/react';
+import { Tr, Td, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 type Props = {
   item: AddressesItem;
   isLoading?: boolean;
-}
+};
 
 const AddressesLabelSearchTableItem = ({
   item,
@@ -38,7 +39,7 @@ const AddressesLabelSearchTableItem = ({
       </Td>
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading } display="inline-block" lineHeight="24px">
-          { Number(item.tx_count).toLocaleString() }
+          { Number(item.transaction_count).toLocaleString() }
         </Skeleton>
       </Td>
     </Tr>

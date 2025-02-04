@@ -1,8 +1,9 @@
-import { Button, Skeleton, Flex, IconButton, chakra } from '@chakra-ui/react';
+import { Button, Flex, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from './types';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends PaginationParams {
@@ -30,7 +31,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
           onClick={ resetPage }
           isDisabled={ page === 1 || isLoading }
         >
-        First
+          First
         </Button>
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" mr={ 3 } borderRadius="base">

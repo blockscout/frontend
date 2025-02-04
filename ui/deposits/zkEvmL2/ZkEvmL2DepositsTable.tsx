@@ -11,7 +11,7 @@ import ZkEvmL2DepositsTableItem from './ZkEvmL2DepositsTableItem';
    items: Array<ZkEvmL2DepositsItem>;
    top: number;
    isLoading?: boolean;
- }
+ };
 
 const ZkEvmL2DepositsTable = ({ items, top, isLoading }: Props) => {
   return (

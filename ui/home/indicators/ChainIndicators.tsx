@@ -1,9 +1,10 @@
-import { Flex, Skeleton, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -40,9 +41,9 @@ const ChainIndicators = () => {
 
   const bgColor = 'grey.10';
 
-  // if (indicators.length === 0) {
-  //   return null;
-  // }
+  if (indicators.length === 0) {
+    return null;
+  }
 
   const valueTitle = (() => {
     if (statsQueryResult.isPlaceholderData) {

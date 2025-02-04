@@ -6,7 +6,7 @@ import { urlValidator } from '../validators/url';
 
 interface Params<
   FormFields extends FieldValues,
-  Name extends Path<FormFields>
+  Name extends Path<FormFields>,
 > {
   name: Name;
   isRequired?: boolean;
@@ -33,7 +33,7 @@ interface ReturnType {
 
 export default function useFieldWithImagePreview<
   FormFields extends FieldValues,
-  Name extends Path<FormFields>
+  Name extends Path<FormFields>,
 >({
   name,
   isRequired,

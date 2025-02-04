@@ -1,6 +1,6 @@
 import { Thead, useColorModeValue } from '@chakra-ui/react';
 import type { TableHeadProps, PositionProps } from '@chakra-ui/react';
-import throttle from 'lodash/throttle';
+import { throttle } from 'es-toolkit';
 import React from 'react';
 
 interface Props extends TableHeadProps {
@@ -33,7 +33,7 @@ const TheadSticky = ({ top, children, ...restProps }: Props) => {
   const props = {
     ...restProps,
     position: 'sticky' as PositionProps['position'],
-    top: `${ top }px` || 0,
+    top: top ? `${ top }px` : 0,
     backgroundColor: useColorModeValue('white', 'black'),
     boxShadow: isSticky ? 'md' : 'none',
     zIndex: '1',

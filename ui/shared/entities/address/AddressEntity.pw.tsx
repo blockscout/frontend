@@ -19,7 +19,7 @@ test.use({ viewport: { width: 180, height: 140 } });
 
 test.describe('icon size', () => {
   iconSizes.forEach((size) => {
-    test(size, async({ render }) => {
+    test(`${ size }`, async({ render }) => {
       const component = await render(
         <AddressEntity
           address={ addressMock.withoutName }
@@ -148,6 +148,16 @@ test('with ENS', async({ render }) => {
   const component = await render(
     <AddressEntity
       address={ addressMock.withEns }
+    />,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('delegated address +@dark-mode', async({ render }) => {
+  const component = await render(
+    <AddressEntity
+      address={ addressMock.delegated }
     />,
   );
 

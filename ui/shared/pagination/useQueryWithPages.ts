@@ -1,11 +1,13 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
-import omit from 'lodash/omit';
+import { omit } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { animateScroll } from 'react-scroll';
 
 import type { PaginationParams } from './types';
+
+import type { Route } from 'nextjs-routes';
 
 import type { PaginatedResources, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'lib/api/resources';
 import { RESOURCES, SORTING_FIELDS } from 'lib/api/resources';
@@ -26,6 +28,10 @@ type NextPageParams = Record<string, unknown>;
 
 const INITIAL_PAGE_PARAMS = { '1': {} };
 
+function getPageFromQuery(query: Route['query']) {
+  return query?.page && !Array.isArray(query.page) ? Number(query.page) : 1;
+}
+
 function getPaginationParamsFromQuery(queryString: string | Array<string> | undefined) {
   if (queryString) {
     try {
@@ -37,7 +43,7 @@ function getPaginationParamsFromQuery(queryString: string | Array<string> | unde
 }
 
 function getNextPageParams<R extends PaginatedResources>(data: ResourcePayload<R> | undefined) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
   // @ts-ignore-next-line
   if (!data || typeof data !== 'object' || !('next_page_params' in data)) {
     return;
@@ -52,7 +58,7 @@ UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
   onFilterChange: <R extends PaginatedResources = Resource>(filters: PaginationFilters<R>) => void;
   onSortingChange: (sorting?: PaginationSorting<Resource>) => void;
   pagination: PaginationParams;
-}
+};
 
 export default function useQueryWithPages<Resource extends PaginatedResources>({
   resourceName,
@@ -66,7 +72,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const [ page, setPage ] = React.useState<number>(router.query.page && !Array.isArray(router.query.page) ? Number(router.query.page) : 1);
+  const [ page, setPage ] = React.useState<number>(getPageFromQuery(router.query));
   const [ pageParams, setPageParams ] = React.useState<Record<number, NextPageParams>>({
     [page]: getPaginationParamsFromQuery(router.query.next_page_params),
   });
@@ -150,7 +156,14 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   }, [ queryClient, resourceName, router, scrollToTop ]);
 
   const onFilterChange = useCallback(<R extends PaginatedResources = Resource>(newFilters: PaginationFilters<R> | undefined) => {
-    const newQuery = omit<typeof router.query>(router.query, 'next_page_params', 'page', 'filterFields' in resource ? resource.filterFields : []);
+    const newQuery: typeof router.query = omit(
+      router.query,
+      [
+        'next_page_params',
+        'page',
+        ...('filterFields' in resource ? resource.filterFields : []),
+      ],
+    );
     if (newFilters) {
       Object.entries(newFilters).forEach(([ key, value ]) => {
         const isValidValue = typeof value === 'boolean' || (value && value.length);
@@ -175,8 +188,8 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   }, [ router, resource, scrollToTop ]);
 
   const onSortingChange = useCallback((newSorting: PaginationSorting<Resource> | undefined) => {
-    const newQuery = {
-      ...omit<typeof router.query>(router.query, 'next_page_params', 'page', SORTING_FIELDS),
+    const newQuery: typeof router.query = {
+      ...omit(router.query, [ 'next_page_params', 'page', ...SORTING_FIELDS ]),
       ...newSorting,
     };
     scrollToTop();
@@ -222,6 +235,18 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
       isMounted.current = true;
     }, 0);
   }, []);
+
+  React.useEffect(() => {
+    const pageFromQuery = getPageFromQuery(router.query);
+    const nextPageParamsFromQuery = getPaginationParamsFromQuery(router.query.next_page_params);
+
+    setPage(pageFromQuery);
+    setPageParams(prev => ({
+      ...prev,
+      [pageFromQuery]: nextPageParamsFromQuery,
+    }));
+    setHasPages(pageFromQuery > 1);
+  }, [ router.query ]);
 
   return { ...queryResult, pagination, onFilterChange, onSortingChange };
 }

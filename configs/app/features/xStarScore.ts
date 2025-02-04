@@ -2,8 +2,8 @@ import type { Feature } from './types';
 
 import { getEnvValue } from '../utils';
 
-const title = 'Xname score';
-const url = getEnvValue('NEXT_PUBLIC_XNAME_SCORE_URL');
+const title = 'XStar score';
+const url = getEnvValue('NEXT_PUBLIC_XSTAR_SCORE_URL');
 
 const config: Feature<{ url: string }> = (() => {
   if (url) {

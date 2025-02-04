@@ -1,7 +1,8 @@
-import { Link, Skeleton, Box } from '@chakra-ui/react';
+import { Link, Box } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import * as mixpanel from 'lib/mixpanel/index';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 const IframeBanner = ({ contentUrl, linkUrl }: { contentUrl: string; linkUrl: string }) => {
   const [ isFrameLoading, setIsFrameLoading ] = useState(true);

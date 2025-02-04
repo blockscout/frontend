@@ -1,7 +1,6 @@
 import {
   Box,
   Flex,
-  Skeleton,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -11,6 +10,7 @@ import type { Block } from 'types/api/block';
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -18,7 +18,7 @@ import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 type Props = {
   block: Block;
   isLoading?: boolean;
-}
+};
 
 const LatestBlocksItem = ({ block, isLoading }: Props) => {
   const totalReward = getBlockTotalReward(block);
@@ -61,7 +61,7 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
       <Flex gap={ 2 } direction="column" fontSize="sm">
         <Flex justify="space-between">
           <Skeleton isLoaded={ !isLoading } color="grey.50">Txn</Skeleton>
-          <Skeleton isLoaded={ !isLoading } color="white"><span>{ block.tx_count }</span></Skeleton>
+          <Skeleton isLoaded={ !isLoading } color="white"><span>{ block.transaction_count }</span></Skeleton>
         </Flex>
 
         { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward && (

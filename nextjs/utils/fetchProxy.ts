@@ -1,5 +1,5 @@
+import { pick } from 'es-toolkit';
 import type { IncomingMessage } from 'http';
-import _pick from 'lodash/pick';
 import type { NextApiRequest } from 'next';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { RequestInit, Response } from 'node-fetch';
@@ -21,7 +21,7 @@ export default function fetchFactory(
       accept: _req.headers['accept'] || 'application/json',
       'content-type': _req.headers['content-type'] || 'application/json',
       cookie: apiToken ? `${ cookies.NAMES.API_TOKEN }=${ apiToken }` : '',
-      ..._pick(_req.headers, [
+      ...pick(_req.headers, [
         'x-csrf-token',
         'Authorization', // the old value, just in case
         'authorization', // Node.js automatically lowercases headers

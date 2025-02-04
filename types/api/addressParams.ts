@@ -1,7 +1,9 @@
 import type { AddressMetadataTagApi } from './addressMetadata';
+import type { SmartContractProxyType } from './contract';
 
 export interface AddressImplementation {
   address: string;
+  filecoin_robust_address?: string | null;
   name?: string | null;
 }
 
@@ -20,7 +22,7 @@ export type AddressFilecoinParams = {
   actor_type?: FilecoinActorType;
   id?: string | null;
   robust?: string | null;
-}
+};
 
 export type FilecoinActorType =
   'account' |
@@ -58,6 +60,7 @@ export type AddressParamBasic = {
     tags: Array<AddressMetadataTagApi>;
   } | null;
   filecoin?: AddressFilecoinParams;
-}
+  proxy_type?: SmartContractProxyType | null;
+};
 
 export type AddressParam = UserTags & AddressParamBasic;

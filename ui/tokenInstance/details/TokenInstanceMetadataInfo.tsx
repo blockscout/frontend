@@ -1,10 +1,11 @@
-import { Grid, GridItem, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 import type { MetadataAttributes } from 'types/client/token';
 
 import parseMetadata from 'lib/token/parseMetadata';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import LinkExternal from 'ui/shared/links/LinkExternal';
@@ -123,7 +124,7 @@ const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) =>
           </DetailsInfoItem.Value>
         </>
       ) }
-      { metadata?.attributes && (
+      { metadata?.attributes && metadata.attributes.length > 0 && (
         <>
           <DetailsInfoItem.Label
             hint="NFT attributes"

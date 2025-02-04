@@ -7,17 +7,17 @@ export const mudWorlds: MudWorldsResponse = {
     {
       address: withName,
       coin_balance: '300000000000000000',
-      tx_count: 3938,
+      transaction_count: 3938,
     },
     {
       address: withoutName,
       coin_balance: '0',
-      tx_count: 0,
+      transaction_count: 0,
     },
     {
       address: withoutName,
       coin_balance: '0',
-      tx_count: 0,
+      transaction_count: 0,
     },
   ],
   next_page_params: {

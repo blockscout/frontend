@@ -9,7 +9,7 @@ export type UserOpsItem = {
   timestamp: string;
   status: boolean;
   fee: string;
-}
+};
 
 export type UserOpsResponse = {
   items: Array<UserOpsItem>;
@@ -17,7 +17,7 @@ export type UserOpsResponse = {
     page_token: string;
     page_size: number;
   } | null;
-}
+};
 
 export type UserOpSponsorType = 'paymaster_hybrid' | 'paymaster_sponsor' | 'wallet_balance' | 'wallet_deposit';
 
@@ -69,13 +69,13 @@ export type UserOp = {
   };
   gas_price: string;
   gas_used: string;
-}
+};
 
 export type UserOpsFilters = {
   transaction_hash?: string;
   sender?: string;
-}
+};
 
 export type UserOpsAccount = {
   total_ops: number;
-}
+};

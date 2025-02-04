@@ -4,7 +4,6 @@ import {
   HStack,
   Text,
   Grid,
-  Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -14,6 +13,7 @@ import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -25,7 +25,7 @@ import TxType from 'ui/txs/TxType';
 type Props = {
   tx: Transaction;
   isLoading?: boolean;
-}
+};
 
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
@@ -49,7 +49,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
       <Flex overflow="hidden" w="100%">
         <Box w="calc(100% - 40px)">
           <HStack flexWrap="wrap" my="3px">
-            <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+            <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
             <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
             <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
           </HStack>

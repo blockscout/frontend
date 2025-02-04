@@ -21,7 +21,7 @@ type Props = {
   onClick?: (e: React.MouseEvent) => void;
   isCollapsed?: boolean;
   isDisabled?: boolean;
-}
+};
 
 const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
   const isMobile = useIsMobile();

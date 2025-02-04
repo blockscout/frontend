@@ -1,7 +1,8 @@
-import { chakra, ButtonGroup, Button, Flex, useRadio, useRadioGroup, Skeleton } from '@chakra-ui/react';
+import { chakra, ButtonGroup, Button, Flex, useRadio, useRadioGroup } from '@chakra-ui/react';
 import type { ChakraProps, UseRadioProps } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -14,7 +15,7 @@ type RadioItemProps = {
   title: string;
   icon: IconName;
   onlyIcon: true;
-}
+};
 
 type RadioButtonProps = UseRadioProps & RadioItemProps;
 
@@ -69,7 +70,7 @@ type RadioButtonGroupProps<T extends string> = {
   autoWidth?: boolean;
   className?: string;
   isLoading?: boolean;
-}
+};
 
 const RadioButtonGroup = <T extends string>({ onChange, name, defaultValue, options, autoWidth = false, className, isLoading }: RadioButtonGroupProps<T>) => {
   const { getRootProps, getRadioProps } = useRadioGroup({ name, defaultValue, onChange });
@@ -96,6 +97,6 @@ const RadioButtonGroup = <T extends string>({ onChange, name, defaultValue, opti
 };
 
 const WrappedRadioButtonGroup = chakra(RadioButtonGroup);
-type WrappedComponent = <T extends string>(props: RadioButtonGroupProps<T> & ChakraProps) => JSX.Element;
+type WrappedComponent = <T extends string>(props: RadioButtonGroupProps<T> & ChakraProps) => React.JSX.Element;
 
 export default React.memo(WrappedRadioButtonGroup) as WrappedComponent;

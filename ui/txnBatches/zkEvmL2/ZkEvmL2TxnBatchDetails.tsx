@@ -1,4 +1,4 @@
-import { Grid, Text, Skeleton } from '@chakra-ui/react';
+import { Grid, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -11,6 +11,7 @@ import { route } from 'nextjs-routes';
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -104,10 +105,10 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         Verify tx hash
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        { data.verify_tx_hash ? (
+        { data.verify_transaction_hash ? (
           <TxEntityL1
             isLoading={ isPlaceholderData }
-            hash={ data.verify_tx_hash }
+            hash={ data.verify_transaction_hash }
             maxW="100%"
           />
         ) : <Text>Pending</Text> }
@@ -162,10 +163,10 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         Sequence tx hash
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        { data.sequence_tx_hash ? (
+        { data.sequence_transaction_hash ? (
           <TxEntityL1
             isLoading={ isPlaceholderData }
-            hash={ data.sequence_tx_hash }
+            hash={ data.sequence_transaction_hash }
             maxW="100%"
           />
         ) : <Text>Pending</Text> }

@@ -13,7 +13,7 @@ import ArbitrumL2MessagesTableItem from './ArbitrumL2MessagesTableItem';
    direction: MessagesDirection;
    top: number;
    isLoading?: boolean;
- }
+ };
 
 const ArbitrumL2MessagesTable = ({ items, direction, top, isLoading }: Props) => {
   return (

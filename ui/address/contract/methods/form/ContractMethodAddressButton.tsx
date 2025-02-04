@@ -27,7 +27,7 @@ const ContractMethodAddressButton = ({ onClick, isDisabled }: Props) => {
         onClick={ handleClick }
         isDisabled={ isDisabled || !address }
       >
-       Self
+        Self
       </Button>
     </Tooltip>
   );

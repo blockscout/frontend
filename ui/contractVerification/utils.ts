@@ -8,6 +8,7 @@ import type {
   FormFieldsSourcify,
   FormFieldsStandardInput,
   FormFieldsStandardInputZk,
+  FormFieldsStylusGitHubRepo,
   FormFieldsVyperContract,
   FormFieldsVyperMultiPartFile,
   FormFieldsVyperStandardInput,
@@ -19,6 +20,7 @@ import type {
 import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/client/contract';
 
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
+import stripLeadingSlash from 'lib/stripLeadingSlash';
 
 export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMethod> = [
   'flattened-code',
@@ -30,6 +32,7 @@ export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMeth
   'vyper-code',
   'vyper-multi-part',
   'vyper-standard-input',
+  'stylus-github-repository',
 ];
 
 export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
@@ -42,6 +45,7 @@ export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
   'vyper-standard-input': 'Vyper (Standard JSON input)',
   'solidity-hardhat': 'Solidity (Hardhat)',
   'solidity-foundry': 'Solidity (Foundry)',
+  'stylus-github-repository': 'Stylus (GitHub repository)',
 };
 
 export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields> = {
@@ -151,6 +155,18 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
     },
     compiler: null,
     sources: [],
+    license_type: null,
+  },
+  'stylus-github-repository': {
+    address: '',
+    method: {
+      value: 'stylus-github-repository' as const,
+      label: METHOD_LABELS['stylus-github-repository'],
+    },
+    compiler: null,
+    repository_url: '',
+    commit_hash: '',
+    path_prefix: '',
     license_type: null,
   },
 };
@@ -318,6 +334,18 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       return body;
     }
 
+    case 'stylus-github-repository': {
+      const _data = data as FormFieldsStylusGitHubRepo;
+
+      return {
+        cargo_stylus_version: _data.compiler?.value,
+        repository_url: _data.repository_url,
+        commit: _data.commit_hash,
+        path_prefix: _data.path_prefix,
+        license_type: _data.license_type?.value ?? defaultLicenseType,
+      };
+    }
+
     default: {
       return {};
     }
@@ -364,4 +392,17 @@ export function formatSocketErrors(errors: SmartContractVerificationError): Arra
 
     return [ API_ERROR_TO_FORM_FIELD[_key], { message: value.join(',') } ];
   });
+}
+
+export function getGitHubOwnerAndRepo(repositoryUrl: string) {
+  try {
+    const urlObj = new URL(repositoryUrl);
+    if (urlObj.hostname !== 'github.com') {
+      throw new Error();
+    }
+    const [ owner, repo, ...rest ] = stripLeadingSlash(urlObj.pathname).split('/');
+    return { owner, repo, rest, url: urlObj };
+  } catch (error) {
+    return;
+  }
 }

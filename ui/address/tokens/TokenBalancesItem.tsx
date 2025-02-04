@@ -1,13 +1,14 @@
-import { Box, Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 type Props = {
   name: string;
   value: string;
   icon: React.ReactNode;
   valueSecondary?: string;
   isLoading: boolean;
-}
+};
 
 const TokenBalancesItem = ({ name, icon, value, valueSecondary, isLoading }: Props) => {
 

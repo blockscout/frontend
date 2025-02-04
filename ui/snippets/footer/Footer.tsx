@@ -1,5 +1,5 @@
 import type { GridProps, HTMLChakraProps } from '@chakra-ui/react';
-import { Box, Grid, VStack, Skeleton } from '@chakra-ui/react';
+import { Box, Grid, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import type { CustomLinksGroup } from 'types/footerLinks';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useFetch from 'lib/hooks/useFetch';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import NetworkLogo from '../networkMenu/NetworkLogo';
 import FooterLinkItem from './FooterLinkItem';

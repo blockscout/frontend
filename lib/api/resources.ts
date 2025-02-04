@@ -42,6 +42,7 @@ import type {
 } from 'types/api/address';
 import type { AddressesResponse, AddressesMetadataSearchResult, AddressesMetadataSearchFilters } from 'types/api/addresses';
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
+import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'types/api/advancedFilter';
 import type {
   ArbitrumL2MessagesResponse,
   ArbitrumL2TxnBatch,
@@ -93,6 +94,7 @@ import type {
   OptimismL2BatchTxs,
   OptimismL2BatchBlocks,
 } from 'types/api/optimisticL2';
+import type { Pool, PoolsResponse } from 'types/api/pools';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type {
   RewardsConfigResponse,
@@ -105,6 +107,13 @@ import type {
   RewardsUserDailyClaimResponse,
   RewardsUserReferralsResponse,
 } from 'types/api/rewards';
+import type {
+  ScrollL2BatchesResponse,
+  ScrollL2TxnBatch,
+  ScrollL2TxnBatchTxs,
+  ScrollL2TxnBatchBlocks,
+  ScrollL2MessagesResponse,
+} from 'types/api/scrollL2';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
 import type { HomeStats } from 'types/api/stats';
@@ -255,6 +264,9 @@ export const RESOURCES = {
   },
   auth_link_address: {
     path: '/api/account/v2/address/link',
+  },
+  auth_logout: {
+    path: '/api/account/auth/logout',
   },
 
   // STATS MICROSERVICE API
@@ -597,7 +609,7 @@ export const RESOURCES = {
     filterFields: [],
   },
   address_xstar_score: {
-    path: '/api/v2/proxy/xname/address/:hash',
+    path: '/api/v2/proxy/xname/addresses/:hash',
     pathParams: [ 'hash' as const ],
   },
 
@@ -983,6 +995,51 @@ export const RESOURCES = {
     path: '/api/v2/shibarium/withdrawals/count',
   },
 
+  // SCROLL L2
+  scroll_l2_deposits: {
+    path: '/api/v2/scroll/deposits',
+    filterFields: [],
+  },
+
+  scroll_l2_deposits_count: {
+    path: '/api/v2/scroll/deposits/count',
+  },
+
+  scroll_l2_withdrawals: {
+    path: '/api/v2/scroll/withdrawals',
+    filterFields: [],
+  },
+
+  scroll_l2_withdrawals_count: {
+    path: '/api/v2/scroll/withdrawals/count',
+  },
+
+  scroll_l2_txn_batches: {
+    path: '/api/v2/scroll/batches',
+    filterFields: [],
+  },
+
+  scroll_l2_txn_batches_count: {
+    path: '/api/v2/scroll/batches/count',
+  },
+
+  scroll_l2_txn_batch: {
+    path: '/api/v2/scroll/batches/:number',
+    pathParams: [ 'number' as const ],
+  },
+
+  scroll_l2_txn_batch_txs: {
+    path: '/api/v2/transactions/scroll-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
+  },
+
+  scroll_l2_txn_batch_blocks: {
+    path: '/api/v2/blocks/scroll-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
+  },
+
   // NOVES-FI
   noves_transaction: {
     path: '/api/v2/proxy/noves-fi/transactions/:hash',
@@ -1037,6 +1094,57 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const ],
   },
 
+  // ADVANCED FILTER
+  advanced_filter: {
+    path: '/api/v2/advanced-filters',
+    filterFields: [
+      'transaction_types' as const,
+      'methods' as const,
+      'methods_names' as const /* frontend only */,
+      'age_from' as const,
+      'age_to' as const,
+      'age' as const /* frontend only */,
+      'from_address_hashes_to_include' as const,
+      'from_address_hashes_to_exclude' as const,
+      'to_address_hashes_to_include' as const,
+      'to_address_hashes_to_exclude' as const,
+      'address_relation' as const,
+      'amount_from' as const,
+      'amount_to' as const,
+      'token_contract_address_hashes_to_include' as const,
+      'token_contract_symbols_to_include' as const /* frontend only */,
+      'token_contract_address_hashes_to_exclude' as const,
+      'token_contract_symbols_to_exclude' as const /* frontend only */,
+      'block_number' as const,
+      'transaction_index' as const,
+      'internal_transaction_index' as const,
+      'token_transfer_index' as const,
+    ],
+  },
+  advanced_filter_methods: {
+    path: '/api/v2/advanced-filters/methods',
+    filterFields: [ 'q' as const ],
+  },
+  advanced_filter_csv: {
+    path: '/api/v2/advanced-filters/csv',
+  },
+
+  // POOLS
+  pools: {
+    path: '/api/v1/chains/:chainId/pools',
+    pathParams: [ 'chainId' as const ],
+    filterFields: [ 'query' as const ],
+    endpoint: getFeaturePayload(config.features.pools)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.pools)?.api.basePath,
+  },
+
+  pool: {
+    path: '/api/v1/chains/:chainId/pools/:hash',
+    pathParams: [ 'chainId' as const, 'hash' as const ],
+    endpoint: getFeaturePayload(config.features.pools)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.pools)?.api.basePath,
+  },
+
   // CONFIGS
   config_backend_version: {
     path: '/api/v2/config/backend-version',
@@ -1069,6 +1177,9 @@ export const RESOURCES = {
   csv_export_logs: {
     path: '/api/v1/logs-csv',
   },
+  csv_export_epoch_rewards: {
+    path: '/api/v1/celo-election-rewards-csv',
+  },
   graphql: {
     path: '/api/v1/graphql',
   },
@@ -1081,10 +1192,10 @@ export type ResourceName = keyof typeof RESOURCES;
 
 type ResourcePathMap = {
   [K in ResourceName]: typeof RESOURCES[K]['path']
-}
-export type ResourcePath = ResourcePathMap[keyof ResourcePathMap]
+};
+export type ResourcePath = ResourcePathMap[keyof ResourcePathMap];
 
-export type ResourceFiltersKey<R extends ResourceName> = typeof RESOURCES[R] extends {filterFields: Array<unknown>} ?
+export type ResourceFiltersKey<R extends ResourceName> = typeof RESOURCES[R] extends { filterFields: Array<unknown> } ?
   ArrayElement<typeof RESOURCES[R]['filterFields']> :
   never;
 
@@ -1105,7 +1216,7 @@ export interface ResourceError<T = unknown> {
   statusText: Response['statusText'];
 }
 
-export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
+export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>;
 
 export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_rewards' |
 'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
@@ -1119,7 +1230,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'verified_contracts' |
 'optimistic_l2_output_roots' | 'optimistic_l2_withdrawals' | 'optimistic_l2_txn_batches' | 'optimistic_l2_deposits' |
 'optimistic_l2_dispute_games' | 'optimistic_l2_txn_batch_txs' | 'optimistic_l2_txn_batch_blocks' |
-'mud_worlds'| 'address_mud_tables' | 'address_mud_records' |
+'mud_worlds' | 'address_mud_tables' | 'address_mud_records' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
 'arbitrum_l2_messages' | 'arbitrum_l2_txn_batches' | 'arbitrum_l2_txn_batch_txs' | 'arbitrum_l2_txn_batch_blocks' |
 'zkevm_l2_deposits' | 'zkevm_l2_withdrawals' | 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
@@ -1127,11 +1238,12 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
 'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history' |
-'token_transfers_all';
+'token_transfers_all' | 'scroll_l2_txn_batches' | 'scroll_l2_txn_batch_txs' | 'scroll_l2_txn_batch_blocks' |
+'scroll_l2_deposits' | 'scroll_l2_withdrawals' | 'advanced_filter' | 'pools';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 // !!! IMPORTANT !!!
 // Don't add any new types here because TypeScript cannot handle it properly
 // use ResourcePayloadB instead
@@ -1155,7 +1267,7 @@ Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
 Q extends 'homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
 Q extends 'homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
 Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
-Q extends 'homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem>} :
+Q extends 'homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem> } :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'homepage_zkevm_latest_batch' ? number :
 Q extends 'homepage_zksync_latest_batch' ? number :
@@ -1237,9 +1349,9 @@ Q extends 'optimistic_l2_dispute_games_count' ? number :
 never;
 // !!! IMPORTANT !!!
 // See comment above
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type ResourcePayloadB<Q extends ResourceName> =
 Q extends 'config_backend_version' ? BackendVersionConfig :
 Q extends 'config_csv_export' ? CsvExportConfig :
@@ -1275,6 +1387,8 @@ Q extends 'zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
 Q extends 'zksync_l2_txn_batches_count' ? number :
 Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :
 Q extends 'zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
+Q extends 'scroll_l2_txn_batch_txs' ? ScrollL2TxnBatchTxs :
+Q extends 'scroll_l2_txn_batch_blocks' ? ScrollL2TxnBatchBlocks :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
 Q extends 'addresses_lookup' ? bens.LookupAddressResponse :
 Q extends 'address_domain' ? bens.GetAddressResponse :
@@ -1285,7 +1399,7 @@ Q extends 'domain_protocols' ? bens.GetProtocolsResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :
-Q extends 'user_op_interpretation'? TxInterpretationResponse :
+Q extends 'user_op_interpretation' ? TxInterpretationResponse :
 Q extends 'noves_transaction' ? NovesResponseData :
 Q extends 'noves_address_history' ? NovesAccountHistoryResponse :
 Q extends 'noves_describe_txs' ? NovesDescribeTxsResponse :
@@ -1310,8 +1424,19 @@ Q extends 'rewards_user_daily_claim' ? RewardsUserDailyClaimResponse :
 Q extends 'rewards_user_referrals' ? RewardsUserReferralsResponse :
 Q extends 'token_transfers_all' ? TokenTransferResponse :
 Q extends 'address_xstar_score' ? AddressXStarResponse :
+Q extends 'scroll_l2_txn_batches' ? ScrollL2BatchesResponse :
+Q extends 'scroll_l2_txn_batches_count' ? number :
+Q extends 'scroll_l2_txn_batch' ? ScrollL2TxnBatch :
+Q extends 'scroll_l2_deposits' ? ScrollL2MessagesResponse :
+Q extends 'scroll_l2_deposits_count' ? number :
+Q extends 'scroll_l2_withdrawals' ? ScrollL2MessagesResponse :
+Q extends 'scroll_l2_withdrawals_count' ? number :
+Q extends 'advanced_filter' ? AdvancedFilterResponse :
+Q extends 'advanced_filter_methods' ? AdvancedFilterMethodsResponse :
+Q extends 'pools' ? PoolsResponse :
+Q extends 'pool' ? Pool :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
 export type ResourcePayload<Q extends ResourceName> = ResourcePayloadA<Q> | ResourcePayloadB<Q>;
 export type PaginatedResponseItems<Q extends ResourceName> = Q extends PaginatedResources ? ResourcePayloadA<Q>['items'] | ResourcePayloadB<Q>['items'] : never;
@@ -1319,7 +1444,7 @@ export type PaginatedResponseNextPageParams<Q extends ResourceName> = Q extends 
   ResourcePayloadA<Q>['next_page_params'] | ResourcePayloadB<Q>['next_page_params'] :
   never;
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type PaginationFilters<Q extends PaginatedResources> =
 Q extends 'blocks' ? BlockFilters :
 Q extends 'block_txs' ? TTxsWithBlobsFilters :
@@ -1345,10 +1470,12 @@ Q extends 'validators_stability' ? ValidatorsStabilityFilters :
 Q extends 'address_mud_tables' ? AddressMudTablesFilter :
 Q extends 'address_mud_records' ? AddressMudRecordsFilter :
 Q extends 'token_transfers_all' ? TokenTransferFilters :
+Q extends 'advanced_filter' ? AdvancedFilterParams :
+Q extends 'pools' ? { query: string } :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type PaginationSorting<Q extends PaginatedResources> =
 Q extends 'tokens' ? TokensSorting :
 Q extends 'tokens_bridged' ? TokensSorting :
@@ -1360,4 +1487,4 @@ Q extends 'validators_stability' ? ValidatorsStabilitySorting :
 Q extends 'validators_blackfort' ? ValidatorsBlackfortSorting :
 Q extends 'address_mud_records' ? AddressMudRecordsSorting :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */

@@ -2,19 +2,20 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
 import type { TransactionsSortingValue, TxsResponse } from 'types/api/transaction';
+import type { SelectOption } from 'ui/shared/select/types';
 
 import type { ResourceError } from 'lib/api/resources';
 import * as cookies from 'lib/cookies';
-import type { TOption } from 'ui/shared/sort/Option';
 
 import sortTxs from './sortTxs';
 
-export const SORT_OPTIONS: Array<TOption<TransactionsSortingValue>> = [
-  { title: 'Default', id: undefined },
-  { title: 'Value ascending', id: 'value-asc' },
-  { title: 'Value descending', id: 'value-desc' },
-  { title: 'Fee ascending', id: 'fee-asc' },
-  { title: 'Fee descending', id: 'fee-desc' },
+export const SORT_OPTIONS: Array<SelectOption<TransactionsSortingValue>> = [
+  { label: 'Default', value: undefined },
+  { label: 'Value ascending', value: 'value-asc' },
+  { label: 'Value descending', value: 'value-desc' },
+  { label: 'Fee ascending', value: 'fee-asc' },
+  { label: 'Fee descending', value: 'fee-desc' },
+  { label: 'Block number ascending', value: 'block_number-asc' },
 ];
 
 type SortingValue = TransactionsSortingValue | undefined;
@@ -22,7 +23,7 @@ type SortingValue = TransactionsSortingValue | undefined;
 type HookResult = UseQueryResult<TxsResponse, ResourceError<unknown>> & {
   sorting: SortingValue;
   setSortByValue: (value: SortingValue) => void;
-}
+};
 
 export default function useTxsSort(
   queryResult: UseQueryResult<TxsResponse, ResourceError<unknown>>,

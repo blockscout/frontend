@@ -1,4 +1,4 @@
-import { Text, Flex, Skeleton } from '@chakra-ui/react';
+import { Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { currencyUnits } from 'lib/units';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -40,7 +41,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
       <Flex columnGap={ 2 } w="100%">
         <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Txn</Skeleton>
         <Skeleton isLoaded={ !props.isLoading } display="inline-block" color="Skeleton_secondary">
-          <span>{ props.tx_count }</span>
+          <span>{ props.transaction_count }</span>
         </Skeleton>
       </Flex>
       <Flex columnGap={ 2 } w="100%">

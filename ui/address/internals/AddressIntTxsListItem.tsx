@@ -1,4 +1,4 @@
-import { Flex, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -26,7 +27,7 @@ const TxInternalsListItem = ({
   error,
   created_contract: createdContract,
   transaction_hash: txnHash,
-  block,
+  block_number: blockNumber,
   timestamp,
   currentAddress,
   isLoading,
@@ -58,7 +59,7 @@ const TxInternalsListItem = ({
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Block</Skeleton>
         <BlockEntity
           isLoading={ isLoading }
-          number={ block }
+          number={ blockNumber }
           noIcon
           fontSize="sm"
           lineHeight={ 5 }

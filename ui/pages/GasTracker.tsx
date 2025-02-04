@@ -1,4 +1,10 @@
-import { Alert, Box, Flex, Skeleton, chakra } from '@chakra-ui/react';
+import {
+  Alert,
+  Box,
+  Flex,
+  Heading,
+  chakra,
+} from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -6,8 +12,10 @@ import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import GasTrackerChart from 'ui/gasTracker/GasTrackerChart';
+import GasTrackerFaq from 'ui/gasTracker/GasTrackerFaq';
 import GasTrackerNetworkUtilization from 'ui/gasTracker/GasTrackerNetworkUtilization';
 import GasTrackerPrices from 'ui/gasTracker/GasTrackerPrices';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import GasInfoUpdateTimer from 'ui/shared/gas/GasInfoUpdateTimer';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -72,6 +80,8 @@ const GasTracker = () => {
     return data?.gas_prices ? <GasTrackerPrices prices={ data.gas_prices } isLoading={ isLoading }/> : null;
   })();
 
+  const faq = config.meta.seo.enhancedDataEnabled ? <GasTrackerFaq/> : null;
+
   return (
     <>
       <PageTitle
@@ -79,12 +89,14 @@ const GasTracker = () => {
         secondRow={ titleSecondRow }
         withTextAd
       />
+      <Heading as="h2" mt={ 8 } mb={ 4 } fontSize="2xl">{ `Track ${ config.chain.name } gas fees` }</Heading>
       { snippets }
       { config.features.stats.isEnabled && (
         <Box mt={ 12 }>
           <GasTrackerChart/>
         </Box>
       ) }
+      { faq }
     </>
   );
 };

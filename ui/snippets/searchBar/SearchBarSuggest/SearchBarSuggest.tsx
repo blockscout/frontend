@@ -1,6 +1,6 @@
 import { Box, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import throttle from 'lodash/throttle';
+import { throttle } from 'es-toolkit';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
@@ -162,7 +162,9 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
                 variant="secondary"
                 mt={ 6 }
                 mb={ 3 }
-                ref={ (el: HTMLParagraphElement) => categoriesRefs.current[indx] = el }
+                ref={ (el: HTMLParagraphElement) => {
+                  categoriesRefs.current[indx] = el;
+                } }
               >
                 { cat.title }
               </Text>

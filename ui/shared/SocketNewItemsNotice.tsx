@@ -1,5 +1,7 @@
-import { Alert, Link, Text, chakra, Skeleton, Tr, Td } from '@chakra-ui/react';
+import { Alert, Link, Text, chakra, Tr, Td } from '@chakra-ui/react';
 import React from 'react';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 interface InjectedProps {
   content: React.ReactNode;
@@ -7,7 +9,7 @@ interface InjectedProps {
 
 interface Props {
   type?: 'transaction' | 'token_transfer' | 'deposit' | 'block';
-  children?: (props: InjectedProps) => JSX.Element;
+  children?: (props: InjectedProps) => React.JSX.Element;
   className?: string;
   url: string;
   alert?: string;

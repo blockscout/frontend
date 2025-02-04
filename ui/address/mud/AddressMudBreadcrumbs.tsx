@@ -17,19 +17,19 @@ type TableViewProps = {
   hash: string;
   tableId: string;
   tableName: string;
-}
+};
 
 type RecordViewProps = TableViewProps & {
   recordId: string;
   recordName: string;
-}
+};
 
 type BreadcrumbItemProps = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   text: string;
   href: string;
   isLast?: boolean;
-}
+};
 
 const BreadcrumbItem = ({ text, href, isLast, scrollRef }: BreadcrumbItemProps) => {
   const iconColor = useColorModeValue('gray.300', 'gray.600');

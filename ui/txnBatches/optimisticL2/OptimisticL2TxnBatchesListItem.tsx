@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
@@ -7,6 +6,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
@@ -52,7 +52,7 @@ const OptimisticL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn count</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton isLoaded={ !isLoading } minW="40px">
-          { item.l1_tx_hashes.length }
+          { item.l1_transaction_hashes.length }
         </Skeleton>
       </ListItemMobileGrid.Value>
 
@@ -75,7 +75,7 @@ const OptimisticL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
         >
           <Skeleton isLoaded={ !isLoading } minW="40px">
-            { item.tx_count }
+            { item.transaction_count }
           </Skeleton>
         </LinkInternal>
       </ListItemMobileGrid.Value>

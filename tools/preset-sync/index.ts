@@ -4,6 +4,7 @@ import path from 'path';
 /* eslint-disable no-console */
 const PRESETS = {
   arbitrum: 'https://arbitrum.blockscout.com',
+  arbitrum_sepolia: 'https://arbitrum-sepolia.blockscout.com',
   base: 'https://base.blockscout.com',
   blackfort_testnet: 'https://blackfort-testnet.blockscout.com',
   celo_alfajores: 'https://celo-alfajores.blockscout.com',
@@ -13,15 +14,18 @@ const PRESETS = {
   garnet: 'https://explorer.garnetchain.com',
   filecoin: 'https://filecoin.blockscout.com',
   gnosis: 'https://gnosis.blockscout.com',
+  mekong: 'https://mekong.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
   optimism_celestia: 'https://opcelestia-raspberry.gelatoscout.com',
   optimism_sepolia: 'https://optimism-sepolia.blockscout.com',
   polygon: 'https://polygon.blockscout.com',
   rootstock_testnet: 'https://rootstock-testnet.blockscout.com',
+  scroll_sepolia: 'https://scroll-sepolia.blockscout.com',
   shibarium: 'https://www.shibariumscan.io',
   stability_testnet: 'https://stability-testnet.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
+  zilliqa_prototestnet: 'https://zilliqa-prototestnet.blockscout.com',
   zora: 'https://explorer.zora.energy',
   // main === staging
   main: 'https://eth-sepolia.k8s-dev.blockscout.com',
@@ -38,6 +42,7 @@ const LOCAL_ENVS = {
 const IGNORED_ENVS = [
   'NEXT_PUBLIC_GIT_COMMIT_SHA',
   'NEXT_PUBLIC_GIT_TAG',
+  'NEXT_PUBLIC_ICON_SPRITE_HASH',
 ];
 
 function parseScriptArgs() {

@@ -24,7 +24,7 @@ const ACTOR_TYPES: Record<FilecoinActorType, string> = {
 
 type Props = {
   actorType: FilecoinActorType;
-}
+};
 
 const FilecoinActorTag = ({ actorType }: Props) => {
   const text = ACTOR_TYPES[actorType];

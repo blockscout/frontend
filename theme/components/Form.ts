@@ -17,7 +17,7 @@ function getFloatingVariantStylesForSize(size: 'md' | 'lg', props: StyleFunction
   const activeLabelStyles = {
     ...FormLabel.variants?.floating?.(props)._focusWithin,
     ...FormLabel.sizes?.[size](props)._focusWithin,
-  } || {};
+  };
 
   const activeInputStyles = (() => {
     switch (size) {

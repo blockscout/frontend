@@ -1,16 +1,17 @@
-import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react';
+import { useAppKit, useAppKitState } from '@reown/appkit/react';
 import React from 'react';
-import { useAccount, useDisconnect, useAccountEffect } from 'wagmi';
+import { useDisconnect, useAccountEffect } from 'wagmi';
 
 import * as mixpanel from 'lib/mixpanel/index';
+import useAccount from 'lib/web3/useAccount';
 
 interface Params {
   source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
 }
 
 export default function useWeb3Wallet({ source }: Params) {
-  const { open: openModal } = useWeb3Modal();
-  const { open: isOpen } = useWeb3ModalState();
+  const { open: openModal } = useAppKit();
+  const { open: isOpen } = useAppKitState();
   const { disconnect } = useDisconnect();
   const [ isOpening, setIsOpening ] = React.useState(false);
   const [ isClientLoaded, setIsClientLoaded ] = React.useState(false);
@@ -44,16 +45,17 @@ export default function useWeb3Wallet({ source }: Params) {
 
   useAccountEffect({ onConnect: handleAccountConnected });
 
-  const { address, isDisconnected } = useAccount();
-
-  const isConnected = isClientLoaded && !isDisconnected && address !== undefined;
+  const account = useAccount();
+  const address = account.address;
+  const isConnected = isClientLoaded && !account.isDisconnected && account.address !== undefined;
 
   return React.useMemo(() => ({
     connect: handleConnect,
     disconnect: handleDisconnect,
     isOpen: isOpening || isOpen,
     isConnected,
+    isReconnecting: account.isReconnecting,
     address,
     openModal,
-  }), [ handleConnect, handleDisconnect, isOpen, isOpening, isConnected, address, openModal ]);
+  }), [ handleConnect, handleDisconnect, isOpening, isOpen, isConnected, account.isReconnecting, address, openModal ]);
 }

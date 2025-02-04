@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
+import { FEATURED_NETWORKS } from 'mocks/config/network';
 import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
 
@@ -39,7 +39,7 @@ test('with horizontal nav bar layout', async({ render, mockApiResponse, mockEnvs
     [ 'NEXT_PUBLIC_NAVIGATION_LAYOUT', 'horizontal' ],
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS_MOCK);
+  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS);
   await mockAssetResponse('https://localhost:3000/my-logo.png', './playwright/mocks/image_s.jpg');
 
   const component = await render(<TopBar/>);

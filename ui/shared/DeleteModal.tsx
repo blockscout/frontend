@@ -19,10 +19,10 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  renderContent: () => JSX.Element;
+  renderContent: () => React.JSX.Element;
   mutationFn: () => Promise<unknown>;
   onSuccess: () => Promise<void>;
-}
+};
 
 const DeleteModal: React.FC<Props> = ({
   isOpen,
@@ -39,7 +39,7 @@ const DeleteModal: React.FC<Props> = ({
     onClose();
   }, [ onClose, setAlertVisible ]);
 
-  const mutation = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn,
     onSuccess: async() => {
       onSuccess();
@@ -52,8 +52,8 @@ const DeleteModal: React.FC<Props> = ({
 
   const onDeleteClick = useCallback(() => {
     setAlertVisible(false);
-    mutation.mutate();
-  }, [ setAlertVisible, mutation ]);
+    mutate();
+  }, [ setAlertVisible, mutate ]);
 
   const isMobile = useIsMobile();
 
@@ -71,11 +71,11 @@ const DeleteModal: React.FC<Props> = ({
           <Button
             size="lg"
             onClick={ onDeleteClick }
-            isLoading={ mutation.isPending }
+            isLoading={ isPending }
             // FIXME: chackra's button is disabled when isLoading
             isDisabled={ false }
           >
-              Delete
+            Delete
           </Button>
         </ModalFooter>
       </ModalContent>

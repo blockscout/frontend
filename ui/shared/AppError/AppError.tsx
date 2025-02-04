@@ -20,6 +20,10 @@ interface Props {
 }
 
 const ERROR_TEXTS: Record<string, { title: string; text: string }> = {
+  '403': {
+    title: 'Alert',
+    text: 'Access to this resource is restricted.',
+  },
   '404': {
     title: 'Page not found',
     text: 'This page is no longer explorable! If you are lost, use the search bar to find what you are looking for.',
@@ -85,7 +89,7 @@ const AppError = ({ error, className }: Props) => {
               as="a"
               href={ route({ pathname: '/' }) }
             >
-                Back to home
+              Back to home
             </Button>
           </>
         );

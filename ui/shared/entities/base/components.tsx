@@ -1,7 +1,8 @@
-import { chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, useColorModeValue } from '@chakra-ui/react';
 import type { As, IconProps } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
@@ -84,8 +85,7 @@ interface EntityIconProps extends Pick<IconProps, 'color' | 'borderRadius' | 'ma
   size?: IconSize;
 }
 
-export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon'>, EntityIconProps {
-}
+export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon'>, EntityIconProps {}
 
 const Icon = ({ isLoading, noIcon, size, name, color, borderRadius, marginRight, boxSize }: IconBaseProps) => {
   const defaultColor = useColorModeValue('gray.500', 'gray.400');

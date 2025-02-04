@@ -13,7 +13,7 @@ import NFTItem from './NFTItem';
 type Props = {
   tokensQuery: QueryWithPagesResult<'address_nfts'>;
   hasActiveFilters: boolean;
-}
+};
 
 const AddressNFTs = ({ tokensQuery, hasActiveFilters }: Props) => {
   const isMobile = useIsMobile();

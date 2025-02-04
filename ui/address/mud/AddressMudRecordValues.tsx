@@ -5,9 +5,9 @@ import type { AddressMudRecord } from 'types/api/address';
 
 import { getValueString } from './utils';
 
-type Props ={
+type Props = {
   data?: AddressMudRecord;
-}
+};
 
 const AddressMudRecordValues = ({ data }: Props) => {
   const valuesBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');

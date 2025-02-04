@@ -1,12 +1,14 @@
-import { Box, Flex, Skeleton } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
 
 import config from 'configs/app';
+import formatLanguageName from 'lib/contracts/formatLanguageName';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import { currencyUnits } from 'lib/units';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -64,13 +66,13 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Txs count</Skeleton>
         <Skeleton isLoaded={ !isLoading } color="text_secondary">
-          <span>{ data.tx_count ? data.tx_count.toLocaleString() : '0' }</span>
+          <span>{ data.transaction_count ? data.transaction_count.toLocaleString() : '0' }</span>
         </Skeleton>
       </Flex>
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink="0">Compiler</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink="0">Language</Skeleton>
         <Skeleton isLoaded={ !isLoading } display="flex" flexWrap="wrap">
-          <Box textTransform="capitalize">{ data.language }</Box>
+          <Box>{ formatLanguageName(data.language) }</Box>
           <Box color="text_secondary" wordBreak="break-all" whiteSpace="pre-wrap"> ({ data.compiler_version })</Box>
         </Skeleton>
       </Flex>

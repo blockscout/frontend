@@ -1,4 +1,4 @@
-import { Grid, Skeleton, Tooltip, Flex } from '@chakra-ui/react';
+import { Grid, Tooltip, Flex } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -10,6 +10,7 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import stripTrailingSlash from 'lib/stripTrailingSlash';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
@@ -40,7 +41,7 @@ const NameDomainDetails = ({ query }: Props) => {
               hint="The date the name was registered"
               isLoading={ isLoading }
             >
-            Registration date
+              Registration date
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
               <IconSvg name="clock" boxSize={ 5 } color="gray.500" verticalAlign="middle" isLoading={ isLoading } mr={ 2 }/>
@@ -55,10 +56,10 @@ const NameDomainDetails = ({ query }: Props) => {
           <>
             <DetailsInfoItem.Label
             // eslint-disable-next-line max-len
-              hint="The date the name expires, upon which there is a 90 day grace period for the owner to renew. After the 90 days, the name is released to the market"
+              hint="The date the name expires, upon which there is a grace period for the owner to renew. After grace period ends, the name is released to the market"
               isLoading={ isLoading }
             >
-            Expiration date
+              Expiration date
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
               <IconSvg name="clock" boxSize={ 5 } color="gray.500" verticalAlign="middle" isLoading={ isLoading } mr={ 2 } mt="-2px"/>
@@ -105,7 +106,7 @@ const NameDomainDetails = ({ query }: Props) => {
               hint="The account that owns the domain name and has the rights to edit its ownership and records"
               isLoading={ isLoading }
             >
-            Registrant
+              Registrant
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value
               columnGap={ 2 }
@@ -134,7 +135,7 @@ const NameDomainDetails = ({ query }: Props) => {
               hint="The account that owns the rights to edit the records of this domain name"
               isLoading={ isLoading }
             >
-            Owner
+              Owner
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value
               columnGap={ 2 }
@@ -163,7 +164,7 @@ const NameDomainDetails = ({ query }: Props) => {
               hint="Owner of this NFT domain in NameWrapper contract"
               isLoading={ isLoading }
             >
-            Manager
+              Manager
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value
               columnGap={ 2 }
@@ -220,7 +221,7 @@ const NameDomainDetails = ({ query }: Props) => {
               hint="Other cryptocurrency addresses added to this domain name"
               isLoading={ isLoading }
             >
-            Other addresses
+              Other addresses
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value
               flexDir="column"

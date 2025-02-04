@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { AddressImplementation } from 'types/api/addressParams';
+import type { SmartContractProxyType } from 'types/api/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -13,14 +14,15 @@ import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
-import { enrichWithMethodId, isMethod } from './utils';
+import { formatAbi } from './utils';
 
 interface Props {
   implementations: Array<AddressImplementation>;
   isLoading?: boolean;
+  proxyType?: SmartContractProxyType;
 }
 
-const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: Props) => {
+const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading, proxyType }: Props) => {
   const router = useRouter();
   const sourceAddress = getQueryParamString(router.query.source_address);
   const tab = getQueryParamString(router.query.tab);
@@ -36,10 +38,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: 
     },
   });
 
-  const abi = React.useMemo(() => {
-    return contractQuery.data?.abi?.filter(isMethod).map(enrichWithMethodId) || [];
-  }, [ contractQuery.data?.abi ]);
-
+  const abi = React.useMemo(() => formatAbi(contractQuery.data?.abi || []), [ contractQuery.data?.abi ]);
   const filters = useMethodsFilters({ abi });
 
   return (
@@ -51,7 +50,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: 
           selectedItem={ selectedItem }
           onItemSelect={ setSelectedItem }
           isLoading={ isInitialLoading }
-          label="Implementation address"
+          label={ proxyType === 'eip7702' ? 'Delegate address' : 'Implementation address' }
           mb={ 3 }
         />
         <ContractMethodsFilters

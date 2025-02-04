@@ -1,3 +1,4 @@
+import type * as bens from '@blockscout/bens-types';
 import type { TokenType } from 'types/api/token';
 
 export type SearchResultType = 'token' | 'address' | 'block' | 'transaction' | 'contract';
@@ -16,6 +17,7 @@ export interface SearchResultToken {
   is_verified_via_admin_panel: boolean;
   is_smart_contract_verified: boolean;
   filecoin_robust_address?: string | null;
+  certified?: boolean;
 }
 
 export interface SearchResultAddressOrContract {
@@ -46,6 +48,7 @@ export interface SearchResultDomain {
     expiry_date?: string;
     name: string;
     names_count: number;
+    protocol?: bens.ProtocolInfo;
   };
 }
 
@@ -69,7 +72,7 @@ export interface SearchResultBlock {
 
 export interface SearchResultTx {
   type: 'transaction';
-  tx_hash: string;
+  transaction_hash: string;
   timestamp: string;
   url?: string; // not used by the frontend, we build the url ourselves
 }
@@ -93,15 +96,15 @@ SearchResultBlob | SearchResultDomain;
 export interface SearchResult {
   items: Array<SearchResultItem>;
   next_page_params: {
-    'address_hash': string | null;
-    'block_hash': string | null;
-    'holder_count': number | null;
-    'inserted_at': string | null;
-    'item_type': SearchResultType;
-    'items_count': number;
-    'name': string;
-    'q': string;
-    'tx_hash': string | null;
+    address_hash: string | null;
+    block_hash: string | null;
+    holder_count: number | null;
+    inserted_at: string | null;
+    item_type: SearchResultType;
+    items_count: number;
+    name: string;
+    q: string;
+    transaction_hash: string | null;
   } | null;
 }
 

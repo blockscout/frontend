@@ -13,12 +13,12 @@ import AddressMudBreadcrumbs from './AddressMudBreadcrumbs';
 import AddressMudRecordValues from './AddressMudRecordValues';
 import { getValueString } from './utils';
 
-type Props ={
+type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   isQueryEnabled?: boolean;
   tableId: string;
   recordId: string;
-}
+};
 
 const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true, scrollRef }: Props) => {
   const router = useRouter();

@@ -55,6 +55,7 @@ const UserWalletDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
               address={ web3AccountWithDomain.address }
               domain={ web3AccountWithDomain.domain }
               isAutoConnectDisabled={ isAutoConnectDisabled }
+              isReconnecting={ web3Wallet.isReconnecting }
               onOpenWallet={ handleOpenWalletClick }
               onDisconnect={ handleDisconnectClick }
             />

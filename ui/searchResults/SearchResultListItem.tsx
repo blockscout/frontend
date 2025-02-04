@@ -1,4 +1,4 @@
-import { chakra, Flex, Grid, Image, Box, Text, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
+import { chakra, Flex, Grid, Image, Box, Text, useColorMode, Tag } from '@chakra-ui/react';
 import React from 'react';
 import xss from 'xss';
 
@@ -12,6 +12,7 @@ import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
@@ -73,7 +74,8 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
                 textOverflow="ellipsis"
               />
             </LinkInternal>
-            { data.is_verified_via_admin_panel && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+            { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
+            { data.is_verified_via_admin_panel && !data.certified && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
           </Flex>
         );
       }
@@ -203,12 +205,12 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
             <TxEntity.Icon/>
             <TxEntity.Link
               isLoading={ isLoading }
-              hash={ data.tx_hash }
+              hash={ data.transaction_hash }
               onClick={ handleLinkClick }
             >
               <TxEntity.Content
                 asProp="mark"
-                hash={ data.tx_hash }
+                hash={ data.transaction_hash }
                 fontSize="sm"
                 lineHeight={ 5 }
                 fontWeight={ 700 }
@@ -263,7 +265,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'ens_domain': {
         return (
           <EnsEntity.Container>
-            <EnsEntity.Icon/>
+            <EnsEntity.Icon protocol={ data.ens_info.protocol }/>
             <LinkInternal
               href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
               fontWeight={ 700 }
@@ -385,7 +387,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
                   <chakra.span color="text_secondary">{ expiresText }</chakra.span>
               ) }
             </Text>
-            { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } ml={ 1 }/> }
+            { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
           </Flex>
         ) :
           null;

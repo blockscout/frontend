@@ -1,4 +1,4 @@
-import { Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
@@ -7,6 +7,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -39,7 +40,7 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <Skeleton isLoaded={ !isLoading } minW="40px" display="inline-block">
-          { item.l1_tx_hashes.length }
+          { item.l1_transaction_hashes.length }
         </Skeleton>
       </Td>
       <Td verticalAlign="middle" isNumeric>
@@ -60,7 +61,7 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           justifyContent="flex-end"
         >
           <Skeleton isLoaded={ !isLoading } minW="40px" display="inline-block">
-            { item.tx_count }
+            { item.transaction_count }
           </Skeleton>
         </LinkInternal>
       </Td>

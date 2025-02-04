@@ -11,7 +11,7 @@ type Props = {
   items: Array<OptimisticL2OutputRootsItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const OptimisticL2OutputRootsTable = ({ items, top, isLoading }: Props) => {
   return (

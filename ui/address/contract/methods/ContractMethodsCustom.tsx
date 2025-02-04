@@ -1,4 +1,4 @@
-import { Button, Flex, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -8,6 +8,7 @@ import type { SmartContract } from 'types/api/contract';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import AuthGuard from 'ui/snippets/auth/AuthGuard';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
@@ -18,7 +19,7 @@ import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
-import { enrichWithMethodId, isMethod } from './utils';
+import { formatAbi } from './utils';
 
 interface Props {
   isLoading?: boolean;
@@ -52,12 +53,7 @@ const ContractMethodsCustom = ({ isLoading: isLoadingProp }: Props) => {
     contract_address_hash: addressHash,
   } : undefined);
 
-  const abi = React.useMemo(() => {
-    return currentInfo?.abi
-      .filter(isMethod)
-      .map(enrichWithMethodId) ?? [];
-  }, [ currentInfo ]);
-
+  const abi = React.useMemo(() => formatAbi(currentInfo?.abi || []), [ currentInfo ]);
   const filters = useMethodsFilters({ abi });
 
   const updateButton = React.useMemo(() => {

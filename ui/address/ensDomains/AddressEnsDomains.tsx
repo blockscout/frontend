@@ -8,12 +8,11 @@ import {
   PopoverContent,
   PopoverTrigger,
   Show,
-  Skeleton,
   useDisclosure,
   chakra,
 } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import _clamp from 'lodash/clamp';
+import { clamp } from 'es-toolkit';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
@@ -23,6 +22,7 @@ import { route } from 'nextjs-routes';
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import Popover from 'ui/shared/chakra/Popover';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
@@ -37,7 +37,7 @@ interface Props {
 const DomainsGrid = ({ data }: { data: Array<bens.Domain> }) => {
   return (
     <Grid
-      templateColumns={{ base: `repeat(${ _clamp(data.length, 1, 2) }, 1fr)`, lg: `repeat(${ _clamp(data.length, 1, 3) }, 1fr)` }}
+      templateColumns={{ base: `repeat(${ clamp(data.length, 1, 2) }, 1fr)`, lg: `repeat(${ clamp(data.length, 1, 3) }, 1fr)` }}
       columnGap={ 8 }
       rowGap={ 4 }
       mt={ 2 }

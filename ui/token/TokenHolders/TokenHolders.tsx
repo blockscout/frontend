@@ -21,7 +21,7 @@ type Props = {
   token?: TokenInfo;
   holdersQuery: QueryWithPagesResult<'token_holders'>;
   shouldRender?: boolean;
-}
+};
 
 const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props) => {
   const isMobile = useIsMobile();

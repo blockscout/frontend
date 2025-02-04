@@ -47,11 +47,10 @@ interface SocketMessageParamsGeneric<Event extends string | undefined, Payload e
   handler: (payload: Payload) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace SocketMessage {
   export type NewBlock = SocketMessageParamsGeneric<'new_block', NewBlockSocketResponse>;
-  export type BlocksIndexStatus = SocketMessageParamsGeneric<'block_index_status', {finished: boolean; ratio: string}>;
-  export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'internal_txs_index_status', {finished: boolean; ratio: string}>;
+  export type BlocksIndexStatus = SocketMessageParamsGeneric<'block_index_status', { finished: boolean; ratio: string }>;
+  export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'internal_txs_index_status', { finished: boolean; ratio: string }>;
   export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;
   export type TxRawTrace = SocketMessageParamsGeneric<'raw_trace', RawTracesResponse>;
   export type NewTx = SocketMessageParamsGeneric<'transaction', { transaction: number }>;
@@ -73,8 +72,8 @@ export namespace SocketMessage {
   export type AddressChangedBytecode = SocketMessageParamsGeneric<'changed_bytecode', Record<string, never>>;
   export type AddressFetchedBytecode = SocketMessageParamsGeneric<'fetched_bytecode', { fetched_bytecode: string }>;
   export type SmartContractWasVerified = SocketMessageParamsGeneric<'smart_contract_was_verified', Record<string, never>>;
-  export type TokenTransfers = SocketMessageParamsGeneric<'token_transfer', {token_transfer: number }>;
-  export type TokenTotalSupply = SocketMessageParamsGeneric<'total_supply', {total_supply: number }>;
+  export type TokenTransfers = SocketMessageParamsGeneric<'token_transfer', { token_transfer: number }>;
+  export type TokenTotalSupply = SocketMessageParamsGeneric<'total_supply', { total_supply: number }>;
   export type TokenInstanceMetadataFetched = SocketMessageParamsGeneric<'fetched_token_instance_metadata', TokenInstanceMetadataSocketMessage>;
   export type ContractVerification = SocketMessageParamsGeneric<'verification_result', SmartContractVerificationResponse>;
   export type NewZkEvmL2Batch = SocketMessageParamsGeneric<'new_zkevm_confirmed_batch', NewZkEvmBatchSocketResponse>;

@@ -2,15 +2,14 @@ import type {
   ValidatorsStabilitySortingValue,
   ValidatorsStabilitySortingField,
 } from 'types/api/validators';
+import type { SelectOption } from 'ui/shared/select/types';
 
-import type { TOption } from 'ui/shared/sort/Option';
-
-export const VALIDATORS_STABILITY_SORT_OPTIONS: Array<TOption<ValidatorsStabilitySortingValue>> = [
-  { title: 'Default', id: undefined },
-  { title: 'Status descending', id: 'state-desc' },
-  { title: 'Status ascending', id: 'state-asc' },
-  { title: 'Blocks validated descending', id: 'blocks_validated-desc' },
-  { title: 'Blocks validated ascending', id: 'blocks_validated-asc' },
+export const VALIDATORS_STABILITY_SORT_OPTIONS: Array<SelectOption<ValidatorsStabilitySortingValue>> = [
+  { label: 'Default', value: undefined },
+  { label: 'Status descending', value: 'state-desc' },
+  { label: 'Status ascending', value: 'state-asc' },
+  { label: 'Blocks validated descending', value: 'blocks_validated-desc' },
+  { label: 'Blocks validated ascending', value: 'blocks_validated-asc' },
 ];
 
 export const VALIDATORS_STABILITY_SORT_SEQUENCE: Record<ValidatorsStabilitySortingField, Array<ValidatorsStabilitySortingValue | undefined>> = {
