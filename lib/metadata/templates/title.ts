@@ -5,6 +5,7 @@ import config from 'configs/app';
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/': '%network_name% blockchain explorer - View %network_name% stats',
   '/txs': '%network_name% transactions - %network_name% explorer',
+  '/internal-txs': '%network_name% internal transactions - %network_name% explorer',
   '/txs/kettle/[hash]': '%network_name% kettle %hash% transactions',
   '/tx/[hash]': '%network_name% transaction %hash%',
   '/blocks': '%network_name% blocks',

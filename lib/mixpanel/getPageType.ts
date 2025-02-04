@@ -3,6 +3,7 @@ import type { Route } from 'nextjs-routes';
 export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/': 'Homepage',
   '/txs': 'Transactions',
+  '/internal-txs': 'Internal transactions',
   '/txs/kettle/[hash]': 'Kettle transactions',
   '/tx/[hash]': 'Transaction details',
   '/blocks': 'Blocks',
