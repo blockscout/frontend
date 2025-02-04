@@ -12,7 +12,7 @@ import ValidatorEntity from 'ui/shared/entities/validator/ValidatorEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import ValidatorDetails from 'ui/validators/zilliqa/ValidatorDetails';
 
-const NameDomain = () => {
+const ValidatorZilliqa = () => {
   const appProps = useAppContext();
   const router = useRouter();
   const blsPublicKey = getQueryParamString(router.query.id);
@@ -69,4 +69,4 @@ const NameDomain = () => {
   );
 };
 
-export default NameDomain;
+export default ValidatorZilliqa;
