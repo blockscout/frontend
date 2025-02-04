@@ -30,20 +30,6 @@ const UserOpsListItem = ({ item, isLoading }: Props) => {
         <AddressEntity address={{ hash: item.contract_address }} noIcon isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>FDV</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading }>
-          ${ Number(item.fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
-        </Skeleton>
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Market cap</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading }>
-          ${ Number(item.market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
-        </Skeleton>
-      </ListItemMobileGrid.Value>
-
       <ListItemMobileGrid.Label isLoading={ isLoading }>Liquidity</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton isLoaded={ !isLoading }>
