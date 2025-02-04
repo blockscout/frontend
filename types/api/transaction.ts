@@ -215,3 +215,49 @@ export interface TxAuthorization {
   chain_id: number;
   nonce: number;
 }
+
+export interface CustomTransaction {
+  hash: string;
+  index: string;
+  nonce: string;
+  from: string;
+  to: string;
+  value: string;
+  burn: string;
+  gas: string;
+  gasUsed: string;
+  gasPrice: string;
+  inputData: string;
+  status: string;
+  block: Block;
+  tokenTransactions: Array<TokenTransaction>;
+  __typename: 'Transaction';
+}
+
+export interface Block {
+  hash: string;
+  number: string;
+  timestamp: string;
+  __typename: 'Block';
+}
+
+export interface TokenTransaction {
+  trxIndex: string;
+  tokenAddress: string;
+  tokenName: string;
+  tokenSymbol: string;
+  tokenType: string;
+  tokenId: string;
+  tokenDecimals: string;
+  type: string;
+  sender: string;
+  recipient: string;
+  amount: string;
+  __typename: 'TokenTransaction';
+}
+
+export interface GetTransactionByHashResponse {
+  data: {
+    transaction: CustomTransaction;
+  };
+}
