@@ -38,18 +38,20 @@ const indicators = INDICATORS.filter(
   return 0;
 });
 
-const coinPriceIndicator = INDICATORS.filter(
-  ({ id }) => config.UI.homepage.charts.includes(id) && id === 'coin_price',
-);
-const marketCapIndicator = INDICATORS.filter(
-  ({ id }) => config.UI.homepage.charts.includes(id) && id === 'market_cap',
-);
+// const coinPriceIndicator = INDICATORS.filter(
+//   ({ id }) => config.UI.homepage.charts.includes(id) && id === "coin_price"
+// );
+// const marketCapIndicator = INDICATORS.filter(
+//   ({ id }) => config.UI.homepage.charts.includes(id) && id === "market_cap"
+// );
 const totalSupplyIndicator = INDICATORS.filter(
   ({ id }) => id === 'total_supply',
 );
 
 const ChainIndicators = () => {
-  const [ selectedIndicator, selectIndicator ] = React.useState(indicators[0]?.id);
+  const [ selectedIndicator, selectIndicator ] = React.useState(
+    indicators[0]?.id,
+  );
   const indicator = indicators.find(({ id }) => id === selectedIndicator);
 
   const queryResult = useFetchChartData(indicator);
@@ -99,75 +101,104 @@ const ChainIndicators = () => {
     const diffColor = diff >= 0 ? 'green.500' : 'red.500';
 
     return (
-      <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } display="flex" alignItems="center" color={ diffColor } ml={ 2 }>
-        <IconSvg name="arrows/up-head" boxSize={ 5 } mr={ 1 } transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
-        <Text color={ diffColor } fontWeight={ 600 }>{ diff }%</Text>
+      <Skeleton
+        isLoaded={ !statsQueryResult.isPlaceholderData }
+        display="flex"
+        alignItems="center"
+        color={ diffColor }
+        ml={ 2 }
+      >
+        <IconSvg
+          name="arrows/up-head"
+          boxSize={ 5 }
+          mr={ 1 }
+          transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }
+        />
+        <Text color={ diffColor } fontWeight={ 600 }>
+          { diff }%
+        </Text>
       </Skeleton>
     );
   })();
 
   return (
-    <Flex
-      px={{ base: 3, lg: 4 }}
-      py={ 3 }
-      borderRadius="base"
-      bgColor={ bgColor }
-      columnGap={{ base: 3, lg: 4 }}
-      rowGap={ 0 }
-      flexBasis="50%"
-      flexGrow={ 1 }
-      alignItems="stretch"
-    >
-      <Flex flexGrow={ 1 } flexDir="column">
-        <Flex alignItems="center">
-          <Text fontWeight={ 500 }>{ indicator?.title }</Text>
-          { indicator?.hint && <Hint label={ indicator.hint } ml={ 1 }/> }
+    <>
+      <Flex
+        px={{ base: 3, lg: 4 }}
+        py={ 3 }
+        borderRadius="base"
+        bgColor={ bgColor }
+        columnGap={{ base: 3, lg: 4 }}
+        rowGap={ 0 }
+        // flexBasis="60%"
+        flexGrow={ 1 }
+        alignItems="stretch"
+      >
+        <Flex flexGrow={ 1 } flexDir="column">
+          <Flex alignItems="center">
+            <Text fontWeight={ 500 }>{ indicator?.title }</Text>
+            { indicator?.hint && <Hint label={ indicator.hint } ml={ 1 }/> }
+          </Flex>
+          <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end">
+            { valueTitle }
+            { valueDiff }
+          </Flex>
+          <ChainIndicatorChartContainer { ...queryResult }/>
         </Flex>
-        <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end">
-          { valueTitle }
-          { valueDiff }
-        </Flex>
-        <ChainIndicatorChartContainer { ...queryResult }/>
       </Flex>
-      { indicators.length > 0 && (
-        <Flex
-          flexShrink={ 0 }
-          flexDir="column"
-          as="ul"
-          borderRadius="lg"
-          rowGap="6px"
-          m={{ base: 'auto 0', lg: 0 }}
-        >
-          { indicators.map((indicator) => (
+
+      <Flex
+        px={{ base: 3, lg: 4 }}
+        py={ 3 }
+        borderRadius="base"
+        bgColor={ bgColor }
+        columnGap={{ base: 3, lg: 4 }}
+        rowGap={ 0 }
+        // flexBasis="20%"
+        flexGrow={ 1 }
+        alignItems="stretch"
+      >
+        { indicators.length > 0 && (
+          <Flex
+            flexShrink={ 0 }
+            flexDir="column"
+            as="ul"
+            borderRadius="lg"
+            rowGap="6px"
+            flexGrow={ 1 }
+            m={{ base: 'auto 0', lg: 0 }}
+          >
+            { indicators.map((indicator) => (
+              <ChainIndicatorItem
+                key={ indicator.id }
+                { ...indicator }
+                isSelected={ selectedIndicator === indicator.id }
+                onClick={ selectIndicator }
+                stats={ statsQueryResult }
+              />
+            )) }
+            { /* <ChainIndicatorItem
+      key={ coinPriceIndicator[0].id }
+      { ...coinPriceIndicator[0] }
+      isSelected={ selectedIndicator === coinPriceIndicator[0].id }
+      stats={ rwaStatsQueryResult }
+    />
+    <ChainIndicatorItem
+      key={ marketCapIndicator[0].id }
+      { ...marketCapIndicator[0] }
+      isSelected={ selectedIndicator === marketCapIndicator[0].id }
+      stats={ rwaStatsQueryResult }
+    /> */ }
             <ChainIndicatorItem
-              key={ indicator.id }
-              { ...indicator }
-              isSelected={ selectedIndicator === indicator.id }
-              onClick={ selectIndicator }
-              stats={ statsQueryResult }
+              key={ totalSupplyIndicator[0].id }
+              { ...totalSupplyIndicator[0] }
+              isSelected={ selectedIndicator === totalSupplyIndicator[0].id }
+              stats={ rwaStatsQueryResult }
             />
-          )) }
-          <ChainIndicatorItem
-            key={ coinPriceIndicator[0].id }
-            { ...coinPriceIndicator[0] }
-            isSelected={ selectedIndicator === coinPriceIndicator[0].id }
-            stats={ rwaStatsQueryResult }
-          />
-          <ChainIndicatorItem
-            key={ marketCapIndicator[0].id }
-            { ...marketCapIndicator[0] }
-            isSelected={ selectedIndicator === marketCapIndicator[0].id }
-            stats={ rwaStatsQueryResult }
-          />
-          <ChainIndicatorItem
-            key={ totalSupplyIndicator[0].id }
-            { ...totalSupplyIndicator[0] }
-            isSelected={ selectedIndicator === totalSupplyIndicator[0].id }
-            stats={ rwaStatsQueryResult }
-          />
-        </Flex>
-      ) }
-    </Flex>
+          </Flex>
+        ) }
+      </Flex>
+    </>
   );
 };
 
