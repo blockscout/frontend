@@ -24,8 +24,6 @@ jobs:
           node-version: "22.11.0"
           cache: "yarn"
 
-      - name: Remove husky in CI
-        run: yarn remove husky
       - name: Install dependencies
         run: yarn install
         env:
