@@ -29,7 +29,7 @@ const ValidatorZilliqa = () => {
   const isLoading = query.isPlaceholderData;
 
   const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/validators');
+    const hasGoBackLink = appProps.referrer && appProps.referrer.endsWith('/validators');
 
     if (!hasGoBackLink) {
       return;

@@ -68,7 +68,7 @@ export default function useNavItems(): ReturnType {
       text: 'Top validators',
       nextRoute: { pathname: '/validators' as const },
       icon: 'validator',
-      isActive: pathname === '/validators',
+      isActive: pathname === '/validators' || pathname === '/validators/[id]',
     } : null;
     const rollupDeposits = {
       text: `Deposits (L1${ rightLineArrow }L2)`,

@@ -83,7 +83,7 @@ const ValidatorDetails = ({ data, isLoading }: Props) => {
       </DetailsInfoItem.Value>
 
       <DetailsInfoItem.Label
-        hint="The address whose key with which validators sign cross-chain events"
+        hint="The address whose key the validator uses to sign cross-chain events"
         isLoading={ isLoading }
       >
         Signing address
