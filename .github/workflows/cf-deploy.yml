@@ -25,7 +25,9 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --production
+        env:
+          CI: true
 
       - name: Build Blockscout
         run: yarn run build:next
