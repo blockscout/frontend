@@ -76,6 +76,19 @@ test('search by address hash +@mobile', async({ render, page, mockApiResponse })
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
+test('search by meta tag  +@mobile +@dark-mode', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.metatag1,
+    searchMock.metatag2,
+    searchMock.metatag3,
+  ], { queryParams: { q: 'utko' } });
+  await render(<SearchBar/>);
+  await page.getByPlaceholder(/search/i).fill('utko');
+  await page.waitForResponse(apiUrl);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+});
+
 test('search by block number +@mobile', async({ render, page, mockApiResponse }) => {
   const apiUrl = await mockApiResponse('quick_search', [
     searchMock.block1,

@@ -8,6 +8,7 @@ import type {
   SearchResultUserOp,
   SearchResultBlob,
   SearchResultDomain,
+  SearchResultMetadataTag,
 } from 'types/api/search';
 
 export const token1: SearchResultToken = {
@@ -147,6 +148,42 @@ export const domain1: SearchResultDomain = {
   url: '/address/0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
 };
 
+export const metatag1: SearchResultMetadataTag = {
+  ...address1,
+  type: 'metadata_tag',
+  metadata: {
+    name: 'utko',
+    slug: 'utko',
+    meta: {},
+    tagType: 'name',
+    ordinal: 1,
+  },
+};
+
+export const metatag2: SearchResultMetadataTag = {
+  ...address2,
+  type: 'metadata_tag',
+  metadata: {
+    name: 'utko',
+    slug: 'utko',
+    meta: {},
+    tagType: 'name',
+    ordinal: 1,
+  },
+};
+
+export const metatag3: SearchResultMetadataTag = {
+  ...contract2,
+  type: 'metadata_tag',
+  metadata: {
+    name: 'super utko',
+    slug: 'super-utko',
+    meta: {},
+    tagType: 'protocol',
+    ordinal: 1,
+  },
+};
+
 export const baseResponse: SearchResult = {
   items: [
     token1,
@@ -157,6 +194,8 @@ export const baseResponse: SearchResult = {
     tx1,
     blob1,
     domain1,
+    metatag1,
+
   ],
   next_page_params: null,
 };

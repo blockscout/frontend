@@ -142,7 +142,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     return (
       <>
         { resultCategories.length > 1 && (
-          <Box position="sticky" top="0" width="100%" background={ bgColor } py={ 5 } my={ -5 } ref={ tabsRef }>
+          <Box position="sticky" top="0" width="100%" background={ bgColor } py={ 5 } my={ -5 } ref={ tabsRef } zIndex={ 1 }>
             <Tabs variant="outline" colorScheme="gray" size="sm" index={ tabIndex }>
               <TabList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
                 { resultCategories.map((cat, index) => (
