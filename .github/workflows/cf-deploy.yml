@@ -1,0 +1,71 @@
+name: Deploy Blockscout to Cloudflare
+
+on:
+  push:
+    branches:
+      - devel
+    paths:
+      - "**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy Blockscout
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "22.11.0"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build Blockscout
+        run: yarn run build:next
+        env:
+          # Local development ENVs
+          # NEXT_PUBLIC_APP_HOST: ${{ var.NEXT_PUBLIC_APP_HOST }}
+          # NEXT_PUBLIC_APP_PORT: ${{ var.NEXT_PUBLIC_APP_PORT }}
+          # NEXT_PUBLIC_APP_PROTOCOL: ${{ var.NEXT_PUBLIC_APP_PROTOCOL }}
+          # NEXT_PUBLIC_API_BASE_PATH=: ${{ var.NEXT_PUBLIC_API_BASE_PATH }}
+          # NEXT_PUBLIC_IS_TESTNET: ${{ var.NEXT_PUBLIC_IS_TESTNET }}
+          # NEXT_PUBLIC_APP_ENV: ${{ var.NEXT_PUBLIC_APP_ENV }}
+          # Blockscout specific
+          NEXT_PUBLIC_API_HOST: ${{ var.NEXT_PUBLIC_API_HOST }}
+          NEXT_PUBLIC_STATS_API_HOST: ${{ var.NEXT_PUBLIC_STATS_API_HOST }}
+          NEXT_PUBLIC_NETWORK_NAME: ${{ var.NEXT_PUBLIC_NETWORK_NAME }}
+          NEXT_PUBLIC_NETWORK_SHORT_NAME: ${{ var.NEXT_PUBLIC_NETWORK_SHORT_NAME }}
+          NEXT_PUBLIC_NETWORK_ID: ${{ var.NEXT_PUBLIC_NETWORK_ID }}
+          NEXT_PUBLIC_NETWORK_CURRENCY_NAME: ${{ var.NEXT_PUBLIC_NETWORK_CURRENCY_NAME }}
+          NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: ${{ var.NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL }}
+          NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: ${{ var.NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS }}
+          NEXT_PUBLIC_HOMEPAGE_CHARTS: ${{ var.NEXT_PUBLIC_HOMEPAGE_CHARTS }}
+          NEXT_PUBLIC_VISUALIZE_API_HOST: ${{ var.NEXT_PUBLIC_VISUALIZE_API_HOST }}
+          NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL: ${{ var.NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL }}
+          NEXT_PUBLIC_API_SPEC_URL: ${{ var.NEXT_PUBLIC_API_SPEC_URL }}
+          # Theme
+          NEXT_PUBLIC_COLOR_THEME_DEFAULT: ${{ var.NEXT_PUBLIC_COLOR_THEME_DEFAULT }}
+          NEXT_PUBLIC_NAVIGATION_LAYOUT: ${{ var.NEXT_PUBLIC_NAVIGATION_LAYOUT }}
+
+      - name: Prepare deployment
+        run: |
+          mkdir -p ./deploy
+          cp -r .next ./deploy/
+          cp -r public ./deploy/
+          cp package.json ./deploy/
+          cd ./deploy
+          yarn add wrangler@3 --dev
+  
+      - name: Deploy to Cloudflare Pages
+        working-directory: ./deploy
+        run: yarn wrangler pages deploy . --project-name=blockscout-fluent --commit-dirty=true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
