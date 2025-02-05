@@ -45,9 +45,9 @@ const ChainIndicatorItem = ({
   }, [ id, onClick ]);
 
   const valueContent = (() => {
-    if (isMobile) {
-      return null;
-    }
+    // if (isMobile) {
+    //   return null;
+    // }
 
     if (stats.isPlaceholderData) {
       return (
