@@ -1,9 +1,9 @@
-import { Button } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2WithdrawalStatus } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
+import { Button } from 'toolkit/chakra/button';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
@@ -71,6 +71,7 @@ const TxDetailsWithdrawalStatus = ({ status, l1TxHash }: Props) => {
     }
   })();
 
+  // TODO @tom2drum Button as <a> tags
   const rightSlot = hasClaimButton ? (
     <Button
       variant="outline"

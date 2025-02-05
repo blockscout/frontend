@@ -1,4 +1,4 @@
-import { chakra, useDisclosure } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { ItemProps } from '../types';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import IconSvg from 'ui/shared/IconSvg';
 import AuthGuard from 'ui/snippets/auth/AuthGuard';
@@ -15,7 +16,7 @@ import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import ButtonItem from '../parts/ButtonItem';
 import MenuItem from '../parts/MenuItem';
 
-const TokenInfoMenuItem = ({ className, hash, type }: ItemProps) => {
+const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
   const router = useRouter();
   const modal = useDisclosure();
   const isAuth = useIsAuth();
@@ -72,7 +73,7 @@ const TokenInfoMenuItem = ({ className, hash, type }: ItemProps) => {
         return (
           <AuthGuard onAuthSuccess={ onAuthSuccess }>
             { ({ onClick }) => (
-              <ButtonItem label={ label } icon={ icon } onClick={ onClick } className={ className }/>
+              <ButtonItem label={ label } icon={ icon } onClick={ onClick }/>
             ) }
           </AuthGuard>
         );
@@ -81,7 +82,7 @@ const TokenInfoMenuItem = ({ className, hash, type }: ItemProps) => {
         return (
           <AuthGuard onAuthSuccess={ onAuthSuccess }>
             { ({ onClick }) => (
-              <MenuItem className={ className } onClick={ onClick }>
+              <MenuItem onClick={ onClick } value="add-token-info">
                 { icon }
                 <chakra.span ml={ 2 }>{ label }</chakra.span>
               </MenuItem>
@@ -98,7 +99,7 @@ const TokenInfoMenuItem = ({ className, hash, type }: ItemProps) => {
       <AddressVerificationModal
         defaultAddress={ hash }
         pageType={ PAGE_TYPE_DICT['/token/[hash]'] }
-        isOpen={ modal.isOpen }
+        isOpen={ modal.open }
         onClose={ modal.onClose }
         onSubmit={ handleVerifiedAddressSubmit }
         onAddTokenInfoClick={ handleAddApplicationClick }

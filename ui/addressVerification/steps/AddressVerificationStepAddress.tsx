@@ -16,10 +16,9 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
+import { Link } from 'toolkit/chakra/link';
 import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
-
 type Fields = RootFields & AddressVerificationFormFirstStepFields;
 
 interface Props {
@@ -85,7 +84,7 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
         return (
           <Box>
             <span>The contract source code you entered is not yet verified. Please follow these steps to </span>
-            <LinkInternal href={ href }>verify the contract</LinkInternal>
+            <Link href={ href }>verify the contract</Link>
             <span>.</span>
           </Box>
         );

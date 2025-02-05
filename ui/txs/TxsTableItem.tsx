@@ -83,8 +83,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
               isLoading={ isLoading }
               number={ tx.block_number }
               noIcon
-              fontSize="sm"
-              lineHeight={ 6 }
+              textStyle="sm"
               fontWeight={ 500 }
             />
           ) }

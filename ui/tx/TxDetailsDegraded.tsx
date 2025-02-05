@@ -132,15 +132,15 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
 
   React.useEffect(() => {
     if (!query.isPlaceholderData && hasData) {
-      txQuery.setRefetchOnError.on();
+      txQuery.setRefetchEnabled(true);
     }
   }, [ hasData, query.isPlaceholderData, txQuery ]);
 
   React.useEffect(() => {
     return () => {
-      txQuery.setRefetchOnError.off();
+      txQuery.setRefetchEnabled(false);
     };
-  }, [ txQuery.setRefetchOnError ]);
+  }, [ txQuery ]);
 
   if (!query.data) {
     if (originalError && isCustomAppError(originalError)) {

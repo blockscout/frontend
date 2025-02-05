@@ -8,7 +8,7 @@ import { useMetadataUpdateContext } from 'ui/tokenInstance/contexts/metadataUpda
 import ButtonItem from '../parts/ButtonItem';
 import MenuItem from '../parts/MenuItem';
 
-const MetadataUpdateMenuItem = ({ type, className }: ItemProps) => {
+const MetadataUpdateMenuItem = ({ type }: ItemProps) => {
 
   const { status, setStatus } = useMetadataUpdateContext() || {};
 
@@ -24,15 +24,14 @@ const MetadataUpdateMenuItem = ({ type, className }: ItemProps) => {
             label="Refresh metadata"
             icon="refresh"
             onClick={ handleClick }
-            className={ className }
             isDisabled={ status === 'WAITING_FOR_RESPONSE' }
           />
         );
       }
       case 'menu_item': {
         return (
-          <MenuItem className={ className } onClick={ handleClick } isDisabled={ status === 'WAITING_FOR_RESPONSE' }>
-            <IconSvg name="refresh" boxSize={ 5 } mr={ 2 }/>
+          <MenuItem onClick={ handleClick } isDisabled={ status === 'WAITING_FOR_RESPONSE' } value="refresh-metadata">
+            <IconSvg name="refresh" boxSize={ 5 }/>
             <span>Refresh metadata</span>
           </MenuItem>
         );

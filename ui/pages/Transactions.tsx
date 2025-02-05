@@ -5,6 +5,8 @@ import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
@@ -12,12 +14,12 @@ import getNetworkValidationActionText from 'lib/networks/getNetworkValidationAct
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
+import { Link } from 'toolkit/chakra/link';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import TxsStats from 'ui/txs/TxsStats';
 import TxsWatchlist from 'ui/txs/TxsWatchlist';
@@ -162,15 +164,15 @@ const Transactions = () => {
     return (
       <Flex alignItems="center" gap={ 6 }>
         { isAdvancedFilterEnabled && (
-          <LinkInternal
-            href="/advanced-filter"
+          <Link
+            href={ route({ pathname: '/advanced-filter' }) }
             alignItems="center"
             display="flex"
             gap={ 1 }
           >
             <IconSvg name="filter" boxSize={ 5 }/>
             Advanced filter
-          </LinkInternal>
+          </Link>
         ) }
         { pagination.isVisible && <Pagination my={ 1 } { ...pagination }/> }
       </Flex>
@@ -186,7 +188,7 @@ const Transactions = () => {
       <TxsStats/>
       <RoutedTabs
         tabs={ tabs }
-        tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
         rightSlot={ rightSlot }
         stickyEnabled={ !isMobile }
       />

@@ -23,8 +23,8 @@ const TxDetailsOther = ({ nonce, type, position, queueIndex }: Props) => {
               <Box key="type">
                 <Text as="span" fontWeight="500">Txn type: </Text>
                 <Text fontWeight="600" as="span">{ type }</Text>
-                { type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
-                { type === 3 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-4844)</Text> }
+                { type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color="text.secondary">(EIP-1559)</Text> }
+                { type === 3 && <Text fontWeight="400" as="span" ml={ 1 } color="text.secondary">(EIP-4844)</Text> }
               </Box>
             ),
             queueIndex !== undefined ? (
@@ -47,10 +47,10 @@ const TxDetailsOther = ({ nonce, type, position, queueIndex }: Props) => {
           ]
             .filter(Boolean)
             .map((item, index) => (
-              <>
+              <React.Fragment key={ index }>
                 { index !== 0 && <TextSeparator/> }
                 { item }
-              </>
+              </React.Fragment>
             ))
         }
       </DetailsInfoItem.Value>

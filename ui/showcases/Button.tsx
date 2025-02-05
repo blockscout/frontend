@@ -2,10 +2,11 @@ import React from 'react';
 
 import { Button } from 'toolkit/chakra/button';
 import { Checkbox } from 'toolkit/chakra/checkbox';
+import { Link } from 'toolkit/chakra/link';
 import { PopoverContent, PopoverRoot, PopoverTrigger, PopoverBody } from 'toolkit/chakra/popover';
 import { BACKGROUND_DEFAULT } from 'ui/home/HeroBanner';
 
-import { Section, Container, SectionHeader, SamplesStack, Sample } from './parts';
+import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
 const ButtonShowcase = () => {
   return (
@@ -179,6 +180,18 @@ const ButtonShowcase = () => {
           </Sample>
           <Sample label="loading: true, loadingText: undefined">
             <Button loading>Content</Button>
+          </Sample>
+        </SamplesStack>
+      </Section>
+
+      <Section>
+        <SectionHeader>Examples</SectionHeader>
+        <SectionSubHeader>As Link</SectionSubHeader>
+        <SamplesStack>
+          <Sample>
+            <Link href="/" asChild>
+              <Button>I am link</Button>
+            </Link>
           </Sample>
         </SamplesStack>
       </Section>

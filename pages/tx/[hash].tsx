@@ -5,12 +5,12 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
-// const Transaction = dynamic(() => import('ui/pages/Transaction'), { ssr: false });
+const Transaction = dynamic(() => import('ui/pages/Transaction'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageNextJs pathname="/tx/[hash]" query={ props.query }>
-      { /* <Transaction/> */ }
+      <Transaction/>
     </PageNextJs>
   );
 };

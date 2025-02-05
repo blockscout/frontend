@@ -1,4 +1,4 @@
-import { Tooltip, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -13,8 +13,9 @@ import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import * as mixpanel from 'lib/mixpanel/index';
 import { currencyUnits } from 'lib/units';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -103,7 +104,7 @@ const TxInterpretationElementByType = (
           </chakra.span>
         );
       }
-      return <chakra.span color="text_secondary" whiteSpace="pre">{ value + ' ' }</chakra.span>;
+      return <chakra.span color="text.secondary" whiteSpace="pre">{ value + ' ' }</chakra.span>;
     }
     case 'currency': {
       let numberString = '';
@@ -119,19 +120,19 @@ const TxInterpretationElementByType = (
       return <chakra.span>{ numberString + ' ' }</chakra.span>;
     }
     case 'timestamp': {
-      return <chakra.span color="text_secondary" whiteSpace="pre">{ dayjs(Number(value) * 1000).format('MMM DD YYYY') }</chakra.span>;
+      return <chakra.span color="text.secondary" whiteSpace="pre">{ dayjs(Number(value) * 1000).format('MMM DD YYYY') }</chakra.span>;
     }
     case 'method': {
       return (
-        <Tag
+        <Badge
           colorScheme={ value === 'Multicall' ? 'teal' : 'gray' }
-          isTruncated
+          truncated
           ml={ 1 }
           mr={ 2 }
           verticalAlign="text-top"
         >
           { value }
-        </Tag>
+        </Badge>
       );
     }
   }
@@ -155,9 +156,9 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className }: Pro
   const chunks = getStringChunks(intermediateResult);
 
   return (
-    <Skeleton isLoaded={ !isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
-      <Tooltip label="Transaction summary">
-        <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 1 } verticalAlign="text-top"/>
+    <Skeleton loading={ isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
+      <Tooltip content="Transaction summary">
+        <IconSvg name="lightning" boxSize={ 5 } color="text.secondary" mr={ 1 } verticalAlign="text-top"/>
       </Tooltip>
       { chunks.map((chunk, index) => {
         let content = null;
@@ -175,7 +176,7 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className }: Pro
         }
         return (
           <chakra.span key={ chunk + index }>
-            <chakra.span color="text_secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</chakra.span>
+            <chakra.span color="text.secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</chakra.span>
             { index < variablesNames.length && content }
           </chakra.span>
         );

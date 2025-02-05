@@ -1,11 +1,11 @@
-import type { ResponsiveValue } from '@chakra-ui/react';
+import type { GridItemProps } from '@chakra-ui/react';
 import { GridItem, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 interface Props {
   className?: string;
   id?: string;
-  colSpan?: ResponsiveValue<number | 'auto'>;
+  colSpan?: GridItemProps['colSpan'];
 }
 
 const DetailsInfoItemDivider = ({ className, id, colSpan }: Props) => {

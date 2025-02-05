@@ -260,6 +260,13 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
       },
     },
+    menu: {
+      item: {
+        bg: {
+          highlighted: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
+        },
+      },
+    },
     spinner: {
       track: {
         DEFAULT: { value: { _light: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.200}' } },

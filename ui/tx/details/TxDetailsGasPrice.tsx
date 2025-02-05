@@ -6,7 +6,7 @@ import type { TokenInfo } from 'types/api/token';
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
@@ -24,7 +24,7 @@ const TxDetailsGasPrice = ({ gasPrice, gasToken, isLoading }: Props) => {
   const content = (() => {
     if (gasToken) {
       return (
-        <Skeleton isLoaded={ !isLoading } display="flex">
+        <Skeleton loading={ isLoading } display="flex">
           <span>{ BigNumber(gasPrice).dividedBy(WEI).toFixed() }</span>
           <TokenEntity token={ gasToken } noCopy onlySymbol w="auto" ml={ 1 }/>
         </Skeleton>
@@ -33,10 +33,10 @@ const TxDetailsGasPrice = ({ gasPrice, gasToken, isLoading }: Props) => {
 
     return (
       <>
-        <Skeleton isLoaded={ !isLoading } mr={ 1 }>
+        <Skeleton loading={ isLoading } mr={ 1 }>
           { BigNumber(gasPrice).dividedBy(WEI).toFixed() } { currencyUnits.ether }
         </Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">
+        <Skeleton loading={ isLoading } color="text_secondary">
           <span>({ BigNumber(gasPrice).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</span>
         </Skeleton>
       </>

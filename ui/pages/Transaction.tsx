@@ -8,12 +8,12 @@ import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { publicClient } from 'lib/web3/client';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
 import TextAd from 'ui/shared/ad/TextAd';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxAssetFlows from 'ui/tx/TxAssetFlows';
 import TxBlobs from 'ui/tx/TxBlobs';
@@ -52,34 +52,34 @@ const TransactionPageContent = () => {
         title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details',
         component: detailsComponent,
       },
-      txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
-        { id: 'asset_flows', title: 'Asset Flows', component: <TxAssetFlows hash={ hash }/> } :
-        undefined,
-      config.features.suave.isEnabled && data?.wrapped ?
-        { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
-        undefined,
-      { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
-      config.features.userOps.isEnabled ?
-        { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
-        undefined,
-      { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> },
-      config.features.dataAvailability.isEnabled && txQuery.data?.blob_versioned_hashes?.length ?
-        { id: 'blobs', title: 'Blobs', component: <TxBlobs txQuery={ txQuery }/> } :
-        undefined,
-      { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
-      { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
-      { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
+      // txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
+      //   { id: 'asset_flows', title: 'Asset Flows', component: <TxAssetFlows hash={ hash }/> } :
+      //   undefined,
+      // config.features.suave.isEnabled && data?.wrapped ?
+      //   { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
+      //   undefined,
+      // { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
+      // config.features.userOps.isEnabled ?
+      //   { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
+      //   undefined,
+      // { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> },
+      // config.features.dataAvailability.isEnabled && txQuery.data?.blob_versioned_hashes?.length ?
+      //   { id: 'blobs', title: 'Blobs', component: <TxBlobs txQuery={ txQuery }/> } :
+      //   undefined,
+      // { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
+      // { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
+      // { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
     ].filter(Boolean);
   })();
 
   const tabIndex = useTabIndexFromQuery(tabs);
 
-  const tags = (
-    <EntityTags
-      isLoading={ isPlaceholderData }
-      tags={ data?.transaction_tag ? [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const } ] : [] }
-    />
-  );
+  // const tags = (
+  //   <EntityTags
+  //     isLoading={ isPlaceholderData }
+  //     tags={ data?.transaction_tag ? [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 10 } ] : [] }
+  //   />
+  // );
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/txs');
@@ -100,7 +100,7 @@ const TransactionPageContent = () => {
     if (isPlaceholderData && !showDegradedView) {
       return (
         <>
-          <TabsSkeleton tabs={ tabs } mt={ 6 }/>
+          <RoutedTabsSkeleton tabs={ tabs } mt={ 6 }/>
           { tabs[tabIndex]?.component }
         </>
       );
@@ -121,7 +121,7 @@ const TransactionPageContent = () => {
       <PageTitle
         title="Transaction details"
         backLink={ backLink }
-        contentAfter={ tags }
+        // contentAfter={ tags }
         secondRow={ titleSecondRow }
       />
       { content }

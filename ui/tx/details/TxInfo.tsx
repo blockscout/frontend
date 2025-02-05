@@ -3,17 +3,13 @@ import {
   Grid,
   GridItem,
   Text,
-  Link,
   Spinner,
   Flex,
-  Tooltip,
   chakra,
-  useColorModeValue,
   HStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
 
 import { SCROLL_L2_BLOCK_STATUSES } from 'types/api/scrollL2';
 import type { Transaction } from 'types/api/transaction';
@@ -29,8 +25,11 @@ import * as arbitrum from 'lib/rollups/arbitrum';
 import { MESSAGE_DESCRIPTIONS } from 'lib/tx/arbitrumMessageStatusDescription';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import CutLink from 'toolkit/components/CutLink/CutLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -77,21 +76,12 @@ interface Props {
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
-  const handleCutClick = React.useCallback(() => {
+  const handleCutLinkClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
-    scroller.scrollTo('TxInfo__cutLink', {
-      duration: 500,
-      smooth: true,
-    });
   }, []);
-  const executionSuccessIconColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
 
   const showAssociatedL1Tx = React.useCallback(() => {
     setIsExpanded(true);
-    scroller.scrollTo('TxInfo__cutLink', {
-      duration: 500,
-      smooth: true,
-    });
   }, []);
 
   if (!data) {
@@ -102,24 +92,24 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
     ...data.from.private_tags || [],
     ...data.from.public_tags || [],
     ...data.from.watchlist_names || [],
-  ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
+  ].map((tag) => <Badge key={ tag.label }>{ tag.display_name }</Badge>);
 
   const toAddress = data.to ? data.to : data.created_contract;
   const addressToTags = [
     ...toAddress?.private_tags || [],
     ...toAddress?.public_tags || [],
     ...toAddress?.watchlist_names || [],
-  ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
+  ].map((tag) => <Badge key={ tag.label }>{ tag.display_name }</Badge>);
 
   const executionSuccessBadge = toAddress?.is_contract && data.result === 'success' ? (
-    <Tooltip label="Contract execution completed">
+    <Tooltip content="Contract execution completed">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <IconSvg name="status/success" boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
+        <IconSvg name="status/success" boxSize={ 4 } color={{ _light: 'blackAlpha.800', _dark: 'whiteAlpha.800' }} cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
   const executionFailedBadge = toAddress?.is_contract && Boolean(data.status) && data.result !== 'success' ? (
-    <Tooltip label="Error occurred during contract execution">
+    <Tooltip content="Error occurred during contract execution">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
         <IconSvg name="status/error" boxSize={ 4 } color="error" cursor="pointer"/>
       </chakra.span>
@@ -151,7 +141,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value flexWrap="nowrap">
         { data.status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
-        <Skeleton isLoaded={ !isLoading } overflow="hidden">
+        <Skeleton loading={ isLoading } overflow="hidden">
           <HashStringShortenDynamic hash={ data.hash }/>
         </Skeleton>
         <CopyToClipboard text={ data.hash } isLoading={ isLoading }/>
@@ -178,13 +168,13 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       <DetailsInfoItem.Value>
         <TxStatus status={ data.status } errorText={ data.status === 'error' ? data.result : undefined } isLoading={ isLoading }/>
         { data.method && (
-          <Tag colorScheme={ data.method === 'Multicall' ? 'teal' : 'gray' } isLoading={ isLoading } isTruncated ml={ 3 }>
+          <Badge colorScheme={ data.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated ml={ 3 }>
             { data.method }
-          </Tag>
+          </Badge>
         ) }
         { data.arbitrum?.contains_message && (
-          <Skeleton isLoaded={ !isLoading } onClick={ showAssociatedL1Tx }>
-            <Link isTruncated ml={ 3 }>
+          <Skeleton loading={ isLoading } onClick={ showAssociatedL1Tx }>
+            <Link truncate ml={ 3 }>
               { data.arbitrum?.contains_message === 'incoming' ? 'Incoming message' : 'Outgoing message' }
             </Link>
           </Skeleton>
@@ -296,7 +286,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         { Boolean(data.confirmations) && (
           <>
             <TextSeparator color="gray.500"/>
-            <Skeleton isLoaded={ !isLoading } color="text_secondary">
+            <Skeleton loading={ isLoading } color="text_secondary">
               <span>{ data.confirmations } Block confirmations</span>
             </Skeleton>
           </>
@@ -340,7 +330,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                 isLoading={ isLoading }
                 number={ data.zksync.batch_number }
               />
-            ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
+            ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -356,7 +346,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <DetailsInfoItem.Value>
             { data.arbitrum.batch_number ?
               <BatchEntityL2 isLoading={ isLoading } number={ data.arbitrum.batch_number }/> :
-              <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
+              <Skeleton loading={ isLoading }>Pending</Skeleton> }
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -374,7 +364,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             { data.confirmation_duration && (
               <>
                 <TextSeparator color="gray.500"/>
-                <Skeleton isLoaded={ !isLoading } color="text_secondary">
+                <Skeleton loading={ isLoading } color="text_secondary">
                   <span>{ getConfirmationDuration(data.confirmation_duration) }</span>
                 </Skeleton>
               </>
@@ -521,7 +511,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             Sequence tx hash
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value flexWrap="nowrap">
-            <Skeleton isLoaded={ !isLoading } overflow="hidden">
+            <Skeleton loading={ isLoading } overflow="hidden">
               <HashStringShortenDynamic hash={ data.zkevm_sequence_hash }/>
             </Skeleton>
             <CopyToClipboard text={ data.zkevm_sequence_hash } isLoading={ isLoading }/>
@@ -538,7 +528,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             Verify tx hash
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value flexWrap="nowrap">
-            <Skeleton isLoaded={ !isLoading } overflow="hidden">
+            <Skeleton loading={ isLoading } overflow="hidden">
               <HashStringShortenDynamic hash={ data.zkevm_verify_hash }/>
             </Skeleton>
             <CopyToClipboard text={ data.zkevm_verify_hash } isLoading={ isLoading }/>
@@ -629,9 +619,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         Gas usage & limit by txn
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
+        <Skeleton loading={ isLoading }>{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
         <TextSeparator/>
-        <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.gas_limit).toFormat() }</Skeleton>
+        <Skeleton loading={ isLoading }>{ BigNumber(data.gas_limit).toFormat() }</Skeleton>
         <Utilization ml={ 4 } value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() } isLoading={ isLoading }/>
       </DetailsInfoItem.Value>
 
@@ -644,7 +634,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             Gas used for L1
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.arbitrum.gas_used_for_l1 || 0).toFormat() }</Skeleton>
+            <Skeleton loading={ isLoading }>{ BigNumber(data.arbitrum.gas_used_for_l1 || 0).toFormat() }</Skeleton>
             <TextSeparator/>
             <Utilization
               ml={ 4 }
@@ -660,7 +650,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             Gas used for L2
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.arbitrum.gas_used_for_l2 || 0).toFormat() }</Skeleton>
+            <Skeleton loading={ isLoading }>{ BigNumber(data.arbitrum.gas_used_for_l2 || 0).toFormat() }</Skeleton>
             <TextSeparator/>
             <Utilization
               ml={ 4 }
@@ -680,7 +670,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             L1 Gas used
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.scroll?.l1_gas_used || 0).toFormat() }</Skeleton>
+            <Skeleton loading={ isLoading }>{ BigNumber(data.scroll?.l1_gas_used || 0).toFormat() }</Skeleton>
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -700,21 +690,21 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             { data.base_fee_per_gas && (
-              <Skeleton isLoaded={ !isLoading }>
+              <Skeleton loading={ isLoading }>
                 <Text as="span" fontWeight="500">Base: </Text>
                 <Text fontWeight="600" as="span">{ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
                 { (data.max_fee_per_gas || data.max_priority_fee_per_gas) && <TextSeparator/> }
               </Skeleton>
             ) }
             { data.max_fee_per_gas && (
-              <Skeleton isLoaded={ !isLoading }>
+              <Skeleton loading={ isLoading }>
                 <Text as="span" fontWeight="500">Max: </Text>
                 <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
                 { data.max_priority_fee_per_gas && <TextSeparator/> }
               </Skeleton>
             ) }
             { data.max_priority_fee_per_gas && (
-              <Skeleton isLoaded={ !isLoading }>
+              <Skeleton loading={ isLoading }>
                 <Text as="span" fontWeight="500">Max priority: </Text>
                 <Text fontWeight="600" as="span">{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
               </Skeleton>
@@ -751,7 +741,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               </DetailsInfoItem.Label>
               <DetailsInfoItem.Value>
                 <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
-                <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
+                <Text color="text.secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
               </DetailsInfoItem.Value>
             </>
           ) }
@@ -793,135 +783,117 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       ) }
       <TxInfoScrollFees data={ data } isLoading={ isLoading }/>
 
-      <GridItem colSpan={{ base: undefined, lg: 2 }}>
-        <Element name="TxInfo__cutLink">
-          <Skeleton isLoaded={ !isLoading } mt={ 6 } display="inline-block">
-            <Link
-              display="inline-block"
-              fontSize="sm"
-              textDecorationLine="underline"
-              textDecorationStyle="dashed"
-              onClick={ handleCutClick }
+      <CutLink loading={ isLoading } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }} isExpanded={ isExpanded } onClick={ handleCutLinkClick }>
+        <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+
+        { data.arbitrum?.contains_message && data.arbitrum?.message_related_info && (
+          <>
+            <DetailsInfoItem.Label
+              hint={ data.arbitrum.contains_message === 'incoming' ?
+                'The hash of the transaction that originated the message from the base layer' :
+                'The hash of the transaction that completed the message on the base layer'
+              }
             >
-              { isExpanded ? 'Hide details' : 'View details' }
-            </Link>
-          </Skeleton>
-        </Element>
-      </GridItem>
+              { data.arbitrum.contains_message === 'incoming' ? 'Originating L1 txn hash' : 'Completion L1 txn hash' }
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              { data.arbitrum.message_related_info.associated_l1_transaction ?
+                <TxEntityL1 hash={ data.arbitrum.message_related_info.associated_l1_transaction }/> : (
+                  <HStack gap={ 2 }>
+                    <Text color="text_secondary">{ data.arbitrum.message_related_info.message_status }</Text>
+                    <Hint label={ MESSAGE_DESCRIPTIONS[data.arbitrum.message_related_info.message_status] }/>
+                  </HStack>
+                )
+              }
+            </DetailsInfoItem.Value>
+          </>
+        ) }
 
-      { isExpanded && (
-        <>
-          <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+        { (data.blob_gas_used || data.max_fee_per_blob_gas || data.blob_gas_price) && (
+          <>
+            { data.blob_gas_used && data.blob_gas_price && (
+              <>
+                <DetailsInfoItem.Label
+                  hint="Blob fee for this transaction"
+                >
+                  Blob fee
+                </DetailsInfoItem.Label>
+                <DetailsInfoItem.Value>
+                  <CurrencyValue
+                    value={ BigNumber(data.blob_gas_used).multipliedBy(data.blob_gas_price).toString() }
+                    currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
+                    exchangeRate={ data.exchange_rate }
+                    flexWrap="wrap"
+                    isLoading={ isLoading }
+                  />
+                </DetailsInfoItem.Value>
+              </>
+            ) }
 
-          { data.arbitrum?.contains_message && data.arbitrum?.message_related_info && (
-            <>
-              <DetailsInfoItem.Label
-                hint={ data.arbitrum.contains_message === 'incoming' ?
-                  'The hash of the transaction that originated the message from the base layer' :
-                  'The hash of the transaction that completed the message on the base layer'
-                }
-              >
-                { data.arbitrum.contains_message === 'incoming' ? 'Originating L1 txn hash' : 'Completion L1 txn hash' }
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                { data.arbitrum.message_related_info.associated_l1_transaction ?
-                  <TxEntityL1 hash={ data.arbitrum.message_related_info.associated_l1_transaction }/> : (
-                    <HStack gap={ 2 }>
-                      <Text color="text_secondary">{ data.arbitrum.message_related_info.message_status }</Text>
-                      <Hint label={ MESSAGE_DESCRIPTIONS[data.arbitrum.message_related_info.message_status] }/>
-                    </HStack>
-                  )
-                }
-              </DetailsInfoItem.Value>
-            </>
-          ) }
+            { data.blob_gas_used && (
+              <>
+                <DetailsInfoItem.Label
+                  hint="Amount of gas used by the blobs in this transaction"
+                >
+                  Blob gas usage
+                </DetailsInfoItem.Label>
+                <DetailsInfoItem.Value>
+                  { BigNumber(data.blob_gas_used).toFormat() }
+                </DetailsInfoItem.Value>
+              </>
+            ) }
 
-          { (data.blob_gas_used || data.max_fee_per_blob_gas || data.blob_gas_price) && (
-            <>
-              { data.blob_gas_used && data.blob_gas_price && (
-                <>
-                  <DetailsInfoItem.Label
-                    hint="Blob fee for this transaction"
-                  >
-                    Blob fee
-                  </DetailsInfoItem.Label>
-                  <DetailsInfoItem.Value>
-                    <CurrencyValue
-                      value={ BigNumber(data.blob_gas_used).multipliedBy(data.blob_gas_price).toString() }
-                      currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
-                      exchangeRate={ data.exchange_rate }
-                      flexWrap="wrap"
-                      isLoading={ isLoading }
-                    />
-                  </DetailsInfoItem.Value>
-                </>
-              ) }
+            { (data.max_fee_per_blob_gas || data.blob_gas_price) && (
+              <>
+                <DetailsInfoItem.Label
+                  hint={ `Amount of ${ currencyUnits.ether } used for blobs in this transaction` }
+                >
+                  { `Blob gas fees (${ currencyUnits.gwei })` }
+                </DetailsInfoItem.Label>
+                <DetailsInfoItem.Value>
+                  { data.blob_gas_price && (
+                    <Text fontWeight="600" as="span">{ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                  ) }
+                  { (data.max_fee_per_blob_gas && data.blob_gas_price) && <TextSeparator/> }
+                  { data.max_fee_per_blob_gas && (
+                    <>
+                      <Text as="span" fontWeight="500" whiteSpace="pre">Max: </Text>
+                      <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_blob_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                    </>
+                  ) }
+                </DetailsInfoItem.Value>
+              </>
+            ) }
+            <DetailsInfoItemDivider/>
+          </>
+        ) }
 
-              { data.blob_gas_used && (
-                <>
-                  <DetailsInfoItem.Label
-                    hint="Amount of gas used by the blobs in this transaction"
-                  >
-                    Blob gas usage
-                  </DetailsInfoItem.Label>
-                  <DetailsInfoItem.Value>
-                    { BigNumber(data.blob_gas_used).toFormat() }
-                  </DetailsInfoItem.Value>
-                </>
-              ) }
+        <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position } queueIndex={ data.scroll?.queue_index }/>
 
-              { (data.max_fee_per_blob_gas || data.blob_gas_price) && (
-                <>
-                  <DetailsInfoItem.Label
-                    hint={ `Amount of ${ currencyUnits.ether } used for blobs in this transaction` }
-                  >
-                    { `Blob gas fees (${ currencyUnits.gwei })` }
-                  </DetailsInfoItem.Label>
-                  <DetailsInfoItem.Value>
-                    { data.blob_gas_price && (
-                      <Text fontWeight="600" as="span">{ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
-                    ) }
-                    { (data.max_fee_per_blob_gas && data.blob_gas_price) && <TextSeparator/> }
-                    { data.max_fee_per_blob_gas && (
-                      <>
-                        <Text as="span" fontWeight="500" whiteSpace="pre">Max: </Text>
-                        <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_blob_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
-                      </>
-                    ) }
-                  </DetailsInfoItem.Value>
-                </>
-              ) }
-              <DetailsInfoItemDivider/>
-            </>
-          ) }
+        <DetailsInfoItem.Label
+          hint="Binary data included with the transaction. See logs tab for additional info"
+        >
+          Raw input
+        </DetailsInfoItem.Label>
+        <DetailsInfoItem.Value>
+          <RawInputData hex={ data.raw_input } defaultDataType={ data.zilliqa?.is_scilla ? 'UTF-8' : 'Hex' }/>
+        </DetailsInfoItem.Value>
 
-          <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position } queueIndex={ data.scroll?.queue_index }/>
+        { data.decoded_input && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Decoded input data"
+            >
+              Decoded input data
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <LogDecodedInputData data={ data.decoded_input }/>
+            </DetailsInfoItem.Value>
+          </>
+        ) }
 
-          <DetailsInfoItem.Label
-            hint="Binary data included with the transaction. See logs tab for additional info"
-          >
-            Raw input
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <RawInputData hex={ data.raw_input } defaultDataType={ data.zilliqa?.is_scilla ? 'UTF-8' : 'Hex' }/>
-          </DetailsInfoItem.Value>
-
-          { data.decoded_input && (
-            <>
-              <DetailsInfoItem.Label
-                hint="Decoded input data"
-              >
-                Decoded input data
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                <LogDecodedInputData data={ data.decoded_input }/>
-              </DetailsInfoItem.Value>
-            </>
-          ) }
-
-          { data.zksync && <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isLoading }/> }
-        </>
-      ) }
+        { data.zksync && <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isLoading }/> }
+      </CutLink>
     </Grid>
   );
 };

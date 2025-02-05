@@ -6,7 +6,7 @@ import type { Transaction } from 'types/api/transaction';
 
 import { WEI_IN_GWEI } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -68,7 +68,7 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <CurrencyValue
-              value={ data.scroll?.l1_fee_commit_scalar }
+              value={ String(data.scroll?.l1_fee_commit_scalar) }
               currency={ currencyUnits.ether }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
@@ -86,9 +86,9 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
             L1 Fee Overhead
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isLoading }>
+            <Skeleton loading={ isLoading }>
               <CurrencyValue
-                value={ data.scroll?.l1_fee_overhead }
+                value={ String(data.scroll?.l1_fee_overhead) }
                 currency={ currencyUnits.ether }
                 exchangeRate={ data.exchange_rate }
                 flexWrap="wrap"
@@ -107,13 +107,13 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             { data.scroll?.l1_base_fee !== undefined && (
-              <Skeleton isLoaded={ !isLoading }>
+              <Skeleton loading={ isLoading }>
                 <Text as="span" fontWeight="500">Base: </Text>
                 <Text fontWeight="600" as="span">{ BigNumber(data.scroll?.l1_base_fee || 0).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
               </Skeleton>
             ) }
             { data.scroll?.l1_fee_scalar !== undefined && (
-              <Skeleton isLoaded={ !isLoading }>
+              <Skeleton loading={ isLoading }>
                 <TextSeparator/>
                 <Text as="span" fontWeight="500">Scalar: </Text>
                 <Text fontWeight="600" as="span">{ BigNumber(data.scroll?.l1_fee_scalar || 0).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
@@ -132,13 +132,13 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             { data.scroll?.l1_blob_base_fee !== undefined && (
-              <Skeleton isLoaded={ !isLoading }>
+              <Skeleton loading={ isLoading }>
                 <Text as="span" fontWeight="500">Base: </Text>
                 <Text fontWeight="600" as="span">{ BigNumber(data.scroll?.l1_blob_base_fee || 0).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
               </Skeleton>
             ) }
             { data.scroll?.l1_fee_blob_scalar !== undefined && (
-              <Skeleton isLoaded={ !isLoading }>
+              <Skeleton loading={ isLoading }>
                 <TextSeparator/>
                 <Text as="span" fontWeight="500">Scalar: </Text>
                 <Text fontWeight="600" as="span">{ BigNumber(data.scroll?.l1_fee_blob_scalar || 0).dividedBy(WEI_IN_GWEI).toFixed() }</Text>

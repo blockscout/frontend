@@ -1,4 +1,4 @@
-import { Flex, useColorModeValue, chakra } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 export type Props = {
@@ -22,8 +22,6 @@ const ContainerWithScrollY = ({ className, gradientHeight, children, onScrollVis
     onScrollVisibilityChange?.(hasScroll);
   }, [ gradientHeight, onScrollVisibilityChange ]);
 
-  const gradientEndColor = useColorModeValue('white', 'black');
-
   return (
     <Flex
       flexDirection="column"
@@ -37,7 +35,7 @@ const ContainerWithScrollY = ({ className, gradientHeight, children, onScrollVis
         left: 0,
         right: '20px',
         height: `${ gradientHeight }px`,
-        bgGradient: `linear(to-b, transparent, ${ gradientEndColor })`,
+        bgGradient: { _light: `linear(to-b, transparent, {colors.white}`, _dark: `linear(to-b, transparent, {colors.black})` },
       } : undefined }
       pr={ hasScroll ? 5 : 0 }
       pb={ hasScroll ? `${ gradientHeight }px` : 0 }

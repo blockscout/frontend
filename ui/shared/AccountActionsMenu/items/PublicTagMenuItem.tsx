@@ -8,7 +8,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import ButtonItem from '../parts/ButtonItem';
 import MenuItem from '../parts/MenuItem';
 
-const PublicTagMenuItem = ({ className, hash, type }: ItemProps) => {
+const PublicTagMenuItem = ({ hash, type }: ItemProps) => {
   const router = useRouter();
 
   const handleClick = React.useCallback(() => {
@@ -17,11 +17,11 @@ const PublicTagMenuItem = ({ className, hash, type }: ItemProps) => {
 
   switch (type) {
     case 'button': {
-      return <ButtonItem label="Add public tag" icon="publictags" onClick={ handleClick } className={ className }/>;
+      return <ButtonItem label="Add public tag" icon="publictags" onClick={ handleClick }/>;
     }
     case 'menu_item': {
       return (
-        <MenuItem className={ className } onClick={ handleClick }>
+        <MenuItem onClick={ handleClick } value="add-public-tag">
           <IconSvg name="publictags" boxSize={ 6 } mr={ 2 }/>
           <span>Add public tag</span>
         </MenuItem>

@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { Alert } from 'toolkit/chakra/alert';
+import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
@@ -48,6 +49,14 @@ const AlertsShowcase = () => {
       </Section>
       <Section>
         <SectionHeader>Examples</SectionHeader>
+        <SectionSubHeader>As Link</SectionSubHeader>
+        <SamplesStack>
+          <Sample>
+            <Link href="/" asChild>
+              <Alert status="info" title="Info"> Alert content </Alert>
+            </Link>
+          </Sample>
+        </SamplesStack>
         <SectionSubHeader>Inside table (SocketNewItemsNotice)</SectionSubHeader>
         <SamplesStack>
           <Sample label="loading">

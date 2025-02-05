@@ -1,6 +1,7 @@
-import { Flex, Link, useBoolean } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import { Link } from 'toolkit/chakra/link';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
@@ -10,8 +11,13 @@ interface Props {
 
 const CUT_LENGTH = 2;
 
+// TODO @tom2drum another variant of CutLink
 const TxAllowedPeekers = ({ items }: Props) => {
-  const [ isExpanded, expand ] = useBoolean(false);
+  const [ isExpanded, setIsExpanded ] = React.useState(false);
+
+  const handleCutLinkClick = React.useCallback(() => {
+    setIsExpanded((flag) => !flag);
+  }, []);
 
   return (
     <>
@@ -32,7 +38,7 @@ const TxAllowedPeekers = ({ items }: Props) => {
             fontSize="sm"
             textDecorationLine="underline"
             textDecorationStyle="dashed"
-            onClick={ expand.toggle }
+            onClick={ handleCutLinkClick }
           >
             { isExpanded ? 'Hide' : 'Show all' }
           </Link>

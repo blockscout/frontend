@@ -1,4 +1,3 @@
-import { useDisclosure } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -9,6 +8,7 @@ import type { Transaction } from 'types/api/transaction';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getPageType from 'lib/mixpanel/getPageType';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AddressModal from 'ui/privateTags/AddressModal/AddressModal';
 import TransactionModal from 'ui/privateTags/TransactionModal/TransactionModal';
 import IconSvg from 'ui/shared/IconSvg';
@@ -21,7 +21,7 @@ interface Props extends ItemProps {
   entityType?: 'address' | 'tx';
 }
 
-const PrivateTagMenuItem = ({ className, hash, entityType = 'address', type }: Props) => {
+const PrivateTagMenuItem = ({ hash, entityType = 'address', type }: Props) => {
   const modal = useDisclosure();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -46,7 +46,7 @@ const PrivateTagMenuItem = ({ className, hash, entityType = 'address', type }: P
 
   const pageType = getPageType(router.pathname);
   const modalProps = {
-    isOpen: modal.isOpen,
+    isOpen: modal.open,
     onClose: modal.onClose,
     onSuccess: handleAddPrivateTag,
     pageType,
@@ -58,7 +58,7 @@ const PrivateTagMenuItem = ({ className, hash, entityType = 'address', type }: P
         return (
           <AuthGuard onAuthSuccess={ modal.onOpen }>
             { ({ onClick }) => (
-              <ButtonItem label="Add private tag" icon="privattags" onClick={ onClick } className={ className }/>
+              <ButtonItem label="Add private tag" icon="privattags" onClick={ onClick }/>
             ) }
           </AuthGuard>
         );
@@ -67,7 +67,7 @@ const PrivateTagMenuItem = ({ className, hash, entityType = 'address', type }: P
         return (
           <AuthGuard onAuthSuccess={ modal.onOpen }>
             { ({ onClick }) => (
-              <MenuItem className={ className } onClick={ onClick }>
+              <MenuItem onClick={ onClick } value="add-private-tag">
                 <IconSvg name="privattags" boxSize={ 6 } mr={ 2 }/>
                 <span>Add private tag</span>
               </MenuItem>
