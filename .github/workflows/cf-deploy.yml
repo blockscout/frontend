@@ -33,7 +33,7 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: HUSKY=0 yarn install
+        run: yarn install
         env:
           CI: true
           HUSKY: 0

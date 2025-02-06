@@ -1,29 +1,28 @@
-name: Deploy from main branch
-
-on:
-  push:
-    branches:
-#      Commented out to deploy from main branch
+#name: Deploy from main branch
+#
+#on:
+#  push:
+#    branches:
 #      - main
 #      - devel
-    paths-ignore:
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.husky/**'
-      - '.vscode/**'
-      - 'docs/**'
-      - 'jest/**'
-      - 'mocks/**'
-      - 'playwright/**'
-      - 'stubs/**'
-      - 'tools/**'
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-jobs:
-  publish_image:
-    name: Publish Docker image
-    uses: './.github/workflows/publish-image.yml'
-    secrets: inherit
+#    paths-ignore:
+#      - '.github/ISSUE_TEMPLATE/**'
+#      - '.husky/**'
+#      - '.vscode/**'
+#      - 'docs/**'
+#      - 'jest/**'
+#      - 'mocks/**'
+#      - 'playwright/**'
+#      - 'stubs/**'
+#      - 'tools/**'
+#  workflow_dispatch:
+#
+#concurrency:
+#  group: ${{ github.workflow }}-${{ github.ref }}
+#  cancel-in-progress: true
+#
+#jobs:
+#  publish_image:
+#    name: Publish Docker image
+#    uses: './.github/workflows/publish-image.yml'
+#    secrets: inherit
