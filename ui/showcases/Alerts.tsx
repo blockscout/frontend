@@ -5,6 +5,7 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import TxPendingAlert from 'ui/tx/TxPendingAlert';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
@@ -35,7 +36,7 @@ const AlertsShowcase = () => {
         <SectionHeader>Variant</SectionHeader>
         <SamplesStack>
           <Sample label="variant: subtle">
-            <Alert status="info" title="Info"> Alert content </Alert>
+            <Alert status="info" title="Info" showIcon> Alert content </Alert>
           </Sample>
         </SamplesStack>
       </Section>
@@ -102,7 +103,7 @@ const AlertsShowcase = () => {
         <SectionSubHeader>Multiple lines</SectionSubHeader>
         <SamplesStack>
           <Sample label="multiple lines, with title, inline=false">
-            <Alert status="warning" title="Warning" inline={ false } maxWidth="500px">
+            <Alert status="warning" title="Warning" inline={ false } maxWidth="500px" showIcon>
               <Box>
                 Participated in our recent Blockscout activities? Check your eligibility and claim your NFT Scout badges. More exciting things are coming soon!
               </Box>
@@ -114,6 +115,9 @@ const AlertsShowcase = () => {
                 Participated in our recent Blockscout activities? Check your eligibility and claim your NFT Scout badges. More exciting things are coming soon!
               </Box>
             </Alert>
+          </Sample>
+          <Sample label="with spinner">
+            <TxPendingAlert/>
           </Sample>
         </SamplesStack>
       </Section>

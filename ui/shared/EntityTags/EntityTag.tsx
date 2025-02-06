@@ -76,7 +76,13 @@ const EntityTag = ({ data, isLoading, noLink, ...rest }: Props) => {
 
   return (
     <EntityTagTooltip data={ data }>
-      <Link external={ linkParams?.type === 'external' } href={ linkParams?.href } onClick={ handleLinkClick } noIcon>
+      <Link
+        external={ linkParams?.type === 'external' }
+        href={ linkParams?.href }
+        onClick={ handleLinkClick }
+        noIcon
+        cursor={ hasLink ? 'pointer' : 'default' }
+      >
         <Tag
           bg={ data.meta?.bgColor }
           color={ data.meta?.textColor }

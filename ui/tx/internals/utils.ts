@@ -1,6 +1,6 @@
 import type { TxInternalsType } from 'types/api/internalTransaction';
 
-export type Sort = 'value-asc' | 'value-desc' | 'gas-limit-asc' | 'gas-limit-desc';
+export type Sort = 'value-asc' | 'value-desc' | 'gas-limit-asc' | 'gas-limit-desc' | 'default';
 export type SortField = 'value' | 'gas-limit';
 
 interface TxInternalsTypeItem {

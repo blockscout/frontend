@@ -42,7 +42,6 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
             className="group"
             target="_blank"
             rel="noopener noreferrer"
-            cursor={ href ? 'pointer' : 'default' }
             { ...rest }
           >
             { children }
@@ -54,7 +53,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
 
     return (
       <Skeleton loading={ loading } asChild>
-        <ChakraLink asChild ref={ ref } cursor={ href ? 'pointer' : 'default' } { ...rest }>
+        <ChakraLink asChild ref={ ref } { ...rest }>
           { href ? <NextLink href={ href as NextLinkProps['href'] } scroll={ scroll }>{ children }</NextLink> : <span>{ children }</span> }
         </ChakraLink>
       </Skeleton>

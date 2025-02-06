@@ -1,12 +1,12 @@
-import { Table, Tbody, Tr, Th, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { currencyUnits } from 'lib/units';
+import { Link } from 'toolkit/chakra/link';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import IconSvg from 'ui/shared/IconSvg';
-import { default as Thead } from 'ui/shared/TheadSticky';
 import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
 
@@ -23,31 +23,31 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) =
 
   return (
     <AddressHighlightProvider>
-      <Table>
-        <Thead top={ top }>
-          <Tr>
-            <Th width="28%">Type</Th>
-            <Th width="40%">From/To</Th>
-            <Th width="16%" isNumeric>
+      <TableRoot>
+        <TableHeaderSticky top={ top }>
+          <TableRow>
+            <TableColumnHeader width="28%">Type</TableColumnHeader>
+            <TableColumnHeader width="40%">From/To</TableColumnHeader>
+            <TableColumnHeader width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('value') } columnGap={ 1 }>
                 { sort?.includes('value') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
                 Value { currencyUnits.ether }
               </Link>
-            </Th>
-            <Th width="16%" isNumeric>
+            </TableColumnHeader>
+            <TableColumnHeader width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('gas-limit') } columnGap={ 1 }>
                 { sort?.includes('gas-limit') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
                 Gas limit { currencyUnits.ether }
               </Link>
-            </Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+            </TableColumnHeader>
+          </TableRow>
+        </TableHeaderSticky>
+        <TableBody>
           { data.map((item, index) => (
             <TxInternalsTableItem key={ item.index.toString() + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
           )) }
-        </Tbody>
-      </Table>
+        </TableBody>
+      </TableRoot>
     </AddressHighlightProvider>
   );
 };

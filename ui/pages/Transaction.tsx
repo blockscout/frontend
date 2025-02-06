@@ -62,7 +62,7 @@ const TransactionPageContent = () => {
       // config.features.userOps.isEnabled ?
       //   { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
       //   undefined,
-      // { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> },
+      { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> },
       // config.features.dataAvailability.isEnabled && txQuery.data?.blob_versioned_hashes?.length ?
       //   { id: 'blobs', title: 'Blobs', component: <TxBlobs txQuery={ txQuery }/> } :
       //   undefined,

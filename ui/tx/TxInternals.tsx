@@ -1,4 +1,4 @@
-import { Show, Hide } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
@@ -22,14 +22,14 @@ import TxSocketAlert from 'ui/tx/TxSocketAlert';
 
 import type { TxQuery } from './useTxQuery';
 
-const SORT_SEQUENCE: Record<SortField, Array<Sort | undefined>> = {
-  value: [ 'value-desc', 'value-asc', undefined ],
-  'gas-limit': [ 'gas-limit-desc', 'gas-limit-asc', undefined ],
+const SORT_SEQUENCE: Record<SortField, Array<Sort>> = {
+  value: [ 'value-desc', 'value-asc', 'default' ],
+  'gas-limit': [ 'gas-limit-desc', 'gas-limit-asc', 'default' ],
 };
 
 const getNextSortValue = (getNextSortValueShared<SortField, Sort>).bind(undefined, SORT_SEQUENCE);
 
-const sortFn = (sort: Sort | undefined) => (a: InternalTransaction, b: InternalTransaction) => {
+const sortFn = (sort: Sort) => (a: InternalTransaction, b: InternalTransaction) => {
   switch (sort) {
     case 'value-desc': {
       return compareBns(b.value, a.value);
@@ -68,7 +68,7 @@ const TxInternals = ({ txQuery }: Props) => {
   // filters are not implemented yet in api
   // const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
-  const [ sort, setSort ] = React.useState<Sort>();
+  const [ sort, setSort ] = React.useState<Sort>('default');
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
     resourceName: 'tx_internal_txs',
     pathParams: { hash: txQuery.data?.hash },
@@ -103,8 +103,8 @@ const TxInternals = ({ txQuery }: Props) => {
 
   const content = filteredData ? (
     <>
-      <Show below="lg" ssr={ false }><TxInternalsList data={ filteredData } isLoading={ isPlaceholderData }/></Show>
-      <Hide below="lg" ssr={ false }>
+      <Box hideFrom="lg"><TxInternalsList data={ filteredData } isLoading={ isPlaceholderData }/></Box>
+      <Box hideBelow="lg">
         <TxInternalsTable
           data={ filteredData }
           sort={ sort }
@@ -112,7 +112,7 @@ const TxInternals = ({ txQuery }: Props) => {
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ isPlaceholderData }
         />
-      </Hide>
+      </Box>
     </>
   ) : null;
 
@@ -127,15 +127,16 @@ const TxInternals = ({ txQuery }: Props) => {
   return (
     <DataListDisplay
       isError={ isError || txQuery.isError }
-      items={ data?.items }
+      itemsNum={ data?.items.length }
       emptyText="There are no internal transactions for this transaction."
       // filterProps={{
       // emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`.
       // hasActiveFilters: Boolean(filters.length || searchTerm),
       // }}
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

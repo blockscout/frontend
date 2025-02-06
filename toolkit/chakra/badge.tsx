@@ -8,7 +8,7 @@ import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import { Skeleton } from './skeleton';
 
-export interface BadgeProps extends ChakraBadgeProps {
+export interface BadgeProps extends Omit<ChakraBadgeProps, 'colorScheme'> {
   loading?: boolean;
   iconStart?: IconName;
   truncated?: boolean;
