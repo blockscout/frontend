@@ -1,6 +1,7 @@
-import { Flex, Text, Link, useBoolean } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import { Link } from 'toolkit/chakra/link';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 
 interface Props {
@@ -10,7 +11,11 @@ interface Props {
 }
 
 const TxStateTokenIdList = ({ items, tokenAddress, isLoading }: Props) => {
-  const [ isCut, setIsCut ] = useBoolean(true);
+  const [ isCut, setIsCut ] = React.useState(true);
+
+  const handleToggle = React.useCallback(() => {
+    setIsCut((prev) => !prev);
+  }, []);
 
   return (
     <Flex flexDir="column" rowGap={ 2 }>
@@ -33,7 +38,7 @@ const TxStateTokenIdList = ({ items, tokenAddress, isLoading }: Props) => {
           fontWeight={ 400 }
           textDecoration="underline dashed"
           _hover={{ textDecoration: 'underline dashed', color: 'link_hovered' }}
-          onClick={ setIsCut.toggle }
+          onClick={ handleToggle }
           pb={{ base: '5px', md: 0 }}
         >
           View { isCut ? 'more' : 'less' }

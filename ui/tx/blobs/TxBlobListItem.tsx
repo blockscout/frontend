@@ -2,8 +2,8 @@ import React from 'react';
 
 import type { TxBlob } from 'types/api/blobs';
 
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlobDataType from 'ui/shared/blob/BlobDataType';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
@@ -29,7 +29,7 @@ const TxBlobListItem = ({ data, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Size, bytes</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading }>
+        <Skeleton loading={ isLoading }>
           { size.toLocaleString() }
         </Skeleton>
       </ListItemMobileGrid.Value>

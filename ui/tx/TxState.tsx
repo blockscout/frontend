@@ -1,4 +1,4 @@
-import { Hide, Show, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { TX_STATE_CHANGES } from 'stubs/txStateChanges';
@@ -39,12 +39,12 @@ const TxState = ({ txQuery }: Props) => {
 
   const content = data ? (
     <>
-      <Hide below="lg" ssr={ false }>
+      <Box hideBelow="lg">
         <TxStateTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
-      </Hide>
-      <Show below="lg" ssr={ false }>
+      </Box>
+      <Box hideFrom="lg">
         <TxStateList data={ data.items } isLoading={ isPlaceholderData }/>
-      </Show>
+      </Box>
     </>
   ) : null;
 
@@ -64,11 +64,12 @@ const TxState = ({ txQuery }: Props) => {
       ) }
       <DataListDisplay
         isError={ isError || txQuery.isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no state changes for this transaction."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

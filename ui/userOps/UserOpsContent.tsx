@@ -1,4 +1,4 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -23,7 +23,7 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
 
   const content = query.data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }>
+      <Box hideBelow="lg">
         <UserOpsTable
           items={ query.data.items }
           top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
@@ -31,8 +31,8 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
           showTx={ showTx }
           showSender={ showSender }
         />
-      </Hide>
-      <Show below="lg" ssr={ false }>
+      </Box>
+      <Box hideFrom="lg">
         { query.data.items.map((item, index) => (
           <UserOpsListItem
             key={ item.hash + (query.isPlaceholderData ? String(index) : '') }
@@ -42,7 +42,7 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
             showSender={ showSender }
           />
         )) }
-      </Show>
+      </Box>
     </>
   ) : null;
 
@@ -55,11 +55,12 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
   return (
     <DataListDisplay
       isError={ query.isError }
-      items={ query.data?.items }
+      itemsNum={ query.data?.items?.length }
       emptyText="There are no user operations."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

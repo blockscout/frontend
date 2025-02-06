@@ -11,7 +11,6 @@ interface Props {
 
 const CUT_LENGTH = 2;
 
-// TODO @tom2drum another variant of CutLink
 const TxAllowedPeekers = ({ items }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 

@@ -1,4 +1,4 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { TX_BLOB } from 'stubs/blobs';
@@ -34,12 +34,12 @@ const TxBlobs = ({ txQuery }: Props) => {
 
   const content = data ? (
     <>
-      <Hide below="lg" ssr={ false }>
+      <Box hideBelow="lg">
         <TxBlobsTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
-      </Hide>
-      <Show below="lg" ssr={ false }>
+      </Box>
+      <Box hideFrom="lg">
         <TxBlobsList data={ data.items } isLoading={ isPlaceholderData }/>
-      </Show>
+      </Box>
     </>
   ) : null;
 
@@ -52,11 +52,12 @@ const TxBlobs = ({ txQuery }: Props) => {
   return (
     <DataListDisplay
       isError={ isError || txQuery.isError }
-      items={ data?.items }
+      itemsNum={ data?.items.length }
       emptyText="There are no blobs for this transaction."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 
