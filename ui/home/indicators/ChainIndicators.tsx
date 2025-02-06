@@ -38,12 +38,12 @@ const indicators = INDICATORS.filter(
   return 0;
 });
 
-// const coinPriceIndicator = INDICATORS.filter(
-//   ({ id }) => config.UI.homepage.charts.includes(id) && id === "coin_price"
-// );
-// const marketCapIndicator = INDICATORS.filter(
-//   ({ id }) => config.UI.homepage.charts.includes(id) && id === "market_cap"
-// );
+const coinPriceIndicator = INDICATORS.filter(
+  ({ id }) => config.UI.homepage.charts.includes(id) && id === 'coin_price',
+);
+const marketCapIndicator = INDICATORS.filter(
+  ({ id }) => config.UI.homepage.charts.includes(id) && id === 'market_cap',
+);
 const totalSupplyIndicator = INDICATORS.filter(
   ({ id }) => id === 'total_supply',
 );
@@ -177,18 +177,24 @@ const ChainIndicators = () => {
                 stats={ statsQueryResult }
               />
             )) }
-            { /* <ChainIndicatorItem
-      key={ coinPriceIndicator[0].id }
-      { ...coinPriceIndicator[0] }
-      isSelected={ selectedIndicator === coinPriceIndicator[0].id }
-      stats={ rwaStatsQueryResult }
-    />
-    <ChainIndicatorItem
-      key={ marketCapIndicator[0].id }
-      { ...marketCapIndicator[0] }
-      isSelected={ selectedIndicator === marketCapIndicator[0].id }
-      stats={ rwaStatsQueryResult }
-    /> */ }
+            <ChainIndicatorItem
+              key={ coinPriceIndicator[0].id }
+              { ...coinPriceIndicator[0] }
+              isSelected={ selectedIndicator === coinPriceIndicator[0].id }
+              stats={ rwaStatsQueryResult }
+              // eslint-disable-next-line
+              value={(stats: HomeStats) => "---"}
+              // eslint-disable-next-line
+              valueDiff={(stats) =>
+                stats?.coin_price_change_percentage ? null : null
+              }
+            />
+            <ChainIndicatorItem
+              key={ marketCapIndicator[0].id }
+              { ...marketCapIndicator[0] }
+              isSelected={ selectedIndicator === marketCapIndicator[0].id }
+              stats={ rwaStatsQueryResult }
+            />
             <ChainIndicatorItem
               key={ totalSupplyIndicator[0].id }
               { ...totalSupplyIndicator[0] }
