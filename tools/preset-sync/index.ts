@@ -15,6 +15,7 @@ const PRESETS = {
   filecoin: 'https://filecoin.blockscout.com',
   gnosis: 'https://gnosis.blockscout.com',
   mekong: 'https://mekong.blockscout.com',
+  neon_devnet: 'https://neon-devnet.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
   optimism_celestia: 'https://opcelestia-raspberry.gelatoscout.com',
   optimism_sepolia: 'https://optimism-sepolia.blockscout.com',
