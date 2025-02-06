@@ -120,7 +120,7 @@ export const recipe = defineSlotRecipe({
     },
     valueText: {
       lineClamp: '1',
-      maxW: '80%',
+      maxW: '100%',
     },
   },
 

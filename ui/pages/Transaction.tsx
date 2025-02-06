@@ -66,7 +66,7 @@ const TransactionPageContent = () => {
       // config.features.dataAvailability.isEnabled && txQuery.data?.blob_versioned_hashes?.length ?
       //   { id: 'blobs', title: 'Blobs', component: <TxBlobs txQuery={ txQuery }/> } :
       //   undefined,
-      // { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
+      { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
       // { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
       // { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
     ].filter(Boolean);
