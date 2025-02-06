@@ -194,6 +194,8 @@ const ChainIndicators = () => {
               { ...marketCapIndicator[0] }
               isSelected={ selectedIndicator === marketCapIndicator[0].id }
               stats={ rwaStatsQueryResult }
+              // eslint-disable-next-line
+              value={(stats: HomeStats) => "---"}
             />
             <ChainIndicatorItem
               key={ totalSupplyIndicator[0].id }

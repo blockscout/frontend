@@ -33,9 +33,9 @@ const NumberWidgetsList = () => {
         ({ id, title, value, units, description }, index) => {
           let unitsStr = '';
           if (units && UNITS_WITHOUT_SPACE.includes(units)) {
-            unitsStr = units;
+            unitsStr = units === 'ETH' ? 'RWA' : units;
           } else if (units) {
-            unitsStr = ' ' + units;
+            unitsStr = units === 'ETH' ? ' RWA' : ' ' + units;
           }
           title = replaceSubstring(title, 'ETH', 'RWA');
 
