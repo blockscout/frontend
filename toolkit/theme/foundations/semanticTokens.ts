@@ -321,6 +321,10 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     tag: {
       root: {
         subtle: {
+          bg: { value: { _light: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.100}' } },
+          fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+        },
+        clickable: {
           bg: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },
           fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
         },

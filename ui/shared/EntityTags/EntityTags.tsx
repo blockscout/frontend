@@ -1,12 +1,12 @@
-import { Box, Flex, PopoverBody, PopoverContent, PopoverTrigger, chakra } from '@chakra-ui/react';
+import { Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import Popover from 'ui/shared/chakra/Popover';
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 
 import EntityTag from './EntityTag';
 
@@ -39,20 +39,20 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
         <>
           { tags.slice(0, visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } maxW={ tagMaxW }/>) }
           { metaSuitesPlaceholder }
-          <Popover trigger="click" placement="bottom-start" isLazy>
+          <PopoverRoot>
             <PopoverTrigger>
-              <Tag isLoading={ isLoading } cursor="pointer" as="button" _hover={{ color: 'link_hovered' }}>
+              <Badge loading={ isLoading } cursor="pointer" as="button" _hover={{ color: 'link.primary.hover' }}>
                 +{ tags.length - visibleNum }
-              </Tag>
+              </Badge>
             </PopoverTrigger>
-            <PopoverContent maxW="300px" w="auto">
-              <PopoverBody >
+            <PopoverContent maxW="300px">
+              <PopoverBody>
                 <Flex columnGap={ 2 } rowGap={ 2 } flexWrap="wrap">
                   { tags.slice(visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag }/>) }
                 </Flex>
               </PopoverBody>
             </PopoverContent>
-          </Popover>
+          </PopoverRoot>
         </>
       );
     }

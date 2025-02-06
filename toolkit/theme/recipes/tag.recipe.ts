@@ -38,6 +38,9 @@ export const recipe = defineSlotRecipe({
     },
     startElement: {
       flexShrink: 0,
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       boxSize: 'var(--tag-element-size)',
       ms: 'var(--tag-element-offset)',
       '&:has([data-scope=avatar])': {
@@ -48,6 +51,9 @@ export const recipe = defineSlotRecipe({
     },
     endElement: {
       flexShrink: 0,
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       boxSize: 'var(--tag-element-size)',
       me: 'var(--tag-element-offset)',
       _icon: { boxSize: '100%' },
@@ -66,8 +72,8 @@ export const recipe = defineSlotRecipe({
           minH: '6',
           gap: '1',
           '--tag-avatar-size': 'spacing.4',
-          '--tag-element-size': 'spacing.4',
-          '--tag-element-offset': '-2px',
+          '--tag-element-size': 'spacing.3',
+          '--tag-element-offset': '0px',
         },
         label: {
           textStyle: 'sm',
@@ -82,6 +88,19 @@ export const recipe = defineSlotRecipe({
           color: 'tag.root.subtle.fg',
           '&:not([data-loading], [aria-busy=true])': {
             bgColor: 'tag.root.subtle.bg',
+          },
+        },
+      },
+      clickable: {
+        root: {
+          cursor: 'pointer',
+          bgColor: 'tag.root.clickable.bg',
+          color: 'tag.root.clickable.fg',
+          '&:not([data-loading], [aria-busy=true])': {
+            bgColor: 'tag.root.clickable.bg',
+          },
+          _hover: {
+            opacity: 0.76,
           },
         },
       },

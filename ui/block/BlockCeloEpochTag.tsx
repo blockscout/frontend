@@ -3,7 +3,6 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import { Badge } from 'toolkit/chakra/badge';
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -26,9 +25,9 @@ const BlockCeloEpochTag = ({ blockQuery }: Props) => {
       undefined;
     const content = epochBlockNumber ? (
       <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(epochBlockNumber) } }) }>
-        <Tag>Epoch #{ blockQuery.data.celo.epoch_number }</Tag>
+        <Tag variant="clickable">Epoch #{ blockQuery.data.celo.epoch_number }</Tag>
       </Link>
-    ) : <Badge>Epoch #{ blockQuery.data.celo.epoch_number }</Badge>;
+    ) : <Tag>Epoch #{ blockQuery.data.celo.epoch_number }</Tag>;
 
     return (
       <Tooltip

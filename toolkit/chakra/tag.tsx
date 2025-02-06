@@ -8,6 +8,7 @@ import { Skeleton } from './skeleton';
 export interface TagProps extends ChakraTag.RootProps {
   startElement?: React.ReactNode;
   endElement?: React.ReactNode;
+  endElementProps?: ChakraTag.EndElementProps;
   onClose?: VoidFunction;
   closable?: boolean;
   truncated?: boolean;
@@ -19,6 +20,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
     const {
       startElement,
       endElement,
+      endElementProps,
       onClose,
       closable = Boolean(onClose),
       children,
@@ -41,7 +43,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
           ) }
           { labelElement }
           { endElement && (
-            <ChakraTag.EndElement>{ endElement }</ChakraTag.EndElement>
+            <ChakraTag.EndElement { ...endElementProps }>{ endElement }</ChakraTag.EndElement>
           ) }
           { closable && (
             <ChakraTag.EndElement>

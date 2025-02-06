@@ -8,16 +8,30 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import { Skeleton } from './skeleton';
 
+export const LinkExternalIcon = ({ color }: { color?: ChakraLinkProps['color'] }) => (
+  <IconSvg
+    name="link_external"
+    boxSize={ 3 }
+    verticalAlign="middle"
+    color={ color ?? 'icon.externalLink' }
+    _groupHover={{
+      color: 'inherit',
+    }}
+    flexShrink={ 0 }
+  />
+);
+
 export interface LinkProps extends ChakraLinkProps {
   loading?: boolean;
   external?: boolean;
   scroll?: boolean;
   iconColor?: ChakraLinkProps['color'];
+  noIcon?: boolean;
 }
 
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
-    const { external, loading, href, children, scroll = true, iconColor, ...rest } = props;
+    const { external, loading, href, children, scroll = true, iconColor, noIcon, ...rest } = props;
 
     if (external) {
       return (
@@ -27,19 +41,12 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
             href={ href }
             className="group"
             target="_blank"
-            rel="noopener noreferrer" { ...rest }
+            rel="noopener noreferrer"
+            cursor={ href ? 'pointer' : 'default' }
+            { ...rest }
           >
             { children }
-            <IconSvg
-              name="link_external"
-              boxSize={ 3 }
-              verticalAlign="middle"
-              color={ iconColor ?? 'icon.externalLink' }
-              _groupHover={{
-                color: 'inherit',
-              }}
-              flexShrink={ 0 }
-            />
+            { !noIcon && <LinkExternalIcon color={ iconColor }/> }
           </ChakraLink>
         </Skeleton>
       );
@@ -47,7 +54,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
 
     return (
       <Skeleton loading={ loading } asChild>
-        <ChakraLink asChild ref={ ref } { ...rest }>
+        <ChakraLink asChild ref={ ref } cursor={ href ? 'pointer' : 'default' } { ...rest }>
           { href ? <NextLink href={ href as NextLinkProps['href'] } scroll={ scroll }>{ children }</NextLink> : <span>{ children }</span> }
         </ChakraLink>
       </Skeleton>

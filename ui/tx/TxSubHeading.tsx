@@ -9,7 +9,6 @@ import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import { Link } from 'toolkit/chakra/link';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-// TODO @tom2drum fix app action button
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailsActionsWrapper';
@@ -138,9 +137,9 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         mt={{ base: 3, lg: 0 }}
       >
         { !hasTag && <AccountActionsMenu isLoading={ isLoading }/> }
-        { /* { appActionData && (
+        { appActionData && (
           <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
-        ) } */ }
+        ) }
         <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }}/>
       </Flex>
     </Box>
