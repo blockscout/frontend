@@ -4,8 +4,16 @@ on:
   push:
     branches:
       - devel
-    paths:
-      - "**"
+    paths-ignore:
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.husky/**'
+      - '.vscode/**'
+      - 'docs/**'
+      - 'jest/**'
+      - 'mocks/**'
+      - 'playwright/**'
+      - 'stubs/**'
+      - 'tools/**'
 
 jobs:
   deploy:
@@ -65,6 +73,8 @@ jobs:
           cp package.json ./deploy/
           cd ./deploy
           yarn add wrangler@3 --dev
+        env:
+          HUSKY: 0
 
       - name: Deploy to Cloudflare Pages
         working-directory: ./deploy

@@ -3,8 +3,9 @@ name: Deploy from main branch
 on:
   push:
     branches:
-      - main
-      - devel
+#      Commented out to deploy from main branch
+#      - main
+#      - devel
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
       - '.husky/**'
