@@ -28,6 +28,7 @@ jobs:
         run: yarn install
         env:
           CI: true
+          HUSKY: 0
 
       - name: Build Blockscout
         run: yarn run build:next
@@ -64,7 +65,7 @@ jobs:
           cp package.json ./deploy/
           cd ./deploy
           yarn add wrangler@3 --dev
-  
+
       - name: Deploy to Cloudflare Pages
         working-directory: ./deploy
         run: yarn wrangler pages deploy . --project-name=blockscout-fluent --commit-dirty=true
