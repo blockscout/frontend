@@ -1,8 +1,10 @@
 import { createListCollection } from '@chakra-ui/react';
+import { noop } from 'es-toolkit';
 import React from 'react';
 
 import { SelectContent, SelectItem, SelectRoot, SelectControl, SelectValueText } from 'toolkit/chakra/select';
 import Sort from 'ui/shared/sort/Sort';
+import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import { SORT_OPTIONS } from 'ui/txs/useTxsSort';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
@@ -73,6 +75,15 @@ const SelectsShowcase = () => {
               collection={ txSortingOptions }
               isLoading
             />
+          </Sample>
+        </SamplesStack>
+
+        <SectionSubHeader>Token transfers filter</SectionSubHeader>
+        <SamplesStack>
+          <Sample>
+            <TokenTransferFilter defaultTypeFilters={ [ ] } onTypeFilterChange={ noop } withAddressFilter/>
+            <TokenTransferFilter defaultTypeFilters={ [ ] } onTypeFilterChange={ noop } appliedFiltersNum={ 2 }/>
+            <TokenTransferFilter defaultTypeFilters={ [ ] } onTypeFilterChange={ noop } appliedFiltersNum={ 2 } isLoading/>
           </Sample>
         </SamplesStack>
       </Section>

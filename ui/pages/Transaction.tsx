@@ -58,7 +58,7 @@ const TransactionPageContent = () => {
       // config.features.suave.isEnabled && data?.wrapped ?
       //   { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
       //   undefined,
-      // { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
+      { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
       // config.features.userOps.isEnabled ?
       //   { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
       //   undefined,
@@ -74,12 +74,12 @@ const TransactionPageContent = () => {
 
   const tabIndex = useTabIndexFromQuery(tabs);
 
-  // const tags = (
-  //   <EntityTags
-  //     isLoading={ isPlaceholderData }
-  //     tags={ data?.transaction_tag ? [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 10 } ] : [] }
-  //   />
-  // );
+  const tags = (
+    <EntityTags
+      isLoading={ isPlaceholderData }
+      tags={ data?.transaction_tag ? [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 10 } ] : [] }
+    />
+  );
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/txs');
@@ -121,7 +121,7 @@ const TransactionPageContent = () => {
       <PageTitle
         title="Transaction details"
         backLink={ backLink }
-        // contentAfter={ tags }
+        contentAfter={ tags }
         secondRow={ titleSecondRow }
       />
       { content }

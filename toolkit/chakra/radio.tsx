@@ -21,4 +21,20 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
   },
 );
 
-export const RadioGroup = ChakraRadioGroup.Root;
+export interface RadioGroupProps extends ChakraRadioGroup.RootProps {}
+
+export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
+  function RadioGroup(props, ref) {
+    const { orientation = 'horizontal', ...rest } = props;
+    return (
+      <ChakraRadioGroup.Root
+        ref={ ref }
+        orientation={ orientation }
+        display="flex"
+        flexDirection={ orientation === 'horizontal' ? 'row' : 'column' }
+        gap={ orientation === 'horizontal' ? 4 : 2 }
+        { ...rest }
+      />
+    );
+  },
+);

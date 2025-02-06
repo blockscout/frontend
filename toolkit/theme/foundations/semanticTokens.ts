@@ -112,7 +112,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           active: { value: { _light: '{colors.link.primary.hover}' } },
         },
         bg: {
-          DEFAULT: { value: 'transparent' },
+          DEFAULT: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
           selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
         },
         border: {
@@ -337,6 +337,22 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       header: {
         bg: { value: { _light: '{colors.blackAlpha.100}', _dark: '{colors.whiteAlpha.200}' } },
         fg: { value: { _light: '{colors.blackAlpha.700}', _dark: '{colors.whiteAlpha.700}' } },
+      },
+    },
+    checkbox: {
+      icon: {
+        bg: {
+          checked: { value: { _light: '{colors.blue.500}', _dark: '{colors.gray.300}' } },
+          hover: { value: { _light: '{colors.blue.600}', _dark: '{colors.gray.400}' } },
+        },
+      },
+    },
+    radio: {
+      icon: {
+        bg: {
+          checked: { value: { _light: '{colors.blue.500}', _dark: '{colors.gray.300}' } },
+          hover: { value: { _light: '{colors.blue.600}', _dark: '{colors.gray.400}' } },
+        },
       },
     },
     heading: {

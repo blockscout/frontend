@@ -24,9 +24,11 @@ import AccordionsShowcase from 'ui/showcases/Accordion';
 import AlertsShowcase from 'ui/showcases/Alerts';
 import BadgesShowcase from 'ui/showcases/Badges';
 import ButtonShowcase from 'ui/showcases/Button';
+import CheckboxesShowcase from 'ui/showcases/Checkbox';
 import LinksShowcase from 'ui/showcases/Links';
 import MenusShowcase from 'ui/showcases/Menu';
 import PaginationShowcase from 'ui/showcases/Pagination';
+import RadiosShowcase from 'ui/showcases/Radio';
 import SelectsShowcase from 'ui/showcases/Select';
 import TabsShowcase from 'ui/showcases/Tabs';
 import TagsShowcase from 'ui/showcases/Tags';
@@ -50,9 +52,11 @@ const ChakraShowcases = () => {
           <TabsTrigger value="alerts">Alerts</TabsTrigger>
           <TabsTrigger value="badges">Badges</TabsTrigger>
           <TabsTrigger value="buttons">Buttons</TabsTrigger>
+          <TabsTrigger value="checkboxes">Checkboxes</TabsTrigger>
           <TabsTrigger value="links">Links</TabsTrigger>
           <TabsTrigger value="menus">Menus</TabsTrigger>
           <TabsTrigger value="pagination">Pagination</TabsTrigger>
+          <TabsTrigger value="radios">Radios</TabsTrigger>
           <TabsTrigger value="selects">Selects</TabsTrigger>
           <TabsTrigger value="tabs">Tabs</TabsTrigger>
           <TabsTrigger value="tags">Tags</TabsTrigger>
@@ -63,10 +67,12 @@ const ChakraShowcases = () => {
         <AlertsShowcase/>
         <BadgesShowcase/>
         <ButtonShowcase/>
+        <CheckboxesShowcase/>
         <LinksShowcase/>
         <MenusShowcase/>
         <TabsShowcase/>
         <PaginationShowcase/>
+        <RadiosShowcase/>
         <SelectsShowcase/>
         <TooltipsShowcase/>
         <TagsShowcase/>
