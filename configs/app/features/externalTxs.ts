@@ -1,14 +1,9 @@
 import type { Feature } from './types';
+import type { TxExternalTxsConfig } from 'types/client/externalTxsConfig';
 
 import { getEnvValue, parseEnvJson } from '../utils';
 
-type TxExternalTransactionsConfig = {
-  chain_name: string;
-  chain_logo_url: string;
-  explorer_url_template: string;
-};
-
-const externalTransactionsConfig = parseEnvJson<TxExternalTransactionsConfig>(getEnvValue('NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG'));
+const externalTransactionsConfig = parseEnvJson<TxExternalTxsConfig>(getEnvValue('NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG'));
 
 const title = 'External transactions';
 
