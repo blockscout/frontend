@@ -12,15 +12,6 @@ const rewrites = require('./nextjs/rewrites');
 
 /** @type {import('next').NextConfig} */
 const moduleExports = {
-	webpack: (config) => {
-		if (config.cache && !dev) {
-			config.cache = Object.freeze({
-				type: 'memory',
-			})
-		}
-		// Important: return the modified config
-		return config
-	},
   transpilePackages: [
     'react-syntax-highlighter',
     'swagger-client',

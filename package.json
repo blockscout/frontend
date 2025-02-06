@@ -4,7 +4,7 @@
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
-    "node": "22.11.0",
+    "node": "^22.11.0",
     "npm": "10.9.0"
   },
   "scripts": {
@@ -14,6 +14,9 @@
     "build": "next build",
     "build:next": "./deploy/scripts/download_assets.sh ./public/assets/configs && yarn svg:build-sprite && ./deploy/scripts/make_envs_script.sh && next build",
     "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t blockscout-frontend:local ./",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "npm run pages:build && wrangler pages dev",
+    "deploy": "npm run pages:build && wrangler pages deploy",
     "start": "next start",
     "start:docker:local": "docker run -p 3000:3000 --env-file .env.local blockscout-frontend:local",
     "start:docker:preset": "./tools/scripts/docker.preset.sh",
@@ -121,6 +124,7 @@
     "xss": "^1.0.14"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.7",
     "@eslint/compat": "1.2.2",
     "@eslint/js": "9.14.0",
     "@next/eslint-plugin-next": "15.0.3",
@@ -175,6 +179,7 @@
     "ts-node": "^10.9.1",
     "typescript": "5.4.2",
     "typescript-eslint": "8.14.0",
+    "vercel": "^41.0.2",
     "vite-plugin-svgr": "^2.2.2",
     "vite-tsconfig-paths": "4.3.2",
     "ws": "^8.17.1"
