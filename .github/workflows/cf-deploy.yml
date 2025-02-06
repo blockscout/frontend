@@ -25,7 +25,9 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn install
+        run: |
+          export HUSKY=0
+          yarn install
         env:
           CI: true
           HUSKY: 0
