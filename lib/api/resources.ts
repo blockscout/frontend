@@ -1290,9 +1290,6 @@ Q extends 'homepage_arbitrum_latest_batch' ? number :
 Q extends 'stats_counters' ? stats.Counters :
 Q extends 'stats_lines' ? stats.LineCharts :
 Q extends 'stats_line' ? stats.LineChart :
-Q extends 'stats_main' ? stats.MainPageStats :
-Q extends 'stats_transactions' ? stats.TransactionsPageStats :
-Q extends 'stats_contracts' ? stats.ContractsPageStats :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_countdown' ? BlockCountdownResponse :
@@ -1453,6 +1450,9 @@ Q extends 'advanced_filter' ? AdvancedFilterResponse :
 Q extends 'advanced_filter_methods' ? AdvancedFilterMethodsResponse :
 Q extends 'pools' ? PoolsResponse :
 Q extends 'pool' ? Pool :
+Q extends 'stats_main' ? stats.MainPageStats :
+Q extends 'stats_transactions' ? stats.TransactionsPageStats :
+Q extends 'stats_contracts' ? stats.ContractsPageStats :
 never;
 /* eslint-enable @stylistic/indent */
 

@@ -66,6 +66,24 @@ const ChainIndicators = () => {
   const { value: indicatorValue, valueDiff: indicatorValueDiff } =
     getIndicatorValues(selectedIndicatorData as TChainIndicator, statsMicroserviceQueryResult?.data, statsApiQueryResult?.data);
 
+  const title = (() => {
+    let title: string | undefined;
+    if (selectedIndicatorData?.titleMicroservice && statsMicroserviceQueryResult?.data) {
+      title = selectedIndicatorData.titleMicroservice(statsMicroserviceQueryResult.data);
+    }
+
+    return title || selectedIndicatorData?.title;
+  })();
+
+  const hint = (() => {
+    let hint: string | undefined;
+    if (selectedIndicatorData?.hintMicroservice && statsMicroserviceQueryResult?.data) {
+      hint = selectedIndicatorData.hintMicroservice(statsMicroserviceQueryResult.data);
+    }
+
+    return hint || selectedIndicatorData?.hint;
+  })();
+
   const valueTitle = (() => {
     if (isPlaceholderData) {
       return <Skeleton h="36px" w="215px"/>;
@@ -111,8 +129,8 @@ const ChainIndicators = () => {
     >
       <Flex flexGrow={ 1 } flexDir="column">
         <Flex alignItems="center">
-          <Text fontWeight={ 500 }>{ selectedIndicatorData?.title }</Text>
-          { selectedIndicatorData?.hint && <Hint label={ selectedIndicatorData.hint } ml={ 1 }/> }
+          <Text fontWeight={ 500 }>{ title }</Text>
+          { hint && <Hint label={ hint } ml={ 1 }/> }
         </Flex>
         <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end">
           { valueTitle }

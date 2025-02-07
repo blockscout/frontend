@@ -72,6 +72,7 @@ export const TXS_STATS: TransactionsStats = {
 export const TXS_STATS_MICROSERVICE: stats.TransactionsPageStats = {
   pending_transactions_30m: STATS_COUNTER,
   transactions_24h: STATS_COUNTER,
+  operational_transactions_24h: STATS_COUNTER,
   transactions_fee_24h: STATS_COUNTER,
   average_transactions_fee_24h: STATS_COUNTER,
 };

@@ -10,6 +10,7 @@ const INDICATORS: Array<TChainIndicator> = [
   {
     id: 'daily_txs',
     title: 'Daily transactions',
+    titleMicroservice: (stats) => stats.daily_new_transactions?.info?.title,
     value: (stats) => stats.transactions_today === null ?
       'N/A' :
       Number(stats.transactions_today).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
@@ -18,16 +19,19 @@ const INDICATORS: Array<TChainIndicator> = [
       Number(stats.yesterday_transactions?.value).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
     icon: <IconSvg name="transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
     hint: `Number of transactions yesterday (0:00 - 23:59 UTC). The chart displays daily transactions for the past 30 days.`,
+    hintMicroservice: (stats) => stats.daily_new_transactions?.info?.description,
   },
   {
     id: 'daily_operational_txs',
-    title: 'Operational txns',
+    title: 'Daily op txns',
+    titleMicroservice: (stats) => stats.daily_new_operational_transactions?.info?.title,
     value: () => 'N/A',
     valueMicroservice: (stats) => stats.yesterday_operational_transactions?.value === null ?
       'N/A' :
       Number(stats.yesterday_operational_transactions?.value).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
     icon: <IconSvg name="transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
     hint: `Number of operational transactions yesterday (0:00 - 23:59 UTC). The chart displays daily operational transactions for the past 30 days.`,
+    hintMicroservice: (stats) => stats.daily_new_operational_transactions?.info?.description,
   },
   {
     id: 'coin_price',

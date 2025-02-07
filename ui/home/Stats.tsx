@@ -123,10 +123,10 @@ const Stats = () => {
         href: { pathname: '/batches' as const },
         isLoading,
       },
-      {
+      (statsData?.total_blocks?.value || apiData?.total_blocks) && {
         id: 'total_blocks' as const,
         icon: 'block_slim' as const,
-        label: 'Total blocks',
+        label: statsData?.total_blocks?.title || 'Total blocks',
         value: Number(statsData?.total_blocks?.value || apiData?.total_blocks).toLocaleString(),
         href: { pathname: '/blocks' as const },
         isLoading,
@@ -134,14 +134,14 @@ const Stats = () => {
       (statsData?.average_block_time?.value || apiData?.average_block_time) && {
         id: 'average_block_time' as const,
         icon: 'clock-light' as const,
-        label: 'Average block time',
+        label: statsData?.average_block_time?.title || 'Average block time',
         value: `${ Number(statsData?.average_block_time?.value).toFixed(1) || (apiData ? (apiData.average_block_time / 1000).toFixed(1) : 'N/A') }s`,
         isLoading,
       },
       (statsData?.total_transactions?.value || apiData?.total_transactions) && {
         id: 'total_txs' as const,
         icon: 'transactions_slim' as const,
-        label: 'Total transactions',
+        label: statsData?.total_transactions?.title || 'Total transactions',
         value: Number(statsData?.total_transactions?.value || apiData?.total_transactions).toLocaleString(),
         href: { pathname: '/txs' as const },
         isLoading,
@@ -149,7 +149,7 @@ const Stats = () => {
       statsData?.total_operational_transactions?.value && {
         id: 'total_operational_txs' as const,
         icon: 'transactions_slim' as const,
-        label: 'Total operational transactions',
+        label: statsData?.total_operational_transactions?.title || 'Total operational transactions',
         value: Number(statsData?.total_operational_transactions?.value).toLocaleString(),
         href: { pathname: '/txs' as const },
         isLoading,
@@ -165,7 +165,7 @@ const Stats = () => {
       (statsData?.total_addresses?.value || apiData?.total_addresses) && {
         id: 'wallet_addresses' as const,
         icon: 'wallet' as const,
-        label: 'Wallet addresses',
+        label: statsData?.total_addresses?.title || 'Wallet addresses',
         value: Number(statsData?.total_addresses?.value || apiData?.total_addresses).toLocaleString(),
         isLoading,
       },

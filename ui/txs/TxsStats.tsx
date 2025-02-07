@@ -60,23 +60,31 @@ const TxsStats = () => {
   return (
     <Box
       display="grid"
-      gridTemplateColumns={{ base: '1fr', lg: 'repeat(4, calc(25% - 9px))' }}
+      gridTemplateColumns={{ base: '1fr', lg: 'repeat(5, calc(20% - 9px))' }}
       rowGap={ 3 }
       columnGap={ 3 }
       mb={ 6 }
     >
       { txCount24h && (
         <StatsWidget
-          label="Transactions"
+          label={ txsStatsQuery.data?.transactions_24h?.title || 'Transactions' }
           value={ Number(txCount24h).toLocaleString() }
           period="24h"
           isLoading={ isLoading }
           href={ config.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'newTxns' } } : undefined }
         />
       ) }
+      { isStatsFeatureEnabled && txsStatsQuery.data?.operational_transactions_24h?.value && (
+        <StatsWidget
+          label={ txsStatsQuery.data?.operational_transactions_24h?.title || 'Daily op txns' }
+          value={ Number(txsStatsQuery.data.operational_transactions_24h.value).toLocaleString() }
+          period="24h"
+          isLoading={ isLoading }
+        />
+      ) }
       { pendingTxns && (
         <StatsWidget
-          label="Pending transactions"
+          label={ txsStatsQuery.data?.pending_transactions_30m?.title || 'Pending transactions' }
           value={ Number(pendingTxns).toLocaleString() }
           period={ isStatsFeatureEnabled ? '30min' : '1h' }
           isLoading={ isLoading }
@@ -84,7 +92,7 @@ const TxsStats = () => {
       ) }
       { txFeeSum24h && (
         <StatsWidget
-          label="Transactions fees"
+          label={ txsStatsQuery.data?.transactions_fee_24h?.title || 'Transactions fees' }
           value={ txFeeSum24h.toLocaleString(undefined, { maximumFractionDigits: 2 }) }
           valuePostfix={ thinsp + config.chain.currency.symbol }
           period="24h"
@@ -94,7 +102,7 @@ const TxsStats = () => {
       ) }
       { txFeeAvg && (
         <StatsWidget
-          label="Avg. transaction fee"
+          label={ txsStatsQuery.data?.average_transactions_fee_24h?.title || 'Avg. transaction fee' }
           value={ txFeeAvg.usd ? txFeeAvg.usd : txFeeAvg.valueStr }
           valuePrefix={ txFeeAvg.usd ? '$' : undefined }
           valuePostfix={ txFeeAvg.usd ? undefined : thinsp + config.chain.currency.symbol }
