@@ -48,7 +48,7 @@ const ChartWidget = ({
   const ref = useRef<HTMLDivElement>(null);
   const { zoomRange, handleZoom, handleZoomReset } = useZoom();
 
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('gray.200', 'grey.20');
 
   const hasItems = items && items.length > 2;
 

@@ -43,8 +43,8 @@ const variants = {
   }),
   select: definePartsStyle((props) => ({
     container: {
-      bg: mode('gray.100', 'gray.800')(props),
-      color: mode('gray.500', 'whiteAlpha.800')(props),
+      bg: mode('gray.100', 'grey.10')(props),
+      color: mode('gray.500', 'white')(props),
       cursor: 'pointer',
       _hover: {
         color: 'blue.400',
@@ -54,8 +54,8 @@ const variants = {
         &[data-selected=true],
         &[data-selected=true][aria-selected=true]
       `]: {
-        bg: mode('blue.500', 'blue.900')(props),
-        color: 'whiteAlpha.800',
+        bg: mode('blue.500', 'grey.10')(props),
+        color: 'cyan',
       },
     },
   })),

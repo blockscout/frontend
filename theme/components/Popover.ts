@@ -21,12 +21,12 @@ const baseStyleContent = defineStyle((props) => {
   const shadowColor = mode('blackAlpha.200', 'whiteAlpha.300')(props);
 
   return {
-    [$popperBg.variable]: `#252526`,
-    background: '#252526',
+    [$popperBg.variable]: `#1a1a1a`,
+    background: '#1a1a1a',
     [$arrowBg.variable]: $popperBg.reference,
     [$arrowShadowColor.variable]: `colors.${ shadowColor }`,
     _dark: {
-      background: '#252526',
+      background: '#1a1a1a',
       [$popperBg.variable]: `grey.50`,
       [$arrowShadowColor.variable]: `grey.50`,
       boxShadow: 'dark-lg',

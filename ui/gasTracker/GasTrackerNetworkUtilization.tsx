@@ -25,7 +25,7 @@ const GasTrackerNetworkUtilization = ({ percentage, isLoading }: Props) => {
   const colors = {
     high: 'red.600',
     medium: 'orange.600',
-    low: 'green.600',
+    low: 'green.500',
   };
   const color = colors[load];
 
