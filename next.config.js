@@ -19,13 +19,6 @@ const moduleExports = {
   ],
   reactStrictMode: true,
   webpack(config) {
-	// Fix the Cloudflare upload max. size issue
-    if (process.env.GITHUB_ACTIONS === "true") {
-	  config.cache = Object.freeze({
-        type: 'memory',
-	  })
-	}
-
     config.module.rules.push(
       {
         test: /\.svg$/,
