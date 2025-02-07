@@ -3,14 +3,17 @@ import React from 'react';
 
 import type { ArbitrumL2TxnBatchDACelestia } from 'types/api/arbitrumL2';
 
+import config from 'configs/app';
 import CeleniumLink from 'ui/shared/batch/CeleniumLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
-type Props = {
+const feature = config.features.rollup;
+
+interface Props {
   data: ArbitrumL2TxnBatchDACelestia;
-};
+}
 
 const ArbitrumL2TxnBatchDetailsCelestiaDA = ({ data }: Props) => {
   return (
@@ -34,7 +37,13 @@ const ArbitrumL2TxnBatchDetailsCelestiaDA = ({ data }: Props) => {
           <HashStringShortenDynamic hash={ data.transaction_commitment }/>
         </Flex>
         <CopyToClipboard text={ data.transaction_commitment } mr={ 3 }/>
-        <CeleniumLink commitment={ data.transaction_commitment } namespace="ca1de12a9905be97beaf" height={ data.height }/>
+        { feature.isEnabled && feature.DA.celestia.namespace && (
+          <CeleniumLink
+            commitment={ data.transaction_commitment }
+            namespace={ feature.DA.celestia.namespace }
+            height={ data.height }
+          />
+        ) }
       </DetailsInfoItem.Value>
     </>
   );

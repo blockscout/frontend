@@ -457,6 +457,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS | `boolean` | Set to `true` to display "Latest blocks" widget instead of "Latest batches" on the home page | - | - | `true` | v1.36.0+ |
 | NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED | `boolean` | Enables "Output roots" page (Optimistic stack only)  | - | `false` | `true` | v1.37.0+ |
 | NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME | `string` | Set to customize L1 transaction status labels in the UI (e.g., "Sent to <chain-name>"). This setting is applicable only for Arbitrum-based chains.  | - | - | `DuckChain` | v1.37.0+ |
+| NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE | `string` | Hex-string for creating a link to the transaction batch on the Seleneium explorer. "0x"-format and 60 symbol length. Available only for Arbitrum roll-ups. | - | - | `0x00000000000000000000000000000000000000ca1de12a9905be97beaf` | v1.38.0+ |
 
 &nbsp;
 

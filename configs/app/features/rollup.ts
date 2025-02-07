@@ -23,6 +23,11 @@ const config: Feature<{
   outputRootsEnabled: boolean;
   L2WithdrawalUrl: string | undefined;
   parentChainName: string | undefined;
+  DA: {
+    celestia: {
+      namespace: string | undefined;
+    };
+  };
 }> = (() => {
   if (type && L1BaseUrl) {
     return Object.freeze({
@@ -35,6 +40,11 @@ const config: Feature<{
       parentChainName: type === 'arbitrum' ? getEnvValue('NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME') : undefined,
       homepage: {
         showLatestBlocks: getEnvValue('NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS') === 'true',
+      },
+      DA: {
+        celestia: {
+          namespace: type === 'arbitrum' ? getEnvValue('NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE') : undefined,
+        },
       },
     });
   }

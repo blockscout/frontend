@@ -321,6 +321,16 @@ const rollupSchema = yup
           value => value === undefined,
         ),
       }),
+    NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE: yup
+      .string()
+      .min(60)
+      .max(60)
+      .matches(regexp.HEX_REGEXP_WITH_0X)
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: (value: string) => value === 'arbitrum',
+        then: (schema) => schema,
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' '),
+      }),
   });
 
 const celoSchema = yup
