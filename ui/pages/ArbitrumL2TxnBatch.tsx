@@ -3,13 +3,11 @@ import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
-import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { ARBITRUM_L2_TXN_BATCH } from 'stubs/arbitrumL2';
 import { BLOCK } from 'stubs/block';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
@@ -21,6 +19,7 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import ArbitrumL2TxnBatchDetails from 'ui/txnBatches/arbitrumL2/ArbitrumL2TxnBatchDetails';
+import useBatchQuery from 'ui/txnBatches/arbitrumL2/useBatchQuery';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
@@ -35,20 +34,16 @@ const ArbitrumL2TxnBatch = () => {
   const router = useRouter();
   const appProps = useAppContext();
   const number = getQueryParamString(router.query.number);
+  const height = getQueryParamString(router.query.height);
+  const commitment = getQueryParamString(router.query.commitment);
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
 
-  const batchQuery = useApiQuery('arbitrum_l2_txn_batch', {
-    pathParams: { number },
-    queryOptions: {
-      enabled: Boolean(number),
-      placeholderData: ARBITRUM_L2_TXN_BATCH,
-    },
-  });
+  const batchQuery = useBatchQuery();
 
   const batchTxsQuery = useQueryWithPages({
     resourceName: 'arbitrum_l2_txn_batch_txs',
-    pathParams: { number },
+    pathParams: { number: String(batchQuery.data?.number) },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
       placeholderData: generateListStub<'arbitrum_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
@@ -62,7 +57,7 @@ const ArbitrumL2TxnBatch = () => {
 
   const batchBlocksQuery = useQueryWithPages({
     resourceName: 'arbitrum_l2_txn_batch_blocks',
-    pathParams: { number },
+    pathParams: { number: String(batchQuery.data?.number) },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'blocks'),
       placeholderData: generateListStub<'arbitrum_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
@@ -73,7 +68,7 @@ const ArbitrumL2TxnBatch = () => {
     },
   });
 
-  throwOnAbsentParamError(number);
+  throwOnAbsentParamError(number || (height && commitment));
   throwOnResourceLoadError(batchQuery);
 
   let pagination;
@@ -117,8 +112,9 @@ const ArbitrumL2TxnBatch = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `Txn batch #${ number }` }
+        title={ `Txn batch #${ batchQuery.data?.number }` }
         backLink={ backLink }
+        isLoading={ batchQuery.isPlaceholderData }
       />
       { batchQuery.isPlaceholderData ?
         <TabsSkeleton tabs={ tabs }/> : (
