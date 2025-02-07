@@ -46,6 +46,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/dispute-games': DEFAULT_TEMPLATE,
   '/batches': DEFAULT_TEMPLATE,
   '/batches/[number]': DEFAULT_TEMPLATE,
+  '/batches/celestia/[height]/[commitment]': DEFAULT_TEMPLATE,
   '/blobs/[hash]': DEFAULT_TEMPLATE,
   '/ops': DEFAULT_TEMPLATE,
   '/op/[hash]': DEFAULT_TEMPLATE,
