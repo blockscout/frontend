@@ -1,4 +1,5 @@
 import { type ChakraProps } from '@chakra-ui/react';
+import { Global } from '@emotion/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -32,7 +33,10 @@ import 'lib/setLocale';
 // import 'focus-visible/dist/focus-visible';
 
 const Bossa = localFont({
-  src: '../public/fonts/Bossa-Regular.otf',
+  src: '../public/fonts/Bossa-Regular.woff2',
+  weight: 'normal',
+  style: 'normal',
+  variable: '--font-Bossa',
 });
 
 type AppPropsWithLayout = AppProps & {
@@ -51,6 +55,34 @@ const ERROR_SCREEN_STYLES: ChakraProps = {
   p: { base: 4, lg: 0 },
 };
 
+const Fonts = () => (
+  <Global
+    styles={ `
+      /* latin */
+      @font-face {
+        font-family: 'Bossa';
+        src: url('./fonts/Bossa-Regular.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: 'Bossa';
+        src: url('./fonts/Bossa-Bold.woff2') format('woff2');
+        font-weight: bold;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: 'Bossa';
+        src: url('./fonts/Bossa-Medium.woff2') format('woff2');
+        font-weight: 600;
+        font-style: normal;
+      }
+      ` }
+  />
+);
+
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   useLoadFeatures();
@@ -61,8 +93,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
 
   return (
-    <div className={ Bossa.className }>
+    <div className={ `${ Bossa.className } ${ Bossa.variable }` }>
       <ChakraProvider>
+        <Fonts/>
         <RollbarProvider config={ rollbarConfig }>
           <AppErrorBoundary
             { ...ERROR_SCREEN_STYLES }

@@ -6,7 +6,7 @@ export const BODY_TYPEFACE = config.UI.fonts.body?.name ?? 'Inter';
 
 const typography = {
   fonts: {
-    heading: `"Bossa", sans-serif`,
+    heading: `Bossa, ${ theme.fonts.heading }`,
     body: `${ BODY_TYPEFACE }, ${ theme.fonts.body }`,
   },
   textStyles: {

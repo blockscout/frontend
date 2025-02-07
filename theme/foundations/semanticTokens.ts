@@ -2,7 +2,7 @@ const semanticTokens = {
   colors: {
     divider: {
       'default': 'blackAlpha.200',
-      _dark: 'whiteAlpha.200',
+      _dark: 'grey.20',
     },
     text: {
       'default': 'black',
@@ -10,15 +10,15 @@ const semanticTokens = {
     },
     text_secondary: {
       'default': 'gray.500',
-      _dark: 'gray.400',
+      _dark: 'grey.50',
     },
     link: {
       'default': 'purple.90',
-      _dark: 'purple.30',
+      _dark: 'white',
     },
     link_hovered: {
       'default': 'purple.300',
-      _dark: 'purple.60',
+      _dark: 'cyan',
     },
     icon_link_external: {
       'default': 'gray.300',
@@ -26,7 +26,7 @@ const semanticTokens = {
     },
     icon_info: {
       'default': 'gray.400',
-      _dark: 'gray.500',
+      _dark: 'white',
     },
     error: {
       'default': 'red.500',

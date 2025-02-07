@@ -41,7 +41,9 @@ const ChartWidgetGraph = ({
   zoomRange,
 }: Props) => {
   const isMobile = useIsMobile();
-  const color = useToken('colors', 'blue.200');
+  const color = useToken('colors', 'yellow.400');
+  const gradientStart = useToken('colors', 'orange.600');
+  const gradientEnd = useToken('colors', 'blackAlpha.900');
   const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
 
   const overlayRef = React.useRef<SVGRectElement>(null);
@@ -87,6 +89,12 @@ const ChartWidgetGraph = ({
 
   return (
     <svg width="100%" height="100%" ref={ ref } cursor="pointer" id={ chartId } opacity={ rect ? 1 : 0 }>
+      <defs>
+        <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={ gradientStart } stopOpacity="0.8"/>
+          <stop offset="100%" stopColor={ gradientEnd } stopOpacity="0.1"/>
+        </linearGradient>
+      </defs>
 
       <g transform={ `translate(${ chartMargin?.left || 0 },${ chartMargin?.top || 0 })` }>
         <ChartGridLine
@@ -104,6 +112,7 @@ const ChartWidgetGraph = ({
           xScale={ axes.x.scale }
           yScale={ axes.y.scale }
           noAnimation={ noAnimation }
+          fill="url(#chartGradient)"
         />
 
         <ChartLine

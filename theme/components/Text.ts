@@ -7,7 +7,7 @@ const variantPrimary = defineStyle((props) => ({
 }));
 
 const variantSecondary = defineStyle((props) => ({
-  color: mode('gray.500', 'gray.400')(props),
+  color: mode('gray.500', 'grey.50')(props),
 }));
 
 const variantInherit = {

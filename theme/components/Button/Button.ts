@@ -5,11 +5,10 @@ import { runIfFn } from '@chakra-ui/utils';
 import config from 'configs/app';
 
 const variantSolid = defineStyle((props) => {
-  const { colorScheme: c } = props;
 
-  const bg = `${ c }.600`;
+  const bg = mode('blackAlpha.800', 'grey.10')(props);
   const color = 'white';
-  const hoverBg = `${ c }.400`;
+  const hoverBg = mode('blackAlpha.800', 'grey.10')(props);
   const activeBg = hoverBg;
 
   return {
@@ -35,21 +34,22 @@ const variantOutline = defineStyle((props) => {
   const { colorScheme: c } = props;
 
   const isGrayTheme = c === 'gray';
+  const isPurple = c === 'blue';
 
   const bg = 'transparent';
 
   const color = isGrayTheme ? mode('blackAlpha.800', 'whiteAlpha.800')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
-  const borderColor = isGrayTheme ? mode('gray.200', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
+  const borderColor = isGrayTheme ? mode('gray.200', 'grey.10')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
 
-  const selectedBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
+  const selectedBg = isGrayTheme ? mode('blue.50', 'grey.10')(props) : mode(`${ c }.50`, 'gray.600')(props);
   const selectedColor = mode('blue.600', 'gray.50')(props);
 
   return {
-    color,
+    color: isPurple ? 'cyan' : color,
     fontWeight: props.fontWeight || 600,
     borderWidth: props.borderWidth || '2px',
     borderStyle: 'solid',
-    borderColor,
+    borderColor: isPurple ? 'cyan' : borderColor,
     bg,
     _hover: {
       color: 'link_hovered',
@@ -59,8 +59,8 @@ const variantOutline = defineStyle((props) => {
         color: 'link_hovered',
       },
       _disabled: {
-        color,
-        borderColor,
+        color: isPurple ? 'cyan' : color,
+        borderColor: isPurple ? 'cyan' : borderColor,
       },
     },
     _disabled: {
@@ -87,9 +87,9 @@ const variantOutline = defineStyle((props) => {
       &[data-selected=true],
       &[data-selected=true][aria-selected=true]
     `]: {
-      bg: selectedBg,
+      bg: isPurple ? 'grey.10' : selectedBg,
       color: selectedColor,
-      borderColor: selectedBg,
+      borderColor: isPurple ? 'grey.10' : selectedBg,
     },
   };
 });

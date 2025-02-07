@@ -50,7 +50,7 @@ const baseStyle = definePartsStyle({
 });
 
 const variantSubtle = definePartsStyle((props) => {
-  const { colorScheme } = props;
+  const { colorScheme, status } = props;
   const bg = getBg(props);
 
   return {
@@ -58,8 +58,9 @@ const variantSubtle = definePartsStyle((props) => {
       [$fg.variable]: colorScheme === 'gray' ? 'colors.blackAlpha.800' : `colors.${ colorScheme }.500`,
       [$bg.variable]: colorScheme === 'gray' ? 'colors.blackAlpha.100' : bg.light,
       _dark: {
-        [$fg.variable]: colorScheme === 'gray' ? 'colors.whiteAlpha.800' : `colors.${ colorScheme }.200`,
-        [$bg.variable]: colorScheme === 'gray' ? 'colors.whiteAlpha.200' : bg.dark,
+        [$fg.variable]: colorScheme === 'gray' ? 'white' : `colors.${ colorScheme }.200`,
+        [$bg.variable]: colorScheme === 'gray' ? 'colors.grey.10' : bg.dark,
+        [$bg.variable]: status === 'warning' ? 'linear-gradient(90deg, #FE6901 -7.32%, #FF7FFE 81.62%)' : bg.dark,
       },
     },
   };

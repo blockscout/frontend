@@ -8,27 +8,27 @@ export default function getFormStyles(props: StyleFunctionProps) {
         // there is no text in the empty input
         // color: ???,
         bgColor: props.bgColor || mode('white', 'black')(props),
-        borderColor: mode('gray.100', 'gray.700')(props),
+        borderColor: mode('gray.100', 'grey.20')(props),
       },
       hover: {
         color: mode('gray.800', 'gray.50')(props),
         bgColor: props.bgColor || mode('white', 'black')(props),
-        borderColor: mode('gray.200', 'gray.500')(props),
+        borderColor: mode('gray.200', 'cyan')(props),
       },
       focus: {
         color: mode('gray.800', 'gray.50')(props),
         bgColor: props.bgColor || mode('white', 'black')(props),
-        borderColor: mode('blue.400', 'blue.400')(props),
+        borderColor: mode('blue.400', 'cyan')(props),
       },
       filled: {
         color: mode('gray.800', 'gray.50')(props),
         bgColor: props.bgColor || mode('white', 'black')(props),
-        borderColor: mode('gray.300', 'gray.600')(props),
+        borderColor: mode('gray.300', 'grey.10')(props),
       },
       readOnly: {
         color: mode('gray.800', 'gray.50')(props),
         bgColor: mode('gray.200', 'gray.800')(props),
-        borderColor: mode('gray.200', 'gray.800')(props),
+        borderColor: mode('gray.200', 'grey.10')(props),
       },
       // we use opacity to show the disabled state
       disabled: {
@@ -42,7 +42,7 @@ export default function getFormStyles(props: StyleFunctionProps) {
     },
     placeholder: {
       'default': {
-        color: mode('gray.500', 'gray.500')(props),
+        color: mode('gray.500', 'grey.50')(props),
       },
       disabled: {
         color: transparentize('gray.500', 0.2)(props.theme),

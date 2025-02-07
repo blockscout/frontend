@@ -52,7 +52,7 @@ const StatsWidget = ({
   period,
   href,
 }: Props) => {
-  const bgColor = 'rgba(255, 255, 255, 0.1)';
+  const bgColor = 'grey.10';
   const skeletonBgColor = 'blackAlpha.50';
   const hintColor = 'white';
 
@@ -65,7 +65,7 @@ const StatsWidget = ({
         border="1px solid transparent"
         backdropFilter="blur(30px)"
         p={ 3 }
-        _hover={ href ? { bg: 'rgba(255, 255, 255, 0.2)', border: '1px solid rgba(255, 255, 255, 0.3)' } : undefined }
+        _hover={ href ? { bg: 'grey.20', border: '1px solid rgba(255, 255, 255, 0.3)' } : undefined }
         borderRadius="12px"
         justifyContent="space-between"
         columnGap={ 2 }

@@ -51,6 +51,12 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon-180x180.png"/>
           <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-chrome-192x192.png"/>
           <link rel="preload" as="image" href={ svgSprite.href }/>
+          <link
+            rel="preload"
+            href="/fonts/Bossa-Regular.woff2"
+            as="font"
+            crossOrigin="anonymous"
+          />
         </Head>
         <body>
           <ColorModeScript initialColorMode={ theme.config.initialColorMode }/>
