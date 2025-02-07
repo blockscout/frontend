@@ -1,7 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Transaction } from 'types/api/transaction';
+import type { Transaction, WrappedTransactionFields } from 'types/api/transaction';
 
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
@@ -13,7 +13,7 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 interface Props {
   className?: string;
   isLoading?: boolean;
-  tx: Transaction;
+  tx: Transaction | Pick<Transaction, WrappedTransactionFields>;
   withCurrency?: boolean;
   withUsd?: boolean;
   accuracy?: number;
@@ -22,7 +22,7 @@ interface Props {
 
 const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency = true, withUsd }: Props) => {
 
-  if (tx.celo?.gas_token) {
+  if ('celo' in tx && tx.celo?.gas_token) {
     const token = tx.celo.gas_token;
     const { valueStr, usd } = getCurrencyValue({
       value: tx.fee.value || '0',
@@ -40,7 +40,7 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
     );
   }
 
-  if (tx.stability_fee) {
+  if ('stability_fee' in tx && tx.stability_fee) {
     const token = tx.stability_fee.token;
     const { valueStr, usd } = getCurrencyValue({
       value: tx.stability_fee.total_fee,
@@ -65,7 +65,7 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
     <CurrencyValue
       value={ tx.fee.value }
       currency={ showCurrency ? currencyUnits.ether : '' }
-      exchangeRate={ withUsd ? tx.exchange_rate : null }
+      exchangeRate={ withUsd && 'exchange_rate' in tx ? tx.exchange_rate : null }
       accuracy={ accuracy }
       accuracyUsd={ accuracyUsd }
       flexWrap="wrap"

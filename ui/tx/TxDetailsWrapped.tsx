@@ -6,7 +6,7 @@ import type { Transaction } from 'types/api/transaction';
 import type { ExcludeUndefined } from 'types/utils';
 
 import { currencyUnits } from 'lib/units';
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
@@ -40,9 +40,9 @@ const TxDetailsWrapped = ({ data }: Props) => {
         Method
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <Tag colorScheme="gray">
+        <Badge colorPalette="gray">
           { data.method }
-        </Tag>
+        </Badge>
       </DetailsInfoItem.Value>
 
       <DetailsInfoItemDivider/>

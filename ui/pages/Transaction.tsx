@@ -52,12 +52,12 @@ const TransactionPageContent = () => {
         title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details',
         component: detailsComponent,
       },
-      // txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
-      //   { id: 'asset_flows', title: 'Asset Flows', component: <TxAssetFlows hash={ hash }/> } :
-      //   undefined,
-      // config.features.suave.isEnabled && data?.wrapped ?
-      //   { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
-      //   undefined,
+      txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
+        { id: 'asset_flows', title: 'Asset Flows', component: <TxAssetFlows hash={ hash }/> } :
+        undefined,
+      config.features.suave.isEnabled && data?.wrapped ?
+        { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
+        undefined,
       { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
       config.features.userOps.isEnabled ?
         { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
