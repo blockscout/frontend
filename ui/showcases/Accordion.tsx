@@ -13,9 +13,9 @@ const items = [
 // https://eth-sepolia.k8s-dev.blockscout.com/address/0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC?tab=read_write_contract
 // https://base.blockscout.com/token/0x8f9C456C928a33a3859Fa283fb57B23c908fE843/instance/1924977?tab=metadata
 
-const AccordionsShowcase = () => {
+const AccordionShowcase = () => {
   return (
-    <Container value="accordions">
+    <Container value="accordion">
       <Section>
         <SectionHeader>Variant</SectionHeader>
         <SamplesStack>
@@ -69,4 +69,4 @@ const AccordionsShowcase = () => {
   );
 };
 
-export default React.memo(AccordionsShowcase);
+export default React.memo(AccordionShowcase);

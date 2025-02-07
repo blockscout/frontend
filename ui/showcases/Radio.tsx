@@ -4,10 +4,10 @@ import { Radio, RadioGroup } from 'toolkit/chakra/radio';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample } from './parts';
 
-const RadiosShowcase = () => {
+const RadioShowcase = () => {
 
   return (
-    <Container value="radios">
+    <Container value="radio">
       <Section>
         <SectionHeader>Variant</SectionHeader>
         <SamplesStack>
@@ -77,4 +77,4 @@ const RadiosShowcase = () => {
   );
 };
 
-export default React.memo(RadiosShowcase);
+export default React.memo(RadioShowcase);

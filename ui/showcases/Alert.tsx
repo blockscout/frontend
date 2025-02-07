@@ -9,17 +9,14 @@ import TxPendingAlert from 'ui/tx/TxPendingAlert';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
-const AlertsShowcase = () => {
+const AlertShowcase = () => {
   return (
-    <Container value="alerts">
+    <Container value="alert">
       <Section>
         <SectionHeader>Status</SectionHeader>
         <SamplesStack>
           <Sample label="status: info">
             <Alert status="info" title="Info"> Alert content </Alert>
-          </Sample>
-          <Sample label="status: neutral">
-            <Alert status="neutral" title="Neutral"> Alert content </Alert>
           </Sample>
           <Sample label="status: warning">
             <Alert status="warning" title="Warning"> Alert content </Alert>
@@ -125,4 +122,4 @@ const AlertsShowcase = () => {
   );
 };
 
-export default React.memo(AlertsShowcase);
+export default React.memo(AlertShowcase);

@@ -10,7 +10,7 @@ import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHead
 
 const ButtonShowcase = () => {
   return (
-    <Container value="buttons">
+    <Container value="button">
       <Section>
         <SectionHeader>Size</SectionHeader>
         <SamplesStack>

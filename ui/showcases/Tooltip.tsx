@@ -5,9 +5,9 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample } from './parts';
 
-const TooltipsShowcase = () => {
+const TooltipShowcase = () => {
   return (
-    <Container value="tooltips">
+    <Container value="tooltip">
       <Section>
         <SectionHeader>Variant</SectionHeader>
         <SamplesStack>
@@ -35,4 +35,4 @@ const TooltipsShowcase = () => {
   );
 };
 
-export default React.memo(TooltipsShowcase);
+export default React.memo(TooltipShowcase);

@@ -84,15 +84,6 @@ export const recipe = defineSlotRecipe({
           color: 'alert.fg',
         },
       },
-      neutral: {
-        root: {
-          bgColor: 'alert.bg.neutral',
-          '&:not([data-loading], [aria-busy=true])': {
-            bgColor: 'alert.bg.neutral',
-          },
-          color: 'alert.fg',
-        },
-      },
     },
 
     variant: {
@@ -139,7 +130,7 @@ export const recipe = defineSlotRecipe({
   },
 
   defaultVariants: {
-    status: 'neutral',
+    status: 'info',
     size: 'md',
     inline: true,
     variant: 'subtle',

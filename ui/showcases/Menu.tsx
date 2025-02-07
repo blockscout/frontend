@@ -6,10 +6,10 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
-const MenusShowcase = () => {
+const MenuShowcase = () => {
 
   return (
-    <Container value="menus">
+    <Container value="menu">
       <Section>
         <SectionHeader>Variant</SectionHeader>
         <SamplesStack>
@@ -53,4 +53,4 @@ const MenusShowcase = () => {
   );
 };
 
-export default React.memo(MenusShowcase);
+export default React.memo(MenuShowcase);

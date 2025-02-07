@@ -6,9 +6,9 @@ import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
-const BadgesShowcase = () => {
+const BadgeShowcase = () => {
   return (
-    <Container value="badges">
+    <Container value="badge">
       <Section>
         <SectionHeader>Color palette</SectionHeader>
         <SamplesStack>
@@ -112,4 +112,4 @@ const BadgesShowcase = () => {
   );
 };
 
-export default React.memo(BadgesShowcase);
+export default React.memo(BadgeShowcase);

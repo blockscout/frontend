@@ -21,10 +21,10 @@ const txSortingOptions = createListCollection({
   items: SORT_OPTIONS,
 });
 
-const SelectsShowcase = () => {
+const SelectShowcase = () => {
 
   return (
-    <Container value="selects">
+    <Container value="select">
       <Section>
         <SectionHeader>Variant</SectionHeader>
         <SamplesStack>
@@ -91,4 +91,4 @@ const SelectsShowcase = () => {
   );
 };
 
-export default React.memo(SelectsShowcase);
+export default React.memo(SelectShowcase);

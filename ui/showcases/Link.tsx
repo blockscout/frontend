@@ -37,10 +37,10 @@ const TOKEN = {
   volume_24h: '82069586622.4918',
 };
 
-const LinksShowcase = () => {
+const LinkShowcase = () => {
 
   return (
-    <Container value="links">
+    <Container value="link">
 
       <Section>
         <SectionHeader>Variants</SectionHeader>
@@ -243,4 +243,4 @@ const LinksShowcase = () => {
   );
 };
 
-export default React.memo(LinksShowcase);
+export default React.memo(LinkShowcase);

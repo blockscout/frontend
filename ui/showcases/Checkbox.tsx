@@ -4,10 +4,10 @@ import { Checkbox } from 'toolkit/chakra/checkbox';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample } from './parts';
 
-const CheckboxesShowcase = () => {
+const CheckboxShowcase = () => {
 
   return (
-    <Container value="checkboxes">
+    <Container value="checkbox">
       <Section>
         <SectionHeader>Variant</SectionHeader>
         <SamplesStack>
@@ -41,4 +41,4 @@ const CheckboxesShowcase = () => {
   );
 };
 
-export default React.memo(CheckboxesShowcase);
+export default React.memo(CheckboxShowcase);

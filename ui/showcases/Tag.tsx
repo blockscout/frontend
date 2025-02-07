@@ -6,10 +6,10 @@ import EntityTag from 'ui/shared/EntityTags/EntityTag';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
-const TagsShowcase = () => {
+const TagShowcase = () => {
   // TODO @tom2drum filtered tags
   return (
-    <Container value="tags">
+    <Container value="tag">
       <Section>
         <SectionHeader>Variant</SectionHeader>
         <SamplesStack>
@@ -68,4 +68,4 @@ const TagsShowcase = () => {
   );
 };
 
-export default React.memo(TagsShowcase);
+export default React.memo(TagShowcase);
