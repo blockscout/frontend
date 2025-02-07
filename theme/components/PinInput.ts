@@ -4,7 +4,7 @@ import getOutlinedFieldStyles from '../utils/getOutlinedFieldStyles';
 
 const baseStyle = defineStyle({
   textAlign: 'center',
-  bgColor: 'dialog_bg',
+  bgColor: 'dialog.bg',
 });
 
 const sizes = {

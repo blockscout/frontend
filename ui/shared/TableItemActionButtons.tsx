@@ -21,7 +21,6 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props
         <IconButton
           aria-label="edit"
           variant="link"
-          boxSize={ 5 }
           onClick={ onEditClick }
           onFocusCapture={ onFocusCapture }
           loading={ isLoading }
@@ -36,7 +35,6 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props
         <IconButton
           aria-label="delete"
           variant="link"
-          boxSize={ 5 }
           onClick={ onDeleteClick }
           onFocusCapture={ onFocusCapture }
           loading={ isLoading }

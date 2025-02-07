@@ -111,7 +111,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisi
           name="contract_address_hash"
           placeholder="Smart contract address (0x...)"
           isRequired
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
           isReadOnly={ Boolean(data && 'contract_address_hash' in data) }
           mb={ 5 }
         />
@@ -122,7 +122,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisi
           rules={{
             maxLength: NAME_MAX_LENGTH,
           }}
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
           mb={ 5 }
         />
         <FormFieldText<Inputs>
@@ -130,7 +130,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisi
           placeholder="Custom ABI [{...}] (JSON format)"
           isRequired
           asComponent="Textarea"
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
           size="lg"
           minH="300px"
           mb={ 8 }

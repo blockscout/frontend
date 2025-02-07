@@ -39,7 +39,7 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
           placeholder="Search by token name"
           ml="1px"
           onChange={ onInputChange }
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
         />
       </InputGroup>
       <Flex flexDir="column" rowGap={ 6 }>

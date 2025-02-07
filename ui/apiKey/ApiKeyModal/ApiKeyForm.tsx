@@ -100,7 +100,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
             name="token"
             placeholder="Auto-generated API key token"
             isReadOnly
-            bgColor="dialog_bg"
+            bgColor="dialog.bg"
             mb={ 5 }
           />
         ) }
@@ -111,7 +111,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           rules={{
             maxLength: NAME_MAX_LENGTH,
           }}
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
           mb={ 8 }
         />
         <Box marginTop={ 8 }>

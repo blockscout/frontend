@@ -221,7 +221,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
               asComponent="Textarea"
               isReadOnly
               maxH={{ base: '140px', lg: '80px' }}
-              bgColor="dialog_bg"
+              bgColor="dialog.bg"
             />
           </div>
           { !noWeb3Provider && (
@@ -236,7 +236,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
               placeholder="Signature hash"
               isRequired
               rules={{ pattern: SIGNATURE_REGEXP }}
-              bgColor="dialog_bg"
+              bgColor="dialog.bg"
             />
           ) }
         </Flex>

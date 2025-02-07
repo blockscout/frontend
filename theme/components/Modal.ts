@@ -14,7 +14,7 @@ const baseStyleDialog = defineStyle(() => {
   return {
     padding: 8,
     borderRadius: 'lg',
-    bg: 'dialog_bg',
+    bg: 'dialog.bg',
     margin: 'auto',
   };
 });

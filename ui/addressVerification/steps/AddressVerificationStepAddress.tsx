@@ -106,7 +106,7 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
         <FormFieldAddress<Fields>
           name="address"
           isRequired
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
           placeholder="Smart contract address (0x...)"
           mt={ 8 }
         />
