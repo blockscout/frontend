@@ -1,4 +1,4 @@
-import _padStart from 'lodash/padStart';
+import { padStart } from 'es-toolkit/compat';
 
 import type { BlockEpoch, BlockEpochElectionRewardDetails, BlockEpochElectionRewardDetailsResponse } from 'types/api/block';
 
@@ -42,11 +42,11 @@ function getRewardDetailsItem(index: number): BlockEpochElectionRewardDetails {
     amount: `${ 100 - index }210001063118670575`,
     account: {
       ...addressMock.withoutName,
-      hash: `0x30D060F129817c4DE5fBc1366d53e19f43c8c6${ _padStart(String(index), 2, '0') }`,
+      hash: `0x30D060F129817c4DE5fBc1366d53e19f43c8c6${ padStart(String(index), 2, '0') }`,
     },
     associated_account: {
       ...addressMock.withoutName,
-      hash: `0x456f41406B32c45D59E539e4BBA3D7898c3584${ _padStart(String(index), 2, '0') }`,
+      hash: `0x456f41406B32c45D59E539e4BBA3D7898c3584${ padStart(String(index), 2, '0') }`,
     },
   };
 }

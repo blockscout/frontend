@@ -14,6 +14,7 @@ const PRESETS = {
   garnet: 'https://explorer.garnetchain.com',
   filecoin: 'https://filecoin.blockscout.com',
   gnosis: 'https://gnosis.blockscout.com',
+  mekong: 'https://mekong.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
   optimism_celestia: 'https://opcelestia-raspberry.gelatoscout.com',
   optimism_sepolia: 'https://optimism-sepolia.blockscout.com',
@@ -41,6 +42,7 @@ const LOCAL_ENVS = {
 const IGNORED_ENVS = [
   'NEXT_PUBLIC_GIT_COMMIT_SHA',
   'NEXT_PUBLIC_GIT_TAG',
+  'NEXT_PUBLIC_ICON_SPRITE_HASH',
 ];
 
 function parseScriptArgs() {

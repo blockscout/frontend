@@ -1,5 +1,4 @@
-import { Link, Skeleton, useColorModeValue, LinkBox, Flex, Image, LinkOverlay, IconButton } from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { Link, useColorModeValue, LinkBox, Flex, Image, LinkOverlay, IconButton } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -7,6 +6,8 @@ import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
+import Skeleton from 'ui/shared/chakra/Skeleton';
+import NextLink from 'ui/shared/NextLink';
 
 import FavoriteIcon from '../FavoriteIcon';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';

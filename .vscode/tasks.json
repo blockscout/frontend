@@ -369,6 +369,7 @@
               "eth_goerli",
               "eth_sepolia",
               "filecoin",
+              "mekong",
               "optimism",
               "optimism_celestia",
               "optimism_sepolia",

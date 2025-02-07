@@ -1,5 +1,5 @@
 import { Flex, Select, Input, InputGroup, InputRightElement, VStack, IconButton } from '@chakra-ui/react';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 

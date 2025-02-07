@@ -1,9 +1,10 @@
-import { Skeleton, Image } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Pool } from 'types/api/pools';
 
 import getPoolLinks from 'lib/pools/getPoolLinks';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PoolEntity from 'ui/shared/entities/pool/PoolEntity';
 import LinkExternal from 'ui/shared/links/LinkExternal';
@@ -27,20 +28,6 @@ const UserOpsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Contract</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <AddressEntity address={{ hash: item.contract_address }} noIcon isLoading={ isLoading }/>
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>FDV</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading }>
-          ${ Number(item.fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
-        </Skeleton>
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Market cap</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading }>
-          ${ Number(item.market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
-        </Skeleton>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Liquidity</ListItemMobileGrid.Label>

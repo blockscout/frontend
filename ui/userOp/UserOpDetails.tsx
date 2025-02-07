@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Link, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Link } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -13,11 +13,13 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -89,6 +91,20 @@ const UserOpDetails = ({ query }: Props) => {
       <DetailsInfoItem.Value>
         <AddressStringOrParam address={ data.sender } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem.Value>
+
+      { data.execute_target && (
+        <>
+          <DetailsInfoItem.Label
+            hint="Target smart contract called by the User operation"
+            isLoading={ isPlaceholderData }
+          >
+            Target
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <AddressEntity address={ data.execute_target } isLoading={ isPlaceholderData }/>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
 
       <DetailsInfoItem.Label
         hint="Current User operation state"

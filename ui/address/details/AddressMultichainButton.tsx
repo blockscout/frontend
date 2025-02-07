@@ -1,5 +1,5 @@
 import { Image, Tooltip } from '@chakra-ui/react';
-import _capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { MultichainProviderConfigParsed } from 'types/client/multichainProviderConfig';
@@ -25,10 +25,10 @@ const AddressMultichainButton = ({ item, addressHash, onClick, hasSingleProvider
   const buttonContent = hasSingleProvider ? (
     <>
       { buttonIcon }
-      { _capitalize(item.name) }
+      { capitalize(item.name) }
     </>
   ) : (
-    <Tooltip label={ _capitalize(item.name) }>{ buttonIcon }</Tooltip>
+    <Tooltip label={ capitalize(item.name) }>{ buttonIcon }</Tooltip>
   );
 
   const linkProps = {

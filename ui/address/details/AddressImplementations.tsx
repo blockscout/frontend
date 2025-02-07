@@ -1,6 +1,7 @@
 import React from 'react';
 
 import type { AddressImplementation } from 'types/api/addressParams';
+import type { SmartContractProxyType } from 'types/api/contract';
 
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -8,20 +9,26 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 interface Props {
   data: Array<AddressImplementation>;
   isLoading?: boolean;
+  proxyType?: SmartContractProxyType;
 }
 
-const AddressImplementations = ({ data, isLoading }: Props) => {
+const AddressImplementations = ({ data, isLoading, proxyType }: Props) => {
   const hasManyItems = data.length > 1;
   const [ hasScroll, setHasScroll ] = React.useState(false);
+
+  const text = proxyType === 'eip7702' ? 'Delegated to' : `Implementation${ hasManyItems ? 's' : '' }`;
+  const hint = proxyType === 'eip7702' ?
+    'Account\'s executable code address' :
+    `Implementation${ hasManyItems ? 's' : '' } address${ hasManyItems ? 'es' : '' } of the proxy contract`;
 
   return (
     <>
       <DetailsInfoItem.Label
-        hint={ `Implementation${ hasManyItems ? 's' : '' } address${ hasManyItems ? 'es' : '' } of the proxy contract` }
+        hint={ hint }
         isLoading={ isLoading }
         hasScroll={ hasScroll }
       >
-        { `Implementation${ hasManyItems ? 's' : '' }` }
+        { text }
       </DetailsInfoItem.Label>
       <DetailsInfoItem.ValueWithScroll
         gradientHeight={ 48 }

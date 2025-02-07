@@ -1,10 +1,11 @@
-import { Flex, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';

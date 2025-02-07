@@ -1,3 +1,4 @@
+import type * as bens from '@blockscout/bens-types';
 import type { TokenType } from 'types/api/token';
 
 export type SearchResultType = 'token' | 'address' | 'block' | 'transaction' | 'contract';
@@ -47,6 +48,7 @@ export interface SearchResultDomain {
     expiry_date?: string;
     name: string;
     names_count: number;
+    protocol?: bens.ProtocolInfo;
   };
 }
 

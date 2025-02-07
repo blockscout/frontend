@@ -154,6 +154,16 @@ test('with ENS', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('delegated address +@dark-mode', async({ render }) => {
+  const component = await render(
+    <AddressEntity
+      address={ addressMock.delegated }
+    />,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
 test('with name tag', async({ render }) => {
   const component = await render(
     <AddressEntity

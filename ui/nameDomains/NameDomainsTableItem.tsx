@@ -1,10 +1,11 @@
-import { chakra, Tr, Td, Skeleton } from '@chakra-ui/react';
+import { chakra, Tr, Td } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
 import dayjs from 'lib/date/dayjs';
 import NameDomainExpiryStatus from 'ui/nameDomain/NameDomainExpiryStatus';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 

@@ -69,7 +69,6 @@ const AddressPageContent = () => {
 
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
   const hash = getQueryParamString(router.query.hash);
-  const checkSummedHash = React.useMemo(() => getCheckedSummedAddress(hash), [ hash ]);
 
   const checkDomainName = useCheckDomainNameParam(hash);
   const checkAddressFormat = useCheckAddressFormat(hash);
@@ -206,7 +205,7 @@ const AddressPageContent = () => {
       {
         id: 'internal_txns',
         title: 'Internal txns',
-        count: addressTabsCountersQuery.data?.internal_txs_count,
+        count: addressTabsCountersQuery.data?.internal_transactions_count,
         component: <AddressInternalTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       },
       addressTabsCountersQuery.data?.celo_election_rewards_count ? {
@@ -240,16 +239,18 @@ const AddressPageContent = () => {
       addressQuery.data?.is_contract ? {
         id: 'contract',
         title: () => {
+          const tabName = addressQuery.data.proxy_type === 'eip7702' ? 'Code' : 'Contract';
+
           if (addressQuery.data.is_verified) {
             return (
               <>
-                <span>Contract</span>
+                <span>{ tabName }</span>
                 <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
               </>
             );
           }
 
-          return 'Contract';
+          return tabName;
         },
         component: (
           <AddressContract
@@ -280,7 +281,12 @@ const AddressPageContent = () => {
       config.features.validators.isEnabled && addressQuery.data?.has_validated_blocks ?
         { slug: 'validator', name: 'Validator', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
         undefined,
-      addressQuery.data?.implementations?.length ? { slug: 'proxy', name: 'Proxy', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } : undefined,
+      addressQuery.data?.implementations?.length && addressQuery.data?.proxy_type !== 'eip7702' ?
+        { slug: 'proxy', name: 'Proxy', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
+        undefined,
+      addressQuery.data?.implementations?.length && addressQuery.data?.proxy_type === 'eip7702' ?
+        { slug: 'eip7702', name: 'EOA+code', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
+        undefined,
       addressQuery.data?.token ? { slug: 'token', name: 'Token', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } : undefined,
       isSafeAddress ? { slug: 'safe', name: 'Multisig: Safe', tagType: 'custom' as const, ordinal: -10 } : undefined,
       addressProfileAPIFeature.isEnabled && usernameApiTag ? {
@@ -364,6 +370,10 @@ const AddressPageContent = () => {
     return;
   }, [ appProps.referrer ]);
 
+  // API always returns hash in check-summed format except for addresses that are not in the database
+  // In this case it returns 404 with empty payload, so we calculate check-summed hash on the client
+  const checkSummedHash = React.useMemo(() => addressQuery.data?.hash ?? getCheckedSummedAddress(hash), [ hash, addressQuery.data?.hash ]);
+
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
       { addressQuery.data?.ens_domain_name && (
@@ -406,7 +416,7 @@ const AddressPageContent = () => {
         <SolidityscanReport hash={ hash }/> }
       { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
         <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
-      <NetworkExplorers type="address" pathParam={ hash }/>
+      <NetworkExplorers type="address" pathParam={ hash.toLowerCase() }/>
     </Flex>
   );
 
@@ -414,7 +424,7 @@ const AddressPageContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
+        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details` }
         backLink={ backLink }
         contentAfter={ titleContentAfter }
         secondRow={ titleSecondRow }

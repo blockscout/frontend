@@ -1,5 +1,4 @@
 import { Link, Text, HStack, Tooltip, Box, useBreakpointValue } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import React from 'react';
 
 import type { NavItem } from 'types/client/navigation';
@@ -9,6 +8,7 @@ import { route } from 'nextjs-routes';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
+import NextLink from 'ui/shared/NextLink';
 
 import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';

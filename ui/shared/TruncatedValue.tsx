@@ -1,7 +1,8 @@
 import type { PlacementWithLogical } from '@chakra-ui/react';
-import { Skeleton, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {

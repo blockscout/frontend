@@ -1,8 +1,9 @@
-import { Grid, Skeleton } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Pool } from 'types/api/pools';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -17,7 +18,7 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
     <Grid
       columnGap={ 8 }
       rowGap={{ base: 1, lg: 3 }}
-      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
+      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 220px) minmax(0, 1fr)' }}
       overflow="hidden"
     >
       <DetailsInfoItem.Label
@@ -62,23 +63,47 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
         isLoading={ isPlaceholderData }
         hint="Fully Diluted Valuation: theoretical market cap if all tokens were in circulation"
       >
-        FDV
+        Base token FDV
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
-          ${ Number(data.fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
+          ${ Number(data.base_token_fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
       </DetailsInfoItem.Value>
 
       <DetailsInfoItem.Label
         isLoading={ isPlaceholderData }
-        hint="Current market capitalization of the pool"
+        hint="Current market capitalization of the base token"
       >
-        Market cap
+        Base token market cap
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
-          ${ Number(data.market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
+          ${ Number(data.base_token_market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
+        </Skeleton>
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
+        isLoading={ isPlaceholderData }
+        hint="Fully Diluted Valuation: theoretical market cap if all tokens were in circulation"
+      >
+        Quote token FDV
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
+        <Skeleton isLoaded={ !isPlaceholderData }>
+          ${ Number(data.quote_token_fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
+        </Skeleton>
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
+        isLoading={ isPlaceholderData }
+        hint="Current market capitalization of the base token"
+      >
+        Quote token market cap
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
+        <Skeleton isLoaded={ !isPlaceholderData }>
+          ${ Number(data.quote_token_market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
       </DetailsInfoItem.Value>
 

@@ -1,6 +1,7 @@
 import { Button } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import React from 'react';
+
+import NextLink from 'ui/shared/NextLink';
 
 type Props = {
   id: string;

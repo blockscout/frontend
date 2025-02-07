@@ -30,7 +30,7 @@ interface ReturnType {
   isLoading: boolean;
 }
 
-export default function useContractTabs(data: Address | undefined, isPlaceholderData: boolean, hasMudTab?: boolean): ReturnType {
+export default function useContractTabs(data: Address | undefined, isPlaceholderData: boolean, hasMudTab: boolean = false): ReturnType {
   const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
 
   const router = useRouter();
@@ -88,7 +88,13 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
         verifiedImplementations.length > 0 && {
           id: [ 'read_write_proxy' as const, 'read_proxy' as const, 'write_proxy' as const ],
           title: 'Read/Write proxy',
-          component: <ContractMethodsProxy implementations={ verifiedImplementations } isLoading={ contractQuery.isPlaceholderData }/>,
+          component: (
+            <ContractMethodsProxy
+              implementations={ verifiedImplementations }
+              isLoading={ contractQuery.isPlaceholderData }
+              proxyType={ contractQuery.data?.proxy_type }
+            />
+          ),
         },
         config.features.account.isEnabled && {
           id: [ 'read_write_custom_methods' as const, 'read_custom_methods' as const, 'write_custom_methods' as const ],

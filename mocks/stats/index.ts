@@ -1,4 +1,4 @@
-import _mapValues from 'lodash/mapValues';
+import { mapValues } from 'es-toolkit';
 
 import type { HomeStats } from 'types/api/stats';
 
@@ -51,17 +51,17 @@ export const withBtcLocked: HomeStats = {
 
 export const withoutFiatPrices: HomeStats = {
   ...base,
-  gas_prices: _mapValues(base.gas_prices, (price) => price ? ({ ...price, fiat_price: null }) : null),
+  gas_prices: base.gas_prices ? mapValues(base.gas_prices, (price) => price ? ({ ...price, fiat_price: null }) : null) : null,
 };
 
 export const withoutGweiPrices: HomeStats = {
   ...base,
-  gas_prices: _mapValues(base.gas_prices, (price) => price ? ({ ...price, price: null }) : null),
+  gas_prices: base.gas_prices ? mapValues(base.gas_prices, (price) => price ? ({ ...price, price: null }) : null) : null,
 };
 
 export const withoutBothPrices: HomeStats = {
   ...base,
-  gas_prices: _mapValues(base.gas_prices, (price) => price ? ({ ...price, price: null, fiat_price: null }) : null),
+  gas_prices: base.gas_prices ? mapValues(base.gas_prices, (price) => price ? ({ ...price, price: null, fiat_price: null }) : null) : null,
 };
 
 export const withoutGasInfo: HomeStats = {

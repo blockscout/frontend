@@ -1,10 +1,11 @@
-import { Text, Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Text, Td, Tr } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { MudWorldItem } from 'types/api/mudWorlds';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 type Props = { item: MudWorldItem; isLoading?: boolean };

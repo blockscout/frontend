@@ -26,7 +26,7 @@ interface Props {
 
 export default function useContractDetailsTabs({ data, isLoading, addressHash, sourceAddress }: Props): Array<Tab> {
 
-  const canBeVerified = !data?.is_self_destructed && !data?.is_verified;
+  const canBeVerified = !data?.is_self_destructed && !data?.is_verified && data?.proxy_type !== 'eip7702';
 
   return React.useMemo(() => {
     const verificationButton = (

@@ -40,8 +40,14 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
             </Link>
           </Th>
           <Th width="130px" isNumeric>
-            <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('txs_count') } columnGap={ 1 }>
-              { sort?.includes('txs_count') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
+            <Link
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-end"
+              onClick={ isLoading ? undefined : onSortToggle('transactions_count') }
+              columnGap={ 1 }
+            >
+              { sort?.includes('transactions_count') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
               Txs
             </Link>
           </Th>

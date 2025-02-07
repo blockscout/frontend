@@ -2,6 +2,7 @@ import type { Transaction } from 'types/api/transaction';
 
 import type { UserTags, AddressImplementation, AddressParam, AddressFilecoinParams } from './addressParams';
 import type { Block, EpochRewardsType } from './block';
+import type { SmartContractProxyType } from './contract';
 import type { InternalTransaction } from './internalTransaction';
 import type { MudWorldSchema, MudWorldTable } from './mudWorlds';
 import type { NFTTokenType, TokenInfo, TokenInstance, TokenType } from './token';
@@ -31,6 +32,7 @@ export interface Address extends UserTags {
   name: string | null;
   token: TokenInfo | null;
   watchlist_address_id: number | null;
+  proxy_type?: SmartContractProxyType | null;
 }
 
 export interface AddressZilliqaParams {
@@ -191,7 +193,7 @@ export type AddressWithdrawalsItem = {
 };
 
 export type AddressTabsCounters = {
-  internal_txs_count: number | null;
+  internal_transactions_count: number | null;
   logs_count: number | null;
   token_balances_count: number | null;
   token_transfers_count: number | null;

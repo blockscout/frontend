@@ -1,4 +1,4 @@
-import _capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import type { Config } from 'mixpanel-browser';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
@@ -40,12 +40,12 @@ export default function useMixpanelInit() {
       'Viewport width': window.innerWidth,
       'Viewport height': window.innerHeight,
       Language: window.navigator.language,
-      'Device type': _capitalize(deviceType),
+      'Device type': capitalize(deviceType),
       'User id': userId,
     });
     mixpanel.identify(userId);
     userProfile.set({
-      'Device Type': _capitalize(deviceType),
+      'Device Type': capitalize(deviceType),
       ...(isAuth ? { 'With Account': true } : {}),
     });
     userProfile.setOnce({

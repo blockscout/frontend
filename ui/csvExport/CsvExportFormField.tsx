@@ -1,4 +1,4 @@
-import _capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
@@ -40,7 +40,7 @@ const CsvExportFormField = ({ formApi, name }: Props) => {
       name={ name }
       type="date"
       max={ dayjs().format('YYYY-MM-DD') }
-      placeholder={ _capitalize(name) }
+      placeholder={ capitalize(name) }
       isRequired
       rules={{ validate }}
       size={{ base: 'md', lg: 'lg' }}

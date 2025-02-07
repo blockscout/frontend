@@ -27,17 +27,17 @@ const RESTRICTED_MODULES = {
     { name: 'playwright/TestApp', message: 'Please use render() fixture from test() function of playwright/lib module' },
     {
       name: '@chakra-ui/react',
-      importNames: [ 'Popover', 'Menu', 'PinInput', 'useToast' ],
+      importNames: [ 'Popover', 'Menu', 'PinInput', 'useToast', 'Skeleton' ],
       message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
     },
     {
-      name: 'lodash',
-      message: 'Please use `import [package] from \'lodash/[package]\'` instead.',
+      name: 'next/link',
+      importNames: [ 'default' ],
+      message: 'Please use ui/shared/NextLink component instead',
     },
   ],
   patterns: [
     'icons/*',
-    '!lodash/*',
   ],
 };
 
@@ -428,6 +428,7 @@ export default tseslint.config(
       'pages/**',
       'nextjs/**',
       'playwright/**',
+      'deploy/scripts/**',
       'deploy/tools/**',
       'middleware.ts',
       'instrumentation*.ts',

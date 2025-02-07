@@ -1,10 +1,9 @@
 import * as d3 from 'd3';
-import _maxBy from 'lodash/maxBy';
-import _unique from 'lodash/uniq';
+import { maxBy, uniq } from 'es-toolkit';
 
 import type { AxesConfig, AxisConfig, TimeChartData } from '../types';
 
-import { WEEK, MONTH, YEAR } from 'lib/consts';
+import { MONTH, YEAR } from 'lib/consts';
 
 export const DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS = 2;
 export const DEFAULT_MAXIMUM_FRACTION_DIGITS = 3;
@@ -48,14 +47,12 @@ const tickFormatterX = (axis: d3.Axis<d3.NumberValue>) => (d: d3.AxisDomain) => 
 
   const span = Number(extent[1]) - Number(extent[0]);
 
-  if (span > YEAR) {
+  if (span > 2 * YEAR) {
     format = d3.timeFormat('%Y');
-  } else if (span > 2 * MONTH) {
-    format = d3.timeFormat('%b');
-  } else if (span > WEEK) {
-    format = d3.timeFormat('%b %d');
+  } else if (span > 4 * MONTH) {
+    format = d3.timeFormat('%b \'%y');
   } else {
-    format = d3.timeFormat('%a %d');
+    format = d3.timeFormat('%d %b');
   }
 
   return format(d as Date);
@@ -90,8 +87,8 @@ function getYLabelFormatParams(ticks: Array<number>, maximumSignificantDigits = 
     notation: 'compact' as const,
   };
 
-  const uniqTicksStr = _unique(ticks.map((tick) => tick.toLocaleString(undefined, params)));
-  const maxLabelLength = _maxBy(uniqTicksStr, (items) => items.length)?.length ?? DEFAULT_LABEL_LENGTH;
+  const uniqTicksStr = uniq(ticks.map((tick) => tick.toLocaleString(undefined, params)));
+  const maxLabelLength = maxBy(uniqTicksStr, (items) => items.length)?.length ?? DEFAULT_LABEL_LENGTH;
 
   if (uniqTicksStr.length === ticks.length || maximumSignificantDigits === MAXIMUM_SIGNIFICANT_DIGITS_LIMIT) {
     return { ...params, maxLabelLength };

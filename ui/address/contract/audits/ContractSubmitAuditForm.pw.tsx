@@ -1,4 +1,4 @@
-import noop from 'lodash/noop';
+import { noop } from 'es-toolkit';
 import React from 'react';
 
 import { test, expect } from 'playwright/lib';
