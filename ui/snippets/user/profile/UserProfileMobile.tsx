@@ -35,7 +35,7 @@ const UserProfileMobile = () => {
     }
 
     if (router.pathname === '/apps/[id]' && config.features.blockchainInteraction.isEnabled) {
-      setAuthInitialScreen({ type: 'connect_wallet' });
+      setAuthInitialScreen({ type: 'connect_wallet', loginToRewards: true });
     }
 
     authModal.onOpen();
@@ -47,7 +47,7 @@ const UserProfileMobile = () => {
   }, [ authModal ]);
 
   const handleAddAddressClick = React.useCallback(() => {
-    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true });
+    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true, loginToRewards: true });
     authModal.onOpen();
   }, [ authModal ]);
 
