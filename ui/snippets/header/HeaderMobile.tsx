@@ -33,6 +33,7 @@ const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
       left={ 0 }
       zIndex="sticky2"
       pt="1px"
+      height="56px"
     >
       <Flex
         as="header"

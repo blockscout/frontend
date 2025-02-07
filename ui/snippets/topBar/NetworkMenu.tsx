@@ -18,8 +18,7 @@ const NetworkMenu = () => {
     >
       <PopoverTrigger>
         <IconButton
-          color="link.primary"
-          _hover={{ color: 'link.primary.hover' }}
+          variant="link"
           aria-label="Network menu"
           borderRadius="sm"
           onClick={ menu.onToggle }

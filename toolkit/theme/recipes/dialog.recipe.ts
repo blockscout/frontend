@@ -4,7 +4,7 @@ export const recipe = defineSlotRecipe({
   slots: [ 'backdrop', 'positioner', 'content', 'header', 'body', 'footer', 'title', 'description' ],
   base: {
     backdrop: {
-      bg: 'blackAlpha.500',
+      bg: 'blackAlpha.800',
       pos: 'fixed',
       left: 0,
       top: 0,
@@ -70,9 +70,9 @@ export const recipe = defineSlotRecipe({
       alignItems: 'center',
       justifyContent: 'flex-end',
       gap: '3',
-      px: '6',
+      px: '0',
       pt: '2',
-      pb: '4',
+      pb: '0',
     },
     title: {
       textStyle: 'heading.md',

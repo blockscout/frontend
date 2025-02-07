@@ -46,8 +46,8 @@ const PrivateTagMenuItem = ({ hash, entityType = 'address', type }: Props) => {
 
   const pageType = getPageType(router.pathname);
   const modalProps = {
-    isOpen: modal.open,
-    onClose: modal.onClose,
+    open: modal.open,
+    onOpenChange: modal.onOpenChange,
     onSuccess: handleAddPrivateTag,
     pageType,
   };

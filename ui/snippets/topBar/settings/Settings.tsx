@@ -21,8 +21,7 @@ const Settings = () => {
     >
       <PopoverTrigger>
         <IconButton
-          color="link.primary"
-          _hover={{ color: 'link.primary.hover' }}
+          variant="link"
           borderRadius="sm"
           aria-label="User settings"
         >

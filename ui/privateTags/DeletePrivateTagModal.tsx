@@ -9,13 +9,13 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   data: AddressTag | TransactionTag;
   type: 'address' | 'transaction';
 };
 
-const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type }) => {
+const DeletePrivateTagModal: React.FC<Props> = ({ open, onOpenChange, data, type }) => {
   const tag = data.name;
   const id = data.id;
 
@@ -53,8 +53,8 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
 
   return (
     <DeleteModal
-      isOpen={ isOpen }
-      onClose={ onClose }
+      open={ open }
+      onOpenChange={ onOpenChange }
       title="Removal of private tag"
       renderContent={ renderText }
       mutationFn={ mutationFn }

@@ -50,10 +50,10 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     //   render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
     //   enabled: config.features.account.isEnabled && isTokenPage && config.features.addressVerification.isEnabled && !userWithoutEmail,
     // },
-    // {
-    //   render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,
-    //   enabled: config.features.account.isEnabled,
-    // },
+    {
+      render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,
+      enabled: config.features.account.isEnabled,
+    },
     {
       render: (props: ItemProps) => <PublicTagMenuItem { ...props }/>,
       enabled: config.features.account.isEnabled && !isTxPage && config.features.publicTagsSubmission.isEnabled,

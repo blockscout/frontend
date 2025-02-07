@@ -418,10 +418,10 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       DEFAULT: { value: '{colors.red.500}' },
       _dark: { value: '{colors.red.500}' },
     },
-    dialog_bg: {
-      DEFAULT: { value: '{colors.white}' },
-      _dark: { value: '{colors.gray.900}' },
-    },
+    // dialog_bg: {
+    //   DEFAULT: { value: '{colors.white}' },
+    //   _dark: { value: '{colors.gray.900}' },
+    // },
   },
   shadows: {
     popover: {
