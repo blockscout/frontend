@@ -19,6 +19,7 @@ const PRESETS = {
   optimism_celestia: 'https://opcelestia-raspberry.gelatoscout.com',
   optimism_sepolia: 'https://optimism-sepolia.blockscout.com',
   polygon: 'https://polygon.blockscout.com',
+  rari_testnet: 'https://rari-testnet.cloud.blockscout.com',
   rootstock_testnet: 'https://rootstock-testnet.blockscout.com',
   scroll_sepolia: 'https://scroll-sepolia.blockscout.com',
   shibarium: 'https://www.shibariumscan.io',

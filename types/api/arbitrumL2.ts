@@ -74,8 +74,14 @@ export type ArbitrumL2TxnBatchDAAnytrust = {
   }>;
 };
 
-export type ArbitrumL2TxnBatchDataAvailability = ArbitrumL2TxnBatchDAAnytrust | {
-  batch_data_container: Exclude<BatchDataContainer, 'in_anytrust'>;
+export type ArbitrumL2TxnBatchDACelestia = {
+  batch_data_container: 'in_celestia';
+  height: number;
+  transaction_commitment: string;
+};
+
+export type ArbitrumL2TxnBatchDataAvailability = ArbitrumL2TxnBatchDAAnytrust | ArbitrumL2TxnBatchDACelestia | {
+  batch_data_container: Exclude<BatchDataContainer, 'in_anytrust' | 'in_celestia'>;
 };
 
 export type ArbitrumL2TxnBatch = {

@@ -26,6 +26,7 @@ on:
             - optimism_celestia
             - optimism_sepolia
             - polygon
+            - rari_testnet
             - rootstock
             - shibarium
             - scroll_sepolia
