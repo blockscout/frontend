@@ -103,7 +103,7 @@ const ChartMenu = ({
         dayjs(item.date).format('YYYY-MM-DD'), String(item.value),
       ]);
 
-      saveAsCSV(headerRows, dataRows, `${ title } (Blockscout stats)`);
+      saveAsCSV(headerRows, dataRows, `${ title } (Moca Chain stats)`);
     }
   }, [ items, title ]);
 

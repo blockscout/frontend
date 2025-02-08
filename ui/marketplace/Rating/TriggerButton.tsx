@@ -16,7 +16,7 @@ type Props = {
 
 const getTooltipText = (canRate: boolean | undefined) => {
   if (canRate === undefined) {
-    return <>Please connect your wallet to Blockscout to rate this DApp.<br/>Only wallets with 5+ transactions are eligible</>;
+    return <>Please connect your wallet to Moca Chain to rate this DApp.<br/>Only wallets with 5+ transactions are eligible</>;
   }
   if (!canRate) {
     return <>Brand new wallets cannot leave ratings.<br/>Please connect a wallet with 5 or more transactions on this chain</>;

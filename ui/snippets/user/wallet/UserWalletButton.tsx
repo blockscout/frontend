@@ -38,7 +38,7 @@ const UserWalletButton = ({ size, variant, onClick, isPending, isAutoConnectDisa
 
   return (
     <Tooltip
-      label={ <span>Connect your wallet<br/>to Blockscout for<br/>full-featured access</span> }
+      label={ <span>Connect your wallet<br/>to Moca Chain for<br/>full-featured access</span> }
       textAlign="center"
       padding={ 2 }
       isDisabled={ isMobile || Boolean(address) }

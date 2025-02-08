@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   Flex,
   Box,
@@ -90,7 +89,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
           userWallet: data.address,
         }),
       })
-        .then(async(res: any) => {
+        .then(async(res: Response) => {
           if (res.ok) {
             reset();
             setRequestStatus(FAUCET_REQUEST_TYPE.SENT);
@@ -197,10 +196,10 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
     <>
       <Heading fontSize="24px" fontWeight="400" lineHeight="28px">
         <Highlight
-          query="$ZKME"
+          query="$MOCA"
           styles={{ color: '#8A55FD', fontWeight: '700' }}
         >
-          To receive $ZKME on MeChain Testnet, please follow the steps below.
+          To receive $MOCA on MocaChain Testnet, please follow the steps below.
         </Highlight>
       </Heading>
       <Text
@@ -295,8 +294,8 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
               color="#000000"
               lineHeight="28px"
             >
-              <Highlight query="$ZKME" styles={{ color: '#8A55FD' }}>
-                Request $ZKME on MeChain
+              <Highlight query="$MOCA" styles={{ color: '#8A55FD' }}>
+                Request $MOCA on MocaChain
               </Highlight>
             </Heading>
             <IconSvg name="mechain_square" w="37px" h="25px"/>
@@ -377,15 +376,15 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
                 justifyContent="space-between"
               >
                 <Box as="span" textAlign="left" fontSize="14px" fontWeight="500">
-                What is a testnet Mechain faucet?
+                  What is a testnet MocaChain faucet?
                 </Box>
                 <AccordionIcon/>
               </Flex>
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
-            A MeChain faucet is a developer tool designed to provide testnet $ZKME tokens, allowing developers to test and troubleshoot their decentralized
-applications or protocols before deploying them on the MeChain mainnet where real $ZKME tokens are required. The MeChain testnet faucet is
-designed to be developer-friendly, providing easy access to testnet tokens for integration and testing purposes.
+              A MocaChain faucet is a developer tool designed to provide testnet $MOCA tokens, allowing developers to test and troubleshoot their decentralized
+              applications or protocols before deploying them on the MocaChain mainnet where real $MOCA tokens are required. The MocaChain testnet faucet is
+              designed to be developer-friendly, providing easy access to testnet tokens for integration and testing purposes.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem
@@ -404,14 +403,15 @@ designed to be developer-friendly, providing easy access to testnet tokens for i
                 justifyContent="space-between"
               >
                 <Box as="span" textAlign="left" fontSize="14px" fontWeight="500">
-                What is a testnet $ZKME token?
+                  What is a testnet $MOCA token?
                 </Box>
                 <AccordionIcon/>
               </Flex>
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
-            Testnet $ZKME tokens are a test version of the MeChain network&apos;s native token, allowing developers to simulate transactions and interactions
-within the zkMe ecosystem without using real value. These tokens can be used in place of mainnet $ZKME tokens on the MeChain testnet.
+              Testnet $MOCA tokens are a test version of the MocaChain network&apos;s native token,
+              allowing developers to simulate transactions and interactions
+              within the zkMe ecosystem without using real value. These tokens can be used in place of mainnet $MOCA tokens on the MocaChain testnet.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem
@@ -430,15 +430,15 @@ within the zkMe ecosystem without using real value. These tokens can be used in 
                 justifyContent="space-between"
               >
                 <Box as="span" textAlign="left" fontSize="14px" fontWeight="500">
-                How to request $ZKME?
+                  How to request $MOCA?
                 </Box>
                 <AccordionIcon/>
               </Flex>
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
-            First you need to join zkMe&apos;s discord community(https://discord.com/invite/SJ2RDs9NGM) and hit&ldquo;Verify&ldquo;.
-            When the button changes to&ldquo;Account Verified&ldquo;, you can go to step 2.
-            After entering the address and hit &ldquo;Request&ldquo;, we will send tokens to this address.
+              First you need to join zkMe&apos;s discord community(https://discord.com/invite/SJ2RDs9NGM) and hit&ldquo;Verify&ldquo;.
+              When the button changes to&ldquo;Account Verified&ldquo;, you can go to step 2.
+              After entering the address and hit &ldquo;Request&ldquo;, we will send tokens to this address.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem
@@ -457,13 +457,13 @@ within the zkMe ecosystem without using real value. These tokens can be used in 
                 justifyContent="space-between"
               >
                 <Box as="span" textAlign="left" fontSize="14px" fontWeight="500">
-                Can I request more $ZKME?
+                  Can I request more $MOCA?
                 </Box>
                 <AccordionIcon/>
               </Flex>
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
-            You can only request $ZKME every 24h.
+              You can only request $MOCA every 24h.
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
