@@ -11,9 +11,9 @@ export const table1: MudWorldTable = {
 };
 
 export const table2: MudWorldTable = {
-  table_full_name: 'ot.world.FunctionSignatur',
+  table_full_name: 'ot.world.FunctionSignature',
   table_id: '0x6f74776f726c6400000000000000000046756e6374696f6e5369676e61747572',
-  table_name: 'FunctionSignatur',
+  table_name: 'FunctionSignature',
   table_namespace: 'world',
   table_type: 'offchain',
 };
