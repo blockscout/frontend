@@ -22,7 +22,7 @@ const GraphQL = () => {
 
   const graphqlTheme = window.localStorage.getItem('graphiql:theme');
 
-  // colorModeState used as a key to re-render GraphiQL conponent after color mode change
+  // colorModeState used as a key to re-render GraphiQL component after color mode change
   const [ colorModeState, setColorModeState ] = React.useState(graphqlTheme);
 
   React.useEffect(() => {
