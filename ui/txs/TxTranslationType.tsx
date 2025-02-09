@@ -10,20 +10,20 @@ import TxType from './TxType';
 export interface Props {
   types: Array<TransactionType>;
   isLoading?: boolean;
-  translatationType: string | undefined;
+  translationType: string | undefined;
 }
 
-const TxTranslationType = ({ types, isLoading, translatationType }: Props) => {
+const TxTranslationType = ({ types, isLoading, translationType }: Props) => {
 
   const filteredTypes = [ 'unclassified' ];
 
-  if (!translatationType || filteredTypes.includes(translatationType)) {
+  if (!translationType || filteredTypes.includes(translationType)) {
     return <TxType types={ types } isLoading={ isLoading }/>;
   }
 
   return (
     <Tag colorScheme="purple" isLoading={ isLoading }>
-      { camelCaseToSentence(translatationType) }
+      { camelCaseToSentence(translationType) }
     </Tag>
   );
 
