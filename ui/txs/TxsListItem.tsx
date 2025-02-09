@@ -44,7 +44,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
             <TxTranslationType
               types={ tx.transaction_types }
               isLoading={ isLoading || tx.translation.isLoading }
-              translatationType={ tx.translation.data?.type }
+              translationType={ tx.translation.data?.type }
             />
           ) :
             <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
