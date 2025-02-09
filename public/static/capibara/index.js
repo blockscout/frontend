@@ -2380,7 +2380,7 @@
       },
 
       /**
-       * Update the x position of an indivdual piece of the line.
+       * Update the x position of an individual piece of the line.
        * @param {number} pos Line position.
        * @param {number} increment
        */
