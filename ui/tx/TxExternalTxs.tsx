@@ -33,7 +33,7 @@ const TxExternalTxs: React.FC<Props> = ({ data }) => {
           gap={ 2 }
         >
           <Image src={ externalTxFeature.chainLogoUrl } alt={ externalTxFeature.chainName } width={ 5 } height={ 5 }/>
-          { data.length } { externalTxFeature.chainName } tx{ data.length > 1 ? 's' : '' }
+          { data.length } { externalTxFeature.chainName } txn{ data.length > 1 ? 's' : '' }
         </Link>
       </PopoverTrigger>
       <PopoverContent border="1px solid" borderColor="divider" w={{ base: '300px', lg: '460px' }}>
