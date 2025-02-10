@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-nested-ternary */
 import {
   Table,
@@ -39,7 +40,7 @@ type Props<T extends string> = {
   currPage: number;
   toNext: boolean;
   totleDate: number;
-}
+};
 
 function TableList(props: Props<string>) {
   const [ tableList, setTableList ] = React.useState<Array<TalbeListType>>(props.tableList);
@@ -61,6 +62,8 @@ function TableList(props: Props<string>) {
         return '/bucket-details/[address]';
       case 'Group Name':
         return '/group-details/[address]';
+      default:
+        return '/object-details/[address]';
     }
   };
   const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -167,7 +170,7 @@ function TableList(props: Props<string>) {
                               key={ index }
                               fontWeight="500" fontSize="14px"
                               overflow="hidden"
-                              color="#8A55FD"
+                              color="#FF57B7"
                               p="12px 24px"
                             >
                               {

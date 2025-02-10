@@ -150,7 +150,7 @@ const SearchBarInput = (
     >
       <InputGroup size={{ base: 'sm', lg: isHomepage ? 'sm_md' : 'sm' }} >
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
-          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color="#A07EFF" fontSize="16px"/>
+          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color="#FF57B7" fontSize="16px"/>
         </InputLeftElement>
         <Input
           pl={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
@@ -162,7 +162,7 @@ const SearchBarInput = (
             '@media screen and (min-width: 1001px)': {
               borderRadius: '29px',
               height: '42px',
-              borderColor: '#A07EFF !important',
+              borderColor: '#FF57B7 !important',
               paddingRight: '36px',
             },
           }}

@@ -13,11 +13,11 @@ const semanticTokens = {
       _dark: 'gray.400',
     },
     link: {
-      'default': '#8A55FD',
-      _dark: '#8A55FD',
+      'default': '#FF57B7',
+      _dark: '#FF57B7',
     },
     link_hovered: {
-      'default': '#A07EFF',
+      'default': '#FF57B7',
     },
     icon_link_external: {
       'default': 'gray.300',

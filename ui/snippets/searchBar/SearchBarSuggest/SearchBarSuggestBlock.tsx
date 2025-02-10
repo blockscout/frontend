@@ -16,7 +16,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, isFirst }: Props) => {
   const blockNumber = (
     <Flex fontWeight={ 500 } lineHeight="20px" fontSize={ 14 }>
       <Text color="#000">Block Height:&nbsp;</Text>
-      <Text color="#8A55FD">{ data.block_number.toString() }</Text>
+      <Text color="#FF57B7">{ data.block_number.toString() }</Text>
     </Flex>
   );
 

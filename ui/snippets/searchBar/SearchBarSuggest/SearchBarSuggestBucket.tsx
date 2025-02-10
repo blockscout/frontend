@@ -26,7 +26,7 @@ const SearchBarSuggestBucket = ({ data, isFirst, searchTerm }: Props) => {
                 <span style={{ color: 'rgba(0, 0, 0, 0.30)' }}
                   dangerouslySetInnerHTML={{ __html: highlightText(truncateString(data.bucket_name), searchTerm) }}/>
               ) :
-                <Text color="#8A55FD">{ truncateString(data.bucket_id) }</Text>
+                <Text color="#FF57B7">{ truncateString(data.bucket_id) }</Text>
             }
           </Flex>
           <Text fontSize={ 12 } color="rgba(0, 0, 0, 0.30)">

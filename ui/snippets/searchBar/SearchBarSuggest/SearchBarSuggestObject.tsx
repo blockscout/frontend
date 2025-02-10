@@ -26,7 +26,7 @@ const SearchBarSuggestObject = ({ data, searchTerm, isFirst }: Props) => {
                 <span style={{ color: 'rgba(0, 0, 0, 0.30)' }}
                   dangerouslySetInnerHTML={{ __html: highlightText(truncateString(data.object_name) || '', searchTerm) }}/>
               ) :
-                <Text color="#8A55FD">{ truncateString(data.object_id) }</Text>
+                <Text color="#FF57B7">{ truncateString(data.object_id) }</Text>
             }
           </Flex>
           <Text fontSize={ 12 } color="rgba(0, 0, 0, 0.30)">Owner: { formatPubKey(data.owner_address, 16, 16) }</Text>

@@ -126,10 +126,10 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
       };
     } else {
       return {
-        bg: '#707CFF',
+        bg: '#FF57B7',
         height: '48px',
-        border: '1px solid #3846DE',
-        _hover: { background: '#707CFF' },
+        border: '1px solid #ffa1da',
+        _hover: { background: '#FF57B7' },
       };
     }
   }, [ props.verified ]);
@@ -137,21 +137,21 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
   const requestBtnStyles = React.useCallback(() => {
     if (requestStatus === FAUCET_REQUEST_TYPE.REQUEST && props.verified) {
       return {
-        border: '1px solid #8A55FD',
-        bg: '#A07EFF',
+        border: '1px solid #FF57B7',
+        bg: '#FF57B7',
         _hover: {
-          bg: '#A07EFF',
+          bg: '#FF57B7',
         },
         boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
       };
     } else if (requestStatus === FAUCET_REQUEST_TYPE.SENDING || !props.verified) {
       return {
         border: '1px rgba(0, 0, 0, 0.12)',
-        bg: '#A07EFF',
+        bg: '#FF57B7',
         opacity: 0.5,
         cursor: 'not-allowed',
         _hover: {
-          bg: '#A07EFF',
+          bg: '#FF57B7',
         },
         boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
       };
@@ -197,7 +197,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
       <Heading fontSize="24px" fontWeight="400" lineHeight="28px">
         <Highlight
           query="$MOCA"
-          styles={{ color: '#8A55FD', fontWeight: '700' }}
+          styles={{ color: '#FF57B7', fontWeight: '700' }}
         >
           To receive $MOCA on MocaChain Testnet, please follow the steps below.
         </Highlight>
@@ -221,8 +221,8 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
           padding="24px"
         >
           <Box
-            border="1px solid #3846DE"
-            bg="#707CFF"
+            border="1px solid #ffa1da"
+            bg="#FF57B7"
             borderRadius="50%"
             width="32px"
             height="32px"
@@ -271,8 +271,8 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
           padding="24px"
         >
           <Box
-            border="1px solid #3846DE"
-            bg="#707CFF"
+            border="1px solid #ffa1da"
+            bg="#FF57B7"
             borderRadius="50%"
             width="32px"
             height="32px"
@@ -294,7 +294,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
               color="#000000"
               lineHeight="28px"
             >
-              <Highlight query="$MOCA" styles={{ color: '#8A55FD' }}>
+              <Highlight query="$MOCA" styles={{ color: '#FF57B7' }}>
                 Request $MOCA on MocaChain
               </Highlight>
             </Heading>

@@ -1,4 +1,5 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable no-restricted-imports */
+
 /* eslint-disable no-nested-ternary */
 import {
   Table,
@@ -189,7 +190,7 @@ const Page = (props: HeadProps) => {
                   p="12px 0"
                   fontWeight="500"
                   fontSize="12px"
-                  color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' }
+                  color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#FF57B7' }
                   textAlign="right"
                 >
                   {
@@ -284,14 +285,14 @@ const Page = (props: HeadProps) => {
                                           key={ index }>
                                           <Flex align="center" color="#000000" fontWeight="500" fontSize="12px">
                                             { /* <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink> */ }
-                                      global_virtual_group_id: { value }
+                                            global_virtual_group_id: { value }
                                             <IconSvg
                                               cursor="pointer"
                                               onClick={ copyAddress(value) }
                                               marginLeft="48px"
                                               w="14px"
                                               h="14px"
-                                              color="#8A55FD"
+                                              color="#FF57B7"
                                               name="copyAddress">
                                             </IconSvg>
                                           </Flex>
@@ -310,7 +311,7 @@ const Page = (props: HeadProps) => {
                                   <Box
                                     fontWeight="500"
                                     fontSize="12px"
-                                    color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' }
+                                    color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#FF57B7' }
                                     textAlign="right"
                                     justifyItems="right"
                                     display="flex"

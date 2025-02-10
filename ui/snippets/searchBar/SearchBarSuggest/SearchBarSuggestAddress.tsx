@@ -55,7 +55,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, isFirst }: Props)
     </Flex>
   );
   // const addressEl = <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>;
-  const addressEl = (<Text color="#8A55FD">{ formatPubKey(data.address, 9, 9) }</Text>);
+  const addressEl = (<Text color="#FF57B7">{ formatPubKey(data.address, 9, 9) }</Text>);
 
   if (isMobile) {
     return (
