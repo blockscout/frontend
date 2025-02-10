@@ -24,7 +24,6 @@ import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import { ADDRESS_REGEXP } from 'ui/shared/forms/validators/address';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
@@ -209,34 +208,18 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                   src={ colorMode === 'dark' && data.app.logoDarkMode ? data.app.logoDarkMode : data.app.logo }
                   alt={ `${ data.app.title } app icon` }
                 />
-                { data.app.external ? (
-                  <LinkExternal
-                    href={
-                      route({
-                        pathname: '/apps',
-                        query: {
-                          selectedAppId: data.app.id,
-                        },
-                      })
-                    }
-                    fontWeight={ 700 }
-                    wordBreak="break-all"
-                    isLoading={ isLoading }
-                    onClick={ handleLinkClick }
-                  >
-                    { title }
-                  </LinkExternal>
-                ) : (
-                  <LinkInternal
-                    href={ route({ pathname: '/apps/[id]', query: { id: data.app.id } }) }
-                    fontWeight={ 700 }
-                    wordBreak="break-all"
-                    isLoading={ isLoading }
-                    onClick={ handleLinkClick }
-                  >
-                    { title }
-                  </LinkInternal>
-                ) }
+                <LinkInternal
+                  href={ data.app.external ?
+                    route({ pathname: '/apps', query: { selectedAppId: data.app.id } }) :
+                    route({ pathname: '/apps/[id]', query: { id: data.app.id } })
+                  }
+                  fontWeight={ 700 }
+                  wordBreak="break-all"
+                  isLoading={ isLoading }
+                  onClick={ handleLinkClick }
+                >
+                  { title }
+                </LinkInternal>
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle" colSpan={ 2 }>
