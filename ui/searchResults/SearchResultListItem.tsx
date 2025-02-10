@@ -147,7 +147,14 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
             />
             { data.app.external ? (
               <LinkExternal
-                href={ data.app.url }
+                href={
+                  route({
+                    pathname: '/apps',
+                    query: {
+                      selectedAppId: data.app.id,
+                    },
+                  })
+                }
                 fontWeight={ 700 }
                 wordBreak="break-all"
                 isLoading={ isLoading }
