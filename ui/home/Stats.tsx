@@ -15,7 +15,7 @@ import type { Props as StatsWidgetProps } from 'ui/shared/stats/StatsWidget';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const rollupFeature = config.features.rollup;
-const statsFeature = config.features.stats;
+const isStatsFeatureEnabled = config.features.stats.isEnabled;
 
 const Stats = () => {
   const [ hasGasTracker, setHasGasTracker ] = React.useState(config.features.gasTracker.isEnabled);
@@ -24,8 +24,8 @@ const Stats = () => {
   const statsQuery = useApiQuery('stats_main', {
     queryOptions: {
       refetchOnMount: false,
-      placeholderData: statsFeature.isEnabled ? HOMEPAGE_STATS_MICROSERVICE : undefined,
-      enabled: statsFeature.isEnabled,
+      placeholderData: isStatsFeatureEnabled ? HOMEPAGE_STATS_MICROSERVICE : undefined,
+      enabled: isStatsFeatureEnabled,
     },
   });
 
@@ -135,7 +135,11 @@ const Stats = () => {
         id: 'average_block_time' as const,
         icon: 'clock-light' as const,
         label: statsData?.average_block_time?.title || 'Average block time',
-        value: `${ Number(statsData?.average_block_time?.value).toFixed(1) || (apiData ? (apiData.average_block_time / 1000).toFixed(1) : 'N/A') }s`,
+        value: `${
+          statsData?.average_block_time?.value ?
+            Number(statsData.average_block_time.value).toFixed(1) :
+            (apiData!.average_block_time / 1000).toFixed(1)
+        }s`,
         isLoading,
       },
       (statsData?.total_transactions?.value || apiData?.total_transactions) && {

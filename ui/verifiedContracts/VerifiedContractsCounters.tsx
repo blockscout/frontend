@@ -12,18 +12,18 @@ const VerifiedContractsCounters = () => {
   const countersStatsQuery = useApiQuery('stats_contracts', {
     queryOptions: {
       enabled: isStatsFeatureEnabled,
-      placeholderData: VERIFIED_CONTRACTS_COUNTERS_MICROSERVICE,
+      placeholderData: isStatsFeatureEnabled ? VERIFIED_CONTRACTS_COUNTERS_MICROSERVICE : undefined,
     },
   });
 
   const countersApiQuery = useApiQuery('verified_contracts_counters', {
     queryOptions: {
       enabled: !isStatsFeatureEnabled,
-      placeholderData: VERIFIED_CONTRACTS_COUNTERS,
+      placeholderData: !isStatsFeatureEnabled ? VERIFIED_CONTRACTS_COUNTERS : undefined,
     },
   });
 
-  if (!(countersStatsQuery.data || countersApiQuery.data)) {
+  if (!(isStatsFeatureEnabled ? countersStatsQuery.data : countersApiQuery.data)) {
     return null;
   }
 

@@ -15,14 +15,14 @@ const TxsStats = () => {
   const txsStatsQuery = useApiQuery('stats_transactions', {
     queryOptions: {
       enabled: isStatsFeatureEnabled,
-      placeholderData: TXS_STATS_MICROSERVICE,
+      placeholderData: isStatsFeatureEnabled ? TXS_STATS_MICROSERVICE : undefined,
     },
   });
 
   const txsStatsApiQuery = useApiQuery('txs_stats', {
     queryOptions: {
       enabled: !isStatsFeatureEnabled,
-      placeholderData: TXS_STATS,
+      placeholderData: !isStatsFeatureEnabled ? TXS_STATS : undefined,
     },
   });
 
@@ -39,6 +39,7 @@ const TxsStats = () => {
   const isLoading = isStatsFeatureEnabled ? txsStatsQuery.isPlaceholderData : txsStatsApiQuery.isPlaceholderData;
 
   const txCount24h = isStatsFeatureEnabled ? txsStatsQuery.data?.transactions_24h?.value : txsStatsApiQuery.data?.transactions_count_24h;
+  const operationalTxns24h = isStatsFeatureEnabled ? txsStatsQuery.data?.operational_transactions_24h?.value : null;
 
   const pendingTxns = isStatsFeatureEnabled ? txsStatsQuery.data?.pending_transactions_30m?.value : txsStatsApiQuery.data?.pending_transactions_count;
 
@@ -57,10 +58,18 @@ const TxsStats = () => {
     accuracyUsd: 2,
   }) : null;
 
+  const itemsCount = [
+    txCount24h,
+    operationalTxns24h,
+    pendingTxns,
+    txFeeSum24h,
+    txFeeAvg,
+  ].filter(Boolean).length;
+
   return (
     <Box
       display="grid"
-      gridTemplateColumns={{ base: '1fr', lg: 'repeat(5, calc(20% - 9px))' }}
+      gridTemplateColumns={{ base: '1fr', lg: `repeat(${ itemsCount }, calc(${ 100 / itemsCount }% - 9px))` }}
       rowGap={ 3 }
       columnGap={ 3 }
       mb={ 6 }
@@ -74,10 +83,10 @@ const TxsStats = () => {
           href={ config.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'newTxns' } } : undefined }
         />
       ) }
-      { isStatsFeatureEnabled && txsStatsQuery.data?.operational_transactions_24h?.value && (
+      { operationalTxns24h && (
         <StatsWidget
           label={ txsStatsQuery.data?.operational_transactions_24h?.title || 'Daily op txns' }
-          value={ Number(txsStatsQuery.data.operational_transactions_24h.value).toLocaleString() }
+          value={ Number(operationalTxns24h).toLocaleString() }
           period="24h"
           isLoading={ isLoading }
         />

@@ -4,6 +4,7 @@ import React from 'react';
 import * as blockMock from 'mocks/blocks/block';
 import * as dailyTxsMock from 'mocks/stats/daily_txs';
 import * as statsMock from 'mocks/stats/index';
+import * as statsMainMock from 'mocks/stats/main';
 import * as txMock from 'mocks/txs/tx';
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
@@ -15,6 +16,7 @@ test.describe('default view', () => {
 
   test.beforeEach(async({ render, mockApiResponse, mockAssetResponse }) => {
     await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
+    await mockApiResponse('stats_main', statsMainMock.base);
     await mockApiResponse('stats', statsMock.base);
     await mockApiResponse('homepage_blocks', [
       blockMock.base,
@@ -55,6 +57,7 @@ test.describe('mobile', () => {
 
   test('base view', async({ render, page, mockAssetResponse, mockApiResponse }) => {
     await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
+    await mockApiResponse('stats_main', statsMainMock.base);
     await mockApiResponse('stats', statsMock.base);
     await mockApiResponse('homepage_blocks', [
       blockMock.base,

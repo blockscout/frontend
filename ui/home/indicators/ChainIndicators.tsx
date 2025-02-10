@@ -68,7 +68,7 @@ const ChainIndicators = () => {
 
   const title = (() => {
     let title: string | undefined;
-    if (selectedIndicatorData?.titleMicroservice && statsMicroserviceQueryResult?.data) {
+    if (isStatsFeatureEnabled && selectedIndicatorData?.titleMicroservice && statsMicroserviceQueryResult?.data) {
       title = selectedIndicatorData.titleMicroservice(statsMicroserviceQueryResult.data);
     }
 
@@ -77,7 +77,7 @@ const ChainIndicators = () => {
 
   const hint = (() => {
     let hint: string | undefined;
-    if (selectedIndicatorData?.hintMicroservice && statsMicroserviceQueryResult?.data) {
+    if (isStatsFeatureEnabled && selectedIndicatorData?.hintMicroservice && statsMicroserviceQueryResult?.data) {
       hint = selectedIndicatorData.hintMicroservice(statsMicroserviceQueryResult.data);
     }
 
