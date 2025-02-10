@@ -13,6 +13,12 @@ jobs:
     name: Publish Docker image
     uses: './.github/workflows/publish-image.yml'
     secrets: inherit
+    with:
+      # FIXME: e2e tests has default docker image tag "main" - https://github.com/blockscout/blockscout-ci-cd/blob/56a5424cfa07b03ca378e04650c4c67650ec40a0/charts/blockscout-stack/values/e2e/values.yaml#L352
+      # NOTE: by default the image will be built with type=ref,event=tag; so we don't need to specify it here
+      tags: |
+        type=raw,value=main
+        type=ref,event=branch
 
   deploy_e2e:
     name: Deploy E2E instance
