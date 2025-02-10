@@ -1,4 +1,4 @@
-import { FormLabel, FormControl, Switch } from '@chakra-ui/react';
+import { FormLabel, FormControl, Switch, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -26,12 +26,15 @@ const SettingsScamTokens = () => {
   }
 
   return (
-    <FormControl display="flex" alignItems="center" columnGap={ 2 } mt={ 4 }>
-      <FormLabel htmlFor="address-format" m="0" fontWeight={ 400 } fontSize="sm" lineHeight={ 5 }>
-        Hide scam tokens
-      </FormLabel>
-      <Switch id="address-format" isChecked={ isChecked } onChange={ handleChange }/>
-    </FormControl>
+    <>
+      <Box borderColor="divider" borderTopWidth="1px" my={ 3 }/>
+      <FormControl display="flex" alignItems="center" columnGap={ 2 } mt={ 4 }>
+        <FormLabel htmlFor="scam-tokens" m="0" fontWeight={ 400 } fontSize="sm" lineHeight={ 5 }>
+          Hide scam tokens
+        </FormLabel>
+        <Switch id="scam-tokens" isChecked={ isChecked } onChange={ handleChange }/>
+      </FormControl>
+    </>
   );
 };
 
