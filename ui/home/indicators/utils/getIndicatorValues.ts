@@ -17,7 +17,7 @@ export default function getIndicatorValues(indicator: TChainIndicator, statsData
     return 'N/A';
   })();
 
-  // we have diffs only for coin adn second coin price charts that get data from stats api
+  // we have diffs only for coin and second coin price charts that get data from stats api
   // so we don't check microservice data here, but may require to add it in the future
   const valueDiff = indicator?.valueDiff ? indicator.valueDiff(statsApiData) : undefined;
 
