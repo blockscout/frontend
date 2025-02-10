@@ -19,7 +19,7 @@ const ArbitrumL2TxnBatchDetailsCelestiaDA = ({ data }: Props) => {
   return (
     <>
       <DetailsInfoItem.Label
-        hint="Height"
+        hint="The block number in Celestia where the Data Availability blob was published"
       >
         Height
       </DetailsInfoItem.Label>
@@ -28,7 +28,7 @@ const ArbitrumL2TxnBatchDetailsCelestiaDA = ({ data }: Props) => {
       </DetailsInfoItem.Value>
 
       <DetailsInfoItem.Label
-        hint="The hash of the transaction commitment"
+        hint="The Data Availability blob’s unique cryptographic proof"
       >
         Commitment
       </DetailsInfoItem.Label>
