@@ -201,12 +201,12 @@ const Page = (props: HeadProps) => {
                             { values.value }
                           </NextLink>
                           <IconSvg
-                            color={ (creatorFlag && key === 'Creator') || (ownerFlag && key === 'Owner') ? '#A07EFF' : 'rgba(0, 0, 0, .4)' }
+                            color={ (creatorFlag && key === 'Creator') || (ownerFlag && key === 'Owner') ? '#FF57B7' : 'rgba(0, 0, 0, .4)' }
                             cursor="pointer"
                             ml="4px"
                             onClick={ copyAddress(values.value, key) }
                             name="copyAddress"
-                            _hover={{ color: '#A07EFF' }}
+                            _hover={{ color: '#FF57B7' }}
                             w="14px"
                             h="14px">
                           </IconSvg>

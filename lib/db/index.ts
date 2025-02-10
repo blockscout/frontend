@@ -2,9 +2,8 @@ import mongoose from 'mongoose';
 
 import { getEnvValue } from 'configs/app/utils';
 
-import { FaucetRequestRecord } from './model';
+import { FaucetRequestRecord, FaucetRequestRecordMoca } from './model';
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 mongoose.connect(getEnvValue('NEXT_PUBLIC_DATABASE_URL')!);
 
 export function createAndSaveRecord(discordId: string, discordUsername: string) {
@@ -30,6 +29,28 @@ export async function findEditThenSave(discordId: string, userWallet: string, fa
     if (!doc.request_wallet.includes(userWallet)) {
       doc.request_wallet.push(userWallet);
     }
+    return doc.save();
+  }
+}
+
+export function createAndSaveRecordMoca(walletAddress: string) {
+  const doc = new FaucetRequestRecordMoca({
+    wallet_address: walletAddress,
+    last_request_time: '0',
+  });
+  return doc.save();
+}
+
+export function findOneByDiscordIdMoca(walletAddress: string) {
+  return FaucetRequestRecordMoca.findOne({
+    wallet_address: walletAddress,
+  });
+}
+
+export async function findEditThenSaveMoca(walletAddress: string, faucetRequestTime: string) {
+  const doc = await findOneByDiscordId(walletAddress);
+  if (doc) {
+    doc.last_request_time = faucetRequestTime;
     return doc.save();
   }
 }

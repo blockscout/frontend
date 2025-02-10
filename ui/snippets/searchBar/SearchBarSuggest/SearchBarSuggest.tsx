@@ -196,7 +196,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
                     onClick={ handleTabClick(cat.title.toLowerCase()) }
                     style={{
                       backgroundColor: (tabMatched(cat.title.toLowerCase()) ||
-                      (cat.title === 'all' && seletecdTab.current === 'all')) ? '#A07EFF' : 'transparent',
+                      (cat.title === 'all' && seletecdTab.current === 'all')) ? '#FF57B7' : 'transparent',
                       color: (tabMatched(cat.title.toLowerCase()) ||
                       (cat.title === 'all' && seletecdTab.current === 'all')) ? '#FFF' : '#000',
                       border: (tabMatched(cat.title.toLowerCase()) ||

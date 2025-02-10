@@ -111,14 +111,14 @@ function TableList(props: Props<string>) {
             top="50%"
             transform="translateY(-50%)"
           >
-            <IconSvg color="#A07EFF" w="16px" h="16px" name="search"/>
+            <IconSvg color="#FF57B7" w="16px" h="16px" name="search"/>
           </InputLeftElement>
           <Input
             value={ search }
             onChange={ handleChange }
             pl="40px"
             borderRadius="29px" height="42px"
-            _focusVisible={{ borderColor: '#A07EFF !important' }}
+            _focusVisible={{ borderColor: '#FF57B7 !important' }}
             placeholder={ `Search by ${ props.page.replace(/^./, props.page[0].toUpperCase()) } Name or ID` }
           >
           </Input>
@@ -131,7 +131,7 @@ function TableList(props: Props<string>) {
                 cursor="pointer"
                 onClick={ clearSearch }
               >
-                <IconSvg border="1px solid #A07EFF" borderRadius="50%" color="#A07EFF" w="16px" h="16px" name="cross"/>
+                <IconSvg border="1px solid #FF57B7" borderRadius="50%" color="#FF57B7" w="16px" h="16px" name="cross"/>
               </InputRightElement>
             )
           }

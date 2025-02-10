@@ -1,7 +1,7 @@
 import {
   Flex,
   Box,
-  Square,
+  // Square,
   Text,
   Button,
   Input,
@@ -20,7 +20,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { isAddress } from 'viem';
 
-import { getEnvValue, sleep } from 'configs/app/utils';
+import { sleep } from 'configs/app/utils';
 import IconSvg from 'ui/shared/IconSvg';
 
 const enum FAUCET_REQUEST_TYPE {
@@ -35,22 +35,22 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
   const [ errMessage, setErrMessage ] = React.useState<string>('');
   const [ requestStatus, setRequestStatus ] = React.useState<number>(FAUCET_REQUEST_TYPE.REQUEST);
 
-  const handleClk = React.useCallback(() => {
-    if (props.verified) {
-      return;
-    } else {
-      const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
-      const authUrl = new URL('https://discord.com/oauth2/authorize');
-      const searchParams = new URLSearchParams({
-        client_id: getEnvValue('NEXT_PUBLIC_DISCORD_CLIENT_ID')!,
-        response_type: 'code',
-        redirect_uri: redirectUri,
-        scope: 'identify guilds.join',
-      });
-      authUrl.search = searchParams.toString();
-      location.href = authUrl.href;
-    }
-  }, [ props.verified ]);
+  // const handleClk = React.useCallback(() => {
+  //   if (props.verified) {
+  //     return;
+  //   } else {
+  //     const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
+  // const authUrl = new URL('https://discord.com/oauth2/authorize');
+  // const searchParams = new URLSearchParams({
+  //   client_id: getEnvValue('NEXT_PUBLIC_DISCORD_CLIENT_ID')!,
+  //   response_type: 'code',
+  //   redirect_uri: redirectUri,
+  //       scope: 'identify guilds.join',
+  //     });
+  //     authUrl.search = searchParams.toString();
+  //     location.href = authUrl.href;
+  //   }
+  // }, [ props.verified ]);
 
   const reset = React.useCallback(() => {
     setIsError(false);
@@ -58,13 +58,13 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
   }, []);
 
   const onSubmit = React.useCallback((data: { address: string }) => {
-    if (!props.verified) {
-      return;
-    }
+    // if (!props.verified) {
+    //   return;
+    // }
 
-    if (requestStatus === FAUCET_REQUEST_TYPE.SENDING) {
-      return;
-    }
+    // if (requestStatus === FAUCET_REQUEST_TYPE.SENDING) {
+    //   return;
+    // }
 
     if (!data.address) {
       if (!data.address) {
@@ -113,59 +113,37 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
           setRequestStatus(FAUCET_REQUEST_TYPE.REQUEST);
         });
     }
-  }, [ props, requestStatus, reset ]);
+  }, [ props, reset ]);
 
-  const verifyBtnStyles = React.useCallback(() => {
-    if (props.verified) {
-      return {
-        bg: '#30D3BF',
-        height: '48px',
-        border: '1px solid rgba(0, 0, 0, 0.12)',
-        _hover: { background: '#30D3BF' },
-        cursor: 'unset',
-      };
-    } else {
-      return {
-        bg: '#FF57B7',
-        height: '48px',
-        border: '1px solid #ffa1da',
-        _hover: { background: '#FF57B7' },
-      };
-    }
-  }, [ props.verified ]);
+  // const verifyBtnStyles = React.useCallback(() => {
+  //   if (props.verified) {
+  //     return {
+  //       bg: '#30D3BF',
+  //       height: '48px',
+  //       border: '1px solid rgba(0, 0, 0, 0.12)',
+  //       _hover: { background: '#30D3BF' },
+  //       cursor: 'unset',
+  //     };
+  //   } else {
+  //     return {
+  //       bg: '#FF57B7',
+  //       height: '48px',
+  //       border: '1px solid #ffa1da',
+  //       _hover: { background: '#FF57B7' },
+  //     };
+  //   }
+  // }, [ props.verified ]);
 
   const requestBtnStyles = React.useCallback(() => {
-    if (requestStatus === FAUCET_REQUEST_TYPE.REQUEST && props.verified) {
-      return {
-        border: '1px solid #FF57B7',
+    return {
+      border: '1px solid #FF57B7',
+      bg: '#FF57B7',
+      _hover: {
         bg: '#FF57B7',
-        _hover: {
-          bg: '#FF57B7',
-        },
-        boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
-      };
-    } else if (requestStatus === FAUCET_REQUEST_TYPE.SENDING || !props.verified) {
-      return {
-        border: '1px rgba(0, 0, 0, 0.12)',
-        bg: '#FF57B7',
-        opacity: 0.5,
-        cursor: 'not-allowed',
-        _hover: {
-          bg: '#FF57B7',
-        },
-        boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
-      };
-    } else {
-      return {
-        border: '1px rgba(0, 0, 0, 0.12)',
-        bg: '#30D3BF',
-        _hover: {
-          bg: '#30D3BF',
-        },
-        boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
-      };
-    }
-  }, [ requestStatus, props.verified ]);
+      },
+      boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
+    };
+  }, []);
 
   const requestBtnContent = React.useCallback(() => {
     if (requestStatus === FAUCET_REQUEST_TYPE.REQUEST) {
@@ -212,7 +190,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
         Tokens will be automatically transferred to your address.
       </Text>
       <Flex>
-        <Box
+        { /* <Box
           width="580px"
           minH="280px"
           border="1px solid rgba(0, 0, 0, 0.06)"
@@ -261,7 +239,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
             { props.verified ? 'Account Verified' : 'Verify' }
           </Button>
         </Box>
-        <Square size="20px"></Square>
+        <Square size="20px"></Square> */ }
         <Box
           width="580px"
           minH="280px"
@@ -280,7 +258,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
             textAlign="center"
             lineHeight="32px"
           >
-            2
+            1
           </Box>
           <Flex
             margin="24px 0 48px 0"
@@ -298,7 +276,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
                 Request $MOCA on MocaChain
               </Highlight>
             </Heading>
-            <IconSvg name="mechain_square" w="37px" h="25px"/>
+            <IconSvg name="networks/icon-mechain-placeholder" w="37px" h="25px"/>
             <Text fontWeight="700" color="#000000">
               Testnet
             </Text>

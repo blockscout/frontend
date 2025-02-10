@@ -41,7 +41,7 @@ const ChartWidgetGraph = ({
   zoomRange,
 }: Props) => {
   const isMobile = useIsMobile();
-  const color = useToken('colors', '#A07EFF');
+  const color = useToken('colors', '#FF57B7');
   const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
 
   const overlayRef = React.useRef<SVGRectElement>(null);
