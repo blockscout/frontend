@@ -1,5 +1,6 @@
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable max-len */
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import * as addressMock from 'mocks/address/address';
@@ -10,7 +11,8 @@ import * as ensMock from 'mocks/ens/domain';
 import * as poolMock from 'mocks/pools/pool';
 import * as txMock from 'mocks/txs/tx';
 import { Link } from 'toolkit/chakra/link';
-import CutLink from 'toolkit/components/CutLink/CutLink';
+import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
+import CutLinkList from 'toolkit/components/CutLink/CutLinkList';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -96,15 +98,24 @@ const LinkShowcase = () => {
 
         <SectionSubHeader>Cut link</SectionSubHeader>
         <SamplesStack>
-          <Sample label="Default" flexDirection="column" alignItems="flex-start">
-            <CutLink id="CutLink_1">
+          <Sample label="Show details" flexDirection="column" alignItems="flex-start">
+            <CutLinkDetails id="CutLink_1">
               <Box maxW="500px">{ TEXT }</Box>
-            </CutLink>
+            </CutLinkDetails>
+            <CutLinkDetails id="CutLink_2" loading>
+              <Box maxW="500px">{ TEXT }</Box>
+            </CutLinkDetails>
           </Sample>
-          <Sample label="Loading" flexDirection="column" alignItems="flex-start">
-            <CutLink id="CutLink_2" loading>
-              <Box maxW="500px">{ TEXT }</Box>
-            </CutLink>
+          <Sample label="Expand all list" flexDirection="row" alignItems="flex-start" flexWrap="nowrap">
+            <CutLinkList
+              items={ [ 'foo', 'bar', 'baz', 'qux', 'quux', 'corge', 'grault', 'garply', 'waldo', 'fred', 'plugh', 'xyzzy', 'thud' ] }
+              renderItem={ (item) => <Text>{ item }</Text> }
+            />
+            <CutLinkList
+              items={ [ 'foo', 'bar', 'baz', 'qux', 'quux', 'corge', 'grault', 'garply', 'waldo', 'fred', 'plugh', 'xyzzy', 'thud' ] }
+              renderItem={ (item) => <Text>{ item }</Text> }
+              linkProps={{ loading: true }}
+            />
           </Sample>
         </SamplesStack>
 

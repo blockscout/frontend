@@ -1,7 +1,7 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { Link } from 'toolkit/chakra/link';
+import CutLinkList from 'toolkit/components/CutLink/CutLinkList';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 
 interface Props {
@@ -11,40 +11,23 @@ interface Props {
 }
 
 const TxStateTokenIdList = ({ items, tokenAddress, isLoading }: Props) => {
-  const [ isCut, setIsCut ] = React.useState(true);
+  const renderItem = React.useCallback((item: typeof items[number], index: number) => {
+    if (item.total.token_id !== null) {
+      return <NftEntity key={ index } hash={ tokenAddress } id={ item.total.token_id } isLoading={ isLoading }/>;
+    }
 
-  const handleToggle = React.useCallback(() => {
-    setIsCut((prev) => !prev);
-  }, []);
+    return <Text key={ index } color="text.secondary">N/A</Text>;
+  }, [ isLoading, tokenAddress ]);
 
   return (
-    <Flex flexDir="column" rowGap={ 2 }>
-      { items.slice(0, isCut ? 3 : items.length).map((item, index) => {
-        if (item.total.token_id !== null) {
-          return (
-            <NftEntity
-              key={ index }
-              hash={ tokenAddress }
-              id={ item.total.token_id }
-              isLoading={ isLoading }
-            />
-          );
-        } else {
-          return <Text key={ index } color="text_secondary">N/A</Text>;
-        }
-      }) }
-      { items.length > 3 && (
-        <Link
-          fontWeight={ 400 }
-          textDecoration="underline dashed"
-          _hover={{ textDecoration: 'underline dashed', color: 'link_hovered' }}
-          onClick={ handleToggle }
-          pb={{ base: '5px', md: 0 }}
-        >
-          View { isCut ? 'more' : 'less' }
-        </Link>
-      ) }
-    </Flex>
+    <CutLinkList
+      items={ items }
+      renderItem={ renderItem }
+      linkProps={{
+        pb: { base: '5px', md: 0 },
+      }}
+      rowGap={ 2 }
+    />
   );
 };
 

@@ -29,7 +29,7 @@ import { Badge } from 'toolkit/chakra/badge';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import CutLink from 'toolkit/components/CutLink/CutLink';
+import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -168,7 +168,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       <DetailsInfoItem.Value>
         <TxStatus status={ data.status } errorText={ data.status === 'error' ? data.result : undefined } isLoading={ isLoading }/>
         { data.method && (
-          <Badge colorScheme={ data.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated ml={ 3 }>
+          <Badge colorPalette={ data.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated ml={ 3 }>
             { data.method }
           </Badge>
         ) }
@@ -783,7 +783,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       ) }
       <TxInfoScrollFees data={ data } isLoading={ isLoading }/>
 
-      <CutLink loading={ isLoading } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }} isExpanded={ isExpanded } onClick={ handleCutLinkClick }>
+      <CutLinkDetails loading={ isLoading } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }} isExpanded={ isExpanded } onClick={ handleCutLinkClick }>
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
         { data.arbitrum?.contains_message && data.arbitrum?.message_related_info && (
@@ -893,7 +893,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         ) }
 
         { data.zksync && <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isLoading }/> }
-      </CutLink>
+      </CutLinkDetails>
     </Grid>
   );
 };

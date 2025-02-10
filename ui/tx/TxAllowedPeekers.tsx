@@ -1,7 +1,6 @@
-import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import { Link } from 'toolkit/chakra/link';
+import CutLinkList from 'toolkit/components/CutLink/CutLinkList';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
@@ -9,13 +8,9 @@ interface Props {
   items: Array<string>;
 }
 
-const CUT_LENGTH = 2;
-
 const TxAllowedPeekers = ({ items }: Props) => {
-  const [ isExpanded, setIsExpanded ] = React.useState(false);
-
-  const handleCutLinkClick = React.useCallback(() => {
-    setIsExpanded((flag) => !flag);
+  const renderItem = React.useCallback((item: string) => {
+    return <AddressEntity key={ item } address={{ hash: item, is_contract: true }}/>;
   }, []);
 
   return (
@@ -26,22 +21,12 @@ const TxAllowedPeekers = ({ items }: Props) => {
         Allowed peekers
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <Flex flexDir="column" rowGap={ 3 } w="100%">
-          { items
-            .slice(0, isExpanded ? undefined : CUT_LENGTH)
-            .map((item) => <AddressEntity key={ item } address={{ hash: item, is_contract: true }}/>) }
-        </Flex>
-        { items.length > CUT_LENGTH && (
-          <Link
-            display="inline-block"
-            fontSize="sm"
-            textDecorationLine="underline"
-            textDecorationStyle="dashed"
-            onClick={ handleCutLinkClick }
-          >
-            { isExpanded ? 'Hide' : 'Show all' }
-          </Link>
-        ) }
+        <CutLinkList
+          items={ items }
+          renderItem={ renderItem }
+          cutLength={ 2 }
+          rowGap={ 3 }
+        />
       </DetailsInfoItem.Value>
     </>
   );

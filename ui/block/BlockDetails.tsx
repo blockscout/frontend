@@ -20,7 +20,7 @@ import { currencyUnits } from 'lib/units';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import CutLink from 'toolkit/components/CutLink/CutLink';
+import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -545,7 +545,7 @@ const BlockDetails = ({ query }: Props) => {
       ) }
 
       { /* ADDITIONAL INFO */ }
-      <CutLink loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
+      <CutLinkDetails loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
         { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync &&
@@ -744,7 +744,7 @@ const BlockDetails = ({ query }: Props) => {
             ) }
           </>
         ) }
-      </CutLink>
+      </CutLinkDetails>
 
     </Grid>
   );
