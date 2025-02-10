@@ -54,7 +54,8 @@ jobs:
     needs: make_slug
     uses: './.github/workflows/publish-image.yml'
     with:
-        tags: ghcr.io/blockscout/frontend:review-${{ needs.make_slug.outputs.REF_SLUG }}
+        tags: |
+          type=raw,value=review-${{ needs.make_slug.outputs.REF_SLUG }}
         build_args: ENVS_PRESET=${{ inputs.envs_preset }}
     secrets: inherit
 

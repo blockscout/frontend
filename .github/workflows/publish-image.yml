@@ -49,6 +49,9 @@ jobs:
                 uses: docker/metadata-action@v5
                 with:
                     images: ghcr.io/blockscout/frontend
+                    tags: |
+                        type=ref,event=tag
+                        {{ inputs.tags }}
     
             -   name: Login to GitHub Container Registry
                 uses: docker/login-action@v2
@@ -75,7 +78,7 @@ jobs:
                     file: ./Dockerfile
                     push: true
                     cache-from: type=gha
-                    tags: ${{ inputs.tags || steps.meta.outputs.tags }}
+                    tags: ${{ steps.meta.outputs.tags }}
                     platforms: ${{ inputs.platforms }}
                     labels: ${{ steps.meta.outputs.labels }}
                     build-args: |
