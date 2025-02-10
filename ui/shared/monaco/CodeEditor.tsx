@@ -252,7 +252,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
   }), [ editorWidth, themeColors, borderRadius ]);
 
   const renderErrorScreen = React.useCallback(() => {
-    return <Center bgColor={ themeColors['editor.background'] } w="100%" borderRadius="md">Oops! Something went wrong!</Center>;
+    return <Center bgColor={ themeColors['editor.background'] } w="100%" h="100%" borderRadius="md">Oops! Something went wrong!</Center>;
   }, [ themeColors ]);
 
   if (data.length === 1) {
