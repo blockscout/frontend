@@ -126,20 +126,20 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
   //     };
   //   } else {
   //     return {
-  //       bg: '#FF57B7',
+  //       bg: '#C15E97',
   //       height: '48px',
   //       border: '1px solid #ffa1da',
-  //       _hover: { background: '#FF57B7' },
+  //       _hover: { background: '#C15E97' },
   //     };
   //   }
   // }, [ props.verified ]);
 
   const requestBtnStyles = React.useCallback(() => {
     return {
-      border: '1px solid #FF57B7',
-      bg: '#FF57B7',
+      border: '1px solid #C15E97',
+      bg: '#C15E97',
       _hover: {
-        bg: '#FF57B7',
+        bg: '#C15E97',
       },
       boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
     };
@@ -175,7 +175,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
       <Heading fontSize="24px" fontWeight="400" lineHeight="28px">
         <Highlight
           query="$MOCA"
-          styles={{ color: '#FF57B7', fontWeight: '700' }}
+          styles={{ color: '#C15E97', fontWeight: '700' }}
         >
           To receive $MOCA on MocaChain Testnet, please follow the steps below.
         </Highlight>
@@ -200,7 +200,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
         >
           <Box
             border="1px solid #ffa1da"
-            bg="#FF57B7"
+            bg="#C15E97"
             borderRadius="50%"
             width="32px"
             height="32px"
@@ -250,7 +250,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
         >
           <Box
             border="1px solid #ffa1da"
-            bg="#FF57B7"
+            bg="#C15E97"
             borderRadius="50%"
             width="32px"
             height="32px"
@@ -272,11 +272,11 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
               color="#000000"
               lineHeight="28px"
             >
-              <Highlight query="$MOCA" styles={{ color: '#FF57B7' }}>
+              <Highlight query="$MOCA" styles={{ color: '#C15E97' }}>
                 Request $MOCA on MocaChain
               </Highlight>
             </Heading>
-            <IconSvg name="networks/icon-mechain-placeholder" w="37px" h="25px"/>
+            <IconSvg name="icon-mechain-placeholder" w="37px" h="25px"/>
             <Text fontWeight="700" color="#000000">
               Testnet
             </Text>

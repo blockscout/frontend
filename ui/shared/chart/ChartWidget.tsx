@@ -50,7 +50,7 @@ const ChartWidget = ({
 
   // const pngBackgroundColor = useColorModeValue('white', 'black');
   // const borderColor = useColorModeValue('gray.200', 'gray.600');
-  const borderColor = '#FF57B7';
+  const borderColor = '#C15E97';
 
   const hasItems = items && items.length > 2;
 

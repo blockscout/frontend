@@ -26,7 +26,7 @@ const SearchBarSuggestGroup = ({ data, isFirst, searchTerm }: Props) => {
                 <span style={{ color: 'rgba(0, 0, 0, 0.30)' }}
                   dangerouslySetInnerHTML={{ __html: highlightText(truncateString(data.group_name), searchTerm) }}/>
               ) :
-                <Text color="#FF57B7">{ truncateString(data.group_id) }</Text>
+                <Text color="#C15E97">{ truncateString(data.group_id) }</Text>
             }
           </Flex>
           <Text fontSize={ 12 } color="rgba(0, 0, 0, 0.30)">Owner: { formatPubKey(data.owner_address, 16, 16) }</Text>
