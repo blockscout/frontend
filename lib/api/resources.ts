@@ -150,6 +150,8 @@ import type {
   ValidatorsBlackfortCountersResponse,
   ValidatorsBlackfortResponse,
   ValidatorsBlackfortSorting,
+  ValidatorsZilliqaResponse,
+  ValidatorZilliqa,
 } from 'types/api/validators';
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
@@ -1097,6 +1099,15 @@ export const RESOURCES = {
   validators_blackfort_counters: {
     path: '/api/v2/validators/blackfort/counters',
   },
+  validators_zilliqa: {
+    path: '/api/v2/validators/zilliqa',
+    filterFields: [],
+  },
+  validator_zilliqa: {
+    path: '/api/v2/validators/zilliqa/:bls_public_key',
+    pathParams: [ 'bls_public_key' as const ],
+    filterFields: [],
+  },
 
   // BLOBS
   blob: {
@@ -1247,7 +1258,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
-'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history' |
+'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'validators_zilliqa' | 'noves_address_history' |
 'token_transfers_all' | 'scroll_l2_txn_batches' | 'scroll_l2_txn_batch_txs' | 'scroll_l2_txn_batch_blocks' |
 'scroll_l2_deposits' | 'scroll_l2_withdrawals' | 'advanced_filter' | 'pools';
 
@@ -1375,6 +1386,8 @@ Q extends 'validators_stability' ? ValidatorsStabilityResponse :
 Q extends 'validators_stability_counters' ? ValidatorsStabilityCountersResponse :
 Q extends 'validators_blackfort' ? ValidatorsBlackfortResponse :
 Q extends 'validators_blackfort_counters' ? ValidatorsBlackfortCountersResponse :
+Q extends 'validators_zilliqa' ? ValidatorsZilliqaResponse :
+Q extends 'validator_zilliqa' ? ValidatorZilliqa :
 Q extends 'shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
 Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
 Q extends 'shibarium_withdrawals_count' ? number :

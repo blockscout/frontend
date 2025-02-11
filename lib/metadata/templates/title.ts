@@ -51,6 +51,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/name-domains': '%network_name% name domains - %network_name% explorer',
   '/name-domains/[name]': '%network_name% %name% domain details',
   '/validators': '%network_name% validators list',
+  '/validators/[id]': '%network_name% validator %id% details',
   '/gas-tracker': 'Track %network_name% gas fees in %network_gwei%',
   '/mud-worlds': '%network_name% MUD worlds list',
   '/token-transfers': '%network_name% token transfers',

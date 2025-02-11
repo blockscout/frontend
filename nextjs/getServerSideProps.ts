@@ -244,6 +244,17 @@ export const validators: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const validatorDetails: GetServerSideProps<Props> = async(context) => {
+  const feature = config.features.validators;
+  if (!feature.isEnabled || feature.chainType !== 'zilliqa') {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const gasTracker: GetServerSideProps<Props> = async(context) => {
   if (!config.features.gasTracker.isEnabled) {
     return {

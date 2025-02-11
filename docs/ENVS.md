@@ -750,7 +750,7 @@ The feature enables the Validators page which provides detailed information abou
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE | `'stability' \| 'blackfort'` | Chain type | Required | - | `'stability'` | v1.25.0+ |
+| NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE | `'stability' \| 'blackfort' \| 'zilliqa'` | Chain type | Required | - | `'stability'` | v1.25.0+ |
 
 &nbsp;
 
