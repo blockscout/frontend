@@ -21,7 +21,7 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
     <Image w="30px" h="30px" src={ icon } alt={ `${ title } network icon` } style={ style }/>
   ) : (
     <IconSvg
-      name="networks/icon-mechain-placeholder"
+      name="icon-moca-placeholder"
       boxSize="30px"
       color={ colors.iconPlaceholder.default }
     />

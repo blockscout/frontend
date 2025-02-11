@@ -276,7 +276,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
                 Request $MOCA on MocaChain
               </Highlight>
             </Heading>
-            <IconSvg name="icon-mechain-placeholder" w="37px" h="25px"/>
+            <IconSvg name="icon-moca-placeholder" w="37px" h="25px"/>
             <Text fontWeight="700" color="#000000">
               Testnet
             </Text>

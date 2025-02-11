@@ -32,7 +32,7 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
 
   return (
     <IconSvg
-      name={ isSmall ? 'icon-mechain-placeholder' : 'logo-mechain-placeholder' }
+      name={ isSmall ? 'icon-moca-placeholder' : 'logo-moca-placeholder' }
       width="auto"
       height="100%"
       color={ logoColor }
