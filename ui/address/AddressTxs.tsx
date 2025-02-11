@@ -61,7 +61,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = 
 
   const [ socketAlert, setSocketAlert ] = React.useState('');
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
-  const [ sort, setSort ] = React.useState<TransactionsSortingValue | undefined>(getSortValueFromQuery<TransactionsSortingValue>(router.query, SORT_OPTIONS));
+  const [ sort, setSort ] = React.useState<TransactionsSortingValue>(getSortValueFromQuery<TransactionsSortingValue>(router.query, SORT_OPTIONS) || 'default');
 
   const isMobile = useIsMobile();
   const currentAddress = getQueryParamString(router.query.hash);
@@ -165,14 +165,15 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = 
     return null;
   }
 
-  const filter = (
-    <AddressTxsFilter
-      defaultFilter={ filterValue }
-      onFilterChange={ handleFilterChange }
-      hasActiveFilter={ Boolean(filterValue) }
-      isLoading={ addressTxsQuery.pagination.isLoading }
-    />
-  );
+  // const filter = (
+  //   <AddressTxsFilter
+  //     defaultFilter={ filterValue }
+  //     onFilterChange={ handleFilterChange }
+  //     hasActiveFilter={ Boolean(filterValue) }
+  //     isLoading={ addressTxsQuery.pagination.isLoading }
+  //   />
+  // );
+  const filter = null;
 
   const csvExportLink = (
     <AddressCsvExportLink

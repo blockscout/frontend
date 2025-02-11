@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
@@ -43,7 +43,7 @@ const AddressNameInfo = ({ data, isLoading }: Props) => {
           Contract name
         </DetailedInfo.ItemLabel>
         <DetailedInfo.ItemValue>
-          <Skeleton isLoaded={ !isLoading }>
+          <Skeleton loading={ isLoading }>
             { data.name }
           </Skeleton>
         </DetailedInfo.ItemValue>
@@ -61,7 +61,7 @@ const AddressNameInfo = ({ data, isLoading }: Props) => {
           Validator name
         </DetailedInfo.ItemLabel>
         <DetailedInfo.ItemValue>
-          <Skeleton isLoaded={ !isLoading }>
+          <Skeleton loading={ isLoading }>
             { data.name }
           </Skeleton>
         </DetailedInfo.ItemValue>

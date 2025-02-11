@@ -172,7 +172,6 @@ const AddressEntry = (props: EntityProps) => {
       onMouseLeave={ highlightContext?.onMouseLeave }
       position="relative"
       zIndex={ 0 }
-      fontWeight="medium"
     >
       <Icon { ...partsProps.icon }/>
       { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }

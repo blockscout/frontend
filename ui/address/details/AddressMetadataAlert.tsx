@@ -1,7 +1,9 @@
-import { Alert, Flex, chakra } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
+
+import { Alert } from 'toolkit/chakra/alert';
 
 interface Props {
   tags: Array<AddressMetadataTagFormatted> | undefined;
@@ -25,11 +27,11 @@ const AddressMetadataAlert = ({ tags, className }: Props) => {
           color={ noteTag.meta?.alertTextColor }
           whiteSpace="pre-wrap"
           display="inline-block"
-          sx={{
+          css={{
             '& a': {
               color: 'link',
               _hover: {
-                color: 'link_hovered',
+                color: 'link.primary.hover',
               },
             },
           }}

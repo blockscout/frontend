@@ -23,7 +23,7 @@ const AddressImplementations = ({ data, isLoading }: Props) => {
       >
         { `Implementation${ hasManyItems ? 's' : '' }` }
       </DetailedInfo.ItemLabel>
-      <DetailsInfoItem.ValueWithScroll
+      <DetailedInfo.ItemValueWithScroll
         gradientHeight={ 48 }
         onScrollVisibilityChange={ setHasScroll }
         rowGap={ 2 }
@@ -42,7 +42,7 @@ const AddressImplementations = ({ data, isLoading }: Props) => {
             noIcon
           />
         )) }
-      </DetailsInfoItem.ValueWithScroll>
+      </DetailedInfo.ItemValueWithScroll>
     </>
   );
 };

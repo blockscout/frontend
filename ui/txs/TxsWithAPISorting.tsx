@@ -20,8 +20,8 @@ type Props = {
   filterValue?: AddressFromToFilter;
   enableTimeIncrement?: boolean;
   top?: number;
-  sorting: TransactionsSortingValue | undefined;
-  setSort: (value?: TransactionsSortingValue) => void;
+  sorting: TransactionsSortingValue;
+  setSort: (value: TransactionsSortingValue) => void;
 };
 
 const TxsWithAPISorting = ({
@@ -39,7 +39,7 @@ const TxsWithAPISorting = ({
   setSort,
 }: Props) => {
 
-  const handleSortChange = React.useCallback((value?: TransactionsSortingValue) => {
+  const handleSortChange = React.useCallback((value: TransactionsSortingValue) => {
     setSort(value);
     query.onSortingChange(getSortParamsFromValue(value));
   }, [ setSort, query ]);

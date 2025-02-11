@@ -26,7 +26,7 @@ export const recipe = defineSlotRecipe({
         transition: 'translate 400ms, scale 400ms, opacity 200ms',
         transitionTimingFunction: 'cubic-bezier(0.06, 0.71, 0.55, 1)',
       },
-      bg: 'alert.bg.neutral',
+      bg: 'alert.bg.info',
       color: 'alert.fg',
       boxShadow: 'xl',
       '--toast-trigger-bg': 'colors.bg.muted',

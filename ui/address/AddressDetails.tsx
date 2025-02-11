@@ -1,4 +1,4 @@
-import { Box, Text, Grid } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -94,11 +94,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   return (
     <>
       { addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={ addressQuery.isPlaceholderData } mb={ 6 }/> }
-      <Grid
-        columnGap={ 8 }
-        rowGap={{ base: 1, lg: 3 }}
-        templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
-      >
+      <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} >
         <AddressAlternativeFormat isLoading={ addressQuery.isPlaceholderData } addressHash={ addressHash }/>
 
         { data.filecoin?.id && (
@@ -318,7 +314,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         ) }
 
         <DetailedInfoSponsoredItem isLoading={ addressQuery.isPlaceholderData }/>
-      </Grid>
+      </DetailedInfo.Container>
     </>
   );
 };

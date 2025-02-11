@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -19,6 +19,7 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -54,7 +55,6 @@ import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
 const PREDEFINED_TAG_PRIORITY = 100;
@@ -142,7 +142,6 @@ const AddressPageContent = () => {
   });
 
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
-  const safeIconColor = useColorModeValue('black', 'white');
 
   const xStarQuery = useFetchXStarScore({ hash });
 
@@ -154,111 +153,111 @@ const AddressPageContent = () => {
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
-      config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0 && {
-        id: 'mud',
-        title: 'MUD',
-        count: mudTablesCountQuery.data,
-        component: <AddressMud scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      },
+      // config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0 && {
+      //   id: 'mud',
+      //   title: 'MUD',
+      //   count: mudTablesCountQuery.data,
+      //   component: <AddressMud scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      // },
       {
         id: 'txs',
         title: 'Transactions',
         count: addressTabsCountersQuery.data?.transactions_count,
         component: <AddressTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       },
-      txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
-        {
-          id: 'account_history',
-          title: 'Account history',
-          component: <AddressAccountHistory scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-        } :
-        undefined,
-      config.features.userOps.isEnabled && Boolean(userOpsAccountQuery.data?.total_ops) ?
-        {
-          id: 'user_ops',
-          title: 'User operations',
-          count: userOpsAccountQuery.data?.total_ops,
-          component: <AddressUserOps shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-        } :
-        undefined,
-      config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.withdrawals_count ?
-        {
-          id: 'withdrawals',
-          title: 'Withdrawals',
-          count: addressTabsCountersQuery.data?.withdrawals_count,
-          component: <AddressWithdrawals scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-        } :
-        undefined,
-      {
-        id: 'token_transfers',
-        title: 'Token transfers',
-        count: addressTabsCountersQuery.data?.token_transfers_count,
-        component: <AddressTokenTransfers scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      },
-      {
-        id: 'tokens',
-        title: 'Tokens',
-        count: addressTabsCountersQuery.data?.token_balances_count,
-        component: <AddressTokens shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-        subTabs: TOKEN_TABS,
-      },
-      {
-        id: 'internal_txns',
-        title: 'Internal txns',
-        count: addressTabsCountersQuery.data?.internal_transactions_count,
-        component: <AddressInternalTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      },
-      addressTabsCountersQuery.data?.celo_election_rewards_count ? {
-        id: 'epoch_rewards',
-        title: 'Epoch rewards',
-        count: addressTabsCountersQuery.data?.celo_election_rewards_count,
-        component: <AddressEpochRewards scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      } : undefined,
-      {
-        id: 'coin_balance_history',
-        title: 'Coin balance history',
-        component: <AddressCoinBalance shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      },
-      addressTabsCountersQuery.data?.validations_count ?
-        {
-          id: 'blocks_validated',
-          title: `Blocks ${ getNetworkValidationActionText() }`,
-          count: addressTabsCountersQuery.data?.validations_count,
-          component: <AddressBlocksValidated scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-        } :
-        undefined,
-      addressTabsCountersQuery.data?.logs_count ?
-        {
-          id: 'logs',
-          title: 'Logs',
-          count: addressTabsCountersQuery.data?.logs_count,
-          component: <AddressLogs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-        } :
-        undefined,
+      // txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
+      //   {
+      //     id: 'account_history',
+      //     title: 'Account history',
+      //     component: <AddressAccountHistory scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      //   } :
+      //   undefined,
+      // config.features.userOps.isEnabled && Boolean(userOpsAccountQuery.data?.total_ops) ?
+      //   {
+      //     id: 'user_ops',
+      //     title: 'User operations',
+      //     count: userOpsAccountQuery.data?.total_ops,
+      //     component: <AddressUserOps shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      //   } :
+      //   undefined,
+      // config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.withdrawals_count ?
+      //   {
+      //     id: 'withdrawals',
+      //     title: 'Withdrawals',
+      //     count: addressTabsCountersQuery.data?.withdrawals_count,
+      //     component: <AddressWithdrawals scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      //   } :
+      //   undefined,
+      // {
+      //   id: 'token_transfers',
+      //   title: 'Token transfers',
+      //   count: addressTabsCountersQuery.data?.token_transfers_count,
+      //   component: <AddressTokenTransfers scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      // },
+      // {
+      //   id: 'tokens',
+      //   title: 'Tokens',
+      //   count: addressTabsCountersQuery.data?.token_balances_count,
+      //   component: <AddressTokens shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      //   subTabs: TOKEN_TABS,
+      // },
+      // {
+      //   id: 'internal_txns',
+      //   title: 'Internal txns',
+      //   count: addressTabsCountersQuery.data?.internal_transactions_count,
+      //   component: <AddressInternalTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      // },
+      // addressTabsCountersQuery.data?.celo_election_rewards_count ? {
+      //   id: 'epoch_rewards',
+      //   title: 'Epoch rewards',
+      //   count: addressTabsCountersQuery.data?.celo_election_rewards_count,
+      //   component: <AddressEpochRewards scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      // } : undefined,
+      // {
+      //   id: 'coin_balance_history',
+      //   title: 'Coin balance history',
+      //   component: <AddressCoinBalance shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      // },
+      // addressTabsCountersQuery.data?.validations_count ?
+      //   {
+      //     id: 'blocks_validated',
+      //     title: `Blocks ${ getNetworkValidationActionText() }`,
+      //     count: addressTabsCountersQuery.data?.validations_count,
+      //     component: <AddressBlocksValidated scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      //   } :
+      //   undefined,
+      // addressTabsCountersQuery.data?.logs_count ?
+      //   {
+      //     id: 'logs',
+      //     title: 'Logs',
+      //     count: addressTabsCountersQuery.data?.logs_count,
+      //     component: <AddressLogs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      //   } :
+      //   undefined,
 
-      addressQuery.data?.is_contract ? {
-        id: 'contract',
-        title: () => {
-          if (addressQuery.data.is_verified) {
-            return (
-              <>
-                <span>Contract</span>
-                <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
-              </>
-            );
-          }
+      // addressQuery.data?.is_contract ? {
+      //   id: 'contract',
+      //   title: () => {
+      //     if (addressQuery.data.is_verified) {
+      //       return (
+      //         <>
+      //           <span>Contract</span>
+      //           <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
+      //         </>
+      //       );
+      //     }
 
-          return 'Contract';
-        },
-        component: (
-          <AddressContract
-            tabs={ contractTabs.tabs }
-            shouldRender={ !isTabsLoading }
-            isLoading={ contractTabs.isLoading }
-          />
-        ),
-        subTabs: CONTRACT_TAB_IDS,
-      } : undefined,
+      //     return 'Contract';
+      //   },
+      //   component: (
+      //     <AddressContract
+      //       tabs={ contractTabs.tabs }
+      //       shouldRender={ !isTabsLoading }
+      //       isLoading={ contractTabs.isLoading }
+      //     />
+      //   ),
+      //   subTabs: CONTRACT_TAB_IDS,
+      // } : undefined,
     ].filter(Boolean);
   }, [
     addressQuery.data,
@@ -343,7 +342,7 @@ const AddressPageContent = () => {
 
   const content = (addressQuery.isError || addressQuery.isDegradedData) ?
     null :
-    <RoutedTabs tabs={ tabs } tabListProps={{ mt: 6 }} isLoading={ isTabsLoading }/>;
+    <RoutedTabs tabs={ tabs } listProps={{ mt: 6 }} isLoading={ isTabsLoading }/>;
 
   const backLink = React.useMemo(() => {
     if (appProps.referrer && appProps.referrer.includes('/accounts')) {
@@ -367,51 +366,51 @@ const AddressPageContent = () => {
   // In this case it returns 404 with empty payload, so we calculate check-summed hash on the client
   const checkSummedHash = React.useMemo(() => addressQuery.data?.hash ?? getCheckedSummedAddress(hash), [ hash, addressQuery.data?.hash ]);
 
-  const titleSecondRow = (
-    <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
-      { addressQuery.data?.ens_domain_name && (
-        <EnsEntity
-          domain={ addressQuery.data?.ens_domain_name }
-          protocol={ !addressEnsDomainsQuery.isPending ? addressMainDomain?.protocol : null }
-          fontFamily="heading"
-          fontSize="lg"
-          fontWeight={ 500 }
-          mr={ 1 }
-          maxW="300px"
-        />
-      ) }
-      <AddressEntity
-        address={{
-          ...addressQuery.data,
-          hash: checkSummedHash,
-          name: '',
-          ens_domain_name: '',
-          implementations: null,
-        }}
-        isLoading={ isLoading }
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
-        noLink
-        isSafeAddress={ isSafeAddress }
-        icon={{ color: isSafeAddress ? safeIconColor : undefined }}
-        mr={ 4 }
-      />
-      { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
-        <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }
-      { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
-        <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
-      ) }
-      <AddressQrCode address={{ hash: addressQuery.data?.filecoin?.robust ?? checkSummedHash }} isLoading={ isLoading }/>
-      <AccountActionsMenu isLoading={ isLoading }/>
-      <HStack ml="auto" gap={ 2 }/>
-      { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
-        <SolidityscanReport hash={ hash }/> }
-      { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
-        <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
-      <NetworkExplorers type="address" pathParam={ hash.toLowerCase() }/>
-    </Flex>
-  );
+  // const titleSecondRow = (
+  //   <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+  //     { addressQuery.data?.ens_domain_name && (
+  //       <EnsEntity
+  //         domain={ addressQuery.data?.ens_domain_name }
+  //         protocol={ !addressEnsDomainsQuery.isPending ? addressMainDomain?.protocol : null }
+  //         fontFamily="heading"
+  //         fontSize="lg"
+  //         fontWeight={ 500 }
+  //         mr={ 1 }
+  //         maxW="300px"
+  //       />
+  //     ) }
+  //     <AddressEntity
+  //       address={{
+  //         ...addressQuery.data,
+  //         hash: checkSummedHash,
+  //         name: '',
+  //         ens_domain_name: '',
+  //         implementations: null,
+  //       }}
+  //       isLoading={ isLoading }
+  //       fontFamily="heading"
+  //       fontSize="lg"
+  //       fontWeight={ 500 }
+  //       noLink
+  //       isSafeAddress={ isSafeAddress }
+  //       icon={{ color: isSafeAddress ? { _light: 'black', _dark: 'white' } : undefined }}
+  //       mr={ 4 }
+  //     />
+  //     { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
+  //       <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }
+  //     { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
+  //       <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
+  //     ) }
+  //     <AddressQrCode address={{ hash: addressQuery.data?.filecoin?.robust ?? checkSummedHash }} isLoading={ isLoading }/>
+  //     <AccountActionsMenu isLoading={ isLoading }/>
+  //     <HStack ml="auto" gap={ 2 }/>
+  //     { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
+  //       <SolidityscanReport hash={ hash }/> }
+  //     { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
+  //       <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
+  //     <NetworkExplorers type="address" pathParam={ hash.toLowerCase() }/>
+  //   </Flex>
+  // );
 
   return (
     <>
@@ -420,7 +419,7 @@ const AddressPageContent = () => {
         title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
         backLink={ backLink }
         contentAfter={ titleContentAfter }
-        secondRow={ titleSecondRow }
+        // secondRow={ titleSecondRow }
         isLoading={ isLoading }
       />
       { !addressMetadataQuery.isPending &&

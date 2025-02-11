@@ -74,34 +74,34 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
   return React.useMemo(() => {
     return {
       tabs: [
-        data?.hash && {
-          id: 'contract_code' as const,
-          title: 'Code',
-          component: <ContractDetails mainContractQuery={ contractQuery } channel={ channel } addressHash={ data.hash }/>,
-          subTabs: CONTRACT_DETAILS_TAB_IDS as unknown as Array<string>,
-        },
-        contractQuery.data?.abi && {
-          id: [ 'read_write_contract' as const, 'read_contract' as const, 'write_contract' as const ],
-          title: 'Read/Write contract',
-          component: <ContractMethodsRegular abi={ contractQuery.data.abi } isLoading={ contractQuery.isPlaceholderData }/>,
-        },
-        verifiedImplementations.length > 0 && {
-          id: [ 'read_write_proxy' as const, 'read_proxy' as const, 'write_proxy' as const ],
-          title: 'Read/Write proxy',
-          component: <ContractMethodsProxy implementations={ verifiedImplementations } isLoading={ contractQuery.isPlaceholderData }/>,
-        },
-        config.features.account.isEnabled && {
-          id: [ 'read_write_custom_methods' as const, 'read_custom_methods' as const, 'write_custom_methods' as const ],
-          title: 'Custom ABI',
-          component: <ContractMethodsCustom isLoading={ contractQuery.isPlaceholderData }/>,
-        },
-        hasMudTab && {
-          id: 'mud_system' as const,
-          title: 'MUD System',
-          component: mudSystemsQuery.isPlaceholderData ?
-            <ContentLoader/> :
-            <ContractMethodsMudSystem items={ mudSystemsQuery.data?.items ?? [] }/>,
-        },
+        // data?.hash && {
+        //   id: 'contract_code' as const,
+        //   title: 'Code',
+        //   component: <ContractDetails mainContractQuery={ contractQuery } channel={ channel } addressHash={ data.hash }/>,
+        //   subTabs: CONTRACT_DETAILS_TAB_IDS as unknown as Array<string>,
+        // },
+        // contractQuery.data?.abi && {
+        //   id: [ 'read_write_contract' as const, 'read_contract' as const, 'write_contract' as const ],
+        //   title: 'Read/Write contract',
+        //   component: <ContractMethodsRegular abi={ contractQuery.data.abi } isLoading={ contractQuery.isPlaceholderData }/>,
+        // },
+        // verifiedImplementations.length > 0 && {
+        //   id: [ 'read_write_proxy' as const, 'read_proxy' as const, 'write_proxy' as const ],
+        //   title: 'Read/Write proxy',
+        //   component: <ContractMethodsProxy implementations={ verifiedImplementations } isLoading={ contractQuery.isPlaceholderData }/>,
+        // },
+        // config.features.account.isEnabled && {
+        //   id: [ 'read_write_custom_methods' as const, 'read_custom_methods' as const, 'write_custom_methods' as const ],
+        //   title: 'Custom ABI',
+        //   component: <ContractMethodsCustom isLoading={ contractQuery.isPlaceholderData }/>,
+        // },
+        // hasMudTab && {
+        //   id: 'mud_system' as const,
+        //   title: 'MUD System',
+        //   component: mudSystemsQuery.isPlaceholderData ?
+        //     <ContentLoader/> :
+        //     <ContractMethodsMudSystem items={ mudSystemsQuery.data?.items ?? [] }/>,
+        // },
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,
     };

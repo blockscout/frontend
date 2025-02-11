@@ -1,7 +1,9 @@
-import { useDisclosure, Modal, ModalContent, ModalCloseButton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FormattedData } from './types';
+
+import { DialogContent, DialogRoot } from 'toolkit/chakra/dialog';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 import TokenSelectButton from './TokenSelectButton';
 import TokenSelectMenu from './TokenSelectMenu';
@@ -13,18 +15,17 @@ interface Props {
 }
 
 const TokenSelectMobile = ({ data, isLoading }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { open, onOpenChange } = useDisclosure();
   const result = useTokenSelect(data);
 
   return (
     <>
-      <TokenSelectButton isOpen={ isOpen } onClick={ onToggle } data={ result.data } isLoading={ isLoading }/>
-      <Modal isOpen={ isOpen } onClose={ onClose } size="full">
-        <ModalContent>
-          <ModalCloseButton/>
+      <TokenSelectButton isOpen={ open } data={ result.data } isLoading={ isLoading }/>
+      <DialogRoot open={ open } onOpenChange={ onOpenChange } size="full">
+        <DialogContent>
           <TokenSelectMenu { ...result }/>
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </DialogRoot>
     </>
   );
 };

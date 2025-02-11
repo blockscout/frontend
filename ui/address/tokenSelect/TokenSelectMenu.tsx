@@ -1,4 +1,4 @@
-import { Text, Box, Input, InputGroup, InputLeftElement, useColorModeValue, Flex, Link } from '@chakra-ui/react';
+import { Text, Box, Input, Flex } from '@chakra-ui/react';
 import { sumBy } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -7,6 +7,8 @@ import type { FormattedData } from './types';
 import type { TokenType } from 'types/api/token';
 
 import { getTokenTypeName } from 'lib/token/tokenTypes';
+import { InputGroup } from 'toolkit/chakra/input-group';
+import { Link } from 'toolkit/chakra/link';
 import IconSvg from 'ui/shared/IconSvg';
 
 import type { Sort } from '../utils/tokenUtils';
@@ -24,23 +26,16 @@ interface Props {
 }
 
 const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onInputChange, onSortClick, searchTerm }: Props) => {
-  const searchIconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
-
   const hasFilteredResult = sumBy(Object.values(filteredData), ({ items }) => items.length) > 0;
 
   return (
     <>
-      <InputGroup size="xs" mb={ 5 }>
-        <InputLeftElement >
-          <IconSvg name="search" boxSize={ 4 } color={ searchIconColor }/>
-        </InputLeftElement>
-        <Input
-          paddingInlineStart="38px"
-          placeholder="Search by token name"
-          ml="1px"
-          onChange={ onInputChange }
-          bgColor="dialog.bg"
-        />
+      <InputGroup
+        startElement={ <IconSvg name="search" boxSize={ 4 } color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }}/> }
+        startOffset="38px"
+        mb={ 5 }
+      >
+        <Input placeholder="Search by token name" onChange={ onInputChange } size="sm" bgColor="dialog.bg"/>
       </InputGroup>
       <Flex flexDir="column" rowGap={ 6 }>
         { Object.entries(filteredData).sort(sortTokenGroups).map(([ tokenType, tokenInfo ]) => {

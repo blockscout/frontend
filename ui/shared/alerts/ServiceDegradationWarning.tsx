@@ -12,7 +12,7 @@ const ServiceDegradationWarning = ({ isLoading, className }: Props) => {
   return (
     <Alert
       loading={ isLoading }
-      status="neutral"
+      status="info"
       className={ className }
       startElement={ <Spinner size="sm" my="3px" flexShrink={ 0 }/> }
     >
