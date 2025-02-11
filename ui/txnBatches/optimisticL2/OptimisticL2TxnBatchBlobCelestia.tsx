@@ -1,29 +1,15 @@
-import { Flex, GridItem, Icon, VStack } from '@chakra-ui/react';
+import { Flex, GridItem, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2BlobTypeCelestia } from 'types/api/optimisticL2';
 
-// This icon doesn't work properly when it is in the sprite
-// Probably because of the gradient
-// eslint-disable-next-line no-restricted-imports
-import celeniumIcon from 'icons/brands/celenium.svg';
 import dayjs from 'lib/date/dayjs';
-import hexToBase64 from 'lib/hexToBase64';
+import CeleniumLink from 'ui/shared/batch/CeleniumLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 
 import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
-
-function getCeleniumUrl(blob: OptimisticL2BlobTypeCelestia) {
-  const url = new URL('https://mocha.celenium.io/blob');
-  url.searchParams.set('commitment', hexToBase64(blob.commitment));
-  url.searchParams.set('hash', hexToBase64(blob.namespace));
-  url.searchParams.set('height', String(blob.height));
-
-  return url.toString();
-}
 
 interface Props {
   blobs: Array<OptimisticL2BlobTypeCelestia>;
@@ -43,10 +29,7 @@ const OptimisticL2TxnBatchBlobCelestia = ({ blobs, isLoading }: Props) => {
                 <CopyToClipboard text={ blob.commitment }/>
               </Flex>
             </GridItem>
-            <GridItem display="flex" columnGap={ 2 }>
-              <Icon as={ celeniumIcon } boxSize={ 5 }/>
-              <LinkExternal href={ getCeleniumUrl(blob) }>Blob page</LinkExternal>
-            </GridItem>
+            <CeleniumLink commitment={ blob.commitment } namespace={ blob.namespace } height={ blob.height }/>
             <GridItem fontWeight={ 600 }>Height</GridItem>
             <GridItem colSpan={ 2 }>
               { blob.height }

@@ -819,6 +819,11 @@ export const RESOURCES = {
     pathParams: [ 'number' as const ],
   },
 
+  optimistic_l2_txn_batch_celestia: {
+    path: '/api/v2/optimism/batches/da/celestia/:height/:commitment',
+    pathParams: [ 'height' as const, 'commitment' as const ],
+  },
+
   optimistic_l2_txn_batch_txs: {
     path: '/api/v2/transactions/optimism-batch/:number',
     pathParams: [ 'number' as const ],
@@ -902,6 +907,11 @@ export const RESOURCES = {
   arbitrum_l2_txn_batch: {
     path: '/api/v2/arbitrum/batches/:number',
     pathParams: [ 'number' as const ],
+  },
+
+  arbitrum_l2_txn_batch_celestia: {
+    path: '/api/v2/arbitrum/batches/da/celestia/:height/:commitment',
+    pathParams: [ 'height' as const, 'commitment' as const ],
   },
 
   arbitrum_l2_txn_batch_txs: {
@@ -1339,6 +1349,7 @@ Q extends 'optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
 Q extends 'optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
 Q extends 'optimistic_l2_txn_batches_count' ? number :
 Q extends 'optimistic_l2_txn_batch' ? OptimismL2TxnBatch :
+Q extends 'optimistic_l2_txn_batch_celestia' ? OptimismL2TxnBatch :
 Q extends 'optimistic_l2_txn_batch_txs' ? OptimismL2BatchTxs :
 Q extends 'optimistic_l2_txn_batch_blocks' ? OptimismL2BatchBlocks :
 Q extends 'optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
@@ -1373,6 +1384,7 @@ Q extends 'arbitrum_l2_messages_count' ? number :
 Q extends 'arbitrum_l2_txn_batches' ? ArbitrumL2TxnBatchesResponse :
 Q extends 'arbitrum_l2_txn_batches_count' ? number :
 Q extends 'arbitrum_l2_txn_batch' ? ArbitrumL2TxnBatch :
+Q extends 'arbitrum_l2_txn_batch_celestia' ? ArbitrumL2TxnBatch :
 Q extends 'arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
 Q extends 'arbitrum_l2_txn_batch_blocks' ? ArbitrumL2BatchBlocks :
 Q extends 'zkevm_l2_deposits' ? ZkEvmL2DepositsResponse :

@@ -43,6 +43,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/dispute-games': '%network_name% dispute games',
   '/batches': '%network_name% txn batches',
   '/batches/[number]': '%network_name% L2 txn batch %number%',
+  '/batches/celestia/[height]/[commitment]': '%network_name% L2 txn batch %height% %commitment%',
   '/blobs/[hash]': '%network_name% blob %hash% details',
   '/ops': 'User operations on %network_name% - %network_name% explorer',
   '/op/[hash]': '%network_name% user operation %hash%',
