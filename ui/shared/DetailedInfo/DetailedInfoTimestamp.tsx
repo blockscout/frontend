@@ -11,7 +11,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-const DetailsTimestamp = ({ timestamp, isLoading }: Props) => {
+const DetailedInfoTimestamp = ({ timestamp, isLoading }: Props) => {
   return (
     <>
       <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
@@ -26,4 +26,4 @@ const DetailsTimestamp = ({ timestamp, isLoading }: Props) => {
   );
 };
 
-export default DetailsTimestamp;
+export default DetailedInfoTimestamp;

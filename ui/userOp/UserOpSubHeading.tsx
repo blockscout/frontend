@@ -8,7 +8,7 @@ import config from 'configs/app';
 // import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
-import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailsActionsWrapper';
+import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 

@@ -4,7 +4,7 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import Skeleton from 'ui/shared/chakra/Skeleton';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
@@ -38,13 +38,13 @@ const TokenInstanceTransfersCount = ({ hash, id, onClick }: Props) => {
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Number of transfer for the token instance"
         isLoading={ transfersCountQuery.isPlaceholderData }
       >
         Transfers
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <Skeleton isLoaded={ !transfersCountQuery.isPlaceholderData } display="inline-block">
           <LinkInternal
             href={ url }
@@ -53,7 +53,7 @@ const TokenInstanceTransfersCount = ({ hash, id, onClick }: Props) => {
             { transfersCountQuery.data.transfers_count.toLocaleString() }
           </LinkInternal>
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

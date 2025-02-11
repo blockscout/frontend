@@ -12,8 +12,8 @@ import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarnin
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -103,45 +103,45 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
 
         { data.filecoin?.id && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="Short identifier of an address that may change with chain state updates"
             >
               ID
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value>
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
               <Text>{ data.filecoin.id }</Text>
               <CopyToClipboard text={ data.filecoin.id }/>
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
         { data.filecoin?.actor_type && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="Identifies the purpose and behavior of the address on the Filecoin network"
             >
               Actor
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value>
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
               <FilecoinActorTag actorType={ data.filecoin.actor_type }/>
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
         { (data.filecoin?.actor_type === 'evm' || data.filecoin?.actor_type === 'ethaccount') && data?.filecoin?.robust && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="0x-style address to which the Filecoin address is assigned by the Ethereum Address Manager"
             >
               Ethereum Address
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value flexWrap="nowrap">
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue flexWrap="nowrap">
               <AddressEntity
                 address={{ hash: data.hash }}
                 noIcon
                 noLink
               />
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
@@ -149,13 +149,13 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
 
         { data.is_contract && data.creation_transaction_hash && (creatorAddressHash) && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="Transaction and address of creation"
               isLoading={ addressQuery.isPlaceholderData }
             >
               Creator
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value>
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
               <AddressEntity
                 address={{ hash: creatorAddressHash, filecoin: { robust: data.creator_filecoin_robust_address } }}
                 truncation="constant"
@@ -163,7 +163,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
               />
               <Text whiteSpace="pre"> at txn </Text>
               <TxEntity hash={ data.creation_transaction_hash } truncation="constant" noIcon noCopy={ false }/>
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
         { data.is_contract && data.implementations && data.implementations?.length > 0 && (
@@ -177,38 +177,38 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
 
         { data.has_tokens && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="All tokens in the account and total value"
             >
               Tokens
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value py={ addressQuery.data ? 0 : undefined }>
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue py={ addressQuery.data ? 0 : undefined }>
               { addressQuery.data ? <TokenSelect onClick={ handleCounterItemClick }/> : <Box>0</Box> }
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
         { (config.features.multichainButton.isEnabled || (data.exchange_rate && data.has_tokens)) && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="Total net worth in USD of all tokens for the address"
               isLoading={ addressQuery.isPlaceholderData }
             >
               Net worth
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value alignSelf="center" py={ 0 }>
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue alignSelf="center" py={ 0 }>
               <AddressNetWorth addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ addressQuery.isPlaceholderData }/>
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         )
         }
 
-        <DetailsInfoItem.Label
+        <DetailedInfo.ItemLabel
           hint="Number of transactions related to this address"
           isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
         >
           Transactions
-        </DetailsInfoItem.Label>
-        <DetailsInfoItem.Value>
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
           { addressQuery.data ? (
             <AddressCounterItem
               prop="transactions_count"
@@ -220,17 +220,17 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             />
           ) :
             0 }
-        </DetailsInfoItem.Value>
+        </DetailedInfo.ItemValue>
 
         { data.has_token_transfers && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="Number of transfers to/from this address"
               isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
             >
               Transfers
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value>
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
               { addressQuery.data ? (
                 <AddressCounterItem
                   prop="token_transfers_count"
@@ -242,19 +242,19 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
                 />
               ) :
                 0 }
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
         { countersQuery.data?.gas_usage_count && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="Gas used by the address"
               isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
             >
               Gas used
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value>
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
               { addressQuery.data ? (
                 <AddressCounterItem
                   prop="gas_usage_count"
@@ -272,19 +272,19 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
                   address={ data.hash }
                 />
               ) }
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
         { data.has_validated_blocks && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint={ `Number of blocks ${ getNetworkValidationActionText() } by this ${ getNetworkValidatorTitle() }` }
               isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
             >
               { `Blocks ${ getNetworkValidationActionText() }` }
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value>
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
               { addressQuery.data ? (
                 <AddressCounterItem
                   prop="validations_count"
@@ -296,28 +296,28 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
                 />
               ) :
                 0 }
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
         { data.block_number_balance_updated_at && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="Block number in which the address was updated"
               isLoading={ addressQuery.isPlaceholderData }
             >
               Last balance update
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value>
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
               <BlockEntity
                 number={ data.block_number_balance_updated_at }
                 isLoading={ addressQuery.isPlaceholderData }
               />
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
-        <DetailsSponsoredItem isLoading={ addressQuery.isPlaceholderData }/>
+        <DetailedInfoSponsoredItem isLoading={ addressQuery.isPlaceholderData }/>
       </Grid>
     </>
   );

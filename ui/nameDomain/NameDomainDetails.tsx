@@ -11,7 +11,7 @@ import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 import Skeleton from 'ui/shared/chakra/Skeleton';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -37,31 +37,31 @@ const NameDomainDetails = ({ query }: Props) => {
       <Grid columnGap={ 8 } rowGap={ 3 } templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
         { query.data?.registration_date && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="The date the name was registered"
               isLoading={ isLoading }
             >
               Registration date
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value>
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
               <IconSvg name="clock" boxSize={ 5 } color="gray.500" verticalAlign="middle" isLoading={ isLoading } mr={ 2 }/>
               <Skeleton isLoaded={ !isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="20px">
                 { dayjs(query.data.registration_date).format('llll') }
               </Skeleton>
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
         { query.data?.expiry_date && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
             // eslint-disable-next-line max-len
               hint="The date the name expires, upon which there is a grace period for the owner to renew. After grace period ends, the name is released to the market"
               isLoading={ isLoading }
             >
               Expiration date
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value>
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
               <IconSvg name="clock" boxSize={ 5 } color="gray.500" verticalAlign="middle" isLoading={ isLoading } mr={ 2 } mt="-2px"/>
               { hasExpired && (
                 <>
@@ -78,37 +78,37 @@ const NameDomainDetails = ({ query }: Props) => {
               <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline">
                 <NameDomainExpiryStatus date={ query.data?.expiry_date }/>
               </Skeleton>
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
         { query.data?.resolver_address && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="The resolver contract provides information about a domain name"
               isLoading={ isLoading }
             >
               Resolver
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue
             >
               <AddressEntity
                 address={ query.data.resolver_address }
                 isLoading={ isLoading }
               />
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
         { query.data?.registrant && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="The account that owns the domain name and has the rights to edit its ownership and records"
               isLoading={ isLoading }
             >
               Registrant
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue
               columnGap={ 2 }
               flexWrap="nowrap"
             >
@@ -125,19 +125,19 @@ const NameDomainDetails = ({ query }: Props) => {
                   <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
                 </LinkInternal>
               </Tooltip>
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
         { query.data?.owner && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="The account that owns the rights to edit the records of this domain name"
               isLoading={ isLoading }
             >
               Owner
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue
               columnGap={ 2 }
               flexWrap="nowrap"
             >
@@ -154,19 +154,19 @@ const NameDomainDetails = ({ query }: Props) => {
                   <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
                 </LinkInternal>
               </Tooltip>
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
         { query.data?.wrapped_owner && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="Owner of this NFT domain in NameWrapper contract"
               isLoading={ isLoading }
             >
               Manager
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue
               columnGap={ 2 }
               flexWrap="nowrap"
             >
@@ -183,7 +183,7 @@ const NameDomainDetails = ({ query }: Props) => {
                   <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
                 </LinkInternal>
               </Tooltip>
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
 
@@ -199,31 +199,31 @@ const NameDomainDetails = ({ query }: Props) => {
 
           return (
             <React.Fragment key={ token.type }>
-              <DetailsInfoItem.Label
+              <DetailedInfo.ItemLabel
                 hint={ `The ${ token.type === bens.TokenType.WRAPPED_DOMAIN_TOKEN ? 'wrapped ' : '' }token ID of this domain name NFT` }
                 isLoading={ isLoading }
               >
                 { token.type === bens.TokenType.WRAPPED_DOMAIN_TOKEN ? 'Wrapped token ID' : 'Token ID' }
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value
+              </DetailedInfo.ItemLabel>
+              <DetailedInfo.ItemValue
                 wordBreak="break-all"
                 whiteSpace="pre-wrap"
               >
                 <NftEntity { ...entityProps } hash={ token.contract_hash } id={ token.id } isLoading={ isLoading } noIcon/>
-              </DetailsInfoItem.Value>
+              </DetailedInfo.ItemValue>
             </React.Fragment>
           );
         }) }
 
         { otherAddresses.length > 0 && (
           <>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint="Other cryptocurrency addresses added to this domain name"
               isLoading={ isLoading }
             >
               Other addresses
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue
               flexDir="column"
               alignItems="flex-start"
             >
@@ -238,7 +238,7 @@ const NameDomainDetails = ({ query }: Props) => {
                   />
                 </Flex>
               )) }
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </>
         ) }
       </Grid>

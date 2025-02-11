@@ -8,8 +8,8 @@ import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+
 import IconSvg from 'ui/shared/IconSvg';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
@@ -35,40 +35,40 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
 
       { data.blob_gas_price && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             // eslint-disable-next-line max-len
             hint="Price per unit of gas used for for blob deployment. Blob gas is independent of normal gas. Both gas prices can affect the priority of transaction execution."
           >
             Blob gas price
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <Text>{ BigNumber(data.blob_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
             <Text color="text.secondary" whiteSpace="pre">
               { space }({ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
             </Text>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
       { data.blob_gas_used && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Actual amount of gas used by the blobs in this block"
           >
             Blob gas used
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <Text>{ BigNumber(data.blob_gas_used).toFormat() }</Text>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
       { !burntBlobFees.isEqualTo(ZERO) && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint={ `Amount of ${ currencyUnits.ether } used for blobs in this block` }
           >
             Blob burnt fees
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <IconSvg name="flame" boxSize={ 5 } color="gray.500" mr={ 2 }/>
             { burntBlobFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             { !blobFees.isEqualTo(ZERO) && (
@@ -76,25 +76,25 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
                 <Utilization ml={ 4 } value={ burntBlobFees.dividedBy(blobFees).toNumber() }/>
               </Tooltip>
             ) }
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
       { data.excess_blob_gas && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="A running total of blob gas consumed in excess of the target, prior to the block."
           >
             Excess blob gas
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <Text>{ BigNumber(data.excess_blob_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
             <Text color="text.secondary" whiteSpace="pre">
               { space }({ BigNumber(data.excess_blob_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
             </Text>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
-      <DetailsInfoItemDivider/>
+      <DetailedInfo.ItemDivider/>
     </>
   );
 };

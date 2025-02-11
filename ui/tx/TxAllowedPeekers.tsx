@@ -1,7 +1,7 @@
 import React from 'react';
 
 import CutLinkList from 'toolkit/components/CutLink/CutLinkList';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
@@ -15,19 +15,19 @@ const TxAllowedPeekers = ({ items }: Props) => {
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Smart contracts allowed to interact with confidential data"
       >
         Allowed peekers
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <CutLinkList
           items={ items }
           renderItem={ renderItem }
           cutLength={ 2 }
           rowGap={ 3 }
         />
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

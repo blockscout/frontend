@@ -4,8 +4,8 @@ import React from 'react';
 import type { Pool } from 'types/api/pools';
 
 import Skeleton from 'ui/shared/chakra/Skeleton';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 type Props = {
@@ -21,13 +21,13 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
       overflow="hidden"
     >
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="The base token in a liquidity pool pair"
       >
         Base token
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <TokenEntity
           token={{
             type: 'ERC-20',
@@ -38,15 +38,15 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
           }}
           isLoading={ isPlaceholderData }
         />
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="The quote token in a liquidity pool pair"
       >
         Quote token
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <TokenEntity
           token={{
             type: 'ERC-20',
@@ -57,57 +57,57 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
           }}
           isLoading={ isPlaceholderData }
         />
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Fully Diluted Valuation: theoretical market cap if all tokens were in circulation"
       >
         FDV
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <Skeleton isLoaded={ !isPlaceholderData }>
           ${ Number(data.fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Current market capitalization of the pool"
       >
         Market cap
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <Skeleton isLoaded={ !isPlaceholderData }>
           ${ Number(data.market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Current liquidity of the pool"
       >
         Liquidity
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <Skeleton isLoaded={ !isPlaceholderData }>
           ${ Number(data.liquidity).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="DEX where the pool is traded"
       >
         DEX
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <Skeleton isLoaded={ !isPlaceholderData }>
           { data.dex.name }
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsSponsoredItem isLoading={ isPlaceholderData }/>
+      <DetailedInfoSponsoredItem isLoading={ isPlaceholderData }/>
     </Grid>
   );
 };

@@ -5,7 +5,6 @@ import config from 'configs/app';
 const heroBannerButton = config.UI.homepage.heroBanner?.button;
 
 const semanticTokens: ThemingConfig['semanticTokens'] = {
-  // TODO @tom2drum remove *_hover in favor of conditional selectors
   colors: {
     // NEW TOKENS
     button: {

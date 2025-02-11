@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { AddressImplementation } from 'types/api/addressParams';
 
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
@@ -16,13 +16,13 @@ const AddressImplementations = ({ data, isLoading }: Props) => {
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint={ `Implementation${ hasManyItems ? 's' : '' } address${ hasManyItems ? 'es' : '' } of the proxy contract` }
         isLoading={ isLoading }
         hasScroll={ hasScroll }
       >
         { `Implementation${ hasManyItems ? 's' : '' }` }
-      </DetailsInfoItem.Label>
+      </DetailedInfo.ItemLabel>
       <DetailsInfoItem.ValueWithScroll
         gradientHeight={ 48 }
         onScrollVisibilityChange={ setHasScroll }

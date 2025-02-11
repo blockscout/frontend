@@ -6,7 +6,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import { route } from 'nextjs-routes';
 
 import { Link } from 'toolkit/chakra/link';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import IconSvg from 'ui/shared/IconSvg';
 import TokenTransferSnippet from 'ui/shared/TokenTransferSnippet/TokenTransferSnippet';
 interface Props {
@@ -39,12 +39,12 @@ const TxDetailsTokenTransfers = ({ data, txHash, isOverflow }: Props) => {
 
         return (
           <React.Fragment key={ type }>
-            <DetailsInfoItem.Label
+            <DetailedInfo.ItemLabel
               hint={ hint }
             >
               { title }
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value position="relative">
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue position="relative">
               <Flex
                 flexDirection="column"
                 alignItems="flex-start"
@@ -54,7 +54,7 @@ const TxDetailsTokenTransfers = ({ data, txHash, isOverflow }: Props) => {
               >
                 { items.map((item, index) => <TokenTransferSnippet key={ index } data={ item }/>) }
               </Flex>
-            </DetailsInfoItem.Value>
+            </DetailedInfo.ItemValue>
           </React.Fragment>
         );
       }) }

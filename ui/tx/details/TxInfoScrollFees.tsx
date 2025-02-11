@@ -8,7 +8,7 @@ import { WEI_IN_GWEI } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CurrencyValue from 'ui/shared/CurrencyValue';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 type Props = {
@@ -21,71 +21,71 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
     <>
       { data.scroll?.l1_fee !== undefined && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
 
             hint="L1 fee that pays for rollup costs"
             isLoading={ isLoading }
           >
             L1 data fee
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <CurrencyValue
               value={ data.scroll?.l1_fee }
               currency={ currencyUnits.ether }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
             />
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
 
       { data.scroll?.l2_fee !== undefined && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="L2 execution fee"
             isLoading={ isLoading }
           >
             Execution fee
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <CurrencyValue
               value={ data.scroll?.l2_fee.value }
               currency={ currencyUnits.ether }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
             />
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
 
       { data.scroll?.l1_fee_commit_scalar !== undefined && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Commitment scalar"
             isLoading={ isLoading }
           >
             L1 commit scalar
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <CurrencyValue
               value={ String(data.scroll?.l1_fee_commit_scalar) }
               currency={ currencyUnits.ether }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
             />
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
 
       { data.scroll?.l1_fee_overhead !== undefined && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Additional gas overhead of a data commitment transaction"
             isLoading={ isLoading }
           >
             L1 Fee Overhead
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <Skeleton loading={ isLoading }>
               <CurrencyValue
                 value={ String(data.scroll?.l1_fee_overhead) }
@@ -94,18 +94,18 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
                 flexWrap="wrap"
               />
             </Skeleton>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
       { (data.scroll?.l1_base_fee !== undefined || data.scroll?.l1_fee_scalar !== undefined) && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="L1 gas fees"
             isLoading={ isLoading }
           >
             L1 gas fees
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             { data.scroll?.l1_base_fee !== undefined && (
               <Skeleton loading={ isLoading }>
                 <Text as="span" fontWeight="500">Base: </Text>
@@ -119,18 +119,18 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
                 <Text fontWeight="600" as="span">{ BigNumber(data.scroll?.l1_fee_scalar || 0).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
               </Skeleton>
             ) }
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
       { (data.scroll?.l1_blob_base_fee !== undefined || data.scroll?.l1_fee_blob_scalar !== undefined) && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="L1 blob fees"
             isLoading={ isLoading }
           >
             L1 blob fees
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             { data.scroll?.l1_blob_base_fee !== undefined && (
               <Skeleton loading={ isLoading }>
                 <Text as="span" fontWeight="500">Base: </Text>
@@ -144,7 +144,7 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
                 <Text fontWeight="600" as="span">{ BigNumber(data.scroll?.l1_fee_blob_scalar || 0).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
               </Skeleton>
             ) }
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
     </>

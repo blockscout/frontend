@@ -9,8 +9,8 @@ import type { TokenInfo } from 'types/api/token';
 import { WEI, ZERO_ADDRESS } from 'lib/consts';
 import { Link } from 'toolkit/chakra/link';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -58,18 +58,18 @@ const BlockDetailsBaseFeeCelo = ({ data }: Props) => {
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="The contract receiving the base fee, responsible for handling fee usage. This contract is controlled by governance process."
       >
         Base fee handler
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <AddressEntity address={ data.recipient }/>
-      </DetailsInfoItem.Value>
-      <DetailsInfoItem.Label hint={ totalFeeLabel }>
+      </DetailedInfo.ItemValue>
+      <DetailedInfo.ItemLabel hint={ totalFeeLabel }>
         Base fee total
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value display="block">
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue display="block">
         <Flex columnGap={ 2 }>
           { totalBaseFee }
           <TokenEntity token={ data.token } noCopy onlySymbol/>
@@ -86,8 +86,8 @@ const BlockDetailsBaseFeeCelo = ({ data }: Props) => {
             )) }
           </Flex>
         ) }
-      </DetailsInfoItem.Value>
-      <DetailsInfoItemDivider/>
+      </DetailedInfo.ItemValue>
+      <DetailedInfo.ItemDivider/>
     </>
   );
 };

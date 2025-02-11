@@ -6,8 +6,8 @@ import type { MetadataAttributes } from 'types/client/token';
 
 import parseMetadata from 'lib/token/parseMetadata';
 import Skeleton from 'ui/shared/chakra/Skeleton';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
@@ -87,58 +87,58 @@ const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) =>
 
   return (
     <>
-      <DetailsInfoItemDivider/>
+      <DetailedInfo.ItemDivider/>
       { metadata?.name && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="NFT name"
             isLoading={ isLoading }
           >
             Name
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue
             whiteSpace="normal"
             wordBreak="break-word"
           >
             <Skeleton isLoaded={ !isLoading }>
               { metadata.name }
             </Skeleton>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
       { metadata?.description && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="NFT description"
             isLoading={ isLoading }
           >
             Description
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue
             whiteSpace="normal"
             wordBreak="break-word"
           >
             <Skeleton isLoaded={ !isLoading }>
               { metadata.description }
             </Skeleton>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
       { metadata?.attributes && metadata.attributes.length > 0 && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="NFT attributes"
             isLoading={ isLoading }
           >
             Attributes
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <Grid gap={ 2 } templateColumns="repeat(auto-fill,minmax(160px, 1fr))" w="100%" whiteSpace="normal">
               { metadata.attributes
                 .filter((attribute) => attribute.value)
                 .map((attribute, index) => <Item key={ index } data={ attribute } isLoading={ isLoading }/>) }
             </Grid>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
     </>

@@ -5,8 +5,8 @@ import type { ZilliqaNestedQuorumCertificate, ZilliqaQuorumCertificate } from 't
 
 import { apos, ndash } from 'lib/html-entities';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+
 import Hint from 'ui/shared/Hint';
 
 function formatSigners(signers: Array<number>) {
@@ -39,12 +39,12 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint={ hint() }
       >
         { data.nested_quorum_certificates ? 'Aggregate quorum certificate' : 'Quorum certificate' }
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value rowGap={ 0 }>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue rowGap={ 0 }>
         <Grid
           fontSize="sm"
           lineHeight={ 5 }
@@ -53,13 +53,13 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
         >
           <GridItem fontWeight={ 600 }>View</GridItem>
           <GridItem>{ data.view }</GridItem>
-          <DetailsInfoItemDivider my={{ base: 2, lg: 2 }} colSpan={ 2 }/>
+          <DetailedInfo.ItemDivider my={{ base: 2, lg: 2 }} colSpan={ 2 }/>
           <GridItem fontWeight={ 600 }>Signature</GridItem>
           <GridItem whiteSpace="pre-wrap" wordBreak="break-word" display="flex" alignItems="flex-start" columnGap={ 5 }>
             { data.signature }
             <CopyToClipboard text={ data.signature }/>
           </GridItem>
-          <DetailsInfoItemDivider my={{ base: 2, lg: 2 }} colSpan={ 2 }/>
+          <DetailedInfo.ItemDivider my={{ base: 2, lg: 2 }} colSpan={ 2 }/>
           <GridItem fontWeight={ 600 }>Signers</GridItem>
           <GridItem >{ formatSigners(data.signers) }</GridItem>
         </Grid>
@@ -123,7 +123,7 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
             </Accordion>
           </>
         ) }
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

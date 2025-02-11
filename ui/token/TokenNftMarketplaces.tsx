@@ -6,7 +6,7 @@ import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 import config from 'configs/app';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import Skeleton from 'ui/shared/chakra/Skeleton';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 interface Props {
@@ -24,13 +24,13 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Marketplaces trading this NFT"
         isLoading={ isLoading }
       >
         Marketplaces
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue
         py={ appActionData ? '1px' : '6px' }
       >
         <Skeleton isLoaded={ !isLoading } display="flex" columnGap={ 3 } flexWrap="wrap" alignItems="center">
@@ -59,7 +59,7 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
             </>
           ) }
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

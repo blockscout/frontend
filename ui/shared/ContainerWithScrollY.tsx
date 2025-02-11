@@ -1,14 +1,13 @@
+import type { FlexProps } from '@chakra-ui/react';
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-export type Props = {
-  children: React.ReactNode;
+export interface Props extends FlexProps {
   gradientHeight: number;
-  className?: string;
   onScrollVisibilityChange?: (isVisible: boolean) => void;
 };
 
-const ContainerWithScrollY = ({ className, gradientHeight, children, onScrollVisibilityChange }: Props) => {
+const ContainerWithScrollY = ({ gradientHeight, children, onScrollVisibilityChange, ...rest }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [ hasScroll, setHasScroll ] = React.useState(false);
 
@@ -25,7 +24,6 @@ const ContainerWithScrollY = ({ className, gradientHeight, children, onScrollVis
   return (
     <Flex
       flexDirection="column"
-      className={ className }
       overflowY={ hasScroll ? 'scroll' : 'auto' }
       ref={ ref }
       _after={ hasScroll ? {
@@ -39,6 +37,7 @@ const ContainerWithScrollY = ({ className, gradientHeight, children, onScrollVis
       } : undefined }
       pr={ hasScroll ? 5 : 0 }
       pb={ hasScroll ? `${ gradientHeight }px` : 0 }
+      { ...rest }
     >
       { children }
     </Flex>

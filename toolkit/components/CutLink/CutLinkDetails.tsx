@@ -14,10 +14,6 @@ interface Props extends LinkProps {
 
 const ID = 'CutLink';
 
-// TODO @tom2drum another variant of CutLink
-// ui/tx/TxAllowedPeekers.tsx
-// ui/tx/state/TxStateTokenIdList.tsx
-
 const CutLink = (props: Props) => {
   const { children, id = ID, onClick, isExpanded: isExpandedProp = false, ...rest } = props;
 

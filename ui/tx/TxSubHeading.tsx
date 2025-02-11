@@ -11,7 +11,7 @@ import { Link } from 'toolkit/chakra/link';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
-import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailsActionsWrapper';
+import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';

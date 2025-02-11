@@ -5,7 +5,8 @@ import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AdBanner from 'ui/shared/ad/AdBanner';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+
+import * as DetailedInfo from './DetailedInfo';
 
 const feature = config.features.adsBanner;
 
@@ -13,7 +14,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const DetailsSponsoredItem = ({ isLoading }: Props) => {
+const DetailedInfoSponsoredItem = ({ isLoading }: Props) => {
   const isMobile = useIsMobile();
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED);
 
@@ -31,17 +32,17 @@ const DetailsSponsoredItem = ({ isLoading }: Props) => {
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Sponsored banner advertisement"
         isLoading={ isLoading }
       >
         Sponsored
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <AdBanner isLoading={ isLoading }/>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };
 
-export default React.memo(DetailsSponsoredItem);
+export default React.memo(DetailedInfoSponsoredItem);

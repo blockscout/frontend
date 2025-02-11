@@ -5,8 +5,8 @@ import type { ArbitrumL2TxnBatchDAAnytrust } from 'types/api/arbitrumL2';
 
 import dayjs from 'lib/date/dayjs';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import IconSvg from 'ui/shared/IconSvg';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -20,26 +20,26 @@ const ArbitrumL2TxnBatchDetailsDA = ({ dataAvailability }: Props) => {
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Aggregated BLS signature of AnyTrust committee members"
       >
         Signature
-      </DetailsInfoItem.Label><DetailsInfoItem.Value wordBreak="break-all" whiteSpace="break-spaces">
+      </DetailedInfo.ItemLabel><DetailedInfo.ItemValue wordBreak="break-all" whiteSpace="break-spaces">
         { dataAvailability.bls_signature }
-      </DetailsInfoItem.Value><DetailsInfoItem.Label
+      </DetailedInfo.ItemValue><DetailedInfo.ItemLabel
         hint="The hash of the data blob stored by the AnyTrust committee"
       >
         Data hash
-      </DetailsInfoItem.Label><DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel><DetailedInfo.ItemValue>
         { dataAvailability.data_hash }
         <CopyToClipboard text={ dataAvailability.data_hash } ml={ 2 }/>
-      </DetailsInfoItem.Value><DetailsInfoItem.Label
+      </DetailedInfo.ItemValue><DetailedInfo.ItemLabel
         hint="Expiration timeout for the data blob"
       >
         Timeout
-      </DetailsInfoItem.Label><DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel><DetailedInfo.ItemValue>
         { dayjs(dataAvailability.timeout) < dayjs() ?
-          <DetailsTimestamp timestamp={ dataAvailability.timeout }/> :
+          <DetailedInfoTimestamp timestamp={ dataAvailability.timeout }/> :
           (
             <>
               <Text>{ dayjs(dataAvailability.timeout).format('llll') }</Text>
@@ -47,13 +47,13 @@ const ArbitrumL2TxnBatchDetailsDA = ({ dataAvailability }: Props) => {
               <Text color="red.500">{ dayjs(dataAvailability.timeout).diff(dayjs(), 'day') } days left</Text>
             </>
           ) }
-      </DetailsInfoItem.Value>
-      <DetailsInfoItem.Label
+      </DetailedInfo.ItemValue>
+      <DetailedInfo.ItemLabel
         hint="Members of AnyTrust committee"
       >
         Signers
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value overflowX="scroll" fontSize="sm">
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue overflowX="scroll" fontSize="sm">
         <Show above="lg" ssr={ false }>
           <Grid
             templateColumns="1fr auto auto"
@@ -114,7 +114,7 @@ const ArbitrumL2TxnBatchDetailsDA = ({ dataAvailability }: Props) => {
             )) }
           </Box>
         </Hide>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 type Props = Pick<Transaction, 'nonce' | 'type' | 'position'> & { queueIndex?: number };
@@ -11,12 +11,12 @@ type Props = Pick<Transaction, 'nonce' | 'type' | 'position'> & { queueIndex?: n
 const TxDetailsOther = ({ nonce, type, position, queueIndex }: Props) => {
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Other data related to this transaction"
       >
         Other
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         {
           [
             typeof type === 'number' && (
@@ -53,7 +53,7 @@ const TxDetailsOther = ({ nonce, type, position, queueIndex }: Props) => {
               </React.Fragment>
             ))
         }
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

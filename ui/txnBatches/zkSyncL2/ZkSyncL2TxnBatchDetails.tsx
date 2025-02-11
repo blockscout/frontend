@@ -17,9 +17,9 @@ import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+
+import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -77,13 +77,13 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
       overflow="hidden"
     >
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on Ethereum."
         isLoading={ isPlaceholderData }
       >
         Txn batch number
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <Skeleton isLoaded={ !isPlaceholderData }>
           { data.number }
         </Skeleton>
@@ -95,43 +95,43 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           isPrevDisabled={ data.number === 0 }
           isLoading={ isPlaceholderData }
         />
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Status is the short interpretation of the batch lifecycle"
         isLoading={ isPlaceholderData }
       >
         Status
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES.slice(1) } currentStep={ data.status } isLoading={ isPlaceholderData }/>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Date and time at which batch is produced"
         isLoading={ isPlaceholderData }
       >
         Timestamp
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        { data.timestamp ? <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/> : 'Undefined' }
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        { data.timestamp ? <DetailedInfoTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/> : 'Undefined' }
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Number of transactions inside the batch."
         isLoading={ isPlaceholderData }
       >
         Transactions
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <Skeleton isLoaded={ !isPlaceholderData }>
           <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
             { txNum } transaction{ txNum === 1 ? '' : 's' }
           </LinkInternal>
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItemDivider/>
+      <DetailedInfo.ItemDivider/>
 
       <ZkSyncL2TxnBatchHashesInfo isLoading={ isPlaceholderData } data={ data }/>
 
@@ -155,38 +155,38 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         <>
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="L1 batch root is a hash that summarizes batch data and submitted to the L1"
           >
             Root hash
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue
             flexWrap="nowrap"
             alignSelf="flex-start"
           >
             <TruncatedValue value={ data.root_hash }/>
             <CopyToClipboard text={ data.root_hash }/>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
 
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Gas price for the batch settlement transaction on L1"
           >
             L1 gas price
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
             <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
 
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint='The gas price below which the "baseFee" of the batch should not fall'
           >
             L2 fair gas price
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <Text mr={ 1 }>{ BigNumber(data.l2_fair_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
             <Text variant="secondary">({ BigNumber(data.l2_fair_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
     </Grid>
