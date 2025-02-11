@@ -16,6 +16,7 @@ import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxAssetFlows from 'ui/tx/TxAssetFlows';
+import TxAuthorizations from 'ui/tx/TxAuthorizations';
 import TxBlobs from 'ui/tx/TxBlobs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsDegraded from 'ui/tx/TxDetailsDegraded';
@@ -69,6 +70,9 @@ const TransactionPageContent = () => {
       { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
       { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
       { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
+      txQuery.data?.authorization_list?.length ?
+        { id: 'authorizations', title: 'Authorizations', component: <TxAuthorizations txQuery={ txQuery }/> } :
+        undefined,
     ].filter(Boolean);
   })();
 

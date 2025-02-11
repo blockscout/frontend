@@ -1,5 +1,5 @@
 import { Flex, Button, Select } from '@chakra-ui/react';
-import capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import hexToAddress from 'lib/hexToAddress';

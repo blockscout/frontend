@@ -133,6 +133,16 @@ export const batch: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const batchCelestia: GetServerSideProps<Props> = async(context) => {
+  if (!(rollupFeature.isEnabled && (rollupFeature.type === 'arbitrum' || rollupFeature.type === 'optimistic'))) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const marketplace = async <Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext):
 Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   if (!config.features.marketplace.isEnabled) {
@@ -236,6 +246,17 @@ export const userOps: GetServerSideProps<Props> = async(context) => {
 
 export const validators: GetServerSideProps<Props> = async(context) => {
   if (!config.features.validators.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const validatorDetails: GetServerSideProps<Props> = async(context) => {
+  const feature = config.features.validators;
+  if (!feature.isEnabled || feature.chainType !== 'zilliqa') {
     return {
       notFound: true,
     };

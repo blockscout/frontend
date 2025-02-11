@@ -1,5 +1,7 @@
 import type { AddressParam } from './addressParams';
 
+// Stability
+
 export interface ValidatorStability {
   address: AddressParam;
   blocks_validated_count: number;
@@ -37,6 +39,8 @@ export type ValidatorsStabilitySortingField = ValidatorsStabilitySorting['sort']
 
 export type ValidatorsStabilitySortingValue = `${ ValidatorsStabilitySortingField }-${ ValidatorsStabilitySorting['order'] }`;
 
+// Blackfort
+
 export interface ValidatorBlackfort {
   address: AddressParam;
   name: string;
@@ -65,3 +69,27 @@ export interface ValidatorsBlackfortSorting {
 export type ValidatorsBlackfortSortingField = ValidatorsBlackfortSorting['sort'];
 
 export type ValidatorsBlackfortSortingValue = `${ ValidatorsBlackfortSortingField }-${ ValidatorsBlackfortSorting['order'] }`;
+
+// Zilliqa
+export interface ValidatorsZilliqaItem {
+  index: number;
+  bls_public_key: string;
+  balance: string;
+}
+
+export interface ValidatorsZilliqaResponse {
+  items: Array<ValidatorsZilliqaItem>;
+  next_page_params: null;
+}
+
+export interface ValidatorZilliqa {
+  added_at_block_number: number;
+  balance: string;
+  bls_public_key: string;
+  control_address: AddressParam;
+  index: number;
+  peer_id: string;
+  reward_address: AddressParam;
+  signing_address: AddressParam;
+  stake_updated_at_block_number: number;
+}

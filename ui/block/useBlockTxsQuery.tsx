@@ -111,7 +111,7 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
               created_contract: null,
               result: '',
               priority_fee: null,
-              tx_burnt_fee: null,
+              transaction_burnt_fee: null,
               revert_reason: null,
               decoded_input: null,
               has_error_in_internal_transactions: null,

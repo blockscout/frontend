@@ -2,7 +2,7 @@ import type { AddressParam } from './addressParams';
 import type { TokenInfo } from './token';
 
 export type AdvancedFilterParams = {
-  tx_types?: Array<AdvancedFilterType>;
+  transaction_types?: Array<AdvancedFilterType>;
   methods?: Array<string>;
   methods_names?: Array<string>; /* frontend only */
   age_from?: string;

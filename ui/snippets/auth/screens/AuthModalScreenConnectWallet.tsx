@@ -15,14 +15,15 @@ interface Props {
   onError: (isAuth?: boolean) => void;
   isAuth?: boolean;
   source?: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
+  loginToRewards?: boolean;
 }
 
-const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth, source }: Props) => {
+const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth, source, loginToRewards }: Props) => {
   const isStartedRef = React.useRef(false);
   const recaptcha = useReCaptcha();
 
-  const handleSignInSuccess = React.useCallback(({ address, profile }: { address: string; profile: UserInfo }) => {
-    onSuccess({ type: 'success_wallet', address, isAuth, profile });
+  const handleSignInSuccess = React.useCallback(({ address, profile, rewardsToken }: { address: string; profile: UserInfo; rewardsToken?: string }) => {
+    onSuccess({ type: 'success_wallet', address, isAuth, profile, rewardsToken });
   }, [ onSuccess, isAuth ]);
 
   const handleSignInError = React.useCallback(() => {
@@ -35,6 +36,7 @@ const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth, source }: Pr
     source,
     isAuth,
     executeRecaptchaAsync: recaptcha.executeAsync,
+    loginToRewards,
   });
 
   React.useEffect(() => {

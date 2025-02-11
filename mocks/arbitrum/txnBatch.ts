@@ -38,3 +38,16 @@ export const batchDataAnytrust: ArbitrumL2TxnBatch = {
     ],
   },
 };
+
+export const batchDataCelestia: ArbitrumL2TxnBatch = {
+  ...finalized,
+  after_acc: '0xcd064f3409015e8e6407e492e5275a185e492c6b43ccf127f22092d8057a9ffb',
+  before_acc: '0x2ed7c4985eb778d76ec400a43805e7feecc8c2afcdb492dbe5caf227de6d37bc',
+  start_block: 1245209,
+  end_block: 1245490,
+  data_availability: {
+    batch_data_container: 'in_celestia',
+    height: 4520041,
+    transaction_commitment: '0x3ebe5a43f47fbf69db003e543bb27e4875929ede2fa9a25d09f0bd082d5d20f0',
+  },
+};

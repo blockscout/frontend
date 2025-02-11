@@ -152,6 +152,8 @@ import type {
   ValidatorsBlackfortCountersResponse,
   ValidatorsBlackfortResponse,
   ValidatorsBlackfortSorting,
+  ValidatorsZilliqaResponse,
+  ValidatorZilliqa,
 } from 'types/api/validators';
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
@@ -821,6 +823,11 @@ export const RESOURCES = {
     pathParams: [ 'number' as const ],
   },
 
+  optimistic_l2_txn_batch_celestia: {
+    path: '/api/v2/optimism/batches/da/celestia/:height/:commitment',
+    pathParams: [ 'height' as const, 'commitment' as const ],
+  },
+
   optimistic_l2_txn_batch_txs: {
     path: '/api/v2/transactions/optimism-batch/:number',
     pathParams: [ 'number' as const ],
@@ -904,6 +911,11 @@ export const RESOURCES = {
   arbitrum_l2_txn_batch: {
     path: '/api/v2/arbitrum/batches/:number',
     pathParams: [ 'number' as const ],
+  },
+
+  arbitrum_l2_txn_batch_celestia: {
+    path: '/api/v2/arbitrum/batches/da/celestia/:height/:commitment',
+    pathParams: [ 'height' as const, 'commitment' as const ],
   },
 
   arbitrum_l2_txn_batch_txs: {
@@ -1101,6 +1113,15 @@ export const RESOURCES = {
   validators_blackfort_counters: {
     path: '/api/v2/validators/blackfort/counters',
   },
+  validators_zilliqa: {
+    path: '/api/v2/validators/zilliqa',
+    filterFields: [],
+  },
+  validator_zilliqa: {
+    path: '/api/v2/validators/zilliqa/:bls_public_key',
+    pathParams: [ 'bls_public_key' as const ],
+    filterFields: [],
+  },
 
   // BLOBS
   blob: {
@@ -1112,7 +1133,7 @@ export const RESOURCES = {
   advanced_filter: {
     path: '/api/v2/advanced-filters',
     filterFields: [
-      'tx_types' as const,
+      'transaction_types' as const,
       'methods' as const,
       'methods_names' as const /* frontend only */,
       'age_from' as const,
@@ -1251,7 +1272,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
-'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history' |
+'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'validators_zilliqa' | 'noves_address_history' |
 'token_transfers_all' | 'scroll_l2_txn_batches' | 'scroll_l2_txn_batch_txs' | 'scroll_l2_txn_batch_blocks' |
 'scroll_l2_deposits' | 'scroll_l2_withdrawals' | 'advanced_filter' | 'pools';
 
@@ -1353,6 +1374,7 @@ Q extends 'optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
 Q extends 'optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
 Q extends 'optimistic_l2_txn_batches_count' ? number :
 Q extends 'optimistic_l2_txn_batch' ? OptimismL2TxnBatch :
+Q extends 'optimistic_l2_txn_batch_celestia' ? OptimismL2TxnBatch :
 Q extends 'optimistic_l2_txn_batch_txs' ? OptimismL2BatchTxs :
 Q extends 'optimistic_l2_txn_batch_blocks' ? OptimismL2BatchBlocks :
 Q extends 'optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
@@ -1378,6 +1400,8 @@ Q extends 'validators_stability' ? ValidatorsStabilityResponse :
 Q extends 'validators_stability_counters' ? ValidatorsStabilityCountersResponse :
 Q extends 'validators_blackfort' ? ValidatorsBlackfortResponse :
 Q extends 'validators_blackfort_counters' ? ValidatorsBlackfortCountersResponse :
+Q extends 'validators_zilliqa' ? ValidatorsZilliqaResponse :
+Q extends 'validator_zilliqa' ? ValidatorZilliqa :
 Q extends 'shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
 Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
 Q extends 'shibarium_withdrawals_count' ? number :
@@ -1387,6 +1411,7 @@ Q extends 'arbitrum_l2_messages_count' ? number :
 Q extends 'arbitrum_l2_txn_batches' ? ArbitrumL2TxnBatchesResponse :
 Q extends 'arbitrum_l2_txn_batches_count' ? number :
 Q extends 'arbitrum_l2_txn_batch' ? ArbitrumL2TxnBatch :
+Q extends 'arbitrum_l2_txn_batch_celestia' ? ArbitrumL2TxnBatch :
 Q extends 'arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
 Q extends 'arbitrum_l2_txn_batch_blocks' ? ArbitrumL2BatchBlocks :
 Q extends 'arbitrum_l2_txn_withdrawals' ? ArbitrumL2TxnWithdrawalsResponse :

@@ -37,6 +37,11 @@ const config: Feature<{
   outputRootsEnabled: boolean;
   L2WithdrawalUrl: string | undefined;
   parentChain: ParentChain;
+  DA: {
+    celestia: {
+      namespace: string | undefined;
+    };
+  };
 }> = (() => {
   if (type && parentChain) {
     return Object.freeze({
@@ -49,6 +54,11 @@ const config: Feature<{
         showLatestBlocks: getEnvValue('NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS') === 'true',
       },
       parentChain,
+      DA: {
+        celestia: {
+          namespace: type === 'arbitrum' ? getEnvValue('NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE') : undefined,
+        },
+      },
     });
   }
 

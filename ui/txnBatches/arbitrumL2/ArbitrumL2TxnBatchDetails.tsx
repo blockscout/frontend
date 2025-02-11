@@ -23,7 +23,8 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 
-import ArbitrumL2TxnBatchDetailsDA from './ArbitrumL2TxnBatchDetailsDA';
+import ArbitrumL2TxnBatchDetailsAnyTrustDA from './ArbitrumL2TxnBatchDetailsAnyTrustDA';
+import ArbitrumL2TxnBatchDetailsCelestiaDA from './ArbitrumL2TxnBatchDetailsCelestiaDA';
 interface Props {
   query: UseQueryResult<ArbitrumL2TxnBatch, ResourceError>;
 }
@@ -181,11 +182,11 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       >
         Before acc
       </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      <DetailsInfoItem.Value flexWrap="nowrap" >
         <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
           <HashStringShortenDynamic hash={ data.before_acc }/>
-          <CopyToClipboard text={ data.before_acc }/>
         </Skeleton>
+        <CopyToClipboard text={ data.before_acc } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem.Value>
 
       <DetailsInfoItem.Label
@@ -194,14 +195,14 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       >
         After acc
       </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      <DetailsInfoItem.Value flexWrap="nowrap">
         <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
           <HashStringShortenDynamic hash={ data.after_acc }/>
-          <CopyToClipboard text={ data.after_acc }/>
         </Skeleton>
+        <CopyToClipboard text={ data.after_acc } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem.Value>
 
-      { data.data_availability.batch_data_container === 'in_anytrust' && (
+      { (data.data_availability.batch_data_container === 'in_anytrust' || data.data_availability.batch_data_container === 'in_celestia') && (
         <>
           { /* CUT */ }
           <GridItem colSpan={{ base: undefined, lg: 2 }}>
@@ -224,7 +225,12 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
             <>
               <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
-              <ArbitrumL2TxnBatchDetailsDA dataAvailability={ data.data_availability }/>
+              { data.data_availability.batch_data_container === 'in_anytrust' && (
+                <ArbitrumL2TxnBatchDetailsAnyTrustDA data={ data.data_availability }/>
+              ) }
+              { data.data_availability.batch_data_container === 'in_celestia' && (
+                <ArbitrumL2TxnBatchDetailsCelestiaDA data={ data.data_availability }/>
+              ) }
             </>
           ) }
         </>

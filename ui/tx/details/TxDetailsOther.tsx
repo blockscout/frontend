@@ -25,6 +25,7 @@ const TxDetailsOther = ({ nonce, type, position, queueIndex }: Props) => {
                 <Text fontWeight="600" as="span">{ type }</Text>
                 { type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
                 { type === 3 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-4844)</Text> }
+                { type === 4 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-7702)</Text> }
               </Box>
             ),
             queueIndex !== undefined ? (

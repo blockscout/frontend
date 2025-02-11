@@ -25,11 +25,11 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import Sort from 'ui/shared/sort/Sort';
-import { VALIDATORS_STABILITY_SORT_OPTIONS } from 'ui/validatorsStability/utils';
-import ValidatorsCounters from 'ui/validatorsStability/ValidatorsCounters';
-import ValidatorsFilter from 'ui/validatorsStability/ValidatorsFilter';
-import ValidatorsList from 'ui/validatorsStability/ValidatorsList';
-import ValidatorsTable from 'ui/validatorsStability/ValidatorsTable';
+import { VALIDATORS_STABILITY_SORT_OPTIONS } from 'ui/validators/stability/utils';
+import ValidatorsCounters from 'ui/validators/stability/ValidatorsCounters';
+import ValidatorsFilter from 'ui/validators/stability/ValidatorsFilter';
+import ValidatorsList from 'ui/validators/stability/ValidatorsList';
+import ValidatorsTable from 'ui/validators/stability/ValidatorsTable';
 
 const ValidatorsStability = () => {
   const router = useRouter();
