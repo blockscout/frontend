@@ -9,7 +9,6 @@ import {
   Tooltip,
   chakra,
   useColorModeValue,
-  HStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -26,7 +25,6 @@ import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
-import { MESSAGE_DESCRIPTIONS } from 'lib/tx/arbitrumMessageStatusDescription';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
 import Skeleton from 'ui/shared/chakra/Skeleton';
@@ -42,7 +40,6 @@ import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
@@ -58,12 +55,13 @@ import TxDetailsFeePerGas from 'ui/tx/details/TxDetailsFeePerGas';
 import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
-import TxDetailsWithdrawalStatus from 'ui/tx/details/TxDetailsWithdrawalStatus';
+import TxDetailsWithdrawalStatusOptimistic from 'ui/tx/details/TxDetailsWithdrawalStatusOptimistic';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
+import TxDetailsWithdrawalStatusArbitrum from './TxDetailsWithdrawalStatusArbitrum';
 import TxInfoScrollFees from './TxInfoScrollFees';
 
 const rollupFeature = config.features.rollup;
@@ -207,7 +205,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                     <span>Nonce: </span>
                     <chakra.span fontWeight={ 600 }>{ withdrawal.nonce }</chakra.span>
                   </Box>
-                  <TxDetailsWithdrawalStatus
+                  <TxDetailsWithdrawalStatusOptimistic
                     status={ withdrawal.status }
                     l1TxHash={ withdrawal.l1_transaction_hash }
                   />
@@ -813,28 +811,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         <>
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
-          { data.arbitrum?.contains_message && data.arbitrum?.message_related_info && (
-            <>
-              <DetailsInfoItem.Label
-                hint={ data.arbitrum.contains_message === 'incoming' ?
-                  'The hash of the transaction that originated the message from the base layer' :
-                  'The hash of the transaction that completed the message on the base layer'
-                }
-              >
-                { data.arbitrum.contains_message === 'incoming' ? 'Originating L1 txn hash' : 'Completion L1 txn hash' }
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                { data.arbitrum.message_related_info.associated_l1_transaction ?
-                  <TxEntityL1 hash={ data.arbitrum.message_related_info.associated_l1_transaction }/> : (
-                    <HStack gap={ 2 }>
-                      <Text color="text_secondary">{ data.arbitrum.message_related_info.message_status }</Text>
-                      <Hint label={ MESSAGE_DESCRIPTIONS[data.arbitrum.message_related_info.message_status] }/>
-                    </HStack>
-                  )
-                }
-              </DetailsInfoItem.Value>
-            </>
-          ) }
+          <TxDetailsWithdrawalStatusArbitrum data={ data }/>
 
           { (data.blob_gas_used || data.max_fee_per_blob_gas || data.blob_gas_price) && (
             <>

@@ -5,21 +5,23 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 
-import * as TxEntity from './TxEntity';
+import * as TokenEntity from './TokenEntity';
 
 const rollupFeature = config.features.rollup;
 
-const TxEntityL1 = (props: TxEntity.EntityProps) => {
+const TokenEntityL1 = (props: TokenEntity.EntityProps) => {
   if (!rollupFeature.isEnabled) {
     return null;
   }
 
   const defaultHref = rollupFeature.parentChain.baseUrl + route({
-    pathname: '/tx/[hash]',
-    query: { hash: props.hash },
+    pathname: '/token/[hash]',
+    query: { hash: props.token.address },
   });
 
-  return <TxEntity.default { ...props } href={ props.href ?? defaultHref } isExternal/>;
+  return (
+    <TokenEntity.default { ...props } href={ props.href ?? defaultHref } isExternal/>
+  );
 };
 
-export default chakra(TxEntityL1);
+export default chakra(TokenEntityL1);

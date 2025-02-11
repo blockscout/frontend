@@ -51,6 +51,8 @@ import type {
   ArbitrumL2BatchBlocks,
   ArbitrumL2TxnBatchesItem,
   ArbitrumLatestDepositsResponse,
+  ArbitrumL2TxnWithdrawalsResponse,
+  ArbitrumL2MessageClaimResponse,
 } from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
 import type {
@@ -928,6 +930,18 @@ export const RESOURCES = {
     filterFields: [],
   },
 
+  arbitrum_l2_txn_withdrawals: {
+    path: '/api/v2/arbitrum/messages/withdrawals/:hash',
+    pathParams: [ 'hash' as const ],
+    filterFields: [],
+  },
+
+  arbitrum_l2_message_claim: {
+    path: '/api/v2/arbitrum/messages/claim/:id',
+    pathParams: [ 'id' as const ],
+    filterFields: [],
+  },
+
   // zkEvm L2
   zkevm_l2_deposits: {
     path: '/api/v2/zkevm/deposits',
@@ -1400,6 +1414,8 @@ Q extends 'arbitrum_l2_txn_batch' ? ArbitrumL2TxnBatch :
 Q extends 'arbitrum_l2_txn_batch_celestia' ? ArbitrumL2TxnBatch :
 Q extends 'arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
 Q extends 'arbitrum_l2_txn_batch_blocks' ? ArbitrumL2BatchBlocks :
+Q extends 'arbitrum_l2_txn_withdrawals' ? ArbitrumL2TxnWithdrawalsResponse :
+Q extends 'arbitrum_l2_message_claim' ? ArbitrumL2MessageClaimResponse :
 Q extends 'zkevm_l2_deposits' ? ZkEvmL2DepositsResponse :
 Q extends 'zkevm_l2_deposits_count' ? number :
 Q extends 'zkevm_l2_withdrawals' ? ZkEvmL2WithdrawalsResponse :

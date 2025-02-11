@@ -1,4 +1,4 @@
-import type { ArbitrumL2TxnBatchesItem, ArbitrumL2TxnBatch, ArbitrumL2MessagesItem } from 'types/api/arbitrumL2';
+import type { ArbitrumL2TxnBatchesItem, ArbitrumL2TxnBatch, ArbitrumL2MessagesItem, ArbitrumL2TxnWithdrawalsItem } from 'types/api/arbitrumL2';
 
 import { ADDRESS_HASH } from './addressParams';
 import { TX_HASH } from './tx';
@@ -35,4 +35,18 @@ export const ARBITRUM_L2_TXN_BATCH: ArbitrumL2TxnBatch = {
   data_availability: {
     batch_data_container: 'in_blob4844',
   },
+};
+
+export const ARBITRUM_L2_TXN_WITHDRAWALS_ITEM: ArbitrumL2TxnWithdrawalsItem = {
+  arb_block_number: 70889261,
+  caller: '0x507f55d716340fc836ba52c1a8daebcfeedeef1a',
+  completion_transaction_hash: null,
+  callvalue: '100000000000000',
+  data: '0x',
+  destination: '0x507f55d716340fc836ba52c1a8daebcfeedeef1a',
+  eth_block_number: 6494128,
+  id: 43685,
+  l2_timestamp: 1723578569,
+  status: 'relayed',
+  token: null,
 };

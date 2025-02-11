@@ -65,6 +65,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/token-transfers">
     | StaticRoute<"/tokens">
     | DynamicRoute<"/tx/[hash]", { "hash": string }>
+    | StaticRoute<"/txn-withdrawals">
     | StaticRoute<"/txs">
     | DynamicRoute<"/txs/kettle/[hash]", { "hash": string }>
     | DynamicRoute<"/validators/[id]", { "id": string }>

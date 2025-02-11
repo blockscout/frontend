@@ -36,6 +36,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/account/verified-addresses': '%network_name% - my verified addresses',
   '/public-tags/submit': '%network_name% - public tag requests',
   '/withdrawals': '%network_name% withdrawals - track on %network_name% explorer',
+  '/txn-withdrawals': '%network_name% L2 to L1 message relayer',
   '/visualize/sol2uml': '%network_name% Solidity UML diagram',
   '/csv-export': '%network_name% export data to CSV',
   '/deposits': '%network_name% deposits (L1 > L2)',

@@ -70,6 +70,14 @@ const urlTest: yup.TestConfig = {
   exclusive: true,
 };
 
+const getYupValidationErrorMessage = (error: unknown) => 
+  typeof error === 'object' && 
+  error !== null && 
+  'errors' in error && 
+  Array.isArray(error.errors) ? 
+    error.errors.join(', ') : 
+    '';
+
 const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
   .object({
     id: yup.string().required(),
@@ -270,6 +278,44 @@ const beaconChainSchema = yup
       }),
   });
 
+const parentChainCurrencySchema = yup
+  .object()
+  .shape({
+    name: yup.string().required(),
+    symbol: yup.string().required(),
+    decimals: yup.number().required(),
+  });
+
+const parentChainSchema = yup
+  .object()
+  .transform(replaceQuotes)
+  .json()
+  .shape({
+    id: yup.number(),
+    name: yup.string(),
+    baseUrl: yup.string().test(urlTest).required(),
+    rpcUrls: yup.array().of(yup.string().test(urlTest)),
+    currency: yup
+      .mixed()
+      .test(
+        'shape',
+        (ctx) => {
+          try {
+            parentChainCurrencySchema.validateSync(ctx.originalValue);
+            throw new Error('Unknown validation error');
+          } catch (error: unknown) {
+            const message = getYupValidationErrorMessage(error);
+            return 'in \"currency\" property ' + (message ? `${ message }` : '');
+          }
+        },
+        (data) => {
+          const isUndefined = data === undefined;
+          return isUndefined || parentChainCurrencySchema.isValidSync(data);
+        },
+      ),
+    isTestnet: yup.boolean(),
+  });
+
 const rollupSchema = yup
   .object()
   .shape({
@@ -318,6 +364,34 @@ const rollupSchema = yup
         otherwise: (schema) => schema.test(
           'not-exist',
           'NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_ROLLUP_PARENT_CHAIN: yup
+      .mixed()
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: (value: string) => value,
+        then: (schema) => {
+          return schema.test(
+            'shape',
+            (ctx) => {
+              try {
+                parentChainSchema.validateSync(ctx.originalValue);
+                throw new Error('Unknown validation error');
+              } catch (error: unknown) {
+                const message = getYupValidationErrorMessage(error);
+                return 'Invalid schema were provided for NEXT_PUBLIC_ROLLUP_TYPE' + (message ? `: ${ message }` : '');
+              }
+            },
+            (data) => {
+              const isUndefined = data === undefined;
+              return isUndefined || parentChainSchema.isValidSync(data);
+            }
+          )
+        },
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined',
           value => value === undefined,
         ),
       }),
@@ -662,7 +736,7 @@ const schema = yup
             heroBannerSchema.validateSync(ctx.originalValue);
             throw new Error('Unknown validation error');
           } catch (error: unknown) {
-            const message = typeof error === 'object' && error !== null && 'errors' in error && Array.isArray(error.errors) ? error.errors.join(', ') : '';
+            const message = getYupValidationErrorMessage(error);
             return 'Invalid schema were provided for NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG' + (message ? `: ${ message }` : '');
           }
         },

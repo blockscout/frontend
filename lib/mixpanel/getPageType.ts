@@ -34,6 +34,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/account/verified-addresses': 'Verified addresses',
   '/public-tags/submit': 'Submit public tag',
   '/withdrawals': 'Withdrawals',
+  '/txn-withdrawals': 'Txn withdrawals',
   '/visualize/sol2uml': 'Solidity UML diagram',
   '/csv-export': 'Export data to CSV file',
   '/deposits': 'Deposits (L1 > L2)',
