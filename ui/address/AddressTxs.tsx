@@ -66,7 +66,8 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = 
   const isMobile = useIsMobile();
   const currentAddress = getQueryParamString(router.query.hash);
 
-  const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
+  const initialFilterValue = getFilterValue(router.query.filter);
+  const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(initialFilterValue);
 
   const addressTxsQuery = useQueryWithPages({
     resourceName: 'address_txs',
@@ -165,15 +166,14 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = 
     return null;
   }
 
-  // const filter = (
-  //   <AddressTxsFilter
-  //     defaultFilter={ filterValue }
-  //     onFilterChange={ handleFilterChange }
-  //     hasActiveFilter={ Boolean(filterValue) }
-  //     isLoading={ addressTxsQuery.pagination.isLoading }
-  //   />
-  // );
-  const filter = null;
+  const filter = (
+    <AddressTxsFilter
+      initialValue={ initialFilterValue }
+      onFilterChange={ handleFilterChange }
+      hasActiveFilter={ Boolean(filterValue) }
+      isLoading={ addressTxsQuery.pagination.isLoading }
+    />
+  );
 
   const csvExportLink = (
     <AddressCsvExportLink

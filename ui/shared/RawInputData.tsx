@@ -39,8 +39,10 @@ const RawInputData = ({ hex, rightSlot: rightSlotProp, defaultDataType = 'Hex', 
         variant="outline"
         defaultValue={ [ defaultDataType ] }
         onValueChange={ handleValueChange }
+        w="100px"
+        mr="auto"
       >
-        <SelectControl w="100px" mr="auto" loading={ isLoading }>
+        <SelectControl loading={ isLoading }>
           <SelectValueText placeholder="Select framework"/>
         </SelectControl>
         <SelectContent>

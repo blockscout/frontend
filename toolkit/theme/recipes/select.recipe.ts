@@ -8,7 +8,7 @@ export const recipe = defineSlotRecipe({
       display: 'flex',
       flexDirection: 'column',
       gap: '1.5',
-      width: 'full',
+      width: 'fit-content',
     },
     trigger: {
       display: 'flex',
@@ -156,12 +156,14 @@ export const recipe = defineSlotRecipe({
           bgColor: 'select.trigger.filter.border.selected',
           borderColor: 'select.trigger.filter.border.selected',
           _expanded: {
-            color: 'link.primary.hover',
-            borderColor: 'link.primary.hover',
+            color: 'select.trigger.filter.fg.selected',
+            bgColor: 'select.trigger.filter.border.selected',
+            borderColor: 'select.trigger.filter.border.selected',
           },
           _hover: {
             color: 'select.trigger.filter.fg.selected',
             borderColor: 'select.trigger.filter.border.selected',
+            bgColor: 'select.trigger.filter.border.selected',
           },
           _focusVisible: {
             borderColor: 'link.primary.hover',
@@ -174,6 +176,23 @@ export const recipe = defineSlotRecipe({
             _hover: {
               color: 'link.primary.hover',
               borderColor: 'link.primary.hover',
+              bgColor: 'transparent',
+            },
+          },
+          // If the default value is selected, the styles should be the same as when the placeholder is shown
+          '&[data-default-value="true"]': {
+            color: 'select.trigger.filter.fg',
+            borderColor: 'select.trigger.filter.border',
+            bgColor: 'transparent',
+            _hover: {
+              color: 'link.primary.hover',
+              borderColor: 'link.primary.hover',
+              bgColor: 'transparent',
+            },
+            _expanded: {
+              color: 'inherit',
+              borderColor: 'inherit',
+              bgColor: 'inherit',
             },
           },
         },

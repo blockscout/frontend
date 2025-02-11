@@ -1,10 +1,9 @@
 import type { NextRouter } from 'next/router';
 
-import type { SelectOption } from 'ui/shared/select/types';
-
 import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
+import type { SelectOption } from 'toolkit/chakra/select';
 
 const feature = config.features.marketplace;
 

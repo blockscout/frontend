@@ -1,5 +1,5 @@
 import type { EnsLookupSorting } from 'types/api/ens';
-import type { SelectOption } from 'ui/shared/select/types';
+import type { SelectOption } from 'toolkit/chakra/select';
 
 import getNextSortValueShared from 'ui/shared/sort/getNextSortValue';
 

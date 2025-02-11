@@ -2,10 +2,10 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
 import type { TransactionsSortingValue, TxsResponse } from 'types/api/transaction';
-import type { SelectOption } from 'ui/shared/select/types';
 
 import type { ResourceError } from 'lib/api/resources';
 import * as cookies from 'lib/cookies';
+import type { SelectOption } from 'toolkit/chakra/select';
 
 import sortTxs from './sortTxs';
 

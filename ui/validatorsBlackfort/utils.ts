@@ -2,7 +2,7 @@ import type {
   ValidatorsBlackfortSortingValue,
   ValidatorsBlackfortSortingField,
 } from 'types/api/validators';
-import type { SelectOption } from 'ui/shared/select/types';
+import type { SelectOption } from 'toolkit/chakra/select';
 
 export const VALIDATORS_BLACKFORT_SORT_OPTIONS: Array<SelectOption<ValidatorsBlackfortSortingValue>> = [
   { label: 'Default', value: undefined },

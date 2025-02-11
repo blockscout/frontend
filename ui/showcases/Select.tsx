@@ -3,6 +3,7 @@ import { noop } from 'es-toolkit';
 import React from 'react';
 
 import { SelectContent, SelectItem, SelectRoot, SelectControl, SelectValueText } from 'toolkit/chakra/select';
+import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
 import Sort from 'ui/shared/sort/Sort';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import { SORT_OPTIONS } from 'ui/txs/useTxsSort';
@@ -22,6 +23,11 @@ const txSortingOptions = createListCollection({
 });
 
 const SelectShowcase = () => {
+  const [ hasActiveFilter, setHasActiveFilter ] = React.useState(false);
+
+  const handleFilterChange = React.useCallback((nextValue: string) => {
+    setHasActiveFilter(nextValue !== txSortingOptions.items[0].value);
+  }, []);
 
   return (
     <Container value="select">
@@ -68,12 +74,14 @@ const SelectShowcase = () => {
               name="transactions_sorting"
               defaultValue={ [ txSortingOptions.items[0].value ] }
               collection={ txSortingOptions }
+              w="fit-content"
             />
             <Sort
               name="transactions_sorting"
               defaultValue={ [ txSortingOptions.items[0].value ] }
               collection={ txSortingOptions }
               isLoading
+              w="fit-content"
             />
           </Sample>
         </SamplesStack>
@@ -84,6 +92,25 @@ const SelectShowcase = () => {
             <TokenTransferFilter defaultTypeFilters={ [ ] } onTypeFilterChange={ noop } withAddressFilter/>
             <TokenTransferFilter defaultTypeFilters={ [ ] } onTypeFilterChange={ noop } appliedFiltersNum={ 2 }/>
             <TokenTransferFilter defaultTypeFilters={ [ ] } onTypeFilterChange={ noop } appliedFiltersNum={ 2 } isLoading/>
+          </Sample>
+        </SamplesStack>
+
+        <SectionSubHeader>Radio filter</SectionSubHeader>
+        <SamplesStack>
+          <Sample flexWrap="nowrap">
+            <PopoverFilterRadio
+              name="transactions_sorting"
+              collection={ txSortingOptions }
+              hasActiveFilter={ hasActiveFilter }
+              onChange={ handleFilterChange }
+            />
+            <PopoverFilterRadio
+              name="transactions_sorting"
+              collection={ txSortingOptions }
+              hasActiveFilter
+              onChange={ noop }
+              isLoading
+            />
           </Sample>
         </SamplesStack>
       </Section>

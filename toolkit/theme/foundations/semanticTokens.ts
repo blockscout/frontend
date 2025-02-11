@@ -243,12 +243,12 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
         filter: {
           fg: {
-            DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
-            selected: { value: { _light: '{colors.blue.600}', _dark: '{colors.gray.50}' } },
+            DEFAULT: { value: '{colors.button.dropdown.fg}' },
+            selected: { value: '{colors.button.dropdown.fg.selected}' },
           },
           border: {
-            DEFAULT: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.600}' } },
-            selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.600}' } },
+            DEFAULT: { value: '{colors.button.dropdown.border}' },
+            selected: { value: '{colors.button.dropdown.border.selected}' },
           },
         },
       },

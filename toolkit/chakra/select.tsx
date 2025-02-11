@@ -1,13 +1,18 @@
 'use client';
 
 import type { CollectionItem } from '@chakra-ui/react';
-import { Select as ChakraSelect, Portal } from '@chakra-ui/react';
+import { Select as ChakraSelect, Portal, useSelect, useSelectContext } from '@chakra-ui/react';
 import * as React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
 
 import { CloseButton } from './close-button';
 import { Skeleton } from './skeleton';
+
+export interface SelectOption<Value extends string = string> {
+  value: Value;
+  label: string;
+}
 
 export interface SelectControlProps extends ChakraSelect.ControlProps {
   clearable?: boolean;
@@ -20,11 +25,16 @@ export const SelectControl = React.forwardRef<
   HTMLButtonElement,
   SelectControlProps
 >(function SelectControl(props, ref) {
-  const { children, clearable, noIndicator, triggerProps, loading, ...rest } = props;
+  // NOTE: here defaultValue means the "default" option of the select, not its initial value
+  const { children, clearable, noIndicator, triggerProps, loading, defaultValue, ...rest } = props;
+
+  const context = useSelectContext();
+  const isDefaultValue = Array.isArray(defaultValue) ? context.value.every((item) => defaultValue.includes(item)) : context.value === defaultValue;
+
   return (
     <Skeleton loading={ loading } asChild>
       <ChakraSelect.Control { ...rest } className="group">
-        <ChakraSelect.Trigger ref={ ref } { ...triggerProps }>{ children }</ChakraSelect.Trigger>
+        <ChakraSelect.Trigger ref={ ref } { ...triggerProps } data-default-value={ isDefaultValue }>{ children }</ChakraSelect.Trigger>
         { (!noIndicator || clearable) && (
           <ChakraSelect.IndicatorGroup>
             { clearable && <SelectClearTrigger/> }

@@ -2,7 +2,7 @@ import type {
   ValidatorsStabilitySortingValue,
   ValidatorsStabilitySortingField,
 } from 'types/api/validators';
-import type { SelectOption } from 'ui/shared/select/types';
+import type { SelectOption } from 'toolkit/chakra/select';
 
 export const VALIDATORS_STABILITY_SORT_OPTIONS: Array<SelectOption<ValidatorsStabilitySortingValue>> = [
   { label: 'Default', value: undefined },

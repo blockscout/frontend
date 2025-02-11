@@ -1,5 +1,5 @@
 import type { VerifiedContractsSortingValue, VerifiedContractsSortingField } from 'types/api/verifiedContracts';
-import type { SelectOption } from 'ui/shared/select/types';
+import type { SelectOption } from 'toolkit/chakra/select';
 
 export const SORT_OPTIONS: Array<SelectOption<VerifiedContractsSortingValue>> = [
   { label: 'Default', value: undefined },
