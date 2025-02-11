@@ -49,7 +49,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
             pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
             aria-label={ `${ item.text } link group` }
             position="relative"
-            border={ item.isActive ? '0.5px solid rgba(160, 126, 255, 0.24)' : 'none' }
+            border={ item.isActive ? '0.5px solid #FEF1F9' : 'none' }
           >
             <HStack spacing={ 0 } overflow="hidden">
               <NavLinkIcon item={ item }/>
