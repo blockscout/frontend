@@ -1,6 +1,6 @@
 # Contribution guide
 
-Thanks for showing interest to contribute to Blockscout. The following steps will get you up and running.
+Thanks for showing interest in contributing to Blockscout. The following steps will get you up and running.
 
 &nbsp;
 
@@ -39,7 +39,7 @@ We welcome contributions that enhance the project and improve the overall qualit
 
 ## Toolkit
 
-We are using following technology stack in the project
+We are using the following technology stack in the project.
 - [Yarn](https://yarnpkg.com/) as package manager
 - [ReactJS](https://reactjs.org/) as UI library
 - [Next.js](https://nextjs.org/) as application framework
@@ -65,7 +65,7 @@ A. Custom configuration:
 
 B. Pre-defined configuration:
 
-1. Optionally, clone `.env.example` file into `configs/envs/.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets your need.
+1. Optionally, clone `.env.example` file into `configs/envs/.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets you need.
 2. Choose one of the predefined configurations located in the `/configs/envs` folder.
 3. Start your local Dev Server using the `yarn dev:preset <config_preset_name>` command.
 4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
@@ -86,7 +86,7 @@ For all types of dependencies:
 
 These are the steps that you have to follow to make everything work:
 1. First and foremost, document variable in the [/docs/ENVS.md](./ENVS.md) file; provide short description, its expected type, requirement flag, default and example value; **do not skip this step** otherwise the app will not receive variable value at run-time
-2. Make sure that you have added a property to React app config (`configs/app/index.ts`) in appropriate section that is associated with this variable; do not use ENV variable values directly in the application code; decide where this variable belongs to and place it under the certain section:
+2. Make sure that you have added a property to React app config (`configs/app/index.ts`) in appropriate section that is associated with this variable; do not use ENV variable values directly in the application code; decide where this variable belongs and place it under the appropriate section:
     - `app` - the front-end app itself
     - `api` - the main API configuration
     - `chain` - the Blockchain parameters
@@ -121,22 +121,22 @@ Every feature or bugfix should be accompanied by tests, either unit tests or com
 
 If your changes are only related to the logic of the app and not to its visual presentation, then try to write unit tests using [Jest](https://jestjs.io/) framework and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/). In general these tests are "cheaper" and faster than Playwright ones. Use them for testing your utilities and React hooks, as well as the whole components logic. 
 
-Place your test suites in `.test.ts` or `.test.tsx` files. You can find or add some mocks or other helpful utilities for these tests purposes in the `/jest` folder. 
+Place your test files in `.test.ts` or `.test.tsx`. You can find or add some mocks or other helpful utilities for these tests purposes in the `/jest` folder. 
 
-*Note*, that we are using custom renderer and wrapper in all tests for React components, so please do not import package `@testing-library/react` directly in your test suites, instead use imports from `jest/lib` utility.
+*Note*, that we are using custom renderer and wrapper in all tests for React components, so please do not import the package `@testing-library/react` directly in your test files, instead use imports from `jest/lib` utility.
 
 ### Playwright components tests
 
 For changes associated with the UI itself write components visual tests using [Playwright](https://playwright.dev/) framework and its *experimental* [Components test library](https://playwright.dev/docs/test-components). Please be aware of known [issues and limitations](https://playwright.dev/docs/test-components#known-issues-and-limitations) of this library.
 
-Your tests files should have `.pw.tsx` extension. All configs, mocks, fixtures and other utilities for these tests live in `/playwright` folder.
+Your test files should have the `.pw.tsx` extension. All configs, mocks, fixtures and other utilities for these tests live in `/playwright` folder.
 
 We have 3 pre-configured projects. You can run your test with the desired project by simply adding its [tag](https://playwright.dev/docs/test-annotations#tag-tests) to the test name:
-- `default` - default project for all test, uses desktop Chrome desktop device; don't need to specify its tag, instead use `-@default` tag to skip test run with this project
+- `default` - default project for all tests, uses a desktop Chrome device; don't need to specify its tag, instead use `-@default` tag to skip test run with this project
 - `mobile` - project for testing on mobile devices, uses Safari mobile browser; add tag `+@mobile` to run test with this project
 - `dark-color-mode` - project for testing app in the dark color mode, uses desktop Chrome desktop device with forced dark color mode; add tag `+@dark-mode` to run test with this project.
 
-*Note* that, since we are developing not on the same operating system as our CI system, we have to use Docker to generate or update the screenshots. In order to do that use `yarn test:pw:docker <path-to-file> --update-snapshots` command. Please **do not commit** any screenshots generated via `yarn test:pw:local` command, their associated tests will fail in the CI run.
+*Note* that, since we are developing not on the same operating system as our CI system, we have to use Docker to generate or update the screenshots. In order to do that use `yarn test:pw:docker <path-to-file> --update-snapshots` command. Please **do not commit** any screenshots generated via the `yarn test:pw:local` command, as their associated tests will fail in the CI run.
 
 &nbsp;
 
@@ -168,7 +168,7 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 
 ### Opening PR and getting it accepted
 
-1. Push your changes and create a Pull Request. If you are still working on the task, please use "Draft Pull Request" option, so we know that it is not ready yet. In addition, you can add label "skip checks" to your PR, so all CI checks will not be triggered. 
+1. Push your changes and create a Pull Request. If you are still working on the task, please use the "Draft Pull Request" option so we know that it is not ready yet. In addition, you can add label "skip checks" to your PR, so all CI checks will not be triggered. 
 2. Once you finish your work, remove label "skip checks" from PR, if it was added before, and publish PR if it was in the draft state
 3. Make sure that all code checks and tests are successfully passed
 4. Add description to your Pull Request and link an existing issue(s) that it is fixing
