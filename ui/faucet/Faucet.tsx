@@ -16,12 +16,15 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react';
+import Image from 'next/image';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { isAddress } from 'viem';
 
 import { sleep } from 'configs/app/utils';
 import IconSvg from 'ui/shared/IconSvg';
+
+import mocaIcon from '../../icons/logo/icon-moca-placeholder.png';
 
 const enum FAUCET_REQUEST_TYPE {
   REQUEST = 0,
@@ -276,7 +279,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
                 Request $MOCA on MocaChain
               </Highlight>
             </Heading>
-            <IconSvg name="icon-moca-placeholder" w="37px" h="25px"/>
+            <Image src={ mocaIcon } alt="Moca Icon" style={{ width: '25px', height: '25px', margin: '0 4px' }}/>
             <Text fontWeight="700" color="#000000">
               Testnet
             </Text>

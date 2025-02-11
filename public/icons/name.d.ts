@@ -99,7 +99,6 @@
 	| "loading"
 	| "lock"
 	| "logo-moca-placeholder"
-	| "mechain_square"
 	| "merits_colored"
 	| "merits_slim"
 	| "merits_with_dot_slim"

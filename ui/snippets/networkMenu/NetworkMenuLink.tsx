@@ -1,10 +1,12 @@
 import { Box, Flex, Text, Image, useColorModeValue } from '@chakra-ui/react';
+import Images from 'next/image';
 import React from 'react';
 
 import type { FeaturedNetwork } from 'types/networks';
 
 import IconSvg from 'ui/shared/IconSvg';
 
+import mocaIcon from '../../../icons/logo/icon-moca-placeholder.png';
 import useColors from './useColors';
 
 interface Props extends FeaturedNetwork {
@@ -20,11 +22,12 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
   const iconEl = icon ? (
     <Image w="30px" h="30px" src={ icon } alt={ `${ title } network icon` } style={ style }/>
   ) : (
-    <IconSvg
-      name="icon-moca-placeholder"
-      boxSize="30px"
-      color={ colors.iconPlaceholder.default }
-    />
+    // <IconSvg
+    //   name="icon-moca-placeholder"
+    //   boxSize="30px"
+    //   color={ colors.iconPlaceholder.default }
+    // />
+    <Images src={ mocaIcon } alt="Moca Icon" style={{ width: '30px', height: '30px' }}/>
   );
 
   return (
