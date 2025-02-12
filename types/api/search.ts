@@ -69,6 +69,7 @@ export interface SearchResultTx {
   transaction_hash?: string;
   timestamp: string;
   url?: string; // not used by the frontend, we build the url ourselves
+  tx_hash?: string;
 }
 
 export interface SearchResultBlob {
