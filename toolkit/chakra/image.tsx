@@ -6,12 +6,11 @@ import { Skeleton } from './skeleton';
 
 export interface ImageProps extends ChakraImageProps {
   fallback?: React.ReactNode;
-  containerProps?: BoxProps;
 }
 
 export const Image = React.forwardRef<HTMLImageElement, ImageProps>(
   function Image(props, ref) {
-    const { fallback, src, containerProps, ...rest } = props;
+    const { fallback, src, ...rest } = props;
 
     const [ loading, setLoading ] = React.useState(true);
     const [ error, setError ] = React.useState(false);
@@ -34,14 +33,17 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(
     }
 
     return (
-      <Skeleton loading={ loading } { ...containerProps }>
+      <>
+        { loading && <Skeleton loading { ...rest as BoxProps }/> }
         <ChakraImage
           ref={ ref }
           src={ src }
           onError={ handleLoadError }
           onLoad={ handleLoadSuccess }
           { ...rest }
+          display={ loading ? 'none' : rest.display || 'inline-block' }
         />
-      </Skeleton>
+      </>
     );
-  });
+  },
+);

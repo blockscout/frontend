@@ -1,7 +1,7 @@
 'use client';
 
 import type { CollectionItem } from '@chakra-ui/react';
-import { Select as ChakraSelect, Portal, useSelect, useSelectContext } from '@chakra-ui/react';
+import { Select as ChakraSelect, Portal, useSelectContext } from '@chakra-ui/react';
 import * as React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';

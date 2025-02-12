@@ -1,9 +1,10 @@
-import { Box, Link, Text, chakra } from '@chakra-ui/react';
+import { Box, Text, chakra } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
 import { ndash } from 'lib/html-entities';
 import isBrowser from 'lib/isBrowser';
 import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 type AdData = {
@@ -52,6 +53,7 @@ const CoinzillaTextAd = ({ className }: { className?: string }) => {
   if (isLoading) {
     return (
       <Skeleton
+        loading
         className={ className }
         h={{ base: 12, lg: 6 }}
         w="100%"
@@ -83,12 +85,16 @@ const CoinzillaTextAd = ({ className }: { className?: string }) => {
         <Text as="span" mr={ 1 }>🎨</Text> : (
           <Image
             src={ adData.ad.thumbnail }
-            containerProps={{ width: '20px', height: '20px', mb: '-4px', mr: 1, display: 'inline-block' }}
+            width="20px"
+            height="20px"
+            mb="-4px"
+            mr={ 1 }
+            display="inline-block"
             alt=""
           />
         ) }
       <Text as="span" whiteSpace="pre-wrap">{ `${ adData.ad.name } ${ ndash } ${ adData.ad.description_short } ` }</Text>
-      <Link href={ adData.ad.url }>{ adData.ad.cta_button }</Link>
+      <Link href={ adData.ad.url } external noIcon>{ adData.ad.cta_button }</Link>
     </Box>
   );
 };

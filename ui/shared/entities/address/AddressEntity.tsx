@@ -154,7 +154,7 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   noAltHash?: boolean;
 }
 
-const AddressEntry = (props: EntityProps) => {
+const AddressEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
   const highlightContext = useAddressHighlightContext(props.noHighlight);
   const settingsContext = useSettingsContext();
@@ -180,7 +180,7 @@ const AddressEntry = (props: EntityProps) => {
   );
 };
 
-export default React.memo(chakra(AddressEntry));
+export default React.memo(chakra(AddressEntity));
 
 export {
   Container,

@@ -49,10 +49,7 @@ const Icon = (props: IconProps) => {
   return (
     <Image
       { ...styles }
-      containerProps={{
-        className: props.className,
-        ...styles,
-      }}
+      className={ props.className }
       src={ props.token.icon_url ?? undefined }
       alt={ `${ props.token.name || 'token' } logo` }
       fallback={ <TokenLogoPlaceholder { ...styles }/> }
