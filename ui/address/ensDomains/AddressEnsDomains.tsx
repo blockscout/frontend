@@ -37,8 +37,6 @@ const DomainsGrid = ({ data }: { data: Array<bens.Domain> }) => {
 };
 
 const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
-  // const { isOpen, onToggle, onClose } = useDisclosure();
-
   const { data, isPending, isError } = query;
 
   if (isError) {
@@ -85,9 +83,9 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
 
   return (
     <PopoverRoot>
-      <PopoverTrigger>
-        <Box>
-          <Tooltip content="List of names resolved or owned by this address">
+      <Tooltip content="List of names resolved or owned by this address">
+        <div>
+          <PopoverTrigger>
             <Button
               size="sm"
               variant="dropdown"
@@ -100,9 +98,9 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
               <chakra.span hideBelow="xl">{ totalRecords } Domain{ data.items.length > 1 ? 's' : '' }</chakra.span>
               <chakra.span hideFrom="xl">{ totalRecords }</chakra.span>
             </Button>
-          </Tooltip>
-        </Box>
-      </PopoverTrigger>
+          </PopoverTrigger>
+        </div>
+      </Tooltip>
       <PopoverContent w={{ lg: '500px' }}>
         <PopoverBody textStyle="sm" display="flex" flexDir="column" rowGap={ 5 } alignItems="flex-start">
           { mainDomain && (

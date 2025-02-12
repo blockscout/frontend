@@ -53,6 +53,7 @@ const CopyToClipboard = (props: Props) => {
       contentProps={{ zIndex: 'tooltip2' }}
       open={ disclosure.open }
       onOpenChange={ disclosure.onOpenChange }
+      closeOnPointerDown={ false }
     >
       <IconButton
         aria-label="copy"

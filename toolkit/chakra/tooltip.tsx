@@ -16,7 +16,6 @@ export interface TooltipProps extends ChakraTooltip.RootProps {
   disableOnMobile?: boolean;
 }
 
-// TODO @tom2drum fix flashing svg icons when use tooltip (disabled) + popover
 export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
   function Tooltip(props, ref) {
     const {
@@ -72,7 +71,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         open={ open }
         onOpenChange={ isMobile ? undefined : handleOpenChange }
         closeOnClick={ false }
-        closeOnPointerDown={ false }
+        closeOnPointerDown={ true }
         variant={ variant }
         lazyMount={ lazyMount }
         unmountOnExit={ unmountOnExit }

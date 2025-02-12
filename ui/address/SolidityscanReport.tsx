@@ -7,8 +7,7 @@ import React from 'react';
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import useFetchReport from 'lib/solidityScan/useFetchReport';
 import { Link } from 'toolkit/chakra/link';
-import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
-import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
 import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanReportScore';
@@ -18,7 +17,6 @@ interface Props {
 }
 
 const SolidityscanReport = ({ hash }: Props) => {
-  const { open, onOpenChange } = useDisclosure();
 
   const { data, isPlaceholderData, isError } = useFetchReport({ hash });
 
@@ -37,16 +35,11 @@ const SolidityscanReport = ({ hash }: Props) => {
   const vulnerabilitiesCount = vulnerabilitiesCounts.reduce((acc, val) => acc + val, 0);
 
   return (
-    <PopoverRoot onOpenChange={ onOpenChange } open={ open }>
-      <PopoverTrigger>
-        <Box>
-          <SolidityscanReportButton
-            score={ score }
-            isLoading={ isPlaceholderData }
-            isActive={ open }
-          />
-        </Box>
-      </PopoverTrigger>
+    <PopoverRoot>
+      <SolidityscanReportButton
+        score={ score }
+        isLoading={ isPlaceholderData }
+      />
       <PopoverContent w={{ base: '100vw', lg: '328px' }}>
         <PopoverBody textStyle="sm">
           <Box mb={ 5 } lineHeight="25px">

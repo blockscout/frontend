@@ -2,9 +2,12 @@ import React from 'react';
 
 import { Button } from 'toolkit/chakra/button';
 import { Checkbox } from 'toolkit/chakra/checkbox';
+import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverContent, PopoverRoot, PopoverTrigger, PopoverBody } from 'toolkit/chakra/popover';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import { BACKGROUND_DEFAULT } from 'ui/home/HeroBanner';
+import IconSvg from 'ui/shared/IconSvg';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
@@ -95,6 +98,24 @@ const ButtonShowcase = () => {
               </PopoverContent>
             </PopoverRoot>
             <Button variant="dropdown" disabled>Disabled</Button>
+
+            <PopoverRoot>
+              <Tooltip content="Tooltip content">
+                <div>
+                  <PopoverTrigger>
+                    <IconButton variant="dropdown" size="md" px={ 2 }>
+                      <IconSvg name="explorer" boxSize={ 5 }/>
+                      With tooltip
+                    </IconButton>
+                  </PopoverTrigger>
+                </div>
+              </Tooltip>
+              <PopoverContent>
+                <PopoverBody>
+                  Popover content
+                </PopoverBody>
+              </PopoverContent>
+            </PopoverRoot>
           </Sample>
 
           <Sample label="variant: header">
