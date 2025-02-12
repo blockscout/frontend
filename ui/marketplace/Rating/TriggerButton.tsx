@@ -31,6 +31,7 @@ const TriggerButton = (
   const textColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
   const onFocusCapture = usePreventFocusAfterModalClosing();
 
+  // TODO @tom2drum remove all such occurrences of useDisclosure
   // have to implement controlled tooltip on mobile because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
   const { isOpen, onToggle, onClose } = useDisclosure();
   const isMobile = useIsMobile();

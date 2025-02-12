@@ -72,6 +72,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         open={ open }
         onOpenChange={ isMobile ? undefined : handleOpenChange }
         closeOnClick={ false }
+        closeOnPointerDown={ false }
         variant={ variant }
         lazyMount={ lazyMount }
         unmountOnExit={ unmountOnExit }

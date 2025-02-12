@@ -23,6 +23,7 @@ import AlertShowcase from 'ui/showcases/Alert';
 import BadgeShowcase from 'ui/showcases/Badge';
 import ButtonShowcase from 'ui/showcases/Button';
 import CheckboxShowcase from 'ui/showcases/Checkbox';
+import ClipboardShowcase from 'ui/showcases/Clipboard';
 import DialogShowcase from 'ui/showcases/Dialog';
 import InputShowcase from 'ui/showcases/Input';
 import LinkShowcase from 'ui/showcases/Link';
@@ -54,6 +55,7 @@ const ChakraShowcases = () => {
           <TabsTrigger value="badge">Badge</TabsTrigger>
           <TabsTrigger value="button">Button</TabsTrigger>
           <TabsTrigger value="checkbox">Checkbox</TabsTrigger>
+          <TabsTrigger value="clipboard">Clipboard</TabsTrigger>
           <TabsTrigger value="dialog">Dialog</TabsTrigger>
           <TabsTrigger value="input">Input</TabsTrigger>
           <TabsTrigger value="link">Link</TabsTrigger>
@@ -71,6 +73,7 @@ const ChakraShowcases = () => {
         <BadgeShowcase/>
         <ButtonShowcase/>
         <CheckboxShowcase/>
+        <ClipboardShowcase/>
         <DialogShowcase/>
         <InputShowcase/>
         <LinkShowcase/>

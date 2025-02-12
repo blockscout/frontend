@@ -1,77 +1,71 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import type { IconButtonProps } from 'toolkit/chakra/icon-button';
 import { IconButton } from 'toolkit/chakra/icon-button';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import useClipboard from 'toolkit/hooks/useClipboard';
-import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
-export interface Props {
+export interface Props extends Omit<IconButtonProps, 'type' | 'loading'> {
   text: string;
-  className?: string;
+  type?: 'link' | 'text' | 'share';
   isLoading?: boolean;
-  onClick?: (event: React.MouseEvent) => void;
-  size?: number;
-  type?: 'link';
-  icon?: IconName;
-  // TODO @tom2drum check if we need this
-  visual?: string;
-  // TODO @tom2drum check if we need this
-  colorScheme?: string;
 }
 
-const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, icon, colorScheme }: Props) => {
-  const { hasCopied, copy } = useClipboard(text, 1000);
-  // const [ copiedText, copyToClipboard ] = useCopyToClipboard();
-  // const [ copied, setCopied ] = useState(false);
-  // TODO @tom2drum check if we need this
-  // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
-  const { open, onOpen, onClose } = useDisclosure();
-  const colorProps = colorScheme ? {} : { color: { _light: 'gray.400', _dark: 'gray.500' } };
-  const iconName = icon || (type === 'link' ? 'link' : 'copy');
+const CopyToClipboard = (props: Props) => {
+  const { text, type = 'text', isLoading, onClick, boxSize = 5, ...rest } = props;
 
-  // useEffect(() => {
-  //   if (hasCopied) {
-  //     setCopied(true);
-  //   } else {
-  //     setCopied(false);
-  //   }
-  // }, [ hasCopied ]);
+  const { hasCopied, copy, disclosure } = useClipboard(text);
 
-  const handleClick = React.useCallback((event: React.MouseEvent) => {
+  const handleClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.stopPropagation();
     copy();
     onClick?.(event);
   }, [ onClick, copy ]);
 
-  if (isLoading) {
-    return <Skeleton boxSize={ size } className={ className } borderRadius="sm" flexShrink={ 0 } ml={ 2 } display="inline-block" loading/>;
-  }
+  const tooltipContent = (() => {
+    if (hasCopied) {
+      return 'Copied';
+    }
+
+    if (type === 'link') {
+      return 'Copy link to clipboard';
+    }
+
+    return 'Copy to clipboard';
+  })();
+
+  const iconName = (() => {
+    switch (type) {
+      case 'link':
+        return 'link';
+      case 'share':
+        return 'share';
+      default:
+        return 'copy';
+    }
+  })();
 
   return (
     <Tooltip
-      content={ hasCopied ? 'Copied' : `Copy${ type === 'link' ? ' link ' : ' ' }to clipboard` }
-      contentProps={{
-        zIndex: 'tooltip2',
-      }}
-      // open={ hasCopied }
+      content={ tooltipContent }
+      contentProps={{ zIndex: 'tooltip2' }}
+      open={ disclosure.open }
+      onOpenChange={ disclosure.onOpenChange }
     >
       <IconButton
-        { ...colorProps }
         aria-label="copy"
-        boxSize={ size }
-        colorScheme={ colorScheme }
+        boxSize={ boxSize }
         onClick={ handleClick }
-        className={ className }
-        // onMouseEnter={ onOpen }
-        // onMouseLeave={ onClose }
         ml={ 2 }
-        borderRadius="none"
+        borderRadius="sm"
+        loading={ isLoading }
+        color="icon.info"
+        _hover={{ color: 'link.primary.hover' }}
+        { ...rest }
       >
-        <IconSvg name={ iconName } boxSize={ size }/>
+        <IconSvg name={ iconName } boxSize="full"/>
       </IconButton>
     </Tooltip>
   );
