@@ -398,7 +398,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
             { data.type === 'metadata_tag' && (
             // we show regular tag because we don't need all meta info here, but need to highlight search term
               <Tag display="flex" alignItems="center">
-                <EntityTagIcon data={ data.metadata } iconColor="gray.400"/>
+                <EntityTagIcon data={ data.metadata }/>
                 <span dangerouslySetInnerHTML={{ __html: highlightText(data.metadata.name, searchTerm) }}/>
               </Tag>
             ) }
