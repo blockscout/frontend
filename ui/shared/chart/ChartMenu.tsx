@@ -85,7 +85,7 @@ const ChartMenu = ({
           })
           .then((dataUrl) => {
             const link = document.createElement('a');
-            link.download = `${ title } (Blockscout chart).png`;
+            link.download = `${ title } (Moca Chain chart).png`;
             link.href = dataUrl;
             link.click();
             link.remove();

@@ -12,7 +12,7 @@ import useFetch from 'lib/hooks/useFetch';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import FooterLinkItem from './FooterLinkItem';
-import IntTxsIndexingStatus from './IntTxsIndexingStatus';
+// import IntTxsIndexingStatus from './IntTxsIndexingStatus';
 // import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 4;
@@ -107,7 +107,7 @@ const Footer = () => {
         mb={{ base: 5, lg: 10 }}
         _empty={{ display: 'none' }}
       >
-        { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
+        { /* { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> } */ }
         <NetworkAddToWallet/>
       </Flex>
     );

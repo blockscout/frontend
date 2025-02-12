@@ -180,7 +180,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
           query="$MOCA"
           styles={{ color: '#C15E97', fontWeight: '700' }}
         >
-          To receive $MOCA on MocaChain Testnet, please follow the steps below.
+          To receive $MOCA on Moca Chain Testnet, please follow the steps below.
         </Highlight>
       </Heading>
       <Text
@@ -276,7 +276,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
               lineHeight="28px"
             >
               <Highlight query="$MOCA" styles={{ color: '#C15E97' }}>
-                Request $MOCA on MocaChain
+                Request $MOCA on Moca Chain
               </Highlight>
             </Heading>
             <Image src={ mocaIcon } alt="Moca Icon" style={{ width: '25px', height: '25px', margin: '0 4px' }}/>
@@ -357,14 +357,14 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
                 justifyContent="space-between"
               >
                 <Box as="span" textAlign="left" fontSize="14px" fontWeight="500">
-                  What is a testnet MocaChain faucet?
+                  What is a testnet Moca Chain faucet?
                 </Box>
                 <AccordionIcon/>
               </Flex>
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
-              A MocaChain faucet is a developer tool designed to provide testnet $MOCA tokens, allowing developers to test and troubleshoot their decentralized
-              applications or protocols before deploying them on the MocaChain mainnet where real $MOCA tokens are required. The MocaChain testnet faucet is
+              A Moca Chain faucet is a developer tool designed to provide testnet $MOCA tokens, allowing developers to test and troubleshoot their decentralized
+              applications or protocols before deploying them on the Moca Chain mainnet where real $MOCA tokens are required. The Moca Chain testnet faucet is
               designed to be developer-friendly, providing easy access to testnet tokens for integration and testing purposes.
             </AccordionPanel>
           </AccordionItem>
@@ -390,9 +390,9 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
               </Flex>
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
-              Testnet $MOCA tokens are a test version of the MocaChain network&apos;s native token,
+              Testnet $MOCA tokens are a test version of the Moca Chain network&apos;s native token,
               allowing developers to simulate transactions and interactions
-              within the zkMe ecosystem without using real value. These tokens can be used in place of mainnet $MOCA tokens on the MocaChain testnet.
+              within the zkMe ecosystem without using real value. These tokens can be used in place of mainnet $MOCA tokens on the Moca Chain testnet.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem
@@ -417,9 +417,10 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
               </Flex>
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
-              First you need to join zkMe&apos;s discord community(https://discord.com/invite/SJ2RDs9NGM) and hit&ldquo;Verify&ldquo;.
+              { /* First you need to join zkMe&apos;s discord community(https://discord.com/invite/SJ2RDs9NGM) and hit&ldquo;Verify&ldquo;.
               When the button changes to&ldquo;Account Verified&ldquo;, you can go to step 2.
-              After entering the address and hit &ldquo;Request&ldquo;, we will send tokens to this address.
+              After entering the address and hit &ldquo;Request&ldquo;, we will send tokens to this address. */ }
+              After entering the address and hit “Request“, we will send tokens to this address.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem
