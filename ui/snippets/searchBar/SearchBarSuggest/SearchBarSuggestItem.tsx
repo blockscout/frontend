@@ -2,7 +2,7 @@ import type { LinkProps as NextLinkProps } from 'next/link';
 import NextLink from 'next/link';
 import React from 'react';
 
-import type { SearchResultItem } from 'types/api/search';
+import type { SearchResultItem } from 'types/client/search';
 
 import { route } from 'nextjs-routes';
 
@@ -28,12 +28,6 @@ interface Props {
 }
 
 const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, isFirst }: Props) => {
-  if (data.type === 'transaction') {
-    if (data['transaction_hash']) {
-      data.tx_hash = data['transaction_hash'];
-    }
-  }
-
   const url = (() => {
     switch (data.type) {
       case 'token': {
@@ -45,9 +39,14 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, isFirst }: 
         return route({ pathname: '/address/[hash]', query: { hash: data.address } });
       }
       case 'transaction': {
-        return route({ pathname: '/tx/[hash]', query: { hash: data.tx_hash } });
+        return route({ pathname: '/tx/[hash]', query: { hash: data.transaction_hash } });
       }
       case 'block': {
+        const isFutureBlock = data.timestamp === undefined;
+        if (isFutureBlock) {
+          return route({ pathname: '/block/countdown/[height]', query: { height: String(data.block_number) } });
+        }
+
         return route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } });
       }
       case 'user_operation': {
@@ -74,15 +73,26 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, isFirst }: 
   const content = (() => {
     switch (data.type) {
       case 'token': {
-        return <SearchBarSuggestToken data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+        return (
+          <SearchBarSuggestToken
+            data={ data }
+            searchTerm={ searchTerm }
+            isMobile={ isMobile }
+          />
+        );
       }
       case 'contract':
       case 'address': {
         return <SearchBarSuggestAddress data={ data } searchTerm={ searchTerm } isMobile={ isMobile } isFirst={ isFirst }/>;
       }
       case 'label': {
-        return <SearchBarSuggestLabel data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
-
+        return (
+          <SearchBarSuggestLabel
+            data={ data }
+            searchTerm={ searchTerm }
+            isMobile={ isMobile }
+          />
+        );
       }
       case 'block': {
         return <SearchBarSuggestBlock data={ data } searchTerm={ searchTerm } isMobile={ isMobile } isFirst={ isFirst }/>;

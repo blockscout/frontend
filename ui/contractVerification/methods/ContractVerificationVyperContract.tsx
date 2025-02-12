@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { SmartContractVerificationConfig } from 'types/api/contract';
+import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
 import ContractVerificationFieldCode from '../fields/ContractVerificationFieldCode';

@@ -29,7 +29,7 @@ test('protocol tag +@dark-mode', async({ render }) => {
 });
 
 test('tag with link and long name +@dark-mode', async({ render }) => {
-  const component = await render(<EntityTag data={ addressMetadataMock.infoTagWithLink } truncate/>);
+  const component = await render(<EntityTag data={ addressMetadataMock.infoTagWithLink } maxW="300px"/>);
   await expect(component).toHaveScreenshot();
 });
 

@@ -1,35 +1,40 @@
-import { chakra, Flex, Tooltip, Skeleton, useBoolean } from '@chakra-ui/react';
+import { chakra, Flex, Tooltip, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { MarketplaceAppOverview, MarketplaceAppSecurityReport } from 'types/client/marketplace';
-import { ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceAppOverview, MarketplaceAppSecurityReport, ContractListTypes } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import RewardsButton from 'ui/rewards/RewardsButton';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
-import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
-import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
+import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import AppSecurityReport from './AppSecurityReport';
 import ContractListModal from './ContractListModal';
 import MarketplaceAppInfo from './MarketplaceAppInfo';
+import Rating from './Rating/Rating';
+import useRatings from './Rating/useRatings';
 
 type Props = {
+  appId: string;
   data: MarketplaceAppOverview | undefined;
   isLoading: boolean;
   securityReport?: MarketplaceAppSecurityReport;
-}
+};
 
-const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
-  const [ showContractList, setShowContractList ] = useBoolean(false);
+const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props) => {
+  const [ contractListType, setContractListType ] = React.useState<ContractListTypes>();
   const appProps = useAppContext();
   const isMobile = useIsMobile();
+
+  const { ratings, userRatings, rateApp, isRatingSending, isRatingLoading, canRate } = useRatings();
 
   const goBackUrl = React.useMemo(() => {
     if (appProps.referrer && appProps.referrer.includes('/apps') && !appProps.referrer.includes('/apps/')) {
@@ -44,9 +49,12 @@ const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
     } catch (err) {}
   }
 
+  const showContractList = React.useCallback((id: string, type: ContractListTypes) => setContractListType(type), []);
+  const hideContractList = React.useCallback(() => setContractListType(undefined), []);
+
   return (
     <>
-      <Flex alignItems="center" flexWrap="wrap" mb={{ base: 3, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
+      <Flex alignItems="center" mb={{ base: 3, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
         { !isMobile && <NetworkLogo isCollapsed/> }
         <Tooltip label="Back to dApps list">
           <LinkInternal display="inline-flex" href={ goBackUrl } h="32px" isLoading={ isLoading } ml={ isMobile ? 0 : 4 }>
@@ -74,24 +82,37 @@ const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
           <AppSecurityReport
             id={ data?.id || '' }
             securityReport={ securityReport }
-            showContractList={ setShowContractList.on }
+            showContractList={ showContractList }
             isLoading={ isLoading }
             onlyIcon={ isMobile }
             source="App page"
           />
         ) }
+        <Rating
+          appId={ appId }
+          rating={ ratings[appId] }
+          userRating={ userRatings[appId] }
+          rate={ rateApp }
+          isSending={ isRatingSending }
+          isLoading={ isRatingLoading }
+          canRate={ canRate }
+          source="App page"
+        />
         { !isMobile && (
-          <Flex flex="1" justifyContent="flex-end">
-            { config.features.account.isEnabled && <ProfileMenuDesktop boxSize="32px" fallbackIconSize={ 16 }/> }
-            { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop size="sm"/> }
+          <Flex ml="auto" gap={ 2 }>
+            { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
+            {
+              (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
+              (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
+            }
           </Flex>
         ) }
       </Flex>
-      { showContractList && (
+      { contractListType && (
         <ContractListModal
-          type={ ContractListTypes.ANALYZED }
+          type={ contractListType }
           contracts={ securityReport?.contractsData }
-          onClose={ setShowContractList.off }
+          onClose={ hideContractList }
         />
       ) }
     </>

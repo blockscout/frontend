@@ -22,7 +22,7 @@ type Props = {
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
   ownerFilter?: string;
   shouldRender?: boolean;
-}
+};
 
 const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter, shouldRender = true }: Props) => {
   const isMobile = useIsMobile();

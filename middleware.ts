@@ -22,6 +22,7 @@ export function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
   middlewares.colorTheme(req, res);
+  middlewares.addressFormat(req, res);
 
   const end = Date.now();
 

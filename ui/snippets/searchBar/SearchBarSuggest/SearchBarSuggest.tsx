@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Flex, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
 // import throttle from 'lodash/throttle';
 import type { Dispatch, SetStateAction } from 'react';
@@ -35,6 +36,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
   const isMobile = useIsMobile();
 
   const marketplaceApps = useMarketplaceApps(searchTerm);
+  // const settingsContext = useSettingsContext();
 
   const categoriesRefs = React.useRef<Array<HTMLParagraphElement>>([]);
   const tabsRef = React.useRef<HTMLDivElement>(null);
@@ -194,7 +196,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
                     onClick={ handleTabClick(cat.title.toLowerCase()) }
                     style={{
                       backgroundColor: (tabMatched(cat.title.toLowerCase()) ||
-                      (cat.title === 'all' && seletecdTab.current === 'all')) ? '#A07EFF' : 'transparent',
+                      (cat.title === 'all' && seletecdTab.current === 'all')) ? '#C15E97' : 'transparent',
                       color: (tabMatched(cat.title.toLowerCase()) ||
                       (cat.title === 'all' && seletecdTab.current === 'all')) ? '#FFF' : '#000',
                       border: (tabMatched(cat.title.toLowerCase()) ||
@@ -224,7 +226,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
                 mt={ indx === 1 ? 6 : 2 }
                 pb={ 2 }
                 px="12px"
-                ref={ (el: HTMLParagraphElement) => categoriesRefs.current[indx] = el }
+                // ref={ (el: HTMLParagraphElement) => categoriesRefs.current[indx] = el }
               >
                 { cat.title }
               </Text>

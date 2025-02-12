@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
@@ -6,12 +5,12 @@ import type * as bens from '@blockscout/bens-types';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 interface Props {
   event: bens.DomainEvent;
@@ -38,9 +37,12 @@ const NameDomainHistoryListItem = ({ isLoading, domain, event }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">
-          <span>{ dayjs(event.timestamp).fromNow() }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ event.timestamp }
+          isLoading={ isLoading }
+          color="text_secondary"
+          display="inline-block"
+        />
       </ListItemMobileGrid.Value>
 
       { event.from_address && (

@@ -13,8 +13,11 @@ export function walletConnect(): CspDev.DirectiveDescriptor {
     'connect-src': [
       '*.web3modal.com',
       'https://api.web3modal.org',
+      '*.web3modal.org',
       '*.walletconnect.com',
+      '*.walletconnect.org',
       'wss://relay.walletconnect.com',
+      'wss://relay.walletconnect.org',
       'wss://www.walletlink.org',
       '*.walletconnect.org',
     ],

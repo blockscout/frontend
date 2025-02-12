@@ -30,7 +30,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
           onClick={ resetPage }
           isDisabled={ page === 1 || isLoading }
         >
-        First
+          First
         </Button>
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" mr={ 3 } borderRadius="base">

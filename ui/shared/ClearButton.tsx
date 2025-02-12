@@ -21,7 +21,7 @@ const ClearButton = ({ onClick, isDisabled, className }: Props) => {
       aria-label="Clear input"
       title="Clear input"
       boxSize={ 6 }
-      icon={ <IconSvg border="1px solid #A07EFF" borderRadius="50%" color="#A07EFF" w="16px" h="16px" name="cross"/> }
+      icon={ <IconSvg border="1px solid #C15E97" borderRadius="50%" color="#C15E97" w="16px" h="16px" name="cross"/> }
       size="sm"
       onClick={ onClick }
     />

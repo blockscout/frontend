@@ -10,7 +10,7 @@ type Props = {
   text: string;
   url: string;
   isLoading?: boolean;
-}
+};
 
 const FooterLinkItem = ({ icon, iconSize, text, url, isLoading }: Props) => {
   if (isLoading) {

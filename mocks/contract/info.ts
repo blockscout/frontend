@@ -24,7 +24,7 @@ export const verified: SmartContract = {
   verified_at: '2021-08-03T10:40:41.679421Z',
   decoded_constructor_args: [
     [ '0xc59615da2da226613b1c78f0c6676cac497910bc', { internalType: 'address', name: '_token', type: 'address' } ],
-    [ '1800', { internalType: 'uint256', name: '_duration', type: 'uint256' } ],
+    [ [ 1800, 3600, 7200 ], { internalType: 'uint256[]', name: '_durations', type: 'uint256[]' } ],
     [ '900000000', { internalType: 'uint256', name: '_totalSupply', type: 'uint256' } ],
   ],
   external_libraries: [
@@ -33,12 +33,6 @@ export const verified: SmartContract = {
   ],
   language: 'solidity',
   license_type: 'gnu_gpl_v3',
-  has_methods_read: true,
-  has_methods_read_proxy: false,
-  has_methods_write: true,
-  has_methods_write_proxy: false,
-  has_custom_methods_read: false,
-  has_custom_methods_write: false,
   is_self_destructed: false,
   is_verified_via_eth_bytecode_db: null,
   is_changed_bytecode: null,
@@ -49,7 +43,7 @@ export const verified: SmartContract = {
   file_path: '',
   additional_sources: [],
   verified_twin_address_hash: null,
-  minimal_proxy_address_hash: null,
+  proxy_type: null,
 };
 
 export const certified: SmartContract = {
@@ -91,7 +85,7 @@ export const withProxyAddress: SmartContract = {
   ...verified,
   is_verified: false,
   verified_twin_address_hash: '0xa62744bee8646e237441cdbfdedd3458861748a8',
-  minimal_proxy_address_hash: '0xa62744bee8646e237441cdbfdedd3458861748a8',
+  proxy_type: 'eip1967',
 };
 
 export const selfDestructed: SmartContract = {
@@ -103,6 +97,26 @@ export const withChangedByteCode: SmartContract = {
   ...verified,
   is_changed_bytecode: true,
   is_blueprint: true,
+};
+
+export const zkSync: SmartContract = {
+  ...verified,
+  zk_compiler_version: 'v1.2.5',
+  optimization_enabled: true,
+  optimization_runs: 's',
+};
+
+export const stylusRust: SmartContract = {
+  ...verified,
+  language: 'stylus_rust',
+  github_repository_metadata: {
+    commit: 'af5029f822815e32def0015bf8e591e769c62f34',
+    path_prefix: 'examples/erc20',
+    repository_url: 'https://github.com/blockscout/cargo-stylus-test-examples',
+  },
+  compiler_version: 'v0.5.6',
+  package_name: 'erc20',
+  evm_version: null,
 };
 
 export const nonVerified: SmartContract = {
@@ -120,12 +134,6 @@ export const nonVerified: SmartContract = {
   verified_at: null,
   is_verified_via_eth_bytecode_db: null,
   is_changed_bytecode: null,
-  has_methods_read: false,
-  has_methods_read_proxy: false,
-  has_methods_write: false,
-  has_methods_write_proxy: false,
-  has_custom_methods_read: false,
-  has_custom_methods_write: false,
   is_verified_via_sourcify: null,
   is_fully_verified: null,
   is_partially_verified: null,
@@ -138,7 +146,7 @@ export const nonVerified: SmartContract = {
   additional_sources: [],
   external_libraries: null,
   verified_twin_address_hash: null,
-  minimal_proxy_address_hash: null,
+  proxy_type: null,
   language: null,
   license_type: null,
 };

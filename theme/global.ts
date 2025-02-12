@@ -3,6 +3,7 @@ import { mode } from '@chakra-ui/theme-tools';
 
 import scrollbar from './foundations/scrollbar';
 import addressEntity from './globals/address-entity';
+import recaptcha from './globals/recaptcha';
 import getDefaultTransitionProps from './utils/getDefaultTransitionProps';
 
 const global = (props: StyleFunctionProps) => ({
@@ -15,7 +16,7 @@ const global = (props: StyleFunctionProps) => ({
   mark: {
     // bgColor: mode('green.100', 'green.800')(props),
     bgColor: 'transparent',
-    color: '#8A55FD',
+    color: '#C15E97',
   },
   'svg *::selection': {
     color: 'none',
@@ -26,6 +27,7 @@ const global = (props: StyleFunctionProps) => ({
   },
   ...scrollbar(props),
   ...addressEntity(props),
+  ...recaptcha(),
 });
 
 export default global;

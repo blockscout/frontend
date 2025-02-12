@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery, gql } from '@apollo/client';
 
 interface QueryConfig {
@@ -105,11 +106,11 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?
   const query = queries.length ? gql`
     query ${ aliasName }($limit: Int, $offset: Int) {
       ${ queries
-    .map(
-      ({ tableName, fields, limit, offset, where, order, aggregate, distinctOn }) => {
-        // Handle aggregation queries
-        if (aggregate && aggregate.length > 0) {
-          return `
+        .map(
+          ({ tableName, fields, limit, offset, where, order, aggregate, distinctOn }) => {
+            // Handle aggregation queries
+            if (aggregate && aggregate.length > 0) {
+              return `
             ${ tableName }(
               where: { ${ formatWhereCondition(where) } },
               ${ distinctOn ? `distinct_on: [${ distinctOn }],` : '' }
@@ -119,9 +120,9 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?
               }
             }
           `;
-        }
-        // Handle regular queries
-        return `
+            }
+            // Handle regular queries
+            return `
           ${ tableName }(
             where: { ${ formatWhereCondition(where) } },
             ${ distinctOn ? `distinct_on: [${ distinctOn }],` : '' }
@@ -132,8 +133,8 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?
             ${ formatFields(fields) }
           }
         `;
-      })
-    .join('\n') }
+          })
+        .join('\n') }
     }
   ` : EMPTY_QUERY;
 

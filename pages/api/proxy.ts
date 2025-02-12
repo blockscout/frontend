@@ -22,8 +22,14 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
   );
 
   // proxy some headers from API
-  nextRes.setHeader('x-request-id', apiRes.headers.get('x-request-id') || '');
-  nextRes.setHeader('set-cookie', apiRes.headers.get('set-cookie') || '');
+  const requestId = apiRes.headers.get('x-request-id');
+  requestId && nextRes.setHeader('x-request-id', requestId);
+
+  const setCookie = apiRes.headers.raw()['set-cookie'];
+  setCookie?.forEach((value) => {
+    nextRes.appendHeader('set-cookie', value);
+  });
+  nextRes.setHeader('content-type', apiRes.headers.get('content-type') || '');
 
   nextRes.status(apiRes.status).send(apiRes.body);
 };

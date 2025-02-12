@@ -7,7 +7,8 @@ import * as cookies from 'lib/cookies';
 
 // import CoinzillaTextAd from './CoinzillaTextAd';
 
-const TextAd = ({ }: {className?: string}) => {
+// eslint-disable-next-line no-empty-pattern
+const TextAd = ({ }: { className?: string }) => {
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED, useAppContext().cookies);
 
   if (!config.features.adsText.isEnabled || hasAdblockCookie === 'true') {

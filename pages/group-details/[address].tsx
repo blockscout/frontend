@@ -120,7 +120,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     setTabName(value);
   }, []);
   const tabRequires = Requires(tabName, 1, details?.object_id);
-  const [ queryParams, setQueryParams ] = React.useState<{offset: number; searchTerm: string; page: number}>({
+  const [ queryParams, setQueryParams ] = React.useState<{ offset: number; searchTerm: string; page: number }>({
     offset: 0,
     searchTerm: '',
     page: 1,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-nested-ternary */
 import {
   Table,
@@ -41,7 +42,7 @@ type Props<T extends string> = {
   toNext: boolean;
   propsPage: (value: number) => void;
   currPage: number;
-}
+};
 
 function Page<T extends string>(props: Props<T>) {
   const [ tapSelect, setTapSelect ] = useState<string>(props.tabsList && props.tabsList.length ? props.tabsList[0] : '');
@@ -60,10 +61,10 @@ function Page<T extends string>(props: Props<T>) {
                 key={ key }
                 onClick={ handleChange(value) }
                 borderBottom={ tapSelect === value ? '2px' : '0px' }
-                borderColor="#8A55FD"
+                borderColor="#C15E97"
                 display="inline-block"
                 cursor="pointer"
-                color={ tapSelect === value ? '#8A55FD' : 'rgba(0, 0, 0, 0.6)' }
+                color={ tapSelect === value ? '#C15E97' : 'rgba(0, 0, 0, 0.6)' }
                 fontWeight={ tapSelect === value ? '700' : '400' }
                 fontSize="16px"
                 p="0 0 10px 0"
@@ -96,13 +97,13 @@ function Page<T extends string>(props: Props<T>) {
                         key={ index }
                         fontWeight="500" fontSize="14px"
                         overflow="hidden"
-                        color={ value === 'txnHash' ? '#8A55FD' : '#000000' } padding="24px"
+                        color={ value === 'txnHash' ? '#C15E97' : '#000000' } padding="24px"
                       >
                         {
                           value === 'Txn Hash' ? (
                             <Tooltip label={ title[value] } placement="top" bg="#FFFF" color="#000000">
                               <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
-                                <Box color="#8A55FD">
+                                <Box color="#C15E97">
                                   { formatPubKey(title[value], 6, 6) }
                                 </Box>
                               </NextLink>
@@ -110,19 +111,19 @@ function Page<T extends string>(props: Props<T>) {
                           ) :
                             value === 'Block' ? (
                               <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
-                                <Box color="#8A55FD">
+                                <Box color="#C15E97">
                                   { title[value] }
                                 </Box>
                               </NextLink>
                             ) :
                               value === 'Creator' ? (
                                 <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
-                                  <Box color="#8A55FD" overflow="hidden">{ formatPubKey(title[value], 6, 6) }</Box>
+                                  <Box color="#C15E97" overflow="hidden">{ formatPubKey(title[value], 6, 6) }</Box>
                                 </NextLink>
                               ) :
                                 value === 'objects name' ? (
                                   <NextLink href={{ pathname: '/object-details/[address]', query: { address: title.id || '' } }}>
-                                    <Box color="#8A55FD" overflow="hidden">{ title[value] }</Box>
+                                    <Box color="#C15E97" overflow="hidden">{ title[value] }</Box>
                                   </NextLink>
                                 ) :
                                   value === 'Block' ? (

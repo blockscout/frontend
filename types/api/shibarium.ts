@@ -6,7 +6,7 @@ export type ShibariumDepositsItem = {
   l2_transaction_hash: string;
   timestamp: string;
   user: AddressParam | string;
-}
+};
 
 export type ShibariumDepositsResponse = {
   items: Array<ShibariumDepositsItem>;
@@ -14,7 +14,7 @@ export type ShibariumDepositsResponse = {
     items_count: number;
     block_number: number;
   };
-}
+};
 
 export type ShibariumWithdrawalsItem = {
   l1_transaction_hash: string;
@@ -22,7 +22,7 @@ export type ShibariumWithdrawalsItem = {
   l2_transaction_hash: string;
   timestamp: string;
   user: AddressParam | string;
-}
+};
 
 export type ShibariumWithdrawalsResponse = {
   items: Array<ShibariumWithdrawalsItem>;
@@ -30,4 +30,4 @@ export type ShibariumWithdrawalsResponse = {
     items_count: number;
     block_number: number;
   };
-}
+};

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-nested-ternary */
 import {
   Table,
@@ -39,7 +40,7 @@ type Props<T extends string> = {
   currPage: number;
   toNext: boolean;
   totleDate: number;
-}
+};
 
 function TableList(props: Props<string>) {
   const [ tableList, setTableList ] = React.useState<Array<TalbeListType>>(props.tableList);
@@ -61,6 +62,8 @@ function TableList(props: Props<string>) {
         return '/bucket-details/[address]';
       case 'Group Name':
         return '/group-details/[address]';
+      default:
+        return '/object-details/[address]';
     }
   };
   const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,14 +111,14 @@ function TableList(props: Props<string>) {
             top="50%"
             transform="translateY(-50%)"
           >
-            <IconSvg color="#A07EFF" w="16px" h="16px" name="search"/>
+            <IconSvg color="#C15E97" w="16px" h="16px" name="search"/>
           </InputLeftElement>
           <Input
             value={ search }
             onChange={ handleChange }
             pl="40px"
             borderRadius="29px" height="42px"
-            _focusVisible={{ borderColor: '#A07EFF !important' }}
+            _focusVisible={{ borderColor: '#C15E97 !important' }}
             placeholder={ `Search by ${ props.page.replace(/^./, props.page[0].toUpperCase()) } Name or ID` }
           >
           </Input>
@@ -128,7 +131,7 @@ function TableList(props: Props<string>) {
                 cursor="pointer"
                 onClick={ clearSearch }
               >
-                <IconSvg border="1px solid #A07EFF" borderRadius="50%" color="#A07EFF" w="16px" h="16px" name="cross"/>
+                <IconSvg border="1px solid #C15E97" borderRadius="50%" color="#C15E97" w="16px" h="16px" name="cross"/>
               </InputRightElement>
             )
           }
@@ -167,7 +170,7 @@ function TableList(props: Props<string>) {
                               key={ index }
                               fontWeight="500" fontSize="14px"
                               overflow="hidden"
-                              color="#8A55FD"
+                              color="#C15E97"
                               p="12px 24px"
                             >
                               {

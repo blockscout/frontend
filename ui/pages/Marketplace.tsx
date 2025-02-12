@@ -1,25 +1,28 @@
-import { Box, Menu, MenuButton, MenuItem, MenuList, Flex, IconButton, Skeleton } from '@chakra-ui/react';
+import { MenuButton, MenuItem, MenuList, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
-import { MarketplaceCategory, MarketplaceDisplayType } from 'types/client/marketplace';
+import { MarketplaceCategory } from 'types/client/marketplace';
 import type { TabItem } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import useGraphLinks from 'lib/hooks/useGraphLinks';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Banner from 'ui/marketplace/Banner';
 import ContractListModal from 'ui/marketplace/ContractListModal';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
-import MarketplaceListWithScores from 'ui/marketplace/MarketplaceListWithScores';
+import { SORT_OPTIONS } from 'ui/marketplace/utils';
+import ActionBar from 'ui/shared/ActionBar';
+import Menu from 'ui/shared/chakra/Menu';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 import type { IconName } from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RadioButtonGroup from 'ui/shared/radioButtonGroup/RadioButtonGroup';
+import Sort from 'ui/shared/sort/Sort';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
 import useMarketplace from '../marketplace/useMarketplace';
@@ -67,12 +70,18 @@ const Marketplace = () => {
     isCategoriesPlaceholderData,
     showContractList,
     contractListModalType,
-    selectedDisplayType,
-    onDisplayTypeChange,
     hasPreviousStep,
+    setSorting,
+    userRatings,
+    rateApp,
+    isRatingSending,
+    isRatingLoading,
+    canRate,
   } = useMarketplace();
 
   const isMobile = useIsMobile();
+
+  const graphLinksQuery = useGraphLinks();
 
   const categoryTabs = React.useMemo(() => {
     const tabs: Array<TabItem> = categories.map(category => ({
@@ -91,13 +100,13 @@ const Marketplace = () => {
 
     tabs.unshift({
       id: MarketplaceCategory.FAVORITES,
-      title: () => <IconSvg name="star_outline" w={ 5 } h={ 5 } display="flex"/>,
-      count: null,
+      title: () => <IconSvg name="heart_filled" boxSize={ 5 } verticalAlign="middle" mt={ -1 }/>,
+      count: favoriteApps.length,
       component: null,
     });
 
     return tabs;
-  }, [ categories, appsTotal ]);
+  }, [ categories, appsTotal, favoriteApps.length ]);
 
   const selectedCategoryIndex = React.useMemo(() => {
     const index = categoryTabs.findIndex(c => c.id === selectedCategoryId);
@@ -107,7 +116,10 @@ const Marketplace = () => {
   const selectedApp = displayedApps.find(app => app.id === selectedAppId);
 
   const handleCategoryChange = React.useCallback((index: number) => {
-    onCategoryChange(categoryTabs[index].id);
+    const tabId = categoryTabs[index].id;
+    if (typeof tabId === 'string') {
+      onCategoryChange(tabId);
+    }
   }, [ categoryTabs, onCategoryChange ]);
 
   const handleAppClick = React.useCallback((event: MouseEvent, id: string) => {
@@ -131,10 +143,13 @@ const Marketplace = () => {
     return null;
   }
 
+  const showSort = SORT_OPTIONS.length > 1;
+
   return (
     <>
       <PageTitle
         title="DAppscout"
+        mb={ 2 }
         contentAfter={ (isMobile && links.length > 1) ? (
           <Menu>
             <MenuButton
@@ -151,7 +166,7 @@ const Marketplace = () => {
                 <MenuItem key={ label } as="a" href={ href } target="_blank" py={ 2 } px={ 4 }>
                   <IconSvg name={ icon } boxSize={ 4 } mr={ 2.5 }/>
                   { label }
-                  <IconSvg name="arrows/north-east" boxSize={ 4 } color="gray.400" ml={ 2 }/>
+                  <IconSvg name="link_external" boxSize={ 3 } color="icon_link_external" ml={ 2 }/>
                 </MenuItem>
               )) }
             </MenuList>
@@ -176,7 +191,15 @@ const Marketplace = () => {
         onAppClick={ handleAppClick }
       />
 
-      <Box marginTop={{ base: 0, lg: 8 }}>
+      <ActionBar
+        showShadow
+        display="flex"
+        flexDirection="column"
+        mx={{ base: -3, lg: -12 }}
+        px={{ base: 3, lg: 12 }}
+        pt={{ base: 4, lg: 6 }}
+        pb={{ base: 4, lg: 3 }}
+      >
         <TabsWithScroll
           tabs={ categoryTabs }
           onTabChange={ handleCategoryChange }
@@ -184,73 +207,43 @@ const Marketplace = () => {
           marginBottom={ -2 }
           isLoading={ isCategoriesPlaceholderData }
         />
-      </Box>
 
-      <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
-        { feature.securityReportsUrl && (
-          <Skeleton isLoaded={ !isPlaceholderData }>
-            <RadioButtonGroup<MarketplaceDisplayType>
-              onChange={ onDisplayTypeChange }
-              defaultValue={ selectedDisplayType }
-              name="type"
-              options={ [
-                {
-                  title: 'Discovery',
-                  value: MarketplaceDisplayType.DEFAULT,
-                  icon: 'apps_xs',
-                  onlyIcon: false,
-                },
-                {
-                  title: 'Apps scores',
-                  value: MarketplaceDisplayType.SCORES,
-                  icon: 'apps_list',
-                  onlyIcon: false,
-                  contentAfter: (
-                    <IconSvg
-                      name={ isMobile ? 'beta_xs' : 'beta' }
-                      h={ 3 }
-                      w={ isMobile ? 3 : 7 }
-                      ml={ 1 }
-                    />
-                  ),
-                },
-              ] }
-              autoWidth
+        <Flex gap={{ base: 2, lg: 3 }}>
+          { showSort && (
+            <Sort
+              name="dapps_sorting"
+              options={ SORT_OPTIONS }
+              onChange={ setSorting }
+              isLoading={ isPlaceholderData }
             />
-          </Skeleton>
-        ) }
-        <FilterInput
-          initialValue={ filterQuery }
-          onChange={ onSearchInputChange }
-          placeholder="Find app by name or keyword..."
-          isLoading={ isPlaceholderData }
-          size={ feature.securityReportsUrl ? 'xs' : 'sm' }
-          w={{ base: '100%', lg: '350px' }}
-        />
-      </Flex>
+          ) }
+          <FilterInput
+            initialValue={ filterQuery }
+            onChange={ onSearchInputChange }
+            placeholder="Find app by name or keyword..."
+            isLoading={ isPlaceholderData }
+            size={ showSort ? 'xs' : 'sm' }
+            w={{ base: '100%', lg: '350px' }}
+          />
+        </Flex>
+      </ActionBar>
 
-      { (selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl) ? (
-        <MarketplaceListWithScores
-          apps={ displayedApps }
-          showAppInfo={ showAppInfo }
-          favoriteApps={ favoriteApps }
-          onFavoriteClick={ onFavoriteClick }
-          isLoading={ isPlaceholderData }
-          selectedCategoryId={ selectedCategoryId }
-          onAppClick={ handleAppClick }
-          showContractList={ showContractList }
-        />
-      ) : (
-        <MarketplaceList
-          apps={ displayedApps }
-          showAppInfo={ showAppInfo }
-          favoriteApps={ favoriteApps }
-          onFavoriteClick={ onFavoriteClick }
-          isLoading={ isPlaceholderData }
-          selectedCategoryId={ selectedCategoryId }
-          onAppClick={ handleAppClick }
-        />
-      ) }
+      <MarketplaceList
+        apps={ displayedApps }
+        showAppInfo={ showAppInfo }
+        favoriteApps={ favoriteApps }
+        onFavoriteClick={ onFavoriteClick }
+        isLoading={ isPlaceholderData }
+        selectedCategoryId={ selectedCategoryId }
+        onAppClick={ handleAppClick }
+        showContractList={ showContractList }
+        userRatings={ userRatings }
+        rateApp={ rateApp }
+        isRatingSending={ isRatingSending }
+        isRatingLoading={ isRatingLoading }
+        canRate={ canRate }
+        graphLinksQuery={ graphLinksQuery }
+      />
 
       { (selectedApp && isAppInfoModalOpen) && (
         <MarketplaceAppModal
@@ -259,6 +252,12 @@ const Marketplace = () => {
           onFavoriteClick={ onFavoriteClick }
           data={ selectedApp }
           showContractList={ showContractList }
+          userRating={ userRatings[selectedApp.id] }
+          rateApp={ rateApp }
+          isRatingSending={ isRatingSending }
+          isRatingLoading={ isRatingLoading }
+          canRate={ canRate }
+          graphLinks={ graphLinksQuery.data?.[selectedApp.id] }
         />
       ) }
 

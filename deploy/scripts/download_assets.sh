@@ -18,6 +18,7 @@ ASSETS_ENVS=(
     "NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL"
     "NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL"
     "NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL"
+    "NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL"
     "NEXT_PUBLIC_FEATURED_NETWORKS"
     "NEXT_PUBLIC_FOOTER_LINKS"
     "NEXT_PUBLIC_NETWORK_LOGO"
@@ -49,10 +50,14 @@ get_target_filename() {
         # Extract the extension from the filename
         local extension="${filename##*.}"
     else
-        # Remove query parameters from the URL and get the filename
-        local filename=$(basename "${url%%\?*}")
-        # Extract the extension from the filename
-        local extension="${filename##*.}"
+        if [[ "$url" == http* ]]; then
+            # Remove query parameters from the URL and get the filename
+            local filename=$(basename "${url%%\?*}")
+            # Extract the extension from the filename
+            local extension="${filename##*.}"
+        else
+            local extension="json"
+        fi
     fi
 
     # Convert the extension to lowercase
@@ -80,16 +85,31 @@ download_and_save_asset() {
         # Copy the local file to the destination
         cp "${url#file://}" "$destination"
     else
-        # Download the asset using curl
-        curl -s -o "$destination" "$url"
+        # Check if the value is a URL
+        if [[ "$url" == http* ]]; then
+            # Download the asset using curl
+            curl -s -o "$destination" "$url"
+        else
+            # Convert single-quoted JSON-like content to valid JSON
+            json_content=$(echo "${!env_var}" | sed "s/'/\"/g")
+
+            # Save the JSON content to a file
+            echo "$json_content" > "$destination"
+        fi
+    fi
+
+    if [[ "$url" == file://* ]] || [[ "$url" == http* ]]; then
+        local source_name=$url
+    else
+        local source_name="raw input"
     fi
 
     # Check if the download was successful
     if [ $? -eq 0 ]; then
-        echo "   [+] $env_var: Successfully saved file from $url to $destination."
+        echo "   [+] $env_var: Successfully saved file from $source_name to $destination."
         return 0
     else
-        echo "   [-] $env_var: Failed to save file from $url."
+        echo "   [-] $env_var: Failed to save file from $source_name."
         return 1
     fi
 }

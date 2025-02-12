@@ -1,10 +1,11 @@
-import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
+import { PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { getRecentSearchKeywords } from 'lib/recentSearchKeywords';
+import Popover from 'ui/shared/chakra/Popover';
 import SearchBarBackdrop from 'ui/snippets/searchBar/SearchBarBackdrop';
 import SearchBarInput from 'ui/snippets/searchBar/SearchBarInput';
 import SearchBarRecentKeywords from 'ui/snippets/searchBar/SearchBarRecentKeywords';
@@ -13,7 +14,7 @@ type Props = {
   searchTerm: string;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
   handleSearchTermChange: (value: string) => void;
-}
+};
 
 const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -76,7 +77,7 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
         autoFocus={ false }
         onClose={ onClose }
         placement="bottom-start"
-        offset={ isMobile ? [ 16, -12 ] : undefined }
+        offset={ isMobile ? [ 16, -12 ] : [ 0, 8 ] }
         isLazy
       >
         <PopoverTrigger>

@@ -6,7 +6,7 @@ import {
 import type { ChakraProviderProps } from '@chakra-ui/react';
 import React from 'react';
 
-import theme from 'theme';
+import theme from 'theme/theme';
 
 interface Props extends ChakraProviderProps {
   cookies?: string;

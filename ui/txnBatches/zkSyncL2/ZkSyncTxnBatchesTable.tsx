@@ -11,11 +11,11 @@ type Props = {
   items: Array<ZkSyncBatchesItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const ZkSyncTxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" minW="1000px">
+    <Table minW="1000px">
       <Thead top={ top }>
         <Tr>
           <Th width="40%">Batch #</Th>

@@ -11,11 +11,12 @@ import { getTagLinkParams } from './utils';
 interface Props {
   data: EntityTag;
   children: React.ReactNode;
+  noLink?: boolean;
 }
 
-const EntityTagLink = ({ data, children }: Props) => {
+const EntityTagLink = ({ data, children, noLink }: Props) => {
 
-  const linkParams = getTagLinkParams(data);
+  const linkParams = !noLink ? getTagLinkParams(data) : undefined;
 
   const handleLinkClick = React.useCallback(() => {
     if (!linkParams?.href) {

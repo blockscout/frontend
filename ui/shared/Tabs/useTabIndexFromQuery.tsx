@@ -12,7 +12,13 @@ export default function useTabIndexFromQuery(tabs: Array<RoutedTab>) {
     return 0;
   }
 
-  const tabIndex = tabs.findIndex(({ id, subTabs }) => id === tabFromQuery || subTabs?.some((id) => id === tabFromQuery));
+  const tabIndex = tabs.findIndex(({ id, subTabs }) => {
+    if (Array.isArray(id)) {
+      return id.includes(tabFromQuery);
+    }
+
+    return id === tabFromQuery || subTabs?.some((id) => id === tabFromQuery);
+  });
 
   if (tabIndex < 0) {
     return 0;

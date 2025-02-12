@@ -21,7 +21,8 @@ const IframeBanner = ({ contentUrl, linkUrl }: { contentUrl: string; linkUrl: st
       h="136px"
       w="100%"
       borderRadius="md"
-      mb={{ base: 4, sm: 6 }}
+      mb={{ base: 0, sm: 2 }}
+      mt={ 6 }
       overflow="hidden"
     >
       <Link

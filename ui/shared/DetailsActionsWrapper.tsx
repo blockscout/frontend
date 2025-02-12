@@ -8,7 +8,7 @@ type Props = {
   children: React.ReactNode;
   isLoading?: boolean;
   type: 'tx' | 'user_op';
-}
+};
 
 const DetailsActionsWrapper = ({ children, isLoading, type }: Props) => {
   const [ hasScroll, setHasScroll ] = React.useState(false);

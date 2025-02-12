@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { optimisticRollup as getServerSideProps } from 'nextjs/getServerSideProps';
+export { outputRoots as getServerSideProps } from 'nextjs/getServerSideProps';

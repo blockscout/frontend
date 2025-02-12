@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-restricted-imports */
 import { debounce, orderBy } from 'lodash';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
@@ -11,9 +13,8 @@ import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
-
 const Page: NextPage = () => {
-  const [ queryParams, setQueryParams ] = React.useState<{offset: number; searchTerm: string; page: number}>({
+  const [ queryParams, setQueryParams ] = React.useState<{ offset: number; searchTerm: string; page: number }>({
     offset: 0,
     searchTerm: '',
     page: 1,
@@ -44,7 +45,6 @@ const Page: NextPage = () => {
       page: value,
     });
   }, []);
-
   const [ queries, setQueries ] = React.useState<Array<any>>([
     {
       tableName: 'groups',

@@ -1,7 +1,7 @@
 import { Box, Grid, Heading, List, ListItem, Skeleton } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
-import type { StatsChartsSection } from 'types/api/stats';
+import type * as stats from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -18,9 +18,9 @@ type Props = {
   initialFilterQuery: string;
   isError: boolean;
   isPlaceholderData: boolean;
-  charts?: Array<StatsChartsSection>;
+  charts?: Array<stats.LineChartSection>;
   interval: StatsIntervalIds;
-}
+};
 
 const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, interval, initialFilterQuery }: Props) => {
   const [ isSomeChartLoadingError, setIsSomeChartLoadingError ] = useState(false);
@@ -76,7 +76,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                 </Heading>
                 { section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
                   <GasInfoTooltip data={ homeStatsQuery.data } dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }>
-                    <IconSvg name="info" boxSize={ 5 } display="block" cursor="pointer" _hover={{ color: 'link_hovered' }}/>
+                    <IconSvg name="info" boxSize={ 5 } display="block" cursor="pointer" color="icon_info" _hover={{ color: 'link_hovered' }}/>
                   </GasInfoTooltip>
                 ) }
               </Skeleton>
@@ -95,6 +95,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                     units={ chart.units || undefined }
                     isPlaceholderData={ isPlaceholderData }
                     onLoadingError={ handleChartLoadingError }
+                    href={{ pathname: '/stats/[id]', query: { id: chart.id } }}
                   />
                 )) }
               </Grid>

@@ -6,9 +6,9 @@ import type { RollupType } from 'types/client/rollup';
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import isNeedProxy from 'lib/api/isNeedProxy';
 const rollupFeature = config.features.rollup;
 const adBannerFeature = config.features.adsBanner;
+import isNeedProxy from 'lib/api/isNeedProxy';
 import type * as metadata from 'lib/metadata';
 
 export interface Props<Pathname extends Route['pathname'] = never> {
@@ -67,7 +67,7 @@ export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
   return account(context);
 };
 
-const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum' ];
+const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
 export const deposits: GetServerSideProps<Props> = async(context) => {
   if (!(rollupFeature.isEnabled && DEPOSITS_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
@@ -78,7 +78,7 @@ export const deposits: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum' ];
+const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
 export const withdrawals: GetServerSideProps<Props> = async(context) => {
   if (
     !config.features.beaconChain.isEnabled &&
@@ -102,8 +102,8 @@ export const rollup: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
-  if (!(rollupFeature.isEnabled && rollupFeature.type === 'optimistic')) {
+export const outputRoots: GetServerSideProps<Props> = async(context) => {
+  if (!(rollupFeature.isEnabled && rollupFeature.outputRootsEnabled)) {
     return {
       notFound: true,
     };
@@ -112,7 +112,7 @@ export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum' ];
+const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum', 'optimistic', 'scroll' ];
 export const batch: GetServerSideProps<Props> = async(context) => {
   if (!(rollupFeature.isEnabled && BATCH_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
@@ -136,6 +136,16 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
 
 export const apiDocs: GetServerSideProps<Props> = async(context) => {
   if (!config.features.restApiDocs.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const graphIQl: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.graphqlApiDocs.isEnabled) {
     return {
       notFound: true,
     };
@@ -194,6 +204,16 @@ export const accounts: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const accountsLabelSearch: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.addressMetadata.isEnabled || !context.query.tagType) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const userOps: GetServerSideProps<Props> = async(context) => {
   if (!config.features.userOps.isEnabled) {
     return {
@@ -224,6 +244,16 @@ export const gasTracker: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const advancedFilter: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.advancedFilter.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const dataAvailability: GetServerSideProps<Props> = async(context) => {
   if (!config.features.dataAvailability.isEnabled) {
     return {
@@ -245,6 +275,16 @@ export const login: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const dev: GetServerSideProps<Props> = async(context) => {
+  if (!config.app.isDev) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const publicTagsSubmit: GetServerSideProps<Props> = async(context) => {
 
   if (!config.features.publicTagsSubmission.isEnabled) {
@@ -258,6 +298,26 @@ export const publicTagsSubmit: GetServerSideProps<Props> = async(context) => {
 
 export const disputeGames: GetServerSideProps<Props> = async(context) => {
   if (!config.features.faultProofSystem.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const mud: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.mudFramework.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const pools: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.pools.isEnabled) {
     return {
       notFound: true,
     };

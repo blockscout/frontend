@@ -1,4 +1,6 @@
 import type * as bens from '@blockscout/bens-types';
+import type * as stats from '@blockscout/stats-types';
+import type * as visualizer from '@blockscout/visualizer-types';
 import { getFeaturePayload } from 'configs/app/features/types';
 import type {
   UserInfo,
@@ -29,28 +31,46 @@ import type {
   AddressNFTsResponse,
   AddressCollectionsResponse,
   AddressNFTTokensFilter,
-  AddressCoinBalanceHistoryChartOld,
+  AddressMudTables,
+  AddressMudTablesFilter,
+  AddressMudRecords,
+  AddressMudRecordsFilter,
+  AddressMudRecordsSorting,
+  AddressMudRecord,
+  AddressEpochRewardsResponse,
+  AddressXStarResponse,
 } from 'types/api/address';
-import type { AddressesResponse } from 'types/api/addresses';
+import type { AddressesResponse, AddressesMetadataSearchResult, AddressesMetadataSearchFilters } from 'types/api/addresses';
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
+import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'types/api/advancedFilter';
 import type {
   ArbitrumL2MessagesResponse,
   ArbitrumL2TxnBatch,
   ArbitrumL2TxnBatchesResponse,
   ArbitrumL2BatchTxs,
   ArbitrumL2BatchBlocks,
+  ArbitrumL2TxnBatchesItem,
+  ArbitrumLatestDepositsResponse,
 } from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
-import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
+import type {
+  BlocksResponse,
+  BlockTransactionsResponse,
+  Block,
+  BlockFilters,
+  BlockWithdrawalsResponse,
+  BlockCountdownResponse,
+  BlockEpoch,
+  BlockEpochElectionRewardDetailsResponse,
+} from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { BackendVersionConfig } from 'types/api/configs';
+import type { BackendVersionConfig, CsvExportConfig } from 'types/api/configs';
 import type {
   SmartContract,
-  SmartContractReadMethod,
-  SmartContractWriteMethod,
-  SmartContractVerificationConfig,
-  SolidityscanReport,
+  SmartContractVerificationConfigRaw,
   SmartContractSecurityAudits,
+  SmartContractMudSystemsResponse,
+  SmartContractMudSystemInfo,
 } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
 import type {
@@ -61,6 +81,7 @@ import type {
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
+import type { MudWorldsResponse } from 'types/api/mudWorlds';
 import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'types/api/noves';
 import type {
   OptimisticL2DepositsResponse,
@@ -69,11 +90,33 @@ import type {
   OptimisticL2TxnBatchesResponse,
   OptimisticL2WithdrawalsResponse,
   OptimisticL2DisputeGamesResponse,
+  OptimismL2TxnBatch,
+  OptimismL2BatchTxs,
+  OptimismL2BatchBlocks,
 } from 'types/api/optimisticL2';
+import type { Pool, PoolsResponse } from 'types/api/pools';
 import type { RawTracesResponse } from 'types/api/rawTrace';
+import type {
+  RewardsConfigResponse,
+  RewardsCheckRefCodeResponse,
+  RewardsNonceResponse,
+  RewardsCheckUserResponse,
+  RewardsLoginResponse,
+  RewardsUserBalancesResponse,
+  RewardsUserDailyCheckResponse,
+  RewardsUserDailyClaimResponse,
+  RewardsUserReferralsResponse,
+} from 'types/api/rewards';
+import type {
+  ScrollL2BatchesResponse,
+  ScrollL2TxnBatch,
+  ScrollL2TxnBatchTxs,
+  ScrollL2TxnBatchBlocks,
+  ScrollL2MessagesResponse,
+} from 'types/api/scrollL2';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
-import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
+import type { HomeStats } from 'types/api/stats';
 import type {
   TokenCounters,
   TokenInfo,
@@ -99,9 +142,16 @@ import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters, TTxsWithBlobsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
-import type { ValidatorsCountersResponse, ValidatorsFilters, ValidatorsResponse, ValidatorsSorting } from 'types/api/validators';
+import type {
+  ValidatorsStabilityCountersResponse,
+  ValidatorsStabilityFilters,
+  ValidatorsStabilityResponse,
+  ValidatorsStabilitySorting,
+  ValidatorsBlackfortCountersResponse,
+  ValidatorsBlackfortResponse,
+  ValidatorsBlackfortSorting,
+} from 'types/api/validators';
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
-import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type {
   ZkEvmL2DepositsResponse,
@@ -139,30 +189,27 @@ export const RESOURCES = {
   user_info: {
     path: '/api/account/v2/user/info',
   },
-  email_resend: {
-    path: '/api/account/v2/email/resend',
-  },
   custom_abi: {
-    path: '/api/account/v2/user/custom_abis/:id?',
+    path: '/api/account/v2/user/custom_abis{/:id}',
     pathParams: [ 'id' as const ],
   },
   watchlist: {
-    path: '/api/account/v2/user/watchlist/:id?',
+    path: '/api/account/v2/user/watchlist{/:id}',
     pathParams: [ 'id' as const ],
     filterFields: [ ],
   },
   private_tags_address: {
-    path: '/api/account/v2/user/tags/address/:id?',
+    path: '/api/account/v2/user/tags/address{/:id}',
     pathParams: [ 'id' as const ],
     filterFields: [ ],
   },
   private_tags_tx: {
-    path: '/api/account/v2/user/tags/transaction/:id?',
+    path: '/api/account/v2/user/tags/transaction{/:id}',
     pathParams: [ 'id' as const ],
     filterFields: [ ],
   },
   api_keys: {
-    path: '/api/account/v2/user/api_keys/:id?',
+    path: '/api/account/v2/user/api_keys{/:id}',
     pathParams: [ 'id' as const ],
   },
 
@@ -192,11 +239,34 @@ export const RESOURCES = {
   },
 
   token_info_applications: {
-    path: '/api/v1/chains/:chainId/token-info-submissions/:id?',
+    path: '/api/v1/chains/:chainId/token-info-submissions{/:id}',
     pathParams: [ 'chainId' as const, 'id' as const ],
     endpoint: getFeaturePayload(config.features.addressVerification)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressVerification)?.api.basePath,
     needAuth: true,
+  },
+
+  // AUTH
+  auth_send_otp: {
+    path: '/api/account/v2/send_otp',
+  },
+  auth_confirm_otp: {
+    path: '/api/account/v2/confirm_otp',
+  },
+  auth_siwe_message: {
+    path: '/api/account/v2/siwe_message',
+  },
+  auth_siwe_verify: {
+    path: '/api/account/v2/authenticate_via_wallet',
+  },
+  auth_link_email: {
+    path: '/api/account/v2/email/link',
+  },
+  auth_link_address: {
+    path: '/api/account/v2/address/link',
+  },
+  auth_logout: {
+    path: '/api/account/auth/logout',
   },
 
   // STATS MICROSERVICE API
@@ -224,6 +294,12 @@ export const RESOURCES = {
     endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
     filterFields: [ 'address' as const, 'resolved_to' as const, 'owned_by' as const, 'only_active' as const, 'protocols' as const ],
+  },
+  address_domain: {
+    path: '/api/v1/:chainId/addresses/:address',
+    pathParams: [ 'chainId' as const, 'address' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
   },
   domain_info: {
     path: '/api/v1/:chainId/domains/:name',
@@ -295,6 +371,60 @@ export const RESOURCES = {
     basePath: marketplaceApi?.basePath,
   },
 
+  // REWARDS SERVICE
+  rewards_config: {
+    path: '/api/v1/config',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_check_ref_code: {
+    path: '/api/v1/auth/code/:code',
+    pathParams: [ 'code' as const ],
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_nonce: {
+    path: '/api/v1/auth/nonce',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_check_user: {
+    path: '/api/v1/auth/user/:address',
+    pathParams: [ 'address' as const ],
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_login: {
+    path: '/api/v1/auth/login',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_logout: {
+    path: '/api/v1/auth/logout',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_balances: {
+    path: '/api/v1/user/balances',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_daily_check: {
+    path: '/api/v1/user/daily/check',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_daily_claim: {
+    path: '/api/v1/user/daily/claim',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_referrals: {
+    path: '/api/v1/user/referrals',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+
   // BLOCKS, TXS
   blocks: {
     path: '/api/v2/blocks',
@@ -312,6 +442,16 @@ export const RESOURCES = {
   block_withdrawals: {
     path: '/api/v2/blocks/:height_or_hash/withdrawals',
     pathParams: [ 'height_or_hash' as const ],
+    filterFields: [],
+  },
+  block_epoch: {
+    path: '/api/v2/blocks/:height_or_hash/epoch',
+    pathParams: [ 'height_or_hash' as const ],
+    filterFields: [],
+  },
+  block_election_rewards: {
+    path: '/api/v2/blocks/:height_or_hash/election-rewards/:reward_type',
+    pathParams: [ 'height_or_hash' as const, 'reward_type' as const ],
     filterFields: [],
   },
   txs_stats: {
@@ -387,6 +527,10 @@ export const RESOURCES = {
     path: '/api/v2/addresses/',
     filterFields: [ ],
   },
+  addresses_metadata_search: {
+    path: '/api/v2/proxy/metadata/addresses',
+    filterFields: [ 'slug' as const, 'tag_type' as const ],
+  },
 
   // ADDRESS
   address: {
@@ -459,30 +603,19 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const ],
     filterFields: [],
   },
+  address_epoch_rewards: {
+    path: '/api/v2/addresses/:hash/election-rewards',
+    pathParams: [ 'hash' as const ],
+    filterFields: [],
+  },
+  address_xstar_score: {
+    path: '/api/v2/proxy/xname/addresses/:hash',
+    pathParams: [ 'hash' as const ],
+  },
 
   // CONTRACT
   contract: {
     path: '/api/v2/smart-contracts/:hash',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_methods_read: {
-    path: '/api/v2/smart-contracts/:hash/methods-read',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_methods_read_proxy: {
-    path: '/api/v2/smart-contracts/:hash/methods-read-proxy',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_method_query: {
-    path: '/api/v2/smart-contracts/:hash/query-read-method',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_methods_write: {
-    path: '/api/v2/smart-contracts/:hash/methods-write',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_methods_write_proxy: {
-    path: '/api/v2/smart-contracts/:hash/methods-write-proxy',
     pathParams: [ 'hash' as const ],
   },
   contract_verification_config: {
@@ -492,7 +625,7 @@ export const RESOURCES = {
     path: '/api/v2/smart-contracts/:hash/verification/via/:method',
     pathParams: [ 'hash' as const, 'method' as const ],
   },
-  contract_solidityscan_report: {
+  contract_solidity_scan_report: {
     path: '/api/v2/smart-contracts/:hash/solidityscan-report',
     pathParams: [ 'hash' as const ],
   },
@@ -567,6 +700,17 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const, 'id' as const ],
     filterFields: [],
   },
+  token_instance_refresh_metadata: {
+    path: '/api/v2/tokens/:hash/instances/:id/refetch-metadata',
+    pathParams: [ 'hash' as const, 'id' as const ],
+    filterFields: [],
+  },
+
+  // TOKEN TRANSFERS
+  token_transfers_all: {
+    path: '/api/v2/token-transfers',
+    filterFields: [ 'type' as const ],
+  },
 
   // APP STATS
   stats: {
@@ -589,14 +733,20 @@ export const RESOURCES = {
   homepage_blocks: {
     path: '/api/v2/main-page/blocks',
   },
-  homepage_deposits: {
+  homepage_optimistic_deposits: {
     path: '/api/v2/main-page/optimism-deposits',
+  },
+  homepage_arbitrum_deposits: {
+    path: '/api/v2/main-page/arbitrum/messages/to-rollup',
   },
   homepage_txs: {
     path: '/api/v2/main-page/transactions',
   },
   homepage_zkevm_l2_batches: {
     path: '/api/v2/main-page/zkevm/batches/confirmed',
+  },
+  homepage_arbitrum_l2_batches: {
+    path: '/api/v2/main-page/arbitrum/batches/committed',
   },
   homepage_txs_watchlist: {
     path: '/api/v2/main-page/transactions/watchlist',
@@ -609,6 +759,9 @@ export const RESOURCES = {
   },
   homepage_zksync_latest_batch: {
     path: '/api/v2/main-page/zksync/batches/latest-number',
+  },
+  homepage_arbitrum_latest_batch: {
+    path: '/api/v2/main-page/arbitrum/batches/latest-number',
   },
 
   // SEARCH
@@ -653,12 +806,29 @@ export const RESOURCES = {
   },
 
   optimistic_l2_txn_batches: {
-    path: '/api/v2/optimism/txn-batches',
+    path: '/api/v2/optimism/batches',
     filterFields: [],
   },
 
   optimistic_l2_txn_batches_count: {
-    path: '/api/v2/optimism/txn-batches/count',
+    path: '/api/v2/optimism/batches/count',
+  },
+
+  optimistic_l2_txn_batch: {
+    path: '/api/v2/optimism/batches/:number',
+    pathParams: [ 'number' as const ],
+  },
+
+  optimistic_l2_txn_batch_txs: {
+    path: '/api/v2/transactions/optimism-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
+  },
+
+  optimistic_l2_txn_batch_blocks: {
+    path: '/api/v2/blocks/optimism-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
   },
 
   optimistic_l2_dispute_games: {
@@ -668,6 +838,44 @@ export const RESOURCES = {
 
   optimistic_l2_dispute_games_count: {
     path: '/api/v2/optimism/games/count',
+  },
+
+  // MUD worlds on optimism
+  mud_worlds: {
+    path: '/api/v2/mud/worlds',
+    filterFields: [],
+  },
+
+  address_mud_tables: {
+    path: '/api/v2/mud/worlds/:hash/tables',
+    pathParams: [ 'hash' as const ],
+    filterFields: [ 'q' as const ],
+  },
+
+  address_mud_tables_count: {
+    path: '/api/v2/mud/worlds/:hash/tables/count',
+    pathParams: [ 'hash' as const ],
+  },
+
+  address_mud_records: {
+    path: '/api/v2/mud/worlds/:hash/tables/:table_id/records',
+    pathParams: [ 'hash' as const, 'table_id' as const ],
+    filterFields: [ 'filter_key0' as const, 'filter_key1' as const ],
+  },
+
+  address_mud_record: {
+    path: '/api/v2/mud/worlds/:hash/tables/:table_id/records/:record_id',
+    pathParams: [ 'hash' as const, 'table_id' as const, 'record_id' as const ],
+  },
+
+  contract_mud_systems: {
+    path: '/api/v2/mud/worlds/:hash/systems',
+    pathParams: [ 'hash' as const ],
+  },
+
+  contract_mud_system_info: {
+    path: '/api/v2/mud/worlds/:hash/systems/:system_address',
+    pathParams: [ 'hash' as const, 'system_address' as const ],
   },
 
   // arbitrum L2
@@ -787,6 +995,51 @@ export const RESOURCES = {
     path: '/api/v2/shibarium/withdrawals/count',
   },
 
+  // SCROLL L2
+  scroll_l2_deposits: {
+    path: '/api/v2/scroll/deposits',
+    filterFields: [],
+  },
+
+  scroll_l2_deposits_count: {
+    path: '/api/v2/scroll/deposits/count',
+  },
+
+  scroll_l2_withdrawals: {
+    path: '/api/v2/scroll/withdrawals',
+    filterFields: [],
+  },
+
+  scroll_l2_withdrawals_count: {
+    path: '/api/v2/scroll/withdrawals/count',
+  },
+
+  scroll_l2_txn_batches: {
+    path: '/api/v2/scroll/batches',
+    filterFields: [],
+  },
+
+  scroll_l2_txn_batches_count: {
+    path: '/api/v2/scroll/batches/count',
+  },
+
+  scroll_l2_txn_batch: {
+    path: '/api/v2/scroll/batches/:number',
+    pathParams: [ 'number' as const ],
+  },
+
+  scroll_l2_txn_batch_txs: {
+    path: '/api/v2/transactions/scroll-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
+  },
+
+  scroll_l2_txn_batch_blocks: {
+    path: '/api/v2/blocks/scroll-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
+  },
+
   // NOVES-FI
   noves_transaction: {
     path: '/api/v2/proxy/noves-fi/transactions/:hash',
@@ -820,14 +1073,19 @@ export const RESOURCES = {
   },
 
   // VALIDATORS
-  validators: {
-    path: '/api/v2/validators/:chainType',
-    pathParams: [ 'chainType' as const ],
+  validators_stability: {
+    path: '/api/v2/validators/stability',
     filterFields: [ 'address_hash' as const, 'state_filter' as const ],
   },
-  validators_counters: {
-    path: '/api/v2/validators/:chainType/counters',
-    pathParams: [ 'chainType' as const ],
+  validators_stability_counters: {
+    path: '/api/v2/validators/stability/counters',
+  },
+  validators_blackfort: {
+    path: '/api/v2/validators/blackfort',
+    filterFields: [],
+  },
+  validators_blackfort_counters: {
+    path: '/api/v2/validators/blackfort/counters',
   },
 
   // BLOBS
@@ -836,9 +1094,63 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const ],
   },
 
+  // ADVANCED FILTER
+  advanced_filter: {
+    path: '/api/v2/advanced-filters',
+    filterFields: [
+      'tx_types' as const,
+      'methods' as const,
+      'methods_names' as const /* frontend only */,
+      'age_from' as const,
+      'age_to' as const,
+      'age' as const /* frontend only */,
+      'from_address_hashes_to_include' as const,
+      'from_address_hashes_to_exclude' as const,
+      'to_address_hashes_to_include' as const,
+      'to_address_hashes_to_exclude' as const,
+      'address_relation' as const,
+      'amount_from' as const,
+      'amount_to' as const,
+      'token_contract_address_hashes_to_include' as const,
+      'token_contract_symbols_to_include' as const /* frontend only */,
+      'token_contract_address_hashes_to_exclude' as const,
+      'token_contract_symbols_to_exclude' as const /* frontend only */,
+      'block_number' as const,
+      'transaction_index' as const,
+      'internal_transaction_index' as const,
+      'token_transfer_index' as const,
+    ],
+  },
+  advanced_filter_methods: {
+    path: '/api/v2/advanced-filters/methods',
+    filterFields: [ 'q' as const ],
+  },
+  advanced_filter_csv: {
+    path: '/api/v2/advanced-filters/csv',
+  },
+
+  // POOLS
+  pools: {
+    path: '/api/v1/chains/:chainId/pools',
+    pathParams: [ 'chainId' as const ],
+    filterFields: [ 'query' as const ],
+    endpoint: getFeaturePayload(config.features.pools)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.pools)?.api.basePath,
+  },
+
+  pool: {
+    path: '/api/v1/chains/:chainId/pools/:hash',
+    pathParams: [ 'chainId' as const, 'hash' as const ],
+    endpoint: getFeaturePayload(config.features.pools)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.pools)?.api.basePath,
+  },
+
   // CONFIGS
   config_backend_version: {
     path: '/api/v2/config/backend-version',
+  },
+  config_csv_export: {
+    path: '/api/v2/config/csv-export',
   },
 
   // CSV EXPORT
@@ -865,8 +1177,14 @@ export const RESOURCES = {
   csv_export_logs: {
     path: '/api/v1/logs-csv',
   },
+  csv_export_epoch_rewards: {
+    path: '/api/v1/celo-election-rewards-csv',
+  },
   graphql: {
     path: '/api/v1/graphql',
+  },
+  block_countdown: {
+    path: '/api',
   },
 };
 
@@ -874,10 +1192,10 @@ export type ResourceName = keyof typeof RESOURCES;
 
 type ResourcePathMap = {
   [K in ResourceName]: typeof RESOURCES[K]['path']
-}
-export type ResourcePath = ResourcePathMap[keyof ResourcePathMap]
+};
+export type ResourcePath = ResourcePathMap[keyof ResourcePathMap];
 
-export type ResourceFiltersKey<R extends ResourceName> = typeof RESOURCES[R] extends {filterFields: Array<unknown>} ?
+export type ResourceFiltersKey<R extends ResourceName> = typeof RESOURCES[R] extends { filterFields: Array<unknown> } ?
   ArrayElement<typeof RESOURCES[R]['filterFields']> :
   never;
 
@@ -898,31 +1216,34 @@ export interface ResourceError<T = unknown> {
   statusText: Response['statusText'];
 }
 
-export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
+export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>;
 
-export type PaginatedResources = 'blocks' | 'block_txs' |
+export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_rewards' |
 'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' | 'tx_blobs' |
-'addresses' |
+'addresses' | 'addresses_metadata_search' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
-'address_logs' | 'address_tokens' | 'address_nfts' | 'address_collections' |
+'address_logs' | 'address_tokens' | 'address_nfts' | 'address_collections' | 'address_epoch_rewards' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' | 'tokens_bridged' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
 'optimistic_l2_output_roots' | 'optimistic_l2_withdrawals' | 'optimistic_l2_txn_batches' | 'optimistic_l2_deposits' |
-'optimistic_l2_dispute_games' |
+'optimistic_l2_dispute_games' | 'optimistic_l2_txn_batch_txs' | 'optimistic_l2_txn_batch_blocks' |
+'mud_worlds' | 'address_mud_tables' | 'address_mud_records' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
 'arbitrum_l2_messages' | 'arbitrum_l2_txn_batches' | 'arbitrum_l2_txn_batch_txs' | 'arbitrum_l2_txn_batch_blocks' |
 'zkevm_l2_deposits' | 'zkevm_l2_withdrawals' | 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
-'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators' | 'noves_address_history';
+'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history' |
+'token_transfers_all' | 'scroll_l2_txn_batches' | 'scroll_l2_txn_batch_txs' | 'scroll_l2_txn_batch_blocks' |
+'scroll_l2_deposits' | 'scroll_l2_withdrawals' | 'advanced_filter' | 'pools';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 // !!! IMPORTANT !!!
 // Don't add any new types here because TypeScript cannot handle it properly
 // use ResourcePayloadB instead
@@ -943,18 +1264,24 @@ Q extends 'stats_charts_secondary_coin_price' ? ChartSecondaryCoinPriceResponse 
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
 Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
-Q extends 'homepage_deposits' ? Array<OptimisticL2DepositsItem> :
+Q extends 'homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
+Q extends 'homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
 Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
+Q extends 'homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem> } :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'homepage_zkevm_latest_batch' ? number :
 Q extends 'homepage_zksync_latest_batch' ? number :
-Q extends 'stats_counters' ? Counters :
-Q extends 'stats_lines' ? StatsCharts :
-Q extends 'stats_line' ? StatsChart :
+Q extends 'homepage_arbitrum_latest_batch' ? number :
+Q extends 'stats_counters' ? stats.Counters :
+Q extends 'stats_lines' ? stats.LineCharts :
+Q extends 'stats_line' ? stats.LineChart :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
+Q extends 'block_countdown' ? BlockCountdownResponse :
 Q extends 'block_txs' ? BlockTransactionsResponse :
 Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
+Q extends 'block_epoch' ? BlockEpoch :
+Q extends 'block_election_rewards' ? BlockEpochElectionRewardDetailsResponse :
 Q extends 'txs_stats' ? TransactionsStats :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :
@@ -970,6 +1297,7 @@ Q extends 'tx_state_changes' ? TxStateChanges :
 Q extends 'tx_blobs' ? TxBlobs :
 Q extends 'tx_interpretation' ? TxInterpretationResponse :
 Q extends 'addresses' ? AddressesResponse :
+Q extends 'addresses_metadata_search' ? AddressesMetadataSearchResult :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
 Q extends 'address_tabs_counters' ? AddressTabsCounters :
@@ -978,7 +1306,7 @@ Q extends 'address_internal_txs' ? AddressInternalTxsResponse :
 Q extends 'address_token_transfers' ? AddressTokenTransferResponse :
 Q extends 'address_blocks_validated' ? AddressBlocksValidatedResponse :
 Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
-Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChartOld | AddressCoinBalanceHistoryChart :
+Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'address_tokens' ? AddressTokensResponse :
 Q extends 'address_nfts' ? AddressNFTsResponse :
@@ -1000,42 +1328,42 @@ Q extends 'quick_search' ? Array<SearchResultItem> :
 Q extends 'search' ? SearchResult :
 Q extends 'search_check_redirect' ? SearchRedirectResult :
 Q extends 'contract' ? SmartContract :
-Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
-Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
-Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
-Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
-Q extends 'contract_solidityscan_report' ? SolidityscanReport :
+Q extends 'contract_solidity_scan_report' ? unknown :
 Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
-Q extends 'visualize_sol2uml' ? VisualizedContract :
-Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
-Q extends 'withdrawals' ? WithdrawalsResponse :
-Q extends 'withdrawals_counters' ? WithdrawalsCounters :
+Q extends 'visualize_sol2uml' ? visualizer.VisualizeResponse :
+Q extends 'contract_verification_config' ? SmartContractVerificationConfigRaw :
 Q extends 'optimistic_l2_output_roots' ? OptimisticL2OutputRootsResponse :
 Q extends 'optimistic_l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
 Q extends 'optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
 Q extends 'optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
+Q extends 'optimistic_l2_txn_batches_count' ? number :
+Q extends 'optimistic_l2_txn_batch' ? OptimismL2TxnBatch :
+Q extends 'optimistic_l2_txn_batch_txs' ? OptimismL2BatchTxs :
+Q extends 'optimistic_l2_txn_batch_blocks' ? OptimismL2BatchBlocks :
 Q extends 'optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
 Q extends 'optimistic_l2_output_roots_count' ? number :
 Q extends 'optimistic_l2_withdrawals_count' ? number :
 Q extends 'optimistic_l2_deposits_count' ? number :
-Q extends 'optimistic_l2_txn_batches_count' ? number :
 Q extends 'optimistic_l2_dispute_games_count' ? number :
 never;
 // !!! IMPORTANT !!!
 // See comment above
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type ResourcePayloadB<Q extends ResourceName> =
 Q extends 'config_backend_version' ? BackendVersionConfig :
+Q extends 'config_csv_export' ? CsvExportConfig :
 Q extends 'address_metadata_info' ? AddressMetadataInfo :
 Q extends 'address_metadata_tag_types' ? PublicTagTypesResponse :
 Q extends 'blob' ? Blob :
 Q extends 'marketplace_dapps' ? Array<MarketplaceAppOverview> :
 Q extends 'marketplace_dapp' ? MarketplaceAppOverview :
-Q extends 'validators' ? ValidatorsResponse :
-Q extends 'validators_counters' ? ValidatorsCountersResponse :
+Q extends 'validators_stability' ? ValidatorsStabilityResponse :
+Q extends 'validators_stability_counters' ? ValidatorsStabilityCountersResponse :
+Q extends 'validators_blackfort' ? ValidatorsBlackfortResponse :
+Q extends 'validators_blackfort_counters' ? ValidatorsBlackfortCountersResponse :
 Q extends 'shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
 Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
 Q extends 'shibarium_withdrawals_count' ? number :
@@ -1059,8 +1387,11 @@ Q extends 'zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
 Q extends 'zksync_l2_txn_batches_count' ? number :
 Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :
 Q extends 'zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
+Q extends 'scroll_l2_txn_batch_txs' ? ScrollL2TxnBatchTxs :
+Q extends 'scroll_l2_txn_batch_blocks' ? ScrollL2TxnBatchBlocks :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
 Q extends 'addresses_lookup' ? bens.LookupAddressResponse :
+Q extends 'address_domain' ? bens.GetAddressResponse :
 Q extends 'domain_info' ? bens.DetailedDomain :
 Q extends 'domain_events' ? bens.ListDomainEventsResponse :
 Q extends 'domains_lookup' ? bens.LookupDomainNameResponse :
@@ -1068,12 +1399,44 @@ Q extends 'domain_protocols' ? bens.GetProtocolsResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :
-Q extends 'user_op_interpretation'? TxInterpretationResponse :
+Q extends 'user_op_interpretation' ? TxInterpretationResponse :
 Q extends 'noves_transaction' ? NovesResponseData :
 Q extends 'noves_address_history' ? NovesAccountHistoryResponse :
 Q extends 'noves_describe_txs' ? NovesDescribeTxsResponse :
+Q extends 'mud_worlds' ? MudWorldsResponse :
+Q extends 'address_mud_tables' ? AddressMudTables :
+Q extends 'address_mud_tables_count' ? number :
+Q extends 'address_mud_records' ? AddressMudRecords :
+Q extends 'address_mud_record' ? AddressMudRecord :
+Q extends 'contract_mud_systems' ? SmartContractMudSystemsResponse :
+Q extends 'contract_mud_system_info' ? SmartContractMudSystemInfo :
+Q extends 'address_epoch_rewards' ? AddressEpochRewardsResponse :
+Q extends 'withdrawals' ? WithdrawalsResponse :
+Q extends 'withdrawals_counters' ? WithdrawalsCounters :
+Q extends 'rewards_config' ? RewardsConfigResponse :
+Q extends 'rewards_check_ref_code' ? RewardsCheckRefCodeResponse :
+Q extends 'rewards_nonce' ? RewardsNonceResponse :
+Q extends 'rewards_check_user' ? RewardsCheckUserResponse :
+Q extends 'rewards_login' ? RewardsLoginResponse :
+Q extends 'rewards_user_balances' ? RewardsUserBalancesResponse :
+Q extends 'rewards_user_daily_check' ? RewardsUserDailyCheckResponse :
+Q extends 'rewards_user_daily_claim' ? RewardsUserDailyClaimResponse :
+Q extends 'rewards_user_referrals' ? RewardsUserReferralsResponse :
+Q extends 'token_transfers_all' ? TokenTransferResponse :
+Q extends 'address_xstar_score' ? AddressXStarResponse :
+Q extends 'scroll_l2_txn_batches' ? ScrollL2BatchesResponse :
+Q extends 'scroll_l2_txn_batches_count' ? number :
+Q extends 'scroll_l2_txn_batch' ? ScrollL2TxnBatch :
+Q extends 'scroll_l2_deposits' ? ScrollL2MessagesResponse :
+Q extends 'scroll_l2_deposits_count' ? number :
+Q extends 'scroll_l2_withdrawals' ? ScrollL2MessagesResponse :
+Q extends 'scroll_l2_withdrawals_count' ? number :
+Q extends 'advanced_filter' ? AdvancedFilterResponse :
+Q extends 'advanced_filter_methods' ? AdvancedFilterMethodsResponse :
+Q extends 'pools' ? PoolsResponse :
+Q extends 'pool' ? Pool :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
 export type ResourcePayload<Q extends ResourceName> = ResourcePayloadA<Q> | ResourcePayloadB<Q>;
 export type PaginatedResponseItems<Q extends ResourceName> = Q extends PaginatedResources ? ResourcePayloadA<Q>['items'] | ResourcePayloadB<Q>['items'] : never;
@@ -1081,7 +1444,7 @@ export type PaginatedResponseNextPageParams<Q extends ResourceName> = Q extends 
   ResourcePayloadA<Q>['next_page_params'] | ResourcePayloadB<Q>['next_page_params'] :
   never;
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type PaginationFilters<Q extends PaginatedResources> =
 Q extends 'blocks' ? BlockFilters :
 Q extends 'block_txs' ? TTxsWithBlobsFilters :
@@ -1090,6 +1453,7 @@ Q extends 'txs_with_blobs' ? TTxsWithBlobsFilters :
 Q extends 'tx_token_transfers' ? TokenTransferFilters :
 Q extends 'token_transfers' ? TokenTransferFilters :
 Q extends 'address_txs' | 'address_internal_txs' ? AddressTxsFilters :
+Q extends 'addresses_metadata_search' ? AddressesMetadataSearchFilters :
 Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
 Q extends 'address_tokens' ? AddressTokensFilter :
 Q extends 'address_nfts' ? AddressNFTTokensFilter :
@@ -1102,11 +1466,16 @@ Q extends 'verified_contracts' ? VerifiedContractsFilters :
 Q extends 'addresses_lookup' ? EnsAddressLookupFilters :
 Q extends 'domains_lookup' ? EnsDomainLookupFilters :
 Q extends 'user_ops' ? UserOpsFilters :
-Q extends 'validators' ? ValidatorsFilters :
+Q extends 'validators_stability' ? ValidatorsStabilityFilters :
+Q extends 'address_mud_tables' ? AddressMudTablesFilter :
+Q extends 'address_mud_records' ? AddressMudRecordsFilter :
+Q extends 'token_transfers_all' ? TokenTransferFilters :
+Q extends 'advanced_filter' ? AdvancedFilterParams :
+Q extends 'pools' ? { query: string } :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type PaginationSorting<Q extends PaginatedResources> =
 Q extends 'tokens' ? TokensSorting :
 Q extends 'tokens_bridged' ? TokensSorting :
@@ -1114,6 +1483,8 @@ Q extends 'verified_contracts' ? VerifiedContractsSorting :
 Q extends 'address_txs' ? TransactionsSorting :
 Q extends 'addresses_lookup' ? EnsLookupSorting :
 Q extends 'domains_lookup' ? EnsLookupSorting :
-Q extends 'validators' ? ValidatorsSorting :
+Q extends 'validators_stability' ? ValidatorsStabilitySorting :
+Q extends 'validators_blackfort' ? ValidatorsBlackfortSorting :
+Q extends 'address_mud_records' ? AddressMudRecordsSorting :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */

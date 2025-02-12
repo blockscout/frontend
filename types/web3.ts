@@ -40,7 +40,7 @@ type WalletProviderFlags =
   | 'isTrust'
   | 'isTrustWallet'
   | 'isXDEFI'
-  | 'isZerion'
+  | 'isZerion';
 
 export type WalletProvider = Evaluate<
 EIP1193Provider & {
@@ -62,4 +62,4 @@ EIP1193Provider & {
   }
   | undefined;
 }
->
+>;

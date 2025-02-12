@@ -1,7 +1,7 @@
 import type { InternalTransaction, InternalTransactionsResponse } from 'types/api/internalTransaction';
 
 export const base: InternalTransaction = {
-  block: 29611822,
+  block_number: 29611822,
   created_contract: null,
   error: null,
   from: {

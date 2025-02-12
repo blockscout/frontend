@@ -6,17 +6,17 @@ import { test, expect } from 'playwright/lib';
 
 import TokenEntity from './TokenEntity';
 
-const iconSizes = [ 'md', 'lg' ];
+const iconSizes = [ 'md', 'lg' ] as const;
 
 test.use({ viewport: { width: 300, height: 100 } });
 
 test.describe('icon size', () => {
   iconSizes.forEach((size) => {
-    test(size, async({ render }) => {
+    test(`${ size }`, async({ render }) => {
       const component = await render(
         <TokenEntity
           token={ tokenMock.tokenInfo }
-          iconSize={ size }
+          icon={{ size }}
         />,
       );
 
@@ -37,6 +37,7 @@ test('with logo, long name and symbol', async({ page, render }) => {
   await render(
     <TokenEntity
       token={{
+        type: 'ERC-20',
         name: 'This token is the best token ever',
         symbol: 'DUCK DUCK DUCK',
         address: tokenMock.tokenInfo.address,

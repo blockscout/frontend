@@ -1,10 +1,11 @@
-import { chakra, Image, Flex, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger, useColorModeValue, DarkMode } from '@chakra-ui/react';
+import { chakra, Image, Flex, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger, useColorModeValue, DarkMode } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag } from './types';
 
 import makePrettyLink from 'lib/makePrettyLink';
 import * as mixpanel from 'lib/mixpanel/index';
+import Popover from 'ui/shared/chakra/Popover';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 
 interface Props {
@@ -35,11 +36,11 @@ const EntityTagPopover = ({ data, children }: Props) => {
   }
 
   return (
-    <Popover trigger="hover" isLazy>
+    <Popover trigger="hover" isLazy gutter={ 8 }>
       <PopoverTrigger>
         { children }
       </PopoverTrigger>
-      <PopoverContent bgColor={ bgColor } borderRadius="sm" maxW="300px" w="fit-content">
+      <PopoverContent bgColor={ bgColor } borderRadius="sm" maxW="280px" w="fit-content">
         <PopoverArrow bgColor={ bgColor }/>
         <DarkMode>
           <PopoverBody color="white" p={ 2 } fontSize="sm" display="flex" flexDir="column" rowGap={ 2 }>

@@ -3,56 +3,38 @@ import React from 'react';
 
 import type { TimeChartItem } from 'ui/shared/chart/types';
 
+import type { AnimationType } from './utils/animations';
+import { ANIMATIONS } from './utils/animations';
+import { getIncompleteDataLineSource } from './utils/formatters';
+
 interface Props extends React.SVGProps<SVGPathElement> {
   xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   yScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   data: Array<TimeChartItem>;
-  animation: 'left' | 'fadeIn' | 'none';
+  animation: AnimationType;
 }
 
 const ChartLine = ({ xScale, yScale, data, animation, ...props }: Props) => {
-  const ref = React.useRef<SVGPathElement>(null);
-
-  // Define different types of animation that we can use
-  const animateLeft = React.useCallback(() => {
-    const totalLength = ref.current?.getTotalLength() || 0;
-    d3.select(ref.current)
-      .attr('opacity', 1)
-      .attr('stroke-dasharray', `${ totalLength },${ totalLength }`)
-      .attr('stroke-dashoffset', totalLength)
-      .transition()
-      .duration(750)
-      .ease(d3.easeLinear)
-      .attr('stroke-dashoffset', 0);
-  }, []);
-
-  const animateFadeIn = React.useCallback(() => {
-    d3.select(ref.current)
-      .transition()
-      .duration(750)
-      .ease(d3.easeLinear)
-      .attr('opacity', 1);
-  }, []);
-
-  const noneAnimation = React.useCallback(() => {
-    d3.select(ref.current).attr('opacity', 1);
-  }, []);
+  const dataPathRef = React.useRef<SVGPathElement>(null);
+  const incompleteDataPathRef = React.useRef<SVGPathElement>(null);
 
   React.useEffect(() => {
-    const ANIMATIONS = {
-      left: animateLeft,
-      fadeIn: animateFadeIn,
-      none: noneAnimation,
-    };
     const animationFn = ANIMATIONS[animation];
-    window.setTimeout(animationFn, 100);
-  }, [ animateLeft, animateFadeIn, noneAnimation, animation ]);
+    const timeoutId = window.setTimeout(() => {
+      dataPathRef.current && animationFn(dataPathRef.current);
+      incompleteDataPathRef.current && animationFn(incompleteDataPathRef.current);
+    }, 100);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [ animation ]);
 
   // Recalculate line length if scale has changed
   React.useEffect(() => {
     if (animation === 'left') {
-      const totalLength = ref.current?.getTotalLength();
-      d3.select(ref.current).attr(
+      const totalLength = dataPathRef.current?.getTotalLength();
+      d3.select(dataPathRef.current).attr(
         'stroke-dasharray',
         `${ totalLength },${ totalLength }`,
       );
@@ -65,15 +47,27 @@ const ChartLine = ({ xScale, yScale, data, animation, ...props }: Props) => {
     .curve(d3.curveMonotoneX);
 
   return (
-    <path
-      ref={ ref }
-      d={ line(data) || undefined }
-      strokeWidth={ 1 }
-      strokeLinecap="round"
-      fill="none"
-      opacity={ 0 }
-      { ...props }
-    />
+    <>
+      <path
+        ref={ incompleteDataPathRef }
+        d={ line(getIncompleteDataLineSource(data)) || undefined }
+        strokeWidth={ 1 }
+        strokeLinecap="round"
+        fill="none"
+        strokeDasharray="6 6"
+        opacity={ 0 }
+        { ...props }
+      />
+      <path
+        ref={ dataPathRef }
+        d={ line(data.filter(({ isApproximate }) => !isApproximate)) || undefined }
+        strokeWidth={ 1 }
+        strokeLinecap="round"
+        fill="none"
+        opacity={ 0 }
+        { ...props }
+      />
+    </>
   );
 };
 

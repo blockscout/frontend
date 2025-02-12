@@ -1,16 +1,7 @@
 import {
   Image,
-  Button,
-  Popover,
-  PopoverTrigger,
-  PopoverBody,
-  PopoverContent,
-  Show,
-  Hide,
   useColorModeValue,
   chakra,
-  useDisclosure,
-  Grid,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -20,7 +11,7 @@ import config from 'configs/app';
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
-import PopoverTriggerTooltip from 'ui/shared/PopoverTriggerTooltip';
+import VerifyWith from 'ui/shared/VerifyWith';
 
 interface Props {
   className?: string;
@@ -29,7 +20,6 @@ interface Props {
 }
 
 const NetworkExplorers = ({ className, type, pathParam }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
   const defaultIconColor = useColorModeValue('gray.400', 'gray.500');
 
   const explorersLinks = React.useMemo(() => {
@@ -54,46 +44,13 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
   }
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
-      <PopoverTrigger>
-        <PopoverTriggerTooltip label="Verify with other explorers" className={ className }>
-          <Button
-            size="sm"
-            variant="outline"
-            colorScheme="gray"
-            onClick={ onToggle }
-            isActive={ isOpen }
-            aria-label="Verify in other explorers"
-            fontWeight={ 500 }
-            px={ 2 }
-            h="32px"
-            flexShrink={ 0 }
-          >
-            <IconSvg name="explorer" boxSize={ 5 }/>
-            <Show above="xl">
-              <chakra.span ml={ 1 }>{ explorersLinks.length } Explorer{ explorersLinks.length > 1 ? 's' : '' }</chakra.span>
-            </Show>
-            <Hide above="xl">
-              <chakra.span ml={ 1 }>{ explorersLinks.length }</chakra.span>
-            </Hide>
-          </Button>
-        </PopoverTriggerTooltip>
-      </PopoverTrigger>
-      <PopoverContent w="auto">
-        <PopoverBody >
-          <chakra.span color="text_secondary" fontSize="xs">Verify with other explorers</chakra.span>
-          <Grid
-            alignItems="center"
-            templateColumns={ explorersLinks.length > 1 ? 'auto auto' : '1fr' }
-            columnGap={ 4 }
-            rowGap={ 2 }
-            mt={ 3 }
-          >
-            { explorersLinks }
-          </Grid>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
+    <VerifyWith
+      className={ className }
+      links={ explorersLinks }
+      label="Verify with other explorers"
+      longText={ `${ explorersLinks.length } Explorer${ explorersLinks.length > 1 ? 's' : '' }` }
+      shortText={ explorersLinks.length.toString() }
+    />
   );
 };
 

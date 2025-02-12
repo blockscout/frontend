@@ -3,6 +3,7 @@ import React from 'react';
 
 import * as ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 import Hint from 'ui/shared/Hint';
+import HintPopover from 'ui/shared/HintPopover';
 
 const LabelScrollText = () => (
   <Text fontWeight={ 500 } variant="secondary" fontSize="xs" className="note" align="right">
@@ -11,15 +12,16 @@ const LabelScrollText = () => (
 );
 
 interface LabelProps {
-  hint?: string;
+  hint?: React.ReactNode;
   children: React.ReactNode;
   isLoading?: boolean;
   className?: string;
   id?: string;
   hasScroll?: boolean;
+  type?: 'tooltip' | 'popover';
 }
 
-const Label = chakra(({ hint, children, isLoading, id, className, hasScroll }: LabelProps) => {
+const Label = chakra(({ hint, children, isLoading, id, className, hasScroll, type }: LabelProps) => {
   return (
     <GridItem
       id={ id }
@@ -29,7 +31,9 @@ const Label = chakra(({ hint, children, isLoading, id, className, hasScroll }: L
       _notFirst={{ mt: { base: 3, lg: 0 } }}
     >
       <Flex columnGap={ 2 } alignItems="flex-start">
-        { hint && <Hint label={ hint } isLoading={ isLoading } my={{ lg: '2px' }}/> }
+        { hint && (type === 'popover' ?
+          <HintPopover label={ hint } isLoading={ isLoading } my={{ lg: '2px' }}/> :
+          <Hint label={ hint } isLoading={ isLoading } my={{ lg: '2px' }}/>) }
         <Skeleton isLoaded={ !isLoading } fontWeight={{ base: 700, lg: 500 }}>
           { children }
           { hasScroll && <LabelScrollText/> }
