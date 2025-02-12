@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import type { BoxProps, ImageProps as ChakraImageProps } from '@chakra-ui/react';
 import { Image as ChakraImage } from '@chakra-ui/react';
 import React from 'react';

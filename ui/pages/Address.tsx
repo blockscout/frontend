@@ -366,51 +366,51 @@ const AddressPageContent = () => {
   // In this case it returns 404 with empty payload, so we calculate check-summed hash on the client
   const checkSummedHash = React.useMemo(() => addressQuery.data?.hash ?? getCheckedSummedAddress(hash), [ hash, addressQuery.data?.hash ]);
 
-  // const titleSecondRow = (
-  //   <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
-  //     { addressQuery.data?.ens_domain_name && (
-  //       <EnsEntity
-  //         domain={ addressQuery.data?.ens_domain_name }
-  //         protocol={ !addressEnsDomainsQuery.isPending ? addressMainDomain?.protocol : null }
-  //         fontFamily="heading"
-  //         fontSize="lg"
-  //         fontWeight={ 500 }
-  //         mr={ 1 }
-  //         maxW="300px"
-  //       />
-  //     ) }
-  //     <AddressEntity
-  //       address={{
-  //         ...addressQuery.data,
-  //         hash: checkSummedHash,
-  //         name: '',
-  //         ens_domain_name: '',
-  //         implementations: null,
-  //       }}
-  //       isLoading={ isLoading }
-  //       fontFamily="heading"
-  //       fontSize="lg"
-  //       fontWeight={ 500 }
-  //       noLink
-  //       isSafeAddress={ isSafeAddress }
-  //       icon={{ color: isSafeAddress ? { _light: 'black', _dark: 'white' } : undefined }}
-  //       mr={ 4 }
-  //     />
-  //     { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
-  //       <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }
-  //     { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
-  //       <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
-  //     ) }
-  //     <AddressQrCode address={{ hash: addressQuery.data?.filecoin?.robust ?? checkSummedHash }} isLoading={ isLoading }/>
-  //     <AccountActionsMenu isLoading={ isLoading }/>
-  //     <HStack ml="auto" gap={ 2 }/>
-  //     { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
-  //       <SolidityscanReport hash={ hash }/> }
-  //     { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
-  //       <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
-  //     <NetworkExplorers type="address" pathParam={ hash.toLowerCase() }/>
-  //   </Flex>
-  // );
+  const titleSecondRow = (
+    <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+      { addressQuery.data?.ens_domain_name && (
+        <EnsEntity
+          domain={ addressQuery.data?.ens_domain_name }
+          protocol={ !addressEnsDomainsQuery.isPending ? addressMainDomain?.protocol : null }
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight={ 500 }
+          mr={ 1 }
+          maxW="300px"
+        />
+      ) }
+      <AddressEntity
+        address={{
+          ...addressQuery.data,
+          hash: checkSummedHash,
+          name: '',
+          ens_domain_name: '',
+          implementations: null,
+        }}
+        isLoading={ isLoading }
+        fontFamily="heading"
+        fontSize="lg"
+        fontWeight={ 500 }
+        noLink
+        isSafeAddress={ isSafeAddress }
+        icon={{ color: isSafeAddress ? { _light: 'black', _dark: 'white' } : undefined }}
+        mr={ 4 }
+      />
+      { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
+        <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }
+      { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
+        <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
+      ) }
+      <AddressQrCode hash={ addressQuery.data?.filecoin?.robust ?? checkSummedHash } isLoading={ isLoading }/>
+      <AccountActionsMenu isLoading={ isLoading }/>
+      <HStack ml="auto" gap={ 2 }/>
+      { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
+        <SolidityscanReport hash={ hash }/> }
+      { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
+        <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
+      <NetworkExplorers type="address" pathParam={ hash.toLowerCase() }/>
+    </Flex>
+  );
 
   return (
     <>
@@ -419,7 +419,7 @@ const AddressPageContent = () => {
         title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
         backLink={ backLink }
         contentAfter={ titleContentAfter }
-        // secondRow={ titleSecondRow }
+        secondRow={ titleSecondRow }
         isLoading={ isLoading }
       />
       { !addressMetadataQuery.isPending &&

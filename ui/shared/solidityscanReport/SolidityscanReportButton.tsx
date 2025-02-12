@@ -1,48 +1,43 @@
-import { Button, Spinner, Tooltip, useColorModeValue, chakra } from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
+import type { ButtonProps } from 'toolkit/chakra/button';
+import { Button } from 'toolkit/chakra/button';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 import useScoreLevelAndColor from './useScoreLevelAndColor';
 
-interface Props {
+interface Props extends ButtonProps {
   score: number;
   isLoading?: boolean;
   onlyIcon?: boolean;
-  onClick?: () => void;
+  isActive?: boolean;
   label?: string | React.ReactElement;
-  isActive: boolean;
-  className?: string;
 }
 
 const SolidityscanReportButton = (
-  { score, isLoading, onlyIcon, onClick, label = 'Security score', isActive, className }: Props,
-  ref: React.ForwardedRef<HTMLButtonElement>,
+  { score, isLoading, onlyIcon, isActive, label = 'Security score', ...rest }: Props,
 ) => {
   const { scoreColor } = useScoreLevelAndColor(score);
-  const colorLoading = useColorModeValue('gray.300', 'gray.600');
-  const isMobile = useIsMobile();
+  const colorLoading = { _light: 'gray.300', _dark: 'gray.600' };
   const onFocusCapture = usePreventFocusAfterModalClosing();
 
   return (
-    <Tooltip label={ label } isDisabled={ isMobile } openDelay={ 100 } textAlign="center">
+    <Tooltip content={ label } disableOnMobile disabled={ isActive }>
       <Button
-        className={ className }
-        ref={ ref }
         color={ isLoading ? colorLoading : scoreColor }
         size="sm"
-        variant="outline"
-        colorScheme="gray"
-        onClick={ onClick }
-        isActive={ isActive }
+        variant="dropdown"
+        expanded={ isActive }
         aria-label="SolidityScan score"
         fontWeight={ 500 }
         px="6px"
         flexShrink={ 0 }
         columnGap={ 1 }
-        isDisabled={ isLoading }
+        disabled={ isLoading }
+        _expanded={{ color: 'link.primary.hover' }}
         _disabled={{
           opacity: 1,
           _hover: {
@@ -50,6 +45,7 @@ const SolidityscanReportButton = (
           },
         }}
         onFocusCapture={ onFocusCapture }
+        { ...rest }
       >
         <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 }/>
         { isLoading && <Spinner size="sm"/> }
@@ -59,4 +55,4 @@ const SolidityscanReportButton = (
   );
 };
 
-export default chakra(React.forwardRef(SolidityscanReportButton));
+export default SolidityscanReportButton;
