@@ -24,6 +24,7 @@ const styles = {
     '&.address-entity_highlighted': {
       _before: {
         pr: 2,
+        width: `calc(100% + 6px + 8px)`,
       },
     },
   },

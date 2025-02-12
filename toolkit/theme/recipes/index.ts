@@ -20,6 +20,7 @@ import { recipe as radiomark } from './radiomark.recipe';
 import { recipe as select } from './select.recipe';
 import { recipe as skeleton } from './skeleton.recipe';
 import { recipe as spinner } from './spinner.recipe';
+import { recipe as stat } from './stat.recipe';
 import { recipe as switchRecipe } from './switch.recipe';
 import { recipe as table } from './table.recipe';
 import { recipe as tabs } from './tabs.recipe';
@@ -55,6 +56,7 @@ export const slotRecipes = {
   progressCircle,
   radioGroup,
   select,
+  stat,
   'switch': switchRecipe,
   table,
   tabs,

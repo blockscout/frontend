@@ -1,10 +1,4 @@
-import {
-  chakra,
-  Flex,
-  IconButton,
-  Tooltip,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { chakra, Flex } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React, { useRef } from 'react';
 
@@ -13,7 +7,9 @@ import type { TimeChartItem } from './types';
 import { route, type Route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChartMenu from './ChartMenu';
@@ -48,8 +44,6 @@ const ChartWidget = ({
   const ref = useRef<HTMLDivElement>(null);
   const { zoomRange, handleZoom, handleZoomReset } = useZoom();
 
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
-
   const hasItems = items && items.length > 2;
 
   const content = (
@@ -72,24 +66,22 @@ const ChartWidget = ({
       flexDir="column"
       alignItems="flex-start"
       cursor={ href ? 'pointer' : 'default' }
-      _hover={ href ? { color: 'link_hovered' } : {} }
+      _hover={ href ? { color: 'link.primary.hovered' } : {} }
     >
       <Skeleton
-        isLoaded={ !isLoading }
+        loading={ isLoading }
         fontWeight={ 600 }
-        size={{ base: 'xs', lg: 'sm' }}
+        textStyle="md"
       >
-
         <span>{ title }</span>
       </Skeleton>
 
       { description && (
         <Skeleton
-          isLoaded={ !isLoading }
+          loading={ isLoading }
           color="text_secondary"
           fontSize="xs"
           mt={ 1 }
-
         >
           <span>{ description }</span>
         </Skeleton>
@@ -104,8 +96,8 @@ const ChartWidget = ({
       flexDir="column"
       padding={{ base: 3, lg: 4 }}
       borderRadius="lg"
-      border="1px"
-      borderColor={ borderColor }
+      borderWidth="1px"
+      borderColor={{ _light: 'gray.200', _dark: 'gray.600' }}
       className={ className }
     >
       <Flex columnGap={ 6 } mb={ 2 } alignItems="flex-start">
@@ -115,18 +107,18 @@ const ChartWidget = ({
           </NextLink>
         ) : chartHeader }
         <Flex ml="auto" columnGap={ 2 }>
-          <Tooltip label="Reset zoom">
+          <Tooltip content="Reset zoom">
             <IconButton
               hidden={ !zoomRange }
               aria-label="Reset zoom"
-              colorScheme="blue"
               w={ 9 }
               h={ 8 }
               size="sm"
               variant="outline"
               onClick={ handleZoomReset }
-              icon={ <IconSvg name="repeat" w={ 4 } h={ 4 }/> }
-            />
+            >
+              <IconSvg name="repeat" boxSize={ 4 }/>
+            </IconButton>
           </Tooltip>
 
           { hasItems && (

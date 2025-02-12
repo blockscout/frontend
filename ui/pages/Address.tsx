@@ -2,8 +2,8 @@ import { Box, Flex, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { EntityTag } from 'ui/shared/EntityTags/types';
-import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
@@ -151,7 +151,7 @@ const AddressPageContent = () => {
     Boolean(config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0),
   );
 
-  const tabs: Array<RoutedTab> = React.useMemo(() => {
+  const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
       // config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0 && {
       //   id: 'mud',
@@ -213,19 +213,19 @@ const AddressPageContent = () => {
       //   count: addressTabsCountersQuery.data?.celo_election_rewards_count,
       //   component: <AddressEpochRewards scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       // } : undefined,
-      // {
-      //   id: 'coin_balance_history',
-      //   title: 'Coin balance history',
-      //   component: <AddressCoinBalance shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      // },
-      // addressTabsCountersQuery.data?.validations_count ?
-      //   {
-      //     id: 'blocks_validated',
-      //     title: `Blocks ${ getNetworkValidationActionText() }`,
-      //     count: addressTabsCountersQuery.data?.validations_count,
-      //     component: <AddressBlocksValidated scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      //   } :
-      //   undefined,
+      {
+        id: 'coin_balance_history',
+        title: 'Coin balance history',
+        component: <AddressCoinBalance shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      },
+      addressTabsCountersQuery.data?.validations_count ?
+        {
+          id: 'blocks_validated',
+          title: `Blocks ${ getNetworkValidationActionText() }`,
+          count: addressTabsCountersQuery.data?.validations_count,
+          component: <AddressBlocksValidated scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        } :
+        undefined,
       // addressTabsCountersQuery.data?.logs_count ?
       //   {
       //     id: 'logs',

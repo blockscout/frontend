@@ -71,7 +71,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       </TableCell>
       <TableCell whiteSpace="nowrap">
         { tx.method && (
-          <Badge colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated>
+          <Badge colorPalette={ tx.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated>
             <span>{ tx.method }</span>
           </Badge>
         ) }

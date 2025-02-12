@@ -1,6 +1,8 @@
-import { useColorModeValue, useToken } from '@chakra-ui/react';
+import { useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
+
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 
 interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   type: 'left' | 'bottom';
@@ -14,8 +16,7 @@ interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
 const ChartAxis = ({ type, scale, ticks, tickFormatGenerator, noAnimation, anchorEl, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
 
-  const textColorToken = useColorModeValue('blackAlpha.600', 'whiteAlpha.500');
-  const textColor = useToken('colors', textColorToken);
+  const textColor = useToken('colors', useColorModeValue('blackAlpha.600', 'whiteAlpha.500'));
 
   React.useEffect(() => {
     if (!ref.current) {
@@ -41,7 +42,7 @@ const ChartAxis = ({ type, scale, ticks, tickFormatGenerator, noAnimation, ancho
     axisGroup.selectAll('text')
       .attr('opacity', 1)
       .attr('color', textColor)
-      .attr('font-size', '0.75rem');
+      .style('font-size', '12px');
   }, [ scale, ticks, tickFormatGenerator, noAnimation, type, textColor ]);
 
   React.useEffect(() => {

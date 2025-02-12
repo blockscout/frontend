@@ -187,7 +187,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = 
   return (
     <>
       { !isMobile && (
-        <ActionBar mt={ -6 }>
+        <ActionBar>
           { filter }
           { currentAddress && csvExportLink }
           <Pagination { ...addressTxsQuery.pagination } ml={ 8 }/>

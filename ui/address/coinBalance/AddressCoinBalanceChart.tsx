@@ -34,7 +34,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       isLoading={ isPending }
       h="300px"
       units={ currencyUnits.ether }
-      emptyText={ data?.days && `Insufficient data for the past ${ data.days } days` }
+      emptyText={ data?.days ? `Insufficient data for the past ${ data.days } days` : undefined }
     />
   );
 };

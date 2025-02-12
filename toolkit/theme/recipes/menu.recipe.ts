@@ -5,7 +5,7 @@ export const recipe = defineSlotRecipe({
   base: {
     content: {
       outline: 0,
-      bg: 'popover,bg',
+      bg: 'popover.bg',
       boxShadow: 'popover',
       color: 'initial',
       maxHeight: 'var(--available-height)',

@@ -353,6 +353,12 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
       },
     },
+    stat: {
+      indicator: {
+        up: { value: { _light: '{colors.green.500}', _dark: '{colors.green.400}' } },
+        down: { value: { _light: '{colors.red.600}', _dark: '{colors.red.400}' } },
+      },
+    },
     heading: {
       DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
     },
