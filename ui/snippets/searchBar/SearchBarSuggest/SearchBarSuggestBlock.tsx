@@ -1,7 +1,7 @@
 import { Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SearchResultBlock } from 'types/api/search';
+import type { SearchResultBlock } from 'types/client/search';
 
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -16,7 +16,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, isFirst }: Props) => {
   const blockNumber = (
     <Flex fontWeight={ 500 } lineHeight="20px" fontSize={ 14 }>
       <Text color="#000">Block Height:&nbsp;</Text>
-      <Text color="#8A55FD">{ data.block_number.toString() }</Text>
+      <Text color="#C15E97">{ data.block_number.toString() }</Text>
     </Flex>
   );
 

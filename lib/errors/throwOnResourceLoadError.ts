@@ -8,7 +8,7 @@ type Params = ({
   error: null;
 }) & {
   resource?: ResourceName;
-}
+};
 
 export const RESOURCE_LOAD_ERROR_MESSAGE = 'Resource load error';
 

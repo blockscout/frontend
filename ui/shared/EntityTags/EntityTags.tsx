@@ -1,10 +1,11 @@
-import { Box, Flex, Popover, PopoverBody, PopoverContent, PopoverTrigger, chakra } from '@chakra-ui/react';
+import { Box, Flex, PopoverBody, PopoverContent, PopoverTrigger, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import Popover from 'ui/shared/chakra/Popover';
 import Tag from 'ui/shared/chakra/Tag';
 
 import EntityTag from './EntityTag';
@@ -28,10 +29,15 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
   }
 
   const content = (() => {
+    const tagMaxW = {
+      base: tags.length === 1 ? '100%' : '60%',
+      lg: '300px',
+    };
+
     if (tags.length > visibleNum) {
       return (
         <>
-          { tags.slice(0, visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } truncate/>) }
+          { tags.slice(0, visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } maxW={ tagMaxW }/>) }
           { metaSuitesPlaceholder }
           <Popover trigger="click" placement="bottom-start" isLazy>
             <PopoverTrigger>
@@ -39,7 +45,7 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
                 +{ tags.length - visibleNum }
               </Tag>
             </PopoverTrigger>
-            <PopoverContent w="300px">
+            <PopoverContent maxW="300px" w="auto">
               <PopoverBody >
                 <Flex columnGap={ 2 } rowGap={ 2 } flexWrap="wrap">
                   { tags.slice(visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag }/>) }
@@ -53,14 +59,14 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
 
     return (
       <>
-        { tags.map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } truncate/>) }
+        { tags.map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } maxW={ tagMaxW }/>) }
         { metaSuitesPlaceholder }
       </>
     );
   })();
 
   return (
-    <Flex className={ className } columnGap={ 2 } rowGap={ 2 } flexWrap="wrap" alignItems="center" flexGrow={ 1 }>
+    <Flex className={ className } columnGap={ 2 } rowGap={ 2 } flexWrap="nowrap" alignItems="center" flexGrow={ 1 } maxW="100%">
       { content }
     </Flex>
   );

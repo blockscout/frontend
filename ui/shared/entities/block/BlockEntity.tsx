@@ -1,12 +1,14 @@
+import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
 
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash' | 'number'>;
+import { distributeEntityProps } from '../base/utils';
+
+type LinkProps = EntityBase.LinkBaseProps & Partial<Pick<EntityProps, 'hash' | 'number'>>;
 
 const Link = chakra((props: LinkProps) => {
   const heightOrHash = props.hash ?? String(props.number);
@@ -22,11 +24,7 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & {
-  name?: EntityBase.IconBaseProps['name'];
-};
-
-const Icon = (props: IconProps) => {
+const Icon = (props: EntityBase.IconBaseProps) => {
   return (
     <EntityBase.Icon
       { ...props }
@@ -50,25 +48,24 @@ const Content = chakra((props: ContentProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  number: number;
+  number: number | string;
   hash?: string;
 }
 
 const BlockEntity = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const partsProps = distributeEntityProps(props);
 
   return (
-    <Container className={ props.className }>
-      <Icon { ...partsProps }/>
-      <Link { ...linkProps }>
-        <Content { ...partsProps }/>
+    <Container { ...partsProps.container }>
+      <Icon { ...partsProps.icon }/>
+      <Link { ...partsProps.link }>
+        <Content { ...partsProps.content }/>
       </Link>
     </Container>
   );
 };
 
-export default React.memo(chakra(BlockEntity));
+export default React.memo(chakra<As, EntityProps>(BlockEntity));
 
 export {
   Container,

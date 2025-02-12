@@ -28,14 +28,14 @@ const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
     <Tooltip
       label={ label }
       placement="top"
-      maxW="320px"
+      maxW={{ base: 'calc(100vw - 8px)', lg: '320px' }}
       isOpen={ isOpen }
       { ...tooltipProps }
     >
       <IconButton
         colorScheme="none"
         aria-label="hint"
-        icon={ <IconSvg name="info" w="100%" h="100%"/> }
+        icon={ <IconSvg name="info" w="100%" h="100%" color="icon_info" _hover={{ color: 'link_hovered' }}/> }
         boxSize={ 5 }
         variant="simple"
         display="inline-block"

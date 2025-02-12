@@ -151,6 +151,7 @@ const MarketplaceApp = () => {
   return (
     <Flex flexDirection="column" h="100%">
       <MarketplaceAppTopBar
+        appId={ id }
         data={ data }
         isLoading={ isPending || isSecurityReportsLoading }
         securityReport={ securityReports?.[id] }

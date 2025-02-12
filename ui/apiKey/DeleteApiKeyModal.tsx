@@ -12,7 +12,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   data: ApiKey;
-}
+};
 
 const DeleteApiKeyModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const queryClient = useQueryClient();

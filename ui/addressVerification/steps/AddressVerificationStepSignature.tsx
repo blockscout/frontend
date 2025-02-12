@@ -1,8 +1,8 @@
 import { Alert, Box, Button, chakra, Flex, Link, Radio, RadioGroup } from '@chakra-ui/react';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { useAppKit } from '@reown/appkit/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useSignMessage, useAccount } from 'wagmi';
 
 import type {
@@ -19,16 +19,15 @@ import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import shortenString from 'lib/shortenString';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { SIGNATURE_REGEXP } from 'ui/shared/forms/validators/signature';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
-
-import AddressVerificationFieldMessage from '../fields/AddressVerificationFieldMessage';
-import AddressVerificationFieldSignature from '../fields/AddressVerificationFieldSignature';
 
 type Fields = RootFields & AddressVerificationFormSecondStepFields;
 
 type SignMethod = 'wallet' | 'manual';
 
-interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess{
+interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess {
   onContinue: (newItem: VerifiedAddress, signMethod: SignMethod) => void;
   noWeb3Provider?: boolean;
 }
@@ -36,7 +35,7 @@ interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStat
 const AddressVerificationStepSignature = ({ address, signingMessage, contractCreator, contractOwner, onContinue, noWeb3Provider }: Props) => {
   const [ signMethod, setSignMethod ] = React.useState<SignMethod>(noWeb3Provider ? 'manual' : 'wallet');
 
-  const { open: openWeb3Modal } = useWeb3Modal();
+  const { open: openWeb3Modal } = useAppKit();
   const { isConnected } = useAccount();
 
   const formApi = useForm<Fields>({
@@ -45,7 +44,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
       message: signingMessage,
     },
   });
-  const { handleSubmit, formState, control, setValue, getValues, setError, clearErrors, watch } = formApi;
+  const { handleSubmit, formState, setValue, getValues, setError, clearErrors, watch } = formApi;
 
   const apiFetch = useApiFetch();
 
@@ -184,51 +183,69 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
   })();
 
   return (
-    <form noValidate onSubmit={ onSubmit }>
-      { rootError && <Alert status="warning" mb={ 6 }>{ rootError }</Alert> }
-      <Box mb={ 8 }>
-        <span>Please select the address to sign and copy the message and sign it using the Blockscout message provider of your choice. </span>
-        <Link href="https://docs.blockscout.com/for-users/my-account/verified-addresses/copy-and-sign-message" target="_blank">
-          Additional instructions
-        </Link>
-        <span>. If you do not see your address here but are sure that you are the owner of the contract, kindly </span>
-        { contactUsLink }
-        <span> for further assistance.</span>
-      </Box>
-      { (contractOwner || contractCreator) && (
-        <Flex flexDir="column" rowGap={ 4 } mb={ 4 }>
-          { contractCreator && (
-            <Box>
-              <chakra.span fontWeight={ 600 }>Contract creator: </chakra.span>
-              <chakra.span>{ contractCreator }</chakra.span>
-            </Box>
+    <FormProvider { ...formApi }>
+      <form noValidate onSubmit={ onSubmit }>
+        { rootError && <Alert status="warning" mb={ 6 }>{ rootError }</Alert> }
+        <Box mb={ 8 }>
+          <span>Please select the address to sign and copy the message and sign it using the Blockscout message provider of your choice. </span>
+          <Link href="https://docs.blockscout.com/for-users/my-account/verified-addresses/copy-and-sign-message" target="_blank">
+            Additional instructions
+          </Link>
+          <span>. If you do not see your address here but are sure that you are the owner of the contract, kindly </span>
+          { contactUsLink }
+          <span> for further assistance.</span>
+        </Box>
+        { (contractOwner || contractCreator) && (
+          <Flex flexDir="column" rowGap={ 4 } mb={ 4 }>
+            { contractCreator && (
+              <Box>
+                <chakra.span fontWeight={ 600 }>Contract creator: </chakra.span>
+                <chakra.span>{ contractCreator }</chakra.span>
+              </Box>
+            ) }
+            { contractOwner && (
+              <Box>
+                <chakra.span fontWeight={ 600 }>Contract owner: </chakra.span>
+                <chakra.span>{ contractOwner }</chakra.span>
+              </Box>
+            ) }
+          </Flex>
+        ) }
+        <Flex rowGap={ 5 } flexDir="column">
+          <div>
+            <CopyToClipboard text={ signingMessage } ml="auto" display="block"/>
+            <FormFieldText<Fields>
+              name="message"
+              placeholder="Message to sign"
+              isRequired
+              asComponent="Textarea"
+              isReadOnly
+              maxH={{ base: '140px', lg: '80px' }}
+              bgColor="dialog_bg"
+            />
+          </div>
+          { !noWeb3Provider && (
+            <RadioGroup onChange={ handleSignMethodChange } value={ signMethod } display="flex" flexDir="column" rowGap={ 4 }>
+              <Radio value="wallet">Sign via Web3 wallet</Radio>
+              <Radio value="manual">Sign manually</Radio>
+            </RadioGroup>
           ) }
-          { contractOwner && (
-            <Box>
-              <chakra.span fontWeight={ 600 }>Contract owner: </chakra.span>
-              <chakra.span>{ contractOwner }</chakra.span>
-            </Box>
+          { signMethod === 'manual' && (
+            <FormFieldText<Fields>
+              name="signature"
+              placeholder="Signature hash"
+              isRequired
+              rules={{ pattern: SIGNATURE_REGEXP }}
+              bgColor="dialog_bg"
+            />
           ) }
         </Flex>
-      ) }
-      <Flex rowGap={ 5 } flexDir="column">
-        <div>
-          <CopyToClipboard text={ signingMessage } ml="auto" display="block"/>
-          <AddressVerificationFieldMessage formState={ formState } control={ control }/>
-        </div>
-        { !noWeb3Provider && (
-          <RadioGroup onChange={ handleSignMethodChange } value={ signMethod } display="flex" flexDir="column" rowGap={ 4 }>
-            <Radio value="wallet">Sign via Web3 wallet</Radio>
-            <Radio value="manual">Sign manually</Radio>
-          </RadioGroup>
-        ) }
-        { signMethod === 'manual' && <AddressVerificationFieldSignature formState={ formState } control={ control }/> }
-      </Flex>
-      <Flex alignItems={{ base: 'flex-start', lg: 'center' }} mt={ 8 } columnGap={ 5 } rowGap={ 2 } flexDir={{ base: 'column', lg: 'row' }}>
-        { button }
-        <AdminSupportText/>
-      </Flex>
-    </form>
+        <Flex alignItems={{ base: 'flex-start', lg: 'center' }} mt={ 8 } columnGap={ 5 } rowGap={ 2 } flexDir={{ base: 'column', lg: 'row' }}>
+          { button }
+          <AdminSupportText/>
+        </Flex>
+      </form>
+    </FormProvider>
   );
 };
 

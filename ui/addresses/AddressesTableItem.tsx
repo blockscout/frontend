@@ -1,4 +1,4 @@
-import { Tr, Td, Text, Skeleton } from '@chakra-ui/react';
+import { Tr, Td, Text, Skeleton, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -14,7 +14,7 @@ type Props = {
   totalSupply: BigNumber;
   hasPercentage: boolean;
   isLoading?: boolean;
-}
+};
 
 const AddressesTableItem = ({
   item,
@@ -24,7 +24,7 @@ const AddressesTableItem = ({
   isLoading,
 }: Props) => {
 
-  const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** config.chain.currency.decimals));
+  const addressBalance = BigNumber(item.coin_balance || 0).div(BigNumber(10 ** config.chain.currency.decimals));
   const addressBalanceChunks = addressBalance.dp(8).toFormat().split('.');
 
   return (
@@ -35,22 +35,21 @@ const AddressesTableItem = ({
         </Skeleton>
       </Td>
       <Td>
-        <AddressEntity
-          address={ item }
-          isLoading={ isLoading }
-          fontWeight={ 700 }
-          my="2px"
-        />
-      </Td>
-      <Td pl={ 10 }>
-        { item.public_tags && item.public_tags.length ? item.public_tags.map(tag => (
-          <Tag key={ tag.label } isLoading={ isLoading } isTruncated>{ tag.display_name }</Tag>
-        )) : null }
+        <Flex alignItems="center" columnGap={ 2 }>
+          <AddressEntity
+            address={ item }
+            isLoading={ isLoading }
+            fontWeight={ 700 }
+            my="2px"
+          />
+          { item.public_tags && item.public_tags.length ? item.public_tags.map(tag => (
+            <Tag key={ tag.label } isLoading={ isLoading } isTruncated>{ tag.display_name }</Tag>
+          )) : null }
+        </Flex>
       </Td>
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading } display="inline-block" maxW="100%">
-          <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] }</Text>
-          { addressBalanceChunks[1] && <Text lineHeight="24px" as="span">.</Text> }
+          <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] + (addressBalanceChunks[1] ? '.' : '') }</Text>
           <Text lineHeight="24px" variant="secondary" as="span">{ addressBalanceChunks[1] }</Text>
         </Skeleton>
       </Td>
@@ -61,7 +60,7 @@ const AddressesTableItem = ({
       ) }
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading } display="inline-block" lineHeight="24px">
-          { Number(item.tx_count).toLocaleString() }
+          { Number(item.transaction_count).toLocaleString() }
         </Skeleton>
       </Td>
     </Tr>

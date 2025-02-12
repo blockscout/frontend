@@ -15,6 +15,8 @@ export interface SearchResultToken {
   total_supply: string | null;
   is_verified_via_admin_panel: boolean;
   is_smart_contract_verified: boolean;
+  filecoin_robust_address?: string | null;
+  certified?: boolean;
 }
 
 export interface SearchResultAddressOrContract {
@@ -23,6 +25,7 @@ export interface SearchResultAddressOrContract {
   address: string;
   is_smart_contract_verified: boolean;
   certified?: true;
+  filecoin_robust_address?: string | null;
   url?: string; // not used by the frontend, we build the url ourselves
   ens_info?: {
     address_hash: string;
@@ -36,6 +39,7 @@ export interface SearchResultDomain {
   type: 'ens_domain';
   name: string | null;
   address: string;
+  filecoin_robust_address?: string | null;
   is_smart_contract_verified: boolean;
   url?: string; // not used by the frontend, we build the url ourselves
   ens_info: {
@@ -49,6 +53,7 @@ export interface SearchResultDomain {
 export interface SearchResultLabel {
   type: 'label';
   address: string;
+  filecoin_robust_address?: string | null;
   name: string;
   is_smart_contract_verified: boolean;
   url?: string; // not used by the frontend, we build the url ourselves
@@ -90,15 +95,15 @@ SearchResultBlob | SearchResultDomain | SearchResultBucket | SearchResultObject 
 export interface SearchResult {
   items: Array<SearchResultItem>;
   next_page_params: {
-    'address_hash': string | null;
-    'block_hash': string | null;
-    'holder_count': number | null;
-    'inserted_at': string | null;
-    'item_type': SearchResultType;
-    'items_count': number;
-    'name': string;
-    'q': string;
-    'tx_hash': string | null;
+    address_hash: string | null;
+    block_hash: string | null;
+    holder_count: number | null;
+    inserted_at: string | null;
+    item_type: SearchResultType;
+    items_count: number;
+    name: string;
+    q: string;
+    transaction_hash: string | null;
   } | null;
 }
 

@@ -11,11 +11,11 @@ import DepositsTableItem from './DepositsTableItem';
    items: Array<ShibariumDepositsItem>;
    top: number;
    isLoading?: boolean;
- }
+ };
 
 const DepositsTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
+    <Table style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
         <Tr>
           <Th>L1 block No</Th>

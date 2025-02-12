@@ -23,11 +23,7 @@ const ERC20TokensTableItem = ({
 
   return (
     <Tr
-      sx={{
-        '&:hover [aria-label="Add token to wallet"]': {
-          opacity: 1,
-        },
-      }}
+      role="group"
     >
       <Td verticalAlign="middle">
         <TokenEntity
@@ -46,7 +42,7 @@ const ERC20TokensTableItem = ({
             truncation="constant"
             noIcon
           />
-          <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading } opacity="0"/>
+          <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading } opacity="0" _groupHover={{ opacity: 1 }}/>
         </Flex>
       </Td>
       <Td isNumeric verticalAlign="middle">

@@ -24,7 +24,7 @@ interface Params {
   addressQuery: AddressQuery;
 }
 
-export default function useAddressQuery({ hash, addressQuery }: Params): AddressCountersQuery {
+export default function useAddressCountersQuery({ hash, addressQuery }: Params): AddressCountersQuery {
   const enabled = Boolean(hash) && !addressQuery.isPlaceholderData;
 
   const apiQuery = useApiQuery<'address_counters', { status: number }>('address_counters', {

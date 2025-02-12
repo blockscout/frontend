@@ -8,7 +8,7 @@ type Props = {
   onEditClick: () => void;
   onDeleteClick: () => void;
   isLoading?: boolean;
-}
+};
 
 const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props) => {
   const onFocusCapture = usePreventFocusAfterModalClosing();

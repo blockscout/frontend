@@ -32,7 +32,12 @@ const AddressImplementations = ({ data, isLoading }: Props) => {
         { data.map((item) => (
           <AddressEntity
             key={ item.address }
-            address={{ hash: item.address, name: item.name, is_contract: true }}
+            address={{
+              hash: item.address,
+              filecoin: { robust: item.filecoin_robust_address },
+              name: item.name,
+              is_contract: true,
+            }}
             isLoading={ isLoading }
             noIcon
           />

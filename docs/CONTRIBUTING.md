@@ -49,15 +49,15 @@ To develop locally, follow one of the two paths outlined below:
 A. Custom configuration:
 
 1. Create `.env.local` file in the root folder and include all required environment variables from the [list](./ENVS.md)
-2. Optionally, clone `.env.example` and name it `.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets your need.
-3. Use `yarn dev` command to start the dev server.
+2. Optionally, clone `.env.example` and name it `.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets you need.
+3. Use `yarn dev` command to start the Dev Server.
 4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
 
 B. Pre-defined configuration:
 
 1. Optionally, clone `.env.example` file into `configs/envs/.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets your need.
 2. Choose one of the predefined configurations located in the `/configs/envs` folder.
-3. Start your local dev server using the `yarn dev:preset <config_preset_name>` command.
+3. Start your local Dev Server using the `yarn dev:preset <config_preset_name>` command.
 4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
 
 
@@ -66,7 +66,7 @@ B. Pre-defined configuration:
 ## Adding new dependencies
 For all types of dependencies:
 - **Do not add** a dependency if the desired functionality is easily implementable
-- If adding a dependency is necessary, please be sure that is is well-maintained and trustworthy
+- If adding a dependency is necessary, please be sure that it is well-maintained and trustworthy
 
 &nbsp;
 
@@ -88,9 +88,7 @@ These are the steps that you have to follow to make everything work:
 4. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `configs/envs` where it is needed
 5. Add the variable to CI configs where it is needed
     - `deploy/values/review/values.yaml.gotmpl` - review development environment
-    - `deploy/values/main/values.yaml` - main development environment
     - `deploy/values/review-l2/values.yaml.gotmpl` - review development environment for L2 networks
-    - `deploy/values/l2-optimism-goerli/values.yaml` - main development environment
 6. If your variable is meant to receive a link to some external resource (image or JSON-config file), extend the array `ASSETS_ENVS` in `deploy/scripts/download_assets.sh` with your variable name
 7. Add validation schema for the new variable into the file `deploy/tools/envs-validator/schema.ts`
 8. Check if modified validation schema is valid by doing the following steps:
@@ -111,11 +109,11 @@ Every feature or bugfix should be accompanied by tests, either unit tests or com
 
 ### Jest unit tests
 
-If your changes only related to the logic of the app and not to its visual presentation, then try to write unit tests using [Jest](https://jestjs.io/) framework and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/). In general these tests are "cheaper" and faster than Playwright ones. Use them for testing your utilities and React hooks, as well as the whole components logic. 
+If your changes are only related to the logic of the app and not to its visual presentation, then try to write unit tests using [Jest](https://jestjs.io/) framework and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/). In general these tests are "cheaper" and faster than Playwright ones. Use them for testing your utilities and React hooks, as well as the whole components logic. 
 
 Place your test suites in `.test.ts` or `.test.tsx` files. You can find or add some mocks or other helpful utilities for these tests purposes in the `/jest` folder. 
 
-*Note*, that we are using custom renderer and wrapper in all test for React components, so please do not import package `@testing-library/react` directly in your test suites, instead use imports from `jest/lib` utility.
+*Note*, that we are using custom renderer and wrapper in all tests for React components, so please do not import package `@testing-library/react` directly in your test suites, instead use imports from `jest/lib` utility.
 
 ### Playwright components tests
 
@@ -176,8 +174,8 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 | Command | Description |
 | --- | --- |
 | **Running and building** |
-| `yarn dev` | run local dev server with user's configuration |
-| `yarn dev:preset <config_preset_name>` | run local dev server with predefined configuration |
+| `yarn dev` | run local Dev Server with user's configuration |
+| `yarn dev:preset <config_preset_name>` | run local Dev Server with predefined configuration |
 | `yarn build:docker` | build a docker image locally |
 | `yarn start:docker:local` | start an application from previously built local docker image with user's configuration |
 | `yarn start:docker:preset <config_preset_name>` | start an application from previously built local docker image with predefined configuration |
@@ -202,7 +200,7 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 
 #### VSCode
 
-There are some predefined tasks for all commands described above. You can see its full list by pressing <kbd>cmd + shift + P</kbd> and using command `Task: Run task`
+There are some predefined tasks for all commands described above. You can see the full list by pressing <kbd>cmd + shift + P</kbd> and using command `Task: Run task`
 
 Also there is a Jest test launch configuration for debugging and running current test file in the watch mode.
 

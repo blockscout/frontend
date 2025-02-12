@@ -5,12 +5,10 @@ import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/naviga
 
 import config from 'configs/app';
 import { rightLineArrow } from 'lib/html-entities';
-import UserAvatar from 'ui/shared/UserAvatar';
 
 interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;
   accountNavItems: Array<NavItem>;
-  profileItem: NavItem;
 }
 
 export function isGroupItem(item: NavItem | NavGroupItem): item is NavGroupItem {
@@ -132,6 +130,12 @@ export default function useNavItems(): ReturnType {
     //   icon: 'output_roots',
     //   isActive: pathname === '/groups',
     // };
+    const mudWorlds = config.features.mudFramework.isEnabled ? {
+      text: 'MUD worlds',
+      nextRoute: { pathname: '/mud-worlds' as const },
+      icon: 'MUD_menu',
+      isActive: pathname === '/mud-worlds',
+    } : null;
 
     const rollupFeature = config.features.rollup;
     const storageNavItems: Array<NavItem> | Array<Array<NavItem>> = [
@@ -142,7 +146,12 @@ export default function useNavItems(): ReturnType {
       ],
     ];
 
-    if (rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'zkEvm')) {
+    if (rollupFeature.isEnabled && (
+      rollupFeature.type === 'optimistic' ||
+      rollupFeature.type === 'arbitrum' ||
+      rollupFeature.type === 'zkEvm' ||
+      rollupFeature.type === 'scroll'
+    )) {
       blockchainNavItems = [
         [
           txs,
@@ -153,11 +162,12 @@ export default function useNavItems(): ReturnType {
           blocks,
           rollupTxnBatches,
           rollupDisputeGames,
-          rollupFeature.type === 'optimistic' ? rollupOutputRoots : undefined,
+          rollupFeature.outputRootsEnabled ? rollupOutputRoots : undefined,
         ].filter(Boolean),
         [
           userOps,
           topAccounts,
+          mudWorlds,
           validators,
           verifiedContracts,
           ensLookup,
@@ -211,30 +221,51 @@ export default function useNavItems(): ReturnType {
       ].filter(Boolean);
     }
 
-    const apiNavItems: Array<NavItem> = [
-      config.features.restApiDocs.isEnabled ? {
-        text: 'REST API',
-        nextRoute: { pathname: '/api-docs' as const },
-        icon: 'restAPI',
-        isActive: pathname === '/api-docs',
-      } : null,
-      config.features.graphqlApiDocs.isEnabled ? {
-        text: 'GraphQL',
-        nextRoute: { pathname: '/graphiql' as const },
-        icon: 'graphQL',
-        isActive: pathname === '/graphiql',
-      } : null,
-      !config.UI.navigation.hiddenLinks?.rpc_api && {
-        text: 'RPC API',
-        icon: 'RPC',
-        url: 'https://docs.blockscout.com/for-users/api/rpc-endpoints',
+    const tokensNavItems = [
+      {
+        text: 'Tokens',
+        nextRoute: { pathname: '/tokens' as const },
+        icon: 'token',
+        isActive: pathname === '/tokens' || pathname.startsWith('/token/'),
       },
-      !config.UI.navigation.hiddenLinks?.eth_rpc_api && {
-        text: 'Eth RPC API',
-        icon: 'RPC',
-        url: ' https://docs.blockscout.com/for-users/api/eth-rpc',
+      {
+        text: 'Token transfers',
+        nextRoute: { pathname: '/token-transfers' as const },
+        icon: 'token-transfers',
+        isActive: pathname === '/token-transfers',
+      },
+      config.features.pools.isEnabled && {
+        text: 'DEX tracker',
+        nextRoute: { pathname: '/pools' as const },
+        icon: 'dex-tracker',
+        isActive: pathname === '/pools' || pathname.startsWith('/pool/'),
       },
     ].filter(Boolean);
+
+    // const apiNavItems: Array<NavItem> = [
+    //   config.features.restApiDocs.isEnabled ? {
+    //     text: 'REST API',
+    //     nextRoute: { pathname: '/api-docs' as const },
+    //     icon: 'restAPI',
+    //     isActive: pathname === '/api-docs',
+    //   } : null,
+    //   config.features.graphqlApiDocs.isEnabled ? {
+    //     text: 'GraphQL',
+    //     nextRoute: { pathname: '/graphiql' as const },
+    //     icon: 'graphQL',
+    //     isActive: pathname === '/graphiql',
+    //   } : null,
+    //   !config.UI.navigation.hiddenLinks?.rpc_api && {
+    //     text: 'RPC API',
+    //     icon: 'RPC',
+    //     url: 'https://docs.blockscout.com/for-users/api/rpc-endpoints',
+    //   },
+    //   !config.UI.navigation.hiddenLinks?.eth_rpc_api && {
+    //     text: 'Eth RPC API',
+    //     icon: 'RPC',
+    //     url: ' https://docs.blockscout.com/for-users/api/eth-rpc',
+    //   },
+    // ].filter(Boolean);
 
     const otherNavItems: Array<NavItem> | Array<Array<NavItem>> = [
       {
@@ -279,6 +310,9 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/tokens' as const },
         icon: 'navitems/token',
         isActive: pathname.startsWith('/token'),
+        // icon: 'token',
+        // isActive: tokensNavItems.flat().some(item => isInternalItem(item) && item.isActive),
+        subItems: tokensNavItems,
       },
       config.features.marketplace.isEnabled ? {
         text: 'DApps',
@@ -291,13 +325,15 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/stats' as const },
         icon: 'navitems/stats',
         isActive: pathname === '/stats',
+        // icon: 'stats',
+        // isActive: pathname.startsWith('/stats'),
       } : null,
-      apiNavItems.length > 0 && {
-        text: 'API',
-        icon: 'navitems/restAPI',
-        isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),
-        subItems: apiNavItems,
-      },
+      // apiNavItems.length > 0 && {
+      //   text: 'API',
+      //   icon: 'navitems/restAPI',
+      //   isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),
+      //   subItems: apiNavItems,
+      // },
       {
         text: 'Other',
         icon: 'navitems/gear',
@@ -339,13 +375,6 @@ export default function useNavItems(): ReturnType {
       },
     ].filter(Boolean);
 
-    const profileItem = {
-      text: 'My profile',
-      nextRoute: { pathname: '/auth/profile' as const },
-      iconComponent: UserAvatar,
-      isActive: pathname === '/auth/profile',
-    };
-
-    return { mainNavItems, accountNavItems, profileItem };
+    return { mainNavItems, accountNavItems };
   }, [ pathname ]);
 }

@@ -3,14 +3,24 @@ import type { Reward } from 'types/api/reward';
 import type { Transaction } from 'types/api/transaction';
 
 import type { ArbitrumBatchStatus, ArbitrumL2TxData } from './arbitrumL2';
+import type { OptimisticL2BatchDataContainer, OptimisticL2BlobTypeEip4844, OptimisticL2BlobTypeCelestia } from './optimisticL2';
+import type { TokenInfo } from './token';
+import type { TokenTransfer } from './tokenTransfer';
 import type { ZkSyncBatchesItem } from './zkSyncL2';
 
 export type BlockType = 'block' | 'reorg' | 'uncle';
 
+export interface BlockBaseFeeCelo {
+  amount: string;
+  breakdown: Array<{ amount: string; percentage: number; address: AddressParam }>;
+  recipient: AddressParam;
+  token: TokenInfo;
+}
+
 export interface Block {
   height: number;
   timestamp: string;
-  tx_count: number;
+  transaction_count: number;
   miner: AddressParam;
   size: number;
   hash: string;
@@ -30,7 +40,7 @@ export interface Block {
   gas_used_percentage: number | null;
   burnt_fees_percentage: number | null;
   type: BlockType;
-  tx_fees: string | null;
+  transaction_fees: string | null;
   uncles_hashes: Array<string>;
   withdrawals_count?: number;
   // ROOTSTOCK FIELDS
@@ -44,23 +54,58 @@ export interface Block {
   blob_gas_used?: string;
   burnt_blob_fees?: string;
   excess_blob_gas?: string;
-  blob_tx_count?: number;
+  blob_transaction_count?: number;
   // ZKSYNC FIELDS
-  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'tx_count' | 'timestamp'> & {
-    'batch_number': number | null;
+  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transaction_count' | 'timestamp'> & {
+    batch_number: number | null;
   };
   arbitrum?: ArbitrumBlockData;
+  optimism?: OptimismBlockData;
+  // CELO FIELDS
+  celo?: {
+    epoch_number: number;
+    is_epoch_block: boolean;
+    base_fee?: BlockBaseFeeCelo;
+  };
+  // ZILLIQA FIELDS
+  zilliqa?: ZilliqaBlockData;
 }
 
 type ArbitrumBlockData = {
-  'batch_number': number;
-  'commitment_transaction': ArbitrumL2TxData;
-  'confirmation_transaction': ArbitrumL2TxData;
-  'delayed_messages': number;
-  'l1_block_height': number;
-  'send_count': number;
-  'send_root': string;
-  'status': ArbitrumBatchStatus;
+  batch_number: number;
+  commitment_transaction: ArbitrumL2TxData;
+  confirmation_transaction: ArbitrumL2TxData;
+  delayed_messages: number;
+  l1_block_height: number;
+  send_count: number;
+  send_root: string;
+  status: ArbitrumBatchStatus;
+};
+
+export interface OptimismBlockData {
+  batch_data_container: OptimisticL2BatchDataContainer;
+  internal_id: number;
+  blobs: Array<OptimisticL2BlobTypeEip4844> | Array<OptimisticL2BlobTypeCelestia> | null;
+  l1_timestamp: string;
+  l1_transaction_hashes: Array<string>;
+}
+
+export interface ZilliqaBlockData {
+  view: number;
+  quorum_certificate: ZilliqaQuorumCertificate;
+  aggregate_quorum_certificate: (ZilliqaQuorumCertificate & {
+    nested_quorum_certificates: Array<ZilliqaNestedQuorumCertificate>;
+  }) | null;
+}
+
+export interface ZilliqaQuorumCertificate {
+  view: number;
+  signature: string;
+  signers: Array<number>;
+}
+
+export interface ZilliqaNestedQuorumCertificate extends ZilliqaQuorumCertificate {
+  proposed_by_validator_index: number;
 }
 
 export interface BlocksResponse {
@@ -95,11 +140,49 @@ export type BlockWithdrawalsResponse = {
     index: number;
     items_count: number;
   } | null;
-}
+};
 
 export type BlockWithdrawalsItem = {
   amount: string;
   index: number;
   receiver: AddressParam;
   validator_index: number;
+};
+
+export interface BlockCountdownResponse {
+  result: {
+    CountdownBlock: string;
+    CurrentBlock: string;
+    EstimateTimeInSec: string;
+    RemainingBlock: string;
+  } | null;
+}
+
+export interface BlockEpochElectionReward {
+  count: number;
+  token: TokenInfo<'ERC-20'>;
+  total: string;
+}
+
+export type EpochRewardsType = 'group' | 'validator' | 'delegated_payment' | 'voter';
+
+export interface BlockEpoch {
+  number: number;
+  distribution: {
+    carbon_offsetting_transfer: TokenTransfer | null;
+    community_transfer: TokenTransfer | null;
+    reserve_bolster_transfer: TokenTransfer | null;
+  };
+  aggregated_election_rewards: Record<EpochRewardsType, BlockEpochElectionReward | null>;
+}
+
+export interface BlockEpochElectionRewardDetails {
+  account: AddressParam;
+  amount: string;
+  associated_account: AddressParam;
+}
+
+export interface BlockEpochElectionRewardDetailsResponse {
+  items: Array<BlockEpochElectionRewardDetails>;
+  next_page_params: null;
 }

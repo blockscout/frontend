@@ -13,7 +13,7 @@ type Props = {
   onClose: () => void;
   onSuccess?: () => Promise<void>;
   data?: Partial<TransactionTag>;
-}
+};
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data }) => {
   const title = data ? 'Edit transaction tag' : 'New transaction tag';

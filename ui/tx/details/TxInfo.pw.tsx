@@ -117,3 +117,12 @@ test('stability customization', async({ render, page, mockEnvs }) => {
     maskColor: pwConfig.maskColor,
   });
 });
+
+test('arbitrum L1 status', async({ render, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.arbitrumRollup);
+  const component = await render(<TxInfo data={ txMock.arbitrumTxn } isLoading={ false }/>);
+
+  const statusElement = component.locator('div').filter({ hasText: 'Processed on rollup' }).nth(2);
+
+  await expect(statusElement).toHaveScreenshot();
+});

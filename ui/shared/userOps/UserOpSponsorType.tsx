@@ -5,7 +5,7 @@ import type { UserOpSponsorType as TUserOpSponsorType } from 'types/api/userOps'
 
 type Props = {
   sponsorType: TUserOpSponsorType;
-}
+};
 
 const UserOpSponsorType = ({ sponsorType }: Props) => {
   let text: string = sponsorType;

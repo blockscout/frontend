@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as promClient from 'prom-client';
 
-// eslint-disable-next-line no-restricted-properties
 const isEnabled = process.env.PROMETHEUS_METRICS_ENABLED === 'true';
 
 isEnabled && promClient.collectDefaultMetrics({ prefix: 'frontend_' });

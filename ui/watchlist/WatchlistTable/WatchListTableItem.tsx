@@ -21,9 +21,10 @@ interface Props {
   isLoading?: boolean;
   onEditClick: (data: WatchlistAddress) => void;
   onDeleteClick: (data: WatchlistAddress) => void;
+  hasEmail: boolean;
 }
 
-const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Props) => {
+const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick, hasEmail }: Props) => {
   const [ notificationEnabled, setNotificationEnabled ] = useState(item.notification_methods.email);
   const [ switchDisabled, setSwitchDisabled ] = useState(false);
   const onItemEditClick = useCallback(() => {
@@ -53,7 +54,7 @@ const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Pro
   const showNotificationToast = useCallback((isOn: boolean) => {
     notificationToast({
       position: 'top-right',
-      description: isOn ? 'Email notification is ON' : 'Email notification is OFF',
+      description: !isOn ? 'Email notification is ON' : 'Email notification is OFF',
       colorScheme: 'green',
       status: 'success',
       variant: 'subtle',
@@ -69,7 +70,7 @@ const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Pro
       const body = { ...item, notification_methods: { email: !notificationEnabled } };
       setNotificationEnabled(prevState => !prevState);
       return apiFetch('watchlist', {
-        pathParams: { id: item.id },
+        pathParams: { id: String(item.id) },
         fetchParams: { method: 'PUT', body },
       });
     },
@@ -101,7 +102,7 @@ const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Pro
             size="md"
             isChecked={ notificationEnabled }
             onChange={ onSwitch }
-            isDisabled={ switchDisabled }
+            isDisabled={ !hasEmail || switchDisabled }
             aria-label="Email notification"
           />
         </Skeleton>

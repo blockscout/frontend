@@ -4,7 +4,7 @@ import React from 'react';
 type Props = {
   value: number;
   isLoading?: boolean;
-}
+};
 
 const GasUsedToTargetRatio = ({ value, isLoading }: Props) => {
   return (

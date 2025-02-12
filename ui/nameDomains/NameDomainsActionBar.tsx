@@ -53,7 +53,7 @@ const NameDomainsActionBar = ({
       minW={{ base: 'auto', lg: '250px' }}
       size="xs"
       onChange={ onSearchChange }
-      placeholder="Search by name"
+      placeholder="Search by name or address"
       initialValue={ searchTerm }
       isLoading={ isInitialLoading }
     />
@@ -136,9 +136,10 @@ const NameDomainsActionBar = ({
 
   const sortButton = (
     <Sort
+      name="name_domains_sorting"
+      defaultValue={ sort }
       options={ SORT_OPTIONS }
-      sort={ sort }
-      setSort={ onSortChange }
+      onChange={ onSortChange }
       isLoading={ isInitialLoading }
     />
   );

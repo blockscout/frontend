@@ -30,6 +30,7 @@ const Page: NextPage<Props> = ({ initialVerified }: Props) => {
 export const getServerSideProps: GetServerSideProps<Props> = async(context) => {
   const { req, res } = context;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const session = await getIronSession<{ user: any }>(req, res, sessionOptions);
   const user = session.user;
 

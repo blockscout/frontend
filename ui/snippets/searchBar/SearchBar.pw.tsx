@@ -103,9 +103,9 @@ test('search by block hash +@mobile', async({ render, page, mockApiResponse }) =
 test('search by tx hash +@mobile', async({ render, page, mockApiResponse }) => {
   const apiUrl = await mockApiResponse('quick_search', [
     searchMock.tx1,
-  ], { queryParams: { q: searchMock.tx1.tx_hash } });
+  ], { queryParams: { q: searchMock.tx1.transaction_hash } });
   await render(<SearchBar/>);
-  await page.getByPlaceholder(/search/i).fill(searchMock.tx1.tx_hash);
+  await page.getByPlaceholder(/search/i).fill(searchMock.tx1.transaction_hash);
   await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
@@ -140,9 +140,9 @@ test('search by user op hash +@mobile', async({ render, page, mockApiResponse, m
   await mockEnvs(ENVS_MAP.userOps);
   const apiUrl = await mockApiResponse('quick_search', [
     searchMock.userOp1,
-  ], { queryParams: { q: searchMock.tx1.tx_hash } });
+  ], { queryParams: { q: searchMock.tx1.transaction_hash } });
   await render(<SearchBar/>);
-  await page.getByPlaceholder(/search/i).fill(searchMock.tx1.tx_hash);
+  await page.getByPlaceholder(/search/i).fill(searchMock.tx1.transaction_hash);
   await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
@@ -196,7 +196,7 @@ test('recent keywords suggest +@mobile', async({ render, page }, { project }) =>
 });
 
 test.describe('with apps', () => {
-  const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
+  const MARKETPLACE_CONFIG_URL = 'http://localhost:4000/marketplace-config.json';
 
   test('default view +@mobile', async({ render, page, mockApiResponse, mockConfigResponse, mockAssetResponse, mockEnvs }) => {
     await mockEnvs([
@@ -206,12 +206,34 @@ test.describe('with apps', () => {
     const apiUrl = await mockApiResponse('quick_search', [
       searchMock.token1,
     ], { queryParams: { q: 'o' } });
-    await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, JSON.stringify(appsMock));
+    await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, appsMock);
     await mockAssetResponse(appsMock[0].logo, './playwright/mocks/image_s.jpg');
     await mockAssetResponse(appsMock[1].logo, './playwright/mocks/image_s.jpg');
 
     await render(<SearchBar/>);
     await page.getByPlaceholder(/search/i).fill('o');
+    await page.waitForResponse(apiUrl);
+
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+  });
+});
+
+test.describe('block countdown', () => {
+  test('no results +@mobile', async({ render, page, mockApiResponse }) => {
+    const apiUrl = await mockApiResponse('quick_search', [], { queryParams: { q: '1234567890' } });
+    await render(<SearchBar/>);
+    await page.getByPlaceholder(/search/i).fill('1234567890');
+    await page.waitForResponse(apiUrl);
+
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+  });
+
+  test('with results +@mobile', async({ render, page, mockApiResponse }) => {
+    const apiUrl = await mockApiResponse('quick_search', [
+      { ...searchMock.token1, name: '1234567890123456789' },
+    ], { queryParams: { q: '1234567890' } });
+    await render(<SearchBar/>);
+    await page.getByPlaceholder(/search/i).fill('1234567890');
     await page.waitForResponse(apiUrl);
 
     await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });

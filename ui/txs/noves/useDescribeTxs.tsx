@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import _ from 'lodash';
+import _chunk from 'lodash/chunk';
+import _uniq from 'lodash/uniq';
 import React from 'react';
 
 import type { NovesDescribeTxsResponse } from 'types/api/noves';
@@ -15,8 +16,8 @@ const translateEnabled = feature.isEnabled && feature.provider === 'noves';
 export default function useDescribeTxs(items: Array<Transaction> | undefined, viewAsAccountAddress: string | undefined, isPlaceholderData: boolean) {
   const apiFetch = useApiFetch();
 
-  const txsHash = _.uniq(items?.map(i => i.hash));
-  const txChunks = _.chunk(txsHash, 10);
+  const txsHash = _uniq(items?.map(i => i.hash));
+  const txChunks = _chunk(txsHash, 10);
 
   const queryKey = {
     viewAsAccountAddress,
@@ -78,7 +79,7 @@ export default function useDescribeTxs(items: Array<Transaction> | undefined, vi
     }
 
     return tx;
-  }), [ items, describeQuery ]);
+  }), [ items, describeQuery.data, describeQuery.isLoading ]);
 
   if (!translateEnabled || isPlaceholderData) {
     return items;

@@ -9,7 +9,7 @@ import Pagination from './pagination/Pagination';
 type Props = {
   pagination: PaginationParams;
   text: React.ReactNode;
-}
+};
 
 const TextSeparator = ({ pagination, text }: Props) => {
   if (!pagination.isVisible) {

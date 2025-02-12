@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 
-export default function useAppActionData(address: string | undefined = '', isEnabled = false) {
+export default function useAppActionData(address: string | undefined = '', isEnabled = true) {
   const memoizedArray = useMemo(() => address ? [ address ] : [], [ address ]);
   const { data } = useAddressMetadataInfoQuery(memoizedArray, isEnabled);
   const metadata = data?.addresses[address?.toLowerCase()];

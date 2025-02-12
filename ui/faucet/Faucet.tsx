@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   Flex,
   Box,
-  Square,
+  // Square,
   Text,
   Button,
   Input,
@@ -17,12 +16,15 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react';
+import Image from 'next/image';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { isAddress } from 'viem';
 
-import { getEnvValue, sleep } from 'configs/app/utils';
+import { sleep } from 'configs/app/utils';
 import IconSvg from 'ui/shared/IconSvg';
+
+import mocaIcon from '../../icons/logo/icon-moca-placeholder.png';
 
 const enum FAUCET_REQUEST_TYPE {
   REQUEST = 0,
@@ -36,22 +38,22 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
   const [ errMessage, setErrMessage ] = React.useState<string>('');
   const [ requestStatus, setRequestStatus ] = React.useState<number>(FAUCET_REQUEST_TYPE.REQUEST);
 
-  const handleClk = React.useCallback(() => {
-    if (props.verified) {
-      return;
-    } else {
-      const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
-      const authUrl = new URL('https://discord.com/oauth2/authorize');
-      const searchParams = new URLSearchParams({
-        client_id: getEnvValue('NEXT_PUBLIC_DISCORD_CLIENT_ID')!,
-        response_type: 'code',
-        redirect_uri: redirectUri,
-        scope: 'identify guilds.join',
-      });
-      authUrl.search = searchParams.toString();
-      location.href = authUrl.href;
-    }
-  }, [ props.verified ]);
+  // const handleClk = React.useCallback(() => {
+  //   if (props.verified) {
+  //     return;
+  //   } else {
+  //     const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
+  // const authUrl = new URL('https://discord.com/oauth2/authorize');
+  // const searchParams = new URLSearchParams({
+  //   client_id: getEnvValue('NEXT_PUBLIC_DISCORD_CLIENT_ID')!,
+  //   response_type: 'code',
+  //   redirect_uri: redirectUri,
+  //       scope: 'identify guilds.join',
+  //     });
+  //     authUrl.search = searchParams.toString();
+  //     location.href = authUrl.href;
+  //   }
+  // }, [ props.verified ]);
 
   const reset = React.useCallback(() => {
     setIsError(false);
@@ -59,13 +61,13 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
   }, []);
 
   const onSubmit = React.useCallback((data: { address: string }) => {
-    if (!props.verified) {
-      return;
-    }
+    // if (!props.verified) {
+    //   return;
+    // }
 
-    if (requestStatus === FAUCET_REQUEST_TYPE.SENDING) {
-      return;
-    }
+    // if (requestStatus === FAUCET_REQUEST_TYPE.SENDING) {
+    //   return;
+    // }
 
     if (!data.address) {
       if (!data.address) {
@@ -90,7 +92,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
           userWallet: data.address,
         }),
       })
-        .then(async(res: any) => {
+        .then(async(res: Response) => {
           if (res.ok) {
             reset();
             setRequestStatus(FAUCET_REQUEST_TYPE.SENT);
@@ -114,59 +116,37 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
           setRequestStatus(FAUCET_REQUEST_TYPE.REQUEST);
         });
     }
-  }, [ props, requestStatus, reset ]);
+  }, [ props, reset ]);
 
-  const verifyBtnStyles = React.useCallback(() => {
-    if (props.verified) {
-      return {
-        bg: '#30D3BF',
-        height: '48px',
-        border: '1px solid rgba(0, 0, 0, 0.12)',
-        _hover: { background: '#30D3BF' },
-        cursor: 'unset',
-      };
-    } else {
-      return {
-        bg: '#707CFF',
-        height: '48px',
-        border: '1px solid #3846DE',
-        _hover: { background: '#707CFF' },
-      };
-    }
-  }, [ props.verified ]);
+  // const verifyBtnStyles = React.useCallback(() => {
+  //   if (props.verified) {
+  //     return {
+  //       bg: '#30D3BF',
+  //       height: '48px',
+  //       border: '1px solid rgba(0, 0, 0, 0.12)',
+  //       _hover: { background: '#30D3BF' },
+  //       cursor: 'unset',
+  //     };
+  //   } else {
+  //     return {
+  //       bg: '#C15E97',
+  //       height: '48px',
+  //       border: '1px solid #ffa1da',
+  //       _hover: { background: '#C15E97' },
+  //     };
+  //   }
+  // }, [ props.verified ]);
 
   const requestBtnStyles = React.useCallback(() => {
-    if (requestStatus === FAUCET_REQUEST_TYPE.REQUEST && props.verified) {
-      return {
-        border: '1px solid #8A55FD',
-        bg: '#A07EFF',
-        _hover: {
-          bg: '#A07EFF',
-        },
-        boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
-      };
-    } else if (requestStatus === FAUCET_REQUEST_TYPE.SENDING || !props.verified) {
-      return {
-        border: '1px rgba(0, 0, 0, 0.12)',
-        bg: '#A07EFF',
-        opacity: 0.5,
-        cursor: 'not-allowed',
-        _hover: {
-          bg: '#A07EFF',
-        },
-        boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
-      };
-    } else {
-      return {
-        border: '1px rgba(0, 0, 0, 0.12)',
-        bg: '#30D3BF',
-        _hover: {
-          bg: '#30D3BF',
-        },
-        boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
-      };
-    }
-  }, [ requestStatus, props.verified ]);
+    return {
+      border: '1px solid #C15E97',
+      bg: '#C15E97',
+      _hover: {
+        bg: '#C15E97',
+      },
+      boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
+    };
+  }, []);
 
   const requestBtnContent = React.useCallback(() => {
     if (requestStatus === FAUCET_REQUEST_TYPE.REQUEST) {
@@ -197,10 +177,10 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
     <>
       <Heading fontSize="24px" fontWeight="400" lineHeight="28px">
         <Highlight
-          query="$ZKME"
-          styles={{ color: '#8A55FD', fontWeight: '700' }}
+          query="$MOCA"
+          styles={{ color: '#C15E97', fontWeight: '700' }}
         >
-          To receive $ZKME on MeChain Testnet, please follow the steps below.
+          To receive $MOCA on Moca Chain Testnet, please follow the steps below.
         </Highlight>
       </Heading>
       <Text
@@ -213,7 +193,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
         Tokens will be automatically transferred to your address.
       </Text>
       <Flex>
-        <Box
+        { /* <Box
           width="580px"
           minH="280px"
           border="1px solid rgba(0, 0, 0, 0.06)"
@@ -222,8 +202,8 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
           padding="24px"
         >
           <Box
-            border="1px solid #3846DE"
-            bg="#707CFF"
+            border="1px solid #ffa1da"
+            bg="#C15E97"
             borderRadius="50%"
             width="32px"
             height="32px"
@@ -262,7 +242,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
             { props.verified ? 'Account Verified' : 'Verify' }
           </Button>
         </Box>
-        <Square size="20px"></Square>
+        <Square size="20px"></Square> */ }
         <Box
           width="580px"
           minH="280px"
@@ -272,8 +252,8 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
           padding="24px"
         >
           <Box
-            border="1px solid #3846DE"
-            bg="#707CFF"
+            border="1px solid #ffa1da"
+            bg="#C15E97"
             borderRadius="50%"
             width="32px"
             height="32px"
@@ -281,7 +261,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
             textAlign="center"
             lineHeight="32px"
           >
-            2
+            1
           </Box>
           <Flex
             margin="24px 0 48px 0"
@@ -295,11 +275,11 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
               color="#000000"
               lineHeight="28px"
             >
-              <Highlight query="$ZKME" styles={{ color: '#8A55FD' }}>
-                Request $ZKME on MeChain
+              <Highlight query="$MOCA" styles={{ color: '#C15E97' }}>
+                Request $MOCA on Moca Chain
               </Highlight>
             </Heading>
-            <IconSvg name="mechain_square" w="37px" h="25px"/>
+            <Image src={ mocaIcon } alt="Moca Icon" style={{ width: '25px', height: '25px', margin: '0 4px' }}/>
             <Text fontWeight="700" color="#000000">
               Testnet
             </Text>
@@ -377,15 +357,15 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
                 justifyContent="space-between"
               >
                 <Box as="span" textAlign="left" fontSize="14px" fontWeight="500">
-                What is a testnet Mechain faucet?
+                  What is a testnet Moca Chain faucet?
                 </Box>
                 <AccordionIcon/>
               </Flex>
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
-            A MeChain faucet is a developer tool designed to provide testnet $ZKME tokens, allowing developers to test and troubleshoot their decentralized
-applications or protocols before deploying them on the MeChain mainnet where real $ZKME tokens are required. The MeChain testnet faucet is
-designed to be developer-friendly, providing easy access to testnet tokens for integration and testing purposes.
+              A Moca Chain faucet is a developer tool designed to provide testnet $MOCA tokens, allowing developers to test and troubleshoot their decentralized
+              applications or protocols before deploying them on the Moca Chain mainnet where real $MOCA tokens are required. The Moca Chain testnet faucet is
+              designed to be developer-friendly, providing easy access to testnet tokens for integration and testing purposes.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem
@@ -404,14 +384,15 @@ designed to be developer-friendly, providing easy access to testnet tokens for i
                 justifyContent="space-between"
               >
                 <Box as="span" textAlign="left" fontSize="14px" fontWeight="500">
-                What is a testnet $ZKME token?
+                  What is a testnet $MOCA token?
                 </Box>
                 <AccordionIcon/>
               </Flex>
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
-            Testnet $ZKME tokens are a test version of the MeChain network&apos;s native token, allowing developers to simulate transactions and interactions
-within the zkMe ecosystem without using real value. These tokens can be used in place of mainnet $ZKME tokens on the MeChain testnet.
+              Testnet $MOCA tokens are a test version of the Moca Chain network&apos;s native token,
+              allowing developers to simulate transactions and interactions
+              within the zkMe ecosystem without using real value. These tokens can be used in place of mainnet $MOCA tokens on the Moca Chain testnet.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem
@@ -430,15 +411,16 @@ within the zkMe ecosystem without using real value. These tokens can be used in 
                 justifyContent="space-between"
               >
                 <Box as="span" textAlign="left" fontSize="14px" fontWeight="500">
-                How to request $ZKME?
+                  How to request $MOCA?
                 </Box>
                 <AccordionIcon/>
               </Flex>
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
-            First you need to join zkMe&apos;s discord community(https://discord.com/invite/SJ2RDs9NGM) and hit&ldquo;Verify&ldquo;.
-            When the button changes to&ldquo;Account Verified&ldquo;, you can go to step 2.
-            After entering the address and hit &ldquo;Request&ldquo;, we will send tokens to this address.
+              { /* First you need to join zkMe&apos;s discord community(https://discord.com/invite/SJ2RDs9NGM) and hit&ldquo;Verify&ldquo;.
+              When the button changes to&ldquo;Account Verified&ldquo;, you can go to step 2.
+              After entering the address and hit &ldquo;Request&ldquo;, we will send tokens to this address. */ }
+              After entering the address and hit “Request“, we will send tokens to this address.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem
@@ -457,13 +439,13 @@ within the zkMe ecosystem without using real value. These tokens can be used in 
                 justifyContent="space-between"
               >
                 <Box as="span" textAlign="left" fontSize="14px" fontWeight="500">
-                Can I request more $ZKME?
+                  Can I request more $MOCA?
                 </Box>
                 <AccordionIcon/>
               </Flex>
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
-            You can only request $ZKME every 24h.
+              You can only request $MOCA every 24h.
             </AccordionPanel>
           </AccordionItem>
         </Accordion>

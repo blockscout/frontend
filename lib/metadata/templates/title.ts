@@ -9,7 +9,10 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/tx/[hash]': '%network_name% transaction %hash%',
   '/blocks': '%network_name% blocks',
   '/block/[height_or_hash]': '%network_name% block %height_or_hash%',
+  '/block/countdown': '%network_name% block countdown index',
+  '/block/countdown/[height]': '%network_name% block %height% countdown',
   '/accounts': '%network_name% top accounts',
+  '/accounts/label/[slug]': '%network_name% addresses search by label',
   '/address/[hash]': '%network_name% address details for %hash%',
   '/verified-contracts': 'Verified %network_name% contracts lookup - %network_name% explorer',
   '/contract-verification': '%network_name% verify contract',
@@ -20,10 +23,12 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/apps': '%network_name% DApps - Explore top apps',
   '/apps/[id]': '%network_name% marketplace app',
   '/stats': '%network_name% stats - %network_name% network insights',
+  '/stats/[id]': '%network_name% stats - %id% chart',
   '/api-docs': '%network_name% API docs - %network_name% developer tools',
   '/graphiql': 'GraphQL for %network_name% - %network_name% data query',
   '/search-results': '%network_name% search result for %q%',
   '/auth/profile': '%network_name% - my profile',
+  '/account/rewards': '%network_name% - rewards',
   '/account/watchlist': '%network_name% - watchlist',
   '/account/api-key': '%network_name% - API keys',
   '/account/custom-abi': '%network_name% - custom ABI',
@@ -36,8 +41,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/deposits': '%network_name% deposits (L1 > L2)',
   '/output-roots': '%network_name% output roots',
   '/dispute-games': '%network_name% dispute games',
-  '/batches': '%network_name% tx batches (L2 blocks)',
-  '/batches/[number]': '%network_name% L2 tx batch %number%',
+  '/batches': '%network_name% txn batches',
+  '/batches/[number]': '%network_name% L2 txn batch %number%',
   '/blobs/[hash]': '%network_name% blob %hash% details',
   '/ops': 'User operations on %network_name% - %network_name% explorer',
   '/op/[hash]': '%network_name% user operation %hash%',
@@ -45,7 +50,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/name-domains': '%network_name% name domains - %network_name% explorer',
   '/name-domains/[name]': '%network_name% %name% domain details',
   '/validators': '%network_name% validators list',
-  '/gas-tracker': '%network_name% gas tracker - Current gas fees',
+  // '/gas-tracker': '%network_name% gas tracker - Current gas fees',
   '/bucket-details/[address]': '%network_name% bucket details',
   '/group-details/[address]': '%network_name% group details',
   '/object-details/[address]': '%network_name% object details',
@@ -53,10 +58,18 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/bucket': '%network_name% bucket',
   '/group': '%network_name% group',
   '/object': '%network_name% object',
+  '/gas-tracker': 'Track %network_name% gas fees in %network_gwei%',
+  '/mud-worlds': '%network_name% MUD worlds list',
+  '/token-transfers': '%network_name% token transfers',
+  '/advanced-filter': '%network_name% advanced filter',
+  '/pools': '%network_name% DEX pools',
+  '/pools/[hash]': '%network_name% pool details',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',
+  '/sprite': '%network_name% SVG sprite',
   '/api/metrics': '%network_name% node API prometheus metrics',
+  '/api/monitoring/invalid-api-schema': '%network_name% node API prometheus metrics',
   '/api/log': '%network_name% node API request log',
   '/api/media-type': '%network_name% node API media type',
   '/api/proxy': '%network_name% node API proxy',
@@ -66,8 +79,10 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/auth/callback/discord': '%network_name% node API discord auth',
   '/api/auth/session': '%network_name% node API session',
   '/api/faucet': '%network_name% node API faucet',
-  '/auth/auth0': '%network_name% authentication',
-  '/auth/unverified-email': '%network_name% unverified email',
+  // '/auth/auth0': '%network_name% authentication',
+  // '/auth/unverified-email': '%network_name% unverified email',
+  // '/api/config': '%network_name% node API app config',
+  '/api/sprite': '%network_name% node API SVG sprite content',
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
@@ -75,11 +90,12 @@ const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
   '/token/[hash]/instance/[id]': '%network_name% token instance for %symbol%',
   '/apps/[id]': '%network_name% - %app_name%',
   '/address/[hash]': '%network_name% address details for %domain_name%',
+  '/stats/[id]': '%title% chart on %network_name%',
 };
 
 export function make(pathname: Route['pathname'], isEnriched = false) {
   const template = (isEnriched ? TEMPLATE_MAP_ENHANCED[pathname] : undefined) ?? TEMPLATE_MAP[pathname];
-  const postfix = config.meta.promoteBlockscoutInTitle ? ' | Blockscout' : '';
+  const postfix = config.meta.promoteBlockscoutInTitle;
 
   return (template + postfix).trim();
 }

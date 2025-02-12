@@ -6,12 +6,14 @@ import { useForm, FormProvider } from 'react-hook-form';
 import type { FormFields } from './types';
 import type { CsvExportParams } from 'types/client/address';
 
+import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import type { ResourceName } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
 import useToast from 'lib/hooks/useToast';
-import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import CsvExportFormField from './CsvExportFormField';
 
@@ -34,16 +36,23 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   });
   const { handleSubmit, formState } = formApi;
   const toast = useToast();
+  const recaptcha = useReCaptcha();
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     try {
+      const token = await recaptcha.executeAsync();
+
+      if (!token) {
+        throw new Error('ReCaptcha is not solved');
+      }
+
       const url = buildUrl(resource, { hash } as never, {
         address_id: hash,
         from_period: exportType !== 'holders' ? data.from : null,
         to_period: exportType !== 'holders' ? data.to : null,
         filter_type: filterType,
         filter_value: filterValue,
-        recaptcha_response: data.reCaptcha,
+        recaptcha_response: token,
       });
 
       const response = await fetch(url, {
@@ -74,14 +83,16 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
       });
     }
 
-  }, [ resource, hash, exportType, filterType, filterValue, fileNameTemplate, toast ]);
+  }, [ recaptcha, resource, hash, exportType, filterType, filterValue, fileNameTemplate, toast ]);
 
-  const disabledFeatureMessage = (
-    <Alert status="error">
-      CSV export is not available at the moment since reCaptcha is not configured for this application.
-      Please contact the service maintainer to make necessary changes in the service configuration.
-    </Alert>
-  );
+  if (!config.services.reCaptchaV2.siteKey) {
+    return (
+      <Alert status="error">
+        CSV export is not available at the moment since reCaptcha is not configured for this application.
+        Please contact the service maintainer to make necessary changes in the service configuration.
+      </Alert>
+    );
+  }
 
   return (
     <FormProvider { ...formApi }>
@@ -92,8 +103,8 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         <Flex columnGap={ 5 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }} alignItems={{ base: 'flex-start', lg: 'center' }} flexWrap="wrap">
           { exportType !== 'holders' && <CsvExportFormField name="from" formApi={ formApi }/> }
           { exportType !== 'holders' && <CsvExportFormField name="to" formApi={ formApi }/> }
-          <FormFieldReCaptcha disabledFeatureMessage={ disabledFeatureMessage }/>
         </Flex>
+        <ReCaptcha ref={ recaptcha.ref }/>
         <Button
           variant="solid"
           size="lg"
@@ -101,7 +112,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
           mt={ 8 }
           isLoading={ formState.isSubmitting }
           loadingText="Download"
-          isDisabled={ !formState.isValid }
+          isDisabled={ Boolean(formState.errors.from || formState.errors.to) }
         >
           Download
         </Button>

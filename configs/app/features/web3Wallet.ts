@@ -21,7 +21,7 @@ const wallets = ((): Array<WalletType> | undefined => {
 
 const title = 'Web3 wallet integration (add token or network to the wallet)';
 
-const config: Feature<{ wallets: Array<WalletType>; addToken: { isDisabled: boolean }}> = (() => {
+const config: Feature<{ wallets: Array<WalletType>; addToken: { isDisabled: boolean } }> = (() => {
   if (wallets && wallets.length > 0) {
     return Object.freeze({
       title,

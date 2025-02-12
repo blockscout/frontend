@@ -1,5 +1,5 @@
 import { Table, Tbody, Tr, Th, Box, Skeleton, Text, Show, Hide } from '@chakra-ui/react';
-import _ from 'lodash';
+import _chunk from 'lodash/chunk';
 import React, { useMemo, useState } from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
@@ -33,7 +33,7 @@ export default function TxAssetFlows(props: FlowViewProps) {
   const [ page, setPage ] = useState<number>(1);
 
   const ViewData = useMemo(() => (queryData ? generateFlowViewData(queryData) : []), [ queryData ]);
-  const chunkedViewData = _.chunk(ViewData, 50);
+  const chunkedViewData = _chunk(ViewData, 50);
 
   const paginationProps: PaginationParams = useMemo(() => ({
     onNextPageClick: () => setPage(page + 1),
@@ -54,7 +54,7 @@ export default function TxAssetFlows(props: FlowViewProps) {
       <Box display="flex" alignItems="center" gap={ 1 }>
         <Skeleton borderRadius="sm" isLoaded={ !isPlaceholderData } >
           <Text fontWeight="400" mr={ 1 }>
-              Wallet
+            Wallet
           </Text>
         </Skeleton>
 
@@ -82,14 +82,14 @@ export default function TxAssetFlows(props: FlowViewProps) {
       </Hide>
 
       <Show above="lg">
-        <Table variant="simple" size="sm">
+        <Table>
           <TheadSticky top={ 75 }>
             <Tr>
               <Th>
-                  Actions
+                Actions
               </Th>
               <Th width="450px">
-                  From/To
+                From/To
               </Th>
             </Tr>
           </TheadSticky>

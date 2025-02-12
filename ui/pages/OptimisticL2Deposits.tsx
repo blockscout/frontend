@@ -24,7 +24,7 @@ const OptimisticL2Deposits = () => {
           next_page_params: {
             items_count: 50,
             l1_block_number: 9045200,
-            tx_hash: '',
+            transaction_hash: '',
           },
         },
       ),
@@ -42,7 +42,7 @@ const OptimisticL2Deposits = () => {
       <Show below="lg" ssr={ false }>
         { data.items.map(((item, index) => (
           <OptimisticDepositsListItem
-            key={ item.l2_tx_hash + (isPlaceholderData ? index : '') }
+            key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
             isLoading={ isPlaceholderData }
             item={ item }
           />

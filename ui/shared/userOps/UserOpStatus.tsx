@@ -6,7 +6,7 @@ import StatusTag from 'ui/shared/statusTag/StatusTag';
 type Props = {
   status?: boolean;
   isLoading?: boolean;
-}
+};
 
 const UserOpStatus = ({ status, isLoading }: Props) => {
   if (status === undefined) {

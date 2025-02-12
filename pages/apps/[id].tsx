@@ -23,7 +23,7 @@ const feature = config.features.marketplace;
 
 const Page: NextPageWithLayout<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
-    <PageNextJs pathname="/apps/[id]" query={ props.query } apiData={ props.apiData }>
+    <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
       <MarketplaceApp/>
     </PageNextJs>
   );

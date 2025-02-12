@@ -58,7 +58,7 @@ const PublicTagsSubmitResultWithErrors = ({ data }: Props) => {
                     { item.tags.map((tag) => (
                       <EntityTag
                         key={ tag.name }
-                        truncate
+                        maxW={{ base: '100%', lg: '300px' }}
                         data={{ ...tag, slug: '', ordinal: 0 }}
                       />
                     )) }

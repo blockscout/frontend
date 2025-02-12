@@ -6,7 +6,7 @@ type Props = {
   isExpanded?: boolean;
   isCollapsed?: boolean;
   isActive?: boolean;
-}
+};
 
 export default function useNavLinkProps({ isExpanded, isCollapsed, isActive }: Props) {
   const colors = useColors();
@@ -15,10 +15,11 @@ export default function useNavLinkProps({ isExpanded, isCollapsed, isActive }: P
     itemProps: {
       py: '9px',
       display: 'flex',
-      color: isActive ? '#8A55FD' : 'rgba(0, 0, 0, 0.60)',
-      bgColor: isActive ? 'rgba(195, 178, 255, 0.24)' : colors.bg.default,
-      _hover: { color: isActive ? '#8A55FD' : '#A07EFF' },
+      color: isActive ? '#C15E97' : '#000000',
+      bgColor: isActive ? 'rgba(255, 241, 249, 1)' : colors.bg.default,
+      _hover: { color: isActive ? '#C15E97' : '#C15E97' },
       borderRadius: 'base',
+      borderColor: '##FFCBEC !important',
       ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }),
     },
     textProps: {
