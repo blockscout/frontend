@@ -69,7 +69,8 @@ export default async function faucetHandler(
 
       value: parseEther(getEnvValue('NEXT_PUBLIC_FAUCET_VALUE')!),
     });
-    const txReceipt = await txRp.wait();
+    // Increase transaction wait time to 10 blocks in faucet handler
+    const txReceipt = await txRp.wait(10);
     if (txReceipt?.status !== 1) {
       requestLock.delete(walletAddress);
       signer.reset(); // reset nonce
