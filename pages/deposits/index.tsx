@@ -28,6 +28,10 @@ const Deposits = dynamic(() => {
     return import('ui/pages/ScrollL2Deposits');
   }
 
+  if (rollupFeature.isEnabled && rollupFeature.type === 'twine') {
+    return import('ui/pages/TwineL2Deposits');
+  }
+
   throw new Error('Deposits feature is not enabled.');
 }, { ssr: false });
 
