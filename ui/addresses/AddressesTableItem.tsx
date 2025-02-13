@@ -48,18 +48,18 @@ const AddressesTableItem = ({
           )) : null }
         </Flex>
       </Td>
-      <Td isNumeric>
+      <Td textAlign="center">
         <Skeleton isLoaded={ !isLoading } display="inline-block" maxW="100%">
           <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] + (addressBalanceChunks[1] ? '.' : '') }</Text>
           <Text lineHeight="24px" variant="secondary" as="span">{ addressBalanceChunks[1] }</Text>
         </Skeleton>
       </Td>
       { hasPercentage && (
-        <Td isNumeric>
+        <Td textAlign="center">
           <Text lineHeight="24px">{ addressBalance.div(totalSupply).multipliedBy(100).dp(8).toFormat() + '%' }</Text>
         </Td>
       ) }
-      <Td isNumeric>
+      <Td textAlign="center">
         <Skeleton isLoaded={ !isLoading } display="inline-block" lineHeight="24px">
           { Number(item.transaction_count).toLocaleString() }
         </Skeleton>
