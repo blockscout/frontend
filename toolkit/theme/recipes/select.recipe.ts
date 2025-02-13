@@ -55,7 +55,7 @@ export const recipe = defineSlotRecipe({
       background: 'popover.bg',
       display: 'flex',
       flexDirection: 'column',
-      zIndex: 'dropdown',
+      zIndex: 'popover',
       borderRadius: 'md',
       borderWidth: '0',
       outline: 0,

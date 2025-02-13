@@ -165,13 +165,13 @@ const AddressPageContent = () => {
         count: addressTabsCountersQuery.data?.transactions_count,
         component: <AddressTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       },
-      // txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
-      //   {
-      //     id: 'account_history',
-      //     title: 'Account history',
-      //     component: <AddressAccountHistory scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      //   } :
-      //   undefined,
+      txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
+        {
+          id: 'account_history',
+          title: 'Account history',
+          component: <AddressAccountHistory scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        } :
+        undefined,
       config.features.userOps.isEnabled && Boolean(userOpsAccountQuery.data?.total_ops) ?
         {
           id: 'user_ops',
@@ -207,12 +207,12 @@ const AddressPageContent = () => {
       //   count: addressTabsCountersQuery.data?.internal_transactions_count,
       //   component: <AddressInternalTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       // },
-      // addressTabsCountersQuery.data?.celo_election_rewards_count ? {
-      //   id: 'epoch_rewards',
-      //   title: 'Epoch rewards',
-      //   count: addressTabsCountersQuery.data?.celo_election_rewards_count,
-      //   component: <AddressEpochRewards scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      // } : undefined,
+      addressTabsCountersQuery.data?.celo_election_rewards_count ? {
+        id: 'epoch_rewards',
+        title: 'Epoch rewards',
+        count: addressTabsCountersQuery.data?.celo_election_rewards_count,
+        component: <AddressEpochRewards scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      } : undefined,
       {
         id: 'coin_balance_history',
         title: 'Coin balance history',

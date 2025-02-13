@@ -1,4 +1,4 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -51,14 +51,14 @@ const AddressEpochRewards = ({ scrollRef, shouldRender = true, isQueryEnabled = 
 
   const content = rewardsQuery.data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }>
+      <Box hideBelow="lg">
         <AddressEpochRewardsTable
           items={ rewardsQuery.data.items }
           top={ rewardsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ rewardsQuery.isPlaceholderData }
         />
-      </Hide>
-      <Show below="lg" ssr={ false }>
+      </Box>
+      <Box hideFrom="lg">
         { rewardsQuery.data.items.map((item, index) => (
           <AddressEpochRewardsListItem
             key={ item.block_hash + item.type + item.account.hash + item.associated_account.hash + (rewardsQuery.isPlaceholderData ? String(index) : '') }
@@ -66,7 +66,7 @@ const AddressEpochRewards = ({ scrollRef, shouldRender = true, isQueryEnabled = 
             isLoading={ rewardsQuery.isPlaceholderData }
           />
         )) }
-      </Show>
+      </Box>
     </>
   ) : null;
 
@@ -85,11 +85,12 @@ const AddressEpochRewards = ({ scrollRef, shouldRender = true, isQueryEnabled = 
   return (
     <DataListDisplay
       isError={ rewardsQuery.isError }
-      items={ rewardsQuery.data?.items }
+      itemsNum={ rewardsQuery.data?.items?.length }
       emptyText="There are no epoch rewards for this address."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 
