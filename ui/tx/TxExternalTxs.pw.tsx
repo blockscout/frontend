@@ -12,7 +12,7 @@ test('base view', async({ page, render, mockEnvs, mockAssetResponse }) => {
   await mockAssetResponse('http://example.url', './playwright/mocks/image_s.jpg');
   await render(<TxExternalTxs data={ Array(13).fill(EXT_TX_HASH) }/>);
   await page.getByText('13 Solana txns').hover();
-  const popover = page.locator('.chakra-popover__content');
+  const popover = page.getByText('Solana transactions');
   await expect(popover).toBeVisible();
-  await expect(popover).toHaveScreenshot();
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 500, height: 500 } });
 });
