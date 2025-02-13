@@ -1508,10 +1508,10 @@
   resolved "https://registry.yarnpkg.com/@blockscout/bens-types/-/bens-types-1.4.1.tgz#9182a79d9015b7fa2339edf0bfa3cd0c32045e66"
   integrity sha512-TlZ1HVdZ2Cswm/CcvNoxS+Ydiht/YGaLo//PJR/UmkmihlEFoY4HfVJvVcUnOQXi+Si7FwJ486DPii889nTJsQ==
 
-"@blockscout/stats-types@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@blockscout/stats-types/-/stats-types-2.0.0.tgz#3805f8379b75377cde8a9ab76306af37bb735846"
-  integrity sha512-icYDsOHsDACjG/7VZhlV+1QRKSJOycblpswQ5Si0dqeWdOpbtmxSqolAS/z6C77d8p+uxZUCMjNa9otUCqn18A==
+"@blockscout/stats-types@2.5.0-alpha":
+  version "2.5.0-alpha"
+  resolved "https://registry.yarnpkg.com/@blockscout/stats-types/-/stats-types-2.5.0-alpha.tgz#e34698577a337ce08b176d8709f89f185d9d9359"
+  integrity sha512-B4IYeNt3pqIIJvcnkLIXm4LNN77VxTV1VYopJ8t6iFPT+JC3BSvRWSpMJMl7nV+WCLywcW27BKmYxdV9rR66bw==
 
 "@blockscout/visualizer-types@0.2.0":
   version "0.2.0"

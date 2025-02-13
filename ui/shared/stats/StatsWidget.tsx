@@ -20,7 +20,7 @@ export type Props = {
   diff?: string | number;
   diffFormatted?: string;
   diffPeriod?: '24h';
-  period?: '1h' | '24h';
+  period?: '1h' | '24h' | '30min';
   href?: Route;
   icon?: IconName;
 };

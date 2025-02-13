@@ -726,12 +726,34 @@ const schema = yup
       .array()
       .transform(replaceQuotes)
       .json()
-      .of(yup.string<ChainIndicatorId>().oneOf(CHAIN_INDICATOR_IDS)),
+      .of(yup.string<ChainIndicatorId>().oneOf(CHAIN_INDICATOR_IDS))
+      .test(
+        'stats-api-required',
+        'NEXT_PUBLIC_STATS_API_HOST is required when daily_operational_txs is enabled in NEXT_PUBLIC_HOMEPAGE_CHARTS',
+        function(value) {
+          // daily_operational_txs is presented only in stats microservice
+          if (value?.includes('daily_operational_txs')) {
+            return Boolean(this.parent.NEXT_PUBLIC_STATS_API_HOST);
+          }
+          return true;
+        }
+      ),
     NEXT_PUBLIC_HOMEPAGE_STATS: yup
       .array()
       .transform(replaceQuotes)
       .json()
-      .of(yup.string<HomeStatsWidgetId>().oneOf(HOME_STATS_WIDGET_IDS)),
+      .of(yup.string<HomeStatsWidgetId>().oneOf(HOME_STATS_WIDGET_IDS))
+      .test(
+        'stats-api-required',
+        'NEXT_PUBLIC_STATS_API_HOST is required when total_operational_txs is enabled in NEXT_PUBLIC_HOMEPAGE_STATS',
+        function(value) {
+          // total_operational_txs is presented only in stats microservice
+          if (value?.includes('total_operational_txs')) {
+            return Boolean(this.parent.NEXT_PUBLIC_STATS_API_HOST);
+          }
+          return true;
+        }
+      ),
     NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG: yup

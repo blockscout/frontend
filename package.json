@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@blockscout/bens-types": "1.4.1",
-    "@blockscout/stats-types": "2.0.0",
+    "@blockscout/stats-types": "2.5.0-alpha",
     "@blockscout/visualizer-types": "0.2.0",
     "@chakra-ui/react": "2.7.1",
     "@chakra-ui/theme-tools": "^2.0.18",

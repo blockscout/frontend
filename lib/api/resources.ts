@@ -290,6 +290,21 @@ export const RESOURCES = {
     endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
     basePath: getFeaturePayload(config.features.stats)?.api.basePath,
   },
+  stats_main: {
+    path: '/api/v1/pages/main',
+    endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.stats)?.api.basePath,
+  },
+  stats_transactions: {
+    path: '/api/v1/pages/transactions',
+    endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.stats)?.api.basePath,
+  },
+  stats_contracts: {
+    path: '/api/v1/pages/contracts',
+    endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.stats)?.api.basePath,
+  },
 
   // NAME SERVICE
   addresses_lookup: {
@@ -1481,6 +1496,9 @@ Q extends 'advanced_filter' ? AdvancedFilterResponse :
 Q extends 'advanced_filter_methods' ? AdvancedFilterMethodsResponse :
 Q extends 'pools' ? PoolsResponse :
 Q extends 'pool' ? Pool :
+Q extends 'stats_main' ? stats.MainPageStats :
+Q extends 'stats_transactions' ? stats.TransactionsPageStats :
+Q extends 'stats_contracts' ? stats.ContractsPageStats :
 never;
 /* eslint-enable @stylistic/indent */
 
