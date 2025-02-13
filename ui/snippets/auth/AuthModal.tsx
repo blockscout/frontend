@@ -175,7 +175,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   }
 
   return (
-    <Modal isOpen onClose={ onModalClose } size={{ base: 'full', lg: 'sm' }}>
+    <Modal isOpen onClose={ onModalClose } size={{ base: 'full', lg: 'sm' }} trapFocus={ false } blockScrollOnMount={ false }>
       <ModalOverlay/>
       <ModalContent p={ 6 } maxW={{ lg: '400px' }}>
         <ModalHeader fontWeight="500" textStyle="h3" mb={ 2 } display="flex" alignItems="center" columnGap={ 2 }>

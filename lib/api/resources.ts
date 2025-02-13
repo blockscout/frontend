@@ -632,7 +632,7 @@ export const RESOURCES = {
     filterFields: [],
   },
   address_xstar_score: {
-    path: '/api/v2/proxy/xname/addresses/:hash',
+    path: '/api/v2/proxy/3rdparty/xname/addresses/:hash',
     pathParams: [ 'hash' as const ],
   },
 
@@ -649,7 +649,7 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const, 'method' as const ],
   },
   contract_solidity_scan_report: {
-    path: '/api/v2/smart-contracts/:hash/solidityscan-report',
+    path: '/api/v2/proxy/3dparty/solidityscan/smart-contracts/:hash/report',
     pathParams: [ 'hash' as const ],
   },
   contract_security_audits: {
@@ -1087,16 +1087,16 @@ export const RESOURCES = {
 
   // NOVES-FI
   noves_transaction: {
-    path: '/api/v2/proxy/noves-fi/transactions/:hash',
+    path: '/api/v2/proxy/3rdparty/noves-fi/transactions/:hash',
     pathParams: [ 'hash' as const ],
   },
   noves_address_history: {
-    path: '/api/v2/proxy/noves-fi/addresses/:address/transactions',
+    path: '/api/v2/proxy/3rdparty/noves-fi/addresses/:address/transactions',
     pathParams: [ 'address' as const ],
     filterFields: [],
   },
   noves_describe_txs: {
-    path: '/api/v2/proxy/noves-fi/transaction-descriptions',
+    path: '/api/v2/proxy/3rdparty/noves-fi/transaction-descriptions',
   },
 
   // USER OPS
