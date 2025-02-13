@@ -1,8 +1,9 @@
-import type { HTMLChakraProps } from '@chakra-ui/react';
 import type React from 'react';
 import type { ControllerRenderProps, FieldValues, Path, RegisterOptions } from 'react-hook-form';
 
 import type { FieldProps } from 'toolkit/chakra/field';
+import type { InputProps } from 'toolkit/chakra/input';
+import type { TextareaProps } from 'toolkit/chakra/textarea';
 
 export interface FormFieldPropsBase<
   FormFields extends FieldValues,
@@ -14,5 +15,5 @@ export interface FormFieldPropsBase<
   onBlur?: () => void;
   onChange?: () => void;
   rightElement?: ({ field }: { field: ControllerRenderProps<FormFields, Name> }) => React.ReactNode;
-  inputProps?: HTMLChakraProps<'input' | 'textarea'>;
+  inputProps?: InputProps | TextareaProps;
 }

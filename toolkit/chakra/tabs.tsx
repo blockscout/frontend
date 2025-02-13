@@ -12,7 +12,9 @@ export const TabsRoot = React.forwardRef<HTMLDivElement, TabsProps>(
 
 export const TabsList = ChakraTabs.List;
 
-export const TabsTrigger = React.forwardRef<HTMLButtonElement, ChakraTabs.TriggerProps>(
+export interface TabsTriggerProps extends ChakraTabs.TriggerProps {}
+
+export const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
   function TabsTrigger(props, ref) {
     return <ChakraTabs.Trigger ref={ ref } className="group" { ...props }/>;
   },

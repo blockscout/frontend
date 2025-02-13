@@ -1,3 +1,4 @@
+import type { AlertDescriptionProps } from '@chakra-ui/react';
 import { Alert as ChakraAlert } from '@chakra-ui/react';
 import * as React from 'react';
 
@@ -9,6 +10,7 @@ import { Skeleton } from './skeleton';
 export interface AlertProps extends Omit<ChakraAlert.RootProps, 'title'> {
   startElement?: React.ReactNode;
   endElement?: React.ReactNode;
+  descriptionProps?: AlertDescriptionProps;
   title?: React.ReactNode;
   icon?: React.ReactElement;
   closable?: boolean;
@@ -29,6 +31,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       endElement,
       loading,
       showIcon = false,
+      descriptionProps,
       ...rest
     } = props;
 
@@ -53,7 +56,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           { children ? (
             <ChakraAlert.Content>
               { title && <ChakraAlert.Title>{ title }</ChakraAlert.Title> }
-              <ChakraAlert.Description display="inline-flex">{ children }</ChakraAlert.Description>
+              <ChakraAlert.Description display="inline-flex" flexWrap="wrap" { ...descriptionProps }>{ children }</ChakraAlert.Description>
             </ChakraAlert.Content>
           ) : (
             <ChakraAlert.Title flex="1">{ title }</ChakraAlert.Title>

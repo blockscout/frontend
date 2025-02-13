@@ -21,6 +21,8 @@ const AdaptiveTabsMenu = ({ tabs, tabsCut, isActive, ...props }: Props, ref: Rea
     <PopoverRoot positioning={{ placement: 'bottom-end' }}>
       <PopoverTrigger>
         <Button
+          // we use "div" so the :last-of-type pseudo-class targets the last tab and not the menu trigger
+          as="div"
           variant="plain"
           color="tabs.solid.fg"
           _hover={{

@@ -87,7 +87,7 @@ const CoinzillaTextAd = ({ className }: { className?: string }) => {
             src={ adData.ad.thumbnail }
             width="20px"
             height="20px"
-            mb="-4px"
+            mb="2px"
             mr={ 1 }
             display="inline-block"
             alt=""

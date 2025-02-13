@@ -1,4 +1,3 @@
-import type { HTMLChakraProps } from '@chakra-ui/react';
 import React from 'react';
 import type { FieldValues, Path } from 'react-hook-form';
 import { useController, useFormContext } from 'react-hook-form';
@@ -6,7 +5,9 @@ import { useController, useFormContext } from 'react-hook-form';
 import type { FormFieldPropsBase } from './types';
 
 import { Field } from 'toolkit/chakra/field';
+import type { InputProps } from 'toolkit/chakra/input';
 import { Input } from 'toolkit/chakra/input';
+import type { TextareaProps } from 'toolkit/chakra/textarea';
 import { Textarea } from 'toolkit/chakra/textarea';
 
 import getFieldErrorText from '../utils/getFieldErrorText';
@@ -49,14 +50,14 @@ const FormFieldText = <
     <Textarea
       { ...field }
       autoComplete="off"
-      { ...inputProps as HTMLChakraProps<'textarea'> }
+      { ...inputProps as TextareaProps }
       onBlur={ handleBlur }
     />
   ) : (
     <Input
       { ...field }
       autoComplete="off"
-      { ...inputProps as HTMLChakraProps<'input'> }
+      { ...inputProps as InputProps }
       onBlur={ handleBlur }
     />
   );

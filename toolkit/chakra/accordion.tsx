@@ -5,6 +5,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 interface AccordionItemTriggerProps extends Accordion.ItemTriggerProps {
   indicatorPlacement?: 'start' | 'end';
+  noIndicator?: boolean;
   variant?: Accordion.RootProps['variant'];
 }
 
@@ -12,7 +13,7 @@ export const AccordionItemTrigger = React.forwardRef<
   HTMLButtonElement,
   AccordionItemTriggerProps
 >(function AccordionItemTrigger(props, ref) {
-  const { children, indicatorPlacement: indicatorPlacementProp, variant, ...rest } = props;
+  const { children, indicatorPlacement: indicatorPlacementProp, variant, noIndicator, ...rest } = props;
 
   const indicatorPlacement = variant === 'faq' ? 'start' : (indicatorPlacementProp ?? 'end');
 
@@ -59,9 +60,9 @@ export const AccordionItemTrigger = React.forwardRef<
 
   return (
     <Accordion.ItemTrigger className="group" { ...rest } ref={ ref }>
-      { indicatorPlacement === 'start' && indicator }
+      { indicatorPlacement === 'start' && !noIndicator && indicator }
       { children }
-      { indicatorPlacement === 'end' && indicator }
+      { indicatorPlacement === 'end' && !noIndicator && indicator }
     </Accordion.ItemTrigger>
   );
 });

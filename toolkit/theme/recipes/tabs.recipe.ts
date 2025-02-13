@@ -124,6 +124,7 @@ export const recipe = defineSlotRecipe({
           textStyle: 'md',
         },
       },
+      free: {},
     },
 
     variant: {
@@ -178,6 +179,38 @@ export const recipe = defineSlotRecipe({
           },
         },
       },
+      segmented: {
+        trigger: {
+          color: 'tabs.segmented.fg',
+          bg: 'transparent',
+          borderWidth: '2px',
+          borderStyle: 'solid',
+          borderColor: 'tabs.segmented.border',
+          _hover: {
+            color: 'link.primary.hover',
+          },
+          _selected: {
+            color: 'tabs.segmented.fg.selected',
+            bg: 'tabs.segmented.border',
+            borderColor: 'tabs.segmented.border',
+            _hover: {
+              color: 'tabs.segmented.fg.selected',
+            },
+          },
+          _notFirst: {
+            borderLeftWidth: '0',
+          },
+          _first: {
+            borderTopLeftRadius: 'base',
+            borderBottomLeftRadius: 'base',
+          },
+          _last: {
+            borderTopRightRadius: 'base',
+            borderBottomRightRadius: 'base',
+          },
+        },
+      },
+      unstyled: {},
     },
   },
 

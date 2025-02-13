@@ -41,6 +41,18 @@ const TabsShowcase = () => {
               <TabsContent value="tab2">Second tab content</TabsContent>
             </TabsRoot>
           </Sample>
+          <Sample label="variant: segmented">
+            <TabsRoot defaultValue="tab1" variant="segmented" size="sm">
+              <TabsList>
+                <TabsTrigger value="tab1">First tab</TabsTrigger>
+                <TabsTrigger value="tab2">Second tab</TabsTrigger>
+                <TabsTrigger value="tab3">Third tab</TabsTrigger>
+              </TabsList>
+              <TabsContent value="tab1">First tab content</TabsContent>
+              <TabsContent value="tab2">Second tab content</TabsContent>
+              <TabsContent value="tab3">Third tab content</TabsContent>
+            </TabsRoot>
+          </Sample>
         </SamplesStack>
       </Section>
 

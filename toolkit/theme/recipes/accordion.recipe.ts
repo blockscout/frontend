@@ -49,6 +49,21 @@ export const recipe = defineSlotRecipe({
   },
 
   variants: {
+    noAnimation: {
+      'true': {
+        itemContent: {
+          _open: {
+            animationName: 'none',
+          },
+          _closed: {
+            animationName: 'none',
+          },
+        },
+        itemIndicator: {
+          transition: 'none',
+        },
+      },
+    },
     variant: {
       outline: {
         item: {

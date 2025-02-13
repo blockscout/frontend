@@ -15,8 +15,8 @@ import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import * as stubs from 'stubs/contract';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 import ContractDetailsAlerts from './alerts/ContractDetailsAlerts';
 import ContractSourceAddressSelector from './ContractSourceAddressSelector';
@@ -114,10 +114,10 @@ const ContractDetails = ({ addressHash, channel, mainContractQuery }: Props) => 
         <RoutedTabs
           tabs={ tabs }
           isLoading={ isPlaceholderData }
-          variant="radio_group"
+          variant="segmented"
           size="sm"
           leftSlot={ addressSelector }
-          tabListProps={ TAB_LIST_PROPS }
+          listProps={ TAB_LIST_PROPS }
           leftSlotProps={ LEFT_SLOT_PROPS }
         />
       ) : (

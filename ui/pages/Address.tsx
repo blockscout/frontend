@@ -235,29 +235,29 @@ const AddressPageContent = () => {
         } :
         undefined,
 
-      // addressQuery.data?.is_contract ? {
-      //   id: 'contract',
-      //   title: () => {
-      //     if (addressQuery.data.is_verified) {
-      //       return (
-      //         <>
-      //           <span>Contract</span>
-      //           <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
-      //         </>
-      //       );
-      //     }
+      addressQuery.data?.is_contract ? {
+        id: 'contract',
+        title: () => {
+          if (addressQuery.data.is_verified) {
+            return (
+              <>
+                <span>Contract</span>
+                <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
+              </>
+            );
+          }
 
-      //     return 'Contract';
-      //   },
-      //   component: (
-      //     <AddressContract
-      //       tabs={ contractTabs.tabs }
-      //       shouldRender={ !isTabsLoading }
-      //       isLoading={ contractTabs.isLoading }
-      //     />
-      //   ),
-      //   subTabs: CONTRACT_TAB_IDS,
-      // } : undefined,
+          return 'Contract';
+        },
+        component: (
+          <AddressContract
+            tabs={ contractTabs.tabs }
+            shouldRender={ !isTabsLoading }
+            isLoading={ contractTabs.isLoading }
+          />
+        ),
+        subTabs: CONTRACT_TAB_IDS,
+      } : undefined,
     ].filter(Boolean);
   }, [
     addressQuery.data,
