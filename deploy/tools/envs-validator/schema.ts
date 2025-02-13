@@ -43,6 +43,7 @@ import type { NftMarketplaceItem } from '../../../types/views/nft';
 import type { TxAdditionalFieldsId, TxFieldsId } from '../../../types/views/tx';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from '../../../types/views/tx';
 import type { VerifiedContractsFilter } from '../../../types/api/contracts';
+import type { TxExternalTxsConfig } from '../../../types/client/externalTxsConfig';
 
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../lib/regexp';
@@ -647,6 +648,12 @@ const multichainProviderConfigSchema: yup.ObjectSchema<MultichainProviderConfig>
   dapp_id: yup.string(),
 });
 
+const externalTxsConfigSchema: yup.ObjectSchema<TxExternalTxsConfig> = yup.object({
+  chain_name: yup.string().required(),
+  chain_logo_url: yup.string().required(),
+  explorer_url_template: yup.string().required(),
+});
+
 const schema = yup
   .object()
   .noUnknown(true, (params) => {
@@ -996,6 +1003,19 @@ const schema = yup
     NEXT_PUBLIC_REWARDS_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_XSTAR_SCORE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK: yup.string().test(urlTest),
+    NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG: yup.mixed().test(
+      'shape',
+      'Invalid schema were provided for NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG, it should have chain_name, chain_logo_url, and explorer_url_template',
+      (data) => {
+        const isUndefined = data === undefined;
+        const valueSchema = yup.object<TxExternalTxsConfig>().transform(replaceQuotes).json().shape({
+          chain_name: yup.string().required(),
+          chain_logo_url: yup.string().required(),
+          explorer_url_template: yup.string().required(),
+        });
+
+        return isUndefined || valueSchema.isValidSync(data);
+      }),
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),

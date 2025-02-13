@@ -604,6 +604,14 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 
 &nbsp;
 
+### External transactions
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG | `{ chain_name: string; chain_logo_url: string; explorer_url_template: string; }` | Configuration of the external transactions links that should be added to the transaction details. | - | - | `{ chain_name: 'ethereum', chain_logo_url: 'https://example.com/logo.png', explorer_url_template: 'https://explorer.com/tx/{hash}' }` | v1.38.0+ |
+
+&nbsp;
+
 ### Verified tokens info
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |

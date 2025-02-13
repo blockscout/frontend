@@ -518,6 +518,10 @@ export const RESOURCES = {
     path: '/api/v2/transactions/:hash/summary',
     pathParams: [ 'hash' as const ],
   },
+  tx_external_transactions: {
+    path: '/api/v2/transactions/:hash/external-transactions',
+    pathParams: [ 'hash' as const ],
+  },
   withdrawals: {
     path: '/api/v2/withdrawals',
     filterFields: [],
@@ -1331,6 +1335,7 @@ Q extends 'tx_raw_trace' ? RawTracesResponse :
 Q extends 'tx_state_changes' ? TxStateChanges :
 Q extends 'tx_blobs' ? TxBlobs :
 Q extends 'tx_interpretation' ? TxInterpretationResponse :
+Q extends 'tx_external_transactions' ? Array<string> :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'addresses_metadata_search' ? AddressesMetadataSearchResult :
 Q extends 'address' ? Address :

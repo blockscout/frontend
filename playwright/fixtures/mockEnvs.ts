@@ -94,4 +94,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_ADDRESS_FORMAT', '["bech32","base16"]' ],
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX', 'tom' ],
   ],
+  externalTxs: [
+    [ 'NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG', '{"chain_name": "Solana", "chain_logo_url": "http://example.url", "explorer_url_template": "https://scan.io/tx/{hash}"}' ],
+  ],
 };

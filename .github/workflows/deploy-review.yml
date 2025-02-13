@@ -22,6 +22,7 @@ on:
             - eth_goerli
             - filecoin
             - mekong
+            - neon_devnet
             - optimism
             - optimism_celestia
             - optimism_sepolia
