@@ -53,7 +53,8 @@ export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleSh
 export function getItemCategory(item: SearchResultItem | SearchResultAppItem): Category | undefined {
   switch (item.type) {
     case 'address':
-    case 'contract': {
+    case 'contract':
+    case 'metadata_tag': {
       return 'address';
     }
     case 'token': {

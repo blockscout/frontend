@@ -21,6 +21,7 @@ import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
+import EntityTagIcon from 'ui/shared/EntityTags/EntityTagIcon';
 import { ADDRESS_REGEXP } from 'ui/shared/forms/validators/address';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
@@ -99,6 +100,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
         );
       }
 
+      case 'metadata_tag':
       case 'contract':
       case 'address': {
         const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
@@ -119,7 +121,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
 
         return (
           <>
-            <Td fontSize="sm" colSpan={ addressName ? 1 : 3 }>
+            <Td fontSize="sm" colSpan={ (addressName || data.type === 'metadata_tag') ? 1 : 3 } verticalAlign="middle">
               <AddressEntity.Container>
                 <AddressEntity.Icon address={ address }/>
                 <AddressEntity.Link
@@ -138,7 +140,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </AddressEntity.Container>
             </Td>
             { addressName && (
-              <Td colSpan={ 2 } fontSize="sm" verticalAlign="middle">
+              <Td colSpan={ data.type === 'metadata_tag' ? 1 : 2 } fontSize="sm" verticalAlign="middle">
                 <Flex alignItems="center">
                   <Text
                     overflow="hidden"
@@ -156,6 +158,17 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                     ) }
                   </Text>
                   { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } mx={ 1 }/> }
+                </Flex>
+              </Td>
+            ) }
+            { data.type === 'metadata_tag' && (
+              <Td colSpan={ addressName ? 1 : 2 } fontSize="sm" verticalAlign="middle">
+                <Flex justifyContent="flex-end">
+                  { /* we show regular tag because we don't need all meta info here, but need to highlight search term */ }
+                  <Tag display="flex" alignItems="center">
+                    <EntityTagIcon data={ data.metadata } iconColor="gray.400"/>
+                    <span dangerouslySetInnerHTML={{ __html: highlightText(data.metadata.name, searchTerm) }}/>
+                  </Tag>
                 </Flex>
               </Td>
             ) }

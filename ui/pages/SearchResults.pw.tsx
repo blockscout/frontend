@@ -20,6 +20,7 @@ test.describe('search by name', () => {
         searchMock.token2,
         searchMock.contract1,
         searchMock.address2,
+        searchMock.metatag1,
         searchMock.label1,
       ],
       next_page_params: null,
@@ -46,6 +47,23 @@ test('search by address hash +@mobile', async({ render, mockApiResponse }) => {
     next_page_params: null,
   };
   await mockApiResponse('search', data, { queryParams: { q: searchMock.address1.address } });
+
+  const component = await render(<SearchResults/>, { hooksConfig });
+
+  await expect(component.locator('main')).toHaveScreenshot();
+});
+
+test('search by meta tag +@mobile', async({ render, mockApiResponse }) => {
+  const hooksConfig = {
+    router: {
+      query: { q: 'utko' },
+    },
+  };
+  const data = {
+    items: [ searchMock.metatag1, searchMock.metatag2, searchMock.metatag3 ],
+    next_page_params: null,
+  };
+  await mockApiResponse('search', data, { queryParams: { q: 'utko' } });
 
   const component = await render(<SearchResults/>, { hooksConfig });
 
