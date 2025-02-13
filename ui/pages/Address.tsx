@@ -172,28 +172,28 @@ const AddressPageContent = () => {
       //     component: <AddressAccountHistory scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       //   } :
       //   undefined,
-      // config.features.userOps.isEnabled && Boolean(userOpsAccountQuery.data?.total_ops) ?
-      //   {
-      //     id: 'user_ops',
-      //     title: 'User operations',
-      //     count: userOpsAccountQuery.data?.total_ops,
-      //     component: <AddressUserOps shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      //   } :
-      //   undefined,
-      // config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.withdrawals_count ?
-      //   {
-      //     id: 'withdrawals',
-      //     title: 'Withdrawals',
-      //     count: addressTabsCountersQuery.data?.withdrawals_count,
-      //     component: <AddressWithdrawals scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      //   } :
-      //   undefined,
-      // {
-      //   id: 'token_transfers',
-      //   title: 'Token transfers',
-      //   count: addressTabsCountersQuery.data?.token_transfers_count,
-      //   component: <AddressTokenTransfers scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      // },
+      config.features.userOps.isEnabled && Boolean(userOpsAccountQuery.data?.total_ops) ?
+        {
+          id: 'user_ops',
+          title: 'User operations',
+          count: userOpsAccountQuery.data?.total_ops,
+          component: <AddressUserOps shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        } :
+        undefined,
+      config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.withdrawals_count ?
+        {
+          id: 'withdrawals',
+          title: 'Withdrawals',
+          count: addressTabsCountersQuery.data?.withdrawals_count,
+          component: <AddressWithdrawals scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        } :
+        undefined,
+      {
+        id: 'token_transfers',
+        title: 'Token transfers',
+        count: addressTabsCountersQuery.data?.token_transfers_count,
+        component: <AddressTokenTransfers scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      },
       // {
       //   id: 'tokens',
       //   title: 'Tokens',
@@ -226,14 +226,14 @@ const AddressPageContent = () => {
           component: <AddressBlocksValidated scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
-      // addressTabsCountersQuery.data?.logs_count ?
-      //   {
-      //     id: 'logs',
-      //     title: 'Logs',
-      //     count: addressTabsCountersQuery.data?.logs_count,
-      //     component: <AddressLogs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      //   } :
-      //   undefined,
+      addressTabsCountersQuery.data?.logs_count ?
+        {
+          id: 'logs',
+          title: 'Logs',
+          count: addressTabsCountersQuery.data?.logs_count,
+          component: <AddressLogs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        } :
+        undefined,
 
       // addressQuery.data?.is_contract ? {
       //   id: 'contract',

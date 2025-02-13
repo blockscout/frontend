@@ -55,7 +55,7 @@ const RoutedTabs = (props: Props) => {
       { ...rest }
       tabs={ tabs }
       onValueChange={ handleValueChange }
-      defaultValue={ activeTab ? getTabValue(activeTab) : undefined }
+      defaultValue={ activeTab ? getTabValue(activeTab) : getTabValue(tabs[ 0 ]) }
     />
   );
 };
