@@ -3,6 +3,7 @@ import React from 'react';
 import { Field } from 'toolkit/chakra/field';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
+import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
@@ -119,9 +120,20 @@ const InputShowcase = () => {
             </Field>
           </Sample>
           <Sample label="with start element">
-            <InputGroup startElement={ <IconSvg name="search" boxSize={ 5 }/> }>
-              <Input placeholder="Search"/>
+            <InputGroup startElement={ <IconSvg name="collection" boxSize={ 5 }/> }>
+              <Input placeholder="Type in something"/>
             </InputGroup>
+          </Sample>
+        </SamplesStack>
+      </Section>
+
+      <Section>
+        <SectionHeader>Examples</SectionHeader>
+        <SectionSubHeader>Filter input</SectionSubHeader>
+        <SamplesStack>
+          <Sample>
+            <FilterInput placeholder="Search by method name"/>
+            <FilterInput placeholder="Search by method name" loading/>
           </Sample>
         </SamplesStack>
       </Section>

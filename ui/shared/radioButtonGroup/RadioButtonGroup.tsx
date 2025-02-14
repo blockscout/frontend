@@ -1,11 +1,13 @@
-import { chakra, ButtonGroup, Button, Flex, useRadio, useRadioGroup } from '@chakra-ui/react';
+import { chakra, Flex, useRadioGroup } from '@chakra-ui/react';
 import type { ChakraProps, UseRadioProps } from '@chakra-ui/react';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Button, ButtonGroup } from 'toolkit/chakra/button';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
+// TODO @tom2drum remove this component
 type RadioItemProps = {
   title: string;
   icon?: IconName;
@@ -20,10 +22,10 @@ type RadioItemProps = {
 type RadioButtonProps = UseRadioProps & RadioItemProps;
 
 const RadioButton = (props: RadioButtonProps) => {
-  const { getInputProps, getRadioProps } = useRadio(props);
+  // const { getInputProps, getRadioProps } = useRadio(props);
 
-  const input = getInputProps();
-  const checkbox = getRadioProps();
+  // const input = getInputProps();
+  // const checkbox = getRadioProps();
 
   if (props.onlyIcon) {
     return (
@@ -33,9 +35,9 @@ const RadioButton = (props: RadioButtonProps) => {
         variant="radio_group"
         selected={ props.isChecked }
       >
-        <input { ...input }/>
+        { /* <input { ...input }/> */ }
         <Flex
-          { ...checkbox }
+          // { ...checkbox }
         >
           <IconSvg name={ props.icon } boxSize={ 5 }/>
         </Flex>
@@ -50,10 +52,10 @@ const RadioButton = (props: RadioButtonProps) => {
       variant="radio_group"
       selected={ props.isChecked }
     >
-      <input { ...input }/>
+      { /* <input { ...input }/> */ }
       <Flex
         alignItems="center"
-        { ...checkbox }
+        // { ...checkbox }
       >
         { props.title }
         { props.contentAfter }
@@ -63,7 +65,7 @@ const RadioButton = (props: RadioButtonProps) => {
 };
 
 type RadioButtonGroupProps<T extends string> = {
-  onChange: (value: T) => void;
+  onChange: ({ value }: { value: T }) => void;
   name: string;
   defaultValue: string;
   options: Array<{ value: T } & RadioItemProps>;
@@ -73,14 +75,14 @@ type RadioButtonGroupProps<T extends string> = {
 };
 
 const RadioButtonGroup = <T extends string>({ onChange, name, defaultValue, options, autoWidth = false, className, isLoading }: RadioButtonGroupProps<T>) => {
-  const { getRootProps, getRadioProps } = useRadioGroup({ name, defaultValue, onChange });
+  const { getRootProps } = useRadioGroup({ name, defaultValue, onValueChange: onChange });
 
-  const group = getRootProps();
+  const root = getRootProps();
 
   return (
-    <Skeleton isLoaded={ !isLoading }>
+    <Skeleton loading={ isLoading }>
       <ButtonGroup
-        { ...group }
+        { ...root }
         className={ className }
         isAttached
         size="sm"
@@ -88,8 +90,8 @@ const RadioButtonGroup = <T extends string>({ onChange, name, defaultValue, opti
         gridTemplateColumns={ `repeat(${ options.length }, ${ autoWidth ? 'auto' : '1fr' })` }
       >
         { options.map((option) => {
-          const props = getRadioProps({ value: option.value });
-          return <RadioButton { ...props } key={ option.value } { ...option }/>;
+          // const props = getRadioProps({ value: option.value });
+          return <RadioButton key={ option.value } { ...option }/>;
         }) }
       </ButtonGroup>
     </Skeleton>

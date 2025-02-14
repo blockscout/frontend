@@ -29,12 +29,12 @@ export const recipe = defineSlotRecipe({
       },
     },
     trigger: {
+      fontWeight: '600',
       outline: '0',
       minW: 'var(--tabs-height)',
       height: 'var(--tabs-height)',
       display: 'flex',
       alignItems: 'center',
-      fontWeight: 'medium',
       position: 'relative',
       cursor: 'button',
       gap: '2',
@@ -130,7 +130,6 @@ export const recipe = defineSlotRecipe({
     variant: {
       solid: {
         trigger: {
-          fontWeight: '600',
           borderRadius: 'base',
           color: 'tabs.solid.fg',
           bg: 'transparent',
@@ -157,7 +156,6 @@ export const recipe = defineSlotRecipe({
           },
         },
         trigger: {
-          fontWeight: '500',
           color: 'tabs.secondary.fg',
           bg: 'transparent',
           borderWidth: '2px',

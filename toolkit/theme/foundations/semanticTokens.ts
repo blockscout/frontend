@@ -45,6 +45,15 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           DEFAULT: { value: { _light: '{colors.gray.300}', _dark: '{colors.gray.600}' } },
         },
       },
+      segmented: {
+        fg: {
+          DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
+          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
+        },
+        border: {
+          DEFAULT: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
+        },
+      },
       hero: {
         bg: {
           DEFAULT: {

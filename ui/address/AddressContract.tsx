@@ -20,7 +20,7 @@ const AddressContract = ({ tabs, isLoading, shouldRender }: Props) => {
   }
 
   return (
-    <RoutedTabs tabs={ tabs } variant="outline" colorScheme="gray" size="sm" listProps={ TAB_LIST_PROPS } isLoading={ isLoading }/>
+    <RoutedTabs tabs={ tabs } variant="secondary" size="sm" listProps={ TAB_LIST_PROPS } isLoading={ isLoading }/>
   );
 };
 

@@ -36,9 +36,9 @@ const ContractMethodsRegular = ({ abi, isLoading }: Props) => {
         onChange={ filters.onChange }
         isLoading={ isLoading }
       />
-      <ContractMethodsContainer isLoading={ isLoading } isEmpty={ formattedAbi.length === 0 } type={ filters.methodType }>
+      { /* <ContractMethodsContainer isLoading={ isLoading } isEmpty={ formattedAbi.length === 0 } type={ filters.methodType }>
         <ContractAbi abi={ formattedAbi } tab={ tab } addressHash={ addressHash } visibleItems={ filters.visibleItems }/>
-      </ContractMethodsContainer>
+      </ContractMethodsContainer> */ }
     </Flex>
   );
 };

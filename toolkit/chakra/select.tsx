@@ -140,7 +140,7 @@ export const SelectRoot = React.forwardRef<
     <ChakraSelect.Root
       { ...props }
       ref={ ref }
-      positioning={{ sameWidth: false, ...props.positioning }}
+      positioning={{ sameWidth: false, ...props.positioning, offset: { mainAxis: 4, ...props.positioning?.offset } }}
     >
       { props.asChild ? (
         props.children

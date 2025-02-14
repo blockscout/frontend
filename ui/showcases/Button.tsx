@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from 'toolkit/chakra/button';
+import { Button, ButtonGroupRadio } from 'toolkit/chakra/button';
 import { Checkbox } from 'toolkit/chakra/checkbox';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
@@ -216,7 +216,24 @@ const ButtonShowcase = () => {
             </Link>
           </Sample>
         </SamplesStack>
+
+        <SectionSubHeader>Button Group Radio</SectionSubHeader>
+        <SamplesStack>
+          <Sample>
+            <ButtonGroupRadio>
+              <Button value="option-1">Option 1</Button>
+              <Button value="option-2">Option 2</Button>
+              <Button value="option-3">Option 3</Button>
+            </ButtonGroupRadio>
+            <ButtonGroupRadio loading>
+              <Button value="option-1">Option 1</Button>
+              <Button value="option-2">Option 2</Button>
+              <Button value="option-3">Option 3</Button>
+            </ButtonGroupRadio>
+          </Sample>
+        </SamplesStack>
       </Section>
+
     </Container>
   );
 };

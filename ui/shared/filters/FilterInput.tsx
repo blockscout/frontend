@@ -1,26 +1,26 @@
-import { chakra, Input, InputGroup, InputLeftElement, InputRightElement, useColorModeValue } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Input } from 'toolkit/chakra/input';
+import { InputGroup } from 'toolkit/chakra/input-group';
+import type { SkeletonProps } from 'toolkit/chakra/skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import ClearButton from 'ui/shared/ClearButton';
 import IconSvg from 'ui/shared/IconSvg';
 
-type Props = {
+interface Props extends Omit<SkeletonProps, 'onChange' | 'loading'> {
   onChange?: (searchTerm: string) => void;
-  className?: string;
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  loading?: boolean;
+  size?: 'sm' | 'md' | 'lg';
   placeholder: string;
   initialValue?: string;
-  isLoading?: boolean;
   type?: React.HTMLInputTypeAttribute;
   name?: string;
 };
 
-const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialValue, isLoading, type, name }: Props) => {
+const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, name, loading = false, ...rest }: Props) => {
   const [ filterQuery, setFilterQuery ] = useState(initialValue || '');
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const iconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
 
   const handleFilterQueryChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -35,22 +35,25 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialVal
     inputRef?.current?.focus();
   }, [ onChange ]);
 
+  const startElement = <IconSvg name="search" color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }} boxSize={ 4 }/>;
+
+  const endElement = filterQuery ? <ClearButton onClick={ handleFilterQueryClear }/> : null;
+
   return (
     <Skeleton
-      isLoaded={ !isLoading }
-      className={ className }
       minW="250px"
       borderRadius="base"
+      loading={ loading }
+      { ...rest }
     >
       <InputGroup
-        size={ size }
+        startElement={ startElement }
+        startElementProps={{ px: 2 }}
+        startOffset="32px"
+        endElement={ endElement }
+        endElementProps={{ px: 0, w: '32px' }}
+        endOffset="32px"
       >
-        <InputLeftElement
-          pointerEvents="none"
-        >
-          <IconSvg name="search" color={ iconColor } boxSize={ 4 }/>
-        </InputLeftElement>
-
         <Input
           ref={ inputRef }
           size={ size }
@@ -63,15 +66,9 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialVal
           type={ type }
           name={ name }
         />
-
-        { filterQuery ? (
-          <InputRightElement>
-            <ClearButton onClick={ handleFilterQueryClear }/>
-          </InputRightElement>
-        ) : null }
       </InputGroup>
     </Skeleton>
   );
 };
 
-export default chakra(FilterInput);
+export default FilterInput;

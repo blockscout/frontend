@@ -8,6 +8,7 @@
     "npm": "10.9.0"
   },
   "scripts": {
+    "postinstall": "yarn chakra:typegen",
     "dev": "./tools/scripts/dev.sh",
     "dev:preset": "./tools/scripts/dev.preset.sh",
     "dev:preset:sync": "tsc -p ./tools/preset-sync/tsconfig.json && node ./tools/preset-sync/index.js",
@@ -44,7 +45,7 @@
     "@blockscout/bens-types": "1.4.1",
     "@blockscout/stats-types": "2.0.0",
     "@blockscout/visualizer-types": "0.2.0",
-    "@chakra-ui/react": "3.4.0",
+    "@chakra-ui/react": "3.8.0",
     "@cloudnouns/kit": "1.1.6",
     "@emotion/react": "11.14.0",
     "@growthbook/growthbook-react": "0.21.0",

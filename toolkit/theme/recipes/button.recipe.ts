@@ -131,6 +131,36 @@ export const recipe = defineRecipe({
           },
         },
       },
+      segmented: {
+        bg: 'transparent',
+        color: 'button.segmented.fg',
+        borderColor: 'button.segmented.border',
+        borderWidth: '2px',
+        borderStyle: 'solid',
+        borderRadius: 'none',
+        _hover: {
+          color: 'link.primary.hover',
+        },
+        _selected: {
+          bg: 'button.segmented.border',
+          color: 'button.segmented.fg.selected',
+          _hover: {
+            bg: 'button.segmented.border',
+            color: 'button.segmented.fg.selected',
+          },
+        },
+        _notFirst: {
+          borderLeftWidth: '0',
+        },
+        _first: {
+          borderTopLeftRadius: 'base',
+          borderBottomLeftRadius: 'base',
+        },
+        _last: {
+          borderTopRightRadius: 'base',
+          borderBottomRightRadius: 'base',
+        },
+      },
       plain: {
         bg: 'transparent',
         color: 'inherit',
