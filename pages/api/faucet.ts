@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Wallet, NonceManager, isAddress, JsonRpcProvider, parseEther } from 'ethers';
+import { isAddress, parseEther } from 'ethers';
 // import { getIronSession } from 'iron-session';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -8,20 +8,7 @@ import { formatErrorMessage, httpLogger } from 'nextjs/utils/logger';
 import { getEnvValue } from 'configs/app/utils';
 import { createAndSaveRecordMoca, findEditThenSaveMoca, findOneByDiscordIdMoca } from 'lib/db';
 // import { sessionOptions } from 'lib/session/config';
-
-const provider = new JsonRpcProvider(
-  getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL'),
-  Number(getEnvValue('NEXT_PUBLIC_NETWORK_ID')),
-  {
-    staticNetwork: true,
-  },
-);
-
-const _signer = new Wallet(getEnvValue('NEXT_PUBLIC_FAUCET_KEY')!, provider);
-const signer = new NonceManager(_signer);
-
-const requestLock = new Set<string>();
-const requestHistory = new Map<string, string>();
+import { requestLock, requestHistory, signer } from 'lib/faucetState';
 
 export default async function faucetHandler(
   req: NextApiRequest,
