@@ -39,6 +39,7 @@ export default async function faucetHandler(
     if (requestLock.has(walletAddress)) {
       return res.status(429).json({ error: 'Too many requests.' });
     }
+    requestLock.add(walletAddress);
 
     let lastRequestTimeAsIso = requestHistory.get(walletAddress);
     if (!lastRequestTimeAsIso) {
