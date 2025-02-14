@@ -58,6 +58,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
   const reset = React.useCallback(() => {
     setIsError(false);
     setErrMessage('');
+    setRequestStatus(FAUCET_REQUEST_TYPE.REQUEST);
   }, []);
 
   const onSubmit = React.useCallback((data: { address: string }) => {
