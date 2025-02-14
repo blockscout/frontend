@@ -6,7 +6,7 @@ export const recipe = defineRecipe({
     minWidth: '0',
     outline: '0',
     position: 'relative',
-    appearance: 'none',
+    appearance: 'textfield',
     textAlign: 'start',
     borderRadius: 'base',
     height: 'var(--input-height)',
@@ -27,7 +27,7 @@ export const recipe = defineRecipe({
   variants: {
     size: {
       sm: {
-        textStyle: 'sm',
+        textStyle: 'md',
         px: '2',
         '--input-height': 'sizes.8',
       },

@@ -1,11 +1,15 @@
-import { Box, Button, Flex, FormControl, Input, InputGroup, InputRightElement, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
-import { NumericFormat } from 'react-number-format';
+// import { NumericFormat } from 'react-number-format';
 
 import type { ContractAbiItemInput } from '../types';
 
 import { HOUR, SECOND } from 'lib/consts';
+import { Button } from 'toolkit/chakra/button';
+import { Field } from 'toolkit/chakra/field';
+import { Input } from 'toolkit/chakra/input';
+import { InputGroup } from 'toolkit/chakra/input-group';
 import ClearButton from 'ui/shared/ClearButton';
 
 import ContractMethodAddressButton from './ContractMethodAddressButton';
@@ -43,8 +47,8 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
   const { control, setValue, getValues } = useFormContext();
   const { field, fieldState } = useController({ control, name, rules: { validate } });
 
-  const inputBgColor = useColorModeValue('white', 'black');
-  const nativeCoinRowBgColor = useColorModeValue('gray.100', 'gray.700');
+  const inputBgColor = { _light: 'white', _dark: 'black' };
+  const nativeCoinRowBgColor = { _light: 'gray.100', _dark: 'gray.700' };
 
   const hasMultiplyButton = argTypeMatchInt && Number(argTypeMatchInt.power) >= 64;
 
@@ -125,6 +129,46 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
 
   const error = fieldState.error;
 
+  const inputEndElement = (
+    <Flex alignItems="center">
+      { field.value !== undefined && field.value !== '' && <ClearButton onClick={ handleClear } isDisabled={ isDisabled } boxSize={ 6 }/> }
+      { data.type === 'address' && <ContractMethodAddressButton onClick={ handleAddressButtonClick } isDisabled={ isDisabled }/> }
+      { argTypeMatchInt && !isNativeCoin && (hasTimestampButton ? (
+        <Button
+          variant="subtle"
+          size="xs"
+          textStyle="md"
+          fontWeight={ 500 }
+          ml={ 1 }
+          onClick={ handleTimestampButtonClick }
+          disabled={ isDisabled }
+        >
+          Now+1h
+        </Button>
+      ) : (
+        <Button
+          variant="subtle"
+          size="xs"
+          textStyle="md"
+          fontWeight={ 500 }
+          ml={ 1 }
+          onClick={ handleMaxIntButtonClick }
+          disabled={ isDisabled }
+        >
+          Max
+        </Button>
+      )) }
+      { hasMultiplyButton && (
+        <ContractMethodMultiplyButton
+          onClick={ handleMultiplyButtonClick }
+          isDisabled={ isDisabled }
+          initialValue={ intPower }
+          onChange={ setIntPower }
+        />
+      ) }
+    </Flex>
+  );
+
   return (
     <Flex
       className={ className }
@@ -138,73 +182,37 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
       py={ isNativeCoin ? 1 : 0 }
     >
       { !hideLabel && <ContractMethodFieldLabel data={ data } isOptional={ isOptional } level={ level }/> }
-      <FormControl isDisabled={ isDisabled }>
-        <InputGroup size="xs">
+      <Field invalid={ Boolean(error) } errorText={ error?.message } disabled={ isDisabled }>
+        <InputGroup
+          endElement={ inputEndElement }
+          endElementProps={{ pl: 0, pr: 1 }}
+        >
           <Input
             { ...field }
-            { ...(argTypeMatchInt ? {
-              as: NumericFormat,
-              thousandSeparator: ' ',
-              decimalScale: 0,
-              allowNegative: !argTypeMatchInt.isUnsigned,
-              getInputRef: (element: HTMLInputElement) => {
-                ref.current = element;
-              },
-            } : {}) }
+            // TODO @tom2drum fix formatting of numeric input
+            // { ...(argTypeMatchInt ? {
+            //   as: NumericFormat,
+            //   thousandSeparator: ' ',
+            //   decimalScale: 0,
+            //   allowNegative: !argTypeMatchInt.isUnsigned,
+            //   getInputRef: (element: HTMLInputElement) => {
+            //     ref.current = element;
+            //   },
+            // } : {}) }
             // as we use mutable ref, we have to cast it to React.LegacyRef<HTMLInputElement> to trick chakra and typescript
             ref={ ref as React.LegacyRef<HTMLInputElement> | undefined }
+            size="sm"
             onChange={ handleChange }
             onPaste={ handlePaste }
             required={ !isOptional }
-            isInvalid={ Boolean(error) }
             placeholder={ data.type }
             autoComplete="off"
             data-1p-ignore
             bgColor={ inputBgColor }
             paddingRight={ hasMultiplyButton ? '120px' : '40px' }
           />
-          <InputRightElement w="auto" right={ 1 } bgColor={ inputBgColor } h="calc(100% - 4px)" top="2px" borderRadius="base">
-            { field.value !== undefined && field.value !== '' && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
-            { data.type === 'address' && <ContractMethodAddressButton onClick={ handleAddressButtonClick } isDisabled={ isDisabled }/> }
-            { argTypeMatchInt && !isNativeCoin && (hasTimestampButton ? (
-              <Button
-                variant="subtle"
-                colorScheme="gray"
-                size="xs"
-                fontSize="normal"
-                fontWeight={ 500 }
-                ml={ 1 }
-                onClick={ handleTimestampButtonClick }
-                isDisabled={ isDisabled }
-              >
-                Now+1h
-              </Button>
-            ) : (
-              <Button
-                variant="subtle"
-                colorScheme="gray"
-                size="xs"
-                fontSize="normal"
-                fontWeight={ 500 }
-                ml={ 1 }
-                onClick={ handleMaxIntButtonClick }
-                isDisabled={ isDisabled }
-              >
-                Max
-              </Button>
-            )) }
-            { hasMultiplyButton && (
-              <ContractMethodMultiplyButton
-                onClick={ handleMultiplyButtonClick }
-                isDisabled={ isDisabled }
-                initialValue={ intPower }
-                onChange={ setIntPower }
-              />
-            ) }
-          </InputRightElement>
         </InputGroup>
-        { error && <Box color="error" fontSize="sm" lineHeight={ 5 } mt={ 1 }>{ error.message }</Box> }
-      </FormControl>
+      </Field>
     </Flex>
   );
 };

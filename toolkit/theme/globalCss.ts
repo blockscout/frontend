@@ -22,6 +22,13 @@ const globalCss: SystemConfig['globalCss'] = {
   form: {
     w: '100%',
   },
+  input: {
+    // hide number input arrows in Google Chrome
+    '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
+      WebkitAppearance: 'none',
+      margin: 0,
+    },
+  },
   ...recaptcha,
   ...scrollbar,
   ...addressEntity,

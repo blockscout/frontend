@@ -11,9 +11,10 @@ interface Props {
   className?: string;
   tooltipProps?: Partial<TooltipProps>;
   isLoading?: boolean;
+  as?: React.ElementType;
 }
 
-const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
+const Hint = ({ label, className, tooltipProps, isLoading, as }: Props) => {
   return (
     <Tooltip
       content={ label }
@@ -27,6 +28,7 @@ const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
         className={ className }
         loading={ isLoading }
         borderRadius="sm"
+        as={ as }
       >
         <IconSvg name="info" w="100%" h="100%" color="icon_info" _hover={{ color: 'link.primary.hover' }}/>
       </IconButton>

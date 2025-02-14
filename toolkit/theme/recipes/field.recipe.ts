@@ -12,7 +12,7 @@ export const recipe = defineSlotRecipe({
       display: 'flex',
       width: '100%',
       position: 'relative',
-      gap: '1.5',
+      gap: '1',
     },
     label: {
       display: 'flex',
@@ -36,11 +36,11 @@ export const recipe = defineSlotRecipe({
       fontWeight: 'medium',
       gap: '1',
       color: 'input.fg.error',
-      textStyle: 'xs',
+      textStyle: 'sm',
     },
     helperText: {
       color: 'fg.muted',
-      textStyle: 'xs',
+      textStyle: 'sm',
     },
   },
 

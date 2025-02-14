@@ -58,7 +58,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: 
           isLoading={ isInitialLoading }
         />
       </div>
-      { /* <ContractMethodsContainer
+      <ContractMethodsContainer
         key={ selectedItem.address }
         isLoading={ isInitialLoading || contractQuery.isPending }
         isEmpty={ abi.length === 0 }
@@ -72,7 +72,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: 
           visibleItems={ filters.visibleItems }
           sourceAddress={ selectedItem.address }
         />
-      </ContractMethodsContainer> */ }
+      </ContractMethodsContainer>
     </Flex>
   );
 };

@@ -93,9 +93,9 @@ const ContractMethodsCustom = ({ isLoading: isLoadingProp }: Props) => {
             onChange={ filters.onChange }
             isLoading={ isLoading }
           />
-          { /* <ContractMethodsContainer isLoading={ isLoading } isEmpty={ abi.length === 0 } type={ filters.methodType }>
+          <ContractMethodsContainer isLoading={ isLoading } isEmpty={ abi.length === 0 } type={ filters.methodType }>
             <ContractAbi abi={ abi } tab={ tab } addressHash={ addressHash } visibleItems={ filters.visibleItems }/>
-          </ContractMethodsContainer> */ }
+          </ContractMethodsContainer>
         </>
       ) : (
         <>
