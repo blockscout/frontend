@@ -57,16 +57,14 @@ export default async function faucetHandler(
       });
     }
 
-    const userWallet: string = req.body.userWallet;
-    if (!isAddress(userWallet)) {
+    if (!isAddress(walletAddress)) {
       return res.status(400).json({ error: 'Please enter the right address.' });
     }
 
     requestLock.add(walletAddress);
 
     const txRp = await signer.sendTransaction({
-      to: userWallet,
-
+      to: walletAddress,
       value: parseEther(getEnvValue('NEXT_PUBLIC_FAUCET_VALUE')!),
     });
     // Increase transaction wait time to 10 blocks in faucet handler
@@ -82,7 +80,7 @@ export default async function faucetHandler(
     }
 
     const now = new Date().toISOString();
-    await findEditThenSaveMoca(walletAddress.toLowerCase(), now);
+    await findEditThenSaveMoca(walletAddress, now);
 
     requestHistory.set(walletAddress, now);
     requestLock.delete(walletAddress);
