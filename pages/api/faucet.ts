@@ -6,7 +6,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { formatErrorMessage, httpLogger } from 'nextjs/utils/logger';
 
 import { getEnvValue } from 'configs/app/utils';
-import { createAndSaveRecordMoca, findEditThenSaveMoca, findOneByDiscordIdMoca } from 'lib/db';
+import { createAndSaveRecordMoca, findEditThenSaveMoca, findOneByUserAccount } from 'lib/db';
 // import { sessionOptions } from 'lib/session/config';
 import { requestLock, requestHistory, signer } from 'lib/faucetState';
 
@@ -30,7 +30,7 @@ export default async function faucetHandler(
 
     let lastRequestTimeAsIso = requestHistory.get(walletAddress);
     if (!lastRequestTimeAsIso) {
-      let dbUser = await findOneByDiscordIdMoca(walletAddress);
+      let dbUser = await findOneByUserAccount(walletAddress);
       if (!dbUser) {
         dbUser = await createAndSaveRecordMoca(walletAddress);
       }
@@ -40,6 +40,7 @@ export default async function faucetHandler(
     const requestPer = Number(getEnvValue('NEXT_PUBLIC_FAUCET_REQUEST_PER'));
     const requestPerAsHours = requestPer / 1000 / 60 / 60;
     if (Date.now() - lastRequestTime <= requestPer) {
+      requestLock.delete(walletAddress);
       return res.status(429).json({
         error: `Failed: the Discord account has already request for $ZKME within the last ${ requestPerAsHours } hours. Please try again later.`,
       });
@@ -55,8 +56,7 @@ export default async function faucetHandler(
       to: walletAddress,
       value: parseEther(getEnvValue('NEXT_PUBLIC_FAUCET_VALUE')!),
     });
-    // Increase transaction wait time to 10 blocks in faucet handler
-    const txReceipt = await txRp.wait(10);
+    const txReceipt = await txRp.wait();
     if (txReceipt?.status !== 1) {
       requestLock.delete(walletAddress);
       signer.reset(); // reset nonce

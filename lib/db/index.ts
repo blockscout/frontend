@@ -41,14 +41,14 @@ export function createAndSaveRecordMoca(walletAddress: string) {
   return doc.save();
 }
 
-export function findOneByDiscordIdMoca(walletAddress: string) {
+export function findOneByUserAccount(walletAddress: string) {
   return FaucetRequestRecordMoca.findOne({
     wallet_address: walletAddress,
   });
 }
 
 export async function findEditThenSaveMoca(walletAddress: string, faucetRequestTime: string) {
-  const doc = await findOneByDiscordId(walletAddress);
+  const doc = await findOneByUserAccount(walletAddress);
   if (doc) {
     doc.last_request_time = faucetRequestTime;
     return doc.save();
