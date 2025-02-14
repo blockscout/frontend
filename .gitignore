@@ -18,7 +18,6 @@
 /public/assets/envs.js
 /public/assets/configs
 /public/icons/sprite.svg
-/public/icons/sprite.*.svg
 /public/icons/README.md
 /analyze
 
@@ -47,6 +46,9 @@ yarn-error.log*
 
 .eslintcache
 
+# Sentry
+.sentryclirc
+
 **.decrypted~**
 /test-results/
 /playwright-report/
@@ -56,6 +58,3 @@ yarn-error.log*
 /playwright/affected-tests.txt
 
 **.dec**
-
-# build outputs
-/tools/preset-sync/index.js

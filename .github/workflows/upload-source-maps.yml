@@ -1,4 +1,3 @@
-# TODO @tom2drum setup source maps for Rollbar
 name: Upload source maps to Sentry
 on:
   workflow_call:
@@ -22,7 +21,7 @@ jobs:
             - name: Setup node
               uses: actions/setup-node@v4
               with:
-                node-version: 22.11.0
+                node-version: 20.11.0
                 cache: 'yarn'
 
             - name: Cache node_modules
@@ -35,7 +34,7 @@ jobs:
 
             - name: Install dependencies
               if: steps.cache-node-modules.outputs.cache-hit != 'true'
-              run: yarn --frozen-lockfile
+              run: yarn --frozen-lockfile --ignore-optional
 
             - name: Make production build with source maps
               run: yarn build

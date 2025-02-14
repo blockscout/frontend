@@ -1,0 +1,8 @@
+node_modules
+node_modules_linux
+
+playwright/envs.js
+deploy/tools/envs-validator/index.js
+deploy/tools/feature-reporter/build/**
+deploy/tools/feature-reporter/index.js
+public/**
