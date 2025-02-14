@@ -27,10 +27,29 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
       endOffset,
       ...rest
     } = props;
+
+    const startElementRef = React.useRef<HTMLDivElement>(null);
+    const endElementRef = React.useRef<HTMLDivElement>(null);
+
+    const [ inlinePaddings, setInlinePaddings ] = React.useState({
+      start: 0,
+      end: 0,
+    });
+
+    React.useEffect(() => {
+      const { width: endWidth } = endElementRef?.current?.getBoundingClientRect() ?? {};
+      const { width: startWidth } = startElementRef?.current?.getBoundingClientRect() ?? {};
+
+      setInlinePaddings({
+        start: startWidth ?? 0,
+        end: endWidth ?? 0,
+      });
+    }, []);
+
     return (
       <Group ref={ ref } w="100%" { ...rest }>
         { startElement && (
-          <InputElement pointerEvents="none" { ...startElementProps }>
+          <InputElement pointerEvents="none" ref={ startElementRef } { ...startElementProps }>
             { startElement }
           </InputElement>
         ) }
@@ -39,12 +58,12 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
             return child;
           }
           return React.cloneElement(child, {
-            ...(startElement && { ps: startOffset ?? `calc(var(--input-height) - 6px)` }),
-            ...(endElement && { pe: endOffset ?? `calc(var(--input-height) - 6px)` }),
+            ...(startElement && { ps: startOffset ?? `${ inlinePaddings.start }px` }),
+            ...(endElement && { pe: endOffset ?? `${ inlinePaddings.end }px` }),
           });
         }) }
         { endElement && (
-          <InputElement placement="end" { ...endElementProps }>
+          <InputElement placement="end" ref={ endElementRef } { ...endElementProps }>
             { endElement }
           </InputElement>
         ) }

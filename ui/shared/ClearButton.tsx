@@ -8,17 +8,19 @@ interface Props {
   onClick: (e: React.SyntheticEvent) => void;
   isDisabled?: boolean;
   className?: string;
+  isVisible?: boolean;
 }
 
-const ClearButton = ({ onClick, isDisabled, className }: Props) => {
+const ClearButton = ({ onClick, isDisabled, isVisible = true, className }: Props) => {
   return (
     <IconButton
-      disabled={ isDisabled }
+      disabled={ isDisabled || !isVisible }
       className={ className }
       aria-label="Clear input"
       title="Clear input"
       size="sm"
       onClick={ onClick }
+      opacity={ isVisible ? 1 : 0 }
     >
       <IconSvg
         name="status/error"

@@ -131,7 +131,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
 
   const inputEndElement = (
     <Flex alignItems="center">
-      { field.value !== undefined && field.value !== '' && <ClearButton onClick={ handleClear } isDisabled={ isDisabled } boxSize={ 6 }/> }
+      <ClearButton onClick={ handleClear } isDisabled={ isDisabled } boxSize={ 6 } isVisible={ field.value !== undefined && field.value !== '' }/>
       { data.type === 'address' && <ContractMethodAddressButton onClick={ handleAddressButtonClick } isDisabled={ isDisabled }/> }
       { argTypeMatchInt && !isNativeCoin && (hasTimestampButton ? (
         <Button

@@ -32,7 +32,6 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
     <>
       <InputGroup
         startElement={ <IconSvg name="search" boxSize={ 4 } color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }}/> }
-        startOffset="38px"
         mb={ 5 }
       >
         <Input placeholder="Search by token name" onChange={ onInputChange } size="sm" bgColor="dialog.bg"/>

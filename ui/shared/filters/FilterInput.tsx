@@ -37,7 +37,7 @@ const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, n
 
   const startElement = <IconSvg name="search" color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }} boxSize={ 4 }/>;
 
-  const endElement = filterQuery ? <ClearButton onClick={ handleFilterQueryClear }/> : null;
+  const endElement = <ClearButton onClick={ handleFilterQueryClear } isVisible={ filterQuery.length > 0 }/>;
 
   return (
     <Skeleton
@@ -49,10 +49,8 @@ const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, n
       <InputGroup
         startElement={ startElement }
         startElementProps={{ px: 2 }}
-        startOffset="32px"
         endElement={ endElement }
         endElementProps={{ px: 0, w: '32px' }}
-        endOffset="32px"
       >
         <Input
           ref={ inputRef }

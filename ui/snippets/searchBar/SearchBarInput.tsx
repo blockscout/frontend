@@ -109,27 +109,24 @@ const SearchBarInput = (
   );
 
   const endElement = (() => {
-    if (value) {
-      return <ClearButton onClick={ onClear }/>;
-    }
-
-    if (isMobile) {
-      return null;
-    }
-
     return (
-      <Center
-        boxSize="20px"
-        my="2px"
-        mr={{ base: 1, lg: isHomepage ? 2 : 1 }}
-        borderRadius="sm"
-        borderWidth="1px"
-        borderColor="gray.400"
-        color="gray.400"
-        display={{ base: 'none', lg: 'flex' }}
-      >
-        /
-      </Center>
+      <>
+        <ClearButton onClick={ onClear } isVisible={ value.length > 0 }/>
+        { !isMobile && (
+          <Center
+            boxSize="20px"
+            my="2px"
+            mr={{ base: 1, lg: isHomepage ? 2 : 1 }}
+            borderRadius="sm"
+            borderWidth="1px"
+            borderColor="gray.400"
+            color="gray.400"
+            display={{ base: 'none', lg: 'flex' }}
+          >
+            /
+          </Center>
+        ) }
+      </>
     );
   })();
 
@@ -157,7 +154,6 @@ const SearchBarInput = (
     >
       <InputGroup
         startElement={ startElement }
-        startOffset={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
         endElement={ endElement }
       >
         <Input

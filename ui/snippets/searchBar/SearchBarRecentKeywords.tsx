@@ -1,8 +1,9 @@
-import { Box, Flex, Link, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { clearRecentSearchKeywords, getRecentSearchKeywords, removeRecentSearchKeyword } from 'lib/recentSearchKeywords';
+import { Link } from 'toolkit/chakra/link';
 import TextAd from 'ui/shared/ad/TextAd';
 import ClearButton from 'ui/shared/ClearButton';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -84,7 +85,7 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
           ) :
             <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ kw }</Text>
           }
-          <ClearButton onClick={ removeKeyword(kw) } flexShrink={ 0 }/>
+          <ClearButton onClick={ removeKeyword(kw) } flexShrink={ 0 } boxSize={ 6 }/>
         </Flex>
       )) }
     </Box>
