@@ -15,7 +15,7 @@ import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
 import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { SettingsContextProvider } from 'lib/contexts/settings';
-import { growthBook } from 'lib/growthbook/init';
+import { initGrowthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
 import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
@@ -47,10 +47,10 @@ const ERROR_SCREEN_STYLES: ChakraProps = {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-
-  useLoadFeatures();
+  useLoadFeatures(pageProps.uuid);
   useNotifyOnNavigation();
 
+  const growthBook = initGrowthBook(pageProps.uuid);
   const queryClient = useQueryClientConfig();
 
   const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);

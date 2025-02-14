@@ -9,6 +9,7 @@ import config from 'configs/app';
 const rollupFeature = config.features.rollup;
 const adBannerFeature = config.features.adsBanner;
 import isNeedProxy from 'lib/api/isNeedProxy';
+import * as cookies from 'lib/cookies';
 import type * as metadata from 'lib/metadata';
 
 export interface Props<Pathname extends Route['pathname'] = never> {
@@ -19,9 +20,10 @@ export interface Props<Pathname extends Route['pathname'] = never> {
   // if apiData is undefined, Next.js will complain that it is not serializable
   // so we force it to be always present in the props but it can be null
   apiData: metadata.ApiData<Pathname> | null;
+  uuid: string;
 }
 
-export const base = async <Pathname extends Route['pathname'] = never>({ req, query }: GetServerSidePropsContext):
+export const base = async <Pathname extends Route['pathname'] = never>({ req, res, query }: GetServerSidePropsContext):
 Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   const adBannerProvider = (() => {
     if (adBannerFeature.isEnabled) {
@@ -36,6 +38,36 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
     return null;
   })();
 
+  let uuid = cookies.getFromCookieString(req.headers.cookie || '', cookies.NAMES.UUID);
+  if (!uuid) {
+    uuid = crypto.randomUUID();
+    res.setHeader('Set-Cookie', `${ cookies.NAMES.UUID }=${ uuid }`);
+  }
+
+  const isTrackingDisabled = process.env.DISABLE_TRACKING === 'true';
+
+  if (!isTrackingDisabled) {
+    // log pageview
+    const hostname = req.headers.host;
+    const timestamp = new Date().toISOString();
+    const chainId = process.env.NEXT_PUBLIC_NETWORK_ID;
+    const chainName = process.env.NEXT_PUBLIC_NETWORK_NAME;
+    const publicRPC = process.env.NEXT_PUBLIC_NETWORK_RPC_URL;
+
+    fetch('https://monitor.blockscout.com/count', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        hostname,
+        timestamp,
+        chainId,
+        chainName,
+        publicRPC,
+        uuid,
+      }),
+    });
+  }
+
   return {
     props: {
       query,
@@ -43,6 +75,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
       referrer: req.headers.referer || '',
       adBannerProvider: adBannerProvider,
       apiData: null,
+      uuid,
     },
   };
 };
