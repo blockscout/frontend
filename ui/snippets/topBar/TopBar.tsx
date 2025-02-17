@@ -12,7 +12,7 @@ import TopBarStats from './TopBarStats';
 const TopBar = () => {
   const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
 
-  return (
+  return null && (
     <Box bgColor={ bgColor }>
       <Flex
         py={ 2 }

@@ -52,7 +52,7 @@ const StatsWidget = ({
   period,
   href,
 }: Props) => {
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
+  const bgColor = useColorModeValue('#fff', '#111');
   const skeletonBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const hintColor = useColorModeValue('gray.600', 'gray.400');
 
@@ -62,6 +62,7 @@ const StatsWidget = ({
         className={ className }
         alignItems="center"
         bgColor={ isLoading ? skeletonBgColor : bgColor }
+        border="1px solid var(--chakra-colors-divider)"
         p={ 3 }
         borderRadius="base"
         justifyContent="space-between"

@@ -16,7 +16,7 @@ type Props = LinkProps & {
 };
 
 const LinkInternal = ({ isLoading, variant, scroll = true, ...props }: Props, ref: LegacyRef<HTMLAnchorElement>) => {
-  const styleProps = useLinkStyles({}, variant);
+  const styleProps = useLinkStyles({ color: '#f94' }, variant);
 
   if (isLoading) {
     return <Flex alignItems="center" { ...props as FlexProps } { ...styleProps }>{ props.children }</Flex>;

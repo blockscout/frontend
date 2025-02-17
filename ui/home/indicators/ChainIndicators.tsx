@@ -121,6 +121,7 @@ const ChainIndicators = () => {
       py={ 3 }
       borderRadius="base"
       bgColor={ bgColor }
+      border="1px solid var(--chakra-colors-divider)"
       columnGap={{ base: 3, lg: 4 }}
       rowGap={ 0 }
       flexBasis="50%"
