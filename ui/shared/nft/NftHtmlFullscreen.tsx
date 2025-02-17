@@ -5,13 +5,13 @@ import NftMediaFullscreenModal from './NftMediaFullscreenModal';
 
 interface Props {
   src: string;
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
 }
 
-const NftHtmlFullscreen = ({ src, isOpen, onClose }: Props) => {
+const NftHtmlFullscreen = ({ src, open, onOpenChange }: Props) => {
   return (
-    <NftMediaFullscreenModal isOpen={ isOpen } onClose={ onClose }>
+    <NftMediaFullscreenModal open={ open } onOpenChange={ onOpenChange }>
       <chakra.iframe
         w="90vw"
         h="90vh"

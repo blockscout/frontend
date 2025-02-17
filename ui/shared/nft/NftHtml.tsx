@@ -14,6 +14,7 @@ const NftHtml = ({ src, onLoad, onError, onClick }: Props) => {
   return (
     <LinkOverlay
       onClick={ onClick }
+      h="100%"
       { ...mediaStyleProps }
     >
       <chakra.iframe

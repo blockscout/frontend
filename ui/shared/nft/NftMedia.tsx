@@ -1,10 +1,11 @@
-import { AspectRatio, chakra, useDisclosure } from '@chakra-ui/react';
+import { AspectRatio, Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import type { TokenInstance } from 'types/api/token';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 import NftFallback from './NftFallback';
 import NftHtml from './NftHtml';
@@ -48,7 +49,7 @@ const NftMedia = ({ data, className, isLoading, withFullscreen, autoplayVideo }:
     setIsLoadingError(true);
   }, []);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open, onOpen, onOpenChange } = useDisclosure();
 
   const content = (() => {
     if (isLoading) {
@@ -94,8 +95,8 @@ const NftMedia = ({ data, className, isLoading, withFullscreen, autoplayVideo }:
     }
 
     const props = {
-      isOpen,
-      onClose,
+      open,
+      onOpenChange,
     };
 
     switch (mediaInfo.mediaType) {
@@ -119,18 +120,20 @@ const NftMedia = ({ data, className, isLoading, withFullscreen, autoplayVideo }:
       ratio={ 1 / 1 }
       overflow="hidden"
       borderRadius="md"
-      objectFit="contain"
       isolation="isolate"
-      sx={{
-        '&>img, &>video': {
-          objectFit: 'contain',
-        },
-      }}
     >
       <>
-        { content }
+        <Box
+          css={{
+            '& > img, & > video': {
+              objectFit: 'contain',
+            },
+          }}
+        >
+          { content }
+        </Box>
         { modal }
-        { isMediaLoading && <Skeleton position="absolute" left={ 0 } top={ 0 } w="100%" h="100%" zIndex="1"/> }
+        { isMediaLoading && <Skeleton loading position="absolute" left={ 0 } top={ 0 } w="100%" h="100%" zIndex="1"/> }
       </>
     </AspectRatio>
   );

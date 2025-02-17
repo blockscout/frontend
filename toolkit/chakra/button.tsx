@@ -82,11 +82,12 @@ export interface ButtonGroupRadioProps extends Omit<ChakraButtonGroupProps, 'chi
   onChange?: (value: string) => void;
   defaultValue?: string;
   loading?: boolean;
+  equalWidth?: boolean;
 }
 
 export const ButtonGroupRadio = React.forwardRef<HTMLDivElement, ButtonGroupRadioProps>(
   function ButtonGroupRadio(props, ref) {
-    const { children, onChange, variant = 'segmented', defaultValue, loading = false, ...rest } = props;
+    const { children, onChange, variant = 'segmented', defaultValue, loading = false, equalWidth = false, ...rest } = props;
 
     const firstChildValue = React.useMemo(() => {
       const firstChild = Array.isArray(children) ? children[0] : undefined;
@@ -109,11 +110,17 @@ export const ButtonGroupRadio = React.forwardRef<HTMLDivElement, ButtonGroupRadi
       });
     });
 
+    const childrenLength = React.Children.count(children);
+
     return (
       <Skeleton loading={ loading }>
         <ChakraButtonGroup
           ref={ ref }
           gap={ 0 }
+          { ...(equalWidth ? {
+            display: 'grid',
+            gridTemplateColumns: `repeat(${ childrenLength }, 1fr)`,
+          } : {}) }
           { ...rest }
         >
           { clonedChildren }

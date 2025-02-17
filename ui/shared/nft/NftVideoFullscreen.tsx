@@ -6,13 +6,13 @@ import { videoPlayProps } from './utils';
 
 interface Props {
   src: string;
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
 }
 
-const NftVideoFullscreen = ({ src, isOpen, onClose }: Props) => {
+const NftVideoFullscreen = ({ src, open, onOpenChange }: Props) => {
   return (
-    <NftMediaFullscreenModal isOpen={ isOpen } onClose={ onClose }>
+    <NftMediaFullscreenModal open={ open } onOpenChange={ onOpenChange }>
       <chakra.video
         { ...videoPlayProps }
         src={ src }

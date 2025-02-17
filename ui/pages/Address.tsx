@@ -194,13 +194,13 @@ const AddressPageContent = () => {
         count: addressTabsCountersQuery.data?.token_transfers_count,
         component: <AddressTokenTransfers scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       },
-      // {
-      //   id: 'tokens',
-      //   title: 'Tokens',
-      //   count: addressTabsCountersQuery.data?.token_balances_count,
-      //   component: <AddressTokens shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      //   subTabs: TOKEN_TABS,
-      // },
+      {
+        id: 'tokens',
+        title: 'Tokens',
+        count: addressTabsCountersQuery.data?.token_balances_count,
+        component: <AddressTokens shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        subTabs: TOKEN_TABS,
+      },
       // {
       //   id: 'internal_txns',
       //   title: 'Internal txns',
