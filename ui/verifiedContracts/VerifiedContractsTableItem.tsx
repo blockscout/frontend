@@ -1,4 +1,4 @@
-import { Tr, Td, Flex, chakra, Tooltip } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,7 +7,9 @@ import type { VerifiedContract } from 'types/api/contracts';
 import config from 'configs/app';
 import formatLanguageName from 'lib/contracts/formatLanguageName';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -33,8 +35,8 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
   })();
 
   return (
-    <Tr>
-      <Td>
+    <TableRow>
+      <TableCell>
         <Flex alignItems="center" mt={ 1 }>
           <AddressEntity
             address={ data.address }
@@ -52,25 +54,26 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
           truncation="constant"
           my={ 1 }
           ml={ 7 }
-          color="text_secondary"
+          color="text.secondary"
+          w="fit-content"
         />
-      </Td>
-      <Td isNumeric>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" my={ 1 }>
+      </TableCell>
+      <TableCell isNumeric>
+        <Skeleton loading={ isLoading } display="inline-block" my={ 1 }>
           { balance }
         </Skeleton>
-      </Td>
-      <Td isNumeric>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" my={ 1 }>
+      </TableCell>
+      <TableCell isNumeric>
+        <Skeleton loading={ isLoading } display="inline-block" my={ 1 }>
           { data.transaction_count ? data.transaction_count.toLocaleString() : '0' }
         </Skeleton>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         <Flex flexWrap="wrap" columnGap={ 2 }>
-          <Skeleton isLoaded={ !isLoading } my={ 1 }>{ formatLanguageName(data.language) }</Skeleton>
+          <Skeleton loading={ isLoading } my={ 1 }>{ formatLanguageName(data.language) }</Skeleton>
           { data.compiler_version && (
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all" my={ 1 } cursor="pointer">
-              <Tooltip label={ data.compiler_version }>
+            <Skeleton loading={ isLoading } color="text.secondary" wordBreak="break-all" my={ 1 } cursor="pointer">
+              <Tooltip content={ data.compiler_version }>
                 <span>{ data.compiler_version.split('+')[0] }</span>
               </Tooltip>
             </Skeleton>
@@ -78,45 +81,45 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
         </Flex>
         { data.zk_compiler_version && (
           <Flex flexWrap="wrap" columnGap={ 2 } my={ 1 }>
-            <Skeleton isLoaded={ !isLoading } >ZK compiler</Skeleton>
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all">
+            <Skeleton loading={ isLoading } >ZK compiler</Skeleton>
+            <Skeleton loading={ isLoading } color="text.secondary" wordBreak="break-all">
               <span>{ data.zk_compiler_version }</span>
             </Skeleton>
           </Flex>
         ) }
-      </Td>
-      <Td>
-        <Tooltip label={ isLoading ? undefined : 'Optimization' }>
+      </TableCell>
+      <TableCell>
+        <Tooltip content="Optimization" disabled={ isLoading }>
           <chakra.span display="inline-block">
             { data.optimization_enabled ?
               <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
               <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
           </chakra.span>
         </Tooltip>
-        <Tooltip label={ isLoading ? undefined : 'Constructor args' }>
+        <Tooltip content="Constructor args" disabled={ isLoading }>
           <chakra.span display="inline-block" ml={ 2 }>
             { data.has_constructor_args ?
               <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
               <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
           </chakra.span>
         </Tooltip>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         <Flex alignItems="center" columnGap={ 2 } my={ 1 }>
           <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
           <TimeAgoWithTooltip
             timestamp={ data.verified_at }
             isLoading={ isLoading }
-            color="text_secondary"
+            color="text.secondary"
           />
         </Flex>
-      </Td>
-      <Td>
-        <Skeleton isLoaded={ !isLoading } my={ 1 } display="inline-block">
+      </TableCell>
+      <TableCell>
+        <Skeleton loading={ isLoading } my={ 1 } display="inline-block">
           { license }
         </Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

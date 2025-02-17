@@ -8,7 +8,7 @@ import config from 'configs/app';
 import formatLanguageName from 'lib/contracts/formatLanguageName';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import { currencyUnits } from 'lib/units';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -53,63 +53,63 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
           noIcon
           truncation="constant"
           ml="auto"
-          color="text_secondary"
+          color="text.secondary"
           flexShrink={ 0 }
         />
       </Flex>
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { currencyUnits.ether }</Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">
+        <Skeleton loading={ isLoading } fontWeight={ 500 }>Balance { currencyUnits.ether }</Skeleton>
+        <Skeleton loading={ isLoading } color="text.secondary">
           <span>{ balance }</span>
         </Skeleton>
       </Flex>
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Txs count</Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">
+        <Skeleton loading={ isLoading } fontWeight={ 500 }>Txs count</Skeleton>
+        <Skeleton loading={ isLoading } color="text.secondary">
           <span>{ data.transaction_count ? data.transaction_count.toLocaleString() : '0' }</span>
         </Skeleton>
       </Flex>
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink="0">Language</Skeleton>
-        <Skeleton isLoaded={ !isLoading } display="flex" flexWrap="wrap">
+        <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink="0">Language</Skeleton>
+        <Skeleton loading={ isLoading } display="flex" flexWrap="wrap">
           <Box>{ formatLanguageName(data.language) }</Box>
-          <Box color="text_secondary" wordBreak="break-all" whiteSpace="pre-wrap"> ({ data.compiler_version })</Box>
+          <Box color="text.secondary" wordBreak="break-all" whiteSpace="pre-wrap"> ({ data.compiler_version })</Box>
         </Skeleton>
       </Flex>
       { data.zk_compiler_version && (
         <Flex columnGap={ 3 }>
-          <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink="0">ZK compiler</Skeleton>
-          <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all" whiteSpace="pre-wrap">
+          <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink="0">ZK compiler</Skeleton>
+          <Skeleton loading={ isLoading } color="text.secondary" wordBreak="break-all" whiteSpace="pre-wrap">
             { data.zk_compiler_version }
           </Skeleton>
         </Flex>
       ) }
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Optimization</Skeleton>
+        <Skeleton loading={ isLoading } fontWeight={ 500 }>Optimization</Skeleton>
         { data.optimization_enabled ?
           <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
           <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
       </Flex>
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Constructor args</Skeleton>
+        <Skeleton loading={ isLoading } fontWeight={ 500 }>Constructor args</Skeleton>
         { data.has_constructor_args ?
           <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
           <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
       </Flex>
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Verified</Skeleton>
+        <Skeleton loading={ isLoading } fontWeight={ 500 }>Verified</Skeleton>
         <Flex alignItems="center" columnGap={ 2 }>
           <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
           <TimeAgoWithTooltip
             timestamp={ data.verified_at }
             isLoading={ isLoading }
-            color="text_secondary"
+            color="text.secondary"
           />
         </Flex>
       </Flex>
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>License</Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">
+        <Skeleton loading={ isLoading } fontWeight={ 500 }>License</Skeleton>
+        <Skeleton loading={ isLoading } color="text.secondary">
           <span>{ license }</span>
         </Skeleton>
       </Flex>

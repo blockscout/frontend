@@ -4,12 +4,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-// const VerifiedContracts = dynamic(() => import('ui/pages/VerifiedContracts'), { ssr: false });
+const VerifiedContracts = dynamic(() => import('ui/pages/VerifiedContracts'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/verified-contracts">
-      { /* <VerifiedContracts/> */ }
+      <VerifiedContracts/>
     </PageNextJs>
   );
 };

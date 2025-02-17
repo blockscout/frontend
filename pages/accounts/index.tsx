@@ -4,12 +4,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-// const Accounts = dynamic(() => import('ui/pages/Accounts'), { ssr: false });
+const Accounts = dynamic(() => import('ui/pages/Accounts'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/accounts">
-      { /* <Accounts/> */ }
+      <Accounts/>
     </PageNextJs>
   );
 };
