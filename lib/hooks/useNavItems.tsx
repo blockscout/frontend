@@ -47,7 +47,7 @@ export default function useNavItems(): ReturnType {
     const internalTxs: NavItem | null = {
       text: 'Internal transactions',
       nextRoute: { pathname: '/internal-txs' as const },
-      icon: 'transactions',
+      icon: 'internal_txns',
       isActive: pathname === '/internal-txs',
     };
     const userOps: NavItem | null = config.features.userOps.isEnabled ? {
