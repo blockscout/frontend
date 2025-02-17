@@ -18,6 +18,7 @@ const PAGE_PROPS = {
   query: {},
   adBannerProvider: null,
   apiData: null,
+  uuid: '123',
 };
 
 const TestApp = ({ children }: { children: React.ReactNode }) => {
