@@ -26,8 +26,11 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
     >
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" mr={ 4 } borderRadius="base">
         <Button
-          variant="outline"
           size="sm"
+          px="24px"
+          py="12px"
+          h={ 9 }
+          fontWeight={ 400 }
           onClick={ resetPage }
           isDisabled={ page === 1 || isLoading }
         >
@@ -36,23 +39,26 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" mr={ 3 } borderRadius="base">
         <IconButton
-          variant="outline"
           onClick={ onPrevPageClick }
           size="sm"
+          px="24px"
+          py="12px"
+          fontWeight={ 400 }
           aria-label="Prev page"
           w="36px"
+          h={ 9 }
           icon={ <IconSvg name="arrows/east-mini" w={ 5 } h={ 5 }/> }
           isDisabled={ !canGoBackwards || isLoading }
         />
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" borderRadius="base">
         <Button
-          variant="outline"
           size="sm"
-          data-selected={ true }
-          borderWidth="1px"
+          px="24px"
+          py="12px"
           fontWeight={ 400 }
-          h={ 8 }
+          data-selected={ true }
+          h={ 9 }
           minW="36px"
           cursor="unset"
         >
@@ -61,8 +67,11 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" ml={ 3 } borderRadius="base">
         <IconButton
-          variant="outline"
           onClick={ onNextPageClick }
+          px="24px"
+          py="12px"
+          h={ 9 }
+          fontWeight={ 400 }
           size="sm"
           aria-label="Next page"
           w="36px"

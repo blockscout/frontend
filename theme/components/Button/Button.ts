@@ -8,20 +8,24 @@ const variantSolid = defineStyle((props) => {
 
   const bg = mode('blackAlpha.800', 'grey.10')(props);
   const color = 'white';
-  const hoverBg = mode('blackAlpha.800', 'grey.10')(props);
+  const hoverBg = mode('blackAlpha.800', 'white')(props);
+  const hoverColor = mode('blackAlpha.800', 'black')(props);
   const activeBg = hoverBg;
 
   return {
     bg,
     color,
     _hover: {
+      color: hoverColor,
       bg: hoverBg,
       _disabled: {
-        bg,
+        bg: "black",
+        color: "grey.50"
       },
     },
     _disabled: {
-      opacity: 0.2,
+      bg: "black",
+      color: "grey.50"
     },
     // According to design there is no "active" or "pressed" state
     // It is simply should be the same as the "hover" state
@@ -38,10 +42,10 @@ const variantOutline = defineStyle((props) => {
 
   const bg = 'transparent';
 
-  const color = isGrayTheme ? mode('blackAlpha.800', 'whiteAlpha.800')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
-  const borderColor = isGrayTheme ? mode('gray.200', 'grey.10')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
+  const color = isGrayTheme ? mode('blackAlpha.800', 'white')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
+  const borderColor = isGrayTheme ? mode('gray.200', 'grey.30')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
 
-  const selectedBg = isGrayTheme ? mode('blue.50', 'grey.10')(props) : mode(`${ c }.50`, 'gray.600')(props);
+  const selectedBg = isGrayTheme ? mode('blue.50', 'grey.30')(props) : mode(`${ c }.50`, 'gray.600')(props);
   const selectedColor = mode('blue.600', 'gray.50')(props);
 
   return {
@@ -52,9 +56,9 @@ const variantOutline = defineStyle((props) => {
     borderColor: isPurple ? 'cyan' : borderColor,
     bg,
     _hover: {
-      color: 'link_hovered',
-      borderColor: 'link_hovered',
-      bg,
+      color,
+      borderColor: color,
+      bg: 'grey.30',
       span: {
         color: 'link_hovered',
       },
@@ -69,8 +73,8 @@ const variantOutline = defineStyle((props) => {
     // According to design there is no "active" or "pressed" state
     // It is simply should be the same as the "hover" state
     _active: {
-      color: 'link_hovered',
-      borderColor: 'link_hovered',
+      color,
+      borderColor: color,
       bg,
       span: {
         color: 'link_hovered',
@@ -98,16 +102,20 @@ const variantRadioGroup = defineStyle((props) => {
   const outline = runIfFn(variantOutline, props);
   const bgColor = mode('blue.50', 'gray.800')(props);
   const selectedTextColor = mode('blue.700', 'gray.50')(props);
+  const hoverTextColor = mode('blue.700', 'black')(props);
+  const hoverBgColor = mode('blue.700', 'white')(props);
+
 
   return {
     ...outline,
-    fontWeight: 500,
+    fontWeight: 400,
     cursor: 'pointer',
     bgColor: 'none',
     borderColor: bgColor,
     _hover: {
+      bg: hoverBgColor,
       borderColor: bgColor,
-      color: 'link_hovered',
+      color: hoverTextColor,
     },
     _active: {
       bgColor: 'none',
@@ -288,10 +296,11 @@ const sizes = {
     px: 4,
   }),
   sm: defineStyle({
-    h: 8,
+    h: 'unset',
     minW: 'unset',
     fontSize: 'sm',
-    px: 3,
+    py: '12px',
+    px: '24px'
   }),
   xs: defineStyle({
     h: 6,

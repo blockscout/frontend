@@ -5,7 +5,7 @@ import React from 'react';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
-const FilterIcon = <IconSvg name="filter" boxSize={ 5 } mr={{ base: 0, lg: 2 }}/>;
+const FilterIcon = <IconSvg name="filter" boxSize={ 5 } ml={{ base: 0, lg: 2 }}/>;
 
 interface Props {
   isActive?: boolean;
@@ -39,25 +39,25 @@ const FilterButton = ({ isActive, isLoading, appliedFiltersNum, onClick, as }: P
       ref={ ref }
       rightIcon={ appliedFiltersNum ? num : undefined }
       size="sm"
-      fontWeight="500"
       variant="outline"
       colorScheme="gray"
       onClick={ onClick }
       isActive={ isActive }
       data-selected={ Boolean(appliedFiltersNum) }
-      px={ 1.5 }
-      flexShrink={ 0 }
       as={ as }
+      px="12px"
+      py="8px"
+      fontWeight={400}
       pointerEvents="all"
       _hover={ isActive ? {
-        color: 'link_hovered',
+        color: 'white',
         '.AppliedFiltersNum': {
           bg: 'link_hovered',
         },
       } : undefined }
     >
-      { FilterIcon }
       <Box display={{ base: 'none', lg: 'block' }}>Filter</Box>
+      { FilterIcon }
     </Button>
   );
 };

@@ -6,16 +6,14 @@ import {
   PopoverContent,
   PopoverBody,
   VStack,
+  Button,
 } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavGroupItem } from 'types/client/navigation';
 
 import Popover from 'ui/shared/chakra/Popover';
-import IconSvg from 'ui/shared/IconSvg';
 
-import LightningLabel from '../LightningLabel';
-import NavLinkIcon from '../NavLinkIcon';
 import useNavLinkStyleProps from '../useNavLinkStyleProps';
 import { checkRouteHighlight } from '../utils';
 import NavLink from './NavLink';
@@ -23,9 +21,11 @@ import NavLink from './NavLink';
 type Props = {
   item: NavGroupItem;
   isCollapsed?: boolean;
+  onMouseOver?: () => void
+  hideSublinks?: boolean
 };
 
-const NavLinkGroup = ({ item, isCollapsed }: Props) => {
+const NavLinkGroup = ({ item, isCollapsed, onMouseOver, hideSublinks }: Props) => {
   const isExpanded = isCollapsed === false;
 
   const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: item.isActive });
@@ -33,11 +33,10 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
   const isHighlighted = checkRouteHighlight(item.subItems);
 
   return (
-    <Box as="li" listStyleType="none" w="100%">
+    <Box as="li" listStyleType="none" w="100%" onMouseOver={onMouseOver}>
       <Popover
         trigger="hover"
         placement="bottom"
-        // should not be lazy to help google indexing pages
         isLazy={ false }
         gutter={ 8 }
       >
@@ -45,38 +44,23 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
           <Box
             { ...styleProps.itemProps }
             mr={ 3 }
-            px={ 2 }
-            py={ 1 }
             aria-label={ `${ item.text } link group` }
             position="relative"
           >
             <HStack spacing={ 0 }>
-              <NavLinkIcon item={ item }/>
-              <Text
-                { ...styleProps.textProps }
-                ml={ 1 }
+              <Button
+                size="sm"
+                fontWeight="400"
+                fontSize="14px"
+                bg={ isHighlighted ? styleProps.itemProps.bgColor : "transparent"}
               >
                 { item.text }
-              </Text>
-              { isHighlighted && (
-                <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
-              ) }
-              <IconSvg
-                name="arrows/east-mini"
-                ml={ 1 }
-                right="7px"
-                transform="rotate(-90deg)"
-                boxSize={ 4 }
-                opacity={{ lg: isExpanded ? '1' : '0', xl: isCollapsed ? '0' : '1' }}
-                transitionProperty="opacity"
-                transitionDuration="normal"
-                transitionTimingFunction="ease"
-              />
+              </Button>
             </HStack>
           </Box>
         </PopoverTrigger>
 
-        <PopoverContent width="252px" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
+        {!hideSublinks && <PopoverContent width="252px" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
           <PopoverBody p={ 4 }>
             <Text variant="secondary" fontSize="sm" mb={ 1 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>
               { item.text }
@@ -101,7 +85,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
               ) }
             </VStack>
           </PopoverBody>
-        </PopoverContent>
+        </PopoverContent>}
       </Popover>
     </Box>
   );

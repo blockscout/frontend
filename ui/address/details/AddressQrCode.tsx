@@ -11,7 +11,7 @@ import {
   Box,
   useDisclosure,
   Tooltip,
-  IconButton,
+  Text,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import QRCode from 'qrcode';
@@ -24,7 +24,6 @@ import * as mixpanel from 'lib/mixpanel/index';
 import { useRollbar } from 'lib/rollbar';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import IconSvg from 'ui/shared/IconSvg';
 
 const SVG_OPTIONS = {
   margin: 0,
@@ -70,17 +69,14 @@ const AddressQrCode = ({ address, className, isLoading }: Props) => {
   return (
     <>
       <Tooltip label="Click to view QR code">
-        <IconButton
+        <Text
           className={ className }
-          aria-label="Show QR code"
-          variant="outline"
-          size="sm"
-          pl="6px"
-          pr="6px"
           onClick={ onOpen }
-          icon={ <IconSvg name="qr_code" boxSize={ 5 }/> }
-          flexShrink={ 0 }
-        />
+          fontSize="14px"
+          color="grey.50"
+        >
+          Click to See QR Code
+        </Text>
       </Tooltip>
 
       { error && (

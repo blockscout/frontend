@@ -11,6 +11,7 @@ import Button from './Button/Button';
 const variantSoftRounded = definePartsStyle((props) => {
   return {
     tab: {
+      fontWeight: 400,
       borderRadius: 'base',
       color: mode('purple.300', 'white')(props),
       _selected: {
@@ -22,7 +23,8 @@ const variantSoftRounded = definePartsStyle((props) => {
         },
       },
       _hover: {
-        color: 'link_hovered',
+        color: mode('white', 'black')(props),
+        bg: mode('purple.200', 'white')(props),
       },
       _focusVisible: {
         boxShadow: { base: 'none', lg: 'outline' },
@@ -70,7 +72,7 @@ const sizes = {
     tab: Button.sizes?.sm,
   }),
   md: definePartsStyle({
-    tab: Button.sizes?.md,
+    tab: Button.sizes?.sm,
   }),
 };
 
