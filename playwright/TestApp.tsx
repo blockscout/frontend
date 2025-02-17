@@ -14,7 +14,7 @@ import { MarketplaceContext } from 'lib/contexts/marketplace';
 import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { SettingsContextProvider } from 'lib/contexts/settings';
 import { SocketProvider } from 'lib/socket/context';
-import currentChain from 'lib/web3/currentChain';
+import { currentChain } from 'lib/web3/chains';
 import theme from 'theme/theme';
 
 import { port as socketPort } from './utils/socket';
@@ -39,6 +39,7 @@ const defaultAppContext = {
     query: {},
     adBannerProvider: 'slise' as const,
     apiData: null,
+    uuid: '123',
   },
 };
 

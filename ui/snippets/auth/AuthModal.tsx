@@ -7,6 +7,7 @@ import type { Screen, ScreenSuccess } from './types';
 
 import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
+import { useRewardsContext } from 'lib/contexts/rewards';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
 import IconSvg from 'ui/shared/IconSvg';
@@ -22,7 +23,7 @@ const feature = config.features.account;
 
 interface Props {
   initialScreen: Screen;
-  onClose: (isSuccess?: boolean) => void;
+  onClose: (isSuccess?: boolean, rewardsApiToken?: string) => void;
   mixpanelConfig?: {
     wallet_connect?: {
       source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
@@ -37,6 +38,9 @@ interface Props {
 const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Props) => {
   const [ steps, setSteps ] = React.useState<Array<Screen>>([ initialScreen ]);
   const [ isSuccess, setIsSuccess ] = React.useState(false);
+  const [ rewardsApiToken, setRewardsApiToken ] = React.useState<string | undefined>(undefined);
+
+  const { saveApiToken } = useRewardsContext();
 
   const router = useRouter();
   const csrfQuery = useGetCsrfToken();
@@ -87,12 +91,18 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
 
     queryClient.setQueryData(getResourceKey('user_info'), () => screen.profile);
     await csrfQuery.refetch();
+
+    if ('rewardsToken' in screen && screen.rewardsToken) {
+      setRewardsApiToken(screen.rewardsToken);
+      saveApiToken(screen.rewardsToken);
+    }
+
     onNextStep(screen);
-  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, csrfQuery, queryClient ]);
+  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, csrfQuery, queryClient, saveApiToken ]);
 
   const onModalClose = React.useCallback(() => {
-    onClose(isSuccess);
-  }, [ isSuccess, onClose ]);
+    onClose(isSuccess, rewardsApiToken);
+  }, [ isSuccess, rewardsApiToken, onClose ]);
 
   const header = (() => {
     const currentStep = steps[steps.length - 1];
@@ -122,6 +132,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
             onSuccess={ onAuthSuccess }
             onError={ onReset }
             isAuth={ currentStep.isAuth }
+            loginToRewards={ currentStep.loginToRewards }
             source={ mixpanelConfig?.wallet_connect?.source }
           />
         );
@@ -153,6 +164,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
             onClose={ onModalClose }
             isAuth={ currentStep.isAuth }
             profile={ currentStep.profile }
+            rewardsToken={ currentStep.rewardsToken }
           />
         );
     }
@@ -163,7 +175,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   }
 
   return (
-    <Modal isOpen onClose={ onModalClose } size={{ base: 'full', lg: 'sm' }}>
+    <Modal isOpen onClose={ onModalClose } size={{ base: 'full', lg: 'sm' }} trapFocus={ false } blockScrollOnMount={ false }>
       <ModalOverlay/>
       <ModalContent p={ 6 } maxW={{ lg: '400px' }}>
         <ModalHeader fontWeight="500" textStyle="h3" mb={ 2 } display="flex" alignItems="center" columnGap={ 2 }>

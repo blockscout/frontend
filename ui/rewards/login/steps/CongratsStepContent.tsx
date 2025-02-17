@@ -22,7 +22,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
   const referralReward = Number(registrationWithReferralReward) - Number(registrationReward);
 
   const refLink = referralsQuery.data?.link || 'N/A';
-  const shareText = `I joined the @blockscoutcom Merits Program and got my first ${ registrationReward || 'N/A' } #Merits! Use this link for a sign-up bonus and start earning rewards with @blockscoutcom block explorer.\n\n${ refLink }`; // eslint-disable-line max-len
+  const shareText = `I joined the @blockscout Merits Program and got my first ${ registrationReward || 'N/A' } #Merits! Use this link for a sign-up bonus and start earning rewards with @blockscout block explorer.\n\n${ refLink }`; // eslint-disable-line max-len
 
   const textColor = useColorModeValue('blue.700', 'blue.100');
   const dividerColor = useColorModeValue('whiteAlpha.800', 'whiteAlpha.100');
@@ -122,7 +122,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
           Explore your current Merits balance, find activities to boost your Merits,
           and view your capybara NFT badge collection on the dashboard
         </Text>
-        <Button mt={ 3 } as="a" href={ route({ pathname: '/account/rewards' }) }>
+        <Button mt={ 3 } as="a" href={ route({ pathname: '/account/merits' }) }>
           Open
         </Button>
       </Flex>

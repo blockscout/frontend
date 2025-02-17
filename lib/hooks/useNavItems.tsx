@@ -74,7 +74,7 @@ export default function useNavItems(): ReturnType {
       text: 'Top validators',
       nextRoute: { pathname: '/validators' as const },
       icon: 'validator',
-      isActive: pathname === '/validators',
+      isActive: pathname === '/validators' || pathname === '/validators/[id]',
     } : null;
     const rollupDeposits = {
       text: `Deposits (L1${ rightLineArrow }L2)`,
@@ -255,6 +255,11 @@ export default function useNavItems(): ReturnType {
         text: 'Submit public tag',
         nextRoute: { pathname: '/public-tags/submit' as const },
         isActive: pathname.startsWith('/public-tags/submit'),
+      },
+      rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && {
+        text: 'Txn withdrawals',
+        nextRoute: { pathname: '/txn-withdrawals' as const },
+        isActive: pathname.startsWith('/txn-withdrawals'),
       },
       ...config.UI.navigation.otherLinks,
     ].filter(Boolean);

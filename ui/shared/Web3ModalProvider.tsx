@@ -1,10 +1,11 @@
 import { useColorMode } from '@chakra-ui/react';
+import type { AppKitNetwork } from '@reown/appkit/networks';
 import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';
 import { WagmiProvider } from 'wagmi';
 
 import config from 'configs/app';
-import currentChain from 'lib/web3/currentChain';
+import { currentChain, parentChain } from 'lib/web3/chains';
 import wagmiConfig from 'lib/web3/wagmiConfig';
 import colors from 'theme/foundations/colors';
 import { BODY_TYPEFACE } from 'theme/foundations/typography';
@@ -20,7 +21,7 @@ const init = () => {
 
     createAppKit({
       adapters: [ wagmiConfig.adapter ],
-      networks: [ currentChain ],
+      networks: [ currentChain, parentChain ].filter(Boolean) as [AppKitNetwork, ...Array<AppKitNetwork>],
       metadata: {
         name: `${ config.chain.name } explorer`,
         description: `${ config.chain.name } explorer`,

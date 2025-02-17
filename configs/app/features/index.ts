@@ -12,6 +12,7 @@ export { default as csvExport } from './csvExport';
 export { default as dataAvailability } from './dataAvailability';
 export { default as deFiDropdown } from './deFiDropdown';
 export { default as easterEggBadge } from './easterEggBadge';
+export { default as externalTxs } from './externalTxs';
 export { default as faultProofSystem } from './faultProofSystem';
 export { default as gasTracker } from './gasTracker';
 export { default as getGasButton } from './getGasButton';

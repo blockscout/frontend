@@ -43,6 +43,7 @@ import type { NftMarketplaceItem } from '../../../types/views/nft';
 import type { TxAdditionalFieldsId, TxFieldsId } from '../../../types/views/tx';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from '../../../types/views/tx';
 import type { VerifiedContractsFilter } from '../../../types/api/contracts';
+import type { TxExternalTxsConfig } from '../../../types/client/externalTxsConfig';
 
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../lib/regexp';
@@ -69,6 +70,14 @@ const urlTest: yup.TestConfig = {
   message: '${path} is not a valid URL',
   exclusive: true,
 };
+
+const getYupValidationErrorMessage = (error: unknown) => 
+  typeof error === 'object' && 
+  error !== null && 
+  'errors' in error && 
+  Array.isArray(error.errors) ? 
+    error.errors.join(', ') : 
+    '';
 
 const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
   .object({
@@ -270,6 +279,44 @@ const beaconChainSchema = yup
       }),
   });
 
+const parentChainCurrencySchema = yup
+  .object()
+  .shape({
+    name: yup.string().required(),
+    symbol: yup.string().required(),
+    decimals: yup.number().required(),
+  });
+
+const parentChainSchema = yup
+  .object()
+  .transform(replaceQuotes)
+  .json()
+  .shape({
+    id: yup.number(),
+    name: yup.string(),
+    baseUrl: yup.string().test(urlTest).required(),
+    rpcUrls: yup.array().of(yup.string().test(urlTest)),
+    currency: yup
+      .mixed()
+      .test(
+        'shape',
+        (ctx) => {
+          try {
+            parentChainCurrencySchema.validateSync(ctx.originalValue);
+            throw new Error('Unknown validation error');
+          } catch (error: unknown) {
+            const message = getYupValidationErrorMessage(error);
+            return 'in \"currency\" property ' + (message ? `${ message }` : '');
+          }
+        },
+        (data) => {
+          const isUndefined = data === undefined;
+          return isUndefined || parentChainCurrencySchema.isValidSync(data);
+        },
+      ),
+    isTestnet: yup.boolean(),
+  });
+
 const rollupSchema = yup
   .object()
   .shape({
@@ -320,6 +367,44 @@ const rollupSchema = yup
           'NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined',
           value => value === undefined,
         ),
+      }),
+    NEXT_PUBLIC_ROLLUP_PARENT_CHAIN: yup
+      .mixed()
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: (value: string) => value,
+        then: (schema) => {
+          return schema.test(
+            'shape',
+            (ctx) => {
+              try {
+                parentChainSchema.validateSync(ctx.originalValue);
+                throw new Error('Unknown validation error');
+              } catch (error: unknown) {
+                const message = getYupValidationErrorMessage(error);
+                return 'Invalid schema were provided for NEXT_PUBLIC_ROLLUP_TYPE' + (message ? `: ${ message }` : '');
+              }
+            },
+            (data) => {
+              const isUndefined = data === undefined;
+              return isUndefined || parentChainSchema.isValidSync(data);
+            }
+          )
+        },
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE: yup
+      .string()
+      .min(60)
+      .max(60)
+      .matches(regexp.HEX_REGEXP_WITH_0X)
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: (value: string) => value === 'arbitrum',
+        then: (schema) => schema,
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' '),
       }),
   });
 
@@ -563,6 +648,12 @@ const multichainProviderConfigSchema: yup.ObjectSchema<MultichainProviderConfig>
   dapp_id: yup.string(),
 });
 
+const externalTxsConfigSchema: yup.ObjectSchema<TxExternalTxsConfig> = yup.object({
+  chain_name: yup.string().required(),
+  chain_logo_url: yup.string().required(),
+  explorer_url_template: yup.string().required(),
+});
+
 const schema = yup
   .object()
   .noUnknown(true, (params) => {
@@ -635,12 +726,34 @@ const schema = yup
       .array()
       .transform(replaceQuotes)
       .json()
-      .of(yup.string<ChainIndicatorId>().oneOf(CHAIN_INDICATOR_IDS)),
+      .of(yup.string<ChainIndicatorId>().oneOf(CHAIN_INDICATOR_IDS))
+      .test(
+        'stats-api-required',
+        'NEXT_PUBLIC_STATS_API_HOST is required when daily_operational_txs is enabled in NEXT_PUBLIC_HOMEPAGE_CHARTS',
+        function(value) {
+          // daily_operational_txs is presented only in stats microservice
+          if (value?.includes('daily_operational_txs')) {
+            return Boolean(this.parent.NEXT_PUBLIC_STATS_API_HOST);
+          }
+          return true;
+        }
+      ),
     NEXT_PUBLIC_HOMEPAGE_STATS: yup
       .array()
       .transform(replaceQuotes)
       .json()
-      .of(yup.string<HomeStatsWidgetId>().oneOf(HOME_STATS_WIDGET_IDS)),
+      .of(yup.string<HomeStatsWidgetId>().oneOf(HOME_STATS_WIDGET_IDS))
+      .test(
+        'stats-api-required',
+        'NEXT_PUBLIC_STATS_API_HOST is required when total_operational_txs is enabled in NEXT_PUBLIC_HOMEPAGE_STATS',
+        function(value) {
+          // total_operational_txs is presented only in stats microservice
+          if (value?.includes('total_operational_txs')) {
+            return Boolean(this.parent.NEXT_PUBLIC_STATS_API_HOST);
+          }
+          return true;
+        }
+      ),
     NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG: yup
@@ -652,7 +765,7 @@ const schema = yup
             heroBannerSchema.validateSync(ctx.originalValue);
             throw new Error('Unknown validation error');
           } catch (error: unknown) {
-            const message = typeof error === 'object' && error !== null && 'errors' in error && Array.isArray(error.errors) ? error.errors.join(', ') : '';
+            const message = getYupValidationErrorMessage(error);
             return 'Invalid schema were provided for NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG' + (message ? `: ${ message }` : '');
           }
         },
@@ -755,6 +868,7 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(nftMarketplaceSchema),
+    NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED: yup.boolean(),
     NEXT_PUBLIC_HELIA_VERIFIED_FETCH_ENABLED: yup.boolean(),
 
     //     e. misc
@@ -912,6 +1026,19 @@ const schema = yup
     NEXT_PUBLIC_REWARDS_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_XSTAR_SCORE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK: yup.string().test(urlTest),
+    NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG: yup.mixed().test(
+      'shape',
+      'Invalid schema were provided for NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG, it should have chain_name, chain_logo_url, and explorer_url_template',
+      (data) => {
+        const isUndefined = data === undefined;
+        const valueSchema = yup.object<TxExternalTxsConfig>().transform(replaceQuotes).json().shape({
+          chain_name: yup.string().required(),
+          chain_logo_url: yup.string().required(),
+          explorer_url_template: yup.string().required(),
+        });
+
+        return isUndefined || valueSchema.isValidSync(data);
+      }),
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),

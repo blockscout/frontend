@@ -48,10 +48,10 @@ const TxDetailsOther = ({ nonce, type, position, queueIndex }: Props) => {
           ]
             .filter(Boolean)
             .map((item, index) => (
-              <>
+              <React.Fragment key={ index }>
                 { index !== 0 && <TextSeparator/> }
                 { item }
-              </>
+              </React.Fragment>
             ))
         }
       </DetailsInfoItem.Value>

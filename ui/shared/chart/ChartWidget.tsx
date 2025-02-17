@@ -5,7 +5,6 @@ import {
   Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import React, { useRef } from 'react';
 
 import type { TimeChartItem } from './types';
@@ -15,6 +14,7 @@ import { route, type Route } from 'nextjs-routes';
 import config from 'configs/app';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
+import NextLink from 'ui/shared/NextLink';
 
 import ChartMenu from './ChartMenu';
 import ChartWidgetContent from './ChartWidgetContent';

@@ -1,4 +1,4 @@
-import { Tooltip, chakra } from '@chakra-ui/react';
+import { Tooltip, Image, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,6 +8,8 @@ import type {
   TxInterpretationVariable,
   TxInterpretationVariableString,
 } from 'types/api/txInterpretation';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
@@ -19,6 +21,8 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
+import LinkExternal from 'ui/shared/links/LinkExternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import {
   extractVariables,
@@ -121,6 +125,9 @@ const TxInterpretationElementByType = (
     case 'timestamp': {
       return <chakra.span color="text_secondary" whiteSpace="pre">{ dayjs(Number(value) * 1000).format('MMM DD YYYY') }</chakra.span>;
     }
+    case 'external_link': {
+      return <LinkExternal href={ value.link }>{ value.name }</LinkExternal>;
+    }
     case 'method': {
       return (
         <Tag
@@ -132,6 +139,35 @@ const TxInterpretationElementByType = (
         >
           { value }
         </Tag>
+      );
+    }
+    case 'dexTag': {
+      const icon = value.app_icon || value.icon;
+      const name = (() => {
+        if (value.app_id && config.features.marketplace.isEnabled) {
+          return (
+            <LinkInternal
+              href={ route({ pathname: '/apps/[id]', query: { id: value.app_id } }) }
+            >
+              { value.name }
+            </LinkInternal>
+          );
+        }
+        if (value.url) {
+          return (
+            <LinkExternal href={ value.url }>
+              { value.name }
+            </LinkExternal>
+          );
+        }
+        return value.name;
+      })();
+
+      return (
+        <chakra.span display="inline-flex" alignItems="center" verticalAlign="top" _notFirst={{ marginLeft: 1 }} gap={ 1 }>
+          { icon && <Image src={ icon } alt={ value.name } width={ 5 } height={ 5 }/> }
+          { name }
+        </chakra.span>
       );
     }
   }

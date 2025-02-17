@@ -19,10 +19,10 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import Sort from 'ui/shared/sort/Sort';
-import { VALIDATORS_BLACKFORT_SORT_OPTIONS } from 'ui/validatorsBlackfort/utils';
-import ValidatorsCounters from 'ui/validatorsBlackfort/ValidatorsCounters';
-import ValidatorsList from 'ui/validatorsBlackfort/ValidatorsList';
-import ValidatorsTable from 'ui/validatorsBlackfort/ValidatorsTable';
+import { VALIDATORS_BLACKFORT_SORT_OPTIONS } from 'ui/validators/blackfort/utils';
+import ValidatorsCounters from 'ui/validators/blackfort/ValidatorsCounters';
+import ValidatorsList from 'ui/validators/blackfort/ValidatorsList';
+import ValidatorsTable from 'ui/validators/blackfort/ValidatorsTable';
 
 const ValidatorsBlackfort = () => {
   const router = useRouter();

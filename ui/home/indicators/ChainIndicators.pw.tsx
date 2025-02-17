@@ -11,6 +11,7 @@ test.beforeEach(async({ mockEnvs }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_HOMEPAGE_CHARTS', '["daily_txs","coin_price","secondary_coin_price","market_cap","tvl"]' ],
     [ 'NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL', 'DUCK' ],
+    [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
 });
 

@@ -1,9 +1,10 @@
 import type { LinkProps, FlexProps } from '@chakra-ui/react';
 import { Flex, Link } from '@chakra-ui/react';
 import type { LinkProps as NextLinkProps } from 'next/link';
-import NextLink from 'next/link';
 import type { LegacyRef } from 'react';
 import React from 'react';
+
+import NextLink from 'ui/shared/NextLink';
 
 import type { Variants } from './useLinkStyles';
 import { useLinkStyles } from './useLinkStyles';

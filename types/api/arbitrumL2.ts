@@ -12,6 +12,8 @@ export interface ArbitrumLatestDepositsResponse {
   items: Array<ArbitrumLatestDepositsItem>;
 }
 
+export type ArbitrumL2MessageStatus = 'initiated' | 'sent' | 'confirmed' | 'relayed';
+
 export type ArbitrumL2MessagesItem = {
   completion_transaction_hash: string | null;
   id: number;
@@ -19,7 +21,7 @@ export type ArbitrumL2MessagesItem = {
   origination_timestamp: string | null;
   origination_transaction_block_number: number | null;
   origination_transaction_hash: string;
-  status: 'initiated' | 'sent' | 'confirmed' | 'relayed';
+  status: ArbitrumL2MessageStatus;
 };
 
 export type ArbitrumL2MessagesResponse = {
@@ -74,8 +76,14 @@ export type ArbitrumL2TxnBatchDAAnytrust = {
   }>;
 };
 
-export type ArbitrumL2TxnBatchDataAvailability = ArbitrumL2TxnBatchDAAnytrust | {
-  batch_data_container: Exclude<BatchDataContainer, 'in_anytrust'>;
+export type ArbitrumL2TxnBatchDACelestia = {
+  batch_data_container: 'in_celestia';
+  height: number;
+  transaction_commitment: string;
+};
+
+export type ArbitrumL2TxnBatchDataAvailability = ArbitrumL2TxnBatchDAAnytrust | ArbitrumL2TxnBatchDACelestia | {
+  batch_data_container: Exclude<BatchDataContainer, 'in_anytrust' | 'in_celestia'>;
 };
 
 export type ArbitrumL2TxnBatch = {
@@ -107,6 +115,36 @@ export type ArbitrumL2BatchBlocks = {
     items_count: number;
   } | null;
 };
+
+export interface ArbitrumL2TxnWithdrawalsItem {
+  arb_block_number: number;
+  caller: string;
+  callvalue: string;
+  completion_transaction_hash: string | null;
+  data: string;
+  destination: string;
+  eth_block_number: number;
+  id: number;
+  l2_timestamp: number;
+  status: ArbitrumL2MessageStatus;
+  token: {
+    address: string;
+    amount: string | null;
+    destination: string | null;
+    name: string | null;
+    symbol: string | null;
+    decimals: number | null;
+  } | null;
+}
+
+export interface ArbitrumL2TxnWithdrawalsResponse {
+  items: Array<ArbitrumL2TxnWithdrawalsItem>;
+}
+
+export interface ArbitrumL2MessageClaimResponse {
+  calldata: string;
+  outbox_address: string;
+}
 
 export const ARBITRUM_L2_TX_BATCH_STATUSES = [
   'Processed on rollup' as const,

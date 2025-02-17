@@ -7,4 +7,7 @@ export const base: RewardsConfigResponse = {
     daily_claim: '10',
     referral_share: '0.1',
   },
+  auth: {
+    shared_siwe_login: true,
+  },
 };

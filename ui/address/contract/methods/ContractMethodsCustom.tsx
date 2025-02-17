@@ -9,12 +9,12 @@ import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
 import Skeleton from 'ui/shared/chakra/Skeleton';
+import ConnectWalletAlert from 'ui/shared/ConnectWalletAlert';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import AuthGuard from 'ui/snippets/auth/AuthGuard';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import ContractAbi from './ContractAbi';
-import ContractConnectWallet from './ContractConnectWallet';
 import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
@@ -75,7 +75,7 @@ const ContractMethodsCustom = ({ isLoading: isLoadingProp }: Props) => {
       { currentInfo ? (
         <>
           <Flex flexDir="column" rowGap={ 2 }>
-            <ContractConnectWallet isLoading={ isLoading }/>
+            <ConnectWalletAlert isLoading={ isLoading }/>
             <ContractCustomAbiAlert isLoading={ isLoading }/>
           </Flex>
           <RawDataSnippet

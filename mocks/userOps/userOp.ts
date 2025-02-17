@@ -66,6 +66,14 @@ export const userOpData: UserOp = {
   },
   call_data: '0xb61d27f600000000000000000000000059f6aa952df7f048fd076e33e0ea8bb552d5ffd8000000000000000000000000000000000000000000000000003f3d017500800000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000',
   execute_call_data: '0x3cf80e6c',
+  execute_target: {
+    ens_domain_name: null,
+    hash: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    implementations: null,
+    is_contract: true,
+    is_verified: true,
+    name: 'FiatTokenProxy',
+  },
   decoded_call_data: {
     method_call: 'execute(address dest, uint256 value, bytes func)',
     method_id: 'b61d27f6',

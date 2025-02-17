@@ -31,7 +31,7 @@ const MyProfile = () => {
   useRedirectForInvalidAuthToken();
 
   const handleAddWalletClick = React.useCallback(() => {
-    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true });
+    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true, loginToRewards: true });
     authModal.onOpen();
   }, [ authModal ]);
 

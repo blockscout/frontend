@@ -80,6 +80,9 @@ jobs:
         secrets: inherit
         with:
             platforms: linux/amd64,linux/arm64/v8
+            # NOTE: by default the image will be built with type=ref,event=tag; so we need to specify it here
+            tags: |
+                type=raw,value=latest
 
     sync_envs_docs:
         name: Sync ENV variables docs

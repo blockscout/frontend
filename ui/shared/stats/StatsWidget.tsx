@@ -1,5 +1,4 @@
 import { Box, Flex, Text, useColorModeValue, chakra } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
@@ -7,6 +6,7 @@ import type { Route } from 'nextjs-routes';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import Hint from 'ui/shared/Hint';
 import IconSvg, { type IconName } from 'ui/shared/IconSvg';
+import NextLink from 'ui/shared/NextLink';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 export type Props = {
@@ -20,7 +20,7 @@ export type Props = {
   diff?: string | number;
   diffFormatted?: string;
   diffPeriod?: '24h';
-  period?: '1h' | '24h';
+  period?: '1h' | '24h' | '30min';
   href?: Route;
   icon?: IconName;
 };
