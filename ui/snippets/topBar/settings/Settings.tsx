@@ -7,6 +7,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import SettingsAddressFormat from './SettingsAddressFormat';
 import SettingsColorTheme from './SettingsColorTheme';
 import SettingsIdentIcon from './SettingsIdentIcon';
+import SettingsScamTokens from './SettingsScamTokens';
 
 const Settings = () => {
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -27,9 +28,10 @@ const Settings = () => {
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">
         <PopoverBody boxShadow="2xl" p={ 4 }>
           <SettingsColorTheme onSelect={ onClose }/>
-          <Box borderColor="divider" borderWidth="1px" my={ 3 }/>
+          <Box borderColor="divider" borderTopWidth="1px" my={ 3 }/>
           <SettingsIdentIcon/>
           <SettingsAddressFormat/>
+          <SettingsScamTokens/>
         </PopoverBody>
       </PopoverContent>
     </Popover>
