@@ -53,7 +53,7 @@ const Footer = () => {
       icon: 'social/twitter' as const,
       iconSize: '18px',
       text: 'X (ex-Twitter)',
-      url: 'https://www.twitter.com/blockscoutcom',
+      url: 'https://x.com/blockscout',
     },
     {
       icon: 'social/discord' as const,
