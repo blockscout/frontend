@@ -122,7 +122,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
           Explore your current Merits balance, find activities to boost your Merits,
           and view your capybara NFT badge collection on the dashboard
         </Text>
-        <Button mt={ 3 } as="a" href={ route({ pathname: '/account/rewards' }) }>
+        <Button mt={ 3 } as="a" href={ route({ pathname: '/account/merits' }) }>
           Open
         </Button>
       </Flex>
