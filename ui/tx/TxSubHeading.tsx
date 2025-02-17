@@ -74,6 +74,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           addressDataMap={ addressDataMap }
           fontSize="lg"
           mr={{ base: 0, lg: 6 }}
+          isNoves
         />
       );
     } else if (hasInternalInterpretation) {
