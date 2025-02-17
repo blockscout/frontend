@@ -1,5 +1,5 @@
 import type { FlexProps } from '@chakra-ui/react';
-import { Flex, chakra } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 export interface Props extends FlexProps {
@@ -44,4 +44,4 @@ const ContainerWithScrollY = ({ gradientHeight, children, onScrollVisibilityChan
   );
 };
 
-export default chakra(ContainerWithScrollY);
+export default ContainerWithScrollY;

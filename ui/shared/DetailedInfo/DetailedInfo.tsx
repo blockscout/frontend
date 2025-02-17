@@ -73,11 +73,11 @@ export const ItemValue = ({ children, ...rest }: ItemValueProps) => {
   );
 };
 
-export const ItemValueWithScroll = ({ children, gradientHeight, onScrollVisibilityChange, className }: ContainerWithScrollY.Props) => {
+export const ItemValueWithScroll = ({ children, gradientHeight, onScrollVisibilityChange, ...rest }: ContainerWithScrollY.Props) => {
   return (
-    <ItemValue position="relative">
+    <ItemValue position="relative" >
       <ContainerWithScrollY.default
-        className={ className }
+        { ...rest }
         gradientHeight={ gradientHeight }
         onScrollVisibilityChange={ onScrollVisibilityChange }
       >

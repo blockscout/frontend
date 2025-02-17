@@ -63,13 +63,12 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 
 const UserOpEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
+  const content = <Content { ...partsProps.content }/>;
 
   return (
     <Container { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      <Link { ...partsProps.link }>
-        <Content { ...partsProps.content }/>
-      </Link>
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
       <Copy { ...partsProps.copy }/>
     </Container>
   );

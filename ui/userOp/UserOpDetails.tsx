@@ -1,8 +1,7 @@
-import { Grid, GridItem, Text, Link } from '@chakra-ui/react';
+import { Grid, GridItem, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
 
 import type { UserOp } from 'types/api/userOps';
 
@@ -12,12 +11,12 @@ import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -35,20 +34,8 @@ interface Props {
   query: UseQueryResult<UserOp, ResourceError>;
 }
 
-const CUT_LINK_NAME = 'UserOpDetails__cutLink';
-
 const UserOpDetails = ({ query }: Props) => {
-  const [ isExpanded, setIsExpanded ] = React.useState(false);
-
   const { data, isPlaceholderData, isError, error } = query;
-
-  const handleCutClick = React.useCallback(() => {
-    setIsExpanded((flag) => !flag);
-    scroller.scrollTo(CUT_LINK_NAME, {
-      duration: 500,
-      smooth: true,
-    });
-  }, []);
 
   if (isError) {
     if (error?.status === 400 || isCustomAppError(error)) {
@@ -76,7 +63,7 @@ const UserOpDetails = ({ query }: Props) => {
         User operation hash
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+        <Skeleton loading={ isPlaceholderData } overflow="hidden">
           <UserOpEntity hash={ data.hash } noIcon noLink noCopy={ false }/>
         </Skeleton>
       </DetailedInfo.ItemValue>
@@ -113,7 +100,7 @@ const UserOpDetails = ({ query }: Props) => {
             wordBreak="break-all"
             whiteSpace="normal"
           >
-            <Skeleton isLoaded={ !isPlaceholderData }>
+            <Skeleton loading={ isPlaceholderData }>
               { data.revert_reason }
             </Skeleton>
           </DetailedInfo.ItemValue>
@@ -159,7 +146,7 @@ const UserOpDetails = ({ query }: Props) => {
         Gas limit
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { BigNumber(data.gas).toFormat() }
         </Skeleton>
       </DetailedInfo.ItemValue>
@@ -171,7 +158,7 @@ const UserOpDetails = ({ query }: Props) => {
         Gas used
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { BigNumber(data.gas_used).toFormat() }
         </Skeleton>
         <Utilization
@@ -214,185 +201,167 @@ const UserOpDetails = ({ query }: Props) => {
 
       { config.features.txInterpretation.isEnabled && <UserOpDetailsActions hash={ data.hash } isUserOpDataLoading={ isPlaceholderData }/> }
 
-      { /* CUT */ }
-      <GridItem colSpan={{ base: undefined, lg: 2 }}>
-        <Element name={ CUT_LINK_NAME }>
-          <Skeleton isLoaded={ !isPlaceholderData } mt={ 6 } display="inline-block">
-            <Link
-              fontSize="sm"
-              textDecorationLine="underline"
-              textDecorationStyle="dashed"
-              onClick={ handleCutClick }
-            >
-              { isExpanded ? 'Hide details' : 'View details' }
-            </Link>
-          </Skeleton>
-        </Element>
-      </GridItem>
-
       { /* ADDITIONAL INFO */ }
-      { isExpanded && !isPlaceholderData && (
-        <>
-          <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+      <CutLinkDetails loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
+        <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
-          <DetailedInfo.ItemLabel
-            hint="Gas limit for execution phase"
-          >
-            Call gas limit
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            { BigNumber(data.call_gas_limit).toFormat() }
-          </DetailedInfo.ItemValue>
+        <DetailedInfo.ItemLabel
+          hint="Gas limit for execution phase"
+        >
+          Call gas limit
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
+          { BigNumber(data.call_gas_limit).toFormat() }
+        </DetailedInfo.ItemValue>
 
-          <DetailedInfo.ItemLabel
-            hint="Gas limit for verification phase"
-          >
-            Verification gas limit
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            { BigNumber(data.verification_gas_limit).toFormat() }
-          </DetailedInfo.ItemValue>
+        <DetailedInfo.ItemLabel
+          hint="Gas limit for verification phase"
+        >
+          Verification gas limit
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
+          { BigNumber(data.verification_gas_limit).toFormat() }
+        </DetailedInfo.ItemValue>
 
-          <DetailedInfo.ItemLabel
-            hint="Gas to compensate the bundler"
-          >
-            Pre-verification gas
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            { BigNumber(data.pre_verification_gas).toFormat() }
-          </DetailedInfo.ItemValue>
+        <DetailedInfo.ItemLabel
+          hint="Gas to compensate the bundler"
+        >
+          Pre-verification gas
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
+          { BigNumber(data.pre_verification_gas).toFormat() }
+        </DetailedInfo.ItemValue>
 
-          { !config.UI.views.tx.hiddenFields?.gas_fees && (
-            <>
-              <DetailedInfo.ItemLabel
-                hint="Maximum fee per gas "
-              >
-                Max fee per gas
-              </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue>
-                <Text>{ BigNumber(data.max_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
-                <Text variant="secondary" whiteSpace="pre">
-                  { space }({ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
-                </Text>
-              </DetailedInfo.ItemValue>
+        { !config.UI.views.tx.hiddenFields?.gas_fees && (
+          <>
+            <DetailedInfo.ItemLabel
+              hint="Maximum fee per gas "
+            >
+              Max fee per gas
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
+              <Text>{ BigNumber(data.max_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
+              <Text color="text.secondary" whiteSpace="pre">
+                { space }({ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
+              </Text>
+            </DetailedInfo.ItemValue>
 
-              <DetailedInfo.ItemLabel
-                hint="Maximum priority fee per gas"
-              >
-                Max priority fee per gas
-              </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue>
-                <Text>{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
-                <Text variant="secondary" whiteSpace="pre">
-                  { space }({ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
-                </Text>
-              </DetailedInfo.ItemValue>
-            </>
-          ) }
+            <DetailedInfo.ItemLabel
+              hint="Maximum priority fee per gas"
+            >
+              Max priority fee per gas
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
+              <Text>{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
+              <Text color="text.secondary" whiteSpace="pre">
+                { space }({ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
+              </Text>
+            </DetailedInfo.ItemValue>
+          </>
+        ) }
 
-          <DetailedInfo.ItemDivider/>
+        <DetailedInfo.ItemDivider/>
 
-          { data.aggregator && (
-            <>
-              <DetailedInfo.ItemLabel
-                hint="Helper contract to validate an aggregated signature"
-              >
-                Aggregator
-              </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue>
-                <AddressStringOrParam address={ data.aggregator }/>
-              </DetailedInfo.ItemValue>
-            </>
-          ) }
+        { data.aggregator && (
+          <>
+            <DetailedInfo.ItemLabel
+              hint="Helper contract to validate an aggregated signature"
+            >
+              Aggregator
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
+              <AddressStringOrParam address={ data.aggregator }/>
+            </DetailedInfo.ItemValue>
+          </>
+        ) }
 
-          { data.aggregator_signature && (
-            <>
-              <DetailedInfo.ItemLabel
-                hint="Aggregator signature"
-              >
-                Aggregator signature
-              </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue>
-                { data.aggregator_signature }
-              </DetailedInfo.ItemValue>
-            </>
-          ) }
+        { data.aggregator_signature && (
+          <>
+            <DetailedInfo.ItemLabel
+              hint="Aggregator signature"
+            >
+              Aggregator signature
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
+              { data.aggregator_signature }
+            </DetailedInfo.ItemValue>
+          </>
+        ) }
 
-          <DetailedInfo.ItemLabel
-            hint="A node (block builder) that handles User operations"
-          >
-            Bundler
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <AddressStringOrParam address={ data.bundler }/>
-          </DetailedInfo.ItemValue>
+        <DetailedInfo.ItemLabel
+          hint="A node (block builder) that handles User operations"
+        >
+          Bundler
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
+          <AddressStringOrParam address={ data.bundler }/>
+        </DetailedInfo.ItemValue>
 
-          { data.factory && (
-            <>
-              <DetailedInfo.ItemLabel
-                hint="Smart contract that deploys new smart contract wallets for users"
-              >
-                Factory
-              </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue>
-                <AddressStringOrParam address={ data.factory }/>
-              </DetailedInfo.ItemValue>
-            </>
-          ) }
+        { data.factory && (
+          <>
+            <DetailedInfo.ItemLabel
+              hint="Smart contract that deploys new smart contract wallets for users"
+            >
+              Factory
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
+              <AddressStringOrParam address={ data.factory }/>
+            </DetailedInfo.ItemValue>
+          </>
+        ) }
 
-          { data.paymaster && (
-            <>
-              <DetailedInfo.ItemLabel
-                hint="Contract to sponsor the gas fees for User operations"
-              >
-                Paymaster
-              </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue>
-                <AddressStringOrParam address={ data.paymaster }/>
-              </DetailedInfo.ItemValue>
-            </>
-          ) }
+        { data.paymaster && (
+          <>
+            <DetailedInfo.ItemLabel
+              hint="Contract to sponsor the gas fees for User operations"
+            >
+              Paymaster
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue>
+              <AddressStringOrParam address={ data.paymaster }/>
+            </DetailedInfo.ItemValue>
+          </>
+        ) }
 
-          <DetailedInfo.ItemLabel
-            hint="Type of the gas fees sponsor"
-          >
-            Sponsor type
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <UserOpSponsorType sponsorType={ data.sponsor_type }/>
-          </DetailedInfo.ItemValue>
+        <DetailedInfo.ItemLabel
+          hint="Type of the gas fees sponsor"
+        >
+          Sponsor type
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
+          <UserOpSponsorType sponsorType={ data.sponsor_type }/>
+        </DetailedInfo.ItemValue>
 
-          <DetailedInfo.ItemDivider/>
+        <DetailedInfo.ItemDivider/>
 
-          <DetailedInfo.ItemLabel
-            hint="Used to validate a User operation along with the nonce during verification"
-          >
-            Signature
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue
-            wordBreak="break-all"
-            whiteSpace="normal"
-          >
-            { data.signature }
-          </DetailedInfo.ItemValue>
+        <DetailedInfo.ItemLabel
+          hint="Used to validate a User operation along with the nonce during verification"
+        >
+          Signature
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue
+          wordBreak="break-all"
+          whiteSpace="normal"
+        >
+          { data.signature }
+        </DetailedInfo.ItemValue>
 
-          <DetailedInfo.ItemLabel
-            hint="Anti-replay protection; also used as the salt for first-time account creation"
-          >
-            Nonce
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue
-            wordBreak="break-all"
-            whiteSpace="normal"
-          >
-            { data.nonce }
-          </DetailedInfo.ItemValue>
+        <DetailedInfo.ItemLabel
+          hint="Anti-replay protection; also used as the salt for first-time account creation"
+        >
+          Nonce
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue
+          wordBreak="break-all"
+          whiteSpace="normal"
+        >
+          { data.nonce }
+        </DetailedInfo.ItemValue>
 
-          <UserOpCallData data={ data }/>
+        <UserOpCallData data={ data }/>
 
-          <UserOpDecodedCallData data={ data }/>
-        </>
-      ) }
+        <UserOpDecodedCallData data={ data }/>
+      </CutLinkDetails>
     </Grid>
   );
 };

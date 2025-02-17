@@ -3,6 +3,7 @@ import * as React from 'react';
 
 export interface SwitchProps extends ChakraSwitch.RootProps {
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+  labelProps?: ChakraSwitch.LabelProps;
   rootRef?: React.Ref<HTMLLabelElement>;
   trackLabel?: { on: React.ReactNode; off: React.ReactNode };
   thumbLabel?: { on: React.ReactNode; off: React.ReactNode };
@@ -10,7 +11,7 @@ export interface SwitchProps extends ChakraSwitch.RootProps {
 
 export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
   function Switch(props, ref) {
-    const { inputProps, children, rootRef, trackLabel, thumbLabel, ...rest } =
+    const { inputProps, children, rootRef, trackLabel, thumbLabel, labelProps, ...rest } =
       props;
 
     return (
@@ -31,7 +32,7 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           ) }
         </ChakraSwitch.Control >
         { children != null && (
-          <ChakraSwitch.Label>{ children }</ChakraSwitch.Label>
+          <ChakraSwitch.Label { ...labelProps }>{ children }</ChakraSwitch.Label>
         ) }
       </ChakraSwitch.Root>
     );

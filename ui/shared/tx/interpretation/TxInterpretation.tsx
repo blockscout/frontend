@@ -125,7 +125,7 @@ const TxInterpretationElementByType = (
     case 'method': {
       return (
         <Badge
-          colorScheme={ value === 'Multicall' ? 'teal' : 'gray' }
+          colorPalette={ value === 'Multicall' ? 'teal' : 'gray' }
           truncated
           ml={ 1 }
           mr={ 2 }
