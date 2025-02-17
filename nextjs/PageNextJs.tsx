@@ -11,7 +11,6 @@ import * as metadata from 'lib/metadata';
 import * as mixpanel from 'lib/mixpanel';
 
 interface Props<Pathname extends Route['pathname']> {
-  uuid: string;
   pathname: Pathname;
   children: React.ReactNode;
   query?: PageProps<Pathname>['query'];

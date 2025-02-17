@@ -280,6 +280,13 @@ Settings for meta tags, OG tags and SEO
 
 &nbsp;
 
+#### Token views
+| Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED | `boolean` | Show the "Hide scam tokens" toggle in the site settings dropdown. This option controls the visibility of tokens with a poor reputation in the search results. | - | - | `'["value","tx_fee"]'` | v1.38.0+ |
+
+&nbsp;
+
 #### NFT views
 
 | Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
