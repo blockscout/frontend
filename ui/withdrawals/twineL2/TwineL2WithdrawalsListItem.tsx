@@ -1,91 +1,102 @@
-import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TwineL2DepositsItem } from 'types/api/twineL2';
+import type { TwineL2WithdrawalsItem } from 'types/api/twineL2';
 
 import config from 'configs/app';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
- type Props = { item: TwineL2DepositsItem; isLoading?: boolean };
+type Props = { item: TwineL2WithdrawalsItem; isLoading?: boolean };
 
-const TwineDepositsTableItem = ({ item, isLoading }: Props) => {
-
+const TwineWithdrawalsListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'twine') {
     return null;
   }
 
   return (
-    <Tr>
-      <Td verticalAlign="middle">
+    <ListItemMobileGrid.Container>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Block number</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <BlockEntityL1
           number={ item.block_number }
           isLoading={ isLoading }
           fontSize="sm"
           lineHeight={ 5 }
           fontWeight={ 600 }
-          noIcon
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Tx Hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }
           hash={ item.tx_hash }
           fontSize="sm"
           lineHeight={ 5 }
           truncation="constant_long"
-          noIcon
         />
-      </Td>
-      <Td verticalAlign="middle" pr={ 12 }>
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <TimeAgoWithTooltip
           timestamp={ item.created_at }
           isLoading={ isLoading }
-          color="text_secondary"
           display="inline-block"
         />
-      </Td>
+      </ListItemMobileGrid.Value>
 
-      <Td verticalAlign="middle">
+      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 Token Address</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <AddressEntityL1
           address={{ hash: item.l1_token, name: '', is_contract: false, is_verified: false, ens_domain_name: null, implementations: null }}
           isLoading={ isLoading }
-          truncation="constant"
           noCopy
+          truncation="constant"
         />
-      </Td>
-      <Td verticalAlign="middle">
-        <AddressEntity
+      </ListItemMobileGrid.Value>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 Token Address</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        <AddressEntityL1
           address={{ hash: item.l2_token, name: '', is_contract: false, is_verified: false, ens_domain_name: null, implementations: null }}
           isLoading={ isLoading }
-          truncation="constant"
           noCopy
+          truncation="constant"
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </ListItemMobileGrid.Value>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>From</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <AddressEntityL1
           address={{ hash: item.from, name: '', is_contract: false, is_verified: false, ens_domain_name: null, implementations: null }}
           isLoading={ isLoading }
-          truncation="constant"
           noCopy
+          truncation="constant"
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </ListItemMobileGrid.Value>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>To (Twine Address)</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <AddressEntity
           address={{ hash: item.to_twine_address, name: '', is_contract: false, is_verified: false, ens_domain_name: null, implementations: null }}
           isLoading={ isLoading }
-          truncation="constant"
           noCopy
+          truncation="constant"
         />
-      </Td>
+      </ListItemMobileGrid.Value>
 
-    </Tr>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Amount</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        { item.amount }
+      </ListItemMobileGrid.Value>
+
+    </ListItemMobileGrid.Container>
   );
 };
 
-export default TwineDepositsTableItem;
+export default TwineWithdrawalsListItem;

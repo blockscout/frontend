@@ -78,7 +78,7 @@ export const deposits: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
+const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll', 'twine' ];
 export const withdrawals: GetServerSideProps<Props> = async(context) => {
   if (
     !config.features.beaconChain.isEnabled &&

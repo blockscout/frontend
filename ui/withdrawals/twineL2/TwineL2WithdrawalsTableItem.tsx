@@ -1,7 +1,7 @@
 import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TwineL2DepositsItem } from 'types/api/twineL2';
+import type { TwineL2WithdrawalsItem } from 'types/api/twineL2';
 
 import config from 'configs/app';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -12,9 +12,9 @@ import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
- type Props = { item: TwineL2DepositsItem; isLoading?: boolean };
+ type Props = { item: TwineL2WithdrawalsItem; isLoading?: boolean };
 
-const TwineDepositsTableItem = ({ item, isLoading }: Props) => {
+const TwineWithdrawalsTableItem = ({ item, isLoading }: Props) => {
 
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'twine') {
     return null;
@@ -88,4 +88,4 @@ const TwineDepositsTableItem = ({ item, isLoading }: Props) => {
   );
 };
 
-export default TwineDepositsTableItem;
+export default TwineWithdrawalsTableItem;

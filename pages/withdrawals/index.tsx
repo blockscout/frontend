@@ -33,6 +33,10 @@ const Withdrawals = dynamic(() => {
     return import('ui/pages/BeaconChainWithdrawals');
   }
 
+  if (rollupFeature.isEnabled && rollupFeature.type === 'twine') {
+    return import('ui/pages/TwineL2Withdrawals');
+  }
+
   throw new Error('Withdrawals feature is not enabled.');
 }, { ssr: false });
 

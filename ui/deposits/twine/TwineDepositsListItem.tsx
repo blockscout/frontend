@@ -3,6 +3,7 @@ import React from 'react';
 import type { TwineL2DepositsItem } from 'types/api/twineL2';
 
 import config from 'configs/app';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -73,7 +74,7 @@ const TwineDepositsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>From</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <AddressEntityL1
-          address={{ hash: item.from_address, name: '', is_contract: false, is_verified: false, ens_domain_name: null, implementations: null }}
+          address={{ hash: item.from, name: '', is_contract: false, is_verified: false, ens_domain_name: null, implementations: null }}
           isLoading={ isLoading }
           noCopy
           truncation="constant"
@@ -81,7 +82,7 @@ const TwineDepositsListItem = ({ item, isLoading }: Props) => {
       </ListItemMobileGrid.Value>
       <ListItemMobileGrid.Label isLoading={ isLoading }>To (Twine Address)</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <AddressEntityL1
+        <AddressEntity
           address={{ hash: item.to_twine_address, name: '', is_contract: false, is_verified: false, ens_domain_name: null, implementations: null }}
           isLoading={ isLoading }
           noCopy
