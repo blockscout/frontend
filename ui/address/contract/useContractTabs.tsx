@@ -95,13 +95,13 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
           title: 'Custom ABI',
           component: <ContractMethodsCustom isLoading={ contractQuery.isPlaceholderData }/>,
         },
-        // hasMudTab && {
-        //   id: 'mud_system' as const,
-        //   title: 'MUD System',
-        //   component: mudSystemsQuery.isPlaceholderData ?
-        //     <ContentLoader/> :
-        //     <ContractMethodsMudSystem items={ mudSystemsQuery.data?.items ?? [] }/>,
-        // },
+        hasMudTab && {
+          id: 'mud_system' as const,
+          title: 'MUD System',
+          component: mudSystemsQuery.isPlaceholderData ?
+            <ContentLoader/> :
+            <ContractMethodsMudSystem items={ mudSystemsQuery.data?.items ?? [] }/>,
+        },
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,
     };

@@ -21,6 +21,7 @@ const ClearButton = ({ onClick, isDisabled, isVisible = true, className }: Props
       size="sm"
       onClick={ onClick }
       opacity={ isVisible ? 1 : 0 }
+      visibility={ isVisible ? 'visible' : 'hidden' }
     >
       <IconSvg
         name="status/error"

@@ -51,6 +51,19 @@ export const PopoverCloseTrigger = React.forwardRef<
   );
 });
 
+export const PopoverCloseTriggerWrapper = React.forwardRef<
+  HTMLButtonElement,
+  ChakraPopover.CloseTriggerProps
+>(function PopoverCloseTriggerWrapper(props, ref) {
+  return (
+    <ChakraPopover.CloseTrigger
+      ref={ ref }
+      { ...props }
+      asChild
+    />
+  );
+});
+
 export const PopoverRoot = (props: ChakraPopover.RootProps) => {
   const positioning = {
     placement: 'bottom-start' as const,

@@ -1,10 +1,9 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MudWorldItem } from 'types/api/mudWorlds';
 
 import { currencyUnits } from 'lib/units';
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import MudWorldsTableItem from './MudWorldsTableItem';
 
@@ -16,15 +15,15 @@ type Props = {
 
 const MudWorldsTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table style={{ tableLayout: 'auto' }}>
-      <Thead top={ top }>
-        <Tr>
-          <Th>Address</Th>
-          <Th isNumeric>{ `Balance ${ currencyUnits.ether }` }</Th>
-          <Th isNumeric>Txn count</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot style={{ tableLayout: 'auto' }}>
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader>Address</TableColumnHeader>
+          <TableColumnHeader isNumeric>{ `Balance ${ currencyUnits.ether }` }</TableColumnHeader>
+          <TableColumnHeader isNumeric>Txn count</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
           <MudWorldsTableItem
             key={ String(item.address.hash) + (isLoading ? index : '') }
@@ -32,8 +31,8 @@ const MudWorldsTable = ({ items, top, isLoading }: Props) => {
             isLoading={ isLoading }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

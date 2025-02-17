@@ -153,12 +153,12 @@ const AddressPageContent = () => {
 
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
-      // config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0 && {
-      //   id: 'mud',
-      //   title: 'MUD',
-      //   count: mudTablesCountQuery.data,
-      //   component: <AddressMud scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      // },
+      config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0 && {
+        id: 'mud',
+        title: 'MUD',
+        count: mudTablesCountQuery.data,
+        component: <AddressMud scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      },
       {
         id: 'txs',
         title: 'Transactions',

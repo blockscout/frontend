@@ -8,10 +8,9 @@ type Props = {
   handleFilterChange: (val: string) => void;
   title: string;
   columnName: string;
-  onClose?: () => void;
 };
 
-const AddressMudRecordsKeyFilter = ({ value = '', handleFilterChange, columnName, title, onClose }: Props) => {
+const AddressMudRecordsKeyFilterContent = ({ value = '', handleFilterChange, columnName, title }: Props) => {
   const [ filterValue, setFilterValue ] = React.useState<string>(value);
 
   const onFilter = React.useCallback(() => {
@@ -23,11 +22,10 @@ const AddressMudRecordsKeyFilter = ({ value = '', handleFilterChange, columnName
       title={ title }
       isFilled={ filterValue !== value }
       onFilter={ onFilter }
-      onClose={ onClose }
     >
       <FilterInput
         initialValue={ value }
-        size="xs"
+        size="sm"
         onChange={ setFilterValue }
         placeholder={ columnName }
       />
@@ -35,4 +33,4 @@ const AddressMudRecordsKeyFilter = ({ value = '', handleFilterChange, columnName
   );
 };
 
-export default AddressMudRecordsKeyFilter;
+export default AddressMudRecordsKeyFilterContent;

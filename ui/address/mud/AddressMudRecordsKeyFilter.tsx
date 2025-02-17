@@ -16,7 +16,7 @@ const AddressMudRecordsKeyFilter = ({ value = '', handleFilterChange, columnName
   return (
     <TableColumnFilterWrapper
       columnName={ columnName }
-      isActive={ Boolean(value) }
+      selected={ Boolean(value) }
       isLoading={ isLoading }
       w="350px"
     >
