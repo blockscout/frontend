@@ -31,7 +31,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/graphiql': DEFAULT_TEMPLATE,
   '/search-results': DEFAULT_TEMPLATE,
   '/auth/profile': DEFAULT_TEMPLATE,
-  '/account/rewards': DEFAULT_TEMPLATE,
+  '/account/merits': DEFAULT_TEMPLATE,
   '/account/watchlist': DEFAULT_TEMPLATE,
   '/account/api-key': DEFAULT_TEMPLATE,
   '/account/custom-abi': DEFAULT_TEMPLATE,

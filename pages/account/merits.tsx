@@ -8,7 +8,7 @@ const RewardsDashboard = dynamic(() => import('ui/pages/RewardsDashboard'), { ss
 
 const Page: NextPage = () => {
   return (
-    <PageNextJs pathname="/account/rewards">
+    <PageNextJs pathname="/account/merits">
       <RewardsDashboard/>
     </PageNextJs>
   );

@@ -61,7 +61,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
           goNext(isRefCodeUsed);
         } else {
           closeModal();
-          router.push({ pathname: '/account/rewards' }, undefined, { shallow: true });
+          router.push({ pathname: '/account/merits' }, undefined, { shallow: true });
         }
       }
     } catch (error) {}

@@ -28,7 +28,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/graphiql': 'Regular page',
   '/search-results': 'Regular page',
   '/auth/profile': 'Root page',
-  '/account/rewards': 'Regular page',
+  '/account/merits': 'Regular page',
   '/account/watchlist': 'Regular page',
   '/account/api-key': 'Regular page',
   '/account/custom-abi': 'Regular page',
