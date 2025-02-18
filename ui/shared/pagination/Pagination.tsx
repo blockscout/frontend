@@ -1,10 +1,9 @@
-import { Button, Flex, IconButton, chakra } from '@chakra-ui/react';
+import { Button, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from './types';
 
 import Skeleton from 'ui/shared/chakra/Skeleton';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends PaginationParams {
   className?: string;
@@ -38,18 +37,20 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
         </Button>
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" mr={ 3 } borderRadius="base">
-        <IconButton
-          onClick={ onPrevPageClick }
+        <Button
           size="sm"
           px="24px"
           py="12px"
           fontWeight={ 400 }
-          aria-label="Prev page"
-          w="36px"
+          data-selected={ true }
           h={ 9 }
-          icon={ <IconSvg name="arrows/east-mini" w={ 5 } h={ 5 }/> }
+          minW="36px"
+          cursor="unset"
           isDisabled={ !canGoBackwards || isLoading }
-        />
+          onClick={ onPrevPageClick }
+        >
+          { '<' }
+        </Button>
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" borderRadius="base">
         <Button
@@ -66,18 +67,21 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
         </Button>
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" ml={ 3 } borderRadius="base">
-        <IconButton
-          onClick={ onNextPageClick }
+        { '>' }
+        <Button
+          size="sm"
           px="24px"
           py="12px"
-          h={ 9 }
           fontWeight={ 400 }
-          size="sm"
-          aria-label="Next page"
-          w="36px"
-          icon={ <IconSvg name="arrows/east-mini" w={ 5 } h={ 5 } transform="rotate(180deg)"/> }
+          data-selected={ true }
+          h={ 9 }
+          minW="36px"
+          cursor="unset"
           isDisabled={ !hasNextPage || isLoading }
-        />
+          onClick={ onNextPageClick }
+        >
+          { '<' }
+        </Button>
       </Skeleton>
       { /* not implemented yet */ }
       { /* <Flex alignItems="center" width="132px" ml={ 16 } display={{ base: 'none', lg: 'flex' }}>
