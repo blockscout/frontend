@@ -1,3 +1,4 @@
+import type { HTMLChakraProps } from '@chakra-ui/react';
 import { chakra, Center } from '@chakra-ui/react';
 import { throttle } from 'es-toolkit';
 import React from 'react';
@@ -9,7 +10,7 @@ import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import ClearButton from 'ui/shared/ClearButton';
 import IconSvg from 'ui/shared/IconSvg';
-interface Props {
+interface Props extends Omit<HTMLChakraProps<'form'>, 'onChange'> {
   onChange: (value: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   onBlur?: (event: FocusEvent<HTMLFormElement>) => void;
@@ -22,7 +23,7 @@ interface Props {
 }
 
 const SearchBarInput = (
-  { onChange, onSubmit, isHomepage, isSuggestOpen, onFocus, onBlur, onHide, onClear, value }: Props,
+  { onChange, onSubmit, isHomepage, isSuggestOpen, onFocus, onBlur, onHide, onClear, value, ...rest }: Props,
   ref: React.ForwardedRef<HTMLFormElement>,
 ) => {
   const innerRef = React.useRef<HTMLFormElement>(null);
@@ -151,6 +152,7 @@ const SearchBarInput = (
       transitionProperty="transform,box-shadow,background-color,color,border-color"
       transitionDuration="normal"
       transitionTimingFunction="ease"
+      { ...rest }
     >
       <InputGroup
         startElement={ startElement }

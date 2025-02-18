@@ -1,4 +1,4 @@
-import { Box, Text, Tabs } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { throttle } from 'es-toolkit';
 import React from 'react';
@@ -10,6 +10,7 @@ import type { ResourceError } from 'lib/api/resources';
 import { useSettingsContext } from 'lib/contexts/settings';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as regexp from 'lib/regexp';
+import { TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
@@ -151,23 +152,23 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       <>
         { resultCategories.length > 1 && (
           <Box position="sticky" top="0" width="100%" background={{ _light: 'white', _dark: 'gray.900' }} py={ 5 } my={ -5 } ref={ tabsRef } zIndex={ 1 }>
-            <Tabs.Root
+            <TabsRoot
               variant="secondary"
               size="sm"
               value={ currentTab }
               onValueChange={ handleTabsValueChange }
             >
-              <Tabs.List columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
+              <TabsList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
                 { resultCategories.map((cat) => (
-                  <Tabs.Trigger
+                  <TabsTrigger
                     key={ cat.id }
                     value={ cat.id }
                   >
                     { cat.title }
-                  </Tabs.Trigger>
+                  </TabsTrigger>
                 )) }
-              </Tabs.List>
-            </Tabs.Root>
+              </TabsList>
+            </TabsRoot>
           </Box>
         ) }
         { resultCategories.map((cat, index) => {

@@ -126,11 +126,11 @@ const SearchBar = ({ isHomepage }: Props) => {
         open={ open && (searchTerm.trim().length > 0 || recentSearchKeywords.length > 0) }
         autoFocus={ false }
         onOpenChange={ handleOpenChange }
-        positioning={{ offset: isMobile && !isHomepage ? { mainAxis: 46, crossAxis: 12 } : { mainAxis: 8, crossAxis: 0 } }}
+        positioning={{ offset: isMobile && !isHomepage ? { mainAxis: 0, crossAxis: 12 } : { mainAxis: 8, crossAxis: 0 } }}
         lazyMount
         closeOnInteractOutside={ false }
       >
-        <PopoverTrigger asChild={ false } w="100%">
+        <PopoverTrigger asChild w="100%">
           <SearchBarInput
             ref={ inputRef }
             onChange={ handleSearchTermChange }

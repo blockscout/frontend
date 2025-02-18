@@ -4,13 +4,12 @@ import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
+import { route } from 'nextjs-routes';
+
 import highlightText from 'lib/highlightText';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
 import IconSvg from 'ui/shared/IconSvg';
-
-// TODO @tom2drum: remove NextLink
-import NextLink from 'ui/shared/NextLink';
 
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 interface Props {
@@ -98,33 +97,14 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
     );
   })();
 
-  if (data.external) {
-    return (
-      <NextLink
-        href={{
-          pathname: '/apps',
-          query: {
-            selectedAppId: data.id,
-          },
-        }}
-        passHref
-        shallow={ router.pathname === '/apps' }
-        legacyBehavior
-      >
-        <SearchBarSuggestItemLink onClick={ onClick }>
-          { content }
-        </SearchBarSuggestItemLink>
-      </NextLink>
-
-    );
-  }
-
   return (
-    <NextLink href={{ pathname: '/apps/[id]', query: { id: data.id } }} passHref legacyBehavior>
-      <SearchBarSuggestItemLink onClick={ onClick }>
-        { content }
-      </SearchBarSuggestItemLink>
-    </NextLink>
+    <SearchBarSuggestItemLink
+      onClick={ onClick }
+      href={ data.external ? route({ pathname: '/apps', query: { selectedAppId: data.id } }) : route({ pathname: '/apps/[id]', query: { id: data.id } }) }
+      shallow={ data.external && router.pathname === '/apps' }
+    >
+      { content }
+    </SearchBarSuggestItemLink>
   );
 };
 

@@ -70,6 +70,11 @@ export const recipe = defineRecipe({
           color: 'link.navigation.fg.active',
         },
       },
+      plain: {
+        _hover: {
+          textDecoration: 'none',
+        },
+      },
     },
   },
   defaultVariants: {

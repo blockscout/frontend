@@ -5,7 +5,6 @@ import {
   Spinner,
   Flex,
   chakra,
-  HStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -89,6 +88,10 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       placeholderData: [ '1', '2', '3' ],
     },
   });
+
+  const handleCutLinkClick = React.useCallback(() => {
+    setIsExpanded((flag) => !flag);
+  }, []);
 
   const showAssociatedL1Tx = React.useCallback(() => {
     setIsExpanded(true);
@@ -803,28 +806,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       <CutLinkDetails loading={ isLoading } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }} isExpanded={ isExpanded } onClick={ handleCutLinkClick }>
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
-        { data.arbitrum?.contains_message && data.arbitrum?.message_related_info && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint={ data.arbitrum.contains_message === 'incoming' ?
-                'The hash of the transaction that originated the message from the base layer' :
-                'The hash of the transaction that completed the message on the base layer'
-              }
-            >
-              { data.arbitrum.contains_message === 'incoming' ? 'Originating L1 txn hash' : 'Completion L1 txn hash' }
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              { data.arbitrum.message_related_info.associated_l1_transaction ?
-                <TxEntityL1 hash={ data.arbitrum.message_related_info.associated_l1_transaction }/> : (
-                  <HStack gap={ 2 }>
-                    <Text color="text_secondary">{ data.arbitrum.message_related_info.message_status }</Text>
-                    <Hint label={ MESSAGE_DESCRIPTIONS[data.arbitrum.message_related_info.message_status] }/>
-                  </HStack>
-                )
-              }
-            </DetailedInfo.ItemValue>
-          </>
-        ) }
+        <TxDetailsWithdrawalStatusArbitrum data={ data }/>
 
         { (data.blob_gas_used || data.max_fee_per_blob_gas || data.blob_gas_price) && (
           <>
@@ -859,8 +841,6 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                 </DetailedInfo.ItemValue>
               </>
             ) }
-
-            <TxDetailsWithdrawalStatusArbitrum data={ data }/>
 
             { (data.max_fee_per_blob_gas || data.blob_gas_price) && (
               <>

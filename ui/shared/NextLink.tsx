@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 
 type LinkProps = NextLinkProps & { children?: ReactNode };
 
+// TODO @tom2drum remove this file in favor of toolkit/chakra/link
 const Link = ({ prefetch = false, children, ...rest }: LinkProps) => {
   return (
     <NextLink prefetch={ prefetch } { ...rest }>

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
@@ -10,11 +10,11 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { publicClient } from 'lib/web3/client';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
+import useActiveTabFromQuery from 'toolkit/components/RoutedTabs/useActiveTabFromQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxAssetFlows from 'ui/tx/TxAssetFlows';
 import TxAuthorizations from 'ui/tx/TxAuthorizations';
 import TxBlobs from 'ui/tx/TxBlobs';
@@ -42,7 +42,7 @@ const TransactionPageContent = () => {
 
   const showDegradedView = publicClient && ((isError && error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
 
-  const tabs: Array<RoutedTab> = (() => {
+  const tabs: Array<TabItemRegular> = (() => {
     const detailsComponent = showDegradedView ?
       <TxDetailsDegraded hash={ hash } txQuery={ txQuery }/> :
       <TxDetails txQuery={ txQuery }/>;
@@ -76,7 +76,7 @@ const TransactionPageContent = () => {
     ].filter(Boolean);
   })();
 
-  const tabIndex = useTabIndexFromQuery(tabs);
+  const activeTab = useActiveTabFromQuery(tabs);
 
   const tags = (
     <EntityTags
@@ -105,7 +105,7 @@ const TransactionPageContent = () => {
       return (
         <>
           <RoutedTabsSkeleton tabs={ tabs } mt={ 6 }/>
-          { tabs[tabIndex]?.component }
+          { activeTab?.component }
         </>
       );
     }

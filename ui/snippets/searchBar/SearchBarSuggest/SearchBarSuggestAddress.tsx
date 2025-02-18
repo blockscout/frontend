@@ -1,4 +1,4 @@
-import { chakra, Box, Text, Flex, Tag, Grid } from '@chakra-ui/react';
+import { chakra, Box, Text, Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ItemsProps } from './types';
@@ -7,6 +7,7 @@ import type { SearchResultAddressOrContract, SearchResultMetadataTag } from 'typ
 import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
+import { Tag } from 'toolkit/chakra/tag';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EntityTagIcon from 'ui/shared/EntityTags/EntityTagIcon';

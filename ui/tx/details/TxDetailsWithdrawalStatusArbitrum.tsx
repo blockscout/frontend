@@ -5,9 +5,9 @@ import type { ArbitrumTransactionMessageStatus, Transaction } from 'types/api/tr
 
 import { route } from 'nextjs-routes';
 
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import { Link } from 'toolkit/chakra/link';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 const WITHDRAWAL_STATUS_STEPS: Array<ArbitrumTransactionMessageStatus> = [
@@ -41,11 +41,11 @@ const TxDetailsWithdrawalStatusArbitrum = ({ data }: Props) => {
 
           return {
             content: (
-              <LinkInternal
+              <Link
                 href={ route({ pathname: '/txn-withdrawals', query: { q: data.hash } }) }
               >
                 { step }
-              </LinkInternal>
+              </Link>
             ),
             label: step,
           };
@@ -64,35 +64,35 @@ const TxDetailsWithdrawalStatusArbitrum = ({ data }: Props) => {
   if (data.arbitrum.contains_message === 'outcoming') {
     return (
       <>
-        <DetailsInfoItem.Label
+        <DetailedInfo.ItemLabel
           hint="Detailed status progress of the transaction"
         >
           Withdrawal status
-        </DetailsInfoItem.Label>
-        <DetailsInfoItem.Value>
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
           { data.arbitrum.message_related_info.message_status ? (
             <VerificationSteps
               steps={ steps as unknown as Array<ArbitrumTransactionMessageStatus> }
               currentStep={ data.arbitrum.message_related_info.message_status }
             />
-          ) : <Text variant="secondary">Could not determine</Text> }
-        </DetailsInfoItem.Value>
+          ) : <Text color="text.secondary">Could not determine</Text> }
+        </DetailedInfo.ItemValue>
       </>
     );
   }
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="The hash of the transaction that originated the message from the base layer"
       >
         Originating L1 txn hash
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         { data.arbitrum.message_related_info.associated_l1_transaction ?
           <TxEntityL1 hash={ data.arbitrum.message_related_info.associated_l1_transaction }/> :
-          <Text variant="secondary">Waiting for confirmation</Text>
+          <Text color="text.secondary">Waiting for confirmation</Text>
         }
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

@@ -21,17 +21,16 @@ export const LinkExternalIcon = ({ color }: { color?: ChakraLinkProps['color'] }
   />
 );
 
-export interface LinkProps extends ChakraLinkProps {
+export interface LinkProps extends Pick<NextLinkProps, 'shallow' | 'prefetch' | 'scroll'>, ChakraLinkProps {
   loading?: boolean;
   external?: boolean;
-  scroll?: boolean;
   iconColor?: ChakraLinkProps['color'];
   noIcon?: boolean;
 }
 
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
-    const { external, loading, href, children, scroll = true, iconColor, noIcon, ...rest } = props;
+    const { external, loading, href, children, scroll = true, iconColor, noIcon, shallow, prefetch = false, ...rest } = props;
 
     if (external) {
       return (
@@ -54,7 +53,18 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     return (
       <Skeleton loading={ loading } asChild>
         <ChakraLink asChild ref={ ref } { ...rest }>
-          { href ? <NextLink href={ href as NextLinkProps['href'] } scroll={ scroll }>{ children }</NextLink> : <span>{ children }</span> }
+          { href ? (
+            <NextLink
+              href={ href as NextLinkProps['href'] }
+              scroll={ scroll }
+              shallow={ shallow }
+              prefetch={ prefetch }
+            >
+              { children }
+            </NextLink>
+          ) :
+            <span>{ children }</span>
+          }
         </ChakraLink>
       </Skeleton>
     );
