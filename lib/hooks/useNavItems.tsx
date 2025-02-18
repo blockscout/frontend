@@ -44,6 +44,12 @@ export default function useNavItems(): ReturnType {
       icon: 'transactions',
       isActive: pathname === '/txs' || pathname === '/tx/[hash]',
     };
+    const internalTxs: NavItem | null = {
+      text: 'Internal transactions',
+      nextRoute: { pathname: '/internal-txs' as const },
+      icon: 'internal_txns',
+      isActive: pathname === '/internal-txs',
+    };
     const userOps: NavItem | null = config.features.userOps.isEnabled ? {
       text: 'User operations',
       nextRoute: { pathname: '/ops' as const },
@@ -118,6 +124,7 @@ export default function useNavItems(): ReturnType {
       blockchainNavItems = [
         [
           txs,
+          internalTxs,
           rollupDeposits,
           rollupWithdrawals,
         ],
@@ -140,6 +147,7 @@ export default function useNavItems(): ReturnType {
       blockchainNavItems = [
         [
           txs,
+          internalTxs,
           rollupDeposits,
           rollupWithdrawals,
         ],
@@ -155,6 +163,7 @@ export default function useNavItems(): ReturnType {
       blockchainNavItems = [
         [
           txs,
+          internalTxs,
           userOps,
           blocks,
           rollupTxnBatches,
@@ -169,6 +178,7 @@ export default function useNavItems(): ReturnType {
     } else {
       blockchainNavItems = [
         txs,
+        internalTxs,
         userOps,
         blocks,
         topAccounts,

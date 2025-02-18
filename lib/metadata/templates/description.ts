@@ -8,6 +8,7 @@ const DEFAULT_TEMPLATE = 'Open-source block explorer by Blockscout. Search trans
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/': DEFAULT_TEMPLATE,
   '/txs': DEFAULT_TEMPLATE,
+  '/internal-txs': DEFAULT_TEMPLATE,
   '/txs/kettle/[hash]': DEFAULT_TEMPLATE,
   '/tx/[hash]': 'View transaction %hash% on %network_title%',
   '/blocks': DEFAULT_TEMPLATE,

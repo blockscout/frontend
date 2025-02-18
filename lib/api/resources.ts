@@ -544,6 +544,9 @@ export const RESOURCES = {
   withdrawals_counters: {
     path: '/api/v2/withdrawals/counters',
   },
+  internal_txs: {
+    path: '/api/v2/internal-transactions',
+  },
 
   // ADDRESSES
   addresses: {
@@ -1273,7 +1276,7 @@ export interface ResourceError<T = unknown> {
 export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>;
 
 export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_rewards' |
-'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
+'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' | 'internal_txs' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' | 'tx_blobs' |
 'addresses' | 'addresses_metadata_search' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
@@ -1342,6 +1345,7 @@ Q extends 'txs_pending' ? TransactionsResponsePending :
 Q extends 'txs_with_blobs' ? TransactionsResponseWithBlobs :
 Q extends 'txs_watchlist' ? TransactionsResponseWatchlist :
 Q extends 'txs_execution_node' ? TransactionsResponseValidated :
+Q extends 'internal_txs' ? InternalTransactionsResponse :
 Q extends 'tx' ? Transaction :
 Q extends 'tx_internal_txs' ? InternalTransactionsResponse :
 Q extends 'tx_logs' ? LogsResponseTx :
@@ -1388,20 +1392,6 @@ Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? visualizer.VisualizeResponse :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfigRaw :
-Q extends 'optimistic_l2_output_roots' ? OptimisticL2OutputRootsResponse :
-Q extends 'optimistic_l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
-Q extends 'optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
-Q extends 'optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
-Q extends 'optimistic_l2_txn_batches_count' ? number :
-Q extends 'optimistic_l2_txn_batch' ? OptimismL2TxnBatch :
-Q extends 'optimistic_l2_txn_batch_celestia' ? OptimismL2TxnBatch :
-Q extends 'optimistic_l2_txn_batch_txs' ? OptimismL2BatchTxs :
-Q extends 'optimistic_l2_txn_batch_blocks' ? OptimismL2BatchBlocks :
-Q extends 'optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
-Q extends 'optimistic_l2_output_roots_count' ? number :
-Q extends 'optimistic_l2_withdrawals_count' ? number :
-Q extends 'optimistic_l2_deposits_count' ? number :
-Q extends 'optimistic_l2_dispute_games_count' ? number :
 never;
 // !!! IMPORTANT !!!
 // See comment above
@@ -1422,34 +1412,6 @@ Q extends 'validators_blackfort' ? ValidatorsBlackfortResponse :
 Q extends 'validators_blackfort_counters' ? ValidatorsBlackfortCountersResponse :
 Q extends 'validators_zilliqa' ? ValidatorsZilliqaResponse :
 Q extends 'validator_zilliqa' ? ValidatorZilliqa :
-Q extends 'shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
-Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
-Q extends 'shibarium_withdrawals_count' ? number :
-Q extends 'shibarium_deposits_count' ? number :
-Q extends 'arbitrum_l2_messages' ? ArbitrumL2MessagesResponse :
-Q extends 'arbitrum_l2_messages_count' ? number :
-Q extends 'arbitrum_l2_txn_batches' ? ArbitrumL2TxnBatchesResponse :
-Q extends 'arbitrum_l2_txn_batches_count' ? number :
-Q extends 'arbitrum_l2_txn_batch' ? ArbitrumL2TxnBatch :
-Q extends 'arbitrum_l2_txn_batch_celestia' ? ArbitrumL2TxnBatch :
-Q extends 'arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
-Q extends 'arbitrum_l2_txn_batch_blocks' ? ArbitrumL2BatchBlocks :
-Q extends 'arbitrum_l2_txn_withdrawals' ? ArbitrumL2TxnWithdrawalsResponse :
-Q extends 'arbitrum_l2_message_claim' ? ArbitrumL2MessageClaimResponse :
-Q extends 'zkevm_l2_deposits' ? ZkEvmL2DepositsResponse :
-Q extends 'zkevm_l2_deposits_count' ? number :
-Q extends 'zkevm_l2_withdrawals' ? ZkEvmL2WithdrawalsResponse :
-Q extends 'zkevm_l2_withdrawals_count' ? number :
-Q extends 'zkevm_l2_txn_batches' ? ZkEvmL2TxnBatchesResponse :
-Q extends 'zkevm_l2_txn_batches_count' ? number :
-Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
-Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
-Q extends 'zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
-Q extends 'zksync_l2_txn_batches_count' ? number :
-Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :
-Q extends 'zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
-Q extends 'scroll_l2_txn_batch_txs' ? ScrollL2TxnBatchTxs :
-Q extends 'scroll_l2_txn_batch_blocks' ? ScrollL2TxnBatchBlocks :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
 Q extends 'addresses_lookup' ? bens.LookupAddressResponse :
 Q extends 'address_domain' ? bens.GetAddressResponse :
@@ -1485,13 +1447,6 @@ Q extends 'rewards_user_daily_claim' ? RewardsUserDailyClaimResponse :
 Q extends 'rewards_user_referrals' ? RewardsUserReferralsResponse :
 Q extends 'token_transfers_all' ? TokenTransferResponse :
 Q extends 'address_xstar_score' ? AddressXStarResponse :
-Q extends 'scroll_l2_txn_batches' ? ScrollL2BatchesResponse :
-Q extends 'scroll_l2_txn_batches_count' ? number :
-Q extends 'scroll_l2_txn_batch' ? ScrollL2TxnBatch :
-Q extends 'scroll_l2_deposits' ? ScrollL2MessagesResponse :
-Q extends 'scroll_l2_deposits_count' ? number :
-Q extends 'scroll_l2_withdrawals' ? ScrollL2MessagesResponse :
-Q extends 'scroll_l2_withdrawals_count' ? number :
 Q extends 'advanced_filter' ? AdvancedFilterResponse :
 Q extends 'advanced_filter_methods' ? AdvancedFilterMethodsResponse :
 Q extends 'pools' ? PoolsResponse :
@@ -1502,10 +1457,66 @@ Q extends 'stats_contracts' ? stats.ContractsPageStats :
 never;
 /* eslint-enable @stylistic/indent */
 
-export type ResourcePayload<Q extends ResourceName> = ResourcePayloadA<Q> | ResourcePayloadB<Q>;
-export type PaginatedResponseItems<Q extends ResourceName> = Q extends PaginatedResources ? ResourcePayloadA<Q>['items'] | ResourcePayloadB<Q>['items'] : never;
+/* eslint-disable @stylistic/indent */
+export type ResourcePayloadRollups<Q extends ResourceName> =
+Q extends 'optimistic_l2_output_roots' ? OptimisticL2OutputRootsResponse :
+Q extends 'optimistic_l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
+Q extends 'optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
+Q extends 'optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
+Q extends 'optimistic_l2_txn_batches_count' ? number :
+Q extends 'optimistic_l2_txn_batch' ? OptimismL2TxnBatch :
+Q extends 'optimistic_l2_txn_batch_celestia' ? OptimismL2TxnBatch :
+Q extends 'optimistic_l2_txn_batch_txs' ? OptimismL2BatchTxs :
+Q extends 'optimistic_l2_txn_batch_blocks' ? OptimismL2BatchBlocks :
+Q extends 'optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
+Q extends 'optimistic_l2_output_roots_count' ? number :
+Q extends 'optimistic_l2_withdrawals_count' ? number :
+Q extends 'optimistic_l2_deposits_count' ? number :
+Q extends 'optimistic_l2_dispute_games_count' ? number :
+Q extends 'shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
+Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
+Q extends 'shibarium_withdrawals_count' ? number :
+Q extends 'shibarium_deposits_count' ? number :
+Q extends 'arbitrum_l2_messages' ? ArbitrumL2MessagesResponse :
+Q extends 'arbitrum_l2_messages_count' ? number :
+Q extends 'arbitrum_l2_txn_batches' ? ArbitrumL2TxnBatchesResponse :
+Q extends 'arbitrum_l2_txn_batches_count' ? number :
+Q extends 'arbitrum_l2_txn_batch' ? ArbitrumL2TxnBatch :
+Q extends 'arbitrum_l2_txn_batch_celestia' ? ArbitrumL2TxnBatch :
+Q extends 'arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
+Q extends 'arbitrum_l2_txn_batch_blocks' ? ArbitrumL2BatchBlocks :
+Q extends 'arbitrum_l2_txn_withdrawals' ? ArbitrumL2TxnWithdrawalsResponse :
+Q extends 'arbitrum_l2_message_claim' ? ArbitrumL2MessageClaimResponse :
+Q extends 'zkevm_l2_deposits' ? ZkEvmL2DepositsResponse :
+Q extends 'zkevm_l2_deposits_count' ? number :
+Q extends 'zkevm_l2_withdrawals' ? ZkEvmL2WithdrawalsResponse :
+Q extends 'zkevm_l2_withdrawals_count' ? number :
+Q extends 'zkevm_l2_txn_batches' ? ZkEvmL2TxnBatchesResponse :
+Q extends 'zkevm_l2_txn_batches_count' ? number :
+Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
+Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
+Q extends 'zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
+Q extends 'zksync_l2_txn_batches_count' ? number :
+Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :
+Q extends 'zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
+Q extends 'scroll_l2_txn_batch_txs' ? ScrollL2TxnBatchTxs :
+Q extends 'scroll_l2_txn_batch_blocks' ? ScrollL2TxnBatchBlocks :
+Q extends 'scroll_l2_txn_batches' ? ScrollL2BatchesResponse :
+Q extends 'scroll_l2_txn_batches_count' ? number :
+Q extends 'scroll_l2_txn_batch' ? ScrollL2TxnBatch :
+Q extends 'scroll_l2_deposits' ? ScrollL2MessagesResponse :
+Q extends 'scroll_l2_deposits_count' ? number :
+Q extends 'scroll_l2_withdrawals' ? ScrollL2MessagesResponse :
+Q extends 'scroll_l2_withdrawals_count' ? number :
+never;
+/* eslint-enable @stylistic/indent */
+
+export type ResourcePayload<Q extends ResourceName> = ResourcePayloadA<Q> | ResourcePayloadB<Q> | ResourcePayloadRollups<Q>;
+export type PaginatedResponseItems<Q extends ResourceName> = Q extends PaginatedResources ?
+  ResourcePayloadA<Q>['items'] | ResourcePayloadB<Q>['items'] | ResourcePayloadRollups<Q>['items'] :
+  never;
 export type PaginatedResponseNextPageParams<Q extends ResourceName> = Q extends PaginatedResources ?
-  ResourcePayloadA<Q>['next_page_params'] | ResourcePayloadB<Q>['next_page_params'] :
+  ResourcePayloadA<Q>['next_page_params'] | ResourcePayloadB<Q>['next_page_params'] | ResourcePayloadRollups<Q>['next_page_params'] :
   never;
 
 /* eslint-disable @stylistic/indent */
