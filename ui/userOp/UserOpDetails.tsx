@@ -18,6 +18,7 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -77,6 +78,20 @@ const UserOpDetails = ({ query }: Props) => {
       <DetailedInfo.ItemValue>
         <AddressStringOrParam address={ data.sender } isLoading={ isPlaceholderData }/>
       </DetailedInfo.ItemValue>
+
+      { data.execute_target && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Target smart contract called by the User operation"
+            isLoading={ isPlaceholderData }
+          >
+            Target
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <AddressEntity address={ data.execute_target } isLoading={ isPlaceholderData }/>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
       <DetailedInfo.ItemLabel
         hint="Current User operation state"

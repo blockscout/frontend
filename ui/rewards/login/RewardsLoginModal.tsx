@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 
+import type { Screen } from 'ui/snippets/auth/types';
+
 import { useRewardsContext } from 'lib/contexts/rewards';
 import useWallet from 'lib/web3/useWallet';
 import { DialogBody, DialogContent, DialogRoot, DialogHeader } from 'toolkit/chakra/dialog';
@@ -24,7 +26,7 @@ const RewardsLoginModal = () => {
 
   const [ isLoginStep, setIsLoginStep ] = React.useState(true);
   const [ isReferral, setIsReferral ] = React.useState(false);
-  const [ isAuth, setIsAuth ] = React.useState(false);
+  const [ authModalInitialScreen, setAuthModalInitialScreen ] = React.useState<Screen>();
   const authModal = useDisclosure();
 
   useEffect(() => {
@@ -49,15 +51,18 @@ const RewardsLoginModal = () => {
     }
   }, [ closeLoginModal, openLoginModal ]);
 
-  const handleAuthModalOpen = useCallback((isAuth: boolean) => {
-    setIsAuth(isAuth);
+  const handleAuthModalOpen = useCallback((isAuth: boolean, trySharedLogin?: boolean) => {
+    setAuthModalInitialScreen({ type: 'connect_wallet', isAuth, loginToRewards: trySharedLogin });
     authModal.onOpen();
-  }, [ authModal, setIsAuth ]);
+  }, [ authModal, setAuthModalInitialScreen ]);
 
-  const handleAuthModalClose = useCallback(() => {
-    setIsAuth(false);
+  const handleAuthModalClose = useCallback((isSuccess?: boolean, rewardsApiToken?: string) => {
+    if (isSuccess && rewardsApiToken) {
+      closeLoginModal();
+    }
+    setAuthModalInitialScreen(undefined);
     authModal.onClose();
-  }, [ authModal, setIsAuth ]);
+  }, [ authModal, setAuthModalInitialScreen, closeLoginModal ]);
 
   return (
     <>
@@ -78,10 +83,10 @@ const RewardsLoginModal = () => {
           </DialogBody>
         </DialogContent>
       </DialogRoot>
-      { authModal.open && (
+      { authModal.open && authModalInitialScreen && (
         <AuthModal
           onClose={ handleAuthModalClose }
-          initialScreen={{ type: 'connect_wallet', isAuth }}
+          initialScreen={ authModalInitialScreen }
           mixpanelConfig={ MIXPANEL_CONFIG }
           closeOnError
         />

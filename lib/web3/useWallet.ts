@@ -7,9 +7,10 @@ import useAccount from 'lib/web3/useAccount';
 
 interface Params {
   source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
+  onConnect?: () => void;
 }
 
-export default function useWeb3Wallet({ source }: Params) {
+export default function useWeb3Wallet({ source, onConnect }: Params) {
   const { open: openModal } = useAppKit();
   const { open: isOpen } = useAppKitState();
   const { disconnect } = useDisconnect();
@@ -35,9 +36,10 @@ export default function useWeb3Wallet({ source }: Params) {
       mixpanel.userProfile.setOnce({
         'With Connected Wallet': true,
       });
+      onConnect?.();
     }
     isConnectionStarted.current = false;
-  }, [ source ]);
+  }, [ source, onConnect ]);
 
   const handleDisconnect = React.useCallback(() => {
     disconnect();

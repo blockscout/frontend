@@ -1,3 +1,4 @@
+import type { AppKitNetwork } from '@reown/appkit/networks';
 import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';
 import { WagmiProvider } from 'wagmi';
@@ -7,7 +8,7 @@ import colors from 'toolkit/theme/foundations/colors';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 import zIndex from 'toolkit/theme/foundations/zIndex';
 import config from 'configs/app';
-import currentChain from 'lib/web3/currentChain';
+import { currentChain, parentChain } from 'lib/web3/chains';
 import wagmiConfig from 'lib/web3/wagmiConfig';
 
 const feature = config.features.blockchainInteraction;
@@ -20,7 +21,7 @@ const init = () => {
 
     createAppKit({
       adapters: [ wagmiConfig.adapter ],
-      networks: [ currentChain ],
+      networks: [ currentChain, parentChain ].filter(Boolean) as [AppKitNetwork, ...Array<AppKitNetwork>],
       metadata: {
         name: `${ config.chain.name } explorer`,
         description: `${ config.chain.name } explorer`,

@@ -21,10 +21,10 @@ import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
+import EntityTagIcon from 'ui/shared/EntityTags/EntityTagIcon';
 import { ADDRESS_REGEXP } from 'ui/shared/forms/validators/address';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
@@ -80,6 +80,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
         );
       }
 
+      case 'metadata_tag':
       case 'contract':
       case 'address': {
         const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
@@ -145,27 +146,18 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
               src={ colorMode === 'dark' && data.app.logoDarkMode ? data.app.logoDarkMode : data.app.logo }
               alt={ `${ data.app.title } app icon` }
             />
-            { data.app.external ? (
-              <LinkExternal
-                href={ data.app.url }
-                fontWeight={ 700 }
-                wordBreak="break-all"
-                isLoading={ isLoading }
-                onClick={ handleLinkClick }
-              >
-                { title }
-              </LinkExternal>
-            ) : (
-              <LinkInternal
-                href={ route({ pathname: '/apps/[id]', query: { id: data.app.id } }) }
-                fontWeight={ 700 }
-                wordBreak="break-all"
-                isLoading={ isLoading }
-                onClick={ handleLinkClick }
-              >
-                { title }
-              </LinkInternal>
-            ) }
+            <LinkInternal
+              href={ data.app.external ?
+                route({ pathname: '/apps', query: { selectedAppId: data.app.id } }) :
+                route({ pathname: '/apps/[id]', query: { id: data.app.id } })
+              }
+              fontWeight={ 700 }
+              wordBreak="break-all"
+              isLoading={ isLoading }
+              onClick={ handleLinkClick }
+            >
+              { title }
+            </LinkInternal>
           </Flex>
         );
       }
@@ -367,27 +359,39 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
           </Text>
         );
       }
+      case 'metadata_tag':
       case 'contract':
       case 'address': {
         const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
         const addressName = data.name || data.ens_info?.name;
         const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
 
-        return addressName ? (
-          <Flex alignItems="center">
-            <Text
-              overflow="hidden"
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
-            >
-              <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(addressName) : highlightText(addressName, searchTerm) }}/>
-              { data.ens_info && (
-                data.ens_info.names_count > 1 ?
-                  <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
-                  <chakra.span color="text_secondary">{ expiresText }</chakra.span>
-              ) }
-            </Text>
-            { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
+        return (addressName || data.type === 'metadata_tag') ? (
+          <Flex alignItems="center" gap={ 2 } justifyContent="space-between" flexWrap="wrap">
+            { addressName && (
+              <Flex alignItems="center">
+                <Text
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(addressName) : highlightText(addressName, searchTerm) }}/>
+                  { data.ens_info && (
+                    data.ens_info.names_count > 1 ?
+                      <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
+                      <chakra.span color="text_secondary">{ expiresText }</chakra.span>
+                  ) }
+                </Text>
+                { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
+              </Flex>
+            ) }
+            { data.type === 'metadata_tag' && (
+            // we show regular tag because we don't need all meta info here, but need to highlight search term
+              <Tag display="flex" alignItems="center">
+                <EntityTagIcon data={ data.metadata }/>
+                <span dangerouslySetInnerHTML={{ __html: highlightText(data.metadata.name, searchTerm) }}/>
+              </Tag>
+            ) }
           </Flex>
         ) :
           null;

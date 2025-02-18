@@ -13,6 +13,10 @@ jobs:
     name: Publish Docker image
     uses: './.github/workflows/publish-image.yml'
     secrets: inherit
+    with:
+      # NOTE: by default the image will be built with type=ref,event=tag; so we don't need to specify it here
+      tags: |
+        type=raw,value=e2e
 
   deploy_e2e:
     name: Deploy E2E instance

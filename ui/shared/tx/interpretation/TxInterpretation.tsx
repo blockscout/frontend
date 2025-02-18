@@ -9,11 +9,16 @@ import type {
   TxInterpretationVariableString,
 } from 'types/api/txInterpretation';
 
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import * as mixpanel from 'lib/mixpanel/index';
 import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -35,6 +40,7 @@ type Props = {
   isLoading?: boolean;
   addressDataMap?: Record<string, AddressParam>;
   className?: string;
+  isNoves?: boolean;
 };
 
 type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>;
@@ -120,7 +126,10 @@ const TxInterpretationElementByType = (
       return <chakra.span>{ numberString + ' ' }</chakra.span>;
     }
     case 'timestamp': {
-      return <chakra.span color="text.secondary" whiteSpace="pre">{ dayjs(Number(value) * 1000).format('MMM DD YYYY') }</chakra.span>;
+      return <chakra.span color="text_secondary" whiteSpace="pre">{ dayjs(Number(value) * 1000).format('MMM DD YYYY') }</chakra.span>;
+    }
+    case 'external_link': {
+      return <Link external href={ value.link }>{ value.name }</Link>;
     }
     case 'method': {
       return (
@@ -135,10 +144,40 @@ const TxInterpretationElementByType = (
         </Badge>
       );
     }
+    case 'dexTag': {
+      const icon = value.app_icon || value.icon;
+      const name = (() => {
+        if (value.app_id && config.features.marketplace.isEnabled) {
+          return (
+            <Link
+              href={ route({ pathname: '/apps/[id]', query: { id: value.app_id } }) }
+            >
+              { value.name }
+            </Link>
+          );
+        }
+        if (value.url) {
+          return (
+            <Link external href={ value.url }>
+              { value.name }
+            </Link>
+          );
+        }
+        return value.name;
+      })();
+
+      return (
+        <chakra.span display="inline-flex" alignItems="center" verticalAlign="top" _notFirst={{ marginLeft: 1 }} gap={ 1 }>
+          { icon && <Image src={ icon } alt={ value.name } width={ 5 } height={ 5 }/> }
+          { name }
+        </chakra.span>
+      );
+    }
   }
 };
 
-const TxInterpretation = ({ summary, isLoading, addressDataMap, className }: Props) => {
+const TxInterpretation = ({ summary, isLoading, addressDataMap, className, isNoves }: Props) => {
+  const novesLogoUrl = useColorModeValue('/static/noves-logo.svg', '/static/noves-logo-dark.svg');
   if (!summary) {
     return null;
   }
@@ -181,6 +220,14 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className }: Pro
           </chakra.span>
         );
       }) }
+      { isNoves && (
+        <Tooltip content="Human readable transaction provided by Noves.fi">
+          <Badge ml={ 2 } verticalAlign="unset" transform="translateY(-2px)">
+            by
+            <Image src={ novesLogoUrl } alt="Noves logo" h="12px" ml={ 1.5 }/>
+          </Badge>
+        </Tooltip>
+      ) }
     </Skeleton>
   );
 };

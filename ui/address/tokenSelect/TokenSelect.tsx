@@ -1,7 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { useQueryClient, useIsFetching } from '@tanstack/react-query';
 import { sumBy } from 'es-toolkit';
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -15,6 +14,7 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
+import NextLink from 'ui/shared/NextLink';
 
 import useFetchTokens from '../utils/useFetchTokens';
 import TokenSelectDesktop from './TokenSelectDesktop';
@@ -66,7 +66,12 @@ const TokenSelect = ({ onClick }: Props) => {
       <Tooltip content="Show all tokens">
         <Box>
           { /* TODO @tom2drum: replace with Link */ }
-          <NextLink href={{ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }} passHref legacyBehavior>
+          <NextLink
+            href={{ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }}
+            passHref
+            legacyBehavior
+            scroll={ false }
+          >
             <IconButton
               aria-label="Show all tokens"
               variant="outline"

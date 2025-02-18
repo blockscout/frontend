@@ -6,6 +6,7 @@ import type { Screen, ScreenSuccess } from './types';
 
 import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
+import { useRewardsContext } from 'lib/contexts/rewards';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
@@ -22,7 +23,7 @@ const feature = config.features.account;
 
 interface Props {
   initialScreen: Screen;
-  onClose: (isSuccess?: boolean) => void;
+  onClose: (isSuccess?: boolean, rewardsApiToken?: string) => void;
   mixpanelConfig?: {
     wallet_connect?: {
       source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
@@ -37,6 +38,9 @@ interface Props {
 const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Props) => {
   const [ steps, setSteps ] = React.useState<Array<Screen>>([ initialScreen ]);
   const [ isSuccess, setIsSuccess ] = React.useState(false);
+  const [ rewardsApiToken, setRewardsApiToken ] = React.useState<string | undefined>(undefined);
+
+  const { saveApiToken } = useRewardsContext();
 
   const router = useRouter();
   const csrfQuery = useGetCsrfToken();
@@ -87,16 +91,22 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
 
     queryClient.setQueryData(getResourceKey('user_info'), () => screen.profile);
     await csrfQuery.refetch();
+
+    if ('rewardsToken' in screen && screen.rewardsToken) {
+      setRewardsApiToken(screen.rewardsToken);
+      saveApiToken(screen.rewardsToken);
+    }
+
     onNextStep(screen);
-  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, csrfQuery, queryClient ]);
+  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, csrfQuery, queryClient, saveApiToken ]);
 
   const onModalClose = React.useCallback(() => {
-    onClose(isSuccess);
-  }, [ isSuccess, onClose ]);
+    onClose(isSuccess, rewardsApiToken);
+  }, [ isSuccess, rewardsApiToken, onClose ]);
 
   const onModalOpenChange = React.useCallback(({ open }: { open: boolean }) => {
-    !open && onClose();
-  }, [ onClose ]);
+    !open && onClose(isSuccess, rewardsApiToken);
+  }, [ onClose, isSuccess, rewardsApiToken ]);
 
   const currentStep = steps[steps.length - 1];
 
@@ -126,6 +136,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
             onSuccess={ onAuthSuccess }
             onError={ onReset }
             isAuth={ currentStep.isAuth }
+            loginToRewards={ currentStep.loginToRewards }
             source={ mixpanelConfig?.wallet_connect?.source }
           />
         );
@@ -157,6 +168,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
             onClose={ onModalClose }
             isAuth={ currentStep.isAuth }
             profile={ currentStep.profile }
+            rewardsToken={ currentStep.rewardsToken }
           />
         );
     }
@@ -175,6 +187,8 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
       modal={ false }
       // FIXME if we allow to close on interact outside, the dialog will be closed when user click on recaptcha
       closeOnInteractOutside={ ![ 'email', 'otp_code' ].includes(currentStep.type) }
+      trapFocus={ false }
+      preventScroll={ false }
     >
       <DialogContent>
         <DialogHeader

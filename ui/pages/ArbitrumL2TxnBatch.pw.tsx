@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { batchData, batchDataAnytrust } from 'mocks/arbitrum/txnBatch';
+import { batchData, batchDataAnytrust, batchDataCelestia } from 'mocks/arbitrum/txnBatch';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
 
@@ -31,6 +31,13 @@ test('with anytrust DA', async({ render, mockApiResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('with celestia DA', async({ render, mockApiResponse }) => {
+  await mockApiResponse('arbitrum_l2_txn_batch', batchDataCelestia, { pathParams: { number: batchNumber } });
+  const component = await render(<ArbitrumL2TxnBatch/>, { hooksConfig });
+  await component.getByText('Show data availability info').click();
+  await expect(component).toHaveScreenshot();
+});
+
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
   test('base view', async({ render, mockApiResponse }) => {
@@ -43,6 +50,14 @@ test.describe('mobile', () => {
     await mockApiResponse('arbitrum_l2_txn_batch', batchDataAnytrust, { pathParams: { number: batchNumber } });
     const component = await render(<ArbitrumL2TxnBatch/>, { hooksConfig });
     await component.getByText('Show data availability info').click();
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('with celestia DA', async({ render, mockApiResponse, page }) => {
+    await mockApiResponse('arbitrum_l2_txn_batch', batchDataCelestia, { pathParams: { number: batchNumber } });
+    const component = await render(<ArbitrumL2TxnBatch/>, { hooksConfig });
+    await component.getByText('Show data availability info').click();
+    await page.mouse.move(0, 0);
     await expect(component).toHaveScreenshot();
   });
 });

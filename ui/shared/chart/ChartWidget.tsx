@@ -1,5 +1,4 @@
 import { chakra, Flex } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import React, { useRef } from 'react';
 
 import type { TimeChartItem } from './types';
@@ -11,6 +10,7 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
+import NextLink from 'ui/shared/NextLink';
 
 import ChartMenu from './ChartMenu';
 import ChartWidgetContent from './ChartWidgetContent';

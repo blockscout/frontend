@@ -9,7 +9,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/404">
     | StaticRoute<"/account/api-key">
     | StaticRoute<"/account/custom-abi">
-    | StaticRoute<"/account/rewards">
+    | StaticRoute<"/account/merits">
     | StaticRoute<"/account/tag-address">
     | StaticRoute<"/account/verified-addresses">
     | StaticRoute<"/account/watchlist">
@@ -32,6 +32,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/apps">
     | StaticRoute<"/auth/profile">
     | DynamicRoute<"/batches/[number]", { "number": string }>
+    | DynamicRoute<"/batches/celestia/[height]/[commitment]", { "height": string; "commitment": string }>
     | StaticRoute<"/batches">
     | DynamicRoute<"/blobs/[hash]", { "hash": string }>
     | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
@@ -46,6 +47,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/gas-tracker">
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
+    | StaticRoute<"/internal-txs">
     | StaticRoute<"/login">
     | StaticRoute<"/mud-worlds">
     | DynamicRoute<"/name-domains/[name]", { "name": string }>
@@ -65,8 +67,10 @@ declare module "nextjs-routes" {
     | StaticRoute<"/token-transfers">
     | StaticRoute<"/tokens">
     | DynamicRoute<"/tx/[hash]", { "hash": string }>
+    | StaticRoute<"/txn-withdrawals">
     | StaticRoute<"/txs">
     | DynamicRoute<"/txs/kettle/[hash]", { "hash": string }>
+    | DynamicRoute<"/validators/[id]", { "id": string }>
     | StaticRoute<"/validators">
     | StaticRoute<"/verified-contracts">
     | StaticRoute<"/visualize/sol2uml">

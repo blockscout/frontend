@@ -4,6 +4,16 @@ Thanks for showing interest to contribute to Blockscout. The following steps wil
 
 &nbsp;
 
+## Our guidelines: what we are looking for
+
+We welcome contributions that enhance the project and improve the overall quality of our codebase. While we appreciate the effort that goes into making contributions, we kindly ask that contributors focus on the following types of changes:
+- **Feature Enhancements:** Substantial improvements or new features that add significant value to the project.
+- **Bug Fixes:** Fixes for known bugs or issues that impact functionality.
+- **Documentation Improvements:** Comprehensive updates to documentation that clarify usage, installation, or project structure.
+- **Performance Improvements:** Changes that enhance the performance or efficiency of the application.
+
+&nbsp;
+
 ## Project setup
 
 1. Fork the repo by clicking <kbd>Fork</kbd> button at the top of the repo main page and name it appropriately

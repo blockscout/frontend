@@ -15,9 +15,10 @@ interface Props {
   onClose: () => void;
   isAuth?: boolean;
   profile: UserInfo | undefined;
+  rewardsToken?: string;
 }
 
-const AuthModalScreenSuccessWallet = ({ address, onAddEmail, onClose, isAuth, profile }: Props) => {
+const AuthModalScreenSuccessWallet = ({ address, onAddEmail, onClose, isAuth, profile, rewardsToken }: Props) => {
   const handleAddEmailClick = React.useCallback(() => {
     onAddEmail({ type: 'email', isAuth: true });
   }, [ onAddEmail ]);
@@ -46,7 +47,8 @@ const AuthModalScreenSuccessWallet = ({ address, onAddEmail, onClose, isAuth, pr
       <Text>
         Wallet{ ' ' }
         <chakra.span fontWeight="700">{ shortenString(address) }</chakra.span>{ ' ' }
-        has been successfully used to log in to your Blockscout account.
+        has been successfully used to log in to your Blockscout account
+        { Boolean(rewardsToken) && ` and Merits Program` }.
       </Text>
       { !profile?.email ? (
         <>

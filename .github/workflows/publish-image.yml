@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
         inputs:
             tags:
-                description: Image tags
+                description: Image tags (e.g. "type=raw,value=foo")
                 required: false
                 type: string
             build_args:
@@ -19,7 +19,7 @@ on:
     workflow_call:
         inputs:
             tags:
-                description: Image tags
+                description: Image tags (e.g. "type=raw,value=foo")
                 required: false
                 type: string
             build_args:
@@ -49,6 +49,11 @@ jobs:
                 uses: docker/metadata-action@v5
                 with:
                     images: ghcr.io/blockscout/frontend
+                    flavor: |
+                        latest=false
+                    tags: |
+                        type=ref,event=tag
+                        ${{ inputs.tags }}
     
             -   name: Login to GitHub Container Registry
                 uses: docker/login-action@v2
@@ -75,7 +80,7 @@ jobs:
                     file: ./Dockerfile
                     push: true
                     cache-from: type=gha
-                    tags: ${{ inputs.tags || steps.meta.outputs.tags }}
+                    tags: ${{ steps.meta.outputs.tags }}
                     platforms: ${{ inputs.platforms }}
                     labels: ${{ steps.meta.outputs.labels }}
                     build-args: |

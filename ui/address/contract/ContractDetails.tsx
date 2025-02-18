@@ -40,7 +40,8 @@ const ContractDetails = ({ addressHash, channel, mainContractQuery }: Props) => 
   const addressInfo = queryClient.getQueryData<AddressInfo>(getResourceKey('address', { pathParams: { hash: addressHash } }));
 
   const sourceItems: Array<AddressImplementation> = React.useMemo(() => {
-    const currentAddressItem = { address: addressHash, name: addressInfo?.name || 'Current contract' };
+    const currentAddressDefaultName = addressInfo?.proxy_type === 'eip7702' ? 'Current address' : 'Current contract';
+    const currentAddressItem = { address: addressHash, name: addressInfo?.name || currentAddressDefaultName };
     if (!addressInfo || !addressInfo.implementations || addressInfo.implementations.length === 0) {
       return [ currentAddressItem ];
     }

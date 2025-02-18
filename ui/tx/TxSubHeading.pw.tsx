@@ -5,6 +5,7 @@ import type { AddressMetadataInfo, AddressMetadataTagApi } from 'types/api/addre
 import config from 'configs/app';
 import * as addressMock from 'mocks/address/address';
 import { protocolTagWithMeta } from 'mocks/metadata/address';
+import { transaction as novesTransaction } from 'mocks/noves/transaction';
 import * as txMock from 'mocks/txs/tx';
 import { txInterpretation } from 'mocks/txs/txInterpretation';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
@@ -141,6 +142,18 @@ test.describe('blockscout provider', () => {
     } as TxQuery;
     await mockApiResponse('tx_interpretation', { data: { summaries: [] } }, { pathParams: { hash } });
     const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txPendingQuery }/>);
+    await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe('noves provider', () => {
+  test.beforeEach(async({ mockEnvs }) => {
+    await mockEnvs([ [ 'NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER', 'noves' ] ]);
+  });
+
+  test('with interpretation +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
+    await mockApiResponse('noves_transaction', novesTransaction, { pathParams: { hash } });
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>);
     await expect(component).toHaveScreenshot();
   });
 });

@@ -14,7 +14,7 @@ const TxEntityL1 = (props: TxEntity.EntityProps) => {
     return null;
   }
 
-  const defaultHref = rollupFeature.L1BaseUrl + route({
+  const defaultHref = rollupFeature.parentChain.baseUrl + route({
     pathname: '/tx/[hash]',
     query: { hash: props.hash },
   });

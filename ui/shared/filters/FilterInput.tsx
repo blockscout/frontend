@@ -10,6 +10,8 @@ import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends Omit<SkeletonProps, 'onChange' | 'loading'> {
   onChange?: (searchTerm: string) => void;
+  onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   loading?: boolean;
   size?: 'sm' | 'md' | 'lg';
   placeholder: string;
@@ -18,7 +20,7 @@ interface Props extends Omit<SkeletonProps, 'onChange' | 'loading'> {
   name?: string;
 };
 
-const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, name, loading = false, ...rest }: Props) => {
+const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, name, loading = false, onFocus, onBlur, ...rest }: Props) => {
   const [ filterQuery, setFilterQuery ] = useState(initialValue || '');
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -57,6 +59,8 @@ const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, n
           size={ size }
           value={ filterQuery }
           onChange={ handleFilterQueryChange }
+          onFocus={ onFocus }
+          onBlur={ onBlur }
           placeholder={ placeholder }
           borderWidth="2px"
           textOverflow="ellipsis"

@@ -13,7 +13,7 @@ type FilterProps = {
 type Props = {
   isError: boolean;
   itemsNum?: number;
-  emptyText: React.ReactNode;
+  emptyText?: React.ReactNode;
   actionBar?: React.ReactNode;
   showActionBarIfEmpty?: boolean;
   children: React.ReactNode;

@@ -45,7 +45,7 @@ export type Transaction = {
   max_priority_fee_per_gas: string | null;
   priority_fee: string | null;
   base_fee_per_gas: string | null;
-  tx_burnt_fee: string | null;
+  transaction_burnt_fee: string | null;
   nonce: number;
   position: number | null;
   revert_reason: TransactionRevertReason | null;
@@ -105,6 +105,8 @@ export type Transaction = {
   translation?: NovesTxTranslation;
   arbitrum?: ArbitrumTransactionData;
   scroll?: ScrollTransactionData;
+  // EIP-7702
+  authorization_list?: Array<TxAuthorization>;
 };
 
 type ArbitrumTransactionData = {
@@ -119,11 +121,11 @@ type ArbitrumTransactionData = {
   status: ArbitrumBatchStatus;
   message_related_info: {
     associated_l1_transaction: string | null;
-    message_status: ArbitrumMessageStatus;
+    message_status: ArbitrumTransactionMessageStatus;
   };
 };
 
-export type ArbitrumMessageStatus = 'Relayed' | 'Syncing with base layer' | 'Waiting for confirmation' | 'Ready for relay' | 'Settlement pending';
+export type ArbitrumTransactionMessageStatus = 'Relayed' | 'Syncing with base layer' | 'Waiting for confirmation' | 'Ready for relay' | 'Settlement pending';
 
 export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];
 
@@ -206,3 +208,10 @@ export type ScrollTransactionData = {
   l2_block_status: ScrollL2BlockStatus;
   queue_index: number;
 };
+
+export interface TxAuthorization {
+  address: string;
+  authority: string;
+  chain_id: number;
+  nonce: number;
+}

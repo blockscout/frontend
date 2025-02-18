@@ -3,14 +3,12 @@ import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
-import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOCK } from 'stubs/block';
-import { L2_TXN_BATCH } from 'stubs/L2';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import BlocksContent from 'ui/blocks/BlocksContent';
@@ -21,6 +19,7 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import OptimisticL2TxnBatchDetails from 'ui/txnBatches/optimisticL2/OptimisticL2TxnBatchDetails';
+import useBatchQuery from 'ui/txnBatches/optimisticL2/useBatchQuery';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
@@ -35,20 +34,16 @@ const OptimisticL2TxnBatch = () => {
   const router = useRouter();
   const appProps = useAppContext();
   const number = getQueryParamString(router.query.number);
+  const height = getQueryParamString(router.query.height);
+  const commitment = getQueryParamString(router.query.commitment);
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
 
-  const batchQuery = useApiQuery('optimistic_l2_txn_batch', {
-    pathParams: { number },
-    queryOptions: {
-      enabled: Boolean(number),
-      placeholderData: L2_TXN_BATCH,
-    },
-  });
+  const batchQuery = useBatchQuery();
 
   const batchTxsQuery = useQueryWithPages({
     resourceName: 'optimistic_l2_txn_batch_txs',
-    pathParams: { number },
+    pathParams: { number: String(batchQuery.data?.internal_id) },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.internal_id && tab === 'txs'),
       placeholderData: generateListStub<'optimistic_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
@@ -61,7 +56,7 @@ const OptimisticL2TxnBatch = () => {
 
   const batchBlocksQuery = useQueryWithPages({
     resourceName: 'optimistic_l2_txn_batch_blocks',
-    pathParams: { number },
+    pathParams: { number: String(batchQuery.data?.internal_id) },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.internal_id && tab === 'blocks'),
       placeholderData: generateListStub<'optimistic_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
@@ -71,7 +66,7 @@ const OptimisticL2TxnBatch = () => {
     },
   });
 
-  throwOnAbsentParamError(number);
+  throwOnAbsentParamError(number || (height && commitment));
   throwOnResourceLoadError(batchQuery);
 
   let pagination;
@@ -115,8 +110,9 @@ const OptimisticL2TxnBatch = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `Batch #${ number }` }
+        title={ `Batch #${ batchQuery.data?.internal_id }` }
         backLink={ backLink }
+        isLoading={ batchQuery.isPlaceholderData }
       />
       { batchQuery.isPlaceholderData ?
         <TabsSkeleton tabs={ tabs }/> : (

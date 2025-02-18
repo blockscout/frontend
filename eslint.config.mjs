@@ -42,6 +42,11 @@ const RESTRICTED_MODULES = {
       ],
       message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
     },
+    {
+      name: 'next/link',
+      importNames: [ 'default' ],
+      message: 'Please use ui/shared/NextLink component instead',
+    },
   ],
   patterns: [
     'icons/*',

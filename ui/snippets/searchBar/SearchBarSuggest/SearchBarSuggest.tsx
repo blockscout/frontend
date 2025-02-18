@@ -150,7 +150,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     return (
       <>
         { resultCategories.length > 1 && (
-          <Box position="sticky" top="0" width="100%" background={{ _light: 'white', _dark: 'gray.900' }} py={ 5 } my={ -5 } ref={ tabsRef }>
+          <Box position="sticky" top="0" width="100%" background={{ _light: 'white', _dark: 'gray.900' }} py={ 5 } my={ -5 } ref={ tabsRef } zIndex={ 1 }>
             <Tabs.Root
               variant="secondary"
               size="sm"

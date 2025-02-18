@@ -21,10 +21,13 @@ on:
             - eth_sepolia
             - eth_goerli
             - filecoin
+            - mekong
+            - neon_devnet
             - optimism
             - optimism_celestia
             - optimism_sepolia
             - polygon
+            - rari_testnet
             - rootstock
             - shibarium
             - scroll_sepolia
@@ -53,7 +56,8 @@ jobs:
     needs: make_slug
     uses: './.github/workflows/publish-image.yml'
     with:
-        tags: ghcr.io/blockscout/frontend:review-${{ needs.make_slug.outputs.REF_SLUG }}
+        tags: |
+          type=raw,value=review-${{ needs.make_slug.outputs.REF_SLUG }}
         build_args: ENVS_PRESET=${{ inputs.envs_preset }}
     secrets: inherit
 

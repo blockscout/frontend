@@ -2,9 +2,10 @@ import React from 'react';
 
 import { SECOND } from 'lib/consts';
 
-import { growthBook } from './init';
+import { initGrowthBook } from './init';
 
-export default function useLoadFeatures() {
+export default function useLoadFeatures(uuid: string) {
+  const growthBook = initGrowthBook(uuid);
   React.useEffect(() => {
     growthBook?.setAttributes({
       ...growthBook.getAttributes(),
@@ -13,5 +14,5 @@ export default function useLoadFeatures() {
     });
 
     growthBook?.loadFeatures({ timeout: SECOND });
-  }, []);
+  }, [ growthBook ]);
 }

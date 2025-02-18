@@ -14,7 +14,7 @@ import * as mixpanel from 'lib/mixpanel';
 const PROTECTED_ROUTES: Array<Route['pathname']> = [
   '/account/api-key',
   '/account/custom-abi',
-  '/account/rewards',
+  '/account/merits',
   '/account/tag-address',
   '/account/verified-addresses',
   '/account/watchlist',

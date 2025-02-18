@@ -158,6 +158,16 @@ function printDeprecationWarning(envsMap: Record<string, string>) {
   }
 
   if (
+    envsMap.NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME ||
+    envsMap.NEXT_PUBLIC_ROLLUP_L1_BASE_URL
+  ) {
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗');
+    // eslint-disable-next-line max-len
+    console.warn('The NEXT_PUBLIC_ROLLUP_L1_BASE_URL and NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME variables are now deprecated and will be removed in the next release. Please migrate to the NEXT_PUBLIC_ROLLUP_PARENT_CHAIN variable.');
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗\n');
+  }
+
+  if (
     envsMap.NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR ||
     envsMap.NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND
   ) {

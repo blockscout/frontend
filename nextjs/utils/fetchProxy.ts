@@ -7,20 +7,20 @@ import nodeFetch from 'node-fetch';
 
 import { httpLogger } from 'nextjs/utils/logger';
 
-import * as cookies from 'lib/cookies';
-
 export default function fetchFactory(
   _req: NextApiRequest | (IncomingMessage & { cookies: NextApiRequestCookies }),
 ) {
   // first arg can be only a string
   // FIXME migrate to RequestInfo later if needed
   return function fetch(url: string, init?: RequestInit): Promise<Response> {
-    const apiToken = _req.cookies[cookies.NAMES.API_TOKEN];
+    const cookie = Object.entries(_req.cookies)
+      .map(([ key, value ]) => `${ key }=${ value }`)
+      .join('; ');
 
     const headers = {
       accept: _req.headers['accept'] || 'application/json',
       'content-type': _req.headers['content-type'] || 'application/json',
-      cookie: apiToken ? `${ cookies.NAMES.API_TOKEN }=${ apiToken }` : '',
+      cookie,
       ...pick(_req.headers, [
         'x-csrf-token',
         'Authorization', // the old value, just in case

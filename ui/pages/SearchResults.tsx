@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
 
+import { SEARCH_RESULT_TYPES } from 'types/api/search';
 import type { SearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
@@ -95,6 +96,9 @@ const SearchResultsPageContent = () => {
 
   const displayedItems: Array<SearchResultItem | SearchResultAppItem> = React.useMemo(() => {
     const apiData = (data?.items || []).filter((item) => {
+      if (!SEARCH_RESULT_TYPES[item.type]) {
+        return false;
+      }
       if (!config.features.userOps.isEnabled && item.type === 'user_operation') {
         return false;
       }

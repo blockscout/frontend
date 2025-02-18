@@ -60,6 +60,12 @@ export const withoutName: AddressParam = {
   ens_domain_name: null,
 };
 
+export const delegated: AddressParam = {
+  ...withoutName,
+  is_verified: true,
+  proxy_type: 'eip7702',
+};
+
 export const token: Address = {
   hash: hash,
   implementations: null,

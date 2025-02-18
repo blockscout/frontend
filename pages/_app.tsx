@@ -14,7 +14,7 @@ import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
 import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { SettingsContextProvider } from 'lib/contexts/settings';
-import { growthBook } from 'lib/growthbook/init';
+import { initGrowthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
 import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
@@ -56,10 +56,11 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   React.useEffect(() => {
     setMounted(true);
   }, []);
-
-  useLoadFeatures();
+  
+  useLoadFeatures(pageProps.uuid);
   useNotifyOnNavigation();
 
+  const growthBook = initGrowthBook(pageProps.uuid);
   const queryClient = useQueryClientConfig();
 
   if (!mounted) {

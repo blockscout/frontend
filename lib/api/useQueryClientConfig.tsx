@@ -20,10 +20,26 @@ export default function useQueryClientConfig() {
       queries: {
         refetchOnWindowFocus: false,
         retry,
-        throwOnError: (error) => {
+        throwOnError: (error, query) => {
           const status = getErrorObjStatusCode(error);
-          // don't catch error for "Too many requests" response
-          return status === 429;
+
+          // we don't catch error only for "Too many requests" response
+          if (status !== 429) {
+            return false;
+          }
+
+          const EXTERNAL_API_RESOURCES = [
+            'safe_transaction_api',
+            'contract_solidity_scan_report',
+            'address_xstar_score',
+            'noves_transaction',
+            'noves_address_history',
+            'noves_describe_txs',
+            'gas_hawk_saving_potential',
+          ];
+          const isExternalApiResource = EXTERNAL_API_RESOURCES.some((resource) => query.queryKey[0] === resource);
+
+          return !isExternalApiResource;
         },
       },
     },

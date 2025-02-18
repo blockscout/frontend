@@ -1,5 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
@@ -9,8 +9,10 @@ import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
 import IconSvg from 'ui/shared/IconSvg';
 
-import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
+// TODO @tom2drum: remove NextLink
+import NextLink from 'ui/shared/NextLink';
 
+import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 interface Props {
   data: MarketplaceAppOverview;
   isMobile: boolean | undefined;
@@ -19,7 +21,7 @@ interface Props {
 }
 
 const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => {
-
+  const router = useRouter();
   const logo = (
     <Image
       borderRadius="base"
@@ -98,9 +100,22 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
 
   if (data.external) {
     return (
-      <SearchBarSuggestItemLink onClick={ onClick } href={ data.url } target="_blank">
-        { content }
-      </SearchBarSuggestItemLink>
+      <NextLink
+        href={{
+          pathname: '/apps',
+          query: {
+            selectedAppId: data.id,
+          },
+        }}
+        passHref
+        shallow={ router.pathname === '/apps' }
+        legacyBehavior
+      >
+        <SearchBarSuggestItemLink onClick={ onClick }>
+          { content }
+        </SearchBarSuggestItemLink>
+      </NextLink>
+
     );
   }
 
