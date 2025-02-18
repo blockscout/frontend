@@ -14,7 +14,6 @@
     "build": "next build",
     "build:next": "./deploy/scripts/download_assets.sh ./public/assets/configs && yarn svg:build-sprite && ./deploy/scripts/make_envs_script.sh && next build",
     "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t blockscout-frontend:local ./",
-    "pages:build": "npx @cloudflare/next-on-pages",
     "start:docker:local": "docker run -p 3000:3000 --env-file .env.local blockscout-frontend:local",
     "start:docker:preset": "./tools/scripts/docker.preset.sh",
     "lint:eslint": "eslint .",
