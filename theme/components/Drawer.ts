@@ -27,7 +27,7 @@ const baseStyleDialog = defineStyle((props) => {
     ...transitionProps,
     zIndex: 'modal',
     maxH: '100vh',
-    bg: mode('white', 'gray.900')(props),
+    bg: mode('white', '#1a1a1a')(props),
     color: 'inherit',
     boxShadow: mode('lg', 'dark-lg')(props),
   };

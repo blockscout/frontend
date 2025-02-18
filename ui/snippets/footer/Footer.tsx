@@ -83,7 +83,7 @@ const Footer = () => {
                 .map(linkGroup => (
                   <Box key={ linkGroup.title }>
                     <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" isLoaded={ !isPlaceholderData }>{ linkGroup.title }</Skeleton>
-                    <VStack spacing={ 1 } alignItems="start">
+                    <VStack spacing={ 1 } alignItems="start" flexDirection={{ lg: 'row', sm: 'column', xs: 'column' }}>
                       { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text } isLoading={ isPlaceholderData }/>) }
                     </VStack>
                   </Box>
@@ -116,6 +116,7 @@ const Footer = () => {
           justifyContent={{ lg: 'flex-end' }}
           gap={ 8 }
           mt={{ base: 8, lg: 0 }}
+          flexDirection={{ lg: 'row', sm: 'column', xs: 'column' }}
         >
           { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
         </Grid>
