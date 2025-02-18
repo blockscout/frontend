@@ -15,12 +15,18 @@ export const recipe = defineRecipe({
     '& svg': {
       boxSize: 'auto',
     },
+    _loading: {
+      bgColor: 'unset',
+    },
   },
   variants: {
     variant: {
       solid: {
         bg: 'blue.600',
         color: 'white',
+        '&:not([data-loading-skeleton])': {
+          bgColor: 'blue.600',
+        },
         _hover: {
           bg: 'blue.400',
         },
@@ -34,11 +40,14 @@ export const recipe = defineRecipe({
         },
       },
       outline: {
-        borderWidth: '2px',
+        borderWidth: '0px',
         borderStyle: 'solid',
         bg: 'transparent',
         color: 'button.outline.fg',
         borderColor: 'button.outline.fg',
+        '&:not([data-loading-skeleton])': {
+          borderWidth: '2px',
+        },
         _hover: {
           bg: 'transparent',
           color: 'blue.400',
@@ -46,11 +55,14 @@ export const recipe = defineRecipe({
         },
       },
       dropdown: {
-        borderWidth: '2px',
+        borderWidth: '0px',
         borderStyle: 'solid',
         bg: 'transparent',
         color: 'button.dropdown.fg',
         borderColor: 'button.dropdown.border',
+        '&:not([data-loading-skeleton])': {
+          borderWidth: '2px',
+        },
         _hover: {
           bg: 'transparent',
           color: 'blue.400',
@@ -111,6 +123,9 @@ export const recipe = defineRecipe({
       hero: {
         bg: 'button.hero.bg',
         color: 'button.hero.fg',
+        '&:not([data-loading-skeleton])': {
+          bg: 'button.hero.bg',
+        },
         _loading: {
           '& .chakra-spinner': {
             borderColor: 'white',
@@ -172,7 +187,7 @@ export const recipe = defineRecipe({
       subtle: {
         bg: 'button.subtle.bg',
         color: 'button.subtle.fg',
-        '&:not([data-loading], [aria-busy=true])': {
+        '&:not([data-loading-skeleton])': {
           bg: 'button.subtle.bg',
         },
         _hover: {

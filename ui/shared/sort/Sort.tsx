@@ -21,7 +21,7 @@ const Sort = (props: Props) => {
       return (
         <SelectControl { ...controlProps } triggerProps={{ asChild: true }} noIndicator>
           <IconButton
-            loading={ isLoading }
+            loadingSkeleton={ isLoading }
             aria-label="sort"
             size="sm"
             variant="outline"

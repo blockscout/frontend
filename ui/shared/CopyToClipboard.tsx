@@ -61,7 +61,7 @@ const CopyToClipboard = (props: Props) => {
         onClick={ handleClick }
         ml={ 2 }
         borderRadius="sm"
-        loading={ isLoading }
+        loadingSkeleton={ isLoading }
         color="icon.info"
         _hover={{ color: 'link.primary.hover' }}
         { ...rest }

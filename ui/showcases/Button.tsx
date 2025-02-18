@@ -11,7 +11,6 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
-// ?? buttons on marketplace card
 const ButtonShowcase = () => {
   return (
     <Container value="button">
@@ -186,6 +185,10 @@ const ButtonShowcase = () => {
             <Button variant="subtle" size="xs" disabled>Disabled: Now+1h</Button>
           </Sample>
 
+          <Sample label="variant: ??? marketplace card???">
+            TBD
+          </Sample>
+
           <Sample label="variant: plain">
             <Button variant="plain">Default</Button>
             <Button variant="plain" data-hover>Hovered</Button>
@@ -202,6 +205,12 @@ const ButtonShowcase = () => {
           </Sample>
           <Sample label="loading: true, loadingText: undefined">
             <Button loading>Content</Button>
+          </Sample>
+          <Sample label="loadingSkeleton: true">
+            <Button loadingSkeleton>Content</Button>
+            <Button loadingSkeleton variant="outline">Content</Button>
+            <Button loadingSkeleton variant="dropdown">Content</Button>
+            <Button loadingSkeleton variant="subtle">Content</Button>
           </Sample>
         </SamplesStack>
       </Section>

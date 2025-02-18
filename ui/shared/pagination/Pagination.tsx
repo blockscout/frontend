@@ -43,7 +43,7 @@ const Pagination = (props: Props) => {
         size="sm"
         onClick={ onPrevPageClick }
         disabled={ !canGoBackwards || isLoading || page === 1 }
-        loading={ showSkeleton }
+        loadingSkeleton={ showSkeleton }
       >
         <IconSvg name="arrows/east-mini" boxSize={ 5 }/>
       </IconButton>
@@ -71,7 +71,7 @@ const Pagination = (props: Props) => {
         size="sm"
         onClick={ onNextPageClick }
         disabled={ !hasNextPage || isLoading }
-        loading={ showSkeleton }
+        loadingSkeleton={ showSkeleton }
       >
         <IconSvg name="arrows/east-mini" boxSize={ 5 } transform="rotate(180deg)"/>
       </IconButton>

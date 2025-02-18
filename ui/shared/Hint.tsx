@@ -26,7 +26,7 @@ const Hint = ({ label, className, tooltipProps, isLoading, as }: Props) => {
         aria-label="hint"
         boxSize={ 5 }
         className={ className }
-        loading={ isLoading }
+        loadingSkeleton={ isLoading }
         borderRadius="sm"
         as={ as }
       >

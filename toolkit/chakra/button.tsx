@@ -13,6 +13,7 @@ import { Skeleton } from './skeleton';
 interface ButtonLoadingProps {
   loading?: boolean;
   loadingText?: React.ReactNode;
+  loadingSkeleton?: boolean;
 }
 
 export interface ButtonProps extends ChakraButtonProps, ButtonLoadingProps {
@@ -23,7 +24,7 @@ export interface ButtonProps extends ChakraButtonProps, ButtonLoadingProps {
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(props, ref) {
-    const { loading, disabled, loadingText, children, expanded, selected, highlighted, ...rest } = props;
+    const { loading, disabled, loadingText, children, expanded, selected, highlighted, loadingSkeleton = false, ...rest } = props;
 
     const content = (() => {
       if (loading && !loadingText) {
@@ -50,17 +51,20 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     })();
 
     return (
-      <ChakraButton
-        { ...(expanded ? { 'data-expanded': true } : {}) }
-        { ...(selected ? { 'data-selected': true } : {}) }
-        { ...(highlighted ? { 'data-highlighted': true } : {}) }
-        { ...(loading ? { 'data-loading': true } : {}) }
-        disabled={ loading || disabled }
-        ref={ ref }
-        { ...rest }
-      >
-        { content }
-      </ChakraButton>
+      <Skeleton loading={ loadingSkeleton } asChild>
+        <ChakraButton
+          { ...(expanded ? { 'data-expanded': true } : {}) }
+          { ...(selected ? { 'data-selected': true } : {}) }
+          { ...(highlighted ? { 'data-highlighted': true } : {}) }
+          { ...(loading ? { 'data-loading': true } : {}) }
+          { ...(loadingSkeleton ? { 'data-loading-skeleton': true } : {}) }
+          disabled={ !loadingSkeleton && (loading || disabled) }
+          ref={ ref }
+          { ...rest }
+        >
+          { content }
+        </ChakraButton>
+      </Skeleton>
     );
   },
 );

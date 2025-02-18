@@ -10,7 +10,7 @@ interface Props {
   className?: string;
 }
 
-const NetworkMenuButton = ({ isActive, onClick, className, ...rest }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
+const NetworkMenuButton = ({ isActive, onClick, className, ...rest }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   return (
     <IconButton
       className={ className }

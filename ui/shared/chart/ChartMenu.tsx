@@ -119,7 +119,7 @@ const ChartMenu = ({
     <>
       <MenuRoot>
         <MenuTrigger asChild>
-          <IconButton variant="dropdown" size="sm" aria-label="Open chart options menu" loading={ isLoading } borderRadius="base" borderWidth="0">
+          <IconButton variant="dropdown" size="sm" aria-label="Open chart options menu" loadingSkeleton={ isLoading } borderRadius="base" borderWidth="0">
             <IconSvg name="dots" boxSize={ 4 } transform="rotate(-90deg)"/>
           </IconButton>
         </MenuTrigger>

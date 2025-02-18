@@ -10,6 +10,8 @@ interface Props {
 }
 
 const AdditionalInfoButton = (props: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+  const { loading, ...rest } = props;
+
   return (
     <IconButton
       ref={ ref }
@@ -22,7 +24,8 @@ const AdditionalInfoButton = (props: Props, ref: React.ForwardedRef<HTMLButtonEl
       borderRadius="base"
       aria-label="Transaction info"
       boxSize={ 6 }
-      { ...props }
+      loadingSkeleton={ loading }
+      { ...rest }
     >
       <IconSvg name="info" boxSize={ 5 }/>
     </IconButton>
