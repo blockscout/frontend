@@ -52,8 +52,14 @@ export const recipe = defineRecipe({
       outline: {
         bg: 'input.bg',
         borderWidth: '2px',
-        borderColor: 'input.border',
+        borderColor: 'input.border.filled',
         focusVisibleRing: 'none',
+        _placeholder: {
+          color: 'input.placeholder',
+        },
+        _placeholderShown: {
+          borderColor: 'input.border',
+        },
         _hover: {
           borderColor: 'input.border.hover',
         },

@@ -27,6 +27,8 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
         size: props.size,
         floating: props.floating,
         bgColor: rest.bgColor,
+        disabled: rest.disabled,
+        readOnly: rest.readOnly,
       };
 
       const labelElement = (

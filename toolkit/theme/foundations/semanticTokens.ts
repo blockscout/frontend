@@ -232,6 +232,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
         error: { value: '{colors.red.500}' },
       },
+      placeholder: { value: '{colors.gray.500}' },
     },
     field: {
       placeholder: {

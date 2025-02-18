@@ -52,7 +52,7 @@ export const recipe = defineSlotRecipe({
           bg: 'bg',
           top: '2px',
           left: '2px',
-          color: 'gray.500',
+          color: 'input.placeholder',
           width: 'calc(100% - 4px)',
           borderRadius: 'base',
           pointerEvents: 'none',
