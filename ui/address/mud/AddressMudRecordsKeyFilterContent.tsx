@@ -21,9 +21,10 @@ const AddressMudRecordsKeyFilter = ({ value = '', handleFilterChange, columnName
   return (
     <TableColumnFilter
       title={ title }
-      isFilled={ filterValue !== value }
+      isFilled={ Boolean(filterValue) }
       onFilter={ onFilter }
       onClose={ onClose }
+      isTouched={ filterValue !== value }
     >
       <FilterInput
         initialValue={ value }
