@@ -95,7 +95,7 @@ export const TOKEN_INFO_APPLICATION_BASE = {
   linkedin: 'https://linkedin.com',
   discord: 'https://discord.com',
   slack: 'https://slack.com',
-  twitter: 'https://twitter.com',
+  twitter: 'https://x.com',
   openSea: 'https://opensea.com',
   facebook: 'https://facebook.com',
   medium: 'https://medium.com',
