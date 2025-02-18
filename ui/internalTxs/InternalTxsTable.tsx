@@ -1,11 +1,10 @@
-import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { currencyUnits } from 'lib/units';
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import InternalTxsTableItem from './InternalTxsTableItem';
 
@@ -18,19 +17,19 @@ interface Props {
 const InternalTxsTable = ({ data, currentAddress, isLoading }: Props) => {
   return (
     <AddressHighlightProvider>
-      <Table>
-        <Thead top={ 68 }>
-          <Tr>
-            <Th width="15%">Parent txn hash</Th>
-            <Th width="15%">Type</Th>
-            <Th width="10%">Block</Th>
-            <Th width="40%">From/To</Th>
-            <Th width="20%" isNumeric>
+      <TableRoot>
+        <TableHeaderSticky top={ 68 }>
+          <TableRow>
+            <TableColumnHeader width="15%">Parent txn hash</TableColumnHeader>
+            <TableColumnHeader width="15%">Type</TableColumnHeader>
+            <TableColumnHeader width="10%">Block</TableColumnHeader>
+            <TableColumnHeader width="40%">From/To</TableColumnHeader>
+            <TableColumnHeader width="20%" isNumeric>
               Value { currencyUnits.ether }
-            </Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+            </TableColumnHeader>
+          </TableRow>
+        </TableHeaderSticky>
+        <TableBody>
           { data.map((item, index) => (
             <InternalTxsTableItem
               key={ item.transaction_hash + '_' + index }
@@ -39,8 +38,8 @@ const InternalTxsTable = ({ data, currentAddress, isLoading }: Props) => {
               isLoading={ isLoading }
             />
           )) }
-        </Tbody>
-      </Table>
+        </TableBody>
+      </TableRoot>
     </AddressHighlightProvider>
 
   );

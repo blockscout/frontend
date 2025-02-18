@@ -201,12 +201,12 @@ const AddressPageContent = () => {
         component: <AddressTokens shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         subTabs: TOKEN_TABS,
       },
-      // {
-      //   id: 'internal_txns',
-      //   title: 'Internal txns',
-      //   count: addressTabsCountersQuery.data?.internal_transactions_count,
-      //   component: <AddressInternalTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      // },
+      {
+        id: 'internal_txns',
+        title: 'Internal txns',
+        count: addressTabsCountersQuery.data?.internal_transactions_count,
+        component: <AddressInternalTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      },
       addressTabsCountersQuery.data?.celo_election_rewards_count ? {
         id: 'epoch_rewards',
         title: 'Epoch rewards',

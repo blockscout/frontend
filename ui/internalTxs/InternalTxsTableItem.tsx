@@ -1,13 +1,14 @@
-import { Tr, Td, Box, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import config from 'configs/app';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
@@ -34,8 +35,8 @@ const InternalTxsTableItem = ({
   const toData = to ? to : createdContract;
 
   return (
-    <Tr alignItems="top">
-      <Td verticalAlign="middle">
+    <TableRow alignItems="top">
+      <TableCell verticalAlign="middle">
         <Flex rowGap={ 3 } flexDir="column">
           <TxEntity
             hash={ txnHash }
@@ -53,41 +54,38 @@ const InternalTxsTableItem = ({
             fontSize="sm"
           />
         </Flex>
-      </Td>
-      <Td verticalAlign="middle">
-        <Flex rowGap={ 2 } flexWrap="wrap">
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <Flex rowGap={ 3 } flexDir="column">
           { typeTitle && (
-            <Box w="126px" display="inline-block">
-              <Tag colorScheme="cyan" mr={ 5 } isLoading={ isLoading }>{ typeTitle }</Tag>
-            </Box>
+            <Badge colorPalette="cyan" loading={ isLoading }>{ typeTitle }</Badge>
           ) }
           <TxStatus status={ success ? 'ok' : 'error' } errorText={ error } isLoading={ isLoading }/>
         </Flex>
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <BlockEntity
           isLoading={ isLoading }
           number={ blockNumber }
           noIcon
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           fontWeight={ 500 }
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <AddressFromTo
           from={ from }
           to={ toData }
           current={ currentAddress }
           isLoading={ isLoading }
         />
-      </Td>
-      <Td isNumeric verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block" minW={ 6 }>
+      </TableCell>
+      <TableCell isNumeric verticalAlign="middle">
+        <Skeleton loading={ isLoading } display="inline-block" minW={ 6 }>
           { BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
         </Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 
