@@ -90,7 +90,7 @@ const Icon = (props: IconProps) => {
   })();
 
   return (
-    <Tooltip label={ label }>
+    <Tooltip content={ label }>
       <Flex marginRight={ styles.marginRight } position="relative">
         <AddressIdenticon
           size={ props.size === 'lg' ? 30 : 20 }
