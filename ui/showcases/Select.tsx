@@ -22,6 +22,8 @@ const txSortingOptions = createListCollection({
   items: SORT_OPTIONS,
 });
 
+// TODO @tom2drum + tanya: select with search
+
 const SelectShowcase = () => {
   const [ hasActiveFilter, setHasActiveFilter ] = React.useState(false);
 

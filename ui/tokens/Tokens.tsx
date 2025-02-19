@@ -1,4 +1,4 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokensSortingValue } from 'types/api/tokens';
@@ -13,8 +13,8 @@ import TokensTable from './TokensTable';
 
 interface Props {
   query: QueryWithPagesResult<'tokens'> | QueryWithPagesResult<'tokens_bridged'>;
-  onSortChange: () => void;
-  sort: TokensSortingValue | undefined;
+  onSortChange: (value: TokensSortingValue) => void;
+  sort: TokensSortingValue;
   actionBar?: React.ReactNode;
   hasActiveFilters: boolean;
   description?: React.ReactNode;
@@ -31,7 +31,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         { description }
         { data.items.map((item, index) => (
           <TokensListItem
@@ -42,8 +42,8 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
             isLoading={ isPlaceholderData }
           />
         )) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         { description }
         <TokensTable
           items={ data.items }
@@ -53,22 +53,23 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
           sorting={ sort }
           top={ tableTop }
         />
-      </Hide>
+      </Box>
     </>
   ) : null;
 
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items.length }
       emptyText="There are no tokens."
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find token that matches your filter query.`,
         hasActiveFilters,
       }}
-      content={ content }
       actionBar={ query.pagination.isVisible || hasActiveFilters ? actionBar : null }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 
