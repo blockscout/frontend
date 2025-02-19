@@ -74,7 +74,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, shouldRender = tru
       <Box display={{ base: 'none', lg: 'block' }}>
         <TokenTransferTable
           data={ data?.items }
-          top={ pagination.isVisible ? TABS_HEIGHT : 0 }
+          top={ TABS_HEIGHT }
           showSocketInfo={ pagination.page === 1 }
           socketInfoAlert={ socketAlert }
           socketInfoNum={ newItemsCount }
@@ -107,11 +107,12 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, shouldRender = tru
   return (
     <DataListDisplay
       isError={ isError || isTokenError }
-      items={ data?.items }
+      itemsNum={ data?.items.length }
       emptyText="There are no token transfers."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

@@ -1,8 +1,8 @@
-import { Link } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenVerifiedInfo } from 'types/api/token';
 
+import { Link } from 'toolkit/chakra/link';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -23,7 +23,7 @@ const ServiceLink = ({ href, title, icon }: Props) => {
       display="inline-flex"
       alignItems="center"
     >
-      <IconSvg name={ icon } boxSize={ 5 } mr={ 2 } color="text_secondary"/>
+      <IconSvg name={ icon } boxSize={ 5 } mr={ 2 } color="text.secondary"/>
       <span>{ title }</span>
     </Link>
   );

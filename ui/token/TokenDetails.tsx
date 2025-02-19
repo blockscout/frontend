@@ -1,4 +1,4 @@
-import { Box, Grid, Link } from '@chakra-ui/react';
+import { Box, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
@@ -14,10 +14,11 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import { TOKEN_COUNTERS } from 'stubs/token';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { TokenTabs } from 'ui/pages/Token';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -65,11 +66,9 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     const tab: TokenTabs = item === 'token_holders_count' ? 'holders' : 'token_transfers';
 
     return (
-      <Skeleton isLoaded={ !tokenCountersQuery.isPlaceholderData }>
-        <Link onClick={ changeUrlAndScroll(tab) }>
-          { Number(itemValue).toLocaleString() }
-        </Link>
-      </Skeleton>
+      <Link onClick={ changeUrlAndScroll(tab) } loading={ tokenCountersQuery.isPlaceholderData }>
+        { Number(itemValue).toLocaleString() }
+      </Link>
     );
   }, [ tokenCountersQuery.data, tokenCountersQuery.isPlaceholderData, changeUrlAndScroll ]);
 
@@ -112,7 +111,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
             Price
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
+            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
               <span>{ `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` }</span>
             </Skeleton>
           </DetailedInfo.ItemValue>
@@ -128,7 +127,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
             Fully diluted market cap
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
+            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
               <span>{ `$${ BigNumber(marketCap).toFormat() }` }</span>
             </Skeleton>
           </DetailedInfo.ItemValue>
@@ -146,7 +145,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         wordBreak="break-word"
         whiteSpace="pre-wrap"
       >
-        <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } w="100%" display="flex">
+        <Skeleton loading={ tokenQuery.isPlaceholderData } w="100%" display="flex">
           <TruncatedValue value={ totalSupplyValue || '0' } maxW="80%" flexShrink={ 0 }/>
           <Box flexShrink={ 0 }> </Box>
           <TruncatedValue value={ symbol || '' }/>
@@ -160,7 +159,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         Holders
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !tokenCountersQuery.isPlaceholderData }>
+        <Skeleton loading={ tokenCountersQuery.isPlaceholderData }>
           { countersItem('token_holders_count') }
         </Skeleton>
       </DetailedInfo.ItemValue>
@@ -172,7 +171,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         Transfers
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !tokenCountersQuery.isPlaceholderData }>
+        <Skeleton loading={ tokenCountersQuery.isPlaceholderData }>
           { countersItem('transfers_count') }
         </Skeleton>
       </DetailedInfo.ItemValue>
@@ -186,7 +185,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
             Decimals
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } minW={ 6 }>
+            <Skeleton loading={ tokenQuery.isPlaceholderData } minW={ 6 }>
               { decimals }
             </Skeleton>
           </DetailedInfo.ItemValue>

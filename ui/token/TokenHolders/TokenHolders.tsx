@@ -37,11 +37,13 @@ const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props
 
   const actionBar = isMobile && holdersQuery.pagination.isVisible && (
     <ActionBar mt={ -6 }>
-      <AddressCsvExportLink
-        address={ token?.address }
-        params={{ type: 'holders' }}
-        isLoading={ holdersQuery.pagination.isLoading }
-      />
+      { token && (
+        <AddressCsvExportLink
+          address={ token.address }
+          params={{ type: 'holders' }}
+          isLoading={ holdersQuery.pagination.isLoading }
+        />
+      ) }
       <Pagination ml="auto" { ...holdersQuery.pagination }/>
     </ActionBar>
   );
@@ -54,7 +56,7 @@ const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props
         <TokenHoldersTable
           data={ items }
           token={ token }
-          top={ holdersQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
+          top={ TABS_HEIGHT }
           isLoading={ holdersQuery.isPlaceholderData }
         />
       </Box>
@@ -71,11 +73,12 @@ const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props
   return (
     <DataListDisplay
       isError={ holdersQuery.isError }
-      items={ holdersQuery.data?.items }
+      itemsNum={ holdersQuery.data?.items.length }
       emptyText="There are no holders for this token."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

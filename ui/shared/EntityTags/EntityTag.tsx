@@ -82,6 +82,7 @@ const EntityTag = ({ data, isLoading, noLink, ...rest }: Props) => {
         onClick={ handleLinkClick }
         noIcon
         cursor={ hasLink ? 'pointer' : 'default' }
+        { ...rest }
       >
         <Tag
           bg={ data.meta?.bgColor }
@@ -92,7 +93,6 @@ const EntityTag = ({ data, isLoading, noLink, ...rest }: Props) => {
           endElementProps={ linkParams?.type === 'external' ? { ml: -1 } : undefined }
           _hover={ hasLink ? { opacity: 0.76 } : undefined }
           variant={ hasLink ? 'clickable' : 'subtle' }
-          { ...rest }
         >
           { prefix }{ name }
         </Tag>

@@ -1,15 +1,10 @@
-import {
-  PopoverTrigger, PopoverContent, PopoverBody,
-  Modal, ModalContent, ModalCloseButton,
-  useDisclosure,
-  Button,
-} from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import Popover from 'ui/shared/chakra/Popover';
-
-import IconSvg from './IconSvg';
+import { Button } from 'toolkit/chakra/button';
+import { DialogRoot, DialogContent, DialogTrigger, DialogHeader } from 'toolkit/chakra/dialog';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   children: React.ReactNode;
@@ -17,21 +12,16 @@ interface Props {
 
 const InfoButton = ({ children }: Props) => {
   const isMobile = useIsMobile();
-  const { isOpen, onToggle, onClose } = useDisclosure();
 
   const triggerButton = (
     <Button
       size="sm"
-      variant="outline"
-      colorScheme="gray"
-      onClick={ onToggle }
-      isActive={ isOpen }
+      variant="dropdown"
+      gap={ 0 }
       aria-label="Show info"
       fontWeight={ 500 }
-      lineHeight={ 6 }
       pl={ 1 }
       pr={ isMobile ? 1 : 2 }
-      h="32px"
     >
       <IconSvg name="info" boxSize={ 6 } mr={ isMobile ? 0 : 1 }/>
       { !isMobile && <span>Info</span> }
@@ -40,29 +30,29 @@ const InfoButton = ({ children }: Props) => {
 
   if (isMobile) {
     return (
-      <>
-        { triggerButton }
-        <Modal isOpen={ isOpen } onClose={ onClose } size="full">
-          <ModalContent>
-            <ModalCloseButton/>
-            { children }
-          </ModalContent>
-        </Modal>
-      </>
+      <DialogRoot size="full">
+        <DialogTrigger>
+          { triggerButton }
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader/>
+          { children }
+        </DialogContent>
+      </DialogRoot>
     );
   }
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+    <PopoverRoot>
       <PopoverTrigger>
         { triggerButton }
       </PopoverTrigger>
       <PopoverContent w="500px">
-        <PopoverBody px={ 6 } py={ 5 }>
+        <PopoverBody>
           { children }
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   );
 };
 
