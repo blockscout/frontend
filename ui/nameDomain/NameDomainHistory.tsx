@@ -1,4 +1,4 @@
-import { Box, Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -22,7 +22,7 @@ const NameDomainHistory = ({ domain }: Props) => {
   const router = useRouter();
   const domainName = getQueryParamString(router.query.name);
 
-  const [ sort, setSort ] = React.useState<Sort>();
+  const [ sort, setSort ] = React.useState<Sort>('default');
 
   const { isPlaceholderData, isError, data } = useApiQuery('domain_events', {
     pathParams: { name: domainName, chainId: config.chain.id },
@@ -44,19 +44,17 @@ const NameDomainHistory = ({ domain }: Props) => {
 
   const content = (
     <>
-      <Show below="lg" ssr={ false }>
-        <Box>
-          { data?.items.map((item, index) => (
-            <NameDomainHistoryListItem
-              key={ index }
-              event={ item }
-              domain={ domain }
-              isLoading={ isPlaceholderData }
-            />
-          )) }
-        </Box>
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      <Box hideFrom="lg">
+        { data?.items.map((item, index) => (
+          <NameDomainHistoryListItem
+            key={ index }
+            event={ item }
+            domain={ domain }
+            isLoading={ isPlaceholderData }
+          />
+        )) }
+      </Box>
+      <Box hideBelow="lg">
         <NameDomainHistoryTable
           history={ data }
           domain={ domain }
@@ -64,17 +62,18 @@ const NameDomainHistory = ({ domain }: Props) => {
           sort={ sort }
           onSortToggle={ handleSortToggle }
         />
-      </Hide>
+      </Box>
     </>
   );
 
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items.length }
       emptyText="There are no events for this domain."
-      content={ content }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

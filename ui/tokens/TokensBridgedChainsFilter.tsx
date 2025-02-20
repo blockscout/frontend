@@ -38,10 +38,7 @@ const TokensBridgedChainsFilter = ({ onChange, defaultValue }: Props) => {
         <Text fontWeight={ 600 } color="text.secondary">Show bridged tokens from</Text>
         <Link
           onClick={ handleReset }
-          color={ value.length > 0 ? 'link' : 'text_secondary' }
-          _hover={{
-            color: value.length > 0 ? 'link_hovered' : 'text_secondary',
-          }}
+          disabled={ value.length === 0 }
         >
           Reset
         </Link>

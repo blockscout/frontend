@@ -6,7 +6,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import stripTrailingSlash from 'lib/stripTrailingSlash';
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
@@ -58,7 +58,7 @@ const NameDomainHistoryListItem = ({ isLoading, domain, event }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Method</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Tag colorScheme="gray" isLoading={ isLoading }>{ event.action }</Tag>
+            <Badge colorPalette="gray" loading={ isLoading }>{ event.action }</Badge>
           </ListItemMobileGrid.Value>
         </>
       ) }

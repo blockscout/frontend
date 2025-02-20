@@ -26,11 +26,12 @@ export interface LinkProps extends Pick<NextLinkProps, 'shallow' | 'prefetch' | 
   external?: boolean;
   iconColor?: ChakraLinkProps['color'];
   noIcon?: boolean;
+  disabled?: boolean;
 }
 
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
-    const { external, loading, href, children, scroll = true, iconColor, noIcon, shallow, prefetch = false, ...rest } = props;
+    const { external, loading, href, children, scroll = true, iconColor, noIcon, shallow, prefetch = false, disabled, ...rest } = props;
 
     if (external) {
       return (
@@ -41,6 +42,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
             className="group"
             target="_blank"
             rel="noopener noreferrer"
+            { ...(disabled ? { 'data-disabled': true } : {}) }
             { ...rest }
           >
             { children }
@@ -52,7 +54,12 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
 
     return (
       <Skeleton loading={ loading } asChild>
-        <ChakraLink asChild ref={ ref } { ...rest }>
+        <ChakraLink
+          asChild
+          ref={ ref }
+          { ...(disabled ? { 'data-disabled': true } : {}) }
+          { ...rest }
+        >
           { href ? (
             <NextLink
               href={ href as NextLinkProps['href'] }

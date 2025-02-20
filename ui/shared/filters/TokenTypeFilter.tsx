@@ -34,11 +34,7 @@ const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange
         <Text fontWeight={ 600 } color="text.secondary">Type</Text>
         <Link
           onClick={ handleReset }
-          cursor={ value.length > 0 ? 'pointer' : 'unset' }
-          color={ value.length > 0 ? 'link' : 'text_secondary' }
-          _hover={{
-            color: value.length > 0 ? 'link_hovered' : 'text_secondary',
-          }}
+          disabled={ value.length === 0 }
         >
           Reset
         </Link>

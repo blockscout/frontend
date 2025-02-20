@@ -1,4 +1,4 @@
-import { Box, Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -41,7 +41,7 @@ const NameDomains = () => {
 
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q || '');
   const [ filterValue, setFilterValue ] = React.useState<EnsDomainLookupFiltersOptions>(initialFilters);
-  const [ sort, setSort ] = React.useState<Sort | undefined>(initialSort);
+  const [ sort, setSort ] = React.useState<Sort>(initialSort ?? 'default');
   const [ protocolsFilter, setProtocolsFilter ] = React.useState<Array<string>>(protocols);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -192,25 +192,23 @@ const NameDomains = () => {
 
   const content = (
     <>
-      <Show below="lg" ssr={ false }>
-        <Box>
-          { data?.items.map((item, index) => (
-            <NameDomainsListItem
-              key={ item.id + (isLoading ? index : '') }
-              { ...item }
-              isLoading={ isLoading }
-            />
-          )) }
-        </Box>
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      <Box hideFrom="lg">
+        { data?.items.map((item, index) => (
+          <NameDomainsListItem
+            key={ item.id + (isLoading ? index : '') }
+            { ...item }
+            isLoading={ isLoading }
+          />
+        )) }
+      </Box>
+      <Box hideBelow="lg">
         <NameDomainsTable
           data={ data }
           isLoading={ isLoading }
           sort={ sort }
           onSortToggle={ handleSortToggle }
         />
-      </Hide>
+      </Box>
     </>
   );
 
@@ -239,15 +237,16 @@ const NameDomains = () => {
       />
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no name domains."
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find name domains that match your filter query.`,
           hasActiveFilters,
         }}
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

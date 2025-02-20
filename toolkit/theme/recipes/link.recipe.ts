@@ -3,6 +3,9 @@ import { defineRecipe } from '@chakra-ui/react';
 export const recipe = defineRecipe({
   base: {
     gap: 0,
+    _disabled: {
+      cursor: 'not-allowed',
+    },
   },
   variants: {
     variant: {
@@ -11,6 +14,9 @@ export const recipe = defineRecipe({
         _hover: {
           textDecoration: 'none',
           color: 'link.primary.hover',
+        },
+        _disabled: {
+          color: 'text.secondary',
         },
       },
       secondary: {
