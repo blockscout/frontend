@@ -28,7 +28,6 @@ interface Props {
   as?: React.ElementType;
 }
 
-// TODO @tom2drum fix truncation when loading
 const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled, tailLength = TAIL_LENGTH, as = 'span' }: Props) => {
   const elementRef = useRef<HTMLSpanElement>(null);
   const [ displayedString, setDisplayedString ] = React.useState(hash);

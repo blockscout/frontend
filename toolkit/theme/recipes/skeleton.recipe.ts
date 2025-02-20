@@ -13,7 +13,9 @@ export const recipe = defineRecipe({
         color: 'transparent',
         pointerEvents: 'none',
         userSelect: 'none',
-        flexShrink: '0',
+        // we have to override the property set by chakra in order to make the skeleton shrink
+        // when the text is too long
+        flexShrink: 'initial',
         '&::before, &::after, *': {
           visibility: 'hidden',
         },

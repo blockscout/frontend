@@ -30,7 +30,7 @@ const MenuShowcase = () => {
 
             <MenuRoot>
               <MenuTrigger asChild>
-                <IconButton variant="dropdown" size="sm" loading>
+                <IconButton variant="dropdown" size="sm" loadingSkeleton>
                   <IconSvg name="dots" boxSize="18px"/>
                 </IconButton>
               </MenuTrigger>
