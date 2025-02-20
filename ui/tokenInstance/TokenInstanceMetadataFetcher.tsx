@@ -1,5 +1,4 @@
-import type { ToastId } from '@chakra-ui/react';
-import { Alert, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, Center } from '@chakra-ui/react';
+import { Spinner, Center } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -11,9 +10,11 @@ import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import { MINUTE, SECOND } from 'lib/consts';
 import getErrorMessage from 'lib/errors/getErrorMessage';
-import useToast from 'lib/hooks/useToast';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { Alert } from 'toolkit/chakra/alert';
+import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
+import { toaster } from 'toolkit/chakra/toaster';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -26,24 +27,22 @@ interface Props {
 
 const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
   const timeoutId = React.useRef<number>();
-  const toastId = React.useRef<ToastId>();
+  const toastId = React.useRef<string>();
 
   const { status, setStatus } = useMetadataUpdateContext() || {};
   const apiFetch = useApiFetch();
-  const toast = useToast();
   const queryClient = useQueryClient();
   const recaptcha = useReCaptcha();
 
   const handleRefreshError = React.useCallback(() => {
     setStatus?.('ERROR');
-    toastId.current && toast.update(toastId.current, {
+    toastId.current && toaster.update(toastId.current, {
       title: 'Error',
       description: 'The refreshing process has failed. Please try again.',
-      status: 'warning',
+      type: 'error',
       duration: 5 * SECOND,
-      isClosable: true,
     });
-  }, [ setStatus, toast ]);
+  }, [ setStatus ]);
 
   const initializeUpdate = React.useCallback(async(tokenProp?: string) => {
     try {
@@ -56,28 +55,26 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
         },
       });
       setStatus?.('WAITING_FOR_RESPONSE');
-      toastId.current = toast({
+      toastId.current = toaster.loading({
         title: 'Please wait',
         description: 'Refetching metadata request sent',
-        icon: <Spinner size="sm" mr={ 2 }/>,
-        status: 'warning',
-        duration: null,
-        isClosable: false,
+        duration: Infinity,
       });
       timeoutId.current = window.setTimeout(handleRefreshError, 2 * MINUTE);
     } catch (error) {
-      toast({
+      toaster.error({
         title: 'Error',
         description: getErrorMessage(error) || 'Unable to initialize metadata update',
-        status: 'warning',
       });
       setStatus?.('ERROR');
     }
 
-  }, [ apiFetch, handleRefreshError, hash, id, recaptcha, setStatus, toast ]);
+  }, [ apiFetch, handleRefreshError, hash, id, recaptcha, setStatus ]);
 
-  const handleModalClose = React.useCallback(() => {
-    setStatus?.('INITIAL');
+  const handleModalClose = React.useCallback(({ open }: { open: boolean }) => {
+    if (!open) {
+      setStatus?.('INITIAL');
+    }
   }, [ setStatus ]);
 
   const handleSocketMessage: SocketMessage.TokenInstanceMetadataFetched['handler'] = React.useCallback((payload) => {
@@ -106,18 +103,17 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       };
     });
 
-    toastId.current && toast.update(toastId.current, {
+    toastId.current && toaster.update(toastId.current, {
       title: 'Success!',
       description: 'Metadata has been refreshed',
-      status: 'success',
+      type: 'success',
       duration: 5 * SECOND,
-      isClosable: true,
     });
 
     setStatus?.('SUCCESS');
 
     window.clearTimeout(timeoutId.current);
-  }, [ hash, id, queryClient, setStatus, toast ]);
+  }, [ hash, id, queryClient, setStatus ]);
 
   const channel = useSocketChannel({
     topic: `token_instances:${ hash.toLowerCase() }`,
@@ -144,10 +140,9 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
   React.useEffect(() => {
     return () => {
       timeoutId.current && window.clearTimeout(timeoutId.current);
-      toastId.current && toast.close(toastId.current);
+      toastId.current && toaster.remove(toastId.current);
     };
-  // run only on mount/unmount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // run only on mount/unmount
   }, []);
 
   if (status !== 'MODAL_OPENED') {
@@ -155,12 +150,18 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
   }
 
   return (
-    <Modal isOpen={ status === 'MODAL_OPENED' } onClose={ handleModalClose } size={{ base: 'full', lg: 'sm' }}>
-      <ModalOverlay/>
-      <ModalContent>
-        <ModalHeader fontWeight="500" textStyle="h3" mb={ 4 }>Sending request</ModalHeader>
-        <ModalCloseButton/>
-        <ModalBody mb={ 0 } minH="78px">
+    <DialogRoot
+      open={ status === 'MODAL_OPENED' }
+      onOpenChange={ handleModalClose }
+      size={{ lgDown: 'full', lg: 'sm' }}
+      trapFocus={ false }
+      preventScroll={ false }
+      modal={ false }
+      closeOnInteractOutside={ false }
+    >
+      <DialogContent>
+        <DialogHeader fontWeight="500" textStyle="h3" mb={ 4 }>Sending request</DialogHeader>
+        <DialogBody mb={ 0 } minH="78px">
           { config.services.reCaptchaV2.siteKey ? (
             <>
               <Center h="80px">
@@ -174,9 +175,9 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
               Please contact the service maintainer to make necessary changes in the service configuration.
             </Alert>
           ) }
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 

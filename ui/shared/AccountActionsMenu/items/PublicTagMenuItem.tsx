@@ -22,7 +22,7 @@ const PublicTagMenuItem = ({ hash, type }: ItemProps) => {
     case 'menu_item': {
       return (
         <MenuItem onClick={ handleClick } value="add-public-tag">
-          <IconSvg name="publictags" boxSize={ 6 } mr={ 2 }/>
+          <IconSvg name="publictags" boxSize={ 6 }/>
           <span>Add public tag</span>
         </MenuItem>
       );

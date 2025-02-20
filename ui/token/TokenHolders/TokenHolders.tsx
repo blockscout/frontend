@@ -21,9 +21,10 @@ type Props = {
   token?: TokenInfo;
   holdersQuery: QueryWithPagesResult<'token_holders'>;
   shouldRender?: boolean;
+  tabsHeight?: number;
 };
 
-const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props) => {
+const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true, tabsHeight = TABS_HEIGHT }: Props) => {
   const isMobile = useIsMobile();
   const isMounted = useIsMounted();
 
@@ -56,7 +57,7 @@ const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props
         <TokenHoldersTable
           data={ items }
           token={ token }
-          top={ TABS_HEIGHT }
+          top={ tabsHeight }
           isLoading={ holdersQuery.isPlaceholderData }
         />
       </Box>

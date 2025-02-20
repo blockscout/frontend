@@ -5,12 +5,11 @@ import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import config from 'configs/app';
 import useIsMounted from 'lib/hooks/useIsMounted';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -80,7 +79,7 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <Flex alignItems="center" overflow="hidden">
-              <Skeleton isLoaded={ !isLoading } overflow="hidden" display="inline-block" w="100%">
+              <Skeleton loading={ isLoading } overflow="hidden" display="inline-block" w="100%">
                 <HashStringShortenDynamic hash={ data.id }/>
               </Skeleton>
               <CopyToClipboard text={ data.id } isLoading={ isLoading }/>

@@ -3,9 +3,9 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
   hash: string;
@@ -45,13 +45,13 @@ const TokenInstanceTransfersCount = ({ hash, id, onClick }: Props) => {
         Transfers
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !transfersCountQuery.isPlaceholderData } display="inline-block">
-          <LinkInternal
+        <Skeleton loading={ transfersCountQuery.isPlaceholderData } display="inline-block">
+          <Link
             href={ url }
             onClick={ transfersCountQuery.data.transfers_count > 0 ? onClick : undefined }
           >
             { transfersCountQuery.data.transfers_count.toLocaleString() }
-          </LinkInternal>
+          </Link>
         </Skeleton>
       </DetailedInfo.ItemValue>
     </>

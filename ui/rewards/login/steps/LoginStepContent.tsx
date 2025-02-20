@@ -81,7 +81,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
     }
   }, [ refCode, isRefCodeUsed, isSignUp ]);
 
-  const handleButtonClick = React.React.useCallback(() => {
+  const handleButtonClick = React.useCallback(() => {
     if (canTrySharedLogin) {
       return openAuthModal(Boolean(profileQuery.data?.email), true);
     }
@@ -121,7 +121,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
         src="/static/merits_program.png"
         alt="Merits program"
         mb={ 3 }
-        fallback={ <Skeleton w="full" h="120px" mb={ 3 }/> }
+        fallback={ <Skeleton loading w="full" h="120px" mb={ 3 }/> }
       />
       <Box mb={ 6 }>
         Merits are awarded for a variety of different Blockscout activities. Connect a wallet to get started.

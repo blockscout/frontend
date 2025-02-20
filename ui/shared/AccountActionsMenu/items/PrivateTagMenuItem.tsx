@@ -68,7 +68,7 @@ const PrivateTagMenuItem = ({ hash, entityType = 'address', type }: Props) => {
           <AuthGuard onAuthSuccess={ modal.onOpen }>
             { ({ onClick }) => (
               <MenuItem onClick={ onClick } value="add-private-tag">
-                <IconSvg name="privattags" boxSize={ 6 } mr={ 2 }/>
+                <IconSvg name="privattags" boxSize={ 6 }/>
                 <span>Add private tag</span>
               </MenuItem>
             ) }

@@ -10,14 +10,14 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
-// import TokenInstance from 'ui/pages/TokenInstance';
+import TokenInstance from 'ui/pages/TokenInstance';
 
 const pathname: Route['pathname'] = '/token/[hash]/instance/[id]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      { /* <TokenInstance/> */ }
+      <TokenInstance/>
     </PageNextJs>
   );
 };

@@ -1,5 +1,7 @@
-import { AccordionButton, AccordionIcon, AccordionPanel, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
+
+import { AccordionItemContent, AccordionItemTrigger } from 'toolkit/chakra/accordion';
 
 import MetadataAccordionItem from './MetadataAccordionItem';
 import MetadataAccordionItemTitle from './MetadataAccordionItemTitle';
@@ -15,12 +17,13 @@ const MetadataItemArray = ({ name, value, level }: Props) => {
 
   return (
     <MetadataAccordionItem
+      value={ name }
       flexDir={{ lg: 'column' }}
       alignItems="stretch"
       pl={{ base: 0, lg: 0 }}
       py={ 0 }
     >
-      <AccordionButton
+      <AccordionItemTrigger
         px={ 0 }
         py={ 2 }
         _hover={{ bgColor: 'inherit' }}
@@ -30,18 +33,18 @@ const MetadataItemArray = ({ name, value, level }: Props) => {
           borderColor: 'border.divider',
           borderBottomWidth: '1px',
         }}
+        indicatorPlacement="start"
       >
-        <AccordionIcon boxSize={ 6 } p={ 1 }/>
         <MetadataAccordionItemTitle name={ name }/>
-      </AccordionButton>
-      <AccordionPanel p={ 0 } ml={{ base: 6, lg: level === 0 ? '126px' : 6 }}>
+      </AccordionItemTrigger>
+      <AccordionItemContent p={ 0 } ml={{ base: 6, lg: level === 0 ? '126px' : 6 }}>
         { value.map((item, index) => {
           const content = (() => {
             switch (typeof item) {
               case 'string':
               case 'number':
               case 'boolean': {
-                return <MetadataItemPrimitive value={ item } isItem={ false } level={ level }/>;
+                return <MetadataItemPrimitive name={ name } value={ item } level={ level }/>;
               }
               case 'object': {
                 if (item) {
@@ -54,7 +57,6 @@ const MetadataItemArray = ({ name, value, level }: Props) => {
                           <MetadataAccordionItemTitle name={ name } fontWeight={ 400 } w={{ base: '90px' }}/>
                           <MetadataItemPrimitive
                             value={ typeof value === 'object' ? JSON.stringify(value, undefined, 2) : value }
-                            isItem={ false }
                             level={ level }
                           />
                         </Flex>
@@ -83,7 +85,7 @@ const MetadataItemArray = ({ name, value, level }: Props) => {
             </Flex>
           );
         }) }
-      </AccordionPanel>
+      </AccordionItemContent>
     </MetadataAccordionItem>
   );
 };

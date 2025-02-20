@@ -27,9 +27,10 @@ type Props = {
   tokenId?: string;
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
   shouldRender?: boolean;
+  tabsHeight?: number;
 };
 
-const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, shouldRender = true }: Props) => {
+const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tabsHeight = TABS_HEIGHT, shouldRender = true }: Props) => {
   const isMobile = useIsMobile();
   const isMounted = useIsMounted();
   const router = useRouter();
@@ -74,7 +75,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, shouldRender = tru
       <Box display={{ base: 'none', lg: 'block' }}>
         <TokenTransferTable
           data={ data?.items }
-          top={ TABS_HEIGHT }
+          top={ tabsHeight }
           showSocketInfo={ pagination.page === 1 }
           socketInfoAlert={ socketAlert }
           socketInfoNum={ newItemsCount }

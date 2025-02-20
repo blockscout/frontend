@@ -1,14 +1,13 @@
-import { Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 import type { MetadataAttributes } from 'types/client/token';
 
 import parseMetadata from 'lib/token/parseMetadata';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import { useMetadataUpdateContext } from '../contexts/metadataUpdate';
@@ -24,24 +23,22 @@ interface ItemProps {
 }
 
 const Item = ({ data, isLoading }: ItemProps) => {
-  const attributeBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-
   const value = (() => {
     if (data.value_type === 'URL') {
       return (
-        <LinkExternal
+        <Link
+          external
           whiteSpace="nowrap"
           display="inline-flex"
           alignItems="center"
           w="100%"
           overflow="hidden"
           href={ data.value }
-          fontSize="sm"
-          lineHeight={ 5 }
-          isLoading={ isLoading }
+          textStyle="sm"
+          loading={ isLoading }
         >
           <TruncatedValue value={ data.value } w="calc(100% - 16px)" isLoading={ isLoading }/>
-        </LinkExternal>
+        </Link>
       );
     }
 
@@ -50,7 +47,7 @@ const Item = ({ data, isLoading }: ItemProps) => {
 
   return (
     <GridItem
-      bgColor={ attributeBgColor }
+      bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
       borderRadius="md"
       px={ 4 }
       py={ 2 }
@@ -60,9 +57,8 @@ const Item = ({ data, isLoading }: ItemProps) => {
     >
       <TruncatedValue
         value={ data.trait_type }
-        fontSize="xs"
+        textStyle="xs"
         w="100%"
-        lineHeight={ 4 }
         color="text_secondary"
         fontWeight={ 500 }
         mb={ 1 }
@@ -100,7 +96,7 @@ const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) =>
             whiteSpace="normal"
             wordBreak="break-word"
           >
-            <Skeleton isLoaded={ !isLoading }>
+            <Skeleton loading={ isLoading }>
               { metadata.name }
             </Skeleton>
           </DetailedInfo.ItemValue>
@@ -118,7 +114,7 @@ const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) =>
             whiteSpace="normal"
             wordBreak="break-word"
           >
-            <Skeleton isLoaded={ !isLoading }>
+            <Skeleton loading={ isLoading }>
               { metadata.description }
             </Skeleton>
           </DetailedInfo.ItemValue>

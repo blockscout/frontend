@@ -6,7 +6,7 @@ export interface IconButtonProps extends ButtonProps {}
 
 // TODO @tom2drum variants for icon buttons: prev-next, top-bar, copy-to-clipboard, filter column
 
-export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
+export const IconButton = React.forwardRef<HTMLDivElement, IconButtonProps>(
   function IconButton(props, ref) {
     const { size, variant = 'plain', ...rest } = props;
 

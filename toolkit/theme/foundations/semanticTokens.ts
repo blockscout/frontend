@@ -215,6 +215,19 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         error: { value: { _light: '{colors.red.100}', _dark: '{colors.red.900}' } },
       },
     },
+    toast: {
+      fg: {
+        DEFAULT: { value: '{colors.alert.fg}' },
+      },
+      bg: {
+        DEFAULT: { value: '{colors.alert.bg.info}' },
+        info: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.900}' } },
+        warning: { value: '{colors.alert.bg.warning}' },
+        success: { value: '{colors.alert.bg.success}' },
+        error: { value: '{colors.alert.bg.error}' },
+        loading: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.900}' } },
+      },
+    },
     input: {
       fg: {
         DEFAULT: { value: { _light: '{colors.gray.800}', _dark: '{colors.gray.50}' } },
