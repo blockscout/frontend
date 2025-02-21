@@ -2,10 +2,10 @@ import {
   chakra,
   Flex,
   Text,
-  Link,
-  Button,
 } from '@chakra-ui/react';
 import React from 'react';
+
+import { Button } from 'toolkit/chakra/button';
 
 import ColumnFilterWrapper from './ColumnFilterWrapper';
 
@@ -40,20 +40,17 @@ const ColumnFilterContent = ({ title, isFilled, onFilter, onReset, onClose, chil
     <>
       <Flex alignItems="center" justifyContent="space-between" mb={ 3 }>
         <Text color="text_secondary" fontWeight="600">{ title }</Text>
-        <Link
+        <Button
+          variant="link"
           onClick={ onReset }
-          cursor={ isFilled ? 'pointer' : 'unset' }
-          opacity={ isFilled ? 1 : 0.2 }
-          _hover={{
-            color: isFilled ? 'link_hovered' : 'none',
-          }}
+          disabled={ !isFilled }
         >
           Reset
-        </Link>
+        </Button>
       </Flex>
       { children }
       <Button
-        isDisabled={ !isFilled }
+        disabled={ !isFilled }
         mt={ 4 }
         onClick={ onFilterClick }
         w="fit-content"

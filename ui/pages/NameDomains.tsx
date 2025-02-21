@@ -110,11 +110,10 @@ const NameDomains = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isAddressSearch ]);
 
-  const handleSortToggle = React.useCallback((event: React.MouseEvent) => {
+  const handleSortToggle = React.useCallback((field: SortField) => {
     if (isLoading) {
       return;
     }
-    const field = (event.currentTarget as HTMLDivElement).getAttribute('data-field') as SortField | undefined;
 
     if (field) {
       setSort((prevValue) => {

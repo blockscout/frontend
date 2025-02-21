@@ -60,7 +60,7 @@ const TxsContent = ({
 }: Props) => {
   const isMobile = useIsMobile();
 
-  const onSortToggle = React.useCallback((field: TransactionsSortingField) => () => {
+  const onSortToggle = React.useCallback((field: TransactionsSortingField) => {
     const value = getNextSortValue<TransactionsSortingField, TransactionsSortingValue>(SORT_SEQUENCE, field)(sort);
     setSorting(value);
   }, [ sort, setSorting ]);
@@ -84,8 +84,8 @@ const TxsContent = ({
       <Box hideBelow="lg">
         <TxsTable
           txs={ itemsWithTranslation }
-          sort={ onSortToggle }
-          sorting={ sort }
+          sort={ sort }
+          onSortToggle={ onSortToggle }
           showBlockInfo={ showBlockInfo }
           showSocketInfo={ showSocketInfo }
           socketInfoAlert={ socketInfoAlert }

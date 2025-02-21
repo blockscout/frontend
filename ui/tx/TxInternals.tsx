@@ -83,12 +83,11 @@ const TxInternals = ({ txQuery }: Props) => {
   // }, []);
 
   const handleSortToggle = React.useCallback((field: SortField) => {
-    return () => {
-      if (isPlaceholderData) {
-        return;
-      }
-      setSort(getNextSortValue(field));
-    };
+    if (isPlaceholderData) {
+      return;
+    }
+
+    setSort(getNextSortValue(field));
   }, [ isPlaceholderData ]);
 
   if (!txQuery.isPlaceholderData && !txQuery.isError && !txQuery.data?.status) {

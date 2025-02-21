@@ -21,11 +21,21 @@ import PinInputShowcase from 'ui/showcases/PinInput';
 import ProgressCircleShowcase from 'ui/showcases/ProgressCircle';
 import RadioShowcase from 'ui/showcases/Radio';
 import SelectShowcase from 'ui/showcases/Select';
+import TableShowcase from 'ui/showcases/Table';
 import TabsShowcase from 'ui/showcases/Tabs';
 import TagShowcase from 'ui/showcases/Tag';
 import TextareaShowcase from 'ui/showcases/Textarea';
 import ToastShowcase from 'ui/showcases/Toast';
 import TooltipShowcase from 'ui/showcases/Tooltip';
+
+// Drawer
+// CloseButton
+// IconButton
+// EmptyState ?
+// Rating
+// Switch
+// ToggleTip
+// Popover
 
 const tabs = [
   { label: 'Accordion', value: 'accordion', component: <AccordionsShowcase/> },
@@ -44,6 +54,7 @@ const tabs = [
   { label: 'Radio', value: 'radio', component: <RadioShowcase/> },
   { label: 'Pin input', value: 'pin-input', component: <PinInputShowcase/> },
   { label: 'Select', value: 'select', component: <SelectShowcase/> },
+  { label: 'Table', value: 'table', component: <TableShowcase/> },
   { label: 'Tabs', value: 'tabs', component: <TabsShowcase/> },
   { label: 'Tag', value: 'tag', component: <TagShowcase/> },
   { label: 'Textarea', value: 'textarea', component: <TextareaShowcase/> },

@@ -15,9 +15,6 @@ export const recipe = defineRecipe({
           textDecoration: 'none',
           color: 'link.primary.hover',
         },
-        _disabled: {
-          color: 'text.secondary',
-        },
       },
       secondary: {
         color: 'link.secondary',

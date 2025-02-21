@@ -25,7 +25,6 @@ type Props =
     className?: string;
   };
 
-// TODO @tom2drum fix other popovers
 const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) => {
   const content = hash !== undefined ? <TxAdditionalInfoContainer hash={ hash }/> : <TxAdditionalInfoContent tx={ tx }/>;
 

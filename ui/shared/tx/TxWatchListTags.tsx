@@ -26,9 +26,8 @@ const TxWatchListTags = ({ tx, isLoading }: Props) => {
         <Badge
           key={ tag.label }
           loading={ isLoading }
-          truncate
-          // TODO @tom2drum check these styles
-          // maxW={{ base: '115px', lg: 'initial' }}
+          truncated
+          maxW={{ base: '115px', lg: 'initial' }}
           colorPalette="gray"
         >
           { tag.display_name }

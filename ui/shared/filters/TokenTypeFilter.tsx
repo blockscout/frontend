@@ -4,8 +4,8 @@ import React from 'react';
 import type { NFTTokenType, TokenType } from 'types/api/token';
 
 import { TOKEN_TYPES, TOKEN_TYPE_IDS, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { Button } from 'toolkit/chakra/button';
 import { Checkbox } from 'toolkit/chakra/checkbox';
-import { Link } from 'toolkit/chakra/link';
 
 type Props<T extends TokenType | NFTTokenType> = {
   onChange: (nextValue: Array<T>) => void;
@@ -32,12 +32,13 @@ const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange
     <>
       <Flex justifyContent="space-between" fontSize="sm">
         <Text fontWeight={ 600 } color="text.secondary">Type</Text>
-        <Link
+        <Button
+          variant="link"
           onClick={ handleReset }
           disabled={ value.length === 0 }
         >
           Reset
-        </Link>
+        </Button>
       </Flex>
       <Fieldset.Root>
         <CheckboxGroup defaultValue={ defaultValue } onValueChange={ handleChange } value={ value } name="token_type">

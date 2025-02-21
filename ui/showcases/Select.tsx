@@ -23,8 +23,6 @@ const txSortingOptions = createListCollection({
   items: SORT_OPTIONS,
 });
 
-// TODO @tom2drum + tanya: select with search
-
 const SelectShowcase = () => {
   const [ hasActiveFilter, setHasActiveFilter ] = React.useState(false);
 
@@ -52,8 +50,8 @@ const SelectShowcase = () => {
             </SelectRoot>
           </Sample>
           <Sample label="variant: filter">
-            <SelectRoot collection={ frameworks } variant="filter" multiple>
-              <SelectControl w="200px">
+            <SelectRoot collection={ frameworks } variant="filter">
+              <SelectControl w="200px" noIndicator>
                 <SelectValueText placeholder="Select framework"/>
               </SelectControl>
               <SelectContent>

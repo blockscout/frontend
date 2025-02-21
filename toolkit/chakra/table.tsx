@@ -2,6 +2,10 @@ import { Table as ChakraTable } from '@chakra-ui/react';
 import { throttle } from 'es-toolkit';
 import * as React from 'react';
 
+import IconSvg from 'ui/shared/IconSvg';
+
+import { Link } from './link';
+
 export const TableRoot = ChakraTable.Root;
 export const TableBody = ChakraTable.Body;
 export const TableHeader = ChakraTable.Header;
@@ -25,6 +29,40 @@ export const TableColumnHeader = (props: TableColumnHeaderProps) => {
   const { isNumeric, ...rest } = props;
 
   return <ChakraTable.ColumnHeader textAlign={ isNumeric ? 'right' : undefined } { ...rest }/>;
+};
+
+export interface TableColumnHeaderSortableProps<F extends string> extends TableColumnHeaderProps {
+  sortField: F;
+  sortValue: string;
+  onSortToggle: (sortField: F) => void;
+  disabled?: boolean;
+}
+
+export const TableColumnHeaderSortable = <F extends string>(props: TableColumnHeaderSortableProps<F>) => {
+  const { sortField, sortValue, onSortToggle, children, disabled, ...rest } = props;
+
+  const handleSortToggle = React.useCallback(() => {
+    onSortToggle(sortField);
+  }, [ onSortToggle, sortField ]);
+
+  return (
+    <TableColumnHeader { ...rest }>
+      <Link onClick={ disabled ? undefined : handleSortToggle } position="relative">
+        { sortValue.includes(sortField) && (
+          <IconSvg
+            name="arrows/east"
+            w={ 4 }
+            h="100%"
+            transform={ sortValue.toLowerCase().includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)' }
+            position="absolute"
+            left={ -5 }
+            top={ 0 }
+          />
+        ) }
+        { children }
+      </Link>
+    </TableColumnHeader>
+  );
 };
 
 export interface TableHeaderProps extends ChakraTable.HeaderProps {

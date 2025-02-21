@@ -12,7 +12,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const TxInternalsTable = ({ data, top, isLoading }: Props) => {
+const TxBlobsTable = ({ data, top, isLoading }: Props) => {
 
   return (
     <TableRoot>
@@ -32,4 +32,4 @@ const TxInternalsTable = ({ data, top, isLoading }: Props) => {
   );
 };
 
-export default TxInternalsTable;
+export default TxBlobsTable;

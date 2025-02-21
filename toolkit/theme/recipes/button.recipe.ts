@@ -210,6 +210,9 @@ export const recipe = defineRecipe({
           bg: 'transparent',
           color: 'link.primary.hover',
         },
+        _disabled: {
+          color: 'text.secondary',
+        },
       },
     },
     size: {

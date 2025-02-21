@@ -31,11 +31,10 @@ const NameDomainHistory = ({ domain }: Props) => {
     },
   });
 
-  const handleSortToggle = React.useCallback((event: React.MouseEvent) => {
+  const handleSortToggle = React.useCallback((field: SortField) => {
     if (isPlaceholderData) {
       return;
     }
-    const field = (event.currentTarget as HTMLDivElement).getAttribute('data-field') as SortField | undefined;
 
     if (field) {
       setSort(getNextSortValue(field));

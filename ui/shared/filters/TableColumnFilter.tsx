@@ -6,7 +6,6 @@ import {
 import React from 'react';
 
 import { Button } from 'toolkit/chakra/button';
-import { Link } from 'toolkit/chakra/link';
 import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
 
 type Props = {
@@ -28,16 +27,13 @@ const TableColumnFilter = ({ title, isFilled, isTouched, hasReset, onFilter, onR
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="text.secondary" fontWeight="600">{ title }</Text>
         { hasReset && (
-          <Link
+          <Button
+            variant="link"
             onClick={ onReset }
-            cursor={ isFilled ? 'pointer' : 'unset' }
-            opacity={ isFilled ? 1 : 0.2 }
-            _hover={{
-              color: isFilled ? 'link_hovered' : 'none',
-            }}
+            disabled={ !isFilled }
           >
             Reset
-          </Link>
+          </Button>
         ) }
       </Flex>
       { children }

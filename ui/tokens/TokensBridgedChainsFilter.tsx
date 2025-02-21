@@ -2,8 +2,8 @@ import { CheckboxGroup, Text, Flex, useCheckboxGroup, chakra, Fieldset } from '@
 import React from 'react';
 
 import config from 'configs/app';
+import { Button } from 'toolkit/chakra/button';
 import { Checkbox } from 'toolkit/chakra/checkbox';
-import { Link } from 'toolkit/chakra/link';
 
 const feature = config.features.bridgedTokens;
 
@@ -36,12 +36,13 @@ const TokensBridgedChainsFilter = ({ onChange, defaultValue }: Props) => {
     <>
       <Flex justifyContent="space-between" fontSize="sm">
         <Text fontWeight={ 600 } color="text.secondary">Show bridged tokens from</Text>
-        <Link
+        <Button
+          variant="link"
           onClick={ handleReset }
           disabled={ value.length === 0 }
         >
           Reset
-        </Link>
+        </Button>
       </Flex>
       <Fieldset.Root>
         <CheckboxGroup defaultValue={ defaultValue } onValueChange={ handleChange } value={ value } name="bridged_token_chain">

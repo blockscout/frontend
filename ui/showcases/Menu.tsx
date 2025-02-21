@@ -4,7 +4,7 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
 import IconSvg from 'ui/shared/IconSvg';
 
-import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
+import { Section, Container, SectionHeader, SamplesStack, Sample } from './parts';
 
 const MenuShowcase = () => {
 
@@ -43,11 +43,6 @@ const MenuShowcase = () => {
             </MenuRoot>
           </Sample>
         </SamplesStack>
-      </Section>
-
-      <Section>
-        <SectionHeader>Examples</SectionHeader>
-        <SectionSubHeader>Example 1</SectionSubHeader>
       </Section>
     </Container>
   );

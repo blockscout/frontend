@@ -4,23 +4,19 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { currencyUnits } from 'lib/units';
-import { Link } from 'toolkit/chakra/link';
-import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import IconSvg from 'ui/shared/IconSvg';
+import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
 
 interface Props {
   data: Array<InternalTransaction>;
-  sort: Sort | undefined;
-  onSortToggle: (field: SortField) => () => void;
+  sort: Sort;
+  onSortToggle: (field: SortField) => void;
   top: number;
   isLoading?: boolean;
 }
 
 const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) => {
-  const sortIconTransform = sort?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
-
   return (
     <AddressHighlightProvider>
       <TableRoot>
@@ -28,18 +24,24 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) =
           <TableRow>
             <TableColumnHeader width="28%">Type</TableColumnHeader>
             <TableColumnHeader width="40%">From/To</TableColumnHeader>
-            <TableColumnHeader width="16%" isNumeric>
-              <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('value') } columnGap={ 1 }>
-                { sort?.includes('value') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
-                Value { currencyUnits.ether }
-              </Link>
-            </TableColumnHeader>
-            <TableColumnHeader width="16%" isNumeric>
-              <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('gas-limit') } columnGap={ 1 }>
-                { sort?.includes('gas-limit') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
-                Gas limit { currencyUnits.ether }
-              </Link>
-            </TableColumnHeader>
+            <TableColumnHeaderSortable
+              width="16%"
+              isNumeric
+              sortField="value"
+              sortValue={ sort }
+              onSortToggle={ onSortToggle }
+            >
+              Value { currencyUnits.ether }
+            </TableColumnHeaderSortable>
+            <TableColumnHeaderSortable
+              width="16%"
+              isNumeric
+              sortField="gas-limit"
+              sortValue={ sort }
+              onSortToggle={ onSortToggle }
+            >
+              Gas limit { currencyUnits.ether }
+            </TableColumnHeaderSortable>
           </TableRow>
         </TableHeaderSticky>
         <TableBody>

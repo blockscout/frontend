@@ -6,9 +6,9 @@ import type { EnsDomainLookupFiltersOptions } from 'types/api/ens';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
+import { Button } from 'toolkit/chakra/button';
 import { Checkbox } from 'toolkit/chakra/checkbox';
 import { Image } from 'toolkit/chakra/image';
-import { Link } from 'toolkit/chakra/link';
 import ActionBar from 'ui/shared/ActionBar';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
@@ -87,12 +87,13 @@ const NameDomainsActionBar = ({
           <>
             <Flex justifyContent="space-between" textStyle="sm" mb={ 3 }>
               <Text fontWeight={ 600 } color="text.secondary">Protocol</Text>
-              <Link
+              <Button
+                variant="link"
                 onClick={ handleProtocolReset }
                 disabled={ protocolsFilterValue.length === 0 }
               >
                 Reset
-              </Link>
+              </Button>
             </Flex>
             <Fieldset.Root>
               <CheckboxGroup defaultValue={ protocolsFilterValue } onValueChange={ onProtocolsFilterChange } value={ protocolsFilterValue } name="token_type">
