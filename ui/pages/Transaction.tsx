@@ -84,7 +84,7 @@ const TransactionPageContent = () => {
     [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 1 } ] : [];
   if (rollupFeature.isEnabled && rollupFeature.interopEnabled && data?.op_interop) {
     if (data.op_interop.init_chain !== undefined) {
-      txTags.push({ slug: 'relayed_tx', name: 'Relayed tx', tagType: 'custom' as const, ordinal: 0 });
+      txTags.push({ slug: 'relay_tx', name: 'Relay tx', tagType: 'custom' as const, ordinal: 0 });
     }
     if (data.op_interop.relay_chain !== undefined) {
       txTags.push({ slug: 'init_tx', name: 'Source tx', tagType: 'custom' as const, ordinal: 0 });
