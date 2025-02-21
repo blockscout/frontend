@@ -235,7 +235,7 @@ const Marketplace = () => {
         />
       </Flex>
 
-      {selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl ? (
+      {/* {selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl ? (
         <MarketplaceListWithScores
           apps={displayedAppsInMining}
           showAppInfo={showAppInfo}
@@ -256,7 +256,7 @@ const Marketplace = () => {
           selectedCategoryId={selectedCategoryId}
           onAppClick={handleAppClick}
         />
-      )}
+      )} */}
 
       {selectedApp && isAppInfoModalOpen && (
         <MarketplaceAppModal
