@@ -9,7 +9,6 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import { distributeEntityProps } from '../base/utils';
 import * as AddressEntity from './AddressEntity';
-
 interface Props extends AddressEntity.EntityProps {
   chain: ChainInfo | null;
 }
@@ -54,21 +53,22 @@ const AddressEntryInterop = (props: Props) => {
   const addressIcon = (
     <Box position="relative">
       <AddressEntity.Icon { ...partsProps.icon }/>
-      { props.chain?.chain_logo ? (
-        <Image
-          position="absolute"
-          bottom="-3px"
-          right="4px"
-          src={ props.chain.chain_logo }
-          alt={ props.chain.chain_name || 'external chain logo' }
-          width="14px"
-          height="14px"
-          borderRadius="base"
-        />
-      ) : (
-        <IconStub/>
-      )
-      }
+      { !props.isLoading && (
+        props.chain?.chain_logo ? (
+          <Image
+            position="absolute"
+            bottom="-3px"
+            right="4px"
+            src={ props.chain.chain_logo }
+            alt={ props.chain.chain_name || 'external chain logo' }
+            width="14px"
+            height="14px"
+            borderRadius="base"
+          />
+        ) : (
+          <IconStub/>
+        )
+      ) }
     </Box>
   );
 
