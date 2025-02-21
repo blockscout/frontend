@@ -358,6 +358,13 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           bg: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },
           fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
         },
+        select: {
+          bg: {
+            DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },
+            selected: { value: { _light: '{colors.blue.500}', _dark: '{colors.blue.900}' } },
+          },
+          fg: { value: { _light: '{colors.gray.500}', _dark: '{colors.whiteAlpha.800}' } },
+        },
       },
       closeTrigger: {
         color: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },

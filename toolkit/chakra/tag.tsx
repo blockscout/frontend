@@ -13,6 +13,7 @@ export interface TagProps extends ChakraTag.RootProps {
   closable?: boolean;
   truncated?: boolean;
   loading?: boolean;
+  selected?: boolean;
 }
 
 export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
@@ -26,6 +27,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
       children,
       truncated = false,
       loading,
+      selected,
       ...rest
     } = props;
 
@@ -37,7 +39,11 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
 
     return (
       <Skeleton loading={ loading } asChild>
-        <ChakraTag.Root ref={ ref } { ...rest }>
+        <ChakraTag.Root
+          ref={ ref }
+          { ...(selected && { 'data-selected': true }) }
+          { ...rest }
+        >
           { startElement && (
             <ChakraTag.StartElement>{ startElement }</ChakraTag.StartElement>
           ) }

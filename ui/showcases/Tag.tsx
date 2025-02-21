@@ -19,6 +19,22 @@ const TagShowcase = () => {
           <Sample label="variant: clickable">
             <Tag variant="clickable">My tag</Tag>
           </Sample>
+          <Sample label="variant: select">
+            <Tag variant="select">Default</Tag>
+            <Tag variant="select" selected>Selected</Tag>
+          </Sample>
+        </SamplesStack>
+      </Section>
+
+      <Section>
+        <SectionHeader>Size</SectionHeader>
+        <SamplesStack>
+          <Sample label="size: md">
+            <Tag size="md">My tag</Tag>
+          </Sample>
+          <Sample label="size: lg">
+            <Tag size="lg">My tag</Tag>
+          </Sample>
         </SamplesStack>
       </Section>
 

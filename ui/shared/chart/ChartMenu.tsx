@@ -130,7 +130,7 @@ const ChartMenu = ({
               onClick={ hasShare ? handleShare : handleCopy }
               closeOnSelect={ hasShare ? false : true }
             >
-              <IconSvg name={ hasShare ? 'share' : 'copy' } boxSize={ 5 } mr={ 3 }/>
+              <IconSvg name={ hasShare ? 'share' : 'copy' } boxSize={ 5 }/>
               { hasShare ? 'Share' : 'Copy link' }
             </MenuItem>
           ) }
@@ -138,21 +138,21 @@ const ChartMenu = ({
             value="fullscreen"
             onClick={ showChartFullscreen }
           >
-            <IconSvg name="scope" boxSize={ 5 } mr={ 3 }/>
+            <IconSvg name="scope" boxSize={ 5 }/>
             View fullscreen
           </MenuItem>
           <MenuItem
             value="save-png"
             onClick={ handleFileSaveClick }
           >
-            <IconSvg name="files/image" boxSize={ 5 } mr={ 3 }/>
+            <IconSvg name="files/image" boxSize={ 5 }/>
             Save as PNG
           </MenuItem>
           <MenuItem
             value="save-csv"
             onClick={ handleSVGSavingClick }
           >
-            <IconSvg name="files/csv" boxSize={ 5 } mr={ 3 }/>
+            <IconSvg name="files/csv" boxSize={ 5 }/>
             Save as CSV
           </MenuItem>
         </MenuContent>

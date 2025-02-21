@@ -79,6 +79,20 @@ export const recipe = defineSlotRecipe({
           textStyle: 'sm',
         },
       },
+      lg: {
+        root: {
+          px: '6px',
+          py: '6px',
+          minH: '8',
+          gap: '1',
+          '--tag-avatar-size': 'spacing.4',
+          '--tag-element-size': 'spacing.3',
+          '--tag-element-offset': '0px',
+        },
+        label: {
+          textStyle: 'sm',
+        },
+      },
     },
 
     variant: {
@@ -101,6 +115,28 @@ export const recipe = defineSlotRecipe({
           },
           _hover: {
             opacity: 0.76,
+          },
+        },
+      },
+      select: {
+        root: {
+          cursor: 'pointer',
+          bgColor: 'tag.root.select.bg',
+          color: 'tag.root.select.fg',
+          '&:not([data-loading], [aria-busy=true])': {
+            bgColor: 'tag.root.select.bg',
+          },
+          _hover: {
+            color: 'blue.400',
+            opacity: 0.76,
+          },
+          _selected: {
+            bgColor: 'tag.root.select.bg.selected',
+            color: 'whiteAlpha.800',
+            _hover: {
+              color: 'whiteAlpha.800',
+              opacity: 0.76,
+            },
           },
         },
       },

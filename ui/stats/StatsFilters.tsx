@@ -1,12 +1,12 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { createListCollection, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as stats from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
+import { SelectContent, SelectControl, SelectItem, SelectRoot, SelectValueText } from 'toolkit/chakra/select';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
 import FilterInput from 'ui/shared/filters/FilterInput';
-import Select from 'ui/shared/select/Select';
 
 type Props = {
   sections?: Array<stats.LineChartSection>;
@@ -30,12 +30,18 @@ const StatsFilters = ({
   initialFilterValue,
 }: Props) => {
 
-  const options = React.useMemo(() => {
-    return [
-      { value: 'all', label: 'All stats' },
-      ...(sections || []).map((section) => ({ value: section.id, label: section.title })),
-    ];
+  const collection = React.useMemo(() => {
+    return createListCollection({
+      items: [
+        { value: 'all', label: 'All stats' },
+        ...(sections || []).map((section) => ({ value: section.id, label: section.title })),
+      ],
+    });
   }, [ sections ]);
+
+  const handleItemSelect = React.useCallback(({ value }: { value: Array<string> }) => {
+    onSectionChange(value[0]);
+  }, [ onSectionChange ]);
 
   return (
     <Grid
@@ -52,14 +58,24 @@ const StatsFilters = ({
         w={{ base: '100%', lg: 'auto' }}
         area="section"
       >
-        <Select
-          options={ options }
-          defaultValue={ currentSection }
-          onChange={ onSectionChange }
-          isLoading={ isLoading }
+        <SelectRoot
+          collection={ collection }
+          variant="outline"
+          defaultValue={ [ currentSection ] }
+          onValueChange={ handleItemSelect }
           w={{ base: '100%', lg: '136px' }}
-          fontWeight={ 600 }
-        />
+        >
+          <SelectControl loading={ isLoading }>
+            <SelectValueText placeholder="Select section"/>
+          </SelectControl>
+          <SelectContent>
+            { collection.items.map((item) => (
+              <SelectItem item={ item } key={ item.value }>
+                { item.label }
+              </SelectItem>
+            )) }
+          </SelectContent>
+        </SelectRoot>
       </GridItem>
 
       <GridItem
@@ -75,11 +91,11 @@ const StatsFilters = ({
       >
         <FilterInput
           key={ initialFilterValue }
-          isLoading={ isLoading }
+          loading={ isLoading }
           onChange={ onFilterInputChange }
           placeholder="Find chart, metric..."
           initialValue={ initialFilterValue }
-          size="xs"
+          size="sm"
         />
       </GridItem>
     </Grid>

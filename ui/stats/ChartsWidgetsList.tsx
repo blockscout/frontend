@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, List, ListItem } from '@chakra-ui/react';
+import { Box, Grid } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type * as stats from '@blockscout/stats-types';
@@ -6,7 +6,8 @@ import type { StatsIntervalIds } from 'types/client/stats';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { apos } from 'lib/html-entities';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Heading } from 'toolkit/chakra/heading';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import IconSvg from 'ui/shared/IconSvg';
@@ -61,18 +62,18 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
         <ChartsLoadingErrorAlert/>
       ) }
 
-      <List ref={ sectionRef }>
+      <section ref={ sectionRef }>
         {
           charts?.map((section) => (
-            <ListItem
+            <Box
               key={ section.id }
               mb={ 8 }
               _last={{
                 marginBottom: 0,
               }}
             >
-              <Skeleton isLoaded={ !isPlaceholderData } mb={ 4 } display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
-                <Heading size="md" id={ section.id }>
+              <Skeleton loading={ isPlaceholderData } mb={ 4 } display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
+                <Heading level="2" id={ section.id }>
                   { section.title }
                 </Heading>
                 { section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
@@ -100,10 +101,10 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                   />
                 )) }
               </Grid>
-            </ListItem>
+            </Box>
           ))
         }
-      </List>
+      </section>
     </Box>
   );
 };

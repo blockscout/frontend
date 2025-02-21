@@ -40,12 +40,13 @@ const FullscreenChartModal = ({
     <DialogRoot
       open={ open }
       onOpenChange={ onOpenChange }
-      size="full"
+      // FIXME: with size="full" the chart will not be expanded to the full height of the modal
+      size="cover"
     >
       <DialogContent>
         <DialogHeader/>
         <DialogBody pt={ 6 } display="flex" flexDir="column">
-          <Grid gridColumnGap={ 2 } >
+          <Grid gridColumnGap={ 2 } mb={ 4 }>
             <Heading mb={ 1 } level="2">
               { title }
             </Heading>
@@ -54,7 +55,7 @@ const FullscreenChartModal = ({
               <Text
                 gridColumn={ 1 }
                 color="text.secondary"
-                fontSize="xs"
+                textStyle="sm"
               >
                 { description }
               </Text>

@@ -1,6 +1,8 @@
-import type { TagProps } from '@chakra-ui/react';
-import { HStack, Tag } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 import React from 'react';
+
+import type { TagProps } from 'toolkit/chakra/tag';
+import { Tag } from 'toolkit/chakra/tag';
 
 type Props<T extends string> = {
   items: Array<{ id: T; title: string }>;
@@ -42,7 +44,7 @@ const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tag
             variant="select"
             key={ item.id }
             data-id={ item.id }
-            data-selected={ isSelected }
+            selected={ isSelected }
             fontWeight={ 500 }
             onClick={ onItemClick }
             size={ tagSize }

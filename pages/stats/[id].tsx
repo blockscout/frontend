@@ -13,14 +13,14 @@ import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
-// const Chart = dynamic(() => import('ui/pages/Chart'), { ssr: false });
+const Chart = dynamic(() => import('ui/pages/Chart'), { ssr: false });
 
 const pathname: Route['pathname'] = '/stats/[id]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      { /* <Chart/> */ }
+      <Chart/>
     </PageNextJs>
   );
 };
