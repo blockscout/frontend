@@ -28,20 +28,20 @@ export default function useMarketplace() {
   const defaultFilterQuery = getQueryParamString(router.query.filter);
   const defaultDisplayType = getQueryParamString(router.query.tab);
 
-  const [selectedAppId, setSelectedAppId] = React.useState<string | null>(null);
-  const [selectedCategoryId, setSelectedCategoryId] = React.useState<string>(MarketplaceCategory.ALL);
-  const [selectedDisplayType, setSelectedDisplayType] = React.useState<string>(
+  const [ selectedAppId, setSelectedAppId ] = React.useState<string | null>(null);
+  const [ selectedCategoryId, setSelectedCategoryId ] = React.useState<string>(MarketplaceCategory.ALL);
+  const [ selectedDisplayType, setSelectedDisplayType ] = React.useState<string>(
     Object.values(MarketplaceDisplayType).includes(defaultDisplayType as MarketplaceDisplayType) ?
       defaultDisplayType :
       MarketplaceDisplayType.DEFAULT,
   );
-  const [filterQuery, setFilterQuery] = React.useState(defaultFilterQuery);
-  const [favoriteApps, setFavoriteApps] = React.useState<Array<string>>([]);
-  const [isFavoriteAppsLoaded, setIsFavoriteAppsLoaded] = React.useState<boolean>(false);
-  const [isAppInfoModalOpen, setIsAppInfoModalOpen] = React.useState<boolean>(false);
-  const [isDisclaimerModalOpen, setIsDisclaimerModalOpen] = React.useState<boolean>(false);
-  const [contractListModalType, setContractListModalType] = React.useState<ContractListTypes | null>(null);
-  const [hasPreviousStep, setHasPreviousStep] = React.useState<boolean>(false);
+  const [ filterQuery, setFilterQuery ] = React.useState(defaultFilterQuery);
+  const [ favoriteApps, setFavoriteApps ] = React.useState<Array<string>>([]);
+  const [ isFavoriteAppsLoaded, setIsFavoriteAppsLoaded ] = React.useState<boolean>(false);
+  const [ isAppInfoModalOpen, setIsAppInfoModalOpen ] = React.useState<boolean>(false);
+  const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
+  const [ contractListModalType, setContractListModalType ] = React.useState<ContractListTypes | null>(null);
+  const [ hasPreviousStep, setHasPreviousStep ] = React.useState<boolean>(false);
 
   const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean, source: 'Discovery view' | 'Security view' | 'App modal' | 'Banner') => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id, Source: source });
@@ -60,7 +60,7 @@ export default function useMarketplace() {
   }, []);
 
   const showAppInfo = React.useCallback((id: string) => {
-    
+
     setSelectedAppId(id);
     setIsAppInfoModalOpen(true);
   }, []);
@@ -97,7 +97,7 @@ export default function useMarketplace() {
   }, []);
 
   const {
-    isPlaceholderData, isError, error, data, displayedApps, displayedAppsInRace, gpuRaceData
+    isPlaceholderData, isError, error, data, displayedApps, displayedAppsInRace, gpuRaceData,
   } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps, isFavoriteAppsLoaded);
 
   const {
@@ -120,7 +120,7 @@ export default function useMarketplace() {
     }
     // run only when data is loaded
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPlaceholderData]);
+  }, [ isPlaceholderData ]);
 
   React.useEffect(() => {
     const query = _pickBy({
@@ -141,7 +141,7 @@ export default function useMarketplace() {
     // omit router in the deps because router.push() somehow modifies it
     // and we get infinite re-renders then
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedFilterQuery, selectedCategoryId, selectedDisplayType]);
+  }, [ debouncedFilterQuery, selectedCategoryId, selectedDisplayType ]);
 
   return React.useMemo(() => ({
     selectedCategoryId,

@@ -86,7 +86,7 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     internalWallet: yup.boolean(),
     priority: yup.number(),
     miningInfo: yup.object(),
-    tokenInfo: yup.object()
+    tokenInfo: yup.object(),
   });
 
 const issueSeverityDistributionSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['overallInfo']['issueSeverityDistribution']> = yup

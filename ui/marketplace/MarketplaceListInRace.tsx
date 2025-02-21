@@ -29,7 +29,6 @@ const MarketplaceListInRace = ({ apps, showAppInfo, favoriteApps, onFavoriteClic
     onFavoriteClick(id, isFavorite, 'Discovery view');
   }, [ onFavoriteClick ]);
 
-
   return apps.length > 0 ? (
     <Grid
       templateColumns={{

@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
-
 import {
   Box,
   Button,
-  Container,
   Flex,
   FormControl,
   FormHelperText,
   FormLabel,
-  Image,
   Input,
   Modal,
   ModalBody,
@@ -16,18 +12,13 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Skeleton,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
   Text,
   useDisclosure,
   List,
   ListItem,
-  Icon,
 } from '@chakra-ui/react';
+import React, { useState } from 'react';
+
 import LinkExternal from '../../shared/LinkExternal';
 const FixedComponent = () => {
   // nft
@@ -145,8 +136,7 @@ const FixedComponent = () => {
                 <Flex gap="5" direction="column">
                   <ListItem>
                     <Text fontSize="sm">
-                      {'(1)'}&nbsp; &nbsp;Install the DBC Worker node in the virtual machine. Installation
-                      documentation:
+                      (1)&nbsp; &nbsp;Install the DBC Worker node in the virtual machine. Installation documentation:
                       <LinkExternal href="https://github.com/DeepBrainChain/AIComputingNode">
                         https://github.com/DeepBrainChain/AIComputingNode
                       </LinkExternal>
@@ -155,20 +145,20 @@ const FixedComponent = () => {
 
                   <ListItem>
                     <Text fontSize="sm">
-                      {'(2)'}&nbsp; &nbsp;Download the AI container image. Download address:
+                      (2)&nbsp; &nbsp;Download the AI container image. Download address:
                       <LinkExternal href="https://and.decentralgpt.org/rule">xxxxxx</LinkExternal>
                     </Text>
                   </ListItem>
                   <ListItem>
                     <Text fontSize="sm">
-                      {'(3)'}&nbsp; &nbsp;Start a certain AI model container of DecentralGPT, obtain the container ID.
+                      (3)&nbsp; &nbsp;Start a certain AI model container of DecentralGPT, obtain the container ID.
                       Startup command:
                       <LinkExternal href="https://and.decentralgpt.org/rule">xxxxxx</LinkExternal>
                     </Text>
                   </ListItem>
                   <ListItem>
                     <Text fontSize="sm">
-                      {'(4)'}&nbsp; &nbsp;
+                      (4)&nbsp; &nbsp;
                       <Button
                         onClick={onPledgeModalOpen}
                         size="sm"
@@ -238,8 +228,8 @@ const FixedComponent = () => {
                   </ListItem>
                   <ListItem>
                     <Text fontSize="sm">
-                      <Flex gap={'2'} alignItems="center">
-                        {'(5)'}&nbsp;
+                      <Flex gap="2" alignItems="center">
+                        (5)&nbsp;
                         <Button
                           onClick={onPledgeModalOpenDgc}
                           size="sm"
@@ -314,7 +304,7 @@ const FixedComponent = () => {
                   </ListItem>
                   <ListItem>
                     <Text fontSize="sm">
-                      {'(6)'}&nbsp; &nbsp;View the information of machines that have joined the DecentralGPT network:{' '}
+                      (6)&nbsp; &nbsp;View the information of machines that have joined the DecentralGPT network:{' '}
                       <LinkExternal href="https://and.decentralgpt.org/calc">
                         https://and.decentralgpt.org/calc
                       </LinkExternal>

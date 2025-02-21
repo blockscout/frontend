@@ -19,7 +19,7 @@ const Home = () => {
     <Box as="main">
       <Box
         w="100%"
-        background={config.UI.homepage.plate.background}
+        background={ config.UI.homepage.plate.background }
         borderRadius="24px"
         padding={{ base: '24px', lg: '48px' }}
         minW={{ base: 'unset', lg: '900px' }}
@@ -30,25 +30,25 @@ const Home = () => {
             as="h1"
             size={{ base: 'md', lg: 'xl' }}
             lineHeight={{ base: '32px', lg: '50px' }}
-            fontWeight={600}
-            color={config.UI.homepage.plate.textColor}
+            fontWeight={ 600 }
+            color={ config.UI.homepage.plate.textColor }
           >
-            {config.chain.name} explorer
+            { config.chain.name } explorer
           </Heading>
           <Box display={{ base: 'none', lg: 'flex' }}>
-            {config.features.account.isEnabled && <ProfileMenuDesktop isHomePage />}
-            {config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage />}
+            { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
+            { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
           </Box>
         </Flex>
-        <SearchBar isHomepage />
+        <SearchBar isHomepage/>
       </Box>
-      <Stats />
-      <ChainIndicators />
-      <AdBanner mt={{ base: 6, lg: 8 }} mx="auto" display="flex" justifyContent="center" />
-      <Flex mt={8} direction={{ base: 'column', lg: 'row' }} columnGap={12} rowGap={8}>
-        {rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? <LatestZkEvmL2Batches /> : <LatestBlocks />}
-        <Box flexGrow={1}>
-          <Transactions />
+      <Stats/>
+      <ChainIndicators/>
+      <AdBanner mt={{ base: 6, lg: 8 }} mx="auto" display="flex" justifyContent="center"/>
+      <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 8 }>
+        { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? <LatestZkEvmL2Batches/> : <LatestBlocks/> }
+        <Box flexGrow={ 1 }>
+          <Transactions/>
         </Box>
       </Flex>
     </Box>

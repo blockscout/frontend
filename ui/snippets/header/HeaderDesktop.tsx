@@ -6,6 +6,7 @@ import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
+
 import Burger from './Burger';
 
 type Props = {
@@ -14,7 +15,7 @@ type Props = {
 };
 
 const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
-  const searchBar = renderSearchBar ? renderSearchBar() : <SearchBar />;
+  const searchBar = renderSearchBar ? renderSearchBar() : <SearchBar/>;
 
   return (
     <HStack
@@ -23,22 +24,22 @@ const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
       width="100%"
       alignItems="center"
       justifyContent="center"
-      gap={12}
+      gap={ 12 }
     >
-      {isMarketplaceAppPage && (
-        <Box display="flex" alignItems="center" gap={3}>
-          <Burger isMarketplaceAppPage />
-          <NetworkLogo isCollapsed />
+      { isMarketplaceAppPage && (
+        <Box display="flex" alignItems="center" gap={ 3 }>
+          <Burger isMarketplaceAppPage/>
+          <NetworkLogo isCollapsed/>
         </Box>
-      )}
-      <Box width="100%">{searchBar}</Box>
-      <Box display="flex" alignItems={'center'} gap={3}>
+      ) }
+      <Box width="100%">{ searchBar }</Box>
+      <Box display="flex" alignItems="center" gap={ 3 }>
         <Tooltip label="我的机器">
           <Button variant="ghost">Call us</Button>
         </Tooltip>
 
-        {config.features.account.isEnabled && <ProfileMenuDesktop />}
-        {config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop />}
+        { config.features.account.isEnabled && <ProfileMenuDesktop/> }
+        { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop/> }
       </Box>
     </HStack>
   );

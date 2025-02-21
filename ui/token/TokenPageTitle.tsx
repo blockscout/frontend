@@ -22,9 +22,9 @@ import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import { formatAgreementTag, formatAgreementText } from 'ui/tokenInfo/utils';
 
 import TokenVerifiedInfo from './TokenVerifiedInfo';
-import { formatAgreementTag, formatAgreementText } from 'ui/tokenInfo/utils';
 
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
@@ -84,7 +84,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
         undefined,
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags || []),
     ].filter(Boolean).sort(sortEntityTags)
-    .map((tag) => (formatAgreementTag(tag)));
+      .map((tag) => (formatAgreementTag(tag)));
   }, [
     addressMetadataQuery.data?.addresses,
     addressQuery.data,
@@ -96,7 +96,6 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
   ]);
 
   console.log('tags', tags);
-  
 
   const contentAfter = (
     <>

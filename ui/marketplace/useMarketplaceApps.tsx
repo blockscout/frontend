@@ -61,7 +61,7 @@ export default function useMarketplaceApps(
   const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
 
   // Set the value only 1 time to avoid unnecessary useQuery calls and re-rendering of all applications
-  const [snapshotFavoriteApps, setSnapshotFavoriteApps] = React.useState<Array<string> | undefined>();
+  const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
   const isInitialSetup = React.useRef(true);
 
   React.useEffect(() => {
@@ -69,11 +69,11 @@ export default function useMarketplaceApps(
       setSnapshotFavoriteApps(favoriteApps || []);
       isInitialSetup.current = false;
     }
-  }, [isFavoriteAppsLoaded, favoriteApps]);
+  }, [ isFavoriteAppsLoaded, favoriteApps ]);
 
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
-    queryKey: ['marketplace-dapps', snapshotFavoriteApps],
-    queryFn: async () => {
+    queryKey: [ 'marketplace-dapps', snapshotFavoriteApps ],
+    queryFn: async() => {
       if (!feature.isEnabled) {
         return [];
       } else if ('configUrl' in feature) {
@@ -88,15 +88,14 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
-
   const { isPlaceholderData: isGPURacePlaceholderData, isError: isGPURaceError, error: gpuRaceError, data: gpuRaceData } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
-    queryKey: ['gpu_race-dapps', snapshotFavoriteApps],
-    queryFn: async () => {
+    queryKey: [ 'gpu_race-dapps', snapshotFavoriteApps ],
+    queryFn: async() => {
       try {
         const response = await fetch<Array<MarketplaceAppWithSecurityReport>, unknown>(
-          "/assets/configs/gpu_race_config.json", 
-          undefined, 
-          { resource: 'marketplace-dapps' }
+          '/assets/configs/gpu_race_config.json',
+          undefined,
+          { resource: 'marketplace-dapps' },
         );
         return response;
       } catch (error) {
@@ -110,15 +109,14 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
-
   const { isPlaceholderData: isGPUMiningPlaceholderData, isError: isGPUMiningError, error: gpuMiningError, data: gpuMiningData } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
-    queryKey: ['gpu_mining-dapps', snapshotFavoriteApps],
-    queryFn: async () => {
+    queryKey: [ 'gpu_mining-dapps', snapshotFavoriteApps ],
+    queryFn: async() => {
       try {
         const response = await fetch<Array<MarketplaceAppWithSecurityReport>, unknown>(
-          "/assets/configs/gpu_mining-dapps.json", 
-          undefined, 
-          { resource: 'marketplace-dapps' }
+          '/assets/configs/gpu_mining-dapps.json',
+          undefined,
+          { resource: 'marketplace-dapps' },
         );
         return response;
       } catch (error) {
@@ -132,36 +130,34 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
-
-
   const appsWithSecurityReports = React.useMemo(() =>
     data?.map((app) => ({ ...app, securityReport: securityReports?.[app.id] })),
-    [data, securityReports]);
+  [ data, securityReports ]);
 
   const displayedApps = React.useMemo(() => {
     return appsWithSecurityReports?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
-  }, [selectedCategoryId, appsWithSecurityReports, filter, favoriteApps]);
+  }, [ selectedCategoryId, appsWithSecurityReports, filter, favoriteApps ]);
 
   const displayedAppsInRace = React.useMemo(() => {
     console.log('Filter conditions:', {
       gpuRaceData,
       filter,
       selectedCategoryId,
-      favoriteApps
+      favoriteApps,
     });
-    
-    return gpuRaceData?.filter(app => 
-      isAppNameMatches(filter, app) && 
-      isAppCategoryMatches(selectedCategoryId, app, favoriteApps)
+
+    return gpuRaceData?.filter(app =>
+      isAppNameMatches(filter, app) &&
+      isAppCategoryMatches(selectedCategoryId, app, favoriteApps),
     ) || [];
-  }, [selectedCategoryId, gpuRaceData, filter, favoriteApps]);
+  }, [ selectedCategoryId, gpuRaceData, filter, favoriteApps ]);
 
   const displayedAppsInMining = React.useMemo(() => {
-    return gpuMiningData?.filter(app => 
-      isAppNameMatches(filter, app) && 
-      isAppCategoryMatches(selectedCategoryId, app, favoriteApps)
+    return gpuMiningData?.filter(app =>
+      isAppNameMatches(filter, app) &&
+      isAppCategoryMatches(selectedCategoryId, app, favoriteApps),
     ) || [];
-  }, [selectedCategoryId, gpuMiningData, filter, favoriteApps]);
+  }, [ selectedCategoryId, gpuMiningData, filter, favoriteApps ]);
 
   return React.useMemo(() => ({
     data,
@@ -172,7 +168,7 @@ export default function useMarketplaceApps(
     gpuRaceData,
     displayedAppsInRace,
     gpuMiningData,
-    displayedAppsInMining
+    displayedAppsInMining,
   }), [
     data,
     displayedApps,
@@ -183,6 +179,6 @@ export default function useMarketplaceApps(
     gpuRaceData,
     displayedAppsInRace,
     gpuMiningData,
-    displayedAppsInMining
+    displayedAppsInMining,
   ]);
 }

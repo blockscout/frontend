@@ -153,7 +153,7 @@ const Footer = () => {
       <Grid { ...containerProps }>
         <div>
           { renderNetworkInfo() }
-          {/* { renderProjectInfo() } */}
+          { /* { renderProjectInfo() } */ }
         </div>
 
         <Grid
@@ -198,9 +198,9 @@ const Footer = () => {
     >
 
       { renderNetworkInfo({ lg: 'network' }) }
-      {/* { renderProjectInfo({ lg: 'info' }) } */}
+      { /* { renderProjectInfo({ lg: 'info' }) } */ }
 
-      {/* <Grid
+      { /* <Grid
         gridArea={{ lg: 'links-bottom' }}
         gap={ 1 }
         gridTemplateColumns={{
@@ -219,7 +219,7 @@ const Footer = () => {
         mt={{ base: 8, lg: 0 }}
       >
         { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
-      </Grid> */}
+      </Grid> */ }
     </Grid>
   );
 };

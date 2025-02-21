@@ -29,7 +29,6 @@ const MarketplaceListInMining = ({ apps, showAppInfo, favoriteApps, onFavoriteCl
     onFavoriteClick(id, isFavorite, 'Discovery view');
   }, [ onFavoriteClick ]);
 
-
   return apps.length > 0 ? (
     <Grid
       templateColumns={{

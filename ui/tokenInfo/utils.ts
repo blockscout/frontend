@@ -1,6 +1,6 @@
-import { EntityTag } from 'ui/shared/EntityTags/types';
 import type { Fields } from './types';
 import type { TokenInfoApplication } from 'types/api/account';
+import type { EntityTag } from 'ui/shared/EntityTags/types';
 
 export function getFormDefaultValues(address: string, tokenName: string, application: TokenInfoApplication | undefined): Partial<Fields> {
   if (!application) {
@@ -67,8 +67,6 @@ export function prepareRequestBody(data: Fields): Omit<TokenInfoApplication, 'id
   };
 }
 
-
-
 export function formatAgreementText(text: string): string {
   switch (text) {
     case 'ERC-20':
@@ -84,8 +82,6 @@ export function formatAgreementText(text: string): string {
   }
 }
 
-
-
 // [
 //   {
 //       "slug": "ERC-20",
@@ -99,6 +95,6 @@ export function formatAgreementTag(tag: EntityTag): EntityTag {
   return {
     ...tag,
     name: formatAgreementText(tag.name),
-    slug: formatAgreementText(tag.slug)
+    slug: formatAgreementText(tag.slug),
   };
 }
