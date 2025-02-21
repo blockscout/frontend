@@ -8,7 +8,8 @@ const MyMachine = dynamic(() => import('ui/mymachine/index'), { ssr: false });
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/mymachine">
-    <MyMachine />
+    {/* <MyMachine /> */}
+    <div>测试网2</div>
   </PageNextJs>
 );
 

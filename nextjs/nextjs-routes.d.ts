@@ -43,7 +43,6 @@ declare module "nextjs-routes" {
     | StaticRoute<"/mining">
     | DynamicRoute<"/mining/[id]", { "id": string }>
     | StaticRoute<"/mymachine">
-    | DynamicRoute<"/mymachine/[id]", { "id": string }>
     | StaticRoute<"/name-domains">
     | DynamicRoute<"/name-domains/[name]", { "name": string }>
     | DynamicRoute<"/op/[hash]", { "hash": string }>

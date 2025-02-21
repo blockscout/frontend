@@ -17,6 +17,11 @@ type Props = {
 const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
   const searchBar = renderSearchBar ? renderSearchBar() : <SearchBar />;
   const router = useRouter();
+  const routerH = () => {
+    if (router.pathname !== '/mymachine') {
+      router.push('/mymachine');
+    }
+  };
   return (
     <HStack
       as="header"
@@ -35,13 +40,7 @@ const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
       <Box width="100%">{searchBar}</Box>
       <Box display="flex" alignItems="center" gap={3}>
         <Tooltip label="My machine" className="hidden md:block">
-          <Button
-            fontSize="sm"
-            colorScheme="blue"
-            onClick={() => {
-              router.push('/mymachine');
-            }}
-          >
+          <Button fontSize="sm" colorScheme="blue" onClick={routerH}>
             My machine
           </Button>
         </Tooltip>

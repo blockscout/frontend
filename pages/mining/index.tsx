@@ -5,10 +5,13 @@ import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
 
 const MarketplaceInMining = dynamic(() => import('ui/pages/MarketplaceInMining'), { ssr: false });
+{
+  /* <MarketplaceInMining /> */
+}
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/mining">
-    <MarketplaceInMining />
+    <div>测试网</div>
   </PageNextJs>
 );
 
