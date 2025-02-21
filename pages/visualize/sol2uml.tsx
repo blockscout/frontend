@@ -3,12 +3,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-// import Sol2Uml from 'ui/pages/Sol2Uml';
+import Sol2Uml from 'ui/pages/Sol2Uml';
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/visualize/sol2uml">
-      { /* <Sol2Uml/> */ }
+      <Sol2Uml/>
     </PageNextJs>
   );
 };

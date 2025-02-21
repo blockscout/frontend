@@ -6,15 +6,17 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
+import { route } from 'nextjs-routes';
+
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { IconButton } from 'toolkit/chakra/icon-button';
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
-import NextLink from 'ui/shared/NextLink';
 
 import useFetchTokens from '../utils/useFetchTokens';
 import TokenSelectDesktop from './TokenSelectDesktop';
@@ -64,27 +66,20 @@ const TokenSelect = ({ onClick }: Props) => {
         <TokenSelectDesktop data={ data } isLoading={ tokensIsFetching === 1 }/>
       }
       <Tooltip content="Show all tokens">
-        <Box>
-          { /* TODO @tom2drum: replace with Link */ }
-          <NextLink
-            href={{ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }}
-            passHref
-            legacyBehavior
-            scroll={ false }
+        <Link
+          href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }) }
+          asChild
+          scroll={ false }
+        >
+          <IconButton
+            aria-label="Show all tokens"
+            variant="outline"
+            size="sm"
+            onClick={ handleIconButtonClick }
           >
-            <IconButton
-              aria-label="Show all tokens"
-              variant="outline"
-              size="sm"
-              pl="6px"
-              pr="6px"
-              as="a"
-              onClick={ handleIconButtonClick }
-            >
-              <IconSvg name="wallet" boxSize={ 5 }/>
-            </IconButton>
-          </NextLink>
-        </Box>
+            <IconSvg name="wallet" boxSize={ 5 }/>
+          </IconButton>
+        </Link>
       </Tooltip>
     </Flex>
   );

@@ -1,8 +1,5 @@
 import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
-// TODO @tom2drum migrate this to the new recipe system
-// import components from './components/index';
-// import config from './config';
 import { keyframes } from './foundations/animations';
 import * as borders from './foundations/borders';
 import breakpoints from './foundations/breakpoints';
@@ -39,8 +36,6 @@ const customConfig = defineConfig({
       },
     },
   },
-  // components,
-  // config,
 });
 
 export default createSystem(defaultConfig, customConfig);
