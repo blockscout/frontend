@@ -4,11 +4,11 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const MarketplaceInMining = dynamic(() => import('ui/pages/MarketplaceInMining'), { ssr: false });
+const MyMachine = dynamic(() => import('ui/mymachine/index'), { ssr: false });
 
 const Page: NextPage = () => (
-  <PageNextJs pathname="/mining">
-    <MarketplaceInMining />
+  <PageNextJs pathname="/mymachine">
+    <MyMachine />
   </PageNextJs>
 );
 

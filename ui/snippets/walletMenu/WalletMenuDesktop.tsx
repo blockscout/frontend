@@ -35,7 +35,7 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
     source: 'Header',
   });
   const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
-  const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useBoolean(false);
   const isMobile = useIsMobile();
   const { isAutoConnectDisabled } = useMarketplaceContext();
 
@@ -44,7 +44,7 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
       return 'subtle';
     }
     return isHomePage ? 'solid' : 'outline';
-  }, [ isWalletConnected, isHomePage ]);
+  }, [isWalletConnected, isHomePage]);
 
   const themedColorForOrangeBg = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
   let buttonStyles: Partial<ButtonProps> = {};
@@ -72,61 +72,61 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
   const openPopover = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Open' });
     setIsPopoverOpen.toggle();
-  }, [ setIsPopoverOpen ]);
+  }, [setIsPopoverOpen]);
 
   return (
     <Popover
-      openDelay={ 300 }
+      openDelay={300}
       placement="bottom-end"
-      gutter={ 10 }
+      gutter={10}
       isLazy
-      isOpen={ isPopoverOpen }
-      onClose={ setIsPopoverOpen.off }
+      isOpen={isPopoverOpen}
+      onClose={setIsPopoverOpen.off}
     >
-      <Box ml={ 2 }>
+      <Box ml={2}>
         <PopoverTrigger>
           <WalletTooltip
-            isDisabled={ isMobile === undefined || isMobile }
-            isWalletConnected={ isWalletConnected }
-            isAutoConnectDisabled={ isAutoConnectDisabled }
+            isDisabled={isMobile === undefined || isMobile}
+            isWalletConnected={isWalletConnected}
+            isAutoConnectDisabled={isAutoConnectDisabled}
           >
             <Button
-              className={ className }
-              variant={ variant }
+              className={className}
+              variant={variant}
               colorScheme="blue"
-              flexShrink={ 0 }
-              isLoading={ (isModalOpening || isModalOpen) && !isWalletConnected }
+              flexShrink={0}
+              isLoading={(isModalOpening || isModalOpen) && !isWalletConnected}
               loadingText="Connect wallet"
-              onClick={ isWalletConnected ? openPopover : connect }
+              onClick={isWalletConnected ? openPopover : connect}
               fontSize="sm"
-              size={ size }
-              { ...buttonStyles }
+              size={size}
+              {...buttonStyles}
             >
-              { isWalletConnected ? (
+              {isWalletConnected ? (
                 <>
-                  <WalletIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled } mr={ 2 }/>
-                  <HashStringShorten hash={ address } isTooltipDisabled/>
+                  <WalletIdenticon address={address} isAutoConnectDisabled={isAutoConnectDisabled} mr={2} />
+                  <HashStringShorten hash={address} isTooltipDisabled />
                 </>
               ) : (
                 'Connect wallet'
-              ) }
+              )}
             </Button>
           </WalletTooltip>
         </PopoverTrigger>
       </Box>
-      { isWalletConnected && (
+      {isWalletConnected && (
         <PopoverContent w="235px">
           <PopoverBody padding="24px 16px 16px 16px">
             <WalletMenuContent
-              address={ address }
-              disconnect={ disconnect }
-              isAutoConnectDisabled={ isAutoConnectDisabled }
-              openWeb3Modal={ openModal }
-              closeWalletMenu={ setIsPopoverOpen.off }
+              address={address}
+              disconnect={disconnect}
+              isAutoConnectDisabled={isAutoConnectDisabled}
+              openWeb3Modal={openModal}
+              closeWalletMenu={setIsPopoverOpen.off}
             />
           </PopoverBody>
         </PopoverContent>
-      ) }
+      )}
     </Popover>
   );
 };

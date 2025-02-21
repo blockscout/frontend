@@ -22,13 +22,14 @@ import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
 import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
+import '../style/index.css';
 
 import 'lib/setLocale';
 // import 'focus-visible/dist/focus-visible';
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
-}
+};
 
 const ERROR_SCREEN_STYLES: ChakraProps = {
   h: '100vh',
@@ -43,7 +44,6 @@ const ERROR_SCREEN_STYLES: ChakraProps = {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-
   useLoadFeatures();
   useNotifyOnNavigation();
 
@@ -53,28 +53,23 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     Sentry.captureException(error);
   }, []);
 
-  const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
+  const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
 
   return (
-    <ChakraProvider cookies={ pageProps.cookies }>
-      <AppErrorBoundary
-        { ...ERROR_SCREEN_STYLES }
-        onError={ handleError }
-      >
+    <ChakraProvider cookies={pageProps.cookies}>
+      <AppErrorBoundary {...ERROR_SCREEN_STYLES} onError={handleError}>
         <Web3ModalProvider>
-          <AppContextProvider pageProps={ pageProps }>
-            <QueryClientProvider client={ queryClient }>
-              <GrowthBookProvider growthbook={ growthBook }>
+          <AppContextProvider pageProps={pageProps}>
+            <QueryClientProvider client={queryClient}>
+              <GrowthBookProvider growthbook={growthBook}>
                 <ScrollDirectionProvider>
-                  <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
-                    <MarketplaceContextProvider>
-                      { getLayout(<Component { ...pageProps }/>) }
-                    </MarketplaceContextProvider>
+                  <SocketProvider url={`${config.api.socket}${config.api.basePath}/socket/v2`}>
+                    <MarketplaceContextProvider>{getLayout(<Component {...pageProps} />)}</MarketplaceContextProvider>
                   </SocketProvider>
                 </ScrollDirectionProvider>
               </GrowthBookProvider>
-              <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
-              <GoogleAnalytics/>
+              <ReactQueryDevtools buttonPosition="bottom-left" position="left" />
+              <GoogleAnalytics />
             </QueryClientProvider>
           </AppContextProvider>
         </Web3ModalProvider>
