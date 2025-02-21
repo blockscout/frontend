@@ -5,10 +5,10 @@ import MarketplaceInMining from 'ui/pages/MarketplaceInMining';
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/mining">
-    <MarketplaceInMining />
+    <div>88888888</div>
   </PageNextJs>
 );
 
 export default Page;
 
-export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';
+// export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';
