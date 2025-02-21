@@ -34,4 +34,5 @@ export const ProgressCircleValueText = React.forwardRef<
   );
 });
 
+export interface ProgressCircleRootProps extends ChakraProgressCircle.RootProps {}
 export const ProgressCircleRoot = ChakraProgressCircle.Root;
