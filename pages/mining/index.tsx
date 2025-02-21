@@ -11,4 +11,4 @@ const Page: NextPage = () => (
 
 export default Page;
 
-// export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';
+export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';
