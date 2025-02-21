@@ -1,20 +1,9 @@
-/* eslint-disable max-len */
-
-import { HStack, Spinner, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { useColorMode } from 'toolkit/chakra/color-mode';
-import { Field } from 'toolkit/chakra/field';
-import { Heading } from 'toolkit/chakra/heading';
-import { NativeSelectField, NativeSelectRoot } from 'toolkit/chakra/native-select';
-import { PinInput } from 'toolkit/chakra/pin-input';
-import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
-import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
-import { Textarea } from 'toolkit/chakra/textarea';
-import ContentLoader from 'ui/shared/ContentLoader';
+import { TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import AccordionsShowcase from 'ui/showcases/Accordion';
 import AlertShowcase from 'ui/showcases/Alert';
@@ -25,16 +14,42 @@ import ClipboardShowcase from 'ui/showcases/Clipboard';
 import DialogShowcase from 'ui/showcases/Dialog';
 import InputShowcase from 'ui/showcases/Input';
 import LinkShowcase from 'ui/showcases/Link';
+import LoadersShowcase from 'ui/showcases/Loaders';
 import MenuShowcase from 'ui/showcases/Menu';
 import PaginationShowcase from 'ui/showcases/Pagination';
+import PinInputShowcase from 'ui/showcases/PinInput';
+import ProgressCircleShowcase from 'ui/showcases/ProgressCircle';
 import RadioShowcase from 'ui/showcases/Radio';
 import SelectShowcase from 'ui/showcases/Select';
 import TabsShowcase from 'ui/showcases/Tabs';
 import TagShowcase from 'ui/showcases/Tag';
+import TextareaShowcase from 'ui/showcases/Textarea';
 import ToastShowcase from 'ui/showcases/Toast';
 import TooltipShowcase from 'ui/showcases/Tooltip';
 
-const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+const tabs = [
+  { label: 'Accordion', value: 'accordion', component: <AccordionsShowcase/> },
+  { label: 'Alert', value: 'alert', component: <AlertShowcase/> },
+  { label: 'Badge', value: 'badge', component: <BadgeShowcase/> },
+  { label: 'Button', value: 'button', component: <ButtonShowcase/> },
+  { label: 'Checkbox', value: 'checkbox', component: <CheckboxShowcase/> },
+  { label: 'Clipboard', value: 'clipboard', component: <ClipboardShowcase/> },
+  { label: 'Dialog', value: 'dialog', component: <DialogShowcase/> },
+  { label: 'Input', value: 'input', component: <InputShowcase/> },
+  { label: 'Link', value: 'link', component: <LinkShowcase/> },
+  { label: 'Loaders', value: 'loaders', component: <LoadersShowcase/> },
+  { label: 'Menu', value: 'menu', component: <MenuShowcase/> },
+  { label: 'Pagination', value: 'pagination', component: <PaginationShowcase/> },
+  { label: 'Progress Circle', value: 'progress-circle', component: <ProgressCircleShowcase/> },
+  { label: 'Radio', value: 'radio', component: <RadioShowcase/> },
+  { label: 'Pin input', value: 'pin-input', component: <PinInputShowcase/> },
+  { label: 'Select', value: 'select', component: <SelectShowcase/> },
+  { label: 'Tabs', value: 'tabs', component: <TabsShowcase/> },
+  { label: 'Tag', value: 'tag', component: <TagShowcase/> },
+  { label: 'Textarea', value: 'textarea', component: <TextareaShowcase/> },
+  { label: 'Toast', value: 'toast', component: <ToastShowcase/> },
+  { label: 'Tooltip', value: 'tooltip', component: <TooltipShowcase/> },
+];
 
 const ChakraShowcases = () => {
   const colorMode = useColorMode();
@@ -48,102 +63,12 @@ const ChakraShowcases = () => {
       </Switch>
 
       <TabsRoot defaultValue="accordion" orientation={ isMobile ? 'horizontal' : 'vertical' }>
-        <TabsList flexWrap="wrap" w="fit-content">
-          <TabsTrigger value="accordion">Accordion</TabsTrigger>
-          <TabsTrigger value="alert">Alert</TabsTrigger>
-          <TabsTrigger value="badge">Badge</TabsTrigger>
-          <TabsTrigger value="button">Button</TabsTrigger>
-          <TabsTrigger value="checkbox">Checkbox</TabsTrigger>
-          <TabsTrigger value="clipboard">Clipboard</TabsTrigger>
-          <TabsTrigger value="dialog">Dialog</TabsTrigger>
-          <TabsTrigger value="input">Input</TabsTrigger>
-          <TabsTrigger value="link">Link</TabsTrigger>
-          <TabsTrigger value="menu">Menu</TabsTrigger>
-          <TabsTrigger value="pagination">Pagination</TabsTrigger>
-          <TabsTrigger value="radio">Radio</TabsTrigger>
-          <TabsTrigger value="select">Select</TabsTrigger>
-          <TabsTrigger value="tabs">Tabs</TabsTrigger>
-          <TabsTrigger value="tag">Tag</TabsTrigger>
-          <TabsTrigger value="toast">Toast</TabsTrigger>
-          <TabsTrigger value="tooltip">Tooltip</TabsTrigger>
-          <TabsTrigger value="unsorted">Unsorted</TabsTrigger>
+        <TabsList flexWrap="wrap" w="fit-content" whiteSpace="nowrap">
+          { tabs.map((tab) => (
+            <TabsTrigger key={ tab.value } value={ tab.value }>{ tab.label }</TabsTrigger>
+          )) }
         </TabsList>
-        <AccordionsShowcase/>
-        <AlertShowcase/>
-        <BadgeShowcase/>
-        <ButtonShowcase/>
-        <CheckboxShowcase/>
-        <ClipboardShowcase/>
-        <DialogShowcase/>
-        <InputShowcase/>
-        <LinkShowcase/>
-        <MenuShowcase/>
-        <PaginationShowcase/>
-        <RadioShowcase/>
-        <SelectShowcase/>
-        <TabsShowcase/>
-        <TagShowcase/>
-        <ToastShowcase/>
-        <TooltipShowcase/>
-
-        <TabsContent value="unsorted">
-          <VStack align="flex-start" gap={ 6 }>
-            <section>
-              <Heading textStyle="heading.sm" mb={ 2 } mt={ 6 }>Pin input</Heading>
-              <HStack mt={ 4 }>
-                <PinInput otp count={ 3 }/>
-                <PinInput otp count={ 3 } value={ [ '1', '2', '3' ] } disabled bgColor="dialog.bg"/>
-              </HStack>
-            </section>
-
-            <section>
-              <Heading textStyle="heading.md" mb={ 2 }>Textarea</Heading>
-              <HStack gap={ 4 } flexWrap="wrap">
-                <Field label="Description" required floating size="2xl" w="360px">
-                  <Textarea/>
-                </Field>
-                <Field label="Description" required floating size="2xl" w="360px">
-                  <Textarea value={ TEXT }/>
-                </Field>
-              </HStack>
-            </section>
-
-            <section>
-              <Heading textStyle="heading.md" mb={ 2 }>Progress Circle</Heading>
-              <HStack gap={ 4 }>
-                <ProgressCircleRoot
-                  value={ 45 }
-                  colorPalette="blue"
-                >
-                  <ProgressCircleRing/>
-                </ProgressCircleRoot>
-              </HStack>
-            </section>
-
-            <section>
-              <Heading textStyle="heading.md" mb={ 2 }>Skeleton & Loaders</Heading>
-              <HStack gap={ 4 }>
-                <Skeleton loading>
-                  <span>Skeleton</span>
-                </Skeleton>
-                <ContentLoader/>
-                <Spinner/>
-              </HStack>
-            </section>
-
-            <section>
-              <Heading textStyle="heading.md" mb={ 2 }>Select</Heading>
-              <HStack gap={ 4 } whiteSpace="nowrap" flexWrap="wrap">
-                <NativeSelectRoot w="350px">
-                  <NativeSelectField>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                  </NativeSelectField>
-                </NativeSelectRoot>
-              </HStack>
-            </section>
-          </VStack>
-        </TabsContent>
+        { tabs.map((tab) => tab.component) }
       </TabsRoot>
     </>
   );

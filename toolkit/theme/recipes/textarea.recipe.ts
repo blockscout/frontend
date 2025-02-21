@@ -45,7 +45,6 @@ export const recipe = defineRecipe({
         },
         _readOnly: {
           userSelect: 'all',
-          pointerEvents: 'none',
           bg: 'input.bg.readOnly',
           borderColor: 'input.border.readOnly',
           _focus: {
@@ -56,6 +55,7 @@ export const recipe = defineRecipe({
           },
         },
         _disabled: {
+          pointerEvents: 'none',
           bg: 'input.bg.disabled',
           borderColor: 'input.border.disabled',
         },
