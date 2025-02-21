@@ -36,10 +36,11 @@ const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
       <Box display="flex" alignItems="center" gap={3}>
         <Tooltip label="My machine" className="hidden md:block">
           <Button
+            fontSize="sm"
+            colorScheme="blue"
             onClick={() => {
               router.push('/mymachine');
             }}
-            variant="outline"
           >
             My machine
           </Button>

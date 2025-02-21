@@ -13,8 +13,10 @@ import {
   Td,
   Tooltip,
   TableContainer,
+  CardHeader,
+  Heading,
 } from '@chakra-ui/react';
-import IconSvg from 'ui/shared/IconSvg';
+// import IconSvg from 'ui/shared/IconSvg';
 
 function index() {
   // thead数据
@@ -172,6 +174,9 @@ function index() {
   ];
   return (
     <Card variant="subtle">
+      <CardHeader>
+        <Heading size="md">Machine List</Heading>
+      </CardHeader>
       <CardBody gap="2">
         <TableContainer>
           <Table size={'sm'}>
