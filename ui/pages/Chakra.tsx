@@ -18,6 +18,7 @@ import LoadersShowcase from 'ui/showcases/Loaders';
 import MenuShowcase from 'ui/showcases/Menu';
 import PaginationShowcase from 'ui/showcases/Pagination';
 import PinInputShowcase from 'ui/showcases/PinInput';
+import PopoverShowcase from 'ui/showcases/Popover';
 import ProgressCircleShowcase from 'ui/showcases/ProgressCircle';
 import RadioShowcase from 'ui/showcases/Radio';
 import SelectShowcase from 'ui/showcases/Select';
@@ -53,6 +54,7 @@ const tabs = [
   { label: 'Progress Circle', value: 'progress-circle', component: <ProgressCircleShowcase/> },
   { label: 'Radio', value: 'radio', component: <RadioShowcase/> },
   { label: 'Pin input', value: 'pin-input', component: <PinInputShowcase/> },
+  { label: 'Popover', value: 'popover', component: <PopoverShowcase/> },
   { label: 'Select', value: 'select', component: <SelectShowcase/> },
   { label: 'Table', value: 'table', component: <TableShowcase/> },
   { label: 'Tabs', value: 'tabs', component: <TabsShowcase/> },
@@ -79,7 +81,7 @@ const ChakraShowcases = () => {
             <TabsTrigger key={ tab.value } value={ tab.value }>{ tab.label }</TabsTrigger>
           )) }
         </TabsList>
-        { tabs.map((tab) => tab.component) }
+        { tabs.map((tab) => <React.Fragment key={ tab.value }>{ tab.component }</React.Fragment>) }
       </TabsRoot>
     </>
   );

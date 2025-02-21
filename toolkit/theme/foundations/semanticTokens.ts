@@ -453,10 +453,10 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       DEFAULT: { value: '{colors.gray.400}' },
       _dark: { value: '{colors.gray.500}' },
     },
-    error: {
-      DEFAULT: { value: '{colors.red.500}' },
-      _dark: { value: '{colors.red.500}' },
-    },
+    // error: {
+    //   DEFAULT: { value: '{colors.red.500}' },
+    //   _dark: { value: '{colors.red.500}' },
+    // },
     // dialog_bg: {
     //   DEFAULT: { value: '{colors.white}' },
     //   _dark: { value: '{colors.gray.900}' },

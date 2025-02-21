@@ -8,10 +8,10 @@ import config from 'configs/app';
 import ContentLoader from 'ui/shared/ContentLoader';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-// const GraphQL = dynamic(() => import('ui/graphQL/GraphQL'), {
-//   loading: () => <ContentLoader/>,
-//   ssr: false,
-// });
+const GraphQL = dynamic(() => import('ui/graphQL/GraphQL'), {
+  loading: () => <ContentLoader/>,
+  ssr: false,
+});
 
 const Page: NextPage = () => {
 
@@ -20,7 +20,7 @@ const Page: NextPage = () => {
       <PageTitle
         title={ config.meta.seo.enhancedDataEnabled ? `GraphiQL ${ config.chain.name } interface` : 'GraphQL playground' }
       />
-      { /* <GraphQL/> */ }
+      <GraphQL/>
     </PageNextJs>
   );
 };
