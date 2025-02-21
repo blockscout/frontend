@@ -23,6 +23,8 @@ on:
             - filecoin
             - neon_devnet
             - optimism
+            - optimism0
+            - optimism1
             - optimism_celestia
             - optimism_sepolia
             - polygon
