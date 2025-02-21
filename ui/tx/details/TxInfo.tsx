@@ -504,6 +504,29 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
 
+      { hasInterop && data.op_interop?.target && (
+        <>
+          <DetailsInfoItem.Label
+            isLoading={ isLoading }
+            hint="The target address where this cross-chain transaction is executed"
+          >
+            Interop target
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value flexWrap="nowrap">
+            { data.op_interop?.relay_chain !== undefined ? (
+              <AddressEntityInterop
+                chain={ data.op_interop.relay_chain }
+                address={{ hash: data.op_interop.target }}
+                isLoading={ isLoading }
+                truncation="dynamic"
+              />
+            ) : (
+              <AddressEntity address={{ hash: data.op_interop.target }} isLoading={ isLoading } truncation="dynamic"/>
+            ) }
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
       <DetailsInfoItemDivider/>
 
       { (data.arbitrum?.commitment_transaction.hash || data.arbitrum?.confirmation_transaction.hash) &&
@@ -575,29 +598,6 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       ) }
 
       { (data.zkevm_batch_number || data.zkevm_verify_hash) && <DetailsInfoItemDivider/> }
-
-      { hasInterop && data.op_interop?.target && (
-        <>
-          <DetailsInfoItem.Label
-            isLoading={ isLoading }
-            hint="The target contract where this cross-chain transaction is executed"
-          >
-            Interop target
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value flexWrap="nowrap">
-            { data.op_interop?.relay_chain ? (
-              <AddressEntityInterop
-                chain={ data.op_interop.relay_chain }
-                address={{ hash: data.op_interop.target }}
-                isLoading={ isLoading }
-                truncation="dynamic"
-              />
-            ) : (
-              <AddressEntity address={{ hash: data.op_interop.target }} isLoading={ isLoading } truncation="dynamic"/>
-            ) }
-          </DetailsInfoItem.Value>
-        </>
-      ) }
 
       { !config.UI.views.tx.hiddenFields?.value && (
         <>

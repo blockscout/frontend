@@ -23,7 +23,7 @@ const InteropMessagesTableItem = ({ item, isLoading }: Props) => {
   return (
     <Tr>
       <Td>
-        <InteropMessageAdditionalInfo payload={ item.payload }/>
+        <InteropMessageAdditionalInfo payload={ item.payload } isLoading={ isLoading }/>
       </Td>
       <Td>
         <Skeleton isLoaded={ !isLoading } fontWeight="700">

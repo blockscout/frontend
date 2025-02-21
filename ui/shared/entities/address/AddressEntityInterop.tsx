@@ -5,7 +5,6 @@ import type { ChainInfo } from 'types/api/interop';
 
 import { route } from 'nextjs-routes';
 
-import * as EntityBase from 'ui/shared/entities/base/components';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { distributeEntityProps } from '../base/utils';
@@ -52,37 +51,35 @@ const AddressEntryInterop = (props: Props) => {
     },
   }) : null;
 
+  const addressIcon = (
+    <Box position="relative">
+      <AddressEntity.Icon { ...partsProps.icon }/>
+      { props.chain?.chain_logo ? (
+        <Image
+          position="absolute"
+          bottom="-3px"
+          right="4px"
+          src={ props.chain.chain_logo }
+          alt={ props.chain.chain_name || 'external chain logo' }
+          width="14px"
+          height="14px"
+          borderRadius="base"
+        />
+      ) : (
+        <IconStub/>
+      )
+      }
+    </Box>
+  );
+
   return (
     <AddressEntity.Container>
       { props.chain && (
-        <Tooltip label={ `Contract on ${ props.chain.chain_name ? props.chain.chain_name : 'external chain' } (chain id ${ props.chain.chain_id })` }>
-          <Box position="relative">
-            <EntityBase.Icon
-              { ...props }
-              name="contracts/regular"
-              borderRadius={ 0 }
-            />
-            { props.chain.chain_logo ? (
-              <Image
-                position="absolute"
-                bottom="-3px"
-                right="4px"
-                src={ props.chain.chain_logo }
-                alt={ props.chain.chain_name || 'external chain logo' }
-                width="14px"
-                height="14px"
-                borderRadius="base"
-              />
-            ) : (
-              <IconStub/>
-            )
-            }
-          </Box>
+        <Tooltip label={ `Address on ${ props.chain.chain_name ? props.chain.chain_name : 'external chain' } (chain id ${ props.chain.chain_id })` }>
+          { addressIcon }
         </Tooltip>
       ) }
-      { !props.chain && (
-        <IconStub/>
-      ) }
+      { !props.chain && addressIcon }
       { href ? (
         <AddressEntity.Link { ...partsProps.link } href={ href } isExternal>
           <AddressEntity.Content { ...partsProps.content }/>

@@ -102,7 +102,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
     </Grid>
   );
 
-  if (data.init_transaction_hash) {
+  if (data.init_chain !== undefined) {
     return (
       <>
         <DetailsInfoItem.Label
@@ -120,7 +120,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
     );
   }
 
-  if (data.relay_transaction_hash) {
+  if (data.relay_chain !== undefined) {
     return (
       <>
         <DetailsInfoItem.Label
