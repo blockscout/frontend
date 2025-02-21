@@ -5,16 +5,13 @@ import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
 
 const MarketplaceInMining = dynamic(() => import('ui/pages/MarketplaceInMining'), { ssr: false });
-{
-  /* <MarketplaceInMining /> */
-}
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/mining">
-    <div>测试网</div>
+    <MarketplaceInMining />
   </PageNextJs>
 );
 
 export default Page;
 
-export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';
+// export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';
