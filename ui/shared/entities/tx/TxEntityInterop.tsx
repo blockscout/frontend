@@ -1,10 +1,11 @@
-import { Box, Flex, Image, Tooltip, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Box, Image, Tooltip, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ChainInfo } from 'types/api/interop';
 
 import { route } from 'nextjs-routes';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { distributeEntityProps } from '../base/utils';
@@ -15,10 +16,12 @@ type Props = {
   hash?: string | null;
 } & Omit<TxEntity.EntityProps, 'hash'>;
 
-const IconStub = () => {
+const IconStub = ({ isLoading }: { isLoading?: boolean }) => {
   const bgColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
   return (
-    <Flex
+    <Skeleton
+      isLoaded={ !isLoading }
+      display="flex"
       w="20px"
       h="20px"
       borderRadius="full"
@@ -34,7 +37,7 @@ const IconStub = () => {
         color="text_secondary"
         display="block"
       />
-    </Flex>
+    </Skeleton>
   );
 };
 
@@ -64,7 +67,7 @@ const TxEntityInterop = ({ chain, hash, ...props }: Props) => {
                 borderRadius="base"
               />
             ) : (
-              <IconStub/>
+              <IconStub isLoading={ props.isLoading }/>
             ) }
           </Box>
         </Tooltip>
