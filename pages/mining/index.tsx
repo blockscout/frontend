@@ -5,7 +5,7 @@ import MarketplaceInMining from 'ui/pages/MarketplaceInMining';
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/mining">
-    <div>88888888</div>
+    <MarketplaceInMining />
   </PageNextJs>
 );
 
