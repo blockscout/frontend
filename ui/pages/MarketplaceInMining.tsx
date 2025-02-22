@@ -196,7 +196,7 @@ const Marketplace = () => {
           isLoading={isCategoriesPlaceholderData}
         />
       </Box>
-      {/* <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
+      <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
         {feature.securityReportsUrl && (
           <Skeleton isLoaded={!isPlaceholderData}>
             <RadioButtonGroup<MarketplaceDisplayType>
@@ -230,41 +230,8 @@ const Marketplace = () => {
           size={feature.securityReportsUrl ? 'xs' : 'sm'}
           flex="1"
         />
-      </Flex> */}
-      {/* ----------------------- */}
-      <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
-        <Skeleton isLoaded={!isPlaceholderData}>
-          <RadioButtonGroup<MarketplaceDisplayType>
-            onChange={onDisplayTypeChange}
-            defaultValue={selectedDisplayType}
-            name="type"
-            options={[
-              {
-                title: 'Discovery',
-                value: MarketplaceDisplayType.DEFAULT,
-                icon: 'apps_xs',
-                onlyIcon: false,
-              },
-              {
-                title: 'Apps scores',
-                value: MarketplaceDisplayType.SCORES,
-                icon: 'apps_list',
-                onlyIcon: false,
-                contentAfter: <IconSvg name={isMobile ? 'beta_xs' : 'beta'} h={3} w={isMobile ? 3 : 7} ml={1} />,
-              },
-            ]}
-            autoWidth
-          />
-        </Skeleton>
-        <FilterInput
-          initialValue={filterQuery}
-          onChange={onSearchInputChange}
-          placeholder="Find app by name or keyword..."
-          isLoading={isPlaceholderData}
-          size={feature.securityReportsUrl ? 'xs' : 'sm'}
-          flex="1"
-        />
       </Flex>
+
       {/* {selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl ? (
         <MarketplaceListWithScores
           apps={displayedAppsInMining}
