@@ -26,22 +26,6 @@ import useMarketplaceInMining from '../marketplace/useMarketplaceInMining';
 const feature = config.features.marketplace;
 
 const links: Array<{ label: string; href: string; icon: IconName }> = [];
-// if (feature.isEnabled) {
-//   if (feature.submitFormUrl) {
-//     links.push({
-//       label: 'Submit app',
-//       href: feature.submitFormUrl,
-//       icon: 'plus' as IconName,
-//     });
-//   }
-//   if (feature.suggestIdeasFormUrl) {
-//     links.push({
-//       label: 'Suggest ideas',
-//       href: feature.suggestIdeasFormUrl,
-//       icon: 'edit' as IconName,
-//     });
-//   }
-// }
 
 const Marketplace = () => {
   const {
@@ -235,7 +219,7 @@ const Marketplace = () => {
         />
       </Flex>
 
-      {/* {selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl ? (
+      {selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl ? (
         <MarketplaceListWithScores
           apps={displayedAppsInMining}
           showAppInfo={showAppInfo}
@@ -256,7 +240,7 @@ const Marketplace = () => {
           selectedCategoryId={selectedCategoryId}
           onAppClick={handleAppClick}
         />
-      )} */}
+      )}
 
       {selectedApp && isAppInfoModalOpen && (
         <MarketplaceAppModal

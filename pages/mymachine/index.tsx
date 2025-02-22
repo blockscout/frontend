@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
-import MyMachine from 'ui/mymachine/index';
+import dynamic from 'next/dynamic';
+const MyMachine = dynamic(() => import('ui/mymachine/index'), { ssr: false });
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/mymachine">
@@ -11,4 +12,6 @@ const Page: NextPage = () => (
 
 export default Page;
 
-// export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';
+export async function getServerSideProps() {
+  return { props: {} };
+}
