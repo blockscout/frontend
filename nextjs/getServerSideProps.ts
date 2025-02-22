@@ -20,14 +20,16 @@ export interface Props<Pathname extends Route['pathname'] = never> {
   apiData: metadata.ApiData<Pathname> | null;
 }
 
-export const base = async <Pathname extends Route['pathname'] = never>({ req, query }: GetServerSidePropsContext):
-Promise<GetServerSidePropsResult<Props<Pathname>>> => {
+export const base = async <Pathname extends Route['pathname'] = never>({
+  req,
+  query,
+}: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   const adBannerProvider = (() => {
     if (adBannerFeature.isEnabled) {
       if ('additionalProvider' in adBannerFeature && adBannerFeature.additionalProvider) {
         // we need to get a random ad provider on the server side to keep it consistent with the client side
         const randomIndex = Math.round(Math.random());
-        return [ adBannerFeature.provider, adBannerFeature.additionalProvider ][randomIndex];
+        return [adBannerFeature.provider, adBannerFeature.additionalProvider][randomIndex];
       } else {
         return adBannerFeature.provider;
       }
@@ -46,7 +48,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   };
 };
 
-export const account: GetServerSideProps<Props> = async(context) => {
+export const account: GetServerSideProps<Props> = async (context) => {
   if (!config.features.account.isEnabled) {
     return {
       notFound: true,
@@ -56,7 +58,7 @@ export const account: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
+export const verifiedAddresses: GetServerSideProps<Props> = async (context) => {
   if (!config.features.addressVerification.isEnabled) {
     return {
       notFound: true,
@@ -66,20 +68,12 @@ export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
   return account(context);
 };
 
-export const deposits: GetServerSideProps<Props> = async(context) => {
-  if (!(rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium' || rollupFeature.type === 'zkEvm'))) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return base(context);
-};
-
-export const withdrawals: GetServerSideProps<Props> = async(context) => {
+export const deposits: GetServerSideProps<Props> = async (context) => {
   if (
-    !config.features.beaconChain.isEnabled &&
-    !(rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium' || rollupFeature.type === 'zkEvm'))
+    !(
+      rollupFeature.isEnabled &&
+      (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium' || rollupFeature.type === 'zkEvm')
+    )
   ) {
     return {
       notFound: true,
@@ -89,7 +83,23 @@ export const withdrawals: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const rollup: GetServerSideProps<Props> = async(context) => {
+export const withdrawals: GetServerSideProps<Props> = async (context) => {
+  if (
+    !config.features.beaconChain.isEnabled &&
+    !(
+      rollupFeature.isEnabled &&
+      (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium' || rollupFeature.type === 'zkEvm')
+    )
+  ) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const rollup: GetServerSideProps<Props> = async (context) => {
   if (!config.features.rollup.isEnabled) {
     return {
       notFound: true,
@@ -99,7 +109,7 @@ export const rollup: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
+export const optimisticRollup: GetServerSideProps<Props> = async (context) => {
   if (!(rollupFeature.isEnabled && rollupFeature.type === 'optimistic')) {
     return {
       notFound: true,
@@ -109,7 +119,7 @@ export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const batch: GetServerSideProps<Props> = async(context) => {
+export const batch: GetServerSideProps<Props> = async (context) => {
   if (!(rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync'))) {
     return {
       notFound: true,
@@ -119,18 +129,19 @@ export const batch: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const marketplace = async <Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext):
-Promise<GetServerSidePropsResult<Props<Pathname>>> => {
-  if (!config.features.marketplace.isEnabled) {
-    return {
-      notFound: true,
-    };
-  }
+export const marketplace = async <Pathname extends Route['pathname'] = never>(
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<Props<Pathname>>> => {
+  // if (!config.features.marketplace.isEnabled) {
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
 
   return base<Pathname>(context);
 };
 
-export const apiDocs: GetServerSideProps<Props> = async(context) => {
+export const apiDocs: GetServerSideProps<Props> = async (context) => {
   if (!config.features.restApiDocs.isEnabled) {
     return {
       notFound: true,
@@ -140,7 +151,7 @@ export const apiDocs: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const csvExport: GetServerSideProps<Props> = async(context) => {
+export const csvExport: GetServerSideProps<Props> = async (context) => {
   if (!config.features.csvExport.isEnabled) {
     return {
       notFound: true,
@@ -150,7 +161,7 @@ export const csvExport: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const stats: GetServerSideProps<Props> = async(context) => {
+export const stats: GetServerSideProps<Props> = async (context) => {
   if (!config.features.stats.isEnabled) {
     return {
       notFound: true,
@@ -160,7 +171,7 @@ export const stats: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const suave: GetServerSideProps<Props> = async(context) => {
+export const suave: GetServerSideProps<Props> = async (context) => {
   if (!config.features.suave.isEnabled) {
     return {
       notFound: true,
@@ -170,7 +181,7 @@ export const suave: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const nameService: GetServerSideProps<Props> = async(context) => {
+export const nameService: GetServerSideProps<Props> = async (context) => {
   if (!config.features.nameService.isEnabled) {
     return {
       notFound: true,
@@ -180,7 +191,7 @@ export const nameService: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const accounts: GetServerSideProps<Props> = async(context) => {
+export const accounts: GetServerSideProps<Props> = async (context) => {
   if (config.UI.views.address.hiddenViews?.top_accounts) {
     return {
       notFound: true,
@@ -190,7 +201,7 @@ export const accounts: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const userOps: GetServerSideProps<Props> = async(context) => {
+export const userOps: GetServerSideProps<Props> = async (context) => {
   if (!config.features.userOps.isEnabled) {
     return {
       notFound: true,
@@ -200,7 +211,7 @@ export const userOps: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const validators: GetServerSideProps<Props> = async(context) => {
+export const validators: GetServerSideProps<Props> = async (context) => {
   if (!config.features.validators.isEnabled) {
     return {
       notFound: true,
@@ -210,7 +221,7 @@ export const validators: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const gasTracker: GetServerSideProps<Props> = async(context) => {
+export const gasTracker: GetServerSideProps<Props> = async (context) => {
   if (!config.features.gasTracker.isEnabled) {
     return {
       notFound: true,
@@ -220,7 +231,7 @@ export const gasTracker: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const dataAvailability: GetServerSideProps<Props> = async(context) => {
+export const dataAvailability: GetServerSideProps<Props> = async (context) => {
   if (!config.features.dataAvailability.isEnabled) {
     return {
       notFound: true,
@@ -230,8 +241,7 @@ export const dataAvailability: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const login: GetServerSideProps<Props> = async(context) => {
-
+export const login: GetServerSideProps<Props> = async (context) => {
   if (!isNeedProxy()) {
     return {
       notFound: true,
