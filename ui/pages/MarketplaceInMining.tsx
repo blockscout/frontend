@@ -26,6 +26,22 @@ import useMarketplaceInMining from '../marketplace/useMarketplaceInMining';
 const feature = config.features.marketplace;
 
 const links: Array<{ label: string; href: string; icon: IconName }> = [];
+// if (feature.isEnabled) {
+//   if (feature.submitFormUrl) {
+//     links.push({
+//       label: 'Submit app',
+//       href: feature.submitFormUrl,
+//       icon: 'plus' as IconName,
+//     });
+//   }
+//   if (feature.suggestIdeasFormUrl) {
+//     links.push({
+//       label: 'Suggest ideas',
+//       href: feature.suggestIdeasFormUrl,
+//       icon: 'edit' as IconName,
+//     });
+//   }
+// }
 
 const Marketplace = () => {
   const {
@@ -120,9 +136,9 @@ const Marketplace = () => {
 
   throwOnResourceLoadError(isError && error ? { isError, error } : { isError: false, error: null });
 
-  if (!feature.isEnabled) {
-    return null;
-  }
+  // if (!feature.isEnabled) {
+  //   return null;
+  // }
 
   console.log('displayedAppsInMining', displayedAppsInMining);
 
@@ -183,7 +199,7 @@ const Marketplace = () => {
         />
       </Box>
 
-      <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
+      {/* <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
         {feature.securityReportsUrl && (
           <Skeleton isLoaded={!isPlaceholderData}>
             <RadioButtonGroup<MarketplaceDisplayType>
@@ -217,7 +233,7 @@ const Marketplace = () => {
           size={feature.securityReportsUrl ? 'xs' : 'sm'}
           flex="1"
         />
-      </Flex>
+      </Flex> */}
 
       {/* {selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl ? (
         <MarketplaceListWithScores
