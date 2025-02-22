@@ -4,8 +4,7 @@ import chain from '../chain';
 import { getEnvValue, getExternalAssetFilePath } from '../utils';
 
 // config file will be downloaded at run-time and saved in the public folder
-// const enabled = getEnvValue('NEXT_PUBLIC_MARKETPLACE_ENABLED');
-const enabled = 'true';
+const enabled = getEnvValue('NEXT_PUBLIC_MARKETPLACE_ENABLED');
 const configUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL');
 const submitFormUrl = getEnvValue('NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM');
 const suggestIdeasFormUrl = getEnvValue('NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM');
