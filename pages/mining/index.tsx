@@ -12,7 +12,4 @@ const Page: NextPage = () => (
 
 export default Page;
 
-// export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';
-export async function getServerSideProps() {
-  return { props: {} };
-}
+export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';
