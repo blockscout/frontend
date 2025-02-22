@@ -23,7 +23,7 @@ import RadioButtonGroup from 'ui/shared/radioButtonGroup/RadioButtonGroup';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
 import useMarketplaceInMining from '../marketplace/useMarketplaceInMining';
-const feature = config.features.marketplace;
+const feature: any = config.features.marketplace;
 
 const links: Array<{ label: string; href: string; icon: IconName }> = [];
 // if (feature.isEnabled) {
@@ -140,7 +140,12 @@ const Marketplace = () => {
   //   return null;
   // }
 
-  console.log('displayedAppsInMining', displayedAppsInMining);
+  console.log(
+    'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    MarketplaceDisplayType.SCORES,
+    feature.securityReportsUrl,
+    displayedAppsInMining
+  );
 
   return (
     <div>
@@ -231,8 +236,9 @@ const Marketplace = () => {
           flex="1"
         />
       </Flex>
+      {/* ----------------------- */}
 
-      {/* {selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl ? (
+      {selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl ? (
         <MarketplaceListWithScores
           apps={displayedAppsInMining}
           showAppInfo={showAppInfo}
@@ -253,9 +259,10 @@ const Marketplace = () => {
           selectedCategoryId={selectedCategoryId}
           onAppClick={handleAppClick}
         />
-      )} */}
+      )}
+
       {/* ----------------------- */}
-      <MarketplaceListInMining
+      {/* <MarketplaceListInMining
         apps={displayedAppsInMining || []}
         showAppInfo={showAppInfo}
         favoriteApps={favoriteApps}
@@ -263,7 +270,7 @@ const Marketplace = () => {
         isLoading={isPlaceholderData}
         selectedCategoryId={selectedCategoryId}
         onAppClick={handleAppClick}
-      />
+      /> */}
       {selectedApp && isAppInfoModalOpen && (
         <MarketplaceAppModal
           onClose={clearSelectedAppId}
