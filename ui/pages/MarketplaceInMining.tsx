@@ -179,7 +179,6 @@ const Marketplace = () => {
           )
         }
       />
-
       <Banner
         apps={apps}
         favoriteApps={favoriteApps}
@@ -188,7 +187,6 @@ const Marketplace = () => {
         onFavoriteClick={onFavoriteClick}
         onAppClick={handleAppClick}
       />
-
       <Box marginTop={{ base: 0, lg: 8 }}>
         <TabsWithScroll
           tabs={categoryTabs}
@@ -198,7 +196,6 @@ const Marketplace = () => {
           isLoading={isCategoriesPlaceholderData}
         />
       </Box>
-
       {/* <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
         {feature.securityReportsUrl && (
           <Skeleton isLoaded={!isPlaceholderData}>
@@ -234,7 +231,40 @@ const Marketplace = () => {
           flex="1"
         />
       </Flex> */}
-
+      {/* ----------------------- */}
+      <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
+        <Skeleton isLoaded={!isPlaceholderData}>
+          <RadioButtonGroup<MarketplaceDisplayType>
+            onChange={onDisplayTypeChange}
+            defaultValue={selectedDisplayType}
+            name="type"
+            options={[
+              {
+                title: 'Discovery',
+                value: MarketplaceDisplayType.DEFAULT,
+                icon: 'apps_xs',
+                onlyIcon: false,
+              },
+              {
+                title: 'Apps scores',
+                value: MarketplaceDisplayType.SCORES,
+                icon: 'apps_list',
+                onlyIcon: false,
+                contentAfter: <IconSvg name={isMobile ? 'beta_xs' : 'beta'} h={3} w={isMobile ? 3 : 7} ml={1} />,
+              },
+            ]}
+            autoWidth
+          />
+        </Skeleton>
+        <FilterInput
+          initialValue={filterQuery}
+          onChange={onSearchInputChange}
+          placeholder="Find app by name or keyword..."
+          isLoading={isPlaceholderData}
+          size={feature.securityReportsUrl ? 'xs' : 'sm'}
+          flex="1"
+        />
+      </Flex>
       {/* {selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl ? (
         <MarketplaceListWithScores
           apps={displayedAppsInMining}
@@ -257,7 +287,16 @@ const Marketplace = () => {
           onAppClick={handleAppClick}
         />
       )} */}
-
+      {/* ----------------------- */}
+      <MarketplaceListInMining
+        apps={displayedAppsInMining || []}
+        showAppInfo={showAppInfo}
+        favoriteApps={favoriteApps}
+        onFavoriteClick={onFavoriteClick}
+        isLoading={isPlaceholderData}
+        selectedCategoryId={selectedCategoryId}
+        onAppClick={handleAppClick}
+      />
       {selectedApp && isAppInfoModalOpen && (
         <MarketplaceAppModal
           onClose={clearSelectedAppId}
@@ -267,7 +306,6 @@ const Marketplace = () => {
           showContractList={showContractList}
         />
       )}
-
       {selectedApp && isDisclaimerModalOpen && (
         <MarketplaceDisclaimerModal
           isOpen={isDisclaimerModalOpen}
@@ -275,7 +313,6 @@ const Marketplace = () => {
           appId={selectedApp.id}
         />
       )}
-
       {selectedApp && contractListModalType && (
         <ContractListModal
           type={contractListModalType}
