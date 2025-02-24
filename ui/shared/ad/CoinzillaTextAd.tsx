@@ -18,15 +18,15 @@ type AdData = {
   };
 };
 
-const MOCK: AdData = {
-  ad: {
-    url: 'https://unsplash.com/s/photos/cute-kitten',
-    thumbnail: 'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/gnosis.svg',
-    name: 'All about kitties',
-    description_short: 'To see millions picture of cute kitties',
-    cta_button: 'click here',
-  },
-};
+// const MOCK: AdData = {
+//   ad: {
+//     url: 'https://unsplash.com/s/photos/cute-kitten',
+//     thumbnail: 'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/gnosis.svg',
+//     name: 'All about kitties',
+//     description_short: 'To see millions picture of cute kitties',
+//     cta_button: 'click here',
+//   },
+// };
 
 const CoinzillaTextAd = ({ className }: { className?: string }) => {
   const [ adData, setAdData ] = React.useState<AdData | null>(null);
@@ -44,7 +44,7 @@ const CoinzillaTextAd = ({ className }: { className?: string }) => {
           }
         })
         .finally(() => {
-          setAdData(MOCK);
+          // setAdData(MOCK);
           setIsLoading(false);
         });
     }

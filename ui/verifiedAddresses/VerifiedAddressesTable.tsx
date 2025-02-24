@@ -1,7 +1,8 @@
-import { Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
+
+import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import VerifiedAddressesTableItem from './VerifiedAddressesTableItem';
 
@@ -15,17 +16,17 @@ interface Props {
 
 const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd, isLoading }: Props) => {
   return (
-    <Table>
-      <Thead>
-        <Tr>
-          <Th>Address</Th>
-          <Th w="168px" pr={ 1 }>Token info</Th>
-          <Th w="36px" pl="0"></Th>
-          <Th w="160px">Request status</Th>
-          <Th w="150px">Date</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot>
+      <TableHeader>
+        <TableRow>
+          <TableColumnHeader>Address</TableColumnHeader>
+          <TableColumnHeader w="168px" pr={ 1 }>Token info</TableColumnHeader>
+          <TableColumnHeader w="36px" pl="0"></TableColumnHeader>
+          <TableColumnHeader w="160px">Request status</TableColumnHeader>
+          <TableColumnHeader w="150px">Date</TableColumnHeader>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         { data.map((item, index) => (
           <VerifiedAddressesTableItem
             key={ item.contractAddress + (isLoading ? index : '') }
@@ -36,8 +37,8 @@ const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd, isL
             isLoading={ isLoading }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

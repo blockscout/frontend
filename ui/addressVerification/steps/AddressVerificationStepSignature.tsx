@@ -1,4 +1,4 @@
-import { Alert, Box, Button, chakra, Flex, Link, Radio, RadioGroup } from '@chakra-ui/react';
+import { Box, chakra, Flex } from '@chakra-ui/react';
 import { useAppKit } from '@reown/appkit/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -18,6 +18,10 @@ import type { VerifiedAddress } from 'types/api/account';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import shortenString from 'lib/shortenString';
+import { Alert } from 'toolkit/chakra/alert';
+import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
+import { Radio, RadioGroup } from 'toolkit/chakra/radio';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 import { SIGNATURE_REGEXP } from 'ui/shared/forms/validators/signature';
@@ -81,8 +85,8 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
 
   const { signMessage, isPending: isSigning } = useSignMessage();
 
-  const handleSignMethodChange = React.useCallback((value: typeof signMethod) => {
-    setSignMethod(value);
+  const handleSignMethodChange = React.useCallback(({ value }: { value: string }) => {
+    setSignMethod(value as SignMethod);
     clearErrors('root');
   }, [ clearErrors ]);
 
@@ -121,7 +125,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         <Button
           size="lg"
           onClick={ handleManualSignClick }
-          isLoading={ formState.isSubmitting }
+          loading={ formState.isSubmitting }
           loadingText="Verifying"
         >
           Verify
@@ -133,7 +137,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
       <Button
         size="lg"
         onClick={ isConnected ? handleWeb3SignClick : handleOpenWeb3Modal }
-        isLoading={ formState.isSubmitting || isSigning }
+        loading={ formState.isSubmitting || isSigning }
         loadingText={ isSigning ? 'Signing' : 'Verifying' }
       >
         { isConnected ? 'Sign and verify' : 'Connect wallet' }
@@ -217,15 +221,23 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
             <FormFieldText<Fields>
               name="message"
               placeholder="Message to sign"
-              isRequired
+              required
               asComponent="Textarea"
-              isReadOnly
-              maxH={{ base: '140px', lg: '80px' }}
-              bgColor="dialog.bg"
+              readOnly
+              inputProps={{
+                h: { base: '180px', lg: '130px' },
+                minH: 'auto',
+              }}
             />
           </div>
           { !noWeb3Provider && (
-            <RadioGroup onChange={ handleSignMethodChange } value={ signMethod } display="flex" flexDir="column" rowGap={ 4 }>
+            <RadioGroup
+              onValueChange={ handleSignMethodChange }
+              value={ signMethod }
+              display="flex"
+              flexDir="column"
+              rowGap={ 4 }
+            >
               <Radio value="wallet">Sign via Web3 wallet</Radio>
               <Radio value="manual">Sign manually</Radio>
             </RadioGroup>
@@ -234,7 +246,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
             <FormFieldText<Fields>
               name="signature"
               placeholder="Signature hash"
-              isRequired
+              required
               rules={{ pattern: SIGNATURE_REGEXP }}
               bgColor="dialog.bg"
             />

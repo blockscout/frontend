@@ -1,8 +1,4 @@
-import type { ThemingConfig } from '@chakra-ui/react';
-
-import type { ExcludeUndefined } from 'types/utils';
-
-const colors: ExcludeUndefined<ThemingConfig['tokens']>['colors'] = {
+const colors = {
   green: {
     '50': { value: '#F0FFF4' },
     '100': { value: '#C6F6D5' },

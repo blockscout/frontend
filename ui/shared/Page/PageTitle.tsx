@@ -4,12 +4,11 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Heading } from 'toolkit/chakra/heading';
-import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import TextAd from 'ui/shared/ad/TextAd';
-import IconSvg from 'ui/shared/IconSvg';
+import ButtonBackTo from 'ui/shared/buttons/ButtonBackTo';
 
 type BackLinkProp = { label: string; url: string } | { label: string; onClick: () => void };
 
@@ -26,37 +25,6 @@ type Props = {
 };
 
 const TEXT_MAX_LINES = 1;
-
-const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
-  if (!props) {
-    return null;
-  }
-
-  if (props.isLoading) {
-    return (
-      <Skeleton
-        boxSize={ 6 }
-        display="inline-block"
-        flexShrink={ 0 }
-        borderRadius="base"
-        mr={ 3 }
-        my={ 2 }
-        verticalAlign="text-bottom"
-        loading
-      />
-    );
-  }
-
-  const icon = <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400" flexShrink={ 0 }/>;
-
-  return (
-    <Tooltip content={ props.label }>
-      <Link display="inline-flex" href={ 'url' in props ? props.url : undefined } onClick={ 'onClick' in props ? props.onClick : undefined } h="40px" mr={ 3 }>
-        { icon }
-      </Link>
-    </Tooltip>
-  );
-};
 
 const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading = false, afterTitle, beforeTitle, secondRow }: Props) => {
   const tooltip = useDisclosure();
@@ -113,7 +81,15 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         alignItems="center"
       >
         <Flex h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }} maxW="100%" alignItems="center">
-          { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
+          { backLink && (
+            <ButtonBackTo
+              hint={ backLink.label }
+              href={ 'url' in backLink ? backLink.url : undefined }
+              onClick={ 'onClick' in backLink ? backLink.onClick : undefined }
+              loadingSkeleton={ isLoading }
+              mr={ 3 }
+            />
+          ) }
           { beforeTitle }
           <Skeleton
             loading={ isLoading }

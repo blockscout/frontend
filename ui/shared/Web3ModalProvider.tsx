@@ -3,13 +3,13 @@ import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';
 import { WagmiProvider } from 'wagmi';
 
+import config from 'configs/app';
+import { currentChain, parentChain } from 'lib/web3/chains';
+import wagmiConfig from 'lib/web3/wagmiConfig';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import colors from 'toolkit/theme/foundations/colors';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 import zIndex from 'toolkit/theme/foundations/zIndex';
-import config from 'configs/app';
-import { currentChain, parentChain } from 'lib/web3/chains';
-import wagmiConfig from 'lib/web3/wagmiConfig';
 
 const feature = config.features.blockchainInteraction;
 
