@@ -22,7 +22,7 @@ const IconStub = ({ isLoading }: { isLoading?: boolean }) => {
     <Skeleton
       isLoaded={ !isLoading }
       display="flex"
-      w="20px"
+      minWidth="20px"
       h="20px"
       borderRadius="full"
       background={ bgColor }
