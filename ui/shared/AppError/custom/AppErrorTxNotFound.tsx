@@ -1,19 +1,25 @@
 /* eslint-disable max-len */
-import { Box, OrderedList, ListItem, useColorModeValue, Flex, chakra, Button } from '@chakra-ui/react';
+import { Box, OrderedList, ListItem, useColorModeValue, Flex, chakra, Button, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import Puzzle15 from 'ui/games/Puzzle15';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppErrorTitle from '../AppErrorTitle';
-
 const AppErrorTxNotFound = () => {
   const snippet = {
     borderColor: useColorModeValue('blackAlpha.300', 'whiteAlpha.300'),
     iconBg: useColorModeValue('blackAlpha.800', 'whiteAlpha.800'),
     iconColor: useColorModeValue('white', 'black'),
   };
+
+  const [ isPuzzleOpen, setIsPuzzleOpen ] = React.useState(false);
+
+  const showPuzzle = React.useCallback(() => {
+    setIsPuzzleOpen(true);
+  }, []);
 
   return (
     <>
@@ -39,7 +45,7 @@ const AppErrorTxNotFound = () => {
       <AppErrorTitle title="Sorry, we are unable to locate this transaction hash"/>
       <OrderedList mt={ 3 } spacing={ 3 }>
         <ListItem>
-          If you have just submitted this transaction please wait for at least 30 seconds before refreshing this page.
+          If you have just submitted this transaction please <Link onClick={ showPuzzle }>wait for at least 30 seconds</Link> before refreshing this page.
         </ListItem>
         <ListItem>
           It could still be in the TX Pool of a different node, waiting to be broadcasted.
@@ -53,6 +59,7 @@ const AppErrorTxNotFound = () => {
           <span> for additional information.</span>
         </ListItem>
       </OrderedList>
+      { isPuzzleOpen && <Puzzle15/> }
       <Button
         mt={ 8 }
         size="lg"
