@@ -31,8 +31,6 @@ class MyDocument extends Document {
   }
 
   render() {
-    // eslint-disable-next-line no-console
-    console.log('theme.config.initialColorMode', theme.config.initialColorMode);
     return (
       <Html lang="en">
         <Head>

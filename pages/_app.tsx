@@ -1,4 +1,4 @@
-import { type ChakraProps } from '@chakra-ui/react';
+import type { ChakraProps } from '@chakra-ui/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -21,6 +21,7 @@ import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
 import { SocketProvider } from 'lib/socket/context';
 import RewardsLoginModal from 'ui/rewards/login/RewardsLoginModal';
+// import theme from 'theme/theme';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
