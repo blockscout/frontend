@@ -132,11 +132,11 @@ export const batch: GetServerSideProps<Props> = async (context) => {
 export const marketplace = async <Pathname extends Route['pathname'] = never>(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<Props<Pathname>>> => {
-  // if (!config.features.marketplace.isEnabled) {
-  //   return {
-  //     notFound: true,
-  //   };
-  // }
+  if (!config.features.marketplace.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
 
   return base<Pathname>(context);
 };

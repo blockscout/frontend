@@ -261,16 +261,6 @@ const Marketplace = () => {
         />
       )}
 
-      {/* ----------------------- */}
-      {/* <MarketplaceListInMining
-        apps={displayedAppsInMining || []}
-        showAppInfo={showAppInfo}
-        favoriteApps={favoriteApps}
-        onFavoriteClick={onFavoriteClick}
-        isLoading={isPlaceholderData}
-        selectedCategoryId={selectedCategoryId}
-        onAppClick={handleAppClick}
-      /> */}
       {selectedApp && isAppInfoModalOpen && (
         <MarketplaceAppModal
           onClose={clearSelectedAppId}
