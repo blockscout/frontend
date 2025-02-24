@@ -31,6 +31,7 @@ const FixedComponent = () => {
   const { isOpen: isPledgeModalOpen, onOpen: onPledgeModalOpen, onClose: onPledgeModalClose } = useDisclosure();
   const [ nftNodeCount, setNftNodeCount ] = useState('');
   const [ machineId, setMachineId ] = useState('');
+  const [ rentalMachineIdOnChain, setRentalMachineIdOnChain ] = useState('');
   const [ privateKey, setPrivateKey ] = useState('');
 
   const handlePledgeSubmit = () => {
@@ -167,6 +168,16 @@ const FixedComponent = () => {
                 value={ machineId }
                 onChange={ (e) => setMachineId(e.target.value) }
                 placeholder="Enter machine ID"
+                size="sm"
+              />
+            </FormControl>
+
+            <FormControl mb={ 4 } size="sm">
+              <FormLabel fontSize="sm">ID for On-chain Rental setRentalMachineIdOnChain</FormLabel>
+              <Input
+                value={ rentalMachineIdOnChain }
+                onChange={ (e) => setRentalMachineIdOnChain(e.target.value) }
+                placeholder="Enter the ID for on-chain rental"
                 size="sm"
               />
             </FormControl>

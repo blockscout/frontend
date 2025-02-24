@@ -20,16 +20,7 @@ interface Props {
   inTabsSlot?: boolean;
 }
 
-const TokensActionBar = ({
-  sort,
-  onSortChange,
-  searchTerm,
-  onSearchChange,
-  pagination,
-  filter,
-  inTabsSlot,
-}: Props) => {
-
+const TokensActionBar = ({ sort, onSortChange, searchTerm, onSearchChange, pagination, filter, inTabsSlot }: Props) => {
   const searchInput = (
     <FilterInput
       w={{ base: '100%', lg: '360px' }}
@@ -44,11 +35,7 @@ const TokensActionBar = ({
     <>
       <HStack spacing={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
         { filter }
-        <Sort
-          options={ SORT_OPTIONS }
-          setSort={ onSortChange }
-          sort={ sort }
-        />
+        <Sort options={ SORT_OPTIONS } setSort={ onSortChange } sort={ sort }/>
         { searchInput }
       </HStack>
       <ActionBar
