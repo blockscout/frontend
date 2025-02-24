@@ -1,12 +1,13 @@
 import type { NextPage } from 'next';
-import React from 'react';
-import PageNextJs from 'nextjs/PageNextJs';
 import dynamic from 'next/dynamic';
+import React from 'react';
+
+import PageNextJs from 'nextjs/PageNextJs';
 const MyMachine = dynamic(() => import('ui/mymachine/index'), { ssr: false });
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/mymachine">
-    <MyMachine />
+    <MyMachine/>
   </PageNextJs>
 );
 

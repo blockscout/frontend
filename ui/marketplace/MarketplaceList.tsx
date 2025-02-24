@@ -33,14 +33,14 @@ const MarketplaceList = ({
       mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
       showAppInfo(id);
     },
-    [showAppInfo]
+    [ showAppInfo ],
   );
 
   const handleFavoriteClick = useCallback(
     (id: string, isFavorite: boolean) => {
       onFavoriteClick(id, isFavorite, 'Discovery view');
     },
-    [onFavoriteClick]
+    [ onFavoriteClick ],
   );
 
   return apps.length > 0 ? (
@@ -52,28 +52,28 @@ const MarketplaceList = ({
       autoRows="1fr"
       gap={{ base: '16px', sm: '24px' }}
     >
-      {apps.map((app, index) => (
+      { apps.map((app, index) => (
         <MarketplaceAppCard
-          key={app.id + (isLoading ? index : '')}
-          onInfoClick={handleInfoClick}
-          id={app.id}
-          external={app.external}
-          url={app.url}
-          title={app.title}
-          logo={app.logo}
-          logoDarkMode={app.logoDarkMode}
-          shortDescription={app.shortDescription}
-          categories={app.categories}
-          isFavorite={favoriteApps.includes(app.id)}
-          onFavoriteClick={handleFavoriteClick}
-          isLoading={isLoading}
-          internalWallet={app.internalWallet}
-          onAppClick={onAppClick}
+          key={ app.id + (isLoading ? index : '') }
+          onInfoClick={ handleInfoClick }
+          id={ app.id }
+          external={ app.external }
+          url={ app.url }
+          title={ app.title }
+          logo={ app.logo }
+          logoDarkMode={ app.logoDarkMode }
+          shortDescription={ app.shortDescription }
+          categories={ app.categories }
+          isFavorite={ favoriteApps.includes(app.id) }
+          onFavoriteClick={ handleFavoriteClick }
+          isLoading={ isLoading }
+          internalWallet={ app.internalWallet }
+          onAppClick={ onAppClick }
         />
-      ))}
+      )) }
     </Grid>
   ) : (
-    <EmptySearchResult selectedCategoryId={selectedCategoryId} favoriteApps={favoriteApps} />
+    <EmptySearchResult selectedCategoryId={ selectedCategoryId } favoriteApps={ favoriteApps }/>
   );
 };
 

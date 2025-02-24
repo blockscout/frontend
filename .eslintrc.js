@@ -12,7 +12,7 @@ const RESTRICTED_MODULES = {
       message: 'Please lazy-load @metamask/post-message-stream or use useProvider hook instead',
     },
   ],
-  patterns: ['icons/*'],
+  patterns: [ 'icons/*' ],
 };
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
     browser: true,
     node: true,
   },
-  extends: [
+  'extends': [
     'next/core-web-vitals',
     'eslint:recommended',
     'plugin:react/recommended',
@@ -62,50 +62,50 @@ module.exports = {
     '@typescript-eslint/array-type': [
       'error',
       {
-        default: 'generic',
+        'default': 'generic',
         readonly: 'generic',
       },
     ],
-    '@typescript-eslint/brace-style': ['error', '1tbs'],
-    '@typescript-eslint/consistent-type-imports': ['error'],
-    '@typescript-eslint/indent': ['error', 2],
-    '@typescript-eslint/member-delimiter-style': ['error'],
+    '@typescript-eslint/brace-style': [ 'error', '1tbs' ],
+    '@typescript-eslint/consistent-type-imports': [ 'error' ],
+    '@typescript-eslint/indent': [ 'error', 2 ],
+    '@typescript-eslint/member-delimiter-style': [ 'error' ],
     '@typescript-eslint/naming-convention': [
       'error',
       {
         selector: 'default',
-        format: ['camelCase'],
+        format: [ 'camelCase' ],
         leadingUnderscore: 'allow',
         trailingUnderscore: 'forbid',
       },
       {
         selector: 'class',
-        format: ['PascalCase'],
+        format: [ 'PascalCase' ],
       },
       {
         selector: 'enum',
-        format: ['PascalCase', 'UPPER_CASE'],
+        format: [ 'PascalCase', 'UPPER_CASE' ],
       },
       {
         selector: 'enumMember',
-        format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+        format: [ 'camelCase', 'PascalCase', 'UPPER_CASE' ],
       },
       {
         selector: 'function',
-        format: ['camelCase', 'PascalCase'],
+        format: [ 'camelCase', 'PascalCase' ],
       },
       {
         selector: 'interface',
-        format: ['PascalCase'],
+        format: [ 'PascalCase' ],
       },
       {
         selector: 'method',
-        format: ['camelCase', 'snake_case', 'UPPER_CASE'],
+        format: [ 'camelCase', 'snake_case', 'UPPER_CASE' ],
         leadingUnderscore: 'allow',
       },
       {
         selector: 'parameter',
-        format: ['camelCase', 'PascalCase'],
+        format: [ 'camelCase', 'PascalCase' ],
         leadingUnderscore: 'allow',
       },
       {
@@ -114,25 +114,25 @@ module.exports = {
       },
       {
         selector: 'typeAlias',
-        format: ['PascalCase'],
+        format: [ 'PascalCase' ],
       },
       {
         selector: 'typeParameter',
-        format: ['PascalCase', 'UPPER_CASE'],
+        format: [ 'PascalCase', 'UPPER_CASE' ],
       },
       {
         selector: 'variable',
-        format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+        format: [ 'camelCase', 'PascalCase', 'UPPER_CASE' ],
         leadingUnderscore: 'allow',
       },
     ],
-    '@typescript-eslint/no-duplicate-imports': ['error'],
-    '@typescript-eslint/no-empty-function': ['off'],
-    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
+    '@typescript-eslint/no-duplicate-imports': [ 'error' ],
+    '@typescript-eslint/no-empty-function': [ 'off' ],
+    '@typescript-eslint/no-unused-vars': [ 'error', { ignoreRestSiblings: true } ],
     '@typescript-eslint/no-use-before-define': 'off',
-    '@typescript-eslint/no-useless-constructor': ['error'],
+    '@typescript-eslint/no-useless-constructor': [ 'error' ],
     '@typescript-eslint/type-annotation-spacing': 'error',
-    '@typescript-eslint/no-explicit-any': ['error', { ignoreRestArgs: true }],
+    '@typescript-eslint/no-explicit-any': [ 'error', { ignoreRestArgs: true } ],
 
     // disabled in favor of @typescript-eslint
     'brace-style': 'off',
@@ -142,16 +142,16 @@ module.exports = {
     'no-use-before-define': 'off',
     'no-useless-constructor': 'off',
 
-    'array-bracket-spacing': ['error', 'always'],
-    'arrow-spacing': ['error', { before: true, after: true }],
-    'comma-dangle': ['error', 'always-multiline'],
-    'comma-spacing': ['error'],
-    'comma-style': ['error', 'last'],
-    curly: ['error', 'all'],
+    'array-bracket-spacing': [ 'error', 'always' ],
+    'arrow-spacing': [ 'error', { before: true, after: true } ],
+    'comma-dangle': [ 'error', 'always-multiline' ],
+    'comma-spacing': [ 'error' ],
+    'comma-style': [ 'error', 'last' ],
+    curly: [ 'error', 'all' ],
     'eol-last': 'error',
-    eqeqeq: ['error', 'allow-null'],
-    'id-match': ['error', '^[\\w$]+$'],
-    'jsx-quotes': ['error', 'prefer-double'],
+    eqeqeq: [ 'error', 'allow-null' ],
+    'id-match': [ 'error', '^[\\w$]+$' ],
+    'jsx-quotes': [ 'error', 'prefer-double' ],
     'key-spacing': [
       'error',
       {
@@ -160,7 +160,7 @@ module.exports = {
       },
     ],
     'keyword-spacing': 'error',
-    'linebreak-style': ['error', 'unix'],
+    'linebreak-style': [ 'error', 'unix' ],
     'lines-around-comment': [
       'error',
       {
@@ -168,21 +168,21 @@ module.exports = {
         allowBlockStart: true,
       },
     ],
-    'max-len': ['error', 160, 4],
+    'max-len': [ 'error', 160, 4 ],
     'no-console': 'error',
-    'no-empty': ['error', { allowEmptyCatch: true }],
+    'no-empty': [ 'error', { allowEmptyCatch: true } ],
     'no-implicit-coercion': [
       'error',
       {
         number: true,
-        boolean: true,
+        'boolean': true,
         string: true,
       },
     ],
     'no-mixed-operators': [
       'error',
       {
-        groups: [['&&', '||']],
+        groups: [ [ '&&', '||' ] ],
       },
     ],
     'no-mixed-spaces-and-tabs': 'error',
@@ -200,10 +200,10 @@ module.exports = {
     'no-trailing-spaces': 'error',
     'no-spaced-func': 'error',
     'no-with': 'error',
-    'object-curly-spacing': ['error', 'always'],
+    'object-curly-spacing': [ 'error', 'always' ],
     'object-shorthand': 'off',
-    'one-var': ['error', 'never'],
-    'operator-linebreak': ['error', 'after'],
+    'one-var': [ 'error', 'never' ],
+    'operator-linebreak': [ 'error', 'after' ],
     'prefer-const': 'error',
     'quote-props': [
       'error',
@@ -220,14 +220,14 @@ module.exports = {
         allowTemplateLiterals: true,
       },
     ],
-    'space-before-function-paren': ['error', 'never'],
-    'space-before-blocks': ['error', 'always'],
-    'space-in-parens': ['error', 'never'],
+    'space-before-function-paren': [ 'error', 'never' ],
+    'space-before-blocks': [ 'error', 'always' ],
+    'space-in-parens': [ 'error', 'never' ],
     'space-infix-ops': 'error',
     'space-unary-ops': 'off',
-    'template-curly-spacing': ['error', 'always'],
-    'wrap-iife': ['error', 'inside'],
-    semi: ['error', 'always'],
+    'template-curly-spacing': [ 'error', 'always' ],
+    'wrap-iife': [ 'error', 'inside' ],
+    semi: [ 'error', 'always' ],
 
     'import-helpers/order-imports': [
       'error',
@@ -236,7 +236,7 @@ module.exports = {
         groups: [
           'module',
           '/types/',
-          ['/^nextjs/'],
+          [ '/^nextjs/' ],
           [
             '/^configs/',
             '/^data/',
@@ -251,13 +251,13 @@ module.exports = {
             '/^theme/',
             '/^ui/',
           ],
-          ['parent', 'sibling', 'index'],
+          [ 'parent', 'sibling', 'index' ],
         ],
         alphabetize: { order: 'asc', ignoreCase: true },
       },
     ],
 
-    'no-restricted-imports': ['error', RESTRICTED_MODULES],
+    'no-restricted-imports': [ 'error', RESTRICTED_MODULES ],
     'no-restricted-properties': [
       2,
       {
@@ -293,8 +293,8 @@ module.exports = {
         },
       },
     ],
-    'react/jsx-equals-spacing': ['error', 'never'],
-    'react/jsx-fragments': ['error', 'syntax'],
+    'react/jsx-equals-spacing': [ 'error', 'never' ],
+    'react/jsx-fragments': [ 'error', 'syntax' ],
     'react/jsx-no-duplicate-props': 'error',
     'react/jsx-no-target-blank': 'off',
     'react/jsx-no-useless-fragment': 'error',
@@ -311,7 +311,7 @@ module.exports = {
       {
         declaration: 'parens-new-line',
         assignment: 'parens-new-line',
-        return: 'parens-new-line',
+        'return': 'parens-new-line',
         arrow: 'parens-new-line',
         condition: 'parens-new-line',
         logical: 'parens-new-line',
@@ -327,7 +327,7 @@ module.exports = {
     'react/no-string-refs': 'off',
     'react/no-unknown-property': 'error',
     'react/no-unused-state': 'error',
-    'react/require-optimization': ['error'],
+    'react/require-optimization': [ 'error' ],
     'react/void-dom-elements-no-children': 'error',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
@@ -342,7 +342,7 @@ module.exports = {
     'regexp/no-obscure-range': [
       'error',
       {
-        allowed: ['alphanumeric'],
+        allowed: [ 'alphanumeric' ],
       },
     ],
     'regexp/no-optional-assertion': 'error',
@@ -359,7 +359,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.js', '*.jsx'],
+      files: [ '*.js', '*.jsx' ],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
       },
@@ -376,7 +376,7 @@ module.exports = {
       ],
       rules: {
         // for configs allow to consume env variables from process.env directly
-        'no-restricted-properties': [0],
+        'no-restricted-properties': [ 0 ],
       },
     },
   ],

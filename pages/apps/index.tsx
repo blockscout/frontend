@@ -8,7 +8,7 @@ const Marketplace = dynamic(() => import('ui/pages/Marketplace'), { ssr: false }
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/apps">
-    <Marketplace />
+    <Marketplace/>
   </PageNextJs>
 );
 

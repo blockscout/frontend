@@ -18,14 +18,14 @@ const bannerLinkUrl = getEnvValue('NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL');
 const title = 'Marketplace';
 
 const config: Feature<
-  ({ configUrl: string } | { api: { endpoint: string; basePath: string } }) & {
-    submitFormUrl: string;
-    categoriesUrl: string | undefined;
-    suggestIdeasFormUrl: string | undefined;
-    securityReportsUrl: string | undefined;
-    featuredApp: string | undefined;
-    banner: { contentUrl: string; linkUrl: string } | undefined;
-  }
+({ configUrl: string } | { api: { endpoint: string; basePath: string } }) & {
+  submitFormUrl: string;
+  categoriesUrl: string | undefined;
+  suggestIdeasFormUrl: string | undefined;
+  securityReportsUrl: string | undefined;
+  featuredApp: string | undefined;
+  banner: { contentUrl: string; linkUrl: string } | undefined;
+}
 > = (() => {
   if (enabled === 'true' && chain.rpcUrl && submitFormUrl) {
     const props = {
@@ -35,12 +35,12 @@ const config: Feature<
       securityReportsUrl,
       featuredApp,
       banner:
-        bannerContentUrl && bannerLinkUrl
-          ? {
-              contentUrl: bannerContentUrl,
-              linkUrl: bannerLinkUrl,
-            }
-          : undefined,
+        bannerContentUrl && bannerLinkUrl ?
+          {
+            contentUrl: bannerContentUrl,
+            linkUrl: bannerLinkUrl,
+          } :
+          undefined,
     };
 
     if (configUrl) {

@@ -39,10 +39,10 @@ const MarketplaceAppCard = ({
   };
 
   return (
-    <NextLink href={href} passHref legacyBehavior>
+    <NextLink href={ href } passHref legacyBehavior>
       <Link
         as="article"
-        className={className}
+        className={ className }
         _hover={{
           boxShadow: isLoading ? 'none' : 'lg',
           transform: 'translateY(-2px)',
@@ -50,54 +50,54 @@ const MarketplaceAppCard = ({
           textDecoration: 'none',
         }}
         borderRadius="lg"
-        padding={6}
+        padding={ 6 }
         border="1px"
-        borderColor={useColorModeValue('gray.200', 'gray.600')}
-        bg={useColorModeValue('white', 'gray.800')}
-        onClick={(e) => onAppClick(e, id)}
+        borderColor={ useColorModeValue('gray.200', 'gray.600') }
+        bg={ useColorModeValue('white', 'gray.800') }
+        onClick={ (e) => onAppClick(e, id) }
         display="block"
       >
-        <Flex direction="column" gap={4}>
+        <Flex direction="column" gap={ 4 }>
           <Flex justify="space-between" align="start">
-            <Skeleton isLoaded={!isLoading} w="80px" h="80px" borderRadius="lg" flexShrink={0}>
-              <Image src={logo} alt={`${title} logo`} borderRadius="lg" w="80px" h="80px" objectFit="cover" />
+            <Skeleton isLoaded={ !isLoading } w="80px" h="80px" borderRadius="lg" flexShrink={ 0 }>
+              <Image src={ logo } alt={ `${ title } logo` } borderRadius="lg" w="80px" h="80px" objectFit="cover"/>
             </Skeleton>
 
-            <Flex direction="column" gap={1}>
-              <Skeleton isLoaded={!isLoading}>
+            <Flex direction="column" gap={ 1 }>
+              <Skeleton isLoaded={ !isLoading }>
                 <Box
                   border="1px"
-                  borderColor={useColorModeValue('gray.200', 'gray.600')}
+                  borderColor={ useColorModeValue('gray.200', 'gray.600') }
                   borderRadius="md"
-                  px={2}
-                  py={1}
+                  px={ 2 }
+                  py={ 1 }
                 >
                   <Text fontSize="md" fontWeight="medium">
-                    ${tokenInfo?.symbol}:{tokenInfo?.price}
+                    ${ tokenInfo?.symbol }:{ tokenInfo?.price }
                   </Text>
                 </Box>
               </Skeleton>
-              <Skeleton isLoaded={!isLoading}>
+              <Skeleton isLoaded={ !isLoading }>
                 <Text color="green.500" fontWeight="medium" fontSize="sm">
-                  {tokenInfo?.priceChange}
+                  { tokenInfo?.priceChange }
                 </Text>
               </Skeleton>
             </Flex>
           </Flex>
 
-          <Skeleton isLoaded={!isLoading}>
+          <Skeleton isLoaded={ !isLoading }>
             <Text fontSize="xl" fontWeight="bold">
-              {title}
+              { title }
             </Text>
           </Skeleton>
 
-          <Skeleton isLoaded={!isLoading}>
-            <Flex direction="column" gap={2} bg={useColorModeValue('gray.50', 'gray.700')} p={3} borderRadius="md">
+          <Skeleton isLoaded={ !isLoading }>
+            <Flex direction="column" gap={ 2 } bg={ useColorModeValue('gray.50', 'gray.700') } p={ 3 } borderRadius="md">
               <Text fontSize="sm" fontWeight="medium">
-                Daily Mining Reward: {miningInfo?.dailyReward}
+                Daily Mining Reward: { miningInfo?.dailyReward }
               </Text>
               <Text fontSize="sm" fontWeight="medium">
-                GPU Count: {miningInfo?.gpuCount}
+                GPU Count: { miningInfo?.gpuCount }
               </Text>
             </Flex>
           </Skeleton>

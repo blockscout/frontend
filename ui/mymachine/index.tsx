@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Button,
   Card,
@@ -16,6 +15,7 @@ import {
   CardHeader,
   Heading,
 } from '@chakra-ui/react';
+import React from 'react';
 // import IconSvg from 'ui/shared/IconSvg';
 
 function index() {
@@ -84,8 +84,8 @@ function index() {
       v7: 'Cum Earn',
       v8: 'Wd Earn',
       v9: 'Lckd Earn',
-      v10: ['Re-plg', 'Unplg'],
-      v11: ['St Min', 'Stp Min', 'Wd Earn'],
+      v10: [ 'Re-plg', 'Unplg' ],
+      v11: [ 'St Min', 'Stp Min', 'Wd Earn' ],
     },
     {
       v0: 'Mach ID',
@@ -98,8 +98,8 @@ function index() {
       v7: 'Cum Earn',
       v8: 'Wd Earn',
       v9: 'Lckd Earn',
-      v10: ['Re-plg', 'Unplg'],
-      v11: ['St Min', 'Stp Min', 'Wd Earn'],
+      v10: [ 'Re-plg', 'Unplg' ],
+      v11: [ 'St Min', 'Stp Min', 'Wd Earn' ],
     },
     {
       v0: 'Mach ID',
@@ -112,8 +112,8 @@ function index() {
       v7: 'Cum Earn',
       v8: 'Wd Earn',
       v9: 'Lckd Earn',
-      v10: ['Re-plg', 'Unplg'],
-      v11: ['St Min', 'Stp Min', 'Wd Earn'],
+      v10: [ 'Re-plg', 'Unplg' ],
+      v11: [ 'St Min', 'Stp Min', 'Wd Earn' ],
     },
     {
       v0: 'Mach ID',
@@ -126,8 +126,8 @@ function index() {
       v7: 'Cum Earn',
       v8: 'Wd Earn',
       v9: 'Lckd Earn',
-      v10: ['Re-plg', 'Unplg'],
-      v11: ['St Min', 'Stp Min', 'Wd Earn'],
+      v10: [ 'Re-plg', 'Unplg' ],
+      v11: [ 'St Min', 'Stp Min', 'Wd Earn' ],
     },
     {
       v0: 'Mach ID',
@@ -140,8 +140,8 @@ function index() {
       v7: 'Cum Earn',
       v8: 'Wd Earn',
       v9: 'Lckd Earn',
-      v10: ['Re-plg', 'Unplg'],
-      v11: ['St Min', 'Stp Min', 'Wd Earn'],
+      v10: [ 'Re-plg', 'Unplg' ],
+      v11: [ 'St Min', 'Stp Min', 'Wd Earn' ],
     },
     {
       v0: 'Mach ID',
@@ -154,8 +154,8 @@ function index() {
       v7: 'Cum Earn',
       v8: 'Wd Earn',
       v9: 'Lckd Earn',
-      v10: ['Re-plg', 'Unplg'],
-      v11: ['St Min', 'Stp Min', 'Wd Earn'],
+      v10: [ 'Re-plg', 'Unplg' ],
+      v11: [ 'St Min', 'Stp Min', 'Wd Earn' ],
     },
     {
       v0: 'Mach ID',
@@ -168,8 +168,8 @@ function index() {
       v7: 'Cum Earn',
       v8: 'Wd Earn',
       v9: 'Lckd Earn',
-      v10: ['Re-plg', 'Unplg'],
-      v11: ['St Min', 'Stp Min', 'Wd Earn'],
+      v10: [ 'Re-plg', 'Unplg' ],
+      v11: [ 'St Min', 'Stp Min', 'Wd Earn' ],
     },
   ];
   return (
@@ -179,89 +179,89 @@ function index() {
       </CardHeader>
       <CardBody gap="2">
         <TableContainer>
-          <Table size={'sm'}>
+          <Table size="sm">
             <Thead>
               <Tr sx={{ width: 'auto !important' }}>
-                {thead.map((item, index) => {
+                { thead.map((item, index) => {
                   return (
-                    <Th width={item.w} key={index}>
-                      {item.t}
+                    <Th width={ item.w } key={ index }>
+                      { item.t }
                     </Th>
                   );
-                })}
+                }) }
               </Tr>
             </Thead>
             <Tbody>
-              {tableBodyData.map((item, index) => {
+              { tableBodyData.map((item, index) => {
                 return (
-                  <Tr key={index}>
+                  <Tr key={ index }>
                     <Td>
                       <Tooltip label="Hey, I'm here!" aria-label="A tooltip">
-                        <Text mt={2}>{item.v0}</Text>
+                        <Text mt={ 2 }>{ item.v0 }</Text>
                       </Tooltip>
                     </Td>
                     <Td>
-                      <Text mt={2}>{item.v1}</Text>
+                      <Text mt={ 2 }>{ item.v1 }</Text>
                     </Td>
                     <Td>
-                      <Text mt={2}>{item.v2}</Text>
+                      <Text mt={ 2 }>{ item.v2 }</Text>
                     </Td>
                     <Td>
-                      <Text mt={2}>{item.v3}</Text>
+                      <Text mt={ 2 }>{ item.v3 }</Text>
                     </Td>
                     <Td>
-                      <Text mt={2}>{item.v4}</Text>
+                      <Text mt={ 2 }>{ item.v4 }</Text>
                     </Td>
                     <Td>
                       <Tooltip label="Hey, I'm here!" aria-label="A tooltip">
-                        <Text mt={2}>{item.v5}</Text>
+                        <Text mt={ 2 }>{ item.v5 }</Text>
                       </Tooltip>
                     </Td>
                     <Td>
-                      <Text mt={2}>{item.v6}</Text>
+                      <Text mt={ 2 }>{ item.v6 }</Text>
                     </Td>
                     <Td>
-                      <Text mt={2}>{item.v7}</Text>
+                      <Text mt={ 2 }>{ item.v7 }</Text>
                     </Td>
                     <Td>
-                      <Text mt={2}>{item.v8}</Text>
+                      <Text mt={ 2 }>{ item.v8 }</Text>
                     </Td>
                     <Td>
-                      <Text mt={2}>{item.v9}</Text>
+                      <Text mt={ 2 }>{ item.v9 }</Text>
                     </Td>
                     <Td>
                       <div className="flex items-center gap-x-3">
-                        {item.v10.map((item2, index2) => {
+                        { item.v10.map((item2, index2) => {
                           return (
-                            <Button size={'sm'} variant="outline" key={index2}>
-                              {item2}
+                            <Button size="sm" variant="outline" key={ index2 }>
+                              { item2 }
                             </Button>
                           );
-                        })}
+                        }) }
                       </div>
                     </Td>
                     <Td>
                       <div className="flex items-center gap-x-3">
-                        {item.v11.map((item3, index3) => {
+                        { item.v11.map((item3, index3) => {
                           return (
-                            <Button size={'sm'} variant="outline" key={index3}>
-                              {item3}
+                            <Button size="sm" variant="outline" key={ index3 }>
+                              { item3 }
                             </Button>
                           );
-                        })}
+                        }) }
                       </div>
                     </Td>
                   </Tr>
                 );
-              })}
+              }) }
             </Tbody>
           </Table>
         </TableContainer>
       </CardBody>
-      {/* <CardFooter justifyContent="flex-end">
+      { /* <CardFooter justifyContent="flex-end">
         <Button variant="outline">View</Button>
         <Button>Join</Button>
-      </CardFooter> */}
+      </CardFooter> */ }
     </Card>
   );
 }

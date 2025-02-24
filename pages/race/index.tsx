@@ -8,7 +8,7 @@ const MarketplaceInRace = dynamic(() => import('ui/pages/MarketplaceInRace'), { 
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/race">
-    <MarketplaceInRace />
+    <MarketplaceInRace/>
   </PageNextJs>
 );
 
