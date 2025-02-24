@@ -135,3 +135,23 @@ test('with external txs +@mobile', async({ render, mockEnvs, mockApiResponse, mo
 
   await expect(component).toHaveScreenshot();
 });
+
+test('with interop message in +@mobile', async({ render, page, mockEnvs, mockAssetResponse }) => {
+  await mockEnvs(ENVS_MAP.interop);
+  await mockAssetResponse('https://example.com/logo.png', './playwright/mocks/image_s.jpg');
+  const component = await render(<TxInfo data={ txMock.withInteropInMessage } isLoading={ false }/>);
+  await page.getByText('View details').first().click();
+  await expect(page.getByText('Interop status')).toBeVisible();
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('with interop message out +@mobile', async({ render, mockEnvs, mockAssetResponse }) => {
+  await mockEnvs(ENVS_MAP.interop);
+  await mockAssetResponse('https://example.com/logo.png', './playwright/mocks/image_s.jpg');
+  const component = await render(<TxInfo data={ txMock.withInteropOutMessage } isLoading={ false }/>);
+  await component.getByText('View details').first().click();
+  await expect(component.getByText('Interop status')).toBeVisible();
+
+  await expect(component).toHaveScreenshot();
+});

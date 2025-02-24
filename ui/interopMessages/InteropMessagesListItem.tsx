@@ -50,7 +50,7 @@ const InteropMessagesListItem = ({ item, isLoading }: Props) => {
           ) }
           <AddressFromToIcon
             isLoading={ isLoading }
-            type={ item.init_chain ? 'out' : 'in' }
+            type={ item.init_chain !== undefined ? 'in' : 'out' }
           />
           { item.relay_chain !== undefined ? (
             <AddressEntityInterop

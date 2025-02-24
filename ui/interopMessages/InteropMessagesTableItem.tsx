@@ -51,7 +51,7 @@ const InteropMessagesTableItem = ({ item, isLoading }: Props) => {
       <Td>
         <AddressFromToIcon
           isLoading={ isLoading }
-          type={ item.init_chain ? 'in' : 'out' }
+          type={ item.init_chain !== undefined ? 'in' : 'out' }
         />
       </Td>
       <Td>
