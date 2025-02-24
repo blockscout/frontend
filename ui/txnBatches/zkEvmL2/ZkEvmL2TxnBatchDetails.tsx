@@ -10,16 +10,15 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
@@ -68,7 +67,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         Txn batch number
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { data.number }
         </Skeleton>
         <PrevNext
@@ -120,10 +119,10 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         Transactions
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
+        <Skeleton loading={ isPlaceholderData }>
+          <Link href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
             { data.transactions.length } transaction{ data.transactions.length === 1 ? '' : 's' }
-          </LinkInternal>
+          </Link>
         </Skeleton>
       </DetailedInfo.ItemValue>
 
@@ -137,7 +136,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       <DetailedInfo.ItemValue
         flexWrap="nowrap"
       >
-        <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+        <Skeleton loading={ isPlaceholderData } overflow="hidden">
           <HashStringShortenDynamic hash={ data.global_exit_root }/>
         </Skeleton>
         <CopyToClipboard text={ data.global_exit_root } isLoading={ isPlaceholderData }/>
@@ -151,7 +150,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       <DetailedInfo.ItemValue
         flexWrap="nowrap"
       >
-        <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+        <Skeleton loading={ isPlaceholderData } overflow="hidden">
           <HashStringShortenDynamic hash={ data.acc_input_hash }/>
         </Skeleton>
         <CopyToClipboard text={ data.acc_input_hash } isLoading={ isPlaceholderData }/>
@@ -180,7 +179,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       <DetailedInfo.ItemValue
         flexWrap="nowrap"
       >
-        <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+        <Skeleton loading={ isPlaceholderData } overflow="hidden">
           <HashStringShortenDynamic hash={ data.state_root }/>
         </Skeleton>
         <CopyToClipboard text={ data.state_root } isLoading={ isPlaceholderData }/>

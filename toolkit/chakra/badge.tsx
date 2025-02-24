@@ -14,7 +14,7 @@ export interface BadgeProps extends Omit<ChakraBadgeProps, 'colorScheme'> {
   truncated?: boolean;
 }
 
-export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+export const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
   function Badge(props, ref) {
     const { loading, iconStart, children, asChild = true, truncated = false, ...rest } = props;
 
@@ -27,8 +27,8 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     ) : child;
 
     return (
-      <Skeleton loading={ loading } asChild={ asChild }>
-        <ChakraBadge ref={ ref } display="inline-flex" alignItems="center" whiteSpace="nowrap" { ...rest }>
+      <Skeleton loading={ loading } asChild={ asChild } ref={ ref }>
+        <ChakraBadge display="inline-flex" alignItems="center" whiteSpace="nowrap" { ...rest }>
           { iconStart && <IconSvg name={ iconStart } boxSize="10px"/> }
           { childrenElement }
         </ChakraBadge>

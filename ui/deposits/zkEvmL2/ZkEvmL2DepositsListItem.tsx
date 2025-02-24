@@ -5,7 +5,7 @@ import React from 'react';
 import type { ZkEvmL2DepositsItem } from 'types/api/zkEvmL2';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
@@ -29,15 +29,14 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
         <BlockEntityL1
           number={ item.block_number }
           isLoading={ isLoading }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           fontWeight={ 600 }
         />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block">
           { item.index }
         </Skeleton>
       </ListItemMobileGrid.Value>
@@ -47,8 +46,7 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.l1_transaction_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
@@ -68,8 +66,7 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
           <TxEntity
             isLoading={ isLoading }
             hash={ item.l2_transaction_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
+            textStyle="sm"
             truncation="constant_long"
           />
         ) : (
@@ -81,14 +78,14 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block">
           { BigNumber(item.value).toFormat() }
         </Skeleton>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Token</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block">
           { item.symbol }
         </Skeleton>
       </ListItemMobileGrid.Value>
