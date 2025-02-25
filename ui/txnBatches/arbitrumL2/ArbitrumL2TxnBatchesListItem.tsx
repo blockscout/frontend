@@ -5,12 +5,12 @@ import type { ArbitrumL2TxnBatchesItem } from 'types/api/arbitrumL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import ArbitrumL2TxnBatchDA from 'ui/shared/batch/ArbitrumL2TxnBatchDA';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ArbitrumL2TxnBatchStatus from 'ui/shared/statusTag/ArbitrumL2TxnBatchStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -32,8 +32,6 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         <BatchEntityL2
           isLoading={ isLoading }
           number={ item.number }
-          fontSize="sm"
-          lineHeight={ 5 }
           fontWeight={ 600 }
         />
       </ListItemMobileGrid.Value>
@@ -48,8 +46,6 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         <BlockEntityL1
           number={ item.commitment_transaction.block_number }
           isLoading={ isLoading }
-          fontSize="sm"
-          lineHeight={ 5 }
         />
       </ListItemMobileGrid.Value>
 
@@ -57,7 +53,7 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Block count</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.blocks_count.toLocaleString() }</Skeleton>
+            <Skeleton loading={ isLoading } display="inline-block">{ item.blocks_count.toLocaleString() }</Skeleton>
           </ListItemMobileGrid.Value>
         </>
       ) }
@@ -67,8 +63,6 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         <TxEntityL1
           hash={ item.commitment_transaction.hash }
           isLoading={ isLoading }
-          fontSize="sm"
-          lineHeight={ 5 }
           truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
@@ -85,15 +79,14 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn count</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <LinkInternal
+        <Link
           href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
-          isLoading={ isLoading }
+          loading={ isLoading }
           fontWeight={ 600 }
+          minW="40px"
         >
-          <Skeleton isLoaded={ !isLoading } minW="40px">
-            { item.transactions_count.toLocaleString() }
-          </Skeleton>
-        </LinkInternal>
+          { item.transactions_count.toLocaleString() }
+        </Link>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Data container</ListItemMobileGrid.Label>

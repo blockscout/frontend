@@ -24,7 +24,7 @@ const OptimisticL2TxnBatchDA = ({ container, isLoading }: Props) => {
   })();
 
   return (
-    <Badge colorScheme="yellow" loading={ isLoading }>
+    <Badge colorPalette="yellow" loading={ isLoading }>
       { text }
     </Badge>
   );

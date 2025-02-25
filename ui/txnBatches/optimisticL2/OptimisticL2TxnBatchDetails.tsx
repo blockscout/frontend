@@ -9,13 +9,13 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 
 import OptimisticL2TxnBatchBlobCallData from './OptimisticL2TxnBatchBlobCallData';
@@ -70,7 +70,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
         Batch ID
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { data.internal_id }
         </Skeleton>
         <PrevNext
@@ -103,10 +103,10 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
         Transactions
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'txs' } }) }>
+        <Skeleton loading={ isPlaceholderData }>
+          <Link href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'txs' } }) }>
             { data.transaction_count.toLocaleString() } transaction{ data.transaction_count === 1 ? '' : 's' }
-          </LinkInternal>
+          </Link>
           { ' ' }in this batch
         </Skeleton>
       </DetailedInfo.ItemValue>
@@ -118,10 +118,10 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
         Blocks
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'blocks' } }) }>
+        <Skeleton loading={ isPlaceholderData }>
+          <Link href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'blocks' } }) }>
             { blocksCount.toLocaleString() } block{ blocksCount === 1 ? '' : 's' }
-          </LinkInternal>
+          </Link>
           { ' ' }in this batch
         </Skeleton>
       </DetailedInfo.ItemValue>

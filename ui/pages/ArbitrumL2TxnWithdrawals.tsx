@@ -82,7 +82,7 @@ const ArbitrumL2TxnWithdrawals = () => {
           name="tx_hash"
           w={{ base: '100%', lg: '700px' }}
           mt={ 6 }
-          size="xs"
+          size="sm"
           placeholder="Search by transaction hash"
           initialValue={ searchTerm }
           onChange={ handleSearchTermChange }
@@ -94,13 +94,14 @@ const ArbitrumL2TxnWithdrawals = () => {
       <DataListDisplay
         mt={ 6 }
         isError={ isError }
-        items={ searchTerm ? data?.items : undefined }
+        itemsNum={ searchTerm ? data?.items.length : undefined }
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find any withdrawals for your transaction.`,
           hasActiveFilters: Boolean(searchTerm),
         }}
-        content={ content }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

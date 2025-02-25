@@ -10,12 +10,13 @@ interface Props extends LinkProps {
   id?: string;
   onClick?: () => void;
   isExpanded?: boolean;
+  text?: [string, string];
 }
 
 const ID = 'CutLink';
 
 const CutLink = (props: Props) => {
-  const { children, id = ID, onClick, isExpanded: isExpandedProp = false, ...rest } = props;
+  const { children, id = ID, onClick, isExpanded: isExpandedProp = false, text: textProp, ...rest } = props;
 
   const [ isExpanded, setIsExpanded ] = React.useState(isExpandedProp);
 
@@ -36,7 +37,7 @@ const CutLink = (props: Props) => {
     });
   }, [ isExpandedProp, id ]);
 
-  const text = isExpanded ? 'Hide details' : 'View details';
+  const text = isExpanded ? (textProp?.[1] ?? 'Hide details') : (textProp?.[0] ?? 'View details');
 
   return (
     <>

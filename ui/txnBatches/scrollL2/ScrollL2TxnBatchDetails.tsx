@@ -9,15 +9,15 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ScrollL2TxnBatchDA from 'ui/shared/batch/ScrollL2TxnBatchDA';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import ScrollL2TxnBatchStatus from 'ui/shared/statusTag/ScrollL2TxnBatchStatus';
 
@@ -69,7 +69,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
         Txn batch number
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { data.number }
         </Skeleton>
         <PrevNext
@@ -111,7 +111,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       <DetailedInfo.ItemValue>
         { data.confirmation_transaction.timestamp ?
           <DetailedInfoTimestamp timestamp={ data.confirmation_transaction.timestamp }isLoading={ isPlaceholderData }/> :
-          <Skeleton isLoaded={ !isPlaceholderData } display="inline-block">Pending</Skeleton>
+          <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton>
         }
       </DetailedInfo.ItemValue>
 
@@ -122,11 +122,9 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
         Transactions
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
-            { data.transaction_count.toLocaleString() } transaction{ data.transaction_count === 1 ? '' : 's' }
-          </LinkInternal>
-        </Skeleton>
+        <Link loading={ isPlaceholderData } href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
+          { data.transaction_count.toLocaleString() } transaction{ data.transaction_count === 1 ? '' : 's' }
+        </Link>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
@@ -136,11 +134,9 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
         Blocks
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'blocks' } }) }>
-            { blocksCount.toLocaleString() } block{ blocksCount === 1 ? '' : 's' }
-          </LinkInternal>
-        </Skeleton>
+        <Link loading={ isPlaceholderData } href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'blocks' } }) }>
+          { blocksCount.toLocaleString() } block{ blocksCount === 1 ? '' : 's' }
+        </Link>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
@@ -152,7 +148,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       <DetailedInfo.ItemValue>
         { data.commitment_transaction.timestamp ?
           <DetailedInfoTimestamp timestamp={ data.commitment_transaction.timestamp }isLoading={ isPlaceholderData }/> :
-          <Skeleton isLoaded={ !isPlaceholderData } display="inline-block">Pending</Skeleton>
+          <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton>
         }
       </DetailedInfo.ItemValue>
 
@@ -196,7 +192,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
             hash={ data.confirmation_transaction.hash }
             maxW="100%"
           />
-        ) : <Skeleton isLoaded={ !isPlaceholderData } display="inline-block">Pending</Skeleton> }
+        ) : <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton> }
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
@@ -211,7 +207,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
             isLoading={ isPlaceholderData }
             number={ data.confirmation_transaction.block_number }
           />
-        ) : <Skeleton isLoaded={ !isPlaceholderData } display="inline-block">Pending</Skeleton> }
+        ) : <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton> }
       </DetailedInfo.ItemValue>
     </Grid>
   );

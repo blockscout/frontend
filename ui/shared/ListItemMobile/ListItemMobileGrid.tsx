@@ -25,8 +25,7 @@ const Container = chakra(({ animation, children, className }: ContainerProps) =>
         borderBottomWidth: '1px',
       }}
       className={ className }
-      fontSize="sm"
-      lineHeight="20px"
+      textStyle="sm"
     >
       { children }
     </Grid>

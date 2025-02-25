@@ -8,13 +8,13 @@ import config from 'configs/app';
 const rollupFeature = config.features.rollup;
 
 const Deposits = dynamic(() => {
-  // if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
-  //   return import('ui/pages/OptimisticL2Deposits');
-  // }
+  if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
+    return import('ui/pages/OptimisticL2Deposits');
+  }
 
-  // if (rollupFeature.isEnabled && rollupFeature.type === 'arbitrum') {
-  //   return import('ui/pages/ArbitrumL2Deposits');
-  // }
+  if (rollupFeature.isEnabled && rollupFeature.type === 'arbitrum') {
+    return import('ui/pages/ArbitrumL2Deposits');
+  }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
     return import('ui/pages/ShibariumDeposits');
@@ -24,9 +24,9 @@ const Deposits = dynamic(() => {
     return import('ui/pages/ZkEvmL2Deposits');
   }
 
-  // if (rollupFeature.isEnabled && rollupFeature.type === 'scroll') {
-  //   return import('ui/pages/ScrollL2Deposits');
-  // }
+  if (rollupFeature.isEnabled && rollupFeature.type === 'scroll') {
+    return import('ui/pages/ScrollL2Deposits');
+  }
 
   throw new Error('Deposits feature is not enabled.');
 }, { ssr: false });

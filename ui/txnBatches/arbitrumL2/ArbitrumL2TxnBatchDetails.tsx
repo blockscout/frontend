@@ -1,8 +1,7 @@
-import { Grid, GridItem, Link } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
 
 import type { ArbitrumL2TxnBatch } from 'types/api/arbitrumL2';
 
@@ -10,9 +9,11 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ArbitrumL2TxnBatchDA from 'ui/shared/batch/ArbitrumL2TxnBatchDA';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
@@ -20,26 +21,17 @@ import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp'
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 
 import ArbitrumL2TxnBatchDetailsAnyTrustDA from './ArbitrumL2TxnBatchDetailsAnyTrustDA';
 import ArbitrumL2TxnBatchDetailsCelestiaDA from './ArbitrumL2TxnBatchDetailsCelestiaDA';
+
 interface Props {
   query: UseQueryResult<ArbitrumL2TxnBatch, ResourceError>;
 }
 
 const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
   const router = useRouter();
-  const [ isExpanded, setIsExpanded ] = React.useState(false);
-
-  const handleCutClick = React.useCallback(() => {
-    setIsExpanded((flag) => !flag);
-    scroller.scrollTo('BatchDetails__cutLink', {
-      duration: 500,
-      smooth: true,
-    });
-  }, []);
 
   const { data, isPlaceholderData, isError, error } = query;
 
@@ -82,7 +74,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         Txn batch number
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { data.number }
         </Skeleton>
         <PrevNext
@@ -115,11 +107,9 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         Transactions
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
-            { data.transactions_count.toLocaleString() } transaction{ data.transactions_count === 1 ? '' : 's' }
-          </LinkInternal>
-        </Skeleton>
+        <Link loading={ isPlaceholderData } href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
+          { data.transactions_count.toLocaleString() } transaction{ data.transactions_count === 1 ? '' : 's' }
+        </Link>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
@@ -129,11 +119,9 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         Blocks
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'blocks' } }) }>
-            { blocksCount.toLocaleString() } block{ blocksCount === 1 ? '' : 's' }
-          </LinkInternal>
-        </Skeleton>
+        <Link loading={ isPlaceholderData } href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'blocks' } }) }>
+          { blocksCount.toLocaleString() } block{ blocksCount === 1 ? '' : 's' }
+        </Link>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
@@ -183,7 +171,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         Before acc
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue flexWrap="nowrap" >
-        <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+        <Skeleton loading={ isPlaceholderData } overflow="hidden">
           <HashStringShortenDynamic hash={ data.before_acc }/>
         </Skeleton>
         <CopyToClipboard text={ data.before_acc } isLoading={ isPlaceholderData }/>
@@ -196,44 +184,28 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         After acc
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue flexWrap="nowrap">
-        <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+        <Skeleton loading={ isPlaceholderData } overflow="hidden">
           <HashStringShortenDynamic hash={ data.after_acc }/>
         </Skeleton>
         <CopyToClipboard text={ data.after_acc } isLoading={ isPlaceholderData }/>
       </DetailedInfo.ItemValue>
 
       { (data.data_availability.batch_data_container === 'in_anytrust' || data.data_availability.batch_data_container === 'in_celestia') && (
-        <>
-          { /* CUT */ }
-          <GridItem colSpan={{ base: undefined, lg: 2 }}>
-            <Element name="BatchDetails__cutLink">
-              <Skeleton isLoaded={ !isPlaceholderData } mt={ 6 } display="inline-block">
-                <Link
-                  fontSize="sm"
-                  textDecorationLine="underline"
-                  textDecorationStyle="dashed"
-                  onClick={ handleCutClick }
-                >
-                  { isExpanded ? 'Hide data availability info' : 'Show data availability info' }
-                </Link>
-              </Skeleton>
-            </Element>
-          </GridItem>
+        <CutLinkDetails
+          loading={ isPlaceholderData }
+          mt={ 6 }
+          gridColumn={{ base: undefined, lg: '1 / 3' }}
+          text={ [ 'Show data availability info', 'Hide data availability info' ] }
+        >
+          <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
-          { /* ADDITIONAL INFO */ }
-          { isExpanded && !isPlaceholderData && (
-            <>
-              <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
-
-              { data.data_availability.batch_data_container === 'in_anytrust' && (
-                <ArbitrumL2TxnBatchDetailsAnyTrustDA data={ data.data_availability }/>
-              ) }
-              { data.data_availability.batch_data_container === 'in_celestia' && (
-                <ArbitrumL2TxnBatchDetailsCelestiaDA data={ data.data_availability }/>
-              ) }
-            </>
+          { data.data_availability.batch_data_container === 'in_anytrust' && (
+            <ArbitrumL2TxnBatchDetailsAnyTrustDA data={ data.data_availability }/>
           ) }
-        </>
+          { data.data_availability.batch_data_container === 'in_celestia' && (
+            <ArbitrumL2TxnBatchDetailsCelestiaDA data={ data.data_availability }/>
+          ) }
+        </CutLinkDetails>
       ) }
     </Grid>
   );
