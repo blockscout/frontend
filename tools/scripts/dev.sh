@@ -21,5 +21,4 @@ dotenv \
   -e .env.local \
   -e .env.development \
   -e .env \
-  -- bash -c './deploy/scripts/make_envs_script.sh && next dev --turbopack -p $NEXT_PUBLIC_APP_PORT' |
-pino-pretty
+  -- bash -c './deploy/scripts/make_envs_script.sh && next dev --turbopack -p $NEXT_PUBLIC_APP_PORT'
