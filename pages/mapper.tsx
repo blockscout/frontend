@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
@@ -11,9 +12,10 @@ import '@moonchain/react-mapper/style.css';
 const Mapper = dynamic(() => import('@moonchain/react-mapper'), { ssr: false });
 
 const Page: NextPage = () => {
+  const router = useRouter();
   return (
     <PageNextJs pathname="/mapper">
-      <Mapper chain={ config.chain.id! }/>
+      <Mapper query={ router.query } chain={ config.chain.id! }/>
     </PageNextJs>
   );
 };

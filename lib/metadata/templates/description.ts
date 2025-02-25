@@ -26,6 +26,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/token/[hash]/instance/[id]': '%hash%, balances and analytics on the %network_title%',
   '/apps': DEFAULT_TEMPLATE,
   '/apps/[id]': DEFAULT_TEMPLATE,
+  '/mapper': DEFAULT_TEMPLATE,
   '/stats': DEFAULT_TEMPLATE,
   '/stats/[id]': DEFAULT_TEMPLATE,
   '/api-docs': DEFAULT_TEMPLATE,

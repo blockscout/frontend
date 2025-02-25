@@ -4,14 +4,15 @@
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
-    "node": "22.11.0",
-    "npm": "10.9.0"
+    "node": "^22.11.0",
+    "npm": "^0.9.0"
   },
   "scripts": {
-    "dev": "./tools/scripts/dev.sh",
-    "dev:preset": "./tools/scripts/dev.preset.sh",
+    "dev": "sh ./tools/scripts/dev.sh",
+    "dev:preset": "sh ./tools/scripts/dev.preset.sh",
     "dev:preset:sync": "tsc -p ./tools/preset-sync/tsconfig.json && node ./tools/preset-sync/index.js",
-    "build": "next build",
+    "build": "sh ./tools/scripts/build.sh",
+    "build:preset": "sh ./tools/scripts/build.preset.sh",
     "build:next": "./deploy/scripts/download_assets.sh ./public/assets/configs && yarn svg:build-sprite && ./deploy/scripts/make_envs_script.sh && next build",
     "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t blockscout-frontend:local ./",
     "start": "next start",
@@ -36,7 +37,8 @@
     "og-image:generate:dev": "./tools/scripts/og-image-generator.dev.sh",
     "sitemap:generate:dev": "./tools/scripts/sitemap-generator.dev.sh",
     "monitoring:prometheus:local": "docker run --name blockscout_prometheus -d -p 127.0.0.1:9090:9090 -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus",
-    "monitoring:grafana:local": "docker run -d -p 4000:3000 --name=blockscout_grafana --user $(id -u) --volume $(pwd)/grafana:/var/lib/grafana grafana/grafana-enterprise"
+    "monitoring:grafana:local": "docker run -d -p 4000:3000 --name=blockscout_grafana --user $(id -u) --volume $(pwd)/grafana:/var/lib/grafana grafana/grafana-enterprise",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@blockscout/bens-types": "1.4.1",
@@ -74,6 +76,7 @@
     "airtable": "^0.12.2",
     "bignumber.js": "^9.1.0",
     "blo": "^1.1.1",
+    "@moonchain/react-mapper": "0.4.0",
     "chakra-react-select": "^4.4.3",
     "crypto-js": "^4.2.0",
     "d3": "^7.6.1",
@@ -168,6 +171,8 @@
     "jest-fetch-mock": "^3.0.3",
     "lint-staged": ">=10",
     "mockdate": "^3.0.5",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "style-loader": "^3.3.1",
     "svg-icons-cli": "^0.0.5",
     "svgo": "^2.8.0",
