@@ -1,17 +1,18 @@
-import { LinkBox, Flex, LinkOverlay, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
+
+import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Image } from 'toolkit/chakra/image';
-import { Link } from 'toolkit/chakra/link';
+import { Link, LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import NextLink from 'ui/shared/NextLink';
 
 import FavoriteIcon from '../FavoriteIcon';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
@@ -60,7 +61,7 @@ const FeaturedApp = ({
   }
 
   return (
-    <LinkBox role="group">
+    <LinkBox>
       <Flex
         gap={ 6 }
         borderRadius="md"
@@ -94,17 +95,13 @@ const FeaturedApp = ({
               fontFamily="heading"
               lineHeight="36px"
             >
-              { external ? (
-                <LinkOverlay href={ url } target="_blank" marginRight={ 2 }>
-                  { title }
-                </LinkOverlay>
-              ) : (
-                <NextLink href={{ pathname: '/apps/[id]', query: { id } }} passHref legacyBehavior>
-                  <LinkOverlay marginRight={ 2 }>
-                    { title }
-                  </LinkOverlay>
-                </NextLink>
-              ) }
+              <LinkOverlay
+                href={ external ? url : route({ pathname: '/apps/[id]', query: { id } }) }
+                marginRight={ 2 }
+                external={ external }
+              >
+                { title }
+              </LinkOverlay>
               <MarketplaceAppIntegrationIcon external={ external } internalWallet={ internalWallet }/>
             </Skeleton>
 

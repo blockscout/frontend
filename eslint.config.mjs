@@ -32,8 +32,8 @@ const RESTRICTED_MODULES = {
     {
       name: '@chakra-ui/react',
       importNames: [
-        'Menu', 'useToast', 'useDisclosure', 'useClipboard', 'Tooltip', 'Skeleton', 'IconButton', 'Button', 'ButtonGroup', 'Link', 'Tag', 'Switch',
-        'Image', 'Popover', 'PopoverTrigger', 'PopoverContent', 'PopoverBody', 'PopoverFooter',
+        'Menu', 'useToast', 'useDisclosure', 'useClipboard', 'Tooltip', 'Skeleton', 'IconButton', 'Button', 'ButtonGroup', 'Link', 'LinkBox', 'LinkOverlay',
+        'Tag', 'Switch', 'Image', 'Popover', 'PopoverTrigger', 'PopoverContent', 'PopoverBody', 'PopoverFooter',
         'DrawerRoot', 'DrawerBody', 'DrawerContent', 'DrawerOverlay', 'DrawerBackdrop', 'DrawerTrigger', 'Drawer',
         'Alert', 'AlertIcon', 'AlertTitle', 'AlertDescription',
         'Heading', 'Badge', 'Tabs', 'Show', 'Hide', 'Checkbox',

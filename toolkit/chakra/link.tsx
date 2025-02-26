@@ -1,5 +1,5 @@
 import type { LinkProps as ChakraLinkProps } from '@chakra-ui/react';
-import { Link as ChakraLink } from '@chakra-ui/react';
+import { Link as ChakraLink, LinkBox as ChakraLinkBox, LinkOverlay as ChakraLinkOverlay } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import type { LinkProps as NextLinkProps } from 'next/link';
 import React from 'react';
@@ -21,7 +21,7 @@ export const LinkExternalIcon = ({ color }: { color?: ChakraLinkProps['color'] }
   />
 );
 
-export interface LinkProps extends Pick<NextLinkProps, 'shallow' | 'prefetch' | 'scroll'>, ChakraLinkProps {
+interface LinkPropsChakra extends ChakraLinkProps {
   loading?: boolean;
   external?: boolean;
   iconColor?: ChakraLinkProps['color'];
@@ -29,9 +29,28 @@ export interface LinkProps extends Pick<NextLinkProps, 'shallow' | 'prefetch' | 
   disabled?: boolean;
 }
 
+interface LinkPropsNext extends Pick<NextLinkProps, 'shallow' | 'prefetch' | 'scroll'> {}
+
+export interface LinkProps extends LinkPropsChakra, LinkPropsNext {}
+
+const splitProps = (props: LinkProps): { chakra: LinkPropsChakra; next: NextLinkProps } => {
+  const { scroll = true, shallow = false, prefetch = false, ...rest } = props;
+
+  return {
+    chakra: rest,
+    next: {
+      href: rest.href as NextLinkProps['href'],
+      scroll,
+      shallow,
+      prefetch,
+    },
+  };
+};
+
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
-    const { external, loading, href, children, scroll = true, iconColor, noIcon, shallow, prefetch = false, disabled, ...rest } = props;
+    const { chakra, next } = splitProps(props);
+    const { external, loading, href, children, disabled, noIcon, iconColor, ...rest } = chakra;
 
     if (external) {
       return (
@@ -60,13 +79,8 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
           { ...(disabled ? { 'data-disabled': true } : {}) }
           { ...rest }
         >
-          { href ? (
-            <NextLink
-              href={ href as NextLinkProps['href'] }
-              scroll={ scroll }
-              shallow={ shallow }
-              prefetch={ prefetch }
-            >
+          { next.href ? (
+            <NextLink { ...next }>
               { children }
             </NextLink>
           ) :
@@ -74,6 +88,29 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
           }
         </ChakraLink>
       </Skeleton>
+    );
+  },
+);
+
+export const LinkBox = ChakraLinkBox;
+
+export const LinkOverlay = React.forwardRef<HTMLAnchorElement, LinkProps>(
+  function LinkOverlay(props, ref) {
+    const { chakra, next } = splitProps(props);
+    const { children, external, ...rest } = chakra;
+
+    if (external) {
+      return (
+        <ChakraLinkOverlay ref={ ref } target="_blank" rel="noopener noreferrer" { ...rest }>
+          { children }
+        </ChakraLinkOverlay>
+      );
+    }
+
+    return (
+      <ChakraLinkOverlay ref={ ref } asChild={ Boolean(next.href) } { ...rest }>
+        { next.href ? <NextLink { ...next }>{ children }</NextLink> : children }
+      </ChakraLinkOverlay>
     );
   },
 );

@@ -1,5 +1,7 @@
-import { chakra, LinkOverlay } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
+
+import { LinkOverlay } from 'toolkit/chakra/link';
 
 import { mediaStyleProps } from './utils';
 

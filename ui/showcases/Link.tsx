@@ -10,7 +10,7 @@ import * as blockMock from 'mocks/blocks/block';
 import * as ensMock from 'mocks/ens/domain';
 import * as poolMock from 'mocks/pools/pool';
 import * as txMock from 'mocks/txs/tx';
-import { Link } from 'toolkit/chakra/link';
+import { Link, LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
 import CutLinkList from 'toolkit/components/CutLink/CutLinkList';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -247,6 +247,22 @@ const LinkShowcase = () => {
               <PoolEntity pool={ poolMock.noIcons } isExternal/>
             </Box>
             <PoolEntity pool={ poolMock.noIcons } isLoading/>
+          </Sample>
+        </SamplesStack>
+
+        <SectionSubHeader>Link overlay</SectionSubHeader>
+        <SamplesStack>
+          <Sample label="Internal link">
+            <LinkBox p={ 2 } display="flex" flexDirection="column" columnGap={ 2 } borderWidth="1px" borderColor="border.divider" borderRadius="base">
+              <LinkOverlay href="/blocks">Main link</LinkOverlay>
+              <Link href="/txs">Inner link</Link>
+            </LinkBox>
+          </Sample>
+          <Sample label="External link">
+            <LinkBox p={ 2 } display="flex" flexDirection="column" columnGap={ 2 } borderWidth="1px" borderColor="border.divider" borderRadius="base">
+              <LinkOverlay href="https://blockscout.com" external>Main link</LinkOverlay>
+              <Link href="https://blockscout.com/txs" external>Inner link</Link>
+            </LinkBox>
           </Sample>
         </SamplesStack>
       </Section>

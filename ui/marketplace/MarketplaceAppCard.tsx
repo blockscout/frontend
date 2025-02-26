@@ -1,4 +1,4 @@
-import { LinkBox, chakra, Flex, Text } from '@chakra-ui/react';
+import { chakra, Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -9,7 +9,7 @@ import isBrowser from 'lib/isBrowser';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Image } from 'toolkit/chakra/image';
-import { Link } from 'toolkit/chakra/link';
+import { Link, LinkBox } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
