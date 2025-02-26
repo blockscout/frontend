@@ -117,7 +117,7 @@ const AdaptiveTabsList = (props: Props) => {
               ref={ ref }
               tabs={ tabs }
               tabsCut={ tabsCut }
-              isActive={ activeTabIndex > 0 && activeTabIndex >= tabsCut }
+              isActive={ activeTabIndex > 0 && tabsCut > 0 && activeTabIndex >= tabsCut }
               { ...(tabsCut >= tabs.length ? HIDDEN_ITEM_STYLES : {}) }
             />
           );
@@ -130,7 +130,7 @@ const AdaptiveTabsList = (props: Props) => {
             ref={ ref }
             scrollSnapAlign="start"
             flexShrink={ 0 }
-            { ...(!tabsCut || index < tabsCut ? {} : HIDDEN_ITEM_STYLES as never) }
+            { ...(index < tabsCut ? {} : HIDDEN_ITEM_STYLES as never) }
           >
             <Skeleton loading={ isLoading }>
               { typeof tab.title === 'function' ? tab.title() : tab.title }
