@@ -1,4 +1,4 @@
-import { LinkBox, Flex, LinkOverlay } from '@chakra-ui/react';
+import { LinkBox, Flex, LinkOverlay, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -143,15 +143,11 @@ const FeaturedApp = ({
 
           <Skeleton
             loading={ isLoading }
-            textStyle="sm"
-            WebkitLineClamp={ 2 }
-            style={{
-              WebkitBoxOrient: 'vertical',
-            }}
-            display="-webkit-box"
-            overflow="hidden"
+            asChild
           >
-            { shortDescription }
+            <Text lineClamp={ 2 } textStyle="sm">
+              { shortDescription }
+            </Text>
           </Skeleton>
         </Flex>
       </Flex>

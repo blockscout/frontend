@@ -18,8 +18,9 @@ const MarketplaceAppCardLink = ({ url, external, id, title, onClick, className }
     onClick?.(event, id);
   }, [ onClick, id ]);
 
+  // TODO @tom2drum create LinkOverlay component
   return external ? (
-    <LinkOverlay href={ url } marginRight={ 2 } className={ className }>
+    <LinkOverlay href={ url } marginRight={ 2 } className={ className } target="_blank">
       { title }
     </LinkOverlay>
   ) : (

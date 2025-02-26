@@ -1,4 +1,4 @@
-import { LinkBox, Flex } from '@chakra-ui/react';
+import { LinkBox, Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React from 'react';
 
@@ -125,15 +125,11 @@ const FeaturedAppMobile = ({
 
           <Skeleton
             loading={ isLoading }
-            textStyle="xs"
-            WebkitLineClamp={ 3 }
-            style={{
-              WebkitBoxOrient: 'vertical',
-            }}
-            display="-webkit-box"
-            overflow="hidden"
+            asChild
           >
-            { shortDescription }
+            <Text lineClamp={ 3 } textStyle="xs">
+              { shortDescription }
+            </Text>
           </Skeleton>
         </Flex>
 

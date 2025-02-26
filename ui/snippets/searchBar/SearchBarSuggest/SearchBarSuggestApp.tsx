@@ -49,13 +49,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
           </Flex>
           <Text
             color="text.secondary"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            style={{
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: 'vertical',
-              display: '-webkit-box',
-            }}
+            lineClamp={ 3 }
           >
             { data.description }
           </Text>

@@ -346,15 +346,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       }
       case 'app': {
         return (
-          <Text
-            overflow="hidden"
-            textOverflow="ellipsis"
-            style={{
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: 'vertical',
-              display: '-webkit-box',
-            }}
-          >
+          <Text lineClamp={ 3 }>
             { data.app.description }
           </Text>
         );

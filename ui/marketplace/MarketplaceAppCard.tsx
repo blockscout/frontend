@@ -1,4 +1,4 @@
-import { LinkBox, chakra, Flex } from '@chakra-ui/react';
+import { LinkBox, chakra, Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -161,15 +161,11 @@ const MarketplaceAppCard = ({
 
         <Skeleton
           loading={ isLoading }
-          textStyle="sm"
-          WebkitLineClamp={{ base: 2, md: 3 }}
-          style={{
-            WebkitBoxOrient: 'vertical',
-          }}
-          display="-webkit-box"
-          overflow="hidden"
+          asChild
         >
-          { shortDescription }
+          <Text lineClamp={{ base: 2, md: 3 }} textStyle="sm">
+            { shortDescription }
+          </Text>
         </Skeleton>
 
         { !isLoading && (

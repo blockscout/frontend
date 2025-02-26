@@ -10,6 +10,7 @@ import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import isBrowser from 'lib/isBrowser';
+import makePrettyLink from 'lib/makePrettyLink';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Badge } from 'toolkit/chakra/badge';
 import { Button } from 'toolkit/chakra/button';
@@ -128,12 +129,6 @@ const MarketplaceAppModal = ({
 
   const isMobile = useIsMobile();
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
-
-  function getHostname(url: string | undefined) {
-    try {
-      return new URL(url || '').hostname;
-    } catch (err) {}
-  }
 
   const iconColor = { _light: 'blue.600', _dark: 'gray.400' };
 
@@ -323,7 +318,7 @@ const MarketplaceAppModal = ({
                   overflow="hidden"
                   textOverflow="ellipsis"
                 >
-                  { getHostname(site) }
+                  { makePrettyLink(site)?.domain }
                 </Text>
               </Link>
             ) }

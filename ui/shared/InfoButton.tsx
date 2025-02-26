@@ -8,9 +8,10 @@ import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   children: React.ReactNode;
+  isLoading?: boolean;
 }
 
-const InfoButton = ({ children }: Props) => {
+const InfoButton = ({ children, isLoading }: Props) => {
   const isMobile = useIsMobile();
 
   const triggerButton = (
@@ -22,6 +23,7 @@ const InfoButton = ({ children }: Props) => {
       fontWeight={ 500 }
       pl={ 1 }
       pr={ isMobile ? 1 : 2 }
+      loadingSkeleton={ isLoading }
     >
       <IconSvg name="info" boxSize={ 6 } mr={ isMobile ? 0 : 1 }/>
       { !isMobile && <span>Info</span> }

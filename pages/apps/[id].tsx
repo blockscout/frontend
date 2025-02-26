@@ -16,7 +16,7 @@ import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import LayoutApp from 'ui/shared/layout/LayoutApp';
 
-// const MarketplaceApp = dynamic(() => import('ui/pages/MarketplaceApp'), { ssr: false });
+const MarketplaceApp = dynamic(() => import('ui/pages/MarketplaceApp'), { ssr: false });
 
 const pathname: Route['pathname'] = '/apps/[id]';
 const feature = config.features.marketplace;
@@ -24,7 +24,7 @@ const feature = config.features.marketplace;
 const Page: NextPageWithLayout<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      { /* <MarketplaceApp/> */ }
+      <MarketplaceApp/>
     </PageNextJs>
   );
 };
