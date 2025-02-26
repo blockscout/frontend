@@ -205,7 +205,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
         pb="8px"
         boxShadow={ isInputStuck ? '0px 6px 3px 0px rgba(0, 0, 0, 0.05)' : 'none' }
         endElement={ inputEndElement }
-        endElementProps={{ height: '26px', pl: '0', pr: '10px', columnGap: '2px' }}
+        endElementProps={{ height: '26px', pl: '0', right: '10px', columnGap: '2px' }}
       >
         <Input
           size="xs"

@@ -106,6 +106,8 @@ const SearchBarInput = (
       name="search"
       boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }}
       color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }}
+      ml={{ base: 3, lg: 4 }}
+      mr="10px"
     />
   );
 
@@ -117,12 +119,11 @@ const SearchBarInput = (
           <Center
             boxSize="20px"
             my="2px"
-            mr={{ base: 1, lg: isHomepage ? 2 : 1 }}
+            mr={ 3 }
             borderRadius="sm"
             borderWidth="1px"
             borderColor="gray.400"
             color="gray.400"
-            display={{ base: 'none', lg: 'flex' }}
           >
             /
           </Center>

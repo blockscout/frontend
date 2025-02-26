@@ -1,14 +1,13 @@
-import { Text, Box, Input, Flex } from '@chakra-ui/react';
+import { Text, Box, Flex } from '@chakra-ui/react';
 import { sumBy } from 'es-toolkit';
-import type { ChangeEvent } from 'react';
 import React from 'react';
 
 import type { FormattedData } from './types';
 import type { TokenType } from 'types/api/token';
 
 import { getTokenTypeName } from 'lib/token/tokenTypes';
-import { InputGroup } from 'toolkit/chakra/input-group';
 import { Link } from 'toolkit/chakra/link';
+import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 
 import type { Sort } from '../utils/tokenUtils';
@@ -21,7 +20,7 @@ interface Props {
   erc1155sort: Sort;
   erc404sort: Sort;
   filteredData: FormattedData;
-  onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onInputChange: (searchTerm: string) => void;
   onSortClick: (event: React.SyntheticEvent) => void;
 }
 
@@ -30,12 +29,13 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
 
   return (
     <>
-      <InputGroup
-        startElement={ <IconSvg name="search" boxSize={ 4 } color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }}/> }
+      <FilterInput
+        placeholder="Search by token name"
+        size="sm"
+        inputProps={{ bgColor: 'dialog.bg' }}
         mb={ 5 }
-      >
-        <Input placeholder="Search by token name" onChange={ onInputChange } size="sm" bgColor="dialog.bg"/>
-      </InputGroup>
+        onChange={ onInputChange }
+      />
       <Flex flexDir="column" rowGap={ 6 }>
         { Object.entries(filteredData).sort(sortTokenGroups).map(([ tokenType, tokenInfo ]) => {
           if (tokenInfo.items.length === 0) {

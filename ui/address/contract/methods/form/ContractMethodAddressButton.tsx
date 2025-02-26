@@ -17,7 +17,7 @@ const ContractMethodAddressButton = ({ onClick, isDisabled }: Props) => {
   }, [ address, onClick ]);
 
   return (
-    <Tooltip content={ !address ? 'Connect your wallet to enter your address.' : undefined }>
+    <Tooltip content="Connect your wallet to enter your address." disabled={ Boolean(address) }>
       <Button
         variant="subtle"
         size="xs"

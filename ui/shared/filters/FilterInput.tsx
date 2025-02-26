@@ -1,6 +1,7 @@
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
+import type { InputProps } from 'toolkit/chakra/input';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import type { SkeletonProps } from 'toolkit/chakra/skeleton';
@@ -18,9 +19,10 @@ interface Props extends Omit<SkeletonProps, 'onChange' | 'loading'> {
   initialValue?: string;
   type?: React.HTMLInputTypeAttribute;
   name?: string;
+  inputProps?: InputProps;
 };
 
-const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, name, loading = false, onFocus, onBlur, ...rest }: Props) => {
+const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, name, loading = false, onFocus, onBlur, inputProps, ...rest }: Props) => {
   const [ filterQuery, setFilterQuery ] = useState(initialValue || '');
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -52,7 +54,7 @@ const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, n
         startElement={ startElement }
         startElementProps={{ px: 2 }}
         endElement={ endElement }
-        endElementProps={{ px: 0, w: '32px' }}
+        endElementProps={{ w: '32px' }}
       >
         <Input
           ref={ inputRef }
@@ -67,6 +69,7 @@ const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, n
           whiteSpace="nowrap"
           type={ type }
           name={ name }
+          { ...inputProps }
         />
       </InputGroup>
     </Skeleton>

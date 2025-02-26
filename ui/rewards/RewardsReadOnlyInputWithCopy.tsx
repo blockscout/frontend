@@ -18,8 +18,8 @@ const RewardsReadOnlyInputWithCopy = ({ label, value, className, isLoading }: Pr
   return (
     <Skeleton loading={ isLoading } className={ className }>
       <Field label={ label } floating size="xl" readOnly>
-        <InputGroup endElement={ <CopyToClipboard text={ value }/> }>
-          <Input value={ value } fontWeight="500" overflow="hidden" textOverflow="ellipsis"/>
+        <InputGroup endElement={ <CopyToClipboard text={ value }/> } endElementProps={{ px: 3 }}>
+          <Input value={ value } fontWeight="500"/>
         </InputGroup>
       </Field>
     </Skeleton>

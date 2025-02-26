@@ -1,5 +1,6 @@
 import type { BoxProps, InputElementProps } from '@chakra-ui/react';
 import { Group, InputElement } from '@chakra-ui/react';
+import { debounce } from 'es-toolkit';
 import * as React from 'react';
 
 import getComponentDisplayName from '../utils/getComponentDisplayName';
@@ -31,12 +32,9 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
     const startElementRef = React.useRef<HTMLDivElement>(null);
     const endElementRef = React.useRef<HTMLDivElement>(null);
 
-    const [ inlinePaddings, setInlinePaddings ] = React.useState({
-      start: 0,
-      end: 0,
-    });
+    const [ inlinePaddings, setInlinePaddings ] = React.useState<{ start?: number; end?: number }>();
 
-    React.useEffect(() => {
+    const calculateInlinePaddings = React.useCallback(() => {
       const { width: endWidth } = endElementRef?.current?.getBoundingClientRect() ?? {};
       const { width: startWidth } = startElementRef?.current?.getBoundingClientRect() ?? {};
 
@@ -46,10 +44,22 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
       });
     }, []);
 
+    React.useEffect(() => {
+      calculateInlinePaddings();
+
+      const resizeHandler = debounce(calculateInlinePaddings, 300);
+      const resizeObserver = new ResizeObserver(resizeHandler);
+      resizeObserver.observe(window.document.body);
+
+      return function cleanup() {
+        resizeObserver.unobserve(window.document.body);
+      };
+    }, [ calculateInlinePaddings ]);
+
     return (
       <Group ref={ ref } w="100%" { ...rest }>
         { startElement && (
-          <InputElement pointerEvents="none" ref={ startElementRef } { ...startElementProps }>
+          <InputElement pointerEvents="none" ref={ startElementRef } px={ 0 } { ...startElementProps }>
             { startElement }
           </InputElement>
         ) }
@@ -58,12 +68,15 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
             return child;
           }
           return React.cloneElement(child, {
-            ...(startElement && { ps: startOffset ?? `${ inlinePaddings.start }px` }),
-            ...(endElement && { pe: endOffset ?? `${ inlinePaddings.end }px` }),
+            ...(startElement && { ps: startOffset ?? (inlinePaddings?.start ? `${ inlinePaddings.start }px` : undefined) }),
+            ...(endElement && { pe: endOffset ?? (inlinePaddings?.end ? `${ inlinePaddings.end }px` : undefined) }),
+            // hide input value and placeholder for the first render
+            value: inlinePaddings ? child.props.value : undefined,
+            placeholder: inlinePaddings ? child.props.placeholder : undefined,
           });
         }) }
         { endElement && (
-          <InputElement placement="end" ref={ endElementRef } { ...endElementProps }>
+          <InputElement placement="end" ref={ endElementRef } px={ 0 } { ...endElementProps }>
             { endElement }
           </InputElement>
         ) }

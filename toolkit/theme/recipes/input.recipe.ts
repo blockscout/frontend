@@ -18,6 +18,11 @@ export const recipe = defineRecipe({
       focusRingColor: 'var(--error-color)',
       borderColor: 'var(--error-color)',
     },
+    _readOnly: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    },
     _autofill: {
     //   FIXME: this is not working
     //   WebkitTextFillColor: '{colors.input.fg}',
