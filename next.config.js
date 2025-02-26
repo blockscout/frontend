@@ -8,8 +8,14 @@ const withRoutes = require('nextjs-routes/config')({
 
 const headers = require('./nextjs/headers');
 const redirects = require('./nextjs/redirects');
-const rewrites = require('./nextjs/rewrites');
-
+// const rewrites = require('./nextjs/rewrites');
+async function rewrites() {
+  const apiPrefix = `${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_HOST}`
+  return [
+    { source: '/node-api/proxy/:slug*', destination: `${apiPrefix}/api/proxy` },
+    { source: '/node-api/:slug*', destination: `${apiPrefix}/api/:slug*` },
+  ].filter(Boolean);
+}
 /** @type {import('next').NextConfig} */
 const moduleExports = {
   transpilePackages: [
