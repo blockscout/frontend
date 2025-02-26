@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Pool } from 'types/api/pools';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -64,33 +64,33 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
         hint="Fully Diluted Valuation: theoretical market cap if all tokens were in circulation"
       >
         Base token FDV
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Skeleton loading={ isPlaceholderData }>
           ${ Number(data.base_token_fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Current market capitalization of the base token"
       >
         Base token market cap
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Skeleton loading={ isPlaceholderData }>
           ${ Number(data.base_token_market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Fully Diluted Valuation: theoretical market cap if all tokens were in circulation"
       >
         Quote token FDV
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           ${ Number(data.quote_token_fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
       </DetailedInfo.ItemValue>
@@ -102,7 +102,7 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
         Quote token market cap
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           ${ Number(data.quote_token_market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
       </DetailedInfo.ItemValue>
@@ -114,7 +114,7 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
         Liquidity
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           ${ Number(data.liquidity).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
       </DetailedInfo.ItemValue>
@@ -126,7 +126,7 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
         DEX
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton loading={ isPlaceholderData }>
           { data.dex.name }
         </Skeleton>
       </DetailedInfo.ItemValue>

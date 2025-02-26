@@ -66,8 +66,9 @@ export const recipe = defineSlotRecipe({
       },
       popover: {
         content: {
+          maxW: 'none',
           bg: 'popover.bg',
-          color: 'popover.fg',
+          color: 'text.primary',
           p: '4',
           boxShadow: 'popover',
           boxShadowColor: 'popover.shadow',

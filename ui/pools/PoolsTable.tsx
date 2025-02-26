@@ -1,10 +1,9 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Pool } from 'types/api/pools';
 
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import { default as Thead } from 'ui/shared/TheadSticky';
 
 import PoolsTableItem from './PoolsTableItem';
 
@@ -17,21 +16,21 @@ type Props = {
 
 const PoolsTable = ({ items, page, isLoading, top }: Props) => {
   return (
-    <Table minWidth="900px">
-      <Thead top={ top ?? ACTION_BAR_HEIGHT_DESKTOP }>
-        <Tr>
-          <Th width="70%">Pool</Th>
-          <Th width="30%">DEX </Th>
-          <Th width="130px" isNumeric>Liquidity</Th>
-          <Th width="75px" isNumeric>View in</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot minWidth="900px">
+      <TableHeaderSticky top={ top ?? ACTION_BAR_HEIGHT_DESKTOP }>
+        <TableRow>
+          <TableColumnHeader width="70%">Pool</TableColumnHeader>
+          <TableColumnHeader width="30%">DEX </TableColumnHeader>
+          <TableColumnHeader width="130px" isNumeric>Liquidity</TableColumnHeader>
+          <TableColumnHeader width="75px" isNumeric>View in</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
           <PoolsTableItem key={ item.contract_address + (isLoading ? index : '') } item={ item } index={ index } page={ page } isLoading={ isLoading }/>
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

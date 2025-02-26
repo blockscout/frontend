@@ -107,13 +107,12 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 
 const PoolEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
+  const content = <Content { ...partsProps.content }/>;
 
   return (
     <Container w="100%" { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      <Link { ...partsProps.link }>
-        <Content { ...partsProps.content }/>
-      </Link>
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
     </Container>
   );
 };

@@ -5,12 +5,12 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
-// const Blob = dynamic(() => import('ui/pages/Blob'), { ssr: false });
+const Blob = dynamic(() => import('ui/pages/Blob'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageNextJs pathname="/blobs/[hash]" query={ props.query }>
-      { /* <Blob/> */ }
+      <Blob/>
     </PageNextJs>
   );
 };

@@ -5,12 +5,12 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
-// const KettleTxs = dynamic(() => import('ui/pages/KettleTxs'), { ssr: false });
+const KettleTxs = dynamic(() => import('ui/pages/KettleTxs'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageNextJs pathname="/txs/kettle/[hash]" query={ props.query }>
-      { /* <KettleTxs/> */ }
+      <KettleTxs/>
     </PageNextJs>
   );
 };

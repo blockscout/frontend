@@ -2,6 +2,7 @@ import { useCopyToClipboard } from '@uidotdev/usehooks';
 import React from 'react';
 
 import { SECOND } from 'lib/consts';
+import useIsMobile from 'lib/hooks/useIsMobile';
 
 import { useDisclosure } from './useDisclosure';
 
@@ -11,12 +12,15 @@ export default function useClipboard(text: string, timeout = SECOND) {
   const disclosureTimeoutRef = React.useRef<number | null>(null);
   const [ hasCopied, setHasCopied ] = React.useState(false);
 
+  const isMobile = useIsMobile();
   const [ , copyToClipboard ] = useCopyToClipboard();
   const { open, onOpenChange } = useDisclosure();
 
   const copy = React.useCallback(() => {
     copyToClipboard(text);
     setHasCopied(true);
+    // there is no hover on mobile, so we need to open the disclosure manually after click
+    isMobile && onOpenChange({ open: true });
 
     disclosureTimeoutRef.current = window.setTimeout(() => {
       onOpenChange({ open: false });
@@ -26,7 +30,7 @@ export default function useClipboard(text: string, timeout = SECOND) {
     flagTimeoutRef.current = window.setTimeout(() => {
       setHasCopied(false);
     }, timeout + 200);
-  }, [ text, copyToClipboard, timeout, onOpenChange ]);
+  }, [ text, copyToClipboard, timeout, onOpenChange, isMobile ]);
 
   React.useEffect(() => {
     return () => {

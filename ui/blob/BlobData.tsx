@@ -1,4 +1,4 @@
-import { Flex, GridItem, Button } from '@chakra-ui/react';
+import { createListCollection, Flex, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import * as blobUtils from 'lib/blob';
@@ -8,10 +8,11 @@ import downloadBlob from 'lib/downloadBlob';
 import hexToBase64 from 'lib/hexToBase64';
 import hexToBytes from 'lib/hexToBytes';
 import hexToUtf8 from 'lib/hexToUtf8';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Button } from 'toolkit/chakra/button';
+import { SelectContent, SelectItem, SelectRoot, SelectControl, SelectValueText } from 'toolkit/chakra/select';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
-import Select from 'ui/shared/select/Select';
 
 import BlobDataImage from './BlobDataImage';
 
@@ -41,13 +42,22 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
   }, [ data, isLoading ]);
 
   const isImage = guessedType?.mime?.startsWith('image/');
-  const formats = isImage ? FORMATS : FORMATS.filter((format) => format.value !== 'Image');
+  const collection = React.useMemo(() => {
+    const formats = isImage ? FORMATS : FORMATS.filter((format) => format.value !== 'Image');
+    return createListCollection({
+      items: formats,
+    });
+  }, [ isImage ]);
 
   React.useEffect(() => {
     if (isImage) {
       setFormat('Image');
     }
   }, [ isImage ]);
+
+  const handleFormatChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setFormat(value[0] as Format);
+  }, []);
 
   const handleDownloadButtonClick = React.useCallback(() => {
     const fileBlob = (() => {
@@ -102,20 +112,27 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
   return (
     <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 2 }}>
       <Flex alignItems="center" mb={ 3 }>
-        <Skeleton fontWeight={{ base: 700, lg: 500 }} isLoaded={ !isLoading }>
+        <Skeleton fontWeight={{ base: 700, lg: 500 }} loading={ isLoading }>
           Blob data
         </Skeleton>
-        <Skeleton ml={ 5 } isLoaded={ !isLoading }>
-          <Select
-            options={ formats }
-            name="format"
-            defaultValue={ format }
-            onChange={ setFormat }
-            isLoading={ isLoading }
-            w="95px"
-          />
-        </Skeleton>
-        <Skeleton ml="auto" mr={ 3 } isLoaded={ !isLoading }>
+        <SelectRoot
+          collection={ collection }
+          variant="outline"
+          value={ [ format ] }
+          onValueChange={ handleFormatChange }
+        >
+          <SelectControl loading={ isLoading } ml={ 5 } w="100px">
+            <SelectValueText placeholder="Select framework"/>
+          </SelectControl>
+          <SelectContent>
+            { collection.items.map((item) => (
+              <SelectItem item={ item } key={ item.value }>
+                { item.label }
+              </SelectItem>
+            )) }
+          </SelectContent>
+        </SelectRoot>
+        <Skeleton ml="auto" mr={ 3 } loading={ isLoading }>
           <Button
             variant="outline"
             size="sm"
