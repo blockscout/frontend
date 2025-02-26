@@ -26,7 +26,7 @@ type Props = {
   isRatingSending: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
-  graphLinksQuery: UseQueryResult<Record<string, Array<{ text: string; url: string }>>, unknown>;
+  graphLinksQuery: UseQueryResult<Record<string, Array<{ title: string; url: string }>>, unknown>;
 };
 
 const MarketplaceList = ({
@@ -61,6 +61,8 @@ const MarketplaceList = ({
             external={ app.external }
             url={ app.url }
             title={ app.title }
+            description={ app.description }
+            author={ app.author }
             logo={ app.logo }
             logoDarkMode={ app.logoDarkMode }
             shortDescription={ app.shortDescription }

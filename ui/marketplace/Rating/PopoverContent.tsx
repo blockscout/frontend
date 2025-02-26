@@ -57,7 +57,7 @@ const PopoverContent = ({ appId, rating, userRating, rate, isSending, source }: 
         { userRating && (
           <IconSvg name="verified" color="green.400" boxSize="30px" mr={ 1 } ml="-5px"/>
         ) }
-        <Text fontWeight="500" fontSize="xs" lineHeight="30px" variant="secondary">
+        <Text fontWeight="500" textStyle="xs" color="text.secondary">
           { userRating ? 'App is already rated by you' : 'How was your experience?' }
         </Text>
       </Flex>

@@ -1,4 +1,4 @@
-import { Link, useColorModeValue, LinkBox, Flex, Image, LinkOverlay, IconButton } from '@chakra-ui/react';
+import { LinkBox, Flex, LinkOverlay } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -6,7 +6,11 @@ import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import NextLink from 'ui/shared/NextLink';
 
 import FavoriteIcon from '../FavoriteIcon';
@@ -31,8 +35,6 @@ const FeaturedApp = ({
   const { id, url, external, title, logo, logoDarkMode, shortDescription, categories, internalWallet } = app;
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
   const categoriesLabel = categories.join(', ');
-
-  const backgroundColor = useColorModeValue('purple.50', 'whiteAlpha.100');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -64,12 +66,12 @@ const FeaturedApp = ({
         borderRadius="md"
         height="136px"
         padding={ 5 }
-        background={ backgroundColor }
+        background={{ _light: 'purple.50', _dark: 'whiteAlpha.100' }}
         mb={ 2 }
         mt={ 6 }
       >
         <Skeleton
-          isLoaded={ !isLoading }
+          loading={ isLoading }
           w="96px"
           h="96px"
           display="flex"
@@ -86,14 +88,14 @@ const FeaturedApp = ({
         <Flex flexDirection="column" flex={ 1 } gap={ 2 }>
           <Flex alignItems="center" gap={ 3 }>
             <Skeleton
-              isLoaded={ !isLoading }
+              loading={ isLoading }
               fontSize="30px"
               fontWeight="semibold"
               fontFamily="heading"
               lineHeight="36px"
             >
               { external ? (
-                <LinkOverlay href={ url } isExternal={ true } marginRight={ 2 }>
+                <LinkOverlay href={ url } target="_blank" marginRight={ 2 }>
                   { title }
                 </LinkOverlay>
               ) : (
@@ -107,7 +109,7 @@ const FeaturedApp = ({
             </Skeleton>
 
             <Skeleton
-              isLoaded={ !isLoading }
+              loading={ isLoading }
               color="text_secondary"
               fontSize="xs"
               flex={ 1 }
@@ -128,25 +130,26 @@ const FeaturedApp = ({
 
             { !isLoading && (
               <IconButton
-                display="flex"
-                alignItems="center"
                 aria-label="Mark as favorite"
                 title="Mark as favorite"
-                variant="ghost"
-                colorScheme="gray"
-                w={ 9 }
-                h={ 8 }
+                // TODO @tom2drum fix this button
+                boxSize={ 8 }
                 onClick={ handleFavoriteClick }
-                icon={ <FavoriteIcon isFavorite={ isFavorite }/> }
-              />
+              >
+                <FavoriteIcon isFavorite={ isFavorite }/>
+              </IconButton>
             ) }
           </Flex>
 
           <Skeleton
-            isLoaded={ !isLoading }
-            fontSize="sm"
-            lineHeight="20px"
-            noOfLines={ 2 }
+            loading={ isLoading }
+            textStyle="sm"
+            WebkitLineClamp={ 2 }
+            style={{
+              WebkitBoxOrient: 'vertical',
+            }}
+            display="-webkit-box"
+            overflow="hidden"
           >
             { shortDescription }
           </Skeleton>

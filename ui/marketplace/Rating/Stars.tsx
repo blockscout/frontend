@@ -1,4 +1,4 @@
-import { Flex, useColorModeValue } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEventHandler } from 'react';
 
@@ -12,8 +12,7 @@ type Props = {
 };
 
 const Stars = ({ filledIndex, onMouseOverFactory, onMouseOut, onClickFactory }: Props) => {
-  const disabledStarColor = useColorModeValue('gray.200', 'gray.700');
-  const outlineStartColor = onMouseOverFactory ? 'gray.400' : disabledStarColor;
+  const outlineStartColor = onMouseOverFactory ? 'gray.400' : { _light: 'gray.200', _dark: 'gray.700' };
   return (
     <Flex>
       { Array(5).fill(null).map((_, index) => (

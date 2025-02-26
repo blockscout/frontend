@@ -1,4 +1,5 @@
-import { Spinner } from '@chakra-ui/react';
+import type { BoxProps } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
@@ -15,10 +16,11 @@ interface Props extends ButtonProps {
   isLoading?: boolean;
   onlyIcon?: boolean;
   label?: string | React.ReactElement;
+  wrapperProps?: BoxProps;
 }
 
 const SolidityscanReportButton = (
-  { score, isLoading, onlyIcon, label = 'Security score', ...rest }: Props,
+  { score, isLoading, onlyIcon, label = 'Security score', wrapperProps, ...rest }: Props,
 ) => {
   const { scoreColor } = useScoreLevelAndColor(score);
   const colorLoading = { _light: 'gray.300', _dark: 'gray.600' };
@@ -26,7 +28,7 @@ const SolidityscanReportButton = (
 
   return (
     <Tooltip content={ label } disableOnMobile>
-      <div>
+      <Box { ...wrapperProps }>
         <PopoverTrigger>
           <Button
             color={ isLoading ? colorLoading : scoreColor }
@@ -52,7 +54,7 @@ const SolidityscanReportButton = (
             { !isLoading && (onlyIcon ? null : score) }
           </Button>
         </PopoverTrigger>
-      </div>
+      </Box>
     </Tooltip>
   );
 };

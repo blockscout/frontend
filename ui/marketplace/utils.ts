@@ -7,10 +7,10 @@ import type { SelectOption } from 'toolkit/chakra/select';
 
 const feature = config.features.marketplace;
 
-export type SortValue = 'rating_score' | 'rating_count' | 'security_score';
+export type SortValue = 'default' | 'rating_score' | 'rating_count' | 'security_score';
 
 export const SORT_OPTIONS: Array<SelectOption<SortValue>> = [
-  { label: 'Default', value: undefined },
+  { label: 'Default', value: 'default' },
   (feature.isEnabled && feature.rating) && { label: 'Top rated', value: 'rating_score' },
   (feature.isEnabled && feature.rating) && { label: 'Most rated', value: 'rating_count' },
   (feature.isEnabled && feature.securityReportsUrl) && { label: 'Security score', value: 'security_score' },
