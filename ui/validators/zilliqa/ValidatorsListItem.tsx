@@ -4,7 +4,7 @@ import React from 'react';
 import type { ValidatorsZilliqaItem } from 'types/api/validators';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import ValidatorEntity from 'ui/shared/entities/validator/ValidatorEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
@@ -28,14 +28,14 @@ const ValidatorsListItem = ({ data, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block">
           { data.index }
         </Skeleton>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Balance</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block">
           { BigNumber(data.balance).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() } { config.chain.currency.symbol }
         </Skeleton>
       </ListItemMobileGrid.Value>

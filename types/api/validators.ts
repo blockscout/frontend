@@ -37,7 +37,7 @@ export interface ValidatorsStabilitySorting {
 
 export type ValidatorsStabilitySortingField = ValidatorsStabilitySorting['sort'];
 
-export type ValidatorsStabilitySortingValue = `${ ValidatorsStabilitySortingField }-${ ValidatorsStabilitySorting['order'] }`;
+export type ValidatorsStabilitySortingValue = `${ ValidatorsStabilitySortingField }-${ ValidatorsStabilitySorting['order'] }` | 'default';
 
 // Blackfort
 
@@ -68,7 +68,7 @@ export interface ValidatorsBlackfortSorting {
 
 export type ValidatorsBlackfortSortingField = ValidatorsBlackfortSorting['sort'];
 
-export type ValidatorsBlackfortSortingValue = `${ ValidatorsBlackfortSortingField }-${ ValidatorsBlackfortSorting['order'] }`;
+export type ValidatorsBlackfortSortingValue = `${ ValidatorsBlackfortSortingField }-${ ValidatorsBlackfortSorting['order'] }` | 'default';
 
 // Zilliqa
 export interface ValidatorsZilliqaItem {

@@ -1,3 +1,4 @@
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ValidatorsStabilityFilters } from 'types/api/validators';
@@ -11,6 +12,10 @@ const OPTIONS = [
   { value: 'inactive', label: 'Inactive' },
 ];
 
+const collection = createListCollection({
+  items: OPTIONS,
+});
+
 interface Props {
   hasActiveFilter: boolean;
   defaultValue: ValidatorsStabilityFilters['state_filter'] | undefined;
@@ -21,10 +26,10 @@ const ValidatorsFilter = ({ onChange, defaultValue, hasActiveFilter }: Props) =>
   return (
     <PopoverFilterRadio
       name="validators_filter"
-      options={ OPTIONS }
+      collection={ collection }
       onChange={ onChange }
       hasActiveFilter={ hasActiveFilter }
-      defaultValue={ defaultValue || OPTIONS[0].value }
+      initialValue={ defaultValue || OPTIONS[0].value }
     />
   );
 };
