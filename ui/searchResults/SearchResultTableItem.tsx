@@ -1,4 +1,4 @@
-import { chakra, Tr, Td, Text, Flex, Image, Box, useColorMode, Tag } from '@chakra-ui/react';
+import { chakra, Text, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 import xss from 'xss';
 
@@ -12,7 +12,12 @@ import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { useColorMode } from 'toolkit/chakra/color-mode';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { Tag } from 'toolkit/chakra/tag';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
@@ -25,7 +30,6 @@ import EntityTagIcon from 'ui/shared/EntityTags/EntityTagIcon';
 import { ADDRESS_REGEXP } from 'ui/shared/forms/validators/address';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
 
@@ -57,45 +61,45 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
 
         return (
           <>
-            <Td fontSize="sm">
+            <TableCell>
               <Flex alignItems="center">
                 <TokenEntity.Icon token={{ ...data, type: data.token_type }} isLoading={ isLoading }/>
-                <LinkInternal
+                <Link
                   href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }
                   fontWeight={ 700 }
                   wordBreak="break-all"
                   overflow="hidden"
-                  isLoading={ isLoading }
+                  loading={ isLoading }
                   onClick={ handleLinkClick }
                 >
                   <Skeleton
-                    isLoaded={ !isLoading }
+                    loading={ isLoading }
                     overflow="hidden"
                     textOverflow="ellipsis"
                     whiteSpace="nowrap"
                     dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
                   />
-                </LinkInternal>
+                </Link>
                 { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
                 { data.is_verified_via_admin_panel && !data.certified && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
               </Flex>
-            </Td>
-            <Td fontSize="sm" verticalAlign="middle">
-              <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden" display="flex" alignItems="center">
+            </TableCell>
+            <TableCell verticalAlign="middle">
+              <Skeleton loading={ isLoading } whiteSpace="nowrap" overflow="hidden" display="flex" alignItems="center">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ hash }/>
                 </Box>
                 { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Skeleton>
-            </Td>
-            <Td fontSize="sm" verticalAlign="middle" isNumeric>
-              <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden">
+            </TableCell>
+            <TableCell verticalAlign="middle" isNumeric>
+              <Skeleton loading={ isLoading } whiteSpace="nowrap" overflow="hidden">
                 <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
                   { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
                   { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
                 </Text>
               </Skeleton>
-            </Td>
+            </TableCell>
           </>
         );
       }
@@ -121,7 +125,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
 
         return (
           <>
-            <Td fontSize="sm" colSpan={ (addressName || data.type === 'metadata_tag') ? 1 : 3 } verticalAlign="middle">
+            <TableCell colSpan={ (addressName || data.type === 'metadata_tag') ? 1 : 3 } verticalAlign="middle">
               <AddressEntity.Container>
                 <AddressEntity.Icon address={ address }/>
                 <AddressEntity.Link
@@ -131,16 +135,15 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                   <AddressEntity.Content
                     asProp={ shouldHighlightHash ? 'mark' : 'span' }
                     address={{ ...address, hash }}
-                    fontSize="sm"
-                    lineHeight={ 5 }
+                    textStyle="sm"
                     fontWeight={ 700 }
                   />
                 </AddressEntity.Link>
                 <AddressEntity.Copy address={{ ...address, hash }}/>
               </AddressEntity.Container>
-            </Td>
+            </TableCell>
             { addressName && (
-              <Td colSpan={ data.type === 'metadata_tag' ? 1 : 2 } fontSize="sm" verticalAlign="middle">
+              <TableCell colSpan={ data.type === 'metadata_tag' ? 1 : 2 } verticalAlign="middle">
                 <Flex alignItems="center">
                   <Text
                     overflow="hidden"
@@ -150,19 +153,19 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                     <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(addressName) : highlightText(addressName, searchTerm) }}/>
                     { data.ens_info && (
                       data.ens_info.names_count > 1 ? (
-                        <chakra.span color="text_secondary">
+                        <chakra.span color="text.secondary">
                           { data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` }
                         </chakra.span>
                       ) :
-                        <chakra.span color="text_secondary">{ expiresText }</chakra.span>
+                        <chakra.span color="text.secondary">{ expiresText }</chakra.span>
                     ) }
                   </Text>
                   { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } mx={ 1 }/> }
                 </Flex>
-              </Td>
+              </TableCell>
             ) }
             { data.type === 'metadata_tag' && (
-              <Td colSpan={ addressName ? 1 : 2 } fontSize="sm" verticalAlign="middle">
+              <TableCell colSpan={ addressName ? 1 : 2 } verticalAlign="middle">
                 <Flex justifyContent="flex-end">
                   { /* we show regular tag because we don't need all meta info here, but need to highlight search term */ }
                   <Tag display="flex" alignItems="center">
@@ -170,7 +173,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                     <span dangerouslySetInnerHTML={{ __html: highlightText(data.metadata.name, searchTerm) }}/>
                   </Tag>
                 </Flex>
-              </Td>
+              </TableCell>
             ) }
           </>
         );
@@ -181,29 +184,29 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
 
         return (
           <>
-            <Td fontSize="sm">
+            <TableCell>
               <Flex alignItems="center">
                 <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="gray.500"/>
-                <LinkInternal
+                <Link
                   href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
                   fontWeight={ 700 }
                   wordBreak="break-all"
-                  isLoading={ isLoading }
+                  loading={ isLoading }
                   onClick={ handleLinkClick }
                 >
                   <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
-                </LinkInternal>
+                </Link>
               </Flex>
-            </Td>
-            <Td fontSize="sm" verticalAlign="middle">
+            </TableCell>
+            <TableCell verticalAlign="middle">
               <Flex alignItems="center" overflow="hidden">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ hash }/>
                 </Box>
                 { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Flex>
-            </Td>
-            <Td></Td>
+            </TableCell>
+            <TableCell/>
           </>
         );
       }
@@ -212,7 +215,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
         const title = <span dangerouslySetInnerHTML={{ __html: highlightText(data.app.title, searchTerm) }}/>;
         return (
           <>
-            <Td fontSize="sm">
+            <TableCell>
               <Flex alignItems="center">
                 <Image
                   borderRadius="base"
@@ -221,21 +224,21 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                   src={ colorMode === 'dark' && data.app.logoDarkMode ? data.app.logoDarkMode : data.app.logo }
                   alt={ `${ data.app.title } app icon` }
                 />
-                <LinkInternal
+                <Link
                   href={ data.app.external ?
                     route({ pathname: '/apps', query: { selectedAppId: data.app.id } }) :
                     route({ pathname: '/apps/[id]', query: { id: data.app.id } })
                   }
                   fontWeight={ 700 }
                   wordBreak="break-all"
-                  isLoading={ isLoading }
+                  loading={ isLoading }
                   onClick={ handleLinkClick }
                 >
                   { title }
-                </LinkInternal>
+                </Link>
               </Flex>
-            </Td>
-            <Td fontSize="sm" verticalAlign="middle" colSpan={ 2 }>
+            </TableCell>
+            <TableCell verticalAlign="middle" colSpan={ 2 }>
               <Text
                 overflow="hidden"
                 whiteSpace="nowrap"
@@ -243,7 +246,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               >
                 { data.app.description }
               </Text>
-            </Td>
+            </TableCell>
           </>
         );
       }
@@ -257,7 +260,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
 
         return (
           <>
-            <Td fontSize="sm">
+            <TableCell>
               <BlockEntity.Container>
                 <BlockEntity.Icon isLoading={ isLoading }/>
                 <BlockEntity.Link
@@ -268,33 +271,32 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                   <BlockEntity.Content
                     asProp={ shouldHighlightHash ? 'span' : 'mark' }
                     number={ Number(data.block_number) }
-                    fontSize="sm"
-                    lineHeight={ 5 }
+                    textStyle="sm"
                     fontWeight={ 700 }
                     isLoading={ isLoading }
                   />
                 </BlockEntity.Link>
               </BlockEntity.Container>
-            </Td>
-            <Td fontSize="sm" verticalAlign="middle" colSpan={ isFutureBlock ? 2 : 1 }>
+            </TableCell>
+            <TableCell fontSize="sm" verticalAlign="middle" colSpan={ isFutureBlock ? 2 : 1 }>
               { isFutureBlock ? (
-                <Skeleton isLoaded={ !isLoading }>Learn estimated time for this block to be created.</Skeleton>
+                <Skeleton loading={ isLoading }>Learn estimated time for this block to be created.</Skeleton>
               ) : (
                 <Flex columnGap={ 2 } alignItems="center">
                   { data.block_type === 'reorg' && !isLoading && <Tag flexShrink={ 0 }>Reorg</Tag> }
                   { data.block_type === 'uncle' && !isLoading && <Tag flexShrink={ 0 }>Uncle</Tag> }
-                  <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
+                  <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
                     <HashStringShortenDynamic hash={ data.block_hash }/>
                   </Skeleton>
                 </Flex>
               ) }
-            </Td>
+            </TableCell>
             { !isFutureBlock && (
-              <Td fontSize="sm" verticalAlign="middle" isNumeric>
-                <Skeleton isLoaded={ !isLoading } color="text_secondary">
+              <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
+                <Skeleton loading={ isLoading } color="text.secondary">
                   <span>{ dayjs(data.timestamp).format('llll') }</span>
                 </Skeleton>
-              </Td>
+              </TableCell>
             ) }
           </>
         );
@@ -303,7 +305,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
       case 'transaction': {
         return (
           <>
-            <Td colSpan={ 2 } fontSize="sm">
+            <TableCell colSpan={ 2 } fontSize="sm">
               <TxEntity.Container>
                 <TxEntity.Icon/>
                 <TxEntity.Link
@@ -314,23 +316,22 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                   <TxEntity.Content
                     asProp="mark"
                     hash={ data.transaction_hash }
-                    fontSize="sm"
-                    lineHeight={ 5 }
+                    textStyle="sm"
                     fontWeight={ 700 }
                   />
                 </TxEntity.Link>
               </TxEntity.Container>
-            </Td>
-            <Td fontSize="sm" verticalAlign="middle" isNumeric>
-              <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
-            </Td>
+            </TableCell>
+            <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
+              <Text color="text.secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+            </TableCell>
           </>
         );
       }
 
       case 'blob': {
         return (
-          <Td colSpan={ 3 } fontSize="sm">
+          <TableCell colSpan={ 3 } fontSize="sm">
             <BlobEntity.Container>
               <BlobEntity.Icon/>
               <BlobEntity.Link
@@ -341,20 +342,19 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                 <BlobEntity.Content
                   asProp="mark"
                   hash={ data.blob_hash }
-                  fontSize="sm"
-                  lineHeight={ 5 }
+                  textStyle="sm"
                   fontWeight={ 700 }
                 />
               </BlobEntity.Link>
             </BlobEntity.Container>
-          </Td>
+          </TableCell>
         );
       }
 
       case 'user_operation': {
         return (
           <>
-            <Td colSpan={ 2 } fontSize="sm">
+            <TableCell colSpan={ 2 } fontSize="sm">
               <UserOpEntity.Container>
                 <UserOpEntity.Icon/>
                 <UserOpEntity.Link
@@ -365,16 +365,15 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                   <UserOpEntity.Content
                     asProp="mark"
                     hash={ data.user_operation_hash }
-                    fontSize="sm"
-                    lineHeight={ 5 }
+                    textStyle="sm"
                     fontWeight={ 700 }
                   />
                 </UserOpEntity.Link>
               </UserOpEntity.Container>
-            </Td>
-            <Td fontSize="sm" verticalAlign="middle" isNumeric>
-              <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
-            </Td>
+            </TableCell>
+            <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
+              <Text color="text.secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+            </TableCell>
           </>
         );
       }
@@ -385,40 +384,40 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
 
         return (
           <>
-            <Td fontSize="sm">
+            <TableCell fontSize="sm">
               <EnsEntity.Container>
                 <EnsEntity.Icon protocol={ data.ens_info.protocol }/>
-                <LinkInternal
+                <Link
                   href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
                   fontWeight={ 700 }
                   wordBreak="break-all"
-                  isLoading={ isLoading }
+                  loading={ isLoading }
                   onClick={ handleLinkClick }
                   overflow="hidden"
                 >
                   <Skeleton
-                    isLoaded={ !isLoading }
+                    loading={ isLoading }
                     dangerouslySetInnerHTML={{ __html: highlightText(data.ens_info.name, searchTerm) }}
                     whiteSpace="nowrap"
                     overflow="hidden"
                     textOverflow="ellipsis"
                   />
-                </LinkInternal>
+                </Link>
               </EnsEntity.Container>
-            </Td>
-            <Td>
+            </TableCell>
+            <TableCell>
               <Flex alignItems="center" overflow="hidden">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ hash }/>
                 </Box>
                 { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Flex>
-            </Td>
-            <Td>
+            </TableCell>
+            <TableCell>
               { data.ens_info.names_count > 1 ?
-                <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
-                <chakra.span color="text_secondary">{ expiresText }</chakra.span> }
-            </Td>
+                <chakra.span color="text.secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
+                <chakra.span color="text.secondary">{ expiresText }</chakra.span> }
+            </TableCell>
           </>
         );
       }
@@ -428,14 +427,14 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
   const category = getItemCategory(data);
 
   return (
-    <Tr>
+    <TableRow>
       { content }
-      <Td fontSize="sm" textTransform="capitalize" verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">
+      <TableCell fontSize="sm" textTransform="capitalize" verticalAlign="middle">
+        <Skeleton loading={ isLoading } color="text.secondary" display="inline-block">
           <span>{ category ? searchItemTitles[category].itemTitle : '' }</span>
         </Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 
