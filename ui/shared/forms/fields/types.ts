@@ -3,6 +3,7 @@ import type { ControllerRenderProps, FieldValues, Path, RegisterOptions } from '
 
 import type { FieldProps } from 'toolkit/chakra/field';
 import type { InputProps } from 'toolkit/chakra/input';
+import type { InputGroupProps } from 'toolkit/chakra/input-group';
 import type { TextareaProps } from 'toolkit/chakra/textarea';
 
 export interface FormFieldPropsBase<
@@ -14,6 +15,9 @@ export interface FormFieldPropsBase<
   rules?: Omit<RegisterOptions<FormFields, Name>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>;
   onBlur?: () => void;
   onChange?: () => void;
-  rightElement?: ({ field }: { field: ControllerRenderProps<FormFields, Name> }) => React.ReactNode;
   inputProps?: InputProps | TextareaProps;
+  group?: Omit<InputGroupProps, 'children' | 'endElement'> & {
+    endElement?: React.ReactNode | (({ field }: { field: ControllerRenderProps<FormFields, Name> }) => React.ReactNode);
+  };
+
 }

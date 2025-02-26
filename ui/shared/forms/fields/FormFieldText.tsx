@@ -7,6 +7,7 @@ import type { FormFieldPropsBase } from './types';
 import { Field } from 'toolkit/chakra/field';
 import type { InputProps } from 'toolkit/chakra/input';
 import { Input } from 'toolkit/chakra/input';
+import { InputGroup } from 'toolkit/chakra/input-group';
 import type { TextareaProps } from 'toolkit/chakra/textarea';
 import { Textarea } from 'toolkit/chakra/textarea';
 
@@ -27,7 +28,7 @@ const FormFieldText = <
   placeholder,
   rules,
   onBlur,
-  rightElement,
+  group,
   inputProps,
   asComponent,
   size = 'xl',
@@ -63,6 +64,15 @@ const FormFieldText = <
     />
   );
 
+  const content = group ? (
+    <InputGroup
+      { ...group }
+      endElement={ typeof group.endElement === 'function' ? group.endElement({ field }) : group.endElement }
+    >
+      { input }
+    </InputGroup>
+  ) : input;
+
   return (
     <Field
       label={ placeholder }
@@ -73,35 +83,9 @@ const FormFieldText = <
       floating
       { ...restProps }
     >
-      { input }
+      { content }
     </Field>
   );
-
-  // TODO @tom2drum add input group
-
-  // return (
-  //   <FormControl
-  //     className={ className }
-  //     variant="floating"
-  //     isDisabled={ isDisabled }
-  //     isRequired={ isRequired }
-  //     size={ size }
-  //     bgColor={ bgColor }
-  //   >
-  //     { rightElement ? (
-  //       <InputGroup>
-  //         { input }
-  //         { inputPlaceholder }
-  //         <InputRightElement h="100%"> { rightElement({ field }) } </InputRightElement>
-  //       </InputGroup>
-  //     ) : (
-  //       <>
-  //         { input }
-  //         { inputPlaceholder }
-  //       </>
-  //     ) }
-  //   </FormControl>
-  // );
 };
 
 export default React.memo(FormFieldText) as typeof FormFieldText;
