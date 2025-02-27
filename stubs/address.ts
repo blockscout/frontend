@@ -22,7 +22,6 @@ export const ADDRESS_INFO: Address = {
   creation_transaction_hash: null,
   creator_address_hash: ADDRESS_HASH,
   exchange_rate: null,
-  has_decompiled_code: false,
   has_logs: true,
   has_token_transfers: false,
   has_tokens: false,
