@@ -6,8 +6,8 @@ import type { TokenInfo } from 'types/api/token';
 import config from 'configs/app';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel/index';
-import useAddOrSwitchChain from 'lib/web3/useAddOrSwitchChain';
 import useProvider from 'lib/web3/useProvider';
+import useSwitchOrAddChain from 'lib/web3/useSwitchOrAddChain';
 import { WALLETS_INFO } from 'lib/web3/wallets';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
@@ -25,7 +25,7 @@ interface Props {
 const AddressAddToWallet = ({ className, token, isLoading, variant = 'icon', iconSize = 6 }: Props) => {
   const toast = useToast();
   const { provider, wallet } = useProvider();
-  const addOrSwitchChain = useAddOrSwitchChain();
+  const switchOrAddChain = useSwitchOrAddChain();
 
   const handleClick = React.useCallback(async() => {
     if (!wallet) {
@@ -34,7 +34,7 @@ const AddressAddToWallet = ({ className, token, isLoading, variant = 'icon', ico
 
     try {
       // switch to the correct network otherwise the token will be added to the wrong one
-      await addOrSwitchChain();
+      await switchOrAddChain();
 
       const wasAdded = await provider?.request?.({
         method: 'wallet_watchAsset',
@@ -75,7 +75,7 @@ const AddressAddToWallet = ({ className, token, isLoading, variant = 'icon', ico
         isClosable: true,
       });
     }
-  }, [ toast, token, provider, wallet, addOrSwitchChain ]);
+  }, [ toast, token, provider, wallet, switchOrAddChain ]);
 
   if (!provider || !wallet) {
     return null;
