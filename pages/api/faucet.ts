@@ -1,27 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Wallet, NonceManager, isAddress, JsonRpcProvider, parseEther } from 'ethers';
+import { isAddress, parseEther } from 'ethers';
 // import { getIronSession } from 'iron-session';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { formatErrorMessage, httpLogger } from 'nextjs/utils/logger';
 
 import { getEnvValue } from 'configs/app/utils';
-import { createAndSaveRecordMoca, findEditThenSaveMoca, findOneByDiscordIdMoca } from 'lib/db';
+import { createAndSaveRecordMoca, findEditThenSaveMoca, findOneByUserAccount } from 'lib/db';
 // import { sessionOptions } from 'lib/session/config';
-
-const provider = new JsonRpcProvider(
-  getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL'),
-  Number(getEnvValue('NEXT_PUBLIC_NETWORK_ID')),
-  {
-    staticNetwork: true,
-  },
-);
-
-const _signer = new Wallet(getEnvValue('NEXT_PUBLIC_FAUCET_KEY')!, provider);
-const signer = new NonceManager(_signer);
-
-const requestLock = new Set<string>();
-const requestHistory = new Map<string, string>();
+import { requestLock, requestHistory, signer } from 'lib/faucetState';
 
 export default async function faucetHandler(
   req: NextApiRequest,
@@ -39,10 +26,11 @@ export default async function faucetHandler(
     if (requestLock.has(walletAddress)) {
       return res.status(429).json({ error: 'Too many requests.' });
     }
+    requestLock.add(walletAddress);
 
     let lastRequestTimeAsIso = requestHistory.get(walletAddress);
     if (!lastRequestTimeAsIso) {
-      let dbUser = await findOneByDiscordIdMoca(walletAddress);
+      let dbUser = await findOneByUserAccount(walletAddress);
       if (!dbUser) {
         dbUser = await createAndSaveRecordMoca(walletAddress);
       }
@@ -52,25 +40,23 @@ export default async function faucetHandler(
     const requestPer = Number(getEnvValue('NEXT_PUBLIC_FAUCET_REQUEST_PER'));
     const requestPerAsHours = requestPer / 1000 / 60 / 60;
     if (Date.now() - lastRequestTime <= requestPer) {
+      requestLock.delete(walletAddress);
       return res.status(429).json({
         error: `Failed: the Discord account has already request for $ZKME within the last ${ requestPerAsHours } hours. Please try again later.`,
       });
     }
 
-    const userWallet: string = req.body.userWallet;
-    if (!isAddress(userWallet)) {
+    if (!isAddress(walletAddress)) {
       return res.status(400).json({ error: 'Please enter the right address.' });
     }
 
     requestLock.add(walletAddress);
 
     const txRp = await signer.sendTransaction({
-      to: userWallet,
-
+      to: walletAddress,
       value: parseEther(getEnvValue('NEXT_PUBLIC_FAUCET_VALUE')!),
     });
-    // Increase transaction wait time to 10 blocks in faucet handler
-    const txReceipt = await txRp.wait(10);
+    const txReceipt = await txRp.wait();
     if (txReceipt?.status !== 1) {
       requestLock.delete(walletAddress);
       signer.reset(); // reset nonce
@@ -82,7 +68,7 @@ export default async function faucetHandler(
     }
 
     const now = new Date().toISOString();
-    await findEditThenSaveMoca(walletAddress.toLowerCase(), now);
+    await findEditThenSaveMoca(walletAddress, now);
 
     requestHistory.set(walletAddress, now);
     requestLock.delete(walletAddress);
