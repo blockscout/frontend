@@ -12,6 +12,10 @@ interface Props {
 }
 
 const BlockEpochElectionRewards = ({ data, isLoading }: Props) => {
+  if (!data.aggregated_election_rewards) {
+    return null;
+  }
+
   return (
     <Box mt={ 8 }>
       <Heading as="h4" size="sm" mb={ 3 }>Election rewards</Heading>
