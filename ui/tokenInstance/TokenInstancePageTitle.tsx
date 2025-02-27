@@ -103,7 +103,7 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
           maxW="700px"
         />
       ) }
-      { !isLoading && <AddressAddToWallet token={ token } variant="button"/> }
+      { !isLoading && <AddressAddToWallet token={ token } tokenId={ instance?.id } variant="button"/> }
       <AddressQrCode address={ address } isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading } showUpdateMetadataItem/>
       { appLink }
