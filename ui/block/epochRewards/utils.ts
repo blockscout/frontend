@@ -1,4 +1,5 @@
 import type { BlockEpoch } from 'types/api/block';
+import type { ExcludeNull } from 'types/utils';
 
 export function getRewardNumText(type: keyof BlockEpoch['aggregated_election_rewards'], num: number) {
   const postfix1 = num !== 1 ? 's' : '';
@@ -26,7 +27,7 @@ export function getRewardNumText(type: keyof BlockEpoch['aggregated_election_rew
   return `${ num } ${ text }`;
 }
 
-export function getRewardDetailsTableTitles(type: keyof BlockEpoch['aggregated_election_rewards']): [string, string] {
+export function getRewardDetailsTableTitles(type: keyof ExcludeNull<BlockEpoch['aggregated_election_rewards']>): [string, string] {
   switch (type) {
     case 'delegated_payment':
       return [ 'Beneficiary', 'Validator' ];
@@ -39,6 +40,6 @@ export function getRewardDetailsTableTitles(type: keyof BlockEpoch['aggregated_e
   }
 }
 
-export function formatRewardType(type: keyof BlockEpoch['aggregated_election_rewards']) {
+export function formatRewardType(type: keyof ExcludeNull<BlockEpoch['aggregated_election_rewards']>) {
   return type.replaceAll('_', '-');
 }

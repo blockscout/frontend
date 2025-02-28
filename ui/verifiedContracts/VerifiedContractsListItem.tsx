@@ -14,6 +14,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
 interface Props {
   data: VerifiedContract;
@@ -57,11 +58,13 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
           flexShrink={ 0 }
         />
       </Flex>
-      <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { currencyUnits.ether }</Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">
-          <span>{ balance }</span>
-        </Skeleton>
+      <Flex columnGap={ 3 } w="100%">
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink="0">Balance { currencyUnits.ether }</Skeleton>
+        <TruncatedValue
+          value={ balance }
+          isLoading={ isLoading }
+
+        />
       </Flex>
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Txs count</Skeleton>

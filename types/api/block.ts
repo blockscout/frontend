@@ -172,8 +172,8 @@ export interface BlockEpoch {
     carbon_offsetting_transfer: TokenTransfer | null;
     community_transfer: TokenTransfer | null;
     reserve_bolster_transfer: TokenTransfer | null;
-  };
-  aggregated_election_rewards: Record<EpochRewardsType, BlockEpochElectionReward | null>;
+  } | null;
+  aggregated_election_rewards: Record<EpochRewardsType, BlockEpochElectionReward | null> | null;
 }
 
 export interface BlockEpochElectionRewardDetails {

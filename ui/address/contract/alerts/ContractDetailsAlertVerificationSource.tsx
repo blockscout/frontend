@@ -10,7 +10,7 @@ interface Props {
 }
 
 const ContractDetailsAlertVerificationSource = ({ data }: Props) => {
-  if (data?.is_verified_via_eth_bytecode_db) {
+  if (data?.is_verified && data?.is_verified_via_eth_bytecode_db) {
     return (
       <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
         <span>This contract has been { data.is_partially_verified ? 'partially ' : '' }verified using </span>
@@ -24,7 +24,7 @@ const ContractDetailsAlertVerificationSource = ({ data }: Props) => {
     );
   }
 
-  if (data?.is_verified_via_sourcify) {
+  if (data?.is_verified && data?.is_verified_via_sourcify) {
     return (
       <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
         <span>This contract has been { data.is_partially_verified ? 'partially ' : '' }verified via Sourcify. </span>

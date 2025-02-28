@@ -87,8 +87,11 @@ download_and_save_asset() {
     else
         # Check if the value is a URL
         if [[ "$url" == http* ]]; then
-            # Download the asset using curl
-            curl -s -o "$destination" "$url"
+            # Download the asset using curl with timeouts
+            if ! curl -f -s --connect-timeout 5 --max-time 15 -o "$destination" "$url"; then
+                echo "   [-] $env_var: Failed to download from $url (timeout or connection error)"
+                return 1
+            fi
         else
             # Convert single-quoted JSON-like content to valid JSON
             json_content=$(echo "${!env_var}" | sed "s/'/\"/g")

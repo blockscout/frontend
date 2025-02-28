@@ -20,7 +20,6 @@ export interface Address extends UserTags {
   zilliqa?: AddressZilliqaParams;
   // TODO: if we are happy with tabs-counters method, should we delete has_something fields?
   has_beacon_chain_withdrawals?: boolean;
-  has_decompiled_code: boolean;
   has_logs: boolean;
   has_token_transfers: boolean;
   has_tokens: boolean;
