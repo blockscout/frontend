@@ -13,7 +13,7 @@ export const apps = [
     url: 'https://goerli.hop.exchange/send?token=ETH&sourceNetwork=ethereum',
     github: [ 'https://github.com/hop-protocol/hop', 'https://github.com/hop-protocol/hop-ui' ],
     discord: 'https://discord.gg/hopprotocol',
-    twitter: 'https://twitter.com/HopProtocol',
+    twitter: 'https://x.com/HopProtocol',
   },
   {
     author: 'Blockscout',
