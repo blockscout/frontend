@@ -7,7 +7,7 @@ import { waitForTransactionReceipt } from 'wagmi/actions';
 import { useEffect, useState } from 'react';
 
 const NFT_CONTRACT_ADDRESS = '0x905dE58579886C5afe9B6406CFDE82bd6a1087C1';
-const DLC_TOKEN_ADDRESS = '0xC8b47112D5413c6d06D4BB7573fD903908246614';
+const DLC_TOKEN_ADDRESS = '0x23ba922d2c435ea65aceb6d56feec7a7c29948b8';
 const STAKING_CONTRACT_ADDRESS = '0xa6c07a5c289a2b1b1b528baf9aa3177fd2b57d83';
 
 export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDLC: () => void) {

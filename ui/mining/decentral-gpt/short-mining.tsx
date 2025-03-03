@@ -14,12 +14,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Skeleton,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
+  FormErrorMessage,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -50,13 +45,6 @@ const FixedComponent = () => {
     onClose: nftOnPledgeModalClose,
   } = useDisclosure();
 
-  // Pledge DGC
-  const {
-    isOpen: dgcIsPledgeModalOpen,
-    onOpen: dgcOnPledgeModalOpen,
-    onClose: dgcOnPledgeModalClose,
-  } = useDisclosure();
-
   const {
     nftBtnLoading,
     startApprove,
@@ -66,7 +54,15 @@ const FixedComponent = () => {
     setPledgedDgcCount,
     machineId,
     setMachineId,
-  } = useFreeH(nftOnPledgeModalClose);
+    handleAddDbcToStake,
+    dbcBtnLoading,
+    pledgedDbcCount,
+    dockerId,
+    toPledgedDbcCount,
+    setPledgedDbcCount,
+    setDockerId,
+    settoPledgedDbcCount,
+  } = useFreeH(nftOnPledgeModalClose, dbcOnPledgeModalClose);
 
   return (
     <div>
@@ -158,45 +154,41 @@ const FixedComponent = () => {
           <Button size="sm" onClick={dbcOnPledgeModalOpen} colorScheme="blue" variant="outline" w="fit-content">
             Pledge DBC
           </Button>
+
           <Modal isOpen={dbcIsPledgeModalOpen} onClose={dbcOnPledgeModalClose} size="sm">
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader fontSize="lg">Pledge DBC</ModalHeader>
+              <ModalHeader fontSize="lg">Stake DBC</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
                 <FormControl mb={4} size="sm">
-                  <FormLabel fontSize="sm">Please enter the number of GPUs of the machine:</FormLabel>
+                  <FormLabel fontSize="sm">Amount of DBC to Stake:</FormLabel>
                   <Input
-                    value={gpuCount}
-                    onChange={(e) => setGpuCount(e.target.value)}
-                    placeholder="Please enter the number of GPUs of the machine"
+                    value={pledgedDbcCount}
+                    onChange={(e) => setPledgedDbcCount(e.target.value)}
+                    placeholder="Enter the amount of DBC to stake"
                     size="sm"
                   />
-                  <FormHelperText fontSize="xs">1000 DBC needs to be pledged for each GPU</FormHelperText>
-                </FormControl>
-
-                <FormControl mb={4} size="sm">
-                  <FormLabel fontSize="sm">Please enter the machine ID:</FormLabel>
-                  <Input
-                    value={machineIdentifier}
-                    onChange={(e) => setMachineIdentifier(e.target.value)}
-                    placeholder="Please enter the machine ID"
-                    size="sm"
-                  />
+                  <FormHelperText fontSize="xs">1000 DBC needs to be staked for each GPU</FormHelperText>
                 </FormControl>
 
                 <FormControl mb={6} size="sm">
-                  <FormLabel fontSize="sm">Please enter the machine's private key:</FormLabel>
+                  <FormLabel fontSize="sm">Docker ID:</FormLabel>
                   <Input
-                    value={machinePrivateKey}
-                    onChange={(e) => setMachinePrivateKey(e.target.value)}
-                    placeholder="Please enter the machine's private key"
-                    type="password"
+                    value={dockerId}
+                    onChange={(e) => setDockerId(e.target.value)}
+                    placeholder="Enter your Docker ID"
                     size="sm"
                   />
                 </FormControl>
 
-                <Button colorScheme="blue" width="full" size="sm" onClick={handlePledgeSubmitDnc}>
+                <Button
+                  isLoading={dbcBtnLoading}
+                  colorScheme="blue"
+                  width="full"
+                  size="sm"
+                  onClick={handleAddDbcToStake}
+                >
                   Submit
                 </Button>
               </ModalBody>
@@ -218,61 +210,41 @@ const FixedComponent = () => {
             5
           </Box>
           <Button onClick={nftOnPledgeModalOpen} size="sm" colorScheme="blue" variant="outline" w="fit-content">
-            质押NFT或者DGC
+            Stake NFT or DGC
           </Button>
 
           <Modal isOpen={nftIsPledgeModalOpen} onClose={nftOnPledgeModalClose} size="sm">
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader fontSize="lg">Pledge NFT Nodes</ModalHeader>
+              <ModalHeader fontSize="lg">Stake NFT Nodes</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
-                {/* <FormControl mb={4} size="sm">
-                  <FormLabel fontSize="sm">NFT数量:</FormLabel>
-                  <Input
-                    value={pledgedNftCount}
-                    onChange={(e) => setNftCount(e.target.value)}
-                    placeholder="请输入NFT数量"
-                    size="sm"
-                  />
-                  <FormHelperText fontSize="xs">请输入0-11之间的nft数量</FormHelperText>
-                </FormControl>
-
                 <FormControl mb={4} size="sm">
-                  <FormLabel fontSize="sm">容器ID:</FormLabel>
-                  <Input
-                    value={machineId}
-                    onChange={(e) => setMachineId(e.target.value)}
-                    placeholder="请输入容器ID"
-                    size="sm"
-                  />
-                </FormControl> */}
-                <FormControl mb={4} size="sm">
-                  <FormLabel fontSize="sm">NFT数量:</FormLabel>
+                  <FormLabel fontSize="sm">Number of NFTs to Stake:</FormLabel>
                   <Input
                     value={pledgedNftCount}
                     onChange={(e) => setPledgedNftCount(e.target.value)}
-                    placeholder="请输入NFT数量"
+                    placeholder="Enter the number of NFTs to stake"
                     size="sm"
                   />
-                  <FormHelperText fontSize="xs">请输入0-11之间的nft数量</FormHelperText>
+                  <FormHelperText fontSize="xs">Please enter a number of NFTs between 1 and 11</FormHelperText>
                 </FormControl>
                 <FormControl mb={4} size="sm">
-                  <FormLabel fontSize="sm">DGC数量:</FormLabel>
+                  <FormLabel fontSize="sm">Amount of DGC to Stake:</FormLabel>
                   <Input
                     value={pledgedDgcCount}
                     onChange={(e) => setPledgedDgcCount(e.target.value)}
-                    placeholder="请输入DGC数量"
+                    placeholder="Enter the amount of DGC to stake"
                     size="sm"
                   />
                 </FormControl>
 
                 <FormControl mb={4} size="sm">
-                  <FormLabel fontSize="sm">容器ID:</FormLabel>
+                  <FormLabel fontSize="sm">Docker ID:</FormLabel>
                   <Input
                     value={machineId}
                     onChange={(e) => setMachineId(e.target.value)}
-                    placeholder="请输入容器ID"
+                    placeholder="Enter your Docker ID"
                     size="sm"
                   />
                 </FormControl>
@@ -284,75 +256,7 @@ const FixedComponent = () => {
             </ModalContent>
           </Modal>
         </Flex>
-        {/* <Flex gap={4}>
-          <Box
-            w="24px"
-            h="24px"
-            borderRadius="full"
-            bg="blue.500"
-            color="white"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flexShrink={0}
-          >
-            6
-          </Box>
-          <Flex gap="4" alignItems="center">
-            <Button onClick={dgcOnPledgeModalOpen} size="sm" colorScheme="blue" variant="outline" w="fit-content">
-              Pledge DGC
-            </Button>
 
-            <Modal isOpen={dgcIsPledgeModalOpen} onClose={dgcOnPledgeModalClose} size="sm">
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader fontSize="lg">Pledge DGC</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody pb={6}>
-                  <FormControl mb={4} size="sm">
-                    <FormLabel fontSize="sm">DGC数量:</FormLabel>
-                    <Input
-                      value={pledgedDgcCount2}
-                      onChange={(e) => setDgcCount2(e.target.value)}
-                      placeholder="请输入DGC数量"
-                      size="sm"
-                    />
-                  </FormControl>
-
-                  <FormControl mb={4} size="sm">
-                    <FormLabel fontSize="sm">NFT数量:</FormLabel>
-                    <Input
-                      value={pledgedNftCount2}
-                      onChange={(e) => setNftCount2(e.target.value)}
-                      placeholder="请输入NFT数量"
-                      size="sm"
-                    />
-                    <FormHelperText fontSize="xs">请输入0-11之间的nft数量</FormHelperText>
-                  </FormControl>
-
-                  <FormControl mb={4} size="sm">
-                    <FormLabel fontSize="sm">容器ID:</FormLabel>
-                    <Input
-                      value={machineId2}
-                      onChange={(e) => setMachineId2(e.target.value)}
-                      placeholder="请输入容器ID"
-                      size="sm"
-                    />
-                  </FormControl>
-                  <Button isLoading={nftBtnLoading2} colorScheme="blue" width="full" size="sm" onClick={approveDgc}>
-                    Submit
-                  </Button>
-                </ModalBody>
-              </ModalContent>
-            </Modal>
-
-            <Text>This step can also be skipped without pledging DGC.</Text>
-            <Text>
-              Reference rule:&nbsp;&nbsp;
-              <LinkExternal href="https://and.decentralgpt.org/rule">https://and.decentralgpt.org/rule</LinkExternal>
-            </Text>
-          </Flex>
-        </Flex> */}
         <Flex gap={4}>
           <Box
             w="24px"

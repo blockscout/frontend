@@ -2,14 +2,18 @@ import { useAccount, useWriteContract, useWaitForTransactionReceipt, useConfig, 
 import nftAbi from './nftAbi.json';
 import freeMode from './freeModeAbi.json';
 import dgcAbi from './dgcAbi.json';
+import dbcAbi from './dbcAbi.json';
 import { useToast } from '@chakra-ui/react';
 import { waitForTransactionReceipt } from 'wagmi/actions';
 import { useEffect, useState } from 'react';
+import { parseEther } from 'viem';
 
 const NFT_CONTRACT_ADDRESS = '0xC40ba6AC7Fcd11B8E0Dc73c86b0F8D63714F6494';
 const DGC_CONTRACT_ADDRESS = '0xb6aD0ddC796A110D469D868F6A94c80e3f53D384';
+const DBC_CONTRACT_ADDRESS = '0x8CD8F5517ab18edfA7c121140B03229cD0771B83';
 const FREEMODE_CONTRACT_ADDRESS = '0x9b35c3b9E13E058d958364eA0e7692a0d5D39Ab4';
-export function useFreeH(nftOnPledgeModalClose: () => void) {
+
+export function useFreeH(nftOnPledgeModalClose: () => void, dbcOnPledgeModalClose: () => void) {
   const { address, isConnected } = useAccount();
   const toast = useToast();
   const config = useConfig(); // 获取全局配置
@@ -22,6 +26,7 @@ export function useFreeH(nftOnPledgeModalClose: () => void) {
   const nftApproval = useWriteContract();
   const { data: nftHash } = nftApproval;
   const { isSuccess: nftApproved } = useWaitForTransactionReceipt({ hash: nftHash });
+
   const approveNft: any = async () => {
     return toast.promise(
       nftApproval.writeContractAsync({
@@ -32,16 +37,23 @@ export function useFreeH(nftOnPledgeModalClose: () => void) {
       }),
 
       {
-        loading: { title: '授权中', description: '请在钱包中确认交易', position: 'top' },
+        loading: { title: 'Approving', description: 'Please confirm the transaction in your wallet', position: 'top' },
         success: (txHash) => {
-          console.log('NFT 授权交易已发送:', txHash);
-          return { title: 'NFT 授权成功', description: '授权已完成', position: 'top' };
+          console.log('NFT approval transaction sent:', txHash);
+          return {
+            title: 'NFT Approval Transaction Sent Successfully',
+            description: 'Approval transaction sent successfully',
+            position: 'top',
+          };
         },
-        error: (err) => ({
-          title: '授权失败',
-          description: err.message || '请检查钱包设置或网络',
-          position: 'top',
-        }),
+        error: (err) => {
+          setNftBtnLoading(false);
+          return {
+            title: 'Approval Failed',
+            description: err.message || 'Please check your wallet settings or network',
+            position: 'top',
+          };
+        },
       }
     );
   };
@@ -50,6 +62,7 @@ export function useFreeH(nftOnPledgeModalClose: () => void) {
   const dgcApproval = useWriteContract();
   const { data: dgcHash } = dgcApproval;
   const { isSuccess: dgcApproved } = useWaitForTransactionReceipt({ hash: dgcHash });
+
   const approveDgc = async () => {
     return toast.promise(
       dgcApproval.writeContractAsync({
@@ -60,16 +73,23 @@ export function useFreeH(nftOnPledgeModalClose: () => void) {
       }),
 
       {
-        loading: { title: '授权中', description: '请在钱包中确认交易', position: 'top' },
+        loading: { title: 'Approving', description: 'Please confirm the transaction in your wallet', position: 'top' },
         success: (txHash) => {
-          console.log('DGC  授权交易已发送:', txHash);
-          return { title: 'DGC 授权成功', description: '授权已完成', position: 'top' };
+          console.log('DGC approval transaction sent:', txHash);
+          return {
+            title: 'DGC Transaction Sent Successfully',
+            description: 'DGC approval transaction sent successfully',
+            position: 'top',
+          };
         },
-        error: (err) => ({
-          title: '授权失败',
-          description: err.message || '请检查钱包设置或网络',
-          position: 'top',
-        }),
+        error: (err) => {
+          setNftBtnLoading(false);
+          return {
+            title: 'Approval Failed',
+            description: err.message || 'Please check your wallet settings or network',
+            position: 'top',
+          };
+        },
       }
     );
   };
@@ -80,58 +100,73 @@ export function useFreeH(nftOnPledgeModalClose: () => void) {
   const { isSuccess: isAddSuccess } = useWaitForTransactionReceipt({
     hash: addNftHash,
   });
+
   const handleAddNftToStake = async () => {
-    try {
-      // Step 1: 发送交易调用 addDLCToStake
-      const txHash = await nftStake.writeContractAsync({
+    return toast.promise(
+      nftStake.writeContractAsync({
         address: FREEMODE_CONTRACT_ADDRESS,
         abi: freeMode,
         functionName: 'stake',
         args: [machineId, pledgedDgcCount, pledgedNftCount],
-        // 使用传入的 machineId 和 amount
-      });
-      console.log('交易已发送，txHash:', txHash);
+        // Use the provided machineId and amount
+      }),
 
-      // Step 2: 等待交易确认
-      const receipt = await waitForTransactionReceipt(config, { hash: txHash });
-      if (receipt.status === 'success') {
-        console.log('添加NFT成功，txHash:', txHash);
-      } else {
-        console.log('添加NFT失败，交易被回滚，txHash:', txHash);
+      {
+        loading: {
+          title: 'Staking in Progress',
+          description: 'Please confirm the transaction in your wallet',
+          position: 'top',
+        },
+        success: (txHash) => {
+          console.log('Staking transaction sent:', txHash);
+          return {
+            title: 'Staking Transaction Sent',
+            description: 'The staking transaction has been sent',
+            position: 'top',
+          };
+        },
+        error: (err) => {
+          setNftBtnLoading(false);
+          return {
+            title: 'Staking Failed',
+            description: err.message || 'Please check your wallet settings or network',
+            position: 'top',
+          };
+        },
       }
-    } catch (err) {
-      console.error('添加NFT失败，错误:', err);
-    }
+    );
   };
   // 开始授权
+
   const startApprove = async () => {
     if (!isConnected) {
       toast({
         position: 'top',
-        title: '提示',
-        description: '请先连接钱包',
+        title: 'Reminder',
+        description: 'Please connect your wallet first',
         status: 'warning',
         duration: 5000,
         isClosable: true,
       });
       return;
     }
-    // 开始加载状态
+    // Start loading state
     setNftBtnLoading(true);
 
-    // 先授权NFT
+    // Approve NFT first
     await approveNft();
-    // 再授权DGC
-    approveDgc();
   };
   // --------------------------------------------------------------------------------------------------
   useEffect(() => {
-    if (dgcApproved && nftApproved) {
-      try {
-        handleAddNftToStake();
-      } catch {
-        setNftBtnLoading(false);
-      }
+    if (nftApproved) {
+      // 再授权DGC
+      approveDgc();
+    }
+  }, [nftApproved]);
+
+  useEffect(() => {
+    if (dgcApproved) {
+      handleAddNftToStake();
     }
   }, [dgcApproved]);
 
@@ -139,8 +174,8 @@ export function useFreeH(nftOnPledgeModalClose: () => void) {
     if (isAddSuccess) {
       setNftBtnLoading(false);
       toast({
-        title: '提示',
-        description: '恭喜您，质押成功！',
+        title: 'Reminder',
+        description: 'Congratulations, staking successful!',
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -150,6 +185,81 @@ export function useFreeH(nftOnPledgeModalClose: () => void) {
     }
   }, [isAddSuccess]);
 
+  // 质押原生DBC代币
+  const [dbcBtnLoading, setDbcBtnLoading] = useState(false);
+  const [pledgedDbcCount, setPledgedDbcCount] = useState('');
+  const [dockerId, setDockerId] = useState('');
+  const [toPledgedDbcCount, settoPledgedDbcCount] = useState('');
+
+  const dbgStake = useWriteContract();
+  const { data: addDbcHash } = dbgStake;
+  const { isSuccess: isAddDbcSuccess } = useWaitForTransactionReceipt({
+    hash: addDbcHash,
+  });
+
+  const handleAddDbcToStake = async () => {
+    if (!isConnected) {
+      toast({
+        position: 'top',
+        title: 'Reminder',
+        description: 'Please connect your wallet first',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+    setDbcBtnLoading(true);
+    return toast.promise(
+      dbgStake.writeContractAsync({
+        address: DBC_CONTRACT_ADDRESS,
+        abi: dbcAbi,
+        functionName: 'stakeDbc',
+        args: [dockerId, parseEther(pledgedDbcCount)],
+        value: parseEther(pledgedDbcCount),
+      }),
+
+      {
+        loading: {
+          title: 'Staking in Progress',
+          description: 'Please confirm the transaction in your wallet',
+          position: 'top',
+        },
+        success: (txHash) => {
+          console.log('Staking transaction sent:', txHash);
+          return {
+            title: 'Staking Transaction Sent',
+            description: 'The staking transaction has been sent',
+            position: 'top',
+          };
+        },
+        error: (err) => {
+          setDbcBtnLoading(false);
+          return {
+            title: 'Staking Failed',
+            description: err.message || 'Please check your wallet settings or network',
+            position: 'top',
+            isClosable: true,
+          };
+        },
+      }
+    );
+  };
+
+  useEffect(() => {
+    if (isAddDbcSuccess) {
+      setDbcBtnLoading(false);
+      toast({
+        title: 'Reminder',
+        description: 'Congratulations, staking successful!',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+        position: 'top',
+      });
+      dbcOnPledgeModalClose();
+    }
+  }, [isAddDbcSuccess]);
   return {
     nftBtnLoading,
     approveDgc,
@@ -160,5 +270,13 @@ export function useFreeH(nftOnPledgeModalClose: () => void) {
     machineId,
     setMachineId,
     startApprove,
+    handleAddDbcToStake,
+    dbcBtnLoading,
+    pledgedDbcCount,
+    dockerId,
+    toPledgedDbcCount,
+    setPledgedDbcCount,
+    setDockerId,
+    settoPledgedDbcCount,
   };
 }
