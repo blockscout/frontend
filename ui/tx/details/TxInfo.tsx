@@ -25,10 +25,10 @@ import * as arbitrum from 'lib/rollups/arbitrum';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
+import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
@@ -803,7 +803,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       ) }
       <TxInfoScrollFees data={ data } isLoading={ isLoading }/>
 
-      <CutLinkDetails loading={ isLoading } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }} isExpanded={ isExpanded } onClick={ handleCutLinkClick }>
+      <CollapsibleDetails loading={ isLoading } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }} isExpanded={ isExpanded } onClick={ handleCutLinkClick }>
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
         <TxDetailsWithdrawalStatusArbitrum data={ data }/>
@@ -892,7 +892,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         ) }
 
         { data.zksync && <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isLoading }/> }
-      </CutLinkDetails>
+      </CollapsibleDetails>
     </DetailedInfo.Container>
   );
 };

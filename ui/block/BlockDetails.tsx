@@ -17,10 +17,10 @@ import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
+import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -539,7 +539,7 @@ const BlockDetails = ({ query }: Props) => {
       ) }
 
       { /* ADDITIONAL INFO */ }
-      <CutLinkDetails loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
+      <CollapsibleDetails loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
         { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync &&
@@ -738,7 +738,7 @@ const BlockDetails = ({ query }: Props) => {
             ) }
           </>
         ) }
-      </CutLinkDetails>
+      </CollapsibleDetails>
 
     </DetailedInfo.Container>
   );

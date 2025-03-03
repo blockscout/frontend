@@ -9,9 +9,9 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ArbitrumL2TxnBatchDA from 'ui/shared/batch/ArbitrumL2TxnBatchDA';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -191,7 +191,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemValue>
 
       { (data.data_availability.batch_data_container === 'in_anytrust' || data.data_availability.batch_data_container === 'in_celestia') && (
-        <CutLinkDetails
+        <CollapsibleDetails
           loading={ isPlaceholderData }
           mt={ 6 }
           gridColumn={{ base: undefined, lg: '1 / 3' }}
@@ -205,7 +205,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
           { data.data_availability.batch_data_container === 'in_celestia' && (
             <ArbitrumL2TxnBatchDetailsCelestiaDA data={ data.data_availability }/>
           ) }
-        </CutLinkDetails>
+        </CollapsibleDetails>
       ) }
     </Grid>
   );

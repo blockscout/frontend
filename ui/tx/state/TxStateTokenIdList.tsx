@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import CutLinkList from 'toolkit/components/CutLink/CutLinkList';
+import { CollapsibleList } from 'toolkit/chakra/collapsible';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 
 interface Props {
@@ -20,10 +20,10 @@ const TxStateTokenIdList = ({ items, tokenAddress, isLoading }: Props) => {
   }, [ isLoading, tokenAddress ]);
 
   return (
-    <CutLinkList
+    <CollapsibleList
       items={ items }
       renderItem={ renderItem }
-      linkProps={{
+      triggerProps={{
         pb: { base: '5px', md: 0 },
       }}
       rowGap={ 2 }

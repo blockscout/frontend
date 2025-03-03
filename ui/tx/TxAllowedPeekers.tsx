@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CutLinkList from 'toolkit/components/CutLink/CutLinkList';
+import { CollapsibleList } from 'toolkit/chakra/collapsible';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
@@ -21,7 +21,7 @@ const TxAllowedPeekers = ({ items }: Props) => {
         Allowed peekers
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <CutLinkList
+        <CollapsibleList
           items={ items }
           renderItem={ renderItem }
           cutLength={ 2 }

@@ -12,9 +12,9 @@ import type { ResourceError } from 'lib/api/resources';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { currencyUnits } from 'lib/units';
+import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -125,7 +125,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
 
       <ZkSyncL2TxnBatchHashesInfo isLoading={ isPlaceholderData } data={ data }/>
 
-      <CutLinkDetails loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
+      <CollapsibleDetails loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
         <DetailedInfo.ItemLabel
@@ -160,7 +160,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           <Text mr={ 1 }>{ BigNumber(data.l2_fair_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
           <Text color="text.secondary">({ BigNumber(data.l2_fair_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
         </DetailedInfo.ItemValue>
-      </CutLinkDetails>
+      </CollapsibleDetails>
     </Grid>
   );
 };

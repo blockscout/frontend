@@ -11,8 +11,8 @@ import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
+import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -217,7 +217,7 @@ const UserOpDetails = ({ query }: Props) => {
       { config.features.txInterpretation.isEnabled && <UserOpDetailsActions hash={ data.hash } isUserOpDataLoading={ isPlaceholderData }/> }
 
       { /* ADDITIONAL INFO */ }
-      <CutLinkDetails loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
+      <CollapsibleDetails loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
         <DetailedInfo.ItemLabel
@@ -376,7 +376,7 @@ const UserOpDetails = ({ query }: Props) => {
         <UserOpCallData data={ data }/>
 
         <UserOpDecodedCallData data={ data }/>
-      </CutLinkDetails>
+      </CollapsibleDetails>
     </Grid>
   );
 };

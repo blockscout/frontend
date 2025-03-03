@@ -11,10 +11,12 @@ import BadgeShowcase from 'ui/showcases/Badge';
 import ButtonShowcase from 'ui/showcases/Button';
 import CheckboxShowcase from 'ui/showcases/Checkbox';
 import ClipboardShowcase from 'ui/showcases/Clipboard';
+import CollapsibleShowcase from 'ui/showcases/Collapsible';
+import ContentLoaderShowcase from 'ui/showcases/ContentLoader';
 import DialogShowcase from 'ui/showcases/Dialog';
+import FieldShowcase from 'ui/showcases/Field';
 import InputShowcase from 'ui/showcases/Input';
 import LinkShowcase from 'ui/showcases/Link';
-import LoadersShowcase from 'ui/showcases/Loaders';
 import MenuShowcase from 'ui/showcases/Menu';
 import PaginationShowcase from 'ui/showcases/Pagination';
 import PinInputShowcase from 'ui/showcases/PinInput';
@@ -22,6 +24,8 @@ import PopoverShowcase from 'ui/showcases/Popover';
 import ProgressCircleShowcase from 'ui/showcases/ProgressCircle';
 import RadioShowcase from 'ui/showcases/Radio';
 import SelectShowcase from 'ui/showcases/Select';
+import SkeletonShowcase from 'ui/showcases/Skeleton';
+import SpinnerShowcase from 'ui/showcases/Spinner';
 import TableShowcase from 'ui/showcases/Table';
 import TabsShowcase from 'ui/showcases/Tabs';
 import TagShowcase from 'ui/showcases/Tag';
@@ -45,10 +49,12 @@ const tabs = [
   { label: 'Button', value: 'button', component: <ButtonShowcase/> },
   { label: 'Checkbox', value: 'checkbox', component: <CheckboxShowcase/> },
   { label: 'Clipboard', value: 'clipboard', component: <ClipboardShowcase/> },
+  { label: 'Collapsible', value: 'collapsible', component: <CollapsibleShowcase/> },
+  { label: 'Content loader', value: 'content-loader', component: <ContentLoaderShowcase/> },
   { label: 'Dialog', value: 'dialog', component: <DialogShowcase/> },
   { label: 'Input', value: 'input', component: <InputShowcase/> },
+  { label: 'Field', value: 'field', component: <FieldShowcase/> },
   { label: 'Link', value: 'link', component: <LinkShowcase/> },
-  { label: 'Loaders', value: 'loaders', component: <LoadersShowcase/> },
   { label: 'Menu', value: 'menu', component: <MenuShowcase/> },
   { label: 'Pagination', value: 'pagination', component: <PaginationShowcase/> },
   { label: 'Progress Circle', value: 'progress-circle', component: <ProgressCircleShowcase/> },
@@ -56,6 +62,8 @@ const tabs = [
   { label: 'Pin input', value: 'pin-input', component: <PinInputShowcase/> },
   { label: 'Popover', value: 'popover', component: <PopoverShowcase/> },
   { label: 'Select', value: 'select', component: <SelectShowcase/> },
+  { label: 'Skeleton', value: 'skeleton', component: <SkeletonShowcase/> },
+  { label: 'Spinner', value: 'spinner', component: <SpinnerShowcase/> },
   { label: 'Table', value: 'table', component: <TableShowcase/> },
   { label: 'Tabs', value: 'tabs', component: <TabsShowcase/> },
   { label: 'Tag', value: 'tag', component: <TagShowcase/> },

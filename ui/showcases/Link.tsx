@@ -1,6 +1,4 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable max-len */
-import { Box, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import * as addressMock from 'mocks/address/address';
@@ -11,8 +9,6 @@ import * as ensMock from 'mocks/ens/domain';
 import * as poolMock from 'mocks/pools/pool';
 import * as txMock from 'mocks/txs/tx';
 import { Link, LinkBox, LinkOverlay } from 'toolkit/chakra/link';
-import CutLinkDetails from 'toolkit/components/CutLink/CutLinkDetails';
-import CutLinkList from 'toolkit/components/CutLink/CutLinkList';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -23,7 +19,6 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
-const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
 const TOKEN = {
   address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
@@ -95,29 +90,6 @@ const LinkShowcase = () => {
 
       <Section>
         <SectionHeader>Examples</SectionHeader>
-
-        <SectionSubHeader>Cut link</SectionSubHeader>
-        <SamplesStack>
-          <Sample label="Show details" flexDirection="column" alignItems="flex-start">
-            <CutLinkDetails id="CutLink_1">
-              <Box maxW="500px">{ TEXT }</Box>
-            </CutLinkDetails>
-            <CutLinkDetails id="CutLink_2" loading>
-              <Box maxW="500px">{ TEXT }</Box>
-            </CutLinkDetails>
-          </Sample>
-          <Sample label="Expand all list" flexDirection="row" alignItems="flex-start" flexWrap="nowrap">
-            <CutLinkList
-              items={ [ 'foo', 'bar', 'baz', 'qux', 'quux', 'corge', 'grault', 'garply', 'waldo', 'fred', 'plugh', 'xyzzy', 'thud' ] }
-              renderItem={ (item) => <Text>{ item }</Text> }
-            />
-            <CutLinkList
-              items={ [ 'foo', 'bar', 'baz', 'qux', 'quux', 'corge', 'grault', 'garply', 'waldo', 'fred', 'plugh', 'xyzzy', 'thud' ] }
-              renderItem={ (item) => <Text>{ item }</Text> }
-              linkProps={{ loading: true }}
-            />
-          </Sample>
-        </SamplesStack>
 
         <SectionSubHeader>Address link</SectionSubHeader>
         <SamplesStack>
