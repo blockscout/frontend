@@ -68,7 +68,7 @@ const FixedComponent = () => {
 
   return (
     <div>
-      <div>
+      {/* <div>
         <p>
           <Button onClick={handleUnStake}>解除质押</Button>结果：
           {isUnStakeed.toString()}
@@ -85,7 +85,7 @@ const FixedComponent = () => {
           <Button>质押</Button> 质押的加载状态:{isStaking.toString()} 结果：
           {isStakingSuccess.toString()}
         </p>
-      </div>
+      </div> */}
       <Box mb={4}>
         <Text color="gray.600">
           Note: The long-term rental mode requires the GPU server to be hosted in a professional data center, and to
