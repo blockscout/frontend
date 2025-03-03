@@ -32,13 +32,19 @@ if (process.env.NEXT_PUBLIC_OG_IMAGE_URL) {
 
     console.log('⏳ Making request to OG image generator service...');
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30_000);
+
     const response = await fetch('https://bigs.services.blockscout.com/generate/og', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (response.ok) {
       console.log('⬇️  Downloading the image...');
