@@ -18,25 +18,19 @@ const moduleExports = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  transpilePackages: [
-    'react-syntax-highlighter',
-    'swagger-client',
-    'swagger-ui-react',
-  ],
+  transpilePackages: ['react-syntax-highlighter', 'swagger-client', 'swagger-ui-react'],
   reactStrictMode: true,
   webpack(config, { webpack }) {
     config.plugins.push(
       new webpack.DefinePlugin({
         __SENTRY_DEBUG__: false,
         __SENTRY_TRACING__: false,
-      }),
+      })
     );
-    config.module.rules.push(
-      {
-        test: /\.svg$/,
-        use: [ '@svgr/webpack' ],
-      },
-    );
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
     config.resolve.fallback = { fs: false, net: false, tls: false };
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
 
@@ -56,7 +50,7 @@ const moduleExports = {
     turbo: {
       rules: {
         '*.svg': {
-          loaders: [ '@svgr/webpack' ],
+          loaders: ['@svgr/webpack'],
           as: '*.js',
         },
       },

@@ -42,16 +42,16 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
   } = useWaitForTransactionReceipt({ hash: nftTxHash });
 
   const approveNft = async () => {
-    if (!address) {
+    if (!isConnected) {
       toast({
         position: 'top',
-        title: '提示',
-        description: '请先连接钱包',
+        title: 'Prompt',
+        description: 'Please connect your wallet first',
         status: 'warning',
         duration: 5000,
         isClosable: true,
       });
-      return; // 如果未连接钱包，直接返回
+      return;
     }
     setLoading(true);
 
@@ -59,6 +59,7 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
     refetch();
 
     // 使用 toast.promise 包裹整个 Promise
+
     return toast.promise(
       nftApproval.writeContractAsync({
         address: NFT_CONTRACT_ADDRESS,
@@ -67,14 +68,18 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
         args: [STAKING_CONTRACT_ADDRESS, true],
       }),
       {
-        loading: { title: '授权中', description: '请在钱包中确认交易', position: 'top' },
+        loading: {
+          title: 'Authorizing',
+          description: 'Please confirm the transaction in your wallet',
+          position: 'top',
+        },
         success: (txHash) => {
-          console.log('NFT 授权交易已发送:', txHash);
-          return { title: 'NFT 授权成功', description: '授权已完成', position: 'top' };
+          console.log('NFT authorization transaction sent:', txHash);
+          return { title: 'NFT Authorization Successful', description: 'Authorization completed', position: 'top' };
         },
         error: (err) => ({
-          title: '授权失败',
-          description: err.message || '请检查钱包设置或网络',
+          title: 'Authorization Failed',
+          description: err.message || 'Please check wallet settings or network',
           position: 'top',
         }),
       }
@@ -90,20 +95,34 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
   });
 
   const stake = async () => {
-    try {
-      const txHash = await staking.writeContractAsync({
+    return toast.promise(
+      staking.writeContractAsync({
         address: STAKING_CONTRACT_ADDRESS,
         abi: stakingAbi,
         functionName: 'stake',
         args: [rentalMachineIdOnChain, nftData[0], nftData[1], machineId],
-      });
-
-      console.log('交易已发送，txHash:', txHash);
-      return { success: true, txHash };
-    } catch (err) {
-      console.error('交易失败，错误:', err);
-      return { success: false, txHash: null };
-    }
+      }),
+      {
+        loading: {
+          title: 'In Progress',
+          description: 'Please confirm the transaction in your wallet',
+          position: 'top',
+        },
+        success: (txHash) => {
+          console.log('NFT staking transaction sent:', txHash);
+          return {
+            title: 'NFT Staking Successful',
+            description: 'Staking completed',
+            position: 'top',
+          };
+        },
+        error: (err) => ({
+          title: 'Authorization Failed',
+          description: err.message || 'Please check wallet settings or network',
+          position: 'top',
+        }),
+      }
+    );
   };
 
   useEffect(() => {
@@ -115,13 +134,14 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
       }
     }
   }, [isNftApproved]);
+
   useEffect(() => {
     if (isStakingSuccess) {
       setLoading(false);
       onPledgeModalClose();
       toast({
-        title: '提示',
-        description: '恭喜您，质押nft成功！',
+        title: 'Prompt',
+        description: 'Congratulations, you have successfully staked your NFT!',
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -143,12 +163,13 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
     isSuccess: isDlcApproved,
     error: dlcConfirmationError,
   } = useWaitForTransactionReceipt({ hash: dlcTxHash });
+
   const approveDlcToken = async () => {
-    if (!address) {
+    if (!isConnected) {
       toast({
         position: 'top',
-        title: '提示',
-        description: '请先连接钱包',
+        title: 'Prompt',
+        description: 'Please connect your wallet first',
         status: 'warning',
         duration: 5000,
         isClosable: true,
@@ -163,16 +184,19 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
         functionName: 'approve',
         args: [STAKING_CONTRACT_ADDRESS, dlcNodeCount],
       }),
-
       {
-        loading: { title: '授权中', description: '请在钱包中确认交易', position: 'top' },
+        loading: {
+          title: 'Authorizing',
+          description: 'Please confirm the transaction in your wallet',
+          position: 'top',
+        },
         success: (txHash) => {
-          console.log('DLC Token 授权交易已发送:', txHash);
-          return { title: 'DLC 授权成功', description: '授权已完成', position: 'top' };
+          console.log('DLC Token authorization transaction sent:', txHash);
+          return { title: 'DLC Authorization Successful', description: 'Authorization completed', position: 'top' };
         },
         error: (err) => ({
-          title: '授权失败',
-          description: err.message || '请检查钱包设置或网络',
+          title: 'Authorization Failed',
+          description: err.message || 'Please check wallet settings or network',
           position: 'top',
         }),
       }
@@ -188,10 +212,6 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
   });
   // 开始质押 DLC
   const handleAddDLCToStake = async () => {
-    if (!address) {
-      console.error('请先连接钱包');
-      return;
-    }
     try {
       // Step 1: 发送交易调用 addDLCToStake
       const txHash = await dlcStake.writeContractAsync({
@@ -223,12 +243,13 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
       }
     }
   }, [isDlcApproved]);
+
   useEffect(() => {
     if (isAddDLCSuccess) {
       setDlcBtnLoading(false);
       toast({
-        title: '提示',
-        description: '恭喜您，质押dlc成功！',
+        title: 'Prompt',
+        description: 'Congratulations, you have successfully staked DLC!',
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -246,28 +267,28 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
   // a8aeafb706433fc89c16817e8405705bd66f28b6d5cfc46c9da2faf7b204da78
 
   const handleUnStake = async () => {
-    if (!address) {
-      console.error('请先连接钱包');
+    if (!isConnected) {
+      console.error('Please connect your wallet first');
       return;
     }
     try {
-      // Step 1: 发送交易调用 addDLCToStake
+      // Step 1: Send transaction to call addDLCToStake
       const txHash = await unStake.writeContractAsync({
         address: STAKING_CONTRACT_ADDRESS,
         abi: stakingAbi,
         functionName: 'unStake',
-        args: ['a8aeafb706433fc89c16817e8405705bd66f28b6d5cfc46c9da2faf7b204da78'], // 使用传入的 machineId 和 amount
+        args: ['a8aeafb706433fc89c16817e8405705bd66f28b6d5cfc46c9da2faf7b204da78'], // Using the passed machineId and amount
       });
-      console.log('交易已发送，txHash:', txHash);
-      // Step 2: 等待交易确认
+      console.log('Transaction sent, txHash:', txHash);
+      // Step 2: Wait for transaction confirmation
       const receipt = await waitForTransactionReceipt(config, { hash: txHash });
       if (receipt.status === 'success') {
-        console.log('解除质押成功，txHash:', txHash);
+        console.log('Unstaking successful, txHash:', txHash);
       } else {
-        console.log('解除质押失败，交易被回滚，txHash:', txHash);
+        console.log('Unstaking failed, transaction reverted, txHash:', txHash);
       }
     } catch (error) {
-      console.error('添加DLC失败，错误:', error);
+      console.error('Failed to add DLC, error:', error);
     }
   };
 
