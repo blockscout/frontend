@@ -94,6 +94,19 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "DepositReward",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "string",
         "name": "machineId",
         "type": "string"
@@ -397,19 +410,6 @@
   },
   {
     "inputs": [],
-    "name": "STAKING_TYPE",
-    "outputs": [
-      {
-        "internalType": "enum NFTStaking.StakingType",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "UPGRADE_INTERFACE_VERSION",
     "outputs": [
       {
@@ -479,24 +479,6 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "machineId",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "additionHours",
-        "type": "uint256"
-      }
-    ],
-    "name": "addStakeHours",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -551,19 +533,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "canUpgradeAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "string",
@@ -591,19 +560,6 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "dbcAIContract",
-    "outputs": [
-      {
-        "internalType": "contract IDBCAIContract",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -801,16 +757,67 @@
         "internalType": "uint256",
         "name": "reservedAmount",
         "type": "uint256"
-      },
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
-        "internalType": "bool",
-        "name": "isOnline",
-        "type": "bool"
-      },
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      }
+    ],
+    "name": "getMachineInfoForDBCScan",
+    "outputs": [
       {
-        "internalType": "bool",
-        "name": "isRegistered",
-        "type": "bool"
+        "components": [
+          {
+            "internalType": "bool",
+            "name": "isStaking",
+            "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "gpuType",
+            "type": "string"
+          },
+          {
+            "internalType": "uint8",
+            "name": "gpuCount",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mem",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "projectName",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalRewardAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "claimedRewardAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "lockedRewardAmount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct NFTStaking.MachineInfoForDBCScan",
+        "name": "",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -1047,6 +1054,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getUpgradeAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -1107,12 +1127,12 @@
       },
       {
         "internalType": "address",
-        "name": "_dbcAIContract",
+        "name": "_toolContract",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_toolContract",
+        "name": "_precompileContract",
         "type": "address"
       },
       {
@@ -1229,25 +1249,6 @@
         "type": "string"
       }
     ],
-    "name": "machineId2Rented",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
     "name": "machineId2StakeInfos",
     "outputs": [
       {
@@ -1303,6 +1304,11 @@
       {
         "internalType": "uint256",
         "name": "nextRenterCanRentAt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "rentId",
         "type": "uint256"
       }
     ],
@@ -1458,6 +1464,19 @@
   },
   {
     "inputs": [],
+    "name": "precompileContract",
+    "outputs": [
+      {
+        "internalType": "contract IPrecompileContract",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "proxiableUUID",
     "outputs": [
       {
@@ -1521,6 +1540,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      }
+    ],
+    "name": "requestUpgradeAddress",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "rewardEnd",
     "outputs": [
@@ -1528,6 +1566,19 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rewardStartAtBlockNumber",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1616,19 +1667,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "addr",
-        "type": "address"
-      }
-    ],
-    "name": "setDBCAIContract",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address[]",
         "name": "addrs",
         "type": "address[]"
@@ -1648,6 +1686,19 @@
       }
     ],
     "name": "setNftToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_precompileContract",
+        "type": "address"
+      }
+    ],
+    "name": "setPrecompileContract",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1720,11 +1771,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "stakeholder",
-        "type": "address"
-      },
-      {
         "internalType": "string",
         "name": "machineId",
         "type": "string"
@@ -1741,7 +1787,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "stakeHours",
+        "name": "rentId",
         "type": "uint256"
       }
     ],
@@ -1960,19 +2006,6 @@
       }
     ],
     "name": "unStake",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "machineId",
-        "type": "string"
-      }
-    ],
-    "name": "unStakeByHolder",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

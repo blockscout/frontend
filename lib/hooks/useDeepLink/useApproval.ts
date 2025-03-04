@@ -1,14 +1,15 @@
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useConfig, useReadContract } from 'wagmi';
 import nftAbi from './nftAbi.json';
 import erc20Abi from './dlcAbi.json';
-import stakingAbi from './stakingAbi.json';
+import stakingAbi from './stakingLongAbi.json';
 import { useToast } from '@chakra-ui/react';
 import { waitForTransactionReceipt } from 'wagmi/actions';
 import { useEffect, useState } from 'react';
-
+// machin ID: a8aeafb706433fc89c16817e8405705bd66f28b6d5cfc46c9da2faf7b204da78
+// private key: d85789ca443866f898a928bba3d863a5e3c66dc03b03a7d947e8dde99e19368e
 const NFT_CONTRACT_ADDRESS = '0x905dE58579886C5afe9B6406CFDE82bd6a1087C1';
 const DLC_TOKEN_ADDRESS = '0x23ba922d2c435ea65aceb6d56feec7a7c29948b8';
-const STAKING_CONTRACT_ADDRESS = '0xa6c07a5c289a2b1b1b528baf9aa3177fd2b57d83';
+const STAKING_CONTRACT_ADDRESS = '0x23ba922d2c435ea65aceb6d56feec7a7c29948b8';
 
 export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDLC: () => void) {
   const { address, isConnected } = useAccount();
