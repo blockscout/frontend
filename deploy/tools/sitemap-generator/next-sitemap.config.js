@@ -54,6 +54,15 @@ module.exports = {
   siteUrl,
   generateIndexSitemap: false,
   generateRobotsTxt: true,
+  robotsTxtOptions: {
+    policies: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/auth/*', '/login', '/sprite', '/account/*', '/api/*', '/node-api/*'],
+      },
+    ],
+  },
   sourceDir: path.resolve(process.cwd(), '../../../.next'),
   outDir: path.resolve(process.cwd(), '../../../public'),
   exclude: [
