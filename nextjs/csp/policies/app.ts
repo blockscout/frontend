@@ -6,10 +6,7 @@ import config from 'configs/app';
 
 import { KEY_WORDS } from '../utils';
 
-const MAIN_DOMAINS = [
-  `*.${ config.app.host }`,
-  config.app.host,
-].filter(Boolean);
+const MAIN_DOMAINS = [`*.${config.app.host}`, config.app.host].filter(Boolean);
 
 const getCspReportUrl = () => {
   try {
@@ -47,6 +44,7 @@ export function app(): CspDev.DirectiveDescriptor {
 
       // webpack hmr in safari doesn't recognize localhost as 'self' for some reason
       config.app.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
+      config.app.isDev ? 'http://localhost:3001' : 'http://localhost:3001',
 
       // APIs
       config.api.endpoint,
@@ -76,7 +74,7 @@ export function app(): CspDev.DirectiveDescriptor {
       config.app.isDev ? KEY_WORDS.UNSAFE_EVAL : '',
 
       // hash of ColorModeScript
-      '\'sha256-e7MRMmTzLsLQvIy1iizO1lXf7VWYoQ6ysj5fuUzvRwE=\'',
+      "'sha256-e7MRMmTzLsLQvIy1iizO1lXf7VWYoQ6ysj5fuUzvRwE='",
     ],
 
     'style-src': [
@@ -115,38 +113,27 @@ export function app(): CspDev.DirectiveDescriptor {
       '*', // see comment for img-src directive
     ],
 
-    'font-src': [
-      KEY_WORDS.DATA,
-      ...MAIN_DOMAINS,
-    ],
+    'font-src': [KEY_WORDS.DATA, ...MAIN_DOMAINS],
 
-    'object-src': [
-      KEY_WORDS.NONE,
-    ],
+    'object-src': [KEY_WORDS.NONE],
 
-    'base-uri': [
-      KEY_WORDS.NONE,
-    ],
+    'base-uri': [KEY_WORDS.NONE],
 
     'frame-src': [
       // could be a marketplace app or NFT media (html-page)
       '*',
     ],
 
-    'frame-ancestors': [
-      KEY_WORDS.SELF,
-    ],
+    'frame-ancestors': [KEY_WORDS.SELF],
 
-    ...((() => {
+    ...(() => {
       if (!config.features.sentry.isEnabled) {
         return {};
       }
 
       return {
-        'report-uri': [
-          getCspReportUrl(),
-        ].filter(Boolean),
+        'report-uri': [getCspReportUrl()].filter(Boolean),
       };
-    })()),
+    })(),
   };
 }

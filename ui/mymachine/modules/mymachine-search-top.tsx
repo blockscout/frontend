@@ -21,16 +21,10 @@ import { BsFilter } from 'react-icons/bs';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 
 const mymachineSearchTop = () => {
-  const [ isPending, start ] = useTimeoutFn(
-    () => {
-      console.log('已经3s了', isPending);
-    },
-    2000,
-    { immediate: true },
-  );
+  const [isPending, start] = useTimeoutFn(() => {}, 2000, { immediate: true });
 
   return (
-    <Skeleton isLoaded={ !isPending }>
+    <Skeleton isLoaded={!isPending}>
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <InputGroup size="sm">
@@ -38,19 +32,19 @@ const mymachineSearchTop = () => {
               <Popover>
                 <PopoverTrigger>
                   <div className="flex items-center gap-2 cursor-pointer">
-                    <BsFilter size={ 24 }/>
+                    <BsFilter size={24} />
                     <Text>Filter</Text>
                   </div>
                 </PopoverTrigger>
                 <PopoverContent>
-                  <PopoverArrow/>
-                  <PopoverCloseButton/>
+                  <PopoverArrow />
+                  <PopoverCloseButton />
                   <PopoverHeader>Confirmation!</PopoverHeader>
                   <PopoverBody> milkshake?</PopoverBody>
                 </PopoverContent>
               </Popover>
             </InputLeftAddon>
-            <Input type="tel" placeholder="Please enter keywords for search!"/>
+            <Input type="tel" placeholder="Please enter keywords for search!" />
           </InputGroup>
         </div>
 
@@ -60,14 +54,14 @@ const mymachineSearchTop = () => {
               Total Pages：666
             </Button>
             <Button size="sm">
-              <FaAngleLeft/>
+              <FaAngleLeft />
             </Button>
 
             <Button variant="ghost" size="sm">
               1
             </Button>
             <Button size="sm">
-              <FaAngleRight/>
+              <FaAngleRight />
             </Button>
           </div>
         </div>

@@ -5,15 +5,8 @@ import React, { useEffect, useState } from 'react';
 
 function RestakeBtn() {
   const router: any = useRouter();
-  console.log(router, '?????????????????????');
 
-  const [isPending, start] = useTimeoutFn(
-    () => {
-      console.log('已经3s了', isPending);
-    },
-    2000,
-    { immediate: true }
-  );
+  const [isPending, start] = useTimeoutFn(() => {}, 2000, { immediate: true });
 
   return (
     <>

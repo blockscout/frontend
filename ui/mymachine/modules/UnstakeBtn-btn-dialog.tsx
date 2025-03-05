@@ -17,13 +17,13 @@ function UnstakeBtn() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef(null);
   // 按钮数据
-  const [ btnData, setBtnData ] = React.useState({
+  const [btnData, setBtnData] = React.useState({
     isLoading: false,
     loadingText: '',
   });
 
   // 模拟确认点击事件
-  const handleConfirmClick = async() => {
+  const handleConfirmClick = async () => {
     setBtnData({
       isLoading: true,
       loadingText: 'loading',
@@ -40,40 +40,34 @@ function UnstakeBtn() {
     });
     return false;
   };
-  const [ isPending, start ] = useTimeoutFn(
-    () => {
-      console.log('已经3s了', isPending);
-    },
-    2000,
-    { immediate: true },
-  );
+  const [isPending, start] = useTimeoutFn(() => {}, 2000, { immediate: true });
   return (
     <>
-      <Skeleton isLoaded={ !isPending }>
-        <Button size="sm" variant="outline" onClick={ onOpen }>
+      <Skeleton isLoaded={!isPending}>
+        <Button size="sm" variant="outline" onClick={onOpen}>
           Unstake
         </Button>
       </Skeleton>
 
       <AlertDialog
         motionPreset="slideInBottom"
-        leastDestructiveRef={ cancelRef }
-        onClose={ onClose }
-        isOpen={ isOpen }
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
         isCentered
       >
-        <AlertDialogOverlay/>
+        <AlertDialogOverlay />
 
         <AlertDialogContent className="!max-w-[500px]">
           <AlertDialogHeader>Confirmation</AlertDialogHeader>
-          <AlertDialogCloseButton/>
+          <AlertDialogCloseButton />
           <AlertDialogBody>Are you sure you want to unstake?</AlertDialogBody>
           <AlertDialogFooter>
             <div className="flex items-center gap-6">
-              <Button colorScheme="blackAlpha" ref={ cancelRef } onClick={ onClose }>
+              <Button colorScheme="blackAlpha" ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button isLoading={ btnData.isLoading } loadingText={ btnData.loadingText } onClick={ handleConfirmClick }>
+              <Button isLoading={btnData.isLoading} loadingText={btnData.loadingText} onClick={handleConfirmClick}>
                 Confirm
               </Button>
             </div>

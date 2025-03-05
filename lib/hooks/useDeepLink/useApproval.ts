@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 const NFT_CONTRACT_ADDRESS = '0x905dE58579886C5afe9B6406CFDE82bd6a1087C1';
 const DLC_TOKEN_ADDRESS = '0x23ba922d2c435ea65aceb6d56feec7a7c29948b8';
 const STAKING_CONTRACT_ADDRESS = '0x7FDC6ed8387f3184De77E0cF6D6f3B361F906C21';
+import { createMachine } from '../../../ui/mymachine/modules/api/index';
 
 export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDLC: () => void) {
   const { address, isConnected } = useAccount();
@@ -27,7 +28,7 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
     query: {
       enabled: !!address && !!nftNodeCount,
     },
-  });
+  }) as any;
 
   // NFT 授权
   const [nftLoading, setLoading] = useState(false);
@@ -54,37 +55,42 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
       });
       return;
     }
-    setLoading(true);
 
-    // 获取余额
-    refetch();
+    try {
+      setLoading(true);
 
-    // 使用 toast.promise 包裹整个 Promise
+      // 获取余额
+      refetch();
 
-    return toast.promise(
-      nftApproval.writeContractAsync({
-        address: NFT_CONTRACT_ADDRESS,
-        abi: nftAbi,
-        functionName: 'setApprovalForAll',
-        args: [STAKING_CONTRACT_ADDRESS, true],
-      }),
-      {
-        loading: {
-          title: 'Authorizing',
-          description: 'Please confirm the transaction in your wallet',
-          position: 'top',
-        },
-        success: (txHash) => {
-          console.log('NFT authorization transaction sent:', txHash);
-          return { title: 'NFT Authorization Successful', description: 'Authorization completed', position: 'top' };
-        },
-        error: (err) => ({
-          title: 'Authorization Failed',
-          description: err.message || 'Please check wallet settings or network',
-          position: 'top',
+      // 使用 toast.promise 包裹整个 Promise
+
+      return toast.promise(
+        nftApproval.writeContractAsync({
+          address: NFT_CONTRACT_ADDRESS,
+          abi: nftAbi,
+          functionName: 'setApprovalForAll',
+          args: [STAKING_CONTRACT_ADDRESS, true],
         }),
-      }
-    );
+        {
+          loading: {
+            title: 'Authorizing',
+            description: 'Please confirm the transaction in your wallet',
+            position: 'top',
+          },
+          success: (txHash) => {
+            console.log('NFT authorization transaction sent:', txHash);
+            return { title: 'NFT Authorization Successful', description: 'Authorization completed', position: 'top' };
+          },
+          error: (err) => ({
+            title: 'Authorization Failed',
+            description: err.message || 'Please check wallet settings or network',
+            position: 'top',
+          }),
+        }
+      );
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   // 最终的质押方法
@@ -140,14 +146,44 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
     if (isStakingSuccess) {
       setLoading(false);
       onPledgeModalClose();
-      toast({
-        title: 'Prompt',
-        description: 'Congratulations, you have successfully staked your NFT!',
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-        position: 'top',
-      });
+
+      // 在组件中定义创建机器的函数
+      const handleCreateMachine = async () => {
+        const machineData = {
+          address: address,
+          machineId: rentalMachineIdOnChain,
+          numberOfNodes: nftNodeCount,
+          rentalMachineId: machineId,
+        };
+
+        try {
+          const res: any = await createMachine(machineData);
+          if (res.code === 1000) {
+            toast({
+              title: 'Prompt',
+              description: 'Congratulations, you have successfully staked your NFT!',
+              status: 'success',
+              duration: 2000,
+              isClosable: true,
+              position: 'top',
+            });
+          }
+
+          // 可选：创建成功后刷新列表
+          // fetchMachineDataH();
+        } catch (err: any) {
+          console.log(err, '////////////////');
+          toast({
+            title: 'Prompt',
+            description: err.msg,
+            status: 'error',
+            duration: 2000,
+            isClosable: true,
+            position: 'top',
+          });
+        }
+      };
+      handleCreateMachine();
     }
   }, [isStakingSuccess]);
 

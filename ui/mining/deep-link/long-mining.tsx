@@ -36,15 +36,8 @@ const FixedComponent = () => {
   } = useDisclosure();
 
   const {
-    isApprovingNft,
-    isApprovingDlc,
     approveNft,
-    isNftApproved,
-    isDlcApproved,
     approveDlcToken,
-    stake,
-    isStaking,
-    isStakingSuccess,
     dlcBtnLoading,
     dlcNodeId,
     setdlcNodeId,
@@ -57,8 +50,8 @@ const FixedComponent = () => {
     setRentalMachineIdOnChain,
     nftNodeCount,
     setNftNodeCount,
-    isUnStakeed,
     handleUnStake,
+    isUnStakeed,
   } = useApproval(onPledgeModalClose, onPledgeModalCloseDLC);
 
   // nft按钮提交事件
@@ -72,18 +65,6 @@ const FixedComponent = () => {
         <p>
           <Button onClick={handleUnStake}>解除质押</Button>结果：
           {isUnStakeed.toString()}
-        </p>
-        <p>
-          <Button>授权NFT</Button> NFT 授权的加载状态:{isApprovingNft.toString()} 结果：
-          {isNftApproved.toString()}
-        </p>
-        <p>
-          <Button>授权DLC</Button> DLC 授权的加载状态:{isApprovingDlc.toString()} 结果：
-          {isDlcApproved.toString()}
-        </p>
-        <p>
-          <Button>质押</Button> 质押的加载状态:{isStaking.toString()} 结果：
-          {isStakingSuccess.toString()}
         </p>
       </div> */}
       <Box mb={4}>
