@@ -117,6 +117,9 @@ export const recipe = defineSlotRecipe({
       floating: true,
       css: {
         label: {
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
           padding: '10px 16px 0px 16px',
           textStyle: 'xs',
           _peerPlaceholderShown: {
@@ -142,6 +145,9 @@ export const recipe = defineSlotRecipe({
       floating: true,
       css: {
         label: {
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
           // 16px = scrollbar width
           width: 'calc(100% - 4px - 20px)',
           padding: '20px 24px 0px 24px',

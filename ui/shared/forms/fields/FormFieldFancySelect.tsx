@@ -13,6 +13,7 @@ import FancySelect from 'ui/shared/forms/inputs/select/FancySelect';
 // this type only works for plain objects, not for nested objects or arrays (e.g. ui/publicTags/submit/types.ts:FormFields)
 // type SelectField<O> = { [K in keyof O]: NonNullable<O[K]> extends Option ? K : never }[keyof O];
 
+// TODO @tom2drum remove this component
 type Props<
   FormFields extends FieldValues,
   Name extends Path<FormFields>,

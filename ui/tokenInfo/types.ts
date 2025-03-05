@@ -6,7 +6,7 @@ export interface Fields extends SocialLinkFields, TickerUrlFields {
   requester_name: string;
   requester_email: string;
   project_name?: string;
-  project_sector: Option | null;
+  project_sector: Array<Option> | null;
   project_email: string;
   project_website: string;
   project_description: string;

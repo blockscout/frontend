@@ -20,12 +20,12 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
     const { label, children, helperText, errorText, optionalText, ...rest } = props;
 
     // A floating field cannot be without a label.
-    if (props.floating && label) {
+    if (rest.floating && label) {
       const injectedProps = {
         className: 'peer',
         placeholder: ' ',
-        size: props.size,
-        floating: props.floating,
+        size: rest.size,
+        floating: rest.floating,
         bgColor: rest.bgColor,
         disabled: rest.disabled,
         readOnly: rest.readOnly,
@@ -79,6 +79,13 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
       );
     }
 
+    // Pass size value to the input component
+    const injectedProps = {
+      size: rest.size,
+    };
+    const child = React.Children.only<React.ReactElement<InputProps | InputGroupProps>>(children);
+    const clonedChild = React.cloneElement(child, injectedProps);
+
     return (
       <ChakraField.Root ref={ ref } { ...rest }>
         { label && (
@@ -87,7 +94,7 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
             <ChakraField.RequiredIndicator fallback={ optionalText }/>
           </ChakraField.Label>
         ) }
-        { children }
+        { clonedChild }
         { helperText && (
           <ChakraField.HelperText>{ helperText }</ChakraField.HelperText>
         ) }

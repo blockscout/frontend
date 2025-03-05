@@ -12,7 +12,6 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
@@ -144,12 +143,12 @@ const VerifiedAddresses = () => {
     return (
       <>
         <PageTitle title="Token info application form" backLink={ backLink }/>
-        { /* <TokenInfoForm
+        <TokenInfoForm
           address={ selectedAddress }
           tokenName={ tokenName }
           application={ applicationsQuery.data?.submissions.find(({ tokenAddress }) => tokenAddress.toLowerCase() === selectedAddress.toLowerCase()) }
           onSubmit={ handleApplicationSubmit }
-        /> */ }
+        />
       </>
     );
   }
