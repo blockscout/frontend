@@ -2,9 +2,9 @@ import React from 'react';
 import { Button } from '@chakra-ui/react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useConfig } from 'wagmi';
 import { waitForTransactionReceipt } from 'wagmi/actions';
-import stakingAbi from '../../../../lib/hooks/useDeepLink/stakingAbi.json'; // 确保路径正确
+import stakingAbi from '../../../../lib/hooks/useDeepLink/stakingLongAbi.json'; // 确保路径正确
 
-const STAKING_CONTRACT_ADDRESS = '0xa6c07a5c289a2b1b1b528baf9aa3177fd2b57d83';
+const STAKING_CONTRACT_ADDRESS = '0x7FDC6ed8387f3184De77E0cF6D6f3B361F906C21';
 
 // 定义 Props 类型（可选，使用 TypeScript 时推荐）
 interface AddDLCToStakeProps {

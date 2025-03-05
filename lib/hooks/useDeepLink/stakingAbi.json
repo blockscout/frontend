@@ -16,6 +16,27 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "AddressExists",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CallerNotRentContract",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "CanNotUpgrade",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -37,13 +58,161 @@
     "type": "error"
   },
   {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "gpuType",
+        "type": "string"
+      }
+    ],
+    "name": "GPUTypeNotMatch",
+    "type": "error"
+  },
+  {
     "inputs": [],
     "name": "InvalidInitialization",
     "type": "error"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenIdLength",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "balanceLength",
+        "type": "uint256"
+      }
+    ],
+    "name": "InvalidNFTLength",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidStakeHours",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      }
+    ],
+    "name": "MachineIsStaking",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "MachineNotOnlineOrRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "MachineNotRented",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "MachineNotStakeEnoughDBC",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      }
+    ],
+    "name": "MachineNotStaked",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "MachineRentedByUser",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "MachineStillRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "mem",
+        "type": "uint256"
+      }
+    ],
+    "name": "MemorySizeLessThan16G",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NFTCountGreaterThan20",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotAdmin",
+    "type": "error"
+  },
+  {
     "inputs": [],
     "name": "NotInitializing",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "NotMachineOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotMachineOwnerOrAdmin",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "slashAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "NotPaidSlashBeforeClaim",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "currentAddress",
+        "type": "address"
+      }
+    ],
+    "name": "NotStakeHolder",
     "type": "error"
   },
   {
@@ -75,6 +244,32 @@
   },
   {
     "inputs": [],
+    "name": "RewardEnd",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "StakeAmountLessThanReserve",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TimestampLessThanCurrent",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "UUPSUnauthorizedCallContext",
     "type": "error"
   },
@@ -87,6 +282,21 @@
       }
     ],
     "name": "UUPSUnsupportedProxiableUUID",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroCalcPoint",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroNFTTokenIds",
     "type": "error"
   },
   {
@@ -424,25 +634,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "totalDistributedRewardAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "_getDailyRewardAmount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "string",
         "name": "machineId",
         "type": "string"
@@ -551,6 +742,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      }
+    ],
+    "name": "calculateRewards",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "canUpgradeAddress",
     "outputs": [
@@ -604,6 +814,19 @@
         "internalType": "contract IDBCAIContract",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "depositedReward",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -933,6 +1156,25 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_rewardStartAtTimestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "getRewardStartTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "string",
         "name": "machineId",
         "type": "string"
@@ -944,6 +1186,51 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getStateSummary",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "totalCalcPoint",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalGPUCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalCalcPointPoolCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalRentedGPUCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalBurnedRentFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalReservedAmount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct NFTStakingState.StateSummary",
+        "name": "",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -1023,19 +1310,6 @@
   {
     "inputs": [],
     "name": "getTotalDlcNftStakingBurnedRentFee",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getTotalGPUCountInStaking",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1196,6 +1470,45 @@
       }
     ],
     "name": "machineId2LockedRewardDetail",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "totalAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lockTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "unlockTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "claimedAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "machineId2LockedRewardDetails",
     "outputs": [
       {
         "internalType": "uint256",

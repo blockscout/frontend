@@ -26,11 +26,9 @@ import MymachineSearchTop from './modules/mymachine-search-top';
 import RestakeBtn from './modules/Restake-btn-dialog';
 import UnstakeBtn from './modules/UnstakeBtn-btn-dialog';
 import WithdrawBtn from './modules/WithdrawBtn-btn-dialog';
-import { useMyMachine } from '../../lib/hooks/useDeepLink/useMyMachine';
 
 function index() {
   const isMobile = useIsMobile();
-  const { getStakeData } = useMyMachine();
   // bool isStaking;  // 是否在质押
   // string gpuType;  // gpu类型
   // uint8  gpuCount; // gpu数量

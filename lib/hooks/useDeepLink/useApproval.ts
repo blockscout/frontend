@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 // private key: d85789ca443866f898a928bba3d863a5e3c66dc03b03a7d947e8dde99e19368e
 const NFT_CONTRACT_ADDRESS = '0x905dE58579886C5afe9B6406CFDE82bd6a1087C1';
 const DLC_TOKEN_ADDRESS = '0x23ba922d2c435ea65aceb6d56feec7a7c29948b8';
-const STAKING_CONTRACT_ADDRESS = '0x23ba922d2c435ea65aceb6d56feec7a7c29948b8';
+const STAKING_CONTRACT_ADDRESS = '0x7FDC6ed8387f3184De77E0cF6D6f3B361F906C21';
 
 export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDLC: () => void) {
   const { address, isConnected } = useAccount();
