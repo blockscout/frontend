@@ -635,7 +635,7 @@ export const RESOURCES = {
     filterFields: [],
   },
   address_xstar_score: {
-    path: '/api/v2/proxy/3rdparty/xname/addresses/:hash',
+    path: '/api/v2/proxy/3dparty/xname/addresses/:hash',
     pathParams: [ 'hash' as const ],
   },
 
@@ -1090,16 +1090,16 @@ export const RESOURCES = {
 
   // NOVES-FI
   noves_transaction: {
-    path: '/api/v2/proxy/3rdparty/noves-fi/transactions/:hash',
+    path: '/api/v2/proxy/3dparty/noves-fi/transactions/:hash',
     pathParams: [ 'hash' as const ],
   },
   noves_address_history: {
-    path: '/api/v2/proxy/3rdparty/noves-fi/addresses/:address/transactions',
+    path: '/api/v2/proxy/3dparty/noves-fi/addresses/:address/transactions',
     pathParams: [ 'address' as const ],
     filterFields: [],
   },
   noves_describe_txs: {
-    path: '/api/v2/proxy/3rdparty/noves-fi/transaction-descriptions',
+    path: '/api/v2/proxy/3dparty/noves-fi/transaction-descriptions',
   },
 
   // USER OPS
