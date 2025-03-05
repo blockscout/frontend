@@ -53,7 +53,7 @@
 
 // 获取机器列表数据
 export async function fetchMachineData(address: any) {
-  const url = `/api/machine?address=${encodeURIComponent(address)}`;
+  const url = `/nestapi/machine?address=${encodeURIComponent(address)}`;
 
   try {
     const response = await fetch(url, {
@@ -77,7 +77,7 @@ export async function fetchMachineData(address: any) {
 
 // 创建机器
 export async function createMachine(req: any) {
-  const url = '/api/machine';
+  const url = '/nestapi/machine';
 
   try {
     const response = await fetch(url, {
