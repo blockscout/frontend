@@ -114,6 +114,11 @@ module.exports = {
           return null;
         }
         break;
+      case '/interop-messages':
+        if (process.env.NEXT_PUBLIC_INTEROP_ENABLED !== 'true') {
+          return null;
+        }
+        break;
       case '/pools':
         if (process.env.NEXT_PUBLIC_DEX_POOLS_ENABLED !== 'true') {
           return null;
