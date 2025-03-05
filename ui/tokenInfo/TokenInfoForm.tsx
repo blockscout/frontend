@@ -115,7 +115,6 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
   }
 
   const fieldProps = {
-    size: 'xl' as const,
     readOnly: application?.status === 'IN_PROCESS',
   };
 

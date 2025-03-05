@@ -13,7 +13,7 @@ export interface FormFields {
 
 export interface FormFieldTag {
   name: string;
-  type: Option<AddressMetadataTagType>;
+  type: Array<Option<AddressMetadataTagType>>;
   url: string | undefined;
   bgColor: string | undefined;
   textColor: string | undefined;

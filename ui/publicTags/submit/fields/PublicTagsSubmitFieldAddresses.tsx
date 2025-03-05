@@ -1,9 +1,10 @@
-import { GridItem, IconButton } from '@chakra-ui/react';
+import { GridItem } from '@chakra-ui/react';
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
+import { IconButton } from 'toolkit/chakra/icon-button';
 import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -40,9 +41,8 @@ const PublicTagsSubmitFieldAddresses = () => {
             <GridItem colSpan={{ base: 1, lg: 2 }}>
               <FormFieldAddress<FormFields>
                 name={ `addresses.${ index }.hash` }
-                isRequired
+                required
                 placeholder="Smart contract / Address (0x...)"
-                size={{ base: 'md', lg: 'lg' }}
               />
             </GridItem>
             <GridItem display="flex" alignItems="center" columnGap={ 5 } justifyContent={{ base: 'flex-end', lg: 'flex-start' }}>
@@ -53,9 +53,10 @@ const PublicTagsSubmitFieldAddresses = () => {
                   variant="outline"
                   boxSize="30px"
                   onClick={ handleAddFieldClick }
-                  icon={ <IconSvg name="plus" boxSize={ 5 }/> }
-                  isDisabled={ isDisabled }
-                />
+                  disabled={ isDisabled }
+                >
+                  <IconSvg name="plus" boxSize={ 5 }/>
+                </IconButton>
               ) }
               { fields.length > 1 && (
                 <IconButton
@@ -64,9 +65,10 @@ const PublicTagsSubmitFieldAddresses = () => {
                   variant="outline"
                   boxSize="30px"
                   onClick={ handleRemoveFieldClick }
-                  icon={ <IconSvg name="minus" boxSize={ 5 }/> }
-                  isDisabled={ isDisabled }
-                />
+                  disabled={ isDisabled }
+                >
+                  <IconSvg name="minus" boxSize={ 5 }/>
+                </IconButton>
               ) }
             </GridItem>
           </React.Fragment>

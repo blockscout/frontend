@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Flex, Grid, GridItem } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem } from '@chakra-ui/react';
 import { pickBy } from 'es-toolkit';
 import React from 'react';
 
@@ -7,7 +7,9 @@ import type { FormSubmitResult } from './types';
 import { route } from 'nextjs-routes';
 
 import makePrettyLink from 'lib/makePrettyLink';
-import LinkExternal from 'ui/shared/links/LinkExternal';
+import { Alert } from 'toolkit/chakra/alert';
+import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
 
 import PublicTagsSubmitResultSuccess from './result/PublicTagsSubmitResultSuccess';
 import PublicTagsSubmitResultWithErrors from './result/PublicTagsSubmitResultWithErrors';
@@ -57,7 +59,7 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
           <>
             <GridItem>Company website</GridItem>
             <GridItem>
-              <LinkExternal href={ companyWebsite.url }>{ companyWebsite.domain }</LinkExternal>
+              <Link external href={ companyWebsite.url }>{ companyWebsite.domain }</Link>
             </GridItem>
           </>
         ) }
@@ -68,11 +70,15 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
 
       <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 6 } mt={ 8 } rowGap={ 3 }>
         { hasErrors && (
-          <Button size="lg" variant="outline" as="a" href={ route({ pathname: '/public-tags/submit', query: startOverButtonQuery }) }>
-            Start over
-          </Button>
+          <Link href={ route({ pathname: '/public-tags/submit', query: startOverButtonQuery }) } asChild>
+            <Button size="lg" variant="outline">
+              Start over
+            </Button>
+          </Link>
         ) }
-        <Button size="lg" as="a" href={ route({ pathname: '/public-tags/submit' }) }>Add new tag</Button>
+        <Link href={ route({ pathname: '/public-tags/submit' }) } asChild>
+          <Button size="lg">Add new tag</Button>
+        </Link>
       </Flex>
     </div>
   );

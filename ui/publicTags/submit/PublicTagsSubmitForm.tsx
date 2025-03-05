@@ -1,4 +1,4 @@
-import { Button, chakra, Grid, GridItem } from '@chakra-ui/react';
+import { chakra, Grid, GridItem } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -13,6 +13,7 @@ import useApiFetch from 'lib/api/useApiFetch';
 import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { Button } from 'toolkit/chakra/button';
 import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
@@ -84,10 +85,6 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
     return null;
   }
 
-  const fieldProps = {
-    size: { base: 'md', lg: 'lg' },
-  };
-
   return (
     <FormProvider { ...formApi }>
       <chakra.form
@@ -102,12 +99,12 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
           <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4">
             Company info
           </GridItem>
-          <FormFieldText<FormFields> name="requesterName" isRequired placeholder="Your name" { ...fieldProps }/>
-          <FormFieldEmail<FormFields> name="requesterEmail" isRequired { ...fieldProps }/>
+          <FormFieldText<FormFields> name="requesterName" required placeholder="Your name"/>
+          <FormFieldEmail<FormFields> name="requesterEmail" required/>
 
           { !isMobile && <div/> }
-          <FormFieldText<FormFields> name="companyName" placeholder="Company name" { ...fieldProps }/>
-          <FormFieldUrl<FormFields> name="companyWebsite" placeholder="Company website" { ...fieldProps }/>
+          <FormFieldText<FormFields> name="companyName" placeholder="Company name"/>
+          <FormFieldUrl<FormFields> name="companyWebsite" placeholder="Company website"/>
           { !isMobile && <div/> }
 
           <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4" mt={{ base: 3, lg: 5 }}>
@@ -119,7 +116,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
           <GridItem colSpan={{ base: 1, lg: 2 }}>
             <FormFieldText<FormFields>
               name="description"
-              isRequired
+              required
               placeholder={
                 isMobile ?
                   'Confirm the connection between addresses and tags.' :
@@ -128,7 +125,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
               maxH="160px"
               rules={{ maxLength: 80 }}
               asComponent="Textarea"
-              { ...fieldProps }
+              size="2xl"
             />
           </GridItem>
 
@@ -141,7 +138,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
             size="lg"
             type="submit"
             mt={ 3 }
-            isLoading={ formApi.formState.isSubmitting }
+            loading={ formApi.formState.isSubmitting }
             loadingText="Send request"
             w="min-content"
           >

@@ -31,7 +31,7 @@ const FormFieldText = <
   group,
   inputProps,
   asComponent,
-  size = 'xl',
+  size = asComponent === 'Textarea' ? '2xl' : 'xl',
   disabled,
   ...restProps
 }: Props<FormFields, Name>) => {

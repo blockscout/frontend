@@ -3,12 +3,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-// import PublicTagsSubmit from 'ui/pages/PublicTagsSubmit';
+import PublicTagsSubmit from 'ui/pages/PublicTagsSubmit';
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/public-tags/submit">
-      { /* <PublicTagsSubmit/> */ }
+      <PublicTagsSubmit/>
     </PageNextJs>
   );
 };
