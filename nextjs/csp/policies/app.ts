@@ -45,7 +45,7 @@ export function app(): CspDev.DirectiveDescriptor {
       // webpack hmr in safari doesn't recognize localhost as 'self' for some reason
       config.app.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
       config.app.isDev ? 'http://localhost:3001' : 'http://localhost:3001',
-
+      'https://dbchaininfo.congtu.cloud/',
       // APIs
       config.api.endpoint,
       config.api.socket,
