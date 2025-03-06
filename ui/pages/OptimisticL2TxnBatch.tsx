@@ -12,7 +12,6 @@ import { BLOCK } from 'stubs/block';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import BlocksContent from 'ui/blocks/BlocksContent';
-import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -108,7 +107,6 @@ const OptimisticL2TxnBatch = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle
         title={ `Batch #${ batchQuery.data?.internal_id }` }
         backLink={ backLink }

@@ -7,7 +7,6 @@ import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 import BlobData from './BlobData';
@@ -97,8 +96,6 @@ const BlobInfo = ({ data, isLoading }: Props) => {
           </DetailsInfoItem.Value>
         </>
       ) }
-
-      <DetailsSponsoredItem isLoading={ isLoading }/>
 
       { data.blob_data && (
         <>

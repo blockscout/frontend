@@ -5,7 +5,6 @@ import type { Pool } from 'types/api/pools';
 
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 type Props = {
@@ -142,8 +141,6 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
           { data.dex.name }
         </Skeleton>
       </DetailsInfoItem.Value>
-
-      <DetailsSponsoredItem isLoading={ isPlaceholderData }/>
     </Grid>
   );
 };
