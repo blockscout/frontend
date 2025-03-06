@@ -8,7 +8,6 @@ import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton'
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
 import RewardsReadOnlyInputWithCopy from 'ui/rewards/RewardsReadOnlyInputWithCopy';
-import AdBanner from 'ui/shared/ad/AdBanner';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -57,7 +56,6 @@ const RewardsDashboard = () => {
             </span>
           ) }
         />
-        <AdBanner platform="mobile" w="fit-content" flexShrink={ 0 } borderRadius="md" overflow="hidden" display={{ base: 'none', lg: 'block ' }}/>
       </Flex>
       <Flex flexDirection="column" alignItems="flex-start" w="full" gap={ 6 }>
         { isError && <Alert status="error">Failed to load some data. Please try again later.</Alert> }

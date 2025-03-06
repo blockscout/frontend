@@ -9,7 +9,6 @@ import LatestZkEvmL2Batches from 'ui/home/latestBatches/LatestZkEvmL2Batches';
 import LatestBlocks from 'ui/home/LatestBlocks';
 import Stats from 'ui/home/Stats';
 import Transactions from 'ui/home/Transactions';
-import AdBanner from 'ui/shared/ad/AdBanner';
 
 const rollupFeature = config.features.rollup;
 
@@ -35,7 +34,6 @@ const Home = () => {
         <Stats/>
         <ChainIndicators/>
       </Flex>
-      <AdBanner mt={ 6 } mx="auto" display={{ base: 'flex', lg: 'none' }} justifyContent="center"/>
       <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 6 }>
         { leftWidget }
         <Box flexGrow={ 1 }>

@@ -7,7 +7,6 @@ import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { VALIDATOR_ZILLIQA } from 'stubs/validators';
-import TextAd from 'ui/shared/ad/TextAd';
 import ValidatorEntity from 'ui/shared/entities/validator/ValidatorEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import ValidatorDetails from 'ui/validators/zilliqa/ValidatorDetails';
@@ -62,7 +61,6 @@ const ValidatorZilliqa = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle title="Validator details" secondRow={ titleSecondRow } backLink={ backLink }/>
       { query.data && <ValidatorDetails data={ query.data } isLoading={ isLoading }/> }
     </>
