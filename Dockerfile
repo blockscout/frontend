@@ -39,6 +39,12 @@ WORKDIR /sitemap-generator
 COPY ./deploy/tools/sitemap-generator/package.json ./deploy/tools/sitemap-generator/yarn.lock ./
 RUN yarn --frozen-lockfile --network-timeout 100000
 
+### FAVICON GENERATOR
+# Install dependencies
+WORKDIR /favicon-generator
+COPY ./deploy/tools/favicon-generator/package.json ./deploy/tools/favicon-generator/yarn.lock ./
+RUN yarn --frozen-lockfile
+
 
 # *****************************
 # ****** STAGE 2: Build *******
@@ -85,7 +91,7 @@ RUN cd ./deploy/tools/feature-reporter && yarn build
 
 
 ### ENV VARIABLES CHECKER
-# Copy dependencies and source code, then build 
+# Copy dependencies and source code, then build
 COPY --from=deps /envs-validator/node_modules ./deploy/tools/envs-validator/node_modules
 RUN cd ./deploy/tools/envs-validator && yarn build
 

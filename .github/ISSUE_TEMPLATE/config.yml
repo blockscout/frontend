@@ -1,11 +1,11 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
   - name: Feature Request
-    url: https://blockscout.canny.io/feature-requests
+    url: https://github.com/autonomys/blockscout-frontend/issues
     about: Request a feature or enhancement
   - name: Ask a question
-    url: https://github.com/orgs/blockscout/discussions
+    url: https://https://forum.autonomys.xyz/
     about: Ask questions and discuss topics with other community members
   - name: Join our Discord Server
-    url: https://discord.gg/blockscout
-    about: The official Blockscout Discord community
+    url: https://autonomys.xyz/discord
+    about: The official Autonomys Discord community
