@@ -190,7 +190,16 @@ const FixedComponent = () => {
             </FormControl>
 
             <FormControl mb={4} size="sm">
-              <FormLabel fontSize="sm">ID of the machine you want to pledge</FormLabel>
+              <FormLabel fontSize="sm">rentId</FormLabel>
+              <Input
+                value={rentalMachineIdOnChain}
+                onChange={(e) => setRentalMachineIdOnChain(e.target.value)}
+                placeholder="Enter the rentId"
+                size="sm"
+              />
+            </FormControl>
+            <FormControl mb={4} size="sm">
+              <FormLabel fontSize="sm">ID of the machine</FormLabel>
               <Input
                 value={machineId}
                 onChange={(e) => setMachineId(e.target.value)}
@@ -198,17 +207,6 @@ const FixedComponent = () => {
                 size="sm"
               />
             </FormControl>
-
-            <FormControl mb={4} size="sm">
-              <FormLabel fontSize="sm">ID for On-chain Rental setRentalMachineIdOnChain</FormLabel>
-              <Input
-                value={rentalMachineIdOnChain}
-                onChange={(e) => setRentalMachineIdOnChain(e.target.value)}
-                placeholder="Enter the ID for on-chain rental"
-                size="sm"
-              />
-            </FormControl>
-
             {/* <FormControl mb={6} size="sm">
               <FormLabel fontSize="sm">Machine private key you want to pledge</FormLabel>
               <Input

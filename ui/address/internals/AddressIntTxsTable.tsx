@@ -19,30 +19,29 @@ const AddressIntTxsTable = ({ data, currentAddress, isLoading }: Props) => {
   return (
     <AddressHighlightProvider>
       <Table variant="simple" size="sm">
-        <Thead top={ 80 }>
+        <Thead top={80}>
           <Tr>
             <Th width="15%">Parent txn hash</Th>
             <Th width="15%">Type</Th>
             <Th width="10%">Block</Th>
             <Th width="40%">From/To</Th>
             <Th width="20%" isNumeric>
-              Value { currencyUnits.ether }
+              Value {currencyUnits.ether}
             </Th>
           </Tr>
         </Thead>
         <Tbody>
-          { data.map((item, index) => (
+          {data.map((item, index) => (
             <AddressIntTxsTableItem
-              key={ item.transaction_hash + '_' + index }
-              { ...item }
-              currentAddress={ currentAddress }
-              isLoading={ isLoading }
+              key={item.transaction_hash + '_' + index}
+              {...item}
+              currentAddress={currentAddress}
+              isLoading={isLoading}
             />
-          )) }
+          ))}
         </Tbody>
       </Table>
     </AddressHighlightProvider>
-
   );
 };
 

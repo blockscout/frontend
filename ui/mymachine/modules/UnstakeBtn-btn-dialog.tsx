@@ -11,9 +11,16 @@ import {
   Skeleton,
 } from '@chakra-ui/react';
 import { useTimeoutFn } from '@reactuses/core';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { deleteMachine } from '../modules/api/index';
+import { useApproval } from '../../../lib/hooks/useDeepLink/useApproval';
+import { ascending } from 'd3';
 
-function UnstakeBtn() {
+interface UnstakeBtnProps {
+  id: string;
+}
+
+function UnstakeBtn({ id }: UnstakeBtnProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef(null);
   // 按钮数据
@@ -21,6 +28,7 @@ function UnstakeBtn() {
     isLoading: false,
     loadingText: '',
   });
+  const { handleUnStake, isUnStakeed } = useApproval();
 
   // 模拟确认点击事件
   const handleConfirmClick = async () => {
@@ -28,19 +36,29 @@ function UnstakeBtn() {
       isLoading: true,
       loadingText: 'loading',
     });
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-        onClose();
-      }, 2000);
-    });
-    setBtnData({
-      isLoading: false,
-      loadingText: '666666',
-    });
-    return false;
+
+    handleUnStake(id);
   };
   const [isPending, start] = useTimeoutFn(() => {}, 2000, { immediate: true });
+
+  // 删除机器
+  const deleteMachine = async (id: any) => {
+    const res: any = await deleteMachine(id);
+    console.log(res, '<<<<<<<<<<<<<<<<<<<<<<<<<<');
+
+    if (res.code === 200) {
+      setBtnData({
+        isLoading: false,
+        loadingText: '',
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (isUnStakeed) {
+      deleteMachine(id);
+    }
+  }, [isUnStakeed]);
   return (
     <>
       <Skeleton isLoaded={!isPending}>

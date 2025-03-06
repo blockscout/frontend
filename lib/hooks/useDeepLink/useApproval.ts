@@ -12,7 +12,7 @@ const DLC_TOKEN_ADDRESS = '0x23ba922d2c435ea65aceb6d56feec7a7c29948b8';
 const STAKING_CONTRACT_ADDRESS = '0x7FDC6ed8387f3184De77E0cF6D6f3B361F906C21';
 import { createMachine } from '../../../ui/mymachine/modules/api/index';
 
-export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDLC: () => void) {
+export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseDLC?: () => void) {
   const { address, isConnected } = useAccount();
   const toast = useToast();
   const config = useConfig(); // 获取全局配置
@@ -145,8 +145,9 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
   useEffect(() => {
     if (isStakingSuccess) {
       setLoading(false);
-      onPledgeModalClose();
-
+      if (onPledgeModalClose) {
+        onPledgeModalClose();
+      }
       // 在组件中定义创建机器的函数
       const handleCreateMachine = async () => {
         const machineData = {
@@ -292,7 +293,9 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
         isClosable: true,
         position: 'top',
       });
-      onPledgeModalCloseDLC();
+      if (onPledgeModalCloseDLC) {
+        onPledgeModalCloseDLC();
+      }
     }
   }, [isAddDLCSuccess]);
   // 解除质押
@@ -303,9 +306,16 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
 
   // a8aeafb706433fc89c16817e8405705bd66f28b6d5cfc46c9da2faf7b204da78
 
-  const handleUnStake = async () => {
+  const handleUnStake = async (id: string) => {
     if (!isConnected) {
-      console.error('Please connect your wallet first');
+      toast({
+        position: 'top',
+        title: 'Prompt',
+        description: 'Please connect your wallet first',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      });
       return;
     }
     try {
@@ -314,7 +324,7 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
         address: STAKING_CONTRACT_ADDRESS,
         abi: stakingAbi,
         functionName: 'unStake',
-        args: ['a8aeafb706433fc89c16817e8405705bd66f28b6d5cfc46c9da2faf7b204da78'], // Using the passed machineId and amount
+        args: [id], // Using the passed machineId and amount
       });
       console.log('Transaction sent, txHash:', txHash);
       // Step 2: Wait for transaction confirmation
@@ -325,7 +335,7 @@ export function useApproval(onPledgeModalClose: () => void, onPledgeModalCloseDL
         console.log('Unstaking failed, transaction reverted, txHash:', txHash);
       }
     } catch (error) {
-      console.error('Failed to add DLC, error:', error);
+      console.error('Unstaking, error:', error);
     }
   };
 

@@ -11,14 +11,11 @@ import {
   PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
-  Button,
   Skeleton,
 } from '@chakra-ui/react';
 import { useTimeoutFn } from '@reactuses/core';
 import React from 'react';
 import { BsFilter } from 'react-icons/bs';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 
 const mymachineSearchTop = () => {
   const [isPending, start] = useTimeoutFn(() => {}, 2000, { immediate: true });
@@ -48,7 +45,7 @@ const mymachineSearchTop = () => {
           </InputGroup>
         </div>
 
-        <div className="flex-1 flex justify-end">
+        {/* <div className="flex-1 flex justify-end">
           <div className="flex items-center gap-x-3 ">
             <Button variant="outline" size="sm">
               Total Pages：666
@@ -64,7 +61,7 @@ const mymachineSearchTop = () => {
               <FaAngleRight />
             </Button>
           </div>
-        </div>
+        </div> */}
       </div>
     </Skeleton>
   );

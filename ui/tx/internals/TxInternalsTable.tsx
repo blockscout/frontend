@@ -24,28 +24,46 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) =
   return (
     <AddressHighlightProvider>
       <Table variant="simple" size="sm">
-        <Thead top={ top }>
+        <Thead top={top}>
           <Tr>
             <Th width="28%">Type</Th>
             <Th width="40%">From/To</Th>
             <Th width="16%" isNumeric>
-              <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('value') } columnGap={ 1 }>
-                { sort?.includes('value') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
-                Value { currencyUnits.ether }
+              <Link
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-end"
+                onClick={onSortToggle('value')}
+                columnGap={1}
+              >
+                {sort?.includes('value') && <IconSvg name="arrows/east" boxSize={4} transform={sortIconTransform} />}
+                Value {currencyUnits.ether}
               </Link>
             </Th>
             <Th width="16%" isNumeric>
-              <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('gas-limit') } columnGap={ 1 }>
-                { sort?.includes('gas-limit') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
-                Gas limit { currencyUnits.ether }
+              <Link
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-end"
+                onClick={onSortToggle('gas-limit')}
+                columnGap={1}
+              >
+                {sort?.includes('gas-limit') && (
+                  <IconSvg name="arrows/east" boxSize={4} transform={sortIconTransform} />
+                )}
+                Gas limit {currencyUnits.ether}
               </Link>
             </Th>
           </Tr>
         </Thead>
         <Tbody>
-          { data.map((item, index) => (
-            <TxInternalsTableItem key={ item.index.toString() + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
-          )) }
+          {data.map((item, index) => (
+            <TxInternalsTableItem
+              key={item.index.toString() + (isLoading ? index : '')}
+              {...item}
+              isLoading={isLoading}
+            />
+          ))}
         </Tbody>
       </Table>
     </AddressHighlightProvider>
