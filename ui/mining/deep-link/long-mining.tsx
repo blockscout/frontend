@@ -192,8 +192,8 @@ const FixedComponent = () => {
             <FormControl mb={4} size="sm">
               <FormLabel fontSize="sm">rentId</FormLabel>
               <Input
-                value={rentalMachineIdOnChain}
-                onChange={(e) => setRentalMachineIdOnChain(e.target.value)}
+                value={machineId}
+                onChange={(e) => setMachineId(e.target.value)}
                 placeholder="Enter the rentId"
                 size="sm"
               />
@@ -201,8 +201,8 @@ const FixedComponent = () => {
             <FormControl mb={4} size="sm">
               <FormLabel fontSize="sm">ID of the machine</FormLabel>
               <Input
-                value={machineId}
-                onChange={(e) => setMachineId(e.target.value)}
+                value={rentalMachineIdOnChain}
+                onChange={(e) => setRentalMachineIdOnChain(e.target.value)}
                 placeholder="Enter machine ID"
                 size="sm"
               />
