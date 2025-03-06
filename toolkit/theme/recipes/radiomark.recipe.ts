@@ -1,6 +1,5 @@
 import { defineRecipe } from '@chakra-ui/react';
 
-// TODO @tom2drum dark mode + border color
 export const recipe = defineRecipe({
   base: {
     display: 'inline-flex',
@@ -12,15 +11,14 @@ export const recipe = defineRecipe({
     borderWidth: '2px',
     borderColor: 'transparent',
     borderRadius: 'full',
-    cursor: 'radio',
     _focusVisible: {
       outline: '2px solid',
       outlineColor: 'colorPalette.focusRing',
       outlineOffset: '2px',
     },
     _disabled: {
-      opacity: '0.5',
       cursor: 'disabled',
+      opacity: 'control.disabled',
     },
 
     '& .dot': {
@@ -36,14 +34,36 @@ export const recipe = defineRecipe({
     variant: {
       solid: {
         borderWidth: '2px',
-        borderColor: 'border',
+        borderColor: 'radio.control.border',
+        _hover: {
+          borderColor: 'radio.control.border.hover',
+        },
         _checked: {
-          bg: 'radio.icon.bg.checked',
+          bg: 'blue.500',
           color: 'white',
-          borderColor: 'radio.icon.bg.checked',
+          borderColor: 'blue.500',
           _hover: {
-            bg: 'radio.icon.bg.hover',
-            borderColor: 'radio.icon.bg.hover',
+            bg: 'blue.400',
+            borderColor: 'blue.400',
+          },
+        },
+        _invalid: {
+          bg: 'red.500',
+          borderColor: 'red.500',
+        },
+        _readOnly: {
+          borderColor: 'radio.control.border.readOnly',
+          _hover: {
+            borderColor: 'radio.control.border.readOnly',
+          },
+          _checked: {
+            bg: 'radio.control.border.readOnly',
+            _hover: {
+              bg: 'radio.control.border.readOnly',
+            },
+            '& .dot': {
+              bg: 'gray.500',
+            },
           },
         },
       },

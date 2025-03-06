@@ -36,7 +36,7 @@ const RESTRICTED_MODULES = {
         'Tag', 'Switch', 'Image', 'Popover', 'PopoverTrigger', 'PopoverContent', 'PopoverBody', 'PopoverFooter',
         'DrawerRoot', 'DrawerBody', 'DrawerContent', 'DrawerOverlay', 'DrawerBackdrop', 'DrawerTrigger', 'Drawer',
         'Alert', 'AlertIcon', 'AlertTitle', 'AlertDescription',
-        'Heading', 'Badge', 'Tabs', 'Show', 'Hide', 'Checkbox',
+        'Heading', 'Badge', 'Tabs', 'Show', 'Hide', 'Checkbox', 'CheckboxGroup',
         'Table', 'TableRoot', 'TableBody', 'TableHeader', 'TableRow', 'TableCell',
         'Menu', 'MenuRoot', 'MenuTrigger', 'MenuContent', 'MenuItem', 'MenuTriggerItem', 'MenuRadioItemGroup', 'MenuContextTrigger',
       ],

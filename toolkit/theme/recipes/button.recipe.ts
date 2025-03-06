@@ -4,11 +4,10 @@ export const recipe = defineRecipe({
   base: {
     display: 'flex',
     gap: 0,
-    borderRadius: 'base',
     fontWeight: 600,
     overflow: 'hidden',
     _disabled: {
-      opacity: 0.2,
+      opacity: 'control.disabled',
     },
     // FIXME have to override the Chakra UI styles for the SVG icon inside the button
     // try to find a better solution
@@ -26,14 +25,17 @@ export const recipe = defineRecipe({
         color: 'white',
         '&:not([data-loading-skeleton])': {
           bgColor: 'blue.600',
+          _expanded: {
+            bg: 'blue.400',
+          },
         },
         _hover: {
           bg: 'blue.400',
         },
-        _expanded: { bg: 'blue.400' },
         _loading: {
+          opacity: 1,
           '& .chakra-spinner': {
-            borderColor: 'white',
+            borderColor: 'gray.200',
             borderBottomColor: 'spinner.track',
             borderInlineStartColor: 'spinner.track',
           },
@@ -53,6 +55,14 @@ export const recipe = defineRecipe({
           color: 'blue.400',
           borderColor: 'blue.400',
         },
+        _loading: {
+          opacity: 1,
+          '& .chakra-spinner': {
+            borderColor: 'button.outline.fg',
+            borderBottomColor: 'spinner.track',
+            borderInlineStartColor: 'spinner.track',
+          },
+        },
       },
       dropdown: {
         borderWidth: '0px',
@@ -67,6 +77,14 @@ export const recipe = defineRecipe({
           bg: 'transparent',
           color: 'blue.400',
           borderColor: 'blue.400',
+        },
+        _loading: {
+          opacity: 1,
+          '& .chakra-spinner': {
+            borderColor: 'blue.500',
+            borderBottomColor: 'spinner.track',
+            borderInlineStartColor: 'spinner.track',
+          },
         },
         // When the dropdown is open, the button should be active
         _expanded: {
@@ -99,6 +117,14 @@ export const recipe = defineRecipe({
           color: 'blue.400',
           borderColor: 'blue.400',
         },
+        _loading: {
+          opacity: 1,
+          '& .chakra-spinner': {
+            borderColor: 'blue.500',
+            borderBottomColor: 'spinner.track',
+            borderInlineStartColor: 'spinner.track',
+          },
+        },
         _selected: {
           bg: 'button.header.bg.selected',
           color: 'button.header.fg.selected',
@@ -127,8 +153,9 @@ export const recipe = defineRecipe({
           bg: 'button.hero.bg',
         },
         _loading: {
+          opacity: 1,
           '& .chakra-spinner': {
-            borderColor: 'white',
+            borderColor: 'button.hero.fg',
             borderBottomColor: 'spinner.track',
             borderInlineStartColor: 'spinner.track',
           },
@@ -216,10 +243,10 @@ export const recipe = defineRecipe({
       },
     },
     size: {
-      xs: { px: 2, h: 6, fontSize: '12px' },
-      sm: { px: 2, h: 8, fontSize: '14px' },
-      md: { px: 4, h: 10, fontSize: '16px' },
-      lg: { px: 6, h: 12, fontSize: '20px' },
+      '2xs': { px: 2, h: 5, textStyle: 'xs', borderRadius: 'sm', gap: 1 },
+      xs: { px: 2, h: 6, textStyle: 'sm', borderRadius: 'sm', gap: 1 },
+      sm: { px: 3, h: 8, textStyle: 'md', borderRadius: 'base', gap: 1 },
+      md: { px: 3, h: 10, textStyle: 'md', borderRadius: 'base', gap: 2, '& .chakra-spinner': { '--spinner-size': '20px' } },
     },
   },
   defaultVariants: {

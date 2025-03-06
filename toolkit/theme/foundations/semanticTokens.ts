@@ -377,18 +377,20 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       },
     },
     checkbox: {
-      icon: {
-        bg: {
-          checked: { value: { _light: '{colors.blue.500}', _dark: '{colors.gray.300}' } },
-          hover: { value: { _light: '{colors.blue.600}', _dark: '{colors.gray.400}' } },
+      control: {
+        border: {
+          DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
+          hover: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.500}' } },
+          readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
         },
       },
     },
     radio: {
-      icon: {
-        bg: {
-          checked: { value: { _light: '{colors.blue.500}', _dark: '{colors.gray.300}' } },
-          hover: { value: { _light: '{colors.blue.600}', _dark: '{colors.gray.400}' } },
+      control: {
+        border: {
+          DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
+          hover: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.500}' } },
+          readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
         },
       },
     },
@@ -475,6 +477,11 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     drawer: {
       DEFAULT: { value: { _light: '{shadows.size.lg}', _dark: '{shadows.dark-lg}' } },
+    },
+  },
+  opacity: {
+    control: {
+      disabled: { value: '0.2' },
     },
   },
 };

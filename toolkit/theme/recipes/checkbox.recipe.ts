@@ -12,6 +12,13 @@ export const recipe = defineSlotRecipe({
       alignItems: 'center',
       verticalAlign: 'top',
       position: 'relative',
+      cursor: 'pointer',
+      _disabled: {
+        cursor: 'disabled',
+      },
+      _readOnly: {
+        cursor: 'default',
+      },
     },
 
     control: checkmarkRecipe.base,
@@ -20,23 +27,13 @@ export const recipe = defineSlotRecipe({
       fontWeight: 'normal',
       userSelect: 'none',
       _disabled: {
-        opacity: '0.5',
+        opacity: 'control.disabled',
       },
     },
   },
 
   variants: {
     size: {
-      xs: {
-        root: { gap: '1' },
-        label: { textStyle: 'xs' },
-        control: checkmarkRecipe.variants?.size?.xs,
-      },
-      sm: {
-        root: { gap: '1' },
-        label: { textStyle: 'sm' },
-        control: checkmarkRecipe.variants?.size?.sm,
-      },
       md: {
         root: { gap: '2' },
         label: { textStyle: 'md' },

@@ -38,6 +38,7 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
 
 const INVERT_FILTER = 'brightness(0) invert(1)';
 
+// TODO @tom2drum check loading state
 const NetworkLogo = ({ isCollapsed, onClick, className }: Props) => {
 
   const logoSrc = useColorModeValue(config.UI.navigation.logo.default, config.UI.navigation.logo.dark || config.UI.navigation.logo.default);

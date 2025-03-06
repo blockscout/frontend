@@ -1,4 +1,5 @@
-import { Checkbox as ChakraCheckbox } from '@chakra-ui/react';
+import type { Checkbox as ArkCheckbox } from '@ark-ui/react/checkbox';
+import { Checkbox as ChakraCheckbox, CheckboxGroup as ChakraCheckboxGroup } from '@chakra-ui/react';
 import * as React from 'react';
 
 export interface CheckboxProps extends ChakraCheckbox.RootProps {
@@ -20,6 +21,28 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           <ChakraCheckbox.Label>{ children }</ChakraCheckbox.Label>
         ) }
       </ChakraCheckbox.Root>
+    );
+  },
+);
+
+export interface CheckboxGroupProps extends ArkCheckbox.GroupProps {
+  orientation?: 'vertical' | 'horizontal';
+}
+
+export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps>(
+  function CheckboxGroup(props, ref) {
+    const { children, orientation = 'horizontal', ...rest } = props;
+    return (
+      <ChakraCheckboxGroup
+        ref={ ref }
+        orientation={ orientation }
+        display="flex"
+        flexDirection={ orientation === 'vertical' ? 'column' : 'row' }
+        gap={ orientation === 'vertical' ? 3 : 8 }
+        { ...rest }
+      >
+        { children }
+      </ChakraCheckboxGroup>
     );
   },
 );

@@ -73,6 +73,18 @@ const RadioShowcase = () => {
           </Sample>
         </SamplesStack>
       </Section>
+
+      <Section>
+        <SectionHeader>Read-only</SectionHeader>
+        <SamplesStack>
+          <Sample label="readOnly: true">
+            <RadioGroup defaultValue="1" readOnly>
+              <Radio value="1">Option 1</Radio>
+              <Radio value="2">Option 2</Radio>
+            </RadioGroup>
+          </Sample>
+        </SamplesStack>
+      </Section>
     </Container>
   );
 };

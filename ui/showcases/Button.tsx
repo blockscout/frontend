@@ -17,6 +17,9 @@ const ButtonShowcase = () => {
       <Section>
         <SectionHeader>Size</SectionHeader>
         <SamplesStack>
+          <Sample label="size: 2xs">
+            <Button size="2xs">Content</Button>
+          </Sample>
           <Sample label="size: xs">
             <Button size="xs">Content</Button>
           </Sample>
@@ -25,9 +28,6 @@ const ButtonShowcase = () => {
           </Sample>
           <Sample label="size: md">
             <Button size="md">Content</Button>
-          </Sample>
-          <Sample label="size: lg">
-            <Button size="lg">Content</Button>
           </Sample>
         </SamplesStack>
       </Section>
@@ -40,12 +40,14 @@ const ButtonShowcase = () => {
             <Button variant="solid">Default</Button>
             <Button variant="solid" data-hover>Hovered</Button>
             <Button variant="solid" disabled>Disabled</Button>
+            <Button variant="solid" loading>Loading</Button>
           </Sample>
 
           <Sample label="variant: outline">
             <Button variant="outline">Default</Button>
             <Button variant="outline" data-hover>Hovered</Button>
             <Button variant="outline" disabled>Disabled</Button>
+            <Button variant="outline" loading>Loading</Button>
           </Sample>
 
           <Sample label="variant: link">
@@ -97,6 +99,7 @@ const ButtonShowcase = () => {
               </PopoverContent>
             </PopoverRoot>
             <Button variant="dropdown" disabled>Disabled</Button>
+            <Button variant="dropdown" loading>Loading</Button>
 
             <PopoverRoot>
               <Tooltip content="Tooltip content">
@@ -202,6 +205,9 @@ const ButtonShowcase = () => {
         <SamplesStack>
           <Sample label="loading: true, loadingText: 'Loading'">
             <Button loading loadingText="Loading">Content</Button>
+            <Button loading loadingText="Loading" size="sm">Content</Button>
+            <Button loading loadingText="Loading" size="xs">Content</Button>
+            <Button loading loadingText="Loading" size="2xs">Content</Button>
           </Sample>
           <Sample label="loading: true, loadingText: undefined">
             <Button loading>Content</Button>

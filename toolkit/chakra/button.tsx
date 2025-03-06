@@ -22,7 +22,7 @@ export interface ButtonProps extends ChakraButtonProps, ButtonLoadingProps {
   highlighted?: boolean;
 }
 
-export const Button = React.forwardRef<HTMLDivElement, ButtonProps>(
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(props, ref) {
     const { loading, disabled, loadingText, children, expanded, selected, highlighted, loadingSkeleton = false, ...rest } = props;
 
@@ -51,8 +51,9 @@ export const Button = React.forwardRef<HTMLDivElement, ButtonProps>(
     })();
 
     return (
-      <Skeleton loading={ loadingSkeleton } asChild ref={ ref }>
+      <Skeleton loading={ loadingSkeleton } asChild>
         <ChakraButton
+          ref={ ref }
           { ...(expanded ? { 'data-expanded': true } : {}) }
           { ...(selected ? { 'data-selected': true } : {}) }
           { ...(highlighted ? { 'data-highlighted': true } : {}) }

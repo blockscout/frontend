@@ -3,25 +3,33 @@ import { defineSlotRecipe } from '@chakra-ui/react';
 import { recipe as radiomarkRecipe } from './radiomark.recipe';
 
 export const recipe = defineSlotRecipe({
-  slots: [ 'item', 'itemControl', 'label' ],
+  slots: [ 'item', 'itemControl', 'itemText', 'root' ],
   base: {
+    root: {
+      display: 'flex',
+    },
+
     item: {
       display: 'inline-flex',
       alignItems: 'center',
       position: 'relative',
       fontWeight: 'normal',
+      cursor: 'pointer',
       _disabled: {
         cursor: 'disabled',
+      },
+      _readOnly: {
+        cursor: 'default',
       },
     },
 
     itemControl: radiomarkRecipe.base,
 
-    label: {
+    itemText: {
       userSelect: 'none',
       textStyle: 'md',
       _disabled: {
-        opacity: '0.5',
+        opacity: 'control.disabled',
       },
     },
   },
@@ -33,19 +41,26 @@ export const recipe = defineSlotRecipe({
     },
 
     size: {
-      xs: {
-        item: { textStyle: 'xs', gap: '1' },
-        itemControl: radiomarkRecipe.variants?.size?.xs,
-      },
-
-      sm: {
-        item: { textStyle: 'sm', gap: '1' },
-        itemControl: radiomarkRecipe.variants?.size?.sm,
-      },
-
       md: {
         item: { textStyle: 'md', gap: '2' },
         itemControl: radiomarkRecipe.variants?.size?.md,
+      },
+    },
+
+    orientation: {
+      vertical: {
+        root: {
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          rowGap: '12px',
+        },
+      },
+      horizontal: {
+        root: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          columnGap: '32px',
+        },
       },
     },
   },
@@ -53,5 +68,6 @@ export const recipe = defineSlotRecipe({
   defaultVariants: {
     size: 'md',
     variant: 'solid',
+    orientation: 'horizontal',
   },
 });

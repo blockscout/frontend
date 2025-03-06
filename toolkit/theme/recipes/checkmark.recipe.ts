@@ -1,6 +1,5 @@
 import { defineRecipe } from '@chakra-ui/react';
 
-// TODO @tom2drum dark mode + border color
 export const recipe = defineRecipe({
   className: 'chakra-checkmark',
   base: {
@@ -16,7 +15,7 @@ export const recipe = defineRecipe({
       boxSize: 'full',
     },
     _disabled: {
-      opacity: '0.5',
+      opacity: 'control.disabled',
     },
   },
   variants: {
@@ -37,14 +36,30 @@ export const recipe = defineRecipe({
 
     variant: {
       solid: {
-        borderColor: 'border',
-        '&:is([data-state=checked], [data-state=indeterminate])': {
-          bg: 'checkbox.icon.bg.checked',
-          color: 'white',
-          borderColor: 'checkbox.icon.bg.checked',
+        borderColor: 'checkbox.control.border',
+        _hover: {
+          borderColor: 'checkbox.control.border.hover',
+        },
+        _readOnly: {
+          borderColor: 'checkbox.control.border.readOnly',
           _hover: {
-            bg: 'checkbox.icon.bg.hover',
-            borderColor: 'checkbox.icon.bg.hover',
+            borderColor: 'checkbox.control.border.readOnly',
+          },
+          '&:is([data-state=checked], [data-state=indeterminate])': {
+            bg: 'checkbox.control.border.readOnly',
+            color: 'gray.500',
+            _hover: {
+              bg: 'checkbox.control.border.readOnly',
+            },
+          },
+        },
+        '&:is([data-state=checked], [data-state=indeterminate])': {
+          bg: 'blue.500',
+          color: 'white',
+          borderColor: 'blue.500',
+          _hover: {
+            bg: 'blue.400',
+            borderColor: 'blue.400',
           },
         },
       },
