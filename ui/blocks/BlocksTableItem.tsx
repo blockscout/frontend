@@ -1,4 +1,4 @@
-import { Tr, Td, Flex, Box, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { Tr, Td, Flex, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -17,7 +17,6 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
-import Utilization from 'ui/shared/Utilization/Utilization';
 
 import { getBaseFeeValue } from './utils';
 
@@ -31,10 +30,7 @@ const isRollup = config.features.rollup.isEnabled;
 
 const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
-  const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.transaction_fees || 0);
-
-  const burntFeesIconColor = useColorModeValue('gray.500', 'inherit');
 
   const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas);
 
@@ -123,16 +119,10 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
         <Td fontSize="sm">
           <Flex alignItems="center" columnGap={ 2 }>
-            <IconSvg name="flame" boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
             <Skeleton isLoaded={ !isLoading } display="inline-block">
-              { burntFees.dividedBy(WEI).toFixed(8) }
+              { txFees.dividedBy(WEI).toFixed(8) }
             </Skeleton>
           </Flex>
-          <Tooltip label={ isLoading ? undefined : 'Burnt fees / Txn fees * 100%' }>
-            <Box w="min-content">
-              <Utilization mt={ 2 } value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
-            </Box>
-          </Tooltip>
         </Td>
       ) }
       { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && Boolean(baseFeeValue) && (

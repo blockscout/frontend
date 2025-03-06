@@ -1,4 +1,4 @@
-import { Text, Tooltip } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -10,7 +10,6 @@ import { currencyUnits } from 'lib/units';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import IconSvg from 'ui/shared/IconSvg';
-import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {
   data: Block;
@@ -65,18 +64,11 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
           <DetailsInfoItem.Label
             hint={ `Amount of ${ currencyUnits.ether } used for blobs in this block` }
           >
-            Blob burnt fees
+            Blob txn fees
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <IconSvg name="flame" boxSize={ 5 } color="gray.500" mr={ 2 }/>
-            { burntBlobFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
-            { !blobFees.isEqualTo(ZERO) && (
-              <Tooltip label="Blob burnt fees / Txn fees * 100%">
-                <div>
-                  <Utilization ml={ 4 } value={ burntBlobFees.dividedBy(blobFees).toNumber() }/>
-                </div>
-              </Tooltip>
-            ) }
+            { blobFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
           </DetailsInfoItem.Value>
         </>
       ) }

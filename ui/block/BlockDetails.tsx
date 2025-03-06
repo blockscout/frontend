@@ -30,12 +30,10 @@ import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
-import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
@@ -103,14 +101,6 @@ const BlockDetails = ({ query }: Props) => {
             { space }+{ space }
             <Tooltip label="Txn fees">
               <span>{ txFees.dividedBy(WEI).toFixed() }</span>
-            </Tooltip>
-          </>
-        ) }
-        { !burntFees.isEqualTo(ZERO) && (
-          <>
-            { space }-{ space }
-            <Tooltip label="Burnt fees">
-              <span>{ burntFees.dividedBy(WEI).toFixed() }</span>
             </Tooltip>
           </>
         ) }
@@ -516,24 +506,12 @@ const BlockDetails = ({ query }: Props) => {
             }
             isLoading={ isPlaceholderData }
           >
-            Burnt fees
+            Txn fees
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
             <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>
-              { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
+              { txFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </Skeleton>
-            { !txFees.isEqualTo(ZERO) && (
-              <Tooltip label="Burnt fees / Txn fees * 100%">
-                <Box>
-                  <Utilization
-                    ml={ 4 }
-                    value={ burntFees.dividedBy(txFees).toNumber() }
-                    isLoading={ isPlaceholderData }
-                  />
-                </Box>
-              </Tooltip>
-            ) }
           </DetailsInfoItem.Value>
         </>
       ) }
