@@ -97,6 +97,11 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
       },
     },
+    closeButton: {
+      fg: {
+        DEFAULT: { value: { _light: '{colors.blackAlpha.500}', _dark: '{colors.whiteAlpha.500}' } },
+      },
+    },
     link: {
       primary: {
         DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.300}' } },

@@ -11,6 +11,7 @@ import BadgeShowcase from 'ui/showcases/Badge';
 import ButtonShowcase from 'ui/showcases/Button';
 import CheckboxShowcase from 'ui/showcases/Checkbox';
 import ClipboardShowcase from 'ui/showcases/Clipboard';
+import CloseButtonShowcase from 'ui/showcases/CloseButton';
 import CollapsibleShowcase from 'ui/showcases/Collapsible';
 import ContentLoaderShowcase from 'ui/showcases/ContentLoader';
 import DialogShowcase from 'ui/showcases/Dialog';
@@ -49,6 +50,7 @@ const tabs = [
   { label: 'Button', value: 'button', component: <ButtonShowcase/> },
   { label: 'Checkbox', value: 'checkbox', component: <CheckboxShowcase/> },
   { label: 'Clipboard', value: 'clipboard', component: <ClipboardShowcase/> },
+  { label: 'Close button', value: 'close-button', component: <CloseButtonShowcase/> },
   { label: 'Collapsible', value: 'collapsible', component: <CollapsibleShowcase/> },
   { label: 'Content loader', value: 'content-loader', component: <ContentLoaderShowcase/> },
   { label: 'Dialog', value: 'dialog', component: <DialogShowcase/> },

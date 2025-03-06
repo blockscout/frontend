@@ -7,7 +7,7 @@ export const recipe = defineRecipe({
     borderRadius: 'sm',
     overflow: 'hidden',
     _disabled: {
-      opacity: 0.2,
+      opacity: 'control.disabled',
     },
     minWidth: 'auto',
   },
@@ -15,8 +15,11 @@ export const recipe = defineRecipe({
     visual: {
       plain: {
         bg: 'transparent',
-        color: 'icon.backTo',
+        color: 'closeButton.fg',
         border: 'none',
+        '&:not([data-loading-skeleton])': {
+          bg: 'transparent',
+        },
         _hover: {
           bg: 'transparent',
           color: 'link.primary.hover',
@@ -24,7 +27,9 @@ export const recipe = defineRecipe({
       },
     },
     size: {
-      md: { boxSize: 6, '& svg': { boxSize: 5 } },
+      sm: { boxSize: 6 },
+      md: { boxSize: 8 },
+      lg: { boxSize: 10 },
     },
   },
   defaultVariants: {

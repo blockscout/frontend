@@ -11,6 +11,8 @@ import {
 
 import { SECOND } from 'lib/consts';
 
+import { CloseButton } from './close-button';
+
 export const toaster = createToaster({
   placement: 'top-end',
   pauseOnPageIdle: true,
@@ -44,7 +46,11 @@ export const Toaster = () => {
               { toast.action && (
                 <Toast.ActionTrigger>{ toast.action.label }</Toast.ActionTrigger>
               ) }
-              { closable && <Toast.CloseTrigger/> }
+              { closable && (
+                <Toast.CloseTrigger asChild>
+                  <CloseButton size="md"/>
+                </Toast.CloseTrigger>
+              ) }
             </Toast.Root>
           );
         } }

@@ -91,17 +91,7 @@ export const recipe = defineSlotRecipe({
     closeTrigger: {
       position: 'static',
       alignSelf: 'center',
-      top: '0',
-      insetEnd: '0',
-      padding: '2px',
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: '{currentColor}',
-      borderRadius: 'none',
-      boxSize: '6',
-      transition: 'background 200ms',
-      cursor: 'pointer',
+      color: 'closeButton.fg',
     },
   },
 });

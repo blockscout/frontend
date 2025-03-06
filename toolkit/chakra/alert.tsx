@@ -65,8 +65,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           { closable && (
             <CloseButton
               pos="relative"
-              top="-2"
-              insetEnd="-2"
+              size="sm"
               alignSelf="flex-start"
               onClick={ onClose }
             />

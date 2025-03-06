@@ -38,6 +38,14 @@ const AlertShowcase = () => {
         </SamplesStack>
       </Section>
       <Section>
+        <SectionHeader>Closable</SectionHeader>
+        <SamplesStack>
+          <Sample label="closable">
+            <Alert status="info" title="Info" showIcon closable> Alert content </Alert>
+          </Sample>
+        </SamplesStack>
+      </Section>
+      <Section>
         <SectionHeader>Loading</SectionHeader>
         <SamplesStack>
           <Sample label="loading: true">
@@ -100,7 +108,7 @@ const AlertShowcase = () => {
         <SectionSubHeader>Multiple lines</SectionSubHeader>
         <SamplesStack>
           <Sample label="multiple lines, with title, inline=false">
-            <Alert status="warning" title="Warning" inline={ false } maxWidth="500px" showIcon>
+            <Alert status="warning" title="Warning" inline={ false } maxWidth="500px" showIcon closable>
               <Box>
                 Participated in our recent Blockscout activities? Check your eligibility and claim your NFT Scout badges. More exciting things are coming soon!
               </Box>
