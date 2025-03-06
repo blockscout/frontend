@@ -90,7 +90,7 @@ const BlockEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
 
       { query.isFetching && <ContentLoader maxW="200px" mt={ 3 }/> }
 
-      { query.isError && <Text color="error" mt={ 3 }>Something went wrong. Unable to load next page.</Text> }
+      { query.isError && <Text color="text.error" mt={ 3 }>Something went wrong. Unable to load next page.</Text> }
 
       <Box h="0" w="100px" ref={ cutRef }/>
     </Box>

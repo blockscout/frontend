@@ -1,4 +1,4 @@
-import { chakra, Center, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Center } from '@chakra-ui/react';
 import type { DragEvent } from 'react';
 import React from 'react';
 
@@ -50,8 +50,8 @@ const DragAndDropArea = ({ onDrop, children, className, isDisabled, fullFilePath
     }
   }, [ isDisabled ]);
 
-  const disabledBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const borderColor = isDragOver ? 'link_hovered' : 'link';
+  const disabledBorderColor = { _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' };
+  const borderColor = isDragOver ? 'link.primary.hover' : 'link.primary';
 
   return (
     <Center
@@ -61,7 +61,7 @@ const DragAndDropArea = ({ onDrop, children, className, isDisabled, fullFilePath
       borderWidth="2px"
       borderColor={ isDisabled ? disabledBorderColor : borderColor }
       _hover={{
-        borderColor: isDisabled ? disabledBorderColor : 'link_hovered',
+        borderColor: isDisabled ? disabledBorderColor : 'link.primary.hover',
       }}
       borderRadius="base"
       borderStyle="dashed"

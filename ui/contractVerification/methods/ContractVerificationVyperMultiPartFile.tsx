@@ -1,5 +1,6 @@
-import { Link } from '@chakra-ui/react';
 import React from 'react';
+
+import { Link } from 'toolkit/chakra/link';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
 import ContractVerificationFieldCompiler from '../fields/ContractVerificationFieldCompiler';

@@ -23,7 +23,6 @@ const ContractVerificationStylusGitHubRepo = () => {
         <FormFieldText<FormFields>
           name="path_prefix"
           placeholder="Path prefix"
-          size={{ base: 'md', lg: 'lg' }}
         />
         <span>
           The crate should be located in the root directory. If it is not the case, please specify the relative path from

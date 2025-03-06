@@ -1,4 +1,4 @@
-import { Text, Button, Box, Flex } from '@chakra-ui/react';
+import { Text, Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, FieldPathValue, ValidateResult } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -6,6 +6,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import { Mb } from 'lib/consts';
+import { Button } from 'toolkit/chakra/button';
 import FieldError from 'ui/shared/forms/components/FieldError';
 import DragAndDropArea from 'ui/shared/forms/inputs/file/DragAndDropArea';
 import FileInput from 'ui/shared/forms/inputs/file/FileInput';

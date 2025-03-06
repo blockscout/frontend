@@ -324,6 +324,10 @@ function reduceLibrariesArray(libraries: Array<ContractLibrary> | undefined) {
     return;
   }
 
+  if (libraries.every((item) => item.name === '' && item.address === '')) {
+    return;
+  }
+
   return libraries.reduce<Record<string, string>>((result, item) => {
     result[item.name] = item.address;
     return result;

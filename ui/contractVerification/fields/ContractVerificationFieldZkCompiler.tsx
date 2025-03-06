@@ -1,4 +1,4 @@
-import { Box, Link } from '@chakra-ui/react';
+import { Box, createListCollection } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -6,8 +6,8 @@ import type { FormFields } from '../types';
 import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
-import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
-import IconSvg from 'ui/shared/IconSvg';
+import { Link } from 'toolkit/chakra/link';
+import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
@@ -21,25 +21,26 @@ const ContractVerificationFieldZkCompiler = () => {
     config?.zk_compiler_versions?.map((option) => ({ label: option, value: option })) || []
   ), [ config?.zk_compiler_versions ]);
 
-  const loadOptions = React.useCallback(async(inputValue: string) => {
-    return options
-      .filter(({ label }) => !inputValue || label.toLowerCase().includes(inputValue.toLowerCase()))
+  // TODO @tom2drum implement filtering the options
+
+  const collection = React.useMemo(() => {
+    const items = options
+      // .filter(({ label }) => !inputValue || label.toLowerCase().includes(inputValue.toLowerCase()))
       .slice(0, OPTIONS_LIMIT);
+
+    return createListCollection({ items });
   }, [ options ]);
 
   return (
     <ContractVerificationFormRow>
-      <FormFieldFancySelect<FormFields, 'zk_compiler'>
+      <FormFieldSelect<FormFields, 'zk_compiler'>
         name="zk_compiler"
         placeholder="ZK compiler (enter version or use the dropdown)"
-        placeholderIcon={ <IconSvg name="search"/> }
-        loadOptions={ loadOptions }
-        defaultOptions
-        isRequired
-        isAsync
+        collection={ collection }
+        required
       />
       <Box>
-        <Link isExternal href="https://docs.zksync.io/zk-stack/components/compiler/specification#glossary">zksolc</Link>
+        <Link external href="https://docs.zksync.io/zk-stack/components/compiler/specification#glossary">zksolc</Link>
         <span> compiler version.</span>
       </Box>
     </ContractVerificationFormRow>

@@ -1,6 +1,8 @@
-import { Box, Flex, Text, useColorModeValue, IconButton, chakra, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -41,7 +43,6 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
 
   const fileExtension = getFileExtension(file.name);
   const fileIcon = FILE_ICONS[fileExtension] || 'files/placeholder';
-  const iconColor = useColorModeValue('gray.600', 'gray.400');
 
   return (
     <Flex
@@ -54,11 +55,11 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
       <IconSvg
         name={ fileIcon }
         boxSize="74px"
-        color={ error ? 'error' : iconColor }
+        color={ error ? 'text.error' : { _light: 'gray.600', _dark: 'gray.400' } }
         mr={ 2 }
         borderWidth="2px"
         borderRadius="md"
-        borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
+        borderColor={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' }}
         p={ 3 }
       />
       <Box maxW="calc(100% - 58px - 24px)">
@@ -68,35 +69,34 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
             overflow="hidden"
             textOverflow="ellipsis"
             whiteSpace="nowrap"
-            color={ error ? 'error' : 'initial' }
+            color={ error ? 'text.error' : 'initial' }
           >
             { file.name }
           </Text>
           { Boolean(error) && (
             <Tooltip
-              label={ error }
-              placement="top"
-              maxW={{ base: 'calc(100vw - 8px)', lg: '320px' }}
+              content={ error }
+              positioning={{ placement: 'top' }}
             >
               <Box cursor="pointer" display="inherit" onClick={ handleErrorHintIconClick } ml={ 1 }>
-                <IconSvg name="info" boxSize={ 5 } color="error"/>
+                <IconSvg name="info" boxSize={ 5 } color="text.error"/>
               </Box>
             </Tooltip>
           ) }
           <IconButton
             aria-label="remove"
-            icon={ <IconSvg name="cross" boxSize={ 6 }/> }
             boxSize={ 6 }
-            variant="simple"
             display="inline-block"
             flexShrink={ 0 }
             ml="auto"
             onClick={ handleRemove }
-            isDisabled={ isDisabled }
+            disabled={ isDisabled }
             alignSelf="flex-start"
-          />
+          >
+            <IconSvg name="cross" boxSize={ 6 }/>
+          </IconButton>
         </Flex>
-        <Text variant="secondary" mt={ 1 }>
+        <Text color="text.secondary" mt={ 1 }>
           { file.size.toLocaleString(undefined, { notation: 'compact', maximumFractionDigits: 2, unit: 'byte', unitDisplay: 'narrow', style: 'unit' }) }
         </Text>
       </Box>

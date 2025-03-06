@@ -24,15 +24,15 @@ import ContractVerificationFieldAddress from './fields/ContractVerificationField
 import ContractVerificationFieldLicenseType from './fields/ContractVerificationFieldLicenseType';
 import ContractVerificationFieldMethod from './fields/ContractVerificationFieldMethod';
 import ContractVerificationFlattenSourceCode from './methods/ContractVerificationFlattenSourceCode';
-// import ContractVerificationMultiPartFile from './methods/ContractVerificationMultiPartFile';
-// import ContractVerificationSolidityFoundry from './methods/ContractVerificationSolidityFoundry';
-// import ContractVerificationSolidityHardhat from './methods/ContractVerificationSolidityHardhat';
-// import ContractVerificationSourcify from './methods/ContractVerificationSourcify';
-// import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
-// import ContractVerificationStylusGitHubRepo from './methods/ContractVerificationStylusGitHubRepo';
-// import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
-// import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
-// import ContractVerificationVyperStandardInput from './methods/ContractVerificationVyperStandardInput';
+import ContractVerificationMultiPartFile from './methods/ContractVerificationMultiPartFile';
+import ContractVerificationSolidityFoundry from './methods/ContractVerificationSolidityFoundry';
+import ContractVerificationSolidityHardhat from './methods/ContractVerificationSolidityHardhat';
+import ContractVerificationSourcify from './methods/ContractVerificationSourcify';
+import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
+import ContractVerificationStylusGitHubRepo from './methods/ContractVerificationStylusGitHubRepo';
+import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
+import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
+import ContractVerificationVyperStandardInput from './methods/ContractVerificationVyperStandardInput';
 import { prepareRequestBody, formatSocketErrors, getDefaultValues, METHOD_LABELS } from './utils';
 
 interface Props {
@@ -161,15 +161,15 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const methods = React.useMemo(() => {
     return {
       'flattened-code': <ContractVerificationFlattenSourceCode config={ config }/>,
-      // 'standard-input': <ContractVerificationStandardInput config={ config }/>,
-      // sourcify: <ContractVerificationSourcify/>,
-      // 'multi-part': <ContractVerificationMultiPartFile/>,
-      // 'vyper-code': <ContractVerificationVyperContract config={ config }/>,
-      // 'vyper-multi-part': <ContractVerificationVyperMultiPartFile/>,
-      // 'vyper-standard-input': <ContractVerificationVyperStandardInput/>,
-      // 'solidity-hardhat': <ContractVerificationSolidityHardhat config={ config }/>,
-      // 'solidity-foundry': <ContractVerificationSolidityFoundry/>,
-      // 'stylus-github-repository': <ContractVerificationStylusGitHubRepo/>,
+      'standard-input': <ContractVerificationStandardInput config={ config }/>,
+      sourcify: <ContractVerificationSourcify/>,
+      'multi-part': <ContractVerificationMultiPartFile/>,
+      'vyper-code': <ContractVerificationVyperContract config={ config }/>,
+      'vyper-multi-part': <ContractVerificationVyperMultiPartFile/>,
+      'vyper-standard-input': <ContractVerificationVyperStandardInput/>,
+      'solidity-hardhat': <ContractVerificationSolidityHardhat config={ config }/>,
+      'solidity-foundry': <ContractVerificationSolidityFoundry/>,
+      'stylus-github-repository': <ContractVerificationStylusGitHubRepo/>,
     };
   }, [ config ]);
   const method = watch('method');
@@ -201,7 +201,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
           <ContractVerificationFieldMethod methods={ config.verification_options }/>
         </Grid>
         { content }
-        { formState.errors.root?.message && <Text color="error"mt={ 4 } fontSize="sm" whiteSpace="pre-wrap">{ formState.errors.root.message }</Text> }
+        { formState.errors.root?.message && <Text color="text.error" mt={ 4 } fontSize="sm" whiteSpace="pre-wrap">{ formState.errors.root.message }</Text> }
         { Boolean(method) && methodValue !== 'solidity-hardhat' && methodValue !== 'solidity-foundry' && (
           <Button
             size="md"
