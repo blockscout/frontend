@@ -31,10 +31,15 @@ const FormFieldText = <
   group,
   inputProps,
   asComponent,
-  size = asComponent === 'Textarea' ? '2xl' : 'xl',
+  size: sizeProp,
   disabled,
+  floating: floatingProp,
   ...restProps
 }: Props<FormFields, Name>) => {
+  const defaultSize = asComponent === 'Textarea' ? '2xl' : 'xl';
+  const size = sizeProp || defaultSize;
+  const floating = floatingProp !== undefined ? floatingProp : size === defaultSize;
+
   const { control } = useFormContext<FormFields>();
   const { field, fieldState, formState } = useController<FormFields, typeof name>({
     control,
@@ -59,6 +64,8 @@ const FormFieldText = <
     <Input
       { ...field }
       autoComplete="off"
+      // for non-floating field label, we pass placeholder to the input component
+      placeholder={ !floating ? placeholder : undefined }
       { ...inputProps as InputProps }
       onBlur={ handleBlur }
     />
@@ -75,12 +82,13 @@ const FormFieldText = <
 
   return (
     <Field
-      label={ placeholder }
+      // for floating field label, we pass placeholder value to the label
+      label={ floating ? placeholder : undefined }
       errorText={ getFieldErrorText(fieldState.error) }
       invalid={ Boolean(fieldState.error) }
       disabled={ formState.isSubmitting || disabled }
       size={ size }
-      floating
+      floating={ floating }
       { ...restProps }
     >
       { content }

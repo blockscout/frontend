@@ -1,4 +1,4 @@
-import { chakra, Checkbox, Code } from '@chakra-ui/react';
+import { chakra, Code, createListCollection } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -7,8 +7,8 @@ import type { FormFields } from '../types';
 import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
-import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
-import IconSvg from 'ui/shared/IconSvg';
+import { Checkbox } from 'toolkit/chakra/checkbox';
+import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
@@ -26,12 +26,15 @@ const ContractVerificationFieldCompiler = ({ isVyper, isStylus }: Props) => {
   const config = queryClient.getQueryData<SmartContractVerificationConfig>(getResourceKey('contract_verification_config'));
 
   const handleCheckboxChange = React.useCallback(() => {
-    if (isNightly) {
-      const field = getValues('compiler');
-      field?.value.includes('nightly') && resetField('compiler', { defaultValue: null });
-    }
-    setIsNightly(prev => !prev);
-  }, [ getValues, isNightly, resetField ]);
+    setIsNightly(prev => {
+      if (prev) {
+        const field = getValues('compiler');
+        field?.[0]?.includes('nightly') && resetField('compiler', { defaultValue: [] });
+      }
+
+      return !prev;
+    });
+  }, [ getValues, resetField ]);
 
   const options = React.useMemo(() => {
     const versions = (() => {
@@ -47,11 +50,21 @@ const ContractVerificationFieldCompiler = ({ isVyper, isStylus }: Props) => {
     return versions?.map((option) => ({ label: option, value: option })) || [];
   }, [ isStylus, isVyper, config?.solidity_compiler_versions, config?.stylus_compiler_versions, config?.vyper_compiler_versions ]);
 
-  const loadOptions = React.useCallback(async(inputValue: string) => {
-    return options
-      .filter(({ label }) => !inputValue || label.toLowerCase().includes(inputValue.toLowerCase()))
+  // const loadOptions = React.useCallback(async(inputValue: string) => {
+  //   return options
+  //     .filter(({ label }) => !inputValue || label.toLowerCase().includes(inputValue.toLowerCase()))
+  //     .filter(({ label }) => isNightly ? true : !label.includes('nightly'))
+  //     .slice(0, OPTIONS_LIMIT);
+  // }, [ isNightly, options ]);
+
+  // TODO @tom2drum implement filtering the options
+  const collection = React.useMemo(() => {
+    const items = options
+      // .filter(({ label }) => !inputValue || label.toLowerCase().includes(inputValue.toLowerCase()))
       .filter(({ label }) => isNightly ? true : !label.includes('nightly'))
       .slice(0, OPTIONS_LIMIT);
+
+    return createListCollection({ items });
   }, [ isNightly, options ]);
 
   return (
@@ -59,22 +72,19 @@ const ContractVerificationFieldCompiler = ({ isVyper, isStylus }: Props) => {
       <>
         { !isVyper && !isStylus && (
           <Checkbox
-            size="lg"
             mb={ 2 }
-            onChange={ handleCheckboxChange }
-            isDisabled={ formState.isSubmitting }
+            checked={ isNightly }
+            onCheckedChange={ handleCheckboxChange }
+            disabled={ formState.isSubmitting }
           >
             Include nightly builds
           </Checkbox>
         ) }
-        <FormFieldFancySelect<FormFields, 'compiler'>
+        <FormFieldSelect<FormFields, 'compiler'>
           name="compiler"
           placeholder="Compiler (enter version or use the dropdown)"
-          loadOptions={ loadOptions }
-          defaultOptions
-          placeholderIcon={ <IconSvg name="search"/> }
-          isRequired
-          isAsync
+          collection={ collection }
+          required
         />
       </>
       { isVyper || isStylus ? null : (

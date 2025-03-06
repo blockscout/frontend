@@ -8,10 +8,10 @@ import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 interface Props {
-  isReadOnly?: boolean;
+  readOnly?: boolean;
 }
 
-const ContractVerificationFieldAddress = ({ isReadOnly }: Props) => {
+const ContractVerificationFieldAddress = ({ readOnly }: Props) => {
   return (
     <>
       <ContractVerificationFormRow>
@@ -22,10 +22,9 @@ const ContractVerificationFieldAddress = ({ isReadOnly }: Props) => {
       <ContractVerificationFormRow>
         <FormFieldAddress<FormFields>
           name="address"
-          isRequired
+          required
           placeholder="Smart contract / Address (0x...)"
-          isReadOnly={ isReadOnly }
-          size={{ base: 'md', lg: 'lg' }}
+          readOnly={ readOnly }
         />
       </ContractVerificationFormRow>
     </>

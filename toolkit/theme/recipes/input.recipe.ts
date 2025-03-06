@@ -64,6 +64,9 @@ export const recipe = defineRecipe({
         },
         _placeholderShown: {
           borderColor: 'input.border',
+          _invalid: {
+            borderColor: 'input.border.error',
+          },
         },
         _hover: {
           borderColor: 'input.border.hover',

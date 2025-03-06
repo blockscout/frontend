@@ -1,25 +1,17 @@
 import {
-  Link,
   chakra,
-  PopoverTrigger,
-  Portal,
-  PopoverContent,
-  PopoverArrow,
-  PopoverBody,
-  useColorModeValue,
-  DarkMode,
-  ListItem,
-  OrderedList,
+  List,
   Box,
+  createListCollection,
 } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FormFields } from '../types';
 import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/client/contract';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
-import Popover from 'ui/shared/chakra/Popover';
-import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
+import { Link } from 'toolkit/chakra/link';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { METHOD_LABELS } from '../utils';
@@ -29,60 +21,70 @@ interface Props {
 }
 
 const ContractVerificationFieldMethod = ({ methods }: Props) => {
-  const tooltipBg = useColorModeValue('gray.700', 'gray.900');
-  const isMobile = useIsMobile();
-
-  const options = React.useMemo(() => methods.map((method) => ({
-    value: method,
-    label: METHOD_LABELS[method],
-  })), [ methods ]);
+  const collection = React.useMemo(() => createListCollection({
+    items: methods.map((method) => ({
+      value: method,
+      label: METHOD_LABELS[method],
+    })),
+  }), [ methods ]);
 
   const renderPopoverListItem = React.useCallback((method: SmartContractVerificationMethod) => {
     switch (method) {
       case 'flattened-code':
-        return <ListItem key={ method }>Verification through a single file.</ListItem>;
+        return <List.Item key={ method }>Verification through a single file.</List.Item>;
       case 'multi-part':
-        return <ListItem key={ method }>Verification of multi-part Solidity files.</ListItem>;
+        return <List.Item key={ method }>Verification of multi-part Solidity files.</List.Item>;
       case 'sourcify':
-        return <ListItem key={ method }>Verification through <Link href="https://sourcify.dev/" target="_blank">Sourcify</Link>.</ListItem>;
+        return <List.Item key={ method }>Verification through <Link href="https://sourcify.dev/" target="_blank" className="dark">Sourcify</Link>.</List.Item>;
       case 'standard-input':
         return (
-          <ListItem key={ method }>
+          <List.Item key={ method }>
             <span>Verification using </span>
             <Link
               href="https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description"
               target="_blank"
+              className="dark"
             >
               Standard input JSON
             </Link>
             <span> file.</span>
-          </ListItem>
+          </List.Item>
         );
       case 'vyper-code':
-        return <ListItem key={ method }>Verification of Vyper contract.</ListItem>;
+        return <List.Item key={ method }>Verification of Vyper contract.</List.Item>;
       case 'vyper-multi-part':
-        return <ListItem key={ method }>Verification of multi-part Vyper files.</ListItem>;
+        return <List.Item key={ method }>Verification of multi-part Vyper files.</List.Item>;
       case 'vyper-standard-input':
         return (
-          <ListItem key={ method }>
+          <List.Item key={ method }>
             <span>Verification of Vyper contract using </span>
             <Link
               href="https://docs.vyperlang.org/en/stable/compiling-a-contract.html#compiler-input-and-output-json-description"
               target="_blank"
+              className="dark"
             >
               Standard input JSON
             </Link>
             <span> file.</span>
-          </ListItem>
+          </List.Item>
         );
       case 'solidity-hardhat':
-        return <ListItem key={ method }>Verification through Hardhat plugin.</ListItem>;
+        return <List.Item key={ method }>Verification through Hardhat plugin.</List.Item>;
       case 'solidity-foundry':
-        return <ListItem key={ method }>Verification through Foundry.</ListItem>;
+        return <List.Item key={ method }>Verification through Foundry.</List.Item>;
       case 'stylus-github-repository':
-        return <ListItem key={ method }>Verification of Stylus contract via GitHub repository.</ListItem>;
+        return <List.Item key={ method }>Verification of Stylus contract via GitHub repository.</List.Item>;
     }
   }, []);
+
+  const tooltipContent = (
+    <Box>
+      <span>Currently, Blockscout supports { methods.length } methods:</span>
+      <List.Root as="ol" pl={ 5 }>
+        { methods.map(renderPopoverListItem) }
+      </List.Root>
+    </Box>
+  );
 
   return (
     <>
@@ -90,34 +92,16 @@ const ContractVerificationFieldMethod = ({ methods }: Props) => {
         <chakra.span fontWeight={ 500 } fontSize="lg" fontFamily="heading">
           Currently, Blockscout supports { methods.length } contract verification methods
         </chakra.span>
-        <Popover trigger="hover" isLazy placement={ isMobile ? 'bottom-end' : 'right-start' } offset={ [ -8, 8 ] }>
-          <PopoverTrigger>
-            <chakra.span display="inline-block" ml={ 1 } cursor="pointer" verticalAlign="middle" h="22px">
-              <IconSvg name="info" boxSize={ 5 } color="icon_info" _hover={{ color: 'link_hovered' }}/>
-            </chakra.span>
-          </PopoverTrigger>
-          <Portal>
-            <PopoverContent bgColor={ tooltipBg } w={{ base: '300px', lg: '380px' }}>
-              <PopoverArrow bgColor={ tooltipBg }/>
-              <PopoverBody color="white">
-                <DarkMode>
-                  <span>Currently, Blockscout supports { methods.length } methods:</span>
-                  <OrderedList>
-                    { methods.map(renderPopoverListItem) }
-                  </OrderedList>
-                </DarkMode>
-              </PopoverBody>
-            </PopoverContent>
-          </Portal>
-        </Popover>
+        <Tooltip content={ tooltipContent } interactive contentProps={{ textAlign: 'left', className: 'light' }}>
+          <IconSvg name="info" boxSize={ 5 } ml={ 1 } cursor="pointer" color="icon.info" _hover={{ color: 'link.primary.hover' }}/>
+        </Tooltip>
       </Box>
-      <FormFieldFancySelect<FormFields, 'method'>
+      <FormFieldSelect<FormFields, 'method'>
         name="method"
         placeholder="Verification method (compiler type)"
-        options={ options }
-        isRequired
-        isAsync={ false }
-        isReadOnly={ options.length === 1 }
+        collection={ collection }
+        required
+        readOnly={ collection.items.length === 1 }
       />
     </>
   );

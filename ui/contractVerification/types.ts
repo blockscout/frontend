@@ -7,11 +7,6 @@ export interface ContractLibrary {
   address: string;
 }
 
-interface MethodOption {
-  label: string;
-  value: SmartContractVerificationMethod;
-}
-
 export interface LicenseOption {
   label: string;
   value: SmartContractLicenseType;
@@ -19,15 +14,15 @@ export interface LicenseOption {
 
 interface FormFieldsBase {
   address: string;
-  method: MethodOption;
-  license_type: LicenseOption | null;
+  method: Array<SmartContractVerificationMethod>;
+  license_type: Array<SmartContractLicenseType>;
 }
 
 export interface FormFieldsFlattenSourceCode extends FormFieldsBase {
   is_yul: boolean;
   name: string | undefined;
-  compiler: Option | null;
-  evm_version: Option | null;
+  compiler: Array<string>;
+  evm_version: Array<string>;
   is_optimization_enabled: boolean;
   optimization_runs: string;
   code: string;
@@ -38,7 +33,7 @@ export interface FormFieldsFlattenSourceCode extends FormFieldsBase {
 
 export interface FormFieldsStandardInput extends FormFieldsBase {
   name: string;
-  compiler: Option | null;
+  compiler: Array<string>;
   sources: Array<File>;
   autodetect_constructor_args: boolean;
   constructor_args: string;
@@ -46,8 +41,8 @@ export interface FormFieldsStandardInput extends FormFieldsBase {
 
 export interface FormFieldsStandardInputZk extends FormFieldsBase {
   name: string;
-  compiler: Option | null;
-  zk_compiler: Option | null;
+  compiler: Array<string>;
+  zk_compiler: Array<string>;
   sources: Array<File>;
   autodetect_constructor_args: boolean;
   constructor_args: string;
@@ -59,8 +54,8 @@ export interface FormFieldsSourcify extends FormFieldsBase {
 }
 
 export interface FormFieldsMultiPartFile extends FormFieldsBase {
-  compiler: Option | null;
-  evm_version: Option | null;
+  compiler: Array<string>;
+  evm_version: Array<string>;
   is_optimization_enabled: boolean;
   optimization_runs: string;
   sources: Array<File>;
@@ -69,26 +64,26 @@ export interface FormFieldsMultiPartFile extends FormFieldsBase {
 
 export interface FormFieldsVyperContract extends FormFieldsBase {
   name: string;
-  evm_version: Option | null;
-  compiler: Option | null;
+  evm_version: Array<string>;
+  compiler: Array<string>;
   code: string;
   constructor_args: string | undefined;
 }
 
 export interface FormFieldsVyperMultiPartFile extends FormFieldsBase {
-  compiler: Option | null;
-  evm_version: Option | null;
+  compiler: Array<string>;
+  evm_version: Array<string>;
   sources: Array<File>;
   interfaces: Array<File>;
 }
 
 export interface FormFieldsVyperStandardInput extends FormFieldsBase {
-  compiler: Option | null;
+  compiler: Array<string>;
   sources: Array<File>;
 }
 
 export interface FormFieldsStylusGitHubRepo extends FormFieldsBase {
-  compiler: Option | null;
+  compiler: Array<string>;
   repository_url: string;
   commit_hash: string;
   path_prefix: string;

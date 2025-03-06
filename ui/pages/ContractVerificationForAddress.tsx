@@ -93,6 +93,8 @@ const ContractVerificationForAddress = () => {
         fontSize="lg"
         fontWeight={ 500 }
         mb={ 12 }
+        w="min-content"
+        maxW="100%"
       />
       { content }
     </>

@@ -1,8 +1,9 @@
-import { Flex, IconButton, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FormFields } from '../types';
 
+import { IconButton } from 'toolkit/chakra/icon-button';
 import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 import IconSvg from 'ui/shared/IconSvg';
@@ -38,7 +39,7 @@ const ContractVerificationFieldLibraryItem = ({ index, fieldsLength, onAddFieldC
     <>
       <ContractVerificationFormRow>
         <Flex alignItems="center" justifyContent="space-between" ref={ ref } mt={ index !== 0 ? 6 : 0 }>
-          <Text variant="secondary" fontSize="sm">Contract library { index + 1 }</Text>
+          <Text color="text.secondary" fontSize="sm">Contract library { index + 1 }</Text>
           <Flex columnGap={ 5 }>
             { fieldsLength > 1 && (
               <IconButton
@@ -47,9 +48,10 @@ const ContractVerificationFieldLibraryItem = ({ index, fieldsLength, onAddFieldC
                 w="30px"
                 h="30px"
                 onClick={ handleRemoveButtonClick }
-                icon={ <IconSvg name="minus" w="20px" h="20px"/> }
-                isDisabled={ isDisabled }
-              />
+                disabled={ isDisabled }
+              >
+                <IconSvg name="minus" w="20px" h="20px"/>
+              </IconButton>
             ) }
             { fieldsLength < LIMIT && (
               <IconButton
@@ -58,9 +60,10 @@ const ContractVerificationFieldLibraryItem = ({ index, fieldsLength, onAddFieldC
                 w="30px"
                 h="30px"
                 onClick={ handleAddButtonClick }
-                icon={ <IconSvg name="plus" w="20px" h="20px"/> }
-                isDisabled={ isDisabled }
-              />
+                disabled={ isDisabled }
+              >
+                <IconSvg name="plus" w="20px" h="20px"/>
+              </IconButton>
             ) }
           </Flex>
         </Flex>
@@ -68,10 +71,9 @@ const ContractVerificationFieldLibraryItem = ({ index, fieldsLength, onAddFieldC
       <ContractVerificationFormRow>
         <FormFieldText<FormFields, `libraries.${ number }.name`>
           name={ `libraries.${ index }.name` }
-          isRequired
+          required
           rules={{ maxLength: 255 }}
           placeholder="Library name (.sol file)"
-          size={{ base: 'md', lg: 'lg' }}
         />
         { index === 0 ? (
           <>
@@ -80,11 +82,10 @@ const ContractVerificationFieldLibraryItem = ({ index, fieldsLength, onAddFieldC
         ) : null }
       </ContractVerificationFormRow>
       <ContractVerificationFormRow>
-        <FormFieldAddress<FormFields, `libraries.${ number }.address`>
+        <FormFieldAddress<FormFields>
           name={ `libraries.${ index }.address` }
-          isRequired
+          required
           placeholder="Library address (0x...)"
-          size={{ base: 'md', lg: 'lg' }}
         />
         { index === 0 ? (
           <>

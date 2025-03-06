@@ -207,8 +207,8 @@ const VerifiedAddresses = () => {
           Before starting, make sure that:
         </chakra.p>
         <List.Root ml={ 6 } as="ol">
-          <List.Item _marker={{ color: 'inherit' }}>The source code for the smart contract is deployed on “{ config.chain.name }”.</List.Item>
-          <List.Item _marker={{ color: 'inherit' }}>
+          <List.Item>The source code for the smart contract is deployed on “{ config.chain.name }”.</List.Item>
+          <List.Item>
             <span>The source code is verified (if not yet verified, you can use </span>
             <Link href="https://docs.blockscout.com/for-users/verifying-a-smart-contract" target="_blank">this tool</Link>
             <span>).</span>

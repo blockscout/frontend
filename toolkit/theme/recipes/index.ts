@@ -10,6 +10,7 @@ import { recipe as drawer } from './drawer.recipe';
 import { recipe as field } from './field.recipe';
 import { recipe as input } from './input.recipe';
 import { recipe as link } from './link.recipe';
+import { recipe as list } from './list.recipe';
 import { recipe as menu } from './menu.recipe';
 import { recipe as nativeSelect } from './native-select.recipe';
 import { recipe as pinInput } from './pin-input.recipe';
@@ -49,6 +50,7 @@ export const slotRecipes = {
   dialog,
   drawer,
   field,
+  list,
   menu,
   nativeSelect,
   pinInput,

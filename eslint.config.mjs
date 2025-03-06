@@ -29,6 +29,7 @@ const RESTRICTED_MODULES = {
     { name: 'ui/shared/Tabs/RoutedTabs', message: 'Please use RoutedTabs component from toolkit/components/RoutedTabs instead' },
     { name: 'ui/shared/chakra/Tag', message: 'Please use Tag component from toolkit/chakra instead' },
     { name: 'ui/shared/select/Select', message: 'Please use Select component from toolkit/chakra instead' },
+    { name: 'ui/shared/forms/fields/FormFieldFancySelect', message: 'Please use FormFieldSelect component' },
     {
       name: '@chakra-ui/react',
       importNames: [
