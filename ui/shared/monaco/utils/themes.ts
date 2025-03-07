@@ -73,7 +73,7 @@ export const dark = {
 
     'sideBar.background': '#222',
 
-    focusBorder: '#007fd4',
+    focusBorder: '#1949D2',
 
     // not able to use rgba for standard variables, so we use custom prefix here
     'custom.list.hoverBackground': 'rgba(255, 255, 255, 0.08)', // whiteAlpha.200
@@ -82,10 +82,10 @@ export const dark = {
     'custom.inputOption.hoverBackground': 'rgba(90, 93, 94, 0.31)',
 
     // don't know the name of this variables in vscode
-    'custom.fileLink.hoverForeground': '#4299E1', // blue.400
+    'custom.fileLink.hoverForeground': '#1949D2', // custom blue
     'custom.riskWarning.primaryBackground': 'rgba(246, 173, 85, 0.3)', // orange.300
     'custom.riskWarning.background': 'rgba(246, 173, 85, 0.1)', // orange.300
-    'custom.mainContract.header': 'rgba(183, 148, 244, 0.3)', // purple.300
-    'custom.mainContract.body': 'rgba(214, 188, 250, 0.1)', // purple.200
+    'custom.mainContract.header': 'rgba(3, 35, 144, 0.3)', // custom blue
+    'custom.mainContract.body': 'rgba(12, 28, 67, 0.1)', // custom dark blue
   } as const,
 };
