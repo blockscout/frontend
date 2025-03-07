@@ -207,16 +207,6 @@ const FixedComponent = () => {
                 size="sm"
               />
             </FormControl>
-            {/* <FormControl mb={6} size="sm">
-              <FormLabel fontSize="sm">Machine private key you want to pledge</FormLabel>
-              <Input
-                value={privateKey}
-                onChange={(e) => setPrivateKey(e.target.value)}
-                placeholder="Enter private key"
-                type="password"
-                size="sm"
-              />
-            </FormControl> */}
 
             <Button isLoading={nftLoading} colorScheme="blue" width="full" size="sm" onClick={handlePledgeSubmit}>
               Submit
@@ -244,11 +234,11 @@ const FixedComponent = () => {
               <FormHelperText fontSize="xs">Initial minimum pledge amount is 10,000</FormHelperText>
             </FormControl>
             <FormControl mb={4} size="sm">
-              <FormLabel fontSize="sm">ID for On-chain Rental setRentalMachineIdOnChain</FormLabel>
+              <FormLabel fontSize="sm">ID of the machine</FormLabel>
               <Input
                 value={dlcNodeId}
                 onChange={(e) => setdlcNodeId(e.target.value)}
-                placeholder="Enter the ID for on-chain rental"
+                placeholder="Enter machine ID"
                 size="sm"
               />
             </FormControl>
