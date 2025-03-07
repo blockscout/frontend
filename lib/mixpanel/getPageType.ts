@@ -70,7 +70,6 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/api/csrf': 'Node API: CSRF token',
   '/api/healthz': 'Node API: Health check',
   '/api/config': 'Node API: App config',
-  '/api/sprite': 'Node API: SVG sprite content',
 };
 
 export default function getPageType(pathname: Route['pathname']) {
