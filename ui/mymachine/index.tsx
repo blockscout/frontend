@@ -145,6 +145,14 @@ function Index() {
                 <Tr>
                   <Td colSpan={thead.length}>Error: {error}</Td>
                 </Tr>
+              ) : tableBodyData.length === 0 ? ( // 添加空数据判断
+                <Tr>
+                  <Td colSpan={thead.length}>
+                    <Text textAlign="center" color="gray.500">
+                      No data available
+                    </Text>
+                  </Td>
+                </Tr>
               ) : (
                 tableBodyData.map((item, index) => (
                   <Tr key={index}>
@@ -175,23 +183,17 @@ function Index() {
                         </div>
                       </Skeleton>
                     </Td>
-
                     <Td>
                       <Skeleton isLoaded={!isPending}>
                         <Tooltip label={`GPU type: ${item.v1}`}>
-                          <Skeleton isLoaded={!isPending}>
-                            <Text className="truncate">{item.v1}</Text>
-                          </Skeleton>
+                          <Text className="truncate">{item.v1}</Text>
                         </Tooltip>
                       </Skeleton>
                     </Td>
-
                     <Td>
                       <Skeleton isLoaded={!isPending}>
                         <Tooltip label={`GPU count: ${item.v2.toString()}`}>
-                          <Skeleton isLoaded={!isPending}>
-                            <Text color="blue.500">{item.v2}</Text>
-                          </Skeleton>
+                          <Text color="blue.500">{item.v2}</Text>
                         </Tooltip>
                       </Skeleton>
                     </Td>
@@ -202,7 +204,6 @@ function Index() {
                         </Skeleton>
                       </Tooltip>
                     </Td>
-
                     <Td>
                       <Tooltip label={`Project name: ${item.v4}`}>
                         <Skeleton isLoaded={!isPending}>
@@ -229,18 +230,16 @@ function Index() {
                         </Skeleton>
                       </Tooltip>
                     </Td>
-
                     <Td>
                       <Tooltip label={`Claimed Rewards: ${item.v6.toString()}`}>
                         <Skeleton isLoaded={!isPending}>
                           <div className="flex items-center space-x-2 text-blue-600 font-semibold">
                             <IoCashOutline size={20} className="text-green-500" />
-                            <Text className="truncate  max-w-[50px]">{item.v6}</Text>
+                            <Text className="truncate max-w-[50px]">{item.v6}</Text>
                           </div>
                         </Skeleton>
                       </Tooltip>
                     </Td>
-
                     <Td>
                       <Tooltip label={`Locked Rewards: ${item.v7.toString()}`}>
                         <Skeleton isLoaded={!isPending}>
