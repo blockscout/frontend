@@ -9,7 +9,7 @@ import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import { apos } from 'lib/html-entities';
 import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { getTokenTransfersStub } from 'stubs/token';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -73,7 +73,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter }: Props) => {
   const content = tokenTransferQuery.data?.items ? (
     <>
       <Hide below="lg" ssr={ false }>
-        <TokenTransferTable data={ items } top={ isActionBarHidden ? 0 : 80 } isLoading={ tokenTransferQuery.isPlaceholderData }/>
+        <TokenTransferTable data={ items } top={ isActionBarHidden ? 0 : ACTION_BAR_HEIGHT_DESKTOP } isLoading={ tokenTransferQuery.isPlaceholderData }/>
       </Hide>
       <Show below="lg" ssr={ false }>
         <TokenTransferList data={ items } isLoading={ tokenTransferQuery.isPlaceholderData }/>

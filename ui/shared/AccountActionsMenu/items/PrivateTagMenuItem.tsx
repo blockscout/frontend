@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { ItemType } from '../types';
+import type { ItemProps } from '../types';
 import type { Address } from 'types/api/address';
 import type { Transaction } from 'types/api/transaction';
 
@@ -12,33 +12,22 @@ import getPageType from 'lib/mixpanel/getPageType';
 import AddressModal from 'ui/privateTags/AddressModal/AddressModal';
 import TransactionModal from 'ui/privateTags/TransactionModal/TransactionModal';
 import IconSvg from 'ui/shared/IconSvg';
+import AuthGuard from 'ui/snippets/auth/AuthGuard';
 
 import ButtonItem from '../parts/ButtonItem';
 import MenuItem from '../parts/MenuItem';
 
-interface Props {
-  className?: string;
-  hash: string;
-  onBeforeClick: () => boolean;
+interface Props extends ItemProps {
   entityType?: 'address' | 'tx';
-  type: ItemType;
 }
 
-const PrivateTagMenuItem = ({ className, hash, onBeforeClick, entityType = 'address', type }: Props) => {
+const PrivateTagMenuItem = ({ className, hash, entityType = 'address', type }: Props) => {
   const modal = useDisclosure();
   const queryClient = useQueryClient();
   const router = useRouter();
 
   const queryKey = getResourceKey(entityType === 'tx' ? 'tx' : 'address', { pathParams: { hash } });
   const queryData = queryClient.getQueryData<Address | Transaction>(queryKey);
-
-  const handleClick = React.useCallback(() => {
-    if (!onBeforeClick()) {
-      return;
-    }
-
-    modal.onOpen();
-  }, [ modal, onBeforeClick ]);
 
   const handleAddPrivateTag = React.useCallback(async() => {
     await queryClient.refetchQueries({ queryKey });
@@ -49,7 +38,7 @@ const PrivateTagMenuItem = ({ className, hash, onBeforeClick, entityType = 'addr
     queryData &&
     (
       ('private_tags' in queryData && queryData.private_tags?.length) ||
-      ('tx_tag' in queryData && queryData.tx_tag)
+      ('transaction_tag' in queryData && queryData.transaction_tag)
     )
   ) {
     return null;
@@ -66,14 +55,24 @@ const PrivateTagMenuItem = ({ className, hash, onBeforeClick, entityType = 'addr
   const element = (() => {
     switch (type) {
       case 'button': {
-        return <ButtonItem label="Add private tag" icon="privattags" onClick={ handleClick } className={ className }/>;
+        return (
+          <AuthGuard onAuthSuccess={ modal.onOpen }>
+            { ({ onClick }) => (
+              <ButtonItem label="Add private tag" icon="privattags" onClick={ onClick } className={ className }/>
+            ) }
+          </AuthGuard>
+        );
       }
       case 'menu_item': {
         return (
-          <MenuItem className={ className } onClick={ handleClick }>
-            <IconSvg name="privattags" boxSize={ 6 } mr={ 2 }/>
-            <span>Add private tag</span>
-          </MenuItem>
+          <AuthGuard onAuthSuccess={ modal.onOpen }>
+            { ({ onClick }) => (
+              <MenuItem className={ className } onClick={ onClick }>
+                <IconSvg name="privattags" boxSize={ 6 } mr={ 2 }/>
+                <span>Add private tag</span>
+              </MenuItem>
+            ) }
+          </AuthGuard>
         );
       }
     }

@@ -1,11 +1,11 @@
-import { Heading, Flex, Tooltip, Link, chakra, Skeleton, useDisclosure } from '@chakra-ui/react';
-import _debounce from 'lodash/debounce';
+import { Heading, Flex, Tooltip, Link, chakra, useDisclosure } from '@chakra-ui/react';
+import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-//import TextAd from 'ui/shared/ad/TextAd';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 type BackLinkProp = { label: string; url: string } | { label: string; onClick: () => void };
 
@@ -19,7 +19,7 @@ type Props = {
   secondRow?: React.ReactNode;
   isLoading?: boolean;
   withTextAd?: boolean;
-}
+};
 
 const TEXT_MAX_LINES = 1;
 
@@ -29,10 +29,21 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   }
 
   if (props.isLoading) {
-    return <Skeleton boxSize={ 6 } display="inline-block" borderRadius="base" mr={ 3 } my={ 2 } verticalAlign="text-bottom" isLoaded={ !props.isLoading }/>;
+    return (
+      <Skeleton
+        boxSize={ 6 }
+        display="inline-block"
+        flexShrink={ 0 }
+        borderRadius="base"
+        mr={ 3 }
+        my={ 2 }
+        verticalAlign="text-bottom"
+        isLoaded={ !props.isLoading }
+      />
+    );
   }
 
-  const icon = <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400"/>;
+  const icon = <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400" flexShrink={ 0 }/>;
 
   if ('url' in props) {
     return (
@@ -82,7 +93,7 @@ const PageTitle = ({ title, contentAfter, backLink, className, isLoading, afterT
   }, [ isLoading, updatedTruncateState ]);
 
   React.useEffect(() => {
-    const handleResize = _debounce(updatedTruncateState, 1000);
+    const handleResize = debounce(updatedTruncateState, 1000);
     window.addEventListener('resize', handleResize);
 
     return function cleanup() {
@@ -143,9 +154,9 @@ const PageTitle = ({ title, contentAfter, backLink, className, isLoading, afterT
         { /* { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> } */ }
       </Flex>
       { secondRow && (
-        <Flex alignItems="center" minH={ 10 } overflow="hidden">
+        <Skeleton isLoaded={ !isLoading } alignItems="center" minH={ 10 } overflow="hidden" display="flex" _empty={{ display: 'none' }}>
           { secondRow }
-        </Flex>
+        </Skeleton>
       ) }
     </Flex>
   );

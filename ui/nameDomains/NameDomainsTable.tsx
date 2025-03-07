@@ -1,8 +1,9 @@
 import { Table, Tbody, Tr, Th, Link } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EnsDomainLookupResponse } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import IconSvg from 'ui/shared/IconSvg';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
@@ -10,7 +11,7 @@ import NameDomainsTableItem from './NameDomainsTableItem';
 import { type Sort } from './utils';
 
 interface Props {
-  data: EnsDomainLookupResponse | undefined;
+  data: bens.LookupDomainNameResponse | undefined;
   isLoading?: boolean;
   sort: Sort | undefined;
   onSortToggle: (event: React.MouseEvent) => void;
@@ -20,8 +21,8 @@ const NameDomainsTable = ({ data, isLoading, sort, onSortToggle }: Props) => {
   const sortIconTransform = sort?.toLowerCase().includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
 
   return (
-    <Table variant="simple" size="sm">
-      <Thead top={ 80 }>
+    <Table>
+      <Thead top={ ACTION_BAR_HEIGHT_DESKTOP }>
         <Tr>
           <Th width="25%">Domain</Th>
           <Th width="25%">Address</Th>

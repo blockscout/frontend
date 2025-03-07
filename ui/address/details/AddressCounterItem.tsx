@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -8,7 +7,8 @@ import type { AddressCounters } from 'types/api/address';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
-import LinkInternal from 'ui/shared/LinkInternal';
+import Skeleton from 'ui/shared/chakra/Skeleton';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
   prop: keyof AddressCounters;
@@ -51,7 +51,11 @@ const AddressCounterItem = ({ prop, query, address, onClick, isAddressQueryLoadi
       }
 
       return (
-        <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: address, tab: PROP_TO_TAB[prop] } }) } onClick={ onClick }>
+        <LinkInternal
+          href={ route({ pathname: '/address/[hash]', query: { hash: address, tab: PROP_TO_TAB[prop] } }) }
+          onClick={ onClick }
+          scroll={ false }
+        >
           { Number(data).toLocaleString() }
         </LinkInternal>
       );

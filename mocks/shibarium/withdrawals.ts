@@ -8,7 +8,7 @@ export const data: ShibariumWithdrawalsResponse = {
       l1_transaction_hash: '0xaf3e5f4ef03eac22a622b3434c5dc9f4465aa291900a86bcf0ad9fb14429f05e',
       user: {
         hash: '0x6197d1eef304eb5284a0f6720f79403b4e9bf3a5',
-        implementation_name: null,
+        implementations: null,
         is_contract: false,
         is_verified: false,
         name: null,
@@ -25,7 +25,7 @@ export const data: ShibariumWithdrawalsResponse = {
       l1_transaction_hash: '0xaf3e5f4ef03eac22a622b3434c5dc9f4465aa291900a86bcf0ad9fb14429f05e',
       user: {
         hash: '0x6197d1eef304eb5284a0f6720f79403b4e9bf3a5',
-        implementation_name: null,
+        implementations: null,
         is_contract: false,
         is_verified: false,
         name: null,
@@ -42,7 +42,7 @@ export const data: ShibariumWithdrawalsResponse = {
       l1_transaction_hash: '0xaf3e5f4ef03eac22a622b3434c5dc9f4465aa291900a86bcf0ad9fb14429f05e',
       user: {
         hash: '0x6197d1eef304eb5284a0f6720f79403b4e9bf3a5',
-        implementation_name: null,
+        implementations: null,
         is_contract: false,
         is_verified: false,
         name: null,

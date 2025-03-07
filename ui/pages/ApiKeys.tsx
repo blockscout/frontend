@@ -1,10 +1,9 @@
-import { Box, Button, Link, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Link, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { ApiKey } from 'types/api/account';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { space } from 'lib/html-entities';
 import { API_KEY } from 'stubs/account';
 import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
@@ -12,8 +11,10 @@ import ApiKeyListItem from 'ui/apiKey/ApiKeyTable/ApiKeyListItem';
 import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
 const DATA_LIMIT = 3;
 
@@ -108,7 +109,7 @@ const ApiKeysPage: React.FC = () => {
             onClick={ apiKeyModalProps.onOpen }
             isDisabled={ !canAdd }
           >
-              Add API key
+            Add API key
           </Button>
           { !canAdd && (
             <Text fontSize="sm" variant="secondary">

@@ -1,4 +1,16 @@
-import { Box, DarkMode, Flex, Grid, Popover, PopoverBody, PopoverContent, PopoverTrigger, Portal, useColorModeValue } from '@chakra-ui/react';
+import type {
+  PlacementWithLogical } from '@chakra-ui/react';
+import {
+  Box,
+  DarkMode,
+  Flex,
+  Grid,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Portal,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import React from 'react';
 
 import type { HomeStats } from 'types/api/stats';
@@ -7,7 +19,8 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import LinkInternal from 'ui/shared/LinkInternal';
+import Popover from 'ui/shared/chakra/Popover';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import GasInfoTooltipRow from './GasInfoTooltipRow';
 import GasInfoUpdateTimer from './GasInfoUpdateTimer';
@@ -17,12 +30,12 @@ interface Props {
   data: HomeStats;
   dataUpdatedAt: number;
   isOpen?: boolean; // for testing purposes only; the tests were flaky, i couldn't find a better way
+  placement?: PlacementWithLogical;
 }
 
-const POPOVER_OFFSET: [ number, number ] = [ 0, 10 ];
 const feature = config.features.gasTracker;
 
-const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen }: Props) => {
+const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen, placement }: Props) => {
   const tooltipBg = useColorModeValue('gray.700', 'gray.900');
 
   if (!data.gas_prices) {
@@ -36,7 +49,7 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen }: Props) => {
       3 : 2;
 
   return (
-    <Popover trigger="hover" isLazy offset={ POPOVER_OFFSET } isOpen={ isOpen }>
+    <Popover trigger="hover" isLazy isOpen={ isOpen } placement={ placement }>
       <PopoverTrigger>
         { children }
       </PopoverTrigger>
@@ -61,7 +74,7 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen }: Props) => {
                   <GasInfoTooltipRow name="Slow" info={ data.gas_prices.slow }/>
                 </Grid>
                 <LinkInternal href={ route({ pathname: '/gas-tracker' }) }>
-                    Gas tracker overview
+                  Gas tracker overview
                 </LinkInternal>
               </Flex>
             </DarkMode>

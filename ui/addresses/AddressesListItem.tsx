@@ -1,4 +1,4 @@
-import { Flex, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { AddressesItem } from 'types/api/addresses';
 import config from 'configs/app';
 import { ZERO } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -16,7 +17,7 @@ type Props = {
   index: number;
   totalSupply: BigNumber;
   isLoading?: boolean;
-}
+};
 
 const AddressesListItem = ({
   item,
@@ -25,7 +26,7 @@ const AddressesListItem = ({
   isLoading,
 }: Props) => {
 
-  const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** config.chain.currency.decimals));
+  const addressBalance = BigNumber(item.coin_balance || 0).div(BigNumber(10 ** config.chain.currency.decimals));
 
   return (
     <ListItemMobile rowGap={ 3 }>
@@ -61,7 +62,7 @@ const AddressesListItem = ({
       <HStack spacing={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Txn count</Skeleton>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
-          <span>{ Number(item.tx_count).toLocaleString() }</span>
+          <span>{ Number(item.transaction_count).toLocaleString() }</span>
         </Skeleton>
       </HStack>
     </ListItemMobile>

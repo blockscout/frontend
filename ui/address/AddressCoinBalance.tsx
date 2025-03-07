@@ -6,6 +6,7 @@ import type { SocketMessage } from 'lib/socket/types';
 import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -17,10 +18,17 @@ import SocketAlert from 'ui/shared/SocketAlert';
 import AddressCoinBalanceChart from './coinBalance/AddressCoinBalanceChart';
 import AddressCoinBalanceHistory from './coinBalance/AddressCoinBalanceHistory';
 
-const AddressCoinBalance = () => {
+type Props = {
+  shouldRender?: boolean;
+  isQueryEnabled?: boolean;
+};
+
+const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
+  const isMounted = useIsMounted();
+
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const addressHash = getQueryParamString(router.query.hash);
@@ -29,6 +37,7 @@ const AddressCoinBalance = () => {
     pathParams: { hash: addressHash },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_coin_balance'>(
         ADDRESS_COIN_BALANCE,
         50,
@@ -77,6 +86,10 @@ const AddressCoinBalance = () => {
     event: 'coin_balance',
     handler: handleNewSocketMessage,
   });
+
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
 
   return (
     <>

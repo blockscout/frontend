@@ -1,4 +1,5 @@
-import { chakra, Skeleton } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
+import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,14 +11,19 @@ import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
 import BlockDetails from 'ui/block/BlockDetails';
+import BlockEpochRewards from 'ui/block/BlockEpochRewards';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
+import useBlockBlobTxsQuery from 'ui/block/useBlockBlobTxsQuery';
 import useBlockQuery from 'ui/block/useBlockQuery';
-import useBlockTxQuery from 'ui/block/useBlockTxQuery';
+import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
 import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
 //import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -28,9 +34,11 @@ import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
-  py: 5,
+  pt: 6,
+  pb: 6,
   marginTop: -5,
 };
+const TABS_HEIGHT = 88;
 
 const BlockPageContent = () => {
   const router = useRouter();
@@ -40,8 +48,14 @@ const BlockPageContent = () => {
   const tab = getQueryParamString(router.query.tab);
 
   const blockQuery = useBlockQuery({ heightOrHash });
-  const blockTxsQuery = useBlockTxQuery({ heightOrHash, blockQuery, tab });
+  const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
   const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
+  const blockBlobTxsQuery = useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab });
+
+  const hasPagination = !isMobile && (
+    (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
+    (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible)
+  );
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     {
@@ -60,10 +74,18 @@ const BlockPageContent = () => {
       component: (
         <>
           { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={ 6 }/> }
-          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
+          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>
         </>
       ),
     },
+    config.features.dataAvailability.isEnabled && blockQuery.data?.blob_transaction_count ?
+      {
+        id: 'blob_txs',
+        title: 'Blob txns',
+        component: (
+          <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
+        ),
+      } : null,
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
       {
         id: 'withdrawals',
@@ -75,12 +97,12 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-  ].filter(Boolean)), [ blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
-
-  const hasPagination = !isMobile && (
-    (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
-    (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible)
-  );
+    blockQuery.data?.celo?.is_epoch_block ? {
+      id: 'epoch_rewards',
+      title: 'Epoch rewards',
+      component: <BlockEpochRewards heightOrHash={ heightOrHash }/>,
+    } : null,
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination, heightOrHash ]);
 
   let pagination;
   if (tab === 'txs') {
@@ -103,7 +125,15 @@ const BlockPageContent = () => {
   }, [ appProps.referrer ]);
 
   throwOnAbsentParamError(heightOrHash);
-  throwOnResourceLoadError(blockQuery);
+
+  if (blockQuery.isError) {
+    if (!blockQuery.isDegradedData && blockQuery.error.status === 404 && !heightOrHash.startsWith('0x')) {
+      router.push({ pathname: '/block/countdown/[height]', query: { height: heightOrHash } });
+      return null;
+    } else {
+      throwOnResourceLoadError(blockQuery);
+    }
+  }
 
   const title = (() => {
     switch (blockQuery.data?.type) {
@@ -117,9 +147,10 @@ const BlockPageContent = () => {
         return `Block #${ blockQuery.data?.height }`;
     }
   })();
+
   const titleSecondRow = (
     <>
-      { !config.UI.views.block.hiddenFields?.miner && (
+      { !config.UI.views.block.hiddenFields?.miner && blockQuery.data?.miner && (
         <Skeleton
           isLoaded={ !blockQuery.isPlaceholderData }
           fontFamily="heading"
@@ -129,9 +160,9 @@ const BlockPageContent = () => {
           fontWeight={ 500 }
         >
           <chakra.span flexShrink={ 0 }>
-            { config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
+            { `${ capitalize(getNetworkValidationActionText()) } by` }
           </chakra.span>
-          <AddressEntity address={ blockQuery.data?.miner }/>
+          <AddressEntity address={ blockQuery.data.miner }/>
         </Skeleton>
       ) }
       <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: config.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}/>
@@ -143,6 +174,7 @@ const BlockPageContent = () => {
       <PageTitle
         title={ title }
         backLink={ backLink }
+        contentAfter={ <BlockCeloEpochTag blockQuery={ blockQuery }/> }
         secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }
       />

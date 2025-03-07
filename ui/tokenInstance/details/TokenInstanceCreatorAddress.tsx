@@ -2,7 +2,7 @@ import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { ADDRESS_INFO } from 'stubs/address';
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
@@ -28,21 +28,28 @@ const TokenInstanceCreatorAddress = ({ hash }: Props) => {
 
   const creatorAddress = {
     hash: addressQuery.data.creator_address_hash,
+    filecoin: {
+      robust: addressQuery.data.creator_filecoin_robust_address,
+    },
     is_contract: false,
-    implementation_name: null,
+    implementations: null,
   };
 
   return (
-    <DetailsInfoItem
-      title="Creator"
-      hint="Address that deployed this token contract"
-      isLoading={ addressQuery.isPlaceholderData }
-    >
-      <AddressEntity
-        address={ creatorAddress }
+    <>
+      <DetailsInfoItem.Label
+        hint="Address that deployed this token contract"
         isLoading={ addressQuery.isPlaceholderData }
-      />
-    </DetailsInfoItem>
+      >
+        Creator
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
+        <AddressEntity
+          address={ creatorAddress }
+          isLoading={ addressQuery.isPlaceholderData }
+        />
+      </DetailsInfoItem.Value>
+    </>
   );
 };
 

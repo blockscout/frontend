@@ -1,11 +1,12 @@
-import { Tr, Td, Flex, Skeleton, Box } from '@chakra-ui/react';
+import { Tr, Td, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -13,17 +14,19 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
+import TimeAgoWithTooltip from '../TimeAgoWithTooltip';
+
 type Props = TokenTransfer & {
   baseAddress?: string;
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-}
+};
 
 const TokenTransferTableItem = ({
   token,
   total,
-  tx_hash: txHash,
+  transaction_hash: txHash,
   from,
   to,
   baseAddress,
@@ -33,10 +36,9 @@ const TokenTransferTableItem = ({
   enableTimeIncrement,
   isLoading,
 }: Props) => {
-  const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
-  const { usd, valueStr } = 'value' in total ? getCurrencyValue({
+  const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
-    exchangeRate: token.exchange_rate,
+    exchangeRate: token?.exchange_rate,
     accuracy: 8,
     accuracyUsd: 2,
     decimals: total.decimals || '0',
@@ -52,20 +54,30 @@ const TokenTransferTableItem = ({
         </Td>
       ) }
       <Td>
-        <Flex flexDir="column" alignItems="flex-start" my="3px" rowGap={ 2 }>
-          <TokenEntity
-            token={ token }
-            isLoading={ isLoading }
-            noSymbol
-            noCopy
-            my="2px"
-          />
-          <Tag isLoading={ isLoading }>{ token.type }</Tag>
-          <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
-        </Flex>
+        { token ? (
+          <>
+            <TokenEntity
+              token={ token }
+              isLoading={ isLoading }
+              noSymbol
+              noCopy
+              mt={ 1 }
+            />
+            <Flex columnGap={ 2 } rowGap={ 2 } mt={ 2 } flexWrap="wrap">
+              <Tag isLoading={ isLoading }>{ getTokenTypeName(token.type) }</Tag>
+              <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
+            </Flex>
+          </>
+        ) : 'N/A' }
       </Td>
       <Td>
-        { 'token_id' in total && total.token_id !== null && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
+        { total && 'token_id' in total && total.token_id !== null && token && (
+          <NftEntity
+            hash={ token.address }
+            id={ total.token_id }
+            isLoading={ isLoading }
+          />
+        ) }
       </Td>
       { showTxInfo && txHash && (
         <Td>
@@ -77,11 +89,15 @@ const TokenTransferTableItem = ({
             mt="7px"
             truncation="constant_long"
           />
-          { timestamp && (
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" mt="10px" display="inline-block">
-              <span>{ timeAgo }</span>
-            </Skeleton>
-          ) }
+          <TimeAgoWithTooltip
+            timestamp={ timestamp }
+            enableIncrement={ enableTimeIncrement }
+            isLoading={ isLoading }
+            color="text_secondary"
+            fontWeight="400"
+            mt="10px"
+            display="inline-block"
+          />
         </Td>
       ) }
       <Td>

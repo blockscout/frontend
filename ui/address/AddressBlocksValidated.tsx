@@ -8,29 +8,37 @@ import type { AddressBlocksValidatedResponse } from 'types/api/address';
 
 import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
 import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import SocketAlert from 'ui/shared/SocketAlert';
+import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import AddressBlocksValidatedListItem from './blocksValidated/AddressBlocksValidatedListItem';
 import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksValidatedTableItem';
 
+const OVERLOAD_COUNT = 75;
+
 interface Props {
   scrollRef?: React.RefObject<HTMLDivElement>;
+  shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
 
-const AddressBlocksValidated = ({ scrollRef }: Props) => {
-  const [ socketAlert, setSocketAlert ] = React.useState(false);
+const AddressBlocksValidated = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
+  const [ socketAlert, setSocketAlert ] = React.useState('');
+  const [ newItemsCount, setNewItemsCount ] = React.useState(0);
+
   const queryClient = useQueryClient();
   const router = useRouter();
+  const isMounted = useIsMounted();
 
   const addressHash = String(router.query.hash);
   const query = useQueryWithPages({
@@ -38,6 +46,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
     pathParams: { hash: addressHash },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_blocks_validated'>(
         BLOCK,
         50,
@@ -52,17 +61,22 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
   });
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert(true);
+    setSocketAlert('An error has occurred while fetching new blocks. Please refresh the page to load new blocks.');
   }, []);
 
   const handleNewSocketMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    setSocketAlert(false);
+    setSocketAlert('');
 
     queryClient.setQueryData(
       getResourceKey('address_blocks_validated', { pathParams: { hash: addressHash } }),
       (prevData: AddressBlocksValidatedResponse | undefined) => {
         if (!prevData) {
           return;
+        }
+
+        if (prevData.items.length >= OVERLOAD_COUNT) {
+          setNewItemsCount(prev => prev + 1);
+          return prevData;
         }
 
         return {
@@ -84,22 +98,32 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
     handler: handleNewSocketMessage,
   });
 
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
+
   const content = query.data?.items ? (
     <>
-      { socketAlert && <SocketAlert mb={ 6 }/> }
       <Hide below="lg" ssr={ false }>
-        <Table variant="simple" size="sm">
-          <Thead top={ query.pagination.isVisible ? 80 : 0 }>
+        <Table style={{ tableLayout: 'auto' }}>
+          <Thead top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
             <Tr>
-              <Th width="17%">Block</Th>
-              <Th width="17%">Age</Th>
-              <Th width="16%">Txn</Th>
-              <Th width="25%">Gas used</Th>
-              { !config.UI.views.block.hiddenFields?.total_reward &&
-              <Th width="25%" isNumeric>Reward { currencyUnits.ether }</Th> }
+              <Th>Block</Th>
+              <Th>Age</Th>
+              <Th>Txn</Th>
+              <Th>Gas used</Th>
+              { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled &&
+              <Th isNumeric>Reward { currencyUnits.ether }</Th> }
             </Tr>
           </Thead>
           <Tbody>
+            <SocketNewItemsNotice.Desktop
+              url={ window.location.href }
+              num={ newItemsCount }
+              alert={ socketAlert }
+              type="block"
+              isLoading={ query.isPlaceholderData }
+            />
             { query.data.items.map((item, index) => (
               <AddressBlocksValidatedTableItem
                 key={ item.height + (query.isPlaceholderData ? String(index) : '') }
@@ -112,6 +136,15 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
         </Table>
       </Hide>
       <Show below="lg" ssr={ false }>
+        { query.pagination.page === 1 && (
+          <SocketNewItemsNotice.Mobile
+            url={ window.location.href }
+            num={ newItemsCount }
+            alert={ socketAlert }
+            type="block"
+            isLoading={ query.isPlaceholderData }
+          />
+        ) }
         { query.data.items.map((item, index) => (
           <AddressBlocksValidatedListItem
             key={ item.height + (query.isPlaceholderData ? String(index) : '') }

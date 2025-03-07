@@ -12,7 +12,7 @@ interface Props extends FeaturedNetwork {
   isMobile?: boolean;
 }
 
-const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDarkMode }: Props) => {
+const NetworkMenuLink = ({ title, icon, isActive: isActiveProp, isMobile, url, invertIconInDarkMode }: Props) => {
   const colors = useColors();
   const darkModeFilter = { filter: 'brightness(0) invert(1)' };
   const style = useColorModeValue({}, invertIconInDarkMode ? darkModeFilter : {});
@@ -27,13 +27,28 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
     />
   );
 
+  const isActive = (() => {
+    if (isActiveProp !== undefined) {
+      return isActiveProp;
+    }
+
+    try {
+      const itemOrigin = new URL(url).origin;
+      const currentOrigin = window.location.origin;
+
+      return itemOrigin === currentOrigin;
+    } catch (error) {
+      return false;
+    }
+  })();
+
   return (
     <Box as="li" listStyleType="none">
       <Flex
         as="a"
         href={ url }
-        px={ isMobile ? 3 : 4 }
-        py={ 2 }
+        px={ 3 }
+        py="9px"
         alignItems="center"
         cursor="pointer"
         pointerEvents={ isActive ? 'none' : 'initial' }

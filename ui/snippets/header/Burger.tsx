@@ -3,7 +3,8 @@ import React from 'react';
 
 import config from 'configs/app';
 import IconSvg from 'ui/shared/IconSvg';
-import NavigationMobile from 'ui/snippets/navigation/NavigationMobile';
+import NavigationMobile from 'ui/snippets/navigation/mobile/NavigationMobile';
+import TestnetBadge from 'ui/snippets/navigation/TestnetBadge';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenuButton from 'ui/snippets/networkMenu/NetworkMenuButton';
 import NetworkMenuContentMobile from 'ui/snippets/networkMenu/NetworkMenuContentMobile';
@@ -45,12 +46,12 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
         autoFocus={ false }
       >
         <DrawerOverlay/>
-        <DrawerContent maxWidth="260px">
+        <DrawerContent maxWidth="330px">
           <DrawerBody p={ 6 } display="flex" flexDirection="column">
-            { config.chain.isTestnet && <IconSvg name="testnet" h="14px" w="37px" color="red.400" alignSelf="flex-start"/> }
+            <TestnetBadge alignSelf="flex-start"/>
             <Flex alignItems="center" justifyContent="space-between">
               <NetworkLogo onClick={ handleNetworkLogoClick }/>
-              { config.UI.sidebar.featuredNetworks ? (
+              { config.UI.navigation.featuredNetworks ? (
                 <NetworkMenuButton
                   isMobile
                   isActive={ networkMenu.isOpen }

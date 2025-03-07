@@ -1,21 +1,24 @@
+import { useRouter } from 'next/router';
 import React, { useCallback, useMemo, useState } from 'react';
 
-import type { StatsChartInfo, StatsChartsSection } from 'types/api/stats';
+import type * as stats from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useDebounce from 'lib/hooks/useDebounce';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import { STATS_CHARTS } from 'stubs/stats';
 
-function isSectionMatches(section: StatsChartsSection, currentSection: string): boolean {
+function isSectionMatches(section: stats.LineChartSection, currentSection: string): boolean {
   return currentSection === 'all' || section.id === currentSection;
 }
 
-function isChartNameMatches(q: string, chart: StatsChartInfo) {
+function isChartNameMatches(q: string, chart: stats.LineChartInfo) {
   return chart.title.toLowerCase().includes(q.toLowerCase());
 }
 
 export default function useStats() {
+  const router = useRouter();
+
   const { data, isPlaceholderData, isError } = useApiQuery('stats_lines', {
     queryOptions: {
       placeholderData: STATS_CHARTS,
@@ -24,22 +27,35 @@ export default function useStats() {
 
   const [ currentSection, setCurrentSection ] = useState('all');
   const [ filterQuery, setFilterQuery ] = useState('');
+  const [ initialFilterQuery, setInitialFilterQuery ] = React.useState('');
   const [ interval, setInterval ] = useState<StatsIntervalIds>('oneMonth');
   const sectionIds = useMemo(() => data?.sections?.map(({ id }) => id), [ data ]);
 
-  const debouncedFilterQuery = useDebounce(filterQuery, 500);
+  React.useEffect(() => {
+    if (!isPlaceholderData && !isError) {
+      const chartId = getQueryParamString(router.query.chartId);
+      const chartName = data?.sections.map((section) => section.charts.find((chart) => chart.id === chartId)).filter(Boolean)[0]?.title;
+      if (chartName) {
+        setInitialFilterQuery(chartName);
+        setFilterQuery(chartName);
+        router.replace({ pathname: '/stats' }, undefined, { scroll: false });
+      }
+    }
+  // run only when data is loaded
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ isPlaceholderData ]);
 
   const displayedCharts = React.useMemo(() => {
     return data?.sections
       ?.map((section) => {
-        const charts = section.charts.filter((chart) => isSectionMatches(section, currentSection) && isChartNameMatches(debouncedFilterQuery, chart));
+        const charts = section.charts.filter((chart) => isSectionMatches(section, currentSection) && isChartNameMatches(filterQuery, chart));
 
         return {
           ...section,
           charts,
         };
       }).filter((section) => section.charts.length > 0);
-  }, [ currentSection, data?.sections, debouncedFilterQuery ]);
+  }, [ currentSection, data?.sections, filterQuery ]);
 
   const handleSectionChange = useCallback((newSection: string) => {
     setCurrentSection(newSection);
@@ -58,6 +74,7 @@ export default function useStats() {
     sectionIds,
     isPlaceholderData,
     isError,
+    initialFilterQuery,
     filterQuery,
     currentSection,
     handleSectionChange,
@@ -70,6 +87,7 @@ export default function useStats() {
     sectionIds,
     isPlaceholderData,
     isError,
+    initialFilterQuery,
     filterQuery,
     currentSection,
     handleSectionChange,

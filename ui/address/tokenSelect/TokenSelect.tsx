@@ -1,7 +1,6 @@
-import { Box, Flex, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Tooltip } from '@chakra-ui/react';
 import { useQueryClient, useIsFetching } from '@tanstack/react-query';
-import _sumBy from 'lodash/sumBy';
-import NextLink from 'next/link';
+import { sumBy } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -11,7 +10,9 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
+import NextLink from 'ui/shared/NextLink';
 
 import useFetchTokens from '../utils/useFetchTokens';
 import TokenSelectDesktop from './TokenSelectDesktop';
@@ -49,20 +50,25 @@ const TokenSelect = ({ onClick }: Props) => {
     );
   }
 
-  const hasTokens = _sumBy(Object.values(data), ({ items }) => items.length) > 0;
+  const hasTokens = sumBy(Object.values(data), ({ items }) => items.length) > 0;
   if (isError || !hasTokens) {
     return <Box py="6px">0</Box>;
   }
 
   return (
-    <Flex columnGap={ 3 } mt={{ base: '6px', lg: 0 }}>
+    <Flex columnGap={ 3 } mt={{ base: 1, lg: 0 }}>
       { isMobile ?
         <TokenSelectMobile data={ data } isLoading={ tokensIsFetching === 1 }/> :
         <TokenSelectDesktop data={ data } isLoading={ tokensIsFetching === 1 }/>
       }
       <Tooltip label="Show all tokens">
         <Box>
-          <NextLink href={{ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }} passHref legacyBehavior>
+          <NextLink
+            href={{ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }}
+            passHref
+            legacyBehavior
+            scroll={ false }
+          >
             <IconButton
               aria-label="Show all tokens"
               variant="outline"

@@ -1,4 +1,4 @@
-import type { AddressCollectionsResponse, AddressNFTsResponse, AddressTokenBalance } from 'types/api/address';
+import type { AddressCollectionsResponse, AddressNFTsResponse, AddressTokenBalance, AddressTokensResponse } from 'types/api/address';
 
 import * as tokens from 'mocks/tokens/tokenInfo';
 import * as tokenInstance from 'mocks/tokens/tokenInstance';
@@ -33,6 +33,17 @@ export const erc20d: AddressTokenBalance = {
 
 export const erc20LongSymbol: AddressTokenBalance = {
   token: tokens.tokenInfoERC20LongSymbol,
+  token_id: null,
+  value: '39000000000000000000',
+  token_instance: null,
+};
+
+export const erc20BigAmount: AddressTokenBalance = {
+  token: {
+    ...tokens.tokenInfoERC20LongSymbol,
+    exchange_rate: '4200000000',
+    name: 'DuckDuckGoose Stable Coin',
+  },
   token_id: null,
   value: '39000000000000000000',
   token_instance: null,
@@ -94,28 +105,53 @@ export const erc1155LongId: AddressTokenBalance = {
   value: '42',
 };
 
-export const erc20List = {
+export const erc404a: AddressTokenBalance = {
+  token: tokens.tokenInfoERC404,
+  token_id: '42',
+  token_instance: tokenInstance.base,
+  value: '240000000000000',
+};
+
+export const erc404b: AddressTokenBalance = {
+  token: tokens.tokenInfoERC404,
+  token_instance: null,
+  value: '11',
+  token_id: null,
+};
+
+export const erc20List: AddressTokensResponse = {
   items: [
     erc20a,
     erc20b,
     erc20c,
   ],
+  next_page_params: null,
 };
 
-export const erc721List = {
+export const erc721List: AddressTokensResponse = {
   items: [
     erc721a,
     erc721b,
     erc721c,
   ],
+  next_page_params: null,
 };
 
-export const erc1155List = {
+export const erc1155List: AddressTokensResponse = {
   items: [
     erc1155withoutName,
     erc1155a,
     erc1155b,
   ],
+  next_page_params: null,
+};
+
+export const erc404List: AddressTokensResponse = {
+  items: [
+    erc404a,
+    erc404b,
+  ],
+  next_page_params: null,
 };
 
 export const nfts: AddressNFTsResponse = {
@@ -132,6 +168,12 @@ export const nfts: AddressNFTsResponse = {
       token_type: 'ERC-721',
       value: '1',
     },
+    {
+      ...tokenInstance.unique,
+      token: tokens.tokenInfoERC404,
+      token_type: 'ERC-404',
+      value: '11000',
+    },
   ],
   next_page_params: null,
 };
@@ -142,22 +184,27 @@ const nftInstance = {
   value: '11',
 };
 
+const nftInstanceWithoutImage = {
+  ...nftInstance,
+  image_url: null,
+};
+
 export const collections: AddressCollectionsResponse = {
   items: [
     {
       token: tokens.tokenInfoERC1155a,
       amount: '100',
-      token_instances: Array(5).fill(nftInstance),
+      token_instances: Array(5).fill(nftInstanceWithoutImage),
     },
     {
       token: tokens.tokenInfoERC20LongSymbol,
       amount: '100',
-      token_instances: Array(5).fill(nftInstance),
+      token_instances: Array(5).fill(nftInstanceWithoutImage),
     },
     {
       token: tokens.tokenInfoERC1155WithoutName,
       amount: '1',
-      token_instances: [ nftInstance ],
+      token_instances: [ nftInstanceWithoutImage ],
     },
   ],
   next_page_params: {

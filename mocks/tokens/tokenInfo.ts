@@ -8,7 +8,7 @@ export const tokenInfo: TokenInfo = {
   holders: '46554',
   name: 'ARIANEE',
   symbol: 'ARIA',
-  type: 'ERC-20',
+  type: 'ERC-20' as const,
   total_supply: '1235',
   icon_url: 'http://localhost:3000/token-icon.png',
 };
@@ -27,8 +27,8 @@ export const tokenInfoERC20a: TokenInfo<'ERC-20'> = {
   name: 'hyfi.token',
   symbol: 'HyFi',
   total_supply: '369000000000000000000000000',
-  type: 'ERC-20',
-  icon_url: 'https://example.com/token-icon.png',
+  type: 'ERC-20' as const,
+  icon_url: 'http://localhost:3000/token-icon.png',
 };
 
 export const tokenInfoERC20b: TokenInfo<'ERC-20'> = {
@@ -40,7 +40,7 @@ export const tokenInfoERC20b: TokenInfo<'ERC-20'> = {
   name: 'USD Coin',
   symbol: 'USDC',
   total_supply: '900000000000000000000000000',
-  type: 'ERC-20',
+  type: 'ERC-20' as const,
   icon_url: null,
 };
 
@@ -53,7 +53,7 @@ export const tokenInfoERC20c: TokenInfo<'ERC-20'> = {
   name: 'Ethereum',
   symbol: 'ETH',
   total_supply: '1000000000000000000000000',
-  type: 'ERC-20',
+  type: 'ERC-20' as const,
   icon_url: null,
 };
 
@@ -66,7 +66,7 @@ export const tokenInfoERC20d: TokenInfo<'ERC-20'> = {
   name: 'Zeta',
   symbol: 'ZETA',
   total_supply: '2100000000000000000000000000',
-  type: 'ERC-20',
+  type: 'ERC-20' as const,
   icon_url: null,
 };
 
@@ -79,7 +79,7 @@ export const tokenInfoERC20LongSymbol: TokenInfo<'ERC-20'> = {
   name: 'Zeta',
   symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   total_supply: '2100000000000000000000000000',
-  type: 'ERC-20',
+  type: 'ERC-20' as const,
   icon_url: null,
 };
 
@@ -92,7 +92,7 @@ export const tokenInfoERC721a: TokenInfo<'ERC-721'> = {
   name: 'HyFi Athena',
   symbol: 'HYFI_ATHENA',
   total_supply: '105',
-  type: 'ERC-721',
+  type: 'ERC-721' as const,
   icon_url: null,
 };
 
@@ -105,7 +105,7 @@ export const tokenInfoERC721b: TokenInfo<'ERC-721'> = {
   name: 'World Of Women Galaxy',
   symbol: 'WOWG',
   total_supply: null,
-  type: 'ERC-721',
+  type: 'ERC-721' as const,
   icon_url: null,
 };
 
@@ -118,7 +118,7 @@ export const tokenInfoERC721c: TokenInfo<'ERC-721'> = {
   name: 'Puma',
   symbol: 'PUMA',
   total_supply: null,
-  type: 'ERC-721',
+  type: 'ERC-721' as const,
   icon_url: null,
 };
 
@@ -131,7 +131,7 @@ export const tokenInfoERC721LongSymbol: TokenInfo<'ERC-721'> = {
   name: 'Puma',
   symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   total_supply: null,
-  type: 'ERC-721',
+  type: 'ERC-721' as const,
   icon_url: null,
 };
 
@@ -144,7 +144,7 @@ export const tokenInfoERC1155a: TokenInfo<'ERC-1155'> = {
   name: 'HyFi Membership',
   symbol: 'HYFI_MEMBERSHIP',
   total_supply: '482',
-  type: 'ERC-1155',
+  type: 'ERC-1155' as const,
   icon_url: null,
 };
 
@@ -157,7 +157,7 @@ export const tokenInfoERC1155b: TokenInfo<'ERC-1155'> = {
   name: 'WinkyVerse Collections',
   symbol: 'WVC',
   total_supply: '4943',
-  type: 'ERC-1155',
+  type: 'ERC-1155' as const,
   icon_url: null,
 };
 
@@ -170,8 +170,21 @@ export const tokenInfoERC1155WithoutName: TokenInfo<'ERC-1155'> = {
   name: null,
   symbol: null,
   total_supply: '482',
-  type: 'ERC-1155',
+  type: 'ERC-1155' as const,
   icon_url: null,
+};
+
+export const tokenInfoERC404: TokenInfo<'ERC-404'> = {
+  address: '0xB5C457dDB4cE3312a6C5a2b056a1652bd542a208',
+  circulating_market_cap: '0.0',
+  decimals: '18',
+  exchange_rate: '1484.13',
+  holders: '81',
+  icon_url: null,
+  name: 'OMNI404',
+  symbol: 'O404',
+  total_supply: '6482275000000000000',
+  type: 'ERC-404' as const,
 };
 
 export const bridgedTokenA: TokenInfo<'ERC-20'> = {

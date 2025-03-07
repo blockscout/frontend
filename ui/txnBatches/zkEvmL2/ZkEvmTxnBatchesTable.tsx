@@ -11,18 +11,18 @@ type Props = {
   items: Array<ZkEvmL2TxnBatchesItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" minW="1000px">
+    <Table minW="1000px">
       <Thead top={ top }>
         <Tr>
           <Th width="33%">Batch #</Th>
           <Th width="33%">Status</Th>
           <Th width="150px">Age</Th>
           <Th width="150px">Txn count</Th>
-          <Th width="230px">Verify Tx Has</Th>
+          <Th width="230px">Verify tx hash</Th>
           <Th width="230px">Sequence hash</Th>
         </Tr>
       </Thead>

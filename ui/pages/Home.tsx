@@ -1,50 +1,41 @@
-import { Box, Heading, Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import HeroBanner from 'ui/home/HeroBanner';
 import ChainIndicators from 'ui/home/indicators/ChainIndicators';
+import LatestArbitrumL2Batches from 'ui/home/latestBatches/LatestArbitrumL2Batches';
+import LatestZkEvmL2Batches from 'ui/home/latestBatches/LatestZkEvmL2Batches';
 import LatestBlocks from 'ui/home/LatestBlocks';
-import LatestZkEvmL2Batches from 'ui/home/LatestZkEvmL2Batches';
 import Stats from 'ui/home/Stats';
 import Transactions from 'ui/home/Transactions';
-import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
-import SearchBar from 'ui/snippets/searchBar/SearchBar';
-import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
 const rollupFeature = config.features.rollup;
 
 const Home = () => {
+
+  const leftWidget = (() => {
+    if (rollupFeature.isEnabled && !rollupFeature.homepage.showLatestBlocks) {
+      switch (rollupFeature.type) {
+        case 'zkEvm':
+          return <LatestZkEvmL2Batches/>;
+        case 'arbitrum':
+          return <LatestArbitrumL2Batches/>;
+      }
+    }
+
+    return <LatestBlocks/>;
+  })();
+
   return (
     <Box as="main">
-      <Box
-        w="100%"
-        background={ config.UI.homepage.plate.background }
-        borderRadius="24px"
-        padding={{ base: '24px', lg: '48px' }}
-        minW={{ base: 'unset', lg: '900px' }}
-        data-label="hero plate"
-      >
-        <Flex mb={{ base: 6, lg: 8 }} justifyContent="space-between" alignItems="center">
-          <Heading
-            as="h1"
-            size={{ base: 'md', lg: 'xl' }}
-            lineHeight={{ base: '32px', lg: '50px' }}
-            fontWeight={ 600 }
-            color={ config.UI.homepage.plate.textColor }
-          >
-            { config.chain.name } explorer
-          </Heading>
-          <Box display={{ base: 'none', lg: 'flex' }}>
-            { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
-            { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
-          </Box>
-        </Flex>
-        <SearchBar isHomepage/>
-      </Box>
-      <Stats/>
-      <ChainIndicators/>
-      <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 8 }>
-        { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? <LatestZkEvmL2Batches/> : <LatestBlocks/> }
+      <HeroBanner/>
+      <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 2 } rowGap={ 1 } mt={ 3 } _empty={{ mt: 0 }}>
+        <Stats/>
+        <ChainIndicators/>
+      </Flex>
+      <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 6 }>
+        { leftWidget }
         <Box flexGrow={ 1 }>
           <Transactions/>
         </Box>

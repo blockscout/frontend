@@ -1,4 +1,4 @@
-import { Hide, Show, Skeleton, Text } from '@chakra-ui/react';
+import { Hide, Show, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,6 +8,8 @@ import getCurrencyValue from 'lib/getCurrencyValue';
 import { currencyUnits } from 'lib/units';
 import { generateListStub } from 'stubs/utils';
 import { WITHDRAWAL } from 'stubs/withdrawals';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -50,7 +52,12 @@ const Withdrawals = () => {
         ))) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <BeaconChainWithdrawalsTable items={ data.items } view="list" top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <BeaconChainWithdrawalsTable
+          items={ data.items }
+          view="list"
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+        />
       </Hide>
     </>
   ) : null;
@@ -65,7 +72,7 @@ const Withdrawals = () => {
         { countersQuery.data && (
           <Text lineHeight={{ base: '24px', lg: '32px' }}>
             { BigNumber(countersQuery.data.withdrawal_count).toFormat() } withdrawals processed
-        and { getCurrencyValue({ value: countersQuery.data.withdrawal_sum }).valueStr } { currencyUnits.ether } withdrawn
+            and { getCurrencyValue({ value: countersQuery.data.withdrawal_sum }).valueStr } { currencyUnits.ether } withdrawn
           </Text>
         ) }
       </Skeleton>
@@ -76,7 +83,10 @@ const Withdrawals = () => {
 
   return (
     <>
-      <PageTitle title="Withdrawals" withTextAd/>
+      <PageTitle
+        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } withdrawals` : 'Withdrawals' }
+        withTextAd
+      />
       <DataListDisplay
         isError={ isError }
         items={ data?.items }

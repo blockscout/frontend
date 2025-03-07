@@ -1,20 +1,25 @@
-import { chakra, Input, InputGroup, InputLeftElement, InputRightElement, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Input, InputGroup, InputLeftElement, InputRightElement, useColorModeValue } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import ClearButton from 'ui/shared/ClearButton';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
-  onChange: (searchTerm: string) => void;
+  onChange?: (searchTerm: string) => void;
+  onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   className?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   placeholder: string;
   initialValue?: string;
   isLoading?: boolean;
-}
+  type?: React.HTMLInputTypeAttribute;
+  name?: string;
+};
 
-const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialValue, isLoading }: Props) => {
+const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialValue, isLoading, type, name, onFocus, onBlur }: Props) => {
   const [ filterQuery, setFilterQuery ] = useState(initialValue || '');
   const inputRef = React.useRef<HTMLInputElement>(null);
   const iconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
@@ -23,12 +28,12 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialVal
     const { value } = event.target;
 
     setFilterQuery(value);
-    onChange(value);
+    onChange?.(value);
   }, [ onChange ]);
 
   const handleFilterQueryClear = useCallback(() => {
     setFilterQuery('');
-    onChange('');
+    onChange?.('');
     inputRef?.current?.focus();
   }, [ onChange ]);
 
@@ -57,6 +62,10 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialVal
           borderWidth="2px"
           textOverflow="ellipsis"
           whiteSpace="nowrap"
+          type={ type }
+          name={ name }
+          onFocus={ onFocus }
+          onBlur={ onBlur }
         />
 
         { filterQuery ? (

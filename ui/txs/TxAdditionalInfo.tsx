@@ -3,7 +3,6 @@ import {
   Modal,
   ModalContent,
   ModalCloseButton,
-  Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
@@ -14,6 +13,7 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
+import Popover from 'ui/shared/chakra/Popover';
 
 import TxAdditionalInfoContainer from './TxAdditionalInfoContainer';
 import TxAdditionalInfoContent from './TxAdditionalInfoContent';
@@ -30,7 +30,7 @@ type Props =
     isMobile?: boolean;
     isLoading?: boolean;
     className?: string;
-  }
+  };
 
 const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,7 +58,7 @@ const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) =
             <AdditionalInfoButton isOpen={ isOpen } isLoading={ isLoading } className={ className }/>
           </PopoverTrigger>
           <PopoverContent border="1px solid" borderColor="divider">
-            <PopoverBody>
+            <PopoverBody fontWeight={ 400 } fontSize="sm">
               { content }
             </PopoverBody>
           </PopoverContent>

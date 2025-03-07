@@ -1,4 +1,4 @@
-import { chakra, Tooltip, Hide, Skeleton, Flex } from '@chakra-ui/react';
+import { chakra, Tooltip, Hide, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CsvExportParams } from 'types/client/address';
@@ -8,8 +8,9 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
   address: string;

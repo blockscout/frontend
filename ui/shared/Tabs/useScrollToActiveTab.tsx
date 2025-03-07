@@ -5,19 +5,36 @@ interface Props {
   tabsRefs: Array<React.RefObject<HTMLButtonElement>>;
   listRef: React.RefObject<HTMLDivElement>;
   isMobile?: boolean;
+  isLoading?: boolean;
 }
 
-export default function useScrollToActiveTab({ activeTabIndex, tabsRefs, listRef, isMobile }: Props) {
+export default function useScrollToActiveTab({ activeTabIndex, tabsRefs, listRef, isMobile, isLoading }: Props) {
   React.useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
     if (activeTabIndex < tabsRefs.length && isMobile) {
       window.setTimeout(() => {
         const activeTabRef = tabsRefs[activeTabIndex];
 
         if (activeTabRef.current && listRef.current) {
-          const activeTabRect = activeTabRef.current.getBoundingClientRect();
+          const containerWidth = listRef.current.getBoundingClientRect().width;
+          const activeTabWidth = activeTabRef.current.getBoundingClientRect().width;
+          const left = tabsRefs.slice(0, activeTabIndex)
+            .map((tab) => tab.current?.getBoundingClientRect())
+            .filter(Boolean)
+            .map((rect) => rect.width)
+            .reduce((result, item) => result + item, 0);
+
+          const isWithinFirstPage = containerWidth > left + activeTabWidth;
+
+          if (isWithinFirstPage) {
+            return;
+          }
 
           listRef.current.scrollTo({
-            left: activeTabRect.left + listRef.current.scrollLeft - 16,
+            left,
             behavior: 'smooth',
           });
         }
@@ -27,5 +44,5 @@ export default function useScrollToActiveTab({ activeTabIndex, tabsRefs, listRef
     }
   // run only when tab index or device type is changed
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ activeTabIndex, isMobile ]);
+  }, [ activeTabIndex, isMobile, isLoading ]);
 }

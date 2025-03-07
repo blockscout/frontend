@@ -10,7 +10,7 @@ import {
 } from '@opentelemetry/sdk-metrics';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-node';
-import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { SEMRESATTRS_SERVICE_NAME, SEMRESATTRS_SERVICE_VERSION, SEMRESATTRS_SERVICE_INSTANCE_ID } from '@opentelemetry/semantic-conventions';
 
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
 
@@ -18,9 +18,9 @@ const traceExporter = new OTLPTraceExporter();
 
 const sdk = new NodeSDK({
   resource: new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: 'blockscout_frontend',
-    [SemanticResourceAttributes.SERVICE_VERSION]: process.env.NEXT_PUBLIC_GIT_TAG || process.env.NEXT_PUBLIC_GIT_COMMIT_SHA || 'unknown_version',
-    [SemanticResourceAttributes.SERVICE_INSTANCE_ID]:
+    [SEMRESATTRS_SERVICE_NAME]: 'blockscout_frontend',
+    [SEMRESATTRS_SERVICE_VERSION]: process.env.NEXT_PUBLIC_GIT_TAG || process.env.NEXT_PUBLIC_GIT_COMMIT_SHA || 'unknown_version',
+    [SEMRESATTRS_SERVICE_INSTANCE_ID]:
         process.env.NEXT_PUBLIC_APP_INSTANCE ||
         process.env.NEXT_PUBLIC_APP_HOST?.replace('.blockscout.com', '').replaceAll('-', '_') ||
         'unknown_app',
@@ -46,9 +46,7 @@ const sdk = new NodeSDK({
               url.pathname.startsWith('/_next/static/') ||
               url.pathname.startsWith('/_next/data/') ||
               url.pathname.startsWith('/assets/') ||
-              url.pathname.startsWith('/static/') ||
-              url.pathname.startsWith('/favicon/') ||
-              url.pathname.startsWith('/envs.js')
+              url.pathname.startsWith('/static/')
             ) {
               return true;
             }

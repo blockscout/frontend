@@ -1,4 +1,4 @@
-import { Hide, Show, Skeleton } from '@chakra-ui/react';
+import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -7,6 +7,8 @@ import { SHIBARIUM_DEPOSIT_ITEM } from 'stubs/shibarium';
 import { generateListStub } from 'stubs/utils';
 import DepositsListItem from 'ui/deposits/shibarium/DepositsListItem';
 import DepositsTable from 'ui/deposits/shibarium/DepositsTable';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -47,7 +49,7 @@ const L2Deposits = () => {
         ))) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <DepositsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <DepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;
@@ -75,7 +77,7 @@ const L2Deposits = () => {
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText="There are no withdrawals."
+        emptyText="There are no deposits."
         content={ content }
         actionBar={ actionBar }
       />

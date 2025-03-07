@@ -1,24 +1,39 @@
-import { Tr, Td, Skeleton } from '@chakra-ui/react';
+import { Tr, Td } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EnsDomainEvent } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
-import dayjs from 'lib/date/dayjs';
+import { route } from 'nextjs-routes';
+
+import config from 'configs/app';
+import stripTrailingSlash from 'lib/stripTrailingSlash';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
-type Props = EnsDomainEvent & {
+interface Props {
+  event: bens.DomainEvent;
+  domain: bens.DetailedDomain | undefined;
   isLoading?: boolean;
 }
 
-const NameDomainHistoryTableItem = ({ isLoading, transaction_hash: transactionHash, from_address: fromAddress, action, timestamp }: Props) => {
+const NameDomainHistoryTableItem = ({ isLoading, event, domain }: Props) => {
+  const isProtocolBaseChain = stripTrailingSlash(domain?.protocol?.deployment_blockscout_base_url ?? '') === config.app.baseUrl;
+  const txEntityProps = {
+    isExternal: !isProtocolBaseChain ? true : false,
+    href: !isProtocolBaseChain ? (
+      stripTrailingSlash(domain?.protocol?.deployment_blockscout_base_url ?? '') +
+      route({ pathname: '/tx/[hash]', query: { hash: event.transaction_hash } })
+    ) : undefined,
+  };
 
   return (
     <Tr>
       <Td verticalAlign="middle">
         <TxEntity
-          hash={ transactionHash }
+          { ...txEntityProps }
+          hash={ event.transaction_hash }
           isLoading={ isLoading }
           fontWeight={ 700 }
           noIcon
@@ -26,15 +41,18 @@ const NameDomainHistoryTableItem = ({ isLoading, transaction_hash: transactionHa
         />
       </Td>
       <Td pl={ 9 } verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">
-          <span>{ dayjs(timestamp).fromNow() }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ event.timestamp }
+          isLoading={ isLoading }
+          color="text_secondary"
+          display="inline-block"
+        />
       </Td>
       <Td verticalAlign="middle">
-        { fromAddress && <AddressEntity address={ fromAddress } isLoading={ isLoading } truncation="constant"/> }
+        { event.from_address && <AddressEntity address={ event.from_address } isLoading={ isLoading } truncation="constant"/> }
       </Td>
       <Td verticalAlign="middle">
-        { action && <Tag colorScheme="gray" isLoading={ isLoading }>{ action }</Tag> }
+        { event.action && <Tag colorScheme="gray" isLoading={ isLoading }>{ event.action }</Tag> }
       </Td>
     </Tr>
   );

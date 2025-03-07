@@ -1,4 +1,4 @@
-import { Hide, Show, Skeleton, Text } from '@chakra-ui/react';
+import { Hide, Show, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -6,6 +6,8 @@ import { L2_OUTPUT_ROOTS_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import OptimisticL2OutputRootsListItem from 'ui/outputRoots/optimisticL2/OptimisticL2OutputRootsListItem';
 import OptimisticL2OutputRootsTable from 'ui/outputRoots/optimisticL2/OptimisticL2OutputRootsTable';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -13,9 +15,9 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const OptimisticL2OutputRoots = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'l2_output_roots',
+    resourceName: 'optimistic_l2_output_roots',
     options: {
-      placeholderData: generateListStub<'l2_output_roots'>(
+      placeholderData: generateListStub<'optimistic_l2_output_roots'>(
         L2_OUTPUT_ROOTS_ITEM,
         50,
         {
@@ -28,7 +30,7 @@ const OptimisticL2OutputRoots = () => {
     },
   });
 
-  const countersQuery = useApiQuery('l2_output_roots_count', {
+  const countersQuery = useApiQuery('optimistic_l2_output_roots_count', {
     queryOptions: {
       placeholderData: 50617,
     },
@@ -46,7 +48,7 @@ const OptimisticL2OutputRoots = () => {
         ))) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <OptimisticL2OutputRootsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <OptimisticL2OutputRootsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;

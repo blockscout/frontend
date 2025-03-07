@@ -1,40 +1,22 @@
-import type { Abi } from 'abitype';
+export const CONTRACT_MAIN_TAB_IDS = [
+  'contract_code',
+  'read_contract',
+  'write_contract',
+  'read_write_contract',
+  'read_proxy',
+  'write_proxy',
+  'read_write_proxy',
+  'read_custom_methods',
+  'write_custom_methods',
+  'read_write_custom_methods',
+  'mud_system',
+] as const;
 
-import type { SmartContractWriteMethod } from 'types/api/contract';
+export const CONTRACT_DETAILS_TAB_IDS = [
+  'contract_source_code',
+  'contract_compiler',
+  'contract_abi',
+  'contract_bytecode',
+] as const;
 
-export const getNativeCoinValue = (value: unknown) => {
-  if (typeof value !== 'string') {
-    return BigInt(0);
-  }
-
-  return BigInt(value);
-};
-
-export function prepareAbi(abi: Abi, item: SmartContractWriteMethod): Abi {
-  if ('name' in item) {
-    const hasMethodsWithSameName = abi.filter((abiItem) => 'name' in abiItem ? abiItem.name === item.name : false).length > 1;
-
-    if (hasMethodsWithSameName) {
-      return abi.filter((abiItem) => {
-        if (!('name' in abiItem)) {
-          return true;
-        }
-
-        if (abiItem.name !== item.name) {
-          return true;
-        }
-
-        if (abiItem.inputs.length !== item.inputs.length) {
-          return false;
-        }
-
-        return abiItem.inputs.every(({ name, type }) => {
-          const itemInput = item.inputs.find((input) => input.name === name);
-          return Boolean(itemInput) && itemInput?.type === type;
-        });
-      });
-    }
-  }
-
-  return abi;
-}
+export const CONTRACT_TAB_IDS = (CONTRACT_MAIN_TAB_IDS as unknown as Array<string>).concat(CONTRACT_DETAILS_TAB_IDS as unknown as Array<string>);

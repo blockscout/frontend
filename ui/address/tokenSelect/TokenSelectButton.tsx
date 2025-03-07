@@ -1,9 +1,11 @@
-import { Box, Button, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FormattedData } from './types';
 
+import { space } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { getTokensTotalInfo } from '../utils/tokenUtils';
@@ -38,11 +40,21 @@ const TokenSelectButton = ({ isOpen, isLoading, onClick, data }: Props, ref: Rea
         variant="outline"
         colorScheme="gray"
         onClick={ handleClick }
+        isActive={ isOpen }
         aria-label="Token select"
       >
         <IconSvg name="tokens" boxSize={ 4 } mr={ 2 }/>
-        <Text fontWeight={ 600 }>{ prefix }{ num }</Text>
-        <Text whiteSpace="pre" variant="secondary" fontWeight={ 400 }> ({ prefix }${ usd.toFormat(2) })</Text>
+        <chakra.span fontWeight={ 600 }>{ prefix }{ num }</chakra.span>
+        <chakra.span
+          whiteSpace="pre"
+          color="text_secondary"
+          fontWeight={ 400 }
+          maxW={{ base: 'calc(100vw - 230px)', lg: '500px' }}
+          overflow="hidden"
+          textOverflow="ellipsis"
+        >
+          { space }({ prefix }${ usd.toFormat(2) })
+        </chakra.span>
         <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 3 }/>
       </Button>
       { isLoading && !isOpen && <Skeleton h="100%" w="100%" position="absolute" top={ 0 } left={ 0 } bgColor={ skeletonBgColor } borderRadius="base"/> }

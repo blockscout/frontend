@@ -1,70 +1,35 @@
-import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { txnBatchData } from 'mocks/zkevmL2txnBatches/zkevmL2txnBatch';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
-import * as configs from 'playwright/utils/configs';
+import { txnBatchData } from 'mocks/zkEvm/txnBatches';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
+import { test, expect, devices } from 'playwright/lib';
 
 import ZkEvmL2TxnBatch from './ZkEvmL2TxnBatch';
 
-const test = base.extend({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.zkEvmRollup) as any,
-});
-
+const batchNumber = '5';
 const hooksConfig = {
   router: {
-    query: { number: '5' },
+    query: { number: batchNumber },
   },
 };
 
-const BATCH_API_URL = buildApiUrl('zkevm_l2_txn_batch', { number: '5' });
+test.beforeEach(async({ mockTextAd, mockApiResponse, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.zkEvmRollup);
+  await mockTextAd();
+  await mockApiResponse('zkevm_l2_txn_batch', txnBatchData, { pathParams: { number: batchNumber } });
+});
 
-test('base view', async({ mount, page }) => {
+test('base view', async({ render }) => {
   test.slow();
-  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
-    status: 200,
-    body: '',
-  }));
-
-  await page.route(BATCH_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txnBatchData),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <ZkEvmL2TxnBatch/>
-    </TestApp>,
-    { hooksConfig },
-  );
-
+  const component = await render(<ZkEvmL2TxnBatch/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });
 
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
-  test('base view', async({ mount, page }) => {
+  test('base view', async({ render }) => {
     test.slow();
-    await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
-      status: 200,
-      body: '',
-    }));
-
-    await page.route(BATCH_API_URL, (route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify(txnBatchData),
-    }));
-
-    const component = await mount(
-      <TestApp>
-        <ZkEvmL2TxnBatch/>
-      </TestApp>,
-      { hooksConfig },
-    );
-
+    const component = await render(<ZkEvmL2TxnBatch/>, { hooksConfig });
     await expect(component).toHaveScreenshot();
   });
 });

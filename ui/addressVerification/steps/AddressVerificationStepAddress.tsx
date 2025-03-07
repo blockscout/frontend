@@ -1,7 +1,7 @@
 import { Alert, Box, Button, Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import type {
   AddressVerificationResponseError,
@@ -16,10 +16,10 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
-import LinkInternal from 'ui/shared/LinkInternal';
+import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 
-import AddressVerificationFieldAddress from '../fields/AddressVerificationFieldAddress';
 type Fields = RootFields & AddressVerificationFormFirstStepFields;
 
 interface Props {
@@ -34,7 +34,7 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
       address: defaultAddress,
     },
   });
-  const { handleSubmit, formState, control, setError, clearErrors, watch } = formApi;
+  const { handleSubmit, formState, setError, clearErrors, watch } = formApi;
   const apiFetch = useApiFetch();
 
   const address = watch('address');
@@ -100,17 +100,25 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
   })();
 
   return (
-    <form noValidate onSubmit={ onSubmit }>
-      <Box>Enter the contract address you are verifying ownership for.</Box>
-      { rootError && <Alert status="warning" mt={ 3 }>{ rootError }</Alert> }
-      <AddressVerificationFieldAddress formState={ formState } control={ control }/>
-      <Flex alignItems={{ base: 'flex-start', lg: 'center' }} mt={ 8 } columnGap={ 5 } rowGap={ 2 } flexDir={{ base: 'column', lg: 'row' }}>
-        <Button size="lg" type="submit" isDisabled={ formState.isSubmitting } flexShrink={ 0 }>
+    <FormProvider { ...formApi }>
+      <form noValidate onSubmit={ onSubmit }>
+        <Box>Enter the contract address you are verifying ownership for.</Box>
+        { rootError && <Alert status="warning" mt={ 3 }>{ rootError }</Alert> }
+        <FormFieldAddress<Fields>
+          name="address"
+          isRequired
+          bgColor="dialog_bg"
+          placeholder="Smart contract address (0x...)"
+          mt={ 8 }
+        />
+        <Flex alignItems={{ base: 'flex-start', lg: 'center' }} mt={ 8 } columnGap={ 5 } rowGap={ 2 } flexDir={{ base: 'column', lg: 'row' }}>
+          <Button size="lg" type="submit" isLoading={ formState.isSubmitting } loadingText="Continue" flexShrink={ 0 }>
             Continue
-        </Button>
-        <AdminSupportText/>
-      </Flex>
-    </form>
+          </Button>
+          <AdminSupportText/>
+        </Flex>
+      </form>
+    </FormProvider>
   );
 };
 

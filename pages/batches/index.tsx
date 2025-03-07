@@ -15,8 +15,14 @@ const Batches = dynamic(() => {
   switch (rollupFeature.type) {
     case 'zkEvm':
       return import('ui/pages/ZkEvmL2TxnBatches');
+    case 'zkSync':
+      return import('ui/pages/ZkSyncL2TxnBatches');
     case 'optimistic':
       return import('ui/pages/OptimisticL2TxnBatches');
+    case 'arbitrum':
+      return import('ui/pages/ArbitrumL2TxnBatches');
+    case 'scroll':
+      return import('ui/pages/ScrollL2TxnBatches');
   }
   throw new Error('Txn batches feature is not enabled.');
 }, { ssr: false });

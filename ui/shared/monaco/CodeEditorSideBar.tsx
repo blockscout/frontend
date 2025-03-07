@@ -1,6 +1,6 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, useBoolean } from '@chakra-ui/react';
-import _throttle from 'lodash/throttle';
+import { throttle } from 'es-toolkit';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React from 'react';
 
@@ -29,7 +29,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile, m
   const [ isDrawerOpen, setIsDrawerOpen ] = useBoolean(false);
   const [ tabIndex, setTabIndex ] = React.useState(0);
   const [ searchValue, setSearchValue ] = React.useState('');
-  const [ actionBarRenderer, setActionBarRenderer ] = React.useState<() => JSX.Element>();
+  const [ actionBarRenderer, setActionBarRenderer ] = React.useState<() => React.JSX.Element>();
 
   const themeColors = useThemeColors();
 
@@ -47,7 +47,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile, m
     letterSpacing: 0.3,
   };
 
-  const handleScrollThrottled = React.useRef(_throttle((event: React.SyntheticEvent) => {
+  const handleScrollThrottled = React.useRef(throttle((event: React.SyntheticEvent) => {
     setIsStuck((event.target as HTMLDivElement).scrollTop > 0);
   }, 100));
 

@@ -35,7 +35,8 @@ const baseStyle = defineStyle((props) => {
     [$bg.variable]: `colors.${ bg }`,
     [$fg.variable]: `colors.${ fg }`,
     [$arrowBg.variable]: $bg.reference,
-    maxWidth: props.maxWidth || props.maxW || 'unset',
+    maxWidth: props.maxWidth || props.maxW || 'calc(100vw - 8px)',
+    marginX: '4px',
   };
 });
 

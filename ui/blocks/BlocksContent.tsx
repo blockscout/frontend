@@ -5,6 +5,8 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { BlockType, BlocksResponse } from 'types/api/block';
 
+import { route } from 'nextjs-routes';
+
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
@@ -13,18 +15,23 @@ import BlocksList from 'ui/blocks/BlocksList';
 import BlocksTable from 'ui/blocks/BlocksTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
+import IconSvg from 'ui/shared/IconSvg';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 const OVERLOAD_COUNT = 75;
+const TABS_HEIGHT = 88;
 
 interface Props {
   type?: BlockType;
-  query: QueryWithPagesResult<'blocks'>;
+  query: QueryWithPagesResult<'blocks'> | QueryWithPagesResult<'optimistic_l2_txn_batch_blocks'>;
+  enableSocket?: boolean;
+  top?: number;
 }
 
-const BlocksContent = ({ type, query }: Props) => {
+const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
   const [ socketAlert, setSocketAlert ] = React.useState('');
@@ -70,7 +77,7 @@ const BlocksContent = ({ type, query }: Props) => {
     topic: 'blocks:new_block',
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: query.isPlaceholderData || query.isError || query.pagination.page !== 1,
+    isDisabled: query.isPlaceholderData || query.isError || query.pagination.page !== 1 || !enableSocket,
   });
   useSocketMessage({
     channel,
@@ -81,7 +88,7 @@ const BlocksContent = ({ type, query }: Props) => {
   const content = query.data?.items ? (
     <>
       <Box display={{ base: 'block', lg: 'none' }}>
-        { query.pagination.page === 1 && (
+        { query.pagination.page === 1 && enableSocket && (
           <SocketNewItemsNotice.Mobile
             url={ window.location.href }
             num={ newItemsCount }
@@ -95,10 +102,10 @@ const BlocksContent = ({ type, query }: Props) => {
       <Box display={{ base: 'none', lg: 'block' }}>
         <BlocksTable
           data={ query.data.items }
-          top={ query.pagination.isVisible ? 80 : 0 }
+          top={ top || (query.pagination.isVisible ? TABS_HEIGHT : 0) }
           page={ query.pagination.page }
           isLoading={ query.isPlaceholderData }
-          showSocketInfo={ query.pagination.page === 1 }
+          showSocketInfo={ query.pagination.page === 1 && enableSocket }
           socketInfoNum={ newItemsCount }
           socketInfoAlert={ socketAlert }
         />
@@ -106,8 +113,12 @@ const BlocksContent = ({ type, query }: Props) => {
     </>
   ) : null;
 
-  const actionBar = isMobile && query.pagination.isVisible ? (
+  const actionBar = isMobile ? (
     <ActionBar mt={ -6 }>
+      <LinkInternal display="inline-flex" alignItems="center" href={ route({ pathname: '/block/countdown' }) }>
+        <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
+        <span>Block countdown</span>
+      </LinkInternal>
       <Pagination ml="auto" { ...query.pagination }/>
     </ActionBar>
   ) : null;

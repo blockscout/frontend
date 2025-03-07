@@ -22,7 +22,7 @@ type Props = {
   showPagination?: boolean;
   filterComponent?: React.ReactNode;
   linkSlot?: React.ReactNode;
-}
+};
 
 const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps, className, showPagination = true, linkSlot }: Props) => {
   return (
@@ -30,9 +30,10 @@ const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps
       <HStack>
         { filterComponent }
         <Sort
+          name="transactions_sorting"
+          defaultValue={ sorting }
           options={ SORT_OPTIONS }
-          setSort={ setSorting }
-          sort={ sorting }
+          onChange={ setSorting }
           isLoading={ paginationProps.isLoading }
         />
         { /* api is not implemented */ }

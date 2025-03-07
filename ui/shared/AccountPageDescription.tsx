@@ -1,5 +1,5 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
-import _debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 const CUT_HEIGHT = 144;
@@ -25,7 +25,7 @@ const AccountPageDescription = ({ children, allowCut = true }: { children: React
     }
 
     calculateCut();
-    const resizeHandler = _debounce(calculateCut, 300);
+    const resizeHandler = debounce(calculateCut, 300);
     window.addEventListener('resize', resizeHandler);
     return function cleanup() {
       window.removeEventListener('resize', resizeHandler);

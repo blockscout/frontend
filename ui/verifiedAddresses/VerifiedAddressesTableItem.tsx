@@ -1,9 +1,10 @@
-import { Td, Tr, Link, Tooltip, IconButton, Skeleton } from '@chakra-ui/react';
+import { Td, Tr, Link, Tooltip, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
 
 import dayjs from 'lib/date/dayjs';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -48,6 +49,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
     }
 
     const token = {
+      type: 'ERC-20' as const,
       icon_url: application.iconUrl,
       address: application.tokenAddress,
       name: item.metadata.tokenName,
@@ -68,7 +70,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
     <Tr>
       <Td>
         <AddressEntity
-          address={{ hash: item.contractAddress, is_contract: true, implementation_name: null }}
+          address={{ hash: item.contractAddress, is_contract: true }}
           isLoading={ isLoading }
           fontWeight="600"
         />

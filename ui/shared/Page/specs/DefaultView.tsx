@@ -5,7 +5,7 @@ import type { TokenInfo } from 'types/api/token';
 import * as addressMock from 'mocks/address/address';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import EntityTags from 'ui/shared/EntityTags';
+import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 
@@ -32,10 +32,10 @@ const DefaultView = () => {
 
   const contentAfter = (
     <>
-      <IconSvg name="verified_token" color="green.500" boxSize={ 6 } cursor="pointer"/>
+      <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
       <EntityTags
-        tagsBefore={ [
-          { label: 'example', display_name: 'Example label' },
+        tags={ [
+          { slug: 'example', name: 'Example label', tagType: 'custom' },
         ] }
         flexGrow={ 1 }
       />
@@ -60,7 +60,7 @@ const DefaultView = () => {
       beforeTitle={ (
         <TokenEntity.Icon
           token={ tokenData }
-          iconSize="lg"
+          size="lg"
         />
       ) }
       backLink={ backLink }

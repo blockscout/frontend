@@ -19,8 +19,14 @@ export function middleware(req: NextRequest) {
     return accountResponse;
   }
 
-  const end = Date.now();
   const res = NextResponse.next();
+
+  middlewares.colorTheme(req, res);
+  middlewares.addressFormat(req, res);
+  middlewares.scamTokens(req, res);
+
+  const end = Date.now();
+
   res.headers.append('Content-Security-Policy', cspPolicy);
   res.headers.append('Server-Timing', `middleware;dur=${ end - start }`);
   res.headers.append('Docker-ID', process.env.HOSTNAME || '');

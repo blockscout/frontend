@@ -16,28 +16,6 @@ repositories:
     url: https://bedag.github.io/helm-charts
 
 releases:
-  # Deploy front-main
-  - name: bs-stack
-    chart: blockscout/blockscout-stack
-    version: 1.2.*
-    namespace: front-main
-    labels:
-      app: front
-    values:
-    - values/main/values.yaml
-    - global:
-        env: "main"
-  # Deploy l2-optimism-goerli
-  - name: bs-stack
-    chart: blockscout/blockscout-stack
-    version: 1.2.*
-    namespace: l2-optimism-goerli
-    labels:
-      app: l2-optimism-goerli
-    values:
-    - values/l2-optimism-goerli/values.yaml
-    - global:
-        env: "optimism-goerli"
   # Deploy review L2
   - name: reg-secret
     chart: bedag/raw
@@ -55,7 +33,7 @@ releases:
           type: kubernetes.io/dockerconfigjson
   - name: bs-stack
     chart: blockscout/blockscout-stack
-    version: 1.2.*
+    version: 1.*.*
     namespace: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     labels:
       app: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
@@ -80,7 +58,7 @@ releases:
           type: kubernetes.io/dockerconfigjson
   - name: bs-stack
     chart: blockscout/blockscout-stack
-    version: 1.2.*
+    version: 1.*.*
     namespace: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     labels:
       app: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}

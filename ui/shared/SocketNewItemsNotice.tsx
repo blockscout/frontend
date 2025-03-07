@@ -1,6 +1,8 @@
-import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Skeleton, Tr, Td } from '@chakra-ui/react';
+import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Tr, Td } from '@chakra-ui/react';
 import { transparentize } from '@chakra-ui/theme-tools';
 import React from 'react';
+
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 interface InjectedProps {
   content: React.ReactNode;
@@ -8,7 +10,7 @@ interface InjectedProps {
 
 interface Props {
   type?: 'transaction' | 'token_transfer' | 'deposit' | 'block';
-  children?: (props: InjectedProps) => JSX.Element;
+  children?: (props: InjectedProps) => React.JSX.Element;
   className?: string;
   url: string;
   alert?: string;
@@ -88,7 +90,7 @@ export const Desktop = ({ ...props }: Props) => {
       my={ props.isLoading ? '6px' : 0 }
       { ...props }
     >
-      { ({ content }) => <Tr><Td colSpan={ 100 } p={ 0 }>{ content }</Td></Tr> }
+      { ({ content }) => <Tr><Td colSpan={ 100 } p={ 0 } _first={{ p: 0 }} _last={{ p: 0 }}>{ content }</Td></Tr> }
     </SocketNewItemsNotice>
   );
 };

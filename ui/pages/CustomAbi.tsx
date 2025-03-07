@@ -1,18 +1,19 @@
-import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, useDisclosure } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { CustomAbi } from 'types/api/account';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { CUSTOM_ABI } from 'stubs/account';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
 import CustomAbiListItem from 'ui/customAbi/CustomAbiTable/CustomAbiListItem';
 import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
 const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();
@@ -64,7 +65,7 @@ const CustomAbiPage: React.FC = () => {
         <Box display={{ base: 'block', lg: 'none' }}>
           { data?.map((item, index) => (
             <CustomAbiListItem
-              key={ item.id + (isPlaceholderData ? index : '') }
+              key={ item.id + (isPlaceholderData ? String(index) : '') }
               item={ item }
               isLoading={ isPlaceholderData }
               onDeleteClick={ onDeleteClick }

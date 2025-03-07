@@ -1,15 +1,16 @@
-import { chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, useColorModeValue } from '@chakra-ui/react';
 import type { As, IconProps } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import { getIconProps, type IconSize } from './utils';
 
@@ -18,7 +19,7 @@ export type Truncation = 'constant' | 'constant_long' | 'dynamic' | 'tail' | 'no
 export interface EntityBaseProps {
   className?: string;
   href?: string;
-  iconSize?: IconSize;
+  icon?: EntityIconProps;
   isExternal?: boolean;
   isLoading?: boolean;
   noCopy?: boolean;
@@ -79,28 +80,29 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
   );
 });
 
-export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'iconSize' | 'noIcon'> {
-  name: IconName;
-  color?: IconProps['color'];
-  borderRadius?: IconProps['borderRadius'];
+interface EntityIconProps extends Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> {
+  name?: IconName;
+  size?: IconSize;
 }
 
-const Icon = ({ isLoading, iconSize, noIcon, name, color, borderRadius }: IconBaseProps) => {
+export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon'>, EntityIconProps {}
+
+const Icon = ({ isLoading, noIcon, size, name, color, borderRadius, marginRight, boxSize }: IconBaseProps) => {
   const defaultColor = useColorModeValue('gray.500', 'gray.400');
 
-  if (noIcon) {
+  if (noIcon || !name) {
     return null;
   }
 
-  const styles = getIconProps(iconSize);
+  const styles = getIconProps(size);
   return (
     <IconSvg
       name={ name }
-      boxSize={ styles.boxSize }
+      boxSize={ boxSize ?? styles.boxSize }
       isLoading={ isLoading }
       borderRadius={ borderRadius ?? 'base' }
       display="block"
-      mr={ 2 }
+      mr={ marginRight ?? 2 }
       color={ color ?? defaultColor }
       minW={ 0 }
       flexShrink={ 0 }
@@ -111,9 +113,10 @@ const Icon = ({ isLoading, iconSize, noIcon, name, color, borderRadius }: IconBa
 export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength'> {
   asProp?: As;
   text: string;
+  isTooltipDisabled?: boolean;
 }
 
-const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength }: ContentBaseProps) => {
+const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, isTooltipDisabled }: ContentBaseProps) => {
 
   const children = (() => {
     switch (truncation) {
@@ -123,6 +126,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
             hash={ text }
             as={ asProp }
             type="long"
+            isTooltipDisabled={ isTooltipDisabled }
           />
         );
       case 'constant':
@@ -130,6 +134,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
           <HashStringShorten
             hash={ text }
             as={ asProp }
+            isTooltipDisabled={ isTooltipDisabled }
           />
         );
       case 'dynamic':
@@ -138,8 +143,10 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
             hash={ text }
             as={ asProp }
             tailLength={ tailLength }
+            isTooltipDisabled={ isTooltipDisabled }
           />
         );
+      case 'tail':
       case 'none':
         return <chakra.span as={ asProp }>{ text }</chakra.span>;
     }
@@ -151,6 +158,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
       isLoaded={ !isLoading }
       overflow="hidden"
       whiteSpace="nowrap"
+      textOverflow={ truncation === 'tail' ? 'ellipsis' : undefined }
     >
       { children }
     </Skeleton>

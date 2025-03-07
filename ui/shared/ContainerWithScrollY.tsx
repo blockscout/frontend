@@ -1,21 +1,31 @@
 import { Flex, useColorModeValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-type Props = {
+export type Props = {
   children: React.ReactNode;
-  containerId?: string;
   gradientHeight: number;
   className?: string;
-  hasScroll: boolean;
-}
+  onScrollVisibilityChange?: (isVisible: boolean) => void;
+};
 
-const ContainerWithScrollY = ({ className, hasScroll, containerId, gradientHeight, children }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
-  const gradientStartColor = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
-  const gradientEndColor = useColorModeValue('whiteAlpha.900', 'blackAlpha.900');
+const ContainerWithScrollY = ({ className, gradientHeight, children, onScrollVisibilityChange }: Props) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [ hasScroll, setHasScroll ] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    const hasScroll = ref.current.scrollHeight >= ref.current.clientHeight + gradientHeight / 2;
+    setHasScroll(hasScroll);
+    onScrollVisibilityChange?.(hasScroll);
+  }, [ gradientHeight, onScrollVisibilityChange ]);
+
+  const gradientEndColor = useColorModeValue('white', 'black');
 
   return (
     <Flex
-      id={ containerId }
       flexDirection="column"
       className={ className }
       overflowY={ hasScroll ? 'scroll' : 'auto' }
@@ -27,7 +37,7 @@ const ContainerWithScrollY = ({ className, hasScroll, containerId, gradientHeigh
         left: 0,
         right: '20px',
         height: `${ gradientHeight }px`,
-        bgGradient: `linear(to-b, ${ gradientStartColor } 37.5%, ${ gradientEndColor } 77.5%)`,
+        bgGradient: `linear(to-b, transparent, ${ gradientEndColor })`,
       } : undefined }
       pr={ hasScroll ? 5 : 0 }
       pb={ hasScroll ? `${ gradientHeight }px` : 0 }
@@ -37,4 +47,4 @@ const ContainerWithScrollY = ({ className, hasScroll, containerId, gradientHeigh
   );
 };
 
-export default chakra(React.forwardRef(ContainerWithScrollY));
+export default chakra(ContainerWithScrollY);

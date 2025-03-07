@@ -7,7 +7,7 @@ export type TxStateChange = (TxStateChangeCoin | TxStateChangeToken) & {
   is_miner: boolean;
   balance_before: string | null;
   balance_after: string | null;
-}
+};
 
 export interface TxStateChangeCoin {
   type: 'coin';
@@ -37,6 +37,13 @@ export interface TxStateChangeTokenErc721 {
 export interface TxStateChangeTokenErc1155 {
   type: 'token';
   token: TokenInfo<'ERC-1155'>;
+  change: string;
+  token_id: string;
+}
+
+export interface TxStateChangeTokenErc404 {
+  type: 'token';
+  token: TokenInfo<'ERC-404'>;
   change: string;
   token_id: string;
 }

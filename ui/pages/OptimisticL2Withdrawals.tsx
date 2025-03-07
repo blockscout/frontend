@@ -1,10 +1,12 @@
-import { Hide, Show, Skeleton } from '@chakra-ui/react';
+import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { L2_WITHDRAWAL_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -14,9 +16,9 @@ import OptimisticL2WithdrawalsTable from 'ui/withdrawals/optimisticL2/Optimistic
 
 const OptimisticL2Withdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'l2_withdrawals',
+    resourceName: 'optimistic_l2_withdrawals',
     options: {
-      placeholderData: generateListStub<'l2_withdrawals'>(
+      placeholderData: generateListStub<'optimistic_l2_withdrawals'>(
         L2_WITHDRAWAL_ITEM,
         50,
         {
@@ -29,7 +31,7 @@ const OptimisticL2Withdrawals = () => {
     },
   });
 
-  const countersQuery = useApiQuery('l2_withdrawals_count', {
+  const countersQuery = useApiQuery('optimistic_l2_withdrawals_count', {
     queryOptions: {
       placeholderData: 23700,
     },
@@ -39,13 +41,13 @@ const OptimisticL2Withdrawals = () => {
     <>
       <Show below="lg" ssr={ false }>{ data.items.map(((item, index) => (
         <OptimisticL2WithdrawalsListItem
-          key={ item.l2_tx_hash + (isPlaceholderData ? index : '') }
+          key={ String(item.msg_nonce_version) + item.msg_nonce + (isPlaceholderData ? index : '') }
           item={ item }
           isLoading={ isPlaceholderData }
         />
       ))) }</Show>
       <Hide below="lg" ssr={ false }>
-        <OptimisticL2WithdrawalsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <OptimisticL2WithdrawalsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;

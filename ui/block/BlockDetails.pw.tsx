@@ -1,10 +1,8 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as blockMock from 'mocks/blocks/block';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import TestApp from 'playwright/TestApp';
-import * as configs from 'playwright/utils/configs';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
+import { test, expect } from 'playwright/lib';
 
 import BlockDetails from './BlockDetails';
 import type { BlockQuery } from './useBlockQuery';
@@ -15,59 +13,56 @@ const hooksConfig = {
   },
 };
 
-test('regular block +@mobile +@dark-mode', async({ mount, page }) => {
+test('regular block +@mobile +@dark-mode', async({ render, page }) => {
   const query = {
     data: blockMock.base,
     isPending: false,
   } as BlockQuery;
 
-  const component = await mount(
-    <TestApp>
-      <BlockDetails query={ query }/>
-    </TestApp>,
-    { hooksConfig },
-  );
+  const component = await render(<BlockDetails query={ query }/>, { hooksConfig });
 
   await page.getByText('View details').click();
 
   await expect(component).toHaveScreenshot();
 });
 
-test('genesis block', async({ mount, page }) => {
+test('genesis block', async({ render, page }) => {
   const query = {
     data: blockMock.genesis,
     isPending: false,
   } as BlockQuery;
 
-  const component = await mount(
-    <TestApp>
-      <BlockDetails query={ query }/>
-    </TestApp>,
-    { hooksConfig },
-  );
+  const component = await render(<BlockDetails query={ query }/>, { hooksConfig });
 
   await page.getByText('View details').click();
 
   await expect(component).toHaveScreenshot();
 });
 
-const customFieldsTest = test.extend({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.viewsEnvs.block.hiddenFields) as any,
+test('with blob txs', async({ render, page, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED', 'true' ],
+  ]);
+  const query = {
+    data: blockMock.withBlobTxs,
+    isPending: false,
+  } as BlockQuery;
+
+  const component = await render(<BlockDetails query={ query }/>, { hooksConfig });
+
+  await page.getByText('View details').click();
+
+  await expect(component).toHaveScreenshot();
 });
 
-customFieldsTest('rootstock custom fields', async({ mount, page }) => {
+test('rootstock custom fields', async({ render, page, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.blockHiddenFields);
   const query = {
     data: blockMock.rootstock,
     isPending: false,
   } as BlockQuery;
 
-  const component = await mount(
-    <TestApp>
-      <BlockDetails query={ query }/>
-    </TestApp>,
-    { hooksConfig },
-  );
+  const component = await render(<BlockDetails query={ query }/>, { hooksConfig });
 
   await page.getByText('View details').click();
 

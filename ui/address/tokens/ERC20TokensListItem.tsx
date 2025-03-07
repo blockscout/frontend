@@ -1,15 +1,16 @@
-import { Flex, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
-type Props = AddressTokenBalance & { isLoading: boolean};
+type Props = AddressTokenBalance & { isLoading: boolean };
 
 const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
 
@@ -46,17 +47,17 @@ const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
           </Skeleton>
         </HStack>
       ) }
-      <HStack spacing={ 3 }>
+      <HStack spacing={ 3 } alignItems="baseline">
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Quantity</Skeleton>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" whiteSpace="pre-wrap" wordBreak="break-word">
           <span>{ tokenQuantity }</span>
         </Skeleton>
       </HStack>
       { tokenValue !== undefined && (
-        <HStack spacing={ 3 }>
+        <HStack spacing={ 3 } alignItems="baseline">
           <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Value</Skeleton>
-          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
-            <span>{ tokenValue }</span>
+          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" whiteSpace="pre-wrap" wordBreak="break-word">
+            <span>${ tokenValue }</span>
           </Skeleton>
         </HStack>
       ) }

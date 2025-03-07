@@ -11,8 +11,8 @@ import getResourceErrorPayload from 'lib/errors/getResourceErrorPayload';
 import AppErrorIcon from './AppErrorIcon';
 import AppErrorTitle from './AppErrorTitle';
 import AppErrorBlockConsensus from './custom/AppErrorBlockConsensus';
-import AppErrorInvalidTxHash from './custom/AppErrorInvalidTxHash';
 import AppErrorTooManyRequests from './custom/AppErrorTooManyRequests';
+import AppErrorTxNotFound from './custom/AppErrorTxNotFound';
 
 interface Props {
   className?: string;
@@ -20,6 +20,10 @@ interface Props {
 }
 
 const ERROR_TEXTS: Record<string, { title: string; text: string }> = {
+  '403': {
+    title: 'Alert',
+    text: 'Access to this resource is restricted.',
+  },
   '404': {
     title: 'Page not found',
     text: 'This page is no longer explorable! If you are lost, use the search bar to find what you are looking for.',
@@ -47,11 +51,11 @@ const AppError = ({ error, className }: Props) => {
             undefined;
     const statusCode = getErrorCauseStatusCode(error) || getErrorObjStatusCode(error);
 
-    const isInvalidTxHash = cause && 'resource' in cause && cause.resource === 'tx' && statusCode === 422;
+    const isInvalidTxHash = cause && 'resource' in cause && cause.resource === 'tx' && statusCode === 404;
     const isBlockConsensus = messageInPayload?.includes('Block lost consensus');
 
     if (isInvalidTxHash) {
-      return <AppErrorInvalidTxHash/>;
+      return <AppErrorTxNotFound/>;
     }
 
     if (isBlockConsensus) {
@@ -85,7 +89,7 @@ const AppError = ({ error, className }: Props) => {
               as="a"
               href={ route({ pathname: '/' }) }
             >
-                Back to home
+              Back to home
             </Button>
           </>
         );

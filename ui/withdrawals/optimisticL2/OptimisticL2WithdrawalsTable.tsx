@@ -11,11 +11,11 @@ import OptimisticL2WithdrawalsTableItem from './OptimisticL2WithdrawalsTableItem
    items: Array<OptimisticL2WithdrawalsItem>;
    top: number;
    isLoading?: boolean;
- }
+ };
 
 const OptimisticL2WithdrawalsTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
+    <Table style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
         <Tr>
           <Th>Msg nonce</Th>
@@ -29,7 +29,11 @@ const OptimisticL2WithdrawalsTable = ({ items, top, isLoading }: Props) => {
       </Thead>
       <Tbody>
         { items.map((item, index) => (
-          <OptimisticL2WithdrawalsTableItem key={ item.l2_tx_hash + (isLoading ? index : '') } item={ item } isLoading={ isLoading }/>
+          <OptimisticL2WithdrawalsTableItem
+            key={ String(item.msg_nonce_version) + item.msg_nonce + (isLoading ? index : '') }
+            item={ item }
+            isLoading={ isLoading }
+          />
         )) }
       </Tbody>
     </Table>

@@ -1,14 +1,15 @@
-import { Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressWithdrawalsItem } from 'types/api/address';
 import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
-import dayjs from 'lib/date/dayjs';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = ({
   item: WithdrawalsItem;
@@ -52,9 +53,12 @@ const BeaconChainWithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
       ) }
       { view !== 'block' && (
         <Td verticalAlign="middle" pr={ 12 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
-            <span>{ dayjs(item.timestamp).fromNow() }</span>
-          </Skeleton>
+          <TimeAgoWithTooltip
+            timestamp={ item.timestamp }
+            isLoading={ isLoading }
+            color="text_secondary"
+            display="inline-block"
+          />
         </Td>
       ) }
       <Td verticalAlign="middle">

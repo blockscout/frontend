@@ -1,6 +1,7 @@
-import { Box, IconButton, chakra, Tooltip, Flex, Skeleton } from '@chakra-ui/react';
+import { Box, IconButton, chakra, Tooltip, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -32,7 +33,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
   }
 
   return (
-    <Box className={ className }>
+    <Box className={ className } display="flex">
       <Tooltip label={ prevLabel }>
         <IconButton
           aria-label="prev"

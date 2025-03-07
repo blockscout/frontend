@@ -3,10 +3,11 @@ import type { DocumentContext } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 
+import logRequestFromBot from 'nextjs/utils/logRequestFromBot';
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
 import config from 'configs/app';
-import theme from 'theme';
+import theme from 'theme/theme';
 import * as svgSprite from 'ui/shared/IconSvg';
 
 class MyDocument extends Document {
@@ -22,6 +23,8 @@ class MyDocument extends Document {
       return result;
     };
 
+    await logRequestFromBot(ctx.req, ctx.res, ctx.pathname);
+
     const initialProps = await Document.getInitialProps(ctx);
 
     return initialProps;
@@ -33,16 +36,16 @@ class MyDocument extends Document {
         <Head>
           { /* FONTS */ }
           <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            href={ config.UI.fonts.heading?.url ?? 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap' }
             rel="stylesheet"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+            href={ config.UI.fonts.body?.url ?? 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' }
             rel="stylesheet"
           />
 
           { /* eslint-disable-next-line @next/next/no-sync-scripts */ }
-          <script src="/envs.js"/>
+          <script src="/assets/envs.js"/>
 
           { /* FAVICON */ }
           <link rel="icon" href="/favicon/favicon.ico" sizes="48x48"/>
@@ -55,7 +58,6 @@ class MyDocument extends Document {
           <meta property="og:title" content="Autonomys Auto EVM Explorer"/>
           <meta
             property="og:description"
-            // eslint-disable-next-line max-len
             content="Autonomys Network Auto EVM Explorer"
           />
           <meta property="og:image" content={ config.app.baseUrl + '/static/og.png' }/>

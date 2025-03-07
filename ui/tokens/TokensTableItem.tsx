@@ -1,11 +1,14 @@
-import { Flex, Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Flex, Td, Tr } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
+import getItemIndex from 'lib/getItemIndex';
+import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -16,9 +19,7 @@ type Props = {
   index: number;
   page: number;
   isLoading?: boolean;
-}
-
-const PAGE_SIZE = 50;
+};
 
 const bridgedTokensFeature = config.features.bridgedTokens;
 
@@ -31,6 +32,7 @@ const TokensTableItem = ({
 
   const {
     address,
+    filecoin_robust_address: filecoinRobustAddress,
     exchange_rate: exchangeRate,
     type,
     holders,
@@ -44,20 +46,19 @@ const TokensTableItem = ({
 
   const tokenAddress: AddressEntityProps['address'] = {
     hash: address,
+    filecoin: {
+      robust: filecoinRobustAddress,
+    },
     name: '',
-    implementation_name: null,
     is_contract: true,
     is_verified: false,
     ens_domain_name: null,
+    implementations: null,
   };
 
   return (
     <Tr
-      sx={{
-        '&:hover [aria-label="Add token to wallet"]': {
-          opacity: 1,
-        },
-      }}
+      role="group"
     >
       <Td>
         <Flex alignItems="flex-start">
@@ -69,7 +70,7 @@ const TokensTableItem = ({
             mr={ 3 }
             minW="28px"
           >
-            { (page - 1) * PAGE_SIZE + index + 1 }
+            { getItemIndex(index, page) }
           </Skeleton>
           <Flex overflow="hidden" flexDir="column" rowGap={ 2 }>
             <TokenEntity
@@ -93,10 +94,11 @@ const TokensTableItem = ({
                 isLoading={ isLoading }
                 iconSize={ 5 }
                 opacity={ 0 }
+                _groupHover={{ opacity: 1 }}
               />
             </Flex>
             <Flex columnGap={ 1 }>
-              <Tag isLoading={ isLoading }>{ type }</Tag>
+              <Tag isLoading={ isLoading }>{ getTokenTypeName(type) }</Tag>
               { bridgedChainTag && <Tag isLoading={ isLoading }>{ bridgedChainTag }</Tag> }
             </Flex>
           </Flex>

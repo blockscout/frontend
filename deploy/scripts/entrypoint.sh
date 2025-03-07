@@ -1,12 +1,55 @@
 #!/bin/bash
 
+
+export_envs_from_preset() {
+  if [ -z "$ENVS_PRESET" ]; then
+      return
+  fi
+
+  if [ "$ENVS_PRESET" = "none" ]; then
+      return
+  fi
+
+  local preset_file="./configs/envs/.env.$ENVS_PRESET"
+
+  if [ ! -f "$preset_file" ]; then
+      return
+  fi
+
+  local blacklist=(
+    "NEXT_PUBLIC_APP_PROTOCOL" 
+    "NEXT_PUBLIC_APP_HOST"
+    "NEXT_PUBLIC_APP_PORT"
+    "NEXT_PUBLIC_APP_ENV"
+    "NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL"
+  )
+
+  while IFS='=' read -r name value; do
+      name="${name#"${name%%[![:space:]]*}"}"  # Trim leading whitespace
+      if [[ -n $name && $name == "NEXT_PUBLIC_"* && ! "${blacklist[*]}" =~ "$name" ]]; then
+          export "$name"="$value"
+      fi
+  done < <(grep "^[^#;]" "$preset_file")
+}
+
+# If there is a preset, load the environment variables from the its file
+export_envs_from_preset
+
+# Generate OG image
+node --no-warnings ./og_image_generator.js
+
 # Download external assets
-./download_assets.sh ./public/assets
+./download_assets.sh ./public/assets/configs
 
 # Check run-time ENVs values
-./validate_envs.sh
-if [ $? -ne 0 ]; then
-  exit 1
+if [ "$SKIP_ENVS_VALIDATION" != "true" ]; then
+  ./validate_envs.sh
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+else
+  echo "😱 Skipping ENVs validation."
+  echo
 fi
 
 # Generate favicons bundle
@@ -20,6 +63,9 @@ echo
 
 # Create envs.js file with run-time environment variables for the client app
 ./make_envs_script.sh
+
+# Generate sitemap.xml and robots.txt files
+./sitemap_generator.sh
 
 # Print list of enabled features
 node ./feature-reporter.js

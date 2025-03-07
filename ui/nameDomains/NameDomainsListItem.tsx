@@ -1,24 +1,31 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EnsDomain } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
 import dayjs from 'lib/date/dayjs';
 import NameDomainExpiryStatus from 'ui/nameDomain/NameDomainExpiryStatus';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
-interface Props extends EnsDomain {
+interface Props extends bens.Domain {
   isLoading: boolean;
 }
 
-const NameDomainsListItem = ({ name, isLoading, resolved_address: resolvedAddress, registration_date: registrationDate, expiry_date: expiryDate }: Props) => {
+const NameDomainsListItem = ({
+  name,
+  isLoading,
+  resolved_address: resolvedAddress,
+  registration_date: registrationDate,
+  expiry_date: expiryDate,
+  protocol,
+}: Props) => {
   return (
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Domain</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <EnsEntity name={ name } isLoading={ isLoading } fontWeight={ 500 }/>
+        <EnsEntity domain={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 500 }/>
       </ListItemMobileGrid.Value>
 
       { resolvedAddress && (
@@ -35,7 +42,7 @@ const NameDomainsListItem = ({ name, isLoading, resolved_address: resolvedAddres
           <ListItemMobileGrid.Label isLoading={ isLoading }>Registered on</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <Skeleton isLoaded={ !isLoading }>
-              <div>{ dayjs(registrationDate).format('MMM DD YYYY HH:mm:ss A') }</div>
+              <div>{ dayjs(registrationDate).format('lll') }</div>
               <div> { dayjs(registrationDate).fromNow() }</div>
             </Skeleton>
           </ListItemMobileGrid.Value>
@@ -47,7 +54,7 @@ const NameDomainsListItem = ({ name, isLoading, resolved_address: resolvedAddres
           <ListItemMobileGrid.Label isLoading={ isLoading }>Expiration date</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">
-              <div>{ dayjs(expiryDate).format('MMM DD YYYY HH:mm:ss A') } </div>
+              <div>{ dayjs(expiryDate).format('lll') } </div>
               <NameDomainExpiryStatus date={ expiryDate }/>
             </Skeleton>
           </ListItemMobileGrid.Value>

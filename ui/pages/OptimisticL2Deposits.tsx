@@ -1,4 +1,4 @@
-import { Hide, Show, Skeleton } from '@chakra-ui/react';
+import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -7,6 +7,8 @@ import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import OptimisticDepositsListItem from 'ui/deposits/optimisticL2/OptimisticDepositsListItem';
 import OptimisticDepositsTable from 'ui/deposits/optimisticL2/OptimisticDepositsTable';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -14,23 +16,23 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const OptimisticL2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'l2_deposits',
+    resourceName: 'optimistic_l2_deposits',
     options: {
-      placeholderData: generateListStub<'l2_deposits'>(
+      placeholderData: generateListStub<'optimistic_l2_deposits'>(
         L2_DEPOSIT_ITEM,
         50,
         {
           next_page_params: {
             items_count: 50,
             l1_block_number: 9045200,
-            tx_hash: '',
+            transaction_hash: '',
           },
         },
       ),
     },
   });
 
-  const countersQuery = useApiQuery('l2_deposits_count', {
+  const countersQuery = useApiQuery('optimistic_l2_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },
@@ -41,14 +43,14 @@ const OptimisticL2Deposits = () => {
       <Show below="lg" ssr={ false }>
         { data.items.map(((item, index) => (
           <OptimisticDepositsListItem
-            key={ item.l2_tx_hash + (isPlaceholderData ? index : '') }
+            key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
             isLoading={ isPlaceholderData }
             item={ item }
           />
         ))) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <OptimisticDepositsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <OptimisticDepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;
@@ -76,7 +78,7 @@ const OptimisticL2Deposits = () => {
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText="There are no withdrawals."
+        emptyText="There are no deposits."
         content={ content }
         actionBar={ actionBar }
       />

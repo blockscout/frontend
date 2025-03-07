@@ -1,7 +1,8 @@
-import { Alert, Skeleton, chakra } from '@chakra-ui/react';
+import { Alert, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
 interface Props {
   isLoading?: boolean;

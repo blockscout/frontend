@@ -7,7 +7,7 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import type { ResourceError } from 'lib/api/resources';
 import { currencyUnits } from 'lib/units';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import { default as Thead } from 'ui/shared/TheadSticky';
@@ -26,8 +26,8 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
   const content = query.data?.items ? (
     <>
       <Hide below="lg" ssr={ false }>
-        <Table variant="simple" size="sm">
-          <Thead top={ query.pagination.isVisible ? 80 : 0 }>
+        <Table>
+          <Thead top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
             <Tr>
               <Th width="20%">Block</Th>
               <Th width="20%">Txn</Th>

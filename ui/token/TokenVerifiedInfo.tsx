@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -6,7 +5,8 @@ import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'types/api/token';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
-import LinkExternal from 'ui/shared/LinkExternal';
+import Skeleton from 'ui/shared/chakra/Skeleton';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 
 import TokenProjectInfo from './TokenProjectInfo';
 

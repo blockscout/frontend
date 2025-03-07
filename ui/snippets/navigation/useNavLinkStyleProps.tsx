@@ -6,15 +6,14 @@ type Props = {
   isExpanded?: boolean;
   isCollapsed?: boolean;
   isActive?: boolean;
-  px?: string | number;
-}
+};
 
 export default function useNavLinkProps({ isExpanded, isCollapsed, isActive }: Props) {
   const colors = useColors();
 
   return {
     itemProps: {
-      py: 2.5,
+      py: '9px',
       display: 'flex',
       color: isActive ? colors.text.active : colors.text.default,
       bgColor: isActive ? colors.bg.active : colors.bg.default,

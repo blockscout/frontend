@@ -1,12 +1,12 @@
 import type { InternalTransaction, InternalTransactionsResponse } from 'types/api/internalTransaction';
 
 export const base: InternalTransaction = {
-  block: 29611822,
+  block_number: 29611822,
   created_contract: null,
   error: null,
   from: {
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: true,
     name: 'ArianeeStore',
@@ -21,7 +21,7 @@ export const base: InternalTransaction = {
   timestamp: '2022-10-10T14:43:05.000000Z',
   to: {
     hash: '0x502a9C8af2441a1E276909405119FaE21F3dC421',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: true,
     name: 'ArianeeCreditHistory',
@@ -56,7 +56,7 @@ export const withContractCreated: InternalTransaction = {
   },
   created_contract: {
     hash: '0xdda21946FF3FAa027104b15BE6970CA756439F5a',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: null,
     name: 'Shavuha token',

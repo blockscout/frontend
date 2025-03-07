@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SmartContractVerificationMethod } from 'types/api/contract';
+import type { SmartContractVerificationMethodApi } from 'types/api/contract';
+import type { SmartContractVerificationMethod } from 'types/client/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
@@ -59,7 +60,7 @@ const ContractVerificationForAddress = () => {
 
     return (
       <ContractVerificationForm
-        method={ method && configQuery.data.verification_options.includes(method) ? method : undefined }
+        method={ method && configQuery.data.verification_options.includes(method) ? method as SmartContractVerificationMethodApi : undefined }
         config={ configQuery.data }
         hash={ hash }
       />
@@ -86,7 +87,7 @@ const ContractVerificationForAddress = () => {
         backLink={ backLink }
       />
       <AddressEntity
-        address={{ hash, is_contract: true, implementation_name: null }}
+        address={{ hash, is_contract: true }}
         noLink
         fontFamily="heading"
         fontSize="lg"

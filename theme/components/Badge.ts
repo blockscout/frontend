@@ -1,5 +1,5 @@
 import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
-import { mode, transparentize } from '@chakra-ui/theme-tools';
+import { mode } from '@chakra-ui/theme-tools';
 
 const baseStyle = defineStyle({
   fontSize: 'xs',
@@ -8,19 +8,42 @@ const baseStyle = defineStyle({
 });
 
 const variantSubtle = defineStyle((props) => {
-  const { colorScheme: c, theme } = props;
-  const darkBg = transparentize(`${ c }.200`, 0.16)(theme);
+  const { colorScheme: c } = props;
 
   if (c === 'gray') {
     return {
-      bg: mode('blackAlpha.100', 'whiteAlpha.400')(props),
-      color: mode('gray.600', 'gray.50')(props),
+      bg: mode('blackAlpha.50', 'whiteAlpha.100')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+    };
+  }
+
+  if (c === 'gray-blue') {
+    return {
+      bg: mode('gray.100', 'gray.800')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      _hover: {
+        opacity: 0.76,
+      },
+    };
+  }
+
+  if (c === 'black-blue') {
+    return {
+      bg: mode('blue.50', 'blue.800')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+    };
+  }
+
+  if (c === 'black-purple') {
+    return {
+      bg: mode('purple.100', 'purple.800')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
     };
   }
 
   return {
-    bg: mode(`${ c }.50`, darkBg)(props),
-    color: mode(`${ c }.500`, `${ c }.200`)(props),
+    bg: mode(`${ c }.50`, `${ c }.800`)(props),
+    color: mode(`${ c }.500`, `${ c }.100`)(props),
   };
 });
 

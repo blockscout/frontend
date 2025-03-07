@@ -5,14 +5,18 @@ function generateCspPolicy() {
   const policyDescriptor = mergeDescriptors(
     descriptors.app(),
     descriptors.cloudFlare(),
+    descriptors.gasHawk(),
     descriptors.googleAnalytics(),
     descriptors.googleFonts(),
     descriptors.googleReCaptcha(),
     descriptors.growthBook(),
+    descriptors.helia(),
+    descriptors.marketplace(),
     descriptors.mixpanel(),
     descriptors.monaco(),
+    descriptors.rollbar(),
     descriptors.safe(),
-    descriptors.sentry(),
+    descriptors.usernameApi(),
     descriptors.walletConnect(),
   );
 

@@ -1,5 +1,7 @@
 export type MediaType = 'image' | 'video' | 'html';
 
+export type SrcType = 'url' | 'blob';
+
 const IMAGE_EXTENSIONS = [
   '.jpg', 'jpeg',
   '.png',
@@ -41,7 +43,6 @@ export const mediaStyleProps = {
 };
 
 export const videoPlayProps = {
-  autoPlay: true,
   disablePictureInPicture: true,
   loop: true,
   muted: true,

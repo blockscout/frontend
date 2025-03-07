@@ -1,49 +1,56 @@
-import { Button, chakra, Flex, Grid, Hide, Popover, PopoverBody, PopoverContent, PopoverTrigger, Show, Skeleton, useDisclosure } from '@chakra-ui/react';
-import _clamp from 'lodash/clamp';
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Hide,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Show,
+  useDisclosure,
+  chakra,
+} from '@chakra-ui/react';
+import type { UseQueryResult } from '@tanstack/react-query';
+import { clamp } from 'es-toolkit';
 import React from 'react';
 
-import type { EnsDomain } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
+import Popover from 'ui/shared/chakra/Popover';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
+import PopoverTriggerTooltip from 'ui/shared/PopoverTriggerTooltip';
 
 interface Props {
+  query: UseQueryResult<bens.LookupAddressResponse, ResourceError<unknown>>;
   addressHash: string;
-  mainDomainName: string | null;
+  mainDomainName: string | null | undefined;
 }
 
-const DomainsGrid = ({ data }: { data: Array<EnsDomain> }) => {
+const DomainsGrid = ({ data }: { data: Array<bens.Domain> }) => {
   return (
     <Grid
-      templateColumns={{ base: `repeat(${ _clamp(data.length, 1, 2) }, 1fr)`, lg: `repeat(${ _clamp(data.length, 1, 3) }, 1fr)` }}
+      templateColumns={{ base: `repeat(${ clamp(data.length, 1, 2) }, 1fr)`, lg: `repeat(${ clamp(data.length, 1, 3) }, 1fr)` }}
       columnGap={ 8 }
       rowGap={ 4 }
       mt={ 2 }
     >
-      { data.slice(0, 9).map((domain) => <EnsEntity key={ domain.id } name={ domain.name } noCopy/>) }
+      { data.slice(0, 9).map((domain) => <EnsEntity key={ domain.id } domain={ domain.name } protocol={ domain.protocol } noCopy/>) }
     </Grid>
   );
 };
 
-const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
+const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const { data, isPending, isError } = useApiQuery('addresses_lookup', {
-    pathParams: { chainId: config.chain.id },
-    queryParams: {
-      address: addressHash,
-      resolved_to: true,
-      owned_by: true,
-      only_active: true,
-      order: 'ASC',
-    },
-  });
+  const { data, isPending, isError } = query;
 
   if (isError) {
     return null;
@@ -57,9 +64,9 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
     return null;
   }
 
-  const mainDomain = data.items.find((domain) => domain.name === mainDomainName);
+  const mainDomain = data.items.find((domain) => mainDomainName && domain.name === mainDomainName);
   const ownedDomains = data.items.filter((domain) => {
-    if (domain.name === mainDomainName) {
+    if (mainDomainName && domain.name === mainDomainName) {
       return false;
     }
 
@@ -90,37 +97,40 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
-        <Button
-          size="sm"
-          variant="outline"
-          colorScheme="gray"
-          onClick={ onToggle }
-          aria-label="Address domains"
-          fontWeight={ 500 }
-          px={ 2 }
-          h="32px"
-          flexShrink={ 0 }
-        >
-          <IconSvg name="ENS_slim" boxSize={ 5 }/>
-          <Show above="xl">
-            <chakra.span ml={ 1 }>{ totalRecords } Domain{ data.items.length > 1 ? 's' : '' }</chakra.span>
-          </Show>
-          <Hide above="xl">
-            <chakra.span ml={ 1 }>{ totalRecords }</chakra.span>
-          </Hide>
-        </Button>
+        <PopoverTriggerTooltip label="List of names resolved or owned by this address">
+          <Button
+            size="sm"
+            variant="outline"
+            colorScheme="gray"
+            onClick={ onToggle }
+            isActive={ isOpen }
+            aria-label="Address domains"
+            fontWeight={ 500 }
+            px={ 2 }
+            h="32px"
+            flexShrink={ 0 }
+          >
+            <IconSvg name="ENS_slim" boxSize={ 5 }/>
+            <Show above="xl">
+              <chakra.span ml={ 1 }>{ totalRecords } Domain{ data.items.length > 1 ? 's' : '' }</chakra.span>
+            </Show>
+            <Hide above="xl">
+              <chakra.span ml={ 1 }>{ totalRecords }</chakra.span>
+            </Hide>
+          </Button>
+        </PopoverTriggerTooltip>
       </PopoverTrigger>
       <PopoverContent w={{ base: '100vw', lg: '500px' }}>
         <PopoverBody px={ 6 } py={ 5 } fontSize="sm" display="flex" flexDir="column" rowGap={ 5 } alignItems="flex-start">
           { mainDomain && (
-            <div>
+            <Box w="100%">
               <chakra.span color="text_secondary" fontSize="xs">Primary*</chakra.span>
               <Flex alignItems="center" fontSize="md" mt={ 2 }>
-                <EnsEntity name={ mainDomain.name } fontWeight={ 600 } noCopy/>
+                <EnsEntity domain={ mainDomain.name } protocol={ mainDomain.protocol } fontWeight={ 600 } noCopy/>
                 { mainDomain.expiry_date &&
                     <chakra.span color="text_secondary" whiteSpace="pre"> (expires { dayjs(mainDomain.expiry_date).fromNow() })</chakra.span> }
               </Flex>
-            </div>
+            </Box>
           ) }
           { ownedDomains.length > 0 && (
             <div>

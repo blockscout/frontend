@@ -9,7 +9,7 @@ const NameDomain = dynamic(() => import('ui/pages/NameDomain'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/name-domains/[name]" query={ props }>
+    <PageNextJs pathname="/name-domains/[name]" query={ props.query }>
       <NameDomain/>
     </PageNextJs>
   );

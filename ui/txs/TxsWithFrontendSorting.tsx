@@ -19,7 +19,7 @@ type Props = {
   filterValue?: AddressFromToFilter;
   enableTimeIncrement?: boolean;
   top?: number;
-}
+};
 
 const TxsWithFrontendSorting = ({
   filter,
