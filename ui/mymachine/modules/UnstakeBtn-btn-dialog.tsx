@@ -12,37 +12,115 @@ import {
 } from '@chakra-ui/react';
 import { useTimeoutFn } from '@reactuses/core';
 import React, { useEffect } from 'react';
-import { deleteMachine } from '../modules/api/index';
 import { useApproval } from '../../../lib/hooks/useDeepLink/useApproval';
-import { ascending } from 'd3';
+import { useWriteContract } from 'wagmi';
+import { waitForTransactionReceipt } from 'wagmi/actions';
+import { useConfig } from 'wagmi';
+import { useToast } from '@chakra-ui/react';
+import stakingAbi from '../../../lib/hooks/useDeepLink/stakingLongAbi.json';
+import { deleteMachine } from './api/index';
+
+const STAKING_CONTRACT_ADDRESS = '0x7FDC6ed8387f3184De77E0cF6D6f3B361F906C21';
 
 interface UnstakeBtnProps {
   id: string;
+  forceRerender: any;
 }
 
-function UnstakeBtn({ id }: UnstakeBtnProps) {
+function UnstakeBtn({ id, forceRerender }: UnstakeBtnProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef(null);
+  const config = useConfig();
+  const toast = useToast();
+  const unstake = useWriteContract();
+  const [isPending, start] = useTimeoutFn(() => {}, 2000, { immediate: true });
+
   // 按钮数据
   const [btnData, setBtnData] = React.useState({
     isLoading: false,
     loadingText: '',
   });
-  const { handleUnStake, isUnStakeed } = useApproval();
+  // const { handleUnStake, isUnStakeed } = useApproval();
 
   // 模拟确认点击事件
-  const handleConfirmClick = async () => {
-    setBtnData({
-      isLoading: true,
-      loadingText: 'loading',
-    });
+  const unstakeH = async () => {
+    try {
+      console.log('id是', id);
+      setBtnData({ isLoading: true, loadingText: 'Sending...' });
 
-    handleUnStake(id);
+      // 使用 Promise 链合并交易发送和确认
+      const transactionPromise = unstake
+        .writeContractAsync({
+          address: STAKING_CONTRACT_ADDRESS,
+          abi: stakingAbi,
+          functionName: 'unStake',
+          args: [id],
+        })
+        .then((txHash) =>
+          waitForTransactionReceipt(config, { hash: txHash }).then((receipt) => {
+            return {
+              txHash,
+              receipt,
+            };
+          })
+        );
+
+      // 使用 toast.promise 管理整个流程
+      await toast.promise(transactionPromise, {
+        loading: {
+          title: 'In Progress',
+          description: 'Please confirm the transaction in your wallet',
+          position: 'top',
+          duration: null, // 确保加载状态持续到 Promise 完成
+        },
+        success: ({ txHash, receipt }) => {
+          setBtnData({ isLoading: false, loadingText: '' });
+          if (receipt.status === 'success') {
+            // 删除机器
+            deleteMachineH();
+            // 重新渲染
+            forceRerender();
+            onClose();
+            return {
+              title: 'Transaction Confirmed',
+              description: 'DLC staking completed successfully!',
+              status: 'success',
+              position: 'top',
+              duration: 2000,
+              isClosable: true,
+            };
+          } else {
+            setBtnData({ isLoading: false, loadingText: '' });
+
+            return {
+              title: 'Transaction Failed',
+              description: 'Transaction failed!',
+              status: 'error',
+              position: 'top',
+              duration: 2000,
+              isClosable: true,
+            };
+          }
+        },
+        error: (err) => {
+          setBtnData({ isLoading: false, loadingText: '' });
+          return {
+            title: 'Transaction Failed',
+            description: err.message || 'Please check wallet settings or network',
+            status: 'error',
+            position: 'top',
+            duration: 2000,
+            isClosable: true,
+          };
+        },
+      });
+    } catch (err: any) {
+      console.error('领取奖励出错:', err);
+    }
   };
-  const [isPending, start] = useTimeoutFn(() => {}, 2000, { immediate: true });
 
   // 删除机器
-  const deleteMachine = async (id: any) => {
+  const deleteMachineH = async () => {
     const res: any = await deleteMachine(id);
     console.log(res, '<<<<<<<<<<<<<<<<<<<<<<<<<<');
 
@@ -54,11 +132,6 @@ function UnstakeBtn({ id }: UnstakeBtnProps) {
     }
   };
 
-  useEffect(() => {
-    if (isUnStakeed) {
-      deleteMachine(id);
-    }
-  }, [isUnStakeed]);
   return (
     <>
       <Skeleton isLoaded={!isPending}>
@@ -85,7 +158,7 @@ function UnstakeBtn({ id }: UnstakeBtnProps) {
               <Button colorScheme="blackAlpha" ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button isLoading={btnData.isLoading} loadingText={btnData.loadingText} onClick={handleConfirmClick}>
+              <Button isLoading={btnData.isLoading} loadingText={btnData.loadingText} onClick={unstakeH}>
                 Confirm
               </Button>
             </div>

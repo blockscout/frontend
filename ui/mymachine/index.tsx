@@ -27,7 +27,7 @@ import WithdrawBtn from './modules/WithdrawBtn-btn-dialog';
 import { fetchMachineData } from './modules/api/index';
 import { IoCopy, IoCheckmark, IoCashOutline, IoLockClosedOutline } from 'react-icons/io5';
 import { IoCheckmarkCircle, IoCloseCircle } from 'react-icons/io5';
-
+import { useAccount } from 'wagmi';
 import { FaCoins } from 'react-icons/fa'; // 使用 FaCoins 图标表示代币奖励
 
 function Index() {
@@ -35,11 +35,14 @@ function Index() {
   const [machineData, setMachineData] = useState([]); // 存储请求数据
   const [loading, setLoading] = useState(true); // 加载状态
   const [error, setError] = useState(null); // 错误状态
+  const { address, isConnected } = useAccount();
 
+  // 重新渲染
+  const [key, setKey] = useState(0);
   const fetchMachineDataH = async () => {
     setLoading(true);
     try {
-      const res: any = await fetchMachineData('0x1644d19216765FD18A112c7FAD74663CF1aEcf9F');
+      const res: any = await fetchMachineData(address);
       if (res.code === 1000) {
         console.log(res.data, '拿到数据了');
         setMachineData(res.data); // 设置数据
@@ -55,7 +58,7 @@ function Index() {
 
   useEffect(() => {
     fetchMachineDataH();
-  }, []);
+  }, [key]);
 
   // thead 数据
   const thead = [
@@ -251,7 +254,11 @@ function Index() {
                     <Td>
                       <div className="flex items-center gap-x-3">
                         {item.v11.map((ItemComponent, index3) => (
-                          <ItemComponent id={item.machineId} key={index3} />
+                          <ItemComponent
+                            forceRerender={() => setKey((key) => key + 1)}
+                            id={item.machineId}
+                            key={index3}
+                          />
                         ))}
                       </div>
                     </Td>

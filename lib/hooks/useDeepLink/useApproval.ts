@@ -36,12 +36,8 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
   const [rentalMachineIdOnChain, setRentalMachineIdOnChain] = useState('');
 
   const nftApproval = useWriteContract();
-  const { data: nftTxHash, isPending: isApprovingNft, error: nftApproveError } = nftApproval;
-  const {
-    isLoading: isPendingNftConfirmation,
-    isSuccess: isNftApproved,
-    error: nftConfirmationError,
-  } = useWaitForTransactionReceipt({ hash: nftTxHash });
+  const { data: nftTxHash } = nftApproval;
+  const { isSuccess: isNftApproved } = useWaitForTransactionReceipt({ hash: nftTxHash });
 
   const approveNft = async () => {
     if (!isConnected) {
@@ -118,6 +114,7 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
           title: 'In Progress',
           description: 'Please confirm the transaction in your wallet',
           position: 'top',
+          isClosable: true,
         },
         success: (txHash) => {
           console.log('NFT staking transaction sent:', txHash);
@@ -125,6 +122,7 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
             title: 'NFT Staking Successful',
             description: 'Staking completed',
             position: 'top',
+            isClosable: true,
           };
         },
         error: (err) => {
@@ -134,6 +132,8 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
             title: 'Authorization Failed',
             description: err.message || 'Please check wallet settings or network',
             position: 'top',
+            duration: 2000,
+            isClosable: true,
           };
         },
       }
@@ -202,11 +202,7 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
   const [dlcNodeCount, setDlcNodeCount] = useState('');
   const dlcApproval = useWriteContract();
   const { data: dlcTxHash } = dlcApproval;
-  const {
-    isLoading: isPendingDlcConfirmation,
-    isSuccess: isDlcApproved,
-    error: dlcConfirmationError,
-  } = useWaitForTransactionReceipt({ hash: dlcTxHash });
+  const { isSuccess: isDlcApproved } = useWaitForTransactionReceipt({ hash: dlcTxHash });
 
   const approveDlcToken = async () => {
     if (!isConnected) {
@@ -308,12 +304,13 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
         }
       );
     } catch (err: any) {
+      console.log(err, 'errrrrrr');
       setDlcBtnLoading(false);
       toast({
         title: 'Prompt',
         description: err.message || 'Please check wallet settings or network',
         status: 'error',
-        duration: 2000,
+        duration: 3000,
         isClosable: true,
         position: 'top',
       });
@@ -346,59 +343,13 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
       }
     }
   }, [isAddDLCSuccess]);
-  // 解除质押
-
-  const unStake = useWriteContract();
-  const { data: unStakeHash } = unStake;
-  const { isSuccess: isUnStakeed } = useWaitForTransactionReceipt({ hash: unStakeHash });
-
-  // a8aeafb706433fc89c16817e8405705bd66f28b6d5cfc46c9da2faf7b204da78
-
-  const handleUnStake = async (id: string) => {
-    if (!isConnected) {
-      toast({
-        position: 'top',
-        title: 'Prompt',
-        description: 'Please connect your wallet first',
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-      });
-      return;
-    }
-    try {
-      // Step 1: Send transaction to call addDLCToStake
-      const txHash = await unStake.writeContractAsync({
-        address: STAKING_CONTRACT_ADDRESS,
-        abi: stakingAbi,
-        functionName: 'unStake',
-        args: [id], // Using the passed machineId and amount
-      });
-      console.log('Transaction sent, txHash:', txHash);
-      // Step 2: Wait for transaction confirmation
-      const receipt = await waitForTransactionReceipt(config, { hash: txHash });
-      if (receipt.status === 'success') {
-        console.log('Unstaking successful, txHash:', txHash);
-      } else {
-        console.log('Unstaking failed, transaction reverted, txHash:', txHash);
-      }
-    } catch (error) {
-      console.error('Unstaking, error:', error);
-    }
-  };
 
   return {
     approveNft,
     approveDlcToken,
-    isApprovingNft,
-    isPendingNftConfirmation,
     isNftApproved,
-    nftApproveError,
-    nftConfirmationError,
     nftTxHash,
-    isPendingDlcConfirmation,
     isDlcApproved,
-    dlcConfirmationError,
     dlcTxHash,
     stake,
     isStakingSuccess,
@@ -417,7 +368,5 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
     setRentalMachineIdOnChain,
     nftNodeCount,
     setNftNodeCount,
-    isUnStakeed,
-    handleUnStake,
   };
 }

@@ -50,8 +50,6 @@ const FixedComponent = () => {
     setRentalMachineIdOnChain,
     nftNodeCount,
     setNftNodeCount,
-    handleUnStake,
-    isUnStakeed,
   } = useApproval(onPledgeModalClose, onPledgeModalCloseDLC);
 
   // nft按钮提交事件
@@ -231,7 +229,7 @@ const FixedComponent = () => {
                 placeholder="Enter the amount of DLC to pledge"
                 size="sm"
               />
-              <FormHelperText fontSize="xs">Initial minimum pledge amount is 10,000</FormHelperText>
+              <FormHelperText fontSize="xs">Initial minimum pledge amount is 1,000</FormHelperText>
             </FormControl>
             <FormControl mb={4} size="sm">
               <FormLabel fontSize="sm">ID of the machine</FormLabel>
