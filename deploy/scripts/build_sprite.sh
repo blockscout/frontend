@@ -12,11 +12,23 @@ create_registry_file() {
     # Start the JSON array
     echo "[]" > "$registry_file"
     
+    # Detect OS and set appropriate stat command
+    get_file_size() {
+        local file="$1"
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            # macOS
+            stat -f%z "$file"
+        else
+            # Linux and others
+            stat -c%s "$file"
+        fi
+    }
+    
     # Function to process each file
     process_file() {
         local file="$1"
         local relative_path="${file#$icons_dir/}"
-        local file_size=$(stat -f%z "$file")
+        local file_size=$(get_file_size "$file")
         
         # Create a temporary file with the new entry
         jq --arg name "$relative_path" --arg size "$file_size" \
