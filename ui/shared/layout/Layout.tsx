@@ -12,21 +12,19 @@ import * as Layout from './components';
 const LayoutDefault = ({ children }: Props) => {
   return (
     <Layout.Container>
-      <Layout.TopRow/>
-      <HeaderMobile/>
+      <Layout.TopRow />
+      <HeaderMobile />
       <Layout.MainArea>
-        <Layout.SideBar/>
+        <Layout.SideBar />
         <Layout.MainColumn>
-          <HeaderAlert/>
-          <HeaderDesktop/>
+          <HeaderAlert />
+          <HeaderDesktop />
           <AppErrorBoundary>
-            <Layout.Content>
-              { children }
-            </Layout.Content>
+            <Layout.Content>{children}</Layout.Content>
           </AppErrorBoundary>
         </Layout.MainColumn>
       </Layout.MainArea>
-      <Layout.Footer/>
+      <Layout.Footer />
     </Layout.Container>
   );
 };

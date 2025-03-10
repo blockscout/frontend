@@ -7,7 +7,7 @@ const MarketplaceInMining = dynamic(() => import('ui/pages/MarketplaceInMining')
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/mining">
-    <MarketplaceInMining/>
+    <MarketplaceInMining />
   </PageNextJs>
 );
 

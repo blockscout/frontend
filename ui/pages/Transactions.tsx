@@ -17,6 +17,7 @@ import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxsStats from 'ui/txs/TxsStats';
 import TxsWatchlist from 'ui/txs/TxsWatchlist';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
+import { useTranslation } from 'next-i18next';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -25,7 +26,8 @@ const TAB_LIST_PROPS = {
 };
 
 const Transactions = () => {
-  const verifiedTitle = config.chain.verificationType === 'validation' ? 'Validated' : 'Mined';
+  const { t, i18n } = useTranslation('common');
+  const verifiedTitle = config.chain.verificationType === t('validation') ? t('validated') : t('mined');
   const router = useRouter();
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
@@ -35,12 +37,14 @@ const Transactions = () => {
     filters: { filter: 'validated' },
     options: {
       enabled: !tab || tab === 'validated',
-      placeholderData: generateListStub<'txs_validated'>(TX, 50, { next_page_params: {
-        block_number: 9005713,
-        index: 5,
-        items_count: 50,
-        filter: 'validated',
-      } }),
+      placeholderData: generateListStub<'txs_validated'>(TX, 50, {
+        next_page_params: {
+          block_number: 9005713,
+          index: 5,
+          items_count: 50,
+          filter: 'validated',
+        },
+      }),
     },
   });
 
@@ -49,11 +53,13 @@ const Transactions = () => {
     filters: { filter: 'pending' },
     options: {
       enabled: tab === 'pending',
-      placeholderData: generateListStub<'txs_pending'>(TX, 50, { next_page_params: {
-        inserted_at: '2024-02-05T07:04:47.749818Z',
-        hash: '0x00',
-        filter: 'pending',
-      } }),
+      placeholderData: generateListStub<'txs_pending'>(TX, 50, {
+        next_page_params: {
+          inserted_at: '2024-02-05T07:04:47.749818Z',
+          hash: '0x00',
+          filter: 'pending',
+        },
+      }),
     },
   });
 
@@ -62,11 +68,13 @@ const Transactions = () => {
     filters: { type: 'blob_transaction' },
     options: {
       enabled: config.features.dataAvailability.isEnabled && tab === 'blob_txs',
-      placeholderData: generateListStub<'txs_with_blobs'>(TX, 50, { next_page_params: {
-        block_number: 10602877,
-        index: 8,
-        items_count: 50,
-      } }),
+      placeholderData: generateListStub<'txs_with_blobs'>(TX, 50, {
+        next_page_params: {
+          block_number: 10602877,
+          index: 8,
+          items_count: 50,
+        },
+      }),
     },
   });
 
@@ -74,11 +82,13 @@ const Transactions = () => {
     resourceName: 'txs_watchlist',
     options: {
       enabled: tab === 'watchlist',
-      placeholderData: generateListStub<'txs_watchlist'>(TX, 50, { next_page_params: {
-        block_number: 9005713,
-        index: 5,
-        items_count: 50,
-      } }),
+      placeholderData: generateListStub<'txs_watchlist'>(TX, 50, {
+        next_page_params: {
+          block_number: 9005713,
+          index: 5,
+          items_count: 50,
+        },
+      }),
     },
   });
 
@@ -90,23 +100,25 @@ const Transactions = () => {
     {
       id: 'validated',
       title: verifiedTitle,
-      component:
-        <TxsWithFrontendSorting
-          query={ txsValidatedQuery }
-          showSocketInfo={ txsValidatedQuery.pagination.page === 1 }
-          socketInfoNum={ num }
-          socketInfoAlert={ socketAlert }
-        /> },
-    {
-      id: 'pending',
-      title: 'Pending',
       component: (
         <TxsWithFrontendSorting
-          query={ txsPendingQuery }
-          showBlockInfo={ false }
-          showSocketInfo={ txsPendingQuery.pagination.page === 1 }
-          socketInfoNum={ num }
-          socketInfoAlert={ socketAlert }
+          query={txsValidatedQuery}
+          showSocketInfo={txsValidatedQuery.pagination.page === 1}
+          socketInfoNum={num}
+          socketInfoAlert={socketAlert}
+        />
+      ),
+    },
+    {
+      id: 'pending',
+      title: t('pending'),
+      component: (
+        <TxsWithFrontendSorting
+          query={txsPendingQuery}
+          showBlockInfo={false}
+          showSocketInfo={txsPendingQuery.pagination.page === 1}
+          socketInfoNum={num}
+          socketInfoAlert={socketAlert}
         />
       ),
     },
@@ -115,40 +127,44 @@ const Transactions = () => {
       title: 'Blob txns',
       component: (
         <TxsWithFrontendSorting
-          query={ txsWithBlobsQuery }
-          showSocketInfo={ txsWithBlobsQuery.pagination.page === 1 }
-          socketInfoNum={ num }
-          socketInfoAlert={ socketAlert }
+          query={txsWithBlobsQuery}
+          showSocketInfo={txsWithBlobsQuery.pagination.page === 1}
+          socketInfoNum={num}
+          socketInfoAlert={socketAlert}
         />
       ),
     },
-    hasAccount ? {
-      id: 'watchlist',
-      title: 'Watch list',
-      component: <TxsWatchlist query={ txsWatchlistQuery }/>,
-    } : undefined,
+    hasAccount
+      ? {
+          id: 'watchlist',
+          title: 'Watch list',
+          component: <TxsWatchlist query={txsWatchlistQuery} />,
+        }
+      : undefined,
   ].filter(Boolean);
 
   const pagination = (() => {
     switch (tab) {
-      case 'pending': return txsPendingQuery.pagination;
-      case 'watchlist': return txsWatchlistQuery.pagination;
-      case 'blob_txs': return txsWithBlobsQuery.pagination;
-      default: return txsValidatedQuery.pagination;
+      case 'pending':
+        return txsPendingQuery.pagination;
+      case 'watchlist':
+        return txsWatchlistQuery.pagination;
+      case 'blob_txs':
+        return txsWithBlobsQuery.pagination;
+      default:
+        return txsValidatedQuery.pagination;
     }
   })();
 
   return (
     <>
-      <PageTitle title="Transactions" withTextAd/>
-      <TxsStats/>
+      <PageTitle title={t('transactions')} withTextAd />
+      <TxsStats />
       <RoutedTabs
-        tabs={ tabs }
-        tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ (
-          pagination.isVisible && !isMobile ? <Pagination my={ 1 } { ...pagination }/> : null
-        ) }
-        stickyEnabled={ !isMobile }
+        tabs={tabs}
+        tabListProps={isMobile ? undefined : TAB_LIST_PROPS}
+        rightSlot={pagination.isVisible && !isMobile ? <Pagination my={1} {...pagination} /> : null}
+        stickyEnabled={!isMobile}
       />
     </>
   );

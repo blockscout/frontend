@@ -1,0 +1,20 @@
+{
+  "transactions": "Transactions",
+  "search_by": "Search by address / txn hash / block / token...",
+  "search_by_short": "Search by address / ... ",
+  "my_machine": "My Machine",
+  "pending_transactions": "Pending transactions",
+  "transaction_fees": "Transactions fees",
+  "avg_transaction_fee": "Avg. transaction fee",
+  "validation": "validation",
+  "validated": "Validated",
+  "mined": "Mined",
+  "pending": "Pending",
+  "txn_hash": "Txn hash",
+  "type": "Type",
+  "method": "Method",
+  "block": "Block",
+  "from_to": "From/To",
+  "Value": "Value",
+  "Fee": "Fee"
+}

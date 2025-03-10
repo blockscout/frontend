@@ -78,3 +78,28 @@ export async function deleteMachine(id: any) {
     throw error;
   }
 }
+
+// 获得时间戳
+export async function getTimestamp(mashineId: any) {
+  // const url = `/nestapi/machine?address=${encodeURIComponent(address)}`;
+  const url = `${baseUrl}/getMachineTime?mashineId=${encodeURIComponent(mashineId)}`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data; // 返回数据
+  } catch (error) {
+    console.error('Error fetching machine data:', error);
+    throw error; // 抛出错误，供调用者处理
+  }
+}

@@ -1,9 +1,7 @@
 import { Link, Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
-
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
-
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
@@ -11,8 +9,8 @@ import { currencyUnits } from 'lib/units';
 import IconSvg from 'ui/shared/IconSvg';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TheadSticky from 'ui/shared/TheadSticky';
-
 import TxsTableItem from './TxsTableItem';
+import { useTranslation } from 'next-i18next';
 
 type Props = {
   txs: Array<Transaction>;
@@ -42,6 +40,7 @@ const TxsTable = ({
   isLoading,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
+  const { t, i18n } = useTranslation('common');
 
   return (
     <AddressHighlightProvider>
@@ -49,17 +48,17 @@ const TxsTable = ({
         <TheadSticky top={top}>
           <Tr>
             <Th width="54px"></Th>
-            <Th width="180px">Txn hash</Th>
-            <Th width="160px">Type</Th>
-            <Th width="20%">Method</Th>
-            {showBlockInfo && <Th width="18%">Block</Th>}
-            <Th width="224px">From/To</Th>
+            <Th width="180px">{t('txn_hash')}</Th>
+            <Th width="160px">{t('type')}</Th>
+            <Th width="20%">{t('method')}</Th>
+            {showBlockInfo && <Th width="18%">{t('block')}</Th>}
+            <Th width="224px">{t('from_to')}</Th>
             {!config.UI.views.tx.hiddenFields?.value && (
               <Th width="20%" isNumeric>
                 <Link onClick={sort('value')} display="flex" justifyContent="end">
                   {sorting === 'value-asc' && <IconSvg boxSize={5} name="arrows/east" transform="rotate(-90deg)" />}
                   {sorting === 'value-desc' && <IconSvg boxSize={5} name="arrows/east" transform="rotate(90deg)" />}
-                  {`Value ${currencyUnits.ether}`}
+                  {`${t('Value')} ${currencyUnits.ether}`}
                 </Link>
               </Th>
             )}
@@ -68,7 +67,7 @@ const TxsTable = ({
                 <Link onClick={sort('fee')} display="flex" justifyContent="end">
                   {sorting === 'fee-asc' && <IconSvg boxSize={5} name="arrows/east" transform="rotate(-90deg)" />}
                   {sorting === 'fee-desc' && <IconSvg boxSize={5} name="arrows/east" transform="rotate(90deg)" />}
-                  {`Fee${config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${currencyUnits.ether}`}`}
+                  {`${t('Fee')} ${config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${currencyUnits.ether}`}`}
                 </Link>
               </Th>
             )}
