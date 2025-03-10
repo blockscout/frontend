@@ -71,7 +71,9 @@ const Sprite = () => {
       return <DataFetchAlert/>;
     }
 
-    const items = data.filter((icon) => icon.name.includes(searchTerm));
+    const items = data
+      .filter((icon) => icon.name.includes(searchTerm))
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     if (items.length === 0) {
       return <EmptySearchResult text="No icons found"/>;
