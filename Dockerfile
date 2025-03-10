@@ -72,8 +72,8 @@ RUN cd ./deploy/tools/feature-reporter && yarn build
 ### ENV VARIABLES CHECKER
 # Copy dependencies and source code, then build 
 COPY --from=deps /envs-validator/node_modules ./deploy/tools/envs-validator/node_modules
-RUN cd ./deploy/tools/envs-validator && yarn build
-
+# RUN cd ./deploy/tools/envs-validator && yarn build
+RUN cd ./deploy/tools/envs-validator && yarn tsc --noEmitOnError
 
 # *****************************
 # ******* STAGE 3: Run ********
