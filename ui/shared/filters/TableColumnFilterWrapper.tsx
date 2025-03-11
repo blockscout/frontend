@@ -19,6 +19,7 @@ const TableColumnFilterWrapper = ({ columnName, className, children, isLoading, 
     <PopoverRoot>
       <PopoverTrigger>
         <Button
+          display="inline-flex"
           aria-label={ `filter by ${ columnName }` }
           variant="dropdown"
           borderWidth="0"
@@ -28,16 +29,9 @@ const TableColumnFilterWrapper = ({ columnName, className, children, isLoading, 
           selected={ selected }
           borderRadius="4px"
           size="sm"
+          textStyle="sm"
           fontWeight={ 500 }
           padding={ 0 }
-          css={{
-            'span:only-child': {
-              mx: 0,
-            },
-            'span:not(:only-child)': {
-              mr: '2px',
-            },
-          }}
         >
           <IconSvg name="filter" w="19px" h="19px"/>
           { Boolean(value) && <chakra.span>{ value }</chakra.span> }

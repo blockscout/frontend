@@ -43,7 +43,7 @@ const RawInputData = ({ hex, rightSlot: rightSlotProp, defaultDataType = 'Hex', 
         mr="auto"
       >
         <SelectControl loading={ isLoading }>
-          <SelectValueText placeholder="Select framework"/>
+          <SelectValueText placeholder="Select type"/>
         </SelectControl>
         <SelectContent>
           { collection.items.map((item) => (

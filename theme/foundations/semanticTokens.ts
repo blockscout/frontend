@@ -31,7 +31,7 @@ const semanticTokens = {
       'default': 'red.500',
       _dark: 'red.500',
     },
-    dialog.bg: {
+    dialog_bg: {
       'default': 'white',
       _dark: 'gray.900',
     },

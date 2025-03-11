@@ -1,4 +1,3 @@
-import { Button } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
@@ -7,7 +6,8 @@ import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
-import useToast from 'lib/hooks/useToast';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -17,7 +17,6 @@ type Props = {
 
 const ExportCSV = ({ filters }: Props) => {
   const recaptcha = useReCaptcha();
-  const toast = useToast();
   const [ isLoading, setIsLoading ] = React.useState(false);
 
   const handleExportCSV = React.useCallback(async() => {
@@ -49,18 +48,14 @@ const ExportCSV = ({ filters }: Props) => {
       downloadBlob(blob, fileName);
 
     } catch (error) {
-      toast({
-        position: 'top-right',
+      toaster.error({
         title: 'Error',
         description: (error as Error)?.message || 'Something went wrong. Try again later.',
-        status: 'error',
-        variant: 'subtle',
-        isClosable: true,
       });
     } finally {
       setIsLoading(false);
     }
-  }, [ toast, filters, recaptcha ]);
+  }, [ filters, recaptcha ]);
 
   if (!config.services.reCaptchaV2.siteKey) {
     return null;
@@ -71,7 +66,7 @@ const ExportCSV = ({ filters }: Props) => {
       <Button
         onClick={ handleExportCSV }
         variant="outline"
-        isLoading={ isLoading }
+        loading={ isLoading }
         size="sm"
         mr={ 3 }
       >

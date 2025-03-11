@@ -1,6 +1,8 @@
-import type { TokenDefinition } from '@chakra-ui/react/dist/types/styled-system/types';
+import type { ThemingConfig } from '@chakra-ui/react';
 
-export const radii: TokenDefinition['radii'] = {
+import type { ExcludeUndefined } from 'types/utils';
+
+export const radii: ExcludeUndefined<ThemingConfig['tokens']>['radii'] = {
   none: { value: '0' },
   sm: { value: '4px' },
   base: { value: '8px' },

@@ -26,6 +26,7 @@ export const recipe = defineSlotRecipe({
     label: {
       fontWeight: 'normal',
       userSelect: 'none',
+      flexGrow: 1,
       _disabled: {
         opacity: 'control.disabled',
       },

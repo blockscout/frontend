@@ -48,6 +48,15 @@ const TagShowcase = () => {
       </Section>
 
       <Section>
+        <SectionHeader>Closable</SectionHeader>
+        <SamplesStack>
+          <Sample label="closable: true">
+            <Tag closable>My tag</Tag>
+          </Sample>
+        </SamplesStack>
+      </Section>
+
+      <Section>
         <SectionHeader>Loading</SectionHeader>
         <SamplesStack>
           <Sample label="loading: true">

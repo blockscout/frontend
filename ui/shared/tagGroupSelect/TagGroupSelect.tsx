@@ -19,7 +19,7 @@ type Props<T extends string> = {
   }
 );
 
-const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tagSize }: Props<T>) => {
+const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tagSize, ...rest }: Props<T>) => {
   const onItemClick = React.useCallback((event: React.SyntheticEvent) => {
     const itemValue = (event.currentTarget as HTMLDivElement).getAttribute('data-id') as T;
     if (isMulti) {
@@ -36,7 +36,7 @@ const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tag
   }, [ isMulti, onChange, value ]);
 
   return (
-    <HStack>
+    <HStack { ...rest }>
       { items.map(item => {
         const isSelected = isMulti ? value.includes(item.id) : value === item.id;
         return (

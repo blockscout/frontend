@@ -3,12 +3,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-// import AdvancedFilter from 'ui/pages/AdvancedFilter';
+import AdvancedFilter from 'ui/pages/AdvancedFilter';
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/advanced-filter">
-      { /* <AdvancedFilter/> */ }
+      <AdvancedFilter/>
     </PageNextJs>
   );
 };

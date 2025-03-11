@@ -1,4 +1,4 @@
-import { Flex, Checkbox, CheckboxGroup, Text, Spinner, Select } from '@chakra-ui/react';
+import { Flex, Text, Spinner, createListCollection } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import React from 'react';
 
@@ -7,7 +7,9 @@ import type { TokenInfo } from 'types/api/token';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
-import Tag from 'ui/shared/chakra/Tag';
+import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
+import { Select } from 'toolkit/chakra/select';
+import { Tag } from 'toolkit/chakra/tag';
 import ClearButton from 'ui/shared/ClearButton';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import FilterInput from 'ui/shared/filters/FilterInput';
@@ -23,6 +25,13 @@ const NAME_PARAM_EXCLUDE = 'token_contract_symbols_to_exclude';
 
 export type AssetFilterMode = 'include' | 'exclude';
 
+const collection = createListCollection({
+  items: [
+    { label: 'Include', value: 'include' },
+    { label: 'Exclude', value: 'exclude' },
+  ],
+});
+
 // add native token
 type Value = Array<{ token: TokenInfo; mode: AssetFilterMode }>;
 
@@ -31,10 +40,9 @@ type Props = {
   handleFilterChange: (filed: keyof AdvancedFilterParams, val: Array<string>) => void;
   columnName: string;
   isLoading?: boolean;
-  onClose?: () => void;
 };
 
-const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
+const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Value>([ ...value ]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -43,11 +51,10 @@ const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
     setSearchTerm(value);
   }, []);
 
-  const handleModeSelectChange = React.useCallback((index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value as AssetFilterMode;
+  const handleModeSelectChange = React.useCallback((index: number) => ({ value }: { value: Array<string> }) => {
     setCurrentValue(prev => {
       const newValue = [ ...prev ];
-      newValue[index] = { ...prev[index], mode: value };
+      newValue[index] = { ...prev[index], mode: value[0] as AssetFilterMode };
       return newValue;
     });
   }, []);
@@ -88,11 +95,10 @@ const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
       isTouched={ !isEqual(currentValue.map(i => JSON.stringify(i)).sort(), value.map(i => JSON.stringify(i)).sort()) }
       onFilter={ onFilter }
       onReset={ onReset }
-      onClose={ onClose }
       hasReset
     >
       <FilterInput
-        size="xs"
+        size="sm"
         onChange={ onSearchChange }
         placeholder="Token name or symbol"
         initialValue={ searchTerm }
@@ -100,17 +106,15 @@ const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
       { !searchTerm && currentValue.map((item, index) => (
         <Flex key={ item.token.address } alignItems="center">
           <Select
-            size="xs"
-            borderRadius="base"
-            value={ item.mode }
-            onChange={ handleModeSelectChange(index) }
+            size="sm"
+            value={ [ item.mode ] }
+            onValueChange={ handleModeSelectChange(index) }
+            collection={ collection }
+            placeholder="Select mode"
             minW="105px"
             w="105px"
             mr={ 3 }
-          >
-            <option value="include">Include</option>
-            <option value="exclude">Exclude</option>
-          </Select>
+          />
           <TokenEntity.default token={ item.token } noLink noCopy flexGrow={ 1 }/>
           <ClearButton onClick={ handleRemove(index) }/>
         </Flex>
@@ -139,25 +143,19 @@ const AssetFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
       { searchTerm && tokensQuery.data && !tokensQuery.data?.items.length && <Text>No tokens found</Text> }
       { searchTerm && tokensQuery.data && Boolean(tokensQuery.data?.items.length) && (
         <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll" mt={ 3 } ml="-4px">
-          <CheckboxGroup value={ currentValue.map(i => i.token.address) }>
+          <CheckboxGroup value={ currentValue.map(i => i.token.address) } orientation="vertical">
             { tokensQuery.data.items.map(token => (
-              <Flex key={ token.address }>
-                <Checkbox
-                  value={ token.address }
-                  id={ token.address }
-                  onChange={ onTokenClick(token) }
-                  overflow="hidden"
-                  w="100%"
-                  pl={ 1 }
-                  sx={{
-                    '.chakra-checkbox__label': {
-                      flexGrow: 1,
-                    },
-                  }}
-                >
-                  <TokenEntity.default token={ token } noLink noCopy/>
-                </Checkbox>
-              </Flex>
+              <Checkbox
+                key={ token.address }
+                value={ token.address }
+                id={ token.address }
+                onChange={ onTokenClick(token) }
+                overflow="hidden"
+                w="100%"
+                pl={ 1 }
+              >
+                <TokenEntity.default token={ token } noLink noCopy/>
+              </Checkbox>
             )) }
           </CheckboxGroup>
         </Flex>

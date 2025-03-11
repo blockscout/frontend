@@ -1,6 +1,6 @@
 'use client';
 
-import type { CollectionItem } from '@chakra-ui/react';
+import type { CollectionItem, ListCollection } from '@chakra-ui/react';
 import { Select as ChakraSelect, Portal, useSelectContext } from '@chakra-ui/react';
 import * as React from 'react';
 
@@ -173,3 +173,33 @@ export const SelectItemGroup = React.forwardRef<
 
 export const SelectLabel = ChakraSelect.Label;
 export const SelectItemText = ChakraSelect.ItemText;
+
+export interface SelectProps extends SelectRootProps {
+  collection: ListCollection<CollectionItem>;
+  placeholder: string;
+  portalled?: boolean;
+}
+
+// TODO @tom2drum refactor selects
+export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
+  const { collection, placeholder, portalled = true, ...rest } = props;
+  return (
+    <SelectRoot
+      ref={ ref }
+      collection={ collection }
+      variant="outline"
+      { ...rest }
+    >
+      <SelectControl>
+        <SelectValueText placeholder={ placeholder }/>
+      </SelectControl>
+      <SelectContent portalled={ portalled }>
+        { collection.items.map((item) => (
+          <SelectItem item={ item } key={ item.value }>
+            { item.label }
+          </SelectItem>
+        )) }
+      </SelectContent>
+    </SelectRoot>
+  );
+});

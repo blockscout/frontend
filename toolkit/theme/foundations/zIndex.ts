@@ -1,6 +1,8 @@
-import type { TokenDefinition } from '@chakra-ui/react/dist/types/styled-system/types';
+import type { ThemingConfig } from '@chakra-ui/react';
 
-export const zIndex: TokenDefinition['zIndex'] = {
+import type { ExcludeUndefined } from 'types/utils';
+
+export const zIndex: ExcludeUndefined<ThemingConfig['tokens']>['zIndex'] = {
   hide: { value: -1 },
   auto: { value: 'auto' },
   base: { value: 0 },
