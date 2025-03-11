@@ -135,7 +135,6 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
 
           <Button
             variant="solid"
-            size="lg"
             type="submit"
             mt={ 3 }
             loading={ formApi.formState.isSubmitting }

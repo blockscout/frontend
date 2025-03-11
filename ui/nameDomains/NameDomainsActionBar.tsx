@@ -1,4 +1,4 @@
-import { Box, CheckboxGroup, Fieldset, Flex, HStack, Text, chakra, createListCollection } from '@chakra-ui/react';
+import { Box, Fieldset, Flex, HStack, Text, chakra, createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
@@ -7,7 +7,7 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import { Button } from 'toolkit/chakra/button';
-import { Checkbox } from 'toolkit/chakra/checkbox';
+import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import { Image } from 'toolkit/chakra/image';
 import ActionBar from 'ui/shared/ActionBar';
 import FilterInput from 'ui/shared/filters/FilterInput';
@@ -95,32 +95,28 @@ const NameDomainsActionBar = ({
                 Reset
               </Button>
             </Flex>
-            <Fieldset.Root>
-              <CheckboxGroup defaultValue={ protocolsFilterValue } onValueChange={ onProtocolsFilterChange } value={ protocolsFilterValue } name="token_type">
-                <Fieldset.Content gap={ 5 } alignItems="flex-start">
-                  { protocolsData.map((protocol) => {
-                    const topLevelDomains = protocol.tld_list.map((domain) => `.${ domain }`).join(' ');
-                    return (
-                      <Checkbox key={ protocol.id } value={ protocol.id }>
-                        <Flex alignItems="center">
-                          <Image
-                            src={ protocol.icon_url }
-                            boxSize={ 5 }
-                            borderRadius="sm"
-                            mr={ 2 }
-                            alt={ `${ protocol.title } protocol icon` }
-                            fallback={ <IconSvg name="ENS_slim" boxSize={ 5 } mr={ 2 }/> }
-                            // fallbackStrategy={ protocol.icon_url ? 'onError' : 'beforeLoadOrError' }
-                          />
-                          <span>{ protocol.short_name }</span>
-                          <chakra.span color="text_secondary" whiteSpace="pre"> { topLevelDomains }</chakra.span>
-                        </Flex>
-                      </Checkbox>
-                    );
-                  }) }
-                </Fieldset.Content>
-              </CheckboxGroup>
-            </Fieldset.Root>
+            <CheckboxGroup defaultValue={ protocolsFilterValue } onValueChange={ onProtocolsFilterChange } value={ protocolsFilterValue } name="token_type">
+              { protocolsData.map((protocol) => {
+                const topLevelDomains = protocol.tld_list.map((domain) => `.${ domain }`).join(' ');
+                return (
+                  <Checkbox key={ protocol.id } value={ protocol.id }>
+                    <Flex alignItems="center">
+                      <Image
+                        src={ protocol.icon_url }
+                        boxSize={ 5 }
+                        borderRadius="sm"
+                        mr={ 2 }
+                        alt={ `${ protocol.title } protocol icon` }
+                        fallback={ <IconSvg name="ENS_slim" boxSize={ 5 } mr={ 2 }/> }
+                        // fallbackStrategy={ protocol.icon_url ? 'onError' : 'beforeLoadOrError' }
+                      />
+                      <span>{ protocol.short_name }</span>
+                      <chakra.span color="text.secondary" whiteSpace="pre"> { topLevelDomains }</chakra.span>
+                    </Flex>
+                  </Checkbox>
+                );
+              }) }
+            </CheckboxGroup>
             { filterGroupDivider }
           </>
         ) }
@@ -133,7 +129,7 @@ const NameDomainsActionBar = ({
               </Checkbox>
               <Checkbox
                 value="resolved_to"
-                mt={ 5 }
+                mt={ 3 }
                 disabled={ !isAddressSearch }
               >
                 Resolved to address

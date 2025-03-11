@@ -1,4 +1,4 @@
-import { Box, Separator, Flex, Link, VStack } from '@chakra-ui/react';
+import { Box, Separator, Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavLink } from './types';
@@ -10,6 +10,7 @@ import config from 'configs/app';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import shortenString from 'lib/shortenString';
 import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
 import Hint from 'ui/shared/Hint';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 import useLogout from 'ui/snippets/auth/useLogout';
@@ -96,7 +97,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
             />
             { data?.address_hash ?
               <Box ml="auto">{ shortenString(data?.address_hash) }</Box> :
-              <Link ml="auto" onClick={ onAddAddress } _hover={{ color: 'link.primary.hover' }}>Add address</Link>
+              <Link ml="auto" onClick={ onAddAddress }>Add address</Link>
             }
           </Flex>
         ) }
@@ -104,7 +105,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
           <Box mr="auto">Email</Box>
           { data?.email ?
             <TruncatedValue value={ data.email }/> :
-            <Link onClick={ onAddEmail } _hover={{ color: 'link.primary.hover' }}>Add email</Link>
+            <Link onClick={ onAddEmail }>Add email</Link>
           }
         </Flex>
       </Box>

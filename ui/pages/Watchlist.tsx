@@ -122,7 +122,6 @@ const WatchList: React.FC = () => {
         </DataListDisplay>
         <Skeleton mt={ 8 } loading={ isPlaceholderData } display="inline-block">
           <Button
-            size="lg"
             onClick={ addressModalProps.onOpen }
           >
             Add address

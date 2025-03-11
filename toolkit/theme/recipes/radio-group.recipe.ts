@@ -68,6 +68,6 @@ export const recipe = defineSlotRecipe({
   defaultVariants: {
     size: 'md',
     variant: 'solid',
-    orientation: 'horizontal',
+    orientation: 'vertical',
   },
 });

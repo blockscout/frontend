@@ -92,7 +92,6 @@ const CustomAbiPage: React.FC = () => {
         { Boolean(data?.length) && list }
         <Skeleton mt={ 8 } loading={ isPlaceholderData } display="inline-block">
           <Button
-            size="lg"
             onClick={ customAbiModalProps.onOpen }
           >
             Add custom ABI

@@ -123,7 +123,6 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     if (signMethod === 'manual') {
       return (
         <Button
-          size="lg"
           onClick={ handleManualSignClick }
           loading={ formState.isSubmitting }
           loadingText="Verifying"
@@ -135,7 +134,6 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
 
     return (
       <Button
-        size="lg"
         onClick={ isConnected ? handleWeb3SignClick : handleOpenWeb3Modal }
         loading={ formState.isSubmitting || isSigning }
         loadingText={ isSigning ? 'Signing' : 'Verifying' }

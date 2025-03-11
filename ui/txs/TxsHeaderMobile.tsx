@@ -12,8 +12,6 @@ import Sort from 'ui/shared/sort/Sort';
 
 import { SORT_OPTIONS } from './useTxsSort';
 
-// import TxsFilters from './TxsFilters';
-
 type Props = {
   sorting: TransactionsSortingValue;
   setSorting: (val: TransactionsSortingValue) => void;

@@ -99,7 +99,6 @@ const AddressForm: React.FC<Props> = ({ data, onOpenChange, onSuccess, setAlertV
           mb={ 8 }
         />
         <Button
-          size="lg"
           type="submit"
           disabled={ !formApi.formState.isDirty }
           loading={ pending }

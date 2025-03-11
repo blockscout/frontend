@@ -113,14 +113,14 @@ const VerifiedAddresses = () => {
   const addButton = (() => {
     if (userWithoutEmail) {
       return (
-        <Button size="lg" disabled mt={ 8 }>
+        <Button disabled mt={ 8 }>
           Add address
         </Button>
       );
     }
 
     return (
-      <Button size="lg" onClick={ modalProps.onOpen } loadingSkeleton={ isLoading } mt={ 8 }>
+      <Button onClick={ modalProps.onOpen } loadingSkeleton={ isLoading } mt={ 8 }>
         Add address
       </Button>
     );
@@ -206,7 +206,7 @@ const VerifiedAddresses = () => {
         <chakra.p fontWeight={ 600 } mt={ 5 }>
           Before starting, make sure that:
         </chakra.p>
-        <List.Root ml={ 6 } as="ol">
+        <List.Root pl={ 5 } as="ol">
           <List.Item>The source code for the smart contract is deployed on “{ config.chain.name }”.</List.Item>
           <List.Item>
             <span>The source code is verified (if not yet verified, you can use </span>

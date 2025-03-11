@@ -2,12 +2,12 @@ import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { ColorMode } from 'toolkit/chakra/color-mode';
-import { useColorMode } from 'toolkit/chakra/color-mode';
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { COLOR_THEMES } from 'lib/settings/colorTheme';
+import { useColorMode } from 'toolkit/chakra/color-mode';
+import type { ColorMode } from 'toolkit/chakra/color-mode';
 
 import getPageType from './getPageType';
 import getTabName from './getTabName';

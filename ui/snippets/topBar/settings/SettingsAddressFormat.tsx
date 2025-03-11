@@ -21,6 +21,8 @@ const SettingsAddressFormat = () => {
       onChange={ toggleAddressFormat } mt={ 4 }
       size="sm"
       flexDirection="row-reverse"
+      justifyContent="space-between"
+      w="100%"
       gap={ 2 }
       fontWeight="400"
       color="text.secondary"

@@ -187,7 +187,6 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
         </Grid>
         <Button
           type="submit"
-          size="lg"
           mt={ 8 }
           loading={ formState.isSubmitting }
           loadingText="Send request"

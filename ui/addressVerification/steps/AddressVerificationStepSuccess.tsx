@@ -21,11 +21,11 @@ const AddressVerificationStepSuccess = ({ onAddTokenInfoClick, onShowListClick, 
       </Alert>
       <p>You may now submit the “Add token information” request</p>
       <Flex alignItems="center" mt={ 8 } columnGap={ 5 } flexWrap="wrap" rowGap={ 5 }>
-        <Button size="lg" variant={ isToken ? 'outline' : 'solid' } onClick={ onShowListClick }>
+        <Button variant={ isToken ? 'outline' : 'solid' } onClick={ onShowListClick }>
           View my verified addresses
         </Button>
         { isToken && (
-          <Button size="lg" onClick={ onAddTokenInfoClick }>
+          <Button onClick={ onAddTokenInfoClick }>
             Add token information
           </Button>
         ) }

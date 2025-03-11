@@ -110,7 +110,6 @@ const TransactionForm: React.FC<Props> = ({ data, onOpenChange, onSuccess, setAl
         />
         <Box marginTop={ 8 }>
           <Button
-            size="lg"
             type="submit"
             disabled={ !formApi.formState.isDirty }
             loading={ pending }

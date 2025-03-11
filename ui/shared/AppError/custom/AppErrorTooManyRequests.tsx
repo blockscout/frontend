@@ -1,10 +1,11 @@
-import { Button, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { toaster } from 'toolkit/chakra/toaster';
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import useFetch from 'lib/hooks/useFetch';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -48,7 +49,7 @@ const AppErrorTooManyRequests = () => {
     <>
       <AppErrorIcon statusCode={ 429 }/>
       <AppErrorTitle title="Too many requests"/>
-      <Text variant="secondary" mt={ 3 }>
+      <Text color="text.secondary" mt={ 3 }>
         You have exceeded the request rate for a given time period. Please reduce the number of requests and try again soon.
       </Text>
       <ReCaptcha ref={ recaptcha.ref }/>

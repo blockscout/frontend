@@ -84,7 +84,7 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
             { ({ onClick }) => (
               <MenuItem onClick={ onClick } value="add-token-info">
                 { icon }
-                <chakra.span ml={ 2 }>{ label }</chakra.span>
+                <chakra.span>{ label }</chakra.span>
               </MenuItem>
             ) }
           </AuthGuard>
@@ -99,8 +99,8 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
       <AddressVerificationModal
         defaultAddress={ hash }
         pageType={ PAGE_TYPE_DICT['/token/[hash]'] }
-        isOpen={ modal.open }
-        onClose={ modal.onClose }
+        open={ modal.open }
+        onOpenChange={ modal.onOpenChange }
         onSubmit={ handleVerifiedAddressSubmit }
         onAddTokenInfoClick={ handleAddApplicationClick }
         onShowListClick={ handleShowMyAddressesClick }

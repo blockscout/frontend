@@ -59,7 +59,6 @@ const DeleteModal: React.FC<Props> = ({
         </DialogBody>
         <DialogFooter>
           <Button
-            size="lg"
             onClick={ onDeleteClick }
             loading={ isPending }
           >

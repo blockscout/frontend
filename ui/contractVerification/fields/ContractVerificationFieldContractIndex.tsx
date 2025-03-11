@@ -3,8 +3,8 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-import type { Option } from 'ui/shared/forms/inputs/select/types';
 
+import type { SelectOption } from 'toolkit/chakra/select';
 import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
@@ -12,7 +12,7 @@ import ContractVerificationFormRow from '../ContractVerificationFormRow';
 const SOURCIFY_ERROR_REGEXP = /\(([^()]*)\)/;
 
 const ContractVerificationFieldContractIndex = () => {
-  const [ options, setOptions ] = React.useState<Array<Option>>([]);
+  const [ options, setOptions ] = React.useState<Array<SelectOption>>([]);
   const { formState, watch } = useFormContext<FormFields>();
 
   const sources = watch('sources');

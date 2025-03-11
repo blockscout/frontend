@@ -35,6 +35,8 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       ...rest
     } = props;
 
+    const [ isOpen, setIsOpen ] = React.useState(true);
+
     const defaultIcon = <IconSvg name="info_filled" w="100%" h="100%"/>;
 
     const iconElement = (() => {
@@ -48,6 +50,15 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
       return <ChakraAlert.Indicator>{ icon || defaultIcon }</ChakraAlert.Indicator>;
     })();
+
+    const handleClose = React.useCallback(() => {
+      setIsOpen(false);
+      onClose?.();
+    }, [ onClose ]);
+
+    if (closable && !isOpen) {
+      return null;
+    }
 
     return (
       <Skeleton loading={ loading } asChild>
@@ -67,7 +78,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
               pos="relative"
               size="sm"
               alignSelf="flex-start"
-              onClick={ onClose }
+              onClick={ handleClose }
             />
           ) }
         </ChakraAlert.Root>

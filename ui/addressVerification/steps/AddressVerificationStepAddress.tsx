@@ -114,7 +114,7 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
           mt={ 8 }
         />
         <Flex alignItems={{ base: 'flex-start', lg: 'center' }} mt={ 8 } columnGap={ 5 } rowGap={ 2 } flexDir={{ base: 'column', lg: 'row' }}>
-          <Button size="lg" type="submit" loading={ formState.isSubmitting } loadingText="Continue" flexShrink={ 0 }>
+          <Button type="submit" loading={ formState.isSubmitting } loadingText="Continue" flexShrink={ 0 }>
             Continue
           </Button>
           <AdminSupportText/>

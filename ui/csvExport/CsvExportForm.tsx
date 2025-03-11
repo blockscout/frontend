@@ -104,7 +104,6 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         <ReCaptcha ref={ recaptcha.ref }/>
         <Button
           variant="solid"
-          size="lg"
           type="submit"
           mt={ 8 }
           loading={ formState.isSubmitting }

@@ -180,16 +180,14 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
             />
           </>
         ) }
-        <Box marginTop={ 8 }>
-          <Button
-            size="lg"
-            type="submit"
-            loading={ pending }
-            disabled={ !formApi.formState.isDirty }
-          >
-            { !isAdd ? 'Save changes' : 'Add address' }
-          </Button>
-        </Box>
+        <Button
+          type="submit"
+          loading={ pending }
+          disabled={ !formApi.formState.isDirty }
+          mt={ 8 }
+        >
+          { !isAdd ? 'Save changes' : 'Add address' }
+        </Button>
       </form>
     </FormProvider>
   );

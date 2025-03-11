@@ -4,12 +4,12 @@ import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
-import { toaster } from 'toolkit/chakra/toaster';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
 import * as mixpanel from 'lib/mixpanel';
+import { toaster } from 'toolkit/chakra/toaster';
 
 const PROTECTED_ROUTES: Array<Route['pathname']> = [
   '/account/api-key',

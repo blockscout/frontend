@@ -1,4 +1,4 @@
-import { VStack, Textarea, Alert, Code, Flex, Box } from '@chakra-ui/react';
+import { VStack, Textarea, Code, Flex, Box } from '@chakra-ui/react';
 import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -8,6 +8,7 @@ import * as cookies from 'lib/cookies';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import { useRollbar } from 'lib/rollbar';
+import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -64,16 +65,15 @@ const Login = () => {
       <PageTitle title="Login page 😂"/>
       { isFormVisible && (
         <>
-          <Alert.Root status="error" flexDirection="column" alignItems="flex-start">
-            <Alert.Title fontSize="md">
-              !!! Temporary solution for authentication on localhost !!!
-            </Alert.Title>
-            <Alert.Description mt={ 3 }>
-              To Sign in go to production instance first, sign in there, copy obtained API token from cookie
-              <Code ml={ 1 }>{ cookies.NAMES.API_TOKEN }</Code> and paste it in the form below. After submitting the form you should be successfully
-              authenticated in current environment
-            </Alert.Description>
-          </Alert.Root>
+          <Alert
+            status="warning"
+            title="!!! Temporary solution for authentication on localhost !!!"
+            inline={ false }
+          >
+            To Sign in go to production instance first, sign in there, copy obtained API token from cookie
+            <Code ml={ 1 }>{ cookies.NAMES.API_TOKEN }</Code> and paste it in the form below. After submitting the form you should be successfully
+            authenticated in current environment
+          </Alert>
           <Textarea value={ token } onChange={ handleTokenChange } placeholder="API token"/>
           <Button onClick={ handleSetTokenClick }>Set cookie</Button>
         </>

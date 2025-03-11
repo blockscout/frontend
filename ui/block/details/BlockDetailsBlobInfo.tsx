@@ -9,7 +9,6 @@ import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-
 import IconSvg from 'ui/shared/IconSvg';
 import Utilization from 'ui/shared/Utilization/Utilization';
 

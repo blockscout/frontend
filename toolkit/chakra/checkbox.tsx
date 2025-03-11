@@ -32,7 +32,7 @@ export interface CheckboxGroupProps extends HTMLChakraProps<'div', ArkCheckbox.G
 
 export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps>(
   function CheckboxGroup(props, ref) {
-    const { children, orientation = 'horizontal', ...rest } = props;
+    const { children, orientation = 'vertical', ...rest } = props;
     return (
       <ChakraCheckboxGroup
         ref={ ref }

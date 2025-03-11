@@ -135,7 +135,6 @@ const CustomAbiForm: React.FC<Props> = ({ data, onOpenChange, onSuccess, setAler
         />
         <Box>
           <Button
-            size="lg"
             type="submit"
             disabled={ !formApi.formState.isDirty }
             loading={ isPending }

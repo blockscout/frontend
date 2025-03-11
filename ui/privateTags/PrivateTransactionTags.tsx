@@ -98,7 +98,6 @@ const PrivateTransactionTags = () => {
       </DataListDisplay>
       <Skeleton mt={ 8 } loading={ isPlaceholderData } display="inline-block">
         <Button
-          size="lg"
           onClick={ transactionModalProps.onOpen }
         >
           Add transaction tag

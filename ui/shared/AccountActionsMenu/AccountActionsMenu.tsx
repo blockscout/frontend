@@ -18,13 +18,13 @@ import PrivateTagMenuItem from './items/PrivateTagMenuItem';
 import PublicTagMenuItem from './items/PublicTagMenuItem';
 import TokenInfoMenuItem from './items/TokenInfoMenuItem';
 
-// TODO @tom2drum fix account modals
 interface Props {
   isLoading?: boolean;
   className?: string;
   showUpdateMetadataItem?: boolean;
 }
 
+// TODO @tom2drum fix modal open on menu item click
 const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Props) => {
   const router = useRouter();
 
@@ -46,10 +46,10 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
       render: (props: ItemProps) => <MetadataUpdateMenuItem { ...props }/>,
       enabled: isTokenInstancePage && showUpdateMetadataItem,
     },
-    // {
-    //   render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
-    //   enabled: config.features.account.isEnabled && isTokenPage && config.features.addressVerification.isEnabled && !userWithoutEmail,
-    // },
+    {
+      render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
+      enabled: config.features.account.isEnabled && isTokenPage && config.features.addressVerification.isEnabled && !userWithoutEmail,
+    },
     {
       render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,
       enabled: config.features.account.isEnabled,

@@ -108,7 +108,6 @@ const ApiKeysPage: React.FC = () => {
           rowGap={ 5 }
         >
           <Button
-            size="lg"
             onClick={ apiKeyModalProps.onOpen }
             disabled={ !canAdd }
           >

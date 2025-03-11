@@ -56,7 +56,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   React.useEffect(() => {
     setMounted(true);
   }, []);
-  
+
   useLoadFeatures(pageProps.uuid);
   useNotifyOnNavigation();
 

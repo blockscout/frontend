@@ -1,10 +1,10 @@
-import { chakra, Image } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
 
+import { Image } from 'toolkit/chakra/image';
 import IconSvg from 'ui/shared/IconSvg';
-
 interface Props {
   data: TEntityTag;
   iconColor?: string;

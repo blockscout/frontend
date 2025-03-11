@@ -10,7 +10,6 @@ import { WEI, ZERO_ADDRESS } from 'lib/consts';
 import { Link } from 'toolkit/chakra/link';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';

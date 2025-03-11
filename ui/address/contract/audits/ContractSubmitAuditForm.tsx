@@ -111,7 +111,6 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
         </VStack>
         <Button
           type="submit"
-          size="lg"
           mt={ 8 }
           loading={ formState.isSubmitting }
           loadingText="Send request"

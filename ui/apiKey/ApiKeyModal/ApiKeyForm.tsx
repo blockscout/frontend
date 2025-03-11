@@ -113,7 +113,6 @@ const ApiKeyForm: React.FC<Props> = ({ data, onOpenChange, setAlertVisible }) =>
         />
         <Box marginTop={ 8 }>
           <Button
-            size="lg"
             type="submit"
             disabled={ !formApi.formState.isDirty }
             loading={ isPending }

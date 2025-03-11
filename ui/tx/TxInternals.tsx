@@ -10,7 +10,6 @@ import { generateListStub } from 'stubs/utils';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 // import FilterInput from 'ui/shared/filters/FilterInput';
-// import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import { default as getNextSortValueShared } from 'ui/shared/sort/getNextSortValue';
@@ -117,7 +116,6 @@ const TxInternals = ({ txQuery }: Props) => {
 
   const actionBar = pagination.isVisible ? (
     <ActionBar mt={ -6 }>
-      { /* <TxInternalsFilter onFilterChange={ handleFilterChange } defaultFilters={ filters } appliedFiltersNum={ filters.length }/> */ }
       { /* <FilterInput onChange={ setSearchTerm } maxW="360px" ml={ 3 } size="xs" placeholder="Search by addresses, hash, method..."/> */ }
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>

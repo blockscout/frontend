@@ -1,11 +1,11 @@
-import { CheckboxGroup, Text, Flex, useCheckboxGroup, Fieldset } from '@chakra-ui/react';
+import { Text, Flex, useCheckboxGroup, Fieldset } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NFTTokenType, TokenType } from 'types/api/token';
 
 import { TOKEN_TYPES, TOKEN_TYPE_IDS, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Button } from 'toolkit/chakra/button';
-import { Checkbox } from 'toolkit/chakra/checkbox';
+import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 
 type Props<T extends TokenType | NFTTokenType> = {
   onChange: (nextValue: Array<T>) => void;
