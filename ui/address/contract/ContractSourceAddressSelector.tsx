@@ -3,7 +3,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import { SelectContent, SelectControl, SelectItem, SelectRoot, SelectValueText } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -59,23 +59,14 @@ const ContractSourceAddressSelector = ({ className, selectedItem, onItemSelect, 
   return (
     <Flex columnGap={ 3 } rowGap={ 2 } alignItems="center" className={ className }>
       <chakra.span fontWeight={ 500 } fontSize="sm">{ label }</chakra.span>
-      <SelectRoot
+      <Select
         collection={ collection }
-        variant="outline"
+        placeholder="Select contract"
         defaultValue={ [ selectedItem.address ] }
         onValueChange={ handleItemSelect }
-      >
-        <SelectControl maxW={{ base: '180px', lg: 'none' }} loading={ isLoading }>
-          <SelectValueText placeholder="Select contract"/>
-        </SelectControl>
-        <SelectContent>
-          { collection.items.map((item) => (
-            <SelectItem item={ item } key={ item.value }>
-              { item.label }
-            </SelectItem>
-          )) }
-        </SelectContent>
-      </SelectRoot>
+        maxW={{ base: '180px', lg: 'none' }}
+        loading={ isLoading }
+      />
       <Flex columnGap={ 2 } alignItems="center">
         <CopyToClipboard text={ selectedItem.address } ml={ 0 }/>
         <LinkNewTab

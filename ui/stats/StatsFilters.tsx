@@ -4,7 +4,7 @@ import React from 'react';
 import type * as stats from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
-import { SelectContent, SelectControl, SelectItem, SelectRoot, SelectValueText } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
 import FilterInput from 'ui/shared/filters/FilterInput';
 
@@ -58,24 +58,14 @@ const StatsFilters = ({
         w={{ base: '100%', lg: 'auto' }}
         area="section"
       >
-        <SelectRoot
+        <Select
           collection={ collection }
-          variant="outline"
+          placeholder="Select section"
           defaultValue={ [ currentSection ] }
           onValueChange={ handleItemSelect }
           w={{ base: '100%', lg: '136px' }}
-        >
-          <SelectControl loading={ isLoading }>
-            <SelectValueText placeholder="Select section"/>
-          </SelectControl>
-          <SelectContent>
-            { collection.items.map((item) => (
-              <SelectItem item={ item } key={ item.value }>
-                { item.label }
-              </SelectItem>
-            )) }
-          </SelectContent>
-        </SelectRoot>
+          loading={ isLoading }
+        />
       </GridItem>
 
       <GridItem

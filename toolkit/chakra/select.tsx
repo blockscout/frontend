@@ -178,11 +178,12 @@ export interface SelectProps extends SelectRootProps {
   collection: ListCollection<CollectionItem>;
   placeholder: string;
   portalled?: boolean;
+  loading?: boolean;
 }
 
 // TODO @tom2drum refactor selects
 export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
-  const { collection, placeholder, portalled = true, ...rest } = props;
+  const { collection, placeholder, portalled = true, loading, ...rest } = props;
   return (
     <SelectRoot
       ref={ ref }
@@ -190,7 +191,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
       variant="outline"
       { ...rest }
     >
-      <SelectControl>
+      <SelectControl loading={ loading }>
         <SelectValueText placeholder={ placeholder }/>
       </SelectControl>
       <SelectContent portalled={ portalled }>

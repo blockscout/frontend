@@ -9,7 +9,7 @@ import hexToBase64 from 'lib/hexToBase64';
 import hexToBytes from 'lib/hexToBytes';
 import hexToUtf8 from 'lib/hexToUtf8';
 import { Button } from 'toolkit/chakra/button';
-import { SelectContent, SelectItem, SelectRoot, SelectControl, SelectValueText } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
@@ -115,23 +115,15 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
         <Skeleton fontWeight={{ base: 700, lg: 500 }} loading={ isLoading }>
           Blob data
         </Skeleton>
-        <SelectRoot
+        <Select
           collection={ collection }
-          variant="outline"
-          value={ [ format ] }
+          placeholder="Select type"
+          defaultValue={ [ format ] }
           onValueChange={ handleFormatChange }
-        >
-          <SelectControl loading={ isLoading } ml={ 5 } w="100px">
-            <SelectValueText placeholder="Select framework"/>
-          </SelectControl>
-          <SelectContent>
-            { collection.items.map((item) => (
-              <SelectItem item={ item } key={ item.value }>
-                { item.label }
-              </SelectItem>
-            )) }
-          </SelectContent>
-        </SelectRoot>
+          ml={ 5 }
+          w="100px"
+          loading={ isLoading }
+        />
         <Skeleton ml="auto" mr={ 3 } loading={ isLoading }>
           <Button
             variant="outline"

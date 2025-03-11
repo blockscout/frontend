@@ -4,7 +4,7 @@ import React from 'react';
 import type { TokenInstance } from 'types/api/token';
 
 import { Alert } from 'toolkit/chakra/alert';
-import { SelectContent, SelectControl, SelectItem, SelectRoot, SelectValueText } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
 import ContentLoader from 'ui/shared/ContentLoader';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
@@ -56,24 +56,14 @@ const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
       ) }
       <Flex alignItems="center" mb={ 6 }>
         <chakra.span fontWeight={ 500 }>Metadata</chakra.span>
-        <SelectRoot
+        <Select
           collection={ collection }
-          variant="outline"
+          placeholder="Select type"
+          defaultValue={ [ format ] }
           onValueChange={ handleValueChange }
-          value={ [ format ] }
           ml={ 5 }
-        >
-          <SelectControl w="100px">
-            <SelectValueText placeholder="Select format"/>
-          </SelectControl>
-          <SelectContent>
-            { collection.items.map((item) => (
-              <SelectItem item={ item } key={ item.value }>
-                { item.label }
-              </SelectItem>
-            )) }
-          </SelectContent>
-        </SelectRoot>
+          w="100px"
+        />
         { format === 'JSON' && <CopyToClipboard text={ JSON.stringify(data) } ml="auto"/> }
       </Flex>
       { content }

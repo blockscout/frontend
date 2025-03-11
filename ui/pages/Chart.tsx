@@ -17,7 +17,7 @@ import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';
-import { SelectContent, SelectControl, SelectItem, SelectRoot, SelectValueText } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
@@ -201,24 +201,14 @@ const Chart = () => {
               <Skeleton loading={ isInfoLoading }>
                 { isMobile ? 'Res.' : 'Resolution' }
               </Skeleton>
-              <SelectRoot
+              <Select
                 collection={ resolutionCollection }
-                variant="outline"
+                placeholder="Select resolution"
                 defaultValue={ [ defaultResolution ] }
                 onValueChange={ onResolutionChange }
                 w={{ base: 'fit-content', lg: '160px' }}
-              >
-                <SelectControl loading={ isInfoLoading }>
-                  <SelectValueText placeholder="Select resolution"/>
-                </SelectControl>
-                <SelectContent>
-                  { resolutionCollection.items.map((item) => (
-                    <SelectItem item={ item } key={ item.value }>
-                      { item.label }
-                    </SelectItem>
-                  )) }
-                </SelectContent>
-              </SelectRoot>
+                loading={ isInfoLoading }
+              />
             </Flex>
           ) }
           { (Boolean(zoomRange)) && (

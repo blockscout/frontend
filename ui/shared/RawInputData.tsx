@@ -2,7 +2,7 @@ import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import hexToUtf8 from 'lib/hexToUtf8';
-import { SelectItem, SelectContent, SelectValueText, SelectRoot, SelectControl } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 const OPTIONS = [
@@ -33,26 +33,15 @@ const RawInputData = ({ hex, rightSlot: rightSlotProp, defaultDataType = 'Hex', 
 
   const rightSlot = (
     <>
-      <SelectRoot
-        name="data-type"
+      <Select
         collection={ collection }
-        variant="outline"
+        placeholder="Select type"
         defaultValue={ [ defaultDataType ] }
         onValueChange={ handleValueChange }
         w="100px"
         mr="auto"
-      >
-        <SelectControl loading={ isLoading }>
-          <SelectValueText placeholder="Select type"/>
-        </SelectControl>
-        <SelectContent>
-          { collection.items.map((item) => (
-            <SelectItem item={ item } key={ item.value }>
-              { item.label }
-            </SelectItem>
-          )) }
-        </SelectContent>
-      </SelectRoot>
+        loading={ isLoading }
+      />
       { rightSlotProp }
     </>
   );
