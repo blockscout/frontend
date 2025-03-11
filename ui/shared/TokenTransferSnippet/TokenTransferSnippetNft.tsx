@@ -29,7 +29,7 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
         hash={ token.address }
         id={ tokenId }
         fontWeight={ 600 }
-        icon={{ size: 'md' }}
+        variant="content"
         maxW={{ base: '100%', lg: '150px' }}
         w="auto"
         flexShrink={ 0 }

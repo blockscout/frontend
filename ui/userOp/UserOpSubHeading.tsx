@@ -75,7 +75,7 @@ const UserOpSubHeading = ({ hash }: Props) => {
     //     />
     //   );
   } else {
-    return <UserOpEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } fontFamily="heading"/>;
+    return <UserOpEntity hash={ hash } noLink noCopy={ false } variant="subheading"/>;
   }
 };
 

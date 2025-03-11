@@ -37,7 +37,7 @@ const Icon = (props: IconProps) => {
 
   const styles = {
     marginRight: props.marginRight ?? 2,
-    boxSize: props.boxSize ?? getIconProps(props.size).boxSize,
+    boxSize: props.boxSize ?? getIconProps(props.variant).boxSize,
     borderRadius: props.token.type === 'ERC-20' ? 'full' : 'base',
     flexShrink: 0,
   };
@@ -69,18 +69,11 @@ const Content = chakra((props: ContentProps) => {
   ].filter(Boolean).join(' ');
 
   return (
-    <TruncatedTextTooltip label={ nameString }>
-      <Skeleton
-        loading={ props.isLoading }
-        display="inline-block"
-        whiteSpace="nowrap"
-        overflow="hidden"
-        textOverflow="ellipsis"
-        height="fit-content"
-      >
-        { nameString }
-      </Skeleton>
-    </TruncatedTextTooltip>
+    <EntityBase.Content
+      { ...props }
+      text={ nameString }
+      truncation="tail"
+    />
   );
 });
 

@@ -1,6 +1,7 @@
 import type { SmartContractLicenseType } from 'types/api/contract';
 import type { SmartContractVerificationMethod } from 'types/client/contract';
-import type { Option } from 'ui/shared/forms/inputs/select/types';
+
+import type { SelectOption } from 'toolkit/chakra/select';
 
 export interface ContractLibrary {
   name: string;
@@ -50,7 +51,7 @@ export interface FormFieldsStandardInputZk extends FormFieldsBase {
 
 export interface FormFieldsSourcify extends FormFieldsBase {
   sources: Array<File>;
-  contract_index?: Option;
+  contract_index?: SelectOption;
 }
 
 export interface FormFieldsMultiPartFile extends FormFieldsBase {

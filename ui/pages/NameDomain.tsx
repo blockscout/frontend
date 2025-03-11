@@ -50,9 +50,6 @@ const NameDomain = () => {
     <Flex
       columnGap={ 3 }
       rowGap={ 3 }
-      fontFamily="heading"
-      fontSize="lg"
-      fontWeight={ 500 }
       alignItems="center"
       w="100%"
       flexWrap={{ base: 'wrap', lg: 'nowrap' }}
@@ -63,12 +60,14 @@ const NameDomain = () => {
         isLoading={ isLoading }
         noLink
         maxW={{ lg: infoQuery.data?.resolved_address ? '300px' : 'max-content' }}
+        variant="subheading"
       />
       { infoQuery.data?.resolved_address && (
         <Flex alignItems="center" maxW="100%" columnGap={ 3 }>
           <AddressEntity
             address={ infoQuery.data?.resolved_address }
             isLoading={ isLoading }
+            variant="subheading"
           />
           <Tooltip content="Lookup for related domain names">
             <Link

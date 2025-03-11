@@ -124,7 +124,7 @@ const Pool = () => {
           <PoolEntity.Icon
             pool={ data }
             isLoading={ isPlaceholderData }
-            size="lg"
+            variant="heading"
           />
         ) : null }
         contentAfter={ <Skeleton loading={ isPlaceholderData }><Tag>Pool</Tag></Skeleton> }

@@ -12,7 +12,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
-import { distributeEntityProps, getIconProps } from '../base/utils';
+import { distributeEntityProps, getContentProps, getIconProps } from '../base/utils';
 import AddressEntityContentProxy from './AddressEntityContentProxy';
 import AddressIconDelegated from './AddressIconDelegated';
 import AddressIdenticon from './AddressIdenticon';
@@ -44,7 +44,7 @@ const Icon = (props: IconProps) => {
   }
 
   const styles = {
-    ...getIconProps(props.size),
+    ...getIconProps(props.variant),
     marginRight: props.marginRight ?? 2,
   };
 
@@ -90,10 +90,10 @@ const Icon = (props: IconProps) => {
   })();
 
   return (
-    <Tooltip content={ label }>
+    <Tooltip content={ label } disabled={ !label }>
       <Flex marginRight={ styles.marginRight } position="relative">
         <AddressIdenticon
-          size={ props.size === 'lg' ? 30 : 20 }
+          size={ props.variant === 'heading' ? 30 : 20 }
           hash={ getDisplayedAddress(props.address) }
         />
         { isDelegatedAddress && <AddressIconDelegated isVerified={ Boolean(props.address.is_verified) }/> }
@@ -116,6 +116,8 @@ const Content = chakra((props: ContentProps) => {
   }
 
   if (nameText) {
+    const styles = getContentProps(props.variant);
+
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
         <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
@@ -127,7 +129,7 @@ const Content = chakra((props: ContentProps) => {
 
     return (
       <Tooltip content={ label } contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}>
-        <Skeleton loading={ props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+        <Skeleton loading={ props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" { ...styles }>
           { nameText }
         </Skeleton>
       </Tooltip>

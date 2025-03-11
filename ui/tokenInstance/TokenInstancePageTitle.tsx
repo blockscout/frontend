@@ -96,9 +96,7 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
           noSymbol
           noCopy
           jointSymbol
-          fontFamily="heading"
-          fontSize="lg"
-          fontWeight={ 500 }
+          variant="subheading"
           w="auto"
           maxW="700px"
         />

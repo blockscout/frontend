@@ -379,9 +379,7 @@ const AddressPageContent = () => {
         <EnsEntity
           domain={ addressQuery.data?.ens_domain_name }
           protocol={ !addressEnsDomainsQuery.isPending ? addressMainDomain?.protocol : null }
-          fontFamily="heading"
-          fontSize="lg"
-          fontWeight={ 500 }
+          variant="subheading"
           mr={ 1 }
           maxW="300px"
         />
@@ -395,9 +393,7 @@ const AddressPageContent = () => {
           implementations: null,
         }}
         isLoading={ isLoading }
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
+        variant="subheading"
         noLink
         isSafeAddress={ isSafeAddress }
         icon={{ color: isSafeAddress ? { _light: 'black', _dark: 'white' } : undefined }}

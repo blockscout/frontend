@@ -43,7 +43,7 @@ const Icon = (props: IconProps) => {
       >
         <TokenEntity.Icon
           marginRight={ 0 }
-          size={ props.size }
+          variant={ props.variant }
           token={{
             icon_url: props.pool.base_token_icon_url,
             symbol: props.pool.base_token_symbol,
@@ -63,7 +63,7 @@ const Icon = (props: IconProps) => {
       >
         <TokenEntity.Icon
           marginRight={ 0 }
-          size={ props.size }
+          variant={ props.variant }
           token={{
             icon_url: props.pool.quote_token_icon_url,
             symbol: props.pool.quote_token_symbol,

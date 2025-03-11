@@ -1,5 +1,6 @@
 import type { AddressMetadataTagType } from 'types/api/addressMetadata';
-import type { Option } from 'ui/shared/forms/inputs/select/types';
+
+import type { SelectOption } from 'toolkit/chakra/select';
 
 export interface FormFields {
   requesterName: string;
@@ -13,7 +14,7 @@ export interface FormFields {
 
 export interface FormFieldTag {
   name: string;
-  type: Array<Option<AddressMetadataTagType>>;
+  type: Array<SelectOption<AddressMetadataTagType>>;
   url: string | undefined;
   bgColor: string | undefined;
   textColor: string | undefined;

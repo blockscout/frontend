@@ -10,8 +10,9 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
-import { getIconProps, type IconSize } from './utils';
+import { getContentProps, getIconProps } from './utils';
 
 export type Truncation = 'constant' | 'constant_long' | 'dynamic' | 'tail' | 'none';
 
@@ -30,7 +31,7 @@ export interface EntityBaseProps {
   tailLength?: number;
   target?: React.HTMLAttributeAnchorTarget;
   truncation?: Truncation;
-  size?: 'md' | 'lg';
+  variant?: 'content' | 'heading' | 'subheading';
 }
 
 export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
@@ -82,17 +83,16 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
 
 interface EntityIconProps extends Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> {
   name?: IconName;
-  size?: IconSize;
 }
 
-export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon'>, EntityIconProps {}
+export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant'>, EntityIconProps {}
 
-const Icon = ({ isLoading, noIcon, size, name, color, borderRadius, marginRight, boxSize }: IconBaseProps) => {
+const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRight, boxSize }: IconBaseProps) => {
   if (noIcon || !name) {
     return null;
   }
 
-  const styles = getIconProps(size);
+  const styles = getIconProps(variant);
   return (
     <IconSvg
       name={ name }
@@ -108,12 +108,24 @@ const Icon = ({ isLoading, noIcon, size, name, color, borderRadius, marginRight,
   );
 };
 
-export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'isTooltipDisabled'> {
+export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'isTooltipDisabled' | 'variant'> {
   asProp?: React.ElementType;
   text: string;
 }
 
-const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, isTooltipDisabled }: ContentBaseProps) => {
+const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, isTooltipDisabled, variant }: ContentBaseProps) => {
+  const styles = getContentProps(variant);
+
+  if (truncation === 'tail') {
+    return (
+      <TruncatedValue
+        className={ className }
+        isLoading={ isLoading }
+        value={ text }
+        { ...styles }
+      />
+    );
+  }
 
   const children = (() => {
     switch (truncation) {
@@ -143,7 +155,6 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
             isTooltipDisabled={ isTooltipDisabled }
           />
         );
-      case 'tail':
       case 'none':
         return <chakra.span as={ asProp }>{ text }</chakra.span>;
     }
@@ -155,18 +166,18 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
       loading={ isLoading }
       overflow="hidden"
       whiteSpace="nowrap"
-      textOverflow={ truncation === 'tail' ? 'ellipsis' : undefined }
       w="100%"
+      { ...styles }
     >
       { children }
     </Skeleton>
   );
 });
 
-export type CopyBaseProps = Pick<CopyToClipboardProps, 'isLoading' | 'text'> & Pick<EntityBaseProps, 'noCopy' | 'size'>;
+export type CopyBaseProps = Pick<CopyToClipboardProps, 'isLoading' | 'text'> & Pick<EntityBaseProps, 'noCopy'>;
 
-const Copy = ({ size, ...props }: CopyBaseProps) => {
-  if (props.noCopy) {
+const Copy = ({ noCopy, ...props }: CopyBaseProps) => {
+  if (noCopy) {
     return null;
   }
 

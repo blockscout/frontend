@@ -1,4 +1,4 @@
-import type { Option } from 'ui/shared/forms/inputs/select/types';
+import type { SelectOption } from 'toolkit/chakra/select';
 
 export interface Fields extends SocialLinkFields, TickerUrlFields {
   address: string;
@@ -6,7 +6,7 @@ export interface Fields extends SocialLinkFields, TickerUrlFields {
   requester_name: string;
   requester_email: string;
   project_name?: string;
-  project_sector: Array<Option> | null;
+  project_sector: Array<SelectOption> | null;
   project_email: string;
   project_website: string;
   project_description: string;

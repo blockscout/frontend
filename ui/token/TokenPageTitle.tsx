@@ -124,9 +124,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
         <AddressEntity
           address={{ ...addressQuery.data, name: '' }}
           isLoading={ isLoading }
-          fontFamily="heading"
-          fontSize="lg"
-          fontWeight={ 500 }
+          variant="subheading"
         />
       ) }
       { !isLoading && tokenQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
@@ -149,7 +147,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
           <TokenEntity.Icon
             token={ tokenQuery.data }
             isLoading={ tokenQuery.isPlaceholderData }
-            size="lg"
+            variant="heading"
           />
         ) : null }
         contentAfter={ contentAfter }

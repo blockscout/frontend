@@ -118,7 +118,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         />
       );
     } else {
-      return <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } mr={{ base: 0, lg: 2 }} fontFamily="heading"/>;
+      return <TxEntity hash={ hash } noLink noCopy={ false } variant="subheading" mr={{ base: 0, lg: 2 }}/>;
     }
   })();
 

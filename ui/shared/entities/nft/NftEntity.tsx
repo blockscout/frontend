@@ -4,7 +4,6 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import { distributeEntityProps } from '../base/utils';
 
@@ -18,7 +17,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      size={ props.size ?? 'lg' }
+      variant="heading"
       name={ props.name ?? 'nft_shield' }
     />
   );
@@ -43,9 +42,10 @@ type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps
 
 const Content = chakra((props: ContentProps) => {
   return (
-    <TruncatedValue
-      isLoading={ props.isLoading }
-      value={ props.id }
+    <EntityBase.Content
+      { ...props }
+      text={ props.id }
+      truncation="tail"
     />
   );
 });

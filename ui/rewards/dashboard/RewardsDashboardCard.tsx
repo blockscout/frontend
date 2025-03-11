@@ -1,5 +1,7 @@
-import { Flex, Text, useColorModeValue, Tag } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
+
+import { Badge } from 'toolkit/chakra/badge';
 
 type Props = {
   title?: string;
@@ -22,7 +24,7 @@ const RewardsDashboardCard = ({
       justifyContent={ direction === 'column-reverse' ? 'flex-end' : 'flex-start' }
       p={{ base: 1.5, md: 2 }}
       border="1px solid"
-      borderColor={ useColorModeValue('gray.200', 'whiteAlpha.200') }
+      borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.200' }}
       borderRadius="lg"
       gap={{ base: 1, md: direction === 'row' ? 10 : 1 }}
       w={ direction === 'row' ? 'full' : 'auto' }
@@ -37,7 +39,7 @@ const RewardsDashboardCard = ({
         { title && (
           <Flex alignItems="center" gap={ 2 }>
             <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="500">{ title }</Text>
-            { availableSoon && <Tag colorScheme="blue">Available soon</Tag> }
+            { availableSoon && <Badge colorPalette="blue">Available soon</Badge> }
           </Flex>
         ) }
         <Text as="div" fontSize="sm">
@@ -49,7 +51,7 @@ const RewardsDashboardCard = ({
         alignItems="center"
         justifyContent="space-around"
         borderRadius={{ base: 'lg', md: '8px' }}
-        backgroundColor={ useColorModeValue('gray.50', 'whiteAlpha.50') }
+        backgroundColor={{ _light: 'gray.50', _dark: 'whiteAlpha.50' }}
         minH={{ base: '80px', md: '128px' }}
         filter="auto"
         blur={ blurFilter ? '4px' : '0' }

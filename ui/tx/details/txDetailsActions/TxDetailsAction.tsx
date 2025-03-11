@@ -133,7 +133,7 @@ const TxDetailsAction = ({ action }: Props) => {
                   <Flex key={ data.address + id } whiteSpace="pre-wrap" columnGap={ 2 }>
                     <chakra.span flexShrink={ 0 }>1</chakra.span>
                     <chakra.span color="text_secondary" flexShrink={ 0 }>of token ID</chakra.span>
-                    <NftEntity hash={ data.address } id={ id } w="min-content" icon={{ size: 'md' }}/>
+                    <NftEntity hash={ data.address } id={ id } w="min-content" variant="content"/>
                   </Flex>
                 );
               })

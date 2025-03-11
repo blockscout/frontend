@@ -102,9 +102,9 @@ const LinkShowcase = () => {
             </Box>
             <AddressEntity address={ addressMock.withoutName } isLoading/>
           </Sample>
-          <Sample label="Size: md, lg??? (heading)" vertical>
-            <AddressEntity address={ addressMock.withoutName } size="md"/>
-            <AddressEntity address={ addressMock.withoutName } size="lg" textStyle="heading.md"/>
+          <Sample label="Variant: content, subheading" vertical>
+            <AddressEntity address={ addressMock.withoutName } variant="content"/>
+            <AddressEntity address={ addressMock.withoutName } variant="subheading"/>
           </Sample>
           <Sample label="With name" vertical>
             <AddressEntity address={ addressMock.withName }/>
@@ -140,9 +140,9 @@ const LinkShowcase = () => {
             <TokenEntity token={{ ...TOKEN, icon_url: null }}/>
             <TokenEntity token={{ ...TOKEN, icon_url: null, name: null, symbol: null }}/>
           </Sample>
-          <Sample label="Size: md, lg??? (heading)" vertical w="100%">
-            <TokenEntity token={ TOKEN } size="md"/>
-            <TokenEntity token={ TOKEN } size="lg" textStyle="heading.md" jointSymbol/>
+          <Sample label="Variant: content, subheading" vertical w="100%">
+            <TokenEntity token={ TOKEN } variant="content"/>
+            <TokenEntity token={ TOKEN } variant="subheading" jointSymbol/>
           </Sample>
         </SamplesStack>
 
@@ -190,9 +190,9 @@ const LinkShowcase = () => {
             </Box>
             <EnsEntity domain={ ensMock.ensDomainA.name } protocol={ ensMock.ensDomainA.protocol } isLoading/>
           </Sample>
-          <Sample label="Size: md, lg??? (heading)" vertical w="100%">
-            <EnsEntity domain={ ensMock.ensDomainA.name } protocol={ ensMock.ensDomainA.protocol } size="md"/>
-            <EnsEntity domain={ ensMock.ensDomainA.name } protocol={ ensMock.ensDomainA.protocol } size="lg" textStyle="heading.md"/>
+          <Sample label="Variant: content, subheading" vertical w="100%">
+            <EnsEntity domain={ ensMock.ensDomainA.name } protocol={ ensMock.ensDomainA.protocol } variant="content"/>
+            <EnsEntity domain={ ensMock.ensDomainA.name } protocol={ ensMock.ensDomainA.protocol } variant="subheading"/>
           </Sample>
         </SamplesStack>
 

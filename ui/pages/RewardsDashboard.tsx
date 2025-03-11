@@ -1,16 +1,18 @@
-import { Flex, Image, Alert } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { apos } from 'lib/html-entities';
+import { Alert } from 'toolkit/chakra/alert';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton';
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
 import RewardsReadOnlyInputWithCopy from 'ui/rewards/RewardsReadOnlyInputWithCopy';
 import AdBanner from 'ui/shared/ad/AdBanner';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
@@ -51,9 +53,9 @@ const RewardsDashboard = () => {
             <span>
               The Blockscout Merits Program is just getting started! Learn more about the details,
               features, and future plans in our{ ' ' }
-              <LinkExternal href="https://www.blog.blockscout.com/blockscout-merits-rewarding-block-explorer-skills">
+              <Link external href="https://www.blog.blockscout.com/blockscout-merits-rewarding-block-explorer-skills">
                 blog post
-              </LinkExternal>.
+              </Link>.
             </span>
           ) }
         />
@@ -76,9 +78,9 @@ const RewardsDashboard = () => {
               hint={ (
                 <>
                   Total number of Merits earned from all activities.{ ' ' }
-                  <LinkExternal href="https://docs.blockscout.com/using-blockscout/merits">
+                  <Link external href="https://docs.blockscout.com/using-blockscout/merits">
                     More info on Merits
-                  </LinkExternal>
+                  </Link>
                 </>
               ) }
             />
@@ -103,12 +105,9 @@ const RewardsDashboard = () => {
               <>
                 Current number of consecutive days you{ apos }ve claimed your daily Merits.{ ' ' }
                 The longer your streak, the more daily Merits you can earn.{ ' ' }
-                <LinkExternal
-                  href={ `https://x.com/intent/tweet?text=${ encodeURIComponent(shareText) }` }
-                  fontWeight="500"
-                >
+                <Link external href={ `https://x.com/intent/tweet?text=${ encodeURIComponent(shareText) }` } fontWeight="500">
                   Share on X
-                </LinkExternal>
+                </Link>
               </>
             ) }
             direction="column-reverse"
@@ -124,12 +123,9 @@ const RewardsDashboard = () => {
               hint={ (
                 <>
                   See the{ ' ' }
-                  <LinkExternal
-                    href="https://docs.blockscout.com/using-blockscout/merits/streak-rewards"
-                    isExternal
-                  >
+                  <Link external href="https://docs.blockscout.com/using-blockscout/merits/streak-rewards">
                     docs
-                  </LinkExternal>{ ' ' }
+                  </Link>{ ' ' }
                   to learn how your streak number affects daily rewards
                 </>
               ) }
@@ -142,7 +138,7 @@ const RewardsDashboard = () => {
             description={ (
               <>
                 Refer friends and boost your Merits! You receive a{ ' ' }
-                <Skeleton as="span" isLoaded={ !rewardsConfigQuery.isPending }>
+                <Skeleton as="span" loading={ rewardsConfigQuery.isPending }>
                   { rewardsConfigQuery.data?.rewards.referral_share ?
                     `${ Number(rewardsConfigQuery.data?.rewards.referral_share) * 100 }%` :
                     'N/A'
@@ -199,15 +195,16 @@ const RewardsDashboard = () => {
                 alt="Badges"
                 w="260px"
                 h="86px"
-                fallback={ <Skeleton w="260px" h="86px"/> }
+                fallback={ <Skeleton loading w="260px" h="86px"/> }
               />
-              <LinkExternal
+              <Link
+                external
                 href="https://merits.blockscout.com/?tab=badges&utm_source=blockscout&utm_medium=dashboard"
-                fontSize="md"
+                textStyle="md"
                 fontWeight="500"
               >
                 View badges
-              </LinkExternal>
+              </Link>
             </Flex>
           </RewardsDashboardCard>
         </Flex>

@@ -89,9 +89,7 @@ const ContractVerificationForAddress = () => {
       <AddressEntity
         address={{ hash, is_contract: true }}
         noLink
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
+        variant="subheading"
         mb={ 12 }
         w="min-content"
         maxW="100%"

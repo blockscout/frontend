@@ -11,7 +11,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import IconSvg from 'ui/shared/IconSvg';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import { distributeEntityProps, getIconProps } from '../base/utils';
 
@@ -36,7 +35,7 @@ const Icon = (props: IconProps) => {
   const icon = <EntityBase.Icon { ...props } name={ props.name ?? 'ENS_slim' }/>;
 
   if (props.protocol) {
-    const styles = getIconProps(props.size);
+    const styles = getIconProps(props.variant);
 
     if (props.isLoading) {
       return <Skeleton loading boxSize={ styles.boxSize } borderRadius="sm" mr={ 2 }/>;
@@ -114,9 +113,10 @@ type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps
 
 const Content = chakra((props: ContentProps) => {
   return (
-    <TruncatedValue
-      isLoading={ props.isLoading }
-      value={ props.domain }
+    <EntityBase.Content
+      { ...props }
+      text={ props.domain }
+      truncation="tail"
     />
   );
 });

@@ -46,9 +46,7 @@ const DefaultView = () => {
     <>
       <AddressEntity
         address={{ ...addressMock.token, name: '' }}
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
+        variant="subheading"
       />
       <NetworkExplorers type="token" pathParam={ addressMock.hash } ml="auto"/>
     </>
@@ -60,7 +58,7 @@ const DefaultView = () => {
       beforeTitle={ (
         <TokenEntity.Icon
           token={ tokenData }
-          size="lg"
+          variant="heading"
         />
       ) }
       backLink={ backLink }

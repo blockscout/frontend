@@ -1,17 +1,28 @@
 import type { EntityBaseProps } from './components';
 
-export type IconSize = 'md' | 'lg';
-
-export function getIconProps(size: IconSize = 'md') {
-  switch (size) {
-    case 'md': {
+export function getIconProps(variant: EntityBaseProps['variant'] = 'content') {
+  switch (variant) {
+    case 'content':
+    case 'subheading': {
       return {
-        boxSize: '20px', // for tables, lists and regular content
+        boxSize: '20px', // for tables, lists, regular content and page subheadings
       };
     }
-    case 'lg': {
+    case 'heading': {
       return {
-        boxSize: '30px', // for headings
+        boxSize: '30px', // for page headings
+      };
+    }
+  }
+}
+
+export function getContentProps(variant: EntityBaseProps['variant'] = 'content') {
+  switch (variant) {
+    // currently, there could be only icon in the heading variant
+    // and for the content variant, fontStyle is set in the consumer component
+    case 'subheading': {
+      return {
+        textStyle: 'heading.md',
       };
     }
   }
