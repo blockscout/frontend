@@ -1,22 +1,19 @@
-import { Box, Text, Flex } from '@chakra-ui/react';
+import { Box, Text, Flex, Button } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
 import LinkExternal from '../../shared/LinkExternal';
 import { useTranslation } from 'next-i18next';
-import { FaArrowRight } from 'react-icons/fa';
+import CpuStakeDbcBtn from './modules/cpu-stake-dbc-btn';
+import CpuStakeNftBtn from './modules/cup-stake-nft-node-btn';
+import CpuStakeDlcBtn from './modules/cup-stake-dlc-btn';
 
 const FixedComponent = () => {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
 
   return (
     <div>
       <Box mb={4}>
-        <Text color="gray.600">
-          {t('short-rental-requirements')}
-          <LinkExternal href="https://orion.deeplink.cloud/shortterm">
-            https://orion.deeplink.cloud/shortterm
-          </LinkExternal>
-        </Text>
+        <Text color="gray.600">{t('cpu-mining-requirements')}</Text>
       </Box>
       <Flex direction="column" gap={6}>
         <div className="flex gap-4 flex-wrap md:flex-nowrap">
@@ -34,7 +31,7 @@ const FixedComponent = () => {
             1
           </Box>
           <Text mb={2}>
-            {t('deeplink-download-instruction')}{' '}
+            {t('deeplink-installation-instruction')}:
             <LinkExternal href="https://deepbrainchain.github.io/DBC-Wiki/install-update-dbc-node/install-update-dbc/dbc-bare-metal-node.html">
               https://deepbrainchain.github.io/DBC-Wiki/install-update-dbc-node/install-update-dbc/dbc-bare-metal-node.html
             </LinkExternal>
@@ -55,7 +52,20 @@ const FixedComponent = () => {
             2
           </Box>
 
-          <Text mb={2}>{t('create-wallet')}</Text>
+          <Flex direction="column" gap={4} wrap={'wrap'}>
+            <Text mb={2}> {t('deeplink-network')}:</Text>
+            <CpuStakeDbcBtn />
+            <CpuStakeNftBtn />
+            <div className="flex items-center gap-6 flex-wrap">
+              <CpuStakeDlcBtn />
+              <Text>
+                {t('staking-rewards-rule')}:
+                <LinkExternal href=" https://www.deeplink.cloud/bandWidth">
+                  https://www.deeplink.cloud/bandWidth
+                </LinkExternal>
+              </Text>
+            </div>
+          </Flex>
         </div>
         <div className="flex gap-4 flex-wrap md:flex-nowrap">
           <Box
@@ -71,10 +81,13 @@ const FixedComponent = () => {
           >
             3
           </Box>
-          <Text mb={2} className="flex items-center">
-            {t('click-on-cloud-computer')} <FaArrowRight style={{ margin: '0 8px' }} />
-            {t('my-computer')} <FaArrowRight style={{ margin: '0 8px' }} />
-            {t('add-machine')}
+          <Text mb={2}>
+            <Text>
+              {t('deeplink-network-machine-info')}:
+              <LinkExternal className="ml-6" href=" https://www.deeplink.cloud/bandWidth">
+                xxxxxx
+              </LinkExternal>
+            </Text>
           </Text>
         </div>
       </Flex>

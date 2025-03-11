@@ -17,16 +17,13 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import AddDLCToStake from './modules/addDLCToStake';
-
+import { useTranslation } from 'next-i18next';
 import LinkExternal from '../../shared/LinkExternal';
-import { useGetBalance } from '../../../lib/hooks/useDeepLink/useGetBalance';
 import { useApproval } from '../../../lib/hooks/useDeepLink/useApproval';
 
 const FixedComponent = () => {
   const { isOpen: isPledgeModalOpen, onOpen: onPledgeModalOpen, onClose: onPledgeModalClose } = useDisclosure();
-
-  const [privateKey, setPrivateKey] = useState('');
+  const { t } = useTranslation('common');
 
   // DLC
   const {
@@ -59,21 +56,12 @@ const FixedComponent = () => {
 
   return (
     <div>
-      {/* <div>
-        <p>
-          <Button onClick={handleUnStake}>解除质押</Button>结果：
-          {isUnStakeed.toString()}
-        </p>
-      </div> */}
       <Box mb={4}>
-        <Text color="gray.600">
-          Note: The long-term rental mode requires the GPU server to be hosted in a professional data center, and to
-          maintain 365 days of power and network can not be interrupted, otherwise it will be punished DBC Token
-        </Text>
+        <Text color="gray.600">{t('long-rental-requirements')}</Text>
       </Box>
 
       <Flex direction="column" gap={6}>
-        <Flex gap={4}>
+        <div className="flex gap-4 flex-wrap md:flex-nowrap">
           <Box
             w="24px"
             h="24px"
@@ -88,17 +76,17 @@ const FixedComponent = () => {
             1
           </Box>
           <Box>
-            <Text mb={2}>First, add the GPU machine to the DBC network</Text>
+            <Text mb={2}>{t('add-gpu-to-dbc-network')}</Text>
             <Text mb={2}>
-              Reference document:{' '}
+              {t('reference-document')}:
               <LinkExternal href="https://deepbrainchain.github.io/DBC-Wiki/install-update-dbc-node/install-update-dbc/dbc-bare-metal-node.html">
                 https://deepbrainchain.github.io/DBC-Wiki/install-update-dbc-node/install-update-dbc/dbc-bare-metal-node.html
               </LinkExternal>
             </Text>
           </Box>
-        </Flex>
+        </div>
 
-        <Flex gap={4}>
+        <div className="flex gap-4 flex-wrap md:flex-nowrap">
           <Box
             w="24px"
             h="24px"
@@ -113,23 +101,21 @@ const FixedComponent = () => {
             2
           </Box>
           <Box>
+            <Text mb={2}>{t('machine-rent-down')}</Text>
             <Text mb={2}>
-              The machine in DBC network rent down, rent to the end of the Orion competition at this stage time.
-            </Text>
-            <Text mb={2}>
-              View the competition information:{' '}
+              {t('view-competition-info')}:
               <LinkExternal href="https://orion.deeplink.cloud">https://orion.deeplink.cloud</LinkExternal>
             </Text>
             <Text>
-              Reference document:{' '}
+              {t('reference-document')}:
               <LinkExternal href="https://deepbrainchain.github.io/DBC-Wiki/onchain-guide/rent-machine.html">
                 https://deepbrainchain.github.io/DBC-Wiki/onchain-guide/rent-machine.html
               </LinkExternal>
             </Text>
           </Box>
-        </Flex>
+        </div>
 
-        <Flex gap={4}>
+        <div className="flex gap-4 flex-wrap md:flex-nowrap">
           <Box
             w="24px"
             h="24px"
@@ -144,71 +130,71 @@ const FixedComponent = () => {
             3
           </Box>
           <Box>
-            <Text mb={4}>Add rented GPU machines to the Deeplink network</Text>
+            <Text mb={4}>{t('add-rented-gpu-to-deeplink')}</Text>
             <Flex direction="column" gap={4}>
               <Button colorScheme="blue" variant="outline" w="fit-content" onClick={onPledgeModalOpen}>
-                Pledge NFT nodes
+                {t('pledge-nft-nodes')}
               </Button>
               <Button onClick={onPledgeModalOpenDLC} colorScheme="blue" variant="outline" w="fit-content">
-                Pledge DLC
+                {t('pledge-dlc')}
               </Button>
               <Text color="gray.600" fontSize="sm">
-                This step can also be skipped without pledging DLC, refer to the rules:{' '}
+                {t('skip-dlc-pledge')}:
                 <LinkExternal href="https://orion.deeplink.cloud/longterm">
                   https://orion.deeplink.cloud/longterm
                 </LinkExternal>
               </Text>
               <Text mt={2}>
-                View machine information that has been added to the Deeplink network:{' '}
+                {t('view-deeplink-machine-info')}:
                 <LinkExternal href="https://orion.deeplink.cloud/device">
                   https://orion.deeplink.cloud/device
                 </LinkExternal>
               </Text>
             </Flex>
           </Box>
-        </Flex>
+        </div>
       </Flex>
       <Modal isOpen={isPledgeModalOpen} onClose={onPledgeModalClose} size="sm">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontSize="lg">Pledge NFT Nodes</ModalHeader>
+          <ModalHeader fontSize="lg">{t('pledge-nft-nodes')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <FormControl mb={4} size="sm">
-              <FormLabel fontSize="sm">Number of NFT nodes to pledge</FormLabel>
-              <Input
-                value={nftNodeCount}
-                onChange={(e) => setNftNodeCount(e.target.value)}
-                placeholder="Enter number of nodes"
-                size="sm"
-              />
-              <FormHelperText fontSize="xs">
-                A minimum of 1 NFT and a maximum of 20 NFT need to be pledged
-              </FormHelperText>
-            </FormControl>
+            <div className="flex flex-col gap-4">
+              <FormControl mb={4} size="sm">
+                <FormLabel fontSize="sm">{t('nft-nodes-pledge-count')}：</FormLabel>
+                <Input
+                  value={nftNodeCount}
+                  onChange={(e) => setNftNodeCount(e.target.value)}
+                  placeholder={t('input-nft-nodes-count')}
+                  size="sm"
+                />
+                <FormHelperText fontSize="xs">{t('nft-pledge-requirement')}</FormHelperText>
+              </FormControl>
 
-            <FormControl mb={4} size="sm">
-              <FormLabel fontSize="sm">rentId</FormLabel>
-              <Input
-                value={machineId}
-                onChange={(e) => setMachineId(e.target.value)}
-                placeholder="Enter the rentId"
-                size="sm"
-              />
-            </FormControl>
-            <FormControl mb={4} size="sm">
-              <FormLabel fontSize="sm">ID of the machine</FormLabel>
-              <Input
-                value={rentalMachineIdOnChain}
-                onChange={(e) => setRentalMachineIdOnChain(e.target.value)}
-                placeholder="Enter machine ID"
-                size="sm"
-              />
-            </FormControl>
+              <FormControl mb={4} size="sm">
+                <FormLabel fontSize="sm">{t('rent-id')}：</FormLabel>
+                <Input
+                  value={machineId}
+                  onChange={(e) => setMachineId(e.target.value)}
+                  placeholder={t('input-rent-id')}
+                  size="sm"
+                />
+              </FormControl>
+              <FormControl mb={4} size="sm">
+                <FormLabel fontSize="sm">{t('machine-id')}</FormLabel>
+                <Input
+                  value={rentalMachineIdOnChain}
+                  onChange={(e) => setRentalMachineIdOnChain(e.target.value)}
+                  placeholder={t('input-machine-id')}
+                  size="sm"
+                />
+              </FormControl>
 
-            <Button isLoading={nftLoading} colorScheme="blue" width="full" size="sm" onClick={handlePledgeSubmit}>
-              Submit
-            </Button>
+              <Button isLoading={nftLoading} colorScheme="blue" width="full" onClick={handlePledgeSubmit}>
+                {t('submit')}
+              </Button>
+            </div>
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -218,31 +204,33 @@ const FixedComponent = () => {
       <Modal isOpen={isPledgeModalOpenDLC} onClose={onPledgeModalCloseDLC} size="sm">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontSize="lg">Pledge DLC</ModalHeader>
+          <ModalHeader fontSize="lg">{t('pledge-dlc')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <FormControl mb={4} size="sm">
-              <FormLabel fontSize="sm">Amount of DLC to Pledge</FormLabel>
-              <Input
-                value={dlcNodeCount}
-                onChange={(e) => setDlcNodeCount(e.target.value)}
-                placeholder="Enter the amount of DLC to pledge"
-                size="sm"
-              />
-              <FormHelperText fontSize="xs">Initial minimum pledge amount is 1,000</FormHelperText>
-            </FormControl>
-            <FormControl mb={4} size="sm">
-              <FormLabel fontSize="sm">ID of the machine</FormLabel>
-              <Input
-                value={dlcNodeId}
-                onChange={(e) => setdlcNodeId(e.target.value)}
-                placeholder="Enter machine ID"
-                size="sm"
-              />
-            </FormControl>
-            <Button isLoading={dlcBtnLoading} colorScheme="blue" width="full" size="sm" onClick={approveDlcToken}>
-              Submit
-            </Button>
+            <div className="flex flex-col gap-4">
+              <FormControl mb={4} size="sm">
+                <FormLabel fontSize="sm">{t('dlc-pledge-amount')}</FormLabel>
+                <Input
+                  value={dlcNodeCount}
+                  onChange={(e) => setDlcNodeCount(e.target.value)}
+                  placeholder={t('input-dlc-pledge-amount')}
+                  size="sm"
+                />
+                <FormHelperText fontSize="xs">{t('dlc-pledge-requirement')}</FormHelperText>
+              </FormControl>
+              <FormControl mb={4} size="sm">
+                <FormLabel fontSize="sm">{t('machine-id')}</FormLabel>
+                <Input
+                  value={dlcNodeId}
+                  onChange={(e) => setdlcNodeId(e.target.value)}
+                  placeholder={t('input-machine-id')}
+                  size="sm"
+                />
+              </FormControl>
+              <Button isLoading={dlcBtnLoading} colorScheme="blue" width="full" onClick={approveDlcToken}>
+                {t('submit')}
+              </Button>
+            </div>
           </ModalBody>
         </ModalContent>
       </Modal>

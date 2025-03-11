@@ -32,6 +32,8 @@ import GptLongMining from '../../ui/mining/decentral-gpt/long-mining';
 import GptShortMining from '../../ui/mining/decentral-gpt/short-mining';
 import DeepLinkLongMining from '../../ui/mining/deep-link/long-mining';
 import DeepLinkShortMining from '../../ui/mining/deep-link/short-mining';
+import CpuMining from '../../ui/mining/deep-link/cpu-mining';
+import { useTranslation } from 'next-i18next';
 
 interface MiningAppDetail {
   id: string;
@@ -53,32 +55,14 @@ interface MiningAppDetail {
   };
 }
 
-interface InfoItemProps {
-  label: string;
-  value?: string;
-  isLoading: boolean;
-}
-
-function InfoItem({ label, value, isLoading }: InfoItemProps) {
-  return (
-    <Box>
-      <Text color="gray.500" fontSize="sm">
-        { label }
-      </Text>
-      <Skeleton isLoaded={ !isLoading }>
-        <Text fontWeight="medium">{ value || '-' }</Text>
-      </Skeleton>
-    </Box>
-  );
-}
-
 export default function MiningAppDetail() {
   const router = useRouter();
   const { id } = router.query;
-  const [ isLoading, setIsLoading ] = useState(true);
-  const [ appData, setAppData ] = useState<MiningAppDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [appData, setAppData] = useState<MiningAppDetail | null>(null);
   const { asPath } = router;
   const { gpuMiningData } = useMarketplaceApps('', 'all');
+  const { t, i18n } = useTranslation('common');
 
   useEffect(() => {
     console.log(router, 'routerrouter');
@@ -108,16 +92,16 @@ export default function MiningAppDetail() {
       }
       setIsLoading(false);
     }
-  }, [ id, gpuMiningData ]);
+  }, [id, gpuMiningData]);
 
   return (
-    <Container maxW="container.xl" py={ 4 }>
-      <Flex direction="column" gap={ 4 }>
-        <Flex gap={ 6 } align="start">
-          <Skeleton isLoaded={ !isLoading } w="80px" h="80px" borderRadius="xl">
+    <Container maxW="container.xl" py={4}>
+      <Flex direction="column" gap={4}>
+        <Flex gap={6} align="start">
+          <Skeleton isLoaded={!isLoading} w="80px" h="80px" borderRadius="xl">
             <Image
-              src={ appData?.logo }
-              alt={ `${ appData?.title } logo` }
+              src={appData?.logo}
+              alt={`${appData?.title} logo`}
               w="80px"
               h="80px"
               borderRadius="xl"
@@ -125,10 +109,10 @@ export default function MiningAppDetail() {
             />
           </Skeleton>
 
-          <Flex direction="column" gap={ 3 } flex={ 1 }>
-            <Skeleton isLoaded={ !isLoading }>
+          <Flex direction="column" gap={3} flex={1}>
+            <Skeleton isLoaded={!isLoading}>
               <Text fontSize="3xl" fontWeight="bold">
-                { appData?.title || 'DeepLink' }
+                {appData?.title || 'DeepLink'}
               </Text>
             </Skeleton>
           </Flex>
@@ -137,15 +121,21 @@ export default function MiningAppDetail() {
         <Box>
           <Tabs>
             <TabList>
-              <Tab>Long Mining </Tab>
-              <Tab> { asPath === '/mining/DeepLink' ? 'Short Mining' : 'Free Mining' }</Tab>
+              <Tab>{t('long-mining')} </Tab>
+              <Tab> {asPath === '/mining/DeepLink' ? t('short-mining') : t('free-mining')}</Tab>
+              {asPath === '/mining/DeepLink' && <Tab>{t('cpu-mining')} </Tab>}
             </TabList>
 
             <TabPanels>
-              <TabPanel>{ asPath === '/mining/DeepLink' ? <DeepLinkLongMining/> : <GptLongMining/> }</TabPanel>
+              <TabPanel>{asPath === '/mining/DeepLink' ? <DeepLinkLongMining /> : <GptLongMining />}</TabPanel>
 
               <TabPanel>
-                <Text>{ asPath === '/mining/DeepLink' ? <DeepLinkShortMining/> : <GptShortMining/> }</Text>
+                <Text>{asPath === '/mining/DeepLink' ? <DeepLinkShortMining /> : <GptShortMining />}</Text>
+              </TabPanel>
+              <TabPanel>
+                <Text>
+                  <CpuMining />
+                </Text>
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -154,3 +144,4 @@ export default function MiningAppDetail() {
     </Container>
   );
 }
+export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';
