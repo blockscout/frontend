@@ -28,6 +28,7 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     window.document.documentElement.style.setProperty(varName, hex);
 
     cookies.set(cookies.NAMES.COLOR_MODE_HEX, hex);
+    cookies.set(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);
     window.localStorage.setItem(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);
   }, [ setColorMode ]);
 
