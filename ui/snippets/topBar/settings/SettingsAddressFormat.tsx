@@ -15,7 +15,7 @@ const SettingsAddressFormat = () => {
   const { addressFormat, toggleAddressFormat } = settingsContext;
 
   return (
-    <FormControl display="flex" alignItems="center" columnGap={ 2 } mt={ 4 }>
+    <FormControl display="flex" alignItems="center" justifyContent="space-between" alignSelf="stretch" columnGap={ 2 } mt={ 4 }>
       <FormLabel htmlFor="address-format" m="0" fontWeight={ 400 } fontSize="sm" lineHeight={ 5 }>
         Show { config.UI.views.address.hashFormat.bech32Prefix }{ BECH_32_SEPARATOR } format
       </FormLabel>
