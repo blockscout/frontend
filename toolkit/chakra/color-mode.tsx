@@ -4,13 +4,21 @@ import { ThemeProvider, useTheme } from 'next-themes';
 import type { ThemeProviderProps } from 'next-themes';
 import * as React from 'react';
 
+import config from 'configs/app';
+
 export interface ColorModeProviderProps extends ThemeProviderProps {}
 
 export type ColorMode = 'light' | 'dark';
 
 export function ColorModeProvider(props: ColorModeProviderProps) {
   return (
-    <ThemeProvider attribute="class" scriptProps={{ 'data-cfasync': 'false' }} disableTransitionOnChange { ...props }/>
+    <ThemeProvider
+      attribute="class"
+      scriptProps={{ 'data-cfasync': 'false' }}
+      enableSystem={ false }
+      defaultTheme={ config.UI.colorTheme.default?.colorMode }
+      disableTransitionOnChange { ...props }
+    />
   );
 }
 

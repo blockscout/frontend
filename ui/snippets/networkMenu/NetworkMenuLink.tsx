@@ -12,7 +12,7 @@ interface Props extends FeaturedNetwork {
   isMobile?: boolean;
 }
 
-const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDarkMode }: Props) => {
+const NetworkMenuLink = ({ title, icon, isActive: isActiveProp, isMobile, url, invertIconInDarkMode }: Props) => {
   const darkModeFilter = { filter: 'brightness(0) invert(1)' };
   const style = useColorModeValue({}, invertIconInDarkMode ? darkModeFilter : {});
 
@@ -25,6 +25,21 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
       color={{ base: 'blackAlpha.100', _dark: 'whiteAlpha.300' }}
     />
   );
+
+  const isActive = (() => {
+    if (isActiveProp !== undefined) {
+      return isActiveProp;
+    }
+
+    try {
+      const itemOrigin = new URL(url).origin;
+      const currentOrigin = window.location.origin;
+
+      return itemOrigin === currentOrigin;
+    } catch (error) {
+      return false;
+    }
+  })();
 
   return (
     <Box as="li" listStyleType="none">

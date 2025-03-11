@@ -67,7 +67,10 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isPlaceholderData }>
-          ${ Number(data.base_token_fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
+          { data.base_token_fully_diluted_valuation_usd ?
+            `$${ Number(data.base_token_fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }` :
+            'N/A'
+          }
         </Skeleton>
       </DetailedInfo.ItemValue>
 
@@ -79,7 +82,10 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isPlaceholderData }>
-          ${ Number(data.base_token_market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
+          { data.base_token_market_cap_usd ?
+            `$${ Number(data.base_token_market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }` :
+            'N/A'
+          }
         </Skeleton>
       </DetailedInfo.ItemValue>
 
@@ -91,7 +97,10 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isPlaceholderData }>
-          ${ Number(data.quote_token_fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
+          { data.quote_token_fully_diluted_valuation_usd ?
+            `$${ Number(data.quote_token_fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }` :
+            'N/A'
+          }
         </Skeleton>
       </DetailedInfo.ItemValue>
 
@@ -103,7 +112,10 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isPlaceholderData }>
-          ${ Number(data.quote_token_market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
+          { data.quote_token_market_cap_usd ?
+            `$${ Number(data.quote_token_market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }` :
+            'N/A'
+          }
         </Skeleton>
       </DetailedInfo.ItemValue>
 

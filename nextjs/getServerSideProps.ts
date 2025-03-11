@@ -46,7 +46,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
 
   const isTrackingDisabled = process.env.DISABLE_TRACKING === 'true';
 
-  if (!isTrackingDisabled) {
+  if (!isTrackingDisabled && !config.app.isDev) {
     // log pageview
     const hostname = req.headers.host;
     const timestamp = new Date().toISOString();

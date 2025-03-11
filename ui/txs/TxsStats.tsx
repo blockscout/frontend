@@ -76,7 +76,9 @@ const TxsStats = () => {
     >
       { txCount24h && (
         <StatsWidget
-          label={ txsStatsQuery.data?.transactions_24h?.title || 'Transactions' }
+          label={ txsStatsQuery.data?.transactions_24h?.title ?
+            getLabelFromTitle(txsStatsQuery.data?.transactions_24h?.title) :
+            'Transactions' }
           value={ Number(txCount24h).toLocaleString() }
           period="24h"
           isLoading={ isLoading }
@@ -85,7 +87,9 @@ const TxsStats = () => {
       ) }
       { operationalTxns24h && (
         <StatsWidget
-          label={ txsStatsQuery.data?.operational_transactions_24h?.title || 'Daily op txns' }
+          label={ txsStatsQuery.data?.operational_transactions_24h?.title ?
+            getLabelFromTitle(txsStatsQuery.data?.operational_transactions_24h?.title) :
+            'Daily op txns' }
           value={ Number(operationalTxns24h).toLocaleString() }
           period="24h"
           isLoading={ isLoading }
@@ -93,7 +97,9 @@ const TxsStats = () => {
       ) }
       { pendingTxns && (
         <StatsWidget
-          label={ txsStatsQuery.data?.pending_transactions_30m?.title || 'Pending transactions' }
+          label={ txsStatsQuery.data?.pending_transactions_30m?.title ?
+            getLabelFromTitle(txsStatsQuery.data?.pending_transactions_30m?.title) :
+            'Pending transactions' }
           value={ Number(pendingTxns).toLocaleString() }
           period={ isStatsFeatureEnabled ? '30min' : '1h' }
           isLoading={ isLoading }
@@ -101,7 +107,9 @@ const TxsStats = () => {
       ) }
       { txFeeSum24h && (
         <StatsWidget
-          label={ txsStatsQuery.data?.transactions_fee_24h?.title || 'Transactions fees' }
+          label={ txsStatsQuery.data?.transactions_fee_24h?.title ?
+            getLabelFromTitle(txsStatsQuery.data?.transactions_fee_24h?.title) :
+            'Transactions fees' }
           value={ txFeeSum24h.toLocaleString(undefined, { maximumFractionDigits: 2 }) }
           valuePostfix={ thinsp + config.chain.currency.symbol }
           period="24h"
@@ -111,7 +119,9 @@ const TxsStats = () => {
       ) }
       { txFeeAvg && (
         <StatsWidget
-          label={ txsStatsQuery.data?.average_transactions_fee_24h?.title || 'Avg. transaction fee' }
+          label={ txsStatsQuery.data?.average_transactions_fee_24h?.title ?
+            getLabelFromTitle(txsStatsQuery.data?.average_transactions_fee_24h?.title) :
+            'Avg. transaction fee' }
           value={ txFeeAvg.usd ? txFeeAvg.usd : txFeeAvg.valueStr }
           valuePrefix={ txFeeAvg.usd ? '$' : undefined }
           valuePostfix={ txFeeAvg.usd ? undefined : thinsp + config.chain.currency.symbol }
@@ -123,5 +133,10 @@ const TxsStats = () => {
     </Box>
   );
 };
+
+// remove period from title
+function getLabelFromTitle(title: string) {
+  return title.replace(/\s*\([^)]*\)\s*$/, '');
+}
 
 export default React.memo(TxsStats);

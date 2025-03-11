@@ -2,8 +2,9 @@ import React from 'react';
 
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
-import useAddOrSwitchChain from 'lib/web3/useAddOrSwitchChain';
+import useAddChain from 'lib/web3/useAddChain';
 import useProvider from 'lib/web3/useProvider';
+import useSwitchChain from 'lib/web3/useSwitchChain';
 import { WALLETS_INFO } from 'lib/web3/wallets';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
@@ -13,7 +14,8 @@ const feature = config.features.web3Wallet;
 
 const NetworkAddToWallet = () => {
   const { provider, wallet } = useProvider();
-  const addOrSwitchChain = useAddOrSwitchChain();
+  const addChain = useAddChain();
+  const switchChain = useSwitchChain();
 
   const handleClick = React.useCallback(async() => {
     if (!wallet || !provider) {
@@ -21,7 +23,8 @@ const NetworkAddToWallet = () => {
     }
 
     try {
-      await addOrSwitchChain();
+      await addChain();
+      await switchChain();
 
       toaster.success({
         title: 'Success',
@@ -39,7 +42,7 @@ const NetworkAddToWallet = () => {
         description: (error as Error)?.message || 'Something went wrong',
       });
     }
-  }, [ addOrSwitchChain, provider, wallet ]);
+  }, [ addChain, provider, wallet, switchChain ]);
 
   if (!provider || !wallet || !config.chain.rpcUrls.length || !feature.isEnabled) {
     return null;
