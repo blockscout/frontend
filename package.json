@@ -38,13 +38,14 @@
     "og-image:generate:dev": "./tools/scripts/og-image-generator.dev.sh",
     "sitemap:generate:dev": "./tools/scripts/sitemap-generator.dev.sh",
     "monitoring:prometheus:local": "docker run --name blockscout_prometheus -d -p 127.0.0.1:9090:9090 -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus",
-    "monitoring:grafana:local": "docker run -d -p 4000:3000 --name=blockscout_grafana --user $(id -u) --volume $(pwd)/grafana:/var/lib/grafana grafana/grafana-enterprise"
+    "monitoring:grafana:local": "docker run -d -p 4000:3000 --name=blockscout_grafana --user $(id -u) --volume $(pwd)/grafana:/var/lib/grafana grafana/grafana-enterprise",
+    "postinstall": "chakra typegen ./toolkit/theme/theme.ts"
   },
   "dependencies": {
     "@blockscout/bens-types": "1.4.1",
     "@blockscout/stats-types": "2.5.0-alpha",
     "@blockscout/visualizer-types": "0.2.0",
-    "@chakra-ui/react": "3.9.0",
+    "@chakra-ui/react": "3.12.0",
     "@cloudnouns/kit": "1.1.6",
     "@emotion/react": "11.14.0",
     "@growthbook/growthbook-react": "0.21.0",
