@@ -1,4 +1,3 @@
-import { LightMode } from '@chakra-ui/react';
 import React from 'react';
 
 import { test, expect } from 'playwright/lib';
@@ -20,9 +19,9 @@ test('input on regular page +@mobile +@dark-mode', async({ render, page }) => {
 
 test('input on home page +@mobile +@dark-mode', async({ render, page }) => {
   await render(
-    <LightMode>
+    <div className="light">
       <SearchBarInput { ...props } isHomepage/>
-    </LightMode>,
+    </div>,
   );
   const input = page.getByPlaceholder(/search by/i);
   await expect(input).toHaveScreenshot();

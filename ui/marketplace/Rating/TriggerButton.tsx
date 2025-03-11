@@ -28,7 +28,7 @@ const getTooltipText = (canRate: boolean | undefined) => {
 
 const TriggerButton = (
   { rating, count, fullView, canRate, onClick, ...rest }: Props,
-  ref: React.ForwardedRef<HTMLDivElement>,
+  ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const onFocusCapture = usePreventFocusAfterModalClosing();
 

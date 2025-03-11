@@ -10,7 +10,7 @@ const Identicon = dynamic<{ bg: string; string: string; size: number }>(
     return typeof lib === 'object' && 'default' in lib ? lib.default : lib;
   },
   {
-    loading: () => <Skeleton w="100%" h="100%"/>,
+    loading: () => <Skeleton loading w="100%" h="100%"/>,
     ssr: false,
   },
 );

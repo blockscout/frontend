@@ -4,6 +4,7 @@ import type { OptimisticL2WithdrawalStatus } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
@@ -71,17 +72,19 @@ const TxDetailsWithdrawalStatusOptimistic = ({ status, l1TxHash }: Props) => {
     }
   })();
 
-  // TODO @tom2drum Button as <a> tags
   const rightSlot = hasClaimButton ? (
-    <Button
-      variant="outline"
-      size="sm"
-      as="a"
+    <Link
       href={ rollupFeature.L2WithdrawalUrl }
+      asChild
       target="_blank"
     >
-      Claim funds
-    </Button>
+      <Button
+        variant="outline"
+        size="sm"
+      >
+        Claim funds
+      </Button>
+    </Link>
   ) : null;
 
   return (

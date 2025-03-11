@@ -31,16 +31,16 @@ const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
   const content = !items || items.length === 0 ? (
     <Flex mt={ 6 } flexDir="column" rowGap={ 2 }>
       <Flex mx={ 3 } my={ 2 } alignItems="center">
-        <Skeleton h="30px" w="30px" borderRadius="full"/>
-        <Skeleton h="20px" w="60px" ml={ 3 }/>
+        <Skeleton loading h="30px" w="30px" borderRadius="full"/>
+        <Skeleton loading h="20px" w="60px" ml={ 3 }/>
       </Flex>
       <Flex mx={ 3 } my={ 2 } alignItems="center">
-        <Skeleton h="30px" w="30px" borderRadius="full"/>
-        <Skeleton h="20px" w="120px" ml={ 3 }/>
+        <Skeleton loading h="30px" w="30px" borderRadius="full"/>
+        <Skeleton loading h="20px" w="120px" ml={ 3 }/>
       </Flex>
       <Flex mx={ 3 } my={ 2 } alignItems="center">
-        <Skeleton h="30px" w="30px" borderRadius="full"/>
-        <Skeleton h="20px" w="80px" ml={ 3 }/>
+        <Skeleton loading h="30px" w="30px" borderRadius="full"/>
+        <Skeleton loading h="20px" w="80px" ml={ 3 }/>
       </Flex>
     </Flex>
   ) : (

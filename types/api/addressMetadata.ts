@@ -1,4 +1,4 @@
-import type { AlertStatus } from '@chakra-ui/react';
+import type { AlertProps } from 'toolkit/chakra/alert';
 
 export interface AddressMetadataInfo {
   addresses: Record<string, {
@@ -37,7 +37,7 @@ export interface AddressMetadataTagApi extends Omit<AddressMetadataTag, 'meta'> 
     data?: string;
     alertBgColor?: string;
     alertTextColor?: string;
-    alertStatus?: AlertStatus;
+    alertStatus?: AlertProps['status'];
   } | null;
 }
 

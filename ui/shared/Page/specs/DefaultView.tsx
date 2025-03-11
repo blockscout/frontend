@@ -35,7 +35,7 @@ const DefaultView = () => {
       <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
       <EntityTags
         tags={ [
-          { slug: 'example', name: 'Example label', tagType: 'custom' },
+          { slug: 'example', name: 'Example label', tagType: 'custom', ordinal: 0 },
         ] }
         flexGrow={ 1 }
       />

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -69,7 +69,7 @@ const BlocksPageContent = () => {
     return blocksQuery.pagination;
   })();
 
-  const tabs: Array<RoutedTab> = [
+  const tabs: Array<TabItemRegular> = [
     { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
     { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
     { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ unclesQuery }/> },

@@ -67,6 +67,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,
   '/sprite': DEFAULT_TEMPLATE,
+  '/chakra': DEFAULT_TEMPLATE,
   '/api/metrics': DEFAULT_TEMPLATE,
   '/api/monitoring/invalid-api-schema': DEFAULT_TEMPLATE,
   '/api/log': DEFAULT_TEMPLATE,

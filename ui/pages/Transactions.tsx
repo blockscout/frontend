@@ -3,7 +3,7 @@ import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { route } from 'nextjs-routes';
 
@@ -95,7 +95,7 @@ const Transactions = () => {
 
   const isAuth = useIsAuth();
 
-  const tabs: Array<RoutedTab> = [
+  const tabs: Array<TabItemRegular> = [
     {
       id: 'validated',
       title: verifiedTitle,

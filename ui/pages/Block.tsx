@@ -3,8 +3,8 @@ import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { PaginationParams } from 'ui/shared/pagination/types';
-import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
@@ -57,7 +57,7 @@ const BlockPageContent = () => {
     (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible)
   );
 
-  const tabs: Array<RoutedTab> = React.useMemo(() => ([
+  const tabs: Array<TabItemRegular> = React.useMemo(() => ([
     {
       id: 'index',
       title: 'Details',

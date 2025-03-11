@@ -5,7 +5,6 @@ import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
-import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import IconSvg from 'ui/shared/IconSvg';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
@@ -60,7 +59,6 @@ const NavigationDesktop = () => {
       px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}
       py={ 12 }
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
-      { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
       onClick={ handleContainerClick }
     >
       <TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
@@ -111,7 +109,6 @@ const NavigationDesktop = () => {
         borderWidth="1px"
         borderColor="border.divider"
         transform={{ lg: isExpanded ? 'rotate(0)' : 'rotate(180deg)', xl: isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }}
-        { ...getDefaultTransitionProps({ transitionProperty: 'transform, left' }) }
         transformOrigin="center"
         position="absolute"
         top="104px"

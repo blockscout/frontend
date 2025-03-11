@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem } from '@chakra-ui/react';
 import { pickBy } from 'es-toolkit';
 import React from 'react';
 
@@ -7,17 +7,18 @@ import type { FormSubmitResultGrouped } from '../types';
 import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
-
 interface Props {
   data: FormSubmitResultGrouped;
 }
 
 const PublicTagsSubmitResultWithErrors = ({ data }: Props) => {
   const isMobile = useIsMobile();
-  const bgColorSuccess = useColorModeValue('green.50', 'green.800');
-  const bgColorError = useColorModeValue('red.50', 'red.800');
+  const bgColorSuccess = { _light: 'green.50', _dark: 'green.800' };
+  const bgColorError = { _light: 'red.50', _dark: 'red.800' };
 
   return (
     <Flex flexDir="column" rowGap={ 3 }>
@@ -68,18 +69,21 @@ const PublicTagsSubmitResultWithErrors = ({ data }: Props) => {
               { item.error && <Box color="red.500" mt={ 1 } fontSize="sm">{ item.error }</Box> }
             </Box>
             { item.error && (
-              <Button
-                variant="outline"
-                size="sm"
-                flexShrink={ 0 }
-                mt={{ base: 1, lg: 6 }}
-                ml={{ base: 0, lg: 6 }}
-                w="min-content"
-                as="a"
+              <Link
                 href={ route({ pathname: '/public-tags/submit', query: startOverButtonQuery }) }
+                asChild
               >
-                Start  over
-              </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  flexShrink={ 0 }
+                  mt={{ base: 1, lg: 6 }}
+                  ml={{ base: 0, lg: 6 }}
+                  w="min-content"
+                >
+                  Start  over
+                </Button>
+              </Link>
             ) }
             { !item.error && !isMobile && <Box w="95px" ml={ 6 } flexShrink={ 0 }/> }
           </Flex>

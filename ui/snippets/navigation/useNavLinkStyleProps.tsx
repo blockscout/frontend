@@ -1,5 +1,3 @@
-import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
-
 type Props = {
   isExpanded?: boolean;
   isCollapsed?: boolean;
@@ -14,7 +12,6 @@ export default function useNavLinkStyleProps({ isExpanded, isCollapsed, isActive
       display: 'flex',
       ...(isActive ? { 'data-selected': true } : {}),
       borderRadius: 'base',
-      ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }),
     },
     textProps: {
       variant: 'inherit',

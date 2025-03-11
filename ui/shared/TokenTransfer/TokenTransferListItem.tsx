@@ -61,7 +61,7 @@ const TokenTransferListItem = ({
               <Badge flexShrink={ 0 } loading={ isLoading }>{ getTokenTypeName(token.type) }</Badge>
             </>
           ) }
-          <Badge colorScheme="orange" loading={ isLoading }>{ getTokenTransferTypeText(type) }</Badge>
+          <Badge colorPalette="orange" loading={ isLoading }>{ getTokenTransferTypeText(type) }</Badge>
         </Flex>
         { showTxInfo && txHash && (
           <TxAdditionalInfo hash={ txHash } isMobile isLoading={ isLoading }/>

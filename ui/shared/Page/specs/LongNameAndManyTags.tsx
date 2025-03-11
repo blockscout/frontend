@@ -30,14 +30,14 @@ const LongNameAndManyTags = () => {
       <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer" flexShrink={ 0 }/>
       <EntityTags
         tags={ [
-          { slug: 'example', name: 'Example with long name', tagType: 'custom' },
+          { slug: 'example', name: 'Example with long name', tagType: 'custom', ordinal: 0 },
           ...formatUserTags({
             private_tags: [ privateTag ],
             public_tags: [ publicTag ],
             watchlist_names: [ watchlistName ],
           }),
-          { slug: 'after_1', name: 'Another tag', tagType: 'custom' },
-          { slug: 'after_2', name: 'And yet more', tagType: 'custom' },
+          { slug: 'after_1', name: 'Another tag', tagType: 'custom', ordinal: 0 },
+          { slug: 'after_2', name: 'And yet more', tagType: 'custom', ordinal: 0 },
         ] }
         flexGrow={ 1 }
       />

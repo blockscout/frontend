@@ -22,7 +22,7 @@ const TxTranslationType = ({ types, isLoading, translatationType }: Props) => {
   }
 
   return (
-    <Badge colorScheme="purple" loading={ isLoading }>
+    <Badge colorPalette="purple" loading={ isLoading }>
       { camelCaseToSentence(translatationType) }
     </Badge>
   );

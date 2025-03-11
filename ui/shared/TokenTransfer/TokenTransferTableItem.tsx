@@ -66,7 +66,7 @@ const TokenTransferTableItem = ({
             />
             <Flex columnGap={ 2 } rowGap={ 2 } mt={ 2 } flexWrap="wrap">
               <Badge loading={ isLoading }>{ getTokenTypeName(token.type) }</Badge>
-              <Badge colorScheme="orange" loading={ isLoading }>{ getTokenTransferTypeText(type) }</Badge>
+              <Badge colorPalette="orange" loading={ isLoading }>{ getTokenTransferTypeText(type) }</Badge>
             </Flex>
           </>
         ) : 'N/A' }

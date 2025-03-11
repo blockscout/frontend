@@ -39,7 +39,8 @@ const TypeFilter = ({ value = [ RESET_VALUE ], handleFilterChange }: Props) => {
   const onReset = React.useCallback(() => setCurrentValue([ RESET_VALUE ]), []);
 
   const onFilter = React.useCallback(() => {
-    handleFilterChange(FILTER_PARAM, currentValue.filter(item => item !== RESET_VALUE));
+    const value: Array<AdvancedFilterType> = currentValue.filter(item => item !== RESET_VALUE);
+    handleFilterChange(FILTER_PARAM, value);
   }, [ handleFilterChange, currentValue ]);
 
   return (

@@ -84,7 +84,7 @@ const ChainIndicators = () => {
 
   const valueTitle = (() => {
     if (isPlaceholderData) {
-      return <Skeleton h="36px" w="215px"/>;
+      return <Skeleton loading h="36px" w="215px"/>;
     }
 
     if (!hasData) {
