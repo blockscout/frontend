@@ -18,11 +18,7 @@ import useFetchTokens from '../utils/useFetchTokens';
 import TokenSelectDesktop from './TokenSelectDesktop';
 import TokenSelectMobile from './TokenSelectMobile';
 
-interface Props {
-  onClick?: () => void;
-}
-
-const TokenSelect = ({ onClick }: Props) => {
+const TokenSelect = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const queryClient = useQueryClient();
@@ -38,8 +34,8 @@ const TokenSelect = ({ onClick }: Props) => {
 
   const handleIconButtonClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Tokens show all (icon)' });
-    onClick?.();
-  }, [ onClick ]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [ ]);
 
   if (isPending) {
     return (

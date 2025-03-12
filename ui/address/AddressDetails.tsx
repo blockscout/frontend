@@ -31,10 +31,9 @@ import type { AddressQuery } from './utils/useAddressQuery';
 
 interface Props {
   addressQuery: AddressQuery;
-  scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
-const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
+const AddressDetails = ({ addressQuery }: Props) => {
   const router = useRouter();
 
   const addressHash = getQueryParamString(router.query.hash);
@@ -43,13 +42,6 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     hash: addressHash,
     addressQuery,
   });
-
-  const handleCounterItemClick = React.useCallback(() => {
-    window.setTimeout(() => {
-      // cannot do scroll instantly, have to wait a little
-      scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 500);
-  }, [ scrollRef ]);
 
   const error404Data = React.useMemo(() => ({
     hash: addressHash || '',
@@ -184,7 +176,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
               Tokens
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value py={ addressQuery.data ? 0 : undefined }>
-              { addressQuery.data ? <TokenSelect onClick={ handleCounterItemClick }/> : <Box>0</Box> }
+              { addressQuery.data ? <TokenSelect/> : <Box>0</Box> }
             </DetailsInfoItem.Value>
           </>
         ) }
@@ -215,7 +207,6 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
               prop="transactions_count"
               query={ countersQuery }
               address={ data.hash }
-              onClick={ handleCounterItemClick }
               isAddressQueryLoading={ addressQuery.isPlaceholderData }
               isDegradedData={ addressQuery.isDegradedData }
             />
@@ -237,7 +228,6 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
                   prop="token_transfers_count"
                   query={ countersQuery }
                   address={ data.hash }
-                  onClick={ handleCounterItemClick }
                   isAddressQueryLoading={ addressQuery.isPlaceholderData }
                   isDegradedData={ addressQuery.isDegradedData }
                 />
@@ -261,7 +251,6 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
                   prop="gas_usage_count"
                   query={ countersQuery }
                   address={ data.hash }
-                  onClick={ handleCounterItemClick }
                   isAddressQueryLoading={ addressQuery.isPlaceholderData }
                   isDegradedData={ addressQuery.isDegradedData }
                 />
@@ -291,7 +280,6 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
                   prop="validations_count"
                   query={ countersQuery }
                   address={ data.hash }
-                  onClick={ handleCounterItemClick }
                   isAddressQueryLoading={ addressQuery.isPlaceholderData }
                   isDegradedData={ addressQuery.isDegradedData }
                 />
