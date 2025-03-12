@@ -1,0 +1,13 @@
+diff --git a/node_modules/svg-icons-cli/index.js b/node_modules/svg-icons-cli/index.js
+index e78dac7..199cdbe 100644
+--- a/node_modules/svg-icons-cli/index.js
++++ b/node_modules/svg-icons-cli/index.js
+@@ -529,7 +529,7 @@ async function parsePackageJson() {
+ }
+ 
+ function iconName(file) {
+-  return file.replace(/\.svg$/, "");
++  return file.replace(/\.svg$/, "").replace(/\\/g, '/');
+ }
+ /**
+  * Creates a single SVG file that contains all the icons

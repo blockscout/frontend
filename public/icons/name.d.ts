@@ -79,6 +79,7 @@
 	| "graphQL"
 	| "heart_filled"
 	| "heart_outline"
+	| "hexagon"
 	| "hourglass"
 	| "info"
 	| "integration/full"

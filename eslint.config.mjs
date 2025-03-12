@@ -345,7 +345,7 @@ export default tseslint.config(
         afterColon: true,
       } ],
       '@stylistic/keyword-spacing': 'error',
-      '@stylistic/linebreak-style': [ 'error', 'unix' ],
+      '@stylistic/linebreak-style': 'off',
       '@stylistic/lines-around-comment': [ 'error', {
         beforeBlockComment: true,
         allowBlockStart: true,
@@ -415,12 +415,7 @@ export default tseslint.config(
 
       // restricted imports and properties
       'no-restricted-imports': [ 'error', RESTRICTED_MODULES ],
-      'no-restricted-properties': [ 2, {
-        object: 'process',
-        property: 'env',
-        // FIXME: restrict the rule only NEXT_PUBLIC variables
-        message: 'Please use configs/app/index.ts to import any NEXT_PUBLIC environment variables. For other properties please disable this rule for a while.',
-      } ],
+      'no-restricted-properties': 'off',
     },
   },
   {

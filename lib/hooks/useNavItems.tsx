@@ -277,6 +277,12 @@ export default function useNavItems(): ReturnType {
         isActive: tokensNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: tokensNavItems,
       },
+      config.features.mapper.isEnabled ? {
+        text: 'Mapper',
+        nextRoute: { pathname: '/mapper' as const },
+        icon: 'hexagon',
+        isActive: pathname.startsWith('/mapper'),
+      } : null,
       config.features.marketplace.isEnabled ? {
         text: 'DApps',
         nextRoute: { pathname: '/apps' as const },

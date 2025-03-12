@@ -23,6 +23,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/token/[hash]/instance/[id]': '%network_name% NFT instance',
   '/apps': '%network_name% DApps - Explore top apps',
   '/apps/[id]': '%network_name% marketplace app',
+  '/mapper': '%network_name% hexagon mapper',
   '/stats': '%network_name% stats - %network_name% network insights',
   '/stats/[id]': '%network_name% stats - %id% chart',
   '/api-docs': '%network_name% API docs - %network_name% developer tools',

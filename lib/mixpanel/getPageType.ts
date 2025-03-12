@@ -21,6 +21,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/token/[hash]/instance/[id]': 'Token Instance',
   '/apps': 'DApps',
   '/apps/[id]': 'DApp',
+  '/mapper': 'Mapper',
   '/stats': 'Stats',
   '/stats/[id]': 'Stats chart',
   '/api-docs': 'REST API',
