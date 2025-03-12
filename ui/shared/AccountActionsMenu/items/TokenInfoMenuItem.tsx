@@ -70,7 +70,7 @@ const TokenInfoMenuItem = ({ className, hash, type }: ItemProps) => {
     switch (type) {
       case 'button': {
         return (
-          <AuthGuard onAuthSuccess={ onAuthSuccess }>
+          <AuthGuard onAuthSuccess={ onAuthSuccess } ensureEmail>
             { ({ onClick }) => (
               <ButtonItem label={ label } icon={ icon } onClick={ onClick } className={ className }/>
             ) }
@@ -79,7 +79,7 @@ const TokenInfoMenuItem = ({ className, hash, type }: ItemProps) => {
       }
       case 'menu_item': {
         return (
-          <AuthGuard onAuthSuccess={ onAuthSuccess }>
+          <AuthGuard onAuthSuccess={ onAuthSuccess } ensureEmail>
             { ({ onClick }) => (
               <MenuItem className={ className } onClick={ onClick }>
                 { icon }
