@@ -15,12 +15,11 @@ import AddressCsvExportLink from './AddressCsvExportLink';
 import useAddressQuery from './utils/useAddressQuery';
 
 type Props = {
-  scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
 };
 
-const AddressLogs = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
+const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -28,7 +27,6 @@ const AddressLogs = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: 
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
     resourceName: 'address_logs',
     pathParams: { hash },
-    scrollRef,
     options: {
       enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_logs'>(LOG, 3, { next_page_params: {

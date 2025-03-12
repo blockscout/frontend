@@ -24,11 +24,10 @@ import AddressTxsFilter from './AddressTxsFilter';
 const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
 type Props = {
-  scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
 };
-const AddressInternalTxs = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
+const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -40,7 +39,6 @@ const AddressInternalTxs = ({ scrollRef, shouldRender = true, isQueryEnabled = t
     resourceName: 'address_internal_txs',
     pathParams: { hash },
     filters: { filter: filterValue },
-    scrollRef,
     options: {
       enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_internal_txs'>(
