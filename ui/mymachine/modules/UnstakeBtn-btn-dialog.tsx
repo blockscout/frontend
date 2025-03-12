@@ -138,7 +138,6 @@ function UnstakeBtn({ id, forceRerender }: UnstakeBtnProps) {
   // 删除机器
   const deleteMachineH = async () => {
     const res: any = await deleteMachine(id);
-    console.log(res, '<<<<<<<<<<<<<<<<<<<<<<<<<<');
 
     if (res.code === 200) {
       setBtnData({

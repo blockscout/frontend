@@ -4,20 +4,20 @@ export type SmartContractMethodArgType = AbiType;
 export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';
 
 export type SmartContractLicenseType =
-'none' |
-'unlicense' |
-'mit' |
-'gnu_gpl_v2' |
-'gnu_gpl_v3' |
-'gnu_lgpl_v2_1' |
-'gnu_lgpl_v3' |
-'bsd_2_clause' |
-'bsd_3_clause' |
-'mpl_2_0' |
-'osl_3_0' |
-'apache_2_0' |
-'gnu_agpl_v3' |
-'bsl_1_1';
+  | 'none'
+  | 'unlicense'
+  | 'mit'
+  | 'gnu_gpl_v2'
+  | 'gnu_gpl_v3'
+  | 'gnu_lgpl_v2_1'
+  | 'gnu_lgpl_v3'
+  | 'bsd_2_clause'
+  | 'bsd_3_clause'
+  | 'mpl_2_0'
+  | 'osl_3_0'
+  | 'apache_2_0'
+  | 'gnu_agpl_v3'
+  | 'bsl_1_1';
 
 export interface SmartContract {
   deployed_bytecode: string | null;
@@ -46,7 +46,6 @@ export interface SmartContract {
   is_fully_verified: boolean | null;
   is_partially_verified: boolean | null;
   sourcify_repo_url: string | null;
-  // <<<<
   source_code: string | null;
   constructor_args: string | null;
   decoded_constructor_args: Array<SmartContractDecodedConstructorArg> | null;
@@ -71,7 +70,7 @@ export type SmartContractDecodedConstructorArg = [
     name: string;
     type: SmartContractMethodArgType;
   }
-]
+];
 
 export interface SmartContractExternalLibrary {
   address_hash: string;
@@ -93,7 +92,7 @@ export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMe
 export interface SmartContractQueryMethodSuccess {
   is_error: false;
   result: {
-    names: Array<string | [ string, Array<string> ]>;
+    names: Array<string | [string, Array<string>]>;
     output: Array<{
       type: string;
       value: string | Array<unknown>;
@@ -103,26 +102,36 @@ export interface SmartContractQueryMethodSuccess {
 
 export interface SmartContractQueryMethodError {
   is_error: true;
-  result: {
-    code: number;
-    message: string;
-  } | {
-    error: string;
-  } | {
-    raw: string;
-  } | {
-    method_call: string;
-    method_id: string;
-    parameters: Array<{ 'name': string; 'type': string; 'value': string }>;
-  };
+  result:
+    | {
+        code: number;
+        message: string;
+      }
+    | {
+        error: string;
+      }
+    | {
+        raw: string;
+      }
+    | {
+        method_call: string;
+        method_id: string;
+        parameters: Array<{ name: string; type: string; value: string }>;
+      };
 }
 
 export type SmartContractQueryMethod = SmartContractQueryMethodSuccess | SmartContractQueryMethodError;
 
 // VERIFICATION
 
-export type SmartContractVerificationMethod = 'flattened-code' | 'standard-input' | 'sourcify' | 'multi-part'
-| 'vyper-code' | 'vyper-multi-part' | 'vyper-standard-input';
+export type SmartContractVerificationMethod =
+  | 'flattened-code'
+  | 'standard-input'
+  | 'sourcify'
+  | 'multi-part'
+  | 'vyper-code'
+  | 'vyper-multi-part'
+  | 'vyper-standard-input';
 
 export interface SmartContractVerificationConfigRaw {
   solidity_compiler_versions: Array<string>;
@@ -138,12 +147,14 @@ export interface SmartContractVerificationConfig extends SmartContractVerificati
   verification_options: Array<SmartContractVerificationMethod>;
 }
 
-export type SmartContractVerificationResponse = {
-  status: 'error';
-  errors: SmartContractVerificationError;
-} | {
-  status: 'success';
-}
+export type SmartContractVerificationResponse =
+  | {
+      status: 'error';
+      errors: SmartContractVerificationError;
+    }
+  | {
+      status: 'success';
+    };
 
 export interface SmartContractVerificationError {
   contract_source_code?: Array<string>;
@@ -175,27 +186,27 @@ export type SolidityscanReport = {
     };
     scanner_reference_url: string;
   };
-}
+};
 
 type SmartContractSecurityAudit = {
   audit_company_name: string;
   audit_publish_date: string;
   audit_report_url: string;
-}
+};
 
 export type SmartContractSecurityAudits = {
   items: Array<SmartContractSecurityAudit>;
-}
+};
 
 export type SmartContractSecurityAuditSubmission = {
-  'address_hash': string;
-  'submitter_name': string;
-  'submitter_email': string;
-  'is_project_owner': boolean;
-  'project_name': string;
-  'project_url': string;
-  'audit_company_name': string;
-  'audit_report_url': string;
-  'audit_publish_date': string;
-  'comment'?: string;
-}
+  address_hash: string;
+  submitter_name: string;
+  submitter_email: string;
+  is_project_owner: boolean;
+  project_name: string;
+  project_url: string;
+  audit_company_name: string;
+  audit_report_url: string;
+  audit_publish_date: string;
+  comment?: string;
+};
