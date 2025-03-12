@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    // "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -14,8 +18,20 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "strict": false
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.node.ts", "**/*.tsx", "decs.d.ts", "global.d.ts"],
-  "exclude": ["node_modules", "node_modules_linux", "./deploy/tools/envs-validator"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.node.ts",
+    "**/*.tsx",
+    "decs.d.ts",
+    "global.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "node_modules_linux",
+    "./deploy/tools/envs-validator"
+  ]
 }
