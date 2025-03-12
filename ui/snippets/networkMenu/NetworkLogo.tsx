@@ -38,7 +38,6 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
 
 const INVERT_FILTER = 'brightness(0) invert(1)';
 
-// TODO @tom2drum check loading state
 const NetworkLogo = ({ isCollapsed, onClick, className }: Props) => {
 
   const logoSrc = useColorModeValue(config.UI.navigation.logo.default, config.UI.navigation.logo.dark || config.UI.navigation.logo.default);
@@ -58,23 +57,27 @@ const NetworkLogo = ({ isCollapsed, onClick, className }: Props) => {
     >
       { /* big logo */ }
       <Image
-        w="auto"
+        w="100%"
         h="100%"
         src={ logoSrc }
         alt={ `${ config.chain.name } network logo` }
         fallback={ <LogoFallback isCollapsed={ isCollapsed }/> }
         display={{ base: 'block', lg: isCollapsed === false ? 'block' : 'none', xl: isCollapsed ? 'none' : 'block' }}
         filter={{ _dark: INVERT_FILTER }}
+        objectFit="contain"
+        objectPosition="left"
       />
       { /* small logo */ }
       <Image
-        w="auto"
+        w="100%"
         h="100%"
         src={ iconSrc }
         alt={ `${ config.chain.name } network logo` }
         fallback={ <LogoFallback isCollapsed={ isCollapsed } isSmall/> }
         display={{ base: 'none', lg: isCollapsed === false ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}
         filter={{ _dark: INVERT_FILTER }}
+        objectFit="contain"
+        objectPosition="left"
       />
     </chakra.a>
   );

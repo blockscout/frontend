@@ -2,11 +2,12 @@ import { Box, Flex, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
+import { route } from 'nextjs-routes';
 
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import Hint from 'ui/shared/Hint';
 import IconSvg, { type IconName } from 'ui/shared/IconSvg';
-import NextLink from 'ui/shared/NextLink';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 export type Props = {
@@ -28,9 +29,9 @@ export type Props = {
 const Container = ({ href, children }: { href?: Route; children: React.JSX.Element }) => {
   if (href) {
     return (
-      <NextLink href={ href } passHref legacyBehavior>
+      <Link href={ route(href) } variant="plain">
         { children }
-      </NextLink>
+      </Link>
     );
   }
 
@@ -62,10 +63,7 @@ const StatsWidget = ({
         borderRadius="base"
         justifyContent="space-between"
         columnGap={ 2 }
-        { ...(href && !isLoading ? {
-          as: 'a',
-          href,
-        } : {}) }
+        w="100%"
       >
         { icon && (
           <IconSvg

@@ -9,7 +9,12 @@ RUN ln -sf /usr/bin/python3 /usr/bin/python
 ### APP
 # Install dependencies
 WORKDIR /app
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock tsconfig.json ./
+COPY types ./types
+COPY lib ./lib
+COPY configs/app ./configs/app
+COPY toolkit/theme ./toolkit/theme
+COPY ui/shared/forms/validators/url.ts ./ui/shared/forms/validators/url.ts
 RUN apk add git
 RUN yarn --frozen-lockfile --network-timeout 100000
 
@@ -80,16 +85,14 @@ RUN yarn build
 ### FEATURE REPORTER
 # Copy dependencies and source code, then build
 COPY --from=deps /feature-reporter/node_modules ./deploy/tools/feature-reporter/node_modules
-# TODO @tom2drum fix feature reporter build
-# RUN cd ./deploy/tools/feature-reporter && yarn compile_config
-# RUN cd ./deploy/tools/feature-reporter && yarn build
+RUN cd ./deploy/tools/feature-reporter && yarn compile_config
+RUN cd ./deploy/tools/feature-reporter && yarn build
 
 
 ### ENV VARIABLES CHECKER
 # Copy dependencies and source code, then build 
 COPY --from=deps /envs-validator/node_modules ./deploy/tools/envs-validator/node_modules
-# TODO @tom2drum fix envs-validator build
-# RUN cd ./deploy/tools/envs-validator && yarn build
+RUN cd ./deploy/tools/envs-validator && yarn build
 
 
 ### FAVICON GENERATOR
@@ -125,10 +128,8 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
-# TODO @tom2drum fix envs-validator build
-# COPY --from=builder /app/deploy/tools/envs-validator/index.js ./envs-validator.js
-# TODO @tom2drum fix feature reporter build
-# COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-reporter.js
+COPY --from=builder /app/deploy/tools/envs-validator/index.js ./envs-validator.js
+COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-reporter.js
 
 # Copy scripts
 ## Entripoint

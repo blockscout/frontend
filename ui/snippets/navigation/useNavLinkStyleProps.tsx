@@ -12,6 +12,9 @@ export default function useNavLinkStyleProps({ isExpanded, isCollapsed, isActive
       display: 'flex',
       ...(isActive ? { 'data-selected': true } : {}),
       borderRadius: 'base',
+      transitionProperty: 'width, padding',
+      transitionDuration: 'normal',
+      transitionTimingFunction: 'ease',
     },
     textProps: {
       variant: 'inherit',

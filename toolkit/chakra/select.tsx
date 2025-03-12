@@ -181,7 +181,6 @@ export interface SelectProps extends SelectRootProps {
   loading?: boolean;
 }
 
-// TODO @tom2drum refactor selects
 export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
   const { collection, placeholder, portalled = true, loading, ...rest } = props;
   return (

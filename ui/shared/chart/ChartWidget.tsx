@@ -7,10 +7,10 @@ import { route, type Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { IconButton } from 'toolkit/chakra/icon-button';
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
-import NextLink from 'ui/shared/NextLink';
 
 import ChartMenu from './ChartMenu';
 import ChartWidgetContent from './ChartWidgetContent';
@@ -102,9 +102,9 @@ const ChartWidget = ({
     >
       <Flex columnGap={ 6 } mb={ 2 } alignItems="flex-start">
         { href ? (
-          <NextLink href={ href } passHref legacyBehavior >
+          <Link href={ route(href) } variant="plain">
             { chartHeader }
-          </NextLink>
+          </Link>
         ) : chartHeader }
         <Flex ml="auto" columnGap={ 2 }>
           <Tooltip content="Reset zoom">

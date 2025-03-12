@@ -1,7 +1,5 @@
 import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
-// TODO @tom2drum fix postinstall in CI
-// "postinstall": "chakra typegen ./toolkit/theme/theme.ts",
 import { keyframes } from './foundations/animations';
 import * as borders from './foundations/borders';
 import breakpoints from './foundations/breakpoints';

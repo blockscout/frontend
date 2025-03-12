@@ -45,19 +45,6 @@ const moduleExports = {
       'static': 180,
     },
   },
-  typescript: {
-    // TODO @tom2drum remove this once we have fixed all the type errors
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
 };
 
 module.exports = withBundleAnalyzer(withRoutes(moduleExports));

@@ -60,6 +60,9 @@ const NavigationDesktop = () => {
       py={ 12 }
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
       onClick={ handleContainerClick }
+      transitionProperty="width, padding"
+      transitionDuration="normal"
+      transitionTimingFunction="ease"
     >
       <TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
       <Box
@@ -118,6 +121,9 @@ const NavigationDesktop = () => {
         aria-label="Expand/Collapse menu"
         display="none"
         _groupHover={{ display: 'block' }}
+        transitionProperty="transform, left"
+        transitionDuration="normal"
+        transitionTimingFunction="ease"
       />
     </Flex>
   );

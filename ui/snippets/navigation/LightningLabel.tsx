@@ -35,6 +35,9 @@ const LightningLabel = ({ className, iconColor, isCollapsed }: Props) => {
       top={{ lg: isExpanded ? '0' : '10px', xl: isCollapsed ? '10px' : '0' }}
       right={{ lg: isExpanded ? '0' : '15px', xl: isCollapsed ? '15px' : '0' }}
       color={ color }
+      transitionProperty="color, margin-left"
+      transitionDuration="normal"
+      transitionTimingFunction="ease"
     />
   );
 };

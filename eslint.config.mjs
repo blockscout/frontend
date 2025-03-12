@@ -47,7 +47,7 @@ const RESTRICTED_MODULES = {
     {
       name: 'next/link',
       importNames: [ 'default' ],
-      message: 'Please use ui/shared/NextLink component instead',
+      message: 'Please use toolkit/chakra/link component instead',
     },
   ],
   patterns: [

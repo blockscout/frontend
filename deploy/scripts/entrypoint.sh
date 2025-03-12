@@ -42,16 +42,15 @@ node --no-warnings ./og_image_generator.js
 ./download_assets.sh ./public/assets/configs
 
 # Check run-time ENVs values
-# TODO @tom2drum fix envs-validator build
-# if [ "$SKIP_ENVS_VALIDATION" != "true" ]; then
-#   ./validate_envs.sh
-#   if [ $? -ne 0 ]; then
-#     exit 1
-#   fi
-# else
-#   echo "😱 Skipping ENVs validation."
-#   echo
-# fi
+if [ "$SKIP_ENVS_VALIDATION" != "true" ]; then
+  ./validate_envs.sh
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+else
+  echo "😱 Skipping ENVs validation."
+  echo
+fi
 
 # Generate favicons bundle
 ./favicon_generator.sh
@@ -69,8 +68,7 @@ echo
 ./sitemap_generator.sh
 
 # Print list of enabled features
-# TODO @tom2drum fix feature reporter build
-# node ./feature-reporter.js
+node ./feature-reporter.js
 
 echo "Starting Next.js application"
 exec "$@"
