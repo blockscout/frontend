@@ -13,6 +13,7 @@ import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemMobile from './LatestTxsItemMobile';
+import { useTranslation } from 'next-i18next';
 
 const LatestTransactions = () => {
   const isMobile = useIsMobile();
@@ -22,40 +23,45 @@ const LatestTransactions = () => {
       placeholderData: Array(txsCount).fill(TX),
     },
   });
+  const { t } = useTranslation('common');
 
   const { num, socketAlert } = useNewTxsSocket();
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload page.</Text>;
+    return <Text mt={4}>No data. Please reload page.</Text>;
   }
 
   if (data) {
     const txsUrl = route({ pathname: '/txs' });
     return (
       <>
-        <SocketNewItemsNotice borderBottomRadius={ 0 } url={ txsUrl } num={ num } alert={ socketAlert } isLoading={ isPlaceholderData }/>
-        <Box mb={ 3 } display={{ base: 'block', lg: 'none' }}>
-          { data.slice(0, txsCount).map(((tx, index) => (
+        <SocketNewItemsNotice
+          borderBottomRadius={0}
+          url={txsUrl}
+          num={num}
+          alert={socketAlert}
+          isLoading={isPlaceholderData}
+        />
+        <Box mb={3} display={{ base: 'block', lg: 'none' }}>
+          {data.slice(0, txsCount).map((tx, index) => (
             <LatestTxsItemMobile
-              key={ tx.hash + (isPlaceholderData ? index : '') }
-              tx={ tx }
-              isLoading={ isPlaceholderData }
+              key={tx.hash + (isPlaceholderData ? index : '')}
+              tx={tx}
+              isLoading={isPlaceholderData}
             />
-          ))) }
+          ))}
         </Box>
         <AddressHighlightProvider>
-          <Box mb={ 4 } display={{ base: 'none', lg: 'block' }}>
-            { data.slice(0, txsCount).map(((tx, index) => (
-              <LatestTxsItem
-                key={ tx.hash + (isPlaceholderData ? index : '') }
-                tx={ tx }
-                isLoading={ isPlaceholderData }
-              />
-            ))) }
+          <Box mb={4} display={{ base: 'none', lg: 'block' }}>
+            {data.slice(0, txsCount).map((tx, index) => (
+              <LatestTxsItem key={tx.hash + (isPlaceholderData ? index : '')} tx={tx} isLoading={isPlaceholderData} />
+            ))}
           </Box>
         </AddressHighlightProvider>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ txsUrl }>View all transactions</LinkInternal>
+          <LinkInternal fontSize="sm" href={txsUrl}>
+            {t('view-all-transactions')}
+          </LinkInternal>
         </Flex>
       </>
     );

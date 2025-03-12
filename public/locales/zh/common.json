@@ -6,7 +6,6 @@
   "pending_transactions": "待处理交易",
   "transaction_fees": "交易费用",
   "avg_transaction_fee": "平均交易费用",
-  "validation": "验证",
   "validated": "已验证",
   "mined": "已挖矿",
   "pending": "待处理",
@@ -70,5 +69,69 @@
   "create-wallet": "创建钱包",
   "click-on-cloud-computer": "点击“云电脑”",
   "my-computer": "我的电脑",
-  "add-machine": "添加机器"
+  "add-machine": "添加机器",
+
+  "latest-batch": "最新批次",
+  "total-blocks": "总区块数",
+  "average-block-time": "平均出块时间",
+  "total-transactions": "总交易数",
+  "latest-l1-state-batch": "最新L1状态批次",
+  "wallet-addresses": "钱包地址数",
+  "gas-tracker": "Gas追踪器",
+  "btc-locked-in-2wp": "锁定在2WP中的BTC",
+
+  "last-update": "最后更新",
+  "fast": "快速",
+  "normal": "普通",
+  "slow": "慢速",
+  "gas-tracker-overview": "Gas追踪器概览",
+
+  "daily-transactions": "每日交易数",
+  "transactions-yesterday": "昨天的交易数量（0:00 - 23:59 UTC）。图表显示过去30天的每日交易数。",
+
+  "market-cap": "市值",
+  "market-cap-hint": "加密货币流通供应的总市场价值，类似于股票市场的自由流通市值。市值 = 当前价格 × 流通供应量。",
+  "total-value-locked": "总锁仓价值",
+  "total-value-locked-hint": "链上锁仓或质押的数字资产总价值。",
+
+  "price": "价格",
+  "token-daily-price-usd": "代币每日价格（美元）。",
+
+  "latest-blocks": "最新区块",
+  "latest-transactions": "最新交易",
+  "network-utilization": "网络利用率",
+  "view-all-blocks": "查看所有区块",
+  "validation": "验证",
+  "validator": "验证者",
+  "miner": "矿工",
+  "txn": "交易",
+  "reward": "奖励",
+
+  "contract-call": "合约调用",
+  "blob-txn": "Blob交易",
+  "contract-creation": "合约创建",
+  "token-transfer": "代币转账",
+  "token-creation": "代币创建",
+  "coin-transfer": "货币转账",
+  "remasc": "REMASC",
+  "bridge": "桥接",
+  "transaction": "交易",
+
+  "additional-info": "附加信息",
+  "transaction-fee": "交易费用",
+  "gas-limit-usage": "交易的Gas限制与使用量",
+  "others": "其他",
+  "more-details": "更多详情",
+  "gas-fees": "Gas费用",
+
+  "base": "基础",
+  "max": "最大",
+  "max-priority": "最大优先级",
+
+  "txn-type": "交易类型",
+  "nonce": "交易序号",
+  "position": "交易位置",
+  "fee": "费用",
+  "Add": "加入",
+  "view-all-transactions": "查看所有交易"
 }

@@ -41,7 +41,7 @@ const MarketplaceAppCard = ({
     query: { id },
   };
 
-  const STAKING_CONTRACT_ADDRESS = '0x59bb02e28e8335c38a275eb0efd158f0065a447d';
+  const STAKING_CONTRACT_ADDRESS = '0x6268aba94d0d0e4fb917cc02765f631f309a7388';
 
   // 读取 dailyRewardAmount
 

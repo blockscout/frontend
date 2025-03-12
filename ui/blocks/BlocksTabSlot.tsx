@@ -20,18 +20,24 @@ const BlocksTabSlot = ({ pagination }: Props) => {
   });
 
   return (
-    <Flex alignItems="center" columnGap={ 8 } display={{ base: 'none', lg: 'flex' }}>
-      { statsQuery.data?.network_utilization_percentage !== undefined && (
+    <Flex alignItems="center" columnGap={8} display={{ base: 'none', lg: 'flex' }}>
+      {statsQuery.data?.network_utilization_percentage !== undefined && (
         <Box>
           <Text as="span" fontSize="sm">
-              Network utilization (last 50 blocks):{ nbsp }
+            Network utilization (last 50 blocks):{nbsp}
           </Text>
-          <Skeleton display="inline-block" fontSize="sm" color="blue.400" fontWeight={ 600 } isLoaded={ !statsQuery.isPlaceholderData }>
-            <span>{ statsQuery.data.network_utilization_percentage.toFixed(2) }%</span>
+          <Skeleton
+            display="inline-block"
+            fontSize="sm"
+            color="blue.400"
+            fontWeight={600}
+            isLoaded={!statsQuery.isPlaceholderData}
+          >
+            <span>{statsQuery.data.network_utilization_percentage.toFixed(2)}%</span>
           </Skeleton>
         </Box>
-      ) }
-      <Pagination my={ 1 } { ...pagination }/>
+      )}
+      <Pagination my={1} {...pagination} />
     </Flex>
   );
 };
