@@ -46,7 +46,7 @@ export function app(): CspDev.DirectiveDescriptor {
       config.app.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
       config.app.isDev ? 'http://localhost:3001' : 'http://8.214.55.62:3001',
       'https://dbchaininfo.congtu.cloud/',
-
+      'http://8.214.76.106:3001',
       // APIs
       config.api.endpoint,
       config.api.socket,

@@ -15,6 +15,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import { useTranslation } from 'next-i18next';
 
 const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
   const sectionProps = {
@@ -22,6 +23,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
     borderColor: 'divider',
     paddingBottom: 4,
   };
+  const { t } = useTranslation('common');
 
   const sectionTitleProps = {
     color: 'gray.500',
@@ -31,107 +33,138 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
 
   return (
     <>
-      <Heading as="h4" size="sm" mb={ 6 }>Additional info </Heading>
-      { tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0 && (
-        <Box { ...sectionProps } mb={ 4 }>
+      <Heading as="h4" size="sm" mb={6}>
+        {t('additional-info')}{' '}
+      </Heading>
+      {tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0 && (
+        <Box {...sectionProps} mb={4}>
           <Flex alignItems="center" justifyContent="space-between">
-            <Text { ...sectionTitleProps }>Blobs: { tx.blob_versioned_hashes.length }</Text>
-            { tx.blob_versioned_hashes.length > 3 && (
-              <LinkInternal
-                href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash, tab: 'blobs' } }) }
-                mb={ 3 }
-              >
+            <Text {...sectionTitleProps}>Blobs: {tx.blob_versioned_hashes.length}</Text>
+            {tx.blob_versioned_hashes.length > 3 && (
+              <LinkInternal href={route({ pathname: '/tx/[hash]', query: { hash: tx.hash, tab: 'blobs' } })} mb={3}>
                 view all
               </LinkInternal>
-            ) }
+            )}
           </Flex>
-          <Flex flexDir="column" rowGap={ 3 }>
-            { tx.blob_versioned_hashes.slice(0, 3).map((hash, index) => (
-              <Flex key={ hash } columnGap={ 2 }>
-                <Box fontWeight={ 500 }>{ index + 1 }</Box>
-                <BlobEntity hash={ hash } noIcon/>
+          <Flex flexDir="column" rowGap={3}>
+            {tx.blob_versioned_hashes.slice(0, 3).map((hash, index) => (
+              <Flex key={hash} columnGap={2}>
+                <Box fontWeight={500}>{index + 1}</Box>
+                <BlobEntity hash={hash} noIcon />
               </Flex>
-            )) }
+            ))}
           </Flex>
         </Box>
-      ) }
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
-        <Box { ...sectionProps } mb={ 4 }>
-          { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
+      )}
+      {!config.UI.views.tx.hiddenFields?.tx_fee && (
+        <Box {...sectionProps} mb={4}>
+          {(tx.stability_fee !== undefined || tx.fee.value !== null) && (
             <>
-              <Text { ...sectionTitleProps }>Transaction fee</Text>
-              { tx.stability_fee ? (
-                <TxFeeStability data={ tx.stability_fee }/>
+              <Text {...sectionTitleProps}>{t('transaction-fee')}</Text>
+              {tx.stability_fee ? (
+                <TxFeeStability data={tx.stability_fee} />
               ) : (
                 <Flex>
                   <CurrencyValue
-                    value={ tx.fee.value }
-                    currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
-                    exchangeRate={ tx.exchange_rate }
-                    accuracyUsd={ 2 }
+                    value={tx.fee.value}
+                    currency={config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether}
+                    exchangeRate={tx.exchange_rate}
+                    accuracyUsd={2}
                     flexWrap="wrap"
-                    rowGap={ 0 }
+                    rowGap={0}
                   />
                 </Flex>
-              ) }
+              )}
             </>
-          ) }
+          )}
         </Box>
-      ) }
-      { tx.gas_used !== null && (
-        <Box { ...sectionProps } mb={ 4 }>
-          <Text { ...sectionTitleProps }>Gas limit & usage by transaction</Text>
+      )}
+      {tx.gas_used !== null && (
+        <Box {...sectionProps} mb={4}>
+          <Text {...sectionTitleProps}>{t('gas-limit-usage')}</Text>
           <Flex>
-            <Text>{ BigNumber(tx.gas_used).toFormat() }</Text>
-            <TextSeparator/>
-            <Text>{ BigNumber(tx.gas_limit).toFormat() }</Text>
-            <Utilization ml={ 4 } value={ Number(BigNumber(tx.gas_used).dividedBy(BigNumber(tx.gas_limit)).toFixed(2)) }/>
+            <Text>{BigNumber(tx.gas_used).toFormat()}</Text>
+            <TextSeparator />
+            <Text>{BigNumber(tx.gas_limit).toFormat()}</Text>
+            <Utilization ml={4} value={Number(BigNumber(tx.gas_used).dividedBy(BigNumber(tx.gas_limit)).toFixed(2))} />
           </Flex>
         </Box>
-      ) }
-      { !config.UI.views.tx.hiddenFields?.gas_fees &&
+      )}
+      {!config.UI.views.tx.hiddenFields?.gas_fees &&
         (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
-        <Box { ...sectionProps } mb={ 4 }>
-          <Text { ...sectionTitleProps }>Gas fees ({ currencyUnits.gwei })</Text>
-          { tx.base_fee_per_gas !== null && (
-            <Box>
-              <Text as="span" fontWeight="500">Base: </Text>
-              <Text fontWeight="700" as="span">{ getValueWithUnit(tx.base_fee_per_gas, 'gwei').toFormat() }</Text>
-            </Box>
-          ) }
-          { tx.max_fee_per_gas !== null && (
-            <Box mt={ 1 }>
-              <Text as="span" fontWeight="500">Max: </Text>
-              <Text fontWeight="700" as="span">{ getValueWithUnit(tx.max_fee_per_gas, 'gwei').toFormat() }</Text>
-            </Box>
-          ) }
-          { tx.max_priority_fee_per_gas !== null && (
-            <Box mt={ 1 }>
-              <Text as="span" fontWeight="500">Max priority: </Text>
-              <Text fontWeight="700" as="span">{ getValueWithUnit(tx.max_priority_fee_per_gas, 'gwei').toFormat() }</Text>
-            </Box>
-          ) }
-        </Box>
-      ) }
-      { !(tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0) && (
-        <Box { ...sectionProps } mb={ 4 }>
-          <Text { ...sectionTitleProps }>Others</Text>
+          <Box {...sectionProps} mb={4}>
+            <Text {...sectionTitleProps}>
+              {t('gas-fees')} ({currencyUnits.gwei})
+            </Text>
+            {tx.base_fee_per_gas !== null && (
+              <Box>
+                <Text as="span" fontWeight="500">
+                  {t('base')}:{' '}
+                </Text>
+                <Text fontWeight="700" as="span">
+                  {getValueWithUnit(tx.base_fee_per_gas, 'gwei').toFormat()}
+                </Text>
+              </Box>
+            )}
+            {tx.max_fee_per_gas !== null && (
+              <Box mt={1}>
+                <Text as="span" fontWeight="500">
+                  {t('max')}:{' '}
+                </Text>
+                <Text fontWeight="700" as="span">
+                  {getValueWithUnit(tx.max_fee_per_gas, 'gwei').toFormat()}
+                </Text>
+              </Box>
+            )}
+            {tx.max_priority_fee_per_gas !== null && (
+              <Box mt={1}>
+                <Text as="span" fontWeight="500">
+                  {t('max-priority')}:{' '}
+                </Text>
+                <Text fontWeight="700" as="span">
+                  {getValueWithUnit(tx.max_priority_fee_per_gas, 'gwei').toFormat()}
+                </Text>
+              </Box>
+            )}
+          </Box>
+        )}
+      {!(tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0) && (
+        <Box {...sectionProps} mb={4}>
+          <Text {...sectionTitleProps}>{t('others')}</Text>
           <Box>
-            <Text as="span" fontWeight="500">Txn type: </Text>
-            <Text fontWeight="600" as="span">{ tx.type }</Text>
-            { tx.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color="gray.500">(EIP-1559)</Text> }
+            <Text as="span" fontWeight="500">
+              {t('txn-type')}:{' '}
+            </Text>
+            <Text fontWeight="600" as="span">
+              {tx.type}
+            </Text>
+            {tx.type === 2 && (
+              <Text fontWeight="400" as="span" ml={1} color="gray.500">
+                (EIP-1559)
+              </Text>
+            )}
           </Box>
-          <Box mt={ 1 }>
-            <Text as="span" fontWeight="500">Nonce: </Text>
-            <Text fontWeight="600" as="span">{ tx.nonce }</Text>
+          <Box mt={1}>
+            <Text as="span" fontWeight="500">
+              {t('nonce')}:{' '}
+            </Text>
+            <Text fontWeight="600" as="span">
+              {tx.nonce}
+            </Text>
           </Box>
-          <Box mt={ 1 }>
-            <Text as="span" fontWeight="500">Position: </Text>
-            <Text fontWeight="600" as="span">{ tx.position }</Text>
+          <Box mt={1}>
+            <Text as="span" fontWeight="500">
+              {t('position')}:{' '}
+            </Text>
+            <Text fontWeight="600" as="span">
+              {tx.position}
+            </Text>
           </Box>
         </Box>
-      ) }
-      <LinkInternal href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }) }>More details</LinkInternal>
+      )}
+      <LinkInternal href={route({ pathname: '/tx/[hash]', query: { hash: tx.hash } })}>
+        {t('more-details')}
+      </LinkInternal>
     </>
   );
 };

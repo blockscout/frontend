@@ -5,18 +5,24 @@ import stakingAbi from './stakingLongAbi.json';
 import { useToast } from '@chakra-ui/react';
 import { waitForTransactionReceipt } from 'wagmi/actions';
 import { useEffect, useState } from 'react';
+
+// 主网：
+// 长租质押合约：0x3c059dbe0f42d65acd763c3c3da8b5a1b12bb74f
+//  NFT: 0xFDB11c63b82828774D6A9E893f85D1998E6B36BF
+//  DLC: 0x6f8F70C74FE7d7a61C8EAC0f35A4Ba39a51E1BEe
+// 短租质押合约：0x6268aba94d0d0e4fb917cc02765f631f309a7388
+
 // machin ID: a8aeafb706433fc89c16817e8405705bd66f28b6d5cfc46c9da2faf7b204da78
 // private key: d85789ca443866f898a928bba3d863a5e3c66dc03b03a7d947e8dde99e19368e
-const NFT_CONTRACT_ADDRESS = '0x905dE58579886C5afe9B6406CFDE82bd6a1087C1';
-const DLC_TOKEN_ADDRESS = '0xC8b47112D5413c6d06D4BB7573fD903908246614';
-const STAKING_CONTRACT_ADDRESS = '0x7FDC6ed8387f3184De77E0cF6D6f3B361F906C21';
+const NFT_CONTRACT_ADDRESS = '0xFDB11c63b82828774D6A9E893f85D1998E6B36BF';
+const DLC_TOKEN_ADDRESS = '0x6f8F70C74FE7d7a61C8EAC0f35A4Ba39a51E1BEe';
+const STAKING_CONTRACT_ADDRESS = '0x3c059dbe0f42d65acd763c3c3da8b5a1b12bb74f';
 import { createMachine } from '../../../ui/mymachine/modules/api/index';
 
 export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseDLC?: () => void) {
   const { address, isConnected } = useAccount();
   const toast = useToast();
   const config = useConfig(); // 获取全局配置
-
   // 读取 NFT 余额 (getBalance)
   const [nftNodeCount, setNftNodeCount] = useState('');
 
@@ -102,12 +108,18 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
   });
 
   const stake = async () => {
+    console.log(nftData === undefined, 'nftDatanftDatanftDatanftData');
     return toast.promise(
       staking.writeContractAsync({
         address: STAKING_CONTRACT_ADDRESS,
         abi: stakingAbi,
         functionName: 'stake',
-        args: [rentalMachineIdOnChain, nftData[0], nftData[1], machineId],
+        args: [
+          rentalMachineIdOnChain,
+          nftData === undefined ? [] : nftData[0],
+          nftData === undefined ? [] : nftData[1],
+          machineId,
+        ],
       }),
       {
         loading: {

@@ -19,8 +19,10 @@ import { HOMEPAGE_STATS } from 'stubs/stats';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
+import { useTranslation } from 'next-i18next';
 
 const LatestBlocks = () => {
+  const { t } = useTranslation('common');
   const isMobile = useIsMobile();
   // const blocksMaxCount = isMobile ? 2 : 3;
   let blocksMaxCount: number;
@@ -43,18 +45,20 @@ const LatestBlocks = () => {
     },
   });
 
-  const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('homepage_blocks'), (prevData: Array<Block> | undefined) => {
+  const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback(
+    (payload) => {
+      queryClient.setQueryData(getResourceKey('homepage_blocks'), (prevData: Array<Block> | undefined) => {
+        const newData = prevData ? [...prevData] : [];
 
-      const newData = prevData ? [ ...prevData ] : [];
+        if (newData.some((block) => block.height === payload.block.height)) {
+          return newData;
+        }
 
-      if (newData.some((block => block.height === payload.block.height))) {
-        return newData;
-      }
-
-      return [ payload.block, ...newData ].sort((b1, b2) => b2.height - b1.height).slice(0, blocksMaxCount);
-    });
-  }, [ queryClient, blocksMaxCount ]);
+        return [payload.block, ...newData].sort((b1, b2) => b2.height - b1.height).slice(0, blocksMaxCount);
+      });
+    },
+    [queryClient, blocksMaxCount]
+  );
 
   const channel = useSocketChannel({
     topic: 'blocks:new_block',
@@ -77,38 +81,42 @@ const LatestBlocks = () => {
 
     content = (
       <>
-        { statsQueryResult.data?.network_utilization_percentage !== undefined && (
-          <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } mb={{ base: 6, lg: 3 }} display="inline-block">
+        {statsQueryResult.data?.network_utilization_percentage !== undefined && (
+          <Skeleton isLoaded={!statsQueryResult.isPlaceholderData} mb={{ base: 6, lg: 3 }} display="inline-block">
             <Text as="span" fontSize="sm">
-              Network utilization:{ nbsp }
+              {t('network-utilization')}:{nbsp}
             </Text>
-            <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
-              { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
+            <Text as="span" fontSize="sm" color="blue.400" fontWeight={700}>
+              {statsQueryResult.data?.network_utilization_percentage.toFixed(2)}%
             </Text>
           </Skeleton>
-        ) }
-        <VStack spacing={ 3 } mb={ 4 } overflow="hidden" alignItems="stretch">
-          <AnimatePresence initial={ false } >
-            { dataToShow.map(((block, index) => (
+        )}
+        <VStack spacing={3} mb={4} overflow="hidden" alignItems="stretch">
+          <AnimatePresence initial={false}>
+            {dataToShow.map((block, index) => (
               <LatestBlocksItem
-                key={ block.height + (isPlaceholderData ? String(index) : '') }
-                block={ block }
-                isLoading={ isPlaceholderData }
+                key={block.height + (isPlaceholderData ? String(index) : '')}
+                block={block}
+                isLoading={isPlaceholderData}
               />
-            ))) }
+            ))}
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
+          <LinkInternal fontSize="sm" href={route({ pathname: '/blocks' })}>
+            {t('view-all-blocks')}
+          </LinkInternal>
         </Flex>
       </>
     );
   }
 
   return (
-    <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm" mb={ 4 }>Latest blocks</Heading>
-      { content }
+    <Box width={{ base: '100%', lg: '280px' }} flexShrink={0}>
+      <Heading as="h4" size="sm" mb={4}>
+        {t('latest-blocks')}
+      </Heading>
+      {content}
     </Box>
   );
 };

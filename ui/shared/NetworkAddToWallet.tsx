@@ -8,6 +8,8 @@ import useAddOrSwitchChain from 'lib/web3/useAddOrSwitchChain';
 import useProvider from 'lib/web3/useProvider';
 import { WALLETS_INFO } from 'lib/web3/wallets';
 import IconSvg from 'ui/shared/IconSvg';
+import { FaGlobe } from 'react-icons/fa';
+import { useTranslation } from 'next-i18next';
 
 const feature = config.features.web3Wallet;
 
@@ -15,8 +17,9 @@ const NetworkAddToWallet = () => {
   const toast = useToast();
   const { provider, wallet } = useProvider();
   const addOrSwitchChain = useAddOrSwitchChain();
+  const { t } = useTranslation('common');
 
-  const handleClick = React.useCallback(async() => {
+  const handleClick = React.useCallback(async () => {
     if (!wallet || !provider) {
       return;
     }
@@ -37,7 +40,6 @@ const NetworkAddToWallet = () => {
         Target: 'network',
         Wallet: wallet,
       });
-
     } catch (error) {
       toast({
         position: 'top-right',
@@ -48,16 +50,19 @@ const NetworkAddToWallet = () => {
         isClosable: true,
       });
     }
-  }, [ addOrSwitchChain, provider, toast, wallet ]);
+  }, [addOrSwitchChain, provider, toast, wallet]);
 
   if (!provider || !wallet || !config.chain.rpcUrl || !feature.isEnabled) {
     return null;
   }
 
   return (
-    <Button variant="outline" size="sm" onClick={ handleClick }>
-      <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 5 } mr={ 2 }/>
-        Add { config.chain.name }
+    <Button variant="outline" size="sm" onClick={handleClick}>
+      {/* <IconSvg name={WALLETS_INFO[wallet].icon} boxSize={5} mr={2} /> */}
+      <span className="flex items-center gap-x-2">
+        <FaGlobe size={16} title="加入公网" />
+        {t('Add')} {config.chain.name}
+      </span>
     </Button>
   );
 };

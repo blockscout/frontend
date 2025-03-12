@@ -8,6 +8,7 @@ export interface Props {
   types: Array<TransactionType>;
   isLoading?: boolean;
 }
+import { useTranslation } from 'next-i18next';
 
 const TYPES_ORDER: Array<TransactionType> = [
   'blob_transaction',
@@ -22,52 +23,52 @@ const TYPES_ORDER: Array<TransactionType> = [
 
 const TxType = ({ types, isLoading }: Props) => {
   const typeToShow = types.sort((t1, t2) => TYPES_ORDER.indexOf(t1) - TYPES_ORDER.indexOf(t2))[0];
+  const { t } = useTranslation('common');
 
   let label;
   let colorScheme;
 
   switch (typeToShow) {
     case 'contract_call':
-      label = 'Contract call';
+      label = t('contract-call');
       colorScheme = 'blue';
       break;
     case 'blob_transaction':
-      label = 'Blob txn';
+      label = t('blob-txn');
       colorScheme = 'yellow';
       break;
     case 'contract_creation':
-      label = 'Contract creation';
+      label = t('contract-creation');
       colorScheme = 'blue';
       break;
     case 'token_transfer':
-      label = 'Token transfer';
+      label = t('token-transfer');
       colorScheme = 'orange';
       break;
     case 'token_creation':
-      label = 'Token creation';
+      label = t('token-creation');
       colorScheme = 'orange';
       break;
     case 'coin_transfer':
-      label = 'Coin transfer';
+      label = t('coin-transfer');
       colorScheme = 'orange';
       break;
     case 'rootstock_remasc':
-      label = 'REMASC';
+      label = t('remasc');
       colorScheme = 'blue';
       break;
     case 'rootstock_bridge':
-      label = 'Bridge';
+      label = t('bridge');
       colorScheme = 'blue';
       break;
     default:
-      label = 'Transaction';
+      label = t('transaction');
       colorScheme = 'purple';
-
   }
 
   return (
-    <Tag colorScheme={ colorScheme } isLoading={ isLoading }>
-      { label }
+    <Tag colorScheme={colorScheme} isLoading={isLoading}>
+      {label}
     </Tag>
   );
 };
