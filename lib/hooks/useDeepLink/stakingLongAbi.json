@@ -124,6 +124,11 @@
   },
   {
     "inputs": [],
+    "name": "MachineIsStakingInShortTerm",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "MachineNotRented",
     "type": "error"
   },
@@ -235,6 +240,11 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "RentTimeMustGreaterThan50Days",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "string",
@@ -295,6 +305,74 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "stakeholder",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "stakeHours",
+        "type": "uint256"
+      }
+    ],
+    "name": "AddedStakeHours",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "stakeholder",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "totalRewardAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "moveToUserWalletAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "moveToReservedAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "paidSlash",
+        "type": "bool"
+      }
+    ],
+    "name": "Claimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "amount",
@@ -307,6 +385,12 @@
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "machineOwner",
+        "type": "address"
+      },
       {
         "indexed": false,
         "internalType": "string",
@@ -378,6 +462,12 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "machineOwner",
+        "type": "address"
+      },
+      {
         "indexed": false,
         "internalType": "string",
         "name": "machineId",
@@ -411,6 +501,25 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "ReserveDLC",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "accumulatedPerShareBefore",
         "type": "uint256"
@@ -431,105 +540,67 @@
       {
         "indexed": true,
         "internalType": "address",
+        "name": "stakeholder",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "originCalcPoint",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "calcPoint",
+        "type": "uint256"
+      }
+    ],
+    "name": "Staked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "stakeholder",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "machineId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "paybackReserveAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Unstaked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "implementation",
         "type": "address"
       }
     ],
     "name": "Upgraded",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "stakeholder",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "machineId",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rewardAmount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "moveToReservedAmount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "paidSlash",
-        "type": "bool"
-      }
-    ],
-    "name": "claimed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "machineId",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "reserveDLC",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "stakeholder",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "machineId",
-        "type": "string"
-      }
-    ],
-    "name": "staked",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "stakeholder",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "machineId",
-        "type": "string"
-      }
-    ],
-    "name": "unStaked",
     "type": "event"
   },
   {
@@ -1367,11 +1438,6 @@
       },
       {
         "internalType": "address",
-        "name": "_toolContract",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "_precompileContract",
         "type": "address"
       },
@@ -1966,6 +2032,19 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_shortStakeContract",
+        "type": "address"
+      }
+    ],
+    "name": "setShortStakeContract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "_threshold",
         "type": "uint256"
@@ -1990,7 +2069,25 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "shortStakeContractAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
+      {
+        "internalType": "address",
+        "name": "stakeholder",
+        "type": "address"
+      },
       {
         "internalType": "string",
         "name": "machineId",
@@ -2088,19 +2185,6 @@
       }
     ],
     "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "toolContract",
-    "outputs": [
-      {
-        "internalType": "contract ITool",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {

@@ -113,6 +113,7 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
         abi: stakingAbi,
         functionName: 'stake',
         args: [
+          address,
           rentalMachineIdOnChain,
           nftData === undefined ? [] : nftData[0],
           nftData === undefined ? [] : nftData[1],
@@ -157,7 +158,7 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
               } else {
                 toast({
                   position: 'top',
-                  title: '成功',
+                  title: '质押成功，但创建机器失败！',
                   status: 'error',
                   description: res.msg,
                   isClosable: true,
@@ -182,16 +183,9 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
           setLoading(false);
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
       console.log(error, 'errorerror');
-      return {
-        title: '交易失败',
-        description: error || '交易失败',
-        position: 'top',
-        duration: null,
-        isClosable: true,
-      };
     }
   };
 
