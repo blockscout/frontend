@@ -4,19 +4,19 @@ import erc20Abi from './dlcAbi.json';
 import stakingAbi from './stakingLongAbi.json';
 import { useToast } from '@chakra-ui/react';
 import { waitForTransactionReceipt } from 'wagmi/actions';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // 主网：
 // 长租质押合约：0x3c059dbe0f42d65acd763c3c3da8b5a1b12bb74f
-//  NFT: 0xFDB11c63b82828774D6A9E893f85D1998E6B36BF
-//  DLC: 0x6f8F70C74FE7d7a61C8EAC0f35A4Ba39a51E1BEe
+//  NFT: 0x905dE58579886C5afe9B6406CFDE82bd6a1087C1
+//  DLC: 0xC8b47112D5413c6d06D4BB7573fD903908246614
 // 短租质押合约：0x6268aba94d0d0e4fb917cc02765f631f309a7388
 
 // machin ID: a8aeafb706433fc89c16817e8405705bd66f28b6d5cfc46c9da2faf7b204da78
 // private key: d85789ca443866f898a928bba3d863a5e3c66dc03b03a7d947e8dde99e19368e
-const NFT_CONTRACT_ADDRESS = '0xFDB11c63b82828774D6A9E893f85D1998E6B36BF';
-const DLC_TOKEN_ADDRESS = '0x6f8F70C74FE7d7a61C8EAC0f35A4Ba39a51E1BEe';
-const STAKING_CONTRACT_ADDRESS = '0x3c059dbe0f42d65acd763c3c3da8b5a1b12bb74f';
+const NFT_CONTRACT_ADDRESS = '0x905dE58579886C5afe9B6406CFDE82bd6a1087C1';
+const DLC_TOKEN_ADDRESS = '0xC8b47112D5413c6d06D4BB7573fD903908246614';
+const STAKING_CONTRACT_ADDRESS = '0x7FDC6ed8387f3184De77E0cF6D6f3B361F906C21';
 import { createMachine } from '../../../ui/mymachine/modules/api/index';
 
 export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseDLC?: () => void) {
@@ -26,7 +26,11 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
 
   // 读取 NFT 余额 (getBalance)
   const [nftNodeCount, setNftNodeCount] = useState('');
-  const { data: nftData, refetch } = useReadContract({
+  const {
+    data: nftData,
+    isLoading,
+    refetch,
+  } = useReadContract({
     address: NFT_CONTRACT_ADDRESS,
     abi: nftAbi,
     functionName: 'getBalance',
@@ -35,6 +39,12 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
       enabled: !!address && !!nftNodeCount,
     },
   }) as any;
+
+  useEffect(() => {
+    if (!isLoading) {
+      console.log(nftData, 'VVVVVVVVVVVVVVVVVVVVVVVVVV');
+    }
+  }, [isLoading]);
 
   // NFT 授权
   const [nftLoading, setLoading] = useState(false);
@@ -56,9 +66,7 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
     }
 
     setLoading(true);
-
-    // 获取余额
-    refetch();
+    // refetch();
 
     const hash = await nftApproval.writeContractAsync({
       address: NFT_CONTRACT_ADDRESS,
@@ -108,15 +116,19 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
   const staking = useWriteContract();
   const stake = async () => {
     try {
+      console.log('开始刷新 NFT 余额...');
+      const { data: newNftData } = await refetch();
+      console.log(newNftData, 'nftDatanftDatanftDatanftData');
+
       const hash = await staking.writeContractAsync({
         address: STAKING_CONTRACT_ADDRESS,
         abi: stakingAbi,
         functionName: 'stake',
         args: [
-          address,
+          '0x1644d19216765FD18A112c7FAD74663CF1aEcf9F',
           rentalMachineIdOnChain,
-          nftData === undefined ? [] : nftData[0],
-          nftData === undefined ? [] : nftData[1],
+          newNftData === undefined ? [] : newNftData[0],
+          newNftData === undefined ? [] : newNftData[1],
           machineId,
         ],
       });
