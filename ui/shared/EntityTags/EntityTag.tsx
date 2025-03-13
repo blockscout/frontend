@@ -1,16 +1,14 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
 
 import * as mixpanel from 'lib/mixpanel/index';
-import { Image } from 'toolkit/chakra/image';
 import { Link, LinkExternalIcon } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import IconSvg from 'ui/shared/IconSvg';
 
+import EntityTagIcon from './EntityTagIcon';
 import EntityTagTooltip from './EntityTagTooltip';
 import { getTagLinkParams } from './utils';
 
@@ -42,36 +40,12 @@ const EntityTag = ({ data, isLoading, noLink, ...rest }: Props) => {
     return <Skeleton loading borderRadius="sm" w="100px" h="24px"/>;
   }
 
-  const name = (() => {
+  const text = (() => {
     if (data.meta?.warpcastHandle) {
       return `@${ data.meta.warpcastHandle }`;
     }
 
     return data.name;
-  })();
-
-  const icon = (() => {
-    if (data.meta?.tagIcon) {
-      return <Image boxSize={ 3 } src={ data.meta.tagIcon } alt={ `${ data.name } icon` }/>;
-    }
-
-    if (data.tagType === 'name') {
-      return <IconSvg name="publictags_slim" boxSize={ 3 } color={ iconColor }/>;
-    }
-
-    return null;
-  })();
-
-  const prefix = (() => {
-    if (data.meta?.tagIcon) {
-      return null;
-    }
-
-    if (data.tagType === 'protocol' || data.tagType === 'generic') {
-      return <chakra.span color={ iconColor } whiteSpace="pre"># </chakra.span>;
-    }
-
-    return null;
   })();
 
   return (
@@ -87,14 +61,14 @@ const EntityTag = ({ data, isLoading, noLink, ...rest }: Props) => {
         <Tag
           bg={ data.meta?.bgColor }
           color={ data.meta?.textColor }
-          startElement={ icon }
+          startElement={ <EntityTagIcon data={ data }/> }
           truncated
           endElement={ linkParams?.type === 'external' ? <LinkExternalIcon color={ iconColor }/> : null }
           endElementProps={ linkParams?.type === 'external' ? { ml: -1 } : undefined }
           _hover={ hasLink ? { opacity: 0.76 } : undefined }
           variant={ hasLink ? 'clickable' : 'subtle' }
         >
-          { prefix }{ name }
+          { text }
         </Tag>
       </Link>
     </EntityTagTooltip>

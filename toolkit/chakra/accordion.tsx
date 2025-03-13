@@ -19,6 +19,7 @@ export const AccordionItemTrigger = React.forwardRef<
 
   const indicator = variant === 'faq' ? (
     <Accordion.ItemIndicator
+      asChild
       rotate="0deg"
       position="relative"
       _before={{
@@ -51,7 +52,9 @@ export const AccordionItemTrigger = React.forwardRef<
           transform: 'translateX(-50%) rotate(90deg)',
         },
       }}
-    />
+    >
+      <div/>
+    </Accordion.ItemIndicator>
   ) : (
     <Accordion.ItemIndicator rotate={{ base: '180deg', _open: '270deg' }} display="flex">
       <IconSvg name="arrows/east-mini"/>

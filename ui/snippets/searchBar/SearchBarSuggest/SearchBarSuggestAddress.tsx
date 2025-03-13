@@ -7,10 +7,9 @@ import type { SearchResultAddressOrContract, SearchResultMetadataTag } from 'typ
 import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
-import { Tag } from 'toolkit/chakra/tag';
+import SearchResultEntityTag from 'ui/searchResults/SearchResultEntityTag';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import EntityTagIcon from 'ui/shared/EntityTags/EntityTagIcon';
 import { ADDRESS_REGEXP } from 'ui/shared/forms/validators/address';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
@@ -54,11 +53,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
     </Flex>
   );
   const tagEl = data.type === 'metadata_tag' ? (
-    // we show regular tag because we don't need all meta info here, but need to highlight search term
-    <Tag display="flex" alignItems="center" ml={{ base: 0, lg: 'auto' }}>
-      <EntityTagIcon data={ data.metadata } iconColor="gray.400"/>
-      <span dangerouslySetInnerHTML={{ __html: highlightText(data.metadata.name, searchTerm) }}/>
-    </Tag>
+    <SearchResultEntityTag metadata={ data.metadata } searchTerm={ searchTerm } ml={{ base: 0, lg: 'auto' }}/>
   ) : null;
   const addressEl = <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>;
 

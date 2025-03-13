@@ -45,7 +45,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
           { ...rest }
         >
           { startElement && (
-            <ChakraTag.StartElement>{ startElement }</ChakraTag.StartElement>
+            <ChakraTag.StartElement _empty={{ display: 'none' }}>{ startElement }</ChakraTag.StartElement>
           ) }
           { labelElement }
           { endElement && (

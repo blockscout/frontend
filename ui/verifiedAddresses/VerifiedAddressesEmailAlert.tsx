@@ -13,12 +13,10 @@ const VerifiedAddressesEmailAlert = () => {
       <Alert
         status="warning"
         mb={ 6 }
-        // TODO @tom2drum check this alert
-        // display="flex"
-        // flexDirection={{ base: 'column', md: 'row' }}
-        // alignItems={{ base: 'flex-start', lg: 'center' }}
-        // columnGap={ 2 }
-        // rowGap={ 2 }
+        descriptionProps={{
+          alignItems: 'center',
+          gap: 2,
+        }}
       >
         You need a valid email address to verify contracts. Please add your email to your account.
         <Button variant="outline" size="sm" onClick={ authModal.onOpen }>Add email</Button>

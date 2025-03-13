@@ -111,26 +111,24 @@ const SearchBarInput = (
     />
   );
 
-  const endElement = (() => {
-    return (
-      <>
-        <ClearButton onClick={ onClear } isVisible={ value.length > 0 }/>
-        { !isMobile && (
-          <Center
-            boxSize="20px"
-            my="2px"
-            mr={ 3 }
-            borderRadius="sm"
-            borderWidth="1px"
-            borderColor="gray.400"
-            color="gray.400"
-          >
-            /
-          </Center>
-        ) }
-      </>
-    );
-  })();
+  const endElement = (
+    <>
+      <ClearButton onClick={ onClear } isVisible={ value.length > 0 }/>
+      { !isMobile && (
+        <Center
+          boxSize="20px"
+          my="2px"
+          mr={ 3 }
+          borderRadius="sm"
+          borderWidth="1px"
+          borderColor="gray.400"
+          color="gray.400"
+        >
+          /
+        </Center>
+      ) }
+    </>
+  );
 
   return (
     <chakra.form
@@ -160,6 +158,7 @@ const SearchBarInput = (
         endElement={ endElement }
       >
         <Input
+          size={{ base: 'md', lg: isHomepage ? 'lg' : 'md' }}
           placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
           value={ value }
           onChange={ handleChange }
@@ -170,34 +169,6 @@ const SearchBarInput = (
           _focusWithin={{ _placeholder: { color: 'gray.300' }, borderColor: 'input.border.focus', _hover: { borderColor: 'input.border.focus' } }}
         />
       </InputGroup>
-      { /* TODO @tom2drum migrate icon styles */ }
-      { /* <InputGroup size={{ base: 'sm', lg: isHomepage ? 'sm_md' : 'sm' }}>
-        <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
-          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
-        </InputLeftElement>
-        <Input
-          pl={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
-          sx={{
-            '@media screen and (max-width: 999px)': {
-              paddingLeft: isHomepage ? '50px' : '38px',
-              paddingRight: '36px',
-            },
-            '@media screen and (min-width: 1001px)': {
-              paddingRight: '36px',
-            },
-          }}
-          placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
-          onChange={ handleChange }
-          border={ isHomepage ? 'none' : '2px solid' }
-          borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
-          _focusWithin={{ _placeholder: { color: 'gray.300' } }}
-          color={ useColorModeValue('black', 'white') }
-          value={ value }
-        />
-        <InputRightElement top={{ base: 2, lg: isHomepage ? 3 : 2 }} right={ 2 }>
-          { rightElement }
-        </InputRightElement>
-      </InputGroup> */ }
     </chakra.form>
   );
 };

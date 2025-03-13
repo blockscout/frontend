@@ -19,6 +19,8 @@ const Settings = () => {
       positioning={{ placement: 'bottom-start' }}
       open={ open }
       onOpenChange={ onOpenChange }
+      // should be false to enable auto-switch to default color theme
+      lazyMount={ false }
     >
       <PopoverTrigger>
         <IconButton

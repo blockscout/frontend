@@ -26,12 +26,13 @@ import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
-import EntityTagIcon from 'ui/shared/EntityTags/EntityTagIcon';
 import { ADDRESS_REGEXP } from 'ui/shared/forms/validators/address';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
+
+import SearchResultEntityTag from './SearchResultEntityTag';
 
 interface Props {
   data: SearchResultItem | SearchResultAppItem;
@@ -165,14 +166,8 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </TableCell>
             ) }
             { data.type === 'metadata_tag' && (
-              <TableCell colSpan={ addressName ? 1 : 2 } verticalAlign="middle">
-                <Flex justifyContent="flex-end">
-                  { /* we show regular tag because we don't need all meta info here, but need to highlight search term */ }
-                  <Tag display="flex" alignItems="center">
-                    <EntityTagIcon data={ data.metadata } iconColor="gray.400"/>
-                    <span dangerouslySetInnerHTML={{ __html: highlightText(data.metadata.name, searchTerm) }}/>
-                  </Tag>
-                </Flex>
+              <TableCell colSpan={ addressName ? 1 : 2 } verticalAlign="middle" textAlign="right">
+                <SearchResultEntityTag metadata={ data.metadata } searchTerm={ searchTerm }/>
               </TableCell>
             ) }
           </>

@@ -66,7 +66,6 @@ const Icon = (props: IconProps) => {
             alignItems="center"
             external
           >
-            { /* TODO @tom2drum maybe refactor this to pass icon as a prop */ }
             <IconSvg name="docs" boxSize={ 5 } color="text.secondary" mr={ 2 }/>
             <span>Documentation</span>
           </LinkToolkit>
