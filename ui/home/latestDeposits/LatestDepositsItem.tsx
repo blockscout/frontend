@@ -62,7 +62,7 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
             <TimeAgoWithTooltip
               timestamp={ timestamp }
               isLoading={ isLoading }
-              color="text_secondary"
+              color="text.secondary"
             />
           </Flex>
           <Grid gridTemplateColumns="56px auto">
@@ -89,7 +89,7 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
         <TimeAgoWithTooltip
           timestamp={ timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           w="fit-content"
           h="fit-content"
           my="2px"

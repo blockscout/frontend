@@ -61,14 +61,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
           timestamp={ data.timestamp }
           enableIncrement={ enableTimeIncrement }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight={ 400 }
           display="inline-block"
         />
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Size</Text>
-        <Skeleton loading={ isLoading } display="inline-block" color="text_secondary">
+        <Skeleton loading={ isLoading } display="inline-block" color="text.secondary">
           <span>{ data.size.toLocaleString() } bytes</span>
         </Skeleton>
       </Flex>
@@ -97,7 +97,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
       <Box>
         <Text fontWeight={ 500 }>Gas used</Text>
         <Flex mt={ 2 }>
-          <Skeleton loading={ isLoading } display="inline-block" color="text_secondary" mr={ 4 }>
+          <Skeleton loading={ isLoading } display="inline-block" color="text.secondary" mr={ 4 }>
             <span>{ BigNumber(data.gas_used || 0).toFormat() }</span>
           </Skeleton>
           <BlockGasUsed
@@ -111,7 +111,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Reward { currencyUnits.ether }</Text>
-          <Skeleton loading={ isLoading } display="inline-block" color="text_secondary">
+          <Skeleton loading={ isLoading } display="inline-block" color="text.secondary">
             <span>{ totalReward.toFixed() }</span>
           </Skeleton>
         </Flex>
@@ -122,7 +122,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
           <Flex columnGap={ 4 } mt={ 2 }>
             <Flex>
               <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
-              <Skeleton loading={ isLoading } display="inline-block" color="text_secondary" ml={ 2 }>
+              <Skeleton loading={ isLoading } display="inline-block" color="text.secondary" ml={ 2 }>
                 <span>{ burntFees.div(WEI).toFixed() }</span>
               </Skeleton>
             </Flex>
@@ -133,7 +133,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
       { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && baseFeeValue && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Base fee</Text>
-          <Skeleton loading={ isLoading } display="inline-block" color="text_secondary">
+          <Skeleton loading={ isLoading } display="inline-block" color="text.secondary">
             <span>{ baseFeeValue }</span>
           </Skeleton>
         </Flex>

@@ -229,18 +229,18 @@ const AdvancedFilter = () => {
       <HStack gap={ 2 } flexWrap="wrap" mb={ 6 }>
         { filterTags.map(t => (
           <Tag key={ t.name } colorScheme="blue" display="inline-flex" onClose={ onClearFilter(t.key) } closable>
-            <chakra.span color="text_secondary">{ t.name }: </chakra.span>
+            <chakra.span color="text.secondary">{ t.name }: </chakra.span>
             <chakra.span color="text">{ t.value }</chakra.span>
           </Tag>
         )) }
         { filterTags.length === 0 && (
           <>
             <Tag colorScheme="blue" display="inline-flex">
-              <chakra.span color="text_secondary">Type: </chakra.span>
+              <chakra.span color="text.secondary">Type: </chakra.span>
               <chakra.span color="text">All</chakra.span>
             </Tag>
             <Tag colorScheme="blue" display="inline-flex">
-              <chakra.span color="text_secondary">Age: </chakra.span>
+              <chakra.span color="text.secondary">Age: </chakra.span>
               <chakra.span color="text">7d</chakra.span>
             </Tag>
           </>

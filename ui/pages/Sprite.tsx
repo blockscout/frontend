@@ -51,7 +51,7 @@ const Item = ({ name, fileSize, bgColor }: IconInfo & HTMLChakraProps<'div'>) =>
       <Tooltip content={ copied ? 'Copied' : 'Copy to clipboard' } open={ copied }>
         <Box fontWeight={ 500 } mt={ 2 }>{ name }</Box>
       </Tooltip>
-      <Box color="text_secondary">{ formatFileSize(fileSize) }</Box>
+      <Box color="text.secondary">{ formatFileSize(fileSize) }</Box>
     </Flex>
   );
 };

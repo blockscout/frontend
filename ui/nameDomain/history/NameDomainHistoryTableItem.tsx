@@ -44,7 +44,7 @@ const NameDomainHistoryTableItem = ({ isLoading, event, domain }: Props) => {
         <TimeAgoWithTooltip
           timestamp={ event.timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           display="inline-block"
         />
       </TableCell>

@@ -42,7 +42,7 @@ const PublicTagsSubmitResultWithErrors = ({ data }: Props) => {
                 rowGap={ 3 }
               >
                 <GridItem px={{ base: 4, lg: 6 }} pt={{ base: 2, lg: 4 }} pb={{ base: 0, lg: 4 }} overflow="hidden">
-                  <Box fontSize="sm" color="text_secondary" fontWeight={ 500 }>Smart contract / Address (0x...)</Box>
+                  <Box fontSize="sm" color="text.secondary" fontWeight={ 500 }>Smart contract / Address (0x...)</Box>
                   <Flex flexDir="column" rowGap={ 2 } mt={ 2 }>
                     { item.addresses.map((hash) => (
                       <AddressEntity
@@ -54,7 +54,7 @@ const PublicTagsSubmitResultWithErrors = ({ data }: Props) => {
                   </Flex>
                 </GridItem>
                 <GridItem px={{ base: 4, lg: 6 }} pb={{ base: 2, lg: 4 }} pt={{ base: 0, lg: 4 }}>
-                  <Box fontSize="sm" color="text_secondary" fontWeight={ 500 }>Tag</Box>
+                  <Box fontSize="sm" color="text.secondary" fontWeight={ 500 }>Tag</Box>
                   <Flex rowGap={ 2 } columnGap={ 2 } mt={ 2 } justifyContent="flex-start" flexWrap="wrap">
                     { item.tags.map((tag) => (
                       <EntityTag

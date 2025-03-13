@@ -56,7 +56,7 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
           { web3Wallet.isReconnecting ? <Spinner size="sm" m="2px" flexShrink={ 0 }/> : (
             <IconButton
               aria-label="Open wallet"
-              color="icon_info"
+              color="icon.info"
               boxSize={ 5 }
               onClick={ handleOpenWalletClick }
               loading={ web3Wallet.isOpen }

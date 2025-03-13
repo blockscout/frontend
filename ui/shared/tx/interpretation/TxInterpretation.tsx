@@ -126,7 +126,7 @@ const TxInterpretationElementByType = (
       return <chakra.span>{ numberString + ' ' }</chakra.span>;
     }
     case 'timestamp': {
-      return <chakra.span color="text_secondary" whiteSpace="pre">{ dayjs(Number(value) * 1000).format('MMM DD YYYY') }</chakra.span>;
+      return <chakra.span color="text.secondary" whiteSpace="pre">{ dayjs(Number(value) * 1000).format('MMM DD YYYY') }</chakra.span>;
     }
     case 'external_link': {
       return <Link external href={ value.link }>{ value.name }</Link>;

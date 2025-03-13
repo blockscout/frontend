@@ -36,7 +36,6 @@ const NativeTokenIcon = ({ isLoading, className, type }: Props) => {
       src={ src || undefined }
       alt={ `${ config.chain.currency.symbol } logo` }
       fallback={ <TokenLogoPlaceholder borderRadius="base" className={ className }/> }
-      // fallbackStrategy={ src ? 'onError' : 'beforeLoadOrError' }
     />
   );
 };

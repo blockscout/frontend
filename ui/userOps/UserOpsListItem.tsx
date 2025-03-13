@@ -33,7 +33,7 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
         <TimeAgoWithTooltip
           timestamp={ item.timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           display="inline-block"
         />
       </ListItemMobileGrid.Value>

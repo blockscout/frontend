@@ -82,7 +82,7 @@ const TokenTransferListItem = ({
             timestamp={ timestamp }
             enableIncrement={ enableTimeIncrement }
             isLoading={ isLoading }
-            color="text_secondary"
+            color="text.secondary"
             fontWeight="400"
             fontSize="sm"
           />

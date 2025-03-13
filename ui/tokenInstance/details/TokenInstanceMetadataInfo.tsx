@@ -59,7 +59,7 @@ const Item = ({ data, isLoading }: ItemProps) => {
         value={ data.trait_type }
         textStyle="xs"
         w="100%"
-        color="text_secondary"
+        color="text.secondary"
         fontWeight={ 500 }
         mb={ 1 }
         isLoading={ isLoading }

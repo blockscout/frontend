@@ -63,7 +63,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
           timestamp={ props.block_timestamp }
           enableIncrement={ props.page === 1 }
           isLoading={ props.isLoading }
-          color="text_secondary"
+          color="text.secondary"
         />
       </Flex>
     </ListItemMobile>

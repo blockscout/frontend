@@ -101,7 +101,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
           <VerifiedAddressesStatus status={ item.metadata.tokenName ? application?.status : undefined }/>
         </Skeleton>
       </TableCell>
-      <TableCell fontSize="sm" color="text_secondary">
+      <TableCell fontSize="sm" color="text.secondary">
         <Skeleton loading={ isLoading } display="inline-block">
           { item.metadata.tokenName && application ? dayjs(application.updatedAt).format('MMM DD, YYYY') : null }
         </Skeleton>

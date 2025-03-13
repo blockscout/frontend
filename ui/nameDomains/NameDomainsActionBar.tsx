@@ -108,7 +108,6 @@ const NameDomainsActionBar = ({
                         mr={ 2 }
                         alt={ `${ protocol.title } protocol icon` }
                         fallback={ <IconSvg name="ENS_slim" boxSize={ 5 } mr={ 2 }/> }
-                        // fallbackStrategy={ protocol.icon_url ? 'onError' : 'beforeLoadOrError' }
                       />
                       <span>{ protocol.short_name }</span>
                       <chakra.span color="text.secondary" whiteSpace="pre"> { topLevelDomains }</chakra.span>

@@ -178,7 +178,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
       >
         { buttonText }
       </Button>
-      <Text textStyle="sm" color="text_secondary" textAlign="center">
+      <Text textStyle="sm" color="text.secondary" textAlign="center">
         Already registered for Blockscout Merits on another network or chain? Connect the same wallet here.
       </Text>
     </>

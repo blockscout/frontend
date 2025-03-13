@@ -34,7 +34,7 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           timestamp={ item.l1_timestamp }
           isLoading={ isLoading }
           display="inline-block"
-          color="text_secondary"
+          color="text.secondary"
           my={ 1 }
         />
       </TableCell>

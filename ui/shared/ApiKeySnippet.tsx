@@ -23,7 +23,7 @@ const ApiKeySnippet = ({ apiKey, name, isLoading }: Props) => {
           <CopyToClipboard text={ apiKey } isLoading={ isLoading }/>
         </Flex>
         { name && (
-          <Skeleton loading={ isLoading } display="inline-block" fontSize="sm" color="text_secondary" mt={ 1 }>
+          <Skeleton loading={ isLoading } display="inline-block" fontSize="sm" color="text.secondary" mt={ 1 }>
             <span>{ name }</span>
           </Skeleton>
         ) }

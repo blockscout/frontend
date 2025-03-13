@@ -58,7 +58,7 @@ const TopBarStats = () => {
       { data?.coin_price && (
         <Flex columnGap={ 1 }>
           <Skeleton loading={ isPlaceholderData }>
-            <chakra.span color="text_secondary">{ config.chain.currency.symbol } </chakra.span>
+            <chakra.span color="text.secondary">{ config.chain.currency.symbol } </chakra.span>
             <span>${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
           </Skeleton>
           { data.coin_price_change_percentage && (
@@ -73,7 +73,7 @@ const TopBarStats = () => {
       { !isMobile && data?.secondary_coin_price && config.chain.secondaryCoin.symbol && (
         <Flex columnGap={ 1 } ml={ data?.coin_price ? 3 : 0 }>
           <Skeleton loading={ isPlaceholderData }>
-            <chakra.span color="text_secondary">{ config.chain.secondaryCoin.symbol } </chakra.span>
+            <chakra.span color="text.secondary">{ config.chain.secondaryCoin.symbol } </chakra.span>
             <span>${ Number(data.secondary_coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
           </Skeleton>
         </Flex>
@@ -82,7 +82,7 @@ const TopBarStats = () => {
       { data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled && (
         <>
           <Skeleton loading={ isPlaceholderData } display="inline-flex" whiteSpace="pre-wrap">
-            <chakra.span color="text_secondary">Gas </chakra.span>
+            <chakra.span color="text.secondary">Gas </chakra.span>
             <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt } placement={ !data?.coin_price ? 'bottom-start' : undefined }>
               <Link>
                 <GasPrice data={ data.gas_prices.average }/>

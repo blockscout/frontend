@@ -34,13 +34,13 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
       />
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Value { currencyUnits.ether }</Skeleton>
-        <Skeleton loading={ isLoading } fontSize="sm" color="text_secondary">
+        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary">
           { BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
         </Skeleton>
       </HStack>
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Gas limit</Skeleton>
-        <Skeleton loading={ isLoading } fontSize="sm" color="text_secondary">{ BigNumber(gasLimit).toFormat() }</Skeleton>
+        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary">{ BigNumber(gasLimit).toFormat() }</Skeleton>
       </HStack>
     </ListItemMobile>
   );

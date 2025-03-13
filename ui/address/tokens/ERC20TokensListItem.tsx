@@ -42,21 +42,21 @@ const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
       { token.exchange_rate !== undefined && token.exchange_rate !== null && (
         <HStack gap={ 3 }>
           <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Price</Skeleton>
-          <Skeleton loading={ isLoading } fontSize="sm" color="text_secondary">
+          <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary">
             <span>{ `$${ Number(token.exchange_rate).toLocaleString() }` }</span>
           </Skeleton>
         </HStack>
       ) }
       <HStack gap={ 3 } alignItems="baseline">
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Quantity</Skeleton>
-        <Skeleton loading={ isLoading } fontSize="sm" color="text_secondary" whiteSpace="pre-wrap" wordBreak="break-word">
+        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" whiteSpace="pre-wrap" wordBreak="break-word">
           <span>{ tokenQuantity }</span>
         </Skeleton>
       </HStack>
       { tokenValue !== undefined && (
         <HStack gap={ 3 } alignItems="baseline">
           <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Value</Skeleton>
-          <Skeleton loading={ isLoading } fontSize="sm" color="text_secondary" whiteSpace="pre-wrap" wordBreak="break-word">
+          <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" whiteSpace="pre-wrap" wordBreak="break-word">
             <span>${ tokenValue }</span>
           </Skeleton>
         </HStack>

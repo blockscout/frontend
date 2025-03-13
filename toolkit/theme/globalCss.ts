@@ -10,6 +10,7 @@ const globalCss: SystemConfig['globalCss'] = {
     color: 'global.body.fg',
     WebkitTapHighlightColor: 'transparent',
     fontVariantLigatures: 'no-contextual',
+    focusRingStyle: 'hidden',
   },
   mark: {
     bg: 'global.mark.bg',

@@ -51,11 +51,10 @@ const Icon = (props: IconProps) => {
             mr={ 2 }
             alt={ `${ props.protocol.title } protocol icon` }
             fallback={ icon }
-            // fallbackStrategy={ props.protocol.icon_url ? 'onError' : 'beforeLoadOrError' }
           />
           <div>
             <span>{ props.protocol.short_name }</span>
-            <chakra.span color="text_secondary" whiteSpace="pre"> { props.protocol.tld_list.map((tld) => `.${ tld }`).join((' ')) }</chakra.span>
+            <chakra.span color="text.secondary" whiteSpace="pre"> { props.protocol.tld_list.map((tld) => `.${ tld }`).join((' ')) }</chakra.span>
           </div>
         </Flex>
         <Text>{ props.protocol.description }</Text>
@@ -99,7 +98,6 @@ const Icon = (props: IconProps) => {
           flexShrink={ 0 }
           alt={ `${ props.protocol.title } protocol icon` }
           fallback={ icon }
-          // fallbackStrategy={ props.protocol.icon_url ? 'onError' : 'beforeLoadOrError' }
         />
       </Tooltip>
     );

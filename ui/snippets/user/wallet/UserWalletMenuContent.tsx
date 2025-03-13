@@ -29,7 +29,7 @@ const UserWalletMenuContent = ({ isAutoConnectDisabled, address, domain, isRecon
     <Box>
       { isAutoConnectDisabled && <UserWalletAutoConnectAlert/> }
       <Text fontSize="sm" fontWeight={ 600 } mb={ 1 }>My wallet</Text>
-      <Text fontSize="sm" mb={ 5 } fontWeight={ 400 } color="text_secondary">
+      <Text fontSize="sm" mb={ 5 } fontWeight={ 400 } color="text.secondary">
         Your wallet is used to interact with apps and contracts in the explorer.
       </Text>
       <Flex alignItems="center" columnGap={ 2 } justifyContent="space-between">
@@ -43,7 +43,7 @@ const UserWalletMenuContent = ({ isAutoConnectDisabled, address, domain, isRecon
         { isReconnecting ? <Spinner size="sm" m="2px" flexShrink={ 0 }/> : (
           <IconButton
             aria-label="Open wallet"
-            color="icon_info"
+            color="icon.info"
             boxSize={ 5 }
             onClick={ handleOpenWalletClick }
             flexShrink={ 0 }

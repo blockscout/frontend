@@ -50,7 +50,7 @@ const ZkEvmL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         <TimeAgoWithTooltip
           timestamp={ item.timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -63,7 +63,7 @@ const ZkEvmL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
             textStyle="sm"
           />
         ) : (
-          <chakra.span color="text_secondary">
+          <chakra.span color="text.secondary">
             Pending Claim
           </chakra.span>
         ) }

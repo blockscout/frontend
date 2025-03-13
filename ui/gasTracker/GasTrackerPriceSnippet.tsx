@@ -56,12 +56,12 @@ const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
           <GasPrice data={ data } fontSize={{ base: '36px', xl: '48px' }} lineHeight="48px" fontWeight={ 600 } letterSpacing="-1px" fontFamily="heading"/>
         </Skeleton>
       </Flex>
-      <Skeleton loading={ isLoading } fontSize="sm" color="text_secondary" mt={ 3 } w="fit-content">
+      <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" mt={ 3 } w="fit-content">
         { data.price !== null && data.fiat_price !== null && <GasPrice data={ data } prefix={ `${ asymp } ` } unitMode="secondary"/> }
         <span> per transaction</span>
         { typeof data.time === 'number' && data.time > 0 && <span> / { (data.time / SECOND).toLocaleString(undefined, { maximumFractionDigits: 1 }) }s</span> }
       </Skeleton>
-      <Skeleton loading={ isLoading } fontSize="sm" color="text_secondary" mt={ 2 } w="fit-content" whiteSpace="pre">
+      <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" mt={ 2 } w="fit-content" whiteSpace="pre">
         { typeof data.base_fee === 'number' && <span>Base { data.base_fee.toLocaleString(undefined, { maximumFractionDigits: 0 }) }</span> }
         { typeof data.base_fee === 'number' && typeof data.priority_fee === 'number' && <span> / </span> }
         { typeof data.priority_fee === 'number' && <span>Priority { data.priority_fee.toLocaleString(undefined, { maximumFractionDigits: 0 }) }</span> }

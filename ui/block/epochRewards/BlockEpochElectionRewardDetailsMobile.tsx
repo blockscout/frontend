@@ -59,12 +59,12 @@ const BlockEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
             <Flex key={ index } flexDir="column" alignItems="flex-start" rowGap={ 1 } fontWeight={ 400 }>
               <AddressEntity address={ item.account } noIcon w="100%"/>
               <Flex columnGap={ 1 } alignItems="center">
-                <Box flexShrink={ 0 } color="text_secondary">got</Box>
+                <Box flexShrink={ 0 } color="text.secondary">got</Box>
                 <Box>{ amount.valueStr }</Box>
                 <TokenEntity token={ token } noIcon onlySymbol w="auto"/>
               </Flex>
               <Flex columnGap={ 1 } alignItems="center" w="100%">
-                <Box flexShrink={ 0 } color="text_secondary">on behalf of</Box>
+                <Box flexShrink={ 0 } color="text.secondary">on behalf of</Box>
                 <AddressEntity address={ item.associated_account } noIcon/>
               </Flex>
             </Flex>

@@ -58,7 +58,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           timestamp={ item.timestamp }
           isLoading={ isLoading }
           display="inline-block"
-          color="text_secondary"
+          color="text.secondary"
         />
       </TableCell>
     </TableRow>

@@ -90,9 +90,9 @@ const ContractVerificationFieldCompiler = ({ isVyper, isStylus }: Props) => {
       { isVyper || isStylus ? null : (
         <chakra.div mt={{ base: 0, lg: 8 }}>
           <span >The compiler version is specified in </span>
-          <Code color="text_secondary">pragma solidity X.X.X</Code>
+          <Code color="text.secondary">pragma solidity X.X.X</Code>
           <span>. Use the compiler version rather than the nightly build. If using the Solidity compiler, run </span>
-          <Code color="text_secondary">solc —version</Code>
+          <Code color="text.secondary">solc —version</Code>
           <span> to check.</span>
         </chakra.div>
       ) }

@@ -306,7 +306,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         { Boolean(data.confirmations) && (
           <>
             <TextSeparator color="gray.500"/>
-            <Skeleton loading={ isLoading } color="text_secondary">
+            <Skeleton loading={ isLoading } color="text.secondary">
               <span>{ data.confirmations } Block confirmations</span>
             </Skeleton>
           </>
@@ -384,7 +384,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             { data.confirmation_duration && (
               <>
                 <TextSeparator color="gray.500"/>
-                <Skeleton loading={ isLoading } color="text_secondary">
+                <Skeleton loading={ isLoading } color="text.secondary">
                   <span>{ getConfirmationDuration(data.confirmation_duration) }</span>
                 </Skeleton>
               </>

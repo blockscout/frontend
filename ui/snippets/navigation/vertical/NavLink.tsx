@@ -73,7 +73,7 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
               display={{ base: 'inline', lg: isExpanded ? 'inline' : 'none', xl: isCollapsed ? 'none' : 'inline' }}
             >
               <span>{ item.text }</span>
-              { !isInternalLink && <IconSvg name="link_external" boxSize={ 3 } color="icon_link_external" verticalAlign="middle"/> }
+              { !isInternalLink && <IconSvg name="link_external" boxSize={ 3 } color="icon.externalLink" verticalAlign="middle"/> }
             </chakra.span>
             { isHighlighted && (
               <LightningLabel

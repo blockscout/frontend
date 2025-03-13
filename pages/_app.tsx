@@ -48,9 +48,9 @@ const ERROR_SCREEN_STYLES: HTMLChakraProps<'div'> = {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  // TODO @tom2drum currently there is hydration mismatch between server and client
-  // because we use useColorMode hook in the layout component
-  // not sure how to fix it though
+  // to avoid hydration mismatch between server and client
+  // we have to render the app only on client (when it is mounted)
+  // https://github.com/pacocoursey/next-themes?tab=readme-ov-file#avoid-hydration-mismatch
   const [ mounted, setMounted ] = React.useState(false);
 
   React.useEffect(() => {

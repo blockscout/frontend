@@ -59,7 +59,7 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Output root</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Flex overflow="hidden" whiteSpace="nowrap" alignItems="center" w="100%" justifyContent="start">
-          <Skeleton loading={ isLoading } color="text_secondary">
+          <Skeleton loading={ isLoading } color="text.secondary">
             <HashStringShorten hash={ item.output_root } type="long"/>
           </Skeleton>
           <CopyToClipboard text={ item.output_root } isLoading={ isLoading }/>

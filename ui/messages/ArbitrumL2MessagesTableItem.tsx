@@ -41,7 +41,7 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
               fontWeight={ 600 }
               noIcon
             />
-          ) : <chakra.span color="text_secondary">N/A</chakra.span> }
+          ) : <chakra.span color="text.secondary">N/A</chakra.span> }
         </TableCell>
       ) }
       { direction === 'from-rollup' && (
@@ -68,7 +68,7 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
             noIcon
           />
         ) : (
-          <chakra.span color="text_secondary">
+          <chakra.span color="text.secondary">
             N/A
           </chakra.span>
         ) }
@@ -77,7 +77,7 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
         <TimeAgoWithTooltip
           timestamp={ item.origination_timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -94,7 +94,7 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
             noIcon
           />
         ) : (
-          <chakra.span color="text_secondary">
+          <chakra.span color="text.secondary">
             N/A
           </chakra.span>
         ) }

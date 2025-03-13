@@ -63,7 +63,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           timestamp={ tx.timestamp }
           enableIncrement
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight="400"
           fontSize="sm"
           ml={ 3 }

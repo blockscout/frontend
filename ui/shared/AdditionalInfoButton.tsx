@@ -15,7 +15,7 @@ const AdditionalInfoButton = (props: Props, ref: React.ForwardedRef<HTMLButtonEl
   return (
     <IconButton
       ref={ ref }
-      color="icon_info"
+      color="icon.info"
       _hover={{ color: 'link.primary.hover' }}
       _open={{
         bgColor: { _light: 'blue.50', _dark: 'gray.600' },

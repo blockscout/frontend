@@ -136,7 +136,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
               slug: 'new',
               ordinal: 0,
             }}/>
-            <chakra.span color="text_secondary" fontSize="sm">
+            <chakra.span color="text.secondary" fontSize="sm">
               { tagTypes?.find(({ type }) => type === field.type[0].value)?.description }
             </chakra.span>
           </Flex>

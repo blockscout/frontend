@@ -49,7 +49,7 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         <TimeAgoWithTooltip
           timestamp={ item.origination_timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -61,7 +61,7 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
             noIcon
           />
         ) : (
-          <chakra.span color="text_secondary">
+          <chakra.span color="text.secondary">
             Pending Claim
           </chakra.span>
         ) }

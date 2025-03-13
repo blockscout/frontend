@@ -50,7 +50,7 @@ const GasTracker = () => {
       { data?.gas_price_updated_at && (
         <Skeleton loading={ isLoading } whiteSpace="pre" display="flex" alignItems="center">
           <span>Last updated </span>
-          <chakra.span color="text_secondary">{ dayjs(data.gas_price_updated_at).format('DD MMM, HH:mm:ss') }</chakra.span>
+          <chakra.span color="text.secondary">{ dayjs(data.gas_price_updated_at).format('DD MMM, HH:mm:ss') }</chakra.span>
           { data.gas_prices_update_in !== 0 && (
             <GasInfoUpdateTimer
               key={ dataUpdatedAt }
@@ -65,7 +65,7 @@ const GasTracker = () => {
       { data?.coin_price && (
         <Skeleton loading={ isLoading } ml={{ base: 0, lg: 'auto' }} whiteSpace="pre" display="flex" alignItems="center">
           <NativeTokenIcon mr={ 2 } boxSize={ 6 }/>
-          <chakra.span color="text_secondary">{ config.chain.currency.symbol }</chakra.span>
+          <chakra.span color="text.secondary">{ config.chain.currency.symbol }</chakra.span>
           <span> ${ Number(data.coin_price).toLocaleString(undefined, { maximumFractionDigits: 2 }) }</span>
         </Skeleton>
       ) }

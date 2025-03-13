@@ -18,7 +18,7 @@ const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
 
     if (external) {
       icon = 'link_external';
-      color = 'icon_link_external';
+      color = 'icon.externalLink';
       text = 'This app opens in a separate tab';
       boxSize = 4;
     } else if (internalWallet) {

@@ -25,11 +25,11 @@ const TxAuthorizationsListItem = ({ address, authority, chain_id: chainId, nonce
       </HStack>
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Chain</Skeleton>
-        <Skeleton loading={ isLoading } color="text_secondary">{ chainId === Number(config.chain.id) ? 'this' : 'any' }</Skeleton>
+        <Skeleton loading={ isLoading } color="text.secondary">{ chainId === Number(config.chain.id) ? 'this' : 'any' }</Skeleton>
       </HStack>
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Nonce</Skeleton>
-        <Skeleton loading={ isLoading } color="text_secondary">{ nonce }</Skeleton>
+        <Skeleton loading={ isLoading } color="text.secondary">{ nonce }</Skeleton>
       </HStack>
     </ListItemMobile>
   );

@@ -53,8 +53,6 @@ const Icon = (props: IconProps) => {
       src={ props.token.icon_url ?? undefined }
       alt={ `${ props.token.name || 'token' } logo` }
       fallback={ <TokenLogoPlaceholder { ...styles }/> }
-      // TODO @tom2drum implement fallbackStrategy in Image component
-      // fallbackStrategy={ props.token.icon_url ? 'onError' : 'beforeLoadOrError' }
     />
   );
 };
@@ -93,7 +91,7 @@ const Symbol = (props: SymbolProps) => {
       alignItems="center"
       maxW="20%"
       ml={ 2 }
-      color="text_secondary"
+      color="text.secondary"
     >
       <div>(</div>
       <TruncatedTextTooltip label={ symbol }>

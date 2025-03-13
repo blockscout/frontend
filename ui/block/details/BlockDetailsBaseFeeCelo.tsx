@@ -24,7 +24,7 @@ const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: Item
 
   return (
     <Flex alignItems="center" columnGap={ 2 } rowGap={ 1 } flexWrap="wrap">
-      <Box color="text_secondary">{ percentage }% of amount</Box>
+      <Box color="text.secondary">{ percentage }% of amount</Box>
       <Flex columnGap={ 2 }>
         { BigNumber(amount).dividedBy(WEI).toFixed() }
         <TokenEntity token={ token } noCopy onlySymbol/>
@@ -33,7 +33,7 @@ const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: Item
         <>
           <AddressEntity address={ addressFrom } truncation="constant"/>
           <IconSvg name="flame" boxSize={ 5 } color="gray.500"/>
-          <Box color="text_secondary">burnt</Box>
+          <Box color="text.secondary">burnt</Box>
         </>
       ) : <AddressFromTo from={ addressFrom } to={ address }/> }
     </Flex>

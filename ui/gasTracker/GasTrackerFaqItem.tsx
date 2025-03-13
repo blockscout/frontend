@@ -14,7 +14,7 @@ const GasTrackerFaqItem = ({ question, answer }: Props) => {
         { question }
       </AccordionItemTrigger>
       <AccordionItemContent pb={ 4 } px={ 0 }>
-        <Text color="text_secondary">{ answer }</Text>
+        <Text color="text.secondary">{ answer }</Text>
       </AccordionItemContent>
     </AccordionItem>
   );

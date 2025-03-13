@@ -51,7 +51,7 @@ const InternalTxsListItem = ({
         <TimeAgoWithTooltip
           timestamp={ timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight="400"
           fontSize="sm"
         />
@@ -74,7 +74,7 @@ const InternalTxsListItem = ({
       />
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Value { currencyUnits.ether }</Skeleton>
-        <Skeleton loading={ isLoading } fontSize="sm" color="text_secondary" minW={ 6 }>
+        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" minW={ 6 }>
           <span>{ BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }</span>
         </Skeleton>
       </HStack>

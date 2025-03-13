@@ -41,7 +41,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           timestamp={ item.timestamp }
           fallbackText="Undefined"
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
         />
       </TableCell>
       <TableCell verticalAlign="middle">

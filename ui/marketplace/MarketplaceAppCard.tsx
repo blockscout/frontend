@@ -150,7 +150,7 @@ const MarketplaceAppCard = ({
 
             <Skeleton
               loading={ isLoading }
-              color="text_secondary"
+              color="text.secondary"
               fontSize="xs"
               lineHeight="16px"
             >

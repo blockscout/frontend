@@ -35,7 +35,7 @@ const NameDomainsTableItem = ({
         { registrationDate && (
           <Skeleton loading={ isLoading }>
             { dayjs(registrationDate).format('lll') }
-            <chakra.span color="text_secondary"> { dayjs(registrationDate).fromNow() }</chakra.span>
+            <chakra.span color="text.secondary"> { dayjs(registrationDate).fromNow() }</chakra.span>
           </Skeleton>
         ) }
       </TableCell>

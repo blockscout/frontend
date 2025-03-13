@@ -79,7 +79,7 @@ const StatsWidget = ({
         <Box w={{ base: '100%', lg: icon ? 'calc(100% - 48px)' : '100%' }}>
           <Skeleton
             loading={ isLoading }
-            color="text_secondary"
+            color="text.secondary"
             textStyle="xs"
             w="fit-content"
           >

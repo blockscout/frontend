@@ -62,7 +62,7 @@ const Value = chakra(({ children, className }: ValueProps) => {
     <GridItem
       className={ className }
       py="5px"
-      color="text_secondary"
+      color="text.secondary"
       overflow="hidden"
     >
       { children }

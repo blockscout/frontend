@@ -25,7 +25,7 @@ const AddressEpochRewardsTableItem = ({ item, isLoading }: Props) => {
         <Flex alignItems="center" gap={ 3 }>
           <BlockEntity number={ item.block_number } isLoading={ isLoading } noIcon fontWeight={ 600 }/>
           <Skeleton loading={ isLoading }>
-            <Text color="text_secondary" fontWeight={ 600 }>{ `Epoch # ${ item.epoch_number }` }</Text>
+            <Text color="text.secondary" fontWeight={ 600 }>{ `Epoch # ${ item.epoch_number }` }</Text>
           </Skeleton>
           <TimeAgoWithTooltip timestamp={ item.block_timestamp } isLoading={ isLoading } color="text.secondary" fontWeight={ 400 }/>
         </Flex>

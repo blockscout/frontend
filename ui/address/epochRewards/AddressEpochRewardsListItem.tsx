@@ -42,7 +42,7 @@ const AddressEpochRewardsListItem = ({ item, isLoading }: Props) => {
         <TimeAgoWithTooltip
           timestamp={ item.block_timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           display="inline-block"
         />
       </ListItemMobileGrid.Value>

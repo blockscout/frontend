@@ -69,7 +69,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           timestamp={ tx.timestamp }
           enableIncrement={ enableTimeIncrement }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight="400"
           fontSize="sm"
         />
@@ -79,7 +79,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Method </Skeleton>
           <Skeleton
             loading={ isLoading }
-            color="text_secondary"
+            color="text.secondary"
             overflow="hidden"
             whiteSpace="nowrap"
             textOverflow="ellipsis"

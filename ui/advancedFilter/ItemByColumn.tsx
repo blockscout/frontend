@@ -36,7 +36,7 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
     case 'method':
       return item.method ? <Badge loading={ isLoading } truncated>{ item.method }</Badge> : null;
     case 'age':
-      return <TimeAgoWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text_secondary" fontWeight={ 400 }/>;
+      return <TimeAgoWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text.secondary" fontWeight={ 400 }/>;
     case 'from':
       return (
         <Flex w="100%">

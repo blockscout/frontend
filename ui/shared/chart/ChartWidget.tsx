@@ -79,7 +79,7 @@ const ChartWidget = ({
       { description && (
         <Skeleton
           loading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontSize="xs"
           mt={ 1 }
         >

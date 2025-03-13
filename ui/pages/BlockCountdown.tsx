@@ -75,7 +75,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
             >
               <TruncatedValue value={ `Block #${ height }` } w="100%"/>
             </Heading>
-            <Box mt={ 2 } color="text_secondary">
+            <Box mt={ 2 } color="text.secondary">
               <Box fontWeight={ 600 }>Estimated target date</Box>
               <Box>{ dayjs().add(Number(data.result.EstimateTimeInSec), 's').format('llll') }</Box>
             </Box>

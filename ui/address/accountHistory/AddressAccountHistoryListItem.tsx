@@ -43,7 +43,7 @@ const AddressAccountHistoryListItem = (props: Props) => {
           </Flex>
           <TimeAgoWithTooltip
             timestamp={ props.tx.rawTransactionData.timestamp * 1000 }
-            color="text_secondary"
+            color="text.secondary"
             borderRadius="sm"
             fontWeight={ 500 }
           />

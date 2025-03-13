@@ -55,7 +55,7 @@ const BeaconChainWithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
           <TimeAgoWithTooltip
             timestamp={ item.timestamp }
             isLoading={ isLoading }
-            color="text_secondary"
+            color="text.secondary"
             display="inline-block"
           />
         </TableCell>

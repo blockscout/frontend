@@ -122,7 +122,7 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
       { tokensQuery.isLoading && <Spinner display="block" mt={ 3 }/> }
       { tokensQuery.data && !searchTerm && (
         <>
-          <Text color="text_secondary" fontWeight="600" mt={ 3 }>Popular</Text>
+          <Text color="text.secondary" fontWeight="600" mt={ 3 }>Popular</Text>
           <Flex rowGap={ 3 } flexWrap="wrap" gap={ 3 } mb={ 2 }>
             { [ NATIVE_TOKEN, ...tokensQuery.data.items ].map(token => (
               <Tag

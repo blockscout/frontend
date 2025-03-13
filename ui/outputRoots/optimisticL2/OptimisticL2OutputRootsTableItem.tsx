@@ -31,7 +31,7 @@ const OptimisticL2OutputRootsTableItem = ({ item, isLoading }: Props) => {
           timestamp={ item.l1_timestamp }
           isLoading={ isLoading }
           display="inline-block"
-          color="text_secondary"
+          color="text.secondary"
         />
       </TableCell>
       <TableCell verticalAlign="middle">

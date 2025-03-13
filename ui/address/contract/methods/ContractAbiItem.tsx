@@ -70,7 +70,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
           alignItems="center"
           columnGap={ 2 }
         >
-          <CopyToClipboard text={ url } type="link" ml={ 0 } color="text_secondary" as="div"/>
+          <CopyToClipboard text={ url } type="link" ml={ 0 } color="text.secondary" as="div"/>
           <Box fontWeight={ 500 } display="flex" alignItems="center">
             { index + 1 }. { data.type === 'fallback' || data.type === 'receive' ? data.type : data.name }
             { data.type === 'fallback' && (

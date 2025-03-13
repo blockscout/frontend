@@ -30,7 +30,7 @@ const Hint = ({ label, className, tooltipProps, isLoading, as }: Props) => {
         borderRadius="sm"
         as={ as }
       >
-        <IconSvg name="info" w="100%" h="100%" color="icon_info" _hover={{ color: 'link.primary.hover' }}/>
+        <IconSvg name="info" w="100%" h="100%" color="icon.info" _hover={{ color: 'link.primary.hover' }}/>
       </IconButton>
     </Tooltip>
   );

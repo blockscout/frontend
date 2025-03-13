@@ -51,7 +51,7 @@ const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           fallbackText="N/A"
           isLoading={ isLoading }
           display="inline-block"
-          color="text_secondary"
+          color="text.secondary"
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -73,7 +73,7 @@ const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         }
       </TableCell>
       <TableCell verticalAlign="middle">
-        <Skeleton loading={ isLoading } color="text_secondary" minW="50px" minH="20px" display="inline-block">{ timeToEnd }</Skeleton>
+        <Skeleton loading={ isLoading } color="text.secondary" minW="50px" minH="20px" display="inline-block">{ timeToEnd }</Skeleton>
       </TableCell>
     </TableRow>
   );

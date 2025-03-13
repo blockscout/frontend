@@ -76,7 +76,7 @@ const NameDomainDetails = ({ query }: Props) => {
                 { dayjs(query.data.expiry_date).format('llll') }
               </Skeleton>
               <TextSeparator color="gray.500"/>
-              <Skeleton loading={ isLoading } color="text_secondary" display="inline">
+              <Skeleton loading={ isLoading } color="text.secondary" display="inline">
                 <NameDomainExpiryStatus date={ query.data?.expiry_date }/>
               </Skeleton>
             </DetailedInfo.ItemValue>

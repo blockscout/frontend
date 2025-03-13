@@ -65,7 +65,7 @@ const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
       </PopoverTrigger>
       <PopoverContent w="240px">
         <PopoverBody >
-          <chakra.span color="text_secondary" fontSize="xs">Redactors</chakra.span>
+          <chakra.span color="text.secondary" fontSize="xs">Redactors</chakra.span>
           <Flex
             flexDir="column"
             alignItems="flex-start"

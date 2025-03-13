@@ -44,7 +44,7 @@ const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
         <TimeAgoWithTooltip
           timestamp={ item.l1_block_timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           display="inline-block"
         />
       </TableCell>
@@ -65,7 +65,7 @@ const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
         />
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading } color="text_secondary" display="inline-block">
+        <Skeleton loading={ isLoading } color="text.secondary" display="inline-block">
           <span>{ BigNumber(item.l2_transaction_gas_limit).toFormat() }</span>
         </Skeleton>
       </TableCell>

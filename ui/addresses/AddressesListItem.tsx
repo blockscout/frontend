@@ -38,7 +38,7 @@ const AddressesListItem = ({
           mr={ 2 }
           truncation="constant"
         />
-        <Skeleton loading={ isLoading } fontSize="sm" ml="auto" minW={ 6 } color="text_secondary">
+        <Skeleton loading={ isLoading } fontSize="sm" ml="auto" minW={ 6 } color="text.secondary">
           <span>{ index }</span>
         </Skeleton>
       </Flex>
@@ -47,21 +47,21 @@ const AddressesListItem = ({
       )) }
       <HStack gap={ 3 } maxW="100%" alignItems="flex-start">
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 } flexShrink={ 0 }>{ `Balance ${ currencyUnits.ether }` }</Skeleton>
-        <Skeleton loading={ isLoading } fontSize="sm" color="text_secondary" minW="0" whiteSpace="pre-wrap">
+        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" minW="0" whiteSpace="pre-wrap">
           <span>{ addressBalance.dp(8).toFormat() }</span>
         </Skeleton>
       </HStack>
       { !totalSupply.eq(ZERO) && (
         <HStack gap={ 3 }>
           <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Percentage</Skeleton>
-          <Skeleton loading={ isLoading } fontSize="sm" color="text_secondary">
+          <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary">
             <span>{ addressBalance.div(BigNumber(totalSupply)).multipliedBy(100).dp(8).toFormat() + '%' }</span>
           </Skeleton>
         </HStack>
       ) }
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Txn count</Skeleton>
-        <Skeleton loading={ isLoading } fontSize="sm" color="text_secondary">
+        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary">
           <span>{ Number(item.transaction_count).toLocaleString() }</span>
         </Skeleton>
       </HStack>

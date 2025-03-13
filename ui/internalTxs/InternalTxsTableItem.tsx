@@ -49,7 +49,7 @@ const InternalTxsTableItem = ({
             timestamp={ timestamp }
             enableIncrement
             isLoading={ isLoading }
-            color="text_secondary"
+            color="text.secondary"
             fontWeight="400"
             fontSize="sm"
           />

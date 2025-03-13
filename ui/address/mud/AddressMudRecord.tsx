@@ -64,7 +64,7 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true, scrollRef 
               <TableCell colSpan={ 2 } fontSize="sm">
                 <Flex justifyContent="space-between">
                   <TruncatedValue value={ getValueString(data.record.decoded[keyName]) } mr={ 2 }/>
-                  { index === 0 && <Box color="text_secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
+                  { index === 0 && <Box color="text.secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
                 </Flex>
               </TableCell>
             </TableRow>
@@ -81,7 +81,7 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true, scrollRef 
                 { keyName } ({ data.schema.key_types[index] })
               </Text>
               <Text wordBreak="break-word">{ getValueString(data.record.decoded[keyName]) }</Text>
-              { index === 0 && <Box color="text_secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
+              { index === 0 && <Box color="text.secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
             </VStack>
           )) }
           <TableRoot borderRadius="8px" style={{ tableLayout: 'auto' }} width="100%" mt={ 2 } overflow="hidden">

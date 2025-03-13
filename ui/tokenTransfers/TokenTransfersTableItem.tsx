@@ -43,7 +43,7 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
           timestamp={ item.timestamp }
           enableIncrement
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight="400"
           display="inline-block"
         />

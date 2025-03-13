@@ -62,7 +62,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
           timestamp={ data.timestamp }
           enableIncrement={ enableTimeIncrement }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight={ 400 }
           display="inline-block"
         />

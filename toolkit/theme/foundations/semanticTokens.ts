@@ -6,7 +6,6 @@ const heroBannerButton = config.UI.homepage.heroBanner?.button;
 
 const semanticTokens: ThemingConfig['semanticTokens'] = {
   colors: {
-    // NEW TOKENS
     button: {
       outline: {
         fg: {
@@ -108,7 +107,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         hover: { value: { _light: '{colors.blue.400}' } },
       },
       secondary: {
-        DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
+        DEFAULT: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
       },
       underlaid: {
         bg: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },
@@ -420,7 +419,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     icon: {
       // TODO @tom2drum revise this colors
       backTo: { value: '{colors.gray.400}' },
-      externalLink: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.400}' } },
+      externalLink: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
       content: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.300}' } },
       info: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
     },
@@ -442,39 +441,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         thumb: { value: { _light: '{colors.blackAlpha.300}', _dark: '{colors.whiteAlpha.300}' } },
       },
     },
-
-    // OLD TOKENS
-    // text: {
-    //   DEFAULT: { value: '{colors.blackAlpha.800}' },
-    //   _dark: { value: '{colors.whiteAlpha.800}' },
-    // },
-    text_secondary: {
-      DEFAULT: { value: '{colors.gray.500}' },
-      _dark: { value: '{colors.gray.400}' },
-    },
-    // link: {
-    //   DEFAULT: { value: '{colors.blue.600}' },
-    //   _dark: { value: '{colors.blue.300}' },
-    // },
-    link_hovered: {
-      DEFAULT: { value: '{colors.blue.400}' },
-    },
-    icon_link_external: {
-      DEFAULT: { value: '{colors.gray.300}' },
-      _dark: { value: '{colors.gray.500}' },
-    },
-    icon_info: {
-      DEFAULT: { value: '{colors.gray.400}' },
-      _dark: { value: '{colors.gray.500}' },
-    },
-    // error: {
-    //   DEFAULT: { value: '{colors.red.500}' },
-    //   _dark: { value: '{colors.red.500}' },
-    // },
-    // dialog_bg: {
-    //   DEFAULT: { value: '{colors.white}' },
-    //   _dark: { value: '{colors.gray.900}' },
-    // },
   },
   shadows: {
     popover: {
