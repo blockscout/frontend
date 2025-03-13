@@ -30,7 +30,7 @@ export function walletConnect(): CspDev.DirectiveDescriptor {
       'https://*.dbcscan.io',
       'https://test.dbcscan.io',
     ],
+    'img-src': [KEY_WORDS.BLOB, '*.walletconnect.com', 'https://*.dbcscan.io', 'https://test.dbcscan.io'],
     'frame-src': ["'self'", 'https://secure.walletconnect.com', '*.walletconnect.com', '*.walletconnect.org'],
-    'img-src': [KEY_WORDS.BLOB, '*.walletconnect.com'],
   };
 }
