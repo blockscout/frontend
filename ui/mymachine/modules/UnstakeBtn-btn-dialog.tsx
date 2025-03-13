@@ -22,7 +22,7 @@ import { deleteMachine } from './api/index';
 import { usePolling } from './hooks/usePolling';
 import { getTimestamp } from './api/index';
 
-const STAKING_CONTRACT_ADDRESS = '0x7FDC6ed8387f3184De77E0cF6D6f3B361F906C21';
+const STAKING_CONTRACT_ADDRESS = '0x3c059dbe0f42d65acd763c3c3da8b5a1b12bb74f';
 
 interface UnstakeBtnProps {
   id: string;
