@@ -23,11 +23,6 @@ export const recipe = defineRecipe({
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
     },
-    _autofill: {
-      // TODO @tom2drum: fix webkit autofill color
-    //   FIXME: this is not working
-    //   WebkitTextFillColor: '{colors.input.fg}',
-    },
   },
 
   variants: {
