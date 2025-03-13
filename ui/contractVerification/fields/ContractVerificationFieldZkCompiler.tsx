@@ -7,7 +7,7 @@ import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import { Link } from 'toolkit/chakra/link';
-import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
+import FormFieldSelectAsync from 'ui/shared/forms/fields/FormFieldSelectAsync';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
@@ -17,26 +17,34 @@ const ContractVerificationFieldZkCompiler = () => {
   const queryClient = useQueryClient();
   const config = queryClient.getQueryData<SmartContractVerificationConfig>(getResourceKey('contract_verification_config'));
 
-  const options = React.useMemo(() => (
-    config?.zk_compiler_versions?.map((option) => ({ label: option, value: option })) || []
+  const versions = React.useMemo(() => (
+    config?.zk_compiler_versions || []
   ), [ config?.zk_compiler_versions ]);
 
-  // TODO @tom2drum implement filtering the options
-
-  const collection = React.useMemo(() => {
-    const items = options
-      // .filter(({ label }) => !inputValue || label.toLowerCase().includes(inputValue.toLowerCase()))
-      .slice(0, OPTIONS_LIMIT);
+  const loadOptions = React.useCallback(async(inputValue: string, currentValue: Array<string>) => {
+    const items = versions
+      ?.filter((value) => !inputValue || currentValue.includes(value) || value.toLowerCase().includes(inputValue.toLowerCase()))
+      .sort((a, b) => {
+        if (currentValue.includes(a)) {
+          return -1;
+        }
+        if (currentValue.includes(b)) {
+          return 1;
+        }
+        return 0;
+      })
+      .slice(0, OPTIONS_LIMIT)
+      .map((value) => ({ label: value, value })) ?? [];
 
     return createListCollection({ items });
-  }, [ options ]);
+  }, [ versions ]);
 
   return (
     <ContractVerificationFormRow>
-      <FormFieldSelect<FormFields, 'zk_compiler'>
+      <FormFieldSelectAsync<FormFields, 'zk_compiler'>
         name="zk_compiler"
         placeholder="ZK compiler (enter version or use the dropdown)"
-        collection={ collection }
+        loadOptions={ loadOptions }
         required
       />
       <Box>

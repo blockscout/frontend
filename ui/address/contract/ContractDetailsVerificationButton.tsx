@@ -15,13 +15,13 @@ const ContractDetailsVerificationButton = ({ isLoading, addressHash, isPartially
   return (
     <Link
       href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash } }) }
+      mr={ isPartiallyVerified ? 0 : 3 }
+      ml={ isPartiallyVerified ? 0 : 'auto' }
+      flexShrink={ 0 }
       asChild
     >
       <Button
         size="sm"
-        mr={ isPartiallyVerified ? 0 : 3 }
-        ml={ isPartiallyVerified ? 0 : 'auto' }
-        flexShrink={ 0 }
         loadingSkeleton={ isLoading }
       >
         Verify & publish

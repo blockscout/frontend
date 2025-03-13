@@ -8,7 +8,7 @@ import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import { Checkbox } from 'toolkit/chakra/checkbox';
-import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
+import FormFieldSelectAsync from 'ui/shared/forms/fields/FormFieldSelectAsync';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
@@ -36,57 +36,55 @@ const ContractVerificationFieldCompiler = ({ isVyper, isStylus }: Props) => {
     });
   }, [ getValues, resetField ]);
 
-  const options = React.useMemo(() => {
-    const versions = (() => {
-      if (isStylus) {
-        return config?.stylus_compiler_versions;
-      }
-      if (isVyper) {
-        return config?.vyper_compiler_versions;
-      }
-      return config?.solidity_compiler_versions;
-    })();
-
-    return versions?.map((option) => ({ label: option, value: option })) || [];
+  const versions = React.useMemo(() => {
+    if (isStylus) {
+      return config?.stylus_compiler_versions;
+    }
+    if (isVyper) {
+      return config?.vyper_compiler_versions;
+    }
+    return config?.solidity_compiler_versions;
   }, [ isStylus, isVyper, config?.solidity_compiler_versions, config?.stylus_compiler_versions, config?.vyper_compiler_versions ]);
 
-  // const loadOptions = React.useCallback(async(inputValue: string) => {
-  //   return options
-  //     .filter(({ label }) => !inputValue || label.toLowerCase().includes(inputValue.toLowerCase()))
-  //     .filter(({ label }) => isNightly ? true : !label.includes('nightly'))
-  //     .slice(0, OPTIONS_LIMIT);
-  // }, [ isNightly, options ]);
-
-  // TODO @tom2drum implement filtering the options
-  const collection = React.useMemo(() => {
-    const items = options
-      // .filter(({ label }) => !inputValue || label.toLowerCase().includes(inputValue.toLowerCase()))
-      .filter(({ label }) => isNightly ? true : !label.includes('nightly'))
-      .slice(0, OPTIONS_LIMIT);
+  const loadOptions = React.useCallback(async(inputValue: string, currentValue: Array<string>) => {
+    const items = versions
+      ?.filter((value) => !inputValue || currentValue.includes(value) || value.toLowerCase().includes(inputValue.toLowerCase()))
+      .filter((value) => isNightly ? true : !value.includes('nightly'))
+      .sort((a, b) => {
+        if (currentValue.includes(a)) {
+          return -1;
+        }
+        if (currentValue.includes(b)) {
+          return 1;
+        }
+        return 0;
+      })
+      .slice(0, OPTIONS_LIMIT)
+      .map((value) => ({ label: value, value })) ?? [];
 
     return createListCollection({ items });
-  }, [ isNightly, options ]);
+  }, [ isNightly, versions ]);
+
+  const extraControls = !isVyper && !isStylus ? (
+    <Checkbox
+      mb={ 2 }
+      checked={ isNightly }
+      onCheckedChange={ handleCheckboxChange }
+      disabled={ formState.isSubmitting }
+    >
+      Include nightly builds
+    </Checkbox>
+  ) : null;
 
   return (
     <ContractVerificationFormRow>
-      <>
-        { !isVyper && !isStylus && (
-          <Checkbox
-            mb={ 2 }
-            checked={ isNightly }
-            onCheckedChange={ handleCheckboxChange }
-            disabled={ formState.isSubmitting }
-          >
-            Include nightly builds
-          </Checkbox>
-        ) }
-        <FormFieldSelect<FormFields, 'compiler'>
-          name="compiler"
-          placeholder="Compiler (enter version or use the dropdown)"
-          collection={ collection }
-          required
-        />
-      </>
+      <FormFieldSelectAsync<FormFields, 'compiler'>
+        name="compiler"
+        placeholder="Compiler (enter version or use the dropdown)"
+        loadOptions={ loadOptions }
+        extraControls={ extraControls }
+        required
+      />
       { isVyper || isStylus ? null : (
         <chakra.div mt={{ base: 0, lg: 8 }}>
           <span >The compiler version is specified in </span>
