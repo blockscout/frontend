@@ -225,11 +225,11 @@ const Marketplace = () => {
           flex="1"
         />
       </Flex>
-      {/* ----------------------- */}
+      {/* 卡片 */}
 
       {selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl ? (
         <MarketplaceListWithScores
-          apps={displayedAppsInMining}
+          apps={displayedAppsInMining || []}
           showAppInfo={showAppInfo}
           favoriteApps={favoriteApps}
           onFavoriteClick={onFavoriteClick}
@@ -249,7 +249,6 @@ const Marketplace = () => {
           onAppClick={handleAppClick}
         />
       )}
-
       {selectedApp && isAppInfoModalOpen && (
         <MarketplaceAppModal
           onClose={clearSelectedAppId}

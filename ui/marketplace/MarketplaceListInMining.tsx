@@ -17,19 +17,34 @@ type Props = {
   isLoading: boolean;
   selectedCategoryId?: string;
   onAppClick: (event: MouseEvent, id: string) => void;
-}
+};
 
-const MarketplaceListInMining = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId, onAppClick }: Props) => {
-  const handleInfoClick = useCallback((id: string) => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
-    showAppInfo(id);
-  }, [ showAppInfo ]);
+const MarketplaceListInMining = ({
+  apps,
+  showAppInfo,
+  favoriteApps,
+  onFavoriteClick,
+  isLoading,
+  selectedCategoryId,
+  onAppClick,
+}: Props) => {
+  const handleInfoClick = useCallback(
+    (id: string) => {
+      mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
+      showAppInfo(id);
+    },
+    [showAppInfo]
+  );
 
-  const handleFavoriteClick = useCallback((id: string, isFavorite: boolean) => {
-    onFavoriteClick(id, isFavorite, 'Discovery view');
-  }, [ onFavoriteClick ]);
+  const handleFavoriteClick = useCallback(
+    (id: string, isFavorite: boolean) => {
+      onFavoriteClick(id, isFavorite, 'Discovery view');
+    },
+    [onFavoriteClick]
+  );
+  console.log(apps, 'appsappsapps');
 
-  return apps.length > 0 ? (
+  return apps.length !== 9 ? (
     <Grid
       templateColumns={{
         sm: 'repeat(auto-fill, minmax(178px, 1fr))',
@@ -38,30 +53,30 @@ const MarketplaceListInMining = ({ apps, showAppInfo, favoriteApps, onFavoriteCl
       autoRows="1fr"
       gap={{ base: '16px', sm: '24px' }}
     >
-      { apps.map((app, index) => (
+      {apps.map((app, index) => (
         <MarketplaceAppCardInMining
-          key={ app.id + (isLoading ? index : '') }
-          onInfoClick={ handleInfoClick }
-          id={ app.id }
-          external={ app.external }
-          url={ app.url }
-          title={ app.title }
-          logo={ app.logo }
-          logoDarkMode={ app.logoDarkMode }
-          shortDescription={ app.shortDescription }
-          categories={ app.categories }
-          isFavorite={ favoriteApps.includes(app.id) }
-          onFavoriteClick={ handleFavoriteClick }
-          isLoading={ isLoading }
-          internalWallet={ app.internalWallet }
-          onAppClick={ onAppClick }
-          miningInfo={ app.miningInfo }
-          tokenInfo={ app.tokenInfo }
+          key={app.id + (isLoading ? index : '')}
+          onInfoClick={handleInfoClick}
+          id={app.id}
+          external={app.external}
+          url={app.url}
+          title={app.title}
+          logo={app.logo}
+          logoDarkMode={app.logoDarkMode}
+          shortDescription={app.shortDescription}
+          categories={app.categories}
+          isFavorite={favoriteApps.includes(app.id)}
+          onFavoriteClick={handleFavoriteClick}
+          isLoading={isLoading}
+          internalWallet={app.internalWallet}
+          onAppClick={onAppClick}
+          miningInfo={app.miningInfo}
+          tokenInfo={app.tokenInfo}
         />
-      )) }
+      ))}
     </Grid>
   ) : (
-    <EmptySearchResult selectedCategoryId={ selectedCategoryId } favoriteApps={ favoriteApps }/>
+    <EmptySearchResult selectedCategoryId={selectedCategoryId} favoriteApps={favoriteApps} />
   );
 };
 

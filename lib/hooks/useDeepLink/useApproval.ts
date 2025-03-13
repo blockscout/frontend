@@ -108,7 +108,6 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
   });
 
   const stake = async () => {
-    console.log(nftData === undefined, 'nftDatanftDatanftDatanftData');
     return toast.promise(
       staking.writeContractAsync({
         address: STAKING_CONTRACT_ADDRESS,
