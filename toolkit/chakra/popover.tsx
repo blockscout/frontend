@@ -55,10 +55,16 @@ export const PopoverCloseTriggerWrapper = React.forwardRef<
   HTMLButtonElement,
   ChakraPopover.CloseTriggerProps
 >(function PopoverCloseTriggerWrapper(props, ref) {
+  const { disabled, ...rest } = props;
+
+  if (disabled) {
+    return props.children;
+  }
+
   return (
     <ChakraPopover.CloseTrigger
       ref={ ref }
-      { ...props }
+      { ...rest }
       asChild
     />
   );

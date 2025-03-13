@@ -64,6 +64,11 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
   const { isAutoConnectDisabled } = useMarketplaceContext();
   const logout = useLogout();
 
+  const handleLogoutClick = React.useCallback(() => {
+    logout();
+    onClose();
+  }, [ logout, onClose ]);
+
   if (!data) {
     return (
       <Box>
@@ -96,17 +101,13 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
               ml={ 1 }
             />
             { data?.address_hash ?
-              <Box ml="auto">{ shortenString(data?.address_hash) }</Box> :
-              <Link ml="auto" onClick={ onAddAddress }>Add address</Link>
-            }
+              <Box ml="auto">{ shortenString(data?.address_hash) }</Box> : <Link ml="auto" onClick={ onAddAddress }>Add address</Link> }
           </Flex>
         ) }
         <Flex p={ 2 } columnGap={ 4 }>
           <Box mr="auto">Email</Box>
           { data?.email ?
-            <TruncatedValue value={ data.email }/> :
-            <Link onClick={ onAddEmail }>Add email</Link>
-          }
+            <TruncatedValue value={ data.email }/> : <Link onClick={ onAddEmail }>Add email</Link> }
         </Flex>
       </Box>
 
@@ -127,7 +128,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
       <UserProfileContentNavLink
         text="Sign out"
         icon="sign_out"
-        onClick={ logout }
+        onClick={ handleLogoutClick }
       />
     </Box>
   );

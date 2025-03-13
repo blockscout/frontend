@@ -51,29 +51,28 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
   const handleAddEmailClick = React.useCallback(() => {
     setAuthInitialScreen({ type: 'email', isAuth: true });
     authModal.onOpen();
-  }, [ authModal ]);
+    profileMenu.onClose();
+  }, [ authModal, profileMenu ]);
 
   const handleAddAddressClick = React.useCallback(() => {
     setAuthInitialScreen({ type: 'connect_wallet', isAuth: true, loginToRewards: true });
     authModal.onOpen();
-  }, [ authModal ]);
+    profileMenu.onClose();
+  }, [ authModal, profileMenu ]);
 
   const handleAuthModalClose = React.useCallback(() => {
     setAuthInitialScreen(initialScreen);
     authModal.onClose();
   }, [ authModal ]);
 
-  const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
-    if (open) {
-      profileMenu.onOpen();
-    } else {
-      profileMenu.onClose();
-    }
-  }, [ profileMenu ]);
+  const handleLoginClick = React.useCallback(() => {
+    authModal.onOpen();
+    profileMenu.onClose();
+  }, [ authModal, profileMenu ]);
 
   return (
     <>
-      <PopoverRoot positioning={{ placement: 'bottom-end' }} open={ profileMenu.open } onOpenChange={ handleOpenChange }>
+      <PopoverRoot positioning={{ placement: 'bottom-end' }} open={ profileMenu.open } onOpenChange={ profileMenu.onOpenChange }>
         <PopoverTrigger>
           <UserProfileButton
             profileQuery={ profileQuery }
@@ -88,7 +87,7 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
               <UserProfileContent
                 data={ profileQuery.data }
                 onClose={ profileMenu.onClose }
-                onLogin={ authModal.onOpen }
+                onLogin={ handleLoginClick }
                 onAddEmail={ handleAddEmailClick }
                 onAddAddress={ handleAddAddressClick }
               />

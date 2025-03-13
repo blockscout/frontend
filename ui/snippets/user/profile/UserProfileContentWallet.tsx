@@ -32,6 +32,10 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
     onClose?.();
   }, [ web3Wallet, onClose ]);
 
+  const handleAddressClick = React.useCallback(() => {
+    onClose?.();
+  }, [ onClose ]);
+
   const content = (() => {
     if (web3Wallet.isConnected && web3AccountWithDomain.address) {
       return (
@@ -52,6 +56,7 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
             fontSize="sm"
             fontWeight={ 500 }
             noAltHash
+            onClick={ handleAddressClick }
           />
           { web3Wallet.isReconnecting ? <Spinner size="sm" m="2px" flexShrink={ 0 }/> : (
             <IconButton
