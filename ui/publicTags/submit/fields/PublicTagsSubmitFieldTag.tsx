@@ -126,7 +126,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
           <Flex flexDir="column" alignItems="flex-start" mt={ 10 } rowGap={ 2 }>
             <EntityTag data={{
               name: field.name || 'Tag name',
-              tagType: field.type[0].value,
+              tagType: field.type[0],
               meta: {
                 tagUrl: field.url,
                 bgColor: field.bgColor && colorValidator(field.bgColor) === true ? field.bgColor : undefined,
@@ -137,7 +137,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
               ordinal: 0,
             }}/>
             <chakra.span color="text.secondary" fontSize="sm">
-              { tagTypes?.find(({ type }) => type === field.type[0].value)?.description }
+              { tagTypes?.find(({ type }) => type === field.type[0])?.description }
             </chakra.span>
           </Flex>
         ) }

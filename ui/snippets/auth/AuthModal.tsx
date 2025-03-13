@@ -19,6 +19,7 @@ import AuthModalScreenSelectMethod from './screens/AuthModalScreenSelectMethod';
 import AuthModalScreenSuccessEmail from './screens/AuthModalScreenSuccessEmail';
 import AuthModalScreenSuccessWallet from './screens/AuthModalScreenSuccessWallet';
 
+// TODO @tom2drum: check login flow
 const feature = config.features.account;
 
 interface Props {

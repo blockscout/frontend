@@ -35,7 +35,6 @@ const FormFieldSelect = <
     field.onBlur();
   }, [ field ]);
 
-  // TODO @tom2drum: fix initial value is not displayed in the select
   return (
     <SelectRoot
       ref={ field.ref }
