@@ -3,10 +3,10 @@ import React from 'react';
 
 import type { ItemProps } from '../types';
 
+import { MenuItem } from 'toolkit/chakra/menu';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ButtonItem from '../parts/ButtonItem';
-import MenuItem from '../parts/MenuItem';
 
 const PublicTagMenuItem = ({ hash, type }: ItemProps) => {
   const router = useRouter();

@@ -54,9 +54,8 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
 
     if (external) {
       return (
-        <Skeleton loading={ loading } asChild>
+        <Skeleton loading={ loading } ref={ ref as React.ForwardedRef<HTMLDivElement> } asChild>
           <ChakraLink
-            ref={ ref }
             href={ href }
             className="group"
             target="_blank"
@@ -72,10 +71,9 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     }
 
     return (
-      <Skeleton loading={ loading } asChild>
+      <Skeleton loading={ loading } ref={ ref as React.ForwardedRef<HTMLDivElement> } asChild>
         <ChakraLink
           asChild
-          ref={ ref }
           { ...(disabled ? { 'data-disabled': true } : {}) }
           { ...rest }
         >

@@ -80,14 +80,14 @@ const AdaptiveTabsList = (props: Props) => {
       overflowX={{ base: 'auto', lg: 'initial' }}
       overscrollBehaviorX="contain"
       css={{
-        'scroll-snap-type': 'x mandatory',
-        'scroll-padding-inline': '12px', // mobile page padding
+        scrollSnapType: 'x mandatory',
+        scrollPaddingInline: '12px', // mobile page padding
         // hide scrollbar
         '&::-webkit-scrollbar': { /* Chromiums */
           display: 'none',
         },
         '-ms-overflow-style': 'none', /* IE and Edge */
-        'scrollbar-width': 'none', /* Firefox */
+        scrollbarWidth: 'none', /* Firefox */
       }}
       {
         ...(props.stickyEnabled ? {

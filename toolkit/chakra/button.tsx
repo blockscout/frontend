@@ -51,9 +51,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     })();
 
     return (
-      <Skeleton loading={ loadingSkeleton } asChild>
+      <Skeleton loading={ loadingSkeleton } asChild ref={ ref as React.ForwardedRef<HTMLDivElement> }>
         <ChakraButton
-          ref={ ref }
           { ...(expanded ? { 'data-expanded': true } : {}) }
           { ...(selected ? { 'data-selected': true } : {}) }
           { ...(highlighted ? { 'data-highlighted': true } : {}) }

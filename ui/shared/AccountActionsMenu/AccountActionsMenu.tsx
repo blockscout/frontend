@@ -77,7 +77,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
   }
 
   return (
-    <MenuRoot>
+    <MenuRoot unmountOnExit={ false }>
       <MenuTrigger asChild>
         <IconButton variant="dropdown" size="sm" className={ className } onClick={ handleButtonClick } aria-label="Show address menu">
           <IconSvg name="dots" boxSize="18px"/>

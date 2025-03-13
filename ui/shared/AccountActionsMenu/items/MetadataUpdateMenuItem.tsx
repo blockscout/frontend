@@ -2,11 +2,11 @@ import React from 'react';
 
 import type { ItemProps } from '../types';
 
+import { MenuItem } from 'toolkit/chakra/menu';
 import IconSvg from 'ui/shared/IconSvg';
 import { useMetadataUpdateContext } from 'ui/tokenInstance/contexts/metadataUpdate';
 
 import ButtonItem from '../parts/ButtonItem';
-import MenuItem from '../parts/MenuItem';
 
 const MetadataUpdateMenuItem = ({ type }: ItemProps) => {
 
@@ -30,7 +30,7 @@ const MetadataUpdateMenuItem = ({ type }: ItemProps) => {
       }
       case 'menu_item': {
         return (
-          <MenuItem onClick={ handleClick } isDisabled={ status === 'WAITING_FOR_RESPONSE' } value="refresh-metadata">
+          <MenuItem onClick={ handleClick } disabled={ status === 'WAITING_FOR_RESPONSE' } value="refresh-metadata">
             <IconSvg name="refresh" boxSize={ 5 }/>
             <span>Refresh metadata</span>
           </MenuItem>

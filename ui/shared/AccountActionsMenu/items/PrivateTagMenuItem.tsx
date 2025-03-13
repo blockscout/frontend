@@ -8,6 +8,7 @@ import type { Transaction } from 'types/api/transaction';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getPageType from 'lib/mixpanel/getPageType';
+import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AddressModal from 'ui/privateTags/AddressModal/AddressModal';
 import TransactionModal from 'ui/privateTags/TransactionModal/TransactionModal';
@@ -15,7 +16,6 @@ import IconSvg from 'ui/shared/IconSvg';
 import AuthGuard from 'ui/snippets/auth/AuthGuard';
 
 import ButtonItem from '../parts/ButtonItem';
-import MenuItem from '../parts/MenuItem';
 
 interface Props extends ItemProps {
   entityType?: 'address' | 'tx';
