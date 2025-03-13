@@ -12,31 +12,35 @@ export default function useWallet({ source }: Params) {
   const { open } = useWeb3Modal();
   const { open: isOpen } = useWeb3ModalState();
   const { disconnect } = useDisconnect();
-  const [ isModalOpening, setIsModalOpening ] = React.useState(false);
-  const [ isClientLoaded, setIsClientLoaded ] = React.useState(false);
+  const [isModalOpening, setIsModalOpening] = React.useState(false);
+  const [isClientLoaded, setIsClientLoaded] = React.useState(false);
   const isConnectionStarted = React.useRef(false);
 
   React.useEffect(() => {
     setIsClientLoaded(true);
   }, []);
 
-  const handleConnect = React.useCallback(async() => {
+  const handleConnect = React.useCallback(async () => {
     setIsModalOpening(true);
     await open();
     setIsModalOpening(false);
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
     isConnectionStarted.current = true;
-  }, [ open, source ]);
+  }, [open, source]);
 
-  const handleAccountConnected = React.useCallback(({ isReconnected }: { isReconnected: boolean }) => {
-    !isReconnected && isConnectionStarted.current &&
-      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
-    isConnectionStarted.current = false;
-  }, [ source ]);
+  const handleAccountConnected = React.useCallback(
+    ({ isReconnected }: { isReconnected: boolean }) => {
+      !isReconnected &&
+        isConnectionStarted.current &&
+        mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
+      isConnectionStarted.current = false;
+    },
+    [source]
+  );
 
   const handleDisconnect = React.useCallback(() => {
     disconnect();
-  }, [ disconnect ]);
+  }, [disconnect]);
 
   useAccountEffect({ onConnect: handleAccountConnected });
 

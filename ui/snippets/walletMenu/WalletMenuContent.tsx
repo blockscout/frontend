@@ -18,80 +18,57 @@ type Props = {
 
 const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openWeb3Modal, closeWalletMenu }: Props) => {
   const { themedBackgroundOrange } = useMenuButtonColors();
-  const [ isModalOpening, setIsModalOpening ] = React.useState(false);
+  const [isModalOpening, setIsModalOpening] = React.useState(false);
 
   const onAddressClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Address click' });
   }, []);
 
-  const handleOpenWeb3Modal = React.useCallback(async() => {
+  const handleOpenWeb3Modal = React.useCallback(async () => {
     setIsModalOpening(true);
     await openWeb3Modal();
     setTimeout(closeWalletMenu, 300);
-  }, [ openWeb3Modal, closeWalletMenu ]);
+  }, [openWeb3Modal, closeWalletMenu]);
 
   return (
     <Box>
-      { isAutoConnectDisabled && (
-        <Flex
-          borderRadius="base"
-          p={ 3 }
-          mb={ 3 }
-          alignItems="center"
-          backgroundColor={ themedBackgroundOrange }
-        >
-          <IconSvg
-            name="integration/partial"
-            color="text"
-            boxSize={ 5 }
-            flexShrink={ 0 }
-            mr={ 2 }
-          />
+      {isAutoConnectDisabled && (
+        <Flex borderRadius="base" p={3} mb={3} alignItems="center" backgroundColor={themedBackgroundOrange}>
+          <IconSvg name="integration/partial" color="text" boxSize={5} flexShrink={0} mr={2} />
           <Text fontSize="xs" lineHeight="16px">
             Connect your wallet in the app below
           </Text>
         </Flex>
-      ) }
-      <Text
-        fontSize="sm"
-        fontWeight={ 600 }
-        mb={ 1 }
-        { ...getDefaultTransitionProps() }
-      >
+      )}
+      <Text fontSize="sm" fontWeight={600} mb={1} {...getDefaultTransitionProps()}>
         My wallet
       </Text>
-      <Text
-        fontSize="sm"
-        mb={ 5 }
-        fontWeight={ 400 }
-        color="text_secondary"
-        { ...getDefaultTransitionProps() }
-      >
+      <Text fontSize="sm" mb={5} fontWeight={400} color="text_secondary" {...getDefaultTransitionProps()}>
         Your wallet is used to interact with apps and contracts in the explorer.
       </Text>
-      <Flex alignItems="center" mb={ 6 }>
+      <Flex alignItems="center" mb={6}>
         <AddressEntity
           address={{ hash: address }}
           noTooltip
           truncation="dynamic"
           fontSize="sm"
-          fontWeight={ 700 }
+          fontWeight={700}
           color="text"
-          onClick={ onAddressClick }
-          flex={ 1 }
+          onClick={onAddressClick}
+          flex={1}
         />
         <IconButton
           aria-label="open wallet"
-          icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
+          icon={<IconSvg name="gear_slim" boxSize={5} />}
           variant="simple"
           h="20px"
           w="20px"
-          ml={ 1 }
-          onClick={ handleOpenWeb3Modal }
-          isLoading={ isModalOpening }
+          ml={1}
+          onClick={handleOpenWeb3Modal}
+          isLoading={isModalOpening}
         />
       </Flex>
-      <Button size="sm" width="full" variant="outline" onClick={ disconnect }>
+      <Button size="sm" width="full" variant="outline" onClick={disconnect}>
         Disconnect
       </Button>
     </Box>

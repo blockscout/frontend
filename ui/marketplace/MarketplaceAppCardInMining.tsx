@@ -55,7 +55,7 @@ const MarketplaceAppCard = ({
   const formattedReward =
     dailyRewardAmount && typeof dailyRewardAmount === 'bigint'
       ? Number(formatUnits(dailyRewardAmount, 18)).toFixed(2) // 从 wei 转换为 ETH，保留 2 位小数
-      : 'N/A';
+      : '0.00';
 
   const { data: totalStakingGpuCount, isLoading: gpuLoading } = useReadContract({
     address: STAKING_CONTRACT_ADDRESS,
@@ -66,19 +66,11 @@ const MarketplaceAppCard = ({
   const formattedGpuCount =
     totalStakingGpuCount !== undefined && typeof totalStakingGpuCount === 'bigint'
       ? Number(totalStakingGpuCount).toString()
-      : 'N/A';
+      : '0.00';
 
   useEffect(() => {
-    console.log('=== Debug Start ===');
-    console.log('totalStakingGpuCount:', {
-      loading: gpuLoading,
-      raw: totalStakingGpuCount,
-      type: typeof totalStakingGpuCount,
-      formatted: formattedGpuCount,
-    });
-    console.log('Final Output:', formattedReward, formattedGpuCount, 'KKKKKKKKKKKKKKKKKKKKK');
-    console.log('=== Debug End ===');
-  }, [totalStakingGpuCount, gpuLoading, formattedReward, formattedGpuCount]);
+    console.log('deeplink每日总的奖励数量', formattedReward, formattedGpuCount);
+  }, [formattedReward, formattedGpuCount]);
 
   return (
     <NextLink href={href} passHref legacyBehavior>
