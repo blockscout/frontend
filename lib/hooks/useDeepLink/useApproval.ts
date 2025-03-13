@@ -4,28 +4,28 @@ import erc20Abi from './dlcAbi.json';
 import stakingAbi from './stakingLongAbi.json';
 import { useToast } from '@chakra-ui/react';
 import { waitForTransactionReceipt } from 'wagmi/actions';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // 主网：
 // 长租质押合约：0x3c059dbe0f42d65acd763c3c3da8b5a1b12bb74f
-//  NFT: 0xFDB11c63b82828774D6A9E893f85D1998E6B36BF
-//  DLC: 0x6f8F70C74FE7d7a61C8EAC0f35A4Ba39a51E1BEe
+//  NFT: 0x905dE58579886C5afe9B6406CFDE82bd6a1087C1
+//  DLC: 0xC8b47112D5413c6d06D4BB7573fD903908246614
 // 短租质押合约：0x6268aba94d0d0e4fb917cc02765f631f309a7388
 
 // machin ID: a8aeafb706433fc89c16817e8405705bd66f28b6d5cfc46c9da2faf7b204da78
 // private key: d85789ca443866f898a928bba3d863a5e3c66dc03b03a7d947e8dde99e19368e
-const NFT_CONTRACT_ADDRESS = '0xFDB11c63b82828774D6A9E893f85D1998E6B36BF';
-const DLC_TOKEN_ADDRESS = '0x6f8F70C74FE7d7a61C8EAC0f35A4Ba39a51E1BEe';
-const STAKING_CONTRACT_ADDRESS = '0x3c059dbe0f42d65acd763c3c3da8b5a1b12bb74f';
+const NFT_CONTRACT_ADDRESS = '0x905dE58579886C5afe9B6406CFDE82bd6a1087C1';
+const DLC_TOKEN_ADDRESS = '0xC8b47112D5413c6d06D4BB7573fD903908246614';
+const STAKING_CONTRACT_ADDRESS = '0x7FDC6ed8387f3184De77E0cF6D6f3B361F906C21';
 import { createMachine } from '../../../ui/mymachine/modules/api/index';
 
 export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseDLC?: () => void) {
   const { address, isConnected } = useAccount();
   const toast = useToast();
   const config = useConfig(); // 获取全局配置
+
   // 读取 NFT 余额 (getBalance)
   const [nftNodeCount, setNftNodeCount] = useState('');
-
   const { data: nftData, refetch } = useReadContract({
     address: NFT_CONTRACT_ADDRESS,
     abi: nftAbi,
@@ -42,9 +42,6 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
   const [rentalMachineIdOnChain, setRentalMachineIdOnChain] = useState('');
 
   const nftApproval = useWriteContract();
-  const { data: nftTxHash } = nftApproval;
-  const { isSuccess: isNftApproved } = useWaitForTransactionReceipt({ hash: nftTxHash });
-
   const approveNft = async () => {
     if (!isConnected) {
       toast({
@@ -58,58 +55,60 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
       return;
     }
 
+    setLoading(true);
+
+    // 获取余额
+    refetch();
+
+    const hash = await nftApproval.writeContractAsync({
+      address: NFT_CONTRACT_ADDRESS,
+      abi: nftAbi,
+      functionName: 'setApprovalForAll',
+      args: [STAKING_CONTRACT_ADDRESS, true],
+    });
+    console.log(hash, '授权交易hash');
+
+    toast({
+      position: 'top',
+      title: '交易已发送',
+      status: 'success',
+      description: `授权交易发送成功，请等待成功！hash:${hash}`,
+      isClosable: true,
+    });
     try {
-      setLoading(true);
-
-      // 获取余额
-      refetch();
-
-      // 使用 toast.promise 包裹整个 Promise
-
-      return toast.promise(
-        nftApproval.writeContractAsync({
-          address: NFT_CONTRACT_ADDRESS,
-          abi: nftAbi,
-          functionName: 'setApprovalForAll',
-          args: [STAKING_CONTRACT_ADDRESS, true],
-        }),
-        {
-          loading: {
-            title: 'Authorizing',
-            description: 'Please confirm the transaction in your wallet',
+      waitForTransactionReceipt(config, { hash: hash }).then((receipt) => {
+        console.log(receipt);
+        if (receipt.status === 'success') {
+          console.log('成功授权了');
+          toast({
             position: 'top',
-          },
-          success: (txHash) => {
-            console.log('NFT authorization transaction sent:', txHash);
-            return { title: 'NFT Authorization Successful', description: 'Authorization completed', position: 'top' };
-          },
-          error: (err) => {
-            setLoading(false);
-
-            return {
-              title: 'Authorization Failed',
-              description: err.message || 'Please check wallet settings or network',
-              position: 'top',
-            };
-          },
+            title: '成功',
+            status: 'success',
+            description: '授权成功，请继续等待质押！',
+            isClosable: true,
+          });
+          stake();
+        } else {
+          console.log(receipt);
         }
-      );
+      });
     } catch (error) {
       setLoading(false);
+      return {
+        title: '授权失败',
+        description: error || '授权失败',
+        position: 'top',
+        duration: null,
+        isClosable: true,
+      };
     }
   };
 
   // 最终的质押方法
   const staking = useWriteContract();
-  const { data: stakeTxHash } = staking;
-
-  const { isSuccess: isStakingSuccess } = useWaitForTransactionReceipt({
-    hash: stakeTxHash,
-  });
-
   const stake = async () => {
-    return toast.promise(
-      staking.writeContractAsync({
+    try {
+      const hash = await staking.writeContractAsync({
         address: STAKING_CONTRACT_ADDRESS,
         abi: stakingAbi,
         functionName: 'stake',
@@ -119,101 +118,88 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
           nftData === undefined ? [] : nftData[1],
           machineId,
         ],
-      }),
-      {
-        loading: {
-          title: 'In Progress',
-          description: 'Please confirm the transaction in your wallet',
-          position: 'top',
-          isClosable: true,
-        },
-        success: (txHash) => {
-          console.log('NFT staking transaction sent:', txHash);
-          return {
-            title: 'NFT Staking Successful',
-            description: 'Staking completed',
-            position: 'top',
-            isClosable: true,
+      });
+      console.log('质押:', hash);
+      toast({
+        position: 'top',
+        title: '交易已发送',
+        status: 'success',
+        description: `质押交易发送成功，请等待成功！hash:${hash}`,
+        isClosable: true,
+      });
+      waitForTransactionReceipt(config, { hash: hash }).then((receipt) => {
+        console.log(receipt);
+        if (receipt.status === 'success') {
+          console.log('成功质押了');
+
+          // 在组件中定义创建机器的函数
+          const handleCreateMachine = async () => {
+            const machineData = {
+              address: address,
+              machineId: rentalMachineIdOnChain,
+              numberOfNodes: nftNodeCount,
+              rentalMachineId: machineId,
+            };
+
+            try {
+              const res: any = await createMachine(machineData);
+              if (res.code === 1000) {
+                toast({
+                  position: 'top',
+                  title: '成功',
+                  status: 'success',
+                  description: '成功质押了',
+                  isClosable: true,
+                });
+                if (onPledgeModalClose) {
+                  onPledgeModalClose();
+                }
+              } else {
+                toast({
+                  position: 'top',
+                  title: '成功',
+                  status: 'error',
+                  description: res.msg,
+                  isClosable: true,
+                });
+                setLoading(false);
+              }
+            } catch (err: any) {
+              console.log(err, '////////////////');
+              toast({
+                position: 'top',
+                title: '警告',
+                status: 'warning',
+                description: '质押成功，但创建机器失败！',
+                isClosable: true,
+              });
+              setLoading(false);
+            }
           };
-        },
-        error: (err) => {
+          handleCreateMachine();
+        } else {
+          console.log('失败了', receipt);
           setLoading(false);
-
-          return {
-            title: 'Authorization Failed',
-            description: err.message || 'Please check wallet settings or network',
-            position: 'top',
-            duration: 2000,
-            isClosable: true,
-          };
-        },
-      }
-    );
-  };
-
-  useEffect(() => {
-    if (isNftApproved) {
-      try {
-        stake();
-      } catch {
-        setLoading(false);
-      }
-    }
-  }, [isNftApproved]);
-
-  useEffect(() => {
-    if (isStakingSuccess) {
-      setLoading(false);
-      if (onPledgeModalClose) {
-        onPledgeModalClose();
-      }
-      // 在组件中定义创建机器的函数
-      const handleCreateMachine = async () => {
-        const machineData = {
-          address: address,
-          machineId: rentalMachineIdOnChain,
-          numberOfNodes: nftNodeCount,
-          rentalMachineId: machineId,
-        };
-
-        try {
-          const res: any = await createMachine(machineData);
-          if (res.code === 1000) {
-            toast({
-              title: 'Prompt',
-              description: 'Congratulations, you have successfully staked your NFT!',
-              status: 'success',
-              duration: 2000,
-              isClosable: true,
-              position: 'top',
-            });
-          }
-
-          // 可选：创建成功后刷新列表
-          // fetchMachineDataH();
-        } catch (err: any) {
-          console.log(err, '////////////////');
-          toast({
-            title: 'Prompt',
-            description: err.msg,
-            status: 'error',
-            duration: 2000,
-            isClosable: true,
-            position: 'top',
-          });
         }
+      });
+    } catch (error) {
+      setLoading(false);
+      console.log(error, 'errorerror');
+      return {
+        title: '交易失败',
+        description: error || '交易失败',
+        position: 'top',
+        duration: null,
+        isClosable: true,
       };
-      handleCreateMachine();
     }
-  }, [isStakingSuccess]);
+  };
 
   // DLC 授权
   const [dlcBtnLoading, setDlcBtnLoading] = useState(false);
   const [dlcNodeId, setdlcNodeId] = useState('');
   const [dlcNodeCount, setDlcNodeCount] = useState('');
   const dlcApproval = useWriteContract();
-  const { data: dlcTxHash } = dlcApproval;
-  const { isSuccess: isDlcApproved } = useWaitForTransactionReceipt({ hash: dlcTxHash });
 
   const approveDlcToken = async () => {
     if (!isConnected) {
@@ -228,98 +214,134 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
       return;
     }
     setDlcBtnLoading(true);
-    return toast.promise(
-      dlcApproval.writeContractAsync({
-        address: DLC_TOKEN_ADDRESS,
-        abi: erc20Abi,
-        functionName: 'approve',
-        args: [STAKING_CONTRACT_ADDRESS, dlcNodeCount],
-      }),
-      {
-        loading: {
-          title: 'Authorizing',
-          description: 'Please confirm the transaction in your wallet',
-          position: 'top',
-        },
-        success: (txHash) => {
-          console.log('DLC Token authorization transaction sent:', txHash);
-          return {
-            title: 'DLC Authorization Successful',
-            description: 'Authorization completed',
-            position: 'top',
-            status: 'success',
-            duration: 2000,
-            isClosable: true,
-          };
-        },
-        error: (err) => {
-          setDlcBtnLoading(false);
 
-          return {
-            title: 'Authorization Failed',
-            description: err.message || 'Please check wallet settings or network',
+    const hash = await dlcApproval.writeContractAsync({
+      address: DLC_TOKEN_ADDRESS,
+      abi: erc20Abi,
+      functionName: 'approve',
+      args: [STAKING_CONTRACT_ADDRESS, dlcNodeCount],
+    });
+
+    console.log('dlc授权hash:', hash);
+    toast({
+      position: 'top',
+      title: 'DLC授权交易已发送',
+      status: 'success',
+      description: `DLC授权交易发送成功，请等待成功！hash:${hash}`,
+      isClosable: true,
+    });
+    try {
+      waitForTransactionReceipt(config, { hash: hash }).then((receipt) => {
+        console.log(receipt);
+        if (receipt.status === 'success') {
+          console.log('成功授权了');
+
+          toast({
             position: 'top',
-            status: 'error',
-            duration: 2000,
+            title: '成功',
+            status: 'success',
+            description: `授权成功，请等待DLC质押操作！`,
             isClosable: true,
-          };
-        },
-      }
-    );
+          });
+          handleAddDLCToStake();
+        } else {
+          console.log('失败了', receipt);
+          setDlcBtnLoading(false);
+        }
+      });
+    } catch (error: any) {
+      setDlcBtnLoading(false);
+      toast({
+        position: 'top',
+        title: '失败',
+        status: 'error',
+        description: error || '授权失败',
+        isClosable: true,
+      });
+    }
   };
   // 交易方法：添加 DLC 到质押
   // const { writeContractAsync } = useWriteContract();
   const dlcStake = useWriteContract();
 
-  const { data: addDLCTxHash } = dlcStake;
-  const { isSuccess: isAddDLCSuccess } = useWaitForTransactionReceipt({
-    hash: addDLCTxHash,
-  });
   // 开始质押 DLC
   const handleAddDLCToStake = async () => {
     try {
-      return toast.promise(
-        dlcStake.writeContractAsync({
-          address: STAKING_CONTRACT_ADDRESS,
-          abi: stakingAbi,
-          functionName: 'addDLCToStake',
-          args: [dlcNodeId, dlcNodeCount], // 使用传入的 machineId 和 amount
-        }),
-        {
-          loading: {
-            title: 'In Progress',
-            description: 'Please confirm the transaction in your wallet',
+      // return toast.promise(
+      //   dlcStake.writeContractAsync({
+      //     address: STAKING_CONTRACT_ADDRESS,
+      //     abi: stakingAbi,
+      //     functionName: 'addDLCToStake',
+      //     args: [dlcNodeId, dlcNodeCount], // 使用传入的 machineId 和 amount
+      //   }),
+      //   {
+      //     loading: {
+      //       title: 'In Progress',
+      //       description: 'Please confirm the transaction in your wallet',
+      //       position: 'top',
+      //     },
+      //     success: (txHash) => {
+      //       console.log('DLC staking transaction sent:', txHash);
+      //       return {
+      //         title: 'Transaction Sent',
+      //         description: 'DLC transaction sent successfully, please wait for confirmation!',
+      //         position: 'top',
+      //         duration: 2000,
+      //         isClosable: true,
+      //       };
+      //     },
+      //     error: (err) => {
+      //       setDlcBtnLoading(false);
+      //       return {
+      //         title: 'Transaction sending failed',
+      //         description: err.message || 'Please check wallet settings or network',
+      //         position: 'top',
+      //         status: 'error',
+      //         duration: 2000,
+      //         isClosable: true,
+      //       };
+      //     },
+      //   }
+      // );
+      const hash = await dlcStake.writeContractAsync({
+        address: STAKING_CONTRACT_ADDRESS,
+        abi: stakingAbi,
+        functionName: 'addDLCToStake',
+        args: [dlcNodeId, dlcNodeCount], // 使用传入的 machineId 和 amount
+      });
+      console.log(`DLC质押交易发送成功，请等待成功！hash:${hash}`);
+      toast({
+        position: 'top',
+        title: '交易已发送',
+        status: 'success',
+        description: `DLC质押交易发送成功，请等待成功！hash:${hash}`,
+        isClosable: true,
+      });
+      waitForTransactionReceipt(config, { hash: hash }).then((receipt) => {
+        console.log(receipt);
+        if (receipt.status === 'success') {
+          console.log('dlc质押成功');
+          if (onPledgeModalCloseDLC) {
+            onPledgeModalCloseDLC();
+          }
+          toast({
             position: 'top',
-          },
-          success: (txHash) => {
-            console.log('DLC staking transaction sent:', txHash);
-            return {
-              title: 'Transaction Sent',
-              description: 'DLC transaction sent successfully, please wait for confirmation!',
-              position: 'top',
-              duration: 2000,
-              isClosable: true,
-            };
-          },
-          error: (err) => {
-            setDlcBtnLoading(false);
-            return {
-              title: 'Transaction sending failed',
-              description: err.message || 'Please check wallet settings or network',
-              position: 'top',
-              status: 'error',
-              duration: 2000,
-              isClosable: true,
-            };
-          },
+            title: '成功',
+            status: 'success',
+            description: `dlc质押成功！`,
+            isClosable: true,
+          });
+        } else {
+          console.log('失败了', receipt);
+          setDlcBtnLoading(false);
         }
-      );
+      });
     } catch (err: any) {
       console.log(err, 'errrrrrr');
       setDlcBtnLoading(false);
       toast({
-        title: 'Prompt',
-        description: err.message || 'Please check wallet settings or network',
+        title: '交易失败',
+        description: err,
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -328,45 +350,11 @@ export function useApproval(onPledgeModalClose?: () => void, onPledgeModalCloseD
     }
   };
 
-  useEffect(() => {
-    if (isDlcApproved) {
-      try {
-        handleAddDLCToStake();
-      } catch {
-        setDlcBtnLoading(false);
-      }
-    }
-  }, [isDlcApproved]);
-
-  useEffect(() => {
-    if (isAddDLCSuccess) {
-      setDlcBtnLoading(false);
-      toast({
-        title: 'Prompt',
-        description: 'Congratulations, you have successfully staked DLC!',
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-        position: 'top',
-      });
-      if (onPledgeModalCloseDLC) {
-        onPledgeModalCloseDLC();
-      }
-    }
-  }, [isAddDLCSuccess]);
-
   return {
     approveNft,
     approveDlcToken,
-    isNftApproved,
-    nftTxHash,
-    isDlcApproved,
-    dlcTxHash,
     stake,
-    isStakingSuccess,
     handleAddDLCToStake,
-    isAddDLCSuccess,
-
     dlcBtnLoading,
     dlcNodeId,
     setdlcNodeId,

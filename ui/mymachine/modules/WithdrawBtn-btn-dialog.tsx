@@ -18,7 +18,7 @@ import { useConfig } from 'wagmi';
 import { useToast } from '@chakra-ui/react';
 import stakingAbi from '../../../lib/hooks/useDeepLink/stakingLongAbi.json';
 
-const STAKING_CONTRACT_ADDRESS = '0x3c059dbe0f42d65acd763c3c3da8b5a1b12bb74f';
+const STAKING_CONTRACT_ADDRESS = '0x7FDC6ed8387f3184De77E0cF6D6f3B361F906C21';
 
 function WithdrawBtn({ id, forceRerender }: { id: string; forceRerender: any }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
