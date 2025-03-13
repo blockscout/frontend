@@ -126,12 +126,7 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
-  const {
-    isPlaceholderData: isGPUMiningPlaceholderData,
-    isError: isGPUMiningError,
-    error: gpuMiningError,
-    data: gpuMiningData,
-  } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
+  const { data: gpuMiningData } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
     queryKey: ['gpu_mining-dapps', snapshotFavoriteApps],
     queryFn: async () => {
       try {
@@ -174,13 +169,13 @@ export default function useMarketplaceApps(
   }, [selectedCategoryId, gpuRaceData, filter, favoriteApps]);
 
   const displayedAppsInMining = React.useMemo(() => {
+    if (gpuMiningData?.length === 9) return [];
     return (
       gpuMiningData?.filter(
         (app) => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)
       ) || []
     );
   }, [selectedCategoryId, gpuMiningData, filter, favoriteApps]);
-
   return React.useMemo(
     () => ({
       data,

@@ -44,7 +44,7 @@ const MarketplaceListInMining = ({
   );
   console.log(apps, 'appsappsapps');
 
-  return apps.length !== 9 ? (
+  return apps.length > 0 ? (
     <Grid
       templateColumns={{
         sm: 'repeat(auto-fill, minmax(178px, 1fr))',
