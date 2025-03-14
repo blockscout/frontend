@@ -67,20 +67,19 @@ const RewardsDashboard = () => {
             description="Claim your daily Merits and any Merits received from referrals."
             direction="column-reverse"
             contentAfter={ <DailyRewardClaimButton/> }
+            hint={ (
+              <>
+                Total number of Merits earned from all activities.{ ' ' }
+                <LinkExternal href="https://docs.blockscout.com/using-blockscout/merits">
+                  More info on Merits
+                </LinkExternal>
+              </>
+            ) }
           >
             <RewardsDashboardCardValue
-              label="Total balance"
               value={ balancesQuery.data?.total || 'N/A' }
               isLoading={ balancesQuery.isPending }
               withIcon
-              hint={ (
-                <>
-                  Total number of Merits earned from all activities.{ ' ' }
-                  <LinkExternal href="https://docs.blockscout.com/using-blockscout/merits">
-                    More info on Merits
-                  </LinkExternal>
-                </>
-              ) }
             />
           </RewardsDashboardCard>
           <RewardsDashboardCard
@@ -89,7 +88,6 @@ const RewardsDashboard = () => {
             direction="column-reverse"
           >
             <RewardsDashboardCardValue
-              label="Referrals"
               value={ referralsQuery.data?.referrals ?
                 `${ referralsQuery.data?.referrals } user${ Number(referralsQuery.data?.referrals) === 1 ? '' : 's' }` :
                 'N/A'
@@ -111,28 +109,27 @@ const RewardsDashboard = () => {
                 </LinkExternal>
               </>
             ) }
+            hint={ (
+              <>
+                See the{ ' ' }
+                <LinkExternal
+                  href="https://docs.blockscout.com/using-blockscout/merits/streak-rewards"
+                  isExternal
+                >
+                  docs
+                </LinkExternal>{ ' ' }
+                to learn how your streak number affects daily rewards
+              </>
+            ) }
             direction="column-reverse"
           >
             <RewardsDashboardCardValue
-              label="Streak"
               value={
                 dailyRewardQuery.data?.streak ?
                   `${ dailyRewardQuery.data?.streak } day${ Number(dailyRewardQuery.data?.streak) === 1 ? '' : 's' }` :
                   'N/A'
               }
               isLoading={ dailyRewardQuery.isPending }
-              hint={ (
-                <>
-                  See the{ ' ' }
-                  <LinkExternal
-                    href="https://docs.blockscout.com/using-blockscout/merits/streak-rewards"
-                    isExternal
-                  >
-                    docs
-                  </LinkExternal>{ ' ' }
-                  to learn how your streak number affects daily rewards
-                </>
-              ) }
             />
           </RewardsDashboardCard>
         </Flex>
