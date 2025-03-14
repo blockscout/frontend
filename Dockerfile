@@ -44,7 +44,7 @@ RUN yarn --frozen-lockfile --network-timeout 100000
 # ****** STAGE 2: Build *******
 # *****************************
 FROM node:22.11.0-alpine AS builder
-RUN apk add --no-cache --upgrade libc6-compat bash
+RUN apk add --no-cache --upgrade libc6-compat bash jq
 
 # pass build args to env variables
 ARG GIT_COMMIT_SHA
