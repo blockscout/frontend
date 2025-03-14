@@ -15,13 +15,14 @@ import {
   Accordion,
   AccordionPanel,
   AccordionIcon,
+  Square,
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { isAddress } from 'viem';
 
-import { sleep } from 'configs/app/utils';
+import { getEnvValue, sleep } from 'configs/app/utils';
 import IconSvg from 'ui/shared/IconSvg';
 
 import mocaIcon from '../../icons/logo/icon-moca-placeholder.png';
@@ -38,22 +39,22 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
   const [ errMessage, setErrMessage ] = React.useState<string>('');
   const [ requestStatus, setRequestStatus ] = React.useState<number>(FAUCET_REQUEST_TYPE.REQUEST);
 
-  // const handleClk = React.useCallback(() => {
-  //   if (props.verified) {
-  //     return;
-  //   } else {
-  //     const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
-  // const authUrl = new URL('https://discord.com/oauth2/authorize');
-  // const searchParams = new URLSearchParams({
-  //   client_id: getEnvValue('NEXT_PUBLIC_DISCORD_CLIENT_ID')!,
-  //   response_type: 'code',
-  //   redirect_uri: redirectUri,
-  //       scope: 'identify guilds.join',
-  //     });
-  //     authUrl.search = searchParams.toString();
-  //     location.href = authUrl.href;
-  //   }
-  // }, [ props.verified ]);
+  const handleClk = React.useCallback(() => {
+    if (props.verified) {
+      return;
+    } else {
+      const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
+      const authUrl = new URL('https://discord.com/oauth2/authorize');
+      const searchParams = new URLSearchParams({
+        client_id: getEnvValue('NEXT_PUBLIC_DISCORD_CLIENT_ID')!,
+        response_type: 'code',
+        redirect_uri: redirectUri,
+        scope: 'identify',
+      });
+      authUrl.search = searchParams.toString();
+      location.href = authUrl.href;
+    }
+  }, [ props.verified ]);
 
   const reset = React.useCallback(() => {
     setIsError(false);
@@ -119,24 +120,24 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
     }
   }, [ props, reset ]);
 
-  // const verifyBtnStyles = React.useCallback(() => {
-  //   if (props.verified) {
-  //     return {
-  //       bg: '#30D3BF',
-  //       height: '48px',
-  //       border: '1px solid rgba(0, 0, 0, 0.12)',
-  //       _hover: { background: '#30D3BF' },
-  //       cursor: 'unset',
-  //     };
-  //   } else {
-  //     return {
-  //       bg: '#C15E97',
-  //       height: '48px',
-  //       border: '1px solid #ffa1da',
-  //       _hover: { background: '#C15E97' },
-  //     };
-  //   }
-  // }, [ props.verified ]);
+  const verifyBtnStyles = React.useCallback(() => {
+    if (props.verified) {
+      return {
+        bg: '#30D3BF',
+        height: '48px',
+        border: '1px solid rgba(0, 0, 0, 0.12)',
+        _hover: { background: '#30D3BF' },
+        cursor: 'unset',
+      };
+    } else {
+      return {
+        bg: '#C15E97',
+        height: '48px',
+        border: '1px solid #ffa1da',
+        _hover: { background: '#C15E97' },
+      };
+    }
+  }, [ props.verified ]);
 
   const requestBtnStyles = React.useCallback(() => {
     return {
@@ -194,7 +195,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
         Tokens will be automatically transferred to your address.
       </Text>
       <Flex>
-        { /* <Box
+        <Box
           width="580px"
           minH="280px"
           border="1px solid rgba(0, 0, 0, 0.06)"
@@ -221,14 +222,14 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
             fontSize="24px"
             color="#000000"
           >
-            <Text>Join our Discord</Text>
+            <Text>Authorize</Text>
             <IconSvg
               name="social/discord_colored"
               w="38px"
               h="25px"
               margin="0px 8px"
             />
-            <Text>Community</Text>
+            <Text>Discord to proceed</Text>
           </Flex>
           <Button
             { ...verifyBtnStyles() }
@@ -243,7 +244,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
             { props.verified ? 'Account Verified' : 'Verify' }
           </Button>
         </Box>
-        <Square size="20px"></Square> */ }
+        <Square size="20px"></Square>
         <Box
           width="580px"
           minH="280px"

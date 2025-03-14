@@ -60,29 +60,29 @@ async function getUserProfile(accessToken: string) {
   return results;
 }
 
-async function joinGuild(accessToken: string, userId: string) {
-  const botToken = getEnvValue('NEXT_PUBLIC_DISCORD_BOT_TOKEN');
-  const guildId = getEnvValue('NEXT_PUBLIC_DISCORD_GUILD_ID');
-  const rp = await fetch(`https://discord.com/api/v10/guilds/${ guildId }/members/${ userId }`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bot ${ botToken }`,
-    },
-    body: JSON.stringify({
-      access_token: accessToken,
-    }),
-  });
-  const results: any = await getResponseJson(rp);
+// async function joinGuild(accessToken: string, userId: string) {
+//   const botToken = getEnvValue('NEXT_PUBLIC_DISCORD_BOT_TOKEN');
+//   const guildId = getEnvValue('NEXT_PUBLIC_DISCORD_GUILD_ID');
+//   const rp = await fetch(`https://discord.com/api/v10/guilds/${ guildId }/members/${ userId }`, {
+//     method: 'PUT',
+//     headers: {
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json',
+//       Authorization: `Bot ${ botToken }`,
+//     },
+//     body: JSON.stringify({
+//       access_token: accessToken,
+//     }),
+//   });
+//   const results: any = await getResponseJson(rp);
 
-  if (!rp.ok) {
-    const guildName = getEnvValue('NEXT_PUBLIC_DISCORD_GUILD_NAME');
-    const message = `${ rp.status } ${ rp.statusText } Failed to join ${ guildName }'s community, please try again. ${ JSON.stringify(results) }`;
-    throw new Error(message);
-  }
-  return results;
-}
+//   if (!rp.ok) {
+//     const guildName = getEnvValue('NEXT_PUBLIC_DISCORD_GUILD_NAME');
+//     const message = `${ rp.status } ${ rp.statusText } Failed to join ${ guildName }'s community, please try again. ${ JSON.stringify(results) }`;
+//     throw new Error(message);
+//   }
+//   return results;
+// }
 
 export default async function discordCallbackHandler(req: NextApiRequest, res: NextApiResponse) {
   const code = req.query.code as string;
@@ -102,7 +102,7 @@ export default async function discordCallbackHandler(req: NextApiRequest, res: N
   try {
     const tokenResults = await getAccessToken(code);
     const userResults = await getUserProfile(tokenResults.access_token);
-    await joinGuild(tokenResults.access_token, userResults.id);
+    // await joinGuild(tokenResults.access_token, userResults.id);
 
     const dbUser = await findOneByDiscordId(userResults.id);
     if (!dbUser) {
