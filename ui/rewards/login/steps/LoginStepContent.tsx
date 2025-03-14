@@ -13,7 +13,7 @@ import LinkExternal from 'ui/shared/links/LinkExternal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 type Props = {
-  goNext: (isReferral: boolean) => void;
+  goNext: (isReferral: boolean, reward: string | null) => void;
   closeModal: () => void;
   openAuthModal: (isAuth: boolean, trySharedLogin?: boolean) => void;
 };
@@ -23,9 +23,9 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
   const { connect, isConnected, address } = useWallet({ source: 'Merits' });
   const savedRefCode = cookies.get(cookies.NAMES.REWARDS_REFERRAL_CODE);
   const [ isRefCodeUsed, setIsRefCodeUsed ] = useBoolean(Boolean(savedRefCode));
-  const [ isLoading, setIsLoading ] = useBoolean(false);
+  const [ isLoading, setIsLoading ] = useState(false);
   const [ refCode, setRefCode ] = useState(savedRefCode || '');
-  const [ refCodeError, setRefCodeError ] = useBoolean(false);
+  const [ refCodeError, setRefCodeError ] = useState(false);
   const { login, checkUserQuery, rewardsConfigQuery } = useRewardsContext();
   const profileQuery = useProfileQuery();
 
@@ -51,30 +51,27 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
 
   const loginToRewardsProgram = useCallback(async() => {
     try {
-      setRefCodeError.off();
-      setIsLoading.on();
-      const { isNewUser, invalidRefCodeError } = await login(isSignUp && isRefCodeUsed ? refCode : '');
+      setRefCodeError(false);
+      setIsLoading(true);
+      const { isNewUser, reward, invalidRefCodeError } = await login(isSignUp && isRefCodeUsed ? refCode : '');
       if (invalidRefCodeError) {
-        setRefCodeError.on();
+        setRefCodeError(true);
       } else {
         if (isNewUser) {
-          goNext(isRefCodeUsed);
+          goNext(isRefCodeUsed, reward);
         } else {
           closeModal();
           router.push({ pathname: '/account/merits' }, undefined, { shallow: true });
         }
       }
     } catch (error) {}
-    setIsLoading.off();
-  }, [ login, goNext, setIsLoading, router, closeModal, refCode, setRefCodeError, isRefCodeUsed, isSignUp ]);
+    setIsLoading(false);
+  }, [ login, goNext, router, closeModal, refCode, isRefCodeUsed, isSignUp ]);
 
   useEffect(() => {
-    if (isSignUp && isRefCodeUsed && refCode.length > 0 && refCode.length !== 6) {
-      setRefCodeError.on();
-    } else {
-      setRefCodeError.off();
-    }
-  }, [ refCode, isRefCodeUsed, isSignUp ]); // eslint-disable-line react-hooks/exhaustive-deps
+    const isInvalid = isSignUp && isRefCodeUsed && refCode.length > 0 && refCode.length !== 6 && refCode.length !== 12;
+    setRefCodeError(isInvalid);
+  }, [ refCode, isRefCodeUsed, isSignUp ]);
 
   const handleButtonClick = React.useCallback(() => {
     if (canTrySharedLogin) {
@@ -145,7 +142,10 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
                 <FormInputPlaceholder text="Code"/>
               </FormControl>
               <Text fontSize="sm" variant="secondary" mt={ 1 } color={ refCodeError ? 'red.500' : undefined }>
-                { refCodeError ? 'Incorrect code or format' : 'The code should be in format XXXXXX' }
+                { refCodeError ?
+                  'Incorrect code or format (6 or 12 characters)' :
+                  'The code should be in format XXXXXX'
+                }
               </Text>
             </>
           ) }
