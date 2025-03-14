@@ -41,6 +41,7 @@ const RESTRICTED_MODULES = {
         'Heading', 'Badge', 'Tabs', 'Show', 'Hide', 'Checkbox', 'CheckboxGroup',
         'Table', 'TableRoot', 'TableBody', 'TableHeader', 'TableRow', 'TableCell',
         'Menu', 'MenuRoot', 'MenuTrigger', 'MenuContent', 'MenuItem', 'MenuTriggerItem', 'MenuRadioItemGroup', 'MenuContextTrigger',
+        'Rating', 'RatingGroup',
       ],
       message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
     },

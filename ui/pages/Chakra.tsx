@@ -24,6 +24,7 @@ import PinInputShowcase from 'ui/showcases/PinInput';
 import PopoverShowcase from 'ui/showcases/Popover';
 import ProgressCircleShowcase from 'ui/showcases/ProgressCircle';
 import RadioShowcase from 'ui/showcases/Radio';
+import RatingShowcase from 'ui/showcases/Rating';
 import SelectShowcase from 'ui/showcases/Select';
 import SkeletonShowcase from 'ui/showcases/Skeleton';
 import SpinnerShowcase from 'ui/showcases/Spinner';
@@ -61,6 +62,7 @@ const tabs = [
   { label: 'Pagination', value: 'pagination', component: <PaginationShowcase/> },
   { label: 'Progress Circle', value: 'progress-circle', component: <ProgressCircleShowcase/> },
   { label: 'Radio', value: 'radio', component: <RadioShowcase/> },
+  { label: 'Rating', value: 'rating', component: <RatingShowcase/> },
   { label: 'Pin input', value: 'pin-input', component: <PinInputShowcase/> },
   { label: 'Popover', value: 'popover', component: <PopoverShowcase/> },
   { label: 'Select', value: 'select', component: <SelectShowcase/> },

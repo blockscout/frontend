@@ -24,7 +24,6 @@ interface Props {
   showUpdateMetadataItem?: boolean;
 }
 
-// TODO @tom2drum fix modal open on menu item click
 const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Props) => {
   const router = useRouter();
 

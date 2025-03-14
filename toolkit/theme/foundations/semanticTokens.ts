@@ -404,6 +404,10 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         down: { value: { _light: '{colors.red.600}', _dark: '{colors.red.400}' } },
       },
     },
+    rating: {
+      DEFAULT: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.700}' } },
+      highlighted: { value: '{colors.yellow.400}' },
+    },
     heading: {
       DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
     },

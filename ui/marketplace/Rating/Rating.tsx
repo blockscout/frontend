@@ -6,10 +6,10 @@ import type { AppRating } from 'types/client/marketplace';
 import config from 'configs/app';
 import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
+import { Rating } from 'toolkit/chakra/rating';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import Content from './PopoverContent';
-import Stars from './Stars';
 import TriggerButton from './TriggerButton';
 import type { RateFunction } from './useRatings';
 
@@ -28,7 +28,7 @@ type Props = {
   source: EventPayload<EventTypes.APP_FEEDBACK>['Source'];
 };
 
-const Rating = ({
+const MarketplaceRating = ({
   appId, rating, userRating, rate,
   isSending, isLoading, fullView, canRate, source,
 }: Props) => {
@@ -46,7 +46,7 @@ const Rating = ({
     >
       { fullView && (
         <>
-          <Stars filledIndex={ (rating?.value || 0) - 1 }/>
+          <Rating defaultValue={ Math.floor(rating?.value || 0) } readOnly key={ rating?.value }/>
           <Text fontSize="md" ml={ 2 }>{ rating?.value }</Text>
           { rating?.count && <Text color="text.secondary" textStyle="md" ml={ 1 }>({ rating?.count })</Text> }
         </>
@@ -78,4 +78,4 @@ const Rating = ({
   );
 };
 
-export default Rating;
+export default MarketplaceRating;

@@ -18,6 +18,7 @@ import { recipe as popover } from './popover.recipe';
 import { recipe as progressCircle } from './progress-circle.recipe';
 import { recipe as radioGroup } from './radio-group.recipe';
 import { recipe as radiomark } from './radiomark.recipe';
+import { recipe as ratingGroup } from './rating-group.recipe';
 import { recipe as select } from './select.recipe';
 import { recipe as skeleton } from './skeleton.recipe';
 import { recipe as spinner } from './spinner.recipe';
@@ -57,6 +58,7 @@ export const slotRecipes = {
   popover,
   progressCircle,
   radioGroup,
+  ratingGroup,
   select,
   stat,
   'switch': switchRecipe,
