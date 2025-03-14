@@ -1,7 +1,7 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
-// import { NumericFormat } from 'react-number-format';
+import { NumericFormat } from 'react-number-format';
 
 import type { ContractAbiItemInput } from '../types';
 
@@ -169,6 +169,21 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
     </Flex>
   );
 
+  const inputProps = {
+    ...field,
+    size: 'sm' as const,
+    bgColor: inputBgColor,
+    onChange: handleChange,
+    required: !isOptional,
+    placeholder: data.type,
+    autoComplete: 'off',
+    'data-1p-ignore': true,
+  };
+
+  const getInputRef = React.useCallback((element: HTMLInputElement) => {
+    ref.current = element;
+  }, []);
+
   return (
     <Flex
       className={ className }
@@ -187,30 +202,21 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
           endElement={ inputEndElement }
           endElementProps={{ pl: 0, pr: 1 }}
         >
-          <Input
-            { ...field }
-            // TODO @tom2drum fix formatting of numeric input
-            // { ...(argTypeMatchInt ? {
-            //   as: NumericFormat,
-            //   thousandSeparator: ' ',
-            //   decimalScale: 0,
-            //   allowNegative: !argTypeMatchInt.isUnsigned,
-            //   getInputRef: (element: HTMLInputElement) => {
-            //     ref.current = element;
-            //   },
-            // } : {}) }
-            // as we use mutable ref, we have to cast it to React.LegacyRef<HTMLInputElement> to trick chakra and typescript
-            ref={ ref as React.LegacyRef<HTMLInputElement> | undefined }
-            size="sm"
-            onChange={ handleChange }
-            onPaste={ handlePaste }
-            required={ !isOptional }
-            placeholder={ data.type }
-            autoComplete="off"
-            data-1p-ignore
-            bgColor={ inputBgColor }
-            paddingRight={ hasMultiplyButton ? '120px' : '40px' }
-          />
+          { argTypeMatchInt ? (
+            <Input
+              { ...inputProps }
+              { ...(error ? { 'data-invalid': true } : {}) }
+              onPaste={ handlePaste }
+              asChild
+            >
+              <NumericFormat
+                thousandSeparator=" "
+                decimalScale={ 0 }
+                allowNegative={ !argTypeMatchInt.isUnsigned }
+                getInputRef={ getInputRef }
+              />
+            </Input>
+          ) : <Input { ...inputProps } ref={ ref as React.LegacyRef<HTMLInputElement> | undefined }/> }
         </InputGroup>
       </Field>
     </Flex>
