@@ -24,7 +24,7 @@ function getRequestParams(token: TokenInfo, tokenId?: string): WatchAssetParams 
         options: {
           address: token.address,
           symbol: token.symbol || '',
-          decimals: Number(token.decimals) || 18,
+          decimals: Number(token.decimals ?? '18'),
           image: token.icon_url || '',
         },
       };
