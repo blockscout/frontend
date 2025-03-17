@@ -105,7 +105,7 @@ const TxsStats = () => {
           isLoading={ isLoading }
         />
       ) }
-      { txFeeSum24h && (
+      { Boolean(txFeeSum24h) && (
         <StatsWidget
           label={ txsStatsQuery.data?.transactions_fee_24h?.title ?
             getLabelFromTitle(txsStatsQuery.data?.transactions_fee_24h?.title) :
