@@ -1,7 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -10,9 +10,10 @@ interface Props {
   token: TokenInfo;
   value: string;
   tokenId: string | null;
+  instance?: TokenInstance | null;
 }
 
-const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
+const NftTokenTransferSnippet = ({ value, token, tokenId, instance }: Props) => {
   const num = value === '1' ? '' : value;
 
   const tokenIdContent = (() => {
@@ -28,6 +29,7 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
       <NftEntity
         hash={ token.address }
         id={ tokenId }
+        instance={ instance }
         fontWeight={ 600 }
         icon={{ size: 'md' }}
         maxW={{ base: '100%', lg: '150px' }}

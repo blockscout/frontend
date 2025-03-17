@@ -68,7 +68,7 @@ const TokenTransferListItem = ({
         ) }
       </Flex>
       { total && 'token_id' in total && total.token_id !== null && token && (
-        <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/>
+        <NftEntity hash={ token.address } id={ total.token_id } instance={ total.token_instance } isLoading={ isLoading }/>
       ) }
       { showTxInfo && txHash && (
         <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
