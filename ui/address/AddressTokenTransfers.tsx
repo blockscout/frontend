@@ -63,14 +63,13 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
 };
 
 type Props = {
-  scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
   // for tests only
   overloadCount?: number;
 };
 
-const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = true, isQueryEnabled = true }: Props) => {
+const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
@@ -94,7 +93,6 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shou
     resourceName: 'address_token_transfers',
     pathParams: { hash: currentAddress },
     filters: tokenFilter ? { token: tokenFilter } : filters,
-    scrollRef,
     options: {
       enabled: isQueryEnabled,
       placeholderData: getTokenTransfersStub(undefined, {
