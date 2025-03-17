@@ -60,6 +60,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/advanced-filter': 'Root page',
   '/pools': 'Root page',
   '/pools/[hash]': 'Regular page',
+  '/interop-messages': 'Root page',
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',
