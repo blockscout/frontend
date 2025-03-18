@@ -37,8 +37,13 @@ const NftMedia = ({ data, size = 'original', allowedTypes, className, isLoading,
   const mediaInfoQuery = useNftMediaInfo({ data, size, allowedTypes, field: mediaInfoField, isEnabled: !isLoading && inView });
 
   React.useEffect(() => {
-    if (!mediaInfoQuery.isPending && !mediaInfoQuery.data && mediaInfoField === 'animation_url') {
-      setMediaInfoField('image_url');
+    if (!mediaInfoQuery.isPending && !mediaInfoQuery.data) {
+      if (mediaInfoField === 'animation_url') {
+        setMediaInfoField('image_url');
+      } else {
+        setIsMediaLoadingError(true);
+        setIsMediaLoading(false);
+      }
     }
   }, [ mediaInfoQuery.isPending, mediaInfoQuery.data, mediaInfoField ]);
 
@@ -64,24 +69,12 @@ const NftMedia = ({ data, size = 'original', allowedTypes, className, isLoading,
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const showFallback = (() => {
-    if (isMediaLoadingError) {
-      return true;
-    }
-
-    if (!mediaInfoQuery.isPending && !mediaInfoQuery.data && mediaInfoField === 'image_url') {
-      return true;
-    }
-
-    return false;
-  })();
-
   const content = (() => {
     if (isLoading) {
       return null;
     }
 
-    if (showFallback) {
+    if (isMediaLoadingError) {
       const styleProps = withFullscreen ? {} : mediaStyleProps;
       return fallback ?? <NftFallback { ...styleProps }/>;
     }
@@ -96,12 +89,12 @@ const NftMedia = ({ data, size = 'original', allowedTypes, className, isLoading,
 
     switch (mediaInfo?.mediaType) {
       case 'video': {
-        return <NftVideo { ...props } { ...mediaInfo } autoPlay={ autoplayVideo } instance={ data }/>;
+        return <NftVideo { ...props } src={ mediaInfo.src } transport={ mediaInfo.transport } autoPlay={ autoplayVideo } instance={ data }/>;
       }
       case 'html':
-        return <NftHtml { ...props } { ...mediaInfo }/>;
+        return <NftHtml { ...props } src={ mediaInfo.src } transport={ mediaInfo.transport }/>;
       case 'image': {
-        return <NftImage { ...props } { ...mediaInfo }/>;
+        return <NftImage { ...props } src={ mediaInfo.src } srcSet={ mediaInfo.srcSet } transport={ mediaInfo.transport }/>;
       }
       default:
         return null;
