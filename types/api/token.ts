@@ -62,7 +62,7 @@ export interface TokenInstance {
   external_app_url: string | null;
   metadata: Record<string, unknown> | null;
   owner: AddressParam | null;
-  thumbnails: Partial<Record<ThumbnailSize, string>> | null;
+  thumbnails: ({ original: string } & Partial<Record<Exclude<ThumbnailSize, 'original'>, string>>) | null;
 }
 
 export interface TokenInstanceMetadataSocketMessage {
