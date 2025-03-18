@@ -18,6 +18,8 @@ type IconProps = EntityBase.IconBaseProps & {
   instance?: TokenInstance | null;
 };
 
+const ICON_MEDIA_TYPES = [ 'image' as const ];
+
 const Icon = (props: IconProps) => {
   if (props.noIcon) {
     return null;
@@ -25,9 +27,28 @@ const Icon = (props: IconProps) => {
 
   if (props.instance) {
     const styles = getIconProps(props.size ?? 'lg');
-    // TODO @tom2drum custom fallback component
-    // TODO @tom2drum remove hover effect
-    return <NftMedia data={ props.instance } isLoading={ props.isLoading } boxSize={ styles.boxSize } borderRadius="sm" mr={ 2 }/>;
+    const fallback = (
+      <EntityBase.Icon
+        { ...props }
+        size={ props.size ?? 'lg' }
+        name={ props.name ?? 'nft_shield' }
+        marginRight={ 0 }
+      />
+    );
+
+    return (
+      <NftMedia
+        data={ props.instance }
+        isLoading={ props.isLoading }
+        boxSize={ styles.boxSize }
+        size="sm"
+        allowedTypes={ ICON_MEDIA_TYPES }
+        borderRadius="sm"
+        flexShrink={ 0 }
+        mr={ 2 }
+        fallback={ fallback }
+      />
+    );
   }
 
   return (

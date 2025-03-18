@@ -23,9 +23,10 @@ interface Props {
   isLoading?: boolean;
   withFullscreen?: boolean;
   autoplayVideo?: boolean;
+  fallback?: React.ReactNode;
 }
 
-const NftMedia = ({ data, size = 'original', allowedTypes, className, isLoading, withFullscreen, autoplayVideo }: Props) => {
+const NftMedia = ({ data, size = 'original', allowedTypes, className, isLoading, withFullscreen, autoplayVideo, fallback }: Props) => {
   const [ isMediaLoading, setIsMediaLoading ] = React.useState(true);
   const [ isMediaLoadingError, setIsMediaLoadingError ] = React.useState(false);
   const [ mediaInfoIndex, setMediaInfoIndex ] = React.useState(0);
@@ -83,14 +84,15 @@ const NftMedia = ({ data, size = 'original', allowedTypes, className, isLoading,
 
     if (showFallback) {
       const styleProps = withFullscreen ? {} : mediaStyleProps;
-      return <NftFallback { ...styleProps }/>;
+      return fallback ?? <NftFallback { ...styleProps }/>;
     }
 
     const mediaInfo = mediaInfoQuery.data?.[mediaInfoIndex];
     const props = {
       onLoad: handleMediaLoaded,
       onError: handleMediaLoadError,
-      ...(withFullscreen ? { onClick: onOpen, ...mediaStyleProps } : {}),
+      ...(withFullscreen ? { onClick: onOpen } : {}),
+      ...(size !== 'sm' ? mediaStyleProps : {}),
     };
 
     switch (mediaInfo?.mediaType) {
