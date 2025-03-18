@@ -1,5 +1,5 @@
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useBoolean, useDisclosure } from '@chakra-ui/react';
-import React, { useCallback, useEffect } from 'react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useDisclosure } from '@chakra-ui/react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import type { Screen } from 'ui/snippets/auth/types';
 
@@ -25,24 +25,25 @@ const RewardsLoginModal = () => {
   const isMobile = useIsMobile();
   const { isLoginModalOpen, closeLoginModal } = useRewardsContext();
 
-  const [ isLoginStep, setIsLoginStep ] = useBoolean(true);
-  const [ isReferral, setIsReferral ] = useBoolean(false);
-  const [ authModalInitialScreen, setAuthModalInitialScreen ] = React.useState<Screen>();
+  const [ isLoginStep, setIsLoginStep ] = useState(true);
+  const [ isReferral, setIsReferral ] = useState(false);
+  const [ customReferralReward, setCustomReferralReward ] = useState<string | null>(null);
+  const [ authModalInitialScreen, setAuthModalInitialScreen ] = useState<Screen>();
   const authModal = useDisclosure();
 
   useEffect(() => {
     if (!isLoginModalOpen) {
-      setIsLoginStep.on();
-      setIsReferral.off();
+      setIsLoginStep(true);
+      setIsReferral(false);
+      setCustomReferralReward(null);
     }
-  }, [ isLoginModalOpen, setIsLoginStep, setIsReferral ]);
+  }, [ isLoginModalOpen ]);
 
-  const goNext = useCallback((isReferral: boolean) => {
-    if (isReferral) {
-      setIsReferral.on();
-    }
-    setIsLoginStep.off();
-  }, [ setIsLoginStep, setIsReferral ]);
+  const goNext = useCallback((isReferral: boolean, reward: string | null) => {
+    setIsReferral(isReferral);
+    setCustomReferralReward(reward);
+    setIsLoginStep(false);
+  }, []);
 
   const handleAuthModalOpen = useCallback((isAuth: boolean, trySharedLogin?: boolean) => {
     setAuthModalInitialScreen({ type: 'connect_wallet', isAuth, loginToRewards: trySharedLogin });
@@ -74,7 +75,7 @@ const RewardsLoginModal = () => {
           <ModalBody mb={ 0 }>
             { isLoginStep ?
               <LoginStepContent goNext={ goNext } openAuthModal={ handleAuthModalOpen } closeModal={ closeLoginModal }/> :
-              <CongratsStepContent isReferral={ isReferral }/>
+              <CongratsStepContent isReferral={ isReferral } customReferralReward={ customReferralReward }/>
             }
           </ModalBody>
         </ModalContent>
