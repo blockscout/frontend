@@ -75,7 +75,6 @@ const NftMedia = ({ data, size = 'original', allowedTypes, className, isLoading,
 
     return false;
   })();
-  const showModal = withFullscreen && !(isLoading || isMediaLoading || showFallback);
 
   const content = (() => {
     if (isLoading) {
@@ -109,22 +108,6 @@ const NftMedia = ({ data, size = 'original', allowedTypes, className, isLoading,
     }
   })();
 
-  const modalContent = (() => {
-    const mediaInfo = mediaInfoQuery.data?.[mediaInfoIndex];
-
-    switch (mediaInfo?.mediaType) {
-      case 'video':
-        return <NftVideo { ...mediaInfo } maxW="90vw" maxH="90vh" objectFit="contain" autoPlay instance={ data }/>;
-      case 'html':
-        return <NftHtml { ...mediaInfo } w="90vw" h="90vh"/>;
-      case 'image': {
-        return <NftImage { ...mediaInfo } maxW="90vw" maxH="90vh" objectFit="contain"/>;
-      }
-      default:
-        return null;
-    }
-  })();
-
   return (
     <>
       <AspectRatio
@@ -146,10 +129,8 @@ const NftMedia = ({ data, size = 'original', allowedTypes, className, isLoading,
           { isMediaLoading && <Skeleton position="absolute" left={ 0 } top={ 0 } w="100%" h="100%" zIndex="1"/> }
         </>
       </AspectRatio>
-      { showModal && (
-        <NftMediaFullscreenModal isOpen={ isOpen } onClose={ onClose }>
-          { modalContent }
-        </NftMediaFullscreenModal>
+      { isOpen && (
+        <NftMediaFullscreenModal isOpen={ isOpen } onClose={ onClose } data={ data } allowedTypes={ allowedTypes } field={ mediaInfoField }/>
       ) }
     </>
   );
