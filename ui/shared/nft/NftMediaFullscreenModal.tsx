@@ -42,12 +42,39 @@ const NftMediaFullscreenModal = ({ isOpen, onClose, data, allowedTypes, field }:
 
     switch (mediaInfo?.mediaType) {
       case 'video':
-        return <NftVideo { ...mediaInfo } onError={ handleMediaLoadError } maxW="90vw" maxH="90vh" objectFit="contain" autoPlay instance={ data }/>;
+        return (
+          <NftVideo
+            src={ mediaInfo.src }
+            transport={ mediaInfo.transport }
+            onError={ handleMediaLoadError }
+            maxW="90vw"
+            maxH="90vh"
+            objectFit="contain"
+            autoPlay
+            instance={ data }
+          />
+        );
       case 'html':
-        return <NftHtml { ...mediaInfo } onError={ handleMediaLoadError } w="90vw" h="90vh"/>;
-      case 'image': {
-        return <NftImage { ...mediaInfo } onError={ handleMediaLoadError } maxW="90vw" maxH="90vh" objectFit="contain"/>;
-      }
+        return (
+          <NftHtml
+            src={ mediaInfo.src }
+            transport={ mediaInfo.transport }
+            onError={ handleMediaLoadError }
+            w="90vw"
+            h="90vh"
+          />
+        );
+      case 'image':
+        return (
+          <NftImage
+            src={ mediaInfo.src }
+            srcSet={ mediaInfo.srcSet }
+            transport={ mediaInfo.transport }
+            onError={ handleMediaLoadError }
+            maxW="90vw"
+            maxH="90vh"
+            objectFit="contain"/>
+        );
       default:
         return null;
     }
