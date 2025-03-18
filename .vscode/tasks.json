@@ -365,6 +365,7 @@
               "celo_alfajores",
               "garnet",
               "gnosis",
+              "immutable",
               "eth",
               "eth_goerli",
               "eth_sepolia",
