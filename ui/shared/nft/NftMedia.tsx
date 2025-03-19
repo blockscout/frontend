@@ -129,4 +129,4 @@ const NftMedia = ({ data, size = 'original', allowedTypes, className, isLoading,
   );
 };
 
-export default chakra(NftMedia);
+export default chakra(React.memo(NftMedia));

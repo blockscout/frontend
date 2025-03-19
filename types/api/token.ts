@@ -59,6 +59,8 @@ export interface TokenInstance {
   holder_address_hash: string | null;
   image_url: string | null;
   animation_url: string | null;
+  media_url?: string | null;
+  media_type?: string | null;
   external_app_url: string | null;
   metadata: Record<string, unknown> | null;
   owner: AddressParam | null;

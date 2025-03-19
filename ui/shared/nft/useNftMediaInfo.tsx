@@ -27,18 +27,18 @@ interface MediaInfo {
 }
 
 export default function useNftMediaInfo({ data, size, allowedTypes, field, isEnabled }: Params): UseQueryResult<Array<MediaInfo> | null> {
+  const url = data[field];
   const query = useQuery({
-    queryKey: [ 'nft-media-info', data.id, field, size, ...(allowedTypes ? allowedTypes : []) ],
+    queryKey: [ 'nft-media-info', data.id, url, size, ...(allowedTypes ? allowedTypes : []) ],
     queryFn: async() => {
-      const url = data[field];
       const metadataField = field === 'animation_url' ? 'animation_url' : 'image';
-      const mediaType = await getMediaType(url);
+      const mediaType = await getMediaType(data, field);
 
       if (!mediaType || (allowedTypes ? !allowedTypes.includes(mediaType) : false)) {
         return null;
       }
 
-      const cdnData = getCdnData(data, size);
+      const cdnData = getCdnData(data, size, mediaType);
       const ipfsData = getIpfsData(data.metadata?.[metadataField], mediaType);
 
       return [
@@ -53,9 +53,19 @@ export default function useNftMediaInfo({ data, size, allowedTypes, field, isEna
   return query;
 }
 
-async function getMediaType(url: string | null): Promise<MediaType | undefined> {
+async function getMediaType(data: TokenInstance, field: Params['field']): Promise<MediaType | undefined> {
+  const url = data[field];
+
   if (!url) {
     return;
+  }
+
+  // If the media_url is the same as the url, we can use the media_type field to determine the media type.
+  if (url === data.media_url) {
+    const mediaType = castMimeTypeToMediaType(data.media_type || undefined);
+    if (mediaType) {
+      return mediaType;
+    }
   }
 
   // Media can be an image, video, or HTML page.
@@ -81,7 +91,26 @@ async function getMediaType(url: string | null): Promise<MediaType | undefined> 
   }
 }
 
-function getCdnData(data: TokenInstance, size: Size): MediaInfo | undefined {
+function castMimeTypeToMediaType(mimeType: string | undefined): MediaType | undefined {
+  if (!mimeType) {
+    return;
+  }
+
+  if (mimeType.startsWith('image/')) {
+    return 'image';
+  }
+
+  if (mimeType.startsWith('video/')) {
+    return 'video';
+  }
+}
+
+function getCdnData(data: TokenInstance, size: Size, mediaType: MediaType): MediaInfo | undefined {
+  // CDN is only used for images
+  if (mediaType !== 'image') {
+    return;
+  }
+
   if (!data.thumbnails) {
     return;
   }
