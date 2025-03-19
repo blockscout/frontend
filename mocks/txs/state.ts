@@ -19,6 +19,7 @@ export const mintToken: TxStateChange = {
       direction: 'from',
       total: {
         token_id: '15077554365819457090226168288698582604878106156134383525616269766016907608065',
+        token_instance: null,
       },
     },
   ],
@@ -57,6 +58,7 @@ export const receiveMintedToken: TxStateChange = {
       direction: 'to',
       total: {
         token_id: '15077554365819457090226168288698582604878106156134383525616269766016907608065',
+        token_instance: null,
       },
     },
   ],

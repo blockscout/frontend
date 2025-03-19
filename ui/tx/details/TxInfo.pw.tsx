@@ -1,5 +1,6 @@
 import React from 'react';
 
+import * as tokenInstanceMock from 'mocks/tokens/tokenInstance';
 import * as txMock from 'mocks/txs/tx';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -27,7 +28,8 @@ test('creating contact', async({ render, page }) => {
   });
 });
 
-test('with token transfer +@mobile', async({ render, page }) => {
+test('with token transfer +@mobile', async({ render, page, mockAssetResponse }) => {
+  await mockAssetResponse(tokenInstanceMock.base.image_url as string, './playwright/mocks/image_s.jpg');
   const component = await render(<TxInfo data={ txMock.withTokenTransfer } isLoading={ false }/>);
 
   await expect(component).toHaveScreenshot({

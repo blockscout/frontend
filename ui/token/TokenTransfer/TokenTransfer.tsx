@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import type { ResourceError } from 'lib/api/resources';
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
@@ -25,11 +25,12 @@ const TABS_HEIGHT = 88;
 type Props = {
   transfersQuery: QueryWithPagesResult<'token_transfers'> | QueryWithPagesResult<'token_instance_transfers'>;
   tokenId?: string;
+  tokenInstance?: TokenInstance;
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
   shouldRender?: boolean;
 };
 
-const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, shouldRender = true }: Props) => {
+const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tokenInstance, shouldRender = true }: Props) => {
   const isMobile = useIsMobile();
   const isMounted = useIsMounted();
   const router = useRouter();
@@ -80,6 +81,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, shouldRender = tru
           socketInfoNum={ newItemsCount }
           tokenId={ tokenId }
           token={ token }
+          instance={ tokenInstance }
           isLoading={ isLoading }
         />
       </Box>
@@ -93,7 +95,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, shouldRender = tru
             isLoading={ isLoading }
           />
         ) }
-        <TokenTransferList data={ data?.items } tokenId={ tokenId } isLoading={ isLoading }/>
+        <TokenTransferList data={ data?.items } tokenId={ tokenId } instance={ tokenInstance } isLoading={ isLoading }/>
       </Box>
     </>
   ) : null;

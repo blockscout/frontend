@@ -21,6 +21,7 @@ on:
             - eth_sepolia
             - eth_goerli
             - filecoin
+            - immutable
             - mekong
             - neon_devnet
             - optimism

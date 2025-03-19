@@ -1,6 +1,7 @@
 import { Grid, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
@@ -14,7 +15,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
-type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
+type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance };
 
 const TokenTransferListItem = ({
   token,
@@ -26,6 +27,7 @@ const TokenTransferListItem = ({
   timestamp,
   tokenId,
   isLoading,
+  instance,
 }: Props) => {
   const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
@@ -94,6 +96,7 @@ const TokenTransferListItem = ({
         <NftEntity
           hash={ token.address }
           id={ total.token_id }
+          instance={ instance || total.token_instance }
           noLink={ Boolean(tokenId && tokenId === total.token_id) }
           isLoading={ isLoading }
         />

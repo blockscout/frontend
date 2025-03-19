@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { tokenInfoERC20a, tokenInfoERC721a, tokenInfoERC1155a } from 'mocks/tokens/tokenInfo';
+import * as tokenInstanceMock from 'mocks/tokens/tokenInstance';
 import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import { test, expect } from 'playwright/lib';
 
@@ -33,7 +34,8 @@ test('erc20 +@mobile', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('erc721 +@mobile', async({ render }) => {
+test('erc721 +@mobile', async({ render, mockAssetResponse }) => {
+  await mockAssetResponse(tokenInstanceMock.base.image_url as string, './playwright/mocks/image_s.jpg');
   const component = await render(
     <Box pt={{ base: '134px', lg: '100px' }}>
       <TokenTransfer

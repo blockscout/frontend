@@ -44,6 +44,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
           <TokenTransferSnippetNft
             token={ data.token }
             tokenId={ total.token_id }
+            instance={ total.token_instance }
             value="1"
           />
         );
@@ -56,6 +57,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
             key={ total.token_id }
             token={ data.token }
             tokenId={ total.token_id }
+            instance={ total.token_instance }
             value={ total.value }
           />
         );
