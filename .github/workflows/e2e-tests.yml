@@ -11,14 +11,6 @@ concurrency:
 jobs:
   publish_image:
     name: Publish Docker image
-<<<<<<< HEAD
-    uses: './.github/workflows/publish-image.yml'
-    secrets: inherit
-    with:
-      # NOTE: by default the image will be built with type=ref,event=tag; so we don't need to specify it here
-      tags: |
-        type=raw,value=e2e
-=======
     runs-on: ubuntu-latest
     outputs:
       shortSha: ${{ steps.output-step.outputs.short-sha }}
@@ -67,7 +59,6 @@ jobs:
           build-args: |
             GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
             GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
->>>>>>> subspace-frontend
 
   deploy_e2e:
     name: Deploy E2E instance
