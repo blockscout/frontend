@@ -39,7 +39,7 @@ const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, n
     inputRef?.current?.focus();
   }, [ onChange ]);
 
-  const startElement = <IconSvg name="search" color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }} boxSize={ 4 }/>;
+  const startElement = <IconSvg name="search" boxSize={ 5 }/>;
 
   const endElement = <ClearButton onClick={ handleFilterQueryClear } isVisible={ filterQuery.length > 0 }/>;
 

@@ -28,21 +28,16 @@ export const recipe = defineRecipe({
   variants: {
     size: {
       sm: {
-        textStyle: 'md',
+        textStyle: 'sm',
         px: '2',
         '--input-height': 'sizes.8',
       },
       md: {
-        textStyle: 'md',
+        textStyle: 'sm',
         px: '2',
         '--input-height': 'sizes.10',
       },
       lg: {
-        textStyle: 'md',
-        px: '3',
-        '--input-height': 'sizes.12',
-      },
-      xl: {
         textStyle: 'md',
         px: '4',
         '--input-height': '60px',
@@ -69,6 +64,7 @@ export const recipe = defineRecipe({
         },
         _focus: {
           borderColor: 'input.border.focus',
+          boxShadow: 'size.md',
           _hover: {
             borderColor: 'input.border.focus',
           },
@@ -91,6 +87,9 @@ export const recipe = defineRecipe({
         },
         _invalid: {
           borderColor: 'input.border.error',
+          _placeholder: {
+            color: 'input.placeholder.error',
+          },
           _hover: {
             borderColor: 'input.border.error',
           },
@@ -105,7 +104,7 @@ export const recipe = defineRecipe({
 
   compoundVariants: [
     {
-      size: 'xl',
+      size: 'lg',
       floating: true,
       css: {
         padding: '26px 10px 10px 16px',

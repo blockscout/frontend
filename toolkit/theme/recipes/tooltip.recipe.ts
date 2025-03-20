@@ -5,7 +5,7 @@ export const recipe = defineSlotRecipe({
   base: {
     content: {
       px: '2',
-      py: '2',
+      py: '1',
       borderRadius: 'sm',
       fontWeight: '500',
       textStyle: 'sm',

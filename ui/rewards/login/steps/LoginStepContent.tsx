@@ -147,7 +147,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
               label="Code"
               floating
               id="referral-code"
-              size="xl"
+              size="lg"
               mt={ 3 }
               invalid={ refCodeError }
               helperText="The code should be in format XXXXXX"

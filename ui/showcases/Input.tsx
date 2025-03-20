@@ -23,9 +23,6 @@ const InputShowcase = () => {
           <Sample label="size: lg">
             <Input type="text" placeholder="Name" size="lg"/>
           </Sample>
-          <Sample label="size: xl">
-            <Input type="text" placeholder="Name" size="xl"/>
-          </Sample>
         </SamplesStack>
       </Section>
 
@@ -36,6 +33,7 @@ const InputShowcase = () => {
             <Input type="text" placeholder="Name"/>
             <Input type="text" placeholder="Name (disabled)" disabled/>
             <Input type="text" placeholder="Name (readOnly)" readOnly/>
+            <Input type="text" placeholder="Name (invalid)" data-invalid/>
             <Input type="text" placeholder="Name (invalid)" data-invalid value="duck"/>
           </Sample>
         </SamplesStack>
@@ -45,7 +43,7 @@ const InputShowcase = () => {
         <SectionHeader>Input group</SectionHeader>
         <SamplesStack>
           <Sample label="with end element">
-            <Field label="Referral code" required floating size="xl" w="300px" flexShrink={ 0 }>
+            <Field label="Referral code" required floating size="lg" w="300px" flexShrink={ 0 }>
               <InputGroup endElement={ <IconSvg name="copy" boxSize={ 5 }/> } endElementProps={{ px: 3 }}>
                 <Input/>
               </InputGroup>

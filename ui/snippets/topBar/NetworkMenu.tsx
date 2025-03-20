@@ -23,8 +23,9 @@ const NetworkMenu = () => {
           aria-label="Network menu"
           borderRadius="sm"
           onClick={ menu.onToggle }
+          p={ 0.5 }
         >
-          <IconSvg name="networks"/>
+          <IconSvg name="networks" boxSize="full"/>
         </IconButton>
       </PopoverTrigger>
       <NetworkMenuContentDesktop items={ menu.data } tabs={ menu.availableTabs }/>

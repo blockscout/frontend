@@ -36,7 +36,7 @@ const FormFieldText = <
   floating: floatingProp,
   ...restProps
 }: Props<FormFields, Name>) => {
-  const defaultSize = asComponent === 'Textarea' ? '2xl' : 'xl';
+  const defaultSize = asComponent === 'Textarea' ? '2xl' : 'lg';
   const size = sizeProp || defaultSize;
   const floating = floatingProp !== undefined ? floatingProp : size === defaultSize;
 

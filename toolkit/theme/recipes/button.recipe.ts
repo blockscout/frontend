@@ -264,7 +264,7 @@ export const recipe = defineRecipe({
     size: {
       '2xs': { px: 2, h: 5, minW: 5, textStyle: 'xs', borderRadius: 'sm', gap: 1 },
       xs: { px: 2, h: 6, minW: 6, textStyle: 'sm', borderRadius: 'sm', gap: 1 },
-      sm: { px: 3, h: 8, minW: 8, textStyle: 'md', borderRadius: 'base', gap: 1 },
+      sm: { px: 3, h: 8, minW: 8, textStyle: 'sm', borderRadius: 'base', gap: 1 },
       md: { px: 3, h: 10, minW: 10, textStyle: 'md', borderRadius: 'base', gap: 2, '& .chakra-spinner': { '--spinner-size': '20px' } },
     },
   },

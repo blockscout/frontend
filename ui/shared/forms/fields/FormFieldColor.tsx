@@ -31,7 +31,7 @@ const FormFieldColor = <
   onBlur,
   group,
   inputProps,
-  size = 'xl',
+  size = 'lg',
   disabled,
   sampleDefaultBgColor,
   ...restProps

@@ -9,7 +9,6 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
@@ -73,7 +72,6 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
               display={{ base: 'inline', lg: isExpanded ? 'inline' : 'none', xl: isCollapsed ? 'none' : 'inline' }}
             >
               <span>{ item.text }</span>
-              { !isInternalLink && <IconSvg name="link_external" boxSize={ 3 } color="icon.externalLink" verticalAlign="middle"/> }
             </chakra.span>
             { isHighlighted && (
               <LightningLabel

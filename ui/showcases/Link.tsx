@@ -71,9 +71,6 @@ const LinkShowcase = () => {
         </SamplesStack>
       </Section>
 
-      { /* TODO @tom2drum links with icons */ }
-      <span>??? links with icons</span>
-
       <Section>
         <SectionHeader>Loading</SectionHeader>
         <SamplesStack>

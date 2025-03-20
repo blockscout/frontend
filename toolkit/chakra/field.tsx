@@ -7,12 +7,13 @@ import getComponentDisplayName from '../utils/getComponentDisplayName';
 import type { InputProps } from './input';
 import type { InputGroupProps } from './input-group';
 
-export interface FieldProps extends Omit<ChakraField.RootProps, 'label' | 'children'> {
+export interface FieldProps extends Omit<ChakraField.RootProps, 'label' | 'children' | 'size'> {
   label?: React.ReactNode;
   helperText?: React.ReactNode;
   errorText?: React.ReactNode;
   optionalText?: React.ReactNode;
   children: React.ReactElement<InputProps> | React.ReactElement<InputGroupProps>;
+  size?: 'sm' | 'md' | 'lg' | '2xl';
 }
 
 export const Field = React.forwardRef<HTMLDivElement, FieldProps>(

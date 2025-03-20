@@ -38,9 +38,8 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         { ...(apiToken ? { href: route({ pathname: '/account/merits' }) } : {}) }
         onClick={ apiToken ? undefined : openLoginModal }
         onFocus={ handleFocus }
-        fontSize="sm"
         size={ size }
-        px={{ base: '10px', lg: !isLoading && Boolean(apiToken) ? 2.5 : 4 }}
+        px={{ base: '10px', lg: 3 }}
         loading={ isLoading }
         _hover={{
           textDecoration: 'none',

@@ -79,11 +79,6 @@ export const recipe = defineSlotRecipe({
           fontSize: 'md',
         },
       },
-      xl: {
-        label: {
-          fontSize: 'md',
-        },
-      },
       // special size for textarea
       '2xl': {
         label: {
@@ -113,7 +108,7 @@ export const recipe = defineSlotRecipe({
 
   compoundVariants: [
     {
-      size: 'xl',
+      size: 'lg',
       floating: true,
       css: {
         label: {

@@ -17,7 +17,7 @@ type Props = {
 const RewardsReadOnlyInputWithCopy = ({ label, value, className, isLoading }: Props) => {
   return (
     <Skeleton loading={ isLoading } className={ className }>
-      <Field label={ label } floating size="xl" readOnly>
+      <Field label={ label } floating size="lg" readOnly>
         <InputGroup endElement={ <CopyToClipboard text={ value }/> } endElementProps={{ px: 3 }}>
           <Input value={ value } fontWeight="500"/>
         </InputGroup>

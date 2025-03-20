@@ -70,7 +70,7 @@ const AddressFilterInput = ({ address, mode, onModeChange, onChange, onClear, is
       />
       <InputGroup
         flexGrow={ 1 }
-        endElement={ <ClearButton onClick={ onClear } isDisabled={ !address }/> }
+        endElement={ <ClearButton onClick={ onClear } mx={ 2 } isDisabled={ !address }/> }
       >
         <Input value={ address } onChange={ onChange } placeholder="Smart contract / Address (0x...)*" size="sm" autoComplete="off"/>
       </InputGroup>

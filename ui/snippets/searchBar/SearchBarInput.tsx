@@ -104,26 +104,23 @@ const SearchBarInput = (
   const startElement = (
     <IconSvg
       name="search"
-      boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }}
-      color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }}
-      ml={{ base: 3, lg: 4 }}
-      mr="10px"
+      boxSize={ 5 }
+      ml={{ base: 2, lg: isHomepage ? 4 : 2 }}
+      mr={ 2 }
     />
   );
 
   const endElement = (
     <>
-      <ClearButton onClick={ onClear } isVisible={ value.length > 0 }/>
+      <ClearButton onClick={ onClear } isVisible={ value.length > 0 } mx={ 2 }/>
       { !isMobile && (
         <Center
           boxSize="20px"
-          my="2px"
-          mr={ 3 }
-          ml={ 2 }
+          mr={{ base: 2, lg: isHomepage ? 4 : 2 }}
           borderRadius="sm"
           borderWidth="1px"
-          borderColor="gray.400"
-          color="gray.400"
+          borderColor="gray.500"
+          color="gray.500"
         >
           /
         </Center>

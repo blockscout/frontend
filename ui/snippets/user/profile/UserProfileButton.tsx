@@ -84,8 +84,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ..
           onFocus={ handleFocus }
           selected={ dataExists }
           highlighted={ isAutoConnectDisabled }
-          textStyle="sm"
-          px={ dataExists ? 2.5 : 4 }
+          px={{ base: 2.5, lg: 3 }}
           fontWeight={ dataExists ? 700 : 600 }
           loading={ isButtonLoading }
           { ...rest }
