@@ -96,13 +96,13 @@ export const recipe = defineRecipe({
         // When any items (filters) are selected in the popover, the button should change its background and text color.
         // The last CSS selector is for redefining styles for the TabList component.
         _selected: {
-          bg: 'button.dropdown.border.selected',
+          bg: 'button.dropdown.bg.selected',
           color: 'button.dropdown.fg.selected',
-          borderColor: 'button.dropdown.border.selected',
+          borderColor: 'transparent',
           _hover: {
-            bg: 'button.dropdown.border.selected',
+            bg: 'button.dropdown.bg.selected',
             color: 'button.dropdown.fg.selected',
-            borderColor: 'button.dropdown.border.selected',
+            borderColor: 'transparent',
           },
         },
       },
@@ -241,12 +241,31 @@ export const recipe = defineRecipe({
           color: 'text.secondary',
         },
       },
+      icon_secondary: {
+        bg: 'transparent',
+        color: 'button.icon_secondary.fg',
+        border: 'none',
+        _hover: {
+          color: 'link.primary.hover',
+        },
+        _selected: {
+          bg: 'button.icon_secondary.bg.selected',
+          color: 'button.icon_secondary.fg.selected',
+          _hover: {
+            bg: 'button.icon_secondary.bg.selected',
+            color: 'button.icon_secondary.fg.selected',
+          },
+        },
+        _expanded: {
+          color: 'link.primary.hover',
+        },
+      },
     },
     size: {
-      '2xs': { px: 2, h: 5, textStyle: 'xs', borderRadius: 'sm', gap: 1 },
-      xs: { px: 2, h: 6, textStyle: 'sm', borderRadius: 'sm', gap: 1 },
-      sm: { px: 3, h: 8, textStyle: 'md', borderRadius: 'base', gap: 1 },
-      md: { px: 3, h: 10, textStyle: 'md', borderRadius: 'base', gap: 2, '& .chakra-spinner': { '--spinner-size': '20px' } },
+      '2xs': { px: 2, h: 5, minW: 5, textStyle: 'xs', borderRadius: 'sm', gap: 1 },
+      xs: { px: 2, h: 6, minW: 6, textStyle: 'sm', borderRadius: 'sm', gap: 1 },
+      sm: { px: 3, h: 8, minW: 8, textStyle: 'md', borderRadius: 'base', gap: 1 },
+      md: { px: 3, h: 10, minW: 10, textStyle: 'md', borderRadius: 'base', gap: 2, '& .chakra-spinner': { '--spinner-size': '20px' } },
     },
   },
   defaultVariants: {

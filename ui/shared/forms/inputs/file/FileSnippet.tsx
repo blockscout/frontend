@@ -1,7 +1,7 @@
 import { Box, Flex, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import { IconButton } from 'toolkit/chakra/icon-button';
+import { CloseButton } from 'toolkit/chakra/close-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
@@ -83,18 +83,13 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
               </Box>
             </Tooltip>
           ) }
-          <IconButton
-            aria-label="remove"
-            boxSize={ 6 }
-            display="inline-block"
-            flexShrink={ 0 }
+          <CloseButton
+            aria-label="Remove"
             ml="auto"
             onClick={ handleRemove }
             disabled={ isDisabled }
             alignSelf="flex-start"
-          >
-            <IconSvg name="cross" boxSize={ 6 }/>
-          </IconButton>
+          />
         </Flex>
         <Text color="text.secondary" mt={ 1 }>
           { file.size.toLocaleString(undefined, { notation: 'compact', maximumFractionDigits: 2, unit: 'byte', unitDisplay: 'narrow', style: 'unit' }) }

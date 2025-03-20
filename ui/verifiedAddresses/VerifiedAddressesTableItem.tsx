@@ -86,12 +86,12 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
           <Tooltip content="Edit" disabled={ isLoading }>
             <IconButton
               aria-label="edit"
-              boxSize={ 5 }
+              variant="link"
+              size="2xs"
               borderRadius="none"
-              flexShrink={ 0 }
               onClick={ handleEditClick }
             >
-              <IconSvg name="edit" boxSize={ 4 } flexShrink={ 0 }/>
+              <IconSvg name="edit"/>
             </IconButton>
           </Tooltip>
         ) : null }

@@ -119,6 +119,7 @@ const SearchBarInput = (
           boxSize="20px"
           my="2px"
           mr={ 3 }
+          ml={ 2 }
           borderRadius="sm"
           borderWidth="1px"
           borderColor="gray.400"

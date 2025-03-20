@@ -63,9 +63,6 @@ const SelectClearTrigger = React.forwardRef<
   return (
     <ChakraSelect.ClearTrigger asChild { ...props } ref={ ref }>
       <CloseButton
-        variant="plain"
-        focusVisibleRing="inside"
-        focusRingWidth="2px"
         pointerEvents="auto"
       />
     </ChakraSelect.ClearTrigger>

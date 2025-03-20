@@ -25,9 +25,6 @@ const CloseButtonShowcase = () => {
           <Sample label="size: md">
             <CloseButton size="md" outline="1px dashed lightpink"/>
           </Sample>
-          <Sample label="size: lg">
-            <CloseButton size="lg" outline="1px dashed lightpink"/>
-          </Sample>
         </SamplesStack>
       </Section>
     </Container>

@@ -1,13 +1,14 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { IconButton as ChakraIconButton, useRecipe } from '@chakra-ui/react';
+import { useRecipe } from '@chakra-ui/react';
 import * as React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
 
 import { recipe as closeButtonRecipe } from '../theme/recipes/close-button.recipe';
+import { IconButton } from './icon-button';
 export interface CloseButtonProps extends Omit<ButtonProps, 'variant' | 'size'> {
   variant?: 'plain';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'md';
 }
 
 export const CloseButton = React.forwardRef<
@@ -19,8 +20,8 @@ export const CloseButton = React.forwardRef<
   const styles = recipe(recipeProps);
 
   return (
-    <ChakraIconButton aria-label="Close" ref={ ref } css={ styles } { ...restProps }>
-      { props.children ?? <IconSvg name="cross" boxSize={ 6 }/> }
-    </ChakraIconButton>
+    <IconButton aria-label="Close" ref={ ref } css={ styles } { ...restProps }>
+      { props.children ?? <IconSvg name="close"/> }
+    </IconButton>
   );
 });

@@ -68,8 +68,8 @@ const ContractMethodMultiplyButton = ({ onClick, isDisabled, initialValue, onCha
         <PopoverTrigger>
           <IconButton
             variant="subtle"
-            size="xs"
             cursor="pointer"
+            boxSize={ 6 }
             p={ 0 }
             disabled={ isDisabled }
             borderBottomLeftRadius={ 0 }

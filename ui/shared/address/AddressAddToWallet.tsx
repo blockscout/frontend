@@ -130,13 +130,11 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
         <IconButton
           className={ className }
           aria-label="Add token to wallet"
-          variant="outline"
-          size="sm"
-          px={ 1 }
+          variant="plain"
+          size="md"
           onClick={ handleClick }
-          flexShrink={ 0 }
         >
-          <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 6 }/>
+          <IconSvg name={ WALLETS_INFO[wallet].icon }/>
         </IconButton>
       </Tooltip>
     );

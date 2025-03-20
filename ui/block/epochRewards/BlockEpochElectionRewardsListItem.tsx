@@ -44,7 +44,6 @@ const BlockEpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => 
               aria-label={ section.open ? 'Collapse section' : 'Expand section' }
               variant="link"
               boxSize={ 6 }
-              flexShrink={ 0 }
             >
               <IconSvg
                 name="arrows/east-mini"

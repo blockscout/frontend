@@ -129,9 +129,10 @@ const FeaturedApp = ({
               <IconButton
                 aria-label="Mark as favorite"
                 title="Mark as favorite"
-                // TODO @tom2drum fix this button
-                boxSize={ 8 }
+                variant="icon_secondary"
+                size="md"
                 onClick={ handleFavoriteClick }
+                selected={ isFavorite }
               >
                 <FavoriteIcon isFavorite={ isFavorite }/>
               </IconButton>

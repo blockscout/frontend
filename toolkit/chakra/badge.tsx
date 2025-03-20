@@ -11,12 +11,13 @@ import { Skeleton } from './skeleton';
 export interface BadgeProps extends Omit<ChakraBadgeProps, 'colorScheme'> {
   loading?: boolean;
   iconStart?: IconName;
+  endElement?: React.ReactNode;
   truncated?: boolean;
 }
 
 export const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
   function Badge(props, ref) {
-    const { loading, iconStart, children, asChild = true, truncated = false, ...rest } = props;
+    const { loading, iconStart, children, asChild = true, truncated = false, endElement, ...rest } = props;
 
     const child = <chakra.span overflow="hidden" textOverflow="ellipsis">{ children }</chakra.span>;
 
@@ -31,6 +32,7 @@ export const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
         <ChakraBadge display="inline-flex" alignItems="center" whiteSpace="nowrap" { ...rest }>
           { iconStart && <IconSvg name={ iconStart } boxSize="10px"/> }
           { childrenElement }
+          { endElement }
         </ChakraBadge>
       </Skeleton>
     );

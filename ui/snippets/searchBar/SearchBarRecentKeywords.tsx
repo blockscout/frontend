@@ -85,7 +85,7 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
           ) :
             <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ kw }</Text>
           }
-          <ClearButton onClick={ removeKeyword(kw) } flexShrink={ 0 } boxSize={ 6 }/>
+          <ClearButton onClick={ removeKeyword(kw) }/>
         </Flex>
       )) }
     </Box>

@@ -19,11 +19,12 @@ const NetworkMenu = () => {
       <PopoverTrigger>
         <IconButton
           variant="link"
+          size="2xs"
           aria-label="Network menu"
           borderRadius="sm"
           onClick={ menu.onToggle }
         >
-          <IconSvg name="networks" boxSize={ 4 } p="1px"/>
+          <IconSvg name="networks"/>
         </IconButton>
       </PopoverTrigger>
       <NetworkMenuContentDesktop items={ menu.data } tabs={ menu.availableTabs }/>

@@ -130,8 +130,6 @@ const MarketplaceAppModal = ({
   const isMobile = useIsMobile();
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
 
-  const iconColor = { _light: 'blue.600', _dark: 'gray.400' };
-
   return (
     <DialogRoot
       open={ Boolean(data.id) }
@@ -218,25 +216,22 @@ const MarketplaceAppModal = ({
                 <IconButton
                   aria-label="Mark as favorite"
                   title="Mark as favorite"
-                  variant="outline"
-                  w={ 9 }
-                  h={ 8 }
-                  flexShrink={ 0 }
+                  variant="icon_secondary"
+                  size="md"
                   onClick={ handleFavoriteClick }
+                  selected={ isFavorite }
                 >
-                  <FavoriteIcon isFavorite={ isFavorite } color={ iconColor }/>
+                  <FavoriteIcon isFavorite={ isFavorite }/>
                 </IconButton>
 
                 <CopyToClipboard
                   text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
                   type="share"
-                  variant="outline"
-                  w={ 9 }
-                  h={ 8 }
-                  color={ iconColor }
-                  _hover={{ color: iconColor }}
-                  display="inline-flex"
-                  borderRadius="base"
+                  variant="icon_secondary"
+                  size="md"
+                  borderRadius="none"
+                  ml={ 0 }
+                  boxSize={ 8 }
                 />
               </Flex>
             </Flex>

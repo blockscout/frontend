@@ -20,13 +20,13 @@ const LinkNewTab = ({ className, label, href }: Props) => {
       <IconButton
         asChild
         aria-label={ label ?? 'Open link' }
-        color="link.secondary"
-        _hover={{ color: 'link.primary.hover' }}
+        variant="icon_secondary"
+        size="md"
         className={ className }
         borderRadius={ 0 }
       >
         <Link href={ href } target="_blank">
-          <IconSvg name="open-link" boxSize={ 5 }/>
+          <IconSvg name="open-link"/>
         </Link>
       </IconButton>
     </Tooltip>

@@ -35,6 +35,7 @@
 	| "checkered_flag"
 	| "clock-light"
 	| "clock"
+	| "close"
 	| "coins/bitcoin"
 	| "collection"
 	| "columns"

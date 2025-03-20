@@ -41,10 +41,11 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
           aria-label="prev"
           borderRadius="sm"
           variant="subtle"
+          boxSize={ 6 }
           onClick={ handelPrevClick }
           disabled={ isPrevDisabled }
         >
-          <IconSvg name="arrows/east-mini" boxSize={ 6 }/>
+          <IconSvg name="arrows/east-mini"/>
         </IconButton>
       </Tooltip>
       <Tooltip content={ nextLabel }>
@@ -52,11 +53,12 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
           aria-label="next"
           borderRadius="sm"
           variant="subtle"
+          boxSize={ 6 }
           ml="10px"
           onClick={ handelNextClick }
           disabled={ isNextDisabled }
         >
-          <IconSvg name="arrows/east-mini" boxSize={ 6 } transform="rotate(180deg)"/>
+          <IconSvg name="arrows/east-mini" transform="rotate(180deg)"/>
         </IconButton>
       </Tooltip>
     </Box>

@@ -111,13 +111,11 @@ const ChartWidget = ({
             <IconButton
               hidden={ !zoomRange }
               aria-label="Reset zoom"
-              w={ 9 }
-              h={ 8 }
-              size="sm"
-              variant="outline"
+              size="md"
+              variant="icon_secondary"
               onClick={ handleZoomReset }
             >
-              <IconSvg name="repeat" boxSize={ 4 }/>
+              <IconSvg name="repeat"/>
             </IconButton>
           </Tooltip>
 

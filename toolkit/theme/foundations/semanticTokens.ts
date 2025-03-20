@@ -23,11 +23,13 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       dropdown: {
         fg: {
           DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
-          selected: { value: { _light: '{colors.blue.600}', _dark: '{colors.gray.50}' } },
+          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.whiteAlpha.800}' } },
+        },
+        bg: {
+          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
         },
         border: {
           DEFAULT: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.600}' } },
-          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.600}' } },
         },
       },
       header: {
@@ -51,6 +53,15 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         },
         border: {
           DEFAULT: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
+        },
+      },
+      icon_secondary: {
+        fg: {
+          DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
+          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.whiteAlpha.800}' } },
+        },
+        bg: {
+          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
         },
       },
       hero: {

@@ -23,12 +23,10 @@ const Sort = (props: Props) => {
           <IconButton
             loadingSkeleton={ isLoading }
             aria-label="sort"
-            size="sm"
+            size="md"
             variant="outline"
-            colorScheme="gray"
-            width="36px"
           >
-            <IconSvg name="arrows/up-down" boxSize={ 5 }/>
+            <IconSvg name="arrows/up-down"/>
           </IconButton>
         </SelectControl>
       );

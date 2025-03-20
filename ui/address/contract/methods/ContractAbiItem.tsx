@@ -100,9 +100,12 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
           </Box>
           <Badge colorPalette={ isRead ? 'purple_alt' : 'blue_alt' } flexShrink={ 0 }>{ isRead ? 'read' : 'write' }</Badge>
           { 'method_id' in data && (
-            <Badge display="inline-flex" alignItems="center" flexShrink={ 0 }>
+            <Badge
+              flexShrink={ 0 }
+              endElement={ <CopyToClipboard text={ data.method_id } as="div"/> }
+              gap={ 0 }
+            >
               { data.method_id }
-              <CopyToClipboard text={ data.method_id } as="div"/>
             </Badge>
           ) }
         </AccordionItemTrigger>

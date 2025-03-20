@@ -21,28 +21,26 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props
         <IconButton
           aria-label="edit"
           variant="link"
+          size="2xs"
           onClick={ onEditClick }
           onFocusCapture={ onFocusCapture }
           loadingSkeleton={ isLoading }
-          display="inline-block"
-          flexShrink={ 0 }
           borderRadius="none"
         >
-          <IconSvg name="edit" boxSize={ 5 }/>
+          <IconSvg name="edit"/>
         </IconButton>
       </Tooltip>
       <Tooltip content="Delete">
         <IconButton
           aria-label="delete"
           variant="link"
+          size="2xs"
           onClick={ onDeleteClick }
           onFocusCapture={ onFocusCapture }
           loadingSkeleton={ isLoading }
-          display="inline-block"
-          flexShrink={ 0 }
           borderRadius="none"
         >
-          <IconSvg name="delete" boxSize={ 5 }/>
+          <IconSvg name="delete"/>
         </IconButton>
       </Tooltip>
     </HStack>

@@ -45,24 +45,22 @@ const ContractVerificationFieldLibraryItem = ({ index, fieldsLength, onAddFieldC
               <IconButton
                 aria-label="delete"
                 variant="outline"
-                w="30px"
-                h="30px"
+                size="md"
                 onClick={ handleRemoveButtonClick }
                 disabled={ isDisabled }
               >
-                <IconSvg name="minus" w="20px" h="20px"/>
+                <IconSvg name="minus"/>
               </IconButton>
             ) }
             { fieldsLength < LIMIT && (
               <IconButton
                 aria-label="add"
                 variant="outline"
-                w="30px"
-                h="30px"
+                size="md"
                 onClick={ handleAddButtonClick }
                 disabled={ isDisabled }
               >
-                <IconSvg name="plus" w="20px" h="20px"/>
+                <IconSvg name="plus"/>
               </IconButton>
             ) }
           </Flex>

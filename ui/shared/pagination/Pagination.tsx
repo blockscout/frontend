@@ -40,7 +40,7 @@ const Pagination = (props: Props) => {
         aria-label="Prev page"
         variant="outline"
         w={ 9 }
-        size="sm"
+        h={ 8 }
         onClick={ onPrevPageClick }
         disabled={ !canGoBackwards || isLoading || page === 1 }
         loadingSkeleton={ showSkeleton }
@@ -68,7 +68,7 @@ const Pagination = (props: Props) => {
         aria-label="Next page"
         variant="outline"
         w={ 9 }
-        size="sm"
+        h={ 8 }
         onClick={ onNextPageClick }
         disabled={ !hasNextPage || isLoading }
         loadingSkeleton={ showSkeleton }

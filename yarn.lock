@@ -1593,16 +1593,16 @@
   dependencies:
     "@chainsafe/is-ip" "^2.0.1"
 
-"@chakra-ui/cli@3.2.5":
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/cli/-/cli-3.2.5.tgz#a7a4587ed065ff3d6b7f440d8553b66c9e71641c"
-  integrity sha512-h8LO1r3M00C4dm6T7/cyecd9lGkaRGMka1W44N6dbXWb2pbGR1xgm7x0OXru0YnYl/xaEy/wb58FEAssfhEg4w==
+"@chakra-ui/cli@3.13.0":
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/cli/-/cli-3.13.0.tgz#00d8be740b8e31ce93e6517fa427e75f602dc714"
+  integrity sha512-MbtkzhmDc/tjyzXjRg3l5SvIbLjI+y3s1WiFWLMnzXKpsmHQYi7Ud0rUCUvVj10Pip+asHKzw4lw/ZYx936mjg==
   dependencies:
-    "@clack/prompts" "0.7.0"
+    "@clack/prompts" "0.10.0"
     "@pandacss/is-valid-prop" "0.41.0"
     "@types/cli-table" "^0.3.4"
     "@types/debug" "^4.1.12"
-    "@visulima/boxen" "^1.0.10"
+    "@visulima/boxen" "^1.0.30"
     bundle-n-require "1.1.1"
     chokidar "3.6.0"
     cli-table "^0.3.11"
@@ -1610,6 +1610,7 @@
     debug "^4.3.5"
     globby "14.0.2"
     https-proxy-agent "^7.0.5"
+    look-it-up "2.1.0"
     node-fetch "3.3.2"
     package-manager-detector "0.1.2"
     prettier "3.3.3"
@@ -1617,10 +1618,10 @@
     sucrase "^3.35.0"
     zod "^3.23.8"
 
-"@chakra-ui/react@3.12.0":
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/react-3.12.0.tgz#d3ff2c46bf643c8d155f22f9aae76c6b0a9b39b6"
-  integrity sha512-/RsSVyc9FjVuysZnFW3jJ+SIikWo/DfFWICEPis2EBNiCMaQgtjROKthiH4JUX39pXTd45tzJUrRVEN2p0cjNw==
+"@chakra-ui/react@3.13.0":
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/react-3.13.0.tgz#9dd01a6876b7d19dbfbf936645a64466106a7746"
+  integrity sha512-HqFXuVhiQCftQT5+/9F6w0aZufHgvaSr7jJoMP+BUxihF6uaSSW2YHy2eKK4a5SWNLMOnZHYQbUUrC3WSGcYxg==
   dependencies:
     "@ark-ui/react" "4.9.2"
     "@emotion/is-prop-valid" "1.3.1"
@@ -1631,6 +1632,14 @@
     csstype "3.1.3"
     fast-safe-stringify "2.1.1"
 
+"@clack/core@0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@clack/core/-/core-0.4.1.tgz#36c8aed3f4904060a39275817e804e7a8ffb7e1c"
+  integrity sha512-Pxhij4UXg8KSr7rPek6Zowm+5M22rbd2g1nfojHJkxp5YkFqiZ2+YLEM/XGVIzvGOcM0nqjIFxrpDwWRZYWYjA==
+  dependencies:
+    picocolors "^1.0.0"
+    sisteransi "^1.0.5"
+
 "@clack/core@^0.3.3":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@clack/core/-/core-0.3.3.tgz#233ccebf779aa5a66fc68ee48df5e58cd226fd94"
@@ -1639,7 +1648,16 @@
     picocolors "^1.0.0"
     sisteransi "^1.0.5"
 
-"@clack/prompts@0.7.0", "@clack/prompts@^0.7.0":
+"@clack/prompts@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@clack/prompts/-/prompts-0.10.0.tgz#3fb268c1eb9b4fc6bc5952744273e7a0cb01995a"
+  integrity sha512-H3rCl6CwW1NdQt9rE3n373t7o5cthPv7yUoxF2ytZvyvlJv89C5RYMJu83Hed8ODgys5vpBU0GKxIRG83jd8NQ==
+  dependencies:
+    "@clack/core" "0.4.1"
+    picocolors "^1.0.0"
+    sisteransi "^1.0.5"
+
+"@clack/prompts@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@clack/prompts/-/prompts-0.7.0.tgz#6aaef48ea803d91cce12bc80811cfcb8de2e75ea"
   integrity sha512-0MhX9/B4iL6Re04jPrttDm+BsP8y6mS7byuv0BvXgdXhbV5PdlsHt55dvNsuBCPZ7xq1oTAOOuotR9NFbQyMSA==
@@ -7203,10 +7221,10 @@
   resolved "https://registry.yarnpkg.com/@uidotdev/usehooks/-/usehooks-2.4.1.tgz#4b733eaeae09a7be143c6c9ca158b56cc1ea75bf"
   integrity sha512-1I+RwWyS+kdv3Mv0Vmc+p0dPYH0DTRAo04HLyXReYBL9AeseDWUJyi4THuksBJcu9F0Pih69Ak150VDnqbVnXg==
 
-"@visulima/boxen@^1.0.10":
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/@visulima/boxen/-/boxen-1.0.23.tgz#5e67c5b677f006dde626024235b6dd81a65cf162"
-  integrity sha512-os8zpUA6Iizcbp2JtH43diakJB1EagyEk57v1KaNd6Eh1A7XekNZw0AyUW5AdVmOoeWC0wZkrMXBNWxHL35AQQ==
+"@visulima/boxen@^1.0.30":
+  version "1.0.30"
+  resolved "https://registry.yarnpkg.com/@visulima/boxen/-/boxen-1.0.30.tgz#8100cacee027c797c32fcc8263ae97cafafead06"
+  integrity sha512-izo776RvDFeipY7tJspA0wFrcq/Ih0Qhe/zu6v7O4OlURy2ViFmy+2ZSUYTHSSwKrmVeZWrUUJSpaepZPLPMMQ==
 
 "@vitejs/plugin-react@^4.0.0":
   version "4.0.0"
@@ -14043,6 +14061,11 @@ long@^5.0.0:
   version "5.2.3"
   resolved "https://registry.yarnpkg.com/long/-/long-5.2.3.tgz#a3ba97f3877cf1d778eccbcb048525ebb77499e1"
   integrity sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==
+
+look-it-up@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/look-it-up/-/look-it-up-2.1.0.tgz#278a7ffc9da60a928452a0bab5452bb8855d7d13"
+  integrity sha512-nMoGWW2HurtuJf6XAL56FWTDCWLOTSsanrgwOyaR5Y4e3zfG5N/0cU5xWZSEU3tBxhQugRbV1xL9jb+ug7yZww==
 
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"

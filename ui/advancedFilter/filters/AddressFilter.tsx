@@ -78,13 +78,11 @@ const AddressFilterInput = ({ address, mode, onModeChange, onChange, onClear, is
         <IconButton
           aria-label="add"
           variant="outline"
-          minW="30px"
-          w="30px"
-          h="30px"
+          size="md"
           ml={ 2 }
           onClick={ onAddFieldClick }
         >
-          <IconSvg name="plus" w="20px" h="20px"/>
+          <IconSvg name="plus"/>
         </IconButton>
       ) }
     </Flex>

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Button, ButtonGroupRadio } from 'toolkit/chakra/button';
 import { Checkbox } from 'toolkit/chakra/checkbox';
-import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverContent, PopoverRoot, PopoverTrigger, PopoverBody } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -105,10 +104,10 @@ const ButtonShowcase = () => {
               <Tooltip content="Tooltip content">
                 <div>
                   <PopoverTrigger>
-                    <IconButton variant="dropdown" size="md" px={ 2 }>
+                    <Button variant="dropdown" size="md" px={ 2 }>
                       <IconSvg name="explorer" boxSize={ 5 }/>
                       With tooltip
-                    </IconButton>
+                    </Button>
                   </PopoverTrigger>
                 </div>
               </Tooltip>
@@ -186,10 +185,6 @@ const ButtonShowcase = () => {
             <Button variant="subtle" size="xs">Default: Now+1h</Button>
             <Button variant="subtle" size="xs" data-hover>Hovered: Now+1h</Button>
             <Button variant="subtle" size="xs" disabled>Disabled: Now+1h</Button>
-          </Sample>
-
-          <Sample label="variant: ??? marketplace card???">
-            TBD
           </Sample>
 
           <Sample label="variant: plain">

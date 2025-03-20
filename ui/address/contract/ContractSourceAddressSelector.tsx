@@ -67,7 +67,7 @@ const ContractSourceAddressSelector = ({ className, selectedItem, onItemSelect, 
         maxW={{ base: '180px', lg: 'none' }}
         loading={ isLoading }
       />
-      <Flex columnGap={ 2 } alignItems="center">
+      <Flex alignItems="center">
         <CopyToClipboard text={ selectedItem.address } ml={ 0 }/>
         <LinkNewTab
           label="Open contract details page in new tab"

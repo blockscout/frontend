@@ -25,6 +25,7 @@ const NetworkMenu = ({ isCollapsed }: Props) => {
           marginLeft="auto"
           overflow="hidden"
           width={{ base: 'auto', lg: isCollapsed === false ? '36px' : '0px', xl: isCollapsed ? '0px' : '36px' }}
+          visibility={{ base: 'visible', lg: isCollapsed === false ? 'visible' : 'hidden', xl: isCollapsed ? 'hidden' : 'visible' }}
           isActive={ menu.open }
           onClick={ menu.onToggle }
         />

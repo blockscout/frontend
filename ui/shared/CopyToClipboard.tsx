@@ -1,4 +1,3 @@
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { IconButtonProps } from 'toolkit/chakra/icon-button';
@@ -62,14 +61,14 @@ const CopyToClipboard = (props: Props) => {
         ml={ 2 }
         borderRadius="sm"
         loadingSkeleton={ isLoading }
-        color="icon.info"
-        _hover={{ color: 'link.primary.hover' }}
+        variant="icon_secondary"
+        size="2xs"
         { ...rest }
       >
-        <IconSvg name={ iconName } boxSize="full"/>
+        <IconSvg name={ iconName }/>
       </IconButton>
     </Tooltip>
   );
 };
 
-export default React.memo(chakra(CopyToClipboard));
+export default React.memo(CopyToClipboard);

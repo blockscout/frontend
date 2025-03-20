@@ -45,7 +45,8 @@ export const recipe = defineSlotRecipe({
       zIndex: 'calc(var(--dialog-z-index) + var(--layer-index, 0))',
       bg: 'dialog.bg',
       color: 'dialog.fg',
-      boxShadow: 'lg',
+      boxShadow: 'size.lg',
+      borderRadius: 'xl',
       _open: {
         animationDuration: 'moderate',
       },
@@ -68,14 +69,13 @@ export const recipe = defineSlotRecipe({
     footer: {
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'flex-end',
+      justifyContent: 'flex-start',
       gap: '3',
-      px: '0',
-      pt: '2',
-      pb: '0',
+      p: '0',
+      mt: '6',
     },
     title: {
-      textStyle: 'heading.md',
+      textStyle: 'heading.lg',
       fontWeight: '500',
     },
     description: {
@@ -145,7 +145,7 @@ export const recipe = defineSlotRecipe({
       },
       md: {
         content: {
-          maxW: '640px',
+          maxW: '728px',
         },
       },
       cover: {

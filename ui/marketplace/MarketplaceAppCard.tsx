@@ -183,7 +183,7 @@ const MarketplaceAppCard = ({
             >
               More info
             </Link>
-            <Flex alignItems="center">
+            <Flex alignItems="center" gap={ 1 }>
               <Rating
                 appId={ id }
                 rating={ rating }
@@ -197,25 +197,21 @@ const MarketplaceAppCard = ({
               <IconButton
                 aria-label="Mark as favorite"
                 title="Mark as favorite"
-                variant="ghost"
-                colorScheme="gray"
-                boxSize={{ base: 6, md: '30px' }}
+                variant="icon_secondary"
+                size="md"
                 onClick={ handleFavoriteClick }
-                ml={ 2 }
+                selected={ isFavorite }
               >
                 <FavoriteIcon isFavorite={ isFavorite }/>
               </IconButton>
               <CopyToClipboard
                 text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
                 type="share"
-                boxSize={{ base: 6, md: '30px' }}
-                variant="ghost"
-                colorScheme="gray"
-                color="gray.400"
-                _hover={{ color: 'gray.400' }}
-                ml={{ base: 1, md: 0 }}
-                display="inline-flex"
-                borderRadius="base"
+                variant="icon_secondary"
+                size="md"
+                borderRadius="none"
+                ml={ 0 }
+                boxSize={ 8 }
               />
             </Flex>
           </Flex>

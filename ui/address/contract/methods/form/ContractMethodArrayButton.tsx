@@ -27,7 +27,6 @@ const ContractMethodArrayButton = ({ className, type, index, onClick, isDisabled
       data-index={ index }
       variant="outline"
       boxSize={ 5 }
-      flexShrink={ 0 }
       onClick={ handleClick }
       disabled={ isDisabled }
     >

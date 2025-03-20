@@ -62,13 +62,13 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
             <IconButton
               className={ className }
               aria-label="edit"
-              variant="outline"
-              size="sm"
-              flexShrink={ 0 }
+              variant="icon_secondary"
+              size="md"
+              selected={ Boolean(watchListId) }
               onClick={ onClick }
               onFocusCapture={ onFocusCapture }
             >
-              <IconSvg name={ watchListId ? 'star_filled' : 'star_outline' } boxSize={ 5 }/>
+              <IconSvg name={ watchListId ? 'star_filled' : 'star_outline' }/>
             </IconButton>
           </Tooltip>
         ) }

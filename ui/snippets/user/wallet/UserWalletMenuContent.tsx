@@ -43,12 +43,11 @@ const UserWalletMenuContent = ({ isAutoConnectDisabled, address, domain, isRecon
         { isReconnecting ? <Spinner size="sm" m="2px" flexShrink={ 0 }/> : (
           <IconButton
             aria-label="Open wallet"
-            color="icon.info"
-            boxSize={ 5 }
+            variant="icon_secondary"
+            size="2xs"
             onClick={ handleOpenWalletClick }
-            flexShrink={ 0 }
           >
-            <IconSvg name="gear_slim" boxSize={ 5 }/>
+            <IconSvg name="gear_slim"/>
           </IconButton>
         ) }
       </Flex>

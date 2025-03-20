@@ -163,12 +163,11 @@ const Marketplace = () => {
           <MenuRoot>
             <MenuTrigger asChild>
               <IconButton
-                variant="dropdown"
-                size="sm"
-                px="9px"
+                variant="icon_secondary"
+                size="md"
                 ml="auto"
               >
-                <IconSvg name="dots" boxSize="18px"/>
+                <IconSvg name="dots"/>
               </IconButton>
             </MenuTrigger>
             <MenuContent>

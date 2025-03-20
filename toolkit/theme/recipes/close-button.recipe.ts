@@ -27,9 +27,7 @@ export const recipe = defineRecipe({
       },
     },
     size: {
-      sm: { boxSize: 6 },
-      md: { boxSize: 8 },
-      lg: { boxSize: 10 },
+      md: { boxSize: 5 },
     },
   },
   defaultVariants: {

@@ -51,11 +51,11 @@ const PublicTagsSubmitFieldAddresses = () => {
                   aria-label="add"
                   data-index={ index }
                   variant="outline"
-                  boxSize="30px"
+                  size="md"
                   onClick={ handleAddFieldClick }
                   disabled={ isDisabled }
                 >
-                  <IconSvg name="plus" boxSize={ 5 }/>
+                  <IconSvg name="plus"/>
                 </IconButton>
               ) }
               { fields.length > 1 && (
@@ -63,11 +63,11 @@ const PublicTagsSubmitFieldAddresses = () => {
                   aria-label="delete"
                   data-index={ index }
                   variant="outline"
-                  boxSize="30px"
+                  size="md"
                   onClick={ handleRemoveFieldClick }
                   disabled={ isDisabled }
                 >
-                  <IconSvg name="minus" boxSize={ 5 }/>
+                  <IconSvg name="minus"/>
                 </IconButton>
               ) }
             </GridItem>

@@ -48,7 +48,7 @@ export const Toaster = () => {
               ) }
               { closable && (
                 <Toast.CloseTrigger asChild>
-                  <CloseButton size="md"/>
+                  <CloseButton/>
                 </Toast.CloseTrigger>
               ) }
             </Toast.Root>

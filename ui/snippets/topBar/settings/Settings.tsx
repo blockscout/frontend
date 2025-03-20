@@ -25,10 +25,11 @@ const Settings = () => {
       <PopoverTrigger>
         <IconButton
           variant="link"
+          size="2xs"
           borderRadius="sm"
           aria-label="User settings"
         >
-          <IconSvg name="gear_slim" boxSize={ 5 } p="1px"/>
+          <IconSvg name="gear_slim"/>
         </IconButton>
       </PopoverTrigger>
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">

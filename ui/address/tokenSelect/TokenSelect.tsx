@@ -73,11 +73,11 @@ const TokenSelect = ({ onClick }: Props) => {
         >
           <IconButton
             aria-label="Show all tokens"
-            variant="outline"
-            size="sm"
+            variant="icon_secondary"
+            size="md"
             onClick={ handleIconButtonClick }
           >
-            <IconSvg name="wallet" boxSize={ 5 }/>
+            <IconSvg name="wallet"/>
           </IconButton>
         </Link>
       </Tooltip>

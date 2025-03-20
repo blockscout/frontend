@@ -53,7 +53,6 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
         <ButtonBackTo
           href={ goBackUrl }
           hint="Back to dApps list"
-          size="sm"
           loading={ isLoading }
         />
         <Link

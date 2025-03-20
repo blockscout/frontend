@@ -16,7 +16,6 @@ import * as metadata from 'lib/metadata';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Button } from 'toolkit/chakra/button';
-import { IconButton } from 'toolkit/chakra/icon-button';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
@@ -230,16 +229,14 @@ const Chart = () => {
           { !isMobile && (isInBrowser && ((window.navigator.share as any) ?
             shareButton :
             (
-              <IconButton variant="outline" size="sm" asChild p={ 1 }>
-                <CopyToClipboard
-                  text={ config.app.baseUrl + router.asPath }
-                  type="link"
-                  boxSize={ 8 }
-                  color="button.outline.fg"
-                  ml={ 0 }
-                  borderRadius="base"
-                />
-              </IconButton>
+              <CopyToClipboard
+                text={ config.app.baseUrl + router.asPath }
+                type="link"
+                ml={ 0 }
+                borderRadius="none"
+                variant="icon_secondary"
+                size="md"
+              />
             )
           )) }
           { (hasItems || lineQuery.isPlaceholderData) && (

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import type { ButtonProps } from 'toolkit/chakra/button';
+import type { IconButtonProps } from 'toolkit/chakra/icon-button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
-interface Props extends ButtonProps {
+interface Props extends IconButtonProps {
   href?: string;
   hint?: string;
 }

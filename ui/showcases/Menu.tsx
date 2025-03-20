@@ -16,8 +16,8 @@ const MenuShowcase = () => {
           <Sample label="variant: subtle">
             <MenuRoot>
               <MenuTrigger asChild>
-                <IconButton variant="dropdown" size="sm">
-                  <IconSvg name="dots" boxSize="18px"/>
+                <IconButton variant="icon_secondary" size="md">
+                  <IconSvg name="dots"/>
                 </IconButton>
               </MenuTrigger>
               <MenuContent>
@@ -30,8 +30,8 @@ const MenuShowcase = () => {
 
             <MenuRoot>
               <MenuTrigger asChild>
-                <IconButton variant="dropdown" size="sm" loadingSkeleton>
-                  <IconSvg name="dots" boxSize="18px"/>
+                <IconButton variant="icon_secondary" size="md" loadingSkeleton>
+                  <IconSvg name="dots"/>
                 </IconButton>
               </MenuTrigger>
               <MenuContent>

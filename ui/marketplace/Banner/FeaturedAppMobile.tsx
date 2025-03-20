@@ -143,9 +143,10 @@ const FeaturedAppMobile = ({
             top={{ base: 1, sm: '18px' }}
             aria-label="Mark as favorite"
             title="Mark as favorite"
-            // TODO @tom2drum fix this button
-            boxSize={ 8 }
+            variant="icon_secondary"
+            size="md"
             onClick={ onFavoriteClick }
+            selected={ isFavorite }
           >
             <FavoriteIcon isFavorite={ isFavorite }/>
           </IconButton>

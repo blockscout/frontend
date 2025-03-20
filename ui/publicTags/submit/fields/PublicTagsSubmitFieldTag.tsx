@@ -102,11 +102,11 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
               aria-label="add"
               data-index={ index }
               variant="outline"
-              boxSize="30px"
+              size="md"
               onClick={ handleAddClick }
               disabled={ isDisabled }
             >
-              <IconSvg name="plus" boxSize={ 5 }/>
+              <IconSvg name="plus"/>
             </IconButton>
           ) }
           { onRemoveClick && (
@@ -114,11 +114,11 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
               aria-label="delete"
               data-index={ index }
               variant="outline"
-              boxSize="30px"
+              size="md"
               onClick={ handleRemoveClick }
               disabled={ isDisabled }
             >
-              <IconSvg name="minus" boxSize={ 5 }/>
+              <IconSvg name="minus"/>
             </IconButton>
           ) }
         </Flex>
