@@ -24,7 +24,7 @@ export const recipe = defineSlotRecipe({
       userSelect: 'none',
       zIndex: '1',
       _disabled: {
-        opacity: '0.5',
+        opacity: 'control.disabled',
       },
       _invalid: {
         color: 'input.fg.error',
@@ -143,10 +143,13 @@ export const recipe = defineSlotRecipe({
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          // 16px = scrollbar width
+          // 20px = scrollbar width
+          // 4px = border width
           width: 'calc(100% - 4px - 20px)',
-          padding: '20px 24px 0px 24px',
+          padding: '16px 16px 0px 16px',
           textStyle: 'xs',
+          borderTopRightRadius: '0px',
+          borderBottomRightRadius: '0px',
           _peerPlaceholderShown: {
             textStyle: 'md',
           },

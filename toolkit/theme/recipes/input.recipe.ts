@@ -82,8 +82,7 @@ export const recipe = defineRecipe({
           },
         },
         _disabled: {
-          bg: 'input.bg.disabled',
-          borderColor: 'input.border.disabled',
+          opacity: 'control.disabled',
         },
         _invalid: {
           borderColor: 'input.border.error',

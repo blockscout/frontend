@@ -22,8 +22,9 @@ export const recipe = defineRecipe({
     size: {
       '2xl': {
         textStyle: 'md',
-        px: '6',
         py: '4',
+        pl: '4',
+        pr: '5', // === scrollbar width
         scrollPaddingBottom: '4',
       },
     },
@@ -39,6 +40,7 @@ export const recipe = defineRecipe({
         },
         _focus: {
           borderColor: 'input.border.focus',
+          boxShadow: 'size.md',
           _hover: {
             borderColor: 'input.border.focus',
           },
@@ -56,8 +58,7 @@ export const recipe = defineRecipe({
         },
         _disabled: {
           pointerEvents: 'none',
-          bg: 'input.bg.disabled',
-          borderColor: 'input.border.disabled',
+          opacity: 'control.disabled',
         },
         _invalid: {
           borderColor: 'input.border.error',
@@ -70,7 +71,10 @@ export const recipe = defineRecipe({
 
     floating: {
       'true': {
-        paddingTop: '40px',
+        paddingTop: '8',
+        _placeholderShown: {
+          paddingTop: '10',
+        },
       },
     },
   },
