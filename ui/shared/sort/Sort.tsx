@@ -55,7 +55,7 @@ const Sort = (props: Props) => {
   })();
 
   return (
-    <SelectRoot collection={ collection } { ...rest }>
+    <SelectRoot collection={ collection } positioning={{ sameWidth: false }} { ...rest }>
       { trigger }
       <SelectContent>
         { collection.items.map((item) => (

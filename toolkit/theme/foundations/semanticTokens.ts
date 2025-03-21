@@ -289,12 +289,22 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       trigger: {
         outline: {
           fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
-          border: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.600}' } },
         },
       },
       item: {
         bg: {
           highlighted: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
+        },
+      },
+      indicator: {
+        fg: {
+          DEFAULT: { value: '{colors.gray.500}' },
+        },
+      },
+      placeholder: {
+        fg: {
+          DEFAULT: { value: '{colors.gray.500}' },
+          error: { value: '{colors.red.500}' },
         },
       },
     },

@@ -26,6 +26,7 @@ const PopoverFilterRadio = ({ name, hasActiveFilter, collection, isLoading, onCh
       collection={ collection }
       defaultValue={ initialValue ? [ initialValue ] : [ collection.items[0].value ] }
       onValueChange={ handleValueChange }
+      positioning={{ sameWidth: false }}
     >
       <SelectControl
         triggerProps={{ asChild: true, px: { base: 1, lg: 2 } }}

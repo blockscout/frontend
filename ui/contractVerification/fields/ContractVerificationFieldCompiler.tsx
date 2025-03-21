@@ -67,10 +67,11 @@ const ContractVerificationFieldCompiler = ({ isVyper, isStylus }: Props) => {
 
   const extraControls = !isVyper && !isStylus ? (
     <Checkbox
-      mb={ 2 }
+      mt={ 2 }
       checked={ isNightly }
       onCheckedChange={ handleCheckboxChange }
       disabled={ formState.isSubmitting }
+      size="sm"
     >
       Include nightly builds
     </Checkbox>

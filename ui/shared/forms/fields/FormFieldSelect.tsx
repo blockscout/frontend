@@ -4,19 +4,21 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
 
-import type { SelectRootProps } from 'toolkit/chakra/select';
-import { SelectContent, SelectControl, SelectItem, SelectRoot, SelectValueText } from 'toolkit/chakra/select';
+import type { SelectProps } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
+
+import getFieldErrorText from '../utils/getFieldErrorText';
 
 type Props<
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
-> = FormFieldPropsBase<FormFields, Name> & SelectRootProps;
+> = FormFieldPropsBase<FormFields, Name> & SelectProps;
 
 const FormFieldSelect = <
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
 >(props: Props<FormFields, Name>) => {
-  const { name, rules, collection, placeholder, ...rest } = props;
+  const { name, rules, size = 'lg', ...rest } = props;
 
   const { control } = useFormContext<FormFields>();
   const { field, fieldState, formState } = useController<FormFields, typeof name>({
@@ -36,28 +38,19 @@ const FormFieldSelect = <
   }, [ field ]);
 
   return (
-    <SelectRoot
+    <Select
       ref={ field.ref }
       name={ field.name }
       value={ field.value }
+      onBlur={ field.onBlur }
       onValueChange={ handleChange }
       onInteractOutside={ handleBlur }
-      collection={ collection }
       disabled={ isDisabled }
       invalid={ Boolean(fieldState.error) }
+      errorText={ getFieldErrorText(fieldState.error) }
+      size={ size }
       { ...rest }
-    >
-      <SelectControl>
-        <SelectValueText placeholder={ placeholder }/>
-      </SelectControl>
-      <SelectContent>
-        { collection.items.map((item) => (
-          <SelectItem item={ item } key={ item.value }>
-            { item.label }
-          </SelectItem>
-        )) }
-      </SelectContent>
-    </SelectRoot>
+    />
   );
 };
 

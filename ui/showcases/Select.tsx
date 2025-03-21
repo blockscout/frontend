@@ -2,8 +2,9 @@ import { createListCollection } from '@chakra-ui/react';
 import { noop } from 'es-toolkit';
 import React from 'react';
 
+import { Checkbox } from 'toolkit/chakra/checkbox';
 import { NativeSelectField, NativeSelectRoot } from 'toolkit/chakra/native-select';
-import { SelectContent, SelectItem, SelectRoot, SelectControl, SelectValueText } from 'toolkit/chakra/select';
+import { Select, SelectAsync } from 'toolkit/chakra/select';
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
 import Sort from 'ui/shared/sort/Sort';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
@@ -36,18 +37,91 @@ const SelectShowcase = () => {
         <SectionHeader>Variant</SectionHeader>
         <SamplesStack>
           <Sample label="variant: outline">
-            <SelectRoot collection={ frameworks } variant="outline" defaultValue={ [ frameworks.items[0].value ] }>
-              <SelectControl w="200px">
-                <SelectValueText placeholder="Select framework"/>
-              </SelectControl>
-              <SelectContent>
-                { frameworks.items.map((framework) => (
-                  <SelectItem item={ framework } key={ framework.value }>
-                    { framework.label }
-                  </SelectItem>
-                )) }
-              </SelectContent>
-            </SelectRoot>
+            <Select
+              collection={ frameworks }
+              placeholder="Select framework"
+              size="sm"
+              w="200px"
+            />
+          </Sample>
+        </SamplesStack>
+      </Section>
+
+      <Section>
+        <SectionHeader>Size</SectionHeader>
+        <SamplesStack>
+          { [ 'sm' as const, 'lg' as const ].map((size) => {
+
+            return (
+              <Sample label={ `size: ${ size }` } key={ size }>
+                <Select
+                  collection={ frameworks }
+                  placeholder="Select framework"
+                  size={ size }
+                  w="300px"
+                />
+                <Select
+                  collection={ frameworks }
+                  placeholder="Select framework"
+                  defaultValue={ [ frameworks.items[0].value ] }
+                  size={ size }
+                  w="300px"
+                />
+                <Select
+                  collection={ frameworks }
+                  placeholder="Select framework"
+                  defaultValue={ [ frameworks.items[0].value ] }
+                  size={ size }
+                  w="300px"
+                  readOnly
+                />
+                <Select
+                  collection={ frameworks }
+                  placeholder="Select framework"
+                  defaultValue={ [ frameworks.items[0].value ] }
+                  size={ size }
+                  w="300px"
+                  disabled
+                />
+                <Select
+                  collection={ frameworks }
+                  placeholder="Select framework"
+                  size={ size }
+                  w="300px"
+                  required
+                  invalid
+                  errorText="Error message"
+                />
+                <Select
+                  collection={ frameworks }
+                  placeholder="Select framework"
+                  defaultValue={ [ frameworks.items[0].value ] }
+                  size={ size }
+                  w="300px"
+                  required
+                  invalid
+                  errorText="Error message"
+                />
+              </Sample>
+            );
+          }) }
+        </SamplesStack>
+      </Section>
+
+      <Section>
+        <SectionHeader>With search (async)</SectionHeader>
+        <SamplesStack>
+          <Sample label="variant: outline">
+            <SelectAsync
+              placeholder="Select framework"
+              size="lg"
+              w="300px"
+              // eslint-disable-next-line react/jsx-no-bind
+              loadOptions={ () => {
+                return Promise.resolve(frameworks);
+              } }
+              extraControls={ <Checkbox mt={ 2 } size="sm">Include nightly builds</Checkbox> }
+            />
           </Sample>
         </SamplesStack>
       </Section>

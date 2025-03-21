@@ -7,7 +7,7 @@ export const recipe = defineSlotRecipe({
       display: 'flex',
       flexDirection: 'column',
       gap: '1.5',
-      width: 'fit-content',
+      width: '100%',
     },
     trigger: {
       display: 'flex',
@@ -26,6 +26,11 @@ export const recipe = defineSlotRecipe({
       _disabled: {
         opacity: 'control.disabled',
       },
+      _placeholderShown: {
+        '& [data-part=value-text]': {
+          display: '-webkit-box',
+        },
+      },
     },
     indicatorGroup: {
       display: 'flex',
@@ -37,14 +42,12 @@ export const recipe = defineSlotRecipe({
       bottom: '0',
       px: '0',
       pointerEvents: 'none',
-      _peerHover: {
-        color: 'link.primary.hover',
-      },
     },
     indicator: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      boxSize: '5',
       color: 'inherit',
       _open: {
         color: 'link.primary.hover',
@@ -62,7 +65,6 @@ export const recipe = defineSlotRecipe({
       boxShadowColor: 'colors.popover.shadow',
       maxH: '96',
       overflowY: 'auto',
-      width: 'max-content',
       minWidth: '150px',
       rowGap: '2',
       _open: {
@@ -115,8 +117,11 @@ export const recipe = defineSlotRecipe({
       },
     },
     valueText: {
+      display: 'flex',
+      flexDirection: 'column',
       lineClamp: '1',
       maxW: '100%',
+      wordBreak: 'break-all',
     },
   },
 
@@ -127,20 +132,67 @@ export const recipe = defineSlotRecipe({
           borderWidth: '2px',
           color: 'select.trigger.outline.fg',
           bgColor: 'transparent',
-          borderColor: 'select.trigger.outline.border',
+          borderColor: 'input.border.filled',
           _expanded: {
             color: 'link.primary.hover',
             borderColor: 'link.primary.hover',
+            _hover: {
+              color: 'link.primary.hover',
+              borderColor: 'link.primary.hover',
+            },
           },
           _hover: {
-            color: 'link.primary.hover',
-            borderColor: 'link.primary.hover',
+            color: 'select.trigger.outline.fg',
+            borderColor: 'input.border.hover',
           },
           _focusVisible: {
-            borderColor: 'link.primary.hover',
+            borderColor: 'input.border.focus',
+          },
+          _readOnly: {
+            userSelect: 'all',
+            pointerEvents: 'none',
+            cursor: 'default',
+            bg: 'input.bg.readOnly',
+            borderColor: 'input.border.readOnly',
+            _focus: {
+              borderColor: 'input.border.readOnly',
+            },
+            _hover: {
+              borderColor: 'input.border.readOnly',
+            },
           },
           _invalid: {
-            borderColor: 'border.error',
+            borderColor: 'input.border.error',
+            _hover: {
+              borderColor: 'input.border.error',
+            },
+            _expanded: {
+              color: 'link.primary.hover',
+              borderColor: 'link.primary.hover',
+              _hover: {
+                color: 'link.primary.hover',
+                borderColor: 'link.primary.hover',
+              },
+            },
+          },
+          _placeholderShown: {
+            color: 'select.placeholder.fg',
+            borderColor: 'input.border',
+            _hover: {
+              color: 'select.placeholder.fg',
+            },
+            _invalid: {
+              color: 'select.placeholder.fg.error',
+              _hover: {
+                color: 'select.placeholder.fg.error',
+              },
+            },
+          },
+        },
+        indicatorGroup: {
+          color: 'select.indicator.fg',
+          _peerDisabled: {
+            opacity: 'control.disabled',
           },
         },
       },
@@ -162,10 +214,6 @@ export const recipe = defineSlotRecipe({
           textStyle: 'sm',
           gap: '1',
         },
-        indicator: {
-          width: '5',
-          height: '5',
-        },
         indicatorGroup: {
           pr: '2',
           pl: '1',
@@ -174,16 +222,46 @@ export const recipe = defineSlotRecipe({
           py: '5px',
           px: '4',
         },
-        itemGroup: {
-          mt: '1',
+      },
+      lg: {
+        root: {
+          '--select-trigger-height': '60px',
+          '--select-trigger-padding-right': '44px',
+          '--select-trigger-padding-left': 'spacing.4',
         },
-        itemGroupLabel: {
-          py: '1',
-          px: '1.5',
+        content: {
+          px: '0',
+          py: '4',
+          textStyle: 'md',
+        },
+        trigger: {
+          py: '2',
+        },
+        item: {
+          py: '5px',
+          px: '4',
+        },
+        indicatorGroup: {
+          pr: '4',
+          pl: '2',
         },
       },
     },
   },
+
+  compoundVariants: [
+    {
+      size: 'sm',
+      variant: 'outline',
+      css: {
+        trigger: {
+          _placeholderShown: {
+            color: 'select.trigger.outline.fg',
+          },
+        },
+      },
+    },
+  ],
 
   defaultVariants: {
     size: 'sm',

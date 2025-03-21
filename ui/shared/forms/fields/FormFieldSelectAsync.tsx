@@ -7,6 +7,8 @@ import type { FormFieldPropsBase } from './types';
 import type { SelectAsyncProps } from 'toolkit/chakra/select';
 import { SelectAsync } from 'toolkit/chakra/select';
 
+import getFieldErrorText from '../utils/getFieldErrorText';
+
 type Props<
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
@@ -16,7 +18,7 @@ const FormFieldSelectAsync = <
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
 >(props: Props<FormFields, Name>) => {
-  const { name, rules, ...rest } = props;
+  const { name, rules, size = 'lg', ...rest } = props;
 
   const { control } = useFormContext<FormFields>();
   const { field, fieldState, formState } = useController<FormFields, typeof name>({
@@ -40,10 +42,13 @@ const FormFieldSelectAsync = <
       ref={ field.ref }
       name={ field.name }
       value={ field.value }
+      onBlur={ field.onBlur }
       onValueChange={ handleChange }
       onInteractOutside={ handleBlur }
       disabled={ isDisabled }
       invalid={ Boolean(fieldState.error) }
+      errorText={ getFieldErrorText(fieldState.error) }
+      size={ size }
       { ...rest }
     />
   );

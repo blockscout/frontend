@@ -1,7 +1,7 @@
 'use client';
 
 import type { CollectionItem, ListCollection } from '@chakra-ui/react';
-import { Select as ChakraSelect, createListCollection, Portal, useSelectContext } from '@chakra-ui/react';
+import { Box, Select as ChakraSelect, createListCollection, Flex, Portal, useSelectContext } from '@chakra-ui/react';
 import { useDebounce } from '@uidotdev/usehooks';
 import * as React from 'react';
 
@@ -111,54 +111,78 @@ export const SelectItem = React.forwardRef<
   );
 });
 
-interface SelectValueTextProps
-  extends Omit<ChakraSelect.ValueTextProps, 'children'> {
+interface SelectValueTextProps extends Omit<ChakraSelect.ValueTextProps, 'children'> {
   children?(items: Array<CollectionItem>): React.ReactNode;
+  size?: SelectRootProps['size'];
+  required?: boolean;
+  invalid?: boolean;
+  errorText?: string;
 }
 
 export const SelectValueText = React.forwardRef<
   HTMLSpanElement,
   SelectValueTextProps
 >(function SelectValueText(props, ref) {
-  const { children, ...rest } = props;
+  const { children, size, required, invalid, errorText, ...rest } = props;
+  const context = useSelectContext();
+
+  const content = (() => {
+    const items = context.selectedItems;
+
+    const placeholder = `${ props.placeholder }${ required ? '*' : '' }${ invalid && errorText ? ` - ${ errorText }` : '' }`;
+
+    if (items.length === 0) return placeholder;
+
+    if (children) return children(items);
+
+    if (items.length === 1) {
+      const item = items[0] as CollectionItem & { icon?: React.ReactNode };
+
+      const icon = (() => {
+        if (item.icon) {
+          return typeof item.icon === 'string' ? <IconSvg name={ item.icon } boxSize={ 5 } flexShrink={ 0 } mr={ 1 }/> : item.icon;
+        }
+
+        return null;
+      })();
+
+      const label = size === 'lg' ? (
+        <Box
+          textStyle="xs"
+          color={ invalid ? 'field.placeholder.error' : 'field.placeholder' }
+          display="-webkit-box"
+        >
+          { placeholder }
+        </Box>
+      ) : null;
+
+      return (
+        <>
+          { label }
+          <Flex display="inline-flex" alignItems="center" flexWrap="nowrap">
+            { icon }
+            <span style={{
+              WebkitLineClamp: 1,
+              WebkitBoxOrient: 'vertical',
+              display: '-webkit-box',
+            }}>
+              { context.collection.stringifyItem(item) }
+            </span>
+          </Flex>
+        </>
+      );
+    }
+
+    // FIXME: we don't have multiple selection in the select yet
+    return `${ items.length } selected`;
+  })();
+
   return (
-    <ChakraSelect.ValueText { ...rest } display="inline-flex" alignItems="center" flexWrap="nowrap" ref={ ref }>
-      <ChakraSelect.Context>
-        { (select) => {
-          const items = select.selectedItems;
-          if (items.length === 0) return props.placeholder;
-
-          if (children) return children(items);
-
-          if (items.length === 1) {
-            const item = items[0] as CollectionItem & { icon?: React.ReactNode };
-
-            const icon = (() => {
-              if (item.icon) {
-                return typeof item.icon === 'string' ? <IconSvg name={ item.icon } boxSize={ 5 } flexShrink={ 0 } mr={ 1 }/> : item.icon;
-              }
-
-              return null;
-            })();
-
-            return (
-              <>
-                { icon }
-                <span style={{
-                  WebkitLineClamp: 1,
-                  WebkitBoxOrient: 'vertical',
-                  display: '-webkit-box',
-                }}>
-                  { select.collection.stringifyItem(item) }
-                </span>
-              </>
-            );
-          }
-
-          // FIXME: we don't have multiple selection in the select yet
-          return `${ items.length } selected`;
-        } }
-      </ChakraSelect.Context>
+    <ChakraSelect.ValueText
+      ref={ ref }
+      { ...rest }
+    >
+      { content }
     </ChakraSelect.ValueText>
   );
 });
@@ -169,11 +193,14 @@ export const SelectRoot = React.forwardRef<
   HTMLDivElement,
   ChakraSelect.RootProps
 >(function SelectRoot(props, ref) {
+  const { lazyMount = true, unmountOnExit = true, ...rest } = props;
   return (
     <ChakraSelect.Root
-      { ...props }
       ref={ ref }
-      positioning={{ sameWidth: false, ...props.positioning, offset: { mainAxis: 4, ...props.positioning?.offset } }}
+      lazyMount={ lazyMount }
+      unmountOnExit={ unmountOnExit }
+      { ...rest }
+      positioning={{ sameWidth: true, ...props.positioning, offset: { mainAxis: 4, ...props.positioning?.offset } }}
     >
       { props.asChild ? (
         props.children
@@ -212,19 +239,25 @@ export interface SelectProps extends SelectRootProps {
   placeholder: string;
   portalled?: boolean;
   loading?: boolean;
+  errorText?: string;
 }
 
 export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
-  const { collection, placeholder, portalled = true, loading, ...rest } = props;
+  const { collection, placeholder, portalled = true, loading, errorText, ...rest } = props;
   return (
     <SelectRoot
       ref={ ref }
       collection={ collection }
-      variant="outline"
       { ...rest }
     >
       <SelectControl loading={ loading }>
-        <SelectValueText placeholder={ placeholder }/>
+        <SelectValueText
+          placeholder={ placeholder }
+          size={ props.size }
+          required={ props.required }
+          invalid={ props.invalid }
+          errorText={ errorText }
+        />
       </SelectControl>
       <SelectContent portalled={ portalled }>
         { collection.items.map((item) => (
@@ -237,7 +270,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
   );
 });
 
-export interface SelectAsyncProps extends Omit<SelectRootProps, 'collection'> {
+export interface SelectAsyncProps extends Omit<SelectProps, 'collection'> {
   placeholder: string;
   portalled?: boolean;
   loading?: boolean;
@@ -246,7 +279,7 @@ export interface SelectAsyncProps extends Omit<SelectRootProps, 'collection'> {
 }
 
 export const SelectAsync = React.forwardRef<HTMLDivElement, SelectAsyncProps>((props, ref) => {
-  const { placeholder, portalled = true, loading, loadOptions, extraControls, onValueChange, ...rest } = props;
+  const { placeholder, portalled = true, loading, loadOptions, extraControls, onValueChange, errorText, ...rest } = props;
 
   const [ collection, setCollection ] = React.useState<ListCollection<CollectionItem>>(createListCollection({ items: [] }));
   const [ inputValue, setInputValue ] = React.useState('');
@@ -271,20 +304,28 @@ export const SelectAsync = React.forwardRef<HTMLDivElement, SelectAsyncProps>((p
     <SelectRoot
       ref={ ref }
       collection={ collection }
-      variant="outline"
       onValueChange={ handleValueChange }
       { ...rest }
     >
       <SelectControl loading={ loading }>
-        <SelectValueText placeholder={ placeholder }/>
+        <SelectValueText
+          placeholder={ placeholder }
+          size={ props.size }
+          required={ props.required }
+          invalid={ props.invalid }
+          errorText={ errorText }
+        />
       </SelectControl>
       <SelectContent portalled={ portalled }>
-        <FilterInput
-          placeholder="Search"
-          initialValue={ inputValue }
-          onChange={ handleFilterChange }
-        />
-        { extraControls }
+        <Box px="4">
+          <FilterInput
+            placeholder="Search"
+            initialValue={ inputValue }
+            onChange={ handleFilterChange }
+            inputProps={{ pl: '9' }}
+          />
+          { extraControls }
+        </Box>
         { collection.items.map((item) => (
           <SelectItem item={ item } key={ item.value }>
             { item.label }
