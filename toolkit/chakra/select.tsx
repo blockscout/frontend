@@ -17,7 +17,6 @@ export interface SelectOption<Value extends string = string> {
 }
 
 export interface SelectControlProps extends ChakraSelect.ControlProps {
-  clearable?: boolean;
   noIndicator?: boolean;
   triggerProps?: ChakraSelect.TriggerProps;
   loading?: boolean;
@@ -28,18 +27,17 @@ export const SelectControl = React.forwardRef<
   SelectControlProps
 >(function SelectControl(props, ref) {
   // NOTE: here defaultValue means the "default" option of the select, not its initial value
-  const { children, clearable, noIndicator, triggerProps, loading, defaultValue, ...rest } = props;
+  const { children, noIndicator, triggerProps, loading, defaultValue, ...rest } = props;
 
   const context = useSelectContext();
   const isDefaultValue = Array.isArray(defaultValue) ? context.value.every((item) => defaultValue.includes(item)) : context.value === defaultValue;
 
   return (
     <Skeleton loading={ loading } asChild>
-      <ChakraSelect.Control { ...rest } className="group">
-        <ChakraSelect.Trigger ref={ ref } { ...triggerProps } data-default-value={ isDefaultValue }>{ children }</ChakraSelect.Trigger>
-        { (!noIndicator || clearable) && (
+      <ChakraSelect.Control { ...rest }>
+        <ChakraSelect.Trigger ref={ ref } className="group peer" { ...triggerProps } data-default-value={ isDefaultValue }>{ children }</ChakraSelect.Trigger>
+        { (!noIndicator) && (
           <ChakraSelect.IndicatorGroup>
-            { clearable && <SelectClearTrigger/> }
             { !noIndicator && (
               <ChakraSelect.Indicator
                 transform="rotate(-90deg)"
@@ -56,7 +54,7 @@ export const SelectControl = React.forwardRef<
   );
 });
 
-const SelectClearTrigger = React.forwardRef<
+export const SelectClearTrigger = React.forwardRef<
   HTMLButtonElement,
   ChakraSelect.ClearTriggerProps
 >(function SelectClearTrigger(props, ref) {
@@ -93,12 +91,22 @@ export const SelectItem = React.forwardRef<
   ChakraSelect.ItemProps
 >(function SelectItem(props, ref) {
   const { item, children, ...rest } = props;
+
+  const startElement = (() => {
+    if (item.icon) {
+      return typeof item.icon === 'string' ? <IconSvg name={ item.icon } boxSize={ 5 } flexShrink={ 0 }/> : item.icon;
+    }
+
+    return null;
+  })();
+
   return (
     <ChakraSelect.Item key={ item.value } item={ item } { ...rest } ref={ ref }>
-      <ChakraSelect.ItemIndicator asChild>
-        <IconSvg name="check" boxSize={ 5 } flexShrink={ 0 }/>
-      </ChakraSelect.ItemIndicator>
+      { startElement }
       { children }
+      <ChakraSelect.ItemIndicator asChild>
+        <IconSvg name="check" boxSize={ 5 } flexShrink={ 0 } ml="auto"/>
+      </ChakraSelect.ItemIndicator>
     </ChakraSelect.Item>
   );
 });
@@ -114,14 +122,40 @@ export const SelectValueText = React.forwardRef<
 >(function SelectValueText(props, ref) {
   const { children, ...rest } = props;
   return (
-    <ChakraSelect.ValueText { ...rest } ref={ ref }>
+    <ChakraSelect.ValueText { ...rest } display="inline-flex" alignItems="center" flexWrap="nowrap" ref={ ref }>
       <ChakraSelect.Context>
         { (select) => {
           const items = select.selectedItems;
           if (items.length === 0) return props.placeholder;
+
           if (children) return children(items);
-          if (items.length === 1)
-            return select.collection.stringifyItem(items[0]);
+
+          if (items.length === 1) {
+            const item = items[0] as CollectionItem & { icon?: React.ReactNode };
+
+            const icon = (() => {
+              if (item.icon) {
+                return typeof item.icon === 'string' ? <IconSvg name={ item.icon } boxSize={ 5 } flexShrink={ 0 } mr={ 1 }/> : item.icon;
+              }
+
+              return null;
+            })();
+
+            return (
+              <>
+                { icon }
+                <span style={{
+                  WebkitLineClamp: 1,
+                  WebkitBoxOrient: 'vertical',
+                  display: '-webkit-box',
+                }}>
+                  { select.collection.stringifyItem(item) }
+                </span>
+              </>
+            );
+          }
+
+          // FIXME: we don't have multiple selection in the select yet
           return `${ items.length } selected`;
         } }
       </ChakraSelect.Context>

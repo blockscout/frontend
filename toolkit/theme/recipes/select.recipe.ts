@@ -1,6 +1,5 @@
 import { defineSlotRecipe } from '@chakra-ui/react';
 
-// TODO @tom2drum check sizes for select
 export const recipe = defineSlotRecipe({
   slots: [ 'root', 'trigger', 'indicatorGroup', 'indicator', 'content', 'item', 'control', 'itemText', 'itemGroup', 'itemGroupLabel', 'label', 'valueText' ],
   base: {
@@ -25,7 +24,7 @@ export const recipe = defineSlotRecipe({
       cursor: 'pointer',
       focusVisibleRing: 'none',
       _disabled: {
-        layerStyle: 'disabled',
+        opacity: 'control.disabled',
       },
     },
     indicatorGroup: {
@@ -38,15 +37,15 @@ export const recipe = defineSlotRecipe({
       bottom: '0',
       px: '0',
       pointerEvents: 'none',
+      _peerHover: {
+        color: 'link.primary.hover',
+      },
     },
     indicator: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       color: 'inherit',
-      _groupHover: {
-        color: 'link.primary.hover',
-      },
       _open: {
         color: 'link.primary.hover',
       },
@@ -65,6 +64,7 @@ export const recipe = defineSlotRecipe({
       overflowY: 'auto',
       width: 'max-content',
       minWidth: '150px',
+      rowGap: '2',
       _open: {
         animationStyle: 'slide-fade-in',
         animationDuration: 'fast',
@@ -87,11 +87,7 @@ export const recipe = defineSlotRecipe({
       borderRadius: 'none',
       _disabled: {
         pointerEvents: 'none',
-        opacity: '0.5',
-      },
-      _icon: {
-        width: '4',
-        height: '4',
+        opacity: 'control.disabled',
       },
       _highlighted: {
         bg: 'select.item.bg.highlighted',
@@ -115,7 +111,7 @@ export const recipe = defineSlotRecipe({
       userSelect: 'none',
       textStyle: 'sm',
       _disabled: {
-        layerStyle: 'disabled',
+        opacity: 'control.disabled',
       },
     },
     valueText: {
@@ -142,79 +138,9 @@ export const recipe = defineSlotRecipe({
           },
           _focusVisible: {
             borderColor: 'link.primary.hover',
-            focusVisibleRing: 'none',
           },
           _invalid: {
             borderColor: 'border.error',
-          },
-        },
-      },
-      filter: {
-        trigger: {
-          borderWidth: '2px',
-          color: 'select.trigger.filter.fg.selected',
-          bgColor: 'select.trigger.filter.border.selected',
-          borderColor: 'select.trigger.filter.border.selected',
-          _expanded: {
-            color: 'select.trigger.filter.fg.selected',
-            bgColor: 'select.trigger.filter.border.selected',
-            borderColor: 'select.trigger.filter.border.selected',
-          },
-          _hover: {
-            color: 'select.trigger.filter.fg.selected',
-            borderColor: 'select.trigger.filter.border.selected',
-            bgColor: 'select.trigger.filter.border.selected',
-          },
-          _focusVisible: {
-            borderColor: 'link.primary.hover',
-            focusVisibleRing: 'none',
-          },
-          _placeholderShown: {
-            color: 'select.trigger.filter.fg',
-            borderColor: 'select.trigger.filter.border',
-            bgColor: 'transparent',
-            _hover: {
-              color: 'link.primary.hover',
-              borderColor: 'link.primary.hover',
-              bgColor: 'transparent',
-            },
-          },
-          // If the default value is selected, the styles should be the same as when the placeholder is shown
-          '&[data-default-value="true"]': {
-            color: 'select.trigger.filter.fg',
-            borderColor: 'select.trigger.filter.border',
-            bgColor: 'transparent',
-            _hover: {
-              color: 'link.primary.hover',
-              borderColor: 'link.primary.hover',
-              bgColor: 'transparent',
-            },
-            _expanded: {
-              color: 'inherit',
-              borderColor: 'inherit',
-              bgColor: 'inherit',
-            },
-          },
-        },
-      },
-      sort: {
-        trigger: {
-          borderWidth: '2px',
-          borderColor: 'transparent',
-          bgColor: 'transparent',
-          _hover: {
-            color: 'link.primary.hover',
-            borderColor: 'link.primary.hover',
-          },
-          _open: {
-            bg: 'button.dropdown.border.selected',
-            color: 'button.dropdown.fg.selected',
-            borderColor: 'button.dropdown.border.selected',
-            _hover: {
-              bg: 'button.dropdown.border.selected',
-              color: 'button.dropdown.fg.selected',
-              borderColor: 'button.dropdown.border.selected',
-            },
           },
         },
       },
@@ -229,7 +155,7 @@ export const recipe = defineSlotRecipe({
         },
         content: {
           px: '0',
-          py: '2',
+          py: '4',
           textStyle: 'md',
         },
         trigger: {
@@ -245,12 +171,8 @@ export const recipe = defineSlotRecipe({
           pl: '1',
         },
         item: {
-          py: '2',
-          pr: '4',
-          pl: '44px',
-          _selected: {
-            px: '4',
-          },
+          py: '5px',
+          px: '4',
         },
         itemGroup: {
           mt: '1',

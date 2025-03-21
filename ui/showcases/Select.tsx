@@ -13,8 +13,8 @@ import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHead
 
 const frameworks = createListCollection({
   items: [
-    { label: 'React.js', value: 'react' },
-    { label: 'Vue.js', value: 'vue' },
+    { label: 'React.js is the most popular framework', value: 'react', icon: 'API' },
+    { label: 'Vue.js is the second most popular framework', value: 'vue' },
     { label: 'Angular', value: 'angular' },
     { label: 'Svelte', value: 'svelte' },
   ],
@@ -38,20 +38,6 @@ const SelectShowcase = () => {
           <Sample label="variant: outline">
             <SelectRoot collection={ frameworks } variant="outline" defaultValue={ [ frameworks.items[0].value ] }>
               <SelectControl w="200px">
-                <SelectValueText placeholder="Select framework"/>
-              </SelectControl>
-              <SelectContent>
-                { frameworks.items.map((framework) => (
-                  <SelectItem item={ framework } key={ framework.value }>
-                    { framework.label }
-                  </SelectItem>
-                )) }
-              </SelectContent>
-            </SelectRoot>
-          </Sample>
-          <Sample label="variant: filter">
-            <SelectRoot collection={ frameworks } variant="filter">
-              <SelectControl w="200px" noIndicator>
                 <SelectValueText placeholder="Select framework"/>
               </SelectControl>
               <SelectContent>

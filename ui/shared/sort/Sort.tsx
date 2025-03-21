@@ -3,23 +3,22 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { IconButton } from 'toolkit/chakra/icon-button';
-import type { SelectRootProps, SelectControlProps } from 'toolkit/chakra/select';
+import type { SelectRootProps } from 'toolkit/chakra/select';
 import { SelectContent, SelectItem, SelectRoot, SelectControl, SelectValueText } from 'toolkit/chakra/select';
 import IconSvg from 'ui/shared/IconSvg';
 
 export interface Props extends SelectRootProps {
-  controlProps?: SelectControlProps;
   isLoading?: boolean;
 }
 
 const Sort = (props: Props) => {
-  const { collection, controlProps, isLoading, ...rest } = props;
+  const { collection, isLoading, ...rest } = props;
   const isMobile = useIsMobile(false);
 
   const trigger = (() => {
     if (isMobile) {
       return (
-        <SelectControl { ...controlProps } triggerProps={{ asChild: true }} noIndicator>
+        <SelectControl triggerProps={{ asChild: true }} noIndicator>
           <IconButton
             loadingSkeleton={ isLoading }
             aria-label="sort"
@@ -34,7 +33,7 @@ const Sort = (props: Props) => {
 
     return (
       <SelectControl
-        { ...controlProps }
+        triggerProps={{ borderColor: 'transparent' }}
         loading={ isLoading }
       >
         <chakra.span
@@ -42,19 +41,21 @@ const Sort = (props: Props) => {
           fontWeight="normal"
           color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }}
           _groupHover={{ color: 'inherit' }}
+          _groupExpanded={{ color: 'inherit' }}
         >
           Sort by
         </chakra.span>
         <SelectValueText
           color={{ _light: 'blackAlpha.800', _dark: 'whiteAlpha.800' }}
           _groupHover={{ color: 'inherit' }}
+          _groupExpanded={{ color: 'inherit' }}
         />
       </SelectControl>
     );
   })();
 
   return (
-    <SelectRoot variant={{ lgDown: 'outline', lg: 'sort' }} collection={ collection } { ...rest }>
+    <SelectRoot collection={ collection } { ...rest }>
       { trigger }
       <SelectContent>
         { collection.items.map((item) => (

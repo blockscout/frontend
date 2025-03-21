@@ -60,12 +60,6 @@ export const recipe = defineSlotRecipe({
       outline: {
         field: selectSlotRecipe.variants?.variant.outline.trigger,
       },
-      filter: {
-        field: selectSlotRecipe.variants?.variant.filter.trigger,
-      },
-      sort: {
-        field: selectSlotRecipe.variants?.variant.sort.trigger,
-      },
     },
 
     size: {
