@@ -37,7 +37,7 @@ const InteropMessagesListItem = ({ item, isLoading }: Props) => {
           <Text as="span" variant="secondary">Destination tx</Text>
           <InteropMessageDestinationTx { ...item } isLoading={ isLoading }/>
         </Grid>
-        <Flex w="100%" gap={ 2 } justifyContent="space-between" mt={ 2 }>
+        <Flex gap={ 2 } justifyContent="space-between" mt={ 2 }>
           { item.init_chain !== undefined ? (
             <AddressEntityInterop
               chain={ item.init_chain }

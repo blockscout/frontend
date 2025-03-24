@@ -1,14 +1,10 @@
 import {
   chakra,
-  // Modal,
-  // ModalContent,
-  // ModalCloseButton,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
   Text,
   Flex,
-  // useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
 

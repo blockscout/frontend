@@ -5,6 +5,7 @@ import type { ChainInfo } from 'types/api/interop';
 
 import { route } from 'nextjs-routes';
 
+import stripTrailingSlash from 'lib/stripTrailingSlash';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -44,7 +45,7 @@ const IconStub = ({ isLoading }: { isLoading?: boolean }) => {
 const TxEntityInterop = ({ chain, hash, ...props }: Props) => {
   const partsProps = distributeEntityProps(props);
 
-  const href = (chain?.instance_url && hash) ? chain.instance_url.replace(/\/$/, '') + route({
+  const href = (chain?.instance_url && hash) ? stripTrailingSlash(chain.instance_url) + route({
     pathname: '/tx/[hash]',
     query: {
       ...props.query,

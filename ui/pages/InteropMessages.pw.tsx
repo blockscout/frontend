@@ -8,7 +8,7 @@ import InteropMessages from './InteropMessages';
 test('default view +@mobile', async({ render, mockTextAd, mockAssetResponse, mockApiResponse }) => {
   await mockTextAd();
   await mockAssetResponse(interopMessageMock.chain.chain_logo as string, './playwright/mocks/image_s.jpg');
-  await mockApiResponse('interop_messages', {
+  await mockApiResponse('optimistic_l2_interop_messages', {
     items: [
       interopMessageMock.interopMessageIn,
       interopMessageMock.interopMessageIn1,
@@ -21,7 +21,7 @@ test('default view +@mobile', async({ render, mockTextAd, mockAssetResponse, moc
       timestamp: 1719456000,
     },
   });
-  await mockApiResponse('interop_messages_count', 4000000);
+  await mockApiResponse('optimistic_l2_interop_messages_count', 4000000);
   const component = await render(<InteropMessages/>);
   await expect(component).toHaveScreenshot();
 });
