@@ -183,7 +183,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
         size="sm"
         listProps={ isMobile ? TAB_LIST_PROPS_MOBILE : TAB_LIST_PROPS }
         rightSlot={ rightSlot }
-        rightSlotProps={ tab !== 'tokens_erc20' && !isMobile ? { flexGrow: 1, display: 'flex', justifyContent: 'space-between', ml: 8 } : {} }
+        rightSlotProps={ tab === 'tokens_nfts' && !isMobile ? { display: 'flex', justifyContent: 'space-between', ml: 8 } : {} }
         stickyEnabled={ !isMobile }
       />
     </>
