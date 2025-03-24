@@ -11,7 +11,6 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { MenuContent, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import MetadataUpdateMenuItem from './items/MetadataUpdateMenuItem';
 import PrivateTagMenuItem from './items/PrivateTagMenuItem';
@@ -32,13 +31,9 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
   const isTokenInstancePage = router.pathname === '/token/[hash]/instance/[id]';
   const isTxPage = router.pathname === '/tx/[hash]';
 
-  const profileQuery = useProfileQuery();
-
   const handleButtonClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Address actions (more button)' });
   }, []);
-
-  const userWithoutEmail = profileQuery.data && !profileQuery.data.email;
 
   const items = [
     {
@@ -47,7 +42,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     },
     {
       render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
-      enabled: config.features.account.isEnabled && isTokenPage && config.features.addressVerification.isEnabled && !userWithoutEmail,
+      enabled: config.features.account.isEnabled && isTokenPage && config.features.addressVerification.isEnabled,
     },
     {
       render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,

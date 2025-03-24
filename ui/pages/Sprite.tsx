@@ -3,9 +3,6 @@ import { Flex, Box } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { StaticRoute } from 'nextjs-routes';
-import { route } from 'nextjs-routes';
-
 import useFetch from 'lib/hooks/useFetch';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import useClipboard from 'toolkit/hooks/useClipboard';
@@ -21,10 +18,10 @@ const formatFileSize = (fileSizeInBytes: number) => `${ (fileSizeInBytes / 1_024
 
 interface IconInfo {
   name: string;
-  fileSize: number;
+  file_size: number;
 }
 
-const Item = ({ name, fileSize, bgColor }: IconInfo & HTMLChakraProps<'div'>) => {
+const Item = ({ name, file_size: fileSize, bgColor }: IconInfo & HTMLChakraProps<'div'>) => {
   const { hasCopied, copy } = useClipboard(name, 1000);
   const [ copied, setCopied ] = React.useState(false);
 
@@ -47,7 +44,7 @@ const Item = ({ name, fileSize, bgColor }: IconInfo & HTMLChakraProps<'div'>) =>
       onClick={ copy }
       cursor="pointer"
     >
-      <IconSvg name={ name as IconName } boxSize="100px" bgColor={ bgColor } borderRadius="base"/>
+      <IconSvg name={ name.replace('.svg', '') as IconName } boxSize="100px" bgColor={ bgColor } borderRadius="base"/>
       <Tooltip content={ copied ? 'Copied' : 'Copy to clipboard' } open={ copied }>
         <Box fontWeight={ 500 } mt={ 2 }>{ name }</Box>
       </Tooltip>
@@ -63,8 +60,7 @@ const Sprite = () => {
   const { data, isFetching, isError } = useQuery({
     queryKey: [ 'sprite' ],
     queryFn: () => {
-      const url = route({ pathname: '/node-api/sprite' as StaticRoute<'/api/sprite'>['pathname'] });
-      return fetch<{ icons: Array<IconInfo> }, unknown>(url);
+      return fetch<Array<IconInfo>, unknown>('/icons/registry.json');
     },
   });
 
@@ -73,11 +69,13 @@ const Sprite = () => {
       return <ContentLoader/>;
     }
 
-    if (isError || !data || !('icons' in data)) {
+    if (isError || !data || !Array.isArray(data)) {
       return <DataFetchAlert/>;
     }
 
-    const items = data.icons.filter((icon) => icon.name.includes(searchTerm));
+    const items = data
+      .filter((icon) => icon.name.includes(searchTerm))
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     if (items.length === 0) {
       return <EmptySearchResult text="No icons found"/>;
@@ -91,12 +89,12 @@ const Sprite = () => {
   })();
 
   const total = React.useMemo(() => {
-    if (!data || !('icons' in data)) {
+    if (!data || !Array.isArray(data)) {
       return;
     }
-    return data?.icons.reduce((result, item) => {
+    return data.reduce((result, item) => {
       result.num++;
-      result.fileSize += item.fileSize;
+      result.fileSize += item.file_size;
       return result;
     }, { num: 0, fileSize: 0 });
   }, [ data ]);

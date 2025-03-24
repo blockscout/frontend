@@ -51,7 +51,7 @@ const IndexingBlocksAlert = () => {
 
   useSocketMessage({
     channel: blockIndexingChannel,
-    event: 'block_index_status',
+    event: 'index_status',
     handler: handleBlocksIndexStatus,
   });
 

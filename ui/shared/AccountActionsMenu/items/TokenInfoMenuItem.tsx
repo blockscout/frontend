@@ -72,7 +72,7 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
         const icon = <IconSvg name="edit" boxSize={ 6 } p={ 0.5 }/>;
 
         return (
-          <AuthGuard onAuthSuccess={ onAuthSuccess }>
+          <AuthGuard onAuthSuccess={ onAuthSuccess } ensureEmail>
             { ({ onClick }) => (
               <ButtonItem label={ label } icon={ icon } onClick={ onClick }/>
             ) }
@@ -83,7 +83,7 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
         const icon = <IconSvg name="edit" boxSize={ 6 } p={ 1 }/>;
 
         return (
-          <AuthGuard onAuthSuccess={ onAuthSuccess }>
+          <AuthGuard onAuthSuccess={ onAuthSuccess } ensureEmail>
             { ({ onClick }) => (
               <MenuItem onClick={ onClick } value="add-token-info">
                 { icon }

@@ -12,7 +12,6 @@ import IconSvg from 'ui/shared/IconSvg';
 import useAddressQuery from '../utils/useAddressQuery';
 
 type TableViewProps = {
-  scrollRef?: React.RefObject<HTMLDivElement>;
   className?: string;
   hash: string;
   tableId: string;
@@ -27,21 +26,17 @@ type RecordViewProps = Omit<TableViewProps, 'recordId' | 'recordName'> & {
 };
 
 type BreadcrumbItemProps = {
-  scrollRef?: React.RefObject<HTMLDivElement>;
   text: string;
   href: string;
   isLast?: boolean;
 };
 
-const BreadcrumbItem = ({ text, href, isLast, scrollRef }: BreadcrumbItemProps) => {
+const BreadcrumbItem = ({ text, href, isLast }: BreadcrumbItemProps) => {
   const currentUrl = isBrowser() ? window.location.href : '';
 
   const onLinkClick = React.useCallback(() => {
-    window.setTimeout(() => {
-      // cannot do scroll instantly, have to wait a little
-      scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 500);
-  }, [ scrollRef ]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   if (isLast) {
     return (
@@ -95,20 +90,17 @@ const AddressMudBreadcrumbs = (props: TableViewProps | RecordViewProps) => {
       <BreadcrumbItem
         text="MUD World"
         href={ route({ pathname: '/address/[hash]', query: queryParams }) }
-        scrollRef={ props.scrollRef }
       />
       <BreadcrumbItem
         text={ props.tableName }
         href={ route({ pathname: '/address/[hash]', query: { ...queryParams, table_id: props.tableId } }) }
         isLast={ !('recordId' in props) }
-        scrollRef={ props.scrollRef }
       />
       { ('recordId' in props && typeof props.recordId === 'string') && ('recordName' in props && typeof props.recordName === 'string') && (
         <BreadcrumbItem
           text={ props.recordName }
           href={ route({ pathname: '/address/[hash]', query: { ...queryParams, table_id: props.tableId, record_id: props.recordId } }) }
           isLast
-          scrollRef={ props.scrollRef }
 
         />
       ) }

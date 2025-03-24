@@ -47,14 +47,13 @@ const matchFilter = (filterValue: AddressFromToFilter, transaction: Transaction,
 };
 
 type Props = {
-  scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
   // for tests only
   overloadCount?: number;
 };
 
-const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = true, isQueryEnabled = true }: Props) => {
+const AddressTxs = ({ overloadCount = OVERLOAD_COUNT, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const isMounted = useIsMounted();
@@ -74,7 +73,6 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = 
     pathParams: { hash: currentAddress },
     filters: { filter: filterValue },
     sorting: getSortParamsFromValue<TransactionsSortingValue, TransactionsSortingField, TransactionsSorting['order']>(sort),
-    scrollRef,
     options: {
       enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_txs'>(TX, 50, { next_page_params: {
@@ -186,7 +184,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = 
 
   return (
     <>
-      { !isMobile && (
+      { !isMobile && addressTxsQuery.pagination.isVisible && (
         <ActionBar>
           { filter }
           { currentAddress && csvExportLink }
