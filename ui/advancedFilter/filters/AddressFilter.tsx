@@ -66,6 +66,7 @@ const AddressFilterInput = ({ address, mode, onModeChange, onChange, onClear, is
         onValueChange={ onModeChange }
         portalled={ false }
         w="105px"
+        flexShrink={ 0 }
         mr={ 3 }
       />
       <InputGroup

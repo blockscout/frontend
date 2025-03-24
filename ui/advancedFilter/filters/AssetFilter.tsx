@@ -132,7 +132,7 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
                 variant="select"
               >
                 <Flex flexGrow={ 1 } alignItems="center">
-                  { token.address === NATIVE_TOKEN.address ? <NativeTokenIcon boxSize={ 5 }/> : <TokenEntity.Icon token={ token }/> }
+                  { token.address === NATIVE_TOKEN.address ? <NativeTokenIcon boxSize={ 5 } mr={ 2 }/> : <TokenEntity.Icon token={ token }/> }
                   { token.symbol || token.name || token.address }
                 </Flex>
               </Tag>

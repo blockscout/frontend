@@ -1,14 +1,17 @@
-import { Tag as ChakraTag } from '@chakra-ui/react';
+import { chakra, Tag as ChakraTag } from '@chakra-ui/react';
 import * as React from 'react';
 
+import { nbsp } from 'lib/html-entities';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
+import { CloseButton } from './close-button';
 import { Skeleton } from './skeleton';
 
 export interface TagProps extends ChakraTag.RootProps {
   startElement?: React.ReactNode;
   endElement?: React.ReactNode;
   endElementProps?: ChakraTag.EndElementProps;
+  label?: string;
   onClose?: VoidFunction;
   closable?: boolean;
   truncated?: boolean;
@@ -22,6 +25,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
       startElement,
       endElement,
       endElementProps,
+      label,
       onClose,
       closable = Boolean(onClose),
       children,
@@ -31,11 +35,15 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
       ...rest
     } = props;
 
-    const labelElement = truncated ? (
+    const labelElement = label ? (
+      <chakra.span color="text.secondary">{ label }:{ nbsp }</chakra.span>
+    ) : null;
+
+    const contentElement = truncated ? (
       <TruncatedTextTooltip label={ children }>
-        <ChakraTag.Label>{ children }</ChakraTag.Label>
+        <ChakraTag.Label>{ labelElement }{ children }</ChakraTag.Label>
       </TruncatedTextTooltip>
-    ) : <ChakraTag.Label>{ children }</ChakraTag.Label>;
+    ) : <ChakraTag.Label>{ labelElement }{ children }</ChakraTag.Label>;
 
     return (
       <Skeleton loading={ loading } asChild>
@@ -47,13 +55,15 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
           { startElement && (
             <ChakraTag.StartElement _empty={{ display: 'none' }}>{ startElement }</ChakraTag.StartElement>
           ) }
-          { labelElement }
+          { contentElement }
           { endElement && (
             <ChakraTag.EndElement { ...endElementProps }>{ endElement }</ChakraTag.EndElement>
           ) }
           { closable && (
             <ChakraTag.EndElement>
-              <ChakraTag.CloseTrigger onClick={ onClose }/>
+              <ChakraTag.CloseTrigger onClick={ onClose } asChild>
+                <CloseButton/>
+              </ChakraTag.CloseTrigger>
             </ChakraTag.EndElement>
           ) }
         </ChakraTag.Root>

@@ -7,7 +7,6 @@ import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
 const TagShowcase = () => {
-  // TODO @tom2drum filtered tags
   return (
     <Container value="tag">
       <Section>
@@ -18,6 +17,9 @@ const TagShowcase = () => {
           </Sample>
           <Sample label="variant: clickable">
             <Tag variant="clickable">My tag</Tag>
+          </Sample>
+          <Sample label="variant: filter">
+            <Tag variant="filter">My tag</Tag>
           </Sample>
           <Sample label="variant: select">
             <Tag variant="select">Default</Tag>
@@ -87,7 +89,13 @@ const TagShowcase = () => {
         </SamplesStack>
 
         <SectionSubHeader>Filter tags</SectionSubHeader>
-        <span>TODO</span>
+        <SamplesStack>
+          <Sample>
+            <Tag variant="filter" label="Type">All</Tag>
+            <Tag variant="filter" label="Address" truncated maxW="150px" closable>0x1234567890123456789012345678901234567890</Tag>
+            <Tag variant="filter" label="Type" loading>All</Tag>
+          </Sample>
+        </SamplesStack>
       </Section>
     </Container>
   );

@@ -5,7 +5,7 @@ import React from 'react';
 import type { AddressMudRecordsFilter, AddressMudRecordsSorting } from 'types/api/address';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos, nbsp } from 'lib/html-entities';
+import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Tag } from 'toolkit/chakra/tag';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -89,21 +89,14 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
         const index = key as FilterKeys === 'filter_key0' ? 0 : 1;
         return (
           <Tag
-            display="inline-flex"
             key={ key }
-            maxW="360px"
-            // TODO @tom2drum style filter tags
-            colorScheme="blue"
+            variant="filter"
+            label={ getNameTypeText(data?.schema.key_names[index] || '', data?.schema.key_types[index] || '') }
             closable
             onClose={ onRemoveFilterClick(key as FilterKeys) }
+            maxW="360px"
           >
-            <chakra.span color="text.secondary" >{
-              getNameTypeText(data?.schema.key_names[index] || '', data?.schema.key_types[index] || '') }
-            </chakra.span>
-            <chakra.span color="text" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-              { nbsp }
-              { value }
-            </chakra.span>
+            { value }
           </Tag>
         );
       }) }

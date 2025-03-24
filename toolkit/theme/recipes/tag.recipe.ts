@@ -29,7 +29,7 @@ export const recipe = defineSlotRecipe({
       justifyContent: 'center',
       outline: '0',
       borderRadius: 'none',
-      color: 'tag.closeTrigger.color',
+      color: 'closeButton.fg',
       focusVisibleRing: 'inside',
       focusRingWidth: '2px',
       _hover: {
@@ -115,6 +115,14 @@ export const recipe = defineSlotRecipe({
           },
           _hover: {
             opacity: 0.76,
+          },
+        },
+      },
+      filter: {
+        root: {
+          bgColor: 'tag.root.filter.bg',
+          '&:not([data-loading], [aria-busy=true])': {
+            bgColor: 'tag.root.filter.bg',
           },
         },
       },
