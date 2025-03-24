@@ -3,23 +3,25 @@ import { noop } from 'es-toolkit';
 import React from 'react';
 
 import { Checkbox } from 'toolkit/chakra/checkbox';
+import type { SelectOption } from 'toolkit/chakra/select';
 import { Select, SelectAsync } from 'toolkit/chakra/select';
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
+import type { IconName } from 'ui/shared/IconSvg';
 import Sort from 'ui/shared/sort/Sort';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import { SORT_OPTIONS } from 'ui/txs/useTxsSort';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
-const frameworks = createListCollection({
+const frameworks = createListCollection<SelectOption>({
   items: [
-    { label: 'React.js is the most popular framework', value: 'react', icon: 'API' },
+    { label: 'React.js is the most popular framework', value: 'react', icon: 'API' as IconName },
     { label: 'Vue.js is the second most popular framework', value: 'vue' },
     { label: 'Angular', value: 'angular' },
     { label: 'Svelte', value: 'svelte' },
   ],
 });
-const txSortingOptions = createListCollection({
+const txSortingOptions = createListCollection<SelectOption>({
   items: SORT_OPTIONS,
 });
 

@@ -33,7 +33,6 @@ const AppErrorTooManyRequests = () => {
 
     } catch (error) {
       toaster.create({
-        placement: 'top-end',
         title: 'Error',
         description: 'Unable to get client key.',
         type: 'error',

@@ -9,6 +9,7 @@ import hexToBase64 from 'lib/hexToBase64';
 import hexToBytes from 'lib/hexToBytes';
 import hexToUtf8 from 'lib/hexToUtf8';
 import { Button } from 'toolkit/chakra/button';
+import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -44,7 +45,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
   const isImage = guessedType?.mime?.startsWith('image/');
   const collection = React.useMemo(() => {
     const formats = isImage ? FORMATS : FORMATS.filter((format) => format.value !== 'Image');
-    return createListCollection({
+    return createListCollection<SelectOption>({
       items: formats,
     });
   }, [ isImage ]);

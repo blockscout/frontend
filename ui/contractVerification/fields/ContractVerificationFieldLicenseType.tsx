@@ -4,11 +4,12 @@ import React from 'react';
 import type { FormFields } from '../types';
 
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
+import type { SelectOption } from 'toolkit/chakra/select';
 import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-const collection = createListCollection({
+const collection = createListCollection<SelectOption>({
   items: CONTRACT_LICENSES.map(({ label, title, type }) => ({ label: `${ title } (${ label })`, value: type })),
 });
 

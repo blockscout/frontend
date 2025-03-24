@@ -2,6 +2,7 @@ import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import hexToUtf8 from 'lib/hexToUtf8';
+import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
@@ -10,7 +11,7 @@ const OPTIONS = [
   { label: 'UTF-8', value: 'UTF-8' as const },
 ];
 
-const collection = createListCollection({
+const collection = createListCollection<SelectOption>({
   items: OPTIONS,
 });
 

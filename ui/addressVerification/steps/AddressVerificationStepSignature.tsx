@@ -85,7 +85,11 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
 
   const { signMessage, isPending: isSigning } = useSignMessage();
 
-  const handleSignMethodChange = React.useCallback(({ value }: { value: string }) => {
+  const handleSignMethodChange = React.useCallback(({ value }: { value: string | null }) => {
+    if (!value) {
+      return;
+    }
+
     setSignMethod(value as SignMethod);
     clearErrors('root');
   }, [ clearErrors ]);

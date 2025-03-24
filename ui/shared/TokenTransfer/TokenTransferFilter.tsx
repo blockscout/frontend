@@ -30,7 +30,11 @@ const TokenTransferFilter = ({
 }: Props) => {
   const isInitialLoading = useIsInitialLoading(isLoading);
 
-  const handleAddressFilterChange = React.useCallback(({ value }: { value: string }) => {
+  const handleAddressFilterChange = React.useCallback(({ value }: { value: string | null }) => {
+    if (!value) {
+      return;
+    }
+
     onAddressFilterChange?.(value);
   }, [ onAddressFilterChange ]);
 

@@ -4,6 +4,7 @@ import React from 'react';
 import type { TokenInstance } from 'types/api/token';
 
 import { Alert } from 'toolkit/chakra/alert';
+import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import ContentLoader from 'ui/shared/ContentLoader';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -17,7 +18,7 @@ const OPTIONS = [
   { label: 'JSON', value: 'JSON' as const },
 ];
 
-const collection = createListCollection({ items: OPTIONS });
+const collection = createListCollection<SelectOption>({ items: OPTIONS });
 
 type Format = (typeof OPTIONS)[number]['value'];
 

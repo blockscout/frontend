@@ -4,11 +4,11 @@ import React from 'react';
 
 import type { NetworkGroup, FeaturedNetwork } from 'types/networks';
 
+import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import NetworkMenuLink from './NetworkMenuLink';
-
 interface Props {
   tabs: Array<NetworkGroup>;
   items?: Array<FeaturedNetwork>;
@@ -29,7 +29,7 @@ const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
   }, []);
 
   const selectCollection = React.useMemo(() => {
-    return createListCollection({
+    return createListCollection<SelectOption>({
       items: tabs.map((tab) => ({ label: capitalize(tab), value: tab })),
     });
   }, [ tabs ]);

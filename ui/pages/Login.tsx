@@ -42,7 +42,6 @@ const Login = () => {
     cookies.set(cookies.NAMES.API_TOKEN, token);
     setToken('');
     toaster.create({
-      placement: 'top-end',
       title: 'Success 🥳',
       description: 'Successfully set cookie',
       type: 'success',

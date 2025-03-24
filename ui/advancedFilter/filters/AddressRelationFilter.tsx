@@ -20,7 +20,11 @@ type Props = {
 };
 
 const AddressRelationFilter = ({ value = DEFAULT_VALUE, handleFilterChange, onClose }: Props) => {
-  const onFilter = React.useCallback(({ value }: { value: string }) => {
+  const onFilter = React.useCallback(({ value }: { value: string | null }) => {
+    if (!value) {
+      return;
+    }
+
     onClose && onClose();
     handleFilterChange(FILTER_PARAM, value as Value);
   }, [ handleFilterChange, onClose ]);

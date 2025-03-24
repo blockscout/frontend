@@ -5,6 +5,7 @@ import React from 'react';
 import type { FormFields } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
 
+import type { SelectOption } from 'toolkit/chakra/select';
 import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
 
 interface Props {
@@ -33,7 +34,7 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes }: Props) => {
       icon: getItemIcon(type),
     })) ?? [];
 
-    return createListCollection({ items });
+    return createListCollection<SelectOption>({ items });
   }, [ tagTypes, getItemIcon ]);
 
   return (

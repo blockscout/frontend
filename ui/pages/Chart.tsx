@@ -16,6 +16,7 @@ import * as metadata from 'lib/metadata';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Button } from 'toolkit/chakra/button';
+import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
@@ -173,7 +174,7 @@ const Chart = () => {
       .filter((resolution) => resolutions.includes(resolution.id))
       .map((resolution) => ({ value: resolution.id, label: resolution.title }));
 
-    return createListCollection({ items });
+    return createListCollection<SelectOption>({ items });
   }, [ lineQuery.data?.info?.resolutions ]);
 
   return (

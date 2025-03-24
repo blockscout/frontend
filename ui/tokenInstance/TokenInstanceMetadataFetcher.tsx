@@ -20,6 +20,8 @@ import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import { useMetadataUpdateContext } from './contexts/metadataUpdate';
 
+const TOAST_ID = 'token-instance-metadata-fetcher';
+
 interface Props {
   hash: string;
   id: string;
@@ -27,7 +29,6 @@ interface Props {
 
 const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
   const timeoutId = React.useRef<number>();
-  const toastId = React.useRef<string>();
 
   const { status, setStatus } = useMetadataUpdateContext() || {};
   const apiFetch = useApiFetch();
@@ -36,7 +37,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
 
   const handleRefreshError = React.useCallback(() => {
     setStatus?.('ERROR');
-    toastId.current && toaster.update(toastId.current, {
+    toaster.update(TOAST_ID, {
       title: 'Error',
       description: 'The refreshing process has failed. Please try again.',
       type: 'error',
@@ -55,7 +56,8 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
         },
       });
       setStatus?.('WAITING_FOR_RESPONSE');
-      toastId.current = toaster.loading({
+      toaster.loading({
+        id: TOAST_ID,
         title: 'Please wait',
         description: 'Refetching metadata request sent',
         duration: Infinity,
@@ -63,6 +65,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       timeoutId.current = window.setTimeout(handleRefreshError, 2 * MINUTE);
     } catch (error) {
       toaster.error({
+        id: TOAST_ID,
         title: 'Error',
         description: getErrorMessage(error) || 'Unable to initialize metadata update',
       });
@@ -103,7 +106,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       };
     });
 
-    toastId.current && toaster.update(toastId.current, {
+    toaster.update(TOAST_ID, {
       title: 'Success!',
       description: 'Metadata has been refreshed',
       type: 'success',
@@ -140,7 +143,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
   React.useEffect(() => {
     return () => {
       timeoutId.current && window.clearTimeout(timeoutId.current);
-      toastId.current && toaster.remove(toastId.current);
+      toaster.remove(TOAST_ID);
     };
     // run only on mount/unmount
   }, []);

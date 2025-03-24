@@ -11,6 +11,7 @@ import type { SmartContractVerificationMethod, SmartContractVerificationConfig }
 
 import { nbsp } from 'lib/html-entities';
 import { Link } from 'toolkit/chakra/link';
+import type { SelectOption } from 'toolkit/chakra/select';
 import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
 import Hint from 'ui/shared/Hint';
 
@@ -21,7 +22,7 @@ interface Props {
 }
 
 const ContractVerificationFieldMethod = ({ methods }: Props) => {
-  const collection = React.useMemo(() => createListCollection({
+  const collection = React.useMemo(() => createListCollection<SelectOption>({
     items: methods.map((method) => ({
       value: method,
       label: METHOD_LABELS[method],

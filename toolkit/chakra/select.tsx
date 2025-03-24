@@ -1,11 +1,12 @@
 'use client';
 
-import type { CollectionItem, ListCollection } from '@chakra-ui/react';
+import type { ListCollection } from '@chakra-ui/react';
 import { Box, Select as ChakraSelect, createListCollection, Flex, Portal, useSelectContext } from '@chakra-ui/react';
 import { useDebounce } from '@uidotdev/usehooks';
 import * as React from 'react';
 
 import FilterInput from 'ui/shared/filters/FilterInput';
+import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { CloseButton } from './close-button';
@@ -14,6 +15,7 @@ import { Skeleton } from './skeleton';
 export interface SelectOption<Value extends string = string> {
   value: Value;
   label: string;
+  icon?: IconName | React.ReactNode;
 }
 
 export interface SelectControlProps extends ChakraSelect.ControlProps {
@@ -112,7 +114,7 @@ export const SelectItem = React.forwardRef<
 });
 
 interface SelectValueTextProps extends Omit<ChakraSelect.ValueTextProps, 'children'> {
-  children?(items: Array<CollectionItem>): React.ReactNode;
+  children?(items: Array<SelectOption>): React.ReactNode;
   size?: SelectRootProps['size'];
   required?: boolean;
   invalid?: boolean;
@@ -136,11 +138,11 @@ export const SelectValueText = React.forwardRef<
     if (children) return children(items);
 
     if (items.length === 1) {
-      const item = items[0] as CollectionItem & { icon?: React.ReactNode };
+      const item = items[0] as SelectOption;
 
       const icon = (() => {
         if (item.icon) {
-          return typeof item.icon === 'string' ? <IconSvg name={ item.icon } boxSize={ 5 } flexShrink={ 0 }/> : item.icon;
+          return typeof item.icon === 'string' ? <IconSvg name={ item.icon as IconName } boxSize={ 5 } flexShrink={ 0 }/> : item.icon;
         }
 
         return null;
@@ -235,7 +237,7 @@ export const SelectLabel = ChakraSelect.Label;
 export const SelectItemText = ChakraSelect.ItemText;
 
 export interface SelectProps extends SelectRootProps {
-  collection: ListCollection<CollectionItem>;
+  collection: ListCollection<SelectOption>;
   placeholder: string;
   portalled?: boolean;
   loading?: boolean;
@@ -260,7 +262,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
         />
       </SelectControl>
       <SelectContent portalled={ portalled }>
-        { collection.items.map((item) => (
+        { collection.items.map((item: SelectOption) => (
           <SelectItem item={ item } key={ item.value }>
             { item.label }
           </SelectItem>
@@ -274,14 +276,14 @@ export interface SelectAsyncProps extends Omit<SelectProps, 'collection'> {
   placeholder: string;
   portalled?: boolean;
   loading?: boolean;
-  loadOptions: (input: string, currentValue: Array<string>) => Promise<ListCollection<CollectionItem>>;
+  loadOptions: (input: string, currentValue: Array<string>) => Promise<ListCollection<SelectOption>>;
   extraControls?: React.ReactNode;
 }
 
 export const SelectAsync = React.forwardRef<HTMLDivElement, SelectAsyncProps>((props, ref) => {
   const { placeholder, portalled = true, loading, loadOptions, extraControls, onValueChange, errorText, ...rest } = props;
 
-  const [ collection, setCollection ] = React.useState<ListCollection<CollectionItem>>(createListCollection({ items: [] }));
+  const [ collection, setCollection ] = React.useState<ListCollection<SelectOption>>(createListCollection<SelectOption>({ items: [] }));
   const [ inputValue, setInputValue ] = React.useState('');
   const [ value, setValue ] = React.useState<Array<string>>([]);
 
@@ -295,7 +297,7 @@ export const SelectAsync = React.forwardRef<HTMLDivElement, SelectAsyncProps>((p
     setInputValue(value);
   }, [ ]);
 
-  const handleValueChange = React.useCallback(({ value, items }: { value: Array<string>; items: Array<CollectionItem> }) => {
+  const handleValueChange = React.useCallback(({ value, items }: { value: Array<string>; items: Array<SelectOption> }) => {
     setValue(value);
     onValueChange?.({ value, items });
   }, [ onValueChange ]);
