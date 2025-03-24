@@ -140,7 +140,7 @@ export const SelectValueText = React.forwardRef<
 
       const icon = (() => {
         if (item.icon) {
-          return typeof item.icon === 'string' ? <IconSvg name={ item.icon } boxSize={ 5 } flexShrink={ 0 } mr={ 1 }/> : item.icon;
+          return typeof item.icon === 'string' ? <IconSvg name={ item.icon } boxSize={ 5 } flexShrink={ 0 }/> : item.icon;
         }
 
         return null;
@@ -159,7 +159,7 @@ export const SelectValueText = React.forwardRef<
       return (
         <>
           { label }
-          <Flex display="inline-flex" alignItems="center" flexWrap="nowrap">
+          <Flex display="inline-flex" alignItems="center" flexWrap="nowrap" gap={ 1 }>
             { icon }
             <span style={{
               WebkitLineClamp: 1,

@@ -82,7 +82,6 @@ const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick, hasEm
       <TableCell>
         <Skeleton loading={ isLoading } display="inline-block">
           <Switch
-            colorScheme="blue"
             size="md"
             checked={ notificationEnabled }
             onCheckedChange={ onSwitch }

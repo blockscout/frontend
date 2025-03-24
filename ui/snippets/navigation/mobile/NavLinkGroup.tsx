@@ -33,7 +33,8 @@ const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
         w="100%"
         px={ 2 }
         aria-label={ `${ item.text } link group` }
-        bgColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
+        color={ item.isActive ? 'link.navigation.fg.selected' : 'link.navigation.fg' }
+        bgColor={ item.isActive ? 'link.navigation.bg.selected' : 'transparent' }
       >
         <Flex justifyContent="space-between" width="100%" alignItems="center" pr={ 1 }>
           <HStack gap={ 0 } overflow="hidden">

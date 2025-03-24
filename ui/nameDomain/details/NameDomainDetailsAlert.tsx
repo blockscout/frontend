@@ -16,7 +16,7 @@ const NameDomainDetailsAlert = ({ data }: Props) => {
   }
 
   return (
-    <Alert status="info" colorScheme="gray" display="inline-block" whiteSpace="pre-wrap" mb={ 6 }>
+    <Alert status="info" display="inline-block" whiteSpace="pre-wrap" mb={ 6 }>
       <span>The domain name is resolved offchain using </span>
       { data.stored_offchain && <Link external href="https://eips.ethereum.org/EIPS/eip-3668">EIP-3668: CCIP Read</Link> }
       { data.stored_offchain && data.resolved_with_wildcard && <span> & </span> }

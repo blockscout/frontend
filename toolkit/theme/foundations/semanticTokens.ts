@@ -435,10 +435,8 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       error: { value: '{colors.red.500}' },
     },
     icon: {
-      // TODO @tom2drum revise this colors
       backTo: { value: '{colors.gray.400}' },
       externalLink: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
-      content: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.300}' } },
       info: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
     },
     address: {

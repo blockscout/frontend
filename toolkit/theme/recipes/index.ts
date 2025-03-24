@@ -12,7 +12,6 @@ import { recipe as input } from './input.recipe';
 import { recipe as link } from './link.recipe';
 import { recipe as list } from './list.recipe';
 import { recipe as menu } from './menu.recipe';
-import { recipe as nativeSelect } from './native-select.recipe';
 import { recipe as pinInput } from './pin-input.recipe';
 import { recipe as popover } from './popover.recipe';
 import { recipe as progressCircle } from './progress-circle.recipe';
@@ -53,7 +52,6 @@ export const slotRecipes = {
   field,
   list,
   menu,
-  nativeSelect,
   pinInput,
   popover,
   progressCircle,

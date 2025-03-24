@@ -135,7 +135,6 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
           <Flex w="full" alignItems="center" justifyContent="space-between">
             I have a referral code
             <Switch
-              colorScheme="blue"
               size="md"
               checked={ isRefCodeUsed }
               onCheckedChange={ handleToggleChange }

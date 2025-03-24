@@ -29,6 +29,7 @@ import RatingShowcase from 'ui/showcases/Rating';
 import SelectShowcase from 'ui/showcases/Select';
 import SkeletonShowcase from 'ui/showcases/Skeleton';
 import SpinnerShowcase from 'ui/showcases/Spinner';
+import SwitchShowcase from 'ui/showcases/Switch';
 import TableShowcase from 'ui/showcases/Table';
 import TabsShowcase from 'ui/showcases/Tabs';
 import TagShowcase from 'ui/showcases/Tag';
@@ -37,13 +38,9 @@ import ToastShowcase from 'ui/showcases/Toast';
 import TooltipShowcase from 'ui/showcases/Tooltip';
 
 // Drawer
-// CloseButton
-// IconButton
 // EmptyState ?
-// Rating
 // Switch
 // ToggleTip
-// Popover
 
 const tabs = [
   { label: 'Accordion', value: 'accordion', component: <AccordionsShowcase/> },
@@ -70,6 +67,7 @@ const tabs = [
   { label: 'Select', value: 'select', component: <SelectShowcase/> },
   { label: 'Skeleton', value: 'skeleton', component: <SkeletonShowcase/> },
   { label: 'Spinner', value: 'spinner', component: <SpinnerShowcase/> },
+  { label: 'Switch', value: 'switch', component: <SwitchShowcase/> },
   { label: 'Table', value: 'table', component: <TableShowcase/> },
   { label: 'Tabs', value: 'tabs', component: <TabsShowcase/> },
   { label: 'Tag', value: 'tag', component: <TagShowcase/> },

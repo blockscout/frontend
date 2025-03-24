@@ -105,8 +105,7 @@ const SearchBarInput = (
     <IconSvg
       name="search"
       boxSize={ 5 }
-      ml={{ base: 2, lg: isHomepage ? 4 : 2 }}
-      mr={ 2 }
+      mx={ 2 }
     />
   );
 
@@ -116,7 +115,7 @@ const SearchBarInput = (
       { !isMobile && (
         <Center
           boxSize="20px"
-          mr={{ base: 2, lg: isHomepage ? 4 : 2 }}
+          mr={ 2 }
           borderRadius="sm"
           borderWidth="1px"
           borderColor="gray.500"
@@ -156,7 +155,7 @@ const SearchBarInput = (
         endElement={ endElement }
       >
         <Input
-          size={{ base: 'md', lg: isHomepage ? 'lg' : 'md' }}
+          size="md"
           placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
           value={ value }
           onChange={ handleChange }

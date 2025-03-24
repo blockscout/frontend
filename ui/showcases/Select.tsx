@@ -3,7 +3,6 @@ import { noop } from 'es-toolkit';
 import React from 'react';
 
 import { Checkbox } from 'toolkit/chakra/checkbox';
-import { NativeSelectField, NativeSelectRoot } from 'toolkit/chakra/native-select';
 import { Select, SelectAsync } from 'toolkit/chakra/select';
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
 import Sort from 'ui/shared/sort/Sort';
@@ -128,17 +127,6 @@ const SelectShowcase = () => {
 
       <Section>
         <SectionHeader>Examples</SectionHeader>
-        <SectionSubHeader>Native select</SectionSubHeader>
-        <SamplesStack>
-          <Sample>
-            <NativeSelectRoot>
-              <NativeSelectField>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-              </NativeSelectField>
-            </NativeSelectRoot>
-          </Sample>
-        </SamplesStack>
 
         <SectionSubHeader>Sort</SectionSubHeader>
         <SamplesStack>

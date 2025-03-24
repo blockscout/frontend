@@ -1,10 +1,10 @@
-import { Box, VStack, Flex } from '@chakra-ui/react';
+import { Box, VStack, Flex, createListCollection } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { NetworkGroup, FeaturedNetwork } from 'types/networks';
 
-import { NativeSelectField, NativeSelectRoot } from 'toolkit/chakra/native-select';
+import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import NetworkMenuLink from './NetworkMenuLink';
@@ -24,9 +24,15 @@ const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
     }
   }, [ items, selectedNetwork?.group, tabs ]);
 
-  const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedTab(event.currentTarget.value as NetworkGroup);
+  const handleSelectChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setSelectedTab(value[0] as NetworkGroup);
   }, []);
+
+  const selectCollection = React.useMemo(() => {
+    return createListCollection({
+      items: tabs.map((tab) => ({ label: capitalize(tab), value: tab })),
+    });
+  }, [ tabs ]);
 
   const content = !items || items.length === 0 ? (
     <Flex mt={ 6 } flexDir="column" rowGap={ 2 }>
@@ -46,11 +52,13 @@ const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
   ) : (
     <>
       { tabs.length > 1 && (
-        <NativeSelectRoot size="sm" borderRadius="base" mb={ 3 }>
-          <NativeSelectField value={ selectedTab } onChange={ handleSelectChange }>
-            { tabs.map((tab) => <option key={ tab } value={ tab }>{ capitalize(tab) }</option>) }
-          </NativeSelectField>
-        </NativeSelectRoot>
+        <Select
+          value={ [ selectedTab ] }
+          onValueChange={ handleSelectChange }
+          collection={ selectCollection }
+          placeholder="Select network type"
+          mb={ 3 }
+        />
       ) }
       <VStack as="ul" gap={ 2 } alignItems="stretch">
         { items

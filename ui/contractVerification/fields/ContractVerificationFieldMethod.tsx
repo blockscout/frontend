@@ -9,10 +9,10 @@ import React from 'react';
 import type { FormFields } from '../types';
 import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/client/contract';
 
+import { nbsp } from 'lib/html-entities';
 import { Link } from 'toolkit/chakra/link';
-import { Tooltip } from 'toolkit/chakra/tooltip';
 import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
-import IconSvg from 'ui/shared/IconSvg';
+import Hint from 'ui/shared/Hint';
 
 import { METHOD_LABELS } from '../utils';
 
@@ -89,12 +89,14 @@ const ContractVerificationFieldMethod = ({ methods }: Props) => {
   return (
     <>
       <Box mt={{ base: 10, lg: 6 }} gridColumn={{ lg: '1 / 3' }}>
-        <chakra.span fontWeight={ 500 } fontSize="lg" fontFamily="heading">
-          Currently, Blockscout supports { methods.length } contract verification methods
+        <chakra.span fontWeight={ 500 } fontSize="lg" fontFamily="heading" mr={ 1 }>
+          Currently, Blockscout supports { methods.length }{ nbsp }contract verification methods
         </chakra.span>
-        <Tooltip content={ tooltipContent } interactive contentProps={{ textAlign: 'left', className: 'light' }}>
-          <IconSvg name="info" boxSize={ 5 } ml={ 1 } cursor="pointer" color="icon.info" _hover={{ color: 'link.primary.hover' }}/>
-        </Tooltip>
+        <Hint
+          label={ tooltipContent }
+          verticalAlign="text-bottom"
+          tooltipProps={{ interactive: true, contentProps: { textAlign: 'left', className: 'light' } }}
+        />
       </Box>
       <FormFieldSelect<FormFields, 'method'>
         name="method"

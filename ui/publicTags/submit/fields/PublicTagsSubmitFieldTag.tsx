@@ -95,7 +95,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
           alignItems="center"
           columnGap={ 5 }
           justifyContent={{ base: 'flex-end', lg: 'flex-start' }}
-          h={{ base: 'auto', lg: '80px' }}
+          h={{ base: 'auto', lg: '60px' }}
         >
           { onAddClick && (
             <IconButton
@@ -123,7 +123,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
           ) }
         </Flex>
         { !isMobile && (
-          <Flex flexDir="column" alignItems="flex-start" mt={ 10 } rowGap={ 2 }>
+          <Flex flexDir="column" alignItems="flex-start" mt={ 4 } rowGap={ 2 }>
             <EntityTag data={{
               name: field.name || 'Tag name',
               tagType: field.type[0],
