@@ -33,8 +33,9 @@ const Sort = (props: Props) => {
 
     return (
       <SelectControl
-        triggerProps={{ borderColor: 'transparent' }}
         loading={ isLoading }
+        _hover={{ color: 'link.primary.hover' }}
+        _open={{ color: 'link.primary.hover' }}
       >
         <chakra.span
           flexShrink={ 0 }
@@ -55,7 +56,7 @@ const Sort = (props: Props) => {
   })();
 
   return (
-    <SelectRoot collection={ collection } positioning={{ sameWidth: false }} { ...rest }>
+    <SelectRoot collection={ collection } w="fit-content" variant="plain" { ...rest }>
       { trigger }
       <SelectContent>
         { collection.items.map((item) => (

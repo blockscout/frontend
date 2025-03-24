@@ -29,7 +29,7 @@ const NetworkMenuButton = ({ isActive, onClick, className, ...rest }: Props, ref
         name="networks"
         boxSize={ 4 }
         color={ isActive ? { _light: 'blue.700', _dark: 'blue.50' } : { _light: 'gray.600', _dark: 'gray.400' } }
-        _hover={{ color: 'link.hovered' }}
+        _hover={{ color: 'link.primary.hover' }}
         cursor="pointer"
       />
     </IconButton>

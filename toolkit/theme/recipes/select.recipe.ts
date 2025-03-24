@@ -196,6 +196,10 @@ export const recipe = defineSlotRecipe({
           },
         },
       },
+      plain: {
+        trigger: {},
+        indicatorGroup: {},
+      },
     },
 
     size: {
@@ -257,6 +261,9 @@ export const recipe = defineSlotRecipe({
         trigger: {
           _placeholderShown: {
             color: 'select.trigger.outline.fg',
+            _hover: {
+              color: 'select.trigger.outline.fg',
+            },
           },
         },
       },

@@ -90,7 +90,7 @@ const StatsWidget = ({
             display="flex"
             alignItems="baseline"
             fontWeight={ 500 }
-            textStyle="lg"
+            textStyle="heading.md"
           >
             { valuePrefix && <chakra.span whiteSpace="pre">{ valuePrefix }</chakra.span> }
             { typeof value === 'string' ? (

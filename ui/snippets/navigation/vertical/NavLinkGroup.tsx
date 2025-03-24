@@ -68,6 +68,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
           pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
           aria-label={ `${ item.text } link group` }
           position="relative"
+          color={ item.isActive ? 'link.navigation.fg.selected' : 'link.navigation.fg' }
           bgColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
         >
           <HStack gap={ 0 } overflow="hidden">

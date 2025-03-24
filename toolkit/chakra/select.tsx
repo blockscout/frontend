@@ -200,7 +200,7 @@ export const SelectRoot = React.forwardRef<
       lazyMount={ lazyMount }
       unmountOnExit={ unmountOnExit }
       { ...rest }
-      positioning={{ sameWidth: true, ...props.positioning, offset: { mainAxis: 4, ...props.positioning?.offset } }}
+      positioning={{ sameWidth: false, ...props.positioning, offset: { mainAxis: 4, ...props.positioning?.offset } }}
     >
       { props.asChild ? (
         props.children

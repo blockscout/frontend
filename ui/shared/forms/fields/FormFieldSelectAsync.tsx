@@ -49,6 +49,7 @@ const FormFieldSelectAsync = <
       invalid={ Boolean(fieldState.error) }
       errorText={ getFieldErrorText(fieldState.error) }
       size={ size }
+      positioning={{ sameWidth: true }}
       { ...rest }
     />
   );
