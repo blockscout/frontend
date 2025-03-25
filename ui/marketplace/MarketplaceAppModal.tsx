@@ -328,6 +328,7 @@ const MarketplaceAppModal = ({
                 alignItems="center"
                 justifyContent="center"
                 external
+                noIcon
                 flexShrink={ 0 }
               >
                 <IconSvg

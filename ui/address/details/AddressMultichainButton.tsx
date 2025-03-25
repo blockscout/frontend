@@ -47,6 +47,7 @@ const AddressMultichainButton = ({ item, addressHash, onClick, hasSingleProvider
         textStyle="sm"
         fontWeight="medium"
         onClick={ onClick }
+        noIcon={ !hasSingleProvider }
       >
         { buttonContent }
       </Link>

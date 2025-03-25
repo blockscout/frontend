@@ -138,11 +138,10 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
   return (
     <Box
       width="100%"
-      borderTop="1px solid"
+      borderBottom="1px solid"
       borderColor="border.divider"
       py={ 4 }
       px={{ base: 0, lg: 4 }}
-      _last={{ borderBottom: '1px solid', borderColor: 'border.divider' }}
       textStyle="sm"
     >
       { content }

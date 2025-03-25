@@ -58,10 +58,10 @@ const AddressCoinBalanceTableItem = (props: Props) => {
       <TableCell isNumeric display="flex" justifyContent="end">
         <Skeleton loading={ props.isLoading }>
           <Stat.Root flexGrow="0" size="sm" positive={ isPositiveDelta }>
-            { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
             <Stat.ValueText fontWeight={ 600 }>
               { deltaBn.dp(8).toFormat() }
             </Stat.ValueText>
+            { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
           </Stat.Root>
         </Skeleton>
       </TableCell>

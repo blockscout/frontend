@@ -54,7 +54,7 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
           noIcon
           truncation="constant"
           ml="auto"
-          color="text.secondary"
+          linkVariant="secondary"
           flexShrink={ 0 }
         />
       </Flex>

@@ -37,6 +37,7 @@ const FilterButton = ({ isLoading, appliedFiltersNum, ...rest }: Props, ref: Rea
       selected={ Boolean(appliedFiltersNum) }
       flexShrink={ 0 }
       pointerEvents="all"
+      px={{ base: 1, lg: 3 }}
       { ...rest }
     >
       <IconSvg name="filter" boxSize={ 5 }/>

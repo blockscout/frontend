@@ -96,7 +96,7 @@ const ContractVerificationFieldMethod = ({ methods }: Props) => {
         <Hint
           label={ tooltipContent }
           verticalAlign="text-bottom"
-          tooltipProps={{ interactive: true, contentProps: { textAlign: 'left', className: 'light' } }}
+          tooltipProps={{ interactive: true, contentProps: { textAlign: 'left' } }}
         />
       </Box>
       <FormFieldSelect<FormFields, 'method'>

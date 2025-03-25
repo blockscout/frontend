@@ -29,10 +29,11 @@ type Props = {
 const SCROLL_CONTAINER_ID = 'search_bar_popover_content';
 
 const SearchBar = ({ isHomepage }: Props) => {
-  const { open, onClose, onOpen } = useDisclosure();
   const inputRef = React.useRef<HTMLFormElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
+
+  const { open, onClose, onOpen } = useDisclosure();
   const isMobile = useIsMobile();
   const router = useRouter();
 
@@ -93,6 +94,15 @@ const SearchBar = ({ isHomepage }: Props) => {
     onClose();
   }, [ router.pathname, searchTerm, onClose ]);
 
+  const handleBlur = React.useCallback((event: React.FocusEvent<HTMLFormElement>) => {
+    const isFocusInMenu = menuRef.current?.contains(event.relatedTarget);
+    const isFocusInInput = inputRef.current?.contains(event.relatedTarget);
+    if (!isFocusInMenu && !isFocusInInput) {
+      onClose();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ onClose ]);
+
   const menuPaddingX = isMobile && !isHomepage ? 24 : 0;
   const calculateMenuWidth = React.useCallback(() => {
     menuWidth.current = (inputRef.current?.getBoundingClientRect().width || 0) - menuPaddingX;
@@ -137,6 +147,7 @@ const SearchBar = ({ isHomepage }: Props) => {
             onSubmit={ handleSubmit }
             onFocus={ handleFocus }
             onHide={ handelHide }
+            onBlur={ handleBlur }
             onClear={ handleClear }
             isHomepage={ isHomepage }
             value={ searchTerm }

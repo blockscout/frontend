@@ -40,10 +40,9 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
       gridGap={ 8 }
       width="100%"
       minW="700px"
-      borderTop="1px solid"
+      borderBottom="1px solid"
       borderColor="border.divider"
       p={ 4 }
-      _last={{ borderBottom: '1px solid', borderColor: 'border.divider' }}
       display={{ base: 'none', lg: 'grid' }}
     >
       <Flex overflow="hidden" w="100%">

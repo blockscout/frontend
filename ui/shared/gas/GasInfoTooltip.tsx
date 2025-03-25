@@ -71,7 +71,7 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen, placement }: Pr
       lazyMount
       interactive
       showArrow={ false }
-      contentProps={{ p: 4, borderRadius: 'md', className: 'light' }}
+      contentProps={{ p: 4, borderRadius: 'md' }}
     >
       { children }
     </Tooltip>

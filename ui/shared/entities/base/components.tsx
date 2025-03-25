@@ -2,6 +2,7 @@ import { chakra, Flex } from '@chakra-ui/react';
 import type { IconProps } from '@chakra-ui/react';
 import React from 'react';
 
+import type { LinkProps } from 'toolkit/chakra/link';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
@@ -32,6 +33,7 @@ export interface EntityBaseProps {
   target?: React.HTMLAttributeAnchorTarget;
   truncation?: Truncation;
   variant?: 'content' | 'heading' | 'subheading';
+  linkVariant?: LinkProps['variant'];
 }
 
 export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
@@ -55,9 +57,10 @@ const Container = chakra(({ className, children, ...props }: ContainerBaseProps)
 
 export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query'> {
   children: React.ReactNode;
+  variant?: LinkProps['variant'];
 }
 
-const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }: LinkBaseProps) => {
+const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, variant }: LinkBaseProps) => {
   const styles = {
     display: 'inline-flex',
     alignItems: 'center',
@@ -75,6 +78,7 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
       loading={ isLoading }
       external={ isExternal }
       onClick={ onClick }
+      variant={ variant }
     >
       { children }
     </LinkToolkit>

@@ -42,6 +42,7 @@ const PoolsTableItem = ({
               noIcon
               isLoading={ isLoading }
               truncation="constant_long"
+              linkVariant="secondary"
             />
           </Box>
         </Flex>
@@ -59,7 +60,7 @@ const PoolsTableItem = ({
           { externalLinks.map((link) => (
             <Tooltip content={ link.title } key={ link.url }>
               <Box display="inline-block">
-                <Link external href={ link.url } display="inline-flex">
+                <Link external noIcon href={ link.url } display="inline-flex">
                   <Image src={ link.image } alt={ link.title } boxSize={ 5 }/>
                 </Link>
               </Box>

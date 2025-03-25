@@ -74,6 +74,7 @@ const TokensTableItem = ({
           address={{ hash: address, filecoin: { robust: filecoinRobustAddress } }}
           isLoading={ isLoading }
           truncation="constant"
+          linkVariant="secondary"
           noIcon
         />
         <AddressAddToWallet token={ token } isLoading={ isLoading }/>

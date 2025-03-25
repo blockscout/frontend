@@ -396,7 +396,6 @@ const AddressPageContent = () => {
         noLink
         isSafeAddress={ isSafeAddress }
         icon={{ color: isSafeAddress ? { _light: 'black', _dark: 'white' } : undefined }}
-        mr={ 4 }
       />
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
         <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }

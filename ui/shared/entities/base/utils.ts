@@ -29,13 +29,14 @@ export function getContentProps(variant: EntityBaseProps['variant'] = 'content')
 }
 
 export function distributeEntityProps<Props extends EntityBaseProps>(props: Props) {
-  const { className, onClick, icon, ...restProps } = props;
+  const { className, onClick, icon, linkVariant, ...mainProps } = props;
+  const { variant, ...restProps } = mainProps;
 
   return {
     container: { className },
-    icon: { ...restProps, ...icon },
-    link: { ...restProps, onClick },
-    content: restProps,
+    icon: { ...mainProps, ...icon },
+    link: { ...restProps, variant: linkVariant, onClick },
+    content: mainProps,
     symbol: restProps,
     copy: restProps,
   };

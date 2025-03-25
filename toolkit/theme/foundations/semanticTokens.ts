@@ -149,8 +149,8 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     tooltip: {
       DEFAULT: {
-        bg: { value: { _light: '{colors.gray.700}', _dark: '{colors.gray.200}' } },
-        fg: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
+        bg: { value: '{colors.gray.900}' },
+        fg: { value: '{colors.white}' },
       },
       navigation: {
         bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
@@ -431,7 +431,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       error: { value: '{colors.red.500}' },
     },
     border: {
-      divider: { value: { _light: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.200}' } },
+      divider: { value: { _light: '{colors.blackAlpha.100}', _dark: '{colors.whiteAlpha.100}' } },
       error: { value: '{colors.red.500}' },
     },
     icon: {

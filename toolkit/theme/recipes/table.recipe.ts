@@ -40,6 +40,7 @@ export const recipe = defineSlotRecipe({
         },
         cell: {
           borderBottomWidth: '1px',
+          borderColor: 'border.divider',
         },
         row: {
           bg: 'bg',

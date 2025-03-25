@@ -55,7 +55,7 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
           truncation="constant"
           my={ 1 }
           ml={ 7 }
-          color="text.secondary"
+          linkVariant="secondary"
           w="fit-content"
         />
       </TableCell>

@@ -29,10 +29,10 @@ const AddressCoinBalanceListItem = (props: Props) => {
         </Skeleton>
         <Skeleton loading={ props.isLoading }>
           <Stat.Root flexGrow="0" positive={ isPositiveDelta } size="sm">
-            { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
             <Stat.ValueText fontWeight={ 600 }>
               { deltaBn.dp(8).toFormat() }
             </Stat.ValueText>
+            { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
           </Stat.Root>
         </Skeleton>
       </Flex>

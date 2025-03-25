@@ -18,7 +18,7 @@ const ClipboardShowcase = () => {
             <CopyToClipboard text="Hello, world!" type="link"/>
           </Sample>
           <Sample label="type: share">
-            <CopyToClipboard text="Hello, world!" type="share" boxSize={ 4 }/>
+            <CopyToClipboard text="Hello, world!" type="share"/>
           </Sample>
         </SamplesStack>
       </Section>

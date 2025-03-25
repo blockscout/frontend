@@ -32,10 +32,9 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
   return (
     <Box
       width="100%"
-      borderTop="1px solid"
+      borderBottom="1px solid"
       borderColor="border.divider"
       py={ 4 }
-      _last={{ borderBottom: '1px solid', borderColor: 'border.divider' }}
       display={{ base: 'block', lg: 'none' }}
     >
       <Flex justifyContent="space-between">
