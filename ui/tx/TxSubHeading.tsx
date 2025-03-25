@@ -74,13 +74,13 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           isLoading={ novesInterpretationQuery.isPlaceholderData || txQuery.isPlaceholderData }
           addressDataMap={ addressDataMap }
           fontSize="lg"
-          mr={{ base: 0, lg: 6 }}
+          mr={{ base: 0, lg: 2 }}
           isNoves
         />
       );
     } else if (hasInternalInterpretation) {
       return (
-        <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap" alignItems="center">
+        <Flex mr={{ base: 0, lg: 2 }} flexWrap="wrap" alignItems="center">
           <TxInterpretation
             summary={ txInterpretationQuery.data?.data.summaries[0] }
             isLoading={ txInterpretationQuery.isPlaceholderData || txQuery.isPlaceholderData }
@@ -114,7 +114,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           }}
           isLoading={ txQuery.isPlaceholderData }
           fontSize="lg"
-          mr={{ base: 0, lg: 6 }}
+          mr={{ base: 0, lg: 2 }}
         />
       );
     } else {
