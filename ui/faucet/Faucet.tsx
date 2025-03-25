@@ -263,7 +263,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
             textAlign="center"
             lineHeight="32px"
           >
-            1
+            2
           </Box>
           <Flex
             margin="24px 0 48px 0"
