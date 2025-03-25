@@ -1,6 +1,7 @@
 import React from 'react';
 
 import type { FormFields } from '../types';
+import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 
@@ -10,12 +11,12 @@ import ContractVerificationFieldCommit from '../fields/ContractVerificationField
 import ContractVerificationFieldCompiler from '../fields/ContractVerificationFieldCompiler';
 import ContractVerificationFieldGitHubRepo from '../fields/ContractVerificationFieldGitHubRepo';
 
-const ContractVerificationStylusGitHubRepo = () => {
+const ContractVerificationStylusGitHubRepo = ({ config }: { config: SmartContractVerificationConfig }) => {
   const [ latestCommitHash, setLatestCommitHash ] = React.useState<string | undefined>(undefined);
 
   return (
     <ContractVerificationMethod title="Contract verification via Stylus (GitHub repository) ">
-      <ContractVerificationFieldCompiler isStylus/>
+      <ContractVerificationFieldCompiler config={ config } isStylus/>
       <ContractVerificationFieldGitHubRepo onCommitHashChange={ setLatestCommitHash }/>
       <ContractVerificationFieldCommit latestCommitHash={ latestCommitHash }/>
 

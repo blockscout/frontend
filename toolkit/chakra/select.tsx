@@ -140,6 +140,8 @@ export const SelectValueText = React.forwardRef<
     if (items.length === 1) {
       const item = items[0] as SelectOption;
 
+      if (!item) return placeholder;
+
       const icon = (() => {
         if (item.icon) {
           return typeof item.icon === 'string' ? <IconSvg name={ item.icon as IconName } boxSize={ 5 } flexShrink={ 0 }/> : item.icon;

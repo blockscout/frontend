@@ -163,13 +163,13 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       'flattened-code': <ContractVerificationFlattenSourceCode config={ config }/>,
       'standard-input': <ContractVerificationStandardInput config={ config }/>,
       sourcify: <ContractVerificationSourcify/>,
-      'multi-part': <ContractVerificationMultiPartFile/>,
+      'multi-part': <ContractVerificationMultiPartFile config={ config }/>,
       'vyper-code': <ContractVerificationVyperContract config={ config }/>,
-      'vyper-multi-part': <ContractVerificationVyperMultiPartFile/>,
-      'vyper-standard-input': <ContractVerificationVyperStandardInput/>,
+      'vyper-multi-part': <ContractVerificationVyperMultiPartFile config={ config }/>,
+      'vyper-standard-input': <ContractVerificationVyperStandardInput config={ config }/>,
       'solidity-hardhat': <ContractVerificationSolidityHardhat config={ config }/>,
       'solidity-foundry': <ContractVerificationSolidityFoundry/>,
-      'stylus-github-repository': <ContractVerificationStylusGitHubRepo/>,
+      'stylus-github-repository': <ContractVerificationStylusGitHubRepo config={ config }/>,
     };
   }, [ config ]);
   const method = watch('method');

@@ -1,11 +1,9 @@
 import { createListCollection } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { FormFields } from '../types';
 import type { SmartContractVerificationConfig } from 'types/client/contract';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
 import { Link } from 'toolkit/chakra/link';
 import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
 
@@ -13,12 +11,10 @@ import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 interface Props {
   isVyper?: boolean;
+  config: SmartContractVerificationConfig;
 }
 
-const ContractVerificationFieldEvmVersion = ({ isVyper }: Props) => {
-  const queryClient = useQueryClient();
-  const config = queryClient.getQueryData<SmartContractVerificationConfig>(getResourceKey('contract_verification_config'));
-
+const ContractVerificationFieldEvmVersion = ({ isVyper, config }: Props) => {
   const collection = React.useMemo(() => {
     const items = (isVyper ? config?.vyper_evm_versions : config?.solidity_evm_versions)?.map((option) => ({ label: option, value: option })) || [];
 

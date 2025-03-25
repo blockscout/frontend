@@ -1,12 +1,10 @@
 import { chakra, Code, createListCollection } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 import type { SmartContractVerificationConfig } from 'types/client/contract';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
 import { Checkbox } from 'toolkit/chakra/checkbox';
 import FormFieldSelectAsync from 'ui/shared/forms/fields/FormFieldSelectAsync';
 
@@ -17,13 +15,12 @@ const OPTIONS_LIMIT = 50;
 interface Props {
   isVyper?: boolean;
   isStylus?: boolean;
+  config: SmartContractVerificationConfig;
 }
 
-const ContractVerificationFieldCompiler = ({ isVyper, isStylus }: Props) => {
+const ContractVerificationFieldCompiler = ({ isVyper, isStylus, config }: Props) => {
   const [ isNightly, setIsNightly ] = React.useState(false);
   const { formState, getValues, resetField } = useFormContext<FormFields>();
-  const queryClient = useQueryClient();
-  const config = queryClient.getQueryData<SmartContractVerificationConfig>(getResourceKey('contract_verification_config'));
 
   const handleCheckboxChange = React.useCallback(() => {
     setIsNightly(prev => {

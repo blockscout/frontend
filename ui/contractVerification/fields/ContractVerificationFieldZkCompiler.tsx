@@ -1,11 +1,9 @@
 import { Box, createListCollection } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { FormFields } from '../types';
 import type { SmartContractVerificationConfig } from 'types/client/contract';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
 import { Link } from 'toolkit/chakra/link';
 import FormFieldSelectAsync from 'ui/shared/forms/fields/FormFieldSelectAsync';
 
@@ -13,10 +11,7 @@ import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 const OPTIONS_LIMIT = 50;
 
-const ContractVerificationFieldZkCompiler = () => {
-  const queryClient = useQueryClient();
-  const config = queryClient.getQueryData<SmartContractVerificationConfig>(getResourceKey('contract_verification_config'));
-
+const ContractVerificationFieldZkCompiler = ({ config }: { config: SmartContractVerificationConfig }) => {
   const versions = React.useMemo(() => (
     config?.zk_compiler_versions || []
   ), [ config?.zk_compiler_versions ]);
