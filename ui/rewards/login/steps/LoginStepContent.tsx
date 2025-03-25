@@ -106,7 +106,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
   return (
     <>
       <Image
-        src="/static/merits_program.png"
+        src="/static/merits/merits_program.png"
         alt="Merits program"
         mb={ 3 }
         fallback={ <Skeleton w="full" h="120px" mb={ 3 }/> }

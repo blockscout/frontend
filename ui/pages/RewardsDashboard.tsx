@@ -1,4 +1,4 @@
-import { Flex, Image, Alert } from '@chakra-ui/react';
+import { Flex, Alert } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import config from 'configs/app';
@@ -7,6 +7,7 @@ import { apos } from 'lib/html-entities';
 import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton';
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
+import RewardsDashboardInfoCard from 'ui/rewards/dashboard/RewardsDashboardInfoCard';
 import RewardsReadOnlyInputWithCopy from 'ui/rewards/RewardsReadOnlyInputWithCopy';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import Skeleton from 'ui/shared/chakra/Skeleton';
@@ -49,11 +50,10 @@ const RewardsDashboard = () => {
           title="Dashboard"
           secondRow={ (
             <span>
-              The Blockscout Merits Program is just getting started! Learn more about the details,
-              features, and future plans in our{ ' ' }
-              <LinkExternal href="https://www.blog.blockscout.com/blockscout-merits-rewarding-block-explorer-skills">
-                blog post
-              </LinkExternal>.
+              <LinkExternal href={ `https://merits.blockscout.com/?tab=users&utm_source=${ config.chain.id }&utm_medium=text-banner` }>
+                Explore the Merits Hub
+              </LinkExternal>{ ' ' }
+              to learn more info about a program, spend your Merits, learn how to earn more, and much more.
             </span>
           ) }
         />
@@ -133,7 +133,7 @@ const RewardsDashboard = () => {
             />
           </RewardsDashboardCard>
         </Flex>
-        <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
+        <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
           <RewardsDashboardCard
             title="Referral program"
             description={ (
@@ -170,45 +170,38 @@ const RewardsDashboard = () => {
               />
             </Flex>
           </RewardsDashboardCard>
-          <RewardsDashboardCard
+          <RewardsDashboardInfoCard
             title="Badges"
-            description={ (
-              <Flex flexDir="column" gap={ 2 }>
-                <span>
-                  Collect limited and legendary badges by completing different Blockscout related tasks.
-                  Go to the badges website to see what{ apos }s available and start your collection today.
-                </span>
-              </Flex>
-            ) }
-          >
-            <Flex
-              flex={ 1 }
-              gap={ 4 }
-              pl={ 10 }
-              pr={ 7 }
-              py={{ base: 4, lg: 0 }}
-              flexDirection={{ base: 'column', lg: 'row' }}
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Image
-                src="/static/badges.svg"
-                alt="Badges"
-                w="260px"
-                h="86px"
-                fallback={ <Skeleton w="260px" h="86px"/> }
-              />
-              <LinkExternal
-                href="https://merits.blockscout.com/?tab=badges&utm_source=blockscout&utm_medium=dashboard"
-                fontSize="md"
-                fontWeight="500"
-              >
-                View badges
-              </LinkExternal>
-            </Flex>
-          </RewardsDashboardCard>
+            description={ `Collect limited and legendary badges by completing different Blockscout related tasks.
+              Go to the badges website to see what${ apos }s available and start your collection today.` }
+            imageSrc="/static/merits/badges.svg"
+            imageWidth="260px"
+            imageHeight="86px"
+            linkText="View badges"
+            linkHref={ `https://merits.blockscout.com/?tab=badges&utm_source=${ config.chain.id }&utm_medium=badges` }
+          />
         </Flex>
-        <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
+        <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
+          <RewardsDashboardInfoCard
+            title="Blockscout campaigns"
+            description="Join Blockscout activities to earn bonus Merits and exclusive rewards from our partners!"
+            imageSrc="/static/merits/campaigns.svg"
+            imageWidth="180px"
+            imageHeight="76px"
+            linkText="Check campaigns"
+            linkHref={ `https://merits.blockscout.com/?tab=campaigns&utm_source=${ config.chain.id }&utm_medium=campaigns` }
+          />
+          <RewardsDashboardInfoCard
+            title="Use your Merits"
+            description="Spend your Merits to get exclusive discounts and offers across several web3 products!"
+            imageSrc="/static/merits/offers.svg"
+            imageWidth="180px"
+            imageHeight="86px"
+            linkText="Check offers"
+            linkHref={ `https://merits.blockscout.com/?tab=redeem&utm_source=${ config.chain.id }&utm_medium=redeem` }
+          />
+        </Flex>
+        <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
           <RewardsDashboardCard
             title="Activity"
             description="Earn Merits for your everyday Blockscout activities. You deserve to be rewarded for choosing open-source public goods!"
