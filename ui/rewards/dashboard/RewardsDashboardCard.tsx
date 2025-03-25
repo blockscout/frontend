@@ -4,8 +4,9 @@ import React from 'react';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 
 type Props = {
-  title?: string;
+  title: string;
   description: string | React.ReactNode;
+  hint?: string | React.ReactNode;
   availableSoon?: boolean;
   blurFilter?: boolean;
   contentAfter?: React.ReactNode;

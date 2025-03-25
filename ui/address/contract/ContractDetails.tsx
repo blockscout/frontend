@@ -57,7 +57,7 @@ const ContractDetails = ({ addressHash, channel, mainContractQuery }: Props) => 
   const contractQuery = useApiQuery('contract', {
     pathParams: { hash: selectedItem?.address },
     queryOptions: {
-      enabled: Boolean(selectedItem?.address),
+      enabled: Boolean(selectedItem?.address && !mainContractQuery.isPlaceholderData),
       refetchOnMount: false,
       placeholderData: addressInfo?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },

@@ -10,15 +10,13 @@ import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
-
 type Props = {
   item: AddressMudTableItem;
   isLoading: boolean;
-  scrollRef?: React.RefObject<HTMLDivElement>;
   hash: string;
 };
 
-const AddressMudTablesTableItem = ({ item, isLoading, scrollRef, hash }: Props) => {
+const AddressMudTablesTableItem = ({ item, isLoading, hash }: Props) => {
   const [ isOpened, setIsOpened ] = useBoolean(false);
 
   const router = useRouter();
@@ -39,8 +37,9 @@ const AddressMudTablesTableItem = ({ item, isLoading, scrollRef, hash }: Props) 
         { shallow: true },
       );
     }
-    scrollRef?.current?.scrollIntoView();
-  }, [ router, scrollRef, hash ]);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [ router, hash ]);
 
   return (
     <>
