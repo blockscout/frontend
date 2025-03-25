@@ -82,6 +82,7 @@ import type {
 } from 'types/api/ens';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
+import type { InteropMessageListResponse } from 'types/api/interop';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { MudWorldsResponse } from 'types/api/mudWorlds';
 import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'types/api/noves';
@@ -1243,6 +1244,15 @@ export const RESOURCES = {
   block_countdown: {
     path: '/api',
   },
+
+  // INTEROP
+  optimistic_l2_interop_messages: {
+    path: '/api/v2/optimism/interop/messages',
+    filterFields: [],
+  },
+  optimistic_l2_interop_messages_count: {
+    path: '/api/v2/optimism/interop/messages/count',
+  },
 };
 
 export type ResourceName = keyof typeof RESOURCES;
@@ -1296,7 +1306,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
 'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'validators_zilliqa' | 'noves_address_history' |
 'token_transfers_all' | 'scroll_l2_txn_batches' | 'scroll_l2_txn_batch_txs' | 'scroll_l2_txn_batch_blocks' |
-'scroll_l2_deposits' | 'scroll_l2_withdrawals' | 'advanced_filter' | 'pools';
+'scroll_l2_deposits' | 'scroll_l2_withdrawals' | 'advanced_filter' | 'pools' | 'optimistic_l2_interop_messages';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -1473,6 +1483,8 @@ Q extends 'optimistic_l2_output_roots_count' ? number :
 Q extends 'optimistic_l2_withdrawals_count' ? number :
 Q extends 'optimistic_l2_deposits_count' ? number :
 Q extends 'optimistic_l2_dispute_games_count' ? number :
+Q extends 'optimistic_l2_interop_messages' ? InteropMessageListResponse :
+Q extends 'optimistic_l2_interop_messages_count' ? number :
 Q extends 'shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
 Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
 Q extends 'shibarium_withdrawals_count' ? number :
