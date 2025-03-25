@@ -61,3 +61,31 @@ export type RewardsUserReferralsResponse = {
   link: string;
   referrals: string;
 };
+
+type UserActivity = {
+  date: string;
+  end_date: string;
+  activity: string;
+  amount: string | null;
+  percentile: string | null;
+  is_pending: boolean;
+};
+
+export type RewardsUserActivityResponse = {
+  items: Array<UserActivity>;
+  last_week: Array<UserActivity>;
+};
+
+export type RewardsInstance = {
+  chain_id: string;
+  name: string;
+  domain: string;
+  details: {
+    icon_url: string;
+    is_mainnet: boolean;
+  };
+};
+
+export type RewardsInstancesResponse = {
+  items: Array<RewardsInstance>;
+};

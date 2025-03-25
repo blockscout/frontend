@@ -108,6 +108,8 @@ import type {
   RewardsUserDailyCheckResponse,
   RewardsUserDailyClaimResponse,
   RewardsUserReferralsResponse,
+  RewardsUserActivityResponse,
+  RewardsInstancesResponse,
 } from 'types/api/rewards';
 import type {
   ScrollL2BatchesResponse,
@@ -440,6 +442,16 @@ export const RESOURCES = {
   },
   rewards_user_referrals: {
     path: '/api/v1/user/referrals',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_activity: {
+    path: '/api/v1/user/activity/rewards',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_instances: {
+    path: '/api/v1/instances',
     endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
     basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
   },
@@ -1445,6 +1457,8 @@ Q extends 'rewards_user_balances' ? RewardsUserBalancesResponse :
 Q extends 'rewards_user_daily_check' ? RewardsUserDailyCheckResponse :
 Q extends 'rewards_user_daily_claim' ? RewardsUserDailyClaimResponse :
 Q extends 'rewards_user_referrals' ? RewardsUserReferralsResponse :
+Q extends 'rewards_user_activity' ? RewardsUserActivityResponse :
+Q extends 'rewards_instances' ? RewardsInstancesResponse :
 Q extends 'token_transfers_all' ? TokenTransferResponse :
 Q extends 'address_xstar_score' ? AddressXStarResponse :
 Q extends 'advanced_filter' ? AdvancedFilterResponse :

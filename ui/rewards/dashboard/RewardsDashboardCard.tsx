@@ -1,6 +1,8 @@
 import { Flex, Text, useColorModeValue, Tag } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
+
 type Props = {
   title?: string;
   description: string | React.ReactNode;
@@ -10,11 +12,13 @@ type Props = {
   direction?: 'column' | 'column-reverse' | 'row';
   reverse?: boolean;
   children?: React.ReactNode;
+  label?: string;
+  isLoading?: boolean;
 };
 
 const RewardsDashboardCard = ({
   title, description, availableSoon, contentAfter,
-  direction = 'column', children, blurFilter,
+  direction = 'column', children, blurFilter, label, isLoading,
 }: Props) => {
   return (
     <Flex
@@ -34,6 +38,11 @@ const RewardsDashboardCard = ({
         p={{ base: 1.5, md: 3 }}
         w={{ base: 'full', md: direction === 'row' ? '340px' : 'full' }}
       >
+        { label && (
+          <Skeleton isLoaded={ !isLoading } w="fit-content">
+            <Tag>{ label }</Tag>
+          </Skeleton>
+        ) }
         { title && (
           <Flex alignItems="center" gap={ 2 }>
             <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="500">{ title }</Text>

@@ -5,6 +5,7 @@ import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { apos } from 'lib/html-entities';
 import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton';
+import RewardsDashboardActivitySection from 'ui/rewards/dashboard/RewardsDashboardActivitySection';
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
 import RewardsDashboardInfoCard from 'ui/rewards/dashboard/RewardsDashboardInfoCard';
@@ -204,26 +205,7 @@ const RewardsDashboard = () => {
             linkHref={ `https://merits.blockscout.com/?tab=redeem&utm_source=${ config.chain.id }&utm_medium=redeem` }
           />
         </Flex>
-        <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
-          <RewardsDashboardCard
-            title="Activity"
-            description="Earn Merits for your everyday Blockscout activities. You deserve to be rewarded for choosing open-source public goods!"
-            availableSoon
-            blurFilter
-          >
-            <RewardsDashboardCardValue label="Activity" value="0%"/>
-            <RewardsDashboardCardValue label="Received" value="0" withIcon/>
-          </RewardsDashboardCard>
-          <RewardsDashboardCard
-            title="Verify contracts"
-            description="Verified contracts are so important for transparency and interaction. Verify your contracts on Blockscout and receive Merits for your efforts." // eslint-disable-line max-len
-            availableSoon
-            blurFilter
-          >
-            <RewardsDashboardCardValue label="Activity" value="0%"/>
-            <RewardsDashboardCardValue label="Received" value="0" withIcon/>
-          </RewardsDashboardCard>
-        </Flex>
+        <RewardsDashboardActivitySection/>
       </Flex>
     </>
   );

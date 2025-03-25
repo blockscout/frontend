@@ -12,15 +12,16 @@ type Props = {
   withIcon?: boolean;
   hint?: string | React.ReactNode;
   isLoading?: boolean;
+  bottomText?: string;
 };
 
-const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading }: Props) => (
+const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomText }: Props) => (
   <Flex key={ label } flexDirection="column" alignItems="center" gap={ 2 }>
     <Flex alignItems="center" gap={ 1 }>
       { hint && (
         <HintPopover
           label={ hint }
-          popoverContentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '210px' } }}
+          popoverContentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
           popoverBodyProps={{ textAlign: 'center' }}
         />
       ) }
@@ -41,6 +42,13 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading }: Props
         { value }
       </Text>
     </Skeleton>
+    { bottomText && (
+      <Skeleton isLoaded={ !isLoading }>
+        <Text fontSize="xs" fontWeight="500" variant="secondary">
+          { bottomText }
+        </Text>
+      </Skeleton>
+    ) }
   </Flex>
 );
 
