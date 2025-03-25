@@ -24,6 +24,7 @@ const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
       data={ item }
       isLoading={ isLoading }
       autoplayVideo={ false }
+      size="md"
     />
   );
 
