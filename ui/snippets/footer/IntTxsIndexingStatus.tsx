@@ -39,7 +39,7 @@ const IntTxsIndexingStatus = () => {
 
   useSocketMessage({
     channel: internalTxsIndexingChannel,
-    event: 'internal_txs_index_status',
+    event: 'index_status',
     handler: handleInternalTxsIndexStatus,
   });
 

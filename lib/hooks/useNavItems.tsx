@@ -115,6 +115,13 @@ export default function useNavItems(): ReturnType {
 
     const rollupFeature = config.features.rollup;
 
+    const rollupInteropMessages = rollupFeature.isEnabled && rollupFeature.interopEnabled ? {
+      text: 'Interop messages',
+      nextRoute: { pathname: '/interop-messages' as const },
+      icon: 'interop',
+      isActive: pathname === '/interop-messages',
+    } : null;
+
     if (rollupFeature.isEnabled && (
       rollupFeature.type === 'optimistic' ||
       rollupFeature.type === 'arbitrum' ||
@@ -127,7 +134,8 @@ export default function useNavItems(): ReturnType {
           internalTxs,
           rollupDeposits,
           rollupWithdrawals,
-        ],
+          rollupInteropMessages,
+        ].filter(Boolean),
         [
           blocks,
           rollupTxnBatches,

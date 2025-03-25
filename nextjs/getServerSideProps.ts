@@ -46,7 +46,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
 
   const isTrackingDisabled = process.env.DISABLE_TRACKING === 'true';
 
-  if (!isTrackingDisabled && !config.app.isDev) {
+  if (!isTrackingDisabled) {
     // log pageview
     const hostname = req.headers.host;
     const timestamp = new Date().toISOString();
@@ -372,6 +372,17 @@ export const disputeGames: GetServerSideProps<Props> = async(context) => {
 
 export const mud: GetServerSideProps<Props> = async(context) => {
   if (!config.features.mudFramework.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const interopMessages: GetServerSideProps<Props> = async(context) => {
+  const rollupFeature = config.features.rollup;
+  if (!rollupFeature.isEnabled || !rollupFeature.interopEnabled) {
     return {
       notFound: true,
     };

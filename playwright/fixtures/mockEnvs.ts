@@ -97,4 +97,10 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   externalTxs: [
     [ 'NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG', '{"chain_name": "Solana", "chain_logo_url": "http://example.url", "explorer_url_template": "https://scan.io/tx/{hash}"}' ],
   ],
+  interop: [
+    [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'optimistic' ],
+    [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
+    [ 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL', 'https://localhost:3102' ],
+    [ 'NEXT_PUBLIC_INTEROP_ENABLED', 'true' ],
+  ],
 };
