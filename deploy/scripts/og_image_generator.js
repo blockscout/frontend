@@ -28,6 +28,7 @@ if (process.env.NEXT_PUBLIC_OG_IMAGE_URL) {
       background: bannerConfig.background?.[0],
       title_color: bannerConfig.text_color?.[0],
       invert_logo: !process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK,
+      app_url: process.env.NEXT_PUBLIC_APP_HOST,
     };
 
     console.log('⏳ Making request to OG image generator service...');

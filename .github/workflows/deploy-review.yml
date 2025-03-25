@@ -64,7 +64,7 @@ jobs:
   deploy_review:
     name: Deploy frontend
     needs: [ make_slug, publish_image ]
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
+    uses: blockscout/actions/.github/workflows/deploy_helmfile.yaml@main
     with:
       appName: review-${{ needs.make_slug.outputs.REF_SLUG }}
       globalEnv: review

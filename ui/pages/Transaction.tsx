@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
@@ -31,6 +32,7 @@ import TxUserOps from 'ui/tx/TxUserOps';
 import useTxQuery from 'ui/tx/useTxQuery';
 
 const txInterpretation = config.features.txInterpretation;
+const rollupFeature = config.features.rollup;
 
 const TransactionPageContent = () => {
   const router = useRouter();
@@ -78,10 +80,21 @@ const TransactionPageContent = () => {
 
   const tabIndex = useTabIndexFromQuery(tabs);
 
+  const txTags: Array<TEntityTag> = data?.transaction_tag ?
+    [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 1 } ] : [];
+  if (rollupFeature.isEnabled && rollupFeature.interopEnabled && data?.op_interop) {
+    if (data.op_interop.init_chain !== undefined) {
+      txTags.push({ slug: 'relay_tx', name: 'Relay tx', tagType: 'custom' as const, ordinal: 0 });
+    }
+    if (data.op_interop.relay_chain !== undefined) {
+      txTags.push({ slug: 'init_tx', name: 'Source tx', tagType: 'custom' as const, ordinal: 0 });
+    }
+  }
+
   const tags = (
     <EntityTags
       isLoading={ isPlaceholderData }
-      tags={ data?.transaction_tag ? [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const } ] : [] }
+      tags={ txTags }
     />
   );
 

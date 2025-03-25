@@ -3,6 +3,7 @@ import type { ArbitrumBatchStatus, ArbitrumL2TxData } from './arbitrumL2';
 import type { BlockTransactionsResponse } from './block';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
+import type { ChainInfo, MessageStatus } from './interop';
 import type { NovesTxTranslation } from './noves';
 import type { OptimisticL2WithdrawalStatus } from './optimisticL2';
 import type { ScrollL2BlockStatus } from './scrollL2';
@@ -107,6 +108,8 @@ export type Transaction = {
   scroll?: ScrollTransactionData;
   // EIP-7702
   authorization_list?: Array<TxAuthorization>;
+  // Interop
+  op_interop?: InteropTransactionInfo;
 };
 
 type ArbitrumTransactionData = {
@@ -214,4 +217,16 @@ export interface TxAuthorization {
   authority: string;
   chain_id: number;
   nonce: number;
+}
+
+export interface InteropTransactionInfo {
+  nonce: number;
+  payload: string;
+  init_chain?: ChainInfo | null;
+  relay_chain?: ChainInfo | null;
+  init_transaction_hash?: string;
+  relay_transaction_hash?: string;
+  sender: string;
+  status: MessageStatus;
+  target: string;
 }

@@ -127,11 +127,40 @@ test('arbitrum L1 status', async({ render, mockEnvs }) => {
   await expect(statusElement).toHaveScreenshot();
 });
 
-test('with external txs +@mobile', async({ render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
+test('with external txs +@mobile', async({ page, render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
   await mockEnvs(ENVS_MAP.externalTxs);
   await mockApiResponse('tx_external_transactions', [ 'tx1', 'tx2', 'tx3' ], { pathParams: { hash: txMock.base.hash } });
   await mockAssetResponse('http://example.url', './playwright/mocks/image_s.jpg');
   const component = await render(<TxInfo data={ txMock.base } isLoading={ false }/>);
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
+});
+
+test('with interop message in +@mobile', async({ render, page, mockEnvs, mockAssetResponse }) => {
+  await mockEnvs(ENVS_MAP.interop);
+  await mockAssetResponse('https://example.com/logo.png', './playwright/mocks/image_s.jpg');
+  const component = await render(<TxInfo data={ txMock.withInteropInMessage } isLoading={ false }/>);
+  await page.getByText('View details').first().click();
+  await expect(page.getByText('Interop status')).toBeVisible();
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
+});
+
+test('with interop message out +@mobile', async({ page, render, mockEnvs, mockAssetResponse }) => {
+  await mockEnvs(ENVS_MAP.interop);
+  await mockAssetResponse('https://example.com/logo.png', './playwright/mocks/image_s.jpg');
+  const component = await render(<TxInfo data={ txMock.withInteropOutMessage } isLoading={ false }/>);
+  await component.getByText('View details').first().click();
+  await expect(component.getByText('Interop status')).toBeVisible();
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
