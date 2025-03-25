@@ -1,4 +1,5 @@
 import { Flex, Text, useColorModeValue, Tag } from '@chakra-ui/react';
+import type { ChakraStyledOptions } from '@chakra-ui/react';
 import React from 'react';
 
 import Skeleton from 'ui/shared/chakra/Skeleton';
@@ -15,10 +16,11 @@ type Props = {
   children?: React.ReactNode;
   label?: string;
   isLoading?: boolean;
+  cardValueStyle?: ChakraStyledOptions;
 };
 
 const RewardsDashboardCard = ({
-  title, description, availableSoon, contentAfter,
+  title, description, availableSoon, contentAfter, cardValueStyle,
   direction = 'column', children, blurFilter, label, isLoading,
 }: Props) => {
   return (
@@ -64,6 +66,7 @@ const RewardsDashboardCard = ({
         filter="auto"
         blur={ blurFilter ? '4px' : '0' }
         flex={ direction === 'row' ? 1 : '0 1 auto' }
+        { ...cardValueStyle }
       >
         { children }
       </Flex>

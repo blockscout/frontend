@@ -155,6 +155,7 @@ const RewardsDashboardActivitySection = () => {
               </Flex>
             ) }
             isLoading={ activityQuery.isPlaceholderData }
+            cardValueStyle={{ minH: { base: '104px', md: '128px' } }}
           >
             <RewardsDashboardCardValue
               label="Performance rank"
