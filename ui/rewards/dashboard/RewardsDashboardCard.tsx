@@ -3,6 +3,7 @@ import type { ChakraStyledOptions } from '@chakra-ui/react';
 import React from 'react';
 
 import Skeleton from 'ui/shared/chakra/Skeleton';
+import HintPopover from 'ui/shared/HintPopover';
 
 type Props = {
   title: string;
@@ -21,7 +22,7 @@ type Props = {
 };
 
 const RewardsDashboardCard = ({
-  title, description, availableSoon, contentAfter, cardValueStyle,
+  title, description, availableSoon, contentAfter, cardValueStyle, hint,
   direction = 'column', children, blurFilter, label, isLoading, className,
 }: Props) => {
   return (
@@ -51,6 +52,15 @@ const RewardsDashboardCard = ({
         { title && (
           <Flex alignItems="center" gap={ 2 }>
             <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="500">{ title }</Text>
+            { hint && (
+              <HintPopover
+                label={ hint }
+                popoverContentProps={{
+                  maxW: { base: 'calc(100vw - 8px)', lg: '210px' },
+                }}
+                popoverBodyProps={{ textAlign: 'center' }}
+              />
+            ) }
             { availableSoon && <Tag colorScheme="blue">Available soon</Tag> }
           </Flex>
         ) }
