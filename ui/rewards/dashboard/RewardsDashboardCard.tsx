@@ -1,4 +1,4 @@
-import { Flex, Text, useColorModeValue, Tag } from '@chakra-ui/react';
+import { Flex, Text, useColorModeValue, Tag, chakra } from '@chakra-ui/react';
 import type { ChakraStyledOptions } from '@chakra-ui/react';
 import React from 'react';
 
@@ -17,11 +17,12 @@ type Props = {
   label?: string;
   isLoading?: boolean;
   cardValueStyle?: ChakraStyledOptions;
+  className?: string;
 };
 
 const RewardsDashboardCard = ({
   title, description, availableSoon, contentAfter, cardValueStyle,
-  direction = 'column', children, blurFilter, label, isLoading,
+  direction = 'column', children, blurFilter, label, isLoading, className,
 }: Props) => {
   return (
     <Flex
@@ -34,6 +35,7 @@ const RewardsDashboardCard = ({
       gap={{ base: 1, md: direction === 'row' ? 10 : 1 }}
       w={ direction === 'row' ? 'full' : 'auto' }
       flex={ direction !== 'row' ? 1 : '0 1 auto' }
+      className={ className }
     >
       <Flex
         flexDirection="column"
@@ -63,6 +65,7 @@ const RewardsDashboardCard = ({
         borderRadius={{ base: 'lg', md: '8px' }}
         backgroundColor={ useColorModeValue('gray.50', 'whiteAlpha.50') }
         minH={{ base: '80px', md: '128px' }}
+        mt={ direction === 'column' ? 'auto' : 0 }
         filter="auto"
         blur={ blurFilter ? '4px' : '0' }
         flex={ direction === 'row' ? 1 : '0 1 auto' }
@@ -74,4 +77,4 @@ const RewardsDashboardCard = ({
   );
 };
 
-export default RewardsDashboardCard;
+export default chakra(RewardsDashboardCard);

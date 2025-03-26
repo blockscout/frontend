@@ -67,6 +67,7 @@ const RewardsDashboardActivitySection = () => {
     return {
       transactions: calcActivity('sent_transactions'),
       contracts: calcActivity('verified_contracts'),
+      usage: calcActivity('blockscout_usage'),
     };
   }, [ activityQuery.data ]);
 
@@ -74,7 +75,7 @@ const RewardsDashboardActivitySection = () => {
 
   return (
     <>
-      <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
+      <Flex w="full" gap={ 6 } flexWrap="wrap">
         { [
           {
             title: 'Weekly Blockscout activity',
@@ -126,6 +127,24 @@ const RewardsDashboardActivitySection = () => {
             amount: activities.contracts?.amount,
             amountDiff: activities.contracts?.amountDiff,
           },
+          {
+            title: 'Weekly Blockscout usage',
+            description: (
+              <>
+                Grab your{ ' ' }
+                <LinkExternal href={ `${ activityPassUrl }&utm_medium=usage-task` }>
+                  Activity pass
+                </LinkExternal>{ ' ' }
+                then just use Blockscout explorers in your every day routine.
+              </>
+            ),
+            percentileHint: 'Measures your performance relative to other Merit program participants. Use Blockscout explorers and add them to a MetaMask wallet to increase your weekly performance rank.', /* eslint-disable-line max-len */
+            amountHint: 'The number of extra Merits you have earned this week from your Blockscout usage. Use Blockscout explorers and add them to a MetaMask wallet to earn additional Merits.', /* eslint-disable-line max-len */
+            percentile: activities.usage?.percentile,
+            percentileDiff: activities.usage?.percentileDiff,
+            amount: activities.usage?.amount,
+            amountDiff: activities.usage?.amountDiff,
+          },
         ].map((item, index) => (
           <RewardsDashboardCard
             key={ index }
@@ -156,6 +175,7 @@ const RewardsDashboardActivitySection = () => {
             ) }
             isLoading={ activityQuery.isPlaceholderData }
             cardValueStyle={{ minH: { base: '104px', md: '128px' } }}
+            flex={{ base: '1 1 100%', md: '1 1 calc(50% - 12px)' }}
           >
             <RewardsDashboardCardValue
               label="Performance rank"
@@ -174,6 +194,7 @@ const RewardsDashboardActivitySection = () => {
             />
           </RewardsDashboardCard>
         )) }
+        <Box flex="1 1 calc(50% - 12px)" display={{ base: 'none', md: 'block' }}/>
       </Flex>
       <RewardsInstancesModal
         isOpen={ explorersModal.isOpen }
