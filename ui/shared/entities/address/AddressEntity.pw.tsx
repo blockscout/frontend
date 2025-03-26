@@ -41,6 +41,7 @@ test.describe('contract', () => {
     );
 
     await component.getByText(/eternal/i).hover();
+    await page.locator('div').filter({ hasText: 'EternalStorageProxy' }).first().waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 
@@ -66,7 +67,7 @@ test.describe('proxy contract', () => {
     );
 
     await component.getByText(/home/i).hover();
-    await expect(page.getByText('Proxy contract')).toBeVisible();
+    await page.getByText(/implementation/i).waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 
@@ -78,7 +79,7 @@ test.describe('proxy contract', () => {
     );
 
     await component.getByText(/eternal/i).hover();
-    await expect(page.getByText('Proxy contract')).toBeVisible();
+    await page.getByText(/implementation/i).waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 
@@ -90,7 +91,7 @@ test.describe('proxy contract', () => {
     );
 
     await component.getByText(addressMock.contract.hash.slice(0, 4)).hover();
-    await expect(page.getByText('Proxy contract')).toBeVisible();
+    await page.getByText(/implementation/i).waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 
@@ -102,7 +103,7 @@ test.describe('proxy contract', () => {
     );
 
     await component.getByText(/eternal/i).hover();
-    await expect(page.getByText('Proxy contract')).toBeVisible();
+    await page.getByText(/implementation/i).waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 
@@ -114,7 +115,7 @@ test.describe('proxy contract', () => {
     );
 
     await component.getByText(/quack/i).hover();
-    await expect(page.getByText('Proxy contract')).toBeVisible();
+    await page.getByText(/implementation/i).waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 });
@@ -222,6 +223,7 @@ test('hover', async({ page, render }) => {
   );
 
   await component.getByText(addressMock.hash.slice(0, 4)).hover();
+  await page.getByText(addressMock.hash).waitFor({ state: 'visible' });
   await expect(page).toHaveScreenshot();
 });
 

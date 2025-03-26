@@ -31,10 +31,10 @@ test.beforeEach(async({ mockEnvs, mockConfigResponse, mockAssetResponse }) => {
 test('base view', async({ render, page }) => {
   const component = await render(<Burger/>, { hooksConfig });
 
-  await component.locator('div[aria-label="Menu button"]').click();
-  await expect(page.locator('.chakra-modal__content-container')).toHaveScreenshot();
+  await component.getByRole('button', { name: 'Menu button' }).click();
+  await expect(page).toHaveScreenshot();
 
-  await page.locator('button[aria-label="Network menu"]').click();
+  await page.getByRole('button', { name: 'Network menu' }).click();
   await expect(page).toHaveScreenshot();
 });
 
@@ -44,10 +44,10 @@ test.describe('dark mode', () => {
   test('base view', async({ render, page }) => {
     const component = await render(<Burger/>, { hooksConfig });
 
-    await component.locator('div[aria-label="Menu button"]').click();
+    await component.getByRole('button', { name: 'Menu button' }).click();
     await expect(page).toHaveScreenshot();
 
-    await page.locator('button[aria-label="Network menu"]').click();
+    await page.getByRole('button', { name: 'Network menu' }).click();
     await expect(page).toHaveScreenshot();
   });
 });
@@ -55,7 +55,7 @@ test.describe('dark mode', () => {
 test('submenu', async({ render, page }) => {
   const component = await render(<Burger/>, { hooksConfig });
 
-  await component.locator('div[aria-label="Menu button"]').click();
+  await component.getByRole('button', { name: 'Menu button' }).click();
   await page.locator('div[aria-label="Blockchain link group"]').click();
   await expect(page).toHaveScreenshot();
 });
@@ -70,7 +70,7 @@ authTest.describe('auth', () => {
   authTest('base view', async({ render, page }) => {
     const component = await render(<Burger/>, { hooksConfig });
 
-    await component.locator('div[aria-label="Menu button"]').click();
+    await component.getByRole('button', { name: 'Menu button' }).click();
     await expect(page).toHaveScreenshot();
   });
 });

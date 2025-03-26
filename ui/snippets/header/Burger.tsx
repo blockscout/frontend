@@ -38,13 +38,12 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
     >
       <DrawerBackdrop/>
       <DrawerTrigger>
-        <IconButton onClick={ onOpen } p={ 2 }>
+        <IconButton onClick={ onOpen } p={ 2 } aria-label="Menu button">
           <IconSvg
             name="burger"
             boxSize={ 6 }
             display="block"
             color={{ _light: 'gray.600', _dark: 'white' }}
-            aria-label="Menu button"
           />
         </IconButton>
       </DrawerTrigger>

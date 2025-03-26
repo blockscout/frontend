@@ -43,7 +43,7 @@ const BlockEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
       maxH="360px"
       overflowY="scroll"
       fontWeight={ 400 }
-      lineHeight={ 5 }
+      textStyle="sm"
     >
       { query.data && (
         <Grid

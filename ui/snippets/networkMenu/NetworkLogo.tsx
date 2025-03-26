@@ -28,7 +28,7 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
   return (
     <IconSvg
       name={ isSmall ? 'networks/icon-placeholder' : 'networks/logo-placeholder' }
-      width="auto"
+      width={ isSmall ? '30px' : '120px' }
       height="100%"
       color={{ base: 'blue.600', _dark: 'white' }}
       display={ display }
@@ -63,7 +63,7 @@ const NetworkLogo = ({ isCollapsed, onClick, className }: Props) => {
         alt={ `${ config.chain.name } network logo` }
         fallback={ <LogoFallback isCollapsed={ isCollapsed }/> }
         display={{ base: 'block', lg: isCollapsed === false ? 'block' : 'none', xl: isCollapsed ? 'none' : 'block' }}
-        filter={{ _dark: INVERT_FILTER }}
+        filter={{ _dark: !config.UI.navigation.logo.dark ? INVERT_FILTER : undefined }}
         objectFit="contain"
         objectPosition="left"
       />
@@ -75,7 +75,7 @@ const NetworkLogo = ({ isCollapsed, onClick, className }: Props) => {
         alt={ `${ config.chain.name } network logo` }
         fallback={ <LogoFallback isCollapsed={ isCollapsed } isSmall/> }
         display={{ base: 'none', lg: isCollapsed === false ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}
-        filter={{ _dark: INVERT_FILTER }}
+        filter={{ _dark: !config.UI.navigation.icon.dark ? INVERT_FILTER : undefined }}
         objectFit="contain"
         objectPosition="left"
       />

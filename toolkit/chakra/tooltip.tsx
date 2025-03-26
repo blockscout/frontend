@@ -2,6 +2,7 @@ import { Tooltip as ChakraTooltip, Portal } from '@chakra-ui/react';
 import { useClickAway } from '@uidotdev/usehooks';
 import * as React from 'react';
 
+import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 
 export interface TooltipProps extends ChakraTooltip.RootProps {
@@ -37,7 +38,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
       ...rest
     } = props;
 
-    const [ open, setOpen ] = React.useState(defaultOpen);
+    const [ open, setOpen ] = React.useState<boolean>(defaultOpen);
 
     const isMobile = useIsMobile();
     const triggerRef = useClickAway<HTMLButtonElement>(() => setOpen(false));
@@ -58,6 +59,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
 
     const positioning = {
       ...rest.positioning,
+      overflowPadding: 4,
       offset: {
         mainAxis: 4,
         ...rest.positioning?.offset,
@@ -67,9 +69,11 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     return (
       <ChakraTooltip.Root
         openDelay={ 100 }
-        closeDelay={ 100 }
+        // FIXME: chakra closes tooltip too fast, so Playwright is not able to make a screenshot of its content
+        // so we need to increase the close delay in Playwright environment
+        closeDelay={ config.app.isPw ? 10_000 : 100 }
         open={ open }
-        onOpenChange={ isMobile ? undefined : handleOpenChange }
+        onOpenChange={ handleOpenChange }
         closeOnClick={ false }
         closeOnPointerDown={ true }
         variant={ variant }

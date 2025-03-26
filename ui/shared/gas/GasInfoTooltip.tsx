@@ -23,13 +23,12 @@ interface Props {
   children: React.ReactNode;
   data: HomeStats;
   dataUpdatedAt: number;
-  isOpen?: boolean; // for testing purposes only; the tests were flaky, i couldn't find a better way
   placement?: ExcludeUndefined<TooltipProps['positioning']>['placement'];
 }
 
 const feature = config.features.gasTracker;
 
-const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen, placement }: Props) => {
+const GasInfoTooltip = ({ children, data, dataUpdatedAt, placement }: Props) => {
   if (!data.gas_prices) {
     return null;
   }
@@ -67,7 +66,6 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen, placement }: Pr
     <Tooltip
       content={ content }
       positioning={{ placement }}
-      { ...(isOpen ? { open: true } : { }) }
       lazyMount
       interactive
       showArrow={ false }

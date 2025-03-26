@@ -22,7 +22,7 @@ const MyProfileFieldsEmail = ({ isReadOnly, defaultValue }: Props) => {
       group={{
         endElement: ({ field }) => {
           const isVerified = defaultValue && field.value === defaultValue;
-          return isVerified ? <IconSvg name="certified" boxSize={ 5 } color="green.500"/> : null;
+          return isVerified ? <IconSvg name="certified" boxSize={ 5 } color="green.500" mx={ 5 }/> : null;
         },
       }}
     />

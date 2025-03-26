@@ -219,7 +219,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         ) }
         <Flex rowGap={ 5 } flexDir="column">
           <div>
-            <CopyToClipboard text={ signingMessage } ml="auto" display="block"/>
+            <CopyToClipboard text={ signingMessage } ml="auto" mb={ 2 }/>
             <FormFieldText<Fields>
               name="message"
               placeholder="Message to sign"
@@ -227,7 +227,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
               asComponent="Textarea"
               readOnly
               inputProps={{
-                h: { base: '180px', lg: '130px' },
+                h: { base: '175px', lg: '100px' },
                 minH: 'auto',
               }}
             />
