@@ -7,7 +7,7 @@ import Hint from 'ui/shared/Hint';
 import MeritsIcon from '../MeritsIcon';
 
 type Props = {
-  label: string;
+  label?: string;
   value: number | string | undefined;
   withIcon?: boolean;
   hint?: string | React.ReactNode;
@@ -16,14 +16,16 @@ type Props = {
 
 const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading }: Props) => (
   <Flex key={ label } flexDirection="column" alignItems="center" gap={ 2 }>
-    <Flex alignItems="center" gap={ 1 }>
-      { hint && (
-        <Hint label={ hint }/>
-      ) }
-      <Text fontSize="xs" fontWeight="500" color="text.secondary">
-        { label }
-      </Text>
-    </Flex>
+    { label && (
+      <Flex alignItems="center" gap={ 1 }>
+        { hint && (
+          <Hint label={ hint }/>
+        ) }
+        <Text fontSize="xs" fontWeight="500" color="text.secondary">
+          { label }
+        </Text>
+      </Flex>
+    ) }
     <Skeleton
       loading={ isLoading }
       display="flex"

@@ -112,6 +112,7 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
         <NftMedia
           data={ data }
           isLoading={ isLoading }
+          size="md"
           withFullscreen
           w="250px"
           flexShrink={ 0 }

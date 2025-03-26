@@ -97,7 +97,16 @@ const TokenInstanceContent = () => {
     {
       id: 'token_transfers',
       title: 'Token transfers',
-      component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id } tokenQuery={ tokenQuery } shouldRender={ !isLoading } tabsHeight={ 80 }/>,
+      component: (
+        <TokenTransfer
+          transfersQuery={ transfersQuery }
+          tokenId={ id }
+          tokenQuery={ tokenQuery }
+          tokenInstance={ tokenInstanceQuery.data }
+          shouldRender={ !isLoading }
+          tabsHeight={ 80 }
+        />
+      ),
     },
     shouldFetchHolders ?
       {

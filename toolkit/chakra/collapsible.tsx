@@ -4,56 +4,58 @@ import { scroller, Element } from 'react-scroll';
 
 import useUpdateEffect from 'lib/hooks/useUpdateEffect';
 
-import type { ButtonProps } from './button';
-import { Button } from './button';
+import type { LinkProps } from './link';
+import { Link } from './link';
 
-interface CollapsibleDetailsProps extends ButtonProps {
+interface CollapsibleDetailsProps extends LinkProps {
   children: React.ReactNode;
   id?: string;
   isExpanded?: boolean;
   text?: [string, string];
+  noScroll?: boolean;
 }
 
-export const CollapsibleDetails = (props: CollapsibleDetailsProps) => {
-  const CUT_ID = 'CollapsibleDetails';
+const SCROLL_CONFIG = {
+  duration: 500,
+  smooth: true,
+};
 
-  const { children, id = CUT_ID, onClick, isExpanded: isExpandedProp = false, text: textProp, loading, ...rest } = props;
+const CUT_ID = 'CollapsibleDetails';
+
+export const CollapsibleDetails = (props: CollapsibleDetailsProps) => {
+
+  const { children, id = CUT_ID, onClick, isExpanded: isExpandedProp = false, text: textProp, loading, noScroll, ...rest } = props;
 
   const [ isExpanded, setIsExpanded ] = React.useState(isExpandedProp);
 
-  const handleClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = React.useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
     setIsExpanded((flag) => !flag);
-    scroller.scrollTo(id, {
-      duration: 500,
-      smooth: true,
-    });
+    if (!noScroll) {
+      scroller.scrollTo(id, SCROLL_CONFIG);
+    }
     onClick?.(event);
-  }, [ id, onClick ]);
+  }, [ id, noScroll, onClick ]);
 
   useUpdateEffect(() => {
     setIsExpanded(isExpandedProp);
-    isExpandedProp && scroller.scrollTo(id, {
-      duration: 500,
-      smooth: true,
-    });
-  }, [ isExpandedProp, id ]);
+    isExpandedProp && !noScroll && scroller.scrollTo(id, SCROLL_CONFIG);
+  }, [ isExpandedProp, id, noScroll ]);
 
   const text = isExpanded ? (textProp?.[1] ?? 'Hide details') : (textProp?.[0] ?? 'View details');
 
   return (
     <>
-      <Button
-        variant="link"
+      <Link
         textStyle="sm"
         textDecorationLine="underline"
         textDecorationStyle="dashed"
         w="fit-content"
         onClick={ handleClick }
-        loadingSkeleton={ loading }
+        loading={ loading }
         { ...rest }
       >
         <Element name={ id }>{ text }</Element>
-      </Button>
+      </Link>
       { isExpanded && children }
     </>
   );
@@ -62,7 +64,7 @@ export const CollapsibleDetails = (props: CollapsibleDetailsProps) => {
 interface CollapsibleListProps<T> extends FlexProps {
   items: Array<T>;
   renderItem: (item: T, index: number) => React.ReactNode;
-  triggerProps?: ButtonProps;
+  triggerProps?: LinkProps;
   cutLength?: number;
 }
 
@@ -81,8 +83,7 @@ export const CollapsibleList = <T,>(props: CollapsibleListProps<T>) => {
     <Flex flexDir="column" w="100%" { ...rest }>
       { items.slice(0, isExpanded ? undefined : cutLength).map(renderItem) }
       { items.length > cutLength && (
-        <Button
-          variant="link"
+        <Link
           textStyle="sm"
           textDecorationLine="underline"
           textDecorationStyle="dashed"
@@ -92,7 +93,7 @@ export const CollapsibleList = <T,>(props: CollapsibleListProps<T>) => {
           { ...triggerProps }
         >
           { isExpanded ? 'Hide' : 'Show all' }
-        </Button>
+        </Link>
       ) }
     </Flex>
   );

@@ -2,10 +2,12 @@ import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { Badge } from 'toolkit/chakra/badge';
+import Hint from 'ui/shared/Hint';
 
 type Props = {
-  title?: string;
+  title: string;
   description: string | React.ReactNode;
+  hint?: string | React.ReactNode;
   availableSoon?: boolean;
   blurFilter?: boolean;
   contentAfter?: React.ReactNode;
@@ -15,7 +17,7 @@ type Props = {
 };
 
 const RewardsDashboardCard = ({
-  title, description, availableSoon, contentAfter,
+  title, description, hint, availableSoon, contentAfter,
   direction = 'column', children, blurFilter,
 }: Props) => {
   return (
@@ -36,12 +38,11 @@ const RewardsDashboardCard = ({
         p={{ base: 1.5, md: 3 }}
         w={{ base: 'full', md: direction === 'row' ? '340px' : 'full' }}
       >
-        { title && (
-          <Flex alignItems="center" gap={ 2 }>
-            <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="500">{ title }</Text>
-            { availableSoon && <Badge colorPalette="blue">Available soon</Badge> }
-          </Flex>
-        ) }
+        <Flex alignItems="center" gap={ 2 }>
+          <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="500">{ title }</Text>
+          { hint && <Hint label={ hint }/> }
+          { availableSoon && <Badge colorPalette="blue">Available soon</Badge> }
+        </Flex>
         <Text as="div" fontSize="sm">
           { description }
         </Text>

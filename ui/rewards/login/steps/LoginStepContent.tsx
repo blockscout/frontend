@@ -18,7 +18,7 @@ import { Switch } from 'toolkit/chakra/switch';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 type Props = {
-  goNext: (isReferral: boolean) => void;
+  goNext: (isReferral: boolean, reward: string | null) => void;
   closeModal: () => void;
   openAuthModal: (isAuth: boolean, trySharedLogin?: boolean) => void;
 };
@@ -58,12 +58,12 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
     try {
       setRefCodeError(false);
       setIsLoading(true);
-      const { isNewUser, invalidRefCodeError } = await login(isSignUp && isRefCodeUsed ? refCode : '');
+      const { isNewUser, reward, invalidRefCodeError } = await login(isSignUp && isRefCodeUsed ? refCode : '');
       if (invalidRefCodeError) {
         setRefCodeError(true);
       } else {
         if (isNewUser) {
-          goNext(isRefCodeUsed);
+          goNext(isRefCodeUsed, reward);
         } else {
           closeModal();
           router.push({ pathname: '/account/merits' }, undefined, { shallow: true });
@@ -71,14 +71,11 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
       }
     } catch (error) {}
     setIsLoading(false);
-  }, [ login, goNext, setIsLoading, router, closeModal, refCode, setRefCodeError, isRefCodeUsed, isSignUp ]);
+  }, [ login, goNext, router, closeModal, refCode, isRefCodeUsed, isSignUp ]);
 
   React.useEffect(() => {
-    if (isSignUp && isRefCodeUsed && refCode.length > 0 && refCode.length !== 6) {
-      setRefCodeError(true);
-    } else {
-      setRefCodeError(false);
-    }
+    const isInvalid = isSignUp && isRefCodeUsed && refCode.length > 0 && refCode.length !== 6 && refCode.length !== 12;
+    setRefCodeError(isInvalid);
   }, [ refCode, isRefCodeUsed, isSignUp ]);
 
   const handleButtonClick = React.useCallback(() => {
@@ -118,7 +115,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
   return (
     <>
       <Image
-        src="/static/merits_program.png"
+        src="/static/merits/merits_program.png"
         alt="Merits program"
         mb={ 3 }
         fallback={ <Skeleton loading w="full" h="120px" mb={ 3 }/> }
@@ -150,7 +147,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
               mt={ 3 }
               invalid={ refCodeError }
               helperText="The code should be in format XXXXXX"
-              errorText={ refCodeError ? 'Incorrect code or format' : undefined }
+              errorText={ refCodeError ? 'Incorrect code or format (6 or 12 characters)' : undefined }
             >
               <Input
                 value={ refCode }

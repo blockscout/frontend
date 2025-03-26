@@ -129,11 +129,9 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     }
 
     scrollToTop();
-    router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true })
-      .then(() => {
-        setPage(prev => clamp(prev - 1, 1, Infinity));
-        page === 2 && queryClient.removeQueries({ queryKey: [ resourceName ] });
-      });
+    setPage(prev => clamp(prev - 1, 1, Infinity));
+    page === 2 && queryClient.removeQueries({ queryKey: [ resourceName ] });
+    router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
   }, [ router, page, pageParams, scrollToTop, queryClient, resourceName ]);
 
   const resetPage = useCallback(() => {

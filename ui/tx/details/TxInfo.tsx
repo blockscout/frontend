@@ -35,6 +35,7 @@ import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
@@ -61,10 +62,9 @@ import TxExternalTxs from 'ui/tx/TxExternalTxs';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
+import TxDetailsInterop from './TxDetailsInterop';
 import TxDetailsWithdrawalStatusArbitrum from './TxDetailsWithdrawalStatusArbitrum';
 import TxInfoScrollFees from './TxInfoScrollFees';
-
-const rollupFeature = config.features.rollup;
 
 interface Props {
   data: Transaction | undefined;
@@ -73,6 +73,7 @@ interface Props {
 }
 
 const externalTxFeature = config.features.externalTxs;
+const rollupFeature = config.features.rollup;
 
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
@@ -129,6 +130,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
     </Tooltip>
   ) : null;
 
+  const hasInterop = rollupFeature.isEnabled && rollupFeature.interopEnabled && data.op_interop;
+
   return (
     <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
 
@@ -145,6 +148,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <TxSocketAlert status={ socketStatus }/>
         </GridItem>
       ) }
+
+      <TxDetailsInterop data={ data.op_interop } isLoading={ isLoading }/>
 
       <DetailedInfo.ItemLabel
         hint="Unique character string (TxID) assigned to every verified transaction"
@@ -485,6 +490,52 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       </DetailedInfo.ItemValue>
 
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
+
+      { hasInterop && data.op_interop?.target && (
+        <>
+          <DetailedInfo.ItemLabel
+            isLoading={ isLoading }
+            hint="The target address where this cross-chain transaction is executed"
+          >
+            Interop target
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue flexWrap="nowrap">
+            { data.op_interop?.relay_chain !== undefined ? (
+              <AddressEntityInterop
+                chain={ data.op_interop.relay_chain }
+                address={{ hash: data.op_interop.target }}
+                isLoading={ isLoading }
+                truncation="dynamic"
+              />
+            ) : (
+              <AddressEntity address={{ hash: data.op_interop.target }} isLoading={ isLoading } truncation="dynamic"/>
+            ) }
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
+
+      { hasInterop && data.op_interop?.target && (
+        <>
+          <DetailedInfo.ItemLabel
+            isLoading={ isLoading }
+            hint="The target address where this cross-chain transaction is executed"
+          >
+            Interop target
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue flexWrap="nowrap">
+            { data.op_interop?.relay_chain !== undefined ? (
+              <AddressEntityInterop
+                chain={ data.op_interop.relay_chain }
+                address={{ hash: data.op_interop.target }}
+                isLoading={ isLoading }
+                truncation="dynamic"
+              />
+            ) : (
+              <AddressEntity address={{ hash: data.op_interop.target }} isLoading={ isLoading } truncation="dynamic"/>
+            ) }
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
       <DetailedInfo.ItemDivider/>
 

@@ -33,6 +33,7 @@ const NFTItem = ({ token, value, isLoading, withTokenLink, ...tokenInstance }: P
         <NftMedia
           mb="18px"
           data={ tokenInstance }
+          size="md"
           isLoading={ isLoading }
           autoplayVideo={ false }
         />

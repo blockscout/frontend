@@ -28,6 +28,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
   const apiFetch = useApiFetch();
   const recaptcha = useReCaptcha();
   const [ isCodeSending, setIsCodeSending ] = React.useState(false);
+  const [ resendAttempts, setResendAttempts ] = React.useState(0);
 
   const formApi = useForm<OtpCodeFormFields>({
     mode: 'onBlur',
@@ -92,6 +93,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         description: apiError?.message || getErrorMessage(error) || 'Something went wrong',
       });
     } finally {
+      setResendAttempts((prev) => prev + 1);
       setIsCodeSending(false);
     }
   }, [ apiFetch, email, formApi, recaptcha ]);
@@ -108,7 +110,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
           and enter your code below.
         </Text>
         <AuthModalFieldOtpCode isDisabled={ isCodeSending }/>
-        <ReCaptcha ref={ recaptcha.ref }/>
+        <ReCaptcha key={ resendAttempts } ref={ recaptcha.ref }/>
         <Button
           variant="link"
           columnGap={ 2 }

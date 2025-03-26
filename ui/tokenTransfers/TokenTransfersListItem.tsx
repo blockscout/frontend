@@ -76,6 +76,7 @@ const TokenTransfersListItem = ({ item, isLoading }: Props) => {
             <NftEntity
               hash={ item.token.address }
               id={ item.total.token_id }
+              instance={ item.total.token_instance }
               isLoading={ isLoading }
               noIcon
             />
