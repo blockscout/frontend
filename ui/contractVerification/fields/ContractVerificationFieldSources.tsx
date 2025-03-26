@@ -1,4 +1,4 @@
-import { Text, Box, Flex } from '@chakra-ui/react';
+import { Text, Box, Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, FieldPathValue, ValidateResult } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -55,12 +55,12 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title
 
   const renderUploadButton = React.useCallback(() => {
     return (
-      <div>
-        <Text fontWeight={ 500 } color="text.secondary" mb={ 3 }>{ title }</Text>
+      <VStack gap={ 3 }>
+        <Text fontWeight={ 500 }>{ title }</Text>
         <Button size="sm" variant="outline">
           Drop file{ multiple ? 's' : '' } or click here
         </Button>
-      </div>
+      </VStack>
     );
   }, [ multiple, title ]);
 
@@ -116,7 +116,13 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title
               rowGap={ 2 }
               w="100%"
             >
-              <DragAndDropArea onDrop={ onChange } fullFilePath={ fullFilePath } p={{ base: 3, lg: 6 }} isDisabled={ formState.isSubmitting }>
+              <DragAndDropArea
+                onDrop={ onChange }
+                fullFilePath={ fullFilePath }
+                p={{ base: 3, lg: 6 }}
+                isDisabled={ formState.isSubmitting }
+                isInvalid={ Boolean(error) }
+              >
                 { hasValue ? renderFiles(field.value) : renderUploadButton() }
               </DragAndDropArea>
             </Flex>
@@ -125,7 +131,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title
         { errorElement }
       </>
     );
-  }, [ fileTypes, multiple, commonError, formState.isSubmitting, renderFiles, renderUploadButton, fullFilePath ]);
+  }, [ fileTypes, multiple, commonError?.type, commonError?.message, fullFilePath, formState.isSubmitting, error, renderFiles, renderUploadButton ]);
 
   const validateFileType = React.useCallback(async(value: FieldPathValue<FormFields, typeof name>): Promise<ValidateResult> => {
     if (Array.isArray(value)) {

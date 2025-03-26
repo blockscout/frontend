@@ -42,9 +42,9 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, placement }: Props) => 
   const content = (
     <Flex flexDir="column" textStyle="xs" rowGap={ 3 }>
       { data.gas_price_updated_at && (
-        <Flex justifyContent="space-between">
+        <Flex justifyContent="space-between" alignItems="center">
           <Box color="text.secondary">Last update</Box>
-          <Flex color="text.secondary" justifyContent="flex-end" columnGap={ 2 } ml={ 3 }>
+          <Flex color="text.secondary" justifyContent="flex-end" alignItems="center" columnGap={ 2 } ml={ 3 }>
             { dayjs(data.gas_price_updated_at).format('MMM DD, HH:mm:ss') }
             { data.gas_prices_update_in !== 0 &&
               <GasInfoUpdateTimer key={ dataUpdatedAt } startTime={ dataUpdatedAt } duration={ data.gas_prices_update_in }/> }

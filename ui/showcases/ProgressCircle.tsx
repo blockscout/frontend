@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ProgressCircleRoot, ProgressCircleRing } from 'toolkit/chakra/progress-circle';
+import { ProgressCircleRoot, ProgressCircleRing, ProgressCircleValueText } from 'toolkit/chakra/progress-circle';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample } from './parts';
 
@@ -25,7 +25,7 @@ const ProgressCircleShowcase = () => {
       <Section>
         <SectionHeader>Size</SectionHeader>
         <SamplesStack >
-          { ([ 'sm', 'md' ] as const).map((size) => (
+          { ([ 'sm', 'md', 'lg' ] as const).map((size) => (
             <Sample key={ size } label={ `size: ${ size }` }>
               <ProgressCircleRoot
                 value={ 45 }
@@ -33,6 +33,7 @@ const ProgressCircleShowcase = () => {
                 size={ size }
               >
                 <ProgressCircleRing/>
+                { size === 'lg' && <ProgressCircleValueText/> }
               </ProgressCircleRoot>
             </Sample>
           )) }

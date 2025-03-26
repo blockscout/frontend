@@ -9,7 +9,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     button: {
       outline: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
+          DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.600}' } },
         },
       },
       subtle: {
@@ -168,7 +168,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     progressCircle: {
       trackColor: {
-        DEFAULT: { value: { _light: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.100}' } },
+        DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.whiteAlpha.100}' } },
       },
     },
     skeleton: {

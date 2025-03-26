@@ -56,7 +56,6 @@ const GasTracker = () => {
               key={ dataUpdatedAt }
               startTime={ dataUpdatedAt }
               duration={ data.gas_prices_update_in }
-              size="md"
               ml={ 2 }
             />
           ) }

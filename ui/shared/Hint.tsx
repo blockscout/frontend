@@ -29,8 +29,10 @@ const Hint = ({ label, className, tooltipProps, isLoading, as }: Props) => {
         loadingSkeleton={ isLoading }
         borderRadius="sm"
         as={ as }
+        color="icon.info"
+        _hover={{ color: 'link.primary.hover' }}
       >
-        <IconSvg name="info" w="100%" h="100%" color="icon.info" _hover={{ color: 'link.primary.hover' }}/>
+        <IconSvg name="info" w="100%" h="100%"/>
       </IconButton>
     </Tooltip>
   );

@@ -2,7 +2,7 @@ import { Box, Flex, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { CloseButton } from 'toolkit/chakra/close-button';
-import { Tooltip } from 'toolkit/chakra/tooltip';
+import Hint from 'ui/shared/Hint';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -36,11 +36,6 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
     onRemove?.(index);
   }, [ index, onRemove ]);
 
-  const handleErrorHintIconClick = React.useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-
-  }, []);
-
   const fileExtension = getFileExtension(file.name);
   const fileIcon = FILE_ICONS[fileExtension] || 'files/placeholder';
 
@@ -51,16 +46,12 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
       className={ className }
       alignItems="center"
       textAlign="left"
+      columnGap={ 2 }
     >
       <IconSvg
         name={ fileIcon }
-        boxSize="74px"
-        color={ error ? 'text.error' : { _light: 'gray.600', _dark: 'gray.400' } }
-        mr={ 2 }
-        borderWidth="2px"
-        borderRadius="md"
-        borderColor={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' }}
-        p={ 3 }
+        boxSize="48px"
+        color={ error ? 'text.error' : 'initial' }
       />
       <Box maxW="calc(100% - 58px - 24px)">
         <Flex alignItems="center">
@@ -73,25 +64,15 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
           >
             { file.name }
           </Text>
-          { Boolean(error) && (
-            <Tooltip
-              content={ error }
-              positioning={{ placement: 'top' }}
-            >
-              <Box cursor="pointer" display="inherit" onClick={ handleErrorHintIconClick } ml={ 1 }>
-                <IconSvg name="info" boxSize={ 5 } color="text.error"/>
-              </Box>
-            </Tooltip>
-          ) }
+          { Boolean(error) && <Hint label={ error } ml={ 1 } color="text.error"/> }
           <CloseButton
             aria-label="Remove"
-            ml="auto"
+            ml={ 2 }
             onClick={ handleRemove }
             disabled={ isDisabled }
-            alignSelf="flex-start"
           />
         </Flex>
-        <Text color="text.secondary" mt={ 1 }>
+        <Text color="text.secondary" textStyle="sm" mt={ 1 }>
           { file.size.toLocaleString(undefined, { notation: 'compact', maximumFractionDigits: 2, unit: 'byte', unitDisplay: 'narrow', style: 'unit' }) }
         </Text>
       </Box>

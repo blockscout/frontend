@@ -40,20 +40,29 @@ export const recipe = defineSlotRecipe({
     size: {
       sm: {
         circle: {
-          '--size': '16px',
-          '--thickness': '2px',
-        },
-        valueText: {
-          textStyle: '2xs',
-        },
-      },
-      md: {
-        circle: {
           '--size': '20px',
           '--thickness': '2px',
         },
         valueText: {
           textStyle: 'xs',
+        },
+      },
+      md: {
+        circle: {
+          '--size': '32px',
+          '--thickness': '3px',
+        },
+        valueText: {
+          textStyle: 'xs',
+        },
+      },
+      lg: {
+        circle: {
+          '--size': '80px',
+          '--thickness': '8px',
+        },
+        valueText: {
+          textStyle: 'sm',
         },
       },
     },

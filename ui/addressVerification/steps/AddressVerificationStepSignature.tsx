@@ -219,7 +219,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         ) }
         <Flex rowGap={ 5 } flexDir="column">
           <div>
-            <CopyToClipboard text={ signingMessage } ml="auto" mb={ 2 }/>
+            <CopyToClipboard text={ signingMessage } ml="auto"/>
             <FormFieldText<Fields>
               name="message"
               placeholder="Message to sign"

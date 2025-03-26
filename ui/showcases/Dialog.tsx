@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import { noop } from 'es-toolkit';
 import React from 'react';
 
 import { Button } from 'toolkit/chakra/button';
@@ -30,14 +31,15 @@ const DialogShowcase = () => {
                   <p>{ CONTENT }</p>
                 </DialogBody>
                 <DialogFooter>
-                  <DialogActionTrigger asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </DialogActionTrigger>
                   <Button>Save</Button>
+                  <DialogActionTrigger asChild>
+                    <Button variant="link">I'll do it later</Button>
+                  </DialogActionTrigger>
                 </DialogFooter>
               </DialogContent>
             </DialogRoot>
           </Sample>
+
           <Sample label="size: md">
             <DialogRoot size="md">
               <DialogTrigger asChild>
@@ -46,7 +48,7 @@ const DialogShowcase = () => {
                 </Button>
               </DialogTrigger>
               <DialogContent>
-                <DialogHeader>
+                <DialogHeader onBackToClick={ noop }>
                   <DialogTitle>Dialog Title</DialogTitle>
                 </DialogHeader>
                 <DialogBody>
@@ -61,6 +63,7 @@ const DialogShowcase = () => {
               </DialogContent>
             </DialogRoot>
           </Sample>
+
           <Sample label="size: full">
             <DialogRoot size="full">
               <DialogTrigger asChild>

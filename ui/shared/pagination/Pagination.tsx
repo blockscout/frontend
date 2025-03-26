@@ -26,7 +26,7 @@ const Pagination = (props: Props) => {
       alignItems="center"
       { ...rest }
     >
-      <Skeleton loading={ showSkeleton } mr={ 4 }>
+      <Skeleton loading={ showSkeleton } mr={ 3 }>
         <Button
           variant="outline"
           size="sm"
@@ -39,8 +39,7 @@ const Pagination = (props: Props) => {
       <IconButton
         aria-label="Prev page"
         variant="outline"
-        w={ 9 }
-        h={ 8 }
+        boxSize={ 8 }
         onClick={ onPrevPageClick }
         disabled={ !canGoBackwards || isLoading || page === 1 }
         loadingSkeleton={ showSkeleton }
@@ -53,11 +52,11 @@ const Pagination = (props: Props) => {
           alignItems="center"
           justifyContent="center"
           h={ 8 }
-          minW={ 9 }
+          minW={ 8 }
           px={ 2 }
-
+          fontWeight="semibold"
           bgColor={{ _light: 'blue.50', _dark: 'whiteAlpha.100' }}
-          color={{ _light: 'blackAlpha.800', _dark: 'gray.50' }}
+          color={{ _light: 'blue.700', _dark: 'gray.50' }}
           borderRadius="base"
           textStyle="sm"
         >
@@ -67,8 +66,7 @@ const Pagination = (props: Props) => {
       <IconButton
         aria-label="Next page"
         variant="outline"
-        w={ 9 }
-        h={ 8 }
+        boxSize={ 8 }
         onClick={ onNextPageClick }
         disabled={ !hasNextPage || isLoading }
         loadingSkeleton={ showSkeleton }
