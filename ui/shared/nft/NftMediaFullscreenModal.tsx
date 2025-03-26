@@ -1,8 +1,10 @@
+// eslint-disable-next-line no-restricted-imports
+import { Dialog as ChakraDialog } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
-import { DialogContent, DialogRoot, DialogHeader } from 'toolkit/chakra/dialog';
+import { DialogContent, DialogRoot, DialogCloseTrigger } from 'toolkit/chakra/dialog';
 
 import NftHtml from './NftHtml';
 import NftImage from './NftImage';
@@ -79,7 +81,14 @@ const NftMediaFullscreenModal = ({ open, onOpenChange, data, allowedTypes, field
   return (
     <DialogRoot open={ open } onOpenChange={ onOpenChange } motionPreset="none">
       <DialogContent w="unset" maxW="100vw" p={ 0 } background="none" boxShadow="none">
-        <DialogHeader/>
+        { /* FIXME (maybe): if close trigger is outside of the dialog header, it will not hide backdrop after closing the dialog */ }
+        <ChakraDialog.Header>
+          <DialogCloseTrigger
+            position="fixed"
+            top={ 6 }
+            right={ 6 }
+          />
+        </ChakraDialog.Header>
         { content }
       </DialogContent>
     </DialogRoot>
