@@ -8,6 +8,12 @@ interface Props {
 }
 
 const ReCaptchaInvisible = ({ disabledFeatureMessage }: Props, ref: React.Ref<ReCaptcha>) => {
+  const [ attempt, setAttempt ] = React.useState(0);
+
+  const handleChange = React.useCallback(() => {
+    setAttempt(attempt + 1);
+  }, [ attempt ]);
+
   if (!config.services.reCaptchaV2.siteKey) {
     return disabledFeatureMessage ?? null;
   }
@@ -15,8 +21,10 @@ const ReCaptchaInvisible = ({ disabledFeatureMessage }: Props, ref: React.Ref<Re
   return (
     <ReCaptcha
       ref={ ref }
+      key={ attempt }
       sitekey={ config.services.reCaptchaV2.siteKey }
       size="invisible"
+      onChange={ handleChange }
     />
   );
 };

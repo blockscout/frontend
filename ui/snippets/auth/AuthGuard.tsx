@@ -53,7 +53,7 @@ const AuthGuard = ({ children, onAuthSuccess, ensureEmail }: Props) => {
       { authModal.isOpen && (
         <AuthModal
           onClose={ handleModalClose }
-          initialScreen={ profileQuery.data && !profileQuery.data.email && ensureEmail ? { type: 'email' } : { type: 'select_method' } }
+          initialScreen={ profileQuery.data && !profileQuery.data.email && ensureEmail ? { type: 'email', isAuth: true } : { type: 'select_method' } }
         />
       ) }
     </>
