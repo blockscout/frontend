@@ -74,7 +74,7 @@ const AddressEntryInterop = (props: Props) => {
   );
 
   return (
-    <AddressEntity.Container>
+    <AddressEntity.Container className={ props.className }>
       { props.chain && (
         <Tooltip content={ `Address on ${ props.chain.chain_name ? props.chain.chain_name : 'external chain' } (chain id ${ props.chain.chain_id })` }>
           { addressIcon }

@@ -51,11 +51,10 @@ const RewardsDashboard = () => {
           title="Dashboard"
           secondRow={ (
             <span>
-              The Blockscout Merits Program is just getting started! Learn more about the details,
-              features, and future plans in our{ ' ' }
               <Link external href={ `https://merits.blockscout.com/?tab=users&utm_source=${ config.chain.id }&utm_medium=text-banner` }>
-                blog post
-              </Link>.
+                Explore the Merits Hub
+              </Link>{ ' ' }
+              to learn more info about a program, spend your Merits, learn how to earn more, and much more.
             </span>
           ) }
         />

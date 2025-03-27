@@ -93,7 +93,7 @@ const TxDetailsWithdrawalStatusOptimistic = ({ status, l1TxHash }: Props) => {
       currentStep={ status }
       rightSlot={ rightSlot }
       my={ hasClaimButton ? '-6px' : 0 }
-      lineHeight={ hasClaimButton ? 8 : undefined }
+      lineHeight={ hasClaimButton ? '32px' : undefined }
     />
   );
 };

@@ -14,10 +14,9 @@ interface Props extends IconButtonProps {
 const ButtonBackTo = ({ href, hint, ...rest }: Props) => {
 
   const button = (
-    <IconButton { ...rest }>
+    <IconButton { ...rest } boxSize={ 6 }>
       <IconSvg
         name="arrows/east"
-        boxSize={ 6 }
         transform="rotate(180deg)"
         color="icon.backTo"
         _hover={{ color: 'link.primary.hover' }}

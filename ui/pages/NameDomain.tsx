@@ -63,7 +63,7 @@ const NameDomain = () => {
         variant="subheading"
       />
       { infoQuery.data?.resolved_address && (
-        <Flex alignItems="center" maxW="100%" columnGap={ 3 }>
+        <Flex alignItems="center" maxW="100%" columnGap={ 2 }>
           <AddressEntity
             address={ infoQuery.data?.resolved_address }
             isLoading={ isLoading }

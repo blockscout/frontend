@@ -218,7 +218,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
           </Flex>
         ) }
         <Flex rowGap={ 5 } flexDir="column">
-          <div>
+          <Flex flexDir="column">
             <CopyToClipboard text={ signingMessage } ml="auto"/>
             <FormFieldText<Fields>
               name="message"
@@ -231,7 +231,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
                 minH: 'auto',
               }}
             />
-          </div>
+          </Flex>
           { !noWeb3Provider && (
             <RadioGroup
               onValueChange={ handleSignMethodChange }

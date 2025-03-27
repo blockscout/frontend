@@ -71,13 +71,13 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
       <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 6 } mt={ 8 } rowGap={ 3 }>
         { hasErrors && (
           <Link href={ route({ pathname: '/public-tags/submit', query: startOverButtonQuery }) } asChild>
-            <Button variant="outline">
+            <Button variant="outline" w={{ base: '100%', lg: 'auto' }}>
               Start over
             </Button>
           </Link>
         ) }
         <Link href={ route({ pathname: '/public-tags/submit' }) } asChild>
-          <Button>Add new tag</Button>
+          <Button w={{ base: '100%', lg: 'auto' }}>Add new tag</Button>
         </Link>
       </Flex>
     </div>

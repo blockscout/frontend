@@ -33,7 +33,7 @@ interface Props {
 }
 
 const BlobData = ({ data, isLoading, hash }: Props) => {
-  const [ format, setFormat ] = React.useState<Format>('Raw');
+  const [ format, setFormat ] = React.useState<Array<Format>>([ 'Raw' ]);
 
   const guessedType = React.useMemo(() => {
     if (isLoading) {
@@ -52,17 +52,17 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
 
   React.useEffect(() => {
     if (isImage) {
-      setFormat('Image');
+      setFormat([ 'Image' ]);
     }
   }, [ isImage ]);
 
   const handleFormatChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    setFormat(value[0] as Format);
+    setFormat(value as Array<Format>);
   }, []);
 
   const handleDownloadButtonClick = React.useCallback(() => {
     const fileBlob = (() => {
-      switch (format) {
+      switch (format[0]) {
         case 'Image': {
           const bytes = hexToBytes(data);
           const filteredBytes = removeNonSignificantZeroBytes(bytes);
@@ -85,7 +85,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
   }, [ data, format, guessedType, hash ]);
 
   const content = (() => {
-    switch (format) {
+    switch (format[0]) {
       case 'Image': {
         if (!guessedType?.mime?.startsWith('image/')) {
           return <RawDataSnippet data="Not an image" showCopy={ false } isLoading={ isLoading }/>;
@@ -119,7 +119,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
         <Select
           collection={ collection }
           placeholder="Select type"
-          defaultValue={ [ format ] }
+          value={ format }
           onValueChange={ handleFormatChange }
           ml={ 5 }
           w="100px"

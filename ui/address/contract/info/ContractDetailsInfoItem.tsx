@@ -18,14 +18,7 @@ const ContractDetailsInfoItem = ({ label, children, className, isLoading, hint }
       <Skeleton loading={ isLoading } w="170px" flexShrink={ 0 } fontWeight={ 500 }>
         <Flex alignItems="center">
           { label }
-          { hint && (
-            <Hint
-              label={ hint }
-              ml={ 2 }
-              color={{ _light: 'gray.600', _dark: 'gray.400' }}
-              tooltipProps={{ positioning: { placement: 'bottom' } }}
-            />
-          ) }
+          { hint && <Hint label={ hint } ml={ 2 }/> }
         </Flex>
       </Skeleton>
       <Skeleton loading={ isLoading }>{ children }</Skeleton>

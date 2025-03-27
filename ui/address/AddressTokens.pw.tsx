@@ -144,7 +144,7 @@ test.describe('mobile', () => {
       { hooksConfig },
     );
 
-    await component.getByLabel('list').click();
+    await component.locator('button').filter({ hasText: 'List' }).click();
 
     await expect(component).toHaveScreenshot();
   });

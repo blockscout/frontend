@@ -19,7 +19,7 @@ const SettingsAddressFormat = () => {
       id="address-format"
       defaultChecked={ addressFormat === 'bech32' }
       onChange={ toggleAddressFormat } mt={ 4 }
-      size="sm"
+      size="md"
       flexDirection="row-reverse"
       justifyContent="space-between"
       w="100%"

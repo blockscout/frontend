@@ -54,7 +54,7 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
           ml={ 2 }
         />
       </Flex>
-      <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
+      <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" textStyle="sm">
         <Skeleton loading={ isLoading }>Txn</Skeleton>
         <Skeleton loading={ isLoading } color="text.secondary"><span>{ block.transaction_count }</span></Skeleton>
 

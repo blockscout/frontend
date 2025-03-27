@@ -22,7 +22,7 @@ type Props = {
 const IconStub = ({ isLoading }: { isLoading?: boolean }) => {
   return (
     <Skeleton
-      loading={ !isLoading }
+      loading={ isLoading }
       display="flex"
       minWidth="20px"
       h="20px"

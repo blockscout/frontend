@@ -31,7 +31,7 @@ const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) =
   if (isMobile) {
     return (
       <DialogRoot size="full">
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <AdditionalInfoButton loading={ isLoading } className={ className }/>
         </DialogTrigger>
         <DialogContent>

@@ -64,7 +64,8 @@ const ContractSourceAddressSelector = ({ className, selectedItem, onItemSelect, 
         placeholder="Select contract"
         defaultValue={ [ selectedItem.address ] }
         onValueChange={ handleItemSelect }
-        maxW={{ base: '180px', lg: 'none' }}
+        maxW={{ base: '180px', lg: '400px' }}
+        w="fit-content"
         loading={ isLoading }
       />
       <Flex alignItems="center">

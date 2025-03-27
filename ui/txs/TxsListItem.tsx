@@ -39,7 +39,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
 
   return (
     <ListItemMobile display="block" width="100%" animation={ animation } key={ tx.hash }>
-      <Flex justifyContent="space-between" mt={ 4 }>
+      <Flex justifyContent="space-between" alignItems="flex-start" mt={ 4 }>
         <HStack flexWrap="wrap">
           { tx.translation ? (
             <TxTranslationType

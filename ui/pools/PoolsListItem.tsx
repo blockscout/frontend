@@ -41,7 +41,7 @@ const UserOpsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Value>
         <Skeleton loading={ isLoading }>
           { externalLinks.map((link) => (
-            <Link external noIcon href={ link.url } key={ link.url } display="inline-flex">
+            <Link external href={ link.url } key={ link.url } display="inline-flex">
               <Image src={ link.image } alt={ link.title } boxSize={ 5 } mr={ 2 }/>
               { link.title }
             </Link>

@@ -1,5 +1,5 @@
 import type { FlexProps } from '@chakra-ui/react';
-import { Flex } from '@chakra-ui/react';
+import { Flex, useToken } from '@chakra-ui/react';
 import React from 'react';
 
 export interface Props extends FlexProps {
@@ -10,6 +10,7 @@ export interface Props extends FlexProps {
 const ContainerWithScrollY = ({ gradientHeight, children, onScrollVisibilityChange, ...rest }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [ hasScroll, setHasScroll ] = React.useState(false);
+  const gradientStopColor = useToken('colors', 'global.body.bg');
 
   React.useEffect(() => {
     if (!ref.current) {
@@ -29,11 +30,11 @@ const ContainerWithScrollY = ({ gradientHeight, children, onScrollVisibilityChan
       _after={ hasScroll ? {
         position: 'absolute',
         content: '""',
-        bottom: 0,
+        bottom: 1,
         left: 0,
         right: '20px',
         height: `${ gradientHeight }px`,
-        bgGradient: { _light: `linear(to-b, transparent, {colors.white}`, _dark: `linear(to-b, transparent, {colors.black})` },
+        bg: `linear-gradient(to bottom, transparent, ${ gradientStopColor })`,
       } : undefined }
       pr={ hasScroll ? 5 : 0 }
       pb={ hasScroll ? `${ gradientHeight }px` : 0 }

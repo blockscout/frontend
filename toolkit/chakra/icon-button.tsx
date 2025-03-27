@@ -1,5 +1,6 @@
 import React from 'react';
 
+import getComponentDisplayName from '../utils/getComponentDisplayName';
 import { Button, type ButtonProps } from './button';
 
 export interface IconButtonProps extends Omit<ButtonProps, 'size'> {
@@ -8,7 +9,14 @@ export interface IconButtonProps extends Omit<ButtonProps, 'size'> {
 
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   function IconButton(props, ref) {
-    const { size, variant = 'plain', ...rest } = props;
+    const { size, variant = 'plain', children, ...rest } = props;
+
+    // FIXME: I have to clone the children instead of using _icon props because of style overrides
+    // in some pw tests for some reason the _icon style will be applied before the style of child (IconSvg component)
+    const child = React.Children.only<React.ReactElement>(children as React.ReactElement);
+    const clonedChildren = size && getComponentDisplayName(child.type) === 'IconSvg' ?
+      React.cloneElement(child, { boxSize: 5 }) :
+      child;
 
     const sizeStyle = (() => {
       switch (size) {
@@ -38,11 +46,13 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         alignItems="center"
         p={ 0 }
         minW="auto"
-        { ...sizeStyle }
         flexShrink="0"
         variant={ variant }
+        { ...sizeStyle }
         { ...rest }
-      />
+      >
+        { clonedChildren }
+      </Button>
     );
   },
 );

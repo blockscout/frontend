@@ -9,11 +9,6 @@ export const recipe = defineRecipe({
     _disabled: {
       opacity: 'control.disabled',
     },
-    // FIXME have to override the Chakra UI styles for the SVG icon inside the button
-    // try to find a better solution
-    '& svg': {
-      boxSize: 'auto',
-    },
     _loading: {
       bgColor: 'unset',
     },

@@ -103,19 +103,19 @@ const LatestBlocks = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading level="3" mb={ 3 }>Latest blocks</Heading>
+      <Heading level="3">Latest blocks</Heading>
       { statsQueryResult.data?.network_utilization_percentage !== undefined && (
-        <Skeleton loading={ statsQueryResult.isPlaceholderData } mt={ 1 } display="inline-block">
-          <Text as="span" fontSize="sm">
+        <Skeleton loading={ statsQueryResult.isPlaceholderData } mt={ 2 } display="inline-block" textStyle="sm">
+          <Text as="span">
             Network utilization:{ nbsp }
           </Text>
-          <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
+          <Text as="span" color="blue.400" fontWeight={ 700 }>
             { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
           </Text>
         </Skeleton>
       ) }
       { statsQueryResult.data?.celo && (
-        <Box whiteSpace="pre-wrap" fontSize="sm">
+        <Box whiteSpace="pre-wrap" textStyle="sm" mt={ 2 }>
           <span>Current epoch: </span>
           <chakra.span fontWeight={ 700 }>#{ statsQueryResult.data.celo.epoch_number }</chakra.span>
         </Box>

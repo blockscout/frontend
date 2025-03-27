@@ -154,7 +154,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
             </DetailedInfo.ItemValue>
           </>
         ) }
-        { data.is_contract && data.implementations && data.implementations?.length > 0 && (
+        { !addressQuery.isPlaceholderData && data.is_contract && data.implementations && data.implementations?.length > 0 && (
           <AddressImplementations
             data={ data.implementations }
             isLoading={ addressQuery.isPlaceholderData }

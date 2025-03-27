@@ -33,7 +33,7 @@ const SettingsScamTokens = () => {
         id="scam-tokens"
         checked={ isChecked }
         onChange={ handleChange }
-        size="sm"
+        size="md"
         flexDirection="row-reverse"
         justifyContent="space-between"
         w="100%"
