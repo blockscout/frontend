@@ -280,8 +280,8 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                 <Flex columnGap={ 2 } alignItems="center">
                   { data.block_type === 'reorg' && !isLoading && <Tag flexShrink={ 0 }>Reorg</Tag> }
                   { data.block_type === 'uncle' && !isLoading && <Tag flexShrink={ 0 }>Uncle</Tag> }
-                  <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
-                    <HashStringShortenDynamic hash={ data.block_hash }/>
+                  <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="nowrap" display="block">
+                    <HashStringShortenDynamic hash={ data.block_hash } as={ shouldHighlightHash ? 'mark' : 'span' }/>
                   </Skeleton>
                 </Flex>
               ) }

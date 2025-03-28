@@ -207,8 +207,8 @@ const MarketplaceAppModal = ({
           >
             <Flex flexWrap="wrap" gap={ 6 }>
               <Flex width={{ base: '100%', md: 'auto' }}>
-                <Link href={ external ? url : route({ pathname: '/apps/[id]', query: { id: data.id } }) } external={ external } noIcon>
-                  <Button size="sm" mr={ 2 } w={{ base: '100%', sm: 'auto' }}>
+                <Link href={ external ? url : route({ pathname: '/apps/[id]', query: { id: data.id } }) } external={ external } noIcon mr={ 2 }>
+                  <Button size="sm">
                     Launch app
                   </Button>
                 </Link>

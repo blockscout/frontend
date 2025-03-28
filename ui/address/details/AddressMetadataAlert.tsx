@@ -29,14 +29,15 @@ const AddressMetadataAlert = ({ tags, className }: Props) => {
           display="inline-block"
           css={{
             '& a': {
-              color: 'link',
+              color: 'link.primary',
               _hover: {
                 color: 'link.primary.hover',
               },
             },
           }}
-          dangerouslySetInnerHTML={{ __html: noteTag.meta?.data ?? '' }}
-        />
+        >
+          <div dangerouslySetInnerHTML={{ __html: noteTag.meta?.data ?? '' }}/>
+        </Alert>
       )) }
     </Flex>
   );

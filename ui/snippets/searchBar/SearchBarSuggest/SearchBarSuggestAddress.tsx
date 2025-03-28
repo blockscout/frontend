@@ -49,7 +49,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
             <span>{ expiresText }</span>
         ) }
       </Text>
-      { data.certified && <ContractCertifiedLabel boxSize={ 4 } iconSize={ 4 } ml={ 1 }/> }
+      { data.certified && <ContractCertifiedLabel boxSize={ 4 } iconSize={ 4 } ml={ 1 } flexShrink={ 0 }/> }
     </Flex>
   );
   const tagEl = data.type === 'metadata_tag' ? (

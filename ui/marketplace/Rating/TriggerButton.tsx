@@ -45,8 +45,7 @@ const TriggerButton = (
           <Button
             ref={ ref }
             size="xs"
-            variant="outline"
-            border={ 0 }
+            variant="link"
             p={ 0 }
             fontSize={ fullView ? 'md' : 'sm' }
             fontWeight={ fullView ? '400' : '500' }

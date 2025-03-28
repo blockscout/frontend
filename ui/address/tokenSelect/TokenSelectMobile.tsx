@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { FormattedData } from './types';
 
-import { DialogContent, DialogRoot } from 'toolkit/chakra/dialog';
+import { DialogBody, DialogContent, DialogHeader, DialogRoot, DialogTrigger } from 'toolkit/chakra/dialog';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 import TokenSelectButton from './TokenSelectButton';
@@ -19,14 +19,17 @@ const TokenSelectMobile = ({ data, isLoading }: Props) => {
   const result = useTokenSelect(data);
 
   return (
-    <>
-      <TokenSelectButton isOpen={ open } data={ result.data } isLoading={ isLoading }/>
-      <DialogRoot open={ open } onOpenChange={ onOpenChange } size="full">
-        <DialogContent>
+    <DialogRoot open={ open } onOpenChange={ onOpenChange } size="full">
+      <DialogTrigger asChild>
+        <TokenSelectButton isOpen={ open } data={ result.data } isLoading={ isLoading }/>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>Tokens</DialogHeader>
+        <DialogBody>
           <TokenSelectMenu { ...result }/>
-        </DialogContent>
-      </DialogRoot>
-    </>
+        </DialogBody>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 

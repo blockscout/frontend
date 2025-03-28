@@ -311,8 +311,8 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
 
         return (
           <>
-            <Skeleton loading={ isLoading } as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden" mb={ 1 }>
-              <HashStringShortenDynamic hash={ data.block_hash }/>
+            <Skeleton loading={ isLoading } display="block" whiteSpace="nowrap" overflow="hidden" mb={ 1 }>
+              <HashStringShortenDynamic hash={ data.block_hash } as={ shouldHighlightHash ? 'mark' : 'span' }/>
             </Skeleton>
             <Skeleton loading={ isLoading } color="text.secondary" mr={ 2 }>
               <span>{ dayjs(data.timestamp).format('llll') }</span>

@@ -28,12 +28,12 @@ interface Props {
 }
 
 const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
-  const [ format, setFormat ] = React.useState<Format>('Table');
+  const [ format, setFormat ] = React.useState<Array<Format>>([ 'Table' ]);
 
   const { status: refetchStatus } = useMetadataUpdateContext() || {};
 
   const handleValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    setFormat(value[0] as Format);
+    setFormat(value as Array<Format>);
   }, []);
 
   if (isPlaceholderData || refetchStatus === 'WAITING_FOR_RESPONSE') {
@@ -44,7 +44,7 @@ const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
     return <Box>There is no metadata for this NFT</Box>;
   }
 
-  const content = format === 'Table' ?
+  const content = format[0] === 'Table' ?
     <MetadataAccordion data={ data }/> :
     <RawDataSnippet data={ JSON.stringify(data, undefined, 4) } showCopy={ false }/>;
 
@@ -60,12 +60,12 @@ const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
         <Select
           collection={ collection }
           placeholder="Select type"
-          defaultValue={ [ format ] }
+          value={ format }
           onValueChange={ handleValueChange }
           ml={ 5 }
           w="100px"
         />
-        { format === 'JSON' && <CopyToClipboard text={ JSON.stringify(data) } ml="auto"/> }
+        { format[0] === 'JSON' && <CopyToClipboard text={ JSON.stringify(data) } ml="auto"/> }
       </Flex>
       { content }
     </Box>

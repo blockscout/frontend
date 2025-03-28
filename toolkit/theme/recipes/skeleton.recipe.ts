@@ -38,6 +38,7 @@ export const recipe = defineRecipe({
         '--end-color': 'colors.skeleton.bg.end',
         backgroundImage:
           'linear-gradient(90deg,var(--start-color) 8%,var(--end-color) 18%,var(--start-color) 33%)',
+        backgroundColor: 'transparent',
         backgroundSize: '200% 100%',
         animation: 'bg-position var(--duration, 2s) linear infinite',
       },
