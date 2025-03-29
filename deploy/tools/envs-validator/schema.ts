@@ -346,6 +346,17 @@ const rollupSchema = yup
           value => value === undefined,
         ),
       }),
+    NEXT_PUBLIC_INTEROP_ENABLED: yup
+      .boolean()
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: 'optimistic',
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_INTEROP_ENABLED can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ',
+          value => value === undefined,
+        ),
+      }),
     NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME: yup
       .string()
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {

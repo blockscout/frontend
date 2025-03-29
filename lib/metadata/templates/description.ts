@@ -64,6 +64,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/advanced-filter': DEFAULT_TEMPLATE,
   '/pools': DEFAULT_TEMPLATE,
   '/pools/[hash]': DEFAULT_TEMPLATE,
+  '/interop-messages': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,
@@ -76,7 +77,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/csrf': DEFAULT_TEMPLATE,
   '/api/healthz': DEFAULT_TEMPLATE,
   '/api/config': DEFAULT_TEMPLATE,
-  '/api/sprite': DEFAULT_TEMPLATE,
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {

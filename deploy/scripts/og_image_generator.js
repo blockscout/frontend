@@ -28,9 +28,13 @@ if (process.env.NEXT_PUBLIC_OG_IMAGE_URL) {
       background: bannerConfig.background?.[0],
       title_color: bannerConfig.text_color?.[0],
       invert_logo: !process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK,
+      app_url: process.env.NEXT_PUBLIC_APP_HOST,
     };
 
     console.log('⏳ Making request to OG image generator service...');
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30_000);
 
     const response = await fetch('https://bigs.services.blockscout.com/generate/og', {
       method: 'POST',
@@ -38,7 +42,10 @@ if (process.env.NEXT_PUBLIC_OG_IMAGE_URL) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (response.ok) {
       console.log('⬇️  Downloading the image...');

@@ -25,12 +25,11 @@ import AccountHistoryFilter from './AddressAccountHistoryFilter';
 const getFilterValue = (getFilterValueFromQuery<NovesHistoryFilterValue>).bind(null, NovesHistoryFilterValues);
 
 type Props = {
-  scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
 };
 
-const AddressAccountHistory = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
+const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -41,7 +40,6 @@ const AddressAccountHistory = ({ scrollRef, shouldRender = true, isQueryEnabled 
   const { data, isError, pagination, isPlaceholderData } = useQueryWithPages({
     resourceName: 'noves_address_history',
     pathParams: { address: currentAddress },
-    scrollRef,
     options: {
       enabled: isQueryEnabled,
       placeholderData: generateListStub<'noves_address_history'>(NOVES_TRANSLATE, 10, { hasNextPage: false, pageNumber: 1, pageSize: 10 }),

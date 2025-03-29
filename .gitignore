@@ -16,6 +16,7 @@
 /public/assets/configs
 /public/icons/sprite.svg
 /public/icons/sprite.*.svg
+/public/icons/registry.json
 /public/icons/README.md
 /public/static/og_image.png
 /public/sitemap.xml

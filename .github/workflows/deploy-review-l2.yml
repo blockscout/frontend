@@ -21,6 +21,7 @@ on:
             - eth_sepolia
             - eth_goerli
             - filecoin
+            - immutable
             - neon_devnet
             - optimism
             - optimism_celestia
@@ -62,7 +63,7 @@ jobs:
   deploy_review_l2:
     name: Deploy frontend (L2)
     needs: [ make_slug, publish_image ]
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
+    uses: blockscout/actions/.github/workflows/deploy_helmfile.yaml@main
     with:
       appName: review-l2-${{ needs.make_slug.outputs.REF_SLUG }}
       globalEnv: review

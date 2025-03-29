@@ -59,6 +59,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/advanced-filter': 'Advanced filter',
   '/pools': 'DEX pools',
   '/pools/[hash]': 'Pool details',
+  '/interop-messages': 'Interop messages',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',
@@ -71,7 +72,6 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/api/csrf': 'Node API: CSRF token',
   '/api/healthz': 'Node API: Health check',
   '/api/config': 'Node API: App config',
-  '/api/sprite': 'Node API: SVG sprite content',
 };
 
 export default function getPageType(pathname: Route['pathname']) {

@@ -37,7 +37,7 @@ const LatestOptimisticDeposits = () => {
   }, [ setNum ]);
 
   const channel = useSocketChannel({
-    topic: 'optimism_deposits:new_deposits',
+    topic: 'optimism:new_deposits',
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
     isDisabled: false,
@@ -45,7 +45,7 @@ const LatestOptimisticDeposits = () => {
 
   useSocketMessage({
     channel,
-    event: 'deposits',
+    event: 'new_optimism_deposits',
     handler: handleNewDepositMessage,
   });
 

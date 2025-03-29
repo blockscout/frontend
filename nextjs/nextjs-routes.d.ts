@@ -26,7 +26,6 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/metrics">
     | StaticRoute<"/api/monitoring/invalid-api-schema">
     | StaticRoute<"/api/proxy">
-    | StaticRoute<"/api/sprite">
     | StaticRoute<"/api-docs">
     | StaticRoute<"/apps">
     | DynamicRoute<"/apps/[id]", { "id": string }>
@@ -47,6 +46,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
     | StaticRoute<"/internal-txs">
+    | StaticRoute<"/interop-messages">
     | StaticRoute<"/login">
     | StaticRoute<"/mapper">
     | StaticRoute<"/mud-worlds">

@@ -7,7 +7,7 @@ import HintPopover from 'ui/shared/HintPopover';
 import MeritsIcon from '../MeritsIcon';
 
 type Props = {
-  label: string;
+  label?: string;
   value: number | string | undefined;
   withIcon?: boolean;
   hint?: string | React.ReactNode;
@@ -16,18 +16,20 @@ type Props = {
 
 const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading }: Props) => (
   <Flex key={ label } flexDirection="column" alignItems="center" gap={ 2 }>
-    <Flex alignItems="center" gap={ 1 }>
-      { hint && (
-        <HintPopover
-          label={ hint }
-          popoverContentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '210px' } }}
-          popoverBodyProps={{ textAlign: 'center' }}
-        />
-      ) }
-      <Text fontSize="xs" fontWeight="500" variant="secondary">
-        { label }
-      </Text>
-    </Flex>
+    { label && (
+      <Flex alignItems="center" gap={ 1 }>
+        { hint && (
+          <HintPopover
+            label={ hint }
+            popoverContentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '210px' } }}
+            popoverBodyProps={{ textAlign: 'center' }}
+          />
+        ) }
+        <Text fontSize="xs" fontWeight="500" variant="secondary">
+          { label }
+        </Text>
+      </Flex>
+    ) }
     <Skeleton
       isLoaded={ !isLoading }
       display="flex"
