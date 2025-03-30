@@ -32,7 +32,7 @@ const BLOCKSCOUT_LINKS = [
     icon: 'social/discord' as const,
     iconSize: '24px',
     text: 'Discord',
-    url: 'https://discord.gg/fluentlabst',
+    url: 'https://discord.com/invite/fluentxyz',
   },
 ];
 
