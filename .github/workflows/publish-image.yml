@@ -31,6 +31,10 @@ on:
                 required: false
                 type: string
                 default: linux/amd64
+    push:
+        branches: [ devel ]
+    pull_request:
+        branches: [ devel ]
 
 jobs:
     run:
