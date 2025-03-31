@@ -18,7 +18,7 @@ interface Props {
   domain?: string;
 }
 
-const UserWalletButton = ({ size, variant, isPending, isAutoConnectDisabled, address, domain }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const UserWalletButton = ({ size, variant, isPending, isAutoConnectDisabled, address, domain, ...rest }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
 
   const isMobile = useIsMobile();
 
@@ -53,6 +53,7 @@ const UserWalletButton = ({ size, variant, isPending, isAutoConnectDisabled, add
         fontWeight={ address ? 700 : 600 }
         loading={ isPending }
         loadingText={ isMobile ? undefined : 'Connecting' }
+        { ...rest }
       >
         { content }
       </Button>

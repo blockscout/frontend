@@ -64,11 +64,15 @@ const UserProfileMobile = () => {
     profileMenu.onClose();
   }, [ authModal, profileMenu ]);
 
+  const handleProfileMenuOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    !open && profileMenu.onOpenChange({ open });
+  }, [ profileMenu ]);
+
   return (
     <>
       <DrawerRoot
         open={ profileMenu.open }
-        onOpenChange={ profileMenu.onOpenChange }
+        onOpenChange={ handleProfileMenuOpenChange }
       >
         <DrawerBackdrop/>
         <DrawerTrigger>

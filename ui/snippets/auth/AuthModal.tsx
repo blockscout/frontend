@@ -186,7 +186,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
       // we need to allow user interact with element outside of dialog otherwise they can't click on recaptcha
       modal={ false }
       // FIXME if we allow to close on interact outside, the dialog will be closed when user click on recaptcha
-      closeOnInteractOutside={ ![ 'email', 'otp_code' ].includes(currentStep.type) }
+      closeOnInteractOutside={ ![ 'email', 'otp_code', 'connect_wallet', 'select_method' ].includes(currentStep.type) }
       trapFocus={ false }
       preventScroll={ false }
     >

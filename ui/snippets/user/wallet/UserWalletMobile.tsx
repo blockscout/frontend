@@ -59,7 +59,7 @@ const UserWalletMobile = () => {
       </DrawerTrigger>
       <DrawerContent maxWidth="300px">
         <DrawerBody p={ 6 }>
-          { web3AccountWithDomain.address && (
+          { web3AccountWithDomain.address && walletMenu.open && (
             <UserWalletMenuContent
               address={ web3AccountWithDomain.address }
               domain={ web3AccountWithDomain.domain }

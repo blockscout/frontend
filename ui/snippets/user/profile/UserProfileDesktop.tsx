@@ -70,9 +70,13 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
     profileMenu.onClose();
   }, [ authModal, profileMenu ]);
 
+  const handleProfileMenuOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    !open && profileMenu.onOpenChange({ open });
+  }, [ profileMenu ]);
+
   return (
     <>
-      <PopoverRoot positioning={{ placement: 'bottom-end' }} open={ profileMenu.open } onOpenChange={ profileMenu.onOpenChange }>
+      <PopoverRoot positioning={{ placement: 'bottom-end' }} open={ profileMenu.open } onOpenChange={ handleProfileMenuOpenChange }>
         <PopoverTrigger>
           <UserProfileButton
             profileQuery={ profileQuery }
@@ -81,7 +85,7 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
             onClick={ handleProfileButtonClick }
           />
         </PopoverTrigger>
-        { (profileQuery.data || web3Address) && (
+        { (profileQuery.data || web3Address) && profileMenu.open && (
           <PopoverContent w="280px">
             <PopoverBody>
               <UserProfileContent
