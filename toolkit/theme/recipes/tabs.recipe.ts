@@ -130,6 +130,7 @@ export const recipe = defineSlotRecipe({
       solid: {
         trigger: {
           fontWeight: '600',
+          gap: '1',
           borderRadius: 'base',
           color: 'tabs.solid.fg',
           bg: 'transparent',
@@ -148,7 +149,7 @@ export const recipe = defineSlotRecipe({
       secondary: {
         list: {
           border: 'none',
-          columnGap: '3',
+          columnGap: '2',
           _horizontal: {
             _before: {
               display: 'none',

@@ -166,7 +166,7 @@ const AddressPageContent = () => {
             return (
               <>
                 <span>{ tabName }</span>
-                <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
+                <IconSvg name="status/success" boxSize="14px" color="green.500"/>
               </>
             );
           }

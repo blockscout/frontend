@@ -34,12 +34,10 @@ const TAB_LIST_PROPS = {
   mt: 1,
   mb: { base: 6, lg: 1 },
   py: 5,
-  columnGap: 3,
 };
 
 const TAB_LIST_PROPS_MOBILE = {
   my: 8,
-  columnGap: 3,
 };
 
 const getTokenFilterValue = (getFilterValuesFromQuery<NFTTokenType>).bind(null, NFT_TOKEN_TYPE_IDS);

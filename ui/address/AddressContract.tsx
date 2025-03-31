@@ -10,17 +10,13 @@ interface Props {
   shouldRender?: boolean;
 }
 
-const TAB_LIST_PROPS = {
-  columnGap: 3,
-};
-
 const AddressContract = ({ tabs, isLoading, shouldRender }: Props) => {
   if (!shouldRender) {
     return null;
   }
 
   return (
-    <RoutedTabs tabs={ tabs } variant="secondary" size="sm" listProps={ TAB_LIST_PROPS } isLoading={ isLoading }/>
+    <RoutedTabs tabs={ tabs } variant="secondary" size="sm" isLoading={ isLoading }/>
   );
 };
 

@@ -2,14 +2,15 @@ import React from 'react';
 
 import type { TabItem } from './types';
 
-import type { ButtonProps } from 'toolkit/chakra/button';
-import { Button } from 'toolkit/chakra/button';
-import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import { PopoverBody, PopoverCloseTriggerWrapper, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { TabsCounter, TabsTrigger } from 'toolkit/chakra/tabs';
+import IconSvg from 'ui/shared/IconSvg';
 
-import { getTabValue, menuButton } from './utils';
+import { IconButton } from '../../chakra/icon-button';
+import type { IconButtonProps } from '../../chakra/icon-button';
+import { getTabValue } from './utils';
 
-interface Props extends ButtonProps {
+interface Props extends IconButtonProps {
   tabs: Array<TabItem>;
   tabsCut: number;
   isActive: boolean;
@@ -20,7 +21,7 @@ const AdaptiveTabsMenu = ({ tabs, tabsCut, isActive, ...props }: Props, ref: Rea
   return (
     <PopoverRoot positioning={{ placement: 'bottom-end' }}>
       <PopoverTrigger>
-        <Button
+        <IconButton
           // we use "div" so the :last-of-type pseudo-class targets the last tab and not the menu trigger
           as="div"
           variant="plain"
@@ -34,10 +35,11 @@ const AdaptiveTabsMenu = ({ tabs, tabsCut, isActive, ...props }: Props, ref: Rea
           }}
           ref={ ref }
           expanded={ isActive }
+          px="18px"
           { ...props }
         >
-          { menuButton.title }
-        </Button>
+          <IconSvg name="dots" boxSize={ 5 }/>
+        </IconButton>
       </PopoverTrigger>
       <PopoverContent>
         <PopoverBody display="flex" flexDir="column" rowGap={ 2 } px={ 0 }>
@@ -45,19 +47,23 @@ const AdaptiveTabsMenu = ({ tabs, tabsCut, isActive, ...props }: Props, ref: Rea
             const value = getTabValue(tab);
 
             return (
-              <TabsTrigger
-                key={ value }
-                value={ value }
-                w="100%"
-                py="5px"
-                borderRadius="none"
-                _hover={{
-                  bg: 'tabs.solid.bg.selected',
-                }}
-              >
-                { typeof tab.title === 'function' ? tab.title() : tab.title }
-                <TabsCounter count={ tab.count }/>
-              </TabsTrigger>
+              <PopoverCloseTriggerWrapper key={ value }>
+                <TabsTrigger
+                  className="group"
+                  value={ value }
+                  w="100%"
+                  py="5px"
+                  borderRadius="none"
+                  fontWeight="normal"
+                  color="initial"
+                  _hover={{
+                    bg: 'tabs.solid.bg.selected',
+                  }}
+                >
+                  { typeof tab.title === 'function' ? tab.title() : tab.title }
+                  <TabsCounter count={ tab.count }/>
+                </TabsTrigger>
+              </PopoverCloseTriggerWrapper>
             );
           }) }
         </PopoverBody>

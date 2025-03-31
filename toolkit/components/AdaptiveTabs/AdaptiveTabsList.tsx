@@ -155,19 +155,18 @@ const AdaptiveTabsList = (props: Props) => {
         }
 
         return (
-          <TabsTrigger
-            key={ value }
-            value={ value }
-            ref={ ref }
-            scrollSnapAlign="start"
-            flexShrink={ 0 }
-            { ...getItemStyles(index, tabsCut) }
-          >
-            <Skeleton loading={ isLoading }>
+          <Skeleton loading={ isLoading } key={ value } asChild>
+            <TabsTrigger
+              value={ value }
+              ref={ ref }
+              scrollSnapAlign="start"
+              flexShrink={ 0 }
+              { ...getItemStyles(index, tabsCut) }
+            >
               { typeof tab.title === 'function' ? tab.title() : tab.title }
               <TabsCounter count={ tab.count }/>
-            </Skeleton>
-          </TabsTrigger>
+            </TabsTrigger>
+          </Skeleton>
         );
       }) }
       {
