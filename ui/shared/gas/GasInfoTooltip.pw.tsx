@@ -9,7 +9,7 @@ import { test, expect } from 'playwright/lib';
 import GasInfoTooltip from './GasInfoTooltip';
 import GasPrice from './GasPrice';
 
-const dataUpdatedAt = Date.now() - 30 * SECOND;
+const dataUpdatedAt = Date.now() - 3_000 * SECOND;
 
 test.use({ viewport: { width: 300, height: 300 } });
 

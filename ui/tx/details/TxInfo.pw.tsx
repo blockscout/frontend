@@ -110,8 +110,9 @@ test('without testnet warning', async({ render, page, mockEnvs }) => {
   });
 });
 
-test('stability customization', async({ render, page, mockEnvs }) => {
+test('stability customization', async({ render, page, mockEnvs, mockAssetResponse }) => {
   await mockEnvs(ENVS_MAP.stabilityEnvs);
+  await mockAssetResponse(txMock.stabilityTx.stability_fee?.token.icon_url as string, './playwright/mocks/image_s.jpg');
   const component = await render(<TxInfo data={ txMock.stabilityTx } isLoading={ false }/>);
 
   await expect(component).toHaveScreenshot({

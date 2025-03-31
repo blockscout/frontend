@@ -15,7 +15,7 @@ import useAdaptiveTabs from './useAdaptiveTabs';
 import useScrollToActiveTab from './useScrollToActiveTab';
 import { menuButton, getTabValue } from './utils';
 
-interface SlotProps extends HTMLChakraProps<'div'> {
+export interface SlotProps extends HTMLChakraProps<'div'> {
   widthAllocation?: 'available' | 'fixed';
 }
 
@@ -99,6 +99,7 @@ const AdaptiveTabsList = (props: Props) => {
       marginBottom={ 6 }
       mx={{ base: '-12px', lg: 'unset' }}
       px={{ base: '12px', lg: 'unset' }}
+      w={{ base: 'calc(100% + 24px)', lg: '100%' }}
       overflowX={{ base: 'auto', lg: 'initial' }}
       overscrollBehaviorX="contain"
       css={{
@@ -155,18 +156,26 @@ const AdaptiveTabsList = (props: Props) => {
         }
 
         return (
-          <Skeleton loading={ isLoading } key={ value } asChild>
-            <TabsTrigger
-              value={ value }
-              ref={ ref }
-              scrollSnapAlign="start"
-              flexShrink={ 0 }
-              { ...getItemStyles(index, tabsCut) }
-            >
-              { typeof tab.title === 'function' ? tab.title() : tab.title }
-              <TabsCounter count={ tab.count }/>
-            </TabsTrigger>
-          </Skeleton>
+          <TabsTrigger
+            key={ value }
+            value={ value }
+            ref={ ref }
+            scrollSnapAlign="start"
+            flexShrink={ 0 }
+            { ...getItemStyles(index, tabsCut) }
+          >
+            { isLoading ? (
+              <Skeleton loading>
+                { typeof tab.title === 'function' ? tab.title() : tab.title }
+                <TabsCounter count={ tab.count }/>
+              </Skeleton>
+            ) : (
+              <>
+                { typeof tab.title === 'function' ? tab.title() : tab.title }
+                <TabsCounter count={ tab.count }/>
+              </>
+            ) }
+          </TabsTrigger>
         );
       }) }
       {

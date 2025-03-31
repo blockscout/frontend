@@ -12,6 +12,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_ERC_20 } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
+import type { SlotProps } from 'toolkit/components/AdaptiveTabs/AdaptiveTabsList';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
@@ -33,9 +34,9 @@ const TAB_LIST_PROPS = {
 };
 const TABS_HEIGHT = 88;
 
-const TABS_RIGHT_SLOT_PROPS = {
+const TABS_RIGHT_SLOT_PROPS: SlotProps = {
   ml: 8,
-  flexGrow: 1,
+  widthAllocation: 'available',
 };
 
 const bridgedTokensFeature = config.features.bridgedTokens;

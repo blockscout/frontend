@@ -107,7 +107,7 @@ test.describe('bridged tokens', () => {
     await expect(component).toHaveScreenshot();
 
     await component.getByRole('button', { name: /filter/i }).click();
-    await component.locator('label').filter({ hasText: /poa/i }).click();
+    await page.locator('label').filter({ hasText: /poa/i }).click();
     await page.click('body');
 
     await expect(component).toHaveScreenshot();

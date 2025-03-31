@@ -105,7 +105,7 @@ const Marketplace = () => {
 
     tabs.unshift({
       id: MarketplaceCategory.FAVORITES,
-      title: () => <IconSvg name="heart_filled" boxSize={ 5 } verticalAlign="middle" mt={ -1 }/>,
+      title: () => <IconSvg name="heart_filled" boxSize={ 5 }/>,
       count: favoriteApps.length,
       component: null,
     });

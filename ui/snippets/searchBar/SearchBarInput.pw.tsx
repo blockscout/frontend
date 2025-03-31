@@ -18,11 +18,7 @@ test('input on regular page +@mobile +@dark-mode', async({ render, page }) => {
 });
 
 test('input on home page +@mobile +@dark-mode', async({ render, page }) => {
-  await render(
-    <div className="light">
-      <SearchBarInput { ...props } isHomepage/>
-    </div>,
-  );
+  await render(<SearchBarInput { ...props } isHomepage/>);
   const input = page.getByPlaceholder(/search by/i);
   await expect(input).toHaveScreenshot();
 });
