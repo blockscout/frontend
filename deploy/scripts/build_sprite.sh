@@ -53,8 +53,8 @@ if [ "$NEXT_PUBLIC_APP_ENV" != "pw" ]; then
     # Remove old sprite files
     rm -f $target_dir/sprite.*.svg
 
-    # Rename the new sprite file
-    mv $target_dir/sprite.svg "$target_dir/sprite.${HASH}.svg"
+    # copy the new sprite file
+    cp $target_dir/sprite.svg "$target_dir/sprite.${HASH}.svg"
 
     export NEXT_PUBLIC_ICON_SPRITE_HASH=${HASH}
 
