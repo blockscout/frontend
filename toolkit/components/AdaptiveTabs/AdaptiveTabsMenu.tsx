@@ -40,7 +40,7 @@ const AdaptiveTabsMenu = ({ tabs, tabsCut, isActive, ...props }: Props, ref: Rea
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        <PopoverBody display="flex" flexDir="column">
+        <PopoverBody display="flex" flexDir="column" rowGap={ 2 } px={ 0 }>
           { tabs.slice(tabsCut).map((tab) => {
             const value = getTabValue(tab);
 
@@ -48,7 +48,12 @@ const AdaptiveTabsMenu = ({ tabs, tabsCut, isActive, ...props }: Props, ref: Rea
               <TabsTrigger
                 key={ value }
                 value={ value }
-                w="fit-content"
+                w="100%"
+                py="5px"
+                borderRadius="none"
+                _hover={{
+                  bg: 'tabs.solid.bg.selected',
+                }}
               >
                 { typeof tab.title === 'function' ? tab.title() : tab.title }
                 <TabsCounter count={ tab.count }/>

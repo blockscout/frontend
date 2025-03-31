@@ -29,7 +29,6 @@ export const recipe = defineSlotRecipe({
       },
     },
     trigger: {
-      fontWeight: '600',
       outline: '0',
       minW: 'var(--tabs-height)',
       height: 'var(--tabs-height)',
@@ -130,6 +129,7 @@ export const recipe = defineSlotRecipe({
     variant: {
       solid: {
         trigger: {
+          fontWeight: '600',
           borderRadius: 'base',
           color: 'tabs.solid.fg',
           bg: 'transparent',
@@ -156,6 +156,7 @@ export const recipe = defineSlotRecipe({
           },
         },
         trigger: {
+          fontWeight: '500',
           color: 'tabs.secondary.fg',
           bg: 'transparent',
           borderWidth: '2px',
@@ -164,11 +165,9 @@ export const recipe = defineSlotRecipe({
           borderRadius: 'base',
           _selected: {
             bg: 'tabs.secondary.bg.selected',
-            color: 'tabs.secondary.fg.selected',
-            borderColor: 'tabs.secondary.bg.selected',
+            borderColor: 'transparent',
             _hover: {
-              color: 'tabs.secondary.fg.selected',
-              borderColor: 'tabs.secondary.bg.selected',
+              borderColor: 'transparent',
             },
           },
           _hover: {

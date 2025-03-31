@@ -10,7 +10,7 @@ import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHead
 const TabsShowcase = () => {
   const tabs = [
     { id: 'tab1', title: 'Swaps', component: <div>Swaps content</div>, count: 10 },
-    { id: 'tab2', title: 'Bridges', component: <div>Bridges content</div>, count: 3 },
+    { id: 'tab2', title: 'Bridges', component: <div>Bridges content</div>, count: 0 },
     { id: 'tab3', title: 'Liquidity staking', component: <div>Liquidity staking content</div>, count: 300 },
     { id: 'tab4', title: 'Lending', component: <div>Lending content</div>, count: 400 },
     { id: 'tab5', title: 'Yield farming', component: <div>Yield farming content</div> },
@@ -69,8 +69,8 @@ const TabsShowcase = () => {
               outline="1px dashed lightpink"
               leftSlot={ <Box display={{ base: 'none', lg: 'block' }}>Left element</Box> }
               leftSlotProps={{ pr: { base: 0, lg: 4 }, color: 'text.secondary' }}
-              rightSlot={ <Box display={{ base: 'none', lg: 'block' }}>Right element</Box> }
-              rightSlotProps={{ pl: { base: 0, lg: 4 }, color: 'text.secondary' }}
+              rightSlot={ <Box display={{ base: 'none', lg: 'flex' }} justifyContent="space-between"><span>Right element</span><span>🙈</span></Box> }
+              rightSlotProps={{ pl: { base: 0, lg: 4 }, color: 'text.secondary', widthAllocation: 'available' }}
             />
           </Sample>
         </SamplesStack>

@@ -3,9 +3,9 @@ import React from 'react';
 import type { TabItem } from './types';
 
 export default function useAdaptiveTabs(tabs: Array<TabItem>, disabled?: boolean) {
-  // to avoid flickering we set initial value to 0
+  // to avoid flickering we set initial value to undefined
   // so there will be no displayed tabs initially
-  const [ tabsCut, setTabsCut ] = React.useState(disabled ? tabs.length : 0);
+  const [ tabsCut, setTabsCut ] = React.useState<number | undefined>(disabled ? tabs.length : undefined);
   const [ tabsRefs, setTabsRefs ] = React.useState<Array<React.RefObject<HTMLButtonElement>>>([]);
   const listRef = React.useRef<HTMLDivElement>(null);
   const rightSlotRef = React.useRef<HTMLDivElement>(null);
@@ -52,7 +52,7 @@ export default function useAdaptiveTabs(tabs: Array<TabItem>, disabled?: boolean
 
   React.useEffect(() => {
     setTabsRefs(tabs.map((_, index) => tabsRefs[index] || React.createRef()));
-    setTabsCut(disabled ? tabs.length : 0);
+    setTabsCut(disabled ? tabs.length : undefined);
   // update refs only when disabled prop changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ disabled ]);
