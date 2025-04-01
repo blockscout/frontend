@@ -17604,9 +17604,9 @@ vite-tsconfig-paths@4.3.2:
     tsconfck "^3.0.3"
 
 vite@^5.2.8:
-  version "5.4.8"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-5.4.8.tgz#af548ce1c211b2785478d3ba3e8da51e39a287e8"
-  integrity sha512-FqrItQ4DT1NC4zCUqMB4c4AZORMKIa0m8/URVCZ77OZ/QSNeJ54bU1vrFADbDsuwfIPcgknRkmqakQcgnL4GiQ==
+  version "5.4.16"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-5.4.16.tgz#471983257a890ef33f2700cbbbc2134f2d08abf1"
+  integrity sha512-Y5gnfp4NemVfgOTDQAunSD4346fal44L9mszGGY/e+qxsRT5y1sMlS/8tiQ8AFAp+MFgYNSINdfEchJiPm41vQ==
   dependencies:
     esbuild "^0.21.3"
     postcss "^8.4.43"
