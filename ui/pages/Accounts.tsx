@@ -2,6 +2,7 @@ import { Hide, Show } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import config from 'configs/app';
 import getItemIndex from 'lib/getItemIndex';
 import { TOP_ADDRESS } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
@@ -31,6 +32,8 @@ const Accounts = () => {
       ),
     },
   });
+  // @ts-ignore
+  data!.items = data?.items.filter((item) => !config.UI.views.address.hiddenBalancesAddresses.includes(item.hash));
 
   const actionBar = pagination.isVisible && (
     <ActionBar mt={ -6 }>

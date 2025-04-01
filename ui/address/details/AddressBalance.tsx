@@ -22,6 +22,9 @@ const AddressBalance = ({ data, isLoading }: Props) => {
   const [ lastBlockNumber, setLastBlockNumber ] = React.useState<number>(data.block_number_balance_updated_at || 0);
   const queryClient = useQueryClient();
 
+  if (config.UI.views.address.hiddenBalancesAddresses.includes(data.hash)) {
+    data.coin_balance = '0';
+  }
   const updateData = React.useCallback((balance: string, exchangeRate: string, blockNumber: number) => {
     if (blockNumber < lastBlockNumber) {
       return;
