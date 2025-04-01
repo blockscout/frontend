@@ -30,6 +30,7 @@ export default function useScrollToActiveTab({ activeTabIndex, tabsRefs, listRef
           const isWithinFirstPage = containerWidth > left + activeTabWidth;
 
           if (isWithinFirstPage) {
+            listRef.current.scrollTo({ left: 0 });
             return;
           }
 

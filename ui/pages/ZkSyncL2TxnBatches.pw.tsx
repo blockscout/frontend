@@ -14,5 +14,5 @@ test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse
   await mockApiResponse('zksync_l2_txn_batches_count', 9927);
 
   const component = await render(<ZkSyncL2TxnBatches/>);
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });

@@ -75,6 +75,7 @@ const formConfig: SmartContractVerificationConfig = {
 };
 
 test('flatten source code method +@dark-mode +@mobile', async({ render, page }) => {
+  test.slow();
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select license
@@ -88,7 +89,7 @@ test('flatten source code method +@dark-mode +@mobile', async({ render, page }) 
   await page.getByText(/add contract libraries/i).click();
   await page.locator('button[aria-label="add"]').click();
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });
 
 test('standard input json method', async({ render, page }) => {

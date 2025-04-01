@@ -43,14 +43,16 @@ test.describe('no auth', () => {
     );
   });
 
-  test('+@dark-mode', async() => {
+  test('+@dark-mode', async({ page }) => {
+    await page.locator('a[aria-label="Link to main page"]').hover();
     await expect(component).toHaveScreenshot();
   });
 
   test.describe('xl screen', () => {
     test.use({ viewport: pwConfig.viewport.xl });
 
-    test('+@dark-mode', async() => {
+    test('+@dark-mode', async({ page }) => {
+      await page.locator('a[aria-label="Link to main page"]').hover();
       await expect(component).toHaveScreenshot();
     });
   });

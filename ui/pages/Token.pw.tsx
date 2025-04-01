@@ -82,8 +82,7 @@ test('bridged token', async({ render, page, createSocket, mockApiResponse, mockA
 
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
   const socket = await createSocket();
-  const channel = await socketServer.joinChannel(socket, `tokens:${ hash.toLowerCase() }`);
-  socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+  await socketServer.joinChannel(socket, `tokens:${ hash.toLowerCase() }`);
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],

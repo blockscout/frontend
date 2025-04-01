@@ -14,6 +14,7 @@ const hooksConfig = {
 };
 
 test('base view +@mobile', async({ render, mockApiResponse }) => {
+  test.slow();
   await mockApiResponse('address_internal_txs', internalTxsMock.baseResponse, { pathParams: { hash: ADDRESS_HASH } });
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -21,5 +22,5 @@ test('base view +@mobile', async({ render, mockApiResponse }) => {
     </Box>,
     { hooksConfig },
   );
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });

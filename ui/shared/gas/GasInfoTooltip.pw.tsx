@@ -2,14 +2,13 @@ import React from 'react';
 
 import type { GasPriceInfo } from 'types/api/stats';
 
-import { SECOND } from 'lib/consts';
 import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
 
 import GasInfoTooltip from './GasInfoTooltip';
 import GasPrice from './GasPrice';
 
-const dataUpdatedAt = Date.now() - 3_000 * SECOND;
+const dataUpdatedAt = 0;
 
 test.use({ viewport: { width: 300, height: 300 } });
 
