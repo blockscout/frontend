@@ -75,7 +75,12 @@ const languageFilters: Array<VerifiedContractsFilter> = (() => {
   return envValue.filter((filter) => SMART_CONTRACT_LANGUAGE_FILTERS.includes(filter));
 })();
 
+const hiddenBalancesAddresses = [
+  '0x1000777700000000000000000000000000000003',
+];
+
 const config = Object.freeze({
+  hiddenBalancesAddresses,
   identiconType,
   hashFormat: {
     availableFormats: formats,
