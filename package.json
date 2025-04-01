@@ -124,7 +124,7 @@
     "xss": "^1.0.14"
   },
   "devDependencies": {
-    "@chakra-ui/cli": "3.13.0",
+    "@chakra-ui/cli": "3.15.0",
     "@eslint/compat": "1.2.2",
     "@eslint/js": "9.14.0",
     "@next/eslint-plugin-next": "15.0.3",

@@ -25,11 +25,6 @@ const RESTRICTED_MODULES = {
     { name: '@metamask/providers', message: 'Please lazy-load @metamask/providers or use useProvider hook instead' },
     { name: '@metamask/post-message-stream', message: 'Please lazy-load @metamask/post-message-stream or use useProvider hook instead' },
     { name: 'playwright/TestApp', message: 'Please use render() fixture from test() function of playwright/lib module' },
-    { name: 'ui/shared/chakra/Skeleton', message: 'Please use Skeleton component from toolkit/chakra instead' },
-    { name: 'ui/shared/Tabs/RoutedTabs', message: 'Please use RoutedTabs component from toolkit/components/RoutedTabs instead' },
-    { name: 'ui/shared/chakra/Tag', message: 'Please use Tag component from toolkit/chakra instead' },
-    { name: 'ui/shared/select/Select', message: 'Please use Select component from toolkit/chakra instead' },
-    { name: 'ui/shared/forms/fields/FormFieldFancySelect', message: 'Please use FormFieldSelect component' },
     {
       name: '@chakra-ui/react',
       importNames: [
@@ -44,7 +39,7 @@ const RESTRICTED_MODULES = {
         'Menu', 'MenuRoot', 'MenuTrigger', 'MenuContent', 'MenuItem', 'MenuTriggerItem', 'MenuRadioItemGroup', 'MenuContextTrigger',
         'Rating', 'RatingGroup',
       ],
-      message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
+      message: 'Please use corresponding component or hook from "toolkit" instead',
     },
     {
       name: 'next/link',

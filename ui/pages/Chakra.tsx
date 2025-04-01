@@ -37,11 +37,6 @@ import TextareaShowcase from 'ui/showcases/Textarea';
 import ToastShowcase from 'ui/showcases/Toast';
 import TooltipShowcase from 'ui/showcases/Tooltip';
 
-// Drawer
-// EmptyState ?
-// Switch
-// ToggleTip
-
 const tabs = [
   { label: 'Accordion', value: 'accordion', component: <AccordionsShowcase/> },
   { label: 'Alert', value: 'alert', component: <AlertShowcase/> },
