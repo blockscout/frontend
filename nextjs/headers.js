@@ -16,18 +16,18 @@ async function headers() {
           key: 'X-XSS-Protection',
           value: '1; mode=block',
         },
-        {
-          key: 'X-DNS-Prefetch-Control',
-          value: 'on',
-        },
+        // {
+        //   key: 'X-DNS-Prefetch-Control',
+        //   value: 'on',
+        // },
         // {
         //   key: 'Cross-Origin-Opener-Policy',
         //   value: 'same-origin',
         // },
-        {
-          key: 'Referrer-Policy',
-          value: 'origin-when-cross-origin',
-        },
+        // {
+        //   key: 'Referrer-Policy',
+        //   value: 'origin-when-cross-origin',
+        // },
       ],
     },
   ];
