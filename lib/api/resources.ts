@@ -111,6 +111,9 @@ import type {
   RewardsUserReferralsResponse,
   RewardsUserActivityResponse,
   RewardsInstancesResponse,
+  RewardsUserActivityTrackContractResponse,
+  RewardsUserActivityTrackTxResponse,
+  RewardsUserCheckActivityPassResponse,
 } from 'types/api/rewards';
 import type {
   ScrollL2BatchesResponse,
@@ -446,8 +449,39 @@ export const RESOURCES = {
     endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
     basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
   },
+  rewards_user_check_activity_pass: {
+    path: '/api/v1/activity/check-pass',
+    filterFields: [ 'address' as const ],
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
   rewards_user_activity: {
     path: '/api/v1/user/activity/rewards',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_activity_track_tx: {
+    path: '/api/v1/user/activity/track/transaction',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_activity_track_tx_confirm: {
+    path: '/api/v1/activity/track/transaction/confirm',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_activity_track_contract: {
+    path: '/api/v1/user/activity/track/contract',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_activity_track_contract_confirm: {
+    path: '/api/v1/activity/track/contract/confirm',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_activity_track_usage: {
+    path: '/api/v1/user/activity/track/usage',
     endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
     basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
   },
@@ -1467,7 +1501,10 @@ Q extends 'rewards_user_balances' ? RewardsUserBalancesResponse :
 Q extends 'rewards_user_daily_check' ? RewardsUserDailyCheckResponse :
 Q extends 'rewards_user_daily_claim' ? RewardsUserDailyClaimResponse :
 Q extends 'rewards_user_referrals' ? RewardsUserReferralsResponse :
+Q extends 'rewards_user_check_activity_pass' ? RewardsUserCheckActivityPassResponse :
 Q extends 'rewards_user_activity' ? RewardsUserActivityResponse :
+Q extends 'rewards_user_activity_track_tx' ? RewardsUserActivityTrackTxResponse :
+Q extends 'rewards_user_activity_track_contract' ? RewardsUserActivityTrackContractResponse :
 Q extends 'rewards_instances' ? RewardsInstancesResponse :
 Q extends 'token_transfers_all' ? TokenTransferResponse :
 Q extends 'address_xstar_score' ? AddressXStarResponse :

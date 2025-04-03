@@ -91,3 +91,15 @@ export type RewardsInstance = {
 export type RewardsInstancesResponse = {
   items: Array<RewardsInstance>;
 };
+
+export type RewardsUserActivityTrackTxResponse = {
+  token: string;
+};
+
+export type RewardsUserActivityTrackContractResponse = {
+  token: string;
+};
+
+export type RewardsUserCheckActivityPassResponse = {
+  is_valid: boolean;
+};

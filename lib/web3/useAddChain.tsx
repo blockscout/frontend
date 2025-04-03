@@ -3,6 +3,7 @@ import type { AddEthereumChainParameter } from 'viem';
 
 import config from 'configs/app';
 
+import useRewardsActivity from '../hooks/useRewardsActivity';
 import useProvider from './useProvider';
 import { getHexadecimalChainId } from './utils';
 
@@ -26,15 +27,18 @@ function getParams(): AddEthereumChainParameter {
 
 export default function useAddChain() {
   const { wallet, provider } = useProvider();
+  const { trackUsage } = useRewardsActivity();
 
-  return React.useCallback(() => {
+  return React.useCallback(async() => {
     if (!wallet || !provider) {
       throw new Error('Wallet or provider not found');
     }
 
-    return provider.request({
+    await provider.request({
       method: 'wallet_addEthereumChain',
       params: [ getParams() ],
     });
-  }, [ wallet, provider ]);
+
+    await trackUsage('add_network');
+  }, [ wallet, provider, trackUsage ]);
 }

@@ -21,6 +21,7 @@ import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
 import { SocketProvider } from 'lib/socket/context';
 import RewardsLoginModal from 'ui/rewards/login/RewardsLoginModal';
+import RewardsActivityTracker from 'ui/rewards/RewardsActivityTracker';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
@@ -72,7 +73,12 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                         <MarketplaceContextProvider>
                           <SettingsContextProvider>
                             { getLayout(<Component { ...pageProps }/>) }
-                            { config.features.rewards.isEnabled && <RewardsLoginModal/> }
+                            { config.features.rewards.isEnabled && (
+                              <>
+                                <RewardsLoginModal/>
+                                <RewardsActivityTracker/>
+                              </>
+                            ) }
                           </SettingsContextProvider>
                         </MarketplaceContextProvider>
                       </RewardsContextProvider>

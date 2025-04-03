@@ -6,6 +6,7 @@ import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel/index';
 import useProvider from 'lib/web3/useProvider';
@@ -61,6 +62,7 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
   const { provider, wallet } = useProvider();
   const switchOrAddChain = useSwitchOrAddChain();
   const isMobile = useIsMobile();
+  const { trackUsage } = useRewardsActivity();
 
   const handleClick = React.useCallback(async() => {
     if (!wallet) {
@@ -92,6 +94,8 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
           isClosable: true,
         });
 
+        await trackUsage('add_token');
+
         mixpanel.logEvent(mixpanel.EventTypes.ADD_TO_WALLET, {
           Target: 'token',
           Wallet: wallet,
@@ -108,7 +112,7 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
         isClosable: true,
       });
     }
-  }, [ wallet, token, tokenId, switchOrAddChain, provider, toast ]);
+  }, [ wallet, token, tokenId, switchOrAddChain, provider, toast, trackUsage ]);
 
   if (!provider || !wallet) {
     return null;

@@ -14,6 +14,7 @@ import useApiFetch from 'lib/api/useApiFetch';
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import delay from 'lib/delay';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel/index';
 import useSocketChannel from 'lib/socket/useSocketChannel';
@@ -48,10 +49,11 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const { handleSubmit, watch, formState, setError, reset, getFieldState, getValues, clearErrors } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
   const methodNameRef = React.useRef<string>();
+  const [ activityToken, setActivityToken ] = React.useState<string | undefined>();
 
   const apiFetch = useApiFetch();
   const toast = useToast();
-
+  const { trackContract, trackContractConfirm } = useRewardsActivity();
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     const body = prepareRequestBody(data);
 
@@ -75,6 +77,8 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     }
 
     try {
+      const activityResponse = await trackContract(data.address);
+      setActivityToken(activityResponse?.token);
       await apiFetch('contract_verification_via', {
         pathParams: { method: data.method.value, hash: data.address.toLowerCase() },
         fetchParams: {
@@ -89,7 +93,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     return new Promise((resolve) => {
       submitPromiseResolver.current = resolve;
     });
-  }, [ apiFetch, hash, setError ]);
+  }, [ apiFetch, hash, setError, trackContract ]);
 
   const handleFormChange = React.useCallback(() => {
     clearErrors('root');
@@ -131,8 +135,13 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       { send_immediately: true },
     );
 
+    if (activityToken) {
+      await trackContractConfirm(activityToken);
+      setActivityToken(undefined);
+    }
+
     window.location.assign(route({ pathname: '/address/[hash]', query: { hash: address, tab: 'contract' } }));
-  }, [ setError, toast, address, getValues ]);
+  }, [ setError, toast, address, getValues, activityToken, trackContractConfirm ]);
 
   const handleSocketError = React.useCallback(() => {
     if (!formState.isSubmitting) {
