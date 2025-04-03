@@ -1,5 +1,4 @@
 import {
-  chakra,
   List,
   Box,
   createListCollection,
@@ -10,6 +9,7 @@ import type { FormFields } from '../types';
 import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/client/contract';
 
 import { nbsp } from 'lib/html-entities';
+import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
 import type { SelectOption } from 'toolkit/chakra/select';
 import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
@@ -89,16 +89,14 @@ const ContractVerificationFieldMethod = ({ methods }: Props) => {
 
   return (
     <>
-      <Box mt={{ base: 10, lg: 6 }} gridColumn={{ lg: '1 / 3' }}>
-        <chakra.span fontWeight={ 500 } fontSize="lg" fontFamily="heading" mr={ 1 }>
-          Currently, Blockscout supports { methods.length }{ nbsp }contract verification methods
-        </chakra.span>
+      <Heading level="2" mt={{ base: 10, lg: 6 }} gridColumn={{ lg: '1 / 3' }}>
+        Currently, Blockscout supports { methods.length }{ nbsp }contract verification methods
         <Hint
           label={ tooltipContent }
-          verticalAlign="text-bottom"
           tooltipProps={{ interactive: true, contentProps: { textAlign: 'left' } }}
+          ml={ 1 }
         />
-      </Box>
+      </Heading>
       <FormFieldSelect<FormFields, 'method'>
         name="method"
         placeholder="Verification method (compiler type)"

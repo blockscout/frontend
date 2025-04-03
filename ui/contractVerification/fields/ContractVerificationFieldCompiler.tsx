@@ -78,7 +78,7 @@ const ContractVerificationFieldCompiler = ({ isVyper, isStylus, config }: Props)
     <ContractVerificationFormRow>
       <FormFieldSelectAsync<FormFields, 'compiler'>
         name="compiler"
-        placeholder="Compiler (enter version or use the dropdown)"
+        placeholder="Compiler"
         loadOptions={ loadOptions }
         extraControls={ extraControls }
         required
