@@ -1,13 +1,16 @@
-import { Flex, Button, Select } from '@chakra-ui/react';
+import { createListCollection, Flex } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import hexToAddress from 'lib/hexToAddress';
 import hexToUtf8 from 'lib/hexToUtf8';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { SelectContent, SelectControl, SelectItem, SelectRoot, SelectValueText } from 'toolkit/chakra/select';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+
+import LogIndex from './LogIndex';
 
 interface Props {
   hex: string;
@@ -25,11 +28,18 @@ const VALUE_CONVERTERS: Record<DataType, (hex: string) => string> = {
 };
 const OPTIONS: Array<DataType> = [ 'hex', 'address', 'text', 'number' ];
 
+const collection = createListCollection({
+  items: OPTIONS.map((option) => ({
+    value: option,
+    label: capitalize(option),
+  })),
+});
+
 const LogTopic = ({ hex, index, isLoading }: Props) => {
   const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('hex');
 
-  const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedDataType(event.target.value as DataType);
+  const handleSelectChange = React.useCallback((details: { value: Array<string> }) => {
+    setSelectedDataType(details.value[0] as DataType);
   }, []);
 
   const value = VALUE_CONVERTERS[selectedDataType.toLowerCase() as Lowercase<DataType>](hex);
@@ -41,7 +51,7 @@ const LogTopic = ({ hex, index, isLoading }: Props) => {
       case 'text': {
         return (
           <>
-            <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="nowrap">
+            <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="nowrap">
               <HashStringShortenDynamic hash={ value }/>
             </Skeleton>
             <CopyToClipboard text={ value } isLoading={ isLoading }/>
@@ -62,24 +72,36 @@ const LogTopic = ({ hex, index, isLoading }: Props) => {
 
   return (
     <Flex alignItems="center" px={{ base: 0, lg: 3 }} _notFirst={{ mt: 3 }} overflow="hidden" maxW="100%">
-      <Skeleton isLoaded={ !isLoading } mr={ 3 } borderRadius="base">
-        <Button variant="outline" colorScheme="gray" data-selected size="xs" fontWeight={ 400 } w={ 6 }>
-          { index }
-        </Button>
-      </Skeleton>
+      <LogIndex
+        isLoading={ isLoading }
+        textStyle="xs"
+        mr={ 3 }
+        minW={ 6 }
+        height={ 6 }
+      >
+        { index }
+      </LogIndex>
       { index !== 0 && (
-        <Skeleton isLoaded={ !isLoading } mr={ 3 } flexShrink={ 0 } borderRadius="base">
-          <Select
-            size="xs"
-            borderRadius="base"
-            value={ selectedDataType }
-            onChange={ handleSelectChange }
-            w="auto"
-            aria-label="Data type"
-          >
-            { OPTIONS.map((option) => <option key={ option } value={ option }>{ capitalize(option) }</option>) }
-          </Select>
-        </Skeleton>
+        <SelectRoot
+          collection={ collection }
+          variant="outline"
+          value={ [ selectedDataType ] }
+          onValueChange={ handleSelectChange }
+          mr={ 3 }
+          flexShrink={ 0 }
+          width="fit-content"
+        >
+          <SelectControl w="105px" loading={ isLoading }>
+            <SelectValueText placeholder="Data type"/>
+          </SelectControl>
+          <SelectContent>
+            { collection.items.map((item) => (
+              <SelectItem item={ item } key={ item.value }>
+                { item.label }
+              </SelectItem>
+            )) }
+          </SelectContent>
+        </SelectRoot>
       ) }
       { content }
     </Flex>

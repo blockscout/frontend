@@ -1,5 +1,4 @@
 import { mapValues } from 'es-toolkit';
-import type { ChangeEvent } from 'react';
 import React from 'react';
 
 import type { FormattedData } from './types';
@@ -13,8 +12,8 @@ export default function useTokenSelect(data: FormattedData) {
   const [ erc404sort, setErc404Sort ] = React.useState<Sort>('desc');
   const [ erc20sort, setErc20Sort ] = React.useState<Sort>('desc');
 
-  const onInputChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const onInputChange = React.useCallback((searchTerm: string) => {
+    setSearchTerm(searchTerm);
   }, []);
 
   const onSortClick = React.useCallback((event: React.SyntheticEvent) => {

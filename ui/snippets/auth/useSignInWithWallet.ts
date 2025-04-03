@@ -11,9 +11,9 @@ import * as cookies from 'lib/cookies';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import useToast from 'lib/hooks/useToast';
 import type * as mixpanel from 'lib/mixpanel';
 import useWeb3Wallet from 'lib/web3/useWallet';
+import { toaster } from 'toolkit/chakra/toaster';
 
 function composeMessage(address: string, nonceBlockscout: string, nonceRewards: string) {
   const feature = config.features.rewards;
@@ -51,7 +51,6 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
   const isConnectingWalletRef = React.useRef(false);
 
   const apiFetch = useApiFetch();
-  const toast = useToast();
   const web3Wallet = useWeb3Wallet({ source });
   const { signMessageAsync } = useSignMessage();
 
@@ -137,15 +136,14 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
       const apiErrorMessage = getErrorObjPayload<{ message: string }>(error)?.message;
       const shortMessage = errorObj && 'shortMessage' in errorObj && typeof errorObj.shortMessage === 'string' ? errorObj.shortMessage : undefined;
       onError?.();
-      toast({
-        status: 'error',
+      toaster.error({
         title: 'Error',
         description: apiErrorMessage || shortMessage || getErrorMessage(error) || 'Something went wrong',
       });
     } finally {
       setIsPending(false);
     }
-  }, [ getSiweMessage, signMessageAsync, executeRecaptchaAsync, isAuth, apiFetch, onSuccess, onError, toast ]);
+  }, [ getSiweMessage, signMessageAsync, executeRecaptchaAsync, isAuth, apiFetch, onSuccess, onError ]);
 
   const start = React.useCallback(() => {
     setIsPending(true);

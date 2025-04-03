@@ -23,7 +23,7 @@ const NameDomainExpiryStatus = ({ date }: Props) => {
     return <chakra.span color="red.600">{ diff } days left</chakra.span>;
   }
 
-  return <chakra.span color="text_secondary">Expires { dayjs(date).fromNow() }</chakra.span>;
+  return <chakra.span color="text.secondary">Expires { dayjs(date).fromNow() }</chakra.span>;
 };
 
 export default React.memo(NameDomainExpiryStatus);

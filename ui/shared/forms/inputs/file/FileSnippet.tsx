@@ -1,6 +1,8 @@
-import { Box, Flex, Text, useColorModeValue, IconButton, chakra, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import { CloseButton } from 'toolkit/chakra/close-button';
+import Hint from 'ui/shared/Hint';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -34,14 +36,8 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
     onRemove?.(index);
   }, [ index, onRemove ]);
 
-  const handleErrorHintIconClick = React.useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-
-  }, []);
-
   const fileExtension = getFileExtension(file.name);
   const fileIcon = FILE_ICONS[fileExtension] || 'files/placeholder';
-  const iconColor = useColorModeValue('gray.600', 'gray.400');
 
   return (
     <Flex
@@ -50,16 +46,12 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
       className={ className }
       alignItems="center"
       textAlign="left"
+      columnGap={ 2 }
     >
       <IconSvg
         name={ fileIcon }
-        boxSize="74px"
-        color={ error ? 'error' : iconColor }
-        mr={ 2 }
-        borderWidth="2px"
-        borderRadius="md"
-        borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
-        p={ 3 }
+        boxSize="48px"
+        color={ error ? 'text.error' : 'initial' }
       />
       <Box maxW="calc(100% - 58px - 24px)">
         <Flex alignItems="center">
@@ -68,35 +60,19 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
             overflow="hidden"
             textOverflow="ellipsis"
             whiteSpace="nowrap"
-            color={ error ? 'error' : 'initial' }
+            color={ error ? 'text.error' : 'initial' }
           >
             { file.name }
           </Text>
-          { Boolean(error) && (
-            <Tooltip
-              label={ error }
-              placement="top"
-              maxW={{ base: 'calc(100vw - 8px)', lg: '320px' }}
-            >
-              <Box cursor="pointer" display="inherit" onClick={ handleErrorHintIconClick } ml={ 1 }>
-                <IconSvg name="info" boxSize={ 5 } color="error"/>
-              </Box>
-            </Tooltip>
-          ) }
-          <IconButton
-            aria-label="remove"
-            icon={ <IconSvg name="cross" boxSize={ 6 }/> }
-            boxSize={ 6 }
-            variant="simple"
-            display="inline-block"
-            flexShrink={ 0 }
-            ml="auto"
+          { Boolean(error) && <Hint label={ error } ml={ 1 } color="text.error"/> }
+          <CloseButton
+            aria-label="Remove"
+            ml={ 2 }
             onClick={ handleRemove }
-            isDisabled={ isDisabled }
-            alignSelf="flex-start"
+            disabled={ isDisabled }
           />
         </Flex>
-        <Text variant="secondary" mt={ 1 }>
+        <Text color="text.secondary" textStyle="sm" mt={ 1 }>
           { file.size.toLocaleString(undefined, { notation: 'compact', maximumFractionDigits: 2, unit: 'byte', unitDisplay: 'narrow', style: 'unit' }) }
         </Text>
       </Box>

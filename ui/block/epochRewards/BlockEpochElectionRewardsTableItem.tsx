@@ -1,10 +1,13 @@
-import { Flex, IconButton, Td, Tr, useDisclosure } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { BlockEpoch, BlockEpochElectionReward } from 'types/api/block';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import IconSvg from 'ui/shared/IconSvg';
@@ -26,45 +29,42 @@ const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) =>
     decimals: data.token.decimals,
   });
 
-  const mainRowBorderColor = section.isOpen ? 'transparent' : 'divider';
+  const mainRowBorderColor = section.open ? 'transparent' : 'border.divider';
 
   return (
     <>
-      <Tr
+      <TableRow
         onClick={ isLoading || !data.count ? undefined : section.onToggle }
         cursor={ isLoading || !data.count ? undefined : 'pointer' }
       >
-        <Td borderColor={ mainRowBorderColor }>
+        <TableCell borderColor={ mainRowBorderColor }>
           { Boolean(data.count) && (
-            <Skeleton isLoaded={ !isLoading } display="flex" borderRadius="sm">
+            <Skeleton loading={ isLoading } display="flex" borderRadius="sm">
               <IconButton
-                aria-label={ section.isOpen ? 'Collapse section' : 'Expand section' }
+                aria-label={ section.open ? 'Collapse section' : 'Expand section' }
                 variant="link"
-                boxSize={ 6 }
-                flexShrink={ 0 }
-                icon={ (
-                  <IconSvg
-                    name="arrows/east-mini"
-                    boxSize={ 6 }
-                    transform={ section.isOpen ? 'rotate(270deg)' : 'rotate(180deg)' }
-                    transitionDuration="faster"
-                  />
-                ) }
-              />
+              >
+                <IconSvg
+                  name="arrows/east-mini"
+                  boxSize={ 6 }
+                  transform={ section.open ? 'rotate(270deg)' : 'rotate(180deg)' }
+                  transitionDuration="faster"
+                />
+              </IconButton>
             </Skeleton>
           ) }
-        </Td>
-        <Td borderColor={ mainRowBorderColor }>
+        </TableCell>
+        <TableCell borderColor={ mainRowBorderColor }>
           <EpochRewardTypeTag type={ type } isLoading={ isLoading }/>
-        </Td>
-        <Td borderColor={ mainRowBorderColor }>
-          <Skeleton isLoaded={ !isLoading } fontWeight={ 400 } my={ 1 }>
+        </TableCell>
+        <TableCell borderColor={ mainRowBorderColor }>
+          <Skeleton loading={ isLoading } fontWeight={ 400 } my={ 1 }>
             { getRewardNumText(type, data.count) }
           </Skeleton>
-        </Td>
-        <Td borderColor={ mainRowBorderColor }>
+        </TableCell>
+        <TableCell borderColor={ mainRowBorderColor }>
           <Flex columnGap={ 2 } alignItems="center" justifyContent="flex-end" my="2px">
-            <Skeleton isLoaded={ !isLoading }>{ valueStr }</Skeleton>
+            <Skeleton loading={ isLoading }>{ valueStr }</Skeleton>
             <TokenEntity
               token={ data.token }
               noCopy
@@ -73,15 +73,15 @@ const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) =>
               isLoading={ isLoading }
             />
           </Flex>
-        </Td>
-      </Tr>
-      { section.isOpen && (
-        <Tr>
-          <Td/>
-          <Td colSpan={ 3 } pr={ 0 } pt={ 0 }>
+        </TableCell>
+      </TableRow>
+      { section.open && (
+        <TableRow>
+          <TableCell/>
+          <TableCell colSpan={ 3 } pr={ 0 } pt={ 0 }>
             <BlockEpochElectionRewardDetailsDesktop type={ type } token={ data.token }/>
-          </Td>
-        </Tr>
+          </TableCell>
+        </TableRow>
       ) }
     </>
   );

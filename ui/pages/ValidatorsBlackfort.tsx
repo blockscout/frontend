@@ -1,4 +1,4 @@
-import { Box, Hide, HStack, Show } from '@chakra-ui/react';
+import { Box, createListCollection, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -24,11 +24,15 @@ import ValidatorsCounters from 'ui/validators/blackfort/ValidatorsCounters';
 import ValidatorsList from 'ui/validators/blackfort/ValidatorsList';
 import ValidatorsTable from 'ui/validators/blackfort/ValidatorsTable';
 
+const sortCollection = createListCollection({
+  items: VALIDATORS_BLACKFORT_SORT_OPTIONS,
+});
+
 const ValidatorsBlackfort = () => {
   const router = useRouter();
   const [ sort, setSort ] =
-    React.useState<ValidatorsBlackfortSortingValue | undefined>(
-      getSortValueFromQuery<ValidatorsBlackfortSortingValue>(router.query, VALIDATORS_BLACKFORT_SORT_OPTIONS),
+    React.useState<ValidatorsBlackfortSortingValue>(
+      getSortValueFromQuery<ValidatorsBlackfortSortingValue>(router.query, VALIDATORS_BLACKFORT_SORT_OPTIONS) ?? 'default',
     );
 
   const { isError, isPlaceholderData, data, pagination, onSortingChange } = useQueryWithPages({
@@ -44,23 +48,24 @@ const ValidatorsBlackfort = () => {
     },
   });
 
-  const handleSortChange = React.useCallback((value?: ValidatorsBlackfortSortingValue) => {
-    setSort(value);
-    onSortingChange(getSortParamsFromValue(value));
+  const handleSortChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    const sortValue = value[0] as ValidatorsBlackfortSortingValue;
+    setSort(sortValue);
+    onSortingChange(sortValue === 'default' ? undefined : getSortParamsFromValue(sortValue));
   }, [ onSortingChange ]);
 
   const sortButton = (
     <Sort
       name="validators_sorting"
-      defaultValue={ sort }
-      options={ VALIDATORS_BLACKFORT_SORT_OPTIONS }
-      onChange={ handleSortChange }
+      defaultValue={ [ sort ] }
+      collection={ sortCollection }
+      onValueChange={ handleSortChange }
     />
   );
 
   const actionBar = (
     <>
-      <HStack spacing={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
+      <HStack gap={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
         { sortButton }
       </HStack>
       { pagination.isVisible && (
@@ -73,10 +78,10 @@ const ValidatorsBlackfort = () => {
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         <ValidatorsList data={ data.items } isLoading={ isPlaceholderData }/>
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <ValidatorsTable
           data={ data.items }
           sort={ sort }
@@ -84,7 +89,7 @@ const ValidatorsBlackfort = () => {
           isLoading={ isPlaceholderData }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
         />
-      </Hide>
+      </Box>
     </>
   ) : null;
 
@@ -94,11 +99,12 @@ const ValidatorsBlackfort = () => {
       <ValidatorsCounters/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no validators."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </Box>
   );
 };

@@ -39,7 +39,7 @@ test('base view +@dark-mode', async({ render, page }) => {
   });
   await expect(component).toHaveScreenshot();
 
-  await component.locator('.chakra-menu__menu-button').click();
+  await component.getByLabel('Open chart options menu').click();
   await expect(component).toHaveScreenshot();
 
   await page.mouse.move(0, 0);

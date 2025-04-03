@@ -1,4 +1,3 @@
-import { Button } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { useSendTransaction, useSwitchChain } from 'wagmi';
@@ -13,9 +12,10 @@ import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import getErrorProp from 'lib/errors/getErrorProp';
-import useToast from 'lib/hooks/useToast';
 import useWallet from 'lib/web3/useWallet';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Button } from 'toolkit/chakra/button';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { toaster } from 'toolkit/chakra/toaster';
 
 import ArbitrumL2TxnWithdrawalsClaimTx from './ArbitrumL2TxnWithdrawalsClaimTx';
 
@@ -32,7 +32,6 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHa
   const [ isPending, setIsPending ] = React.useState(false);
   const [ claimTxHash, setClaimTxHash ] = React.useState<string | undefined>(completionTxHash);
   const apiFetch = useApiFetch();
-  const toast = useToast();
 
   const { sendTransactionAsync } = useSendTransaction();
   const { switchChainAsync } = useSwitchChain();
@@ -65,14 +64,13 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHa
     } catch (error) {
       const apiError = getErrorObjPayload<{ message: string }>(error);
       const message = capitalizeFirstLetter(apiError?.message || getErrorProp(error, 'shortMessage') || getErrorMessage(error) || 'Something went wrong');
-      toast({
-        status: 'error',
+      toaster.error({
         title: 'Error',
         description: message,
       });
       setIsPending(false);
     }
-  }, [ apiFetch, messageId, sendTransactionAsync, toast, switchChainAsync ]);
+  }, [ apiFetch, messageId, sendTransactionAsync, switchChainAsync ]);
 
   const web3Wallet = useWallet({ source: 'Smart contracts', onConnect: sendClaimTx });
 
@@ -103,13 +101,12 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHa
   }, [ messageId, queryClient, txHash ]);
 
   const handleError = React.useCallback((error: Error) => {
-    toast({
-      status: 'error',
+    toaster.error({
       title: 'Error',
       description: error.message,
     });
     setIsPending(false);
-  }, [ toast ]);
+  }, [ ]);
 
   if (claimTxHash) {
     return (
@@ -125,12 +122,12 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHa
   const isLoading = isPending || web3Wallet.isOpen;
 
   return (
-    <Skeleton isLoaded={ !isDataLoading }>
+    <Skeleton loading={ isDataLoading }>
       <Button
         size="sm"
         variant="outline"
         onClick={ handleClaimClick }
-        isLoading={ isLoading }
+        loading={ isLoading }
         loadingText="Claim"
       >
         Claim

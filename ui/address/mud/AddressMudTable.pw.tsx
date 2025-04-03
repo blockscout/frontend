@@ -37,7 +37,7 @@ test('expanded view +@mobile', async({ render, mockApiResponse }) => {
     { hooksConfig },
   );
 
-  await component.locator('a[aria-label="show/hide columns"]').first().click();
+  await component.getByLabel('show/hide columns').click();
 
   await expect(component).toHaveScreenshot();
 });

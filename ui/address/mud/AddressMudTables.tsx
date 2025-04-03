@@ -1,4 +1,4 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -48,11 +48,11 @@ const AddressMudTables = ({ isQueryEnabled = true }: Props) => {
     <FilterInput
       w={{ base: '100%', lg: '360px' }}
       minW={{ base: 'auto', lg: '250px' }}
-      size="xs"
+      size="sm"
       onChange={ setSearchTerm }
       placeholder="Search by name, namespace or table ID..."
       initialValue={ searchTerm }
-      isLoading={ isInitialLoading }
+      loading={ isInitialLoading }
     />
   );
 
@@ -65,15 +65,15 @@ const AddressMudTables = ({ isQueryEnabled = true }: Props) => {
 
   const content = data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }>
+      <Box hideBelow="lg">
         <AddressMudTablesTable
           items={ data.items }
           isLoading={ isPlaceholderData }
           top={ ACTION_BAR_HEIGHT_DESKTOP }
           hash={ hash }
         />
-      </Hide>
-      <Show below="lg" ssr={ false }>
+      </Box>
+      <Box hideFrom="lg">
         { data.items.map((item, index) => (
           <AddressMudTablesListItem
             key={ item.table.table_id + (isPlaceholderData ? String(index) : '') }
@@ -82,22 +82,23 @@ const AddressMudTables = ({ isQueryEnabled = true }: Props) => {
             hash={ hash }
           />
         )) }
-      </Show>
+      </Box>
     </>
   ) : null;
 
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items?.length }
       emptyText="There are no tables for this address."
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find tables that match your filter query.`,
         hasActiveFilters: Boolean(searchTerm),
       }}
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

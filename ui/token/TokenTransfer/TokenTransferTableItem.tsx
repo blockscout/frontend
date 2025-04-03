@@ -1,4 +1,4 @@
-import { Tr, Td, Flex, Box } from '@chakra-ui/react';
+import { Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
@@ -6,9 +6,10 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -36,8 +37,8 @@ const TokenTransferTableItem = ({
   }) : { usd: null, valueStr: null };
 
   return (
-    <Tr alignItems="top">
-      <Td>
+    <TableRow alignItems="top">
+      <TableCell>
         <Flex alignItems="center" py="7px">
           <TxEntity
             hash={ txHash }
@@ -56,15 +57,15 @@ const TokenTransferTableItem = ({
             ml="10px"
           />
         </Flex>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         { method ? (
           <Box my="3px">
-            <Tag isLoading={ isLoading } isTruncated>{ method }</Tag>
+            <Badge loading={ isLoading } truncated>{ method }</Badge>
           </Box>
         ) : null }
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         <AddressFromTo
           from={ from }
           to={ to }
@@ -73,9 +74,9 @@ const TokenTransferTableItem = ({
           mode={{ lg: 'compact', xl: 'long' }}
           tokenHash={ token?.address }
         />
-      </Td>
+      </TableCell>
       { (token && NFT_TOKEN_TYPE_IDS.includes(token.type)) && (
-        <Td>
+        <TableCell>
           { total && 'token_id' in total && token && total.token_id !== null ? (
             <NftEntity
               hash={ token.address }
@@ -86,23 +87,23 @@ const TokenTransferTableItem = ({
             />
           ) : ''
           }
-        </Td>
+        </TableCell>
       ) }
       { token && (token.type === 'ERC-20' || token.type === 'ERC-1155' || token.type === 'ERC-404') && (
-        <Td isNumeric verticalAlign="top">
+        <TableCell isNumeric verticalAlign="top">
           { valueStr && (
-            <Skeleton isLoaded={ !isLoading } display="inline-block" mt="7px" wordBreak="break-all">
+            <Skeleton loading={ isLoading } display="inline-block" mt="7px" wordBreak="break-all">
               { valueStr }
             </Skeleton>
           ) }
           { usd && (
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" mt="10px" wordBreak="break-all">
+            <Skeleton loading={ isLoading } color="text.secondary" mt="10px" wordBreak="break-all">
               <span>${ usd }</span>
             </Skeleton>
           ) }
-        </Td>
+        </TableCell>
       ) }
-    </Tr>
+    </TableRow>
   );
 };
 

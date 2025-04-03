@@ -60,12 +60,13 @@ const AddressTxs = ({ overloadCount = OVERLOAD_COUNT, shouldRender = true, isQue
 
   const [ socketAlert, setSocketAlert ] = React.useState('');
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
-  const [ sort, setSort ] = React.useState<TransactionsSortingValue | undefined>(getSortValueFromQuery<TransactionsSortingValue>(router.query, SORT_OPTIONS));
+  const [ sort, setSort ] = React.useState<TransactionsSortingValue>(getSortValueFromQuery<TransactionsSortingValue>(router.query, SORT_OPTIONS) || 'default');
 
   const isMobile = useIsMobile();
   const currentAddress = getQueryParamString(router.query.hash);
 
-  const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
+  const initialFilterValue = getFilterValue(router.query.filter);
+  const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(initialFilterValue);
 
   const addressTxsQuery = useQueryWithPages({
     resourceName: 'address_txs',
@@ -165,7 +166,7 @@ const AddressTxs = ({ overloadCount = OVERLOAD_COUNT, shouldRender = true, isQue
 
   const filter = (
     <AddressTxsFilter
-      defaultFilter={ filterValue }
+      initialValue={ initialFilterValue }
       onFilterChange={ handleFilterChange }
       hasActiveFilter={ Boolean(filterValue) }
       isLoading={ addressTxsQuery.pagination.isLoading }
@@ -184,7 +185,7 @@ const AddressTxs = ({ overloadCount = OVERLOAD_COUNT, shouldRender = true, isQue
   return (
     <>
       { !isMobile && addressTxsQuery.pagination.isVisible && (
-        <ActionBar mt={ -6 }>
+        <ActionBar>
           { filter }
           { currentAddress && csvExportLink }
           <Pagination { ...addressTxsQuery.pagination } ml={ 8 }/>

@@ -1,4 +1,4 @@
-import { Show, Hide } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -14,31 +14,32 @@ const TABS_HEIGHT = 88;
 const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
   const content = blockWithdrawalsQuery.data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         <BeaconChainWithdrawalsList
           items={ blockWithdrawalsQuery.data.items }
           isLoading={ blockWithdrawalsQuery.isPlaceholderData }
           view="block"
         />
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <BeaconChainWithdrawalsTable
           items={ blockWithdrawalsQuery.data.items }
           isLoading={ blockWithdrawalsQuery.isPlaceholderData }
           top={ blockWithdrawalsQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
           view="block"
         />
-      </Hide>
+      </Box>
     </>
   ) : null ;
 
   return (
     <DataListDisplay
       isError={ blockWithdrawalsQuery.isError }
-      items={ blockWithdrawalsQuery.data?.items }
+      itemsNum={ blockWithdrawalsQuery.data?.items?.length }
       emptyText="There are no withdrawals for this block."
-      content={ content }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

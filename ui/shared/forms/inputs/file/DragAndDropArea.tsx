@@ -1,4 +1,4 @@
-import { chakra, Center, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Center } from '@chakra-ui/react';
 import type { DragEvent } from 'react';
 import React from 'react';
 
@@ -9,10 +9,11 @@ interface Props {
   onDrop: (files: Array<File>) => void;
   className?: string;
   isDisabled?: boolean;
+  isInvalid?: boolean;
   fullFilePath?: boolean;
 }
 
-const DragAndDropArea = ({ onDrop, children, className, isDisabled, fullFilePath }: Props) => {
+const DragAndDropArea = ({ onDrop, children, className, isDisabled, fullFilePath, isInvalid }: Props) => {
   const [ isDragOver, setIsDragOver ] = React.useState(false);
 
   const handleDrop = React.useCallback(async(event: DragEvent<HTMLDivElement>) => {
@@ -50,23 +51,23 @@ const DragAndDropArea = ({ onDrop, children, className, isDisabled, fullFilePath
     }
   }, [ isDisabled ]);
 
-  const disabledBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const borderColor = isDragOver ? 'link_hovered' : 'link';
-
   return (
     <Center
       className={ className }
       w="100%"
       minH="120px"
       borderWidth="2px"
-      borderColor={ isDisabled ? disabledBorderColor : borderColor }
-      _hover={{
-        borderColor: isDisabled ? disabledBorderColor : 'link_hovered',
-      }}
       borderRadius="base"
       borderStyle="dashed"
+      borderColor={ isDragOver ? 'input.border.hover' : 'input.border' }
       cursor="pointer"
       textAlign="center"
+      { ...(isDisabled ? { 'data-disabled': true } : {}) }
+      { ...(isInvalid ? { 'data-invalid': true } : {}) }
+      color="input.placeholder"
+      _disabled={{ opacity: 'control.disabled' }}
+      _invalid={{ borderColor: 'input.border.error', color: 'input.placeholder.error' }}
+      _hover={{ borderColor: 'input.border.hover' }}
       onClick={ handleClick }
       onDrop={ handleDrop }
       onDragOver={ handleDragOver }

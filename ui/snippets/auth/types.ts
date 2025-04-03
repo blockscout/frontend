@@ -32,5 +32,5 @@ export interface EmailFormFields {
 }
 
 export interface OtpCodeFormFields {
-  code: string;
+  code: Array<string>;
 }

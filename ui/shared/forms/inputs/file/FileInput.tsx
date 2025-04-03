@@ -1,7 +1,9 @@
-import { InputGroup, VisuallyHiddenInput } from '@chakra-ui/react';
+import { Box, VisuallyHidden } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
+
+import { Input } from 'toolkit/chakra/input';
 
 interface InjectedProps {
   onChange: (files: Array<File>) => void;
@@ -53,17 +55,12 @@ const FileInput = <Values extends FieldValues, Names extends Path<Values>>({ chi
   const content = typeof children === 'function' ? children(injectedProps) : children;
 
   return (
-    <InputGroup onClick={ handleClick } onBlur={ handleInputBlur }>
-      <VisuallyHiddenInput
-        type="file"
-        onChange={ handleInputChange }
-        ref={ ref }
-        accept={ accept }
-        multiple={ multiple }
-        name={ field.name }
-      />
+    <Box onClick={ handleClick } >
+      <VisuallyHidden>
+        <Input type="file" onChange={ handleInputChange } onBlur={ handleInputBlur } ref={ ref } accept={ accept } multiple={ multiple } name={ field.name }/>
+      </VisuallyHidden>
       { content }
-    </InputGroup>
+    </Box>
   );
 };
 

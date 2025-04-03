@@ -1,13 +1,13 @@
-import { Box, useColorModeValue, chakra, Grid } from '@chakra-ui/react';
+import { Box, chakra, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import isBrowser from 'lib/isBrowser';
+import { Link } from 'toolkit/chakra/link';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import useAddressQuery from '../utils/useAddressQuery';
 
@@ -16,9 +16,11 @@ type TableViewProps = {
   hash: string;
   tableId: string;
   tableName: string;
+  recordId?: never;
+  recordName?: never;
 };
 
-type RecordViewProps = TableViewProps & {
+type RecordViewProps = Omit<TableViewProps, 'recordId' | 'recordName'> & {
   recordId: string;
   recordName: string;
 };
@@ -30,8 +32,6 @@ type BreadcrumbItemProps = {
 };
 
 const BreadcrumbItem = ({ text, href, isLast }: BreadcrumbItemProps) => {
-  const iconColor = useColorModeValue('gray.300', 'gray.600');
-
   const currentUrl = isBrowser() ? window.location.href : '';
 
   const onLinkClick = React.useCallback(() => {
@@ -48,14 +48,14 @@ const BreadcrumbItem = ({ text, href, isLast }: BreadcrumbItemProps) => {
         >
           { text }
         </Box>
-        <CopyToClipboard text={ currentUrl } type="link" mx={ 0 } color="text_secondary"/>
+        <CopyToClipboard text={ currentUrl } type="link" mx={ 0 } color="text.secondary"/>
       </Grid>
     );
   }
 
   return (
     <Grid gap={ 2 } overflow="hidden" templateColumns="auto 24px" alignItems="center">
-      <LinkInternal
+      <Link
         href={ href }
         onClick={ onLinkClick }
         overflow="hidden"
@@ -63,8 +63,8 @@ const BreadcrumbItem = ({ text, href, isLast }: BreadcrumbItemProps) => {
         whiteSpace="nowrap"
       >
         { text }
-      </LinkInternal>
-      { !isLast && <IconSvg name="arrows/east" boxSize={ 6 } color={ iconColor }/> }
+      </Link>
+      { !isLast && <IconSvg name="arrows/east" boxSize={ 6 } color={{ _light: 'gray.300', _dark: 'gray.600' }}/> }
     </Grid>
   );
 };
@@ -86,7 +86,7 @@ const AddressMudBreadcrumbs = (props: TableViewProps | RecordViewProps) => {
       width="fit-content"
       fontSize="sm"
     >
-      <IconSvg name="MUD" boxSize={ 5 } color={ addressQuery.data?.is_verified ? 'green.500' : 'text_secondary' }/>
+      <IconSvg name="MUD" boxSize={ 5 } color={ addressQuery.data?.is_verified ? 'green.500' : 'text.secondary' }/>
       <BreadcrumbItem
         text="MUD World"
         href={ route({ pathname: '/address/[hash]', query: queryParams }) }
@@ -96,7 +96,7 @@ const AddressMudBreadcrumbs = (props: TableViewProps | RecordViewProps) => {
         href={ route({ pathname: '/address/[hash]', query: { ...queryParams, table_id: props.tableId } }) }
         isLast={ !('recordId' in props) }
       />
-      { ('recordId' in props) && (
+      { ('recordId' in props && typeof props.recordId === 'string') && ('recordName' in props && typeof props.recordName === 'string') && (
         <BreadcrumbItem
           text={ props.recordName }
           href={ route({ pathname: '/address/[hash]', query: { ...queryParams, table_id: props.tableId, record_id: props.recordId } }) }

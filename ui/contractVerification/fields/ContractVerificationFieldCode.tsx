@@ -15,9 +15,8 @@ const ContractVerificationFieldCode = ({ isVyper }: Props) => {
     <ContractVerificationFormRow>
       <FormFieldText<FormFields>
         name="code"
-        isRequired
+        required
         placeholder="Contract code"
-        size={{ base: 'md', lg: 'lg' }}
         asComponent="Textarea"
       />
       { isVyper ? null : (

@@ -23,7 +23,7 @@ const ChartTooltipRow = ({ label, lineNum, children }: Props) => {
             className="ChartTooltip__label"
             transform="translate(0,0)"
             dominantBaseline="hanging"
-            fill={ labelColor }
+            fill={ labelColor[0] }
           >
             { label }
           </text>
@@ -31,7 +31,7 @@ const ChartTooltipRow = ({ label, lineNum, children }: Props) => {
             className="ChartTooltip__value"
             transform={ `translate(${ LABEL_WIDTH },0)` }
             dominantBaseline="hanging"
-            fill={ textColor }
+            fill={ textColor[0] }
           />
         </>
       ) }

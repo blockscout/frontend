@@ -1,8 +1,9 @@
-import type { TooltipProps } from '@chakra-ui/react';
-import { chakra, IconButton, Tooltip, useDisclosure } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import type { TooltipProps } from 'toolkit/chakra/tooltip';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -10,42 +11,29 @@ interface Props {
   className?: string;
   tooltipProps?: Partial<TooltipProps>;
   isLoading?: boolean;
+  as?: React.ElementType;
 }
 
-const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
-  // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
-  const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
-
-  const handleClick = React.useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-    onToggle();
-  }, [ onToggle ]);
-
-  if (isLoading) {
-    return <Skeleton className={ className } boxSize={ 5 } borderRadius="sm"/>;
-  }
-
+const Hint = ({ label, className, tooltipProps, isLoading, as }: Props) => {
   return (
     <Tooltip
-      label={ label }
-      placement="top"
-      maxW={{ base: 'calc(100vw - 8px)', lg: '320px' }}
-      isOpen={ isOpen }
+      content={ label }
+      positioning={{ placement: 'top' }}
+      interactive
       { ...tooltipProps }
     >
       <IconButton
-        colorScheme="none"
         aria-label="hint"
-        icon={ <IconSvg name="info" w="100%" h="100%" color="icon_info" _hover={{ color: 'link_hovered' }}/> }
         boxSize={ 5 }
-        variant="simple"
-        display="inline-block"
-        flexShrink={ 0 }
         className={ className }
-        onMouseEnter={ onOpen }
-        onMouseLeave={ onClose }
-        onClick={ handleClick }
-      />
+        loadingSkeleton={ isLoading }
+        borderRadius="sm"
+        as={ as }
+        color="icon.info"
+        _hover={{ color: 'link.primary.hover' }}
+      >
+        <IconSvg name="info" w="100%" h="100%"/>
+      </IconButton>
     </Tooltip>
   );
 };

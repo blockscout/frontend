@@ -1,4 +1,4 @@
-import { chakra, Box, Text, Button } from '@chakra-ui/react';
+import { chakra, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -9,7 +9,8 @@ import type { UserInfo } from 'types/api/account';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import useToast from 'lib/hooks/useToast';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
 import IconSvg from 'ui/shared/IconSvg';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
@@ -25,14 +26,13 @@ interface Props {
 const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
 
   const apiFetch = useApiFetch();
-  const toast = useToast();
   const recaptcha = useReCaptcha();
   const [ isCodeSending, setIsCodeSending ] = React.useState(false);
 
   const formApi = useForm<OtpCodeFormFields>({
     mode: 'onBlur',
     defaultValues: {
-      code: '',
+      code: [],
     },
   });
 
@@ -42,7 +42,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
       fetchParams: {
         method: 'POST',
         body: {
-          otp: formData.code,
+          otp: formData.code.join(''),
           email,
         },
       },
@@ -61,13 +61,12 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
           return;
         }
 
-        toast({
-          status: 'error',
+        toaster.error({
           title: 'Error',
           description: getErrorMessage(error) || 'Something went wrong',
         });
       });
-  }, [ apiFetch, email, onSuccess, isAuth, toast, formApi ]);
+  }, [ apiFetch, email, onSuccess, isAuth, formApi ]);
 
   const handleResendCodeClick = React.useCallback(async() => {
     try {
@@ -81,23 +80,21 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         },
       });
 
-      toast({
-        status: 'success',
+      toaster.success({
         title: 'Success',
         description: 'Code has been sent to your email',
       });
     } catch (error) {
       const apiError = getErrorObjPayload<{ message: string }>(error);
 
-      toast({
-        status: 'error',
+      toaster.error({
         title: 'Error',
         description: apiError?.message || getErrorMessage(error) || 'Something went wrong',
       });
     } finally {
       setIsCodeSending(false);
     }
-  }, [ apiFetch, email, formApi, toast, recaptcha ]);
+  }, [ apiFetch, email, formApi, recaptcha ]);
 
   return (
     <FormProvider { ...formApi }>
@@ -114,13 +111,9 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         <ReCaptcha ref={ recaptcha.ref }/>
         <Button
           variant="link"
-          display="flex"
-          alignItems="center"
           columnGap={ 2 }
           mt={ 3 }
-          fontWeight="400"
-          w="fit-content"
-          isDisabled={ isCodeSending }
+          disabled={ isCodeSending }
           onClick={ handleResendCodeClick }
         >
           <IconSvg name="repeat" boxSize={ 5 }/>
@@ -129,8 +122,8 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         <Button
           mt={ 6 }
           type="submit"
-          isLoading={ formApi.formState.isSubmitting }
-          isDisabled={ formApi.formState.isSubmitting || isCodeSending }
+          loading={ formApi.formState.isSubmitting }
+          disabled={ formApi.formState.isSubmitting || isCodeSending }
           loadingText="Submit"
           onClick={ formApi.handleSubmit(onFormSubmit) }
         >

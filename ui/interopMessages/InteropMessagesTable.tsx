@@ -1,9 +1,8 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InteropMessage } from 'types/api/interop';
 
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import InteropMessagesTableItem from './InteropMessagesTableItem';
 
@@ -15,21 +14,21 @@ interface Props {
 
 const InteropMessagesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table style={{ tableLayout: 'auto' }} size="sm">
-      <Thead top={ top }>
-        <Tr>
-          <Th></Th>
-          <Th>Message</Th>
-          <Th>Age</Th>
-          <Th>Status</Th>
-          <Th>Source tx</Th>
-          <Th>Destination tx</Th>
-          <Th>Sender</Th>
-          <Th>In/Out</Th>
-          <Th>Target</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot tableLayout="auto">
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader/>
+          <TableColumnHeader>Message</TableColumnHeader>
+          <TableColumnHeader>Age</TableColumnHeader>
+          <TableColumnHeader>Status</TableColumnHeader>
+          <TableColumnHeader>Source tx</TableColumnHeader>
+          <TableColumnHeader>Destination tx</TableColumnHeader>
+          <TableColumnHeader>Sender</TableColumnHeader>
+          <TableColumnHeader>In/Out</TableColumnHeader>
+          <TableColumnHeader>Target</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items?.map((item, index) => (
           <InteropMessagesTableItem
             key={ item.init_transaction_hash + '_' + index }
@@ -37,8 +36,8 @@ const InteropMessagesTable = ({ items, top, isLoading }: Props) => {
             isLoading={ isLoading }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

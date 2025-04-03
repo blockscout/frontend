@@ -1,14 +1,14 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import OptimisticDepositsListItem from 'ui/deposits/optimisticL2/OptimisticDepositsListItem';
 import OptimisticDepositsTable from 'ui/deposits/optimisticL2/OptimisticDepositsTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -40,7 +40,7 @@ const OptimisticL2Deposits = () => {
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         { data.items.map(((item, index) => (
           <OptimisticDepositsListItem
             key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
@@ -48,10 +48,10 @@ const OptimisticL2Deposits = () => {
             item={ item }
           />
         ))) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <OptimisticDepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   ) : null;
 
@@ -61,10 +61,7 @@ const OptimisticL2Deposits = () => {
     }
 
     return (
-      <Skeleton
-        isLoaded={ !countersQuery.isPlaceholderData }
-        display="inline-block"
-      >
+      <Skeleton loading={ countersQuery.isPlaceholderData } display="inline-block">
         A total of { countersQuery.data?.toLocaleString() } deposits found
       </Skeleton>
     );
@@ -77,11 +74,12 @@ const OptimisticL2Deposits = () => {
       <PageTitle title={ `Deposits (L1${ nbsp }${ rightLineArrow }${ nbsp }L2)` } withTextAd/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items?.length }
         emptyText="There are no deposits."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

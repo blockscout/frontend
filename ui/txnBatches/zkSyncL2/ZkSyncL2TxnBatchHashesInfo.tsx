@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { ZkSyncBatch } from 'types/api/zkSyncL2';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 
 interface Props {
@@ -24,13 +24,13 @@ interface Props {
 const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Hash of L1 tx on which the batch was committed"
         isLoading={ isLoading }
       >
         Commit tx hash
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue
         flexDir="column"
         alignItems="flex-start"
       >
@@ -44,20 +44,20 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
             />
             { data.commit_transaction_timestamp && (
               <Flex alignItems="center" flexWrap="wrap" rowGap={ 3 }>
-                <DetailsTimestamp timestamp={ data.commit_transaction_timestamp } isLoading={ isLoading }/>
+                <DetailedInfoTimestamp timestamp={ data.commit_transaction_timestamp } isLoading={ isLoading }/>
               </Flex>
             ) }
           </>
-        ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
-      </DetailsInfoItem.Value>
+        ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Hash of L1 tx on which the batch was proven"
         isLoading={ isLoading }
       >
         Prove tx hash
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue
         flexDir="column"
         alignItems="flex-start"
       >
@@ -71,20 +71,20 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
             />
             { data.prove_transaction_timestamp && (
               <Flex alignItems="center" flexWrap="wrap" rowGap={ 3 }>
-                <DetailsTimestamp timestamp={ data.prove_transaction_timestamp } isLoading={ isLoading }/>
+                <DetailedInfoTimestamp timestamp={ data.prove_transaction_timestamp } isLoading={ isLoading }/>
               </Flex>
             ) }
           </>
-        ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
-      </DetailsInfoItem.Value>
+        ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Hash of L1 tx on which the batch was executed and finalized"
         isLoading={ isLoading }
       >
         Execute tx hash
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue
         flexDir="column"
         alignItems="flex-start"
       >
@@ -98,12 +98,12 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
             />
             { data.execute_transaction_timestamp && (
               <Flex alignItems="center" flexWrap="wrap" rowGap={ 3 }>
-                <DetailsTimestamp timestamp={ data.execute_transaction_timestamp } isLoading={ isLoading }/>
+                <DetailedInfoTimestamp timestamp={ data.execute_transaction_timestamp } isLoading={ isLoading }/>
               </Flex>
             ) }
           </>
-        ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
-      </DetailsInfoItem.Value>
+        ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
+      </DetailedInfo.ItemValue>
     </>
   );
 };

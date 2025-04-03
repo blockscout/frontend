@@ -1,4 +1,3 @@
-import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -8,7 +7,6 @@ import { route } from 'nextjs-routes';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
 import NftMedia from 'ui/shared/nft/NftMedia';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import { distributeEntityProps, getIconProps } from '../base/utils';
 
@@ -26,11 +24,11 @@ const Icon = (props: IconProps) => {
   }
 
   if (props.instance) {
-    const styles = getIconProps(props.size ?? 'lg');
+    const styles = getIconProps(props.variant ?? 'heading');
     const fallback = (
       <EntityBase.Icon
         { ...props }
-        size={ props.size ?? 'lg' }
+        variant={ props.variant ?? 'heading' }
         name={ props.name ?? 'nft_shield' }
         marginRight={ 0 }
       />
@@ -54,7 +52,7 @@ const Icon = (props: IconProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      size={ props.size ?? 'lg' }
+      variant="heading"
       name={ props.name ?? 'nft_shield' }
     />
   );
@@ -79,9 +77,10 @@ type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps
 
 const Content = chakra((props: ContentProps) => {
   return (
-    <TruncatedValue
-      isLoading={ props.isLoading }
-      value={ props.id }
+    <EntityBase.Content
+      { ...props }
+      text={ props.id }
+      truncation="tail"
     />
   );
 });
@@ -95,17 +94,17 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 const NftEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
 
+  const content = <Content { ...partsProps.content }/>;
+
   return (
     <Container w="100%" { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      <Link { ...partsProps.link }>
-        <Content { ...partsProps.content }/>
-      </Link>
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
     </Container>
   );
 };
 
-export default React.memo(chakra<As, EntityProps>(NftEntity));
+export default React.memo(chakra(NftEntity));
 
 export {
   Container,

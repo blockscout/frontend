@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { TokenInfo } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
-import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
@@ -20,6 +20,7 @@ import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
 import { getTokenHoldersStub } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressContract from 'ui/address/AddressContract';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import useContractTabs from 'ui/address/contract/useContractTabs';
@@ -28,7 +29,6 @@ import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokenDetails from 'ui/token/TokenDetails';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenInventory from 'ui/token/TokenInventory';
@@ -161,7 +161,7 @@ const TokenPageContent = () => {
   const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData;
   const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
 
-  const tabs: Array<RoutedTab> = [
+  const tabs: Array<TabItemRegular> = [
     hasInventoryTab ? {
       id: 'inventory',
       title: 'Inventory',
@@ -184,7 +184,7 @@ const TokenPageContent = () => {
           return (
             <>
               <span>Contract</span>
-              <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
+              <IconSvg name="status/success" boxSize="14px" color="green.500"/>
             </>
           );
         }
@@ -212,7 +212,7 @@ const TokenPageContent = () => {
     pagination = inventoryQuery.pagination;
   }
 
-  const tabListProps = React.useCallback(({ isSticky, activeTabIndex }: { isSticky: boolean; activeTabIndex: number }) => {
+  const tabListProps = React.useCallback(() => {
     if (isMobile) {
       return { mt: 8 };
     }
@@ -221,7 +221,6 @@ const TokenPageContent = () => {
       pt: 6,
       pb: 6,
       marginBottom: 0,
-      boxShadow: activeTabIndex === 2 && isSticky ? 'action_bar' : 'none',
     };
   }, [ isMobile ]);
 
@@ -257,7 +256,7 @@ const TokenPageContent = () => {
 
       <RoutedTabs
         tabs={ tabs }
-        tabListProps={ tabListProps }
+        listProps={ tabListProps }
         rightSlot={ tabsRightSlot }
         rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
         stickyEnabled={ !isMobile }

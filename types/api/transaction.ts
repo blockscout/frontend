@@ -16,7 +16,7 @@ export type TransactionRevertReason = {
   raw: string;
 } | DecodedInput;
 
-type WrappedTransactionFields = 'decoded_input' | 'fee' | 'gas_limit' | 'gas_price' | 'hash' | 'max_fee_per_gas' |
+export type WrappedTransactionFields = 'decoded_input' | 'fee' | 'gas_limit' | 'gas_price' | 'hash' | 'max_fee_per_gas' |
 'max_priority_fee_per_gas' | 'method' | 'nonce' | 'raw_input' | 'to' | 'type' | 'value';
 
 export interface OpWithdrawal {
@@ -196,7 +196,7 @@ export interface TransactionsSorting {
 
 export type TransactionsSortingField = TransactionsSorting['sort'];
 
-export type TransactionsSortingValue = `${ TransactionsSortingField }-${ TransactionsSorting['order'] }`;
+export type TransactionsSortingValue = `${ TransactionsSortingField }-${ TransactionsSorting['order'] }` | 'default';
 
 export type ScrollTransactionData = {
   l1_fee: string;

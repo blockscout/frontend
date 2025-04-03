@@ -6,9 +6,9 @@ import type { SmartContract } from 'types/api/contract';
 import config from 'configs/app';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
+import { Link } from 'toolkit/chakra/link';
 import { getGitHubOwnerAndRepo } from 'ui/contractVerification/utils';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 
 import ContractSecurityAudits from '../audits/ContractSecurityAudits';
 import ContractDetailsInfoItem from './ContractDetailsInfoItem';
@@ -40,9 +40,9 @@ const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
     }
 
     return (
-      <LinkExternal href={ license.url }>
+      <Link external href={ license.url }>
         { license.label }
-      </LinkExternal>
+      </Link>
     );
   })();
 
@@ -57,9 +57,9 @@ const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
     const commit = data.github_repository_metadata.commit;
     const pathPrefix = data.github_repository_metadata.path_prefix;
     return (
-      <LinkExternal href={ `${ repoUrl }/tree/${ commit }${ pathPrefix ? `/${ pathPrefix }` : '' }` }>
+      <Link external href={ `${ repoUrl }/tree/${ commit }${ pathPrefix ? `/${ pathPrefix }` : '' }` }>
         { owner && repo ? `${ owner }/${ repo }` : data.github_repository_metadata.repository_url }
-      </LinkExternal>
+      </Link>
     );
   })();
 
@@ -70,90 +70,102 @@ const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
       { data.name && (
         <ContractDetailsInfoItem
           label="Contract name"
-          content={ contractNameWithCertifiedIcon }
           isLoading={ isLoading }
-        />
+        >
+          { contractNameWithCertifiedIcon }
+        </ContractDetailsInfoItem>
       ) }
       { data.compiler_version && (
         <ContractDetailsInfoItem
           label="Compiler version"
-          content={ data.compiler_version }
           isLoading={ isLoading }
-        />
+        >
+          { data.compiler_version }
+        </ContractDetailsInfoItem>
       ) }
       { data.zk_compiler_version && (
         <ContractDetailsInfoItem
           label="ZK compiler version"
-          content={ data.zk_compiler_version }
           isLoading={ isLoading }
-        />
+        >
+          { data.zk_compiler_version }
+        </ContractDetailsInfoItem>
       ) }
       { data.evm_version && (
         <ContractDetailsInfoItem
           label="EVM version"
-          content={ data.evm_version }
           textTransform="capitalize"
           isLoading={ isLoading }
-        />
+        >
+          { data.evm_version }
+        </ContractDetailsInfoItem>
       ) }
       { licenseLink && (
         <ContractDetailsInfoItem
           label="License"
-          content={ licenseLink }
           hint="License type is entered manually during verification. The initial source code may contain a different license type than the one displayed."
           isLoading={ isLoading }
-        />
+        >
+          { licenseLink }
+        </ContractDetailsInfoItem>
       ) }
       { typeof data.optimization_enabled === 'boolean' && !isStylusContract && (
         <ContractDetailsInfoItem
           label="Optimization enabled"
-          content={ data.optimization_enabled ? 'true' : 'false' }
           isLoading={ isLoading }
-        />
+        >
+          { data.optimization_enabled ? 'true' : 'false' }
+        </ContractDetailsInfoItem>
       ) }
       { data.optimization_runs !== null && !isStylusContract && (
         <ContractDetailsInfoItem
           label={ rollupFeature.isEnabled && rollupFeature.type === 'zkSync' ? 'Optimization mode' : 'Optimization runs' }
-          content={ String(data.optimization_runs) }
           isLoading={ isLoading }
-        />
+        >
+          { String(data.optimization_runs) }
+        </ContractDetailsInfoItem>
       ) }
       { data.package_name && (
         <ContractDetailsInfoItem
           label="Package name"
-          content={ data.package_name }
           isLoading={ isLoading }
-        />
+        >
+          { data.package_name }
+        </ContractDetailsInfoItem>
       ) }
       { data.verified_at && (
         <ContractDetailsInfoItem
           label="Verified at"
-          content={ dayjs(data.verified_at).format('llll') }
           wordBreak="break-word"
           isLoading={ isLoading }
-        />
+        >
+          { dayjs(data.verified_at).format('llll') }
+        </ContractDetailsInfoItem>
       ) }
       { data.file_path && !isStylusContract && (
         <ContractDetailsInfoItem
           label="Contract file path"
-          content={ data.file_path }
           wordBreak="break-word"
           isLoading={ isLoading }
-        />
+        >
+          { data.file_path }
+        </ContractDetailsInfoItem>
       ) }
       { sourceCodeLink && (
         <ContractDetailsInfoItem
           label="Source code"
-          content={ sourceCodeLink }
           isLoading={ isLoading }
-        />
+        >
+          { sourceCodeLink }
+        </ContractDetailsInfoItem>
       ) }
       { config.UI.hasContractAuditReports && (
         <ContractDetailsInfoItem
           label="Security audit"
-          content={ <ContractSecurityAudits addressHash={ addressHash }/> }
           isLoading={ isLoading }
-        />
+        >
+          <ContractSecurityAudits addressHash={ addressHash }/>
+        </ContractDetailsInfoItem>
       ) }
     </Grid>
   );

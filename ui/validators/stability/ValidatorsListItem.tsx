@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { ValidatorStability } from 'types/api/validators';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ValidatorStatus from 'ui/shared/statusTag/ValidatorStabilityStatus';
@@ -33,7 +33,7 @@ const ValidatorsListItem = ({ data, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Blocks</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading }>
           { data.blocks_validated_count.toLocaleString() }
         </Skeleton>
       </ListItemMobileGrid.Value>

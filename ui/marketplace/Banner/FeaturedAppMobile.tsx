@@ -1,10 +1,14 @@
-import { IconButton, Image, Link, LinkBox, useColorModeValue, Flex } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Image } from 'toolkit/chakra/image';
+import { Link, LinkBox } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import FavoriteIcon from '../FavoriteIcon';
 import MarketplaceAppCardLink from '../MarketplaceAppCardLink';
@@ -43,7 +47,7 @@ const FeaturedAppMobile = ({
       borderRadius="md"
       padding={{ base: 3, sm: '20px' }}
       role="group"
-      background={ useColorModeValue('purple.50', 'whiteAlpha.100') }
+      background={{ base: 'purple.50', sm: 'whiteAlpha.100' }}
       mt={ 6 }
     >
       <Flex
@@ -58,7 +62,7 @@ const FeaturedAppMobile = ({
           justifyContent="space-between"
         >
           <Skeleton
-            isLoaded={ !isLoading }
+            loading={ isLoading }
             w={{ base: '64px', sm: '96px' }}
             h={{ base: '64px', sm: '96px' }}
             display="flex"
@@ -93,7 +97,7 @@ const FeaturedAppMobile = ({
 
         <Flex flexDirection="column" gap={ 2 }>
           <Skeleton
-            isLoaded={ !isLoading }
+            loading={ isLoading }
             fontSize={{ base: 'sm', sm: 'lg' }}
             lineHeight={{ base: '20px', sm: '28px' }}
             paddingRight={{ base: '25px', sm: '110px' }}
@@ -112,21 +116,20 @@ const FeaturedAppMobile = ({
           </Skeleton>
 
           <Skeleton
-            isLoaded={ !isLoading }
-            color="text_secondary"
-            fontSize="xs"
-            lineHeight="16px"
+            loading={ isLoading }
+            color="text.secondary"
+            textStyle="xs"
           >
             <span>{ categoriesLabel }</span>
           </Skeleton>
 
           <Skeleton
-            isLoaded={ !isLoading }
-            fontSize={{ base: 'xs', sm: 'sm' }}
-            lineHeight="20px"
-            noOfLines={ 3 }
+            loading={ isLoading }
+            asChild
           >
-            { shortDescription }
+            <Text lineClamp={ 3 } textStyle="xs">
+              { shortDescription }
+            </Text>
           </Skeleton>
         </Flex>
 
@@ -140,13 +143,13 @@ const FeaturedAppMobile = ({
             top={{ base: 1, sm: '18px' }}
             aria-label="Mark as favorite"
             title="Mark as favorite"
-            variant="ghost"
-            colorScheme="gray"
-            w={ 9 }
-            h={ 8 }
+            variant="icon_secondary"
+            size="md"
             onClick={ onFavoriteClick }
-            icon={ <FavoriteIcon isFavorite={ isFavorite }/> }
-          />
+            selected={ isFavorite }
+          >
+            <FavoriteIcon isFavorite={ isFavorite }/>
+          </IconButton>
         ) }
       </Flex>
     </LinkBox>

@@ -41,7 +41,7 @@ test.describe('base view', () => {
     );
   });
 
-  test('+@mobile', async() => {
+  test('desktop', async() => {
     await expect(component).toHaveScreenshot();
   });
 
@@ -52,6 +52,31 @@ test.describe('base view', () => {
       test.slow();
       await expect(component).toHaveScreenshot();
     });
+  });
+});
+
+test.describe('base view', () => {
+  test.use({ viewport: pwConfig.viewport.mobile });
+
+  test('mobile', async({ render, mockApiResponse }) => {
+    await mockApiResponse(
+      'address_txs',
+      {
+        items: [
+          txMock.base,
+          { ...txMock.base, hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3194' },
+        ],
+        next_page_params: DEFAULT_PAGINATION,
+      },
+      { pathParams: { hash: CURRENT_ADDRESS } },
+    );
+    const component = await render(
+      <Box pt={{ base: '134px', lg: 6 }}>
+        <AddressTxs/>
+      </Box>,
+      { hooksConfig },
+    );
+    await expect(component).toHaveScreenshot();
   });
 });
 

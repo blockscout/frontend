@@ -1,11 +1,12 @@
-import { chakra, Tr, Td } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
 import dayjs from 'lib/date/dayjs';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import NameDomainExpiryStatus from 'ui/nameDomain/NameDomainExpiryStatus';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 
@@ -23,30 +24,30 @@ const NameDomainsTableItem = ({
 }: Props) => {
 
   return (
-    <Tr>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
         <EnsEntity domain={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 600 }/>
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         { resolvedAddress && <AddressEntity address={ resolvedAddress } isLoading={ isLoading } fontWeight={ 500 }/> }
-      </Td>
-      <Td verticalAlign="middle" pl={ 9 }>
+      </TableCell>
+      <TableCell verticalAlign="middle" pl={ 9 }>
         { registrationDate && (
-          <Skeleton isLoaded={ !isLoading }>
+          <Skeleton loading={ isLoading }>
             { dayjs(registrationDate).format('lll') }
-            <chakra.span color="text_secondary"> { dayjs(registrationDate).fromNow() }</chakra.span>
+            <chakra.span color="text.secondary"> { dayjs(registrationDate).fromNow() }</chakra.span>
           </Skeleton>
         ) }
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         { expiryDate && (
-          <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">
+          <Skeleton loading={ isLoading }>
             <span>{ dayjs(expiryDate).format('lll') } </span>
             <NameDomainExpiryStatus date={ expiryDate }/>
           </Skeleton>
         ) }
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

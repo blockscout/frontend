@@ -1,4 +1,4 @@
-import { Box, chakra, IconButton, Tooltip } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { WatchAssetParams } from 'viem';
 
@@ -6,12 +6,14 @@ import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel/index';
 import useProvider from 'lib/web3/useProvider';
 import useSwitchOrAddChain from 'lib/web3/useSwitchOrAddChain';
 import { WALLETS_INFO } from 'lib/web3/wallets';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { toaster } from 'toolkit/chakra/toaster';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 const feature = config.features.web3Wallet;
@@ -57,7 +59,6 @@ interface Props {
 }
 
 const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'icon', iconSize = 6 }: Props) => {
-  const toast = useToast();
   const { provider, wallet } = useProvider();
   const switchOrAddChain = useSwitchOrAddChain();
   const isMobile = useIsMobile();
@@ -83,13 +84,9 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
       });
 
       if (wasAdded) {
-        toast({
-          position: 'top-right',
+        toaster.success({
           title: 'Success',
           description: 'Successfully added token to your wallet',
-          status: 'success',
-          variant: 'subtle',
-          isClosable: true,
         });
 
         mixpanel.logEvent(mixpanel.EventTypes.ADD_TO_WALLET, {
@@ -99,23 +96,19 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
         });
       }
     } catch (error) {
-      toast({
-        position: 'top-right',
+      toaster.error({
         title: 'Error',
         description: (error as Error)?.message || 'Something went wrong',
-        status: 'error',
-        variant: 'subtle',
-        isClosable: true,
       });
     }
-  }, [ wallet, token, tokenId, switchOrAddChain, provider, toast ]);
+  }, [ wallet, token, tokenId, switchOrAddChain, provider ]);
 
   if (!provider || !wallet) {
     return null;
   }
 
   if (isLoading) {
-    return <Skeleton className={ className } boxSize={ iconSize } borderRadius="base"/>;
+    return <Skeleton loading className={ className } boxSize={ iconSize } borderRadius="base"/>;
   }
 
   const canBeAdded = (
@@ -133,23 +126,22 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
 
   if (variant === 'button') {
     return (
-      <Tooltip label={ `Add token to ${ WALLETS_INFO[wallet].name }` }>
+      <Tooltip content={ `Add token to ${ WALLETS_INFO[wallet].name }` }>
         <IconButton
           className={ className }
           aria-label="Add token to wallet"
-          variant="outline"
-          size="sm"
-          px={ 1 }
+          variant="plain"
+          size="md"
           onClick={ handleClick }
-          icon={ <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 6 }/> }
-          flexShrink={ 0 }
-        />
+        >
+          <IconSvg name={ WALLETS_INFO[wallet].icon }/>
+        </IconButton>
       </Tooltip>
     );
   }
 
   return (
-    <Tooltip label={ `Add token to ${ WALLETS_INFO[wallet].name }` }>
+    <Tooltip content={ `Add token to ${ WALLETS_INFO[wallet].name }` }>
       <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick } flexShrink={ 0 } aria-label="Add token to wallet">
         <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ iconSize }/>
       </Box>

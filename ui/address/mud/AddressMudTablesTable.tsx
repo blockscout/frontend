@@ -1,9 +1,8 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressMudTables } from 'types/api/address';
 
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import AddressMudTablesTableItem from './AddressMudTablesTableItem';
 
@@ -17,16 +16,16 @@ type Props = {
 //sorry for the naming
 const AddressMudTablesTable = ({ items, isLoading, top, hash }: Props) => {
   return (
-    <Table style={{ tableLayout: 'auto' }}>
-      <Thead top={ top }>
-        <Tr>
-          <Th width="24px"></Th>
-          <Th>Full name</Th>
-          <Th>Table ID</Th>
-          <Th>Type</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot style={{ tableLayout: 'auto' }}>
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader width="24px"></TableColumnHeader>
+          <TableColumnHeader>Full name</TableColumnHeader>
+          <TableColumnHeader>Table ID</TableColumnHeader>
+          <TableColumnHeader>Type</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
           <AddressMudTablesTableItem
             key={ item.table.table_id + (isLoading ? String(index) : '') }
@@ -35,8 +34,8 @@ const AddressMudTablesTable = ({ items, isLoading, top, hash }: Props) => {
             hash={ hash }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

@@ -1,18 +1,16 @@
-import { Text, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
 
 const UserWalletAutoConnectAlert = () => {
-  const bgColor = useColorModeValue('orange.100', 'orange.900');
-
   return (
     <Flex
       borderRadius="base"
       p={ 3 }
       mb={ 3 }
       alignItems="center"
-      bgColor={ bgColor }
+      bgColor={{ _light: 'orange.100', _dark: 'orange.900' }}
     >
       <IconSvg
         name="integration/partial"

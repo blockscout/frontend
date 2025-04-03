@@ -1,6 +1,6 @@
-import { Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -18,7 +18,7 @@ const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
 
     if (external) {
       icon = 'link_external';
-      color = 'icon_link_external';
+      color = 'icon.externalLink';
       text = 'This app opens in a separate tab';
       boxSize = 4;
     } else if (internalWallet) {
@@ -32,11 +32,9 @@ const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
 
   return (
     <Tooltip
-      label={ text }
-      textAlign="center"
-      padding={ 2 }
+      content={ text }
       openDelay={ 300 }
-      maxW={{ base: 'calc(100vw - 8px)', lg: '400px' }}
+      contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
     >
       <IconSvg
         name={ icon }
@@ -45,7 +43,6 @@ const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
         position="relative"
         cursor="pointer"
         verticalAlign="middle"
-        mb={{ base: 0, md: 1 }}
       />
     </Tooltip>
   );

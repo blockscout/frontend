@@ -1,4 +1,4 @@
-import { Show, Hide } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -27,24 +27,27 @@ const ERC20Tokens = ({ tokensQuery }: Props) => {
 
   const content = data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }><ERC20TokensTable data={ data.items } top={ pagination.isVisible ? 72 : 0 } isLoading={ isPlaceholderData }/></Hide>
-      <Show below="lg" ssr={ false }>{ data.items.map((item, index) => (
+      <Box hideBelow="lg"><ERC20TokensTable data={ data.items } top={ pagination.isVisible ? 72 : 0 } isLoading={ isPlaceholderData }/></Box>
+      <Box hideFrom="lg">{ data.items.map((item, index) => (
         <ERC20TokensListItem
           key={ item.token.address + (isPlaceholderData ? index : '') }
           { ...item }
           isLoading={ isPlaceholderData }
         />
-      )) }</Show></>
+      )) }
+      </Box>
+    </>
   ) : null;
 
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items.length }
       emptyText="There are no tokens of selected type."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 
 };

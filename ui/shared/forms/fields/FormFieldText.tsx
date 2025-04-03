@@ -1,12 +1,17 @@
-import type { ChakraProps } from '@chakra-ui/react';
-import { FormControl, Input, InputGroup, InputRightElement, Textarea, chakra, shouldForwardProp } from '@chakra-ui/react';
 import React from 'react';
 import type { FieldValues, Path } from 'react-hook-form';
 import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
 
-import FormInputPlaceholder from '../inputs/FormInputPlaceholder';
+import { Field } from 'toolkit/chakra/field';
+import type { InputProps } from 'toolkit/chakra/input';
+import { Input } from 'toolkit/chakra/input';
+import { InputGroup } from 'toolkit/chakra/input-group';
+import type { TextareaProps } from 'toolkit/chakra/textarea';
+import { Textarea } from 'toolkit/chakra/textarea';
+
+import getFieldErrorText from '../utils/getFieldErrorText';
 
 interface Props<
   FormFields extends FieldValues,
@@ -21,95 +26,74 @@ const FormFieldText = <
 >({
   name,
   placeholder,
-  isReadOnly,
-  isRequired,
   rules,
   onBlur,
-  type = 'text',
-  rightElement,
+  group,
+  inputProps,
   asComponent,
-  max,
-
-  className,
-  size = 'md',
-  bgColor,
-  minH,
-  maxH,
+  size: sizeProp,
+  disabled,
+  floating: floatingProp,
+  ...restProps
 }: Props<FormFields, Name>) => {
+  const defaultSize = asComponent === 'Textarea' ? '2xl' : 'lg';
+  const size = sizeProp || defaultSize;
+  const floating = floatingProp !== undefined ? floatingProp : size === defaultSize;
+
   const { control } = useFormContext<FormFields>();
   const { field, fieldState, formState } = useController<FormFields, typeof name>({
     control,
     name,
-    rules: { ...rules, required: isRequired },
+    rules: { ...rules, required: restProps.required },
   });
-
-  const isDisabled = formState.isSubmitting;
 
   const handleBlur = React.useCallback(() => {
     field.onBlur();
     onBlur?.();
   }, [ field, onBlur ]);
 
-  const Component = asComponent === 'Textarea' ? Textarea : Input;
-  const input = (
-    <Component
+  const input = asComponent === 'Textarea' ? (
+    <Textarea
       { ...field }
-      onBlur={ handleBlur }
-      isInvalid={ Boolean(fieldState.error) }
-      isDisabled={ isDisabled }
-      isReadOnly={ isReadOnly }
       autoComplete="off"
-      type={ type }
-      placeholder=" "
-      max={ max }
-      size={ size }
-      bgColor={ bgColor }
-      minH={ minH }
-      maxH={ maxH }
+      flexGrow={ 1 }
+      { ...inputProps as TextareaProps }
+      onBlur={ handleBlur }
+    />
+  ) : (
+    <Input
+      { ...field }
+      autoComplete="off"
+      // for non-floating field label, we pass placeholder to the input component
+      placeholder={ !floating ? placeholder : undefined }
+      { ...inputProps as InputProps }
+      onBlur={ handleBlur }
     />
   );
-  const inputPlaceholder = size !== 'xs' && <FormInputPlaceholder text={ placeholder } error={ fieldState.error }/>;
+
+  const content = group ? (
+    <InputGroup
+      { ...group }
+      endElement={ typeof group.endElement === 'function' ? group.endElement({ field }) : group.endElement }
+    >
+      { input }
+    </InputGroup>
+  ) : input;
 
   return (
-    <FormControl
-      className={ className }
-      variant="floating"
-      isDisabled={ isDisabled }
-      isRequired={ isRequired }
+    <Field
+      // for floating field label, we pass placeholder value to the label
+      label={ floating ? placeholder : undefined }
+      errorText={ getFieldErrorText(fieldState.error) }
+      invalid={ Boolean(fieldState.error) }
+      disabled={ formState.isSubmitting || disabled }
       size={ size }
-      bgColor={ bgColor }
+      floating={ floating }
+      { ...restProps }
     >
-      { rightElement ? (
-        <InputGroup>
-          { input }
-          { inputPlaceholder }
-          <InputRightElement h="100%"> { rightElement({ field }) } </InputRightElement>
-        </InputGroup>
-      ) : (
-        <>
-          { input }
-          { inputPlaceholder }
-        </>
-      ) }
-    </FormControl>
+      { content }
+    </Field>
   );
 };
 
-const WrappedFormFieldText = chakra(FormFieldText, {
-  shouldForwardProp: (prop) => {
-    const isChakraProp = !shouldForwardProp(prop);
-
-    if (isChakraProp && ![ 'bgColor', 'size', 'minH', 'maxH' ].includes(prop)) {
-      return false;
-    }
-
-    return true;
-  },
-});
-
-export type WrappedComponent = <
-  FormFields extends FieldValues,
-  Name extends Path<FormFields> = Path<FormFields>,
->(props: Props<FormFields, Name> & ChakraProps) => React.JSX.Element;
-
-export default React.memo(WrappedFormFieldText) as WrappedComponent;
+export default React.memo(FormFieldText) as typeof FormFieldText;

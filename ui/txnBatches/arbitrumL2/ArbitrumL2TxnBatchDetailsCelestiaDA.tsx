@@ -6,7 +6,7 @@ import type { ArbitrumL2TxnBatchDACelestia } from 'types/api/arbitrumL2';
 import config from 'configs/app';
 import CeleniumLink from 'ui/shared/batch/CeleniumLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 const feature = config.features.rollup;
@@ -18,21 +18,21 @@ interface Props {
 const ArbitrumL2TxnBatchDetailsCelestiaDA = ({ data }: Props) => {
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="The block number in Celestia where the Data Availability blob was published"
       >
         Height
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value wordBreak="break-all" whiteSpace="break-spaces">
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue wordBreak="break-all" whiteSpace="break-spaces">
         { data.height }
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="The Data Availability blob’s unique cryptographic proof"
       >
         Commitment
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value flexWrap="nowrap">
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue flexWrap="nowrap">
         <Flex overflow="hidden" minW="0">
           <HashStringShortenDynamic hash={ data.transaction_commitment }/>
         </Flex>
@@ -44,7 +44,7 @@ const ArbitrumL2TxnBatchDetailsCelestiaDA = ({ data }: Props) => {
             height={ data.height }
           />
         ) }
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

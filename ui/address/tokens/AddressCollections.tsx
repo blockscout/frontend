@@ -5,11 +5,11 @@ import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import ActionBar from 'ui/shared/ActionBar';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import NftFallback from 'ui/shared/nft/NftFallback';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
@@ -56,12 +56,12 @@ const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Pro
             noCopy
             fontWeight="600"
           />
-          <Skeleton isLoaded={ !isPlaceholderData } mr={ 3 }>
-            <Text variant="secondary" whiteSpace="pre">{ ` - ${ Number(item.amount).toLocaleString() } item${ Number(item.amount) > 1 ? 's' : '' }` }</Text>
+          <Skeleton loading={ isPlaceholderData } mr={ 3 }>
+            <Text color="text.secondary" whiteSpace="pre">{ ` - ${ Number(item.amount).toLocaleString() } item${ Number(item.amount) > 1 ? 's' : '' }` }</Text>
           </Skeleton>
-          <LinkInternal href={ collectionUrl } isLoading={ isPlaceholderData }>
-            <Skeleton isLoaded={ !isPlaceholderData }>View in collection</Skeleton>
-          </LinkInternal>
+          <Link href={ collectionUrl } loading={ isPlaceholderData }>
+            View in collection
+          </Link>
         </Flex>
         <Grid
           w="100%"
@@ -83,16 +83,16 @@ const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Pro
             );
           }) }
           { hasOverload && (
-            <LinkInternal display="flex" href={ collectionUrl }>
+            <Link href={ collectionUrl }>
               <NFTItemContainer display="flex" alignItems="center" justifyContent="center" flexDirection="column" minH="248px">
                 <HStack gap={ 2 } mb={ 3 }>
-                  <NftFallback bgColor="unset" w="30px" h="30px" boxSize="30px" p={ 0 }/>
-                  <NftFallback bgColor="unset" w="30px" h="30px" boxSize="30px" p={ 0 }/>
-                  <NftFallback bgColor="unset" w="30px" h="30px" boxSize="30px" p={ 0 }/>
+                  <NftFallback bgColor={{ _light: 'unset', _dark: 'unset' }} w="30px" h="30px" boxSize="30px" p={ 0 }/>
+                  <NftFallback bgColor={{ _light: 'unset', _dark: 'unset' }} w="30px" h="30px" boxSize="30px" p={ 0 }/>
+                  <NftFallback bgColor={{ _light: 'unset', _dark: 'unset' }} w="30px" h="30px" boxSize="30px" p={ 0 }/>
                 </HStack>
                 View all NFTs
               </NFTItemContainer>
-            </LinkInternal>
+            </Link>
           ) }
         </Grid>
       </Box>
@@ -102,15 +102,16 @@ const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Pro
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items?.length }
       emptyText="There are no tokens of selected type."
-      content={ content }
       actionBar={ actionBar }
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find any token that matches your query.`,
         hasActiveFilters,
       }}
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

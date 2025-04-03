@@ -34,6 +34,6 @@ test('base view', async({ render, page, mockAssetResponse }) => {
       mainDomainName={ ensDomainMock.ensDomainA.name }
     />,
   );
-  await component.getByText('4').click();
+  await component.getByLabel('Address domains').click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 550, height: 350 } });
 });

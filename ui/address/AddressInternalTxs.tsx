@@ -1,4 +1,4 @@
-import { Show, Hide } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -68,19 +68,19 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   ) : null ;
 
   const actionBar = (
     <ActionBar mt={ -6 } justifyContent="left">
       <AddressTxsFilter
-        defaultFilter={ filterValue }
+        initialValue={ filterValue }
         onFilterChange={ handleFilterChange }
         hasActiveFilter={ Boolean(filterValue) }
         isLoading={ pagination.isLoading }
@@ -98,12 +98,13 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items.length }
       filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: Boolean(filterValue) }}
       emptyText="There are no internal transactions for this address."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

@@ -48,7 +48,7 @@ const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth, source, logi
 
   return (
     <Center h="100px">
-      <Spinner/>
+      <Spinner size="xl"/>
       <ReCaptcha ref={ recaptcha.ref }/>
     </Center>
   );

@@ -1,8 +1,10 @@
-import { Alert, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { AbiFunction } from 'viem';
 
 import type { FormSubmitResultPublicClient, ResultViewMode } from '../types';
+
+import { Alert } from 'toolkit/chakra/alert';
 
 import ResultItem from './resultPublicClient/Item';
 
@@ -14,8 +16,6 @@ export interface Props {
 }
 
 const ContractMethodResultPublicClient = ({ data, abiItem, onSettle, mode: modeProps }: Props) => {
-  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-
   React.useEffect(() => {
     if (modeProps === 'result') {
       onSettle();
@@ -32,7 +32,7 @@ const ContractMethodResultPublicClient = ({ data, abiItem, onSettle, mode: modeP
   return (
     <>
       { isError && (
-        <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-word" whiteSpace="pre-wrap">
+        <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" textStyle="sm" wordBreak="break-word" whiteSpace="pre-wrap">
           { 'shortMessage' in data && typeof data.shortMessage === 'string' ? data.shortMessage : data.message }
         </Alert>
       ) }
@@ -42,7 +42,7 @@ const ContractMethodResultPublicClient = ({ data, abiItem, onSettle, mode: modeP
         mt={ 3 }
         p={ 4 }
         borderRadius="md"
-        bgColor={ bgColor }
+        bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
         color={ mode === 'preview' ? 'gray.500' : undefined }
         fontSize="sm"
         lineHeight="20px"

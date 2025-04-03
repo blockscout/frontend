@@ -1,9 +1,9 @@
-import { Tr, Td } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ValidatorStability } from 'types/api/validators';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ValidatorStatus from 'ui/shared/statusTag/ValidatorStabilityStatus';
 
@@ -14,23 +14,23 @@ interface Props {
 
 const ValidatorsTableItem = ({ data, isLoading }: Props) => {
   return (
-    <Tr>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
         <AddressEntity
           address={ data.address }
           isLoading={ isLoading }
           truncation="constant"
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <ValidatorStatus state={ data.state } isLoading={ isLoading }/>
-      </Td>
-      <Td verticalAlign="middle" isNumeric>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+      </TableCell>
+      <TableCell verticalAlign="middle" isNumeric>
+        <Skeleton loading={ isLoading }>
           { data.blocks_validated_count.toLocaleString() }
         </Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

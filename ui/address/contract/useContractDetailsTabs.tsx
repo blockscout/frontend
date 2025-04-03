@@ -1,8 +1,9 @@
-import { Alert, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 
+import { Alert } from 'toolkit/chakra/alert';
 import CodeViewSnippet from 'ui/shared/CodeViewSnippet';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 

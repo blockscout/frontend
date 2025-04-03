@@ -48,7 +48,7 @@ const CodeEditorTab = ({ isActive, isMainFile, path, onClick, onClose, isCloseDi
       cursor="pointer"
       onClick={ handleClick }
       _hover={{
-        '.codicon-close': {
+        '& .codicon-close': {
           visibility: 'visible',
         },
       }}

@@ -1,4 +1,4 @@
-import { Flex, Hide, Show, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -199,7 +199,7 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
 
   const content = data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }>
+      <Box hideBelow="lg">
         <TokenTransferTable
           data={ data?.items }
           baseAddress={ currentAddress }
@@ -211,8 +211,8 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
           socketInfoNum={ newItemsCount }
           isLoading={ isPlaceholderData }
         />
-      </Hide>
-      <Show below="lg" ssr={ false }>
+      </Box>
+      <Box hideFrom="lg">
         { pagination.page === 1 && !tokenFilter && (
           <SocketNewItemsNotice.Mobile
             url={ window.location.href }
@@ -229,7 +229,7 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
           enableTimeIncrement
           isLoading={ isPlaceholderData }
         />
-      </Show>
+      </Box>
     </>
   ) : null;
 
@@ -278,15 +278,16 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items?.length }
       emptyText="There are no token transfers."
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,
         hasActiveFilters: Boolean(numActiveFilters),
       }}
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

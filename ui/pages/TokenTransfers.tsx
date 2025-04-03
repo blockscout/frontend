@@ -1,4 +1,4 @@
-import { Show, Hide } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -15,6 +15,7 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import { getTokenFilterValue } from 'ui/tokens/utils';
 import TokenTransfersListItem from 'ui/tokenTransfers/TokenTransfersListItem';
 import TokenTransfersTable from 'ui/tokenTransfers/TokenTransfersTable';
+
 const TokenTransfers = () => {
   const router = useRouter();
   const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(getTokenFilterValue(router.query.type) || []);
@@ -34,7 +35,7 @@ const TokenTransfers = () => {
 
   const content = (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         { tokenTransfersQuery.data?.items.map((item, index) => (
           <TokenTransfersListItem
             key={ item.transaction_hash + item.log_index + (tokenTransfersQuery.isPlaceholderData ? index : '') }
@@ -42,14 +43,14 @@ const TokenTransfers = () => {
             item={ item }
           />
         )) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <TokenTransfersTable
           items={ tokenTransfersQuery.data?.items }
           top={ tokenTransfersQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ tokenTransfersQuery.isPlaceholderData }
         />
-      </Hide>
+      </Box>
     </>
   );
 
@@ -74,11 +75,12 @@ const TokenTransfers = () => {
       />
       <DataListDisplay
         isError={ tokenTransfersQuery.isError }
-        items={ tokenTransfersQuery.data?.items }
+        itemsNum={ tokenTransfersQuery.data?.items.length }
         emptyText="There are no token transfers."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

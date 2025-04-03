@@ -6,12 +6,12 @@ import type { ArbitrumL2MessagesItem } from 'types/api/arbitrumL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ArbitrumL2MessageStatus from 'ui/shared/statusTag/ArbitrumL2MessageStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -41,8 +41,6 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
               <BlockEntityL1
                 number={ item.origination_transaction_block_number }
                 isLoading={ isLoading }
-                fontSize="sm"
-                lineHeight={ 5 }
                 fontWeight={ 600 }
               />
             ) : <chakra.span>N/A</chakra.span> }
@@ -58,8 +56,6 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
               address={{ hash: item.origination_address }}
               truncation="constant"
               isLoading={ isLoading }
-              fontSize="sm"
-              lineHeight={ 5 }
               fontWeight={ 600 }
             />
           </ListItemMobileGrid.Value>
@@ -68,7 +64,7 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Message #</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block">
           { item.id }
         </Skeleton>
       </ListItemMobileGrid.Value>
@@ -79,8 +75,6 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
           <TxEntity
             isLoading={ isLoading }
             hash={ l2TxHash }
-            fontSize="sm"
-            lineHeight={ 5 }
             truncation="constant_long"
           />
         ) : (
@@ -106,7 +100,7 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         { item.status === 'confirmed' && direction === 'from-rollup' ?
-          <LinkInternal href={ route({ pathname: '/txn-withdrawals', query: { q: item.origination_transaction_hash } }) }>Ready for relay</LinkInternal> :
+          <Link href={ route({ pathname: '/txn-withdrawals', query: { q: item.origination_transaction_hash } }) }>Ready for relay</Link> :
           <ArbitrumL2MessageStatus status={ item.status } isLoading={ isLoading }/> }
       </ListItemMobileGrid.Value>
 
@@ -116,8 +110,6 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
           <TxEntityL1
             isLoading={ isLoading }
             hash={ l1TxHash }
-            fontSize="sm"
-            lineHeight={ 5 }
             truncation="constant_long"
           />
         ) : (

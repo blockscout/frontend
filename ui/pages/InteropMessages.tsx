@@ -1,13 +1,13 @@
-import { Show, Hide } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { INTEROP_MESSAGE } from 'stubs/interop';
 import { generateListStub } from 'stubs/utils';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import InteropMessagesListItem from 'ui/interopMessages/InteropMessagesListItem';
 import InteropMessagesTable from 'ui/interopMessages/InteropMessagesTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -37,10 +37,7 @@ const InteropMessages = () => {
     }
 
     return (
-      <Skeleton
-        isLoaded={ !countQuery.isPlaceholderData }
-        display="inline-block"
-      >
+      <Skeleton loading={ countQuery.isPlaceholderData }>
         A total of { countQuery.data?.toLocaleString() } messages found
       </Skeleton>
     );
@@ -50,7 +47,7 @@ const InteropMessages = () => {
 
   const content = (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         { interopMessagesQuery.data?.items.map((item, index) => (
           <InteropMessagesListItem
             key={ item.init_transaction_hash + (interopMessagesQuery.isPlaceholderData ? index : '') }
@@ -58,14 +55,14 @@ const InteropMessages = () => {
             isLoading={ interopMessagesQuery.isPlaceholderData }
           />
         )) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <InteropMessagesTable
           items={ interopMessagesQuery.data?.items }
           top={ interopMessagesQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ interopMessagesQuery.isPlaceholderData }
         />
-      </Hide>
+      </Box>
     </>
   );
 
@@ -77,11 +74,12 @@ const InteropMessages = () => {
       />
       <DataListDisplay
         isError={ interopMessagesQuery.isError }
-        items={ interopMessagesQuery.data?.items }
+        itemsNum={ interopMessagesQuery.data?.items.length }
         emptyText="There are no interop messages."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

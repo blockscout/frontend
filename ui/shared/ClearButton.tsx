@@ -1,29 +1,25 @@
-import { chakra, IconButton, useColorModeValue } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import { CloseButton } from 'toolkit/chakra/close-button';
 
 interface Props {
   onClick: (e: React.SyntheticEvent) => void;
   isDisabled?: boolean;
   className?: string;
+  isVisible?: boolean;
 }
 
-const ClearButton = ({ onClick, isDisabled, className }: Props) => {
-  const iconColor = useColorModeValue('gray.300', 'gray.600');
-  const iconColorHover = useColorModeValue('gray.200', 'gray.500');
-
+const ClearButton = ({ onClick, isDisabled, isVisible = true, className }: Props) => {
   return (
-    <IconButton
-      isDisabled={ isDisabled }
+    <CloseButton
+      disabled={ isDisabled || !isVisible }
       className={ className }
-      colorScheme="none"
       aria-label="Clear input"
       title="Clear input"
-      boxSize={ 6 }
-      icon={ <IconSvg name="status/error" boxSize={ 3 } color={ iconColor } _hover={{ color: iconColorHover }}/> }
-      size="sm"
       onClick={ onClick }
+      opacity={ isVisible ? 1 : 0 }
+      visibility={ isVisible ? 'visible' : 'hidden' }
     />
   );
 };

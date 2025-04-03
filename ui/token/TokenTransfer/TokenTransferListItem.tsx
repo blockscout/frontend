@@ -6,9 +6,9 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -38,7 +38,7 @@ const TokenTransferListItem = ({
   }) : { usd: null, valueStr: null };
 
   return (
-    <ListItemMobile rowGap={ 3 } isAnimated>
+    <ListItemMobile rowGap={ 3 }>
       <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
         <TxEntity
           isLoading={ isLoading }
@@ -50,13 +50,13 @@ const TokenTransferListItem = ({
           timestamp={ timestamp }
           enableIncrement
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight="400"
           fontSize="sm"
           display="inline-block"
         />
       </Flex>
-      { method && <Tag isLoading={ isLoading }>{ method }</Tag> }
+      { method && <Badge loading={ isLoading }>{ method }</Badge> }
       <AddressFromTo
         from={ from }
         to={ to }
@@ -67,12 +67,12 @@ const TokenTransferListItem = ({
       />
       { valueStr && token && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Grid gap={ 2 } templateColumns={ `1fr auto auto${ usd ? ' auto' : '' }` }>
-          <Skeleton isLoaded={ !isLoading } flexShrink={ 0 } fontWeight={ 500 }>
+          <Skeleton loading={ isLoading } flexShrink={ 0 } fontWeight={ 500 }>
             Value
           </Skeleton>
           <Skeleton
-            isLoaded={ !isLoading }
-            color="text_secondary"
+            loading={ isLoading }
+            color="text.secondary"
             wordBreak="break-all"
             overflow="hidden"
             flexGrow={ 1 }
@@ -82,8 +82,8 @@ const TokenTransferListItem = ({
           { token.symbol && <TruncatedValue isLoading={ isLoading } value={ token.symbol }/> }
           { usd && (
             <Skeleton
-              isLoaded={ !isLoading }
-              color="text_secondary"
+              loading={ isLoading }
+              color="text.secondary"
               wordBreak="break-all"
               overflow="hidden"
             >

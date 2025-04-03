@@ -30,7 +30,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: I
     <Text
       overflow="hidden"
       whiteSpace="nowrap"
-      variant="secondary"
+      color="text.secondary"
     >
       <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>
     </Text>
@@ -41,7 +41,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: I
   const expiresText = data.ens_info?.expiry_date ? ` expires ${ dayjs(data.ens_info.expiry_date).fromNow() }` : '';
   const ensNamesCount = data?.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }`;
   const additionalInfo = (
-    <Text variant="secondary" textAlign={ isMobile ? 'start' : 'end' }>
+    <Text color="text.secondary" textAlign={ isMobile ? 'start' : 'end' }>
       { data?.ens_info.names_count > 1 ? ensNamesCount : expiresText }
     </Text>
   );

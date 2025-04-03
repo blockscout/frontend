@@ -1,21 +1,21 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
-import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { publicClient } from 'lib/web3/client';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
+import useActiveTabFromQuery from 'toolkit/components/RoutedTabs/useActiveTabFromQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxAssetFlows from 'ui/tx/TxAssetFlows';
 import TxAuthorizations from 'ui/tx/TxAuthorizations';
 import TxBlobs from 'ui/tx/TxBlobs';
@@ -44,7 +44,7 @@ const TransactionPageContent = () => {
 
   const showDegradedView = publicClient && ((isError && error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
 
-  const tabs: Array<RoutedTab> = (() => {
+  const tabs: Array<TabItemRegular> = (() => {
     const detailsComponent = showDegradedView ?
       <TxDetailsDegraded hash={ hash } txQuery={ txQuery }/> :
       <TxDetails txQuery={ txQuery }/>;
@@ -78,7 +78,7 @@ const TransactionPageContent = () => {
     ].filter(Boolean);
   })();
 
-  const tabIndex = useTabIndexFromQuery(tabs);
+  const activeTab = useActiveTabFromQuery(tabs);
 
   const txTags: Array<TEntityTag> = data?.transaction_tag ?
     [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 1 } ] : [];
@@ -117,8 +117,8 @@ const TransactionPageContent = () => {
     if (isPlaceholderData && !showDegradedView) {
       return (
         <>
-          <TabsSkeleton tabs={ tabs } mt={ 6 }/>
-          { tabs[tabIndex]?.component }
+          <RoutedTabsSkeleton tabs={ tabs } mt={ 6 }/>
+          { activeTab?.component }
         </>
       );
     }

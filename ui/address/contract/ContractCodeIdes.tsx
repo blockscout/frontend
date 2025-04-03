@@ -1,30 +1,24 @@
-import {
-  Flex,
-  Button,
-  chakra,
-  PopoverTrigger,
-  PopoverBody,
-  PopoverContent,
-  Image,
-  useDisclosure,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import Popover from 'ui/shared/chakra/Popover';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Button } from 'toolkit/chakra/button';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { PopoverRoot, PopoverTrigger, PopoverContent, PopoverBody } from 'toolkit/chakra/popover';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 
 interface Props {
   className?: string;
   hash: string;
-  isLoading?: string;
+  isLoading?: boolean;
 }
 
 const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { open, onOpenChange } = useDisclosure();
   const defaultIconColor = useColorModeValue('gray.600', 'gray.500');
 
   const ideLinks = React.useMemo(() => {
@@ -36,16 +30,16 @@ const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
           <IconSvg name="ABI_slim" boxSize={ 5 } color={ defaultIconColor } mr={ 2 }/>;
 
         return (
-          <LinkExternal key={ ide.title } href={ url } display="inline-flex" alignItems="center">
+          <Link external key={ ide.title } href={ url } display="inline-flex" alignItems="center">
             { icon }
             { ide.title }
-          </LinkExternal>
+          </Link>
         );
       });
   }, [ defaultIconColor, hash ]);
 
   if (isLoading) {
-    return <Skeleton h={ 8 } w="92px" borderRadius="base"/>;
+    return <Skeleton loading h={ 8 } w="92px" borderRadius="base"/>;
   }
 
   if (ideLinks.length === 0) {
@@ -53,28 +47,25 @@ const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
   }
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+    <PopoverRoot open={ open } onOpenChange={ onOpenChange }>
       <PopoverTrigger>
         <Button
           className={ className }
           size="sm"
-          variant="outline"
-          colorScheme="gray"
-          onClick={ onToggle }
-          isActive={ isOpen }
+          variant="dropdown"
           aria-label="Open source code in IDE"
           fontWeight={ 500 }
-          px={ 2 }
+          gap={ 0 }
           h="32px"
           flexShrink={ 0 }
         >
           <span>Open in</span>
-          <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
+          <IconSvg name="arrows/east-mini" transform={ open ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
         </Button>
       </PopoverTrigger>
       <PopoverContent w="240px">
         <PopoverBody >
-          <chakra.span color="text_secondary" fontSize="xs">Redactors</chakra.span>
+          <chakra.span color="text.secondary" fontSize="xs">Redactors</chakra.span>
           <Flex
             flexDir="column"
             alignItems="flex-start"
@@ -86,7 +77,7 @@ const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
           </Flex>
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   );
 };
 

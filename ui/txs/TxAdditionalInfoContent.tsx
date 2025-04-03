@@ -1,4 +1,4 @@
-import { Box, Heading, Text, Flex } from '@chakra-ui/react';
+import { Box, Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -9,8 +9,8 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import { currencyUnits } from 'lib/units';
+import { Link } from 'toolkit/chakra/link';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxFee from 'ui/shared/tx/TxFee';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -18,7 +18,7 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
   const sectionProps = {
     borderBottom: '1px solid',
-    borderColor: 'divider',
+    borderColor: 'border.divider',
     paddingBottom: 4,
   };
 
@@ -30,18 +30,17 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
 
   return (
     <>
-      <Heading as="h4" size="sm" mb={ 6 }>Additional info </Heading>
       { tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0 && (
         <Box { ...sectionProps } mb={ 4 }>
           <Flex alignItems="center" justifyContent="space-between">
             <Text { ...sectionTitleProps }>Blobs: { tx.blob_versioned_hashes.length }</Text>
             { tx.blob_versioned_hashes.length > 3 && (
-              <LinkInternal
+              <Link
                 href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash, tab: 'blobs' } }) }
                 mb={ 3 }
               >
                 view all
-              </LinkInternal>
+              </Link>
             ) }
           </Flex>
           <Flex flexDir="column" rowGap={ 3 }>
@@ -117,7 +116,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           </Box>
         </Box>
       ) }
-      <LinkInternal href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }) }>More details</LinkInternal>
+      <Link href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }) }>More details</Link>
     </>
   );
 };

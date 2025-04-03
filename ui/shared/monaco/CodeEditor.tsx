@@ -1,5 +1,5 @@
 import type { SystemStyleObject } from '@chakra-ui/react';
-import { Box, useColorMode, Flex, useToken, Center } from '@chakra-ui/react';
+import { Box, Flex, useToken, Center } from '@chakra-ui/react';
 import type { EditorProps } from '@monaco-editor/react';
 import MonacoEditor from '@monaco-editor/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
@@ -11,6 +11,7 @@ import type { SmartContractExternalLibrary } from 'types/api/contract';
 import useClientRect from 'lib/hooks/useClientRect';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import isMetaKey from 'lib/isMetaKey';
+import { useColorMode } from 'toolkit/chakra/color-mode';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 
 import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
@@ -56,7 +57,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
   const [ containerRect, containerNodeRef ] = useClientRect<HTMLDivElement>();
 
   const { colorMode } = useColorMode();
-  const borderRadius = useToken('radii', 'md');
+  const [ borderRadius ] = useToken('radii', 'md');
   const isMobile = useIsMobile();
   const themeColors = useThemeColors();
 
@@ -202,28 +203,28 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     setIsMetaPressed(false);
   }, []);
 
-  const containerSx: SystemStyleObject = React.useMemo(() => ({
-    '.editor-container': {
+  const containerCss: SystemStyleObject = React.useMemo(() => ({
+    '& .editor-container': {
       position: 'absolute',
       top: 0,
       left: 0,
       width: `${ editorWidth }px`,
       height: '100%',
     },
-    '.monaco-editor': {
+    '& .monaco-editor': {
       'border-bottom-left-radius': borderRadius,
     },
-    '.monaco-editor .overflow-guard': {
+    '& .monaco-editor .overflow-guard': {
       'border-bottom-left-radius': borderRadius,
     },
-    '.monaco-editor .core-guide': {
+    '& .monaco-editor .core-guide': {
       zIndex: 1,
     },
     // '.monaco-editor .currentFindMatch': // TODO: find a better way to style this
-    '.monaco-editor .findMatch': {
+    '& .monaco-editor .findMatch': {
       backgroundColor: themeColors['custom.findMatchHighlightBackground'],
     },
-    '.highlight': {
+    '& .highlight': {
       backgroundColor: themeColors['custom.findMatchHighlightBackground'],
     },
     '&&.meta-pressed .import-link:hover, &&.meta-pressed .import-link:hover + .import-link': {
@@ -231,19 +232,19 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
       textDecoration: 'underline',
       cursor: 'pointer',
     },
-    '.risk-warning-primary': {
+    '& .risk-warning-primary': {
       backgroundColor: themeColors['custom.riskWarning.primaryBackground'],
     },
-    '.risk-warning': {
+    '& .risk-warning': {
       backgroundColor: themeColors['custom.riskWarning.background'],
     },
-    '.main-contract-header': {
+    '& .main-contract-header': {
       backgroundColor: themeColors['custom.mainContract.header'],
     },
-    '.main-contract-body': {
+    '& .main-contract-body': {
       backgroundColor: themeColors['custom.mainContract.body'],
     },
-    '.main-contract-glyph': {
+    '& .main-contract-glyph': {
       zIndex: 1,
       background: 'url(/static/contract_star.png) no-repeat center center',
       backgroundSize: '12px',
@@ -256,18 +257,18 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
   }, [ themeColors ]);
 
   if (data.length === 1) {
-    const sx = {
-      ...containerSx,
-      '.monaco-editor': {
+    const css = {
+      ...containerCss,
+      '& .monaco-editor': {
         'border-radius': borderRadius,
       },
-      '.monaco-editor .overflow-guard': {
+      '& .monaco-editor .overflow-guard': {
         'border-radius': borderRadius,
       },
     };
 
     return (
-      <Box height={ `${ EDITOR_HEIGHT }px` } width="100%" sx={ sx } ref={ containerNodeRef }>
+      <Box height={ `${ EDITOR_HEIGHT }px` } width="100%" css={ css } ref={ containerNodeRef }>
         <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
           <MonacoEditor
             className="editor-container"
@@ -290,7 +291,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
       height={ `${ EDITOR_HEIGHT + TABS_HEIGHT + BREADCRUMBS_HEIGHT }px` }
       position="relative"
       ref={ containerNodeRef }
-      sx={ containerSx }
+      css={ containerCss }
       overflow={{ base: 'hidden', lg: 'visible' }}
       borderRadius="md"
       onClick={ handleClick }

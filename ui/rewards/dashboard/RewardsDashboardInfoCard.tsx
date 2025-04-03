@@ -1,8 +1,9 @@
-import { Flex, Image } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import LinkExternal from 'ui/shared/links/LinkExternal';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import RewardsDashboardCard from './RewardsDashboardCard';
 
@@ -36,15 +37,16 @@ const RewardsDashboardInfoCard = ({ title, description, imageSrc, imageWidth, im
         alt={ title }
         w={ imageWidth }
         h={ imageHeight }
-        fallback={ <Skeleton w={ imageWidth } h={ imageHeight }/> }
+        fallback={ <Skeleton loading w={ imageWidth } h={ imageHeight }/> }
       />
-      <LinkExternal
+      <Link
+        external
         href={ linkHref }
         fontSize="md"
         fontWeight="500"
       >
         { linkText }
-      </LinkExternal>
+      </Link>
     </Flex>
   </RewardsDashboardCard>
 );
