@@ -6,7 +6,7 @@ import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -36,12 +36,12 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.index }</Skeleton>
+        <Skeleton loading={ isLoading } display="inline-block">{ item.index }</Skeleton>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Validator index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.validator_index }</Skeleton>
+        <Skeleton loading={ isLoading } display="inline-block">{ item.validator_index }</Skeleton>
       </ListItemMobileGrid.Value>
 
       { view !== 'block' && (
@@ -51,8 +51,7 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
             <BlockEntity
               number={ item.block_number }
               isLoading={ isLoading }
-              fontSize="sm"
-              lineHeight={ 5 }
+              textStyle="sm"
             />
           </ListItemMobileGrid.Value>
         </>

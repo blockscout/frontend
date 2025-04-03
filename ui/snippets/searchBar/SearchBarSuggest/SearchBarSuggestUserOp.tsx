@@ -24,7 +24,7 @@ const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserO
           { icon }
           { hash }
         </Flex>
-        <Text variant="secondary">{ date }</Text>
+        <Text color="text.secondary">{ date }</Text>
       </>
     );
   }
@@ -35,7 +35,7 @@ const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserO
         { icon }
         { hash }
       </Flex>
-      <Text variant="secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text>
+      <Text color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text>
     </Flex>
   );
 };

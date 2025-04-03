@@ -28,9 +28,10 @@ type Props = {
   tokenInstance?: TokenInstance;
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
   shouldRender?: boolean;
+  tabsHeight?: number;
 };
 
-const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tokenInstance, shouldRender = true }: Props) => {
+const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tabsHeight = TABS_HEIGHT, tokenInstance, shouldRender = true }: Props) => {
   const isMobile = useIsMobile();
   const isMounted = useIsMounted();
   const router = useRouter();
@@ -75,7 +76,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tokenInstance, sho
       <Box display={{ base: 'none', lg: 'block' }}>
         <TokenTransferTable
           data={ data?.items }
-          top={ pagination.isVisible ? TABS_HEIGHT : 0 }
+          top={ tabsHeight }
           showSocketInfo={ pagination.page === 1 }
           socketInfoAlert={ socketAlert }
           socketInfoNum={ newItemsCount }
@@ -109,11 +110,12 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tokenInstance, sho
   return (
     <DataListDisplay
       isError={ isError || isTokenError }
-      items={ data?.items }
+      itemsNum={ data?.items.length }
       emptyText="There are no token transfers."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

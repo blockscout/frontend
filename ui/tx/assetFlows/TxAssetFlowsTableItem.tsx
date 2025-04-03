@@ -1,6 +1,6 @@
-import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
+import { TableRow, TableCell } from 'toolkit/chakra/table';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
 
 import NovesActionSnippet from './components/NovesActionSnippet';
@@ -14,14 +14,14 @@ type Props = {
 const TxAssetFlowsTableItem = (props: Props) => {
 
   return (
-    <Tr >
-      <Td px={ 3 } py={ 5 } fontSize="sm" borderColor="gray.200" _dark={{ borderColor: 'whiteAlpha.200' }}>
+    <TableRow>
+      <TableCell px={ 3 } py={ 5 } textStyle="sm" borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.200' }}>
         <NovesActionSnippet item={ props.item } isLoaded={ !props.isPlaceholderData }/>
-      </Td>
-      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" _dark={{ borderColor: 'whiteAlpha.200' }}>
+      </TableCell>
+      <TableCell px={ 3 } py="18px" textStyle="sm" borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.200' }}>
         <NovesFromTo item={ props.item } isLoaded={ !props.isPlaceholderData }/>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

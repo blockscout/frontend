@@ -1,4 +1,4 @@
-import { chakra, Box, Text, Button, Flex } from '@chakra-ui/react';
+import { chakra, Box, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Screen } from '../types';
@@ -7,6 +7,7 @@ import type { UserInfo } from 'types/api/account';
 import config from 'configs/app';
 import { apos } from 'lib/html-entities';
 import shortenString from 'lib/shortenString';
+import { Button } from 'toolkit/chakra/button';
 
 interface Props {
   address: string;
@@ -55,9 +56,9 @@ const AuthModalScreenSuccessWallet = ({ address, onAddEmail, onClose, isAuth, pr
             Add your email to receive exclusive updates about Blockscout { config.features.rewards.isEnabled ? 'Merits ' : ' ' }
             and notifications about addresses in your watch list.
           </Text>
-          <Flex mt={ 6 } gap={ 2 }>
+          <Flex mt={ 6 } gap={ 6 }>
             <Button onClick={ handleAddEmailClick }>Add email</Button>
-            <Button variant="simple" onClick={ onClose }>I{ apos }ll do it later</Button>
+            <Button variant="link" onClick={ onClose }>I{ apos }ll do it later</Button>
           </Flex>
         </>
       ) : (

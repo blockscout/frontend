@@ -14,16 +14,16 @@ interface Props {
 const GasInfoTooltipRow = ({ name, info }: Props) => {
   return (
     <>
-      <Box>
+      <Box textAlign="left">
         <chakra.span>{ name }</chakra.span>
         { info && typeof info.time === 'number' && info.time > 0 && (
-          <chakra.span color="text_secondary">
+          <chakra.span color="text.secondary">
             { space }{ (info.time / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 }) }s
           </chakra.span>
         ) }
       </Box>
       <GasPrice data={ info } textAlign="right"/>
-      <GasPrice data={ info } unitMode="secondary" color="text_secondary" textAlign="right"/>
+      <GasPrice data={ info } unitMode="secondary" color="text.secondary" textAlign="right"/>
     </>
   );
 };

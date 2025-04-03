@@ -40,7 +40,7 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
   {
     id: 'or_and',
     name: '',
-    width: '60px',
+    width: '65px',
   },
   {
     id: 'to',

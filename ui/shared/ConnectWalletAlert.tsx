@@ -1,10 +1,12 @@
-import { Alert, Button, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useWeb3Wallet from 'lib/web3/useWallet';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Alert } from 'toolkit/chakra/alert';
+import { Button } from 'toolkit/chakra/button';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
@@ -25,7 +27,7 @@ const ConnectWalletAlert = ({ isLoading }: Props) => {
             onClick={ web3Wallet.connect }
             size="sm"
             variant="outline"
-            isLoading={ web3Wallet.isOpen }
+            loading={ web3Wallet.isOpen }
             loadingText="Connect wallet"
           >
             Connect wallet
@@ -52,8 +54,8 @@ const ConnectWalletAlert = ({ isLoading }: Props) => {
   })();
 
   return (
-    <Skeleton isLoaded={ !isLoading }>
-      <Alert status={ web3Wallet.address ? 'success' : 'warning' }>
+    <Skeleton loading={ isLoading }>
+      <Alert status={ web3Wallet.address ? 'success' : 'warning' } descriptionProps={{ alignItems: 'center' }}>
         { content }
       </Alert>
     </Skeleton>

@@ -1,6 +1,6 @@
-import { Box, Heading, Flex, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { AnimatePresence } from 'framer-motion';
+// import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
@@ -9,11 +9,13 @@ import type { ArbitrumL2TxnBatchesItem } from 'types/api/arbitrumL2';
 import { route } from 'nextjs-routes';
 
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useInitialList from 'lib/hooks/useInitialList';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { ARBITRUM_L2_TXN_BATCHES_ITEM } from 'stubs/arbitrumL2';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Heading } from 'toolkit/chakra/heading';
+import { Link } from 'toolkit/chakra/link';
 
 import LatestBatchItem from './LatestBatchItem';
 
@@ -26,6 +28,12 @@ const LatestArbitrumL2Batches = () => {
     queryOptions: {
       placeholderData: { items: Array(batchesMaxCount).fill(ARBITRUM_L2_TXN_BATCHES_ITEM) },
     },
+  });
+
+  const initialList = useInitialList({
+    data: data?.items ?? [],
+    idFn: (batch) => batch.number,
+    enabled: !isPlaceholderData,
   });
 
   const handleNewBatchMessage: SocketMessage.NewArbitrumL2Batch['handler'] = React.useCallback((payload) => {
@@ -61,21 +69,20 @@ const LatestArbitrumL2Batches = () => {
 
     content = (
       <>
-        <VStack spacing={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
-          <AnimatePresence initial={ false } >
-            { dataToShow.map(((batch, index) => (
-              <LatestBatchItem
-                key={ batch.number + (isPlaceholderData ? String(index) : '') }
-                number={ batch.number }
-                timestamp={ batch.commitment_transaction.timestamp }
-                txCount={ batch.transactions_count }
-                isLoading={ isPlaceholderData }
-              />
-            ))) }
-          </AnimatePresence>
+        <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
+          { dataToShow.map(((batch, index) => (
+            <LatestBatchItem
+              key={ batch.number + (isPlaceholderData ? String(index) : '') }
+              number={ batch.number }
+              timestamp={ batch.commitment_transaction.timestamp }
+              txCount={ batch.transactions_count }
+              isLoading={ isPlaceholderData }
+              animation={ initialList.getAnimationProp(batch) }
+            />
+          ))) }
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/batches' }) }>View all batches</LinkInternal>
+          <Link textStyle="sm" href={ route({ pathname: '/batches' }) }>View all batches</Link>
         </Flex>
       </>
     );
@@ -83,7 +90,7 @@ const LatestArbitrumL2Batches = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm" mb={ 3 }>Latest batches</Heading>
+      <Heading level="3" mb={ 3 }>Latest batches</Heading>
       { content }
     </Box>
   );

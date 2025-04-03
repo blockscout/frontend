@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
@@ -11,11 +11,11 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX_ZKEVM_L2 } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { ZKEVM_L2_TXN_BATCH } from 'stubs/zkEvmL2';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import ZkEvmL2TxnBatchDetails from 'ui/txnBatches/zkEvmL2/ZkEvmL2TxnBatchDetails';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
@@ -46,7 +46,7 @@ const ZkEvmL2TxnBatch = () => {
   throwOnAbsentParamError(number);
   throwOnResourceLoadError(batchQuery);
 
-  const tabs: Array<RoutedTab> = React.useMemo(() => ([
+  const tabs: Array<TabItemRegular> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <ZkEvmL2TxnBatchDetails query={ batchQuery }/> },
     { id: 'txs', title: 'Transactions', component: <TxsWithFrontendSorting query={ batchTxsQuery } showSocketInfo={ false }/> },
   ].filter(Boolean)), [ batchQuery, batchTxsQuery ]);
@@ -71,7 +71,7 @@ const ZkEvmL2TxnBatch = () => {
         title={ `Txn batch #${ number }` }
         backLink={ backLink }
       />
-      { batchQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (
+      { batchQuery.isPlaceholderData ? <RoutedTabsSkeleton tabs={ tabs }/> : (
         <RoutedTabs
           tabs={ tabs }
         />

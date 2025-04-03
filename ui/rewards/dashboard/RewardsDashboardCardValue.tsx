@@ -1,8 +1,8 @@
 import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import HintPopover from 'ui/shared/HintPopover';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import Hint from 'ui/shared/Hint';
 
 import MeritsIcon from '../MeritsIcon';
 
@@ -19,20 +19,14 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomT
   <Flex key={ label } flexDirection="column" alignItems="center" gap={ 2 }>
     { label && (
       <Flex alignItems="center" gap={ 1 }>
-        { hint && (
-          <HintPopover
-            label={ hint }
-            popoverContentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
-            popoverBodyProps={{ textAlign: 'center' }}
-          />
-        ) }
-        <Text fontSize="xs" fontWeight="500" variant="secondary">
+        { hint && <Hint label={ hint }/> }
+        <Text fontSize="xs" fontWeight="500" color="text.secondary">
           { label }
         </Text>
       </Flex>
     ) }
     <Skeleton
-      isLoaded={ !isLoading }
+      loading={ isLoading }
       display="flex"
       alignItems="center"
       justifyContent="center"
@@ -45,7 +39,7 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomT
       </Text>
     </Skeleton>
     { bottomText && (
-      <Skeleton isLoaded={ !isLoading }>
+      <Skeleton loading={ isLoading }>
         <Text fontSize="xs" fontWeight="500" variant="secondary">
           { bottomText }
         </Text>

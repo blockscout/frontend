@@ -108,8 +108,8 @@ const Stats = () => {
           boxSize={ 5 }
           flexShrink={ 0 }
           cursor="pointer"
-          color="icon_info"
-          _hover={{ color: 'link_hovered' }}
+          color="icon.info"
+          _hover={{ color: 'link.primary.hove' }}
         />
       </GasInfoTooltip>
     ) : null;

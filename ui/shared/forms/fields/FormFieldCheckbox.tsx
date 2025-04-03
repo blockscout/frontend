@@ -1,14 +1,15 @@
-import type { ChakraProps } from '@chakra-ui/react';
-import { chakra, Checkbox } from '@chakra-ui/react';
 import React from 'react';
 import { useController, useFormContext, type FieldValues, type Path } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
 
+import type { CheckboxProps } from 'toolkit/chakra/checkbox';
+import { Checkbox } from 'toolkit/chakra/checkbox';
+
 interface Props<
   FormFields extends FieldValues,
   Name extends Path<FormFields> = Path<FormFields>,
-> extends Omit<FormFieldPropsBase<FormFields, Name>, 'size' | 'bgColor' | 'placeholder'> {
+> extends Pick<FormFieldPropsBase<FormFields, Name>, 'rules' | 'name' | 'onChange' | 'readOnly'>, Omit<CheckboxProps, 'name' | 'onChange'> {
   label: string;
 }
 
@@ -20,8 +21,8 @@ const FormFieldCheckbox = <
   label,
   rules,
   onChange,
-  isReadOnly,
-  className,
+  readOnly,
+  ...rest
 }: Props<FormFields, Name>) => {
   const { control } = useFormContext<FormFields>();
   const { field, formState } = useController<FormFields, typeof name>({
@@ -32,32 +33,23 @@ const FormFieldCheckbox = <
 
   const isDisabled = formState.isSubmitting;
 
-  const handleChange: typeof field.onChange = React.useCallback((...args) => {
-    field.onChange(...args);
+  const handleChange: typeof field.onChange = React.useCallback(({ checked }: { checked: boolean }) => {
+    field.onChange(checked);
     onChange?.();
   }, [ field, onChange ]);
 
   return (
     <Checkbox
       ref={ field.ref }
-      isChecked={ field.value }
-      className={ className }
-      onChange={ handleChange }
-      colorScheme="blue"
-      size="lg"
-      isDisabled={ isDisabled }
-      isReadOnly={ isReadOnly }
+      checked={ field.value }
+      onCheckedChange={ handleChange }
+      size="md"
+      disabled={ isDisabled }
+      { ...rest }
     >
       { label }
     </Checkbox>
   );
 };
 
-const WrappedFormFieldCheckbox = chakra(FormFieldCheckbox);
-
-export type WrappedComponent = <
-  FormFields extends FieldValues,
-  Name extends Path<FormFields> = Path<FormFields>,
->(props: Props<FormFields, Name> & ChakraProps) => React.JSX.Element;
-
-export default React.memo(WrappedFormFieldCheckbox) as WrappedComponent;
+export default React.memo(FormFieldCheckbox) as typeof FormFieldCheckbox;

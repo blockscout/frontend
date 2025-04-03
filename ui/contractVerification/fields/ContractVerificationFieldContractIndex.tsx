@@ -1,18 +1,18 @@
-import { useUpdateEffect } from '@chakra-ui/react';
+import { createListCollection, useUpdateEffect } from '@chakra-ui/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-import type { Option } from 'ui/shared/forms/inputs/select/types';
 
-import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
+import type { SelectOption } from 'toolkit/chakra/select';
+import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 const SOURCIFY_ERROR_REGEXP = /\(([^()]*)\)/;
 
 const ContractVerificationFieldContractIndex = () => {
-  const [ options, setOptions ] = React.useState<Array<Option>>([]);
+  const [ options, setOptions ] = React.useState<Array<SelectOption>>([]);
   const { formState, watch } = useFormContext<FormFields>();
 
   const sources = watch('sources');
@@ -37,18 +37,21 @@ const ContractVerificationFieldContractIndex = () => {
     setOptions([]);
   }, [ sources ]);
 
+  const collection = React.useMemo(() => {
+    return createListCollection({ items: options });
+  }, [ options ]);
+
   if (options.length === 0) {
     return null;
   }
 
   return (
     <ContractVerificationFormRow>
-      <FormFieldFancySelect<FormFields, 'contract_index'>
+      <FormFieldSelect<FormFields, 'contract_index'>
         name="contract_index"
         placeholder="Contract name"
-        options={ options }
-        isRequired
-        isAsync={ false }
+        collection={ collection }
+        required
       />
     </ContractVerificationFormRow>
   );

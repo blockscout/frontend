@@ -59,7 +59,7 @@ const Content = ({ data }: Props) => {
     <Flex fontSize="sm" flexDir="column" rowGap={ 5 }>
       { (description || docs || support) && (
         <div>
-          <Text variant="secondary" fontSize="xs">Description and support info</Text>
+          <Text color="text.secondary" fontSize="xs">Description and support info</Text>
           { description }
           { (docs || support) && (
             <Flex alignItems="center" flexWrap="wrap" columnGap={ 6 } mt={ 3 }>
@@ -71,7 +71,7 @@ const Content = ({ data }: Props) => {
       ) }
       { socialLinks.length > 0 && (
         <div>
-          <Text variant="secondary" fontSize="xs">Links</Text>
+          <Text color="text.secondary" fontSize="xs">Links</Text>
           <Grid templateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} columnGap={ 4 } rowGap={ 3 } mt={ 3 }>
             { socialLinks.map((link) => <ServiceLink key={ link.field } { ...link }/>) }
           </Grid>
@@ -79,7 +79,7 @@ const Content = ({ data }: Props) => {
       ) }
       { priceTickersLinks.length > 0 && (
         <div>
-          <Text variant="secondary" fontSize="xs">Crypto markets</Text>
+          <Text color="text.secondary" fontSize="xs">Crypto markets</Text>
           <Grid templateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} columnGap={ 4 } rowGap={ 3 } mt={ 3 }>
             { priceTickersLinks.map((link) => <ServiceLink key={ link.field } { ...link }/>) }
           </Grid>

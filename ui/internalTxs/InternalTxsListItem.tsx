@@ -6,9 +6,9 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -38,7 +38,7 @@ const InternalTxsListItem = ({
   return (
     <ListItemMobile rowGap={ 3 }>
       <Flex columnGap={ 2 }>
-        { typeTitle && <Tag colorScheme="cyan" isLoading={ isLoading }>{ typeTitle }</Tag> }
+        { typeTitle && <Badge colorPalette="cyan" loading={ isLoading }>{ typeTitle }</Badge> }
         <TxStatus status={ success ? 'ok' : 'error' } errorText={ error } isLoading={ isLoading }/>
       </Flex>
       <Flex justifyContent="space-between" width="100%">
@@ -51,19 +51,18 @@ const InternalTxsListItem = ({
         <TimeAgoWithTooltip
           timestamp={ timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight="400"
           fontSize="sm"
         />
       </Flex>
-      <HStack spacing={ 1 }>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Block</Skeleton>
+      <HStack gap={ 1 }>
+        <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Block</Skeleton>
         <BlockEntity
           isLoading={ isLoading }
           number={ blockNumber }
           noIcon
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
         />
       </HStack>
       <AddressFromTo
@@ -73,9 +72,9 @@ const InternalTxsListItem = ({
         isLoading={ isLoading }
         w="100%"
       />
-      <HStack spacing={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Value { currencyUnits.ether }</Skeleton>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" minW={ 6 }>
+      <HStack gap={ 3 }>
+        <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Value { currencyUnits.ether }</Skeleton>
+        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" minW={ 6 }>
           <span>{ BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }</span>
         </Skeleton>
       </HStack>

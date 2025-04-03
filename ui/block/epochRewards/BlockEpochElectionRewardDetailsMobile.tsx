@@ -1,4 +1,4 @@
-import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -25,8 +25,6 @@ const BlockEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
 
-  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-
   const { cutRef, query } = useLazyLoadedList({
     rootRef,
     resourceName: 'block_election_rewards',
@@ -37,7 +35,15 @@ const BlockEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
   });
 
   return (
-    <Flex flexDir="column" rowGap={ 3 } p={ 4 } bgColor={ bgColor } borderRadius="base" maxH="360px" overflowY="scroll">
+    <Flex
+      flexDir="column"
+      rowGap={ 3 }
+      p={ 4 }
+      bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
+      borderRadius="base"
+      maxH="360px"
+      overflowY="scroll"
+    >
 
       { query.data?.pages
         .map((page) => page.items)
@@ -53,12 +59,12 @@ const BlockEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
             <Flex key={ index } flexDir="column" alignItems="flex-start" rowGap={ 1 } fontWeight={ 400 }>
               <AddressEntity address={ item.account } noIcon w="100%"/>
               <Flex columnGap={ 1 } alignItems="center">
-                <Box flexShrink={ 0 } color="text_secondary">got</Box>
+                <Box flexShrink={ 0 } color="text.secondary">got</Box>
                 <Box>{ amount.valueStr }</Box>
                 <TokenEntity token={ token } noIcon onlySymbol w="auto"/>
               </Flex>
               <Flex columnGap={ 1 } alignItems="center" w="100%">
-                <Box flexShrink={ 0 } color="text_secondary">on behalf of</Box>
+                <Box flexShrink={ 0 } color="text.secondary">on behalf of</Box>
                 <AddressEntity address={ item.associated_account } noIcon/>
               </Flex>
             </Flex>
@@ -67,7 +73,7 @@ const BlockEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
 
       { query.isFetching && <ContentLoader maxW="200px" mt={ 3 }/> }
 
-      { query.isError && <Text color="error" mt={ 3 }>Something went wrong. Unable to load next page.</Text> }
+      { query.isError && <Text color="text.error" mt={ 3 }>Something went wrong. Unable to load next page.</Text> }
 
       <Box h="0" w="100px" mt="-12px" ref={ cutRef }/>
     </Flex>

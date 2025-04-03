@@ -10,10 +10,12 @@ const baseUrl = [
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
 const isDev = getEnvValue('NEXT_PUBLIC_APP_ENV') === 'development';
+const isPw = getEnvValue('NEXT_PUBLIC_APP_INSTANCE') === 'pw';
 const spriteHash = getEnvValue('NEXT_PUBLIC_ICON_SPRITE_HASH');
 
 const app = Object.freeze({
   isDev,
+  isPw,
   protocol: appSchema,
   host: appHost,
   port: appPort,

@@ -11,12 +11,12 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { Link } from 'toolkit/chakra/link';
 import BlocksList from 'ui/blocks/BlocksList';
 import BlocksTable from 'ui/blocks/BlocksTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
@@ -87,7 +87,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
 
   const content = query.data?.items ? (
     <>
-      <Box display={{ base: 'block', lg: 'none' }}>
+      <Box hideFrom="lg">
         { query.pagination.page === 1 && enableSocket && (
           <SocketNewItemsNotice.Mobile
             url={ window.location.href }
@@ -99,7 +99,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
         ) }
         <BlocksList data={ query.data.items } isLoading={ query.isPlaceholderData } page={ query.pagination.page }/>
       </Box>
-      <Box display={{ base: 'none', lg: 'block' }}>
+      <Box hideBelow="lg">
         <BlocksTable
           data={ query.data.items }
           top={ top || (query.pagination.isVisible ? TABS_HEIGHT : 0) }
@@ -115,10 +115,10 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
 
   const actionBar = isMobile ? (
     <ActionBar mt={ -6 }>
-      <LinkInternal display="inline-flex" alignItems="center" href={ route({ pathname: '/block/countdown' }) }>
+      <Link href={ route({ pathname: '/block/countdown' }) }>
         <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
-      </LinkInternal>
+      </Link>
       <Pagination ml="auto" { ...query.pagination }/>
     </ActionBar>
   ) : null;
@@ -126,11 +126,12 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   return (
     <DataListDisplay
       isError={ query.isError }
-      items={ query.data?.items }
+      itemsNum={ query.data?.items?.length }
       emptyText="There are no blocks."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

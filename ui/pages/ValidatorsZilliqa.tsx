@@ -1,4 +1,4 @@
-import { Box, Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -37,12 +37,12 @@ const ValidatorsZilliqa = () => {
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         <ValidatorsList data={ data.items } isLoading={ isPlaceholderData }/>
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <ValidatorsTable data={ data.items } isLoading={ isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   ) : null;
 
@@ -51,11 +51,12 @@ const ValidatorsZilliqa = () => {
       <PageTitle title="Validators" withTextAd/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no validators."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </Box>
   );
 };

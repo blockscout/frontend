@@ -1,6 +1,8 @@
-import { useToken, useColorModeValue } from '@chakra-ui/react';
+import { useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
+
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 
 interface Props {
   limits: [[number, number], [number, number]];
@@ -10,7 +12,7 @@ interface Props {
 
 export default function useBrushX({ limits, anchor, setRange }: Props) {
   const brushRef = React.useRef<d3.BrushBehavior<unknown>>();
-  const brushSelectionBg = useToken('colors', useColorModeValue('blackAlpha.400', 'whiteAlpha.500'));
+  const [ brushSelectionBg ] = useToken('colors', useColorModeValue('blackAlpha.400', 'whiteAlpha.500'));
 
   React.useEffect(() => {
     if (!anchor || brushRef.current || limits[1][0] === 0) {

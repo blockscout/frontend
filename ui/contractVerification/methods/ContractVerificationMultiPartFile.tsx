@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { SmartContractVerificationConfig } from 'types/client/contract';
+
 import ContractVerificationMethod from '../ContractVerificationMethod';
 import ContractVerificationFieldCompiler from '../fields/ContractVerificationFieldCompiler';
 import ContractVerificationFieldEvmVersion from '../fields/ContractVerificationFieldEvmVersion';
@@ -9,11 +11,11 @@ import ContractVerificationFieldSources from '../fields/ContractVerificationFiel
 
 const FILE_TYPES = [ '.sol' as const, '.yul' as const ];
 
-const ContractVerificationMultiPartFile = () => {
+const ContractVerificationMultiPartFile = ({ config }: { config: SmartContractVerificationConfig }) => {
   return (
     <ContractVerificationMethod title="Contract verification via Solidity (multi-part files)">
-      <ContractVerificationFieldCompiler/>
-      <ContractVerificationFieldEvmVersion/>
+      <ContractVerificationFieldCompiler config={ config }/>
+      <ContractVerificationFieldEvmVersion config={ config }/>
       <ContractVerificationFieldOptimization/>
       <ContractVerificationFieldSources
         fileTypes={ FILE_TYPES }

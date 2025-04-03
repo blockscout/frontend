@@ -41,7 +41,7 @@ const BlobPageContent = () => {
   })();
 
   const titleSecondRow = (
-    <BlobEntity hash={ hash } noLink fontWeight={ 500 } fontFamily="heading"/>
+    <BlobEntity hash={ hash } noLink variant="subheading"/>
   );
 
   return (

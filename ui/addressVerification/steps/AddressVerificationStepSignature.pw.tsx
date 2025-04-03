@@ -44,5 +44,5 @@ test('INVALID_SIGNER_ERROR view +@mobile', async({ render, page }) => {
   await signatureInput.fill(mocks.SIGNATURE);
   await page.getByRole('button', { name: /verify/i }).click();
 
-  await expect(page).toHaveScreenshot();
+  await expect(page).toHaveScreenshot({ fullPage: true });
 });

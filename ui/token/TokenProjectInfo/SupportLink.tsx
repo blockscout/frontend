@@ -1,6 +1,6 @@
-import { Link } from '@chakra-ui/react';
 import React from 'react';
 
+import { Link } from 'toolkit/chakra/link';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -19,7 +19,7 @@ const SupportLink = ({ url }: Props) => {
       alignItems="center"
       columnGap={ 1 }
     >
-      <IconSvg name={ isEmail ? 'email' : 'link' } boxSize={ 6 } color="text_secondary"/>
+      <IconSvg name={ isEmail ? 'email' : 'link' } boxSize={ 6 } color="text.secondary"/>
       <span>{ url }</span>
     </Link>
   );

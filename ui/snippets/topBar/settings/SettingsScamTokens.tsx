@@ -1,9 +1,10 @@
-import { FormLabel, FormControl, Switch, Box } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
+import { Switch } from 'toolkit/chakra/switch';
 
 const SettingsScamTokens = () => {
   const { cookies: appCookies } = useAppContext();
@@ -28,12 +29,20 @@ const SettingsScamTokens = () => {
   return (
     <>
       <Box borderColor="divider" borderTopWidth="1px" my={ 3 }/>
-      <FormControl display="flex" alignItems="center" justifyContent="space-between" alignSelf="stretch" columnGap={ 2 } mt={ 4 }>
-        <FormLabel htmlFor="scam-tokens" m="0" fontWeight={ 400 } fontSize="sm" lineHeight={ 5 }>
-          Hide scam tokens
-        </FormLabel>
-        <Switch id="scam-tokens" isChecked={ isChecked } onChange={ handleChange }/>
-      </FormControl>
+      <Switch
+        id="scam-tokens"
+        checked={ isChecked }
+        onChange={ handleChange }
+        size="md"
+        flexDirection="row-reverse"
+        justifyContent="space-between"
+        w="100%"
+        gap={ 2 }
+        fontWeight="400"
+        color="text.secondary"
+      >
+        Hide scam tokens
+      </Switch>
     </>
   );
 };

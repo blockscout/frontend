@@ -16,15 +16,14 @@ const ContractVerificationFieldName = ({ hint }: Props) => {
     <ContractVerificationFormRow>
       <FormFieldText<FormFields>
         name="name"
-        isRequired
+        required
         placeholder="Contract name"
-        size={{ base: 'md', lg: 'lg' }}
         rules={{ maxLength: 255 }}
       />
       { hint ? <span>{ hint }</span> : (
         <>
           <span>Must match the name specified in the code. For example, in </span>
-          <Code color="text_secondary">{ `contract MyContract {..}` }</Code>
+          <Code color="text.secondary">{ `contract MyContract {..}` }</Code>
           <span>. <chakra.span fontWeight={ 600 }>MyContract</chakra.span> is the contract name.</span>
         </>
       ) }

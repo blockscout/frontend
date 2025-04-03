@@ -1,4 +1,4 @@
-import { Box, HStack } from '@chakra-ui/react';
+import { Box, chakra, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -15,12 +15,13 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { ADDRESS_TOKEN_BALANCE_ERC_20, ADDRESS_NFT_1155, ADDRESS_COLLECTION } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
+import { Button, ButtonGroupRadio } from 'toolkit/chakra/button';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
+import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RadioButtonGroup from 'ui/shared/radioButtonGroup/RadioButtonGroup';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 import AddressCollections from './tokens/AddressCollections';
 import AddressNFTs from './tokens/AddressNFTs';
@@ -33,12 +34,10 @@ const TAB_LIST_PROPS = {
   mt: 1,
   mb: { base: 6, lg: 1 },
   py: 5,
-  columnGap: 3,
 };
 
 const TAB_LIST_PROPS_MOBILE = {
   my: 8,
-  columnGap: 3,
 };
 
 const getTokenFilterValue = (getFilterValuesFromQuery<NFTTokenType>).bind(null, NFT_TOKEN_TYPE_IDS);
@@ -96,9 +95,9 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
     filters: { type: tokenTypes },
   });
 
-  const handleNFTsDisplayTypeChange = React.useCallback((val: TNftDisplayType) => {
+  const handleNFTsDisplayTypeChange = React.useCallback((val: string) => {
     cookies.set(cookies.NAMES.ADDRESS_NFT_DISPLAY_TYPE, val);
-    setNftDisplayType(val);
+    setNftDisplayType(val as TNftDisplayType);
   }, []);
 
   const handleTokenTypesChange = React.useCallback((value: Array<NFTTokenType>) => {
@@ -131,15 +130,20 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   ];
 
   const nftDisplayTypeRadio = (
-    <RadioButtonGroup<TNftDisplayType>
-      onChange={ handleNFTsDisplayTypeChange }
+    <ButtonGroupRadio
       defaultValue={ nftDisplayType }
-      name="type"
-      options={ [
-        { title: 'By collection', value: 'collection', icon: 'collection', onlyIcon: isMobile },
-        { title: 'List', value: 'list', icon: 'apps', onlyIcon: isMobile },
-      ] }
-    />
+      onChange={ handleNFTsDisplayTypeChange }
+      equalWidth
+    >
+      <Button value="collection" size="sm" px={ 3 }>
+        <IconSvg name="collection" boxSize={ 5 }/>
+        <chakra.span hideBelow="lg">By collection</chakra.span>
+      </Button>
+      <Button value="list" size="sm" px={ 3 }>
+        <IconSvg name="apps" boxSize={ 5 }/>
+        <chakra.span hideBelow="lg">List</chakra.span>
+      </Button>
+    </ButtonGroupRadio>
   );
 
   let pagination: PaginationParams | undefined;
@@ -158,7 +162,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
 
   const rightSlot = (
     <>
-      <HStack spacing={ 3 }>
+      <HStack gap={ 3 }>
         { isNftTab && (hasNftData || hasActiveFilters) && nftDisplayTypeRadio }
         { isNftTab && (hasNftData || hasActiveFilters) && nftTypeFilter }
       </HStack>
@@ -173,12 +177,11 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
       <Box ref={ scrollRef }></Box>
       <RoutedTabs
         tabs={ tabs }
-        variant="outline"
-        colorScheme="gray"
+        variant="secondary"
         size="sm"
-        tabListProps={ isMobile ? TAB_LIST_PROPS_MOBILE : TAB_LIST_PROPS }
+        listProps={ isMobile ? TAB_LIST_PROPS_MOBILE : TAB_LIST_PROPS }
         rightSlot={ rightSlot }
-        rightSlotProps={ tab !== 'tokens_erc20' && !isMobile ? { flexGrow: 1, display: 'flex', justifyContent: 'space-between', ml: 8 } : {} }
+        rightSlotProps={ tab === 'tokens_nfts' && !isMobile ? { display: 'flex', justifyContent: 'space-between', ml: 8, widthAllocation: 'available' } : {} }
         stickyEnabled={ !isMobile }
       />
     </>

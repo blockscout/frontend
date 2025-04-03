@@ -51,15 +51,16 @@ const AddressNFTs = ({ tokensQuery, hasActiveFilters }: Props) => {
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items?.length }
       emptyText="There are no tokens of selected type."
-      content={ content }
       actionBar={ actionBar }
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find any token that matches your query.`,
         hasActiveFilters,
       }}
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

@@ -1,9 +1,10 @@
-import { Tr, Td, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ArbitrumL2TxnWithdrawalsItem } from 'types/api/arbitrumL2';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import ArbitrumL2MessageStatus from 'ui/shared/statusTag/ArbitrumL2MessageStatus';
 
@@ -18,19 +19,19 @@ interface Props {
 
 const ArbitrumL2TxnWithdrawalsTableItem = ({ data, isLoading, txHash }: Props) => {
   return (
-    <Tr>
-      <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading }>{ data.id }</Skeleton>
-      </Td>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
+        <Skeleton loading={ isLoading }>{ data.id }</Skeleton>
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <AddressEntityL1 address={{ hash: data.token?.destination || data.destination }} isLoading={ isLoading }/>
-      </Td>
-      <Td verticalAlign="middle" isNumeric>
-        <Skeleton isLoaded={ !isLoading }>
+      </TableCell>
+      <TableCell verticalAlign="middle" isNumeric>
+        <Skeleton loading={ isLoading }>
           <ArbitrumL2TxnWithdrawalsValue data={ data }/>
         </Skeleton>
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <Flex alignItems="center" justifyContent="space-between" columnGap={ 8 }>
           <ArbitrumL2MessageStatus status={ data.status } isLoading={ isLoading }/>
           { (data.status === 'confirmed' || data.status === 'relayed') && (
@@ -42,8 +43,8 @@ const ArbitrumL2TxnWithdrawalsTableItem = ({ data, isLoading, txHash }: Props) =
             />
           ) }
         </Flex>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

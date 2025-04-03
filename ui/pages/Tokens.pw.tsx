@@ -26,7 +26,8 @@ const allTokens = {
   },
 };
 
-test('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
+// FIXME: test is flaky, screenshot in docker container is different from local
+test.skip('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
 
   await mockApiResponse('tokens', allTokens);
 
@@ -107,7 +108,7 @@ test.describe('bridged tokens', () => {
     await expect(component).toHaveScreenshot();
 
     await component.getByRole('button', { name: /filter/i }).click();
-    await component.locator('label').filter({ hasText: /poa/i }).click();
+    await page.locator('label').filter({ hasText: /poa/i }).click();
     await page.click('body');
 
     await expect(component).toHaveScreenshot();

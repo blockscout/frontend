@@ -26,7 +26,6 @@ test('with chain icon stub +@dark-mode', async({ render }) => {
   const component = await render(
     <TxEntityInterop
       hash={ hash }
-      icon={{ size: 'md' }}
       chain={{ ...interopMock.chain, chain_logo: null }}
     />,
   );

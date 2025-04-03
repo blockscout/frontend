@@ -1,10 +1,11 @@
-import { Box, Flex, chakra, useColorModeValue } from '@chakra-ui/react';
+import type { HTMLChakraProps } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { clamp } from 'es-toolkit';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
-interface Props {
-  className?: string;
+import { Skeleton } from 'toolkit/chakra/skeleton';
+
+interface Props extends Omit<HTMLChakraProps<'div'>, 'direction'> {
   value: number;
   colorScheme?: 'green' | 'gray';
   isLoading?: boolean;
@@ -12,19 +13,19 @@ interface Props {
 
 const WIDTH = 50;
 
-const Utilization = ({ className, value, colorScheme = 'green', isLoading }: Props) => {
+const Utilization = ({ value, colorScheme = 'green', isLoading, ...rest }: Props, ref: React.Ref<HTMLDivElement>) => {
   const valueString = (clamp(value * 100 || 0, 0, 100)).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '%';
-  const colorGrayScheme = useColorModeValue('gray.500', 'gray.400');
+  const colorGrayScheme = { _light: 'gray.500', _dark: 'gray.400' };
   const color = colorScheme === 'gray' ? colorGrayScheme : 'green.500';
 
   return (
-    <Flex className={ className } alignItems="center" columnGap={ 2 }>
-      <Skeleton isLoaded={ !isLoading } w={ `${ WIDTH }px` } h="4px" borderRadius="full" overflow="hidden">
-        <Box bg={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') } h="100%">
+    <Flex alignItems="center" columnGap={ 2 } { ...rest } ref={ ref }>
+      <Skeleton loading={ isLoading } w={ `${ WIDTH }px` } h="4px" borderRadius="full" overflow="hidden">
+        <Box bg={{ _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' }} h="100%">
           <Box bg={ color } w={ valueString } h="100%"/>
         </Box>
       </Skeleton>
-      <Skeleton isLoaded={ !isLoading } color={ color } fontWeight="bold">
+      <Skeleton loading={ isLoading } color={ color } fontWeight="bold">
         <span>
           { valueString }
         </span>
@@ -33,4 +34,4 @@ const Utilization = ({ className, value, colorScheme = 'green', isLoading }: Pro
   );
 };
 
-export default React.memo(chakra(Utilization));
+export default React.memo(React.forwardRef(Utilization));

@@ -27,10 +27,12 @@ const ContractVerificationFieldOptimization = () => {
         { isEnabled && (
           <FormFieldText<FormFields, 'optimization_runs'>
             name="optimization_runs"
-            isRequired
+            required
             placeholder="Optimization runs"
-            type="number"
-            size="xs"
+            inputProps={{
+              type: 'number',
+            }}
+            size="sm"
             minW="100px"
             maxW="200px"
             flexShrink={ 1 }

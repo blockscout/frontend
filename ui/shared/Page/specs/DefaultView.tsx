@@ -35,7 +35,7 @@ const DefaultView = () => {
       <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
       <EntityTags
         tags={ [
-          { slug: 'example', name: 'Example label', tagType: 'custom' },
+          { slug: 'example', name: 'Example label', tagType: 'custom', ordinal: 0 },
         ] }
         flexGrow={ 1 }
       />
@@ -46,9 +46,7 @@ const DefaultView = () => {
     <>
       <AddressEntity
         address={{ ...addressMock.token, name: '' }}
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
+        variant="subheading"
       />
       <NetworkExplorers type="token" pathParam={ addressMock.hash } ml="auto"/>
     </>
@@ -60,7 +58,7 @@ const DefaultView = () => {
       beforeTitle={ (
         <TokenEntity.Icon
           token={ tokenData }
-          size="lg"
+          variant="heading"
         />
       ) }
       backLink={ backLink }

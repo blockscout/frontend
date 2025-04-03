@@ -1,4 +1,3 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -10,7 +9,8 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
-import IconSvg from 'ui/shared/IconSvg';
+import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
+import ButtonBackTo from 'ui/shared/buttons/ButtonBackTo';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';
 import AuthModalScreenEmail from './screens/AuthModalScreenEmail';
@@ -104,8 +104,13 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
     onClose(isSuccess, rewardsApiToken);
   }, [ isSuccess, rewardsApiToken, onClose ]);
 
+  const onModalOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    !open && onClose(isSuccess, rewardsApiToken);
+  }, [ onClose, isSuccess, rewardsApiToken ]);
+
+  const currentStep = steps[steps.length - 1];
+
   const header = (() => {
-    const currentStep = steps[steps.length - 1];
     switch (currentStep.type) {
       case 'select_method':
         return 'Select a way to login';
@@ -122,7 +127,6 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   })();
 
   const content = (() => {
-    const currentStep = steps[steps.length - 1];
     switch (currentStep.type) {
       case 'select_method':
         return <AuthModalScreenSelectMethod onSelectMethod={ onNextStep }/>;
@@ -175,29 +179,28 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   }
 
   return (
-    <Modal isOpen onClose={ onModalClose } size={{ base: 'full', lg: 'sm' }} trapFocus={ false } blockScrollOnMount={ false }>
-      <ModalOverlay/>
-      <ModalContent p={ 6 } maxW={{ lg: '400px' }}>
-        <ModalHeader fontWeight="500" textStyle="h3" mb={ 2 } display="flex" alignItems="center" columnGap={ 2 }>
-          { steps.length > 1 && !steps[steps.length - 1].type.startsWith('success') && (
-            <IconSvg
-              name="arrows/east"
-              boxSize={ 6 }
-              transform="rotate(180deg)"
-              color="gray.400"
-              flexShrink={ 0 }
-              onClick={ onPrevStep }
-              cursor="pointer"
-            />
-          ) }
+    <DialogRoot
+      open
+      onOpenChange={ onModalOpenChange }
+      size={{ lgDown: 'full', lg: 'sm' }}
+      // we need to allow user interact with element outside of dialog otherwise they can't click on recaptcha
+      modal={ false }
+      // FIXME if we allow to close on interact outside, the dialog will be closed when user click on recaptcha
+      closeOnInteractOutside={ ![ 'email', 'otp_code', 'connect_wallet', 'select_method' ].includes(currentStep.type) }
+      trapFocus={ false }
+      preventScroll={ false }
+    >
+      <DialogContent>
+        <DialogHeader
+          startElement={ steps.length > 1 && !steps[steps.length - 1].type.startsWith('success') && <ButtonBackTo onClick={ onPrevStep }/> }
+        >
           { header }
-        </ModalHeader>
-        <ModalCloseButton top={ 6 } right={ 6 } color="gray.400"/>
-        <ModalBody mb={ 0 }>
+        </DialogHeader>
+        <DialogBody>
           { content }
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 

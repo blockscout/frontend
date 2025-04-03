@@ -1,8 +1,9 @@
-import type { ColorMode } from '@chakra-ui/react';
-import { Image, chakra, DarkMode } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import type { ColorMode } from 'toolkit/chakra/color-mode';
+import { Image } from 'toolkit/chakra/image';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 interface Props {
   src: string | undefined;
@@ -23,11 +24,11 @@ const ImageUrlPreview = ({
   fallback: fallbackProp,
   colorMode,
 }: Props) => {
-  const skeleton = <Skeleton className={ className } w="100%" h="100%"/>;
+  const skeleton = <Skeleton loading className={ [ className, colorMode === 'dark' ? 'dark' : undefined ].filter(Boolean).join(' ') } w="100%" h="100%"/>;
 
   const fallback = (() => {
     if (src && !isInvalid) {
-      return colorMode === 'dark' ? <DarkMode>{ skeleton }</DarkMode> : skeleton;
+      return skeleton;
     }
     return fallbackProp;
   })();

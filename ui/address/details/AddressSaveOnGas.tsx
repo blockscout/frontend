@@ -1,11 +1,11 @@
-import { Image } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import * as v from 'valibot';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import LinkExternal from 'ui/shared/links/LinkExternal';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 const feature = config.features.saveOnGas;
@@ -75,12 +75,12 @@ const AddressSaveOnGas = ({ gasUsed, address }: Props) => {
 
   return (
     <>
-      <TextSeparator color="divider"/>
-      <Skeleton isLoaded={ !query.isPlaceholderData } display="flex" alignItems="center" columnGap={ 2 }>
+      <TextSeparator color="border.divider"/>
+      <Skeleton loading={ query.isPlaceholderData } display="flex" alignItems="center" columnGap={ 2 }>
         <Image src="/static/gas_hawk_logo.svg" w="15px" h="20px" alt="GasHawk logo"/>
-        <LinkExternal href="https://www.gashawk.io?utm_source=blockscout&utm_medium=address" fontSize="sm">
+        <Link href="https://www.gashawk.io?utm_source=blockscout&utm_medium=address" fontSize="sm" external>
           Save { percent.toLocaleString(undefined, { maximumFractionDigits: 0 }) }% with GasHawk
-        </LinkExternal>
+        </Link>
       </Skeleton>
     </>
   );

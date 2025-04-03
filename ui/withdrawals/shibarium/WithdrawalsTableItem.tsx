@@ -1,9 +1,9 @@
-import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ShibariumWithdrawalsItem } from 'types/api/shibarium';
 
 import config from 'configs/app';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -20,51 +20,48 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   }
 
   return (
-    <Tr>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
         <BlockEntity
           number={ item.l2_block_number }
           isLoading={ isLoading }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           fontWeight={ 600 }
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <TxEntity
           isLoading={ isLoading }
           hash={ item.l2_transaction_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           truncation="constant_long"
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.l1_transaction_hash }
           truncation="constant_long"
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <AddressStringOrParam
           address={ item.user }
           isLoading={ isLoading }
           truncation="constant"
           noCopy
         />
-      </Td>
-      <Td verticalAlign="middle" pr={ 12 }>
+      </TableCell>
+      <TableCell verticalAlign="middle" pr={ 12 }>
         <TimeAgoWithTooltip
           timestamp={ item.timestamp }
           isLoading={ isLoading }
           display="inline-block"
-          color="text_secondary"
+          color="text.secondary"
         />
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

@@ -22,7 +22,7 @@ const NftTokenTransferSnippet = ({ value, token, tokenId, instance }: Props) => 
       if (token.type === 'ERC-404') {
         return null;
       }
-      return <chakra.span color="text_secondary"> N/A </chakra.span>;
+      return <chakra.span color="text.secondary"> N/A </chakra.span>;
     }
 
     return (
@@ -31,7 +31,7 @@ const NftTokenTransferSnippet = ({ value, token, tokenId, instance }: Props) => 
         id={ tokenId }
         instance={ instance }
         fontWeight={ 600 }
-        icon={{ size: 'md' }}
+        variant="content"
         maxW={{ base: '100%', lg: '150px' }}
         w="auto"
         flexShrink={ 0 }
@@ -44,15 +44,15 @@ const NftTokenTransferSnippet = ({ value, token, tokenId, instance }: Props) => 
     <>
       { num ? (
         <>
-          <chakra.span color="text_secondary">for</chakra.span>
+          <chakra.span color="text.secondary">for</chakra.span>
           <span>{ num }</span>
-          <chakra.span color="text_secondary">token ID</chakra.span>
+          <chakra.span color="text.secondary">token ID</chakra.span>
         </>
       ) : (
-        <chakra.span color="text_secondary">for token ID</chakra.span>
+        <chakra.span color="text.secondary">for token ID</chakra.span>
       ) }
       { tokenIdContent }
-      <chakra.span color="text_secondary">of</chakra.span>
+      <chakra.span color="text.secondary">of</chakra.span>
       <TokenEntity
         token={ token }
         noCopy

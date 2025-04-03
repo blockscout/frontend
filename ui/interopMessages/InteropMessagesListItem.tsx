@@ -29,12 +29,12 @@ const InteropMessagesListItem = ({ item, isLoading }: Props) => {
       <Flex alignItems="flex-start" flexDirection="column" gap={ 2 } w="100%">
         <HStack w="100%">
           <Text fontWeight={ 500 } flexGrow={ 1 }>#{ item.nonce }</Text>
-          <TimeAgoWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text_secondary"/>
+          <TimeAgoWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text.secondary"/>
         </HStack>
         <Grid templateColumns="120px 1fr" rowGap={ 2 }>
-          <Text as="span" variant="secondary">Source tx</Text>
+          <Text as="span" color="text.secondary">Source tx</Text>
           <InteropMessageSourceTx { ...item } isLoading={ isLoading }/>
-          <Text as="span" variant="secondary">Destination tx</Text>
+          <Text as="span" color="text.secondary">Destination tx</Text>
           <InteropMessageDestinationTx { ...item } isLoading={ isLoading }/>
         </Grid>
         <Flex gap={ 2 } justifyContent="space-between" mt={ 2 }>

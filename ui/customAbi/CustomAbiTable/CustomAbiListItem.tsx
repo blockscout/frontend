@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 
 import type { CustomAbi } from 'types/api/account';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
@@ -33,7 +33,7 @@ const CustomAbiListItem = ({ item, isLoading, onEditClick, onDeleteClick }: Prop
           fontWeight="600"
           isLoading={ isLoading }
         />
-        <Skeleton fontSize="sm" color="text_secondary" mt={ 0.5 } ml={ 8 } display="inline-block" isLoaded={ !isLoading }>
+        <Skeleton textStyle="sm" color="text.secondary" mt={ 0.5 } ml={ 8 } display="inline-block" loading={ isLoading }>
           <span>{ item.name }</span>
         </Skeleton>
       </Box>

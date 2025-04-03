@@ -1,21 +1,12 @@
-import {
-  Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import FormSubmitAlert from 'ui/shared/FormSubmitAlert';
 
 interface Props<TData> {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   data?: TData;
   title: string;
   text?: string;
@@ -25,8 +16,8 @@ interface Props<TData> {
 }
 
 export default function FormModal<TData>({
-  isOpen,
-  onClose,
+  open,
+  onOpenChange,
   title,
   text,
   renderForm,
@@ -34,20 +25,16 @@ export default function FormModal<TData>({
   setAlertVisible,
 }: Props<TData>) {
 
-  const onModalClose = useCallback(() => {
-    setAlertVisible && setAlertVisible(false);
-    onClose();
-  }, [ onClose, setAlertVisible ]);
-
-  const isMobile = useIsMobile();
+  const handleOpenChange = useCallback(({ open }: { open: boolean }) => {
+    !open && setAlertVisible?.(false);
+    onOpenChange({ open });
+  }, [ onOpenChange, setAlertVisible ]);
 
   return (
-    <Modal isOpen={ isOpen } onClose={ onModalClose } size={ isMobile ? 'full' : 'md' }>
-      <ModalOverlay/>
-      <ModalContent>
-        <ModalHeader fontWeight="500" textStyle="h3">{ title }</ModalHeader>
-        <ModalCloseButton/>
-        <ModalBody>
+    <DialogRoot open={ open } onOpenChange={ handleOpenChange } size={{ lgDown: 'full', lg: 'md' }}>
+      <DialogContent>
+        <DialogHeader>{ title }</DialogHeader>
+        <DialogBody>
           { (isAlertVisible || text) && (
             <Box marginBottom={{ base: 6, lg: 8 }}>
               { text && (
@@ -59,8 +46,8 @@ export default function FormModal<TData>({
             </Box>
           ) }
           { renderForm() }
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </DialogRoot>
   );
 }

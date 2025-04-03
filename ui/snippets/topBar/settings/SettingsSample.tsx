@@ -1,10 +1,7 @@
-import {
-  Box,
-  Tooltip,
-  useColorModeValue,
-  useToken,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
+
+import { Tooltip } from 'toolkit/chakra/tooltip';
 
 interface Props {
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
@@ -14,18 +11,14 @@ interface Props {
   label: string;
 }
 
-const TOOLTIP_OFFSET: [ number, number ] = [ 0, 10 ];
-
 const SettingsSample = ({ label, value, bg, onClick, isActive }: Props) => {
-  const bgColor = useColorModeValue('white', 'gray.900');
-  const activeBgColor = useColorModeValue('blue.50', 'whiteAlpha.100');
-
-  const activeBorderColor = useToken('colors', useColorModeValue('blackAlpha.800', 'gray.50'));
-  const hoverBorderColor = useToken('colors', 'link_hovered');
+  const bgColor = { base: 'white', _dark: 'gray.900' };
+  const activeBgColor = { base: 'blue.50', _dark: 'whiteAlpha.100' };
+  const activeBorderColor = { base: 'blackAlpha.800', _dark: 'gray.50' };
 
   return (
     <Box p="9px" bgColor={ isActive ? activeBgColor : 'transparent' } borderRadius="base">
-      <Tooltip label={ label } offset={ TOOLTIP_OFFSET }>
+      <Tooltip content={ label }>
         <Box
           bg={ bg }
           boxSize="22px"
@@ -37,6 +30,7 @@ const SettingsSample = ({ label, value, bg, onClick, isActive }: Props) => {
           _before={{
             position: 'absolute',
             display: 'block',
+            boxSizing: 'content-box',
             content: '""',
             top: '-3px',
             left: '-3px',
@@ -49,7 +43,7 @@ const SettingsSample = ({ label, value, bg, onClick, isActive }: Props) => {
           }}
           _hover={{
             _before: {
-              borderColor: isActive ? activeBorderColor : hoverBorderColor,
+              borderColor: isActive ? activeBorderColor : 'link.primary.hover',
             },
           }}
           data-value={ value }

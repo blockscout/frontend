@@ -1,10 +1,12 @@
-import { Box, chakra, Flex, Image, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { Box, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ChainInfo } from 'types/api/interop';
 
 import { route } from 'nextjs-routes';
 
+import { Image } from 'toolkit/chakra/image';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { distributeEntityProps } from '../base/utils';
@@ -14,7 +16,6 @@ interface Props extends AddressEntity.EntityProps {
 }
 
 const IconStub = () => {
-  const bgColor = useColorModeValue('gray.100', 'gray.700');
   return (
     <Flex
       position="absolute"
@@ -23,17 +24,17 @@ const IconStub = () => {
       alignItems="center"
       justifyContent="center"
       borderRadius="base"
-      background={ bgColor }
+      background={{ _light: 'gray.100', _dark: 'gray.700' }}
       width="14px"
       height="14px"
       border="1px solid"
-      borderColor="background"
+      borderColor="global.body.bg"
     >
       <IconSvg
         name="networks/icon-placeholder"
         width="10px"
         height="10px"
-        color="text_secondary"
+        color="text.secondary"
       />
     </Flex>
   );
@@ -73,9 +74,9 @@ const AddressEntryInterop = (props: Props) => {
   );
 
   return (
-    <AddressEntity.Container>
+    <AddressEntity.Container className={ props.className }>
       { props.chain && (
-        <Tooltip label={ `Address on ${ props.chain.chain_name ? props.chain.chain_name : 'external chain' } (chain id ${ props.chain.chain_id })` }>
+        <Tooltip content={ `Address on ${ props.chain.chain_name ? props.chain.chain_name : 'external chain' } (chain id ${ props.chain.chain_id })` }>
           { addressIcon }
         </Tooltip>
       ) }

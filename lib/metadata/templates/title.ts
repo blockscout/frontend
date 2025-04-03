@@ -65,6 +65,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',
   '/sprite': '%network_name% SVG sprite',
+  '/chakra': '%network_name% Chakra UI showcase',
   '/api/metrics': '%network_name% node API prometheus metrics',
   '/api/monitoring/invalid-api-schema': '%network_name% node API prometheus metrics',
   '/api/log': '%network_name% node API request log',

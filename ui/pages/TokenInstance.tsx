@@ -2,8 +2,8 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { PaginationParams } from 'ui/shared/pagination/types';
-import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
@@ -16,10 +16,10 @@ import {
   getTokenInstanceTransfersStub,
   getTokenInstanceHoldersStub,
 } from 'stubs/token';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 import { MetadataUpdateProvider } from 'ui/tokenInstance/contexts/metadataUpdate';
@@ -93,7 +93,7 @@ const TokenInstanceContent = () => {
     }
   }, [ tokenInstanceQuery.data, tokenInstanceQuery.isPlaceholderData, tokenQuery.data, tokenQuery.isPlaceholderData ]);
 
-  const tabs: Array<RoutedTab> = [
+  const tabs: Array<TabItemRegular> = [
     {
       id: 'token_transfers',
       title: 'Token transfers',
@@ -104,11 +104,16 @@ const TokenInstanceContent = () => {
           tokenQuery={ tokenQuery }
           tokenInstance={ tokenInstanceQuery.data }
           shouldRender={ !isLoading }
+          tabsHeight={ 80 }
         />
       ),
     },
     shouldFetchHolders ?
-      { id: 'holders', title: 'Holders', component: <TokenHolders holdersQuery={ holdersQuery } token={ tokenQuery.data } shouldRender={ !isLoading }/> } :
+      {
+        id: 'holders',
+        title: 'Holders',
+        component: <TokenHolders holdersQuery={ holdersQuery } token={ tokenQuery.data } shouldRender={ !isLoading } tabsHeight={ 80 }/>,
+      } :
       undefined,
     { id: 'metadata', title: 'Metadata', component: (
       <TokenInstanceMetadata
@@ -146,7 +151,7 @@ const TokenInstanceContent = () => {
 
       <RoutedTabs
         tabs={ tabs }
-        tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
+        listProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
         isLoading={ isLoading }
         rightSlot={ !isMobile && pagination?.isVisible ? <Pagination { ...pagination }/> : null }
         stickyEnabled={ !isMobile }

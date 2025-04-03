@@ -1,4 +1,4 @@
-import { Button, Grid, Text, chakra, useUpdateEffect } from '@chakra-ui/react';
+import { Grid, Text, chakra, useUpdateEffect } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -15,10 +15,11 @@ import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import delay from 'lib/delay';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
-import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel/index';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
 
 import ContractVerificationFieldAddress from './fields/ContractVerificationFieldAddress';
 import ContractVerificationFieldLicenseType from './fields/ContractVerificationFieldLicenseType';
@@ -44,7 +45,7 @@ interface Props {
 const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
-    defaultValues: getDefaultValues(methodFromQuery, config, hash, null),
+    defaultValues: getDefaultValues(methodFromQuery, config, hash, []),
   });
   const { handleSubmit, watch, formState, setError, reset, getFieldState, getValues, clearErrors } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
@@ -52,7 +53,6 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const [ activityToken, setActivityToken ] = React.useState<string | undefined>();
 
   const apiFetch = useApiFetch();
-  const toast = useToast();
   const { trackContract, trackContractConfirm } = useRewardsActivity();
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     const body = prepareRequestBody(data);
@@ -80,7 +80,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       const activityResponse = await trackContract(data.address);
       setActivityToken(activityResponse?.token);
       await apiFetch('contract_verification_via', {
-        pathParams: { method: data.method.value, hash: data.address.toLowerCase() },
+        pathParams: { method: data.method[0], hash: data.address.toLowerCase() },
         fetchParams: {
           method: 'POST',
           body,
@@ -120,13 +120,9 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       return;
     }
 
-    toast({
-      position: 'top-right',
+    toaster.success({
       title: 'Success',
       description: 'Contract is successfully verified.',
-      status: 'success',
-      variant: 'subtle',
-      isClosable: true,
     });
 
     mixpanel.logEvent(
@@ -141,7 +137,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     }
 
     window.location.assign(route({ pathname: '/address/[hash]', query: { hash: address, tab: 'contract' } }));
-  }, [ setError, toast, address, getValues, activityToken, trackContractConfirm ]);
+  }, [ setError, address, getValues, activityToken, trackContractConfirm ]);
 
   const handleSocketError = React.useCallback(() => {
     if (!formState.isSubmitting) {
@@ -150,20 +146,14 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
     submitPromiseResolver.current?.(null);
 
-    const toastId = 'socket-error';
-    !toast.isActive(toastId) && toast({
-      id: toastId,
-      position: 'top-right',
+    toaster.error({
       title: 'Error',
       description: 'There was an error with socket connection. Try again later.',
-      status: 'error',
-      variant: 'subtle',
-      isClosable: true,
     });
   // callback should not change when form is submitted
   // otherwise it will resubscribe to channel, but we don't want that since in that case we might miss verification result message
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ toast ]);
+  }, [ ]);
 
   const channel = useSocketChannel({
     topic: `addresses:${ address?.toLowerCase() }`,
@@ -182,19 +172,19 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       'flattened-code': <ContractVerificationFlattenSourceCode config={ config }/>,
       'standard-input': <ContractVerificationStandardInput config={ config }/>,
       sourcify: <ContractVerificationSourcify/>,
-      'multi-part': <ContractVerificationMultiPartFile/>,
+      'multi-part': <ContractVerificationMultiPartFile config={ config }/>,
       'vyper-code': <ContractVerificationVyperContract config={ config }/>,
-      'vyper-multi-part': <ContractVerificationVyperMultiPartFile/>,
-      'vyper-standard-input': <ContractVerificationVyperStandardInput/>,
+      'vyper-multi-part': <ContractVerificationVyperMultiPartFile config={ config }/>,
+      'vyper-standard-input': <ContractVerificationVyperStandardInput config={ config }/>,
       'solidity-hardhat': <ContractVerificationSolidityHardhat config={ config }/>,
       'solidity-foundry': <ContractVerificationSolidityFoundry/>,
-      'stylus-github-repository': <ContractVerificationStylusGitHubRepo/>,
+      'stylus-github-repository': <ContractVerificationStylusGitHubRepo config={ config }/>,
     };
   }, [ config ]);
   const method = watch('method');
+  const methodValue = method?.[0];
   const licenseType = watch('license_type');
-  const content = methods[method?.value] || null;
-  const methodValue = method?.value;
+  const content = methods[methodValue] || null;
 
   useUpdateEffect(() => {
     if (methodValue) {
@@ -220,14 +210,13 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
           <ContractVerificationFieldMethod methods={ config.verification_options }/>
         </Grid>
         { content }
-        { formState.errors.root?.message && <Text color="error"mt={ 4 } fontSize="sm" whiteSpace="pre-wrap">{ formState.errors.root.message }</Text> }
-        { Boolean(method) && method.value !== 'solidity-hardhat' && method.value !== 'solidity-foundry' && (
+        { formState.errors.root?.message && <Text color="text.error" mt={ 4 } fontSize="sm" whiteSpace="pre-wrap">{ formState.errors.root.message }</Text> }
+        { Boolean(method) && methodValue !== 'solidity-hardhat' && methodValue !== 'solidity-foundry' && (
           <Button
-            variant="solid"
-            size="lg"
+            size="md"
             type="submit"
             mt={ 12 }
-            isLoading={ formState.isSubmitting }
+            loading={ formState.isSubmitting }
             loadingText="Verify & publish"
           >
             Verify & publish

@@ -1,4 +1,4 @@
-import { Center, useColorModeValue } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
 import React from 'react';
 
 interface Props {
@@ -8,13 +8,13 @@ interface Props {
 }
 
 const TokenInfoIconPreview = ({ url, isInvalid, children }: Props) => {
-  const borderColor = useColorModeValue('gray.100', 'gray.700');
-  const borderColorFilled = useColorModeValue('gray.300', 'gray.600');
+  const borderColor = { _light: 'gray.100', _dark: 'gray.700' };
+  const borderColorFilled = { _light: 'gray.300', _dark: 'gray.600' };
   const borderColorActive = isInvalid ? 'error' : borderColorFilled;
 
   return (
     <Center
-      boxSize={{ base: '60px', lg: '80px' }}
+      boxSize="60px"
       flexShrink={ 0 }
       borderWidth="2px"
       borderColor={ url ? borderColorActive : borderColor }

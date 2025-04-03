@@ -1,4 +1,4 @@
-import type { ThemeTypings } from '@chakra-ui/react';
+import type { ConditionalValue } from '@chakra-ui/react';
 import { Flex, Grid, chakra, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 
@@ -17,7 +17,7 @@ interface Props {
   from: AddressParam;
   to: AddressParam | null;
   current?: string;
-  mode?: Mode | Partial<Record<ThemeTypings['breakpoints'], Mode>>;
+  mode?: Mode | ConditionalValue<Mode>;
   className?: string;
   isLoading?: boolean;
   tokenHash?: string;
@@ -28,9 +28,9 @@ interface Props {
 const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', noIcon }: Props) => {
   const mode = useBreakpointValue(
     {
-      base: (typeof modeProp === 'object' ? modeProp.base : modeProp),
-      lg: (typeof modeProp === 'object' ? modeProp.lg : modeProp),
-      xl: (typeof modeProp === 'object' ? modeProp.xl : modeProp),
+      base: (typeof modeProp === 'object' && 'base' in modeProp ? modeProp.base : modeProp),
+      lg: (typeof modeProp === 'object' && 'lg' in modeProp ? modeProp.lg : modeProp),
+      xl: (typeof modeProp === 'object' && 'xl' in modeProp ? modeProp.xl : modeProp),
     },
   ) ?? 'long';
 

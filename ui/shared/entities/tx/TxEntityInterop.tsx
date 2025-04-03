@@ -1,4 +1,4 @@
-import { Box, Image, Tooltip, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ChainInfo } from 'types/api/interop';
@@ -6,7 +6,9 @@ import type { ChainInfo } from 'types/api/interop';
 import { route } from 'nextjs-routes';
 
 import stripTrailingSlash from 'lib/stripTrailingSlash';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Image } from 'toolkit/chakra/image';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { distributeEntityProps } from '../base/utils';
@@ -18,15 +20,14 @@ type Props = {
 } & Omit<TxEntity.EntityProps, 'hash'>;
 
 const IconStub = ({ isLoading }: { isLoading?: boolean }) => {
-  const bgColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
   return (
     <Skeleton
-      isLoaded={ !isLoading }
+      loading={ isLoading }
       display="flex"
       minWidth="20px"
       h="20px"
       borderRadius="full"
-      background={ bgColor }
+      background={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.100' }}
       alignItems="center"
       justifyContent="center"
       mr={ 2 }
@@ -35,7 +36,7 @@ const IconStub = ({ isLoading }: { isLoading?: boolean }) => {
         name="networks/icon-placeholder"
         width="16px"
         height="16px"
-        color="text_secondary"
+        color="text.secondary"
         display="block"
       />
     </Skeleton>
@@ -56,7 +57,7 @@ const TxEntityInterop = ({ chain, hash, ...props }: Props) => {
   return (
     <TxEntity.Container { ...partsProps.container }>
       { chain && (
-        <Tooltip label={ `${ chain.chain_name ? chain.chain_name : 'External chain' } (chain id ${ chain.chain_id })` }>
+        <Tooltip content={ `${ chain.chain_name ? chain.chain_name : 'External chain' } (chain id ${ chain.chain_id })` }>
           <Box>
             { chain.chain_logo ? (
               <Image

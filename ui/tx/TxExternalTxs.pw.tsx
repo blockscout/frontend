@@ -16,6 +16,6 @@ test('base view', async({ page, render, mockEnvs, mockAssetResponse }) => {
   const popover = page.getByText('Solana transactions');
   await expect(popover).toBeVisible();
   await expect(page.getByText('1uwpB95K9ae8yrpxxVXJ27ivvHXqrmy82jsamgNtd...3LW8')).toBeVisible();
-  await expect(page.getByText('2uwpB95K9ae8yrpxxVXJ27ivvHXqrmy82jsamgNt...3LW8')).toBeVisible();
+  await expect(page.getByText('2uwpB95K9ae8yrpxxVXJ27ivvHXqrmy82jsamgNtd...3LW8')).toBeVisible();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 500, height: 300 } });
 });

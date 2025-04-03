@@ -1,13 +1,15 @@
-import { Box, Button, useDisclosure } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContractSecurityAuditSubmission } from 'types/api/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
+import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 import FormModal from 'ui/shared/FormModal';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 
 import ContractSubmitAuditForm from './ContractSubmitAuditForm';
 
@@ -46,16 +48,16 @@ const ContractSecurityAudits = ({ addressHash }: Props) => {
             mt={ 2 }
           >
             { data.items.map(item => (
-              <LinkExternal href={ item.audit_report_url } key={ item.audit_company_name + item.audit_publish_date } isLoading={ isPlaceholderData }>
+              <Link external href={ item.audit_report_url } key={ item.audit_company_name + item.audit_publish_date } loading={ isPlaceholderData }>
                 { `${ item.audit_company_name }, ${ dayjs(item.audit_publish_date).format('MMM DD, YYYY') }` }
-              </LinkExternal>
+              </Link>
             )) }
           </ContainerWithScrollY>
         </Box>
       ) }
       <FormModal<SmartContractSecurityAuditSubmission>
-        isOpen={ modalProps.isOpen }
-        onClose={ modalProps.onClose }
+        open={ modalProps.open }
+        onOpenChange={ modalProps.onOpenChange }
         title={ formTitle }
         renderForm={ renderForm }
       />

@@ -1,9 +1,8 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
 
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import ZkSyncTxnBatchesTableItem from './ZkSyncTxnBatchesTableItem';
 
@@ -15,18 +14,18 @@ type Props = {
 
 const ZkSyncTxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table minW="1000px">
-      <Thead top={ top }>
-        <Tr>
-          <Th width="40%">Batch #</Th>
-          <Th width="60%">Status</Th>
-          <Th width="150px">Age</Th>
-          <Th width="150px">Txn count</Th>
-          <Th width="210px">Commit tx</Th>
-          <Th width="210px">Prove tx</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot minW="1000px">
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader width="40%">Batch #</TableColumnHeader>
+          <TableColumnHeader width="60%">Status</TableColumnHeader>
+          <TableColumnHeader width="150px">Age</TableColumnHeader>
+          <TableColumnHeader width="150px">Txn count</TableColumnHeader>
+          <TableColumnHeader width="210px">Commit tx</TableColumnHeader>
+          <TableColumnHeader width="210px">Prove tx</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
           <ZkSyncTxnBatchesTableItem
             key={ item.number + (isLoading ? String(index) : '') }
@@ -34,8 +33,8 @@ const ZkSyncTxnBatchesTable = ({ items, top, isLoading }: Props) => {
             isLoading={ isLoading }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

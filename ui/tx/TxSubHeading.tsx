@@ -1,4 +1,4 @@
-import { Box, Flex, Link } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
@@ -7,10 +7,11 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
+import { Link } from 'toolkit/chakra/link';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
-import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailsActionsWrapper';
+import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
@@ -73,13 +74,13 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           isLoading={ novesInterpretationQuery.isPlaceholderData || txQuery.isPlaceholderData }
           addressDataMap={ addressDataMap }
           fontSize="lg"
-          mr={{ base: 0, lg: 6 }}
+          mr={{ base: 0, lg: 2 }}
           isNoves
         />
       );
     } else if (hasInternalInterpretation) {
       return (
-        <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap" alignItems="center">
+        <Flex mr={{ base: 0, lg: 2 }} flexWrap="wrap" alignItems="center">
           <TxInterpretation
             summary={ txInterpretationQuery.data?.data.summaries[0] }
             isLoading={ txInterpretationQuery.isPlaceholderData || txQuery.isPlaceholderData }
@@ -113,11 +114,11 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           }}
           isLoading={ txQuery.isPlaceholderData }
           fontSize="lg"
-          mr={{ base: 0, lg: 6 }}
+          mr={{ base: 0, lg: 2 }}
         />
       );
     } else {
-      return <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } mr={{ base: 0, lg: 2 }} fontFamily="heading"/>;
+      return <TxEntity hash={ hash } noLink noCopy={ false } variant="subheading" mr={{ base: 0, lg: 2 }}/>;
     }
   })();
 

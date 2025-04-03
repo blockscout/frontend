@@ -1,8 +1,9 @@
-import { chakra, Tooltip, Box, useColorModeValue } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import config from 'configs/app';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 
 import GasUsedToTargetRatio from '../GasUsedToTargetRatio';
 import TextSeparator from '../TextSeparator';
@@ -23,27 +24,23 @@ const BlockGasUsed = ({ className, gasUsed, gasLimit, gasTarget, isLoading }: Pr
     gasUsed && gasUsed !== '0' &&
     (!rollupFeature.isEnabled || rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium');
 
-  const separatorColor = useColorModeValue('gray.200', 'gray.700');
-
   if (!hasGasUtilization) {
     return null;
   }
 
   return (
     <>
-      <Tooltip label={ isLoading ? undefined : 'Gas Used %' }>
-        <Box>
-          <Utilization
-            colorScheme="gray"
-            value={ BigNumber(gasUsed).dividedBy(BigNumber(gasLimit)).toNumber() }
-            isLoading={ isLoading }
-            className={ className }
-          />
-        </Box>
+      <Tooltip content="Gas Used %" disabled={ isLoading }>
+        <Utilization
+          colorScheme="gray"
+          value={ BigNumber(gasUsed).dividedBy(BigNumber(gasLimit)).toNumber() }
+          isLoading={ isLoading }
+          className={ className }
+        />
       </Tooltip>
       { gasTarget && (
         <>
-          <TextSeparator color={ separatorColor } mx={ 1 }/>
+          <TextSeparator color={{ _light: 'gray.200', _dark: 'gray.700' }} mx={ 1 }/>
           <GasUsedToTargetRatio value={ gasTarget } isLoading={ isLoading }/>
         </>
       ) }

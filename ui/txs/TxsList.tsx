@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
+import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
@@ -21,6 +22,11 @@ interface Props {
 
 const TxsList = (props: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(props.items, !props.isLoading);
+  const initialList = useInitialList({
+    data: props.items ?? [],
+    idFn: (item) => item.hash,
+    enabled: !props.isLoading,
+  });
 
   return (
     <Box>
@@ -40,6 +46,7 @@ const TxsList = (props: Props) => {
           currentAddress={ props.currentAddress }
           enableTimeIncrement={ props.enableTimeIncrement }
           isLoading={ props.isLoading }
+          animation={ initialList.getAnimationProp(tx) }
         />
       )) }
       <Box ref={ cutRef } h={ 0 }/>

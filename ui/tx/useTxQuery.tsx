@@ -1,4 +1,3 @@
-import { useBoolean } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -22,11 +21,7 @@ const rollupFeature = config.features.rollup;
 
 export type TxQuery = UseQueryResult<Transaction, ResourceError<{ status: number }>> & {
   socketStatus: 'close' | 'error' | undefined;
-  setRefetchOnError: {
-    on: () => void;
-    off: () => void;
-    toggle: () => void;
-  };
+  setRefetchEnabled: (value: boolean) => void;
 };
 
 interface Params {
@@ -36,7 +31,7 @@ interface Params {
 
 export default function useTxQuery(params?: Params): TxQuery {
   const [ socketStatus, setSocketStatus ] = React.useState<'close' | 'error'>();
-  const [ isRefetchEnabled, setRefetchEnabled ] = useBoolean(false);
+  const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -93,6 +88,6 @@ export default function useTxQuery(params?: Params): TxQuery {
   return React.useMemo(() => ({
     ...queryResult,
     socketStatus,
-    setRefetchOnError: setRefetchEnabled,
+    setRefetchEnabled,
   }), [ queryResult, socketStatus, setRefetchEnabled ]);
 }

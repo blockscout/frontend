@@ -1,18 +1,20 @@
 /* eslint-disable max-len */
-import { Box, OrderedList, ListItem, useColorModeValue, Flex, chakra, Button } from '@chakra-ui/react';
+import { Box, Flex, List, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppErrorTitle from '../AppErrorTitle';
 
 const AppErrorTxNotFound = () => {
   const snippet = {
-    borderColor: useColorModeValue('blackAlpha.300', 'whiteAlpha.300'),
-    iconBg: useColorModeValue('blackAlpha.800', 'whiteAlpha.800'),
-    iconColor: useColorModeValue('white', 'black'),
+    borderColor: { _light: 'blackAlpha.300', _dark: 'whiteAlpha.300' },
+    iconBg: { _light: 'blackAlpha.800', _dark: 'whiteAlpha.800' },
+    iconColor: { _light: 'white', _dark: 'black' },
   };
 
   return (
@@ -37,31 +39,30 @@ const AppErrorTxNotFound = () => {
         </Flex>
       </Box>
       <AppErrorTitle title="Sorry, we are unable to locate this transaction hash"/>
-      <OrderedList mt={ 3 } spacing={ 3 }>
-        <ListItem>
+      <List.Root mt={ 3 } gap={ 3 } as="ol" pl={ 5 }>
+        <List.Item>
           If you have just submitted this transaction please wait for at least 30 seconds before refreshing this page.
-        </ListItem>
-        <ListItem>
+        </List.Item>
+        <List.Item>
           It could still be in the TX Pool of a different node, waiting to be broadcasted.
-        </ListItem>
-        <ListItem>
+        </List.Item>
+        <List.Item>
           During times when the network is busy (i.e during ICOs) it can take a while for your transaction to propagate through the network and for us to index it.
-        </ListItem>
-        <ListItem>
+        </List.Item>
+        <List.Item>
           <span>If it still does not show up after 1 hour, please check with your </span>
           <chakra.span fontWeight={ 600 }>sender/exchange/wallet/transaction provider</chakra.span>
           <span> for additional information.</span>
-        </ListItem>
-      </OrderedList>
-      <Button
-        mt={ 8 }
-        size="lg"
-        variant="outline"
-        as="a"
-        href={ route({ pathname: '/' }) }
-      >
-        Back to home
-      </Button>
+        </List.Item>
+      </List.Root>
+      <Link href={ route({ pathname: '/' }) } asChild>
+        <Button
+          mt={ 8 }
+          variant="outline"
+        >
+          Back to home
+        </Button>
+      </Link>
     </>
   );
 };

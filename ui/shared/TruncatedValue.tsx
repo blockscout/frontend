@@ -1,15 +1,15 @@
-import type { PlacementWithLogical } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
+import type { Placement } from '@floating-ui/dom';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
   className?: string;
   isLoading?: boolean;
   value: string;
-  tooltipPlacement?: PlacementWithLogical;
+  tooltipPlacement?: Placement;
 }
 
 const TruncatedValue = ({ className, isLoading, value, tooltipPlacement }: Props) => {
@@ -17,7 +17,7 @@ const TruncatedValue = ({ className, isLoading, value, tooltipPlacement }: Props
     <TruncatedTextTooltip label={ value } placement={ tooltipPlacement }>
       <Skeleton
         className={ className }
-        isLoaded={ !isLoading }
+        loading={ isLoading }
         display="inline-block"
         whiteSpace="nowrap"
         overflow="hidden"

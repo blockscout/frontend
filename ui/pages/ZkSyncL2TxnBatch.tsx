@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
@@ -12,12 +12,12 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { ZKSYNC_L2_TXN_BATCH } from 'stubs/zkSyncL2';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import ZkSyncL2TxnBatchDetails from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchDetails';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
@@ -63,7 +63,7 @@ const ZkSyncL2TxnBatch = () => {
 
   const hasPagination = !isMobile && batchTxsQuery.pagination.isVisible && tab === 'txs';
 
-  const tabs: Array<RoutedTab> = React.useMemo(() => ([
+  const tabs: Array<TabItemRegular> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <ZkSyncL2TxnBatchDetails query={ batchQuery }/> },
     {
       id: 'txs',
@@ -93,10 +93,10 @@ const ZkSyncL2TxnBatch = () => {
         backLink={ backLink }
       />
       { batchQuery.isPlaceholderData ?
-        <TabsSkeleton tabs={ tabs }/> : (
+        <RoutedTabsSkeleton tabs={ tabs }/> : (
           <RoutedTabs
             tabs={ tabs }
-            tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+            listProps={ isMobile ? undefined : TAB_LIST_PROPS }
             rightSlot={ hasPagination ? <Pagination { ...(batchTxsQuery.pagination) }/> : null }
             stickyEnabled={ hasPagination }
           />

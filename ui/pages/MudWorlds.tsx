@@ -1,4 +1,4 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { MUD_WORLD } from 'stubs/mud';
@@ -30,7 +30,7 @@ const MudWorlds = () => {
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         { data.items.map(((item, index) => (
           <MudWorldsListItem
             key={ item.address.hash + (isPlaceholderData ? String(index) : '') }
@@ -38,10 +38,10 @@ const MudWorlds = () => {
             isLoading={ isPlaceholderData }
           />
         ))) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <MudWorldsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   ) : null;
 
@@ -56,11 +56,12 @@ const MudWorlds = () => {
       <PageTitle title="MUD worlds" withTextAd/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no MUD worlds."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

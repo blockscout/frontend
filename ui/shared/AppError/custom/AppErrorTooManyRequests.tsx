@@ -1,10 +1,11 @@
-import { Button, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import useFetch from 'lib/hooks/useFetch';
-import useToast from 'lib/hooks/useToast';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -12,7 +13,6 @@ import AppErrorIcon from '../AppErrorIcon';
 import AppErrorTitle from '../AppErrorTitle';
 
 const AppErrorTooManyRequests = () => {
-  const toast = useToast();
   const fetch = useFetch();
   const recaptcha = useReCaptcha();
 
@@ -32,16 +32,13 @@ const AppErrorTooManyRequests = () => {
       window.location.reload();
 
     } catch (error) {
-      toast({
-        position: 'top-right',
+      toaster.create({
         title: 'Error',
         description: 'Unable to get client key.',
-        status: 'error',
-        variant: 'subtle',
-        isClosable: true,
+        type: 'error',
       });
     }
-  }, [ recaptcha, toast, fetch ]);
+  }, [ recaptcha, fetch ]);
 
   if (!config.services.reCaptchaV2.siteKey) {
     throw new Error('reCAPTCHA V2 site key is not set');
@@ -51,7 +48,7 @@ const AppErrorTooManyRequests = () => {
     <>
       <AppErrorIcon statusCode={ 429 }/>
       <AppErrorTitle title="Too many requests"/>
-      <Text variant="secondary" mt={ 3 }>
+      <Text color="text.secondary" mt={ 3 }>
         You have exceeded the request rate for a given time period. Please reduce the number of requests and try again soon.
       </Text>
       <ReCaptcha ref={ recaptcha.ref }/>

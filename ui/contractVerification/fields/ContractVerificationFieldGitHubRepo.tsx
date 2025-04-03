@@ -73,8 +73,7 @@ const ContractVerificationFieldGitHubRepo = ({ onCommitHashChange }: Props) => {
       <FormFieldUrl<FormFields>
         name="repository_url"
         placeholder="GitHub repository URL"
-        isRequired
-        size={{ base: 'md', lg: 'lg' }}
+        required
         onBlur={ handleBlur }
         rules={ rules }
       />

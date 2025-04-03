@@ -12,13 +12,24 @@ const hooksConfig = {
   },
 };
 
-test('base view +@mobile', async({ render, mockApiResponse }) => {
+test('base view', async({ render, mockApiResponse }) => {
   await mockApiResponse(
     'block_election_rewards',
     blockEpochMock.electionRewardDetails1,
     { pathParams: { height_or_hash: heightOrHash, reward_type: 'voter' } },
   );
   const component = await render(<BlockEpochElectionRewards data={ blockEpochMock.blockEpoch1 }/>, { hooksConfig });
-  await component.getByText('Voting rewards').click();
+  await component.getByRole('cell', { name: 'Voting rewards' }).click();
+  await expect(component).toHaveScreenshot();
+});
+
+test('base view +@mobile -@default', async({ render, mockApiResponse }) => {
+  await mockApiResponse(
+    'block_election_rewards',
+    blockEpochMock.electionRewardDetails1,
+    { pathParams: { height_or_hash: heightOrHash, reward_type: 'voter' } },
+  );
+  const component = await render(<BlockEpochElectionRewards data={ blockEpochMock.blockEpoch1 }/>, { hooksConfig });
+  await component.locator('div').filter({ hasText: 'Voting rewards' }).nth(3).click();
   await expect(component).toHaveScreenshot();
 });

@@ -1,7 +1,8 @@
-import { Tbody, Tr, Thead, Table, Th } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ArbitrumL2TxnWithdrawalsItem } from 'types/api/arbitrumL2';
+
+import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import ArbitrumL2TxnWithdrawalsTableItem from './ArbitrumL2TxnWithdrawalsTableItem';
 
@@ -13,16 +14,16 @@ interface Props {
 
 const ArbitrumL2TxnWithdrawalsTable = ({ data, txHash, isLoading }: Props) => {
   return (
-    <Table minW="900px">
-      <Thead>
-        <Tr>
-          <Th width="150px">Message #</Th>
-          <Th width="30%">Receiver</Th>
-          <Th width="30%" isNumeric>Value</Th>
-          <Th width="40%">Status</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot minW="900px">
+      <TableHeader>
+        <TableRow>
+          <TableColumnHeader width="150px">Message #</TableColumnHeader>
+          <TableColumnHeader width="30%">Receiver</TableColumnHeader>
+          <TableColumnHeader width="30%" isNumeric>Value</TableColumnHeader>
+          <TableColumnHeader width="40%">Status</TableColumnHeader>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         { data.map((item, index) => (
           <ArbitrumL2TxnWithdrawalsTableItem
             key={ String(item.id) + (isLoading ? index : '') }
@@ -30,8 +31,8 @@ const ArbitrumL2TxnWithdrawalsTable = ({ data, txHash, isLoading }: Props) => {
             isLoading={ isLoading }
             txHash={ txHash }/>
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

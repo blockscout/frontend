@@ -1,6 +1,7 @@
-import { IconButton, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import { IconButton } from 'toolkit/chakra/icon-button';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -12,19 +13,25 @@ interface Props {
 }
 
 const ContractMethodArrayButton = ({ className, type, index, onClick, isDisabled }: Props) => {
+
+  const handleClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onClick(event);
+  }, [ onClick ]);
+
   return (
     <IconButton
+      as="div"
       className={ className }
       aria-label={ type }
       data-index={ index }
       variant="outline"
-      w="20px"
-      h="20px"
-      flexShrink={ 0 }
-      onClick={ onClick }
-      icon={ <IconSvg name={ type === 'remove' ? 'minus' : 'plus' } boxSize={ 3 }/> }
-      isDisabled={ isDisabled }
-    />
+      boxSize={ 5 }
+      onClick={ handleClick }
+      disabled={ isDisabled }
+    >
+      <IconSvg name={ type === 'remove' ? 'minus' : 'plus' } boxSize={ 3 }/>
+    </IconButton>
   );
 };
 

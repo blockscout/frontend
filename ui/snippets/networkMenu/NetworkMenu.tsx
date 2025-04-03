@@ -1,7 +1,6 @@
-import { PopoverTrigger } from '@chakra-ui/react';
 import React from 'react';
 
-import Popover from 'ui/shared/chakra/Popover';
+import { PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 
 import NetworkMenuButton from './NetworkMenuButton';
 import NetworkMenuContentDesktop from './NetworkMenuContentDesktop';
@@ -15,18 +14,24 @@ const NetworkMenu = ({ isCollapsed }: Props) => {
   const menu = useNetworkMenu();
 
   return (
-    <Popover openDelay={ 300 } placement="right-start" isLazy isOpen={ menu.isOpen } onClose={ menu.onClose }>
+    <PopoverRoot
+      positioning={{ placement: 'right-start', offset: { crossAxis: 0, mainAxis: 8 } }}
+      lazyMount
+      open={ menu.open }
+      onOpenChange={ menu.onOpenChange }
+    >
       <PopoverTrigger>
         <NetworkMenuButton
           marginLeft="auto"
           overflow="hidden"
-          width={{ base: 'auto', lg: isCollapsed === false ? 'auto' : '0px', xl: isCollapsed ? '0px' : 'auto' }}
-          isActive={ menu.isOpen }
+          width={{ base: 'auto', lg: isCollapsed === false ? '36px' : '0px', xl: isCollapsed ? '0px' : '36px' }}
+          visibility={{ base: 'visible', lg: isCollapsed === false ? 'visible' : 'hidden', xl: isCollapsed ? 'hidden' : 'visible' }}
+          isActive={ menu.open }
           onClick={ menu.onToggle }
         />
       </PopoverTrigger>
       <NetworkMenuContentDesktop items={ menu.data } tabs={ menu.availableTabs }/>
-    </Popover>
+    </PopoverRoot>
   );
 };
 

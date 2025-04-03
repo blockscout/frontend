@@ -1,6 +1,6 @@
-import type { ColorMode } from '@chakra-ui/react';
-
 import type { ColorThemeId } from 'types/settings';
+
+import type { ColorMode } from 'toolkit/chakra/color-mode';
 
 interface ColorTheme {
   id: ColorThemeId;

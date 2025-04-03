@@ -1,8 +1,10 @@
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { VerifiedContractsFilter as TVerifiedContractsFilter } from 'types/api/contracts';
 
 import config from 'configs/app';
+import type { SelectOption } from 'toolkit/chakra/select';
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
 
 type OptionValue = TVerifiedContractsFilter | 'all';
@@ -15,6 +17,10 @@ const OPTIONS = [
   { value: 'scilla', label: 'Scilla' },
 ].filter(({ value }) => value === 'all' || config.UI.views.address.languageFilters.includes(value)) as Array<{ value: OptionValue; label: string }>;
 
+const collection = createListCollection<SelectOption>({
+  items: OPTIONS,
+});
+
 interface Props {
   hasActiveFilter: boolean;
   defaultValue: TVerifiedContractsFilter | undefined;
@@ -25,10 +31,10 @@ const VerifiedContractsFilter = ({ onChange, defaultValue, hasActiveFilter }: Pr
   return (
     <PopoverFilterRadio
       name="verified_contracts_filter"
-      options={ OPTIONS }
+      collection={ collection }
       onChange={ onChange }
       hasActiveFilter={ hasActiveFilter }
-      defaultValue={ defaultValue || OPTIONS[0].value }
+      initialValue={ defaultValue || OPTIONS[0].value }
     />
   );
 };

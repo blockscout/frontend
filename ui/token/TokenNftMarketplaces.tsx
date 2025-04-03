@@ -1,12 +1,14 @@
-import { Image, Link, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 
 import config from 'configs/app';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 interface Props {
@@ -24,23 +26,23 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Marketplaces trading this NFT"
         isLoading={ isLoading }
       >
         Marketplaces
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue
         py={ appActionData ? '1px' : '6px' }
       >
-        <Skeleton isLoaded={ !isLoading } display="flex" columnGap={ 3 } flexWrap="wrap" alignItems="center">
+        <Skeleton loading={ isLoading } display="flex" columnGap={ 3 } flexWrap="wrap" alignItems="center">
           { config.UI.views.nft.marketplaces.map((item) => {
 
             const hrefTemplate = id ? item.instance_url : item.collection_url;
             const href = hrefTemplate.replace('{id}', id || '').replace('{hash}', hash || '');
 
             return (
-              <Tooltip label={ `View on ${ item.name }` } key={ item.name }>
+              <Tooltip content={ `View on ${ item.name }` } key={ item.name }>
                 <Link href={ href } target="_blank">
                   <Image
                     src={ item.logo_url }
@@ -59,7 +61,7 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
             </>
           ) }
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

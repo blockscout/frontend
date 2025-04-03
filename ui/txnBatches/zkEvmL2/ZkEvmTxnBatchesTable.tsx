@@ -1,9 +1,8 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import ZkEvmTxnBatchesTableItem from './ZkEvmTxnBatchesTableItem';
 
@@ -15,18 +14,18 @@ type Props = {
 
 const TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table minW="1000px">
-      <Thead top={ top }>
-        <Tr>
-          <Th width="33%">Batch #</Th>
-          <Th width="33%">Status</Th>
-          <Th width="150px">Age</Th>
-          <Th width="150px">Txn count</Th>
-          <Th width="230px">Verify tx hash</Th>
-          <Th width="230px">Sequence hash</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot minW="1000px">
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader width="33%">Batch #</TableColumnHeader>
+          <TableColumnHeader width="33%">Status</TableColumnHeader>
+          <TableColumnHeader width="150px">Age</TableColumnHeader>
+          <TableColumnHeader width="150px">Txn count</TableColumnHeader>
+          <TableColumnHeader width="230px">Verify tx hash</TableColumnHeader>
+          <TableColumnHeader width="230px">Sequence hash</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
           <ZkEvmTxnBatchesTableItem
             key={ item.number + (isLoading ? String(index) : '') }
@@ -34,8 +33,8 @@ const TxnBatchesTable = ({ items, top, isLoading }: Props) => {
             isLoading={ isLoading }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

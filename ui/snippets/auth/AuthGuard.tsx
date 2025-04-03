@@ -1,5 +1,6 @@
-import { useDisclosure } from '@chakra-ui/react';
 import React from 'react';
+
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 import AuthModal from './AuthModal';
 import useProfileQuery from './useProfileQuery';
@@ -50,10 +51,10 @@ const AuthGuard = ({ children, onAuthSuccess, ensureEmail }: Props) => {
   return (
     <>
       { children({ onClick: handleClick }) }
-      { authModal.isOpen && (
+      { authModal.open && (
         <AuthModal
           onClose={ handleModalClose }
-          initialScreen={ profileQuery.data && !profileQuery.data.email && ensureEmail ? { type: 'email' } : { type: 'select_method' } }
+          initialScreen={ profileQuery.data && !profileQuery.data.email && ensureEmail ? { type: 'email', isAuth: true } : { type: 'select_method' } }
         />
       ) }
     </>

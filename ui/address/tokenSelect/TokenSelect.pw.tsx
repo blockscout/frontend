@@ -75,14 +75,14 @@ test('sort', async({ render, page }) => {
     { hooksConfig },
   );
   await page.getByRole('button', { name: /select/i }).click();
-  await page.locator('a[aria-label="Sort ERC-20 tokens"]').click();
+  await page.locator('[aria-label="Sort ERC-20 tokens"]').click();
 
   await page.mouse.wheel(0, -1000);
   await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
 
   await page.mouse.move(100, 200);
   await page.mouse.wheel(0, 1000);
-  await page.locator('a[aria-label="Sort ERC-1155 tokens"]').click();
+  await page.locator('[aria-label="Sort ERC-1155 tokens"]').click();
 
   await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
 });

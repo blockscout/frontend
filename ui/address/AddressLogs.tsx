@@ -68,11 +68,12 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items?.length }
       emptyText="There are no logs for this address."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

@@ -45,9 +45,6 @@ const ValidatorZilliqa = () => {
     <Flex
       columnGap={ 3 }
       rowGap={ 3 }
-      fontFamily="heading"
-      fontSize="lg"
-      fontWeight={ 500 }
       alignItems="center"
       w="100%"
       flexWrap={{ base: 'wrap', lg: 'nowrap' }}
@@ -55,6 +52,7 @@ const ValidatorZilliqa = () => {
       <ValidatorEntity
         id={ query.data?.bls_public_key ?? '' }
         isLoading={ isLoading }
+        variant="subheading"
         noLink
       />
     </Flex>

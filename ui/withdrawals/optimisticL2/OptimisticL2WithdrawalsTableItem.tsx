@@ -1,15 +1,15 @@
-import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2WithdrawalsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
@@ -24,11 +24,11 @@ const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   }
 
   return (
-    <Tr>
-      <Td verticalAlign="middle" fontWeight={ 600 }>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.msg_nonce_version + '-' + item.msg_nonce }</Skeleton>
-      </Td>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle" fontWeight={ 600 }>
+        <Skeleton loading={ isLoading } display="inline-block">{ item.msg_nonce_version + '-' + item.msg_nonce }</Skeleton>
+      </TableCell>
+      <TableCell verticalAlign="middle">
         { item.from ? (
           <AddressEntity
             address={ item.from }
@@ -36,50 +36,46 @@ const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
             truncation="constant"
           />
         ) : 'N/A' }
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <TxEntity
           isLoading={ isLoading }
           hash={ item.l2_transaction_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
           truncation="constant_long"
           noIcon
         />
-      </Td>
-      <Td verticalAlign="middle" pr={ 12 }>
+      </TableCell>
+      <TableCell verticalAlign="middle" pr={ 12 }>
         <TimeAgoWithTooltip
           timestamp={ item.l2_timestamp }
           fallbackText="N/A"
           isLoading={ isLoading }
           display="inline-block"
-          color="text_secondary"
+          color="text.secondary"
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         { item.status === 'Ready for relay' && rollupFeature.L2WithdrawalUrl ?
-          <LinkExternal href={ rollupFeature.L2WithdrawalUrl }>{ item.status }</LinkExternal> :
-          <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton>
+          <Link external href={ rollupFeature.L2WithdrawalUrl }>{ item.status }</Link> :
+          <Skeleton loading={ isLoading } display="inline-block">{ item.status }</Skeleton>
         }
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         { item.l1_transaction_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
             hash={ item.l1_transaction_hash }
             truncation="constant_long"
             noIcon
-            fontSize="sm"
-            lineHeight={ 5 }
           />
         ) :
           'N/A'
         }
-      </Td>
-      <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" minW="50px" minH="20px" display="inline-block">{ timeToEnd }</Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <Skeleton loading={ isLoading } color="text.secondary" minW="50px" minH="20px" display="inline-block">{ timeToEnd }</Skeleton>
+      </TableCell>
+    </TableRow>
   );
 };
 
