@@ -1,4 +1,4 @@
-import { useDisclosure, Flex, Button, Box } from '@chakra-ui/react';
+import { Flex, Box } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import { route } from 'nextjs-routes';
@@ -8,8 +8,9 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import dayjs from 'lib/date/dayjs';
 import { USER_ACTIVITY } from 'stubs/rewards';
-import LinkExternal from 'ui/shared/links/LinkExternal';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 import RewardsDashboardCard from './RewardsDashboardCard';
 import RewardsDashboardCardValue from './RewardsDashboardCardValue';
@@ -82,19 +83,19 @@ const RewardsDashboardActivitySection = () => {
             description: (
               <>
                 Grab your{ ' ' }
-                <LinkExternal href={ `${ activityPassUrl }&utm_medium=transactions-task` }>
+                <Link external href={ `${ activityPassUrl }&utm_medium=transactions-task` }>
                   Activity pass
-                </LinkExternal>{ ' ' }
+                </Link>{ ' ' }
                 then use{ ' ' }
-                <LinkExternal href="https://revoke.blockscout.com?utm_source=blockscout&utm_medium=transactions-task">
+                <Link external href="https://revoke.blockscout.com?utm_source=blockscout&utm_medium=transactions-task">
                   Revokescout
-                </LinkExternal>,{ ' ' }
-                <LinkExternal href="https://swap.blockscout.com?utm_source=blockscout&utm_medium=transactions-task">
+                </Link>,{ ' ' }
+                <Link external href="https://swap.blockscout.com?utm_source=blockscout&utm_medium=transactions-task">
                   Swapscout
-                </LinkExternal>, or{ ' ' }
-                <LinkInternal href={ route({ pathname: '/verified-contracts' }) }>
+                </Link>, or{ ' ' }
+                <Link href={ route({ pathname: '/verified-contracts' }) }>
                   interact with smart contracts
-                </LinkInternal>{ ' ' }
+                </Link>{ ' ' }
                 to earn extra Merits each week.
               </>
             ),
@@ -110,13 +111,13 @@ const RewardsDashboardActivitySection = () => {
             description: (
               <>
                 Grab your{ ' ' }
-                <LinkExternal href={ `${ activityPassUrl }&utm_medium=verify-contracts-task` }>
+                <Link external href={ `${ activityPassUrl }&utm_medium=verify-contracts-task` }>
                   Activity pass
-                </LinkExternal>{ ' ' }
+                </Link>{ ' ' }
                 then{ ' ' }
-                <LinkInternal href={ route({ pathname: '/contract-verification' }) }>
+                <Link href={ route({ pathname: '/contract-verification' }) }>
                   verify smart contracts
-                </LinkInternal>{ ' ' }
+                </Link>{ ' ' }
                 manually on Blockscout for different chains and earn extra Merits every week.
               </>
             ),
@@ -132,9 +133,9 @@ const RewardsDashboardActivitySection = () => {
             description: (
               <>
                 Grab your{ ' ' }
-                <LinkExternal href={ `${ activityPassUrl }&utm_medium=usage-task` }>
+                <Link external href={ `${ activityPassUrl }&utm_medium=usage-task` }>
                   Activity pass
-                </LinkExternal>{ ' ' }
+                </Link>{ ' ' }
                 then just use Blockscout explorers in your every day routine.
               </>
             ),
@@ -156,12 +157,12 @@ const RewardsDashboardActivitySection = () => {
                 <Flex alignItems="center" gap={ 3 }>
                   <Button
                     flex={{ base: 1, md: 'none' }}
-                    isLoading={ instancesQuery.isLoading }
+                    loading={ instancesQuery.isLoading }
                     onClick={ explorersModal.onOpen }
                   >
                     Earn
                   </Button>
-                  <LinkExternal
+                  <Link external
                     fontSize="md"
                     fontWeight="500"
                     textAlign="center"
@@ -169,7 +170,7 @@ const RewardsDashboardActivitySection = () => {
                     px={{ base: 4, md: 0 }}
                   >
                     Learn more
-                  </LinkExternal>
+                  </Link>
                 </Flex>
               </Flex>
             ) }
@@ -197,7 +198,7 @@ const RewardsDashboardActivitySection = () => {
         <Box flex="1 1 calc(50% - 12px)" display={{ base: 'none', md: 'block' }}/>
       </Flex>
       <RewardsInstancesModal
-        isOpen={ explorersModal.isOpen }
+        isOpen={ explorersModal.open }
         onClose={ explorersModal.onClose }
         items={ instancesQuery.data?.items }
       />

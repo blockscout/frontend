@@ -1,5 +1,4 @@
 import { Flex, Text, chakra } from '@chakra-ui/react';
-import type { ChakraStyledOptions } from '@chakra-ui/react';
 import React from 'react';
 
 import { Badge } from 'toolkit/chakra/badge';
@@ -13,37 +12,35 @@ type Props = {
   availableSoon?: boolean;
   blurFilter?: boolean;
   contentAfter?: React.ReactNode;
-  direction?: 'column' | 'column-reverse' | 'row';
   reverse?: boolean;
   children?: React.ReactNode;
   label?: string;
   isLoading?: boolean;
-  cardValueStyle?: ChakraStyledOptions;
+  cardValueStyle?: object;
   className?: string;
 };
 
 const RewardsDashboardCard = ({
   title, description, availableSoon, contentAfter, cardValueStyle, hint,
-  direction = 'column', children, blurFilter, label, isLoading, className,
+  children, blurFilter, label, isLoading, className,
 }: Props) => {
   return (
     <Flex
-      flexDirection={{ base: direction === 'row' ? 'column' : direction, md: direction }}
-      justifyContent={ direction === 'column-reverse' ? 'flex-end' : 'flex-start' }
+      flexDirection="column"
+      justifyContent="flex-start"
       p={{ base: 1.5, md: 2 }}
       border="1px solid"
       borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.200' }}
       borderRadius="lg"
-      gap={{ base: 1, md: direction === 'row' ? 10 : 1 }}
-      w={ direction === 'row' ? 'full' : 'auto' }
-      flex={ direction !== 'row' ? 1 : '0 1 auto' }
+      gap={ 1 }
+      flex={ 1 }
       className={ className }
     >
       <Flex
         flexDirection="column"
         gap={ 2 }
         p={{ base: 1.5, md: 3 }}
-        w={{ base: 'full', md: direction === 'row' ? '340px' : 'full' }}
+        w="full"
       >
         { label && (
           <Skeleton loading={ isLoading } w="fit-content">
@@ -68,10 +65,10 @@ const RewardsDashboardCard = ({
         borderRadius={{ base: 'lg', md: '8px' }}
         backgroundColor={{ _light: 'gray.50', _dark: 'whiteAlpha.50' }}
         minH={{ base: '80px', md: '128px' }}
-        mt={ direction === 'column' ? 'auto' : 0 }
+        mt="auto"
         filter="auto"
         blur={ blurFilter ? '4px' : '0' }
-        flex={ direction === 'row' ? 1 : '0 1 auto' }
+        flex="0 1 auto"
         { ...cardValueStyle }
       >
         { children }

@@ -40,7 +40,7 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomT
     </Skeleton>
     { bottomText && (
       <Skeleton loading={ isLoading }>
-        <Text fontSize="xs" fontWeight="500" variant="secondary">
+        <Text fontSize="xs" fontWeight="500" color="text.secondary">
           { bottomText }
         </Text>
       </Skeleton>

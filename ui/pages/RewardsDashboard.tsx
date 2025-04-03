@@ -67,7 +67,9 @@ const RewardsDashboard = () => {
           <RewardsDashboardCard
             title="All Merits"
             description="Claim your daily Merits and any Merits received from referrals."
-            direction="column-reverse"
+            flexDirection="column-reverse"
+            justifyContent="flex-end"
+            cardValueStyle={{ mt: 0 }}
             contentAfter={ <DailyRewardClaimButton/> }
             hint={ (
               <>
@@ -87,7 +89,9 @@ const RewardsDashboard = () => {
           <RewardsDashboardCard
             title="Referrals"
             description="Total number of users who have joined the program using your code or referral link."
-            direction="column-reverse"
+            flexDirection="column-reverse"
+            justifyContent="flex-end"
+            cardValueStyle={{ mt: 0 }}
           >
             <RewardsDashboardCardValue
               value={ referralsQuery.data?.referrals ?
@@ -115,7 +119,9 @@ const RewardsDashboard = () => {
                 to learn how your streak number affects daily rewards
               </>
             ) }
-            direction="column-reverse"
+            flexDirection="column-reverse"
+            justifyContent="flex-end"
+            cardValueStyle={{ mt: 0 }}
           >
             <RewardsDashboardCardValue
               value={
