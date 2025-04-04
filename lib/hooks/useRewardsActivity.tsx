@@ -1,6 +1,6 @@
 import { useCallback, useRef, useEffect } from 'react';
 
-import type { RewardsUserActivityTrackContractResponse, RewardsUserActivityTrackTxResponse } from 'types/api/rewards';
+import type { PreSubmitTransactionResponse, PreVerifyContractResponse } from '@blockscout/points-types';
 
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
@@ -66,7 +66,7 @@ export default function useRewardsActivity() {
         to_address: to,
         chain_id: config.chain.id ?? '',
       })
-    ) as RewardsUserActivityTrackTxResponse | undefined;
+    ) as PreSubmitTransactionResponse | undefined;
   }, [ makeRequest ]);
 
   const trackTransactionConfirm = useCallback((hash: string, token: string) =>
@@ -80,7 +80,7 @@ export default function useRewardsActivity() {
         address,
         chain_id: config.chain.id ?? '',
       })
-    ) as RewardsUserActivityTrackContractResponse | undefined;
+    ) as PreVerifyContractResponse | undefined;
   }, [ makeRequest ]);
 
   const trackContractConfirm = useCallback((token: string) =>

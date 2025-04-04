@@ -1,7 +1,7 @@
 import { Flex, Text, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { RewardsInstance } from 'types/api/rewards';
+import type { GetInstancesResponse } from '@blockscout/points-types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
@@ -12,7 +12,7 @@ import { Link } from 'toolkit/chakra/link';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  items: Array<RewardsInstance> | undefined;
+  items: GetInstancesResponse['items'] | undefined;
 };
 
 const RewardsInstancesModal = ({ isOpen, onClose, items }: Props) => {
@@ -60,7 +60,7 @@ const RewardsInstancesModal = ({ isOpen, onClose, items }: Props) => {
                     borderRadius="base"
                   >
                     <Image
-                      src={ instance.details.icon_url }
+                      src={ instance.details?.icon_url }
                       alt={ instance.name }
                       boxSize={ 5 }
                       flexShrink={ 0 }

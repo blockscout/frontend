@@ -1,4 +1,5 @@
 import type * as bens from '@blockscout/bens-types';
+import type * as rewards from '@blockscout/points-types';
 import type * as stats from '@blockscout/stats-types';
 import type * as visualizer from '@blockscout/visualizer-types';
 import { getFeaturePayload } from 'configs/app/features/types';
@@ -99,22 +100,6 @@ import type {
 } from 'types/api/optimisticL2';
 import type { Pool, PoolsResponse } from 'types/api/pools';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type {
-  RewardsConfigResponse,
-  RewardsCheckRefCodeResponse,
-  RewardsNonceResponse,
-  RewardsCheckUserResponse,
-  RewardsLoginResponse,
-  RewardsUserBalancesResponse,
-  RewardsUserDailyCheckResponse,
-  RewardsUserDailyClaimResponse,
-  RewardsUserReferralsResponse,
-  RewardsUserActivityResponse,
-  RewardsInstancesResponse,
-  RewardsUserActivityTrackContractResponse,
-  RewardsUserActivityTrackTxResponse,
-  RewardsUserCheckActivityPassResponse,
-} from 'types/api/rewards';
 import type {
   ScrollL2BatchesResponse,
   ScrollL2TxnBatch,
@@ -1492,20 +1477,20 @@ Q extends 'contract_mud_system_info' ? SmartContractMudSystemInfo :
 Q extends 'address_epoch_rewards' ? AddressEpochRewardsResponse :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
-Q extends 'rewards_config' ? RewardsConfigResponse :
-Q extends 'rewards_check_ref_code' ? RewardsCheckRefCodeResponse :
-Q extends 'rewards_nonce' ? RewardsNonceResponse :
-Q extends 'rewards_check_user' ? RewardsCheckUserResponse :
-Q extends 'rewards_login' ? RewardsLoginResponse :
-Q extends 'rewards_user_balances' ? RewardsUserBalancesResponse :
-Q extends 'rewards_user_daily_check' ? RewardsUserDailyCheckResponse :
-Q extends 'rewards_user_daily_claim' ? RewardsUserDailyClaimResponse :
-Q extends 'rewards_user_referrals' ? RewardsUserReferralsResponse :
-Q extends 'rewards_user_check_activity_pass' ? RewardsUserCheckActivityPassResponse :
-Q extends 'rewards_user_activity' ? RewardsUserActivityResponse :
-Q extends 'rewards_user_activity_track_tx' ? RewardsUserActivityTrackTxResponse :
-Q extends 'rewards_user_activity_track_contract' ? RewardsUserActivityTrackContractResponse :
-Q extends 'rewards_instances' ? RewardsInstancesResponse :
+Q extends 'rewards_config' ? rewards.GetConfigResponse :
+Q extends 'rewards_check_ref_code' ? rewards.AuthCodeResponse :
+Q extends 'rewards_nonce' ? rewards.AuthNonceResponse :
+Q extends 'rewards_check_user' ? rewards.AuthUserResponse :
+Q extends 'rewards_login' ? rewards.AuthLoginResponse :
+Q extends 'rewards_user_balances' ? rewards.GetUserBalancesResponse :
+Q extends 'rewards_user_daily_check' ? rewards.DailyRewardCheckResponse :
+Q extends 'rewards_user_daily_claim' ? rewards.DailyRewardClaimResponse :
+Q extends 'rewards_user_referrals' ? rewards.GetReferralDataResponse :
+Q extends 'rewards_user_check_activity_pass' ? rewards.CheckActivityPassResponse :
+Q extends 'rewards_user_activity' ? rewards.GetActivityRewardsResponse :
+Q extends 'rewards_user_activity_track_tx' ? rewards.PreSubmitTransactionResponse :
+Q extends 'rewards_user_activity_track_contract' ? rewards.PreVerifyContractResponse :
+Q extends 'rewards_instances' ? rewards.GetInstancesResponse :
 Q extends 'token_transfers_all' ? TokenTransferResponse :
 Q extends 'address_xstar_score' ? AddressXStarResponse :
 Q extends 'advanced_filter' ? AdvancedFilterResponse :
