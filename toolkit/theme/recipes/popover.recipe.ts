@@ -13,9 +13,10 @@ export const recipe = defineSlotRecipe({
       boxShadow: 'popover',
       boxShadowColor: 'colors.popover.shadow',
       '--popover-mobile-size': 'calc(100dvw - 1rem)',
-      width: {
-        base: 'min(var(--popover-mobile-size), var(--popover-size))',
-        lg: 'fit-content',
+      width: 'fit-content',
+      maxW: {
+        base: 'calc(100vw - 8px)',
+        lg: '800px',
       },
       borderWidth: '0',
       borderRadius: 'md',

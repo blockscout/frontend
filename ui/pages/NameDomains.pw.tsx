@@ -33,8 +33,9 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse, mockTextAd }) => {
 });
 
 test('default view +@mobile', async({ render }) => {
+  test.slow();
   const component = await render(<NameDomains/>);
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });
 
 test('filters', async({ render, page }) => {

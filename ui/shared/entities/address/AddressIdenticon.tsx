@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -53,7 +53,7 @@ const Icon = dynamic(
 
         return (props: IconProps) => {
           const svg = GradientAvatar(props.hash, props.size, 'circle');
-          return <Flex dangerouslySetInnerHTML={{ __html: svg }}/>;
+          return <Box dangerouslySetInnerHTML={{ __html: svg }}/>;
         };
       }
 

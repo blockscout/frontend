@@ -31,6 +31,7 @@ const TableColumnFilter = ({ title, isFilled, isTouched, hasReset, onFilter, onR
             variant="link"
             onClick={ onReset }
             disabled={ !isFilled }
+            textStyle="sm"
           >
             Reset
           </Button>

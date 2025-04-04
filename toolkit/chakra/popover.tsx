@@ -73,6 +73,7 @@ export const PopoverCloseTriggerWrapper = React.forwardRef<
 export const PopoverRoot = (props: ChakraPopover.RootProps) => {
   const positioning = {
     placement: 'bottom-start' as const,
+    overflowPadding: 4,
     ...props.positioning,
     offset: {
       mainAxis: 4,
