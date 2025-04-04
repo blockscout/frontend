@@ -52,8 +52,8 @@ const RewardsDashboardActivitySection = () => {
 
       const currentAmount = Number(current?.amount || 0);
       const previousAmount = Number(previous?.amount || 0);
-      const currentPercentile = Number(current?.percentile || 0);
-      const previousPercentile = Number(previous?.percentile || 0);
+      const currentPercentile = (current?.percentile || 0) * 100;
+      const previousPercentile = (previous?.percentile || 0) * 100;
       const amountDiff = currentAmount - previousAmount;
       const percentileDiff = currentPercentile - previousPercentile;
 
