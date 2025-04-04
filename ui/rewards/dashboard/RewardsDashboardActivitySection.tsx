@@ -72,7 +72,7 @@ const RewardsDashboardActivitySection = () => {
     };
   }, [ activityQuery.data ]);
 
-  const activityPassUrl = `${ feature.isEnabled && feature.api.endpoint }/?tab=spend&id=activity-pass&utm_source=blockscout`;
+  const activityPassUrl = feature.isEnabled ? `${ feature.api.endpoint }/?tab=spend&id=activity-pass&utm_source=blockscout` : null;
 
   return (
     <>
@@ -157,7 +157,7 @@ const RewardsDashboardActivitySection = () => {
                 <Flex alignItems="center" gap={ 3 }>
                   <Button
                     flex={{ base: 1, md: 'none' }}
-                    loading={ instancesQuery.isLoading }
+                    loadingSkeleton={ instancesQuery.isLoading }
                     onClick={ explorersModal.onOpen }
                   >
                     Earn

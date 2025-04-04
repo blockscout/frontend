@@ -2,7 +2,7 @@ import { Flex, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { Badge } from 'toolkit/chakra/badge';
-import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Heading } from 'toolkit/chakra/heading';
 import Hint from 'ui/shared/Hint';
 
 type Props = {
@@ -42,14 +42,10 @@ const RewardsDashboardCard = ({
         p={{ base: 1.5, md: 3 }}
         w="full"
       >
-        { label && (
-          <Skeleton loading={ isLoading } w="fit-content">
-            <Badge>{ label }</Badge>
-          </Skeleton>
-        ) }
+        { label && <Badge loading={ isLoading }>{ label }</Badge> }
         { title && (
           <Flex alignItems="center" gap={ 2 }>
-            <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="500">{ title }</Text>
+            <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }}>{ title }</Heading>
             { hint && <Hint label={ hint }/> }
             { availableSoon && <Badge colorPalette="blue">Available soon</Badge> }
           </Flex>

@@ -50,7 +50,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const { handleSubmit, watch, formState, setError, reset, getFieldState, getValues, clearErrors } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
   const methodNameRef = React.useRef<string>();
-  const [ activityToken, setActivityToken ] = React.useState<string | undefined>();
+  const activityToken = React.useRef<string | undefined>();
 
   const apiFetch = useApiFetch();
   const { trackContract, trackContractConfirm } = useRewardsActivity();
@@ -78,7 +78,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
     try {
       const activityResponse = await trackContract(data.address);
-      setActivityToken(activityResponse?.token);
+      activityToken.current = activityResponse?.token;
       await apiFetch('contract_verification_via', {
         pathParams: { method: data.method[0], hash: data.address.toLowerCase() },
         fetchParams: {
@@ -131,13 +131,13 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       { send_immediately: true },
     );
 
-    if (activityToken) {
-      await trackContractConfirm(activityToken);
-      setActivityToken(undefined);
+    if (activityToken.current) {
+      await trackContractConfirm(activityToken.current);
+      activityToken.current = undefined;
     }
 
     window.location.assign(route({ pathname: '/address/[hash]', query: { hash: address, tab: 'contract' } }));
-  }, [ setError, address, getValues, activityToken, trackContractConfirm ]);
+  }, [ setError, address, getValues, trackContractConfirm ]);
 
   const handleSocketError = React.useCallback(() => {
     if (!formState.isSubmitting) {

@@ -1,6 +1,7 @@
 import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import Hint from 'ui/shared/Hint';
 
@@ -20,7 +21,7 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomT
     { label && (
       <Flex alignItems="center" gap={ 1 }>
         { hint && <Hint label={ hint }/> }
-        <Text fontSize="xs" fontWeight="500" color="text.secondary">
+        <Text textStyle="xs" fontWeight="500" color="text.secondary">
           { label }
         </Text>
       </Flex>
@@ -34,13 +35,13 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomT
       minW="100px"
     >
       { withIcon && <MeritsIcon boxSize={ 8 }/> }
-      <Text fontSize={{ base: '24px', md: '32px' }} lineHeight={{ base: '24px', md: 1.5 }} fontWeight="500">
+      <Heading textStyle={{ base: 'heading.lg', md: 'heading.xl' }}>
         { value }
-      </Text>
+      </Heading>
     </Skeleton>
     { bottomText && (
       <Skeleton loading={ isLoading }>
-        <Text fontSize="xs" fontWeight="500" color="text.secondary">
+        <Text textStyle="xs" fontWeight="500" color="text.secondary">
           { bottomText }
         </Text>
       </Skeleton>
