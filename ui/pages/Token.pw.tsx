@@ -39,6 +39,7 @@ test('base view', async({ render, page, createSocket }) => {
   const socket = await createSocket();
   const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+  await component.getByText('100 ARIA').waitFor({ state: 'visible' });
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
@@ -55,6 +56,7 @@ test('with verified info', async({ render, page, createSocket, mockApiResponse, 
   const socket = await createSocket();
   const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+  await component.getByText('100 ARIA').waitFor({ state: 'visible' });
 
   await page.getByLabel('Show info').click();
 
@@ -83,6 +85,7 @@ test('bridged token', async({ render, page, createSocket, mockApiResponse, mockA
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
   const socket = await createSocket();
   await socketServer.joinChannel(socket, `tokens:${ hash.toLowerCase() }`);
+  await component.getByText('369,000,000 HyFi').waitFor({ state: 'visible' });
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
@@ -98,6 +101,7 @@ test.describe('mobile', () => {
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+    await component.getByText('100 ARIA').waitFor({ state: 'visible' });
 
     await expect(component).toHaveScreenshot({
       mask: [ page.locator(pwConfig.adsBannerSelector) ],
@@ -113,6 +117,7 @@ test.describe('mobile', () => {
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+    await component.getByText('100 ARIA').waitFor({ state: 'visible' });
 
     await expect(component).toHaveScreenshot({
       mask: [ page.locator(pwConfig.adsBannerSelector) ],
