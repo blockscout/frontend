@@ -1,6 +1,6 @@
-import type { RewardsUserBalancesResponse } from 'types/api/rewards';
+import type { GetUserBalancesResponse } from '@blockscout/points-types';
 
-export const base: RewardsUserBalancesResponse = {
+export const base: GetUserBalancesResponse = {
   total: '250',
   staked: '0',
   unstaked: '0',

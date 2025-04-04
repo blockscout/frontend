@@ -8,6 +8,7 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton';
+import RewardsDashboardActivitySection from 'ui/rewards/dashboard/RewardsDashboardActivitySection';
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
 import RewardsDashboardInfoCard from 'ui/rewards/dashboard/RewardsDashboardInfoCard';
@@ -66,7 +67,9 @@ const RewardsDashboard = () => {
           <RewardsDashboardCard
             title="All Merits"
             description="Claim your daily Merits and any Merits received from referrals."
-            direction="column-reverse"
+            flexDirection="column-reverse"
+            justifyContent="flex-end"
+            cardValueStyle={{ mt: 0 }}
             contentAfter={ <DailyRewardClaimButton/> }
             hint={ (
               <>
@@ -86,7 +89,9 @@ const RewardsDashboard = () => {
           <RewardsDashboardCard
             title="Referrals"
             description="Total number of users who have joined the program using your code or referral link."
-            direction="column-reverse"
+            flexDirection="column-reverse"
+            justifyContent="flex-end"
+            cardValueStyle={{ mt: 0 }}
           >
             <RewardsDashboardCardValue
               value={ referralsQuery.data?.referrals ?
@@ -114,7 +119,9 @@ const RewardsDashboard = () => {
                 to learn how your streak number affects daily rewards
               </>
             ) }
-            direction="column-reverse"
+            flexDirection="column-reverse"
+            justifyContent="flex-end"
+            cardValueStyle={{ mt: 0 }}
           >
             <RewardsDashboardCardValue
               value={
@@ -194,26 +201,7 @@ const RewardsDashboard = () => {
             linkHref={ `https://merits.blockscout.com/?tab=redeem&utm_source=${ config.chain.id }&utm_medium=redeem` }
           />
         </Flex>
-        <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
-          <RewardsDashboardCard
-            title="Activity"
-            description="Earn Merits for your everyday Blockscout activities. You deserve to be rewarded for choosing open-source public goods!"
-            availableSoon
-            blurFilter
-          >
-            <RewardsDashboardCardValue label="Activity" value="0%"/>
-            <RewardsDashboardCardValue label="Received" value="0" withIcon/>
-          </RewardsDashboardCard>
-          <RewardsDashboardCard
-            title="Verify contracts"
-            description="Verified contracts are so important for transparency and interaction. Verify your contracts on Blockscout and receive Merits for your efforts." // eslint-disable-line max-len
-            availableSoon
-            blurFilter
-          >
-            <RewardsDashboardCardValue label="Activity" value="0%"/>
-            <RewardsDashboardCardValue label="Received" value="0" withIcon/>
-          </RewardsDashboardCard>
-        </Flex>
+        <RewardsDashboardActivitySection/>
       </Flex>
     </>
   );
