@@ -19,7 +19,7 @@ import RewardsInstancesModal from './RewardsInstancesModal';
 const feature = config.features.rewards;
 
 const RewardsDashboardActivitySection = () => {
-  const { apiToken } = useRewardsContext();
+  const { apiToken, rewardsConfigQuery } = useRewardsContext();
   const explorersModal = useDisclosure();
 
   const activityQuery = useApiQuery('rewards_user_activity', {
@@ -72,7 +72,9 @@ const RewardsDashboardActivitySection = () => {
     };
   }, [ activityQuery.data ]);
 
-  const activityPassUrl = feature.isEnabled ? `${ feature.api.endpoint }/?tab=spend&id=activity-pass&utm_source=blockscout` : null;
+  const activityPassUrl = feature.isEnabled ?
+    `${ feature.api.endpoint }/?tab=spend&id=${ rewardsConfigQuery.data?.rewards?.blockscout_activity_pass_id }&utm_source=blockscout` :
+    null;
 
   return (
     <>
@@ -83,7 +85,7 @@ const RewardsDashboardActivitySection = () => {
             description: (
               <>
                 Grab your{ ' ' }
-                <Link external href={ `${ activityPassUrl }&utm_medium=transactions-task` }>
+                <Link external href={ `${ activityPassUrl }&utm_medium=transactions-task` } loading={ rewardsConfigQuery.isLoading }>
                   Activity pass
                 </Link>{ ' ' }
                 then use{ ' ' }
@@ -111,7 +113,7 @@ const RewardsDashboardActivitySection = () => {
             description: (
               <>
                 Grab your{ ' ' }
-                <Link external href={ `${ activityPassUrl }&utm_medium=verify-contracts-task` }>
+                <Link external href={ `${ activityPassUrl }&utm_medium=verify-contracts-task` } loading={ rewardsConfigQuery.isLoading }>
                   Activity pass
                 </Link>{ ' ' }
                 then{ ' ' }
@@ -133,7 +135,7 @@ const RewardsDashboardActivitySection = () => {
             description: (
               <>
                 Grab your{ ' ' }
-                <Link external href={ `${ activityPassUrl }&utm_medium=usage-task` }>
+                <Link external href={ `${ activityPassUrl }&utm_medium=usage-task` } loading={ rewardsConfigQuery.isLoading }>
                   Activity pass
                 </Link>{ ' ' }
                 then just use Blockscout explorers in your every day routine.

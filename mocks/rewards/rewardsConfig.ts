@@ -10,6 +10,7 @@ export const base: GetConfigResponse = {
     sent_transactions_activity_rewards: {},
     verified_contracts_activity_rewards: {},
     blockscout_usage_activity_rewards: {},
+    blockscout_activity_pass_id: '1',
   },
   auth: {
     shared_siwe_login: true,
