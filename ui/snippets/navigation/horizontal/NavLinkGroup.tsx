@@ -75,7 +75,7 @@ const NavLinkGroup = ({ item }: Props) => {
         { item.text }
         { isHighlighted && (
           <LightningLabel
-            iconColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
+            iconColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg.group' }
             position={{ lg: 'static' }}
             ml={{ lg: '2px' }}
           />

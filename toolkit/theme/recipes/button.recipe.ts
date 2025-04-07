@@ -26,6 +26,9 @@ export const recipe = defineRecipe({
             borderInlineStartColor: 'spinner.track',
           },
         },
+        _expanded: {
+          bg: 'blue.400',
+        },
       },
       outline: {
         borderWidth: '2px',
