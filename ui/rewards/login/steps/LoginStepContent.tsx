@@ -18,7 +18,7 @@ import { Switch } from 'toolkit/chakra/switch';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 type Props = {
-  goNext: (isReferral: boolean, reward: string | null) => void;
+  goNext: (isReferral: boolean, reward: string | undefined) => void;
   closeModal: () => void;
   openAuthModal: (isAuth: boolean, trySharedLogin?: boolean) => void;
 };
@@ -48,7 +48,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
     isConnected && !isAddressMismatch && !checkUserQuery.isFetching && !checkUserQuery.data?.exists,
   [ isConnected, isAddressMismatch, checkUserQuery ]);
 
-  const canTrySharedLogin = rewardsConfigQuery.data?.auth.shared_siwe_login && checkUserQuery.data?.exists !== false && !isLoggedIntoAccountWithWallet;
+  const canTrySharedLogin = rewardsConfigQuery.data?.auth?.shared_siwe_login && checkUserQuery.data?.exists !== false && !isLoggedIntoAccountWithWallet;
 
   const handleRefCodeChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setRefCode(event.target.value);

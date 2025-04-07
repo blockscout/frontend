@@ -140,8 +140,8 @@ const RewardsDashboard = () => {
               <>
                 Refer friends and boost your Merits! You receive a{ ' ' }
                 <Skeleton as="span" loading={ rewardsConfigQuery.isPending }>
-                  { rewardsConfigQuery.data?.rewards.referral_share ?
-                    `${ Number(rewardsConfigQuery.data?.rewards.referral_share) * 100 }%` :
+                  { rewardsConfigQuery.data?.rewards?.referral_share ?
+                    `${ Number(rewardsConfigQuery.data.rewards.referral_share) * 100 }%` :
                     'N/A'
                   }
                 </Skeleton>
