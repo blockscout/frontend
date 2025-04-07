@@ -17,9 +17,6 @@ export const recipe = defineRecipe({
         bg: 'transparent',
         color: 'closeButton.fg',
         border: 'none',
-        '&:not([data-loading-skeleton])': {
-          bg: 'transparent',
-        },
         _hover: {
           bg: 'transparent',
           color: 'link.primary.hover',

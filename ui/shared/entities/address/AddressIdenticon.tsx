@@ -53,7 +53,7 @@ const Icon = dynamic(
 
         return (props: IconProps) => {
           const svg = GradientAvatar(props.hash, props.size, 'circle');
-          return <Box dangerouslySetInnerHTML={{ __html: svg }}/>;
+          return <Box display="flex" dangerouslySetInnerHTML={{ __html: svg }}/>;
         };
       }
 
