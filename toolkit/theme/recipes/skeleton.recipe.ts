@@ -5,24 +5,25 @@ export const recipe = defineRecipe({
 
   variants: {
     loading: {
-      'true': {
+      // special value to override the default behavior of the skeleton in Chakra
+      // it uses "background: unset" when the loading prop is set to false
+      // but it causes issues with background color of child element (e.g. button, badge, etc.)
+      // so, instead of the "loading" prop, we use the "state" prop to control the skeleton (see below)
+      reset: {},
+    },
+    state: {
+      loading: {
         borderRadius: 'base',
         boxShadow: 'none',
         backgroundClip: 'padding-box',
         cursor: 'default',
         color: 'transparent',
+        borderWidth: '0px',
         pointerEvents: 'none',
         userSelect: 'none',
-        // we have to override the property set by chakra in order to make the skeleton shrink
-        // when the text is too long
-        flexShrink: 'initial',
         '&::before, &::after, *': {
           visibility: 'hidden',
         },
-      },
-      'false': {
-        background: 'var(--layer-bg)',
-        animation: 'fade-in var(--fade-duration, 0.1s) ease-out !important',
       },
     },
     variant: {
@@ -50,6 +51,6 @@ export const recipe = defineRecipe({
 
   defaultVariants: {
     variant: 'shine',
-    loading: true,
+    loading: 'reset',
   },
 });

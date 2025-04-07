@@ -9,21 +9,12 @@ export const recipe = defineRecipe({
     _disabled: {
       opacity: 'control.disabled',
     },
-    _loading: {
-      bgColor: 'unset',
-    },
   },
   variants: {
     variant: {
       solid: {
         bg: 'blue.600',
         color: 'white',
-        '&:not([data-loading-skeleton])': {
-          bgColor: 'blue.600',
-          _expanded: {
-            bg: 'blue.400',
-          },
-        },
         _hover: {
           bg: 'blue.400',
         },
@@ -35,16 +26,16 @@ export const recipe = defineRecipe({
             borderInlineStartColor: 'spinner.track',
           },
         },
+        _expanded: {
+          bg: 'blue.400',
+        },
       },
       outline: {
-        borderWidth: '0px',
+        borderWidth: '2px',
         borderStyle: 'solid',
         bg: 'transparent',
         color: 'button.outline.fg',
         borderColor: 'button.outline.fg',
-        '&:not([data-loading-skeleton])': {
-          borderWidth: '2px',
-        },
         _hover: {
           bg: 'transparent',
           color: 'blue.400',
@@ -60,14 +51,11 @@ export const recipe = defineRecipe({
         },
       },
       dropdown: {
-        borderWidth: '0px',
+        borderWidth: '2px',
         borderStyle: 'solid',
         bg: 'transparent',
         color: 'button.dropdown.fg',
         borderColor: 'button.dropdown.border',
-        '&:not([data-loading-skeleton])': {
-          borderWidth: '2px',
-        },
         _hover: {
           bg: 'transparent',
           color: 'blue.400',
@@ -144,9 +132,6 @@ export const recipe = defineRecipe({
       hero: {
         bg: 'button.hero.bg',
         color: 'button.hero.fg',
-        '&:not([data-loading-skeleton])': {
-          bg: 'button.hero.bg',
-        },
         _loading: {
           opacity: 1,
           '& .chakra-spinner': {
@@ -209,9 +194,6 @@ export const recipe = defineRecipe({
       subtle: {
         bg: 'button.subtle.bg',
         color: 'button.subtle.fg',
-        '&:not([data-loading-skeleton])': {
-          bg: 'button.subtle.bg',
-        },
         _hover: {
           bg: 'button.subtle.bg',
           color: 'link.primary.hover',

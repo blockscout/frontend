@@ -81,7 +81,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
             </Text>
             { isHighlighted && (
               <LightningLabel
-                iconColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
+                iconColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg.group' }
                 isCollapsed={ isCollapsed }
               />
             ) }

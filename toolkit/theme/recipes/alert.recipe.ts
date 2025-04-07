@@ -11,9 +11,6 @@ export const recipe = defineSlotRecipe({
       position: 'relative',
       borderRadius: 'base',
       color: 'alert.fg',
-      _loading: {
-        bgColor: 'unset',
-      },
     },
     title: {
       fontWeight: '600',
@@ -39,51 +36,11 @@ export const recipe = defineSlotRecipe({
 
   variants: {
     status: {
-      info: {
-        root: {
-          bgColor: 'alert.bg.info',
-          '&:not([data-loading], [aria-busy=true])': {
-            bgColor: 'alert.bg.info',
-          },
-          color: 'alert.fg',
-        },
-      },
-      warning: {
-        root: {
-          bgColor: 'alert.bg.warning',
-          '&:not([data-loading], [aria-busy=true])': {
-            bgColor: 'alert.bg.warning',
-          },
-          color: 'alert.fg',
-        },
-      },
-      warning_table: {
-        root: {
-          bgColor: 'alert.bg.warning_table',
-          '&:not([data-loading], [aria-busy=true])': {
-            bgColor: 'alert.bg.warning_table',
-          },
-          color: 'alert.fg',
-        },
-      },
-      success: {
-        root: {
-          bgColor: 'alert.bg.success',
-          '&:not([data-loading], [aria-busy=true])': {
-            bgColor: 'alert.bg.success',
-          },
-          color: 'alert.fg',
-        },
-      },
-      error: {
-        root: {
-          bgColor: 'alert.bg.error',
-          '&:not([data-loading], [aria-busy=true])': {
-            bgColor: 'alert.bg.error',
-          },
-          color: 'alert.fg',
-        },
-      },
+      info: {},
+      warning: {},
+      warning_table: {},
+      success: {},
+      error: {},
     },
 
     variant: {
@@ -128,6 +85,46 @@ export const recipe = defineSlotRecipe({
       },
     },
   },
+
+  compoundVariants: [
+    {
+      status: 'info',
+      variant: 'subtle',
+      css: {
+        root: {
+          bg: 'alert.bg.info',
+        },
+      },
+    },
+    {
+      status: 'warning',
+      variant: 'subtle',
+      css: {
+        root: { bg: 'alert.bg.warning' },
+      },
+    },
+    {
+      status: 'warning_table',
+      variant: 'subtle',
+      css: {
+        root: { bg: 'alert.bg.warning_table' },
+      },
+    },
+    {
+      status: 'success',
+      variant: 'subtle',
+      css: {
+        root: { bg: 'alert.bg.success' },
+      },
+    },
+    {
+      status: 'error',
+      variant: 'subtle',
+      css: {
+        root: { bg: 'alert.bg.error' },
+      },
+    },
+  ],
 
   defaultVariants: {
     status: 'info',
