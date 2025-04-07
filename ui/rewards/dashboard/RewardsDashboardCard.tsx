@@ -1,4 +1,4 @@
-import { Flex, Text, chakra } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { Badge } from 'toolkit/chakra/badge';
@@ -12,35 +12,35 @@ type Props = {
   availableSoon?: boolean;
   blurFilter?: boolean;
   contentAfter?: React.ReactNode;
+  contentDirection?: 'column' | 'column-reverse' | 'row';
   reverse?: boolean;
   children?: React.ReactNode;
   label?: string;
   isLoading?: boolean;
   cardValueStyle?: object;
-  className?: string;
 };
 
 const RewardsDashboardCard = ({
   title, description, availableSoon, contentAfter, cardValueStyle, hint,
-  children, blurFilter, label, isLoading, className,
+  contentDirection = 'column', children, blurFilter, label, isLoading,
 }: Props) => {
   return (
     <Flex
-      flexDirection="column"
-      justifyContent="flex-start"
+      flexDirection={{ base: contentDirection === 'row' ? 'column' : contentDirection, md: contentDirection }}
+      justifyContent={ contentDirection === 'column-reverse' ? 'flex-end' : 'flex-start' }
       p={{ base: 1.5, md: 2 }}
       border="1px solid"
       borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.200' }}
       borderRadius="lg"
-      gap={ 1 }
-      flex={ 1 }
-      className={ className }
+      gap={{ base: 1, md: contentDirection === 'row' ? 10 : 1 }}
+      w={ contentDirection === 'row' ? 'full' : 'auto' }
+      flex={ contentDirection !== 'row' ? 1 : '0 1 auto' }
     >
       <Flex
         flexDirection="column"
         gap={ 2 }
         p={{ base: 1.5, md: 3 }}
-        w="full"
+        w={{ base: 'full', md: contentDirection === 'row' ? '340px' : 'full' }}
       >
         { label && <Badge loading={ isLoading }>{ label }</Badge> }
         { title && (
@@ -60,11 +60,11 @@ const RewardsDashboardCard = ({
         justifyContent="space-around"
         borderRadius={{ base: 'lg', md: '8px' }}
         backgroundColor={{ _light: 'gray.50', _dark: 'whiteAlpha.50' }}
-        minH={{ base: '80px', md: '128px' }}
-        mt="auto"
+        minH={{ base: '104px', md: '128px' }}
+        mt={ contentDirection === 'column' ? 'auto' : 0 }
         filter="auto"
         blur={ blurFilter ? '4px' : '0' }
-        flex="0 1 auto"
+        flex={ contentDirection === 'row' ? 1 : '0 1 auto' }
         { ...cardValueStyle }
       >
         { children }
@@ -73,4 +73,4 @@ const RewardsDashboardCard = ({
   );
 };
 
-export default chakra(RewardsDashboardCard);
+export default RewardsDashboardCard;

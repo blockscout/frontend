@@ -1,4 +1,4 @@
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex, Box, Grid } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import { route } from 'nextjs-routes';
@@ -12,13 +12,13 @@ import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
-import RewardsDashboardCard from './RewardsDashboardCard';
-import RewardsDashboardCardValue from './RewardsDashboardCardValue';
-import RewardsInstancesModal from './RewardsInstancesModal';
+import RewardsDashboardCard from '../RewardsDashboardCard';
+import RewardsDashboardCardValue from '../RewardsDashboardCardValue';
+import RewardsInstancesModal from '../RewardsInstancesModal';
 
 const feature = config.features.rewards;
 
-const RewardsDashboardActivitySection = () => {
+export default function TasksTab() {
   const { apiToken, rewardsConfigQuery } = useRewardsContext();
   const explorersModal = useDisclosure();
 
@@ -78,7 +78,11 @@ const RewardsDashboardActivitySection = () => {
 
   return (
     <>
-      <Flex w="full" gap={ 6 } flexWrap="wrap">
+      <Grid
+        w="full"
+        gap={ 6 }
+        templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
+      >
         { [
           {
             title: 'Weekly Blockscout activity',
@@ -177,8 +181,6 @@ const RewardsDashboardActivitySection = () => {
               </Flex>
             ) }
             isLoading={ activityQuery.isPlaceholderData }
-            cardValueStyle={{ minH: { base: '104px', md: '128px' } }}
-            flex={{ base: '1 1 100%', md: '1 1 calc(50% - 12px)' }}
           >
             <RewardsDashboardCardValue
               label="Performance rank"
@@ -197,8 +199,7 @@ const RewardsDashboardActivitySection = () => {
             />
           </RewardsDashboardCard>
         )) }
-        <Box flex="1 1 calc(50% - 12px)" display={{ base: 'none', md: 'block' }}/>
-      </Flex>
+      </Grid>
       <RewardsInstancesModal
         isOpen={ explorersModal.open }
         onClose={ explorersModal.onClose }
@@ -206,6 +207,4 @@ const RewardsDashboardActivitySection = () => {
       />
     </>
   );
-};
-
-export default RewardsDashboardActivitySection;
+}
