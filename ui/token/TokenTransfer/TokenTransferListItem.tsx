@@ -62,6 +62,7 @@ const TokenTransferListItem = ({
         to={ to }
         isLoading={ isLoading }
         tokenHash={ token?.address }
+        tokenSymbol={ token?.symbol ?? undefined }
         w="100%"
         fontWeight="500"
       />
