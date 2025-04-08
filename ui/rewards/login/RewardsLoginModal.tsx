@@ -26,7 +26,7 @@ const RewardsLoginModal = () => {
 
   const [ isLoginStep, setIsLoginStep ] = React.useState(true);
   const [ isReferral, setIsReferral ] = React.useState(false);
-  const [ customReferralReward, setCustomReferralReward ] = React.useState<string | null>(null);
+  const [ customReferralReward, setCustomReferralReward ] = React.useState<string | undefined>();
   const [ authModalInitialScreen, setAuthModalInitialScreen ] = React.useState<Screen>();
   const authModal = useDisclosure();
 
@@ -34,11 +34,11 @@ const RewardsLoginModal = () => {
     if (!isLoginModalOpen) {
       setIsLoginStep(true);
       setIsReferral(false);
-      setCustomReferralReward(null);
+      setCustomReferralReward(undefined);
     }
   }, [ isLoginModalOpen ]);
 
-  const goNext = useCallback((isReferral: boolean, reward: string | null) => {
+  const goNext = useCallback((isReferral: boolean, reward: string | undefined) => {
     setIsReferral(isReferral);
     setCustomReferralReward(reward);
     setIsLoginStep(false);

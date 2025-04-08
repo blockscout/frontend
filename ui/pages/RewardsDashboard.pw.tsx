@@ -25,19 +25,24 @@ testWithAuth.beforeEach(async({ mockEnvs, mockApiResponse }) => {
   await mockApiResponse('user_info', profileMock.withEmailAndWallet);
 });
 
-testWithAuth('base view +@dark-mode +@mobile', async({ page, render, mockApiResponse }) => {
-  await mockApiResponse('rewards_user_balances', rewardsBalanceMock.base);
-  await mockApiResponse('rewards_user_daily_check', dailyRewardMock.base);
-  await mockApiResponse('rewards_user_referrals', referralsMock.base);
-  await mockApiResponse('rewards_config', rewardsConfigMock.base);
+const testTab = (tab: 'tasks' | 'referrals' | 'resources') =>
+  testWithAuth(`${ tab } tab +@dark-mode +@mobile`, async({ page, render, mockApiResponse }, testInfo) => {
+    await mockApiResponse('rewards_user_balances', rewardsBalanceMock.base);
+    await mockApiResponse('rewards_user_daily_check', dailyRewardMock.base);
+    await mockApiResponse('rewards_user_referrals', referralsMock.base);
+    await mockApiResponse('rewards_config', rewardsConfigMock.base);
 
-  const component = await render(<RewardsDashboard/>);
+    const component = await render(<RewardsDashboard/>, { hooksConfig: { router: { query: { tab } } } });
 
-  await expect(component).toHaveScreenshot({
-    mask: [ page.locator(pwConfig.adsBannerSelector) ],
-    maskColor: pwConfig.maskColor,
+    await expect(component).toHaveScreenshot(testInfo.project.name === 'mobile' ? {} : {
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
+    });
   });
-});
+
+testTab('tasks');
+testTab('referrals');
+testTab('resources');
 
 testWithAuth('with error', async({ page, render }) => {
   const component = await render(<RewardsDashboard/>);

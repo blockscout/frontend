@@ -13,16 +13,16 @@ import RewardsReadOnlyInputWithCopy from '../../RewardsReadOnlyInputWithCopy';
 
 type Props = {
   isReferral: boolean;
-  customReferralReward: string | null;
+  customReferralReward: string | undefined;
 };
 
 const CongratsStepContent = ({ isReferral, customReferralReward }: Props) => {
   const { referralsQuery, rewardsConfigQuery } = useRewardsContext();
 
-  const registrationReward = Number(rewardsConfigQuery.data?.rewards.registration);
+  const registrationReward = Number(rewardsConfigQuery.data?.rewards?.registration);
   const registrationWithReferralReward = customReferralReward ?
     Number(customReferralReward) + registrationReward :
-    Number(rewardsConfigQuery.data?.rewards.registration_with_referral);
+    Number(rewardsConfigQuery.data?.rewards?.registration_with_referral);
   const referralReward = registrationWithReferralReward - registrationReward;
 
   const refLink = referralsQuery.data?.link || 'N/A';
@@ -94,8 +94,8 @@ const CongratsStepContent = ({ isReferral, customReferralReward }: Props) => {
         <Text fontSize="md" mt={ 2 }>
           Receive a{ ' ' }
           <Skeleton as="span" loading={ rewardsConfigQuery.isLoading }>
-            { rewardsConfigQuery.data?.rewards.referral_share ?
-              `${ Number(rewardsConfigQuery.data?.rewards.referral_share) * 100 }%` :
+            { rewardsConfigQuery.data?.rewards?.referral_share ?
+              `${ Number(rewardsConfigQuery.data.rewards.referral_share) * 100 }%` :
               'N/A'
             }
           </Skeleton>

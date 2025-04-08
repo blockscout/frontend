@@ -22,6 +22,7 @@ import { SocketProvider } from 'lib/socket/context';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
 import RewardsLoginModal from 'ui/rewards/login/RewardsLoginModal';
+import RewardsActivityTracker from 'ui/rewards/RewardsActivityTracker';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
@@ -87,7 +88,12 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                           <SettingsContextProvider>
                             { getLayout(<Component { ...pageProps }/>) }
                             <Toaster/>
-                            { config.features.rewards.isEnabled && <RewardsLoginModal/> }
+                            { config.features.rewards.isEnabled && (
+                              <>
+                                <RewardsLoginModal/>
+                                <RewardsActivityTracker/>
+                              </>
+                            ) }
                           </SettingsContextProvider>
                         </MarketplaceContextProvider>
                       </RewardsContextProvider>

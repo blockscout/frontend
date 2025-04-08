@@ -6,12 +6,13 @@ import { useRewardsContext } from 'lib/contexts/rewards';
 import { apos } from 'lib/html-entities';
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
-import { Skeleton } from 'toolkit/chakra/skeleton';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton';
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
-import RewardsDashboardInfoCard from 'ui/rewards/dashboard/RewardsDashboardInfoCard';
-import RewardsReadOnlyInputWithCopy from 'ui/rewards/RewardsReadOnlyInputWithCopy';
+import ReferralsTab from 'ui/rewards/dashboard/tabs/ReferralsTab';
+import ResourcesTab from 'ui/rewards/dashboard/tabs/ResourcesTab';
+import TasksTab from 'ui/rewards/dashboard/tabs/TasksTab';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
@@ -66,7 +67,8 @@ const RewardsDashboard = () => {
           <RewardsDashboardCard
             title="All Merits"
             description="Claim your daily Merits and any Merits received from referrals."
-            direction="column-reverse"
+            contentDirection="column-reverse"
+            cardValueStyle={{ minH: { base: '64px', md: '88px' } }}
             contentAfter={ <DailyRewardClaimButton/> }
             hint={ (
               <>
@@ -86,7 +88,8 @@ const RewardsDashboard = () => {
           <RewardsDashboardCard
             title="Referrals"
             description="Total number of users who have joined the program using your code or referral link."
-            direction="column-reverse"
+            contentDirection="column-reverse"
+            cardValueStyle={{ minH: { base: '64px', md: '88px' } }}
           >
             <RewardsDashboardCardValue
               value={ referralsQuery.data?.referrals ?
@@ -114,7 +117,8 @@ const RewardsDashboard = () => {
                 to learn how your streak number affects daily rewards
               </>
             ) }
-            direction="column-reverse"
+            contentDirection="column-reverse"
+            cardValueStyle={{ minH: { base: '64px', md: '88px' } }}
           >
             <RewardsDashboardCardValue
               value={
@@ -126,94 +130,26 @@ const RewardsDashboard = () => {
             />
           </RewardsDashboardCard>
         </Flex>
-        <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
-          <RewardsDashboardCard
-            title="Referral program"
-            description={ (
-              <>
-                Refer friends and boost your Merits! You receive a{ ' ' }
-                <Skeleton as="span" loading={ rewardsConfigQuery.isPending }>
-                  { rewardsConfigQuery.data?.rewards.referral_share ?
-                    `${ Number(rewardsConfigQuery.data?.rewards.referral_share) * 100 }%` :
-                    'N/A'
-                  }
-                </Skeleton>
-                { ' ' }bonus on all Merits earned by your referrals.
-              </>
-            ) }
-          >
-            <Flex
-              flex={ 1 }
-              gap={{ base: 2, lg: 6 }}
-              px={{ base: 4, lg: 6 }}
-              py={{ base: 4, lg: 0 }}
-              flexDirection={{ base: 'column', lg: 'row' }}
-            >
-              <RewardsReadOnlyInputWithCopy
-                label="Referral link"
-                value={ referralsQuery.data?.link || 'N/A' }
-                isLoading={ referralsQuery.isPending }
-                flex={ 2 }
-              />
-              <RewardsReadOnlyInputWithCopy
-                label="Referral code"
-                value={ referralsQuery.data?.code || 'N/A' }
-                isLoading={ referralsQuery.isPending }
-                flex={ 1 }
-              />
-            </Flex>
-          </RewardsDashboardCard>
-          <RewardsDashboardInfoCard
-            title="Badges"
-            description={ `Collect limited and legendary badges by completing different Blockscout related tasks.
-              Go to the badges website to see what${ apos }s available and start your collection today.` }
-            imageSrc="/static/merits/badges.svg"
-            imageWidth="260px"
-            imageHeight="86px"
-            linkText="View badges"
-            linkHref={ `https://merits.blockscout.com/?tab=badges&utm_source=${ config.chain.id }&utm_medium=badges` }
-          />
-        </Flex>
-        <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
-          <RewardsDashboardInfoCard
-            title="Blockscout campaigns"
-            description="Join Blockscout activities to earn bonus Merits and exclusive rewards from our partners!"
-            imageSrc="/static/merits/campaigns.svg"
-            imageWidth="180px"
-            imageHeight="76px"
-            linkText="Check campaigns"
-            linkHref={ `https://merits.blockscout.com/?tab=campaigns&utm_source=${ config.chain.id }&utm_medium=campaigns` }
-          />
-          <RewardsDashboardInfoCard
-            title="Use your Merits"
-            description="Spend your Merits to get exclusive discounts and offers across several web3 products!"
-            imageSrc="/static/merits/offers.svg"
-            imageWidth="180px"
-            imageHeight="86px"
-            linkText="Check offers"
-            linkHref={ `https://merits.blockscout.com/?tab=redeem&utm_source=${ config.chain.id }&utm_medium=redeem` }
-          />
-        </Flex>
-        <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
-          <RewardsDashboardCard
-            title="Activity"
-            description="Earn Merits for your everyday Blockscout activities. You deserve to be rewarded for choosing open-source public goods!"
-            availableSoon
-            blurFilter
-          >
-            <RewardsDashboardCardValue label="Activity" value="0%"/>
-            <RewardsDashboardCardValue label="Received" value="0" withIcon/>
-          </RewardsDashboardCard>
-          <RewardsDashboardCard
-            title="Verify contracts"
-            description="Verified contracts are so important for transparency and interaction. Verify your contracts on Blockscout and receive Merits for your efforts." // eslint-disable-line max-len
-            availableSoon
-            blurFilter
-          >
-            <RewardsDashboardCardValue label="Activity" value="0%"/>
-            <RewardsDashboardCardValue label="Received" value="0" withIcon/>
-          </RewardsDashboardCard>
-        </Flex>
+        <RoutedTabs
+          w="full"
+          tabs={ [
+            {
+              id: 'tasks',
+              title: 'Tasks',
+              component: <TasksTab/>,
+            },
+            {
+              id: 'referrals',
+              title: 'Referrals',
+              component: <ReferralsTab/>,
+            },
+            {
+              id: 'resources',
+              title: 'Resources',
+              component: <ResourcesTab/>,
+            },
+          ] }
+        />
       </Flex>
     </>
   );
