@@ -42,12 +42,6 @@ export const recipe = defineRecipe({
           color: 'link.primary.hover',
           textDecoration: 'none',
         },
-        _loading: {
-          bgColor: 'unset',
-        },
-        '&:not([data-loading], [aria-busy=true])': {
-          bgColor: 'link.underlaid.bg',
-        },
       },
       menu: {
         color: 'link.menu',
@@ -58,8 +52,7 @@ export const recipe = defineRecipe({
       },
       navigation: {
         color: 'link.navigation.fg',
-        bg: 'link.navigation.bg',
-        border: 'link.navigation.border',
+        bg: 'transparent',
         _hover: {
           color: 'link.navigation.fg.hover',
           textDecoration: 'none',
@@ -67,7 +60,6 @@ export const recipe = defineRecipe({
         _selected: {
           color: 'link.navigation.fg.selected',
           bg: 'link.navigation.bg.selected',
-          border: 'link.navigation.border.selected',
         },
         _active: {
           color: 'link.navigation.fg.active',

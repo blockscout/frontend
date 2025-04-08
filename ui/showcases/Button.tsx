@@ -40,6 +40,7 @@ const ButtonShowcase = () => {
             <Button variant="solid" data-hover>Hovered</Button>
             <Button variant="solid" disabled>Disabled</Button>
             <Button variant="solid" loading>Loading</Button>
+            <Button variant="solid" loadingSkeleton>Loading Skeleton</Button>
           </Sample>
 
           <Sample label="variant: outline">
@@ -47,12 +48,14 @@ const ButtonShowcase = () => {
             <Button variant="outline" data-hover>Hovered</Button>
             <Button variant="outline" disabled>Disabled</Button>
             <Button variant="outline" loading>Loading</Button>
+            <Button variant="outline" loadingSkeleton>Loading Skeleton</Button>
           </Sample>
 
           <Sample label="variant: link">
             <Button variant="link">Default</Button>
             <Button variant="link" data-hover>Hovered</Button>
             <Button variant="link" disabled>Disabled</Button>
+            <Button variant="link" loadingSkeleton>Disabled</Button>
           </Sample>
 
           <Sample label="variant: dropdown">
@@ -99,6 +102,7 @@ const ButtonShowcase = () => {
             </PopoverRoot>
             <Button variant="dropdown" disabled>Disabled</Button>
             <Button variant="dropdown" loading>Loading</Button>
+            <Button variant="dropdown" loadingSkeleton>Loading Skeleton</Button>
 
             <PopoverRoot>
               <Tooltip content="Tooltip content">
@@ -185,12 +189,14 @@ const ButtonShowcase = () => {
             <Button variant="subtle" size="xs">Default: Now+1h</Button>
             <Button variant="subtle" size="xs" data-hover>Hovered: Now+1h</Button>
             <Button variant="subtle" size="xs" disabled>Disabled: Now+1h</Button>
+            <Button variant="subtle" size="xs" loadingSkeleton>Loading Skeleton</Button>
           </Sample>
 
           <Sample label="variant: plain">
             <Button variant="plain">Default</Button>
             <Button variant="plain" data-hover>Hovered</Button>
             <Button variant="plain" disabled>Disabled</Button>
+            <Button variant="plain" loadingSkeleton>Loading Skeleton</Button>
           </Sample>
         </SamplesStack>
       </Section>

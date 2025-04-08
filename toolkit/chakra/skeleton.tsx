@@ -53,11 +53,9 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
     const { loading = false, ...rest } = props;
     return (
       <ChakraSkeleton
-        loading={ loading }
-        css={ !loading ? { animation: 'none' } : {} }
-        { ...(loading ? { 'data-loading': true } : {}) }
-        { ...rest }
         ref={ ref }
+        { ...(loading ? { 'data-loading': true, state: 'loading' } : { variant: 'none' }) }
+        { ...rest }
       />
     );
   },
