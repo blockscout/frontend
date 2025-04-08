@@ -15,6 +15,7 @@ import IconSvg from 'ui/shared/IconSvg';
 interface Props {
   address: string;
   params: CsvExportParams;
+  className?: string;
   isLoading?: boolean;
 }
 
@@ -43,4 +44,4 @@ const AddressCsvExportLink = ({ address, params, isLoading }: Props) => {
   );
 };
 
-export default React.memo(AddressCsvExportLink);
+export default React.memo(chakra(AddressCsvExportLink));
