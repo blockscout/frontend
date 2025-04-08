@@ -19,7 +19,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const AddressCsvExportLink = ({ address, params, isLoading }: Props) => {
+const AddressCsvExportLink = ({ className, address, params, isLoading }: Props) => {
   const isMobile = useIsMobile();
   const isInitialLoading = useIsInitialLoading(isLoading);
 
@@ -30,6 +30,7 @@ const AddressCsvExportLink = ({ address, params, isLoading }: Props) => {
   return (
     <Tooltip disabled={ !isMobile } content="Download CSV">
       <Link
+        className={ className }
         whiteSpace="nowrap"
         href={ route({ pathname: '/csv-export', query: { ...params, address } }) }
         flexShrink={ 0 }
