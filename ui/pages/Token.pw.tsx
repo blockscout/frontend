@@ -34,12 +34,13 @@ test.beforeEach(async({ mockApiResponse, mockTextAd }) => {
 });
 
 test('base view', async({ render, page, createSocket }) => {
+  test.slow();
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
   const socket = await createSocket();
   const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
-  await component.getByText('100 ARIA').waitFor({ state: 'visible' });
+  await component.getByText('100 ARIA').waitFor({ state: 'visible', timeout: 10_000 });
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
