@@ -15,7 +15,7 @@ test('verified with changed byte code socket', async({ render, createSocket }) =
   const props = {
     data: contractMock.verified,
     isLoading: false,
-    addressHash: addressMock.contract.hash,
+    addressData: addressMock.contract,
   };
   const component = await render(<ContractDetailsAlerts { ...props }/>, undefined, { withSocket: true });
   const socket = await createSocket();
@@ -29,7 +29,7 @@ test('verified via sourcify', async({ render }) => {
   const props = {
     data: contractMock.verifiedViaSourcify,
     isLoading: false,
-    addressHash: addressMock.contract.hash,
+    addressData: addressMock.contract,
   };
   const component = await render(<ContractDetailsAlerts { ...props }/>, undefined, { withSocket: true });
 
@@ -40,7 +40,7 @@ test('verified via eth bytecode db', async({ render }) => {
   const props = {
     data: contractMock.verifiedViaEthBytecodeDb,
     isLoading: false,
-    addressHash: addressMock.contract.hash,
+    addressData: addressMock.contract,
   };
   const component = await render(<ContractDetailsAlerts { ...props }/>, undefined, { withSocket: true });
 
@@ -51,7 +51,7 @@ test('with twin address alert +@mobile', async({ render }) => {
   const props = {
     data: contractMock.withTwinAddress,
     isLoading: false,
-    addressHash: addressMock.contract.hash,
+    addressData: addressMock.contract,
   };
   const component = await render(<ContractDetailsAlerts { ...props }/>, undefined, { withSocket: true });
 

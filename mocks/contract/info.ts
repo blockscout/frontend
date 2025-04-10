@@ -43,7 +43,6 @@ export const verified: SmartContract = {
   file_path: '',
   additional_sources: [],
   verified_twin_address_hash: null,
-  proxy_type: null,
 };
 
 export const certified: SmartContract = {
@@ -85,7 +84,6 @@ export const withProxyAddress: SmartContract = {
   ...verified,
   is_verified: false,
   verified_twin_address_hash: '0xa62744bee8646e237441cdbfdedd3458861748a8',
-  proxy_type: 'eip1967',
 };
 
 export const selfDestructed: SmartContract = {
@@ -146,7 +144,6 @@ export const nonVerified: SmartContract = {
   additional_sources: [],
   external_libraries: null,
   verified_twin_address_hash: null,
-  proxy_type: null,
   language: null,
   license_type: null,
 };
