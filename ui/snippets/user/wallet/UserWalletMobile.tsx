@@ -3,7 +3,7 @@ import React from 'react';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useWeb3AccountWithDomain from 'lib/web3/useAccountWithDomain';
 import useWeb3Wallet from 'lib/web3/useWallet';
-import { DrawerTrigger, DrawerRoot, DrawerBackdrop, DrawerContent, DrawerBody } from 'toolkit/chakra/drawer';
+import { DrawerTrigger, DrawerRoot, DrawerContent, DrawerBody } from 'toolkit/chakra/drawer';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 import UserWalletButton from './UserWalletButton';
@@ -48,7 +48,6 @@ const UserWalletMobile = () => {
       open={ walletMenu.open }
       onOpenChange={ handleOpenChange }
     >
-      <DrawerBackdrop/>
       <DrawerTrigger>
         <UserWalletButton
           variant="header"

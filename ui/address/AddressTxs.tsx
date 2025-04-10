@@ -184,7 +184,7 @@ const AddressTxs = ({ overloadCount = OVERLOAD_COUNT, shouldRender = true, isQue
 
   return (
     <>
-      { !isMobile && addressTxsQuery.pagination.isVisible && (
+      { !isMobile && (
         <ActionBar>
           { filter }
           { currentAddress && csvExportLink }

@@ -2,7 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import { DrawerBackdrop, DrawerBody, DrawerContent, DrawerRoot, DrawerTrigger } from 'toolkit/chakra/drawer';
+import { DrawerBody, DrawerContent, DrawerRoot, DrawerTrigger } from 'toolkit/chakra/drawer';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
@@ -35,8 +35,8 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
       open={ open }
       onOpenChange={ onOpenChange }
       placement="start"
+      lazyMount={ false }
     >
-      <DrawerBackdrop/>
       <DrawerTrigger>
         <IconButton onClick={ onOpen } p={ 2 } aria-label="Menu button">
           <IconSvg
@@ -48,7 +48,7 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
         </IconButton>
       </DrawerTrigger>
       <DrawerContent >
-        <DrawerBody display="flex" flexDirection="column" overflow="hidden">
+        <DrawerBody display="flex" flexDirection="column" overflowX="hidden" overflowY="auto">
           <TestnetBadge alignSelf="flex-start"/>
           <Flex alignItems="center" justifyContent="space-between">
             <NetworkLogo onClick={ handleNetworkLogoClick }/>
