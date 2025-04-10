@@ -6,10 +6,11 @@ import { DialogBody, DialogContent, DialogRoot, DialogHeader } from 'toolkit/cha
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  title: string;
   children: React.ReactNode;
 };
 
-const RewardsTaskDetailsModal = ({ isOpen, onClose, children }: Props) => {
+const RewardsTaskDetailsModal = ({ isOpen, onClose, title, children }: Props) => {
   const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
     if (!open) {
       onClose();
@@ -24,7 +25,7 @@ const RewardsTaskDetailsModal = ({ isOpen, onClose, children }: Props) => {
     >
       <DialogContent>
         <DialogHeader>
-          Choose explorer
+          { title }
         </DialogHeader>
         <DialogBody>
           <Text>{ children }</Text>

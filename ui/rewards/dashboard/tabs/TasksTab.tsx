@@ -10,12 +10,15 @@ import dayjs from 'lib/date/dayjs';
 import { mdash } from 'lib/html-entities';
 import { USER_ACTIVITY } from 'stubs/rewards';
 import { Button } from 'toolkit/chakra/button';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Heading } from 'toolkit/chakra/heading';
+import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import MeritsIcon from '../../MeritsIcon';
 import RewardsInstancesModal from '../RewardsInstancesModal';
@@ -36,7 +39,17 @@ export default function TasksTab() {
   const explorersModal = useDisclosure();
   const taskDetailsModal = useDisclosure();
   const [ selectedTaskIndex, setSelectedTaskIndex ] = useState<number>(0);
+  const backgroundImage = useColorModeValue('/static/merits/cells.svg', '/static/merits/cells_dark.svg');
 
+  const profileQuery = useProfileQuery();
+  const checkActivityPassQuery = useApiQuery('rewards_user_check_activity_pass', {
+    queryOptions: {
+      enabled: feature.isEnabled && Boolean(apiToken) && Boolean(profileQuery.data?.address_hash),
+    },
+    queryParams: {
+      address: profileQuery.data?.address_hash ?? '',
+    },
+  });
   const activityQuery = useApiQuery('rewards_user_activity', {
     queryOptions: {
       enabled: Boolean(apiToken) && feature.isEnabled,
@@ -88,8 +101,8 @@ export default function TasksTab() {
   }, [ activityQuery.data ]);
 
   const activityPassUrl = feature.isEnabled ?
-    `${ feature.api.endpoint }/?tab=spend&id=${ rewardsConfigQuery.data?.rewards?.blockscout_activity_pass_id }&utm_source=blockscout` :
-    null;
+    `${ feature.api.endpoint }/?tab=spend&id=${ rewardsConfigQuery.data?.rewards?.blockscout_activity_pass_id }&utm_source=blockscout&utm_medium=tasks` :
+    undefined;
 
   const tasks = useMemo(() => (
     [
@@ -155,6 +168,81 @@ export default function TasksTab() {
     taskDetailsModal.onOpen();
   }, [ taskDetailsModal ]);
 
+  if (checkActivityPassQuery.data && !checkActivityPassQuery.data.is_valid) {
+    return (
+      <Flex
+        p={{ base: 1.5, md: 2 }}
+        border="1px solid"
+        borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.200' }}
+        borderRadius="lg"
+        gap={{ base: 1, md: 10 }}
+        flexDirection={{ base: 'column', md: 'row' }}
+      >
+        <Flex flex={ 1 } flexDirection="column" p={ 3 } gap={ 2 }>
+          <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }}>
+            Activity pass
+          </Heading>
+          <Text textStyle="sm">
+            Grab your{ ' ' }
+            <Link external href={ activityPassUrl } loading={ rewardsConfigQuery.isLoading }>
+              Activity pass
+            </Link>{ ' ' }
+            then engage with various Blockscout products and features to earn Merits every day!{ ' ' }
+            <Link external>Learn more</Link>
+          </Text>
+        </Flex>
+        <Flex
+          flex={{ base: 'none', md: 1 }}
+          flexDirection={{ base: 'column', md: 'row' }}
+          justifyContent="space-between"
+          alignItems="center"
+          h={{ base: '160px', md: '120px' }}
+          pr={{ base: 0, md: 8 }}
+          pl={{ base: 0, md: '86px' }}
+          pt={{ base: 4, md: 0 }}
+          pb={{ base: 3, md: 0 }}
+          borderRadius="base"
+          backgroundColor={{ _light: '#FFEFCE', _dark: '#E1910E' }}
+          overflow="hidden"
+          position="relative"
+        >
+          <Image
+            src={ backgroundImage }
+            alt="Background"
+            width="268px"
+            height="184px"
+            position="absolute"
+            top="-20px"
+            left={{ base: 'calc(50% - 134px)', md: '-8px' }}
+          />
+          <Image
+            src="/static/merits/activity_pass.svg"
+            alt="Activity pass"
+            width="79px"
+            height="86px"
+            zIndex={ 1 }
+          />
+          <Link
+            external
+            href={ activityPassUrl }
+            variant="underlaid"
+            fontWeight="500"
+            backgroundColor={{ _light: '#FFD57C', _dark: '#FFBA0D' }}
+            color="#2B1A3F"
+            iconColor="rgba(43, 26, 63, 0.3)"
+            _hover={{ color: 'link.primary.hover' }}
+            flexShrink={ 0 }
+            zIndex={ 1 }
+          >
+            Grab Activity pass
+          </Link>
+        </Flex>
+      </Flex>
+    );
+  }
+
+  const isActivityDataLoading = activityQuery.isPlaceholderData || checkActivityPassQuery.isPending;
+
   return (
     <>
       <Flex
@@ -167,11 +255,7 @@ export default function TasksTab() {
         <Flex flexDirection="column" w={{ base: 'full', md: '340px' }} p={ 3 } pr={ 0 }>
           <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }} mb={ 2 }>Tasks</Heading>
           <Text textStyle="sm" mb={ 4 }>
-            Grab your{ ' ' }
-            <Link external href={ `${ activityPassUrl }&utm_medium=tasks` } loading={ rewardsConfigQuery.isLoading }>
-              Activity pass
-            </Link>{ ' ' }
-            then engage with various Blockscout products and features to earn Merits every day!
+            Use Blockscout and related products daily to earn Merits. Check each task for details and how to get started.
           </Text>
           <Flex alignItems="center" gap={ 3 } mb={ 4 }>
             <Button
@@ -181,7 +265,8 @@ export default function TasksTab() {
             >
               Earn
             </Button>
-            <Link external
+            <Link
+              external
               fontSize="md"
               fontWeight="500"
               textAlign="center"
@@ -230,12 +315,12 @@ export default function TasksTab() {
                 </Link>
               </Flex>
               <Flex flexDirection="column" gap={ 2 } alignItems="flex-start">
-                <Skeleton loading={ activityQuery.isPlaceholderData }>
+                <Skeleton loading={ isActivityDataLoading }>
                   <Heading textStyle="heading.md">
                     { item.percentile }
                   </Heading>
                 </Skeleton>
-                <Skeleton loading={ activityQuery.isPlaceholderData }>
+                <Skeleton loading={ isActivityDataLoading }>
                   <Text textStyle="xs" color="text.secondary" fontWeight="500">
                     { item.percentileDiff } vs previous week
                   </Text>
@@ -243,7 +328,7 @@ export default function TasksTab() {
               </Flex>
               <Flex flexDirection="column" gap={ 2 } alignItems="flex-start">
                 <Skeleton
-                  loading={ activityQuery.isPlaceholderData }
+                  loading={ isActivityDataLoading }
                   display="flex"
                   alignItems="center"
                   gap={ 2 }
@@ -256,7 +341,7 @@ export default function TasksTab() {
                     /{ item.maxAmount }
                   </Text>
                 </Skeleton>
-                <Skeleton loading={ activityQuery.isPlaceholderData }>
+                <Skeleton loading={ isActivityDataLoading }>
                   <Text textStyle="xs" color="text.secondary" fontWeight="500">
                     { item.amountDiff } vs previous week
                   </Text>
@@ -283,6 +368,7 @@ export default function TasksTab() {
       <RewardsTaskDetailsModal
         isOpen={ taskDetailsModal.open }
         onClose={ taskDetailsModal.onClose }
+        title={ tasks[selectedTaskIndex].title }
       >
         { tasks[selectedTaskIndex].description }
       </RewardsTaskDetailsModal>
