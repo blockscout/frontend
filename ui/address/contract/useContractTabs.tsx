@@ -74,10 +74,10 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
   return React.useMemo(() => {
     return {
       tabs: [
-        data?.hash && {
+        data && {
           id: 'contract_code' as const,
           title: 'Code',
-          component: <ContractDetails mainContractQuery={ contractQuery } channel={ channel } addressHash={ data.hash }/>,
+          component: <ContractDetails mainContractQuery={ contractQuery } channel={ channel } addressData={ data }/>,
           subTabs: CONTRACT_DETAILS_TAB_IDS as unknown as Array<string>,
         },
         contractQuery.data?.abi && {
@@ -92,7 +92,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
             <ContractMethodsProxy
               implementations={ verifiedImplementations }
               isLoading={ contractQuery.isPlaceholderData }
-              proxyType={ contractQuery.data?.proxy_type }
+              proxyType={ data?.proxy_type }
             />
           ),
         },
@@ -112,7 +112,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
       isLoading: contractQuery.isPlaceholderData,
     };
   }, [
-    data?.hash,
+    data,
     contractQuery,
     channel,
     verifiedImplementations,
