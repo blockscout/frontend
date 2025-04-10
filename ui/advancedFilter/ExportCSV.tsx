@@ -8,6 +8,7 @@ import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -63,16 +64,22 @@ const ExportCSV = ({ filters }: Props) => {
 
   return (
     <>
-      <Button
-        onClick={ handleExportCSV }
-        variant="outline"
-        loading={ isLoading }
-        size="sm"
-        mr={ 3 }
+      <Tooltip
+        content="This feature is not available due to a reCAPTCHA initialization error. Please contact the project team on Discord to report this issue."
+        disabled={ !recaptcha.isInitError }
       >
-        Export to CSV
-      </Button>
-      <ReCaptcha ref={ recaptcha.ref }/>
+        <Button
+          onClick={ handleExportCSV }
+          variant="outline"
+          loading={ isLoading }
+          size="sm"
+          mr={ 3 }
+          disabled={ recaptcha.isInitError }
+        >
+          Export to CSV
+        </Button>
+      </Tooltip>
+      <ReCaptcha { ...recaptcha } hideWarning/>
     </>
   );
 };

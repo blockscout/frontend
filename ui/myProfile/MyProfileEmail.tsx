@@ -89,14 +89,14 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
             isReadOnly={ !config.services.reCaptchaV2.siteKey || Boolean(profileQuery.data?.email) }
             defaultValue={ profileQuery.data?.email || undefined }
           />
-          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && <ReCaptcha ref={ recaptcha.ref }/> }
+          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && <ReCaptcha { ...recaptcha }/> }
           { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && (
             <Button
               mt={ 6 }
               size="sm"
               variant="outline"
               type="submit"
-              disabled={ formApi.formState.isSubmitting || !hasDirtyFields }
+              disabled={ formApi.formState.isSubmitting || !hasDirtyFields || recaptcha.isInitError }
               loading={ formApi.formState.isSubmitting }
               loadingText="Save changes"
             >

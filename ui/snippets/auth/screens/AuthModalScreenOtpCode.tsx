@@ -108,22 +108,22 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
           and enter your code below.
         </Text>
         <AuthModalFieldOtpCode isDisabled={ isCodeSending }/>
-        <ReCaptcha ref={ recaptcha.ref }/>
         <Button
           variant="link"
           columnGap={ 2 }
           mt={ 3 }
-          disabled={ isCodeSending }
+          disabled={ isCodeSending || recaptcha.isInitError }
           onClick={ handleResendCodeClick }
         >
           <IconSvg name="repeat" boxSize={ 5 }/>
           <Box fontSize="sm">Resend code</Box>
         </Button>
+        <ReCaptcha { ...recaptcha }/>
         <Button
           mt={ 6 }
           type="submit"
           loading={ formApi.formState.isSubmitting }
-          disabled={ formApi.formState.isSubmitting || isCodeSending }
+          disabled={ formApi.formState.isSubmitting || isCodeSending || recaptcha.isInitError }
           loadingText="Submit"
           onClick={ formApi.handleSubmit(onFormSubmit) }
         >

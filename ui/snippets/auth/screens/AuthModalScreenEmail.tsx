@@ -85,16 +85,16 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
           bgColor="dialog.bg"
           mt={ 6 }
         />
+        <ReCaptcha { ...recaptcha }/>
         <Button
           mt={ 6 }
           type="submit"
-          disabled={ formApi.formState.isSubmitting }
+          disabled={ formApi.formState.isSubmitting || recaptcha.isInitError }
           loading={ formApi.formState.isSubmitting }
           loadingText="Send a code"
         >
           Send a code
         </Button>
-        <ReCaptcha ref={ recaptcha.ref }/>
       </chakra.form>
     </FormProvider>
   );
