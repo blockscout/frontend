@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSignMessage } from 'wagmi';
+import { useSignMessage, useSwitchChain } from 'wagmi';
 
 import type { UserInfo } from 'types/api/account';
 import type { RewardsCheckUserResponse, RewardsConfigResponse, RewardsLoginResponse, RewardsNonceResponse } from 'types/api/rewards';
@@ -53,6 +53,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
   const apiFetch = useApiFetch();
   const web3Wallet = useWeb3Wallet({ source });
   const { signMessageAsync } = useSignMessage();
+  const { switchChainAsync } = useSwitchChain();
 
   const getSiweMessage = React.useCallback(async(address: string) => {
     try {
@@ -99,6 +100,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
 
   const proceedToAuth = React.useCallback(async(address: string) => {
     try {
+      await switchChainAsync({ chainId: Number(config.chain.id) });
       const siweMessage = await getSiweMessage(address);
       const signature = await signMessageAsync({ message: siweMessage.message });
       const recaptchaToken = await executeRecaptchaAsync();
@@ -143,7 +145,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
     } finally {
       setIsPending(false);
     }
-  }, [ getSiweMessage, signMessageAsync, executeRecaptchaAsync, isAuth, apiFetch, onSuccess, onError ]);
+  }, [ getSiweMessage, switchChainAsync, signMessageAsync, executeRecaptchaAsync, isAuth, apiFetch, onSuccess, onError ]);
 
   const start = React.useCallback(() => {
     setIsPending(true);
