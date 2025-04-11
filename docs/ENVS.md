@@ -118,6 +118,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_API_BASE_PATH | `string` | Base path for Main API endpoint url | - | - | `/poa/core` | v1.0.x+ |
 | NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL | `ws \| wss` | Main API websocket protocol | - | `wss` | `ws` | v1.0.x+ |
 | NEXT_PUBLIC_STORAGE_API_HOST | `string` | Storage related Graphql API Host | - | `storage_api_host` | `storage_api_host` | v1.0.x+ |
+| NEXT_PUBLIC_CREDENTIAL_API_HOST | `string` | Credentials API Host | - | - | `/api/v1/explorer` | v1.0.x+ |
 | NEXT_PUBLIC_DISCORD_CLIENT_ID | `number` | Discord Client Id | - | `1234567` | `1234567` | v1.0.x+ |
 | NEXT_PUBLIC_DISCORD_GUILD_ID | `number` | Discord GUILD Id | - | `1234567` | `1234567` | v1.0.x+ |
 | NEXT_PUBLIC_DISCORD_GUILD_NAME | `string` | Discord GUILD Name | - | `zkMe` | `zkMe` | v1.0.x+ |

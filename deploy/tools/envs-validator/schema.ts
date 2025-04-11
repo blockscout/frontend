@@ -913,6 +913,7 @@ const schema = yup
     NEXT_PUBLIC_DISCORD_GUILD_ID: yup.string(),
     NEXT_PUBLIC_DISCORD_GUILD_NAME: yup.string(),
     NEXT_PUBLIC_STORAGE_API_HOST: yup.string(),
+    NEXT_PUBLIC_CREDENTIAL_API_HOST: yup.string(),
     NEXT_PUBLIC_DATABASE_URL: yup.string(),
     NEXT_PUBLIC_DISCORD_CLIENT_SECRET: yup.string(),
     NEXT_PUBLIC_DISCORD_BOT_TOKEN: yup.string(),

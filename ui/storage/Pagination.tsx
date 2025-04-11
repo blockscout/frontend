@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   Box,
 } from '@chakra-ui/react';
@@ -14,7 +13,7 @@ type Props = {
   propsPage: (value: number) => void;
   toNext: boolean;
   search?: string;
-}
+};
 
 function PaginatedItems(props: Props) {
   // We start with an empty list of items.

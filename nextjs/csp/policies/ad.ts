@@ -30,6 +30,8 @@ export function ad(): CspDev.DirectiveDescriptor {
       'http://154.48.244.46:9090/v1/graphql',
       'https://testnet-storage.mechain.tech/v1/graphql',
       'https://devint-storage.mechain.tech/v1/graphql',
+      'https://devzk-credential.bitkinetic.com',
+      'https://testzk-credential.bitkinetic.com',
       'https://testint-storage.mechain.tech/v1/graphql',
     ],
     'frame-src': [

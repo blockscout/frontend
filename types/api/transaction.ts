@@ -25,6 +25,8 @@ export interface OpWithdrawal {
 }
 
 export type Transaction = {
+  credential_id?: string;
+  credential_status?: string;
   to: AddressParam | null;
   created_contract: AddressParam | null;
   hash: string;
@@ -105,6 +107,37 @@ export type Transaction = {
   translation?: NovesTxTranslation;
   arbitrum?: ArbitrumTransactionData;
   scroll?: ScrollTransactionData;
+};
+
+export type ExplorerTransaction = {
+  block_number: number;
+  credential_id: string;
+  credential_status: string;
+  from_address: string;
+  gas_base: string;
+  gas_limit: number;
+  gas_price: string;
+  gas_used: number;
+  max_fee_per_gas: string;
+  max_priority_fee_per_gas: string;
+  method: string;
+  to_address: string;
+  transaction_status: string;
+  tx_fee: string;
+  tx_hash: string;
+  tx_time: string;
+  tx_value: string;
+};
+
+export type ExplorerTransactionDetail = {
+  fn_params: string;
+  fn_signature: string;
+  method_id: string;
+  nonce: number;
+  raw_input: string;
+  transaction_index: number;
+  tx_hash: string;
+  tx_type: string;
 };
 
 type ArbitrumTransactionData = {

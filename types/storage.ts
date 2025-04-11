@@ -11,7 +11,7 @@ export interface TalbeListType {
   'Group Name'?: string;
   'Group ID'?: string;
   'Last Updated'?: string;
-  'Bucket'?: string;
+  Bucket?: string;
   'Bucket Name'?: string;
   'Active Group Member Count'?: string;
   Owner?: string;
@@ -19,6 +19,13 @@ export interface TalbeListType {
   'Object Size'?: string;
   'Last Updated Time'?: string;
   id?: string;
+  'Credential ID'?: string;
+  'Txn hash'?: string;
+  'From/To'?: [ string, string ];
+  Time?: string;
+  'Value MOCA'?: string;
+  'Fee MOCA'?: string;
+  Method?: string;
 }
 export interface ObjetTalbeListType {
   id: string;
@@ -99,16 +106,16 @@ export interface BucketTalbeListType {
 }
 
 export interface BucketRequestType {
-  'bucket_name': string;
-  'bucket_id': string;
-  'update_time': string;
-  'status': string;
-  'active_object_count': {
+  bucket_name: string;
+  bucket_id: string;
+  update_time: string;
+  status: string;
+  active_object_count: {
     aggregate: {
       count: string;
     };
   };
-  'owner_address': string;
+  owner_address: string;
 }
 
 interface PropsMoreValueType {
@@ -125,7 +132,7 @@ export interface HeadProps {
     'Object Tags'?: string;
     'Object ID'?: string;
     'Object No.'?: string;
-    'Type'?: string;
+    Type?: string;
     'Object Size'?: string;
     'Object Status'?: string;
     'Bucket Name'?: string;
@@ -134,19 +141,19 @@ export interface HeadProps {
     // 'Bucket No.'?: string;
     'Active Objects Count'?: string;
     'Bucket Status'?: string;
-    'Deleted'?: string;
+    Deleted?: string;
     'Group Name'?: string;
     'Group Tags'?: string;
     'Group ID'?: string;
-    'Extra'?: string;
+    Extra?: string;
     'Source Type'?: string;
   } | undefined;
   more?: {
-    'Visibility'?: PropsMoreValueType;
+    Visibility?: PropsMoreValueType;
     'Bucket Name'?: PropsMoreValueType;
     'Last Updated Time'?: PropsMoreValueType;
-    'Creator'?: PropsMoreValueType;
-    'Owner'?: PropsMoreValueType;
+    Creator?: PropsMoreValueType;
+    Owner?: PropsMoreValueType;
     'Primary SP'?: PropsMoreValueType;
     'Secondary SP Addresses'?: PropsMoreValueType;
     'Storage Size'?: PropsMoreValueType;

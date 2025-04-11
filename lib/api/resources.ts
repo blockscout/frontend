@@ -482,6 +482,14 @@ export const RESOURCES = {
     path: '/api/v2/transactions/:hash',
     pathParams: [ 'hash' as const ],
   },
+  explorer_transaction_hash: {
+    path: '/api/v1/explorer/transaction/:hash',
+    pathParams: [ 'hash' as const ],
+  },
+  explorer_transaction_hash_detail: {
+    path: '/api/v1/explorer/transaction/:hash/detail',
+    pathParams: [ 'hash' as const ],
+  },
   tx_internal_txs: {
     path: '/api/v2/transactions/:hash/internal-transactions',
     pathParams: [ 'hash' as const ],

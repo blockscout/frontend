@@ -13,6 +13,7 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
@@ -76,6 +77,47 @@ interface Props {
 
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
+  const [ routerTab, setRouterTab ] = React.useState(false);
+  const [ credentialStatusColor, setCredentialStatus ] = React.useState('');
+  const [ transactionStatusColor, setTransactionStatus ] = React.useState('');
+  const router = useRouter();
+  React.useEffect(() => {
+    if (router) {
+      setRouterTab(router.query.tab === 'credentials');
+    }
+  }, [ router ]);
+
+  React.useEffect(() => {
+    if (!data) return;
+    switch (data.result?.toLocaleLowerCase()) {
+      case 'success':
+        setCredentialStatus('#30D3BF');
+        break;
+      case 'failed':
+        setCredentialStatus('#EE6969');
+        break;
+      case 'pending':
+        setCredentialStatus('#64ABFF');
+        break;
+    }
+    switch (data.credential_status?.toLocaleLowerCase()) {
+      case 'valid':
+        setTransactionStatus('#F2B310');
+        break;
+      case 'Not Yet Valid':
+        setTransactionStatus('#64ABFF');
+        break;
+      case 'Revoked':
+        setTransactionStatus('#EE6969');
+        break;
+      case 'Expired':
+        setTransactionStatus('rgba(0, 46, 51, 0.1)');
+        break;
+      default:
+        setTransactionStatus('rgba(0, 46, 51, 0.1)');
+        break;
+    }
+  }, [ data ]);
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -169,19 +211,32 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         isLoading={ isLoading }
       >
         {
+          // eslint-disable-next-line no-nested-ternary
           rollupFeature.isEnabled &&
           (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'scroll') ?
-            'L2 status and method' :
-            'Status and method'
+            'L2 status and method' : routerTab ? 'Method' : 'Status and method'
         }
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <TxStatus status={ data.status } errorText={ data.status === 'error' ? data.result : undefined } isLoading={ isLoading }/>
-        { data.method && (
-          <Tag colorScheme={ data.method === 'Multicall' ? 'teal' : 'gray' } isLoading={ isLoading } isTruncated ml={ 3 }>
-            { data.method }
-          </Tag>
-        ) }
+        {
+          routerTab && data.method ?
+            (
+              <Skeleton isLoaded={ !isLoading }>
+                { data.method.charAt(0).toUpperCase() + data.method.slice(1) }
+              </Skeleton>
+            ) :
+            (
+              <>
+                <TxStatus status={ data.status } errorText={ data.status === 'error' ? data.result : undefined } isLoading={ isLoading }/>
+                { data.method && (
+                  <Tag colorScheme={ data.method === 'Multicall' ? 'teal' : 'gray' } isLoading={ isLoading } isTruncated ml={ 3 }>
+                    { data.method }
+                  </Tag>
+                ) }
+              </>
+            )
+        }
+
         { data.arbitrum?.contains_message && (
           <Skeleton isLoaded={ !isLoading } onClick={ showAssociatedL1Tx }>
             <Link isTruncated ml={ 3 }>
@@ -190,6 +245,40 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </Skeleton>
         ) }
       </DetailsInfoItem.Value>
+      {
+        routerTab && (
+          <>
+            <DetailsInfoItem.Label
+              hint="A unique identifier for the Credential"
+              isLoading={ isLoading }
+            >
+              Credential ID
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <Skeleton isLoaded={ !isLoading }>
+                { data.credential_id }
+              </Skeleton>
+            </DetailsInfoItem.Value>
+
+            <DetailsInfoItem.Label
+              hint="Indicates whether the issued credential is within its validity period."
+              isLoading={ isLoading }
+            >
+              Credential Status
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <Skeleton isLoaded={ !isLoading }>
+                <Box
+                  bg={ transactionStatusColor }
+                  color={ data.credential_status === 'Expired' || data.credential_status === 'REMOVE' ? '#000000' : '#FFFFFF' }
+                  padding="4px 8px" borderRadius="24px">
+                  { data.credential_status }
+                </Box>
+              </Skeleton>
+            </DetailsInfoItem.Value>
+          </>
+        )
+      }
 
       { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.op_withdrawals && data.op_withdrawals.length > 0 &&
       !config.UI.views.tx.hiddenFields?.L1_status && (
@@ -277,6 +366,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </DetailsInfoItem.Value>
         </>
       ) }
+      {
+        routerTab && <DetailsInfoItemDivider/>
+      }
 
       <DetailsInfoItem.Label
         hint="Block number containing the transaction"
@@ -308,6 +400,61 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </>
         ) }
       </DetailsInfoItem.Value>
+      {
+        routerTab && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Unique character string (TxID) assigned to every verified transaction"
+              isLoading={ isLoading }
+            >
+              Transaction Status
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <Skeleton isLoaded={ !isLoading }>
+                <Box display="flex" alignItems="center" bg={ credentialStatusColor } color="#FFFFFF" padding="4px 8px" borderRadius="24px">
+                  {
+                    data.result === 'success' && (
+                      <IconSvg
+                        w="20px"
+                        h="20px"
+                        pr="2px"
+                        name="Success"
+                        color={ executionSuccessIconColor }
+                        cursor="pointer"
+                      />
+                    )
+                  }
+                  {
+                    data.result === 'failed' && (
+                      <IconSvg
+                        w="20px"
+                        h="20px"
+                        pr="2px"
+                        name="Failed"
+                        color={ executionSuccessIconColor }
+                        cursor="pointer"
+                      />
+                    )
+                  }
+                  {
+                    data.result === 'pending' && (
+                      <IconSvg
+                        w="20px"
+                        h="20px"
+                        pr="2px"
+                        name="Pending"
+                        color={ executionSuccessIconColor }
+                        cursor="pointer"
+                      />
+                    )
+                  }
+                  { data.result.charAt(0).toUpperCase() + data.result.slice(1) }
+                </Box>
+              </Skeleton>
+            </DetailsInfoItem.Value>
+          </>
+        )
+      }
 
       { data.zkevm_batch_number && !config.UI.views.tx.hiddenFields?.batch && (
         <>
@@ -361,7 +508,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
-      { data.timestamp && (
+      { (data.timestamp && !routerTab) && (
         <>
           <DetailsInfoItem.Label
             hint="Date & time of transaction inclusion, including length of time for confirmation"
@@ -406,7 +553,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
       <DetailsSponsoredItem isLoading={ isLoading }/>
 
-      <DetailsInfoItemDivider/>
+      {
+        !routerTab && <DetailsInfoItemDivider/>
+      }
 
       <TxDetailsActions hash={ data.hash } actions={ data.actions } isTxDataLoading={ isLoading }/>
 
@@ -414,13 +563,22 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         hint="Address (external or contract) sending the transaction"
         isLoading={ isLoading }
       >
-        From
+        { routerTab ? 'From/To' : 'From' }
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value columnGap={ 3 }>
         <AddressEntity
           address={ data.from }
           isLoading={ isLoading }
         />
+        { routerTab ? 'To' : '' }
+        {
+          (toAddress) && (
+            <AddressEntity
+              address={ toAddress }
+              isLoading={ isLoading }
+            />
+          )
+        }
         { data.from.name && <Text>{ data.from.name }</Text> }
         { addressFromTags.length > 0 && (
           <Flex columnGap={ 3 }>
@@ -429,50 +587,78 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         ) }
       </DetailsInfoItem.Value>
 
-      <DetailsInfoItem.Label
-        hint="Address (external or contract) receiving the transaction"
-        isLoading={ isLoading }
-      >
-        { data.to?.is_contract ? 'Interacted with contract' : 'To' }
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value
-        flexWrap={{ base: 'wrap', lg: 'nowrap' }}
-        columnGap={ 3 }
-      >
-        { toAddress ? (
+      { (data.timestamp && routerTab) && (
+        <>
+          <DetailsInfoItem.Label
+            hint="Date & time of transaction inclusion, including length of time for confirmation"
+            isLoading={ isLoading }
+          >
+            Time
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
+            { data.confirmation_duration && (
+              <>
+                <TextSeparator color="gray.500"/>
+                <Skeleton isLoaded={ !isLoading } color="text_secondary">
+                  <span>{ getConfirmationDuration(data.confirmation_duration) }</span>
+                </Skeleton>
+              </>
+            ) }
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
+      {
+        !routerTab && (
           <>
-            { data.to && data.to.hash ? (
-              <Flex flexWrap="nowrap" alignItems="center" maxW="100%">
-                <AddressEntity
-                  address={ toAddress }
-                  isLoading={ isLoading }
-                />
-                { executionSuccessBadge }
-                { executionFailedBadge }
-              </Flex>
-            ) : (
-              <Flex width="100%" whiteSpace="pre" alignItems="center" flexShrink={ 0 }>
-                <span>[Contract </span>
-                <AddressEntity
-                  address={ toAddress }
-                  isLoading={ isLoading }
-                  noIcon
-                />
-                <span>created]</span>
-                { executionSuccessBadge }
-                { executionFailedBadge }
-              </Flex>
-            ) }
-            { addressToTags.length > 0 && (
-              <Flex columnGap={ 3 }>
-                { addressToTags }
-              </Flex>
-            ) }
+            <DetailsInfoItem.Label
+              hint="Address (external or contract) receiving the transaction"
+              isLoading={ isLoading }
+            >
+              { data.to?.is_contract ? 'Interacted with contract' : 'To' }
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value
+              flexWrap={{ base: 'wrap', lg: 'nowrap' }}
+              columnGap={ 3 }
+            >
+              { toAddress ? (
+                <>
+                  { data.to && data.to.hash ? (
+                    <Flex flexWrap="nowrap" alignItems="center" maxW="100%">
+                      <AddressEntity
+                        address={ toAddress }
+                        isLoading={ isLoading }
+                      />
+                      { executionSuccessBadge }
+                      { executionFailedBadge }
+                    </Flex>
+                  ) : (
+                    <Flex width="100%" whiteSpace="pre" alignItems="center" flexShrink={ 0 }>
+                      <span>[Contract </span>
+                      <AddressEntity
+                        address={ toAddress }
+                        isLoading={ isLoading }
+                        noIcon
+                      />
+                      <span>created]</span>
+                      { executionSuccessBadge }
+                      { executionFailedBadge }
+                    </Flex>
+                  ) }
+                  { addressToTags.length > 0 && (
+                    <Flex columnGap={ 3 }>
+                      { addressToTags }
+                    </Flex>
+                  ) }
+                </>
+              ) : (
+                <span>[ Contract creation ]</span>
+              ) }
+            </DetailsInfoItem.Value>
           </>
-        ) : (
-          <span>[ Contract creation ]</span>
-        ) }
-      </DetailsInfoItem.Value>
+        )
+      }
 
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
 

@@ -52,6 +52,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/bucket-details/[address]': 'Bucket Details',
   '/group-details/[address]': 'Group Details',
   '/object-details/[address]': 'Object Details',
+  '/issuance': 'Issuance',
+  '/verification': 'Verification',
   '/faucet': 'Faucet',
   '/bucket': 'Bucket',
   '/group': 'Group',

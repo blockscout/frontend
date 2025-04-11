@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
@@ -11,6 +12,19 @@ interface Props {
 }
 
 const TxDetails = ({ txQuery }: Props) => {
+  const [ isLoading, setIsLoading ] = React.useState(true);
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (router.query.tab === 'credentials') {
+      if (txQuery.data?.credential_status) {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+      }
+    }
+  }, [ router, txQuery, txQuery.data?.credential_status ]);
+
   if (txQuery.isError) {
     return <DataFetchAlert/>;
   }
@@ -18,7 +32,10 @@ const TxDetails = ({ txQuery }: Props) => {
   return (
     <>
       <TestnetWarning mb={ 6 } isLoading={ txQuery.isPlaceholderData }/>
-      <TxInfo data={ txQuery.data } isLoading={ txQuery.isPlaceholderData } socketStatus={ txQuery.socketStatus }/>
+      <TxInfo
+        data={ txQuery.data }
+        isLoading={ router.query.tab === 'credentials' ? isLoading : txQuery.isPlaceholderData }
+        socketStatus={ txQuery.socketStatus }/>
     </>
   );
 };

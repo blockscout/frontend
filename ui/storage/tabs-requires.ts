@@ -1,7 +1,6 @@
-/* eslint-disable no-console */
 // import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 
-type TokenType = 'Transactions' | 'Versions'
+type TokenType = 'Transactions' | 'Versions';
 
 const map = (id: number, page: number) => {
   return {

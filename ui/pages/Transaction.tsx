@@ -46,6 +46,15 @@ const TransactionPageContent = () => {
       <TxDetailsDegraded hash={ hash } txQuery={ txQuery }/> :
       <TxDetails txQuery={ txQuery }/>;
 
+    if (router.query.tab === 'credentials') {
+      return [
+        {
+          id: 'index',
+          title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details',
+          component: detailsComponent,
+        },
+      ].filter(Boolean);
+    }
     return [
       {
         id: 'index',

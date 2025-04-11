@@ -118,6 +118,18 @@ export default function useNavItems(): ReturnType {
       icon: 'output_roots',
       isActive: pathname === '/group' || pathname === '/group-details/[address]',
     };
+    const issuance = {
+      text: 'Issuance Explorer',
+      nextRoute: { pathname: '/issuance' as const },
+      icon: 'output_roots',
+      isActive: pathname === '/issuance',
+    };
+    const verification = {
+      text: 'Verification Explorer',
+      nextRoute: { pathname: '/verification' as const },
+      icon: 'output_roots',
+      isActive: pathname === '/verification',
+    };
     // const buckets = {
     //   text: 'Buckets',
     //   nextRoute: { pathname: '/buckets' as const },
@@ -143,6 +155,12 @@ export default function useNavItems(): ReturnType {
         objects,
         bucket,
         group,
+      ],
+    ];
+    const credentialsNavItems: Array<NavItem> | Array<Array<NavItem>> = [
+      [
+        issuance,
+        verification,
       ],
     ];
 
@@ -298,6 +316,12 @@ export default function useNavItems(): ReturnType {
         icon: 'navitems/storage',
         isActive: storageNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: storageNavItems,
+      },
+      {
+        text: 'Credentials',
+        icon: 'navitems/credentials',
+        isActive: credentialsNavItems.flat().some(item => isInternalItem(item) && item.isActive),
+        subItems: credentialsNavItems,
       },
       {
         text: 'Faucet',

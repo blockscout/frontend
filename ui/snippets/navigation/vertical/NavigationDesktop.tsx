@@ -2,7 +2,7 @@ import { Flex, Box, VStack, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
+// import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
@@ -17,34 +17,34 @@ import NavLinkGroup from './NavLinkGroup';
 import NavLinkRewards from './NavLinkRewards';
 
 const NavigationDesktop = () => {
-  const appProps = useAppContext();
-  const cookiesString = appProps.cookies;
+  // const appProps = useAppContext();
+  // const cookiesString = appProps.cookies;
 
-  const isNavBarCollapsedCookie = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED, cookiesString);
-  let isNavBarCollapsed;
-  if (isNavBarCollapsedCookie === 'true') {
-    isNavBarCollapsed = true;
-  }
-  if (isNavBarCollapsedCookie === 'false') {
-    isNavBarCollapsed = false;
-  }
+  // const isNavBarCollapsedCookie = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED, cookiesString);
+  // let isNavBarCollapsed;
+  // if (isNavBarCollapsedCookie === 'true') {
+  //   isNavBarCollapsed = true;
+  // }
+  // if (isNavBarCollapsedCookie === 'false') {
+  //   isNavBarCollapsed = false;
+  // }
 
   const { mainNavItems, accountNavItems } = useNavItems();
 
   const isAuth = useIsAuth();
 
-  const [ isCollapsed, setCollapsedState ] = React.useState<boolean | undefined>(isNavBarCollapsed);
+  const [ isCollapsed, setCollapsedState ] = React.useState<boolean | undefined>(false);
 
   const handleTogglerClick = React.useCallback(() => {
     setCollapsedState((flag) => !flag);
     cookies.set(cookies.NAMES.NAV_BAR_COLLAPSED, isCollapsed ? 'false' : 'true');
   }, [ isCollapsed ]);
 
-  const handleContainerClick = React.useCallback((event: React.MouseEvent) => {
-    if (event.target === event.currentTarget) {
-      handleTogglerClick();
-    }
-  }, [ handleTogglerClick ]);
+  // const handleContainerClick = React.useCallback((event: React.MouseEvent) => {
+  //   if (event.target === event.currentTarget) {
+  //     handleTogglerClick();
+  //   }
+  // }, [ handleTogglerClick ]);
 
   const chevronIconStyles = {
     bgColor: useColorModeValue('white', 'black'),
@@ -67,7 +67,7 @@ const NavigationDesktop = () => {
       py={ 12 }
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
-      onClick={ handleContainerClick }
+      // onClick={ handleContainerClick }
     >
       <TestnetBadge position="absolute" w="49px" top="34px"/>
       <Box

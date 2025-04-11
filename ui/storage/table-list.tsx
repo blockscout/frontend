@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-nested-ternary */
+/* eslint-disable no-restricted-imports */
 import {
   Table,
   Thead,
@@ -16,6 +17,8 @@ import {
   InputGroup,
   InputRightElement,
   InputLeftElement,
+  useToast,
+  Text,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -33,13 +36,14 @@ type Props<T extends string> = {
   tableList: Array<TalbeListType>;
   tabThead?: Array<T> | undefined;
   loading: boolean;
-  error: Error | undefined;
+  error?: Error | undefined;
   page: string;
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement> | null) => void;
   propsPage: (value: number) => void;
   currPage: number;
   toNext: boolean;
   totleDate: number;
+  showTotal?: boolean;
 };
 
 function TableList(props: Props<string>) {
@@ -94,52 +98,95 @@ function TableList(props: Props<string>) {
     });
   }, [ props ]);
 
+  const toast = useToast();
+  const copyAddress = (value: string | undefined) => () => {
+    if (value) {
+      toast({
+        position: 'top',
+        isClosable: false,
+        duration: 3000,
+        containerStyle: {
+          minWidth: 'auto',
+        },
+        render: () => (
+          <Box
+            p="10px 48px"
+            bg="#FFFF"
+            border="1px solid rgba(0, 0, 0, 0.06)"
+            borderRadius="32px"
+          >
+            <Flex alignItems="center">
+              <IconSvg name="copy-toast" width="16px" height="16px" marginRight="4px"/>
+              <Text fontWeight="700"
+                fontSize="14px"
+                color="#000000">Copy successfully</Text>
+            </Flex>
+          </Box>
+        ),
+      });
+      const elInput = document.createElement('input');
+      elInput.value = value;
+      document.body.appendChild(elInput);
+      elInput.select();
+      document.execCommand('Copy');
+      elInput.remove();
+    }
+  };
+
   return (
     <>
-      <Flex justifyContent="right" position="relative" top="-64px">
-        <InputGroup
-          _placeholder={{ color: 'rgba(0, 0, 0, 0.3)' }}
-          fontWeight="400" fontSize="12px"
-          borderColor="rgba(0, 46, 51, 0.1)"
-          width="344px"
-          display="flex"
-          alignItems="center"
-        >
-          <InputLeftElement
-            w="16px" h="16px" position="absolute"
-            left="16px"
-            top="50%"
-            transform="translateY(-50%)"
-          >
-            <IconSvg color="#C15E97" w="16px" h="16px" name="search"/>
-          </InputLeftElement>
-          <Input
-            value={ search }
-            onChange={ handleChange }
-            pl="40px"
-            borderRadius="29px" height="42px"
-            _focusVisible={{ borderColor: '#C15E97 !important' }}
-            placeholder={ `Search by ${ props.page.replace(/^./, props.page[0].toUpperCase()) } Name or ID` }
-          >
-          </Input>
-          {
-            search && (
-              <InputRightElement w="16px" h="16px" position="absolute"
-                right="16px"
+      {
+        !props.showTotal ? (
+          <Flex justifyContent="right" position="relative" top="-64px">
+            <InputGroup
+              _placeholder={{ color: 'rgba(0, 0, 0, 0.3)' }}
+              fontWeight="400" fontSize="12px"
+              borderColor="rgba(0, 46, 51, 0.1)"
+              width="344px"
+              display="flex"
+              alignItems="center"
+            >
+              <InputLeftElement
+                w="16px" h="16px" position="absolute"
+                left="16px"
                 top="50%"
                 transform="translateY(-50%)"
-                cursor="pointer"
-                onClick={ clearSearch }
               >
-                <IconSvg border="1px solid #C15E97" borderRadius="50%" color="#C15E97" w="16px" h="16px" name="cross"/>
-              </InputRightElement>
-            )
-          }
-        </InputGroup>
-      </Flex>
+                <IconSvg color="#C15E97" w="16px" h="16px" name="search"/>
+              </InputLeftElement>
+              <Input
+                value={ search }
+                onChange={ handleChange }
+                pl="40px"
+                borderRadius="29px" height="42px"
+                _focusVisible={{ borderColor: '#C15E97 !important' }}
+                placeholder={ `Search by ${ props.page.replace(/^./, props.page[0].toUpperCase()) } Name or ID` }
+              >
+              </Input>
+              {
+                search && (
+                  <InputRightElement w="16px" h="16px" position="absolute"
+                    right="16px"
+                    top="50%"
+                    transform="translateY(-50%)"
+                    cursor="pointer"
+                    onClick={ clearSearch }
+                  >
+                    <IconSvg border="1px solid #C15E97" borderRadius="50%" color="#C15E97" w="16px" h="16px" name="cross"/>
+                  </InputRightElement>
+                )
+              }
+            </InputGroup>
+          </Flex>
+        ) : <div></div>
+      }
+
       {
         !props.loading ? (
-          <TableContainer position="relative" top="-50px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px 78px 4px">
+          <TableContainer
+            position="relative"
+            top={ !props.showTotal ? '-50px' : '0' }
+            border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px 78px 4px">
             <Table minHeight={ tableList.length ? 'auto' : '550px' } variant="bubble" position="relative" className={ styles.table }>
               <Thead>
                 <Tr>
@@ -175,7 +222,7 @@ function TableList(props: Props<string>) {
                             >
                               {
                                 value === 'id' ? null :
-                                  value === 'Last Updated Time' ? (
+                                  value === 'Last Updated Time' || value === 'Time' ? (
                                     <Tooltip
                                       label={ timeText(title[value]) } placement="top" bg="#FFFFFF" color="#000000" >
                                       <Box overflow="hidden" color="#000000" display="inline-block">
@@ -183,9 +230,10 @@ function TableList(props: Props<string>) {
                                       </Box>
                                     </Tooltip >
                                   ) :
-                                    value === 'txnHash' ? (
-                                      <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" >
-                                        <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
+                                    value === 'txnHash' || value === 'Txn hash' ? (
+                                      <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" color="#000000">
+                                        <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '',
+                                          tab: value === 'Txn hash' ? 'credentials' : '' } }}>
                                           <Box overflow="hidden" display="inline-block">
                                             <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value]) }</Skeleton>
                                           </Box>
@@ -203,10 +251,12 @@ function TableList(props: Props<string>) {
                                           </NextLink>
                                         </Tooltip>
                                       ) :
-                                        value === 'Last Updated' ? (
+                                        value === 'Last Updated' || value === 'Block' ? (
                                           <Skeleton isLoaded={ !props.loading }>
                                             <Flex>
-                                              <Box color="#000000" marginRight="4px">Block</Box>
+                                              {
+                                                value === 'Last Updated' && <Box color="#000000" marginRight="4px">Block</Box>
+                                              }
                                               <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
                                                 <Box>{ title[value] }</Box>
                                               </NextLink>
@@ -214,10 +264,10 @@ function TableList(props: Props<string>) {
                                           </Skeleton>
                                         ) :
                                           value === 'Object Name' ||
-                                  value === 'Type' ||
-                                  value === 'Bucket Name' ||
-                                  value === 'Bucket' ||
-                                  value === 'Group Name' ? (
+                                          value === 'Type' ||
+                                          value === 'Bucket Name' ||
+                                          value === 'Bucket' ||
+                                          value === 'Group Name' ? (
                                               <Tooltip
                                                 isDisabled={ title[value].toString().length <= 16 }
                                                 label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
@@ -277,11 +327,41 @@ function TableList(props: Props<string>) {
                                                       { title[value].split('_').splice(-1).toString().toLowerCase() }
                                                     </Skeleton></Box>
                                                   </Box>
-                                                ) : (
-                                                  <Box color="#000000" overflow="hidden">
-                                                    <Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton>
-                                                  </Box>
-                                                ) }
+                                                ) :
+                                                  value === 'From/To' ? (
+                                                    <Skeleton display="flex" isLoaded={ !props.loading }>
+                                                      <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value][0] || '' } }}>
+                                                        <Box display="inline-block">
+                                                          <Skeleton isLoaded={ !props.loading }>
+                                                            { formatPubKey(title[value][0]) }
+                                                          </Skeleton>
+                                                        </Box>
+                                                      </NextLink>
+                                                      <IconSvg
+                                                        onClick={ copyAddress(title[value][0]) }
+                                                        cursor="pointer"
+                                                        marginLeft="4px"
+                                                        color="rgba(0, 0, 0, .4)" w="16px" h="16px" name="copyAddress"/>
+                                                      <Box margin="0 4px" color="#000000">/</Box>
+                                                      <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value][1] || '' } }}>
+                                                        <Box display="inline-block">
+                                                          <Skeleton isLoaded={ !props.loading }>
+                                                            Moca Chain
+                                                          </Skeleton>
+                                                        </Box>
+                                                      </NextLink>
+                                                      <IconSvg
+                                                        onClick={ copyAddress(title[value][1]) }
+                                                        cursor="pointer"
+                                                        marginLeft="4px"
+                                                        color="rgba(0, 0, 0, .4)" w="16px" h="16px" name="copyAddress"/>
+
+                                                    </Skeleton>
+                                                  ) : (
+                                                    <Box color="#000000" overflow="hidden">
+                                                      <Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton>
+                                                    </Box>
+                                                  ) }
                             </Td>
                           )
                         ))
@@ -290,8 +370,13 @@ function TableList(props: Props<string>) {
                   )) }
               </Tbody>
               <Flex position="absolute" right="24px" bottom="-54px" justifyContent="space-between" w="97%">
-                <Box color="rgba(0, 0, 0, 0.5)" fontWeight="400" fontSize="12px">
-                  A total of { props.totleDate } { props.totleDate > 1 ? props.page + 's' : props.page } </Box>
+                {
+                  !props.showTotal ? (
+                    <Box color="rgba(0, 0, 0, 0.5)" fontWeight="400" fontSize="12px">
+                      A total of { props.totleDate } { props.totleDate > 1 ? props.page + 's' : props.page }
+                    </Box>
+                  ) : <div></div>
+                }
                 <Pagination page={ props.currPage } propsPage={ props.propsPage } toNext={ props.toNext }></Pagination>
               </Flex>
             </Table>

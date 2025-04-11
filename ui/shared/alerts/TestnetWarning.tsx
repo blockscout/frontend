@@ -14,8 +14,8 @@ const TestnetWarning = ({ isLoading, className }: Props) => {
   }
 
   return (
-    <Skeleton className={ className } isLoaded={ !isLoading }>
-      <Alert status="warning">This is a testnet transaction only</Alert>
+    <Skeleton className={ className } isLoaded={ !isLoading } color="#F2B310">
+      <Alert background="rgba(255, 226, 142, 0.20)" status="warning">This is a testnet transaction only</Alert>
     </Skeleton>
   );
 };
