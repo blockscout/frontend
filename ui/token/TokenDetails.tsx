@@ -121,10 +121,10 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       { marketCap && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Total supply * Price"
+            hint="Circulating supply * Price"
             isLoading={ tokenQuery.isPlaceholderData }
           >
-            Fully diluted market cap
+            Market cap
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
