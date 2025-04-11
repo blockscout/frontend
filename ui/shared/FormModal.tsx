@@ -1,12 +1,11 @@
+import type { DialogRootProps } from '@chakra-ui/react';
 import { Box, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import FormSubmitAlert from 'ui/shared/FormSubmitAlert';
 
-interface Props<TData> {
-  open: boolean;
-  onOpenChange: ({ open }: { open: boolean }) => void;
+interface Props<TData> extends Omit<DialogRootProps, 'children'> {
   data?: TData;
   title: string;
   text?: string;
@@ -23,15 +22,16 @@ export default function FormModal<TData>({
   renderForm,
   isAlertVisible,
   setAlertVisible,
+  ...rest
 }: Props<TData>) {
 
   const handleOpenChange = useCallback(({ open }: { open: boolean }) => {
     !open && setAlertVisible?.(false);
-    onOpenChange({ open });
+    onOpenChange?.({ open });
   }, [ onOpenChange, setAlertVisible ]);
 
   return (
-    <DialogRoot open={ open } onOpenChange={ handleOpenChange } size={{ lgDown: 'full', lg: 'md' }}>
+    <DialogRoot open={ open } onOpenChange={ handleOpenChange } size={{ lgDown: 'full', lg: 'md' }} { ...rest }>
       <DialogContent>
         <DialogHeader>{ title }</DialogHeader>
         <DialogBody>
