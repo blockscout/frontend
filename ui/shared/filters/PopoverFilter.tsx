@@ -1,6 +1,6 @@
-import type { PopoverContentProps } from '@chakra-ui/react';
 import React from 'react';
 
+import type { PopoverContentProps } from 'toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverTrigger, PopoverRoot } from 'toolkit/chakra/popover';
 import FilterButton from 'ui/shared/filters/FilterButton';
 

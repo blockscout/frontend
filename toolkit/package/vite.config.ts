@@ -8,7 +8,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 // Plugin to copy TypeScript files
 const copyThemeSrc = () => ({
-  name: 'copy-ts-files',
+  name: 'copy-theme-src',
   closeBundle: async() => {
     const srcDir = resolve(__dirname, '../theme');
     const destDir = resolve(__dirname, './dist/theme');
@@ -44,9 +44,11 @@ export default defineConfig({
               params: {
                 overrides: {
                   removeViewBox: false,
+                  removeHiddenElems: false,
                 },
               },
             },
+            'removeDimensions',
           ],
         },
       },
@@ -84,14 +86,9 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: {
-        components: resolve(__dirname, '../components/index.ts'),
-        chakra: resolve(__dirname, '../chakra/index.ts'),
-        theme: resolve(__dirname, '../theme/index.ts'),
-        hooks: resolve(__dirname, '../hooks/index.ts'),
-        utils: resolve(__dirname, '../utils/index.ts'),
-      },
+      entry: resolve(__dirname, './src/index.ts'),
       formats: [ 'es' ],
+      fileName: 'index',
     },
     outDir: './dist',
     rollupOptions: {
@@ -107,8 +104,7 @@ export default defineConfig({
         'next-themes',
       ],
       output: {
-        preserveModules: true,
-        preserveModulesRoot: '..',
+        preserveModules: false,
         exports: 'named',
         interop: 'auto',
       },

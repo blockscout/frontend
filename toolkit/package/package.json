@@ -1,27 +1,14 @@
 {
   "name": "@blockscout/ui-toolkit",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    "./components/*": {
-      "types": "./dist/components/*.d.ts",
-      "import": "./dist/components/*.js"
-    },
-    "./chakra/*": {
-      "types": "./dist/chakra/*.d.ts",
-      "import": "./dist/chakra/*.js"
-    },
-    "./theme": {
-      "types": "./dist/theme/index.d.ts",
-      "import": "./dist/theme/index.js"
-    },
-    "./hooks/*": {
-      "types": "./dist/hooks/*.d.ts",
-      "import": "./dist/hooks/*.js"
-    },
-    "./utils/*": {
-      "types": "./dist/utils/*.d.ts",
-      "import": "./dist/utils/*.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "files": [
@@ -33,12 +20,12 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@chakra-ui/react": "3.15.0",
-    "@emotion/react": "11.14.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "next": "15.2.3",
-    "next-themes": "0.4.4"
+    "@chakra-ui/react": ">=3.15.0",
+    "@emotion/react": ">=11.14.0",
+    "react": ">=18.3.1",
+    "react-dom": ">=18.3.1",
+    "next": ">=15.2.3",
+    "next-themes": ">=0.4.4"
   },
   "devDependencies": {
     "@types/node": "20.16.7",

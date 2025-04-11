@@ -1,4 +1,4 @@
-import { VStack, Textarea, Code, Flex, Box } from '@chakra-ui/react';
+import { VStack, Code, Flex, Box } from '@chakra-ui/react';
 import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -10,8 +10,10 @@ import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import { useRollbar } from 'lib/rollbar';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
+import { Textarea } from 'toolkit/chakra/textarea';
 import { toaster } from 'toolkit/chakra/toaster';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
 const Login = () => {
   const rollbar = useRollbar();
   const [ num, setNum ] = useGradualIncrement(0);
