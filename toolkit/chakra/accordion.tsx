@@ -1,7 +1,7 @@
-import { Accordion } from '@chakra-ui/react';
+import { Accordion, Icon } from '@chakra-ui/react';
 import * as React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import IndicatorIcon from 'icons/arrows/east-mini.svg';
 
 interface AccordionItemTriggerProps extends Accordion.ItemTriggerProps {
   indicatorPlacement?: 'start' | 'end';
@@ -57,7 +57,7 @@ export const AccordionItemTrigger = React.forwardRef<
     </Accordion.ItemIndicator>
   ) : (
     <Accordion.ItemIndicator rotate={{ base: '180deg', _open: '270deg' }} display="flex">
-      <IconSvg name="arrows/east-mini"/>
+      <Icon><IndicatorIcon/></Icon>
     </Accordion.ItemIndicator>
   );
 

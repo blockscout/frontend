@@ -1,8 +1,7 @@
 import { Dialog as ChakraDialog, Portal } from '@chakra-ui/react';
 import * as React from 'react';
 
-import ButtonBackTo from 'ui/shared/buttons/ButtonBackTo';
-
+import ButtonBackTo from '../components/ButtonBackTo';
 import { CloseButton } from './close-button';
 
 interface DialogContentProps extends ChakraDialog.ContentProps {

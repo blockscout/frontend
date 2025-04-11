@@ -3,9 +3,8 @@ import React from 'react';
 
 import type { TabItemRegular } from '../AdaptiveTabs/types';
 
-import { Skeleton } from 'toolkit/chakra/skeleton';
-import type { TabsProps } from 'toolkit/chakra/tabs';
-
+import { Skeleton } from '../../chakra/skeleton';
+import type { TabsProps } from '../../chakra/tabs';
 import useActiveTabFromQuery from './useActiveTabFromQuery';
 
 const SkeletonTabText = ({ size, title }: { size: TabsProps['size']; title: TabItemRegular['title'] }) => (

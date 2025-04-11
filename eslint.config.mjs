@@ -65,9 +65,7 @@ export default tseslint.config(
   { ignores: [
     'deploy/tools/',
     'public/',
-    'theme/dist/',
     '.git/',
-    'theme/webpack.config.js',
     'next.config.js',
   ] },
 
@@ -455,6 +453,7 @@ export default tseslint.config(
   {
     files: [
       'toolkit/chakra/**',
+      'toolkit/components/**',
     ],
     rules: {
       // for toolkit components allow to import @chakra-ui/react directly

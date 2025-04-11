@@ -2,8 +2,8 @@ import { chakra, Tag as ChakraTag } from '@chakra-ui/react';
 import * as React from 'react';
 
 import { nbsp } from 'lib/html-entities';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
+import TruncatedTextTooltip from '../components/TruncatedTextTooltip';
 import { CloseButton } from './close-button';
 import { Skeleton } from './skeleton';
 

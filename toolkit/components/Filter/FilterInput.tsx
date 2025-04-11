@@ -1,13 +1,14 @@
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
-import type { InputProps } from 'toolkit/chakra/input';
-import { Input } from 'toolkit/chakra/input';
-import { InputGroup } from 'toolkit/chakra/input-group';
-import type { SkeletonProps } from 'toolkit/chakra/skeleton';
-import { Skeleton } from 'toolkit/chakra/skeleton';
-import ClearButton from 'ui/shared/ClearButton';
-import IconSvg from 'ui/shared/IconSvg';
+// import ClearButton from 'ui/shared/ClearButton';
+// import IconSvg from 'ui/shared/IconSvg';
+
+import type { InputProps } from '../../chakra/input';
+import { Input } from '../../chakra/input';
+import { InputGroup } from '../../chakra/input-group';
+import type { SkeletonProps } from '../../chakra/skeleton';
+import { Skeleton } from '../../chakra/skeleton';
 
 interface Props extends Omit<SkeletonProps, 'onChange' | 'loading'> {
   onChange?: (searchTerm: string) => void;
@@ -22,7 +23,7 @@ interface Props extends Omit<SkeletonProps, 'onChange' | 'loading'> {
   inputProps?: InputProps;
 };
 
-// TODO @tom2drum remove this component
+// TODO @tom2drum fix imports
 const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, name, loading = false, onFocus, onBlur, inputProps, ...rest }: Props) => {
   const [ filterQuery, setFilterQuery ] = useState(initialValue || '');
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -34,15 +35,15 @@ const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, n
     onChange?.(value);
   }, [ onChange ]);
 
-  const handleFilterQueryClear = useCallback(() => {
-    setFilterQuery('');
-    onChange?.('');
-    inputRef?.current?.focus();
-  }, [ onChange ]);
+  // const handleFilterQueryClear = useCallback(() => {
+  //   setFilterQuery('');
+  //   onChange?.('');
+  //   inputRef?.current?.focus();
+  // }, [ onChange ]);
 
-  const startElement = <IconSvg name="search" boxSize={ 5 }/>;
+  // const startElement = <IconSvg name="search" boxSize={ 5 }/>;
 
-  const endElement = <ClearButton onClick={ handleFilterQueryClear } isVisible={ filterQuery.length > 0 }/>;
+  // const endElement = <ClearButton onClick={ handleFilterQueryClear } isVisible={ filterQuery.length > 0 }/>;
 
   return (
     <Skeleton
@@ -52,9 +53,9 @@ const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, n
       { ...rest }
     >
       <InputGroup
-        startElement={ startElement }
+        // startElement={ startElement }
         startElementProps={{ px: 2 }}
-        endElement={ endElement }
+        // endElement={ endElement }
         endElementProps={{ w: '32px' }}
       >
         <Input
