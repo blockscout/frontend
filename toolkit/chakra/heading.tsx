@@ -11,27 +11,25 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
     const { level, ...rest } = props;
 
     const textStyle = (() => {
-      if (level === '1') {
-        return { base: 'heading.md', lg: 'heading.xl' };
+      switch (level) {
+        case '1':
+          return { base: 'heading.md', lg: 'heading.xl' };
+        case '2':
+          return { base: 'heading.sm', lg: 'heading.lg' };
+        case '3':
+          return { base: 'heading.xs', lg: 'heading.md' };
       }
-
-      if (level === '2') {
-        return { base: 'heading.sm', lg: 'heading.lg' };
-      }
-
-      return { base: 'heading.xs', lg: 'heading.md' };
     })();
 
     const as = (() => {
-      if (level === '1') {
-        return 'h1';
+      switch (level) {
+        case '1':
+          return 'h1';
+        case '2':
+          return 'h2';
+        case '3':
+          return 'h3';
       }
-
-      if (level === '2') {
-        return 'h2';
-      }
-
-      return 'h3';
     })();
 
     return <ChakraHeading ref={ ref } color="heading" textStyle={ textStyle } as={ as } { ...rest }/>;
