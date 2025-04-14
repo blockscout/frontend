@@ -165,11 +165,13 @@ export default function TasksTab() {
     ]
   ), [ rewardsConfigQuery, activities ]);
 
-  const labels = Object.fromEntries(Object.entries({
+  const labels = {
     period: { text: `Period: ${ period }`, hint: 'Current Merits period. All metrics reset weekly' },
     performanceRank: { text: 'Performance rank', hint: 'Your rank across task groups compared to others. Higher rank = more Merits' },
     meritsEarned: { text: 'Merits earned', hint: 'Estimated Merits based on your current rank. Final amount may change' },
-  }).map(([ key, value ], index) => [ key, (
+  };
+
+  const labelComponents = Object.fromEntries(Object.entries(labels).map(([ key, value ], index) => [ key, (
     <Flex key={ index } flex={ 1 } alignItems="center" gap={ 1 } _first={{ minW: { base: 'auto', md: '200px' } }}>
       <Text
         textStyle={{ base: 'sm', md: 'xs' }}
@@ -217,7 +219,6 @@ export default function TasksTab() {
             </Text>
             <Flex alignItems="center" gap={ 3 } mb={{ base: 0, md: 4 }}>
               <Button
-                flex={{ base: 1, md: 'none' }}
                 loadingSkeleton={ instancesQuery.isLoading }
                 onClick={ explorersModal.onOpen }
               >
@@ -228,8 +229,6 @@ export default function TasksTab() {
                 fontSize="md"
                 fontWeight="500"
                 textAlign="center"
-                flex={{ base: 1, md: 'none' }}
-                px={{ base: 4, md: 0 }}
               >
                 Learn more
               </Link>
@@ -249,6 +248,17 @@ export default function TasksTab() {
             </Text>
           </Flex>
         </Flex>
+        <Flex display={{ base: 'flex', md: 'none' }} justifyContent="space-between" px={ 3 }>
+          <Flex alignItems="center" gap={ 1 }>
+            <Text textStyle="sm" fontWeight="500">
+              Period
+            </Text>
+            <Hint label={ labels.period.hint }/>
+          </Flex>
+          <Text textStyle="sm" fontWeight="500" color="text.secondary">
+            { period }
+          </Text>
+        </Flex>
         <Flex
           display={{ base: 'contents', md: 'flex' }}
           flex={ 1 }
@@ -256,82 +266,84 @@ export default function TasksTab() {
           gap={ 1 }
         >
           <Flex p={ 3 } gap={ 8 } display={{ base: 'none', md: 'flex' }}>
-            { Object.values(labels) }
+            { Object.values(labelComponents) }
           </Flex>
-          { tasks.map((item, index) => (
-            <Flex
-              key={ index }
-              flexDirection={{ base: 'column', md: 'row' }}
-              px={ 3 }
-              py={ 4 }
-              gap={{ base: 6, md: 8 }}
-              borderRadius={{ base: 'lg', md: '8px' }}
-              backgroundColor={{ _light: 'gray.50', _dark: 'whiteAlpha.50' }}
-            >
+          <Flex flexDirection="column" gap={{ base: 1.5, md: 1 }}>
+            { tasks.map((item, index) => (
               <Flex
-                flex={ 1 }
-                flexDirection={{ base: 'row', md: 'column' }}
-                gap={ 2 }
-                alignItems={{ base: 'center', md: 'flex-start' }}
-                justifyContent={{ base: 'space-between', md: 'flex-start' }}
-                minW={{ base: 'auto', md: '200px' }}
+                key={ index }
+                flexDirection={{ base: 'column', md: 'row' }}
+                px={ 3 }
+                py={ 4 }
+                gap={{ base: 6, md: 8 }}
+                borderRadius={{ base: 'lg', md: '8px' }}
+                backgroundColor={{ _light: 'gray.50', _dark: 'whiteAlpha.50' }}
               >
-                <Text textStyle="sm" fontWeight="500">
-                  { item.title }
-                </Text>
-                <Link
-                  textStyle={{ base: 'sm', md: 'xs' }}
-                  fontWeight={{ base: '400', md: '500' }}
-                  onClick={ openTaskDetails(index) }
+                <Flex
+                  flex={ 1 }
+                  flexDirection={{ base: 'row', md: 'column' }}
+                  gap={ 2 }
+                  alignItems={{ base: 'center', md: 'flex-start' }}
+                  justifyContent={{ base: 'space-between', md: 'flex-start' }}
+                  minW={{ base: 'auto', md: '200px' }}
                 >
-                  Task details
-                </Link>
-              </Flex>
-              <Flex display={{ base: 'flex', md: 'contents' }} gap={ 8 }>
-                <Flex flex={ 1 } flexDirection="column" gap={ 2 } alignItems="flex-start">
-                  <Flex display={{ base: 'flex', md: 'none' }}>
-                    { labels.performanceRank }
-                  </Flex>
-                  <Skeleton loading={ isActivityDataLoading }>
-                    <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }}>
-                      { item.percentile }
-                    </Heading>
-                  </Skeleton>
-                  <Skeleton loading={ isActivityDataLoading }>
-                    <Text textStyle={{ base: 'sm', md: 'xs' }} color="text.secondary" fontWeight="500">
-                      { item.percentileDiff } vs { isMobile ? 'prev.' : 'previous' } week
-                    </Text>
-                  </Skeleton>
-                </Flex>
-                <Flex flex={ 1 } flexDirection="column" gap={ 2 } alignItems="flex-start">
-                  <Flex display={{ base: 'flex', md: 'none' }}>
-                    { labels.meritsEarned }
-                  </Flex>
-                  <Skeleton
-                    loading={ isActivityDataLoading }
-                    display="flex"
-                    alignItems="center"
+                  <Text textStyle="sm" fontWeight="500">
+                    { item.title }
+                  </Text>
+                  <Link
+                    textStyle={{ base: 'sm', md: 'xs' }}
+                    fontWeight={{ base: '400', md: '500' }}
+                    onClick={ openTaskDetails(index) }
                   >
-                    <MeritsIcon boxSize={ 6 } mr={ 2 }/>
-                    <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }} mr={{ base: 0, md: 2 }}>
-                      { item.amount }
-                    </Heading>
-                    <Text textStyle="sm" color="gray.400" fontWeight="500" alignSelf="flex-end" display={{ base: 'none', md: 'inline' }}>
-                      /{ item.maxAmount }
-                    </Text>
-                    <Heading textStyle="heading.sm" display={{ base: 'inline', md: 'none' }} color="text.secondary">
-                      /{ item.maxAmount }
-                    </Heading>
-                  </Skeleton>
-                  <Skeleton loading={ isActivityDataLoading }>
-                    <Text textStyle={{ base: 'sm', md: 'xs' }} color="text.secondary" fontWeight="500">
-                      { item.amountDiff } vs { isMobile ? 'prev.' : 'previous' } week
-                    </Text>
-                  </Skeleton>
+                    Task details
+                  </Link>
+                </Flex>
+                <Flex display={{ base: 'flex', md: 'contents' }} gap={ 8 }>
+                  <Flex flex={ 1 } flexDirection="column" gap={ 2 } alignItems="flex-start">
+                    <Flex display={{ base: 'flex', md: 'none' }}>
+                      { labelComponents.performanceRank }
+                    </Flex>
+                    <Skeleton loading={ isActivityDataLoading }>
+                      <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }}>
+                        { item.percentile }
+                      </Heading>
+                    </Skeleton>
+                    <Skeleton loading={ isActivityDataLoading }>
+                      <Text textStyle={{ base: 'sm', md: 'xs' }} color="text.secondary" fontWeight="500">
+                        { item.percentileDiff } vs { isMobile ? 'prev.' : 'previous' } week
+                      </Text>
+                    </Skeleton>
+                  </Flex>
+                  <Flex flex={ 1 } flexDirection="column" gap={ 2 } alignItems="flex-start">
+                    <Flex display={{ base: 'flex', md: 'none' }}>
+                      { labelComponents.meritsEarned }
+                    </Flex>
+                    <Skeleton
+                      loading={ isActivityDataLoading }
+                      display="flex"
+                      alignItems="center"
+                    >
+                      <MeritsIcon boxSize={ 6 } mr={ 2 }/>
+                      <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }} mr={{ base: 0, md: 2 }}>
+                        { item.amount }
+                      </Heading>
+                      <Text textStyle="sm" color="gray.400" fontWeight="500" alignSelf="flex-end" display={{ base: 'none', md: 'inline' }}>
+                        /{ item.maxAmount }
+                      </Text>
+                      <Heading textStyle="heading.sm" display={{ base: 'inline', md: 'none' }} color="text.secondary">
+                        /{ item.maxAmount }
+                      </Heading>
+                    </Skeleton>
+                    <Skeleton loading={ isActivityDataLoading }>
+                      <Text textStyle={{ base: 'sm', md: 'xs' }} color="text.secondary" fontWeight="500">
+                        { item.amountDiff } vs { isMobile ? 'prev.' : 'previous' } week
+                      </Text>
+                    </Skeleton>
+                  </Flex>
                 </Flex>
               </Flex>
-            </Flex>
-          )) }
+            )) }
+          </Flex>
           <Flex
             p={{ base: 1.5, md: 3 }}
             order={{ base: 4, md: 'auto' }}
