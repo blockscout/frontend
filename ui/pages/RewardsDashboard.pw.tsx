@@ -1,6 +1,7 @@
 import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
+import * as activityMock from 'mocks/rewards/activity';
 import * as rewardsBalanceMock from 'mocks/rewards/balance';
 import * as dailyRewardMock from 'mocks/rewards/dailyReward';
 import * as referralsMock from 'mocks/rewards/referrals';
@@ -31,6 +32,7 @@ const testTab = (tab: 'tasks' | 'referrals' | 'resources') =>
     await mockApiResponse('rewards_user_daily_check', dailyRewardMock.base);
     await mockApiResponse('rewards_user_referrals', referralsMock.base);
     await mockApiResponse('rewards_config', rewardsConfigMock.base);
+    await mockApiResponse('rewards_user_activity', activityMock.base);
 
     const component = await render(<RewardsDashboard/>, { hooksConfig: { router: { query: { tab } } } });
 

@@ -31,7 +31,13 @@ function getMaxAmount(rewards: Record<string, string> | undefined) {
     return 0;
   }
 
-  return Math.max(...Object.values(rewards).map(Number));
+  const values = Object.values(rewards).map(Number);
+
+  if (values.length === 0) {
+    return 0;
+  }
+
+  return Math.max(...values);
 }
 
 export default function TasksTab() {

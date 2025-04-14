@@ -7,9 +7,15 @@ export const base: GetConfigResponse = {
     daily_claim: '10',
     referral_share: '0.1',
     streak_bonuses: {},
-    sent_transactions_activity_rewards: {},
-    verified_contracts_activity_rewards: {},
-    blockscout_usage_activity_rewards: {},
+    sent_transactions_activity_rewards: {
+      '1': '100',
+    },
+    verified_contracts_activity_rewards: {
+      '1': '100',
+    },
+    blockscout_usage_activity_rewards: {
+      '1': '100',
+    },
     blockscout_activity_pass_id: '1',
   },
   auth: {
