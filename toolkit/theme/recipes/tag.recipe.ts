@@ -13,7 +13,6 @@ export const recipe = defineSlotRecipe({
       focusVisibleRing: 'outside',
       _loading: {
         borderRadius: 'sm',
-        bgColor: 'unset',
       },
     },
     label: {
@@ -100,9 +99,6 @@ export const recipe = defineSlotRecipe({
         root: {
           bgColor: 'tag.root.subtle.bg',
           color: 'tag.root.subtle.fg',
-          '&:not([data-loading], [aria-busy=true])': {
-            bgColor: 'tag.root.subtle.bg',
-          },
         },
       },
       clickable: {
@@ -110,9 +106,6 @@ export const recipe = defineSlotRecipe({
           cursor: 'pointer',
           bgColor: 'tag.root.clickable.bg',
           color: 'tag.root.clickable.fg',
-          '&:not([data-loading], [aria-busy=true])': {
-            bgColor: 'tag.root.clickable.bg',
-          },
           _hover: {
             opacity: 0.76,
           },
@@ -121,9 +114,6 @@ export const recipe = defineSlotRecipe({
       filter: {
         root: {
           bgColor: 'tag.root.filter.bg',
-          '&:not([data-loading], [aria-busy=true])': {
-            bgColor: 'tag.root.filter.bg',
-          },
         },
       },
       select: {
@@ -131,9 +121,6 @@ export const recipe = defineSlotRecipe({
           cursor: 'pointer',
           bgColor: 'tag.root.select.bg',
           color: 'tag.root.select.fg',
-          '&:not([data-loading], [aria-busy=true])': {
-            bgColor: 'tag.root.select.bg',
-          },
           _hover: {
             color: 'blue.400',
             opacity: 0.76,

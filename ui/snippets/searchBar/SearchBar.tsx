@@ -155,6 +155,7 @@ const SearchBar = ({ isHomepage }: Props) => {
           />
         </PopoverTrigger>
         <PopoverContent
+          maxW={{ base: 'calc(100vw - 8px)', lg: 'unset' }}
           w={ `${ menuWidth.current }px` }
           ref={ menuRef }
           overflow="hidden"

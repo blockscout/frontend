@@ -19,7 +19,7 @@ const NetworkMenu = () => {
       <PopoverTrigger>
         <IconButton
           variant="link"
-          size="2xs"
+          boxSize={ 5 }
           aria-label="Network menu"
           borderRadius="sm"
           onClick={ menu.onToggle }

@@ -12,6 +12,8 @@ We welcome contributions that enhance the project and improve the overall qualit
 - **Documentation Improvements:** Comprehensive updates to documentation that clarify usage, installation, or project structure.
 - **Performance Improvements:** Changes that enhance the performance or efficiency of the application.
 
+Please note that we accept contributions for newly submitted issues or those labeled "Available for contribution" - all other issues are reserved for the core team of the project.
+
 &nbsp;
 
 ## Project setup

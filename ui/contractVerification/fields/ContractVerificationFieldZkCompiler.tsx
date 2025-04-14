@@ -38,7 +38,7 @@ const ContractVerificationFieldZkCompiler = ({ config }: { config: SmartContract
     <ContractVerificationFormRow>
       <FormFieldSelectAsync<FormFields, 'zk_compiler'>
         name="zk_compiler"
-        placeholder="ZK compiler (enter version or use the dropdown)"
+        placeholder="ZK compiler"
         loadOptions={ loadOptions }
         required
       />

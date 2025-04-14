@@ -34,11 +34,13 @@ test.beforeEach(async({ mockApiResponse, mockTextAd }) => {
 });
 
 test('base view', async({ render, page, createSocket }) => {
+  test.slow();
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
   const socket = await createSocket();
   const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+  await component.getByText('100 ARIA').waitFor({ state: 'visible', timeout: 10_000 });
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
@@ -47,6 +49,7 @@ test('base view', async({ render, page, createSocket }) => {
 });
 
 test('with verified info', async({ render, page, createSocket, mockApiResponse, mockAssetResponse }) => {
+  test.slow();
   await mockApiResponse('token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId, hash } });
   await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
 
@@ -55,6 +58,7 @@ test('with verified info', async({ render, page, createSocket, mockApiResponse, 
   const socket = await createSocket();
   const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+  await component.getByText('100 ARIA').waitFor({ state: 'visible', timeout: 10_000 });
 
   await page.getByLabel('Show info').click();
 
@@ -83,6 +87,7 @@ test('bridged token', async({ render, page, createSocket, mockApiResponse, mockA
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
   const socket = await createSocket();
   await socketServer.joinChannel(socket, `tokens:${ hash.toLowerCase() }`);
+  await component.getByText('369,000,000 HyFi').waitFor({ state: 'visible' });
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
@@ -98,6 +103,7 @@ test.describe('mobile', () => {
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+    await component.getByText('100 ARIA').waitFor({ state: 'visible' });
 
     await expect(component).toHaveScreenshot({
       mask: [ page.locator(pwConfig.adsBannerSelector) ],
@@ -113,6 +119,7 @@ test.describe('mobile', () => {
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+    await component.getByText('100 ARIA').waitFor({ state: 'visible' });
 
     await expect(component).toHaveScreenshot({
       mask: [ page.locator(pwConfig.adsBannerSelector) ],

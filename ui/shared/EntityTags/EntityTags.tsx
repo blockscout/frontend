@@ -28,12 +28,18 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
     return metaSuitesPlaceholder;
   }
 
-  const content = (() => {
-    const tagMaxW = {
-      base: tags.length === 1 ? '100%' : '60%',
-      lg: '300px',
-    };
+  const tagMaxW = (() => {
+    if (tags.length === 1) {
+      return { base: '100%', lg: '300px' };
+    }
 
+    if (tags.length === 2) {
+      return { base: 'calc((100% - 8px) / 2)', lg: '300px' };
+    }
+    return { base: 'calc((100% - 40px) / 2)', lg: '300px' };
+  })();
+
+  const content = (() => {
     if (tags.length > visibleNum) {
       return (
         <>
@@ -66,7 +72,7 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
   })();
 
   return (
-    <Flex className={ className } columnGap={ 2 } rowGap={ 2 } flexWrap="nowrap" alignItems="center" flexGrow={ 1 } maxW="100%">
+    <Flex className={ className } columnGap={ 2 } rowGap={ 2 } flexWrap="nowrap" alignItems="center" flexGrow={ 1 } maxW="100%" overflow="hidden">
       { content }
     </Flex>
   );

@@ -75,7 +75,7 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
             </chakra.span>
             { isHighlighted && (
               <LightningLabel
-                iconColor={ isInternalLink && item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
+                iconColor={ isInternalLink && item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg.group' }
                 isCollapsed={ isCollapsed }
               />
             ) }

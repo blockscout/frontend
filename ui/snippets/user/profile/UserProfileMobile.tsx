@@ -6,7 +6,7 @@ import type { Screen } from 'ui/snippets/auth/types';
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel';
 import useAccount from 'lib/web3/useAccount';
-import { DrawerBackdrop, DrawerBody, DrawerContent, DrawerRoot, DrawerTrigger } from 'toolkit/chakra/drawer';
+import { DrawerBody, DrawerContent, DrawerRoot, DrawerTrigger } from 'toolkit/chakra/drawer';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
@@ -74,7 +74,6 @@ const UserProfileMobile = () => {
         open={ profileMenu.open }
         onOpenChange={ handleProfileMenuOpenChange }
       >
-        <DrawerBackdrop/>
         <DrawerTrigger>
           <UserProfileButton
             profileQuery={ profileQuery }

@@ -135,12 +135,8 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           active: { value: { _light: '{colors.link.primary.hover}' } },
         },
         bg: {
-          DEFAULT: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
           selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
-        },
-        border: {
-          DEFAULT: { value: '{colors.border.divider}' },
-          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
+          group: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
         },
       },
       menu: {

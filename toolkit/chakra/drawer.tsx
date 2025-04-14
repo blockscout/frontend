@@ -7,15 +7,17 @@ interface DrawerContentProps extends ChakraDrawer.ContentProps {
   portalled?: boolean;
   portalRef?: React.RefObject<HTMLElement>;
   offset?: ChakraDrawer.ContentProps['padding'];
+  backdrop?: boolean;
 }
 
 export const DrawerContent = React.forwardRef<
   HTMLDivElement,
   DrawerContentProps
 >(function DrawerContent(props, ref) {
-  const { children, portalled = true, portalRef, offset, ...rest } = props;
+  const { children, portalled = true, portalRef, offset, backdrop = true, ...rest } = props;
   return (
     <Portal disabled={ !portalled } container={ portalRef }>
+      { backdrop && <ChakraDrawer.Backdrop/> }
       <ChakraDrawer.Positioner padding={ offset }>
         <ChakraDrawer.Content ref={ ref } { ...rest } asChild={ false }>
           { children }
@@ -45,8 +47,8 @@ export const DrawerCloseTrigger = React.forwardRef<
 const EMPTY_ELEMENT = () => null;
 
 export const DrawerRoot = (props: ChakraDrawer.RootProps) => {
-  const { initialFocusEl = EMPTY_ELEMENT, ...rest } = props;
-  return <ChakraDrawer.Root { ...rest } initialFocusEl={ initialFocusEl }/>;
+  const { initialFocusEl = EMPTY_ELEMENT, lazyMount = true, unmountOnExit = true, ...rest } = props;
+  return <ChakraDrawer.Root { ...rest } initialFocusEl={ initialFocusEl } lazyMount={ lazyMount } unmountOnExit={ unmountOnExit }/>;
 };
 
 export const DrawerTrigger = (props: ChakraDrawer.TriggerProps) => {
@@ -57,7 +59,6 @@ export const DrawerTrigger = (props: ChakraDrawer.TriggerProps) => {
 export const DrawerFooter = ChakraDrawer.Footer;
 export const DrawerHeader = ChakraDrawer.Header;
 export const DrawerBody = ChakraDrawer.Body;
-export const DrawerBackdrop = ChakraDrawer.Backdrop;
 export const DrawerDescription = ChakraDrawer.Description;
 export const DrawerTitle = ChakraDrawer.Title;
 export const DrawerActionTrigger = ChakraDrawer.ActionTrigger;
