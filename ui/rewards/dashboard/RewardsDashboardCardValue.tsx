@@ -35,7 +35,7 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomT
       minW="100px"
     >
       { withIcon && <MeritsIcon boxSize={ 8 }/> }
-      <Heading textStyle={{ base: 'heading.lg', md: 'heading.xl' }}>
+      <Heading level="1">
         { value }
       </Heading>
     </Skeleton>
