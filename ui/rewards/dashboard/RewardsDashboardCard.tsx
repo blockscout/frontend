@@ -26,6 +26,7 @@ const RewardsDashboardCard = ({
 }: Props) => {
   return (
     <Flex
+      as="section"
       flexDirection={{ base: contentDirection === 'row' ? 'column' : contentDirection, md: contentDirection }}
       justifyContent={ contentDirection === 'column-reverse' ? 'flex-end' : 'flex-start' }
       p={{ base: 1.5, md: 2 }}
