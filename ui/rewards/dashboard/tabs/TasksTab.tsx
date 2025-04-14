@@ -7,6 +7,7 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import dayjs from 'lib/date/dayjs';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { mdash } from 'lib/html-entities';
 import { USER_ACTIVITY } from 'stubs/rewards';
 import { Button } from 'toolkit/chakra/button';
@@ -37,6 +38,7 @@ export default function TasksTab() {
   const { apiToken, rewardsConfigQuery } = useRewardsContext();
   const explorersModal = useDisclosure();
   const taskDetailsModal = useDisclosure();
+  const isMobile = useIsMobile();
   const [ selectedTaskIndex, setSelectedTaskIndex ] = useState<number>(0);
 
   const profileQuery = useProfileQuery();
@@ -157,6 +159,23 @@ export default function TasksTab() {
     ]
   ), [ rewardsConfigQuery, activities ]);
 
+  const labels = Object.fromEntries(Object.entries({
+    period: { text: `Period: ${ period }`, hint: 'Current Merits period. All metrics reset weekly' },
+    performanceRank: { text: 'Performance rank', hint: 'Your rank across task groups compared to others. Higher rank = more Merits' },
+    meritsEarned: { text: 'Merits earned', hint: 'Estimated Merits based on your current rank. Final amount may change' },
+  }).map(([ key, value ], index) => [ key, (
+    <Flex key={ index } flex={ 1 } alignItems="center" gap={ 1 } _first={{ minW: { base: 'auto', md: '200px' } }}>
+      <Text
+        textStyle={{ base: 'sm', md: 'xs' }}
+        color={{ base: 'text.primary', md: 'text.secondary' }}
+        fontWeight="500"
+      >
+        { value.text }
+      </Text>
+      <Hint label={ value.hint }/>
+    </Flex>
+  ) ]));
+
   const openTaskDetails = useCallback((index: number) => () => {
     setSelectedTaskIndex(index);
     taskDetailsModal.onOpen();
@@ -175,106 +194,142 @@ export default function TasksTab() {
         border="1px solid"
         borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.200' }}
         borderRadius="lg"
-        gap={{ base: 1, md: 10 }}
+        gap={{ base: 4, md: 10 }}
+        flexDirection={{ base: 'column', md: 'row' }}
       >
-        <Flex flexDirection="column" w={{ base: 'full', md: '340px' }} p={ 3 } pr={ 0 }>
-          <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }} mb={ 2 }>Tasks</Heading>
-          <Text textStyle="sm" mb={ 4 }>
-            Use Blockscout and related products daily to earn Merits. Check each task for details and how to get started.
-          </Text>
-          <Flex alignItems="center" gap={ 3 } mb={ 4 }>
-            <Button
-              flex={{ base: 1, md: 'none' }}
-              loadingSkeleton={ instancesQuery.isLoading }
-              onClick={ explorersModal.onOpen }
-            >
-              Earn
-            </Button>
-            <Link
-              external
-              fontSize="md"
-              fontWeight="500"
-              textAlign="center"
-              flex={{ base: 1, md: 'none' }}
-              px={{ base: 4, md: 0 }}
-            >
-              Learn more
-            </Link>
+        <Flex
+          display={{ base: 'contents', md: 'flex' }}
+          flexDirection="column"
+          w="340px"
+          p={ 3 }
+          pr={ 0 }
+        >
+          <Flex flexDirection="column" p={{ base: 1.5, md: 0 }} pb={ 0 }>
+            <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }} mb={ 2 }>Tasks</Heading>
+            <Text textStyle="sm" mb={{ base: 2, md: 4 }}>
+              Use Blockscout and related products daily to earn Merits. Check each task for details and how to get started.
+            </Text>
+            <Flex alignItems="center" gap={ 3 } mb={{ base: 0, md: 4 }}>
+              <Button
+                flex={{ base: 1, md: 'none' }}
+                loadingSkeleton={ instancesQuery.isLoading }
+                onClick={ explorersModal.onOpen }
+              >
+                Earn
+              </Button>
+              <Link
+                external
+                fontSize="md"
+                fontWeight="500"
+                textAlign="center"
+                flex={{ base: 1, md: 'none' }}
+                px={{ base: 4, md: 0 }}
+              >
+                Learn more
+              </Link>
+            </Flex>
           </Flex>
-          <IconSvg name="status/warning" boxSize={ 6 } mt="auto" mb={ 2.5 } color="gray.500"/>
-          <Text textStyle="sm">
-            <chakra.span fontWeight="600">Your current Merit count is not final!</chakra.span><br/>
-            Merits are calculated based on the activity of all users and may increase or decrease by the end of the period.
-          </Text>
+          <Flex
+            flexDirection="column"
+            gap={ 2.5 }
+            mt="auto"
+            order={{ base: 3, md: 'auto' }}
+            px={{ base: 1.5, md: 0 }}
+          >
+            <IconSvg name="status/warning" boxSize={ 6 } color="gray.500"/>
+            <Text textStyle="sm">
+              <chakra.span fontWeight="600">Your current Merit count is not final!</chakra.span><br/>
+              Merits are calculated based on the activity of all users and may increase or decrease by the end of the period.
+            </Text>
+          </Flex>
         </Flex>
-        <Flex flex={ 1 } flexDirection="column" gap={ 1 } css={{ '& > div > *': { flex: 1 } }}>
-          <Flex p={ 3 } gap={ 8 }>
-            { [
-              { text: `Period: ${ period }`, hint: 'Current Merits period. All metrics reset weekly' },
-              { text: 'Performance rank', hint: 'Your rank across task groups compared to others. Higher rank = more Merits' },
-              { text: 'Merits earned', hint: 'Estimated Merits based on your current rank. Final amount may change' },
-            ].map((item, index) => (
-              <Flex key={ index } alignItems="center" gap={ 1 } _first={{ minW: '200px' }}>
-                <Text textStyle="xs" color="text.secondary" fontWeight="500">
-                  { item.text }
-                </Text>
-                <Hint label={ item.hint }/>
-              </Flex>
-            )) }
+        <Flex
+          display={{ base: 'contents', md: 'flex' }}
+          flex={ 1 }
+          flexDirection="column"
+          gap={ 1 }
+        >
+          <Flex p={ 3 } gap={ 8 } display={{ base: 'none', md: 'flex' }}>
+            { Object.values(labels) }
           </Flex>
           { tasks.map((item, index) => (
             <Flex
               key={ index }
+              flexDirection={{ base: 'column', md: 'row' }}
               px={ 3 }
               py={ 4 }
-              gap={ 8 }
+              gap={{ base: 6, md: 8 }}
               borderRadius={{ base: 'lg', md: '8px' }}
               backgroundColor={{ _light: 'gray.50', _dark: 'whiteAlpha.50' }}
             >
-              <Flex flexDirection="column" gap={ 2 } alignItems="flex-start" minW="200px">
+              <Flex
+                flex={ 1 }
+                flexDirection={{ base: 'row', md: 'column' }}
+                gap={ 2 }
+                alignItems={{ base: 'center', md: 'flex-start' }}
+                justifyContent={{ base: 'space-between', md: 'flex-start' }}
+                minW={{ base: 'auto', md: '200px' }}
+              >
                 <Text textStyle="sm" fontWeight="500">
                   { item.title }
                 </Text>
-                <Link textStyle="xs" fontWeight="500" onClick={ openTaskDetails(index) }>
+                <Link
+                  textStyle={{ base: 'sm', md: 'xs' }}
+                  fontWeight={{ base: '400', md: '500' }}
+                  onClick={ openTaskDetails(index) }
+                >
                   Task details
                 </Link>
               </Flex>
-              <Flex flexDirection="column" gap={ 2 } alignItems="flex-start">
-                <Skeleton loading={ isActivityDataLoading }>
-                  <Heading textStyle="heading.md">
-                    { item.percentile }
-                  </Heading>
-                </Skeleton>
-                <Skeleton loading={ isActivityDataLoading }>
-                  <Text textStyle="xs" color="text.secondary" fontWeight="500">
-                    { item.percentileDiff } vs previous week
-                  </Text>
-                </Skeleton>
-              </Flex>
-              <Flex flexDirection="column" gap={ 2 } alignItems="flex-start">
-                <Skeleton
-                  loading={ isActivityDataLoading }
-                  display="flex"
-                  alignItems="center"
-                  gap={ 2 }
-                >
-                  <MeritsIcon boxSize={ 6 }/>
-                  <Heading textStyle="heading.md">
-                    { item.amount }
-                  </Heading>
-                  <Text textStyle="sm" color="gray.400" fontWeight="500" alignSelf="flex-end">
-                    /{ item.maxAmount }
-                  </Text>
-                </Skeleton>
-                <Skeleton loading={ isActivityDataLoading }>
-                  <Text textStyle="xs" color="text.secondary" fontWeight="500">
-                    { item.amountDiff } vs previous week
-                  </Text>
-                </Skeleton>
+              <Flex display={{ base: 'flex', md: 'contents' }} gap={ 8 }>
+                <Flex flex={ 1 } flexDirection="column" gap={ 2 } alignItems="flex-start">
+                  <Flex display={{ base: 'flex', md: 'none' }}>
+                    { labels.performanceRank }
+                  </Flex>
+                  <Skeleton loading={ isActivityDataLoading }>
+                    <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }}>
+                      { item.percentile }
+                    </Heading>
+                  </Skeleton>
+                  <Skeleton loading={ isActivityDataLoading }>
+                    <Text textStyle={{ base: 'sm', md: 'xs' }} color="text.secondary" fontWeight="500">
+                      { item.percentileDiff } vs { isMobile ? 'prev.' : 'previous' } week
+                    </Text>
+                  </Skeleton>
+                </Flex>
+                <Flex flex={ 1 } flexDirection="column" gap={ 2 } alignItems="flex-start">
+                  <Flex display={{ base: 'flex', md: 'none' }}>
+                    { labels.meritsEarned }
+                  </Flex>
+                  <Skeleton
+                    loading={ isActivityDataLoading }
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <MeritsIcon boxSize={ 6 } mr={ 2 }/>
+                    <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }} mr={{ base: 0, md: 2 }}>
+                      { item.amount }
+                    </Heading>
+                    <Text textStyle="sm" color="gray.400" fontWeight="500" alignSelf="flex-end" display={{ base: 'none', md: 'inline' }}>
+                      /{ item.maxAmount }
+                    </Text>
+                    <Heading textStyle="heading.sm" display={{ base: 'inline', md: 'none' }} color="text.secondary">
+                      /{ item.maxAmount }
+                    </Heading>
+                  </Skeleton>
+                  <Skeleton loading={ isActivityDataLoading }>
+                    <Text textStyle={{ base: 'sm', md: 'xs' }} color="text.secondary" fontWeight="500">
+                      { item.amountDiff } vs { isMobile ? 'prev.' : 'previous' } week
+                    </Text>
+                  </Skeleton>
+                </Flex>
               </Flex>
             </Flex>
           )) }
-          <Flex p={ 3 }>
+          <Flex
+            p={{ base: 1.5, md: 3 }}
+            order={{ base: 4, md: 'auto' }}
+          >
             <Text textStyle="xs" color="text.secondary" fontWeight="500">
               Metrics are not updated in real time. Please allow up to one hour for your Performance Rank and earned Merits to reflect recent activity.
               If you experience any issues, feel free to reach out on{ ' ' }
