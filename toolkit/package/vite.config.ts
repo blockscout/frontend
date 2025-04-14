@@ -1,33 +1,9 @@
 import react from '@vitejs/plugin-react';
-import { copyFile, mkdir, readdir } from 'node:fs/promises';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
-
-// Plugin to copy TypeScript files
-const copyThemeSrc = () => ({
-  name: 'copy-theme-src',
-  closeBundle: async() => {
-    const srcDir = resolve(__dirname, '../theme');
-    const destDir = resolve(__dirname, './dist/theme');
-
-    // Ensure destination directory exists
-    await mkdir(destDir, { recursive: true });
-
-    // Copy theme directory
-    const files = await readdir(srcDir, { recursive: true });
-    for (const file of files) {
-      if (file.endsWith('.ts')) {
-        const srcPath = resolve(srcDir, file);
-        const destPath = resolve(destDir, file);
-        await mkdir(resolve(destPath, '..'), { recursive: true });
-        await copyFile(srcPath, destPath);
-      }
-    }
-  },
-});
 
 export default defineConfig({
   plugins: [
@@ -71,7 +47,6 @@ export default defineConfig({
       insertTypesEntry: true,
       entryRoot: '..',
     }),
-    copyThemeSrc(),
   ],
   resolve: {
     alias: {
@@ -99,12 +74,13 @@ export default defineConfig({
         'react/jsx-dev-runtime',
         '@chakra-ui/react',
         '@emotion/react',
-        'use-font-face-observer',
         'next/link',
+        'next/router',
         'next-themes',
       ],
       output: {
         preserveModules: false,
+        preserveModulesRoot: '..',
         exports: 'named',
         interop: 'auto',
       },

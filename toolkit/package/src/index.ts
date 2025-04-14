@@ -88,9 +88,15 @@ export {
 
 // Export theme
 export { default as theme } from '../../theme/theme';
+export { customConfig as themeConfig } from '../../theme/theme';
 
 // Export components
-// TODO @tom2drum add these exports
+export * as AdaptiveTabs from '../../components/AdaptiveTabs/index';
+export * from '../../components/RoutedTabs/index';
+export * from '../../components/filters/FilterInput';
+export * from '../../components/buttons/BackToButton';
+export * from '../../components/buttons/ClearButton';
+export * from '../../components/truncation/TruncatedTextTooltip';
 
 // Export utils
 export { default as getComponentDisplayName } from '../../utils/getComponentDisplayName';

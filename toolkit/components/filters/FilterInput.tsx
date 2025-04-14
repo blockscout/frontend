@@ -1,15 +1,17 @@
+import { Icon } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
-import type { InputProps } from 'toolkit/chakra/input';
-import { Input } from 'toolkit/chakra/input';
-import { InputGroup } from 'toolkit/chakra/input-group';
-import type { SkeletonProps } from 'toolkit/chakra/skeleton';
-import { Skeleton } from 'toolkit/chakra/skeleton';
-import ClearButton from 'ui/shared/ClearButton';
-import IconSvg from 'ui/shared/IconSvg';
+import SearchIcon from 'icons/search.svg';
 
-interface Props extends Omit<SkeletonProps, 'onChange' | 'loading'> {
+import type { InputProps } from '../../chakra/input';
+import { Input } from '../../chakra/input';
+import { InputGroup } from '../../chakra/input-group';
+import type { SkeletonProps } from '../../chakra/skeleton';
+import { Skeleton } from '../../chakra/skeleton';
+import { ClearButton } from '../buttons/ClearButton';
+
+export interface FilterInputProps extends Omit<SkeletonProps, 'onChange' | 'loading'> {
   onChange?: (searchTerm: string) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
@@ -22,8 +24,19 @@ interface Props extends Omit<SkeletonProps, 'onChange' | 'loading'> {
   inputProps?: InputProps;
 };
 
-// TODO @tom2drum remove this component
-const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, name, loading = false, onFocus, onBlur, inputProps, ...rest }: Props) => {
+export const FilterInput = ({
+  onChange,
+  size = 'sm',
+  placeholder,
+  initialValue,
+  type,
+  name,
+  loading = false,
+  onFocus,
+  onBlur,
+  inputProps,
+  ...rest
+}: FilterInputProps) => {
   const [ filterQuery, setFilterQuery ] = useState(initialValue || '');
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -40,9 +53,8 @@ const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, n
     inputRef?.current?.focus();
   }, [ onChange ]);
 
-  const startElement = <IconSvg name="search" boxSize={ 5 }/>;
-
-  const endElement = <ClearButton onClick={ handleFilterQueryClear } isVisible={ filterQuery.length > 0 }/>;
+  const startElement = <Icon><SearchIcon/></Icon>;
+  const endElement = <ClearButton onClick={ handleFilterQueryClear } visible={ filterQuery.length > 0 }/>;
 
   return (
     <Skeleton
@@ -76,5 +88,3 @@ const FilterInput = ({ onChange, size = 'sm', placeholder, initialValue, type, n
     </Skeleton>
   );
 };
-
-export default FilterInput;

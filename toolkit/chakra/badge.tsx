@@ -2,7 +2,7 @@ import type { BadgeProps as ChakraBadgeProps } from '@chakra-ui/react';
 import { chakra, Badge as ChakraBadge } from '@chakra-ui/react';
 import React from 'react';
 
-import TruncatedTextTooltip from '../components/TruncatedTextTooltip';
+import { TruncatedTextTooltip } from '../components/truncation/TruncatedTextTooltip';
 import { Skeleton } from './skeleton';
 
 export interface BadgeProps extends Omit<ChakraBadgeProps, 'colorScheme'> {

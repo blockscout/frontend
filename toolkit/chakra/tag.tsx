@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { nbsp } from 'lib/html-entities';
 
-import TruncatedTextTooltip from '../components/TruncatedTextTooltip';
+import { TruncatedTextTooltip } from '../components/truncation/TruncatedTextTooltip';
 import { CloseButton } from './close-button';
 import { Skeleton } from './skeleton';
 

@@ -3,18 +3,17 @@ import { debounce } from 'es-toolkit';
 import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
 
-import { Tooltip } from 'toolkit/chakra/tooltip';
-import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
+import { Tooltip } from '../../chakra/tooltip';
+import { useDisclosure } from '../../hooks/useDisclosure';
+import { BODY_TYPEFACE } from '../../theme/foundations/typography';
 
-interface Props {
+export interface TruncatedTextTooltipProps {
   children: React.ReactNode;
   label: React.ReactNode;
   placement?: Placement;
 }
 
-// TODO @tom2drum remove this component
-const TruncatedTextTooltip = ({ children, label, placement }: Props) => {
+export const TruncatedTextTooltip = React.memo(({ children, label, placement }: TruncatedTextTooltipProps) => {
   const childRef = React.useRef<HTMLElement>(null);
   const [ isTruncated, setTruncated ] = React.useState(false);
   const { open, onToggle, onOpen, onClose } = useDisclosure();
@@ -91,6 +90,4 @@ const TruncatedTextTooltip = ({ children, label, placement }: Props) => {
   }
 
   return modifiedChildren;
-};
-
-export default React.memo(TruncatedTextTooltip);
+});

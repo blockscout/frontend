@@ -9,7 +9,7 @@ import { INTERNAL_TX } from 'stubs/internalTx';
 import { generateListStub } from 'stubs/utils';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-// import FilterInput from 'ui/shared/filters/FilterInput';
+// import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import { default as getNextSortValueShared } from 'ui/shared/sort/getNextSortValue';

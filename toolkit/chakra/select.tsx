@@ -8,7 +8,7 @@ import * as React from 'react';
 import ArrowIcon from 'icons/arrows/east-mini.svg';
 import CheckIcon from 'icons/check.svg';
 
-import FilterInput from '../components/Filter/FilterInput';
+import { FilterInput } from '../components/filters/FilterInput';
 import { CloseButton } from './close-button';
 import { Skeleton } from './skeleton';
 
