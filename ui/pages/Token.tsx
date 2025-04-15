@@ -23,7 +23,6 @@ import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressContract from 'ui/address/AddressContract';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
-import useContractTabs from 'ui/address/contract/useContractTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
@@ -159,7 +158,6 @@ const TokenPageContent = () => {
   });
 
   const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData;
-  const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
 
   const tabs: Array<TabItemRegular> = [
     hasInventoryTab ? {
@@ -191,7 +189,7 @@ const TokenPageContent = () => {
 
         return 'Contract';
       },
-      component: <AddressContract tabs={ contractTabs.tabs } isLoading={ contractTabs.isLoading } shouldRender={ !isLoading }/>,
+      component: <AddressContract addressData={ addressQuery.data } isLoading={ isLoading }/>,
       subTabs: CONTRACT_TAB_IDS,
     } : undefined,
   ].filter(Boolean);

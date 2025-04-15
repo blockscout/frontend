@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import type { Channel } from 'phoenix';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
 import type { Address as AddressInfo } from 'types/api/address';
 import type { AddressImplementation } from 'types/api/addressParams';
 import type { SmartContract } from 'types/api/contract';
@@ -13,7 +12,6 @@ import type { SmartContract } from 'types/api/contract';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import useSocketMessage from 'lib/socket/useSocketMessage';
 import * as stubs from 'stubs/contract';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -65,21 +63,6 @@ const ContractDetails = ({ addressHash, channel, mainContractQuery }: Props) => 
   const { data, isPlaceholderData, isError } = contractQuery;
 
   const tabs = useContractDetailsTabs({ data, isLoading: isPlaceholderData, addressHash, sourceAddress: selectedItem.address });
-
-  const handleContractWasVerifiedMessage: SocketMessage.SmartContractWasVerified['handler'] = React.useCallback(() => {
-    queryClient.refetchQueries({
-      queryKey: getResourceKey('address', { pathParams: { hash: addressHash } }),
-    });
-    queryClient.refetchQueries({
-      queryKey: getResourceKey('contract', { pathParams: { hash: addressHash } }),
-    });
-  }, [ addressHash, queryClient ]);
-
-  useSocketMessage({
-    channel,
-    event: 'smart_contract_was_verified',
-    handler: handleContractWasVerifiedMessage,
-  });
 
   if (isError) {
     return <DataFetchAlert/>;
