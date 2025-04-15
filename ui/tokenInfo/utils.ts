@@ -12,7 +12,7 @@ export function getFormDefaultValues(address: string, tokenName: string, applica
     requester_name: application.requesterName,
     requester_email: application.requesterEmail,
     project_name: application.projectName,
-    project_sector: application.projectSector ? [ application.projectSector ] : null,
+    project_sector: application.projectSector ? [ application.projectSector ] : undefined,
     project_email: application.projectEmail,
     project_website: application.projectWebsite,
     project_description: application.projectDescription || '',
