@@ -1,7 +1,6 @@
 import { Box, HStack, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -24,16 +23,15 @@ export type TContractAutoVerificationStatus = keyof typeof STATUS_MAP;
 
 interface Props {
   status: TContractAutoVerificationStatus;
+  mode?: 'inline' | 'tooltip';
 }
 
-const ContractAutoVerificationStatus = ({ status }: Props) => {
-  const isMobile = useIsMobile();
-
+const ContractAutoVerificationStatus = ({ status, mode = 'inline' }: Props) => {
   return (
-    <Tooltip content={ STATUS_MAP[status].text } disabled={ !isMobile }>
-      <HStack gap={ 2 }>
+    <Tooltip content={ STATUS_MAP[status].text } disabled={ mode === 'inline' }>
+      <HStack gap={ 2 } whiteSpace="pre-wrap">
         { STATUS_MAP[status].leftElement }
-        <Box hideBelow="lg" textStyle="sm">{ STATUS_MAP[status].text }</Box>
+        <Box display={ mode === 'inline' ? 'inline' : 'none' } textStyle="sm">{ STATUS_MAP[status].text }</Box>
       </HStack>
     </Tooltip>
   );

@@ -8,6 +8,7 @@ import type { Address } from 'types/api/address';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import { SECOND } from 'lib/consts';
 import delay from 'lib/delay';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -30,7 +31,7 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab }: Props) =
 
   const router = useRouter();
   const queryClient = useQueryClient();
-
+  const isMobile = useIsMobile();
   const enableQuery = React.useCallback(() => {
     setIsQueryEnabled(true);
   }, []);
@@ -81,14 +82,18 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab }: Props) =
     return null;
   }
 
+  const rightSlot = autoVerificationStatus ?
+    <ContractAutoVerificationStatus status={ autoVerificationStatus } mode={ isMobile && contractTabs.tabs.length > 1 ? 'tooltip' : 'inline' }/> :
+    null;
+
   return (
     <RoutedTabs
       tabs={ contractTabs.tabs }
       variant="secondary"
       size="sm"
       isLoading={ contractTabs.isLoading }
-      rightSlot={ autoVerificationStatus ? <ContractAutoVerificationStatus status={ autoVerificationStatus }/> : null }
-      rightSlotProps={{ ml: 6 }}
+      rightSlot={ rightSlot }
+      rightSlotProps={{ ml: contractTabs.tabs.length > 1 ? { base: 'auto', md: 6 } : 0 }}
     />
   );
 };
