@@ -27,7 +27,7 @@ export default function RewardsActivityPassCard() {
       flexDirection={{ base: 'column', md: 'row' }}
     >
       <Flex flex={ 1 } flexDirection="column" p={ 3 } gap={ 2 }>
-        <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }}>
+        <Heading>
           Activity pass
         </Heading>
         <Text textStyle="sm">

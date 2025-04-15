@@ -33,20 +33,22 @@ const RewardsDashboardCard = ({
       border="1px solid"
       borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.200' }}
       borderRadius="lg"
-      gap={{ base: 1, md: contentDirection === 'row' ? 10 : 1 }}
+      gap={{ base: 4, md: contentDirection === 'row' ? 10 : 4 }}
       w={ contentDirection === 'row' ? 'full' : 'auto' }
       flex={ contentDirection !== 'row' ? 1 : '0 1 auto' }
     >
       <Flex
         flexDirection="column"
         gap={ 2 }
-        p={{ base: 1.5, md: 3 }}
+        px={{ base: 1.5, md: 3 }}
+        pb={ contentDirection === 'column-reverse' ? { base: 1.5, md: 3 } : 0 }
+        pt={ contentDirection === 'column-reverse' ? 0 : { base: 1.5, md: 3 } }
         w={{ base: 'full', md: contentDirection === 'row' ? '340px' : 'full' }}
       >
         { label && <Badge loading={ isLoading }>{ label }</Badge> }
         { title && (
           <Flex alignItems="center" gap={ 2 }>
-            <Heading textStyle={{ base: 'heading.sm', md: 'heading.md' }}>{ title }</Heading>
+            <Heading>{ title }</Heading>
             { hint && <Hint label={ hint }/> }
             { availableSoon && <Badge colorPalette="blue">Available soon</Badge> }
           </Flex>
