@@ -48,7 +48,7 @@ const RewardsDashboardCard = ({
         { label && <Badge loading={ isLoading }>{ label }</Badge> }
         { title && (
           <Flex alignItems="center" gap={ 2 }>
-            <Heading>{ title }</Heading>
+            <Heading level="3">{ title }</Heading>
             { hint && <Hint label={ hint }/> }
             { availableSoon && <Badge colorPalette="blue">Available soon</Badge> }
           </Flex>

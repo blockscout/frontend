@@ -213,7 +213,7 @@ export default function TasksTab() {
           pr={ 0 }
         >
           <Flex flexDirection="column" p={{ base: 1.5, md: 0 }} pb={ 0 }>
-            <Heading mb={ 2 }>Tasks</Heading>
+            <Heading level="3" mb={ 2 }>Tasks</Heading>
             <Text textStyle="sm" mb={{ base: 2, md: 4 }}>
               Use Blockscout and related products daily to earn Merits. Check each task for details and how to get started.
             </Text>
@@ -305,7 +305,7 @@ export default function TasksTab() {
                       { labelComponents.performanceRank }
                     </Flex>
                     <Skeleton loading={ isActivityDataLoading }>
-                      <Heading>
+                      <Heading level="3">
                         { item.percentile }
                       </Heading>
                     </Skeleton>
@@ -325,13 +325,13 @@ export default function TasksTab() {
                       alignItems="center"
                     >
                       <MeritsIcon boxSize={ 6 } mr={ 2 }/>
-                      <Heading mr={{ base: 0, md: 2 }}>
+                      <Heading level="3" mr={{ base: 0, md: 2 }}>
                         { item.amount }
                       </Heading>
                       <Text textStyle="sm" color="gray.400" fontWeight="500" alignSelf="flex-end" display={{ base: 'none', md: 'inline' }}>
                         /{ item.maxAmount }
                       </Text>
-                      <Heading display={{ base: 'inline', md: 'none' }} color="text.secondary">
+                      <Heading level="3" display={{ base: 'inline', md: 'none' }} color="text.secondary">
                         /{ item.maxAmount }
                       </Heading>
                     </Skeleton>
