@@ -288,7 +288,7 @@ export default function TasksTab() {
                   justifyContent={{ base: 'space-between', md: 'flex-start' }}
                   minW={{ base: 'auto', md: '200px' }}
                 >
-                  <Text textStyle="sm" fontWeight="500">
+                  <Text textStyle="sm" fontWeight={{ base: '700', md: '500' }}>
                     { item.title }
                   </Text>
                   <Link
