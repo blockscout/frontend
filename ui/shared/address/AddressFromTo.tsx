@@ -21,11 +21,12 @@ interface Props {
   className?: string;
   isLoading?: boolean;
   tokenHash?: string;
+  tokenSymbol?: string;
   truncation?: EntityProps['truncation'];
   noIcon?: boolean;
 }
 
-const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', noIcon }: Props) => {
+const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', tokenSymbol = '', noIcon }: Props) => {
   const mode = useBreakpointValue(
     {
       base: (typeof modeProp === 'object' && 'base' in modeProp ? modeProp.base : modeProp),
@@ -34,7 +35,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
     },
   ) ?? 'long';
 
-  const Entity = tokenHash ? AddressEntityWithTokenFilter : AddressEntity;
+  const Entity = tokenHash && tokenSymbol ? AddressEntityWithTokenFilter : AddressEntity;
 
   if (mode === 'compact') {
     return (
@@ -52,6 +53,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             noCopy={ current === from.hash }
             noIcon={ noIcon }
             tokenHash={ tokenHash }
+            tokenSymbol={ tokenSymbol }
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
@@ -65,6 +67,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             noCopy={ current === to.hash }
             noIcon={ noIcon }
             tokenHash={ tokenHash }
+            tokenSymbol={ tokenSymbol }
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
@@ -87,6 +90,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         noCopy={ isOutgoing }
         noIcon={ noIcon }
         tokenHash={ tokenHash }
+        tokenSymbol={ tokenSymbol }
         truncation="constant"
         mr={ isOutgoing ? 4 : 2 }
       />
@@ -102,6 +106,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           noCopy={ current === to.hash }
           noIcon={ noIcon }
           tokenHash={ tokenHash }
+          tokenSymbol={ tokenSymbol }
           truncation="constant"
           ml={ 3 }
         />

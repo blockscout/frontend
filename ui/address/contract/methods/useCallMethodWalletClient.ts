@@ -31,7 +31,7 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     }
 
     if (chainId && String(chainId) !== config.chain.id) {
-      await switchChainAsync?.({ chainId: Number(config.chain.id) });
+      await switchChainAsync({ chainId: Number(config.chain.id) });
     }
 
     const address = getAddress(addressHash);

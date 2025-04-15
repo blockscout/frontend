@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useMemo, useCallback } from 'react';
-import { useSignMessage } from 'wagmi';
+import { useSignMessage, useSwitchChain } from 'wagmi';
 
 import type * as rewards from '@blockscout/points-types';
 
@@ -112,6 +112,7 @@ export function RewardsContextProvider({ children }: Props) {
   const apiFetch = useApiFetch();
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
+  const { switchChainAsync } = useSwitchChain();
   const profileQuery = useProfileQuery();
 
   const [ isLoginModalOpen, setIsLoginModalOpen ] = useToggle(false);
@@ -213,6 +214,7 @@ export function RewardsContextProvider({ children }: Props) {
           isNewUser: false,
         };
       }
+      await switchChainAsync({ chainId: Number(config.chain.id) });
       const message = getMessageToSign(address, nonceResponse.nonce, checkUserQuery.data?.exists, refCode);
       const signature = await signMessageAsync({ message });
       const loginResponse = await apiFetch('rewards_login', {
@@ -234,7 +236,7 @@ export function RewardsContextProvider({ children }: Props) {
       errorToast(_error);
       throw _error;
     }
-  }, [ apiFetch, address, signMessageAsync, errorToast, saveApiToken, checkUserQuery ]);
+  }, [ address, apiFetch, checkUserQuery.data?.exists, switchChainAsync, signMessageAsync, saveApiToken, errorToast ]);
 
   // Claim daily reward
   const claim = useCallback(async() => {

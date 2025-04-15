@@ -129,9 +129,10 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
             />
           </GridItem>
 
-          <GridItem colSpan={{ base: 1, lg: 3 }}>
-            <ReCaptcha ref={ recaptcha.ref }/>
+          <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <ReCaptcha { ...recaptcha }/>
           </GridItem>
+          { !isMobile && <div/> }
 
           <Button
             variant="solid"
@@ -140,6 +141,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
             loading={ formApi.formState.isSubmitting }
             loadingText="Send request"
             w="min-content"
+            disabled={ recaptcha.isInitError }
           >
             Send request
           </Button>
