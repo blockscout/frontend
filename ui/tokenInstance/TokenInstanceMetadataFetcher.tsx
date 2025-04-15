@@ -170,7 +170,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
               <Center h="80px">
                 <Spinner size="lg"/>
               </Center>
-              <ReCaptcha ref={ recaptcha.ref }/>
+              <ReCaptcha { ...recaptcha } hideWarning/>
             </>
           ) : (
             <Alert status="error">

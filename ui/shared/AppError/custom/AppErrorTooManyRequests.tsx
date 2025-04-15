@@ -51,8 +51,8 @@ const AppErrorTooManyRequests = () => {
       <Text color="text.secondary" mt={ 3 }>
         You have exceeded the request rate for a given time period. Please reduce the number of requests and try again soon.
       </Text>
-      <ReCaptcha ref={ recaptcha.ref }/>
-      <Button onClick={ handleSubmit } mt={ 8 }>Try again</Button>
+      <ReCaptcha { ...recaptcha }/>
+      <Button onClick={ handleSubmit } disabled={ recaptcha.isInitError } mt={ 8 }>Try again</Button>
     </>
   );
 };
