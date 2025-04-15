@@ -13,7 +13,7 @@ interface Props {
   fullFilePath?: boolean;
 }
 
-const DragAndDropArea = ({ onDrop, children, className, isDisabled, fullFilePath, isInvalid }: Props) => {
+export const DragAndDropArea = chakra(({ onDrop, children, className, isDisabled, fullFilePath, isInvalid }: Props) => {
   const [ isDragOver, setIsDragOver ] = React.useState(false);
 
   const handleDrop = React.useCallback(async(event: DragEvent<HTMLDivElement>) => {
@@ -77,6 +77,4 @@ const DragAndDropArea = ({ onDrop, children, className, isDisabled, fullFilePath
       { children }
     </Center>
   );
-};
-
-export default React.memo(chakra(DragAndDropArea));
+});

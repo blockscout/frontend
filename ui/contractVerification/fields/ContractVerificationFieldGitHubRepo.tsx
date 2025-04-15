@@ -6,7 +6,7 @@ import type { FormFields } from '../types';
 
 import delay from 'lib/delay';
 import useFetch from 'lib/hooks/useFetch';
-import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
+import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 import { getGitHubOwnerAndRepo } from '../utils';

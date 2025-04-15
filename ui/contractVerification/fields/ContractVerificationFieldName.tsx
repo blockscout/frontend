@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { FormFields } from '../types';
 
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 

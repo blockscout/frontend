@@ -1,7 +1,7 @@
 import type { RollupType } from 'types/client/rollup';
 import type { NetworkVerificationType, NetworkVerificationTypeEnvs } from 'types/networks';
 
-import { urlValidator } from 'ui/shared/forms/validators/url';
+import { urlValidator } from 'toolkit/components/forms/validators/url';
 
 import { getEnvValue, parseEnvJson } from './utils';
 

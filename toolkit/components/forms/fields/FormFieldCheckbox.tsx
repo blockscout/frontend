@@ -3,8 +3,8 @@ import { useController, useFormContext, type FieldValues, type Path } from 'reac
 
 import type { FormFieldPropsBase } from './types';
 
-import type { CheckboxProps } from 'toolkit/chakra/checkbox';
-import { Checkbox } from 'toolkit/chakra/checkbox';
+import { Checkbox } from '../../../chakra/checkbox';
+import type { CheckboxProps } from '../../../chakra/checkbox';
 
 interface Props<
   FormFields extends FieldValues,
@@ -13,7 +13,7 @@ interface Props<
   label: string;
 }
 
-const FormFieldCheckbox = <
+const FormFieldCheckboxContent = <
   FormFields extends FieldValues,
   Name extends Path<FormFields> = Path<FormFields>,
 >({
@@ -52,4 +52,4 @@ const FormFieldCheckbox = <
   );
 };
 
-export default React.memo(FormFieldCheckbox) as typeof FormFieldCheckbox;
+export const FormFieldCheckbox = React.memo(FormFieldCheckboxContent) as typeof FormFieldCheckboxContent;

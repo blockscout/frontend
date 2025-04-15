@@ -3,7 +3,7 @@ import type { ChangeEvent } from 'react';
 import React from 'react';
 import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 
-import { Input } from 'toolkit/chakra/input';
+import { Input } from '../../../../chakra/input';
 
 interface InjectedProps {
   onChange: (files: Array<File>) => void;
@@ -16,7 +16,7 @@ interface Props<V extends FieldValues, N extends Path<V>> {
   multiple?: boolean;
 }
 
-const FileInput = <Values extends FieldValues, Names extends Path<Values>>({ children, accept, multiple, field }: Props<Values, Names>) => {
+const FileInputContent = <Values extends FieldValues, Names extends Path<Values>>({ children, accept, multiple, field }: Props<Values, Names>) => {
   const ref = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -64,4 +64,4 @@ const FileInput = <Values extends FieldValues, Names extends Path<Values>>({ chi
   );
 };
 
-export default FileInput;
+export const FileInput = React.memo(FileInputContent) as typeof FileInputContent;

@@ -4,14 +4,13 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
 
-import { Field } from 'toolkit/chakra/field';
-import type { InputProps } from 'toolkit/chakra/input';
-import { Input } from 'toolkit/chakra/input';
-import { InputGroup } from 'toolkit/chakra/input-group';
-import type { TextareaProps } from 'toolkit/chakra/textarea';
-import { Textarea } from 'toolkit/chakra/textarea';
-
-import getFieldErrorText from '../utils/getFieldErrorText';
+import { Field } from '../../../chakra/field';
+import type { InputProps } from '../../../chakra/input';
+import { Input } from '../../../chakra/input';
+import { InputGroup } from '../../../chakra/input-group';
+import type { TextareaProps } from '../../../chakra/textarea';
+import { Textarea } from '../../../chakra/textarea';
+import { getFormFieldErrorText } from '../utils/getFormFieldErrorText';
 
 interface Props<
   FormFields extends FieldValues,
@@ -20,7 +19,7 @@ interface Props<
   asComponent?: 'Input' | 'Textarea';
 }
 
-const FormFieldText = <
+const FormFieldTextContent = <
   FormFields extends FieldValues,
   Name extends Path<FormFields> = Path<FormFields>,
 >({
@@ -84,7 +83,7 @@ const FormFieldText = <
     <Field
       // for floating field label, we pass placeholder value to the label
       label={ floating ? placeholder : undefined }
-      errorText={ getFieldErrorText(fieldState.error) }
+      errorText={ getFormFieldErrorText(fieldState.error) }
       invalid={ Boolean(fieldState.error) }
       disabled={ formState.isSubmitting || disabled }
       size={ size }
@@ -96,4 +95,4 @@ const FormFieldText = <
   );
 };
 
-export default React.memo(FormFieldText) as typeof FormFieldText;
+export const FormFieldText = React.memo(FormFieldTextContent) as typeof FormFieldTextContent;

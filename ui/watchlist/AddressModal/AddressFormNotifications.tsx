@@ -2,7 +2,7 @@ import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import FormFieldCheckbox from 'ui/shared/forms/fields/FormFieldCheckbox';
+import { FormFieldCheckbox } from 'toolkit/components/forms/fields/FormFieldCheckbox';
 
 import type { Inputs as FormFields } from './AddressForm';
 

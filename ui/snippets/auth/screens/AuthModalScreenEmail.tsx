@@ -11,7 +11,7 @@ import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import * as mixpanel from 'lib/mixpanel';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
-import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
+import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 

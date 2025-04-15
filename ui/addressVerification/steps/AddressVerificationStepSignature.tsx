@@ -22,9 +22,9 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { SIGNATURE_REGEXP } from 'toolkit/components/forms/validators/signature';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import { SIGNATURE_REGEXP } from 'ui/shared/forms/validators/signature';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 
 type Fields = RootFields & AddressVerificationFormSecondStepFields;

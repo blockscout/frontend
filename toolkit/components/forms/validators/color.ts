@@ -1,6 +1,6 @@
 export const COLOR_HEX_REGEXP = /^#[a-f\d]{3,6}$/i;
 
-export const validator = (value: unknown) => {
+export const colorValidator = (value: unknown) => {
   if (typeof value !== 'string') {
     return true;
   }

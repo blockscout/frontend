@@ -2,7 +2,7 @@ import React from 'react';
 import type { FieldValues, Path } from 'react-hook-form';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import { urlValidator } from '../validators/url';
+import { urlValidator } from '../../validators/url';
 
 interface Params<
   FormFields extends FieldValues,
@@ -31,7 +31,7 @@ interface ReturnType {
   };
 }
 
-export default function useFieldWithImagePreview<
+export function useImageField<
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
 >({

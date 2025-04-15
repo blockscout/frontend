@@ -11,7 +11,7 @@ import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
 import { Button } from 'toolkit/chakra/button';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 type Props = {
   data?: ApiKey;

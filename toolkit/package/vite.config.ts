@@ -10,9 +10,12 @@ export default defineConfig({
     react(),
     tsconfigPaths(),
     svgr({
+      include: '**/*.svg',
+      exclude: '',
       svgrOptions: {
-        exportType: 'named',
-        ref: true,
+        icon: true,
+        svgo: true,
+        plugins: [ '@svgr/plugin-jsx' ],
         svgoConfig: {
           plugins: [
             {
@@ -37,7 +40,6 @@ export default defineConfig({
         '../utils/**/*.ts',
         '../hooks/**/*.tsx',
         './src/**/*.ts',
-        './src/**/*.tsx',
         '../../global.d.ts',
         '../../decs.d.ts',
         '../../reset.d.ts',
@@ -56,7 +58,7 @@ export default defineConfig({
       icons: resolve(__dirname, '../../icons'),
       ui: resolve(__dirname, '../../ui'),
       'public': resolve(__dirname, '../../public'),
-      toolkit: resolve(__dirname, '.'),
+      toolkit: resolve(__dirname, '../'),
     },
   },
   build: {
@@ -77,6 +79,7 @@ export default defineConfig({
         'next/link',
         'next/router',
         'next-themes',
+        'react-hook-form',
       ],
       output: {
         preserveModules: false,

@@ -4,17 +4,16 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
 
-import type { SelectAsyncProps } from 'toolkit/chakra/select';
-import { SelectAsync } from 'toolkit/chakra/select';
-
-import getFieldErrorText from '../utils/getFieldErrorText';
+import type { SelectProps } from '../../../chakra/select';
+import { Select } from '../../../chakra/select';
+import { getFormFieldErrorText } from '../utils/getFormFieldErrorText';
 
 type Props<
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
-> = FormFieldPropsBase<FormFields, Name> & SelectAsyncProps;
+> = FormFieldPropsBase<FormFields, Name> & SelectProps;
 
-const FormFieldSelectAsync = <
+const FormFieldSelectContent = <
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
 >(props: Props<FormFields, Name>) => {
@@ -38,7 +37,7 @@ const FormFieldSelectAsync = <
   }, [ field ]);
 
   return (
-    <SelectAsync
+    <Select
       ref={ field.ref }
       name={ field.name }
       value={ field.value }
@@ -47,7 +46,7 @@ const FormFieldSelectAsync = <
       onInteractOutside={ handleBlur }
       disabled={ isDisabled }
       invalid={ Boolean(fieldState.error) }
-      errorText={ getFieldErrorText(fieldState.error) }
+      errorText={ getFormFieldErrorText(fieldState.error) }
       size={ size }
       positioning={{ sameWidth: true }}
       { ...rest }
@@ -55,4 +54,4 @@ const FormFieldSelectAsync = <
   );
 };
 
-export default React.memo(FormFieldSelectAsync) as typeof FormFieldSelectAsync;
+export const FormFieldSelect = React.memo(FormFieldSelectContent) as typeof FormFieldSelectContent;

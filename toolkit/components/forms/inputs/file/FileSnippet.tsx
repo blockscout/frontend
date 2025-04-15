@@ -1,15 +1,17 @@
-import { Box, Flex, Text, chakra } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import { CloseButton } from 'toolkit/chakra/close-button';
+import jsonFileIcon from 'icons/files/json.svg';
+import solFileIcon from 'icons/files/sol.svg';
+import yulFileIcon from 'icons/files/yul.svg';
 import Hint from 'ui/shared/Hint';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 
-const FILE_ICONS: Record<string, IconName> = {
-  '.json': 'files/json',
-  '.sol': 'files/sol',
-  '.yul': 'files/yul',
+import { CloseButton } from '../../../../chakra/close-button';
+
+const FILE_ICONS: Record<string, React.ReactNode> = {
+  '.json': jsonFileIcon,
+  '.sol': solFileIcon,
+  '.yul': yulFileIcon,
 };
 
 function getFileExtension(fileName: string) {
@@ -30,7 +32,7 @@ interface Props {
   error?: string;
 }
 
-const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Props) => {
+export const FileSnippet = chakra(({ file, className, index, onRemove, isDisabled, error }: Props) => {
   const handleRemove = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
     onRemove?.(index);
@@ -48,11 +50,9 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
       textAlign="left"
       columnGap={ 2 }
     >
-      <IconSvg
-        name={ fileIcon }
-        boxSize="48px"
-        color={ error ? 'text.error' : 'initial' }
-      />
+      <Icon boxSize="48px" color={ error ? 'text.error' : 'initial' }>
+        { fileIcon }
+      </Icon>
       <Box maxW="calc(100% - 58px - 24px)">
         <Flex alignItems="center">
           <Text
@@ -78,6 +78,4 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
       </Box>
     </Flex>
   );
-};
-
-export default React.memo(chakra(FileSnippet));
+});

@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { FormFields } from '../types';
 
-import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
+import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

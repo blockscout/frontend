@@ -14,7 +14,7 @@ COPY types ./types
 COPY lib ./lib
 COPY configs/app ./configs/app
 COPY toolkit/theme ./toolkit/theme
-COPY ui/shared/forms/validators/url.ts ./ui/shared/forms/validators/url.ts
+COPY toolkit/components/forms/validators/url.ts ./toolkit/components/forms/validators/url.ts
 RUN apk add git
 RUN yarn --frozen-lockfile --network-timeout 100000
 

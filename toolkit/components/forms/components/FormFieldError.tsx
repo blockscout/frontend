@@ -6,8 +6,6 @@ interface Props {
   className?: string;
 }
 
-const FieldError = ({ message, className }: Props) => {
+export const FormFieldError = chakra(({ message, className }: Props) => {
   return <Box className={ className } color="text.error" textStyle="sm" mt={ 2 } wordBreak="break-word">{ message }</Box>;
-};
-
-export default chakra(FieldError);
+});

@@ -5,7 +5,8 @@
 <!-- TODO @tom2drum tree shake project files (e.g config) -->
 <!-- TODO @tom2drum try to put all project deps to the toolkit folder -->
 <!-- TODO @tom2drum clean up tsconfig and vite config -->
-<!-- TODO @tom2drum add form fields components -->
+<!-- TODO @tom2drum Hint component + ui/ components -->
+<!-- TODO @tom2drum Quick fix in VSCode: omit some imports -->
 
 # Your Organization's UI Toolkit
 

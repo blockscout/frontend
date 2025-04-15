@@ -12,7 +12,7 @@ import { nbsp } from 'lib/html-entities';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
 import type { SelectOption } from 'toolkit/chakra/select';
-import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
+import { FormFieldSelect } from 'toolkit/components/forms/fields/FormFieldSelect';
 import Hint from 'ui/shared/Hint';
 
 import { METHOD_LABELS } from '../utils';

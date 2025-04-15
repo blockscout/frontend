@@ -6,13 +6,12 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
 
-import { Field } from 'toolkit/chakra/field';
-import type { InputProps } from 'toolkit/chakra/input';
-import { Input } from 'toolkit/chakra/input';
-import { InputGroup } from 'toolkit/chakra/input-group';
-import { validator as colorValidator } from 'ui/shared/forms/validators/color';
-
-import getFieldErrorText from '../utils/getFieldErrorText';
+import { Field } from '../../../chakra/field';
+import type { InputProps } from '../../../chakra/input';
+import { Input } from '../../../chakra/input';
+import { InputGroup } from '../../../chakra/input-group';
+import { getFormFieldErrorText } from '../utils/getFormFieldErrorText';
+import { colorValidator } from '../validators/color';
 
 interface Props<
   FormFields extends FieldValues,
@@ -21,7 +20,7 @@ interface Props<
   sampleDefaultBgColor?: BoxProps['bgColor'];
 }
 
-const FormFieldColor = <
+const FormFieldColorContent = <
   FormFields extends FieldValues,
   Name extends Path<FormFields> = Path<FormFields>,
 >({
@@ -82,7 +81,7 @@ const FormFieldColor = <
   return (
     <Field
       label={ placeholder }
-      errorText={ getFieldErrorText(fieldState.error) }
+      errorText={ getFormFieldErrorText(fieldState.error) }
       invalid={ Boolean(fieldState.error) }
       disabled={ formState.isSubmitting || disabled }
       size={ size }
@@ -106,4 +105,4 @@ const FormFieldColor = <
   );
 };
 
-export default React.memo(FormFieldColor) as typeof FormFieldColor;
+export const FormFieldColor = React.memo(FormFieldColorContent) as typeof FormFieldColorContent;

@@ -6,7 +6,7 @@ import type { FormFields } from '../types';
 import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import { Checkbox } from 'toolkit/chakra/checkbox';
-import FormFieldSelectAsync from 'ui/shared/forms/fields/FormFieldSelectAsync';
+import { FormFieldSelectAsync } from 'toolkit/components/forms/fields/FormFieldSelectAsync';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
