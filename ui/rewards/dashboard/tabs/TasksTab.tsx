@@ -226,6 +226,7 @@ export default function TasksTab() {
               </Button>
               <Link
                 external
+                href="https://docs.blockscout.com/using-blockscout/merits/activity-pass"
                 fontSize="md"
                 fontWeight="500"
                 textAlign="center"

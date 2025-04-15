@@ -36,7 +36,9 @@ export default function RewardsActivityPassCard() {
             Activity pass
           </Link>{ ' ' }
           then engage with various Blockscout products and features to earn Merits every day!{ ' ' }
-          <Link external>Learn more</Link>
+          <Link external href="https://docs.blockscout.com/using-blockscout/merits/activity-pass">
+            Learn more
+          </Link>
         </Text>
       </Flex>
       <Flex
