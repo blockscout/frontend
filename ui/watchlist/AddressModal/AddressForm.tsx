@@ -16,7 +16,6 @@ import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
 import FormFieldCheckbox from 'ui/shared/forms/fields/FormFieldCheckbox';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 import AuthModal from 'ui/snippets/auth/AuthModal';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import AddressFormNotifications from './AddressFormNotifications';
 
@@ -30,6 +29,7 @@ type Props = {
   onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
   isAdd: boolean;
+  userWithoutEmail: boolean;
 };
 
 export type Inputs = {
@@ -56,11 +56,9 @@ export type Inputs = {
   };
 };
 
-const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd }) => {
+const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd, userWithoutEmail }) => {
   const [ pending, setPending ] = useState(false);
 
-  const profileQuery = useProfileQuery();
-  const userWithoutEmail = profileQuery.data && !profileQuery.data.email;
   const authModal = useDisclosure();
 
   let notificationsDefault = {} as Inputs['notification_settings'];
@@ -131,65 +129,62 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
   };
 
   return (
-    <FormProvider { ...formApi }>
-      <form noValidate onSubmit={ formApi.handleSubmit(onSubmit) }>
-        <FormFieldAddress<Inputs>
-          name="address"
-          required
-          bgColor="dialog.bg"
-          mb={ 5 }
-        />
-        <FormFieldText<Inputs>
-          name="tag"
-          placeholder="Private tag (max 35 characters)"
-          required
-          rules={{
-            maxLength: TAG_MAX_LENGTH,
-          }}
-          bgColor="dialog.bg"
-          mb={ 8 }
-        />
-        { userWithoutEmail ? (
-          <>
+    <>
+      <FormProvider { ...formApi }>
+        <form noValidate onSubmit={ formApi.handleSubmit(onSubmit) }>
+          <FormFieldAddress<Inputs>
+            name="address"
+            required
+            bgColor="dialog.bg"
+            mb={ 5 }
+          />
+          <FormFieldText<Inputs>
+            name="tag"
+            placeholder="Private tag (max 35 characters)"
+            required
+            rules={{
+              maxLength: TAG_MAX_LENGTH,
+            }}
+            bgColor="dialog.bg"
+            mb={ 8 }
+          />
+          { userWithoutEmail ? (
             <Alert
               status="info"
-              display="flex"
-              flexDirection={{ base: 'column', md: 'row' }}
-              alignItems={{ base: 'flex-start', lg: 'center' }}
-              columnGap={ 2 }
-              rowGap={ 2 }
+              descriptionProps={{ alignItems: 'center', gap: 2 }}
               w="fit-content"
             >
               To receive notifications you need to add an email to your profile.
               <Button variant="outline" size="sm" onClick={ authModal.onOpen }>Add email</Button>
             </Alert>
-            { authModal.open && <AuthModal initialScreen={{ type: 'email', isAuth: true }} onClose={ authModal.onClose }/> }
-          </>
-        ) : (
-          <>
-            <Text color="text.secondary" fontSize="sm" marginBottom={ 5 }>
-              Please select what types of notifications you will receive
-            </Text>
-            <Box marginBottom={ 8 }>
-              <AddressFormNotifications/>
-            </Box>
-            <Text color="text.secondary" fontSize="sm" marginBottom={{ base: '10px', lg: 5 }}>Notification methods</Text>
-            <FormFieldCheckbox<Inputs, 'notification'>
-              name="notification"
-              label="Email notifications"
-            />
-          </>
-        ) }
-        <Button
-          type="submit"
-          loading={ pending }
-          disabled={ !formApi.formState.isDirty }
-          mt={ 8 }
-        >
-          { !isAdd ? 'Save changes' : 'Add address' }
-        </Button>
-      </form>
-    </FormProvider>
+          ) : (
+            <>
+              <Text color="text.secondary" fontSize="sm" marginBottom={ 5 }>
+                Please select what types of notifications you will receive
+              </Text>
+              <Box marginBottom={ 8 }>
+                <AddressFormNotifications/>
+              </Box>
+              <Text color="text.secondary" fontSize="sm" marginBottom={{ base: '10px', lg: 5 }}>Notification methods</Text>
+              <FormFieldCheckbox<Inputs, 'notification'>
+                name="notification"
+                label="Email notifications"
+              />
+            </>
+          ) }
+          <Button
+            type="submit"
+            loading={ pending }
+            disabled={ !formApi.formState.isDirty }
+            mt={ 8 }
+          >
+            { !isAdd ? 'Save changes' : 'Add address' }
+          </Button>
+        </form>
+      </FormProvider>
+      { userWithoutEmail && authModal.open && <AuthModal initialScreen={{ type: 'email', isAuth: true }} onClose={ authModal.onClose }/> }
+    </>
+
   );
 };
 
