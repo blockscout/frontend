@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSignMessage, useSwitchChain } from 'wagmi';
 
+import type * as rewards from '@blockscout/points-types';
 import type { UserInfo } from 'types/api/account';
-import type { RewardsCheckUserResponse, RewardsConfigResponse, RewardsLoginResponse, RewardsNonceResponse } from 'types/api/rewards';
 
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
@@ -65,12 +65,12 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
         throw new Error('User already has logged in to rewards');
       }
 
-      const rewardsConfig = await apiFetch('rewards_config') as RewardsConfigResponse;
-      if (!rewardsConfig.auth.shared_siwe_login) {
+      const rewardsConfig = await apiFetch('rewards_config') as rewards.GetConfigResponse;
+      if (!rewardsConfig.auth?.shared_siwe_login) {
         throw new Error('Shared SIWE login is not enabled');
       }
 
-      const rewardsCheckUser = await apiFetch('rewards_check_user', { pathParams: { address } }) as RewardsCheckUserResponse;
+      const rewardsCheckUser = await apiFetch('rewards_check_user', { pathParams: { address } }) as rewards.AuthUserResponse;
       if (!rewardsCheckUser.exists) {
         throw new Error('Rewards user does not exist');
       }
@@ -78,7 +78,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
       const nonceConfig = await apiFetch(
         'rewards_nonce',
         { queryParams: { blockscout_login_address: address, blockscout_login_chain_id: config.chain.id } },
-      ) as RewardsNonceResponse;
+      ) as rewards.AuthNonceResponse;
       if (!nonceConfig.merits_login_nonce || !nonceConfig.nonce) {
         throw new Error('Cannot get merits login nonce');
       }
@@ -127,7 +127,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
               signature,
             },
           },
-        }) as RewardsLoginResponse : undefined;
+        }) as rewards.AuthLoginResponse : undefined;
 
       if (!('name' in authResponse)) {
         throw Error('Something went wrong');

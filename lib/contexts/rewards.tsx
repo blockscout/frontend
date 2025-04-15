@@ -5,13 +5,7 @@ import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useMemo, useCallback } from 'react';
 import { useSignMessage, useSwitchChain } from 'wagmi';
 
-import type {
-  RewardsUserBalancesResponse, RewardsUserDailyCheckResponse,
-  RewardsNonceResponse, RewardsCheckUserResponse,
-  RewardsLoginResponse, RewardsCheckRefCodeResponse,
-  RewardsUserDailyClaimResponse, RewardsUserReferralsResponse,
-  RewardsConfigResponse,
-} from 'types/api/rewards';
+import type * as rewards from '@blockscout/points-types';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
@@ -34,18 +28,18 @@ type ContextQueryResult<Response> =
   Pick<UseQueryResult<Response, ResourceError<unknown>>, 'data' | 'isLoading' | 'refetch' | 'isPending' | 'isFetching' | 'isError'>;
 
 type TRewardsContext = {
-  balancesQuery: ContextQueryResult<RewardsUserBalancesResponse>;
-  dailyRewardQuery: ContextQueryResult<RewardsUserDailyCheckResponse>;
-  referralsQuery: ContextQueryResult<RewardsUserReferralsResponse>;
-  rewardsConfigQuery: ContextQueryResult<RewardsConfigResponse>;
-  checkUserQuery: ContextQueryResult<RewardsCheckUserResponse>;
+  balancesQuery: ContextQueryResult<rewards.GetUserBalancesResponse>;
+  dailyRewardQuery: ContextQueryResult<rewards.DailyRewardCheckResponse>;
+  referralsQuery: ContextQueryResult<rewards.GetReferralDataResponse>;
+  rewardsConfigQuery: ContextQueryResult<rewards.GetConfigResponse>;
+  checkUserQuery: ContextQueryResult<rewards.AuthUserResponse>;
   apiToken: string | undefined;
   isInitialized: boolean;
   isLoginModalOpen: boolean;
   openLoginModal: () => void;
   closeLoginModal: () => void;
   saveApiToken: (token: string | undefined) => void;
-  login: (refCode: string) => Promise<{ isNewUser: boolean; reward: string | null; invalidRefCodeError?: boolean }>;
+  login: (refCode: string) => Promise<{ isNewUser: boolean; reward?: string; invalidRefCodeError?: boolean }>;
   claim: () => Promise<void>;
 };
 
@@ -70,7 +64,7 @@ const initialState = {
   openLoginModal: () => {},
   closeLoginModal: () => {},
   saveApiToken: () => {},
-  login: async() => ({ isNewUser: false, reward: null }),
+  login: async() => ({ isNewUser: false }),
   claim: async() => {},
 };
 
@@ -209,16 +203,15 @@ export function RewardsContextProvider({ children }: Props) {
         throw new Error();
       }
       const [ nonceResponse, checkCodeResponse ] = await Promise.all([
-        apiFetch('rewards_nonce') as Promise<RewardsNonceResponse>,
+        apiFetch('rewards_nonce') as Promise<rewards.AuthNonceResponse>,
         refCode ?
-          apiFetch('rewards_check_ref_code', { pathParams: { code: refCode } }) as Promise<RewardsCheckRefCodeResponse> :
-          Promise.resolve({ valid: true, reward: null }),
+          apiFetch('rewards_check_ref_code', { pathParams: { code: refCode } }) as Promise<rewards.AuthCodeResponse> :
+          Promise.resolve({ valid: true, reward: undefined }),
       ]);
       if (!checkCodeResponse.valid) {
         return {
           invalidRefCodeError: true,
           isNewUser: false,
-          reward: null,
         };
       }
       await switchChainAsync({ chainId: Number(config.chain.id) });
@@ -233,7 +226,7 @@ export function RewardsContextProvider({ children }: Props) {
             signature,
           },
         },
-      }) as RewardsLoginResponse;
+      }) as rewards.AuthLoginResponse;
       saveApiToken(loginResponse.token);
       return {
         isNewUser: loginResponse.created,
@@ -253,7 +246,7 @@ export function RewardsContextProvider({ children }: Props) {
           method: 'POST',
           ...fetchParams,
         },
-      }) as RewardsUserDailyClaimResponse;
+      }) as rewards.DailyRewardClaimResponse;
     } catch (_error) {
       errorToast(_error);
       throw _error;

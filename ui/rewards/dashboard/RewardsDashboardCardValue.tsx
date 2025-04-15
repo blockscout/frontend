@@ -1,6 +1,7 @@
 import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import Hint from 'ui/shared/Hint';
 
@@ -12,16 +13,15 @@ type Props = {
   withIcon?: boolean;
   hint?: string | React.ReactNode;
   isLoading?: boolean;
+  bottomText?: string;
 };
 
-const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading }: Props) => (
+const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomText }: Props) => (
   <Flex key={ label } flexDirection="column" alignItems="center" gap={ 2 }>
     { label && (
       <Flex alignItems="center" gap={ 1 }>
-        { hint && (
-          <Hint label={ hint }/>
-        ) }
-        <Text fontSize="xs" fontWeight="500" color="text.secondary">
+        { hint && <Hint label={ hint }/> }
+        <Text textStyle="xs" fontWeight="500" color="text.secondary">
           { label }
         </Text>
       </Flex>
@@ -35,10 +35,17 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading }: Props
       minW="100px"
     >
       { withIcon && <MeritsIcon boxSize={ 8 }/> }
-      <Text fontSize={{ base: '24px', md: '32px' }} lineHeight={{ base: '24px', md: 1.5 }} fontWeight="500">
+      <Heading level="1">
         { value }
-      </Text>
+      </Heading>
     </Skeleton>
+    { bottomText && (
+      <Skeleton loading={ isLoading }>
+        <Text textStyle="xs" fontWeight="500" color="text.secondary">
+          { bottomText }
+        </Text>
+      </Skeleton>
+    ) }
   </Flex>
 );
 
