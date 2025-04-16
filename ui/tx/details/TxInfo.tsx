@@ -246,7 +246,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         ) }
       </DetailsInfoItem.Value>
       {
-        routerTab && (
+        router.query.tab === 'issuance' && (
           <>
             <DetailsInfoItem.Label
               hint="A unique identifier for the Credential"
@@ -279,6 +279,22 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </>
         )
       }
+      {
+        router.query.tab === 'verification' && (
+          <>
+            <DetailsInfoItem.Label
+              hint="A unique identifier for the Credential"
+              isLoading={ isLoading }
+            >
+              Schema ID
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <Skeleton isLoaded={ !isLoading }>
+                { data.SchemaID }
+              </Skeleton>
+            </DetailsInfoItem.Value>
+          </>
+        ) }
 
       { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.op_withdrawals && data.op_withdrawals.length > 0 &&
       !config.UI.views.tx.hiddenFields?.L1_status && (

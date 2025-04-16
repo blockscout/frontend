@@ -25,6 +25,7 @@ export interface OpWithdrawal {
 }
 
 export type Transaction = {
+  SchemaID?: number | string;
   credential_id?: string;
   credential_status?: string;
   to: AddressParam | null;
@@ -113,6 +114,7 @@ export type ExplorerTransaction = {
   block_number: number;
   block_confirmations: number;
   confirmed_within: number;
+  scheme_id?: number | string;
   credential_id: string;
   credential_status: string;
   from_address: string;
