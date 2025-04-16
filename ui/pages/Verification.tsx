@@ -15,6 +15,8 @@ const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false })
 type RequestType = {
   has_next: boolean;
   has_more: boolean;
+  next_cursor: string;
+  previous_cursor?: string;
   title_data: Array<{
     block_number: number;
     credential_id: string;
@@ -60,6 +62,8 @@ const ObjectDetails: NextPage = () => {
   const [ totalIssued, setTotalIssued ] = React.useState<number>(0);
   const [ totalCredential, setTotalCredential ] = React.useState<number>(0);
   const [ loading, setLoading ] = React.useState<boolean>(false);
+  const [ nextCursor, setNextCursor ] = React.useState<string>('');
+  const [ previousCursor, setpreviousCursor ] = React.useState<string>('');
 
   const handleSearchChange = () => () => {};
 
@@ -83,7 +87,7 @@ const ObjectDetails: NextPage = () => {
   const request = React.useCallback(async(hash?: string) => {
     try {
       setLoading(true);
-      const rp1 = await (await fetch(url + `/api/v1/explorer/verificationstitle${ hash ? `?cursor${ hash }` : '' }`, { method: 'get' })).json() as RequestType;
+      const rp1 = await (await fetch(url + `/api/v1/explorer/verificationstitle${ hash ? `?cursor=${ hash }` : '' }`, { method: 'get' })).json() as RequestType;
       const tableList: Array<IssuanceTalbeListType> = [];
       orderBy(rp1.title_data, [ 'transaction_status' ]).forEach((v: any) => {
         tableList.push({
@@ -97,6 +101,8 @@ const ObjectDetails: NextPage = () => {
           'Fee MOCA': truncateToSignificantDigits(BigNumber(v.tx_fee / 1e18).toString(10), 3).toString(10),
         });
       });
+      setNextCursor(rp1.next_cursor);
+      setpreviousCursor(rp1?.previous_cursor || '');
       setToNext(rp1.has_next);
       setTableList(tableList);
       setLoading(false);
@@ -110,11 +116,11 @@ const ObjectDetails: NextPage = () => {
     try {
       setLoading(true);
       const rp2 = await (await fetch(url + '/api/v1/explorer/totalverificationsinfo', { method: 'get' })).json() as {
-        total_credential_number: number; total_issued_number: number;
+        total_verified_number: number; total_verified_credential: number;
       };
       setLoading(false);
-      setTotalIssued(rp2.total_credential_number);
-      setTotalCredential(rp2.total_issued_number);
+      setTotalIssued(rp2.total_verified_number);
+      setTotalCredential(rp2.total_verified_credential);
     } catch (error: any) {
       setLoading(false);
       throw Error(error);
@@ -123,14 +129,14 @@ const ObjectDetails: NextPage = () => {
 
   const propsPage = React.useCallback((value: number) => {
     if (value > queryParams.page) {
-      request(tableList[tableList.length - 1]['Block'] + '|' + tableList[tableList.length - 1]['Txn hash']);
+      request(nextCursor);
     } else {
-      request(tableList[0]['Block'] + '|' + tableList[0]['Txn hash']);
+      request(previousCursor);
     }
     updateQueryParams({
       page: value,
     });
-  }, [ queryParams.page, request, tableList ]);
+  }, [ queryParams.page, request, nextCursor, previousCursor ]);
 
   React.useEffect(() => {
     if (url) {

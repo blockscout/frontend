@@ -46,7 +46,7 @@ const TransactionPageContent = () => {
       <TxDetailsDegraded hash={ hash } txQuery={ txQuery }/> :
       <TxDetails txQuery={ txQuery }/>;
 
-    if (router.query.tab === 'credentials') {
+    if (router.query.tab === 'issuance' || router.query.tab === 'verification') {
       return [
         {
           id: 'index',

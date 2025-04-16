@@ -233,7 +233,7 @@ function TableList(props: Props<string>) {
                                     value === 'txnHash' || value === 'Txn hash' ? (
                                       <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" color="#000000">
                                         <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '',
-                                          tab: value === 'Txn hash' ? 'credentials' : '' } }}>
+                                          tab: value === 'Txn hash' ? location.pathname.slice(1) : '' } }}>
                                           <Box overflow="hidden" display="inline-block">
                                             <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value]) }</Skeleton>
                                           </Box>

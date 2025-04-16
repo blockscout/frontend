@@ -83,7 +83,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const router = useRouter();
   React.useEffect(() => {
     if (router) {
-      setRouterTab(router.query.tab === 'credentials');
+      setRouterTab(router.query.tab === 'issuance' || router.query.tab === 'verification');
     }
   }, [ router ]);
 
