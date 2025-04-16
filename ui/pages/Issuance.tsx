@@ -130,6 +130,10 @@ const ObjectDetails: NextPage = () => {
   }, [ url ]);
 
   const propsPage = React.useCallback((value: number) => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
     if (value > queryParams.page) {
       request(nextCursor);
     } else {
