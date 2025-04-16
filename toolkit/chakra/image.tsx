@@ -43,7 +43,7 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(
           onError={ handleLoadError }
           onLoad={ handleLoadSuccess }
           { ...rest }
-          display={ loading ? 'none' : rest.display || 'inline-block' }
+          display={ loading ? 'none' : rest.display || 'block' }
         />
       </>
     );
