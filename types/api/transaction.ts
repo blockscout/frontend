@@ -111,6 +111,8 @@ export type Transaction = {
 
 export type ExplorerTransaction = {
   block_number: number;
+  block_confirmations: number;
+  confirmed_within: number;
   credential_id: string;
   credential_status: string;
   from_address: string;
@@ -127,6 +129,7 @@ export type ExplorerTransaction = {
   tx_hash: string;
   tx_time: string;
   tx_value: string;
+  expiration_date: Array<string>;
 };
 
 export type ExplorerTransactionDetail = {

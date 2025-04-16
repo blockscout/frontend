@@ -69,24 +69,25 @@ export default function useTxQuery(params?: Params): TxQuery {
     if (requestFlag) return;
     setRequestFlag(true);
     try {
-      const rp1 = await (await fetch(url + `/api/v1/explorer/transaction/${ hash }`,
+      const rp1 = await (await fetch(url + `/api/v1/explorer/${ router.query.tab }/${ hash }`,
         { method: 'get' })).json() as ExplorerTransaction;
-      const rp2 = await (await fetch(url + `/api/v1/explorer/transaction/${ hash }/detail`,
+      const rp2 = await (await fetch(url + `/api/v1/explorer/${ router.query.tab }/${ hash }/detail`,
         { method: 'get' })).json() as ExplorerTransactionDetail;
       if (data?.hash !== TX.hash && !isError) {
         queryClient?.setQueryData(getResourceKey('tx', { pathParams: { hash } }), {
           ...data,
-          credential_id: rp1.credential_id,
-          credential_status: rp1.credential_status,
+          credential_id: rp1.credential_id[0],
+          credential_status: rp1.credential_status[0],
         });
       } else if (data?.hash !== TX.hash && isError) {
         queryClient?.setQueryData(getResourceKey('tx', { pathParams: { hash } }), {
           ...TX,
           hash: rp1.tx_hash,
           method: rp1.method,
-          credential_id: rp1.credential_id,
-          credential_status: rp1.credential_status,
+          credential_id: rp1.credential_id[0],
+          credential_status: rp1.credential_status[0],
           block_number: rp1.block_number,
+          confirmations: rp1.block_confirmations,
           transaction_status: rp1.transaction_status,
           from: {
             ...TX.from,
@@ -102,13 +103,16 @@ export default function useTxQuery(params?: Params): TxQuery {
           },
           timestamp: rp1.tx_time,
           value: rp1.tx_value,
-          // blob_gas_used: rp1.tx_value,
           gas_price: rp1.gas_price,
           gas_used: rp1.gas_used,
           gas_limit: rp1.gas_limit,
           base_fee_per_gas: rp1.gas_base,
           max_fee_per_gas: rp1.max_fee_per_gas,
           max_priority_fee_per_gas: rp1.max_priority_fee_per_gas,
+          confirmation_duration: [
+            0,
+            rp1.confirmed_within,
+          ],
           type: Number(rp2.tx_type.slice(0, 1)),
           nonce: rp2.nonce,
           position: rp2.transaction_index,
@@ -126,10 +130,10 @@ export default function useTxQuery(params?: Params): TxQuery {
     } catch (error: unknown) {
       throw new Error(String(error));
     }
-  }, [ requestFlag, url, hash, data, isError, queryClient ]);
+  }, [ requestFlag, url, hash, data, isError, queryClient, router.query.tab ]);
 
   React.useEffect(() => {
-    if (router.query.tab === 'credentials' && !requestFlag) {
+    if ((router.query.tab === 'issuance' || router.query.tab === 'verification') && !requestFlag) {
       setTimeout(() => {
         request();
       }, 500);
