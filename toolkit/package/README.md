@@ -1,9 +1,7 @@
 <!-- TODO @tom2drum rewrite README -->
 <!-- TODO @tom2drum add build check to CI workflow -->
 <!-- TODO @tom2drum add publish workflow -->
-<!-- TODO @tom2drum add eslint rules (?) to discourage use of IconSvg -->
-<!-- TODO @tom2drum clean up tsconfig and vite config -->
-<!-- TODO @tom2drum Quick fix in VSCode: omit some imports -->
+<!-- TODO @tom2drum README: discourage use of IconSvg -->
 
 # Your Organization's UI Toolkit
 

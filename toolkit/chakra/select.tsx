@@ -88,21 +88,17 @@ export const SelectContent = React.forwardRef<
   );
 });
 
+export interface SelectItemProps extends ChakraSelect.ItemProps {
+  item: SelectOption;
+}
+
 export const SelectItem = React.forwardRef<
   HTMLDivElement,
-  ChakraSelect.ItemProps
+  SelectItemProps
 >(function SelectItem(props, ref) {
   const { item, children, ...rest } = props;
 
-  const startElement = (() => {
-    if (item.icon) {
-      // TODO @tom2drum fix icons in select
-      // return typeof item.icon === 'string' ? <IconSvg name={ item.icon } boxSize={ 5 } flexShrink={ 0 }/> : item.icon;
-      return item.icon;
-    }
-
-    return null;
-  })();
+  const startElement = item.icon;
 
   return (
     <ChakraSelect.Item key={ item.value } item={ item } { ...rest } ref={ ref }>
@@ -144,14 +140,6 @@ export const SelectValueText = React.forwardRef<
 
       if (!item) return placeholder;
 
-      const icon = (() => {
-        if (item.icon) {
-          return item.icon;
-        }
-
-        return null;
-      })();
-
       const label = size === 'lg' ? (
         <Box
           textStyle="xs"
@@ -166,7 +154,7 @@ export const SelectValueText = React.forwardRef<
         <>
           { label }
           <Flex display="inline-flex" alignItems="center" flexWrap="nowrap" gap={ 1 }>
-            { icon }
+            { item.icon }
             <span style={{
               WebkitLineClamp: 1,
               WebkitBoxOrient: 'vertical',
