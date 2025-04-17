@@ -46,7 +46,7 @@ export const base: TokenInstance = {
       },
       {
         trait_type: 'eventURL',
-        value: 'https://twitter.com/lilnounsdao?s=21&t=xAihrtwPd6avwdsQqeMXCw',
+        value: 'https://x.com/lilnounsdao?s=21&t=xAihrtwPd6avwdsQqeMXCw',
       },
       {
         trait_type: 'p1',
