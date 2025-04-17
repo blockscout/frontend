@@ -90,6 +90,13 @@ jobs:
         needs: publish_image
         secrets: inherit
 
+    publish_toolkit:
+        name: Publish toolkit package to NPM
+        uses: './.github/workflows/toolkit-npm-publisher.yml'
+        secrets: inherit
+        with:
+            version: ${{ github.ref_name }}
+
     # Temporary disable this step because it is broken
     # There is an issue with building web3modal deps
     upload_source_maps:

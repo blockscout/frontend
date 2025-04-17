@@ -1,7 +1,4 @@
 <!-- TODO @tom2drum rewrite README -->
-<!-- TODO @tom2drum add build check to CI workflow -->
-<!-- TODO @tom2drum add publish workflow -->
-<!-- TODO @tom2drum README: discourage use of IconSvg -->
 
 # Your Organization's UI Toolkit
 

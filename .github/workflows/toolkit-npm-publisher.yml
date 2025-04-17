@@ -1,4 +1,4 @@
-name: Publish Chakra theme package to NPM
+name: Publish toolkit package to NPM
 
 on:
   workflow_dispatch:
@@ -34,19 +34,19 @@ jobs:
 
       - name: Update package version
         run: |
-          cd ./theme
+          cd ./toolkit/package
           npm version ${{ inputs.version }}
     
       - name: Build the package
         run: |
           yarn
-          cd ./theme
+          cd ./toolkit/package
           yarn
           yarn build
     
       - name: Publish to NPM registry
         run: |
-          cd ./theme
+          cd ./toolkit/package
           npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -6,7 +6,6 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
@@ -17,7 +16,6 @@
     "noFallthroughCasesInSwitch": true,
     "declaration": true,
     "declarationDir": "./dist",
-    "emitDeclarationOnly": true,
     "baseUrl": "..",
     "paths": {
       "configs/*": ["../configs/*"],
@@ -42,16 +40,10 @@
     "../components",
     "../utils",
     "../hooks",
-    "../../configs/**/*",
-    "../../lib/**/*",
-    "../../types/**/*",
-    "../../icons/**/*",
-    "../../ui/**/*",
-    "../../public/**/*",
     "../../global.d.ts",
     "../../decs.d.ts",
     "../../reset.d.ts",
   ],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "../../node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 } 
