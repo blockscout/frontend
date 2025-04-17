@@ -3,7 +3,7 @@ import { useAppKit } from '@reown/appkit/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useSignMessage, useAccount } from 'wagmi';
+import { useSignMessage, useAccount, useSwitchChain } from 'wagmi';
 
 import type {
   AddressVerificationFormSecondStepFields,
@@ -84,6 +84,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
   const onSubmit = handleSubmit(onFormSubmit);
 
   const { signMessage, isPending: isSigning } = useSignMessage();
+  const { switchChainAsync } = useSwitchChain();
 
   const handleSignMethodChange = React.useCallback(({ value }: { value: string | null }) => {
     if (!value) {
@@ -99,13 +100,14 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     openWeb3Modal();
   }, [ clearErrors, openWeb3Modal ]);
 
-  const handleWeb3SignClick = React.useCallback(() => {
+  const handleWeb3SignClick = React.useCallback(async() => {
     clearErrors('root');
 
     if (!isConnected) {
       return setError('root', { type: 'manual', message: 'Please connect to your Web3 wallet first' });
     }
 
+    await switchChainAsync({ chainId: Number(config.chain.id) });
     const message = getValues('message');
     signMessage({ message }, {
       onSuccess: (data) => {
@@ -116,7 +118,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         return setError('root', { type: 'SIGNING_FAIL', message: (error as Error)?.message || 'Oops! Something went wrong' });
       },
     });
-  }, [ clearErrors, isConnected, getValues, signMessage, setError, setValue, onSubmit ]);
+  }, [ clearErrors, isConnected, getValues, signMessage, setError, setValue, onSubmit, switchChainAsync ]);
 
   const handleManualSignClick = React.useCallback(() => {
     clearErrors('root');

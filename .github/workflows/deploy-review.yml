@@ -6,7 +6,7 @@ on:
       envs_preset:
           description: ENVs preset
           required: false
-          default: ""
+          default: main
           type: choice
           options:
             - none
@@ -22,6 +22,7 @@ on:
             - eth_goerli
             - filecoin
             - immutable
+            - main
             - mekong
             - neon_devnet
             - optimism

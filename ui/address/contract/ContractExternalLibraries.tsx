@@ -68,7 +68,7 @@ const ContractExternalLibraries = ({ className, data, isLoading }: Props) => {
 
   const content = (
     <>
-      <Heading size="sm">External libraries ({ data.length })</Heading>
+      <Heading size="sm" level="3">External libraries ({ data.length })</Heading>
       <Alert status="warning" mt={ 4 }>
         The linked library{ apos }s source code may not be the real one.
         Check the source code at the library address (if any) if you want to be sure in case if there is any library linked
