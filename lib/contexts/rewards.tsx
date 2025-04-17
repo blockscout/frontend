@@ -11,7 +11,6 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import { YEAR } from 'lib/consts';
 import * as cookies from 'lib/cookies';
 import decodeJWT from 'lib/decodeJWT';
 import getErrorMessage from 'lib/errors/getErrorMessage';
@@ -20,6 +19,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
 import useAccount from 'lib/web3/useAccount';
 import { toaster } from 'toolkit/chakra/toaster';
+import { YEAR } from 'toolkit/utils/consts';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 const feature = config.features.rewards;

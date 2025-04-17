@@ -1,6 +1,6 @@
 import type { TabItem, TabItemMenu } from './types';
 
-import { middot } from 'lib/html-entities';
+import { middot } from 'toolkit/utils/htmlEntities';
 
 export const menuButton: TabItemMenu = {
   id: 'menu',

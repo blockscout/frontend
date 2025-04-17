@@ -5,10 +5,10 @@ import type { ChainInfo } from 'types/api/interop';
 
 import { route } from 'nextjs-routes';
 
-import stripTrailingSlash from 'lib/stripTrailingSlash';
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { stripTrailingSlash } from 'toolkit/utils/url';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { distributeEntityProps } from '../base/utils';

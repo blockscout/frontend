@@ -4,9 +4,9 @@ import React from 'react';
 import jsonFileIcon from 'icons/files/json.svg';
 import solFileIcon from 'icons/files/sol.svg';
 import yulFileIcon from 'icons/files/yul.svg';
-import Hint from 'ui/shared/Hint';
 
 import { CloseButton } from '../../../../chakra/close-button';
+import { Hint } from '../../../../components/Hint/Hint';
 
 const FILE_ICONS: Record<string, React.ReactNode> = {
   '.json': jsonFileIcon,

@@ -5,9 +5,9 @@ import React from 'react';
 import type { AddressMudRecordsFilter, AddressMudRecordsSorting } from 'types/api/address';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Tag } from 'toolkit/chakra/tag';
+import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataListDisplay from 'ui/shared/DataListDisplay';

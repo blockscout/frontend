@@ -1,41 +1,40 @@
-import { chakra } from '@chakra-ui/react';
+import { Icon } from '@chakra-ui/react';
 import React from 'react';
 
-import { IconButton } from 'toolkit/chakra/icon-button';
-import type { TooltipProps } from 'toolkit/chakra/tooltip';
-import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
+import InfoIcon from 'icons/info.svg';
 
-interface Props {
+import type { IconButtonProps } from '../../chakra/icon-button';
+import { IconButton } from '../../chakra/icon-button';
+import type { TooltipProps } from '../../chakra/tooltip';
+import { Tooltip } from '../../chakra/tooltip';
+
+interface Props extends IconButtonProps {
   label: string | React.ReactNode;
-  className?: string;
   tooltipProps?: Partial<TooltipProps>;
   isLoading?: boolean;
   as?: React.ElementType;
 }
 
-const Hint = ({ label, className, tooltipProps, isLoading, as }: Props) => {
+export const Hint = React.memo(({ label, tooltipProps, isLoading, ...rest }: Props) => {
   return (
     <Tooltip
       content={ label }
       positioning={{ placement: 'top' }}
-      interactive
       { ...tooltipProps }
     >
       <IconButton
         aria-label="hint"
         boxSize={ 5 }
-        className={ className }
         loadingSkeleton={ isLoading }
         borderRadius="sm"
-        as={ as }
         color="icon.info"
         _hover={{ color: 'link.primary.hover' }}
+        { ...rest }
       >
-        <IconSvg name="info" w="100%" h="100%"/>
+        <Icon>
+          <InfoIcon/>
+        </Icon>
       </IconButton>
     </Tooltip>
   );
-};
-
-export default React.memo(chakra(Hint));
+});

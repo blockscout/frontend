@@ -2,7 +2,7 @@ import { chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import { Switch } from 'toolkit/chakra/switch';
-import Hint from 'ui/shared/Hint';
+import { Hint } from 'toolkit/components/Hint/Hint';
 
 interface Props {
   onChange: (isChecked: boolean) => void;

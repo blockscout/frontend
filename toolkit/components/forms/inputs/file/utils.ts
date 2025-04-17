@@ -1,4 +1,4 @@
-import stripLeadingSlash from 'lib/stripLeadingSlash';
+import { stripLeadingSlash } from '../../../../utils/url';
 
 // Function to get all files in drop directory
 export async function getAllFileEntries(dataTransferItemList: DataTransferItemList): Promise<Array<FileSystemFileEntry>> {

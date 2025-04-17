@@ -17,7 +17,7 @@ import { Button } from 'toolkit/chakra/button';
 import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
-import Hint from 'ui/shared/Hint';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 

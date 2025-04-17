@@ -9,7 +9,7 @@ import {
   createToaster,
 } from '@chakra-ui/react';
 
-import { SECOND } from 'lib/consts';
+import { SECOND } from 'toolkit/utils/consts';
 
 import { CloseButton } from './close-button';
 

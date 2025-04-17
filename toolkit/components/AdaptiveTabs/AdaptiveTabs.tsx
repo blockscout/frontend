@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { TabsProps } from '../../chakra/tabs';
 import { TabsContent, TabsRoot } from '../../chakra/tabs';
-import useViewportSize from '../../hooks/useViewportSize';
+import { useViewportSize } from '../../hooks/useViewportSize';
 import AdaptiveTabsList, { type BaseProps as AdaptiveTabsListProps } from './AdaptiveTabsList';
 import { getTabValue } from './utils';
 

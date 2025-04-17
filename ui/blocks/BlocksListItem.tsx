@@ -9,12 +9,12 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
-import { WEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { WEI } from 'toolkit/utils/consts';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';

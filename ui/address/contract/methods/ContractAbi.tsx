@@ -6,9 +6,9 @@ import type { SmartContractMethod } from './types';
 
 import { route } from 'nextjs-routes';
 
-import { apos } from 'lib/html-entities';
 import { AccordionRoot } from 'toolkit/chakra/accordion';
 import { Link } from 'toolkit/chakra/link';
+import { apos } from 'toolkit/utils/htmlEntities';
 
 import ContractAbiItem from './ContractAbiItem';
 import useFormSubmit from './useFormSubmit';

@@ -1,6 +1,6 @@
 import type { File, FileTree } from '../types';
 
-import stripLeadingSlash from 'lib/stripLeadingSlash';
+import { stripLeadingSlash } from 'toolkit/utils/url';
 
 import sortFileTree from './sortFileTree';
 

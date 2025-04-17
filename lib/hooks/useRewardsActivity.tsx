@@ -5,8 +5,8 @@ import type { PreSubmitTransactionResponse, PreVerifyContractResponse } from '@b
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
-import { MINUTE } from 'lib/consts';
 import { useRewardsContext } from 'lib/contexts/rewards';
+import { MINUTE } from 'toolkit/utils/consts';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 const feature = config.features.rewards;

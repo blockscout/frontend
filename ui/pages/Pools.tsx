@@ -4,10 +4,10 @@ import React from 'react';
 
 import config from 'configs/app';
 import useDebounce from 'lib/hooks/useDebounce';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { POOL } from 'stubs/pools';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import { apos } from 'toolkit/utils/htmlEntities';
 import PoolsListItem from 'ui/pools/PoolsListItem';
 import PoolsTable from 'ui/pools/PoolsTable';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

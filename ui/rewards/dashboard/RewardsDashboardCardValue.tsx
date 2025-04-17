@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import Hint from 'ui/shared/Hint';
+import { Hint } from 'toolkit/components/Hint/Hint';
 
 import MeritsIcon from '../MeritsIcon';
 

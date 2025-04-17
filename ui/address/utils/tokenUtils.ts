@@ -4,7 +4,7 @@ import type { AddressTokenBalance } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 
 import sumBnReducer from 'lib/bigint/sumBnReducer';
-import { ZERO } from 'lib/consts';
+import { ZERO } from 'toolkit/utils/consts';
 
 export type TokenEnhancedData = AddressTokenBalance & {
   usd?: BigNumber ;

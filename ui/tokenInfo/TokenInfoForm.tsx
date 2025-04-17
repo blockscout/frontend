@@ -10,7 +10,6 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
-import useUpdateEffect from 'lib/hooks/useUpdateEffect';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
@@ -19,6 +18,7 @@ import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 import { noWhitespaceValidator } from 'toolkit/components/forms/validators/text';
+import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 

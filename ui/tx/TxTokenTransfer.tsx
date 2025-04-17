@@ -6,9 +6,9 @@ import type { TokenType } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
-import { apos } from 'lib/html-entities';
 import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { getTokenTransfersStub } from 'stubs/token';
+import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';

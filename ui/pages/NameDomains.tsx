@@ -7,11 +7,11 @@ import type { EnsDomainLookupFiltersOptions, EnsLookupSorting } from 'types/api/
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN } from 'stubs/ENS';
 import { generateListStub } from 'stubs/utils';
 import { ADDRESS_REGEXP } from 'toolkit/components/forms/validators/address';
+import { apos } from 'toolkit/utils/htmlEntities';
 import NameDomainsActionBar from 'ui/nameDomains/NameDomainsActionBar';
 import NameDomainsListItem from 'ui/nameDomains/NameDomainsListItem';
 import NameDomainsTable from 'ui/nameDomains/NameDomainsTable';

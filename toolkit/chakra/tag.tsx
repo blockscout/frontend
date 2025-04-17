@@ -1,7 +1,7 @@
 import { chakra, Tag as ChakraTag } from '@chakra-ui/react';
 import * as React from 'react';
 
-import { nbsp } from 'lib/html-entities';
+import { nbsp } from 'toolkit/utils/htmlEntities';
 
 import { TruncatedTextTooltip } from '../components/truncation/TruncatedTextTooltip';
 import { CloseButton } from './close-button';

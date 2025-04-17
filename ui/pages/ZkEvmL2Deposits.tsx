@@ -2,10 +2,10 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { generateListStub } from 'stubs/utils';
 import { ZKEVM_DEPOSITS_ITEM } from 'stubs/zkEvmL2';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import ZkEvmL2DepositsListItem from 'ui/deposits/zkEvmL2/ZkEvmL2DepositsListItem';
 import ZkEvmL2DepositsTable from 'ui/deposits/zkEvmL2/ZkEvmL2DepositsTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

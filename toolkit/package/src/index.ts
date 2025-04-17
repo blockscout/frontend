@@ -80,7 +80,6 @@ export {
   useBreakpointValue,
   useCheckboxGroup,
   useToken,
-  useUpdateEffect,
 
   chakra,
   createListCollection,
@@ -95,6 +94,7 @@ export * as AdaptiveTabs from '../../components/AdaptiveTabs/index';
 export * from '../../components/RoutedTabs/index';
 export * from '../../components/buttons/BackToButton';
 export * from '../../components/buttons/ClearButton';
+export * from '../../components/Hint/Hint';
 export * from '../../components/filters/FilterInput';
 export * from '../../components/forms/components';
 export * from '../../components/forms/fields';
@@ -105,9 +105,17 @@ export * from '../../components/truncation/TruncatedTextTooltip';
 
 // Export utils
 export { default as getComponentDisplayName } from '../../utils/getComponentDisplayName';
+export * as html from '../../utils/htmlEntities';
+export * as consts from '../../utils/consts';
+export * as regexp from '../../utils/regexp';
+export * as guards from '../../utils/guards';
+export * from '../../utils/url';
+export * from '../../utils/isBrowser';
 
 // Export hooks
-// TODO @tom2drum unify imports
-export { default as useClipboard } from '../../hooks/useClipboard';
+export { useClipboard } from '../../hooks/useClipboard';
 export { useDisclosure } from '../../hooks/useDisclosure';
-export { default as useViewportSize } from '../../hooks/useViewportSize';
+export { useUpdateEffect } from '../../hooks/useUpdateEffect';
+export { useFirstMountState } from '../../hooks/useFirstMountState';
+export { useIsSticky } from '../../hooks/useIsSticky';
+export { useViewportSize } from '../../hooks/useViewportSize';

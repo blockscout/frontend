@@ -3,11 +3,11 @@ import React from 'react';
 
 import type { Fields } from '../types';
 
-import { times } from 'lib/html-entities';
 import type { FieldProps } from 'toolkit/chakra/field';
 import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 import { FormFieldImagePreview } from 'toolkit/components/forms/fields/image/FormFieldImagePreview';
 import { useImageField } from 'toolkit/components/forms/fields/image/useImageField';
+import { times } from 'toolkit/utils/htmlEntities';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 import TokenInfoIconPreview from '../TokenInfoIconPreview';

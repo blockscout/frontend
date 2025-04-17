@@ -8,13 +8,13 @@ import type { TokenInstance } from 'types/api/token';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';
-import { MINUTE, SECOND } from 'lib/consts';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import { toaster } from 'toolkit/chakra/toaster';
+import { MINUTE, SECOND } from 'toolkit/utils/consts';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 

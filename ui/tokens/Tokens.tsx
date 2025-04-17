@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TokensSortingValue } from 'types/api/tokens';
 
-import { apos } from 'lib/html-entities';
+import { apos } from 'toolkit/utils/htmlEntities';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';

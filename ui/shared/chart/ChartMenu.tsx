@@ -6,12 +6,12 @@ import type { TimeChartItem } from './types';
 import type { Resolution } from '@blockscout/stats-types';
 
 import dayjs from 'lib/date/dayjs';
-import isBrowser from 'lib/isBrowser';
 import saveAsCSV from 'lib/saveAsCSV';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 import IconSvg from 'ui/shared/IconSvg';
 
 import FullscreenChartModal from './FullscreenChartModal';

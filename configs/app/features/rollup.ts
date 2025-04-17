@@ -2,7 +2,7 @@ import type { Feature } from './types';
 import type { ParentChain, RollupType } from 'types/client/rollup';
 import { ROLLUP_TYPES } from 'types/client/rollup';
 
-import stripTrailingSlash from 'lib/stripTrailingSlash';
+import { stripTrailingSlash } from 'toolkit/utils/url';
 
 import { getEnvValue, parseEnvJson } from '../utils';
 

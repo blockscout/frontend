@@ -5,10 +5,10 @@ import React from 'react';
 
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 
-import { ndash } from 'lib/html-entities';
 import { Input } from 'toolkit/chakra/input';
 import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
 import { Tag } from 'toolkit/chakra/tag';
+import { ndash } from 'toolkit/utils/htmlEntities';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 const FILTER_PARAM_FROM = 'amount_from';

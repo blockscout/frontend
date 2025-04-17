@@ -8,14 +8,14 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { mdash } from 'lib/html-entities';
 import { USER_ACTIVITY } from 'stubs/rewards';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import Hint from 'ui/shared/Hint';
+import { mdash } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 

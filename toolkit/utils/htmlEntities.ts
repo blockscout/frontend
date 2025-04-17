@@ -4,6 +4,7 @@ export const tilde = String.fromCharCode(126); // ~
 export const hellip = String.fromCharCode(8230); // …
 export const nbsp = String.fromCharCode(160); // no-break Space
 export const thinsp = String.fromCharCode(8201); // thin Space
+export const hairsp = String.fromCharCode(8202); // hair space
 export const space = String.fromCharCode(32); // space
 export const nbdash = String.fromCharCode(8209); // non-breaking hyphen
 export const mdash = String.fromCharCode(8212); // em dash

@@ -11,7 +11,6 @@ import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useInitialList from 'lib/hooks/useInitialList';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { nbsp } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
@@ -19,6 +18,7 @@ import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { nbsp } from 'toolkit/utils/htmlEntities';
 
 import LatestBlocksItem from './LatestBlocksItem';
 

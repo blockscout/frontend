@@ -6,7 +6,7 @@ import React from 'react';
 import useFetch from 'lib/hooks/useFetch';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import useClipboard from 'toolkit/hooks/useClipboard';
+import { useClipboard } from 'toolkit/hooks/useClipboard';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';

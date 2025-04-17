@@ -3,10 +3,10 @@ import React from 'react';
 
 import type { FormattedData } from './types';
 
-import { space } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { space } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { getTokensTotalInfo } from '../utils/tokenUtils';

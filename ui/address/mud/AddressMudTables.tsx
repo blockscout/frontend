@@ -4,11 +4,11 @@ import React from 'react';
 
 import useDebounce from 'lib/hooks/useDebounce';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_MUD_TABLE_ITEM } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

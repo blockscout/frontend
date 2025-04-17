@@ -1,8 +1,8 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import { mdash } from 'lib/html-entities';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { mdash } from 'toolkit/utils/htmlEntities';
 
 interface Props {
   percentage: number;

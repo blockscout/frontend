@@ -4,10 +4,10 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
-import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
-import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { WEI, WEI_IN_GWEI, ZERO } from 'toolkit/utils/consts';
+import { space } from 'toolkit/utils/htmlEntities';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import IconSvg from 'ui/shared/IconSvg';
 import Utilization from 'ui/shared/Utilization/Utilization';

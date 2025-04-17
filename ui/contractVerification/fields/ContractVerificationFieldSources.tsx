@@ -5,12 +5,12 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import { Mb } from 'lib/consts';
 import { Button } from 'toolkit/chakra/button';
 import { FormFieldError } from 'toolkit/components/forms/components/FormFieldError';
 import { DragAndDropArea } from 'toolkit/components/forms/inputs/file/DragAndDropArea';
 import { FileInput } from 'toolkit/components/forms/inputs/file/FileInput';
 import { FileSnippet } from 'toolkit/components/forms/inputs/file/FileSnippet';
+import { Mb } from 'toolkit/utils/consts';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
