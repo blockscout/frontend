@@ -113,7 +113,6 @@ export default function useTxQuery(params?: Params): TxQuery {
           0,
           rp1.confirmed_within,
         ],
-        withUsd: true,
         type: Number(rp2.tx_type.slice(0, 1)),
         nonce: rp2.nonce,
         position: rp2.transaction_index,

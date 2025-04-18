@@ -12,9 +12,10 @@ interface Props {
   accuracyUsd?: number;
   decimals?: string | null;
   isLoading?: boolean;
+  withUsd?: boolean;
 }
 
-const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className, accuracy, accuracyUsd, isLoading }: Props) => {
+const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className, accuracy, accuracyUsd, isLoading, withUsd }: Props) => {
   if (isLoading) {
     return (
       <Skeleton className={ className } display="inline-block">0.00 ($0.00)</Skeleton>
@@ -35,7 +36,7 @@ const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className
       <chakra.span display="inline-block">
         { valueResult }{ currency ? ` ${ currency }` : '' }
       </chakra.span>
-      { usdResult && <chakra.span color="text_secondary" fontWeight={ 400 }>(${ usdResult })</chakra.span> }
+      { usdResult && withUsd && <chakra.span color="text_secondary" fontWeight={ 400 }>(${ usdResult })</chakra.span> }
     </chakra.span>
   );
 };
