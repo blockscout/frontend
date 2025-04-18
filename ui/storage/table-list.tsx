@@ -235,7 +235,7 @@ function TableList(props: Props<string>) {
                                         <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '',
                                           tab: value === 'Txn hash' ? location.pathname.slice(1) : '' } }}>
                                           <Box overflow="hidden" display="inline-block">
-                                            <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value]) }</Skeleton>
+                                            <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value], 4, 16) }</Skeleton>
                                           </Box>
                                         </NextLink>
                                       </Tooltip >
@@ -333,7 +333,7 @@ function TableList(props: Props<string>) {
                                                       <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value][0] || '' } }}>
                                                         <Box display="inline-block">
                                                           <Skeleton isLoaded={ !props.loading }>
-                                                            { formatPubKey(title[value][0]) }
+                                                            { formatPubKey(title[value][0], 4, 6) }
                                                           </Skeleton>
                                                         </Box>
                                                       </NextLink>

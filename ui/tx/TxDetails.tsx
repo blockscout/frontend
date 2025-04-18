@@ -34,7 +34,7 @@ const TxDetails = ({ txQuery }: Props) => {
       <TestnetWarning mb={ 6 } isLoading={ txQuery.isPlaceholderData }/>
       <TxInfo
         data={ txQuery.data }
-        isLoading={ router.query.tab === 'credentials' ? isLoading : txQuery.isPlaceholderData }
+        isLoading={ router.query.tab === 'verification' || router.query.tab === 'issuance' ? isLoading : txQuery.isPlaceholderData }
         socketStatus={ txQuery.socketStatus }/>
     </>
   );

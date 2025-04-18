@@ -79,7 +79,6 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const [ routerTab, setRouterTab ] = React.useState(false);
   const [ credentialStatusColor, setCredentialStatus ] = React.useState('');
-  const [ transactionStatusColor, setTransactionStatus ] = React.useState('');
   const router = useRouter();
   React.useEffect(() => {
     if (router) {
@@ -100,24 +99,22 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         setCredentialStatus('#64ABFF');
         break;
     }
-    switch (data.credential_status?.toLocaleLowerCase()) {
-      case 'valid':
-        setTransactionStatus('#F2B310');
-        break;
-      case 'Not Yet Valid':
-        setTransactionStatus('#64ABFF');
-        break;
-      case 'Revoked':
-        setTransactionStatus('#EE6969');
-        break;
-      case 'Expired':
-        setTransactionStatus('rgba(0, 46, 51, 0.1)');
-        break;
-      default:
-        setTransactionStatus('rgba(0, 46, 51, 0.1)');
-        break;
-    }
   }, [ data ]);
+
+  const switchCredentialStatus = ((status: string) => {
+    switch (status.toLocaleLowerCase()) {
+      case 'valid':
+        return '#F2B310';
+      case 'Not Yet Valid':
+        return '#64ABFF';
+      case 'Revoked':
+        return '#EE6969';
+      case 'Expired':
+        return 'rgba(0, 46, 51, 0.1)';
+      default:
+        return 'rgba(0, 46, 51, 0.1)';
+    }
+  });
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -191,7 +188,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       >
         Transaction hash
       </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value flexWrap="nowrap">
+      <DetailsInfoItem.Value flexWrap="nowrap" color={ routerTab ? '#A80C53' : '' }>
         { data.status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
         <Skeleton isLoaded={ !isLoading } overflow="hidden">
           <HashStringShortenDynamic hash={ data.hash }/>
@@ -222,7 +219,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           routerTab && data.method ?
             (
               <Skeleton isLoaded={ !isLoading }>
-                { data.method.charAt(0).toUpperCase() + data.method.slice(1) }
+                { data.method }
               </Skeleton>
             ) :
             (
@@ -268,11 +265,36 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
               <Skeleton isLoaded={ !isLoading }>
-                <Box
-                  bg={ transactionStatusColor }
-                  color={ data.credential_status === 'Expired' || data.credential_status === 'REMOVE' ? '#000000' : '#FFFFFF' }
-                  padding="4px 8px" borderRadius="24px">
-                  { data.credential_status }
+                <Box gridGap="20px" display="grid">
+                  {
+                    data.credential_status?.length &&
+                    data.credential_status.map((status: { credential_id: string; credential_status: string; expiration_date: string }, index: number) => {
+                      return (
+                        <Box
+                          key={ index }
+                          color="#000000">
+                          { status.credential_id }
+                          <span
+                            style={{
+                              background: switchCredentialStatus(status.credential_status),
+                              padding: '4px 8px',
+                              borderRadius: '24px',
+                              margin: '0 8px',
+                            }}
+                            color={ status.credential_status === 'Expired' || status.credential_status === 'REMOVE' ? '#000000' : '#FFFFFF' }
+                          >
+                            { status.credential_status }
+                          </span>
+                          <span style={{ color: 'rgba(0, 0, 0, 0.4)' }}>
+                            (Expiration Date:&nbsp;
+                            { new Date(status.expiration_date).toLocaleString('en-US', { month: 'short', day: '2-digit',
+                              year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).replaceAll(',', '') }
+                            (+08:00 UTC)
+                          </span>
+                        </Box>
+                      );
+                    })
+                  }
                 </Box>
               </Skeleton>
             </DetailsInfoItem.Value>

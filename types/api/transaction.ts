@@ -27,7 +27,11 @@ export interface OpWithdrawal {
 export type Transaction = {
   SchemaID?: number | string;
   credential_id?: string;
-  credential_status?: string;
+  credential_status?: Array<{
+    credential_id: string;
+    credential_status: string;
+    expiration_date: string;
+  }>;
   to: AddressParam | null;
   created_contract: AddressParam | null;
   hash: string;
@@ -115,8 +119,8 @@ export type ExplorerTransaction = {
   block_confirmations: number;
   confirmed_within: number;
   scheme_id?: number | string;
-  credential_id: string;
-  credential_status: string;
+  credential_id: Array<string>;
+  credential_status: Array<unknown>;
   from_address: string;
   gas_base: string;
   gas_limit: number;
