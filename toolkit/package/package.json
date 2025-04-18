@@ -1,11 +1,31 @@
 {
   "name": "@blockscout/ui-toolkit",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.1-alpha.4",
+  "description": "A comprehensive collection of reusable Chakra UI components and theme system for Blockscout's projects",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "GPL-3.0-only",
+  "author": "Blockscout Team",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blockscout/frontend.git",
+    "directory": "toolkit/package"
+  },
+  "homepage": "https://github.com/blockscout/frontend/tree/main/toolkit/package",
+  "bugs": {
+    "url": "https://github.com/blockscout/frontend/issues"
+  },
+  "keywords": [
+    "blockscout",
+    "ui",
+    "components",
+    "chakra-ui",
+    "react",
+    "typescript",
+    "design-system"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -41,5 +61,11 @@
     "vite-plugin-dts": "4.5.3",
     "vite-plugin-svgr": "4.3.0",
     "vite-tsconfig-paths": "5.1.4"
+  },
+  "engines": {
+    "node": ">=22.11.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

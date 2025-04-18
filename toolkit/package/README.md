@@ -1,22 +1,93 @@
-<!-- TODO @tom2drum rewrite README -->
+# Blockscout UI Toolkit
 
-# Your Organization's UI Toolkit
+A comprehensive collection of reusable Chakra UI components and theme system for Blockscout's projects. This toolkit provides a consistent design system and UI components to maintain visual consistency across Blockscout applications.
 
-A collection of reusable Chakra UI components and theme for your organization's projects.
+## Features
+
+- 🎨 Pre-configured Chakra UI theme with Blockscout's design system
+- 🧩 Reusable UI components built on Chakra UI
+- 🌓 Built-in dark mode support
+- 📱 Responsive and accessible components
+- 🔍 TypeScript support with proper type definitions
 
 ## Installation
 
+### Package Installation
+
+Install the package using your preferred package manager:
+
 ```bash
-npm install @your-org/toolkit
-# or
-yarn add @your-org/toolkit
+# Using npm
+npm install @blockscout/ui-toolkit
+
+# Using yarn
+yarn add @blockscout/ui-toolkit
 ```
 
-## Usage
+### Required Dependencies
+
+Ensure you have the following peer dependencies installed:
+
+```json
+{
+  "dependencies": {
+    "@blockscout/ui-toolkit": "latest",
+    "@chakra-ui/react": ">=3.15.0",
+    "@emotion/react": ">=11.14.0",
+    "next": ">=15.2.3",
+    "next-themes": ">=0.4.4",
+    "react": ">=18.3.1",
+    "react-dom": ">=18.3.1",
+    "react-hook-form": ">=7.52.1"
+  },
+  "devDependencies": {
+    "@chakra-ui/cli": ">=3.15.0",
+    "@types/node": "^20",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "typescript": "5.4.2"
+  }
+}
+```
+
+## Quick Start
+
+### 1. Theme Setup
+
+Create a `theme.ts` file in your project and configure the Blockscout theme:
 
 ```tsx
-import { Button, theme } from '@your-org/toolkit';
+// Basic setup
+import { theme } from '@blockscout/ui-toolkit';
+export default theme;
+```
+
+Or extend the theme with custom overrides:
+
+```tsx
+import { createSystem } from '@chakra-ui/react';
+import { themeConfig } from '@blockscout/ui-toolkit';
+
+const customOverrides = {
+  // Add your custom theme overrides here
+  colors: {
+    brand: {
+      primary: '#your-color',
+    },
+  },
+};
+
+export default createSystem(themeConfig, customOverrides);
+```
+
+### 2. Provider Setup
+
+Wrap your application with the ChakraProvider:
+
+```tsx
 import { ChakraProvider } from '@chakra-ui/react';
+import { Button } from '@blockscout/ui-toolkit';
+import theme from './theme';
 
 function App() {
   return (
@@ -27,75 +98,73 @@ function App() {
 }
 ```
 
+### 3. TypeScript Support
+
+Add the following script to your `package.json` to generate Chakra UI type definitions:
+
+```json
+{
+  "scripts": {
+    "chakra:typegen": "chakra typegen ./src/theme.ts"
+  }
+}
+```
+
 ## Development
 
-1. Install dependencies:
+### Local Development
+
+1. Clone the repository and install dependencies:
 ```bash
-npm install
-# or
 yarn
 ```
 
-2. Start development server:
+2. Start the development server:
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
 3. Build the package:
 ```bash
-npm run build
-# or
 yarn build
 ```
 
-## Publishing
+### Publishing
 
-1. Update the version in `package.json`
+#### Manual Publishing
+
+1. Update the package version:
+```bash
+npm version <version-tag>
+```
+
 2. Build the package:
 ```bash
 npm run build
 ```
+
 3. Publish to NPM:
 ```bash
-npm publish
+npm publish --access public
 ```
 
-## Available Components
+#### Automated Publishing
 
-- Accordion
-- Alert
-- Avatar
-- Badge
-- Button
-- Checkbox
-- Close Button
-- Collapsible
-- Color Mode
-- Dialog
-- Drawer
-- Field
-- Heading
-- Icon Button
-- Image
-- Input
-- Input Group
-- Link
-- Menu
-- Pin Input
-- Popover
-- Progress Circle
-- Provider
-- Radio
-- Rating
-- Select
-- Skeleton
-- Slider
-- Switch
-- Table
-- Tabs
-- Tag
-- Textarea
-- Toaster
-- Tooltip 
+Use the `toolkit-npm-publisher.yml` GitHub Actions workflow for automated publishing.
+
+## Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## Support
+
+For issues, feature requests, or questions, please open an issue in the repository.
+
+## License
+
+This project is licensed under the GNU General Public License v3.
