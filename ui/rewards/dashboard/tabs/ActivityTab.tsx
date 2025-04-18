@@ -213,7 +213,7 @@ export default function ActivityTab() {
           pr={ 0 }
         >
           <Flex flexDirection="column" p={{ base: 1.5, md: 0 }} pb={ 0 }>
-            <Heading level="3" mb={ 2 }>Tasks</Heading>
+            <Heading level="3" mb={ 2 }>Your activity</Heading>
             <Text textStyle="sm" mb={{ base: 2, md: 4 }}>
               Use Blockscout and related products daily to earn Merits. Check each task for details and how to get started.
             </Text>
