@@ -55,7 +55,7 @@ const RewardsDashboard = () => {
               <Link external href={ `https://merits.blockscout.com/?tab=users&utm_source=${ config.chain.id }&utm_medium=text-banner` }>
                 Explore the Merits Hub
               </Link>{ ' ' }
-              to learn more info about a program, spend your Merits, learn how to earn more, and much more.
+              to earn, spend, and learn more about the program.
             </span>
           ) }
         />

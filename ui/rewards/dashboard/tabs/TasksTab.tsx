@@ -88,8 +88,8 @@ export default function TasksTab() {
       const previousAmount = Number(previous?.amount || 0);
       const currentPercentile = (current?.percentile || 0) * 100;
       const previousPercentile = (previous?.percentile || 0) * 100;
-      const amountDiff = currentAmount - previousAmount;
-      const percentileDiff = currentPercentile - previousPercentile;
+      const amountDiff = Number((currentAmount - previousAmount).toFixed(2));
+      const percentileDiff = Number((currentPercentile - previousPercentile).toFixed(2));
 
       return {
         amount: currentAmount,
@@ -135,11 +135,11 @@ export default function TasksTab() {
         title: 'Contracts verification',
         description: (
           <>
-            Log in to your Blockscout account and{ ' ' }
+            Log in and{ ' ' }
             <Link href={ route({ pathname: '/contract-verification' }) }>
               verify a smart contract
             </Link>{ ' ' }
-            using Blockscout website to earn Merits.
+            on the Blockscout explorer to earn Merits.
           </>
         ),
         percentile: activities.contracts?.percentile,
@@ -167,7 +167,7 @@ export default function TasksTab() {
 
   const labels = {
     period: { text: `Period: ${ period }`, hint: 'Current Merits period. All metrics reset weekly' },
-    performanceRank: { text: 'Performance rank', hint: 'Your rank across task groups compared to others. Higher rank = more Merits' },
+    performanceRank: { text: 'Performance rank', hint: 'Your rank within a task group compared to other users in the same period. Higher rank = more Merits.' },
     meritsEarned: { text: 'Merits earned', hint: 'Estimated Merits based on your current rank. Final amount may change' },
   };
 
@@ -245,7 +245,7 @@ export default function TasksTab() {
             <IconSvg name="status/warning" boxSize={ 6 } color="gray.500"/>
             <Text textStyle="sm">
               <chakra.span fontWeight="600">Your current Merit count is not final!</chakra.span><br/>
-              Merits are calculated based on the activity of all users and may increase or decrease by the end of the period.
+              Merits are calculated based on the activity of all users and may increase or decrease by the end of the weekly period.
             </Text>
           </Flex>
         </Flex>
