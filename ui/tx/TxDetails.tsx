@@ -17,7 +17,7 @@ const TxDetails = ({ txQuery }: Props) => {
 
   React.useEffect(() => {
     if (router.query.tab === 'verification' || router.query.tab === 'issuance') {
-      if (txQuery.data?.credential_status) {
+      if (txQuery.data?.SchemaID || txQuery.data?.credential_id) {
         setTimeout(() => {
           setIsLoading(false);
         }, 500);

@@ -77,8 +77,8 @@ export default function useTxQuery(params?: Params): TxQuery {
         ...TX,
         hash: rp1.tx_hash,
         method: rp1.method,
-        credential_id: rp1.credential_id.toString().replace(',', '、'),
-        credential_status: rp1.credential_id.map((value, index) => {
+        credential_id: rp1.credential_id && rp1.credential_id?.toString().replace(',', '、'),
+        credential_status: rp1.credential_id && rp1.credential_id.map((value, index) => {
           return {
             credential_id: value,
             credential_status: rp1.credential_status[index],
@@ -124,7 +124,7 @@ export default function useTxQuery(params?: Params): TxQuery {
         decoded_input: {
           method_call: rp2.fn_signature,
           method_id: rp2.method_id,
-          parameters: JSON.parse(rp2.fn_params),
+          parameters: rp2.fn_params && JSON.parse(rp2.fn_params),
         },
       });
     } catch (error: unknown) {
