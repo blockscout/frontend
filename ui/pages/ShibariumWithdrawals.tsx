@@ -14,7 +14,7 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 import WithdrawalsListItem from 'ui/withdrawals/shibarium/WithdrawalsListItem';
 import WithdrawalsTable from 'ui/withdrawals/shibarium/WithdrawalsTable';
 
-const L2Withdrawals = () => {
+const ShibariumWithdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
     resourceName: 'shibarium_withdrawals',
     options: {
@@ -42,7 +42,7 @@ const L2Withdrawals = () => {
       <Box hideFrom="lg">
         { data.items.map(((item, index) => (
           <WithdrawalsListItem
-            key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
+            key={ `${ item.l2_transaction_hash }-${ index }` }
             item={ item }
             isLoading={ isPlaceholderData }
           />
@@ -83,4 +83,4 @@ const L2Withdrawals = () => {
   );
 };
 
-export default L2Withdrawals;
+export default ShibariumWithdrawals;
