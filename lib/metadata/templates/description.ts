@@ -57,6 +57,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/bucket-details/[address]': DEFAULT_TEMPLATE,
   '/group-details/[address]': DEFAULT_TEMPLATE,
   '/object-details/[address]': DEFAULT_TEMPLATE,
+  '/all-validators': DEFAULT_TEMPLATE,
+  '/my-staking': DEFAULT_TEMPLATE,
   '/issuance': DEFAULT_TEMPLATE,
   '/verification': DEFAULT_TEMPLATE,
   '/faucet': DEFAULT_TEMPLATE,

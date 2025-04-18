@@ -130,6 +130,18 @@ export default function useNavItems(): ReturnType {
       icon: 'output_roots',
       isActive: pathname === '/verification',
     };
+    const allValidators = {
+      text: 'All validators',
+      nextRoute: { pathname: '/all-validators' as const },
+      icon: 'output_roots',
+      isActive: pathname === '/all-validators',
+    };
+    const myStaking = {
+      text: 'My staking',
+      nextRoute: { pathname: '/my-staking' as const },
+      icon: 'output_roots',
+      isActive: pathname === '/my-staking',
+    };
     // const buckets = {
     //   text: 'Buckets',
     //   nextRoute: { pathname: '/buckets' as const },
@@ -161,6 +173,13 @@ export default function useNavItems(): ReturnType {
       [
         issuance,
         verification,
+      ],
+    ];
+
+    const mocaStakingNavItems: Array<NavItem> | Array<Array<NavItem>> = [
+      [
+        allValidators,
+        myStaking,
       ],
     ];
 
@@ -322,6 +341,12 @@ export default function useNavItems(): ReturnType {
         icon: 'navitems/credentials',
         isActive: credentialsNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: credentialsNavItems,
+      },
+      {
+        text: 'MOCA Staking',
+        icon: 'navitems/moca-staking',
+        isActive: mocaStakingNavItems.flat().some(item => isInternalItem(item) && item.isActive),
+        subItems: mocaStakingNavItems,
       },
       {
         text: 'Faucet',

@@ -78,6 +78,8 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/object-details/[address]': 'Root page',
   '/faucet': 'Root page',
   '/bucket': 'Root page',
+  '/all-validators': 'Root page',
+  '/my-staking': 'Root page',
   '/group': 'Root page',
   '/object': 'Root page',
   '/issuance': 'Root page',

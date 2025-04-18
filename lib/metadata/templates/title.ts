@@ -57,6 +57,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/group-details/[address]': '%network_name% group details',
   '/object-details/[address]': '%network_name% object details',
   '/faucet': '%network_name% faucet',
+  '/my-staking': '%network_name% my staking',
+  '/all-validators': '%network_name% all validators',
   '/bucket': '%network_name% bucket',
   '/group': '%network_name% group',
   '/object': '%network_name% object',

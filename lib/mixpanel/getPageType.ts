@@ -51,6 +51,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/gas-tracker': 'Gas tracker',
   '/bucket-details/[address]': 'Bucket Details',
   '/group-details/[address]': 'Group Details',
+  '/all-validators': 'All validators',
+  '/my-staking': 'My staking',
   '/object-details/[address]': 'Object Details',
   '/issuance': 'Issuance',
   '/verification': 'Verification',
