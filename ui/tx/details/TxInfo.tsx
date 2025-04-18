@@ -787,6 +787,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               exchangeRate={ data.exchange_rate }
               isLoading={ isLoading }
               flexWrap="wrap"
+              withUsd={ !routerTab }
             />
           </DetailsInfoItem.Value>
         </>
@@ -801,7 +802,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             Transaction fee
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <TxFee tx={ data } isLoading={ isLoading } withUsd/>
+            <TxFee tx={ data } isLoading={ isLoading } withUsd={ !routerTab }/>
           </DetailsInfoItem.Value>
         </>
       ) }
