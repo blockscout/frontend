@@ -10,9 +10,9 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton';
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
+import ActivityTab from 'ui/rewards/dashboard/tabs/ActivityTab';
 import ReferralsTab from 'ui/rewards/dashboard/tabs/ReferralsTab';
 import ResourcesTab from 'ui/rewards/dashboard/tabs/ResourcesTab';
-import TasksTab from 'ui/rewards/dashboard/tabs/TasksTab';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
@@ -55,7 +55,7 @@ const RewardsDashboard = () => {
               <Link external href={ `https://merits.blockscout.com/?tab=users&utm_source=${ config.chain.id }&utm_medium=text-banner` }>
                 Explore the Merits Hub
               </Link>{ ' ' }
-              to learn more info about a program, spend your Merits, learn how to earn more, and much more.
+              to earn, spend, and learn more about the program.
             </span>
           ) }
         />
@@ -134,9 +134,9 @@ const RewardsDashboard = () => {
           w="full"
           tabs={ [
             {
-              id: 'tasks',
-              title: 'Tasks',
-              component: <TasksTab/>,
+              id: 'activity',
+              title: 'Activity',
+              component: <ActivityTab/>,
             },
             {
               id: 'referrals',

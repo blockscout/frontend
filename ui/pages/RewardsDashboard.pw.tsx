@@ -26,7 +26,7 @@ testWithAuth.beforeEach(async({ mockEnvs, mockApiResponse }) => {
   await mockApiResponse('user_info', profileMock.withEmailAndWallet);
 });
 
-const testTab = (tab: 'tasks' | 'referrals' | 'resources') =>
+const testTab = (tab: 'activity' | 'referrals' | 'resources') =>
   testWithAuth(`${ tab } tab +@dark-mode +@mobile`, async({ page, render, mockApiResponse }, testInfo) => {
     await mockApiResponse('rewards_user_balances', rewardsBalanceMock.base);
     await mockApiResponse('rewards_user_daily_check', dailyRewardMock.base);
@@ -42,7 +42,7 @@ const testTab = (tab: 'tasks' | 'referrals' | 'resources') =>
     });
   });
 
-testTab('tasks');
+testTab('activity');
 testTab('referrals');
 testTab('resources');
 
