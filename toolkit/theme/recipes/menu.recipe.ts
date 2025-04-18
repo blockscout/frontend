@@ -25,7 +25,7 @@ export const recipe = defineSlotRecipe({
     },
     item: {
       textDecoration: 'none',
-      color: 'initial',
+      color: 'text.primary',
       userSelect: 'none',
       borderRadius: 'none',
       width: '100%',
