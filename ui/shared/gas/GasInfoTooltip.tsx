@@ -11,6 +11,7 @@ import type { ExcludeUndefined } from 'types/utils';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import type { TooltipProps } from 'toolkit/chakra/tooltip';
@@ -70,6 +71,7 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, placement }: Props) => 
       interactive
       showArrow={ false }
       contentProps={{ p: 4, borderRadius: 'md' }}
+      closeDelay={ SECOND }
     >
       { children }
     </Tooltip>

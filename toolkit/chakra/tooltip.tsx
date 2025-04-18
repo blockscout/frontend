@@ -35,6 +35,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
       lazyMount = true,
       unmountOnExit = true,
       triggerProps,
+      closeDelay,
       ...rest
     } = props;
 
@@ -71,7 +72,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         openDelay={ 100 }
         // FIXME: chakra closes tooltip too fast, so Playwright is not able to make a screenshot of its content
         // so we need to increase the close delay in Playwright environment
-        closeDelay={ config.app.isPw ? 10_000 : 100 }
+        closeDelay={ config.app.isPw ? 10_000 : closeDelay ?? 100 }
         open={ open }
         onOpenChange={ handleOpenChange }
         closeOnClick={ false }
