@@ -116,11 +116,11 @@ const ObjectDetails: NextPage = () => {
     try {
       setLoading(true);
       const rp2 = await (await fetch(url + '/api/v1/explorer/totalverificationsinfo', { method: 'get' })).json() as {
-        total_verified_number: number; total_verified_credential: number;
+        total_verified_number: number; total_verified_scheme: number;
       };
       setLoading(false);
       setTotalIssued(rp2.total_verified_number);
-      setTotalCredential(rp2.total_verified_credential);
+      setTotalCredential(rp2.total_verified_scheme);
     } catch (error: any) {
       setLoading(false);
       throw Error(error);
