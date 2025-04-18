@@ -73,65 +73,64 @@ export default function useTxQuery(params?: Params): TxQuery {
         { method: 'get' })).json() as ExplorerTransaction;
       const rp2 = await (await fetch(url + `/api/v1/explorer/${ router.query.tab }/${ hash }/detail`,
         { method: 'get' })).json() as ExplorerTransactionDetail;
-      if (data?.hash !== TX.hash && !isError) {
-        queryClient?.setQueryData(getResourceKey('tx', { pathParams: { hash } }), {
-          ...data,
-          credential_id: rp1.credential_id[0],
-          credential_status: rp1.credential_status[0],
-        });
-      } else if (data?.hash !== TX.hash && isError) {
-        queryClient?.setQueryData(getResourceKey('tx', { pathParams: { hash } }), {
-          ...TX,
-          hash: rp1.tx_hash,
-          method: rp1.method,
-          credential_id: rp1.credential_id && rp1.credential_id[0],
-          credential_status: rp1.credential_status && rp1.credential_status[0],
-          SchemaID: rp1.scheme_id || '/',
-          block_number: rp1.block_number,
-          confirmations: rp1.block_confirmations,
-          transaction_status: rp1.transaction_status,
-          from: {
-            ...TX.from,
-            hash: rp1.from_address,
-          },
-          to: {
-            ...TX.to,
-            hash: rp1.to_address,
-            name: 'MOCA Chain',
-          },
-          fee: {
-            value: rp1.tx_fee,
-          },
-          timestamp: rp1.tx_time,
-          value: rp1.tx_value,
-          gas_price: rp1.gas_price,
-          gas_used: rp1.gas_used,
-          gas_limit: rp1.gas_limit,
-          base_fee_per_gas: rp1.gas_base,
-          max_fee_per_gas: rp1.max_fee_per_gas,
-          max_priority_fee_per_gas: rp1.max_priority_fee_per_gas,
-          confirmation_duration: [
-            0,
-            rp1.confirmed_within,
-          ],
-          type: Number(rp2.tx_type.slice(0, 1)),
-          nonce: rp2.nonce,
-          position: rp2.transaction_index,
-          raw_input: rp2.raw_input,
-          zilliqa: {
-            is_scilla: false,
-          },
-          decoded_input: {
-            method_call: rp2.fn_signature,
-            method_id: rp2.method_id,
-            parameters: JSON.parse(rp2.fn_params),
-          },
-        });
-      }
+      queryClient?.setQueryData(getResourceKey('tx', { pathParams: { hash } }), {
+        ...TX,
+        hash: rp1.tx_hash,
+        method: rp1.method,
+        credential_id: rp1.credential_id.toString().replace(',', '、'),
+        credential_status: rp1.credential_id.map((value, index) => {
+          return {
+            credential_id: value,
+            credential_status: rp1.credential_status[index],
+            expiration_date: rp1.expiration_date[index],
+          };
+        }),
+        SchemaID: rp1.scheme_id || '/',
+        block_number: rp1.block_number,
+        confirmations: rp1.block_confirmations,
+        transaction_status: rp1.transaction_status,
+        from: {
+          ...TX.from,
+          hash: rp1.from_address,
+        },
+        to: {
+          ...TX.to,
+          hash: rp1.to_address,
+          name: 'MOCA Chain',
+        },
+        fee: {
+          value: rp1.tx_fee,
+        },
+        timestamp: rp1.tx_time,
+        value: rp1.tx_value,
+        gas_price: rp1.gas_price,
+        gas_used: rp1.gas_used,
+        gas_limit: rp1.gas_limit,
+        base_fee_per_gas: rp1.gas_base,
+        max_fee_per_gas: rp1.max_fee_per_gas,
+        max_priority_fee_per_gas: rp1.max_priority_fee_per_gas,
+        confirmation_duration: [
+          0,
+          rp1.confirmed_within,
+        ],
+        withUsd: true,
+        type: Number(rp2.tx_type.slice(0, 1)),
+        nonce: rp2.nonce,
+        position: rp2.transaction_index,
+        raw_input: rp2.raw_input,
+        zilliqa: {
+          is_scilla: false,
+        },
+        decoded_input: {
+          method_call: rp2.fn_signature,
+          method_id: rp2.method_id,
+          parameters: JSON.parse(rp2.fn_params),
+        },
+      });
     } catch (error: unknown) {
       throw new Error(String(error));
     }
-  }, [ requestFlag, url, hash, data, isError, queryClient, router.query.tab ]);
+  }, [ requestFlag, url, hash, queryClient, router.query.tab ]);
 
   React.useEffect(() => {
     if ((router.query.tab === 'issuance' || router.query.tab === 'verification') && !requestFlag) {
