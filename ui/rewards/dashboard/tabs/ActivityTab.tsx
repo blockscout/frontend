@@ -40,7 +40,7 @@ function getMaxAmount(rewards: Record<string, string> | undefined) {
   return Math.max(...values);
 }
 
-export default function TasksTab() {
+export default function ActivityTab() {
   const { apiToken, rewardsConfigQuery } = useRewardsContext();
   const explorersModal = useDisclosure();
   const taskDetailsModal = useDisclosure();
