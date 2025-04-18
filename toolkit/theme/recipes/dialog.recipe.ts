@@ -207,7 +207,7 @@ export const recipe = defineSlotRecipe({
   defaultVariants: {
     size: 'md',
     scrollBehavior: 'inside',
-    placement: 'center',
+    placement: { base: 'top', lg: 'center' },
     motionPreset: 'scale',
   },
 });
