@@ -128,7 +128,7 @@ const Content = chakra((props: ContentProps) => {
     );
 
     return (
-      <Tooltip content={ label } contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}>
+      <Tooltip content={ label } contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }} triggerProps={{ minW: 0 }}>
         <Skeleton loading={ props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" { ...styles }>
           { nameText }
         </Skeleton>

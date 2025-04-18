@@ -42,7 +42,7 @@ const L2Deposits = () => {
       <Box hideFrom="lg">
         { data.items.map(((item, index) => (
           <DepositsListItem
-            key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
+            key={ `${ item.l2_transaction_hash }-${ index }` }
             isLoading={ isPlaceholderData }
             item={ item }
           />

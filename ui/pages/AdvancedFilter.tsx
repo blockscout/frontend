@@ -137,7 +137,7 @@ const AdvancedFilter = () => {
 
   const content = (
     <AddressHighlightProvider>
-      <Box maxW="100%" overflowX="scroll" whiteSpace="nowrap">
+      <Box maxW="100%" display="grid" overflowX="scroll" whiteSpace="nowrap">
         <TableRoot tableLayout="fixed" minWidth="950px" w="100%">
           <TableHeaderSticky>
             <TableRow>

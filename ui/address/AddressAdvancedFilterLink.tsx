@@ -1,4 +1,5 @@
 import { chakra } from '@chakra-ui/react';
+import { pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
@@ -26,11 +27,11 @@ const AddressAdvancedFilterLink = ({ isLoading, address, typeFilter, directionFi
     return null;
   }
 
-  const queryParams = {
+  const queryParams = pickBy({
     to_address_hashes_to_include: !directionFilter || directionFilter === 'to' ? [ address ] : undefined,
     from_address_hashes_to_include: !directionFilter || directionFilter === 'from' ? [ address ] : undefined,
     transaction_types: typeFilter.length > 0 ? typeFilter : ADVANCED_FILTER_TYPES.filter((type) => type !== 'coin_transfer'),
-  };
+  }, (value) => value !== undefined);
 
   return (
     <Link

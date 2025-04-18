@@ -6,7 +6,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useAccount from './useAccount';
 
 export default function useAccountWithDomain(isEnabled: boolean) {
-  const { address } = useAccount();
+  const { address, isConnecting } = useAccount();
 
   const isQueryEnabled = config.features.nameService.isEnabled && Boolean(address) && Boolean(isEnabled);
 
@@ -25,7 +25,7 @@ export default function useAccountWithDomain(isEnabled: boolean) {
     return {
       address: isEnabled ? address : undefined,
       domain: domainQuery.data?.domain?.name,
-      isLoading: isQueryEnabled && domainQuery.isLoading,
+      isLoading: (isQueryEnabled && domainQuery.isLoading) || isConnecting,
     };
-  }, [ address, domainQuery.data?.domain?.name, domainQuery.isLoading, isEnabled, isQueryEnabled ]);
+  }, [ address, domainQuery.data?.domain?.name, domainQuery.isLoading, isEnabled, isQueryEnabled, isConnecting ]);
 }

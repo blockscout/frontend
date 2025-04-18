@@ -21,7 +21,7 @@ const TableColumnFilterWrapper = ({ columnName, className, children, isLoading, 
         <Button
           display="inline-flex"
           aria-label={ `filter by ${ columnName }` }
-          variant="dropdown"
+          variant="icon_secondary"
           borderWidth="0"
           h="20px"
           minW="auto"

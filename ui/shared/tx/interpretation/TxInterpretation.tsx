@@ -224,7 +224,7 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, isNov
         <Tooltip content="Human readable transaction provided by Noves.fi">
           <Badge ml={ 2 } verticalAlign="unset" transform="translateY(-2px)">
             by
-            <Image src={ novesLogoUrl } alt="Noves logo" h="12px" ml={ 1.5 }/>
+            <Image src={ novesLogoUrl } alt="Noves logo" h="12px" ml={ 1.5 } display="inline"/>
           </Badge>
         </Tooltip>
       ) }

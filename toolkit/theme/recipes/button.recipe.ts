@@ -16,7 +16,7 @@ export const recipe = defineRecipe({
         bg: 'blue.600',
         color: 'white',
         _hover: {
-          bg: 'blue.400',
+          bg: 'link.primary.hover',
         },
         _loading: {
           opacity: 1,
@@ -27,7 +27,7 @@ export const recipe = defineRecipe({
           },
         },
         _expanded: {
-          bg: 'blue.400',
+          bg: 'link.primary.hover',
         },
       },
       outline: {
@@ -38,8 +38,8 @@ export const recipe = defineRecipe({
         borderColor: 'button.outline.fg',
         _hover: {
           bg: 'transparent',
-          color: 'blue.400',
-          borderColor: 'blue.400',
+          color: 'link.primary.hover',
+          borderColor: 'link.primary.hover',
         },
         _loading: {
           opacity: 1,
@@ -58,8 +58,8 @@ export const recipe = defineRecipe({
         borderColor: 'button.dropdown.border',
         _hover: {
           bg: 'transparent',
-          color: 'blue.400',
-          borderColor: 'blue.400',
+          color: 'link.primary.hover',
+          borderColor: 'link.primary.hover',
         },
         _loading: {
           opacity: 1,
@@ -72,8 +72,8 @@ export const recipe = defineRecipe({
         // When the dropdown is open, the button should be active
         _expanded: {
           bg: 'transparent',
-          color: 'blue.400',
-          borderColor: 'blue.400',
+          color: 'link.primary.hover',
+          borderColor: 'link.primary.hover',
         },
         // We have a special state for this button variant that serves as a popover trigger.
         // When any items (filters) are selected in the popover, the button should change its background and text color.
@@ -84,8 +84,11 @@ export const recipe = defineRecipe({
           borderColor: 'transparent',
           _hover: {
             bg: 'button.dropdown.bg.selected',
-            color: 'button.dropdown.fg.selected',
+            color: 'link.primary.hover',
             borderColor: 'transparent',
+          },
+          _expanded: {
+            color: 'link.primary.hover',
           },
         },
       },
@@ -97,8 +100,8 @@ export const recipe = defineRecipe({
         borderStyle: 'solid',
         _hover: {
           bg: 'transparent',
-          color: 'blue.400',
-          borderColor: 'blue.400',
+          color: 'link.primary.hover',
+          borderColor: 'link.primary.hover',
         },
         _loading: {
           opacity: 1,
@@ -115,16 +118,22 @@ export const recipe = defineRecipe({
           borderWidth: '0px',
           _hover: {
             bg: 'button.header.bg.selected',
-            color: 'button.header.fg.selected',
+            color: 'link.primary.hover',
+          },
+          _expanded: {
+            color: 'link.primary.hover',
           },
           _highlighted: {
             bg: 'button.header.bg.highlighted',
             color: 'button.header.fg.highlighted',
             borderColor: 'transparent',
             borderWidth: '0px',
+            _expanded: {
+              color: 'link.primary.hover',
+            },
             _hover: {
               bg: 'button.header.bg.highlighted',
-              color: 'button.header.fg.highlighted',
+              color: 'link.primary.hover',
             },
           },
         },
@@ -149,7 +158,10 @@ export const recipe = defineRecipe({
           color: 'button.hero.fg.selected',
           _hover: {
             bg: 'button.hero.bg.selected',
-            color: 'button.hero.fg.selected',
+            color: 'link.primary.hover',
+          },
+          _expanded: {
+            color: 'link.primary.hover',
           },
         },
       },
@@ -230,7 +242,10 @@ export const recipe = defineRecipe({
           color: 'button.icon_secondary.fg.selected',
           _hover: {
             bg: 'button.icon_secondary.bg.selected',
-            color: 'button.icon_secondary.fg.selected',
+            color: 'link.primary.hover',
+          },
+          _expanded: {
+            color: 'link.primary.hover',
           },
         },
         _expanded: {

@@ -22,6 +22,12 @@ const FilterButton = ({ isLoading, appliedFiltersNum, ...rest }: Props, ref: Rea
       size={ 5 }
       bg={{ _light: 'blue.700', _dark: 'gray.50' }}
       color={{ _light: 'white', _dark: 'black' }}
+      _groupHover={{
+        bg: 'link.primary.hover',
+      }}
+      _groupExpanded={{
+        bg: 'link.primary.hover',
+      }}
     >
       { appliedFiltersNum }
     </Circle>

@@ -29,6 +29,7 @@ const ActionBar = ({ children, className, showShadow }: Props) => {
       className={ className }
       backgroundColor={{ _light: 'white', _dark: 'black' }}
       pt={ 6 }
+      mt={ -6 }
       pb={{ base: 6, lg: 3 }}
       mx={{ base: -3, lg: 0 }}
       px={{ base: 3, lg: 0 }}
