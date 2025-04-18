@@ -19,7 +19,7 @@ type RequestType = {
   previous_cursor?: string;
   title_data: Array<{
     block_number: number;
-    credential_id: string;
+    scheme_id: Array<string>;
     from_address: string;
     to_address: string;
     transaction_status: string;
@@ -30,7 +30,7 @@ type RequestType = {
   }>;
 };
 type IssuanceTalbeListType = {
-  'Credential ID': string;
+  'Schema ID': string;
   'Txn hash': string;
   Block: string;
   Method: string;
@@ -57,7 +57,7 @@ const ObjectDetails: NextPage = () => {
 
   const [ tableList, setTableList ] = React.useState<Array<IssuanceTalbeListType>>([]);
 
-  const tabThead = [ 'Credential ID', 'Txn hash', 'Block', 'Method', 'From/To', 'Time', 'Value MOCA', 'Fee MOCA' ];
+  const tabThead = [ 'Schema ID', 'Txn hash', 'Block', 'Method', 'From/To', 'Time', 'Value MOCA', 'Fee MOCA' ];
   const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
   const [ totalIssued, setTotalIssued ] = React.useState<number>(0);
   const [ totalCredential, setTotalCredential ] = React.useState<number>(0);
@@ -91,12 +91,12 @@ const ObjectDetails: NextPage = () => {
       const tableList: Array<IssuanceTalbeListType> = [];
       orderBy(rp1.title_data, [ 'transaction_status' ]).forEach((v: any) => {
         tableList.push({
-          'Credential ID': v.credential_id || '/',
+          'Schema ID': v.scheme_id[0] || '/',
           'Txn hash': v.tx_hash,
           Block: v.block_number,
           Method: v.method,
           'From/To': [ v.from_address, v.to_address ],
-          Time: v.tx_time,
+          Time: v.tx_time.slice(0, -1),
           'Value MOCA': v.tx_value,
           'Fee MOCA': truncateToSignificantDigits(BigNumber(v.tx_fee / 1e18).toString(10), 3).toString(10),
         });
@@ -153,11 +153,11 @@ const ObjectDetails: NextPage = () => {
     <PageNextJs pathname="/object">
       <Flex justifyContent="space-between" textAlign="left" margin="24px 0">
         <Box width="48%" border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
-          <Text>Total Issued Number</Text>
+          <Text>Total Verified Number</Text>
           <Text>{ Number(new Intl.NumberFormat('en-US').format(totalIssued)) || '-' }</Text>
         </Box>
         <Box width="48%" border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="18px" padding="16px">
-          <Text>Total Credential Number</Text>
+          <Text>Total Verified Schema</Text>
           <Text>{ Number(new Intl.NumberFormat('en-US').format(totalCredential)) || '-' }</Text>
         </Box>
       </Flex>
