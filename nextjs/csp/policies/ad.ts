@@ -1,9 +1,9 @@
-import Base64 from 'crypto-js/enc-base64';
-import sha256 from 'crypto-js/sha256';
+// import Base64 from 'crypto-js/enc-base64';
+// import sha256 from 'crypto-js/sha256';
 import type CspDev from 'csp-dev';
 
-import { connectAdbutler, placeAd } from 'ui/shared/ad/adbutlerScript';
-import { hypeInit } from 'ui/shared/ad/hypeBannerScript';
+// import { connectAdbutler, placeAd } from 'ui/shared/ad/adbutlerScript';
+// import { hypeInit } from 'ui/shared/ad/hypeBannerScript';
 
 export function ad(): CspDev.DirectiveDescriptor {
   return {
@@ -45,15 +45,15 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       // adbutler
       'servedbyadbutler.com',
-      `'sha256-${ Base64.stringify(sha256(connectAdbutler)) }'`,
-      `'sha256-${ Base64.stringify(sha256(placeAd(undefined) ?? '')) }'`,
-      `'sha256-${ Base64.stringify(sha256(placeAd('mobile') ?? '')) }'`,
+      // `'sha256-${ Base64.stringify(sha256(connectAdbutler)) }'`,
+      // `'sha256-${ Base64.stringify(sha256(placeAd(undefined) ?? '')) }'`,
+      // `'sha256-${ Base64.stringify(sha256(placeAd('mobile') ?? '')) }'`,
 
       // slise
       '*.slise.xyz',
 
       //hype
-      `'sha256-${ Base64.stringify(sha256(hypeInit ?? '')) }'`,
+      // `'sha256-${ Base64.stringify(sha256(hypeInit ?? '')) }'`,
       'https://api.hypelab.com',
       'd1q98dzwj6s2rb.cloudfront.net',
     ],
