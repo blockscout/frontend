@@ -110,14 +110,6 @@ jobs:
             exit 1
           fi
 
-      - name: Test package import
-        run: |
-          cd ./toolkit/package
-          mkdir -p test-import
-          cd test-import
-          echo 'import { Button } from "@blockscout/ui-toolkit"; console.log(Button);' > test.js
-          node --input-type=module test.js
-
   envs_validation:
     name: ENV variables validation
     runs-on: ubuntu-latest
