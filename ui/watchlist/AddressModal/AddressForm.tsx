@@ -11,10 +11,10 @@ import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
+import { FormFieldCheckbox } from 'toolkit/components/forms/fields/FormFieldCheckbox';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
-import FormFieldCheckbox from 'ui/shared/forms/fields/FormFieldCheckbox';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 

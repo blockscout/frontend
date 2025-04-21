@@ -3,8 +3,8 @@ import React from 'react';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
-import { apos } from 'lib/html-entities';
 import { Link } from 'toolkit/chakra/link';
+import { apos } from 'toolkit/utils/htmlEntities';
 import EmptySearchResultDefault from 'ui/shared/EmptySearchResult';
 import IconSvg from 'ui/shared/IconSvg';
 

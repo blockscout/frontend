@@ -4,7 +4,7 @@ import React from 'react';
 import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation';
 
 import config from 'configs/app';
-import { rightLineArrow } from 'lib/html-entities';
+import { rightLineArrow } from 'toolkit/utils/htmlEntities';
 
 interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;

@@ -8,12 +8,12 @@ import React from 'react';
 import type { FormFields } from '../types';
 import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/client/contract';
 
-import { nbsp } from 'lib/html-entities';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
 import type { SelectOption } from 'toolkit/chakra/select';
-import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
-import Hint from 'ui/shared/Hint';
+import { FormFieldSelect } from 'toolkit/components/forms/fields/FormFieldSelect';
+import { Hint } from 'toolkit/components/Hint/Hint';
+import { nbsp } from 'toolkit/utils/htmlEntities';
 
 import { METHOD_LABELS } from '../utils';
 

@@ -1,7 +1,7 @@
 import { Grid } from '@chakra-ui/react';
 
 import config from 'configs/app';
-import { apos } from 'lib/html-entities';
+import { apos } from 'toolkit/utils/htmlEntities';
 
 import RewardsDashboardInfoCard from '../RewardsDashboardInfoCard';
 

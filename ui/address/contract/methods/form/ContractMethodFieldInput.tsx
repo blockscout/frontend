@@ -5,12 +5,12 @@ import { NumericFormat } from 'react-number-format';
 
 import type { ContractAbiItemInput } from '../types';
 
-import { HOUR, SECOND } from 'lib/consts';
 import { Button } from 'toolkit/chakra/button';
 import { Field } from 'toolkit/chakra/field';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
-import ClearButton from 'ui/shared/ClearButton';
+import { ClearButton } from 'toolkit/components/buttons/ClearButton';
+import { HOUR, SECOND } from 'toolkit/utils/consts';
 
 import ContractMethodAddressButton from './ContractMethodAddressButton';
 import ContractMethodFieldLabel from './ContractMethodFieldLabel';
@@ -131,7 +131,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
 
   const inputEndElement = (
     <Flex alignItems="center">
-      <ClearButton onClick={ handleClear } isDisabled={ isDisabled } isVisible={ field.value !== undefined && field.value !== '' }/>
+      <ClearButton onClick={ handleClear } disabled={ isDisabled } visible={ field.value !== undefined && field.value !== '' }/>
       { data.type === 'address' && <ContractMethodAddressButton onClick={ handleAddressButtonClick } isDisabled={ isDisabled }/> }
       { argTypeMatchInt && !isNativeCoin && (hasTimestampButton ? (
         <Button

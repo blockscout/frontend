@@ -3,9 +3,9 @@ import React from 'react';
 import type { Fields } from '../types';
 
 import type { FieldProps } from 'toolkit/chakra/field';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import { validator as emailValidator } from 'ui/shared/forms/validators/email';
-import { urlValidator } from 'ui/shared/forms/validators/url';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { emailValidator } from 'toolkit/components/forms/validators/email';
+import { urlValidator } from 'toolkit/components/forms/validators/url';
 
 interface Props {
   readOnly?: boolean;

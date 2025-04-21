@@ -6,10 +6,10 @@ import type { FormSubmitResult } from './types';
 
 import { route } from 'nextjs-routes';
 
-import makePrettyLink from 'lib/makePrettyLink';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
+import { makePrettyLink } from 'toolkit/utils/url';
 
 import PublicTagsSubmitResultSuccess from './result/PublicTagsSubmitResultSuccess';
 import PublicTagsSubmitResultWithErrors from './result/PublicTagsSubmitResultWithErrors';
@@ -59,7 +59,7 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
           <>
             <GridItem>Company website</GridItem>
             <GridItem>
-              <Link external href={ companyWebsite.url }>{ companyWebsite.domain }</Link>
+              <Link external href={ companyWebsite.href }>{ companyWebsite.domain }</Link>
             </GridItem>
           </>
         ) }

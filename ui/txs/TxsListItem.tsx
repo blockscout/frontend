@@ -9,9 +9,9 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
-import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { space } from 'toolkit/utils/htmlEntities';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { ContractAbiItemInput } from '../types';
 
-import Hint from 'ui/shared/Hint';
+import { Hint } from 'toolkit/components/Hint/Hint';
 
 import { getFieldLabel } from './utils';
 

@@ -7,10 +7,10 @@ import type { Address } from 'types/api/address';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { retry } from 'lib/api/useQueryClientConfig';
-import { SECOND } from 'lib/consts';
 import { publicClient } from 'lib/web3/client';
 import { ADDRESS_INFO } from 'stubs/address';
 import { GET_BALANCE } from 'stubs/RPC';
+import { SECOND } from 'toolkit/utils/consts';
 
 type RpcResponseType = [
     bigint | null,

@@ -2,8 +2,8 @@ import React from 'react';
 import type { AddEthereumChainParameter } from 'viem';
 
 import config from 'configs/app';
+import { SECOND } from 'toolkit/utils/consts';
 
-import { SECOND } from '../consts';
 import useRewardsActivity from '../hooks/useRewardsActivity';
 import useProvider from './useProvider';
 import { getHexadecimalChainId } from './utils';

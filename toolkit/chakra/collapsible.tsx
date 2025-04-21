@@ -2,8 +2,7 @@ import { Flex, type FlexProps } from '@chakra-ui/react';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import useUpdateEffect from 'lib/hooks/useUpdateEffect';
-
+import { useUpdateEffect } from '../hooks/useUpdateEffect';
 import type { LinkProps } from './link';
 import { Link } from './link';
 

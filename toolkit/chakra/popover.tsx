@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { CloseButton } from './close-button';
 
-interface PopoverContentProps extends ChakraPopover.ContentProps {
+export interface PopoverContentProps extends ChakraPopover.ContentProps {
   portalled?: boolean;
   portalRef?: React.RefObject<HTMLElement>;
 }

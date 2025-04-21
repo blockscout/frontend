@@ -10,8 +10,6 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
-import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
-import { space } from 'lib/html-entities';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
@@ -21,6 +19,8 @@ import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'toolkit/utils/consts';
+import { space } from 'toolkit/utils/htmlEntities';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';

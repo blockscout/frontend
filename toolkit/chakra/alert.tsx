@@ -1,8 +1,8 @@
 import type { AlertDescriptionProps } from '@chakra-ui/react';
-import { Alert as ChakraAlert } from '@chakra-ui/react';
+import { Alert as ChakraAlert, Icon } from '@chakra-ui/react';
 import * as React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import IndicatorIcon from 'icons/info_filled.svg';
 
 import { CloseButton } from './close-button';
 import { Skeleton } from './skeleton';
@@ -37,7 +37,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
     const [ isOpen, setIsOpen ] = React.useState(true);
 
-    const defaultIcon = <IconSvg name="info_filled" w="100%" h="100%"/>;
+    const defaultIcon = <Icon boxSize={ 5 }><IndicatorIcon/></Icon>;
 
     const iconElement = (() => {
       if (startElement !== undefined) {

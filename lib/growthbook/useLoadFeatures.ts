@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SECOND } from 'lib/consts';
+import { SECOND } from 'toolkit/utils/consts';
 
 import { initGrowthBook } from './init';
 

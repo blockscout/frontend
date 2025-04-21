@@ -6,10 +6,10 @@ import type { SocketMessage } from 'lib/socket/types';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import { apos, nbsp, ndash } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { apos, nbsp, ndash } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
 const IntTxsIndexingStatus = () => {

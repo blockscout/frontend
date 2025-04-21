@@ -10,7 +10,7 @@ import { useRewardsContext } from 'lib/contexts/rewards';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
-import ButtonBackTo from 'ui/shared/buttons/ButtonBackTo';
+import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';
 import AuthModalScreenEmail from './screens/AuthModalScreenEmail';
@@ -192,7 +192,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
     >
       <DialogContent>
         <DialogHeader
-          startElement={ steps.length > 1 && !steps[steps.length - 1].type.startsWith('success') && <ButtonBackTo onClick={ onPrevStep }/> }
+          startElement={ steps.length > 1 && !steps[steps.length - 1].type.startsWith('success') && <BackToButton onClick={ onPrevStep }/> }
         >
           { header }
         </DialogHeader>

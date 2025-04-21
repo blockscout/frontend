@@ -1,21 +1,21 @@
 'use client';
 
 import type { ListCollection } from '@chakra-ui/react';
-import { Box, Select as ChakraSelect, createListCollection, Flex, Portal, useSelectContext } from '@chakra-ui/react';
+import { Box, Select as ChakraSelect, createListCollection, Flex, Portal, Icon, useSelectContext } from '@chakra-ui/react';
 import { useDebounce } from '@uidotdev/usehooks';
 import * as React from 'react';
 
-import FilterInput from 'ui/shared/filters/FilterInput';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
+import ArrowIcon from 'icons/arrows/east-mini.svg';
+import CheckIcon from 'icons/check.svg';
 
+import { FilterInput } from '../components/filters/FilterInput';
 import { CloseButton } from './close-button';
 import { Skeleton } from './skeleton';
 
 export interface SelectOption<Value extends string = string> {
   value: Value;
   label: string;
-  icon?: IconName | React.ReactNode;
+  icon?: React.ReactNode;
 }
 
 export interface SelectControlProps extends ChakraSelect.ControlProps {
@@ -46,7 +46,7 @@ export const SelectControl = React.forwardRef<
                 _open={{ transform: 'rotate(90deg)' }}
                 flexShrink={ 0 }
               >
-                <IconSvg name="arrows/east-mini"/>
+                <Icon boxSize={ 5 }><ArrowIcon/></Icon>
               </ChakraSelect.Indicator>
             ) }
           </ChakraSelect.IndicatorGroup>
@@ -88,26 +88,24 @@ export const SelectContent = React.forwardRef<
   );
 });
 
+export interface SelectItemProps extends ChakraSelect.ItemProps {
+  item: SelectOption;
+}
+
 export const SelectItem = React.forwardRef<
   HTMLDivElement,
-  ChakraSelect.ItemProps
+  SelectItemProps
 >(function SelectItem(props, ref) {
   const { item, children, ...rest } = props;
 
-  const startElement = (() => {
-    if (item.icon) {
-      return typeof item.icon === 'string' ? <IconSvg name={ item.icon } boxSize={ 5 } flexShrink={ 0 }/> : item.icon;
-    }
-
-    return null;
-  })();
+  const startElement = item.icon;
 
   return (
     <ChakraSelect.Item key={ item.value } item={ item } { ...rest } ref={ ref }>
       { startElement }
       { children }
       <ChakraSelect.ItemIndicator asChild>
-        <IconSvg name="check" boxSize={ 5 } flexShrink={ 0 } ml="auto"/>
+        <Icon boxSize={ 5 } flexShrink={ 0 } ml="auto"><CheckIcon/></Icon>
       </ChakraSelect.ItemIndicator>
     </ChakraSelect.Item>
   );
@@ -142,14 +140,6 @@ export const SelectValueText = React.forwardRef<
 
       if (!item) return placeholder;
 
-      const icon = (() => {
-        if (item.icon) {
-          return typeof item.icon === 'string' ? <IconSvg name={ item.icon as IconName } boxSize={ 5 } flexShrink={ 0 }/> : item.icon;
-        }
-
-        return null;
-      })();
-
       const label = size === 'lg' ? (
         <Box
           textStyle="xs"
@@ -164,7 +154,7 @@ export const SelectValueText = React.forwardRef<
         <>
           { label }
           <Flex display="inline-flex" alignItems="center" flexWrap="nowrap" gap={ 1 }>
-            { icon }
+            { item.icon }
             <span style={{
               WebkitLineClamp: 1,
               WebkitBoxOrient: 'vertical',

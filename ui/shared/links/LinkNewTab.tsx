@@ -21,7 +21,7 @@ const LinkNewTab = ({ className, label, href }: Props) => {
         asChild
         aria-label={ label ?? 'Open link' }
         variant="icon_secondary"
-        size="md"
+        boxSize={ 5 }
         className={ className }
         borderRadius={ 0 }
       >

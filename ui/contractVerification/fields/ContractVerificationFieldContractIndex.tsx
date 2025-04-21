@@ -1,11 +1,12 @@
-import { createListCollection, useUpdateEffect } from '@chakra-ui/react';
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
 import type { SelectOption } from 'toolkit/chakra/select';
-import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
+import { FormFieldSelect } from 'toolkit/components/forms/fields/FormFieldSelect';
+import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 

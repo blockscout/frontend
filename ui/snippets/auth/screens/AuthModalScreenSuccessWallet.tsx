@@ -5,9 +5,9 @@ import type { Screen } from '../types';
 import type { UserInfo } from 'types/api/account';
 
 import config from 'configs/app';
-import { apos } from 'lib/html-entities';
 import shortenString from 'lib/shortenString';
 import { Button } from 'toolkit/chakra/button';
+import { apos } from 'toolkit/utils/htmlEntities';
 
 interface Props {
   address: string;

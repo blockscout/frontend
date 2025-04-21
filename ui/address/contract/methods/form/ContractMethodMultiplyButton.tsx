@@ -1,11 +1,11 @@
 import { chakra, List, Input, ListItem } from '@chakra-ui/react';
 import React from 'react';
 
-import { times } from 'lib/html-entities';
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { times } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

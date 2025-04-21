@@ -7,8 +7,8 @@ import { route } from 'nextjs-routes';
 
 import { getPoolTitle } from 'lib/pools/getPoolTitle';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import { distributeEntityProps } from '../base/utils';
 import * as TokenEntity from '../token/TokenEntity';

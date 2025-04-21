@@ -6,8 +6,8 @@ import type { FormFields } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
 
 import type { SelectOption } from 'toolkit/chakra/select';
-import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
-
+import { FormFieldSelect } from 'toolkit/components/forms/fields/FormFieldSelect';
+import IconSvg from 'ui/shared/IconSvg';
 interface Props {
   index: number;
   tagTypes: Array<PublicTagType> | undefined;
@@ -18,7 +18,7 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes }: Props) => {
   const getItemIcon = React.useCallback((type: PublicTagType) => {
     switch (type.type) {
       case 'name':
-        return 'publictags_slim';
+        return <IconSvg name="publictags_slim" boxSize={ 5 } flexShrink={ 0 }/>;
       case 'protocol':
       case 'generic':
         return <span>#</span>;

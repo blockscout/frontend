@@ -9,8 +9,8 @@ import type { ResourceErrorAccount } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
 import { Button } from 'toolkit/chakra/button';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 const TAG_MAX_LENGTH = 35;
 

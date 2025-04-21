@@ -4,10 +4,10 @@ import React from 'react';
 import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import { useAppContext } from 'lib/contexts/app';
-import * as regexp from 'lib/regexp';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
+import * as regexp from 'toolkit/utils/regexp';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';

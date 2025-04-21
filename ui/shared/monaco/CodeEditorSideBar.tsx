@@ -5,9 +5,9 @@ import React from 'react';
 
 import type { File, Monaco } from './types';
 
-import { shift, cmd } from 'lib/html-entities';
 import type { TabsTriggerProps } from 'toolkit/chakra/tabs';
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
+import { shift, cmd } from 'toolkit/utils/htmlEntities';
 
 import CodeEditorFileExplorer from './CodeEditorFileExplorer';
 import CodeEditorSearch from './CodeEditorSearch';

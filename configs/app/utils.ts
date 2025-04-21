@@ -1,5 +1,5 @@
-import isBrowser from 'lib/isBrowser';
-import * as regexp from 'lib/regexp';
+import { isBrowser } from 'toolkit/utils/isBrowser';
+import * as regexp from 'toolkit/utils/regexp';
 
 export const replaceQuotes = (value: string | undefined) => value?.replaceAll('\'', '"');
 

@@ -14,7 +14,8 @@ COPY types ./types
 COPY lib ./lib
 COPY configs/app ./configs/app
 COPY toolkit/theme ./toolkit/theme
-COPY ui/shared/forms/validators/url.ts ./ui/shared/forms/validators/url.ts
+COPY toolkit/utils ./toolkit/utils
+COPY toolkit/components/forms/validators/url.ts ./toolkit/components/forms/validators/url.ts
 RUN apk add git
 RUN yarn --frozen-lockfile --network-timeout 100000
 
@@ -79,6 +80,7 @@ RUN set -a && \
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 # Build app for production
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN yarn build
 
 

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Badge } from 'toolkit/chakra/badge';
 import { Heading } from 'toolkit/chakra/heading';
-import Hint from 'ui/shared/Hint';
+import { Hint } from 'toolkit/components/Hint/Hint';
 
 type Props = {
   title: string;
@@ -49,7 +49,7 @@ const RewardsDashboardCard = ({
         { title && (
           <Flex alignItems="center" gap={ 2 }>
             <Heading level="3">{ title }</Heading>
-            { hint && <Hint label={ hint }/> }
+            { hint && <Hint label={ hint } tooltipProps={{ interactive: true }}/> }
             { availableSoon && <Badge colorPalette="blue">Available soon</Badge> }
           </Flex>
         ) }

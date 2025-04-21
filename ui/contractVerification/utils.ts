@@ -20,7 +20,7 @@ import type {
 import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/client/contract';
 
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
-import stripLeadingSlash from 'lib/stripLeadingSlash';
+import { stripLeadingSlash } from 'toolkit/utils/url';
 
 export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMethod> = [
   'flattened-code',

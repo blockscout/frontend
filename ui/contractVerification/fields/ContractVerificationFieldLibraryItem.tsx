@@ -4,8 +4,8 @@ import React from 'react';
 import type { FormFields } from '../types';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';

@@ -2,10 +2,10 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { ARBITRUM_MESSAGES_ITEM } from 'stubs/arbitrumL2';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import ArbitrumL2MessagesListItem from 'ui/messages/ArbitrumL2MessagesListItem';
 import ArbitrumL2MessagesTable from 'ui/messages/ArbitrumL2MessagesTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

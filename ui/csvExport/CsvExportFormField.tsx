@@ -5,7 +5,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import type { FormFields } from './types';
 
 import dayjs from 'lib/date/dayjs';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 interface Props {
   formApi: UseFormReturn<FormFields>;

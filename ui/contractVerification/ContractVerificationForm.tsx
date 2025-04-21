@@ -1,4 +1,4 @@
-import { Grid, Text, chakra, useUpdateEffect } from '@chakra-ui/react';
+import { Grid, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -20,6 +20,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
+import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';
 
 import ContractVerificationFieldAddress from './fields/ContractVerificationFieldAddress';
 import ContractVerificationFieldLicenseType from './fields/ContractVerificationFieldLicenseType';

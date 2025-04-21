@@ -5,11 +5,11 @@ import React from 'react';
 
 import useFetch from 'lib/hooks/useFetch';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import useClipboard from 'toolkit/hooks/useClipboard';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import { useClipboard } from 'toolkit/hooks/useClipboard';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
-import FilterInput from 'ui/shared/filters/FilterInput';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';

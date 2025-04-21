@@ -5,12 +5,12 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import { Mb } from 'lib/consts';
 import { Button } from 'toolkit/chakra/button';
-import FieldError from 'ui/shared/forms/components/FieldError';
-import DragAndDropArea from 'ui/shared/forms/inputs/file/DragAndDropArea';
-import FileInput from 'ui/shared/forms/inputs/file/FileInput';
-import FileSnippet from 'ui/shared/forms/inputs/file/FileSnippet';
+import { FormFieldError } from 'toolkit/components/forms/components/FormFieldError';
+import { DragAndDropArea } from 'toolkit/components/forms/inputs/file/DragAndDropArea';
+import { FileInput } from 'toolkit/components/forms/inputs/file/FileInput';
+import { FileSnippet } from 'toolkit/components/forms/inputs/file/FileSnippet';
+import { Mb } from 'toolkit/utils/consts';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
@@ -96,11 +96,11 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title
 
     const errorElement = (() => {
       if (commonError?.type === 'required') {
-        return <FieldError message="Field is required"/>;
+        return <FormFieldError message="Field is required"/>;
       }
 
       if (commonError?.message) {
-        return <FieldError message={ commonError.message }/>;
+        return <FormFieldError message={ commonError.message }/>;
       }
 
       return null;
