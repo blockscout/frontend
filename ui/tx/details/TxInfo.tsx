@@ -103,13 +103,13 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
   const switchCredentialStatus = ((status: string) => {
     switch (status.toLocaleLowerCase()) {
-      case 'valid':
+      case 'active':
         return '#F2B310';
-      case 'Not Yet Valid':
+      case 'not yet valid':
         return '#64ABFF';
-      case 'Revoked':
+      case 'revoked':
         return '#EE6969';
-      case 'Expired':
+      case 'expired':
         return 'rgba(0, 46, 51, 0.1)';
       default:
         return 'rgba(0, 46, 51, 0.1)';
@@ -280,8 +280,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                               padding: '4px 8px',
                               borderRadius: '24px',
                               margin: '0 8px',
+                              color: status.credential_status === 'Expired' ? '#000000' : '#FFFFFF',
                             }}
-                            color={ status.credential_status === 'Expired' || status.credential_status === 'REMOVE' ? '#000000' : '#FFFFFF' }
                           >
                             { status.credential_status }
                           </span>
