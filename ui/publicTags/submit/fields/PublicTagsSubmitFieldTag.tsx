@@ -7,11 +7,11 @@ import type { PublicTagType } from 'types/api/addressMetadata';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { IconButton } from 'toolkit/chakra/icon-button';
+import { FormFieldColor } from 'toolkit/components/forms/fields/FormFieldColor';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
+import { colorValidator } from 'toolkit/components/forms/validators/color';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
-import FormFieldColor from 'ui/shared/forms/fields/FormFieldColor';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
-import { validator as colorValidator } from 'ui/shared/forms/validators/color';
 import IconSvg from 'ui/shared/IconSvg';
 
 import PublicTagsSubmitFieldTagType from './PublicTagsSubmitFieldTagType';

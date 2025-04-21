@@ -1,7 +1,7 @@
 import React from 'react';
 
-import makePrettyLink from 'lib/makePrettyLink';
 import { Link } from 'toolkit/chakra/link';
+import { makePrettyLink } from 'toolkit/utils/url';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

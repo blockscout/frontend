@@ -3,11 +3,11 @@ import React from 'react';
 
 import type { Fields } from '../types';
 
-import { times } from 'lib/html-entities';
 import type { FieldProps } from 'toolkit/chakra/field';
-import ImageUrlPreview from 'ui/shared/forms/components/ImageUrlPreview';
-import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
-import useFieldWithImagePreview from 'ui/shared/forms/utils/useFieldWithImagePreview';
+import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
+import { FormFieldImagePreview } from 'toolkit/components/forms/fields/image/FormFieldImagePreview';
+import { useImageField } from 'toolkit/components/forms/fields/image/useImageField';
+import { times } from 'toolkit/utils/htmlEntities';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 import TokenInfoIconPreview from '../TokenInfoIconPreview';
@@ -19,7 +19,7 @@ interface Props {
 
 const TokenInfoFieldIconUrl = ({ readOnly, size }: Props) => {
 
-  const previewUtils = useFieldWithImagePreview({ name: 'icon_url', isRequired: true });
+  const imageField = useImageField({ name: 'icon_url', isRequired: true });
 
   return (
     <Flex columnGap={ 5 }>
@@ -28,11 +28,11 @@ const TokenInfoFieldIconUrl = ({ readOnly, size }: Props) => {
         placeholder={ `Link to icon URL, link to download a SVG or 48${ times }48 PNG icon logo` }
         readOnly={ readOnly }
         size={ size }
-        { ...previewUtils.input }
+        { ...imageField.input }
       />
-      <TokenInfoIconPreview url={ previewUtils.preview.src } isInvalid={ previewUtils.preview.isInvalid }>
-        <ImageUrlPreview
-          { ...previewUtils.preview }
+      <TokenInfoIconPreview url={ imageField.preview.src } isInvalid={ imageField.preview.isInvalid }>
+        <FormFieldImagePreview
+          { ...imageField.preview }
           fallback={ <TokenLogoPlaceholder boxSize={ 10 }/> }
           boxSize={ 10 }
           borderRadius="base"

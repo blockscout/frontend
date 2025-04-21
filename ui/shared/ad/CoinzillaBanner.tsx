@@ -5,7 +5,7 @@ import React from 'react';
 import type { BannerProps } from './types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import isBrowser from 'lib/isBrowser';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 
 const CoinzillaBanner = ({ className, platform }: BannerProps) => {
   const isInBrowser = isBrowser();

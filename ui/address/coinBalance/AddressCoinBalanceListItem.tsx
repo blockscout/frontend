@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 
-import { WEI, ZERO } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { WEI, ZERO } from 'toolkit/utils/consts';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';

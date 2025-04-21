@@ -3,11 +3,11 @@ import React from 'react';
 
 import type { EntityTag } from './types';
 
-import makePrettyLink from 'lib/makePrettyLink';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { makePrettyLink } from 'toolkit/utils/url';
 
 interface Props {
   data: EntityTag;
@@ -44,7 +44,7 @@ const EntityTagTooltip = ({ data, children }: Props) => {
         </Flex>
       ) }
       { data.meta?.tooltipDescription && <chakra.span>{ data.meta.tooltipDescription }</chakra.span> }
-      { link && <Link external href={ link.url } onClick={ handleLinkClick }>{ link.domain }</Link> }
+      { link && <Link external href={ link.href } onClick={ handleLinkClick }>{ link.domain }</Link> }
     </Flex>
   );
 

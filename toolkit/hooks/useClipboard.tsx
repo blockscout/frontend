@@ -1,13 +1,13 @@
 import { useCopyToClipboard } from '@uidotdev/usehooks';
 import React from 'react';
 
-import { SECOND } from 'lib/consts';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { SECOND } from 'toolkit/utils/consts';
 
 import { useDisclosure } from './useDisclosure';
 
 // NOTE: If you don't need the disclosure and the timeout features, please use the useCopyToClipboard hook directly
-export default function useClipboard(text: string, timeout = SECOND) {
+export function useClipboard(text: string, timeout = SECOND) {
   const flagTimeoutRef = React.useRef<number | null>(null);
   const disclosureTimeoutRef = React.useRef<number | null>(null);
   const [ hasCopied, setHasCopied ] = React.useState(false);

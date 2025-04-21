@@ -6,7 +6,6 @@ import type { UserInfo } from 'types/api/account';
 
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
-import { YEAR } from 'lib/consts';
 import * as cookies from 'lib/cookies';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObj from 'lib/errors/getErrorObj';
@@ -14,6 +13,7 @@ import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import type * as mixpanel from 'lib/mixpanel';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import { toaster } from 'toolkit/chakra/toaster';
+import { YEAR } from 'toolkit/utils/consts';
 
 function composeMessage(address: string, nonceBlockscout: string, nonceRewards: string) {
   const feature = config.features.rewards;

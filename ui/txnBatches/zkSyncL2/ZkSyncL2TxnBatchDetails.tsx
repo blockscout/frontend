@@ -9,12 +9,12 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES, type ZkSyncBatch } from 'types/api/zkSyncL
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
-import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { currencyUnits } from 'lib/units';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { WEI, WEI_IN_GWEI } from 'toolkit/utils/consts';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';

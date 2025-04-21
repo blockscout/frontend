@@ -4,8 +4,8 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import { ZERO } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
+import { ZERO } from 'toolkit/utils/consts';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import IconSvg from 'ui/shared/IconSvg';

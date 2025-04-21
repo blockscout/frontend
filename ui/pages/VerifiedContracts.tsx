@@ -8,13 +8,13 @@ import type { VerifiedContractsSorting, VerifiedContractsSortingField, VerifiedC
 import config from 'configs/app';
 import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { VERIFIED_CONTRACT_INFO } from 'stubs/contract';
 import { generateListStub } from 'stubs/utils';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import FilterInput from 'ui/shared/filters/FilterInput';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

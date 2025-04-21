@@ -2,7 +2,7 @@ import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
-import useIsSticky from 'lib/hooks/useIsSticky';
+import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 
 type Props = {
   children: React.ReactNode;

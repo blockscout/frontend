@@ -4,7 +4,7 @@ import React from 'react';
 import type { TransactionsSortingValue } from 'types/api/transaction';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
-// import FilterInput from 'ui/shared/filters/FilterInput';
+// import { FilterInput } from 'toolkit/components/filters/FilterInput';
 
 import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';

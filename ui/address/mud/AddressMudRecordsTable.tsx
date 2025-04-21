@@ -9,11 +9,11 @@ import { route } from 'nextjs-routes';
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { middot } from 'lib/html-entities';
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import type { TableColumnHeaderProps } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { middot } from 'toolkit/utils/htmlEntities';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 

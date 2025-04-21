@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
-import { ZERO } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import { ZERO } from 'toolkit/utils/consts';
 
 import AddressesTableItem from './AddressesTableItem';
 

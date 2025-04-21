@@ -5,8 +5,8 @@ import type * as bens from '@blockscout/bens-types';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import stripTrailingSlash from 'lib/stripTrailingSlash';
 import { Badge } from 'toolkit/chakra/badge';
+import { stripTrailingSlash } from 'toolkit/utils/url';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';

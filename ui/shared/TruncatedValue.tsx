@@ -3,7 +3,7 @@ import type { Placement } from '@floating-ui/dom';
 import React from 'react';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 
 interface Props {
   className?: string;

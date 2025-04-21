@@ -5,7 +5,6 @@ import React from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
 import * as cookies from 'lib/cookies';
-import { apos } from 'lib/html-entities';
 import useWallet from 'lib/web3/useWallet';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
@@ -15,6 +14,7 @@ import { Input } from 'toolkit/chakra/input';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
+import { apos } from 'toolkit/utils/htmlEntities';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 type Props = {

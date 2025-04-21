@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import { WEI_IN_GWEI } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { WEI_IN_GWEI } from 'toolkit/utils/consts';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TextSeparator from 'ui/shared/TextSeparator';

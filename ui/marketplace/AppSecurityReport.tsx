@@ -10,11 +10,11 @@ import config from 'configs/app';
 // Probably because of the gradient
 // eslint-disable-next-line no-restricted-imports
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
-import { apos } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { apos } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';

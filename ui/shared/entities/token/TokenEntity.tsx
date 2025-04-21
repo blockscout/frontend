@@ -7,9 +7,9 @@ import { route } from 'nextjs-routes';
 
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import { distributeEntityProps, getIconProps } from '../base/utils';
 

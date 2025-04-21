@@ -1,6 +1,6 @@
 import type { Feature } from './types';
 
-import stripTrailingSlash from 'lib/stripTrailingSlash';
+import { stripTrailingSlash } from 'toolkit/utils/url';
 
 import { getEnvValue } from '../utils';
 

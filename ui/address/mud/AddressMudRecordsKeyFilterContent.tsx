@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FilterInput from 'ui/shared/filters/FilterInput';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 type Props = {

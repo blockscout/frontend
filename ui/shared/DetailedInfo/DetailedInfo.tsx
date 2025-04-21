@@ -3,8 +3,8 @@ import { Flex, Grid, GridItem, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import * as ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
-import Hint from 'ui/shared/Hint';
 
 export const Container = (props: GridProps) => {
   return (

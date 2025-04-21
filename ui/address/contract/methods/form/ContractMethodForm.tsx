@@ -7,11 +7,11 @@ import { encodeFunctionData, type AbiFunction } from 'viem';
 import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '../types';
 
 import config from 'configs/app';
-import { SECOND } from 'lib/consts';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { SECOND } from 'toolkit/utils/consts';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { isReadMethod } from '../utils';

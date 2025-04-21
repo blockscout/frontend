@@ -2,7 +2,7 @@ import type { ColorThemeId } from 'types/settings';
 
 import type { ColorMode } from 'toolkit/chakra/color-mode';
 
-interface ColorTheme {
+export interface ColorTheme {
   id: ColorThemeId;
   label: string;
   colorMode: ColorMode;

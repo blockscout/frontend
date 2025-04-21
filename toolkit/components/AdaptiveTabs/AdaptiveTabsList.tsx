@@ -6,10 +6,10 @@ import type { TabItemRegular } from './types';
 
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useIsSticky from 'lib/hooks/useIsSticky';
-import { Skeleton } from 'toolkit/chakra/skeleton';
-import { TabsCounter, TabsList, TabsTrigger } from 'toolkit/chakra/tabs';
 
+import { useIsSticky } from '../..//hooks/useIsSticky';
+import { Skeleton } from '../../chakra/skeleton';
+import { TabsCounter, TabsList, TabsTrigger } from '../../chakra/tabs';
 import AdaptiveTabsMenu from './AdaptiveTabsMenu';
 import useAdaptiveTabs from './useAdaptiveTabs';
 import useScrollToActiveTab from './useScrollToActiveTab';

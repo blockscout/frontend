@@ -10,9 +10,9 @@ import useDebounce from 'lib/hooks/useDebounce';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import { Select } from 'toolkit/chakra/select';
 import { Tag } from 'toolkit/chakra/tag';
-import ClearButton from 'ui/shared/ClearButton';
+import { ClearButton } from 'toolkit/components/buttons/ClearButton';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import FilterInput from 'ui/shared/filters/FilterInput';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 

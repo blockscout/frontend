@@ -1,7 +1,8 @@
-import { RatingGroup, useRatingGroup } from '@chakra-ui/react';
+import { Icon, RatingGroup, useRatingGroup } from '@chakra-ui/react';
 import * as React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import StarFilledIcon from 'icons/star_filled.svg';
+import StarOutlineIcon from 'icons/star_outline.svg';
 
 export interface RatingProps extends Omit<RatingGroup.RootProviderProps, 'value'> {
   count?: number;
@@ -24,7 +25,9 @@ export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
         <RatingGroup.HiddenInput/>
         <RatingGroup.Control>
           { Array.from({ length: count }).map((_, index) => {
-            const icon = index < highlightedIndex ? <IconSvg name="star_filled"/> : <IconSvg name="star_outline"/>;
+            const icon = index < highlightedIndex ?
+              <Icon boxSize={ 5 }><StarFilledIcon/></Icon> :
+              <Icon boxSize={ 5 }><StarOutlineIcon/></Icon>;
 
             return (
               <RatingGroup.Item key={ index } index={ index + 1 }>

@@ -3,7 +3,7 @@ import React from 'react';
 import type { IconButtonProps } from 'toolkit/chakra/icon-button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import useClipboard from 'toolkit/hooks/useClipboard';
+import { useClipboard } from 'toolkit/hooks/useClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 
 export interface Props extends Omit<IconButtonProps, 'type' | 'loading'> {

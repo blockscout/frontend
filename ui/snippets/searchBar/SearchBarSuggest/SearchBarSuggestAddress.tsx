@@ -7,10 +7,10 @@ import type { SearchResultAddressOrContract, SearchResultMetadataTag } from 'typ
 import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
+import { ADDRESS_REGEXP } from 'toolkit/components/forms/validators/address';
 import SearchResultEntityTag from 'ui/searchResults/SearchResultEntityTag';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import { ADDRESS_REGEXP } from 'ui/shared/forms/validators/address';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 type Props = ItemsProps<SearchResultAddressOrContract | SearchResultMetadataTag>;

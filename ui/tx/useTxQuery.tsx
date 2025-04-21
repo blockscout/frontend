@@ -10,12 +10,12 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { retry } from 'lib/api/useQueryClientConfig';
-import { SECOND } from 'lib/consts';
 import delay from 'lib/delay';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { TX, TX_ZKEVM_L2 } from 'stubs/tx';
+import { SECOND } from 'toolkit/utils/consts';
 
 const rollupFeature = config.features.rollup;
 

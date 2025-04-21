@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { GasPriceInfo } from 'types/api/stats';
 
-import { space } from 'lib/html-entities';
+import { space } from 'toolkit/utils/htmlEntities';
 import GasPrice from 'ui/shared/gas/GasPrice';
 
 interface Props {

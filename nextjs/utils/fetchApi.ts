@@ -5,8 +5,8 @@ import { httpLogger } from 'nextjs/utils/logger';
 
 import { RESOURCES } from 'lib/api/resources';
 import type { ResourceName, ResourcePathParams, ResourcePayload } from 'lib/api/resources';
-import { SECOND } from 'lib/consts';
 import metrics from 'lib/monitoring/metrics';
+import { SECOND } from 'toolkit/utils/consts';
 
 type Params<R extends ResourceName> = (
   {

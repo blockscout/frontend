@@ -1,11 +1,11 @@
 import { Box, Text, chakra } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
-import { ndash } from 'lib/html-entities';
-import isBrowser from 'lib/isBrowser';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { ndash } from 'toolkit/utils/htmlEntities';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 
 type AdData = {
   ad: {

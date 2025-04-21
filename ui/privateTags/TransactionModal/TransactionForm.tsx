@@ -11,8 +11,8 @@ import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
 import { Button } from 'toolkit/chakra/button';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import { TRANSACTION_HASH_LENGTH, TRANSACTION_HASH_REGEXP } from 'ui/shared/forms/validators/transaction';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { TRANSACTION_HASH_LENGTH, TRANSACTION_HASH_REGEXP } from 'toolkit/components/forms/validators/transaction';
 
 const TAG_MAX_LENGTH = 35;
 

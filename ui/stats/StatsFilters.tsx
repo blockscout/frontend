@@ -5,8 +5,8 @@ import type * as stats from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
 import { Select } from 'toolkit/chakra/select';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
-import FilterInput from 'ui/shared/filters/FilterInput';
 
 type Props = {
   sections?: Array<stats.LineChartSection>;

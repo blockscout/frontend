@@ -6,10 +6,10 @@ import type { Log } from 'types/api/log';
 import { route } from 'nextjs-routes';
 
 // import searchIcon from 'icons/search.svg';
-import { space } from 'lib/html-entities';
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { space } from 'toolkit/utils/htmlEntities';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';

@@ -8,7 +8,7 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import Hint from 'ui/shared/Hint';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';

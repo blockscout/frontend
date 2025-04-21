@@ -8,7 +8,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import { Badge } from 'toolkit/chakra/badge';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
-import FilterInput from 'ui/shared/filters/FilterInput';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 const RESET_VALUE = 'all';
