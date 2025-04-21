@@ -1,17 +1,18 @@
 import { Box, Flex, Icon, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import jsonFileIcon from 'icons/files/json.svg';
-import solFileIcon from 'icons/files/sol.svg';
-import yulFileIcon from 'icons/files/yul.svg';
+import JsonFileIcon from 'icons/files/json.svg';
+import PlaceholderFileIcon from 'icons/files/placeholder.svg';
+import SolFileIcon from 'icons/files/sol.svg';
+import YulFileIcon from 'icons/files/yul.svg';
 
 import { CloseButton } from '../../../../chakra/close-button';
 import { Hint } from '../../../../components/Hint/Hint';
 
 const FILE_ICONS: Record<string, React.ReactNode> = {
-  '.json': jsonFileIcon,
-  '.sol': solFileIcon,
-  '.yul': yulFileIcon,
+  '.json': <JsonFileIcon/>,
+  '.sol': <SolFileIcon/>,
+  '.yul': <YulFileIcon/>,
 };
 
 function getFileExtension(fileName: string) {
@@ -39,7 +40,7 @@ export const FileSnippet = chakra(({ file, className, index, onRemove, isDisable
   }, [ index, onRemove ]);
 
   const fileExtension = getFileExtension(file.name);
-  const fileIcon = FILE_ICONS[fileExtension] || 'files/placeholder';
+  const fileIcon = FILE_ICONS[fileExtension] || <PlaceholderFileIcon/>;
 
   return (
     <Flex

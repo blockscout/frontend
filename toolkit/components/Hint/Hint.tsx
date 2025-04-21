@@ -15,7 +15,7 @@ interface Props extends IconButtonProps {
   as?: React.ElementType;
 }
 
-export const Hint = React.memo(({ label, tooltipProps, isLoading, ...rest }: Props) => {
+export const Hint = React.memo(({ label, tooltipProps, isLoading, boxSize = 5, ...rest }: Props) => {
   return (
     <Tooltip
       content={ label }
@@ -24,14 +24,14 @@ export const Hint = React.memo(({ label, tooltipProps, isLoading, ...rest }: Pro
     >
       <IconButton
         aria-label="hint"
-        boxSize={ 5 }
+        boxSize={ boxSize }
         loadingSkeleton={ isLoading }
         borderRadius="sm"
         color="icon.info"
         _hover={{ color: 'link.primary.hover' }}
         { ...rest }
       >
-        <Icon boxSize={ 5 }>
+        <Icon boxSize={ boxSize }>
           <InfoIcon/>
         </Icon>
       </IconButton>
