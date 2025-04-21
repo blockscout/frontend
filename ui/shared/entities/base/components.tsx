@@ -23,7 +23,7 @@ export interface EntityBaseProps {
   icon?: EntityIconProps;
   isExternal?: boolean;
   isLoading?: boolean;
-  isTooltipDisabled?: boolean;
+  noTooltip?: boolean;
   noCopy?: boolean;
   noIcon?: boolean;
   noLink?: boolean;
@@ -112,12 +112,12 @@ const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRig
   );
 };
 
-export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'isTooltipDisabled' | 'variant'> {
+export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'noTooltip' | 'variant'> {
   asProp?: React.ElementType;
   text: string;
 }
 
-const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, isTooltipDisabled, variant }: ContentBaseProps) => {
+const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, noTooltip, variant }: ContentBaseProps) => {
   const styles = getContentProps(variant);
 
   if (truncation === 'tail') {
@@ -139,7 +139,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
             hash={ text }
             as={ asProp }
             type="long"
-            isTooltipDisabled={ isTooltipDisabled }
+            noTooltip={ noTooltip }
           />
         );
       case 'constant':
@@ -147,7 +147,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
           <HashStringShorten
             hash={ text }
             as={ asProp }
-            isTooltipDisabled={ isTooltipDisabled }
+            noTooltip={ noTooltip }
           />
         );
       case 'dynamic':
@@ -156,7 +156,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
             hash={ text }
             as={ asProp }
             tailLength={ tailLength }
-            isTooltipDisabled={ isTooltipDisabled }
+            noTooltip={ noTooltip }
           />
         );
       case 'none':
@@ -178,7 +178,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
   );
 });
 
-export type CopyBaseProps = Pick<CopyToClipboardProps, 'isLoading' | 'text'> & Pick<EntityBaseProps, 'noCopy'>;
+export type CopyBaseProps = Pick<CopyToClipboardProps, 'isLoading' | 'text'> & Pick<EntityBaseProps, 'noCopy' | 'noTooltip'>;
 
 const Copy = ({ noCopy, ...props }: CopyBaseProps) => {
   if (noCopy) {

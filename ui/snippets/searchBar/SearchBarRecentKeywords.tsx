@@ -80,7 +80,7 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
         >
           { kw.startsWith('0x') ? (
             <Box overflow="hidden" whiteSpace="nowrap">
-              <HashStringShortenDynamic hash={ kw } isTooltipDisabled/>
+              <HashStringShortenDynamic hash={ kw } noTooltip/>
             </Box>
           ) :
             <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ kw }</Text>

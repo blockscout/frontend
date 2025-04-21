@@ -51,11 +51,11 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
           <AddressEntity
             address={{ hash: web3AccountWithDomain.address, ens_domain_name: web3AccountWithDomain.domain }}
             isLoading={ web3AccountWithDomain.isLoading }
-            isTooltipDisabled
             truncation="dynamic"
             fontSize="sm"
             fontWeight={ 500 }
             noAltHash
+            noTooltip
             onClick={ handleAddressClick }
           />
           { web3Wallet.isReconnecting ? <Spinner size="sm" m="2px" flexShrink={ 0 }/> : (

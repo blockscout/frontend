@@ -33,7 +33,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: ItemsProps<Search
       as={ shouldHighlightHash ? 'mark' : 'span' }
       display="block"
     >
-      <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ data.block_hash } noTooltip/>
     </Text>
   ) : null;
   const date = !isFutureBlock ? dayjs(data.timestamp).format('llll') : undefined;
