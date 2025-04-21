@@ -85,7 +85,7 @@ export default function useTxQuery(params?: Params): TxQuery {
             expiration_date: rp1.expiration_date[index],
           };
         }),
-        SchemaID: rp1.scheme_id || '/',
+        SchemaID: rp1.scheme_id[0] || '/',
         block_number: rp1.block_number,
         confirmations: rp1.block_confirmations,
         transaction_status: rp1.transaction_status,
