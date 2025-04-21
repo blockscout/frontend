@@ -118,7 +118,7 @@ export type ExplorerTransaction = {
   block_number: number;
   block_confirmations: number;
   confirmed_within: number;
-  scheme_id?: number | string;
+  scheme_id: Array<string>;
   credential_id: Array<string>;
   credential_status: Array<unknown>;
   from_address: string;

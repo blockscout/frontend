@@ -121,8 +121,8 @@ const ObjectDetails: NextPage = () => {
         total_credential_number: number; total_issued_number: number;
       };
       setLoading(false);
-      setTotalIssued(rp2.total_credential_number);
-      setTotalCredential(rp2.total_issued_number);
+      setTotalIssued(rp2.total_issued_number);
+      setTotalCredential(rp2.total_credential_number);
     } catch (error: any) {
       setLoading(false);
       throw Error(error);
