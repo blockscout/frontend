@@ -91,7 +91,7 @@ const ObjectDetails: NextPage = () => {
       const tableList: Array<IssuanceTalbeListType> = [];
       orderBy(rp1.title_data, [ 'transaction_status' ]).forEach((v: any) => {
         tableList.push({
-          'Schema ID': v.scheme_id[0] || '/',
+          'Schema ID': v.scheme_id?.length ? v.scheme_id[0] || '/' : '/',
           'Txn hash': v.tx_hash,
           Block: v.block_number,
           Method: v.method,
