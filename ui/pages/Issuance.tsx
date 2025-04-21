@@ -93,7 +93,7 @@ const ObjectDetails: NextPage = () => {
       const tableList: Array<IssuanceTalbeListType> = [];
       orderBy(rp1.title_data, [ 'transaction_status' ]).forEach((v: any) => {
         tableList.push({
-          'Credential ID': v.credential_id[0] || '/',
+          'Credential ID': v.credential_id?.length ? v.credential_id[0] || '/' : '/',
           'Txn hash': v.tx_hash,
           Block: v.block_number,
           Method: v.method,
