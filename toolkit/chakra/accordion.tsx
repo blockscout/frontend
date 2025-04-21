@@ -57,7 +57,7 @@ export const AccordionItemTrigger = React.forwardRef<
     </Accordion.ItemIndicator>
   ) : (
     <Accordion.ItemIndicator rotate={{ base: '180deg', _open: '270deg' }} display="flex">
-      <Icon><IndicatorIcon/></Icon>
+      <Icon boxSize={ 5 }><IndicatorIcon/></Icon>
     </Accordion.ItemIndicator>
   );
 

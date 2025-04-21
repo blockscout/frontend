@@ -31,7 +31,7 @@ export const Hint = React.memo(({ label, tooltipProps, isLoading, ...rest }: Pro
         _hover={{ color: 'link.primary.hover' }}
         { ...rest }
       >
-        <Icon>
+        <Icon boxSize={ 5 }>
           <InfoIcon/>
         </Icon>
       </IconButton>

@@ -46,7 +46,7 @@ export const SelectControl = React.forwardRef<
                 _open={{ transform: 'rotate(90deg)' }}
                 flexShrink={ 0 }
               >
-                <Icon><ArrowIcon/></Icon>
+                <Icon boxSize={ 5 }><ArrowIcon/></Icon>
               </ChakraSelect.Indicator>
             ) }
           </ChakraSelect.IndicatorGroup>

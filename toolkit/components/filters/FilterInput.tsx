@@ -53,7 +53,7 @@ export const FilterInput = ({
     inputRef?.current?.focus();
   }, [ onChange ]);
 
-  const startElement = <Icon><SearchIcon/></Icon>;
+  const startElement = <Icon boxSize={ 5 }><SearchIcon/></Icon>;
   const endElement = <ClearButton onClick={ handleFilterQueryClear } visible={ filterQuery.length > 0 }/>;
 
   return (

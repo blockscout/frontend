@@ -37,7 +37,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
     const [ isOpen, setIsOpen ] = React.useState(true);
 
-    const defaultIcon = <Icon><IndicatorIcon/></Icon>;
+    const defaultIcon = <Icon boxSize={ 5 }><IndicatorIcon/></Icon>;
 
     const iconElement = (() => {
       if (startElement !== undefined) {

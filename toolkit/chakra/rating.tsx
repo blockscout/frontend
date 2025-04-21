@@ -25,7 +25,9 @@ export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
         <RatingGroup.HiddenInput/>
         <RatingGroup.Control>
           { Array.from({ length: count }).map((_, index) => {
-            const icon = index < highlightedIndex ? <Icon><StarFilledIcon/></Icon> : <Icon><StarOutlineIcon/></Icon>;
+            const icon = index < highlightedIndex ?
+              <Icon boxSize={ 5 }><StarFilledIcon/></Icon> :
+              <Icon boxSize={ 5 }><StarOutlineIcon/></Icon>;
 
             return (
               <RatingGroup.Item key={ index } index={ index + 1 }>
