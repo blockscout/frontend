@@ -81,8 +81,9 @@ export default function useTxQuery(params?: Params): TxQuery {
         credential_status: rp1.credential_id && rp1.credential_id.map((value, index) => {
           return {
             credential_id: value,
+            credential_address: rp1.user_addr[index],
             credential_status: rp1.credential_status[index],
-            expiration_date: rp1.expiration_date[index],
+            expiration_date: rp1.expiration_date[index].replace('Z', ''),
           };
         }),
         SchemaID: rp1.scheme_id?.length ? rp1.scheme_id[0] : '/',
@@ -101,7 +102,7 @@ export default function useTxQuery(params?: Params): TxQuery {
         fee: {
           value: rp1.tx_fee,
         },
-        timestamp: rp1.tx_time,
+        timestamp: rp1.tx_time.replace('Z', ''),
         value: rp1.tx_value,
         gas_price: rp1.gas_price,
         gas_used: rp1.gas_used,

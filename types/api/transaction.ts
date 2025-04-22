@@ -120,6 +120,7 @@ export type ExplorerTransaction = {
   confirmed_within: number;
   scheme_id: Array<string>;
   credential_id: Array<string>;
+  user_addr: Array<string>;
   credential_status: Array<unknown>;
   from_address: string;
   gas_base: string;
