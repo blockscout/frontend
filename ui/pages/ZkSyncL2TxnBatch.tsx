@@ -67,7 +67,7 @@ const ZkSyncL2TxnBatch = () => {
     {
       id: 'txs',
       title: 'Transactions',
-      component: <TxsWithFrontendSorting query={ batchTxsQuery } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
+      component: <TxsWithFrontendSorting query={ batchTxsQuery } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
     },
   ].filter(Boolean)), [ batchQuery, batchTxsQuery, hasPagination ]);
 

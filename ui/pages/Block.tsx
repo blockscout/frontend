@@ -73,7 +73,7 @@ const BlockPageContent = () => {
       component: (
         <>
           { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={ 6 }/> }
-          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>
+          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>
         </>
       ),
     },
@@ -82,7 +82,7 @@ const BlockPageContent = () => {
         id: 'blob_txs',
         title: 'Blob txns',
         component: (
-          <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
+          <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false }/>
         ),
       } : null,
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?

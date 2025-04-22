@@ -9,7 +9,6 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
@@ -91,8 +90,6 @@ const Transactions = () => {
     },
   });
 
-  const { num, socketAlert } = useNewTxsSocket();
-
   const isAuth = useIsAuth();
 
   const tabs: Array<TabItemRegular> = [
@@ -102,9 +99,7 @@ const Transactions = () => {
       component:
         <TxsWithFrontendSorting
           query={ txsValidatedQuery }
-          showSocketInfo={ txsValidatedQuery.pagination.page === 1 }
-          socketInfoNum={ num }
-          socketInfoAlert={ socketAlert }
+          socketType="txs_validated"
           top={ TABS_HEIGHT }
         /> },
     {
@@ -114,9 +109,7 @@ const Transactions = () => {
         <TxsWithFrontendSorting
           query={ txsPendingQuery }
           showBlockInfo={ false }
-          showSocketInfo={ txsPendingQuery.pagination.page === 1 }
-          socketInfoNum={ num }
-          socketInfoAlert={ socketAlert }
+          socketType="txs_pending"
           top={ TABS_HEIGHT }
         />
       ),
@@ -127,9 +120,6 @@ const Transactions = () => {
       component: (
         <TxsWithFrontendSorting
           query={ txsWithBlobsQuery }
-          showSocketInfo={ txsWithBlobsQuery.pagination.page === 1 }
-          socketInfoNum={ num }
-          socketInfoAlert={ socketAlert }
           top={ TABS_HEIGHT }
         />
       ),

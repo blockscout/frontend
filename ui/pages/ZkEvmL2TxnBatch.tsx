@@ -47,7 +47,7 @@ const ZkEvmL2TxnBatch = () => {
 
   const tabs: Array<TabItemRegular> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <ZkEvmL2TxnBatchDetails query={ batchQuery }/> },
-    { id: 'txs', title: 'Transactions', component: <TxsWithFrontendSorting query={ batchTxsQuery } showSocketInfo={ false }/> },
+    { id: 'txs', title: 'Transactions', component: <TxsWithFrontendSorting query={ batchTxsQuery }/> },
   ].filter(Boolean)), [ batchQuery, batchTxsQuery ]);
 
   const backLink = React.useMemo(() => {
