@@ -13,7 +13,6 @@ import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { ZKSYNC_L2_TXN_BATCH } from 'stubs/zkSyncL2';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -92,15 +91,13 @@ const ZkSyncL2TxnBatch = () => {
         title={ `Txn batch #${ number }` }
         backLink={ backLink }
       />
-      { batchQuery.isPlaceholderData ?
-        <RoutedTabsSkeleton tabs={ tabs }/> : (
-          <RoutedTabs
-            tabs={ tabs }
-            listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-            rightSlot={ hasPagination ? <Pagination { ...(batchTxsQuery.pagination) }/> : null }
-            stickyEnabled={ hasPagination }
-          />
-        ) }
+      <RoutedTabs
+        tabs={ tabs }
+        isLoading={ batchQuery.isPlaceholderData }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        rightSlot={ hasPagination ? <Pagination { ...(batchTxsQuery.pagination) }/> : null }
+        stickyEnabled={ hasPagination }
+      />
     </>
   );
 };

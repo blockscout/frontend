@@ -9,6 +9,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 
 import { useIsSticky } from '../..//hooks/useIsSticky';
 import { Skeleton } from '../../chakra/skeleton';
+import type { TabsProps } from '../../chakra/tabs';
 import { TabsCounter, TabsList, TabsTrigger } from '../../chakra/tabs';
 import AdaptiveTabsMenu from './AdaptiveTabsMenu';
 import useAdaptiveTabs from './useAdaptiveTabs';
@@ -32,6 +33,7 @@ export interface BaseProps {
 
 interface Props extends BaseProps {
   activeTab: string;
+  variant: TabsProps['variant'];
 }
 
 const HIDDEN_ITEM_STYLES: HTMLChakraProps<'button'> = {
@@ -41,19 +43,17 @@ const HIDDEN_ITEM_STYLES: HTMLChakraProps<'button'> = {
   visibility: 'hidden',
 };
 
-const getItemStyles = (index: number, tabsCut: number | undefined) => {
-  if (tabsCut === undefined) {
+const getItemStyles = (index: number, tabsCut: number | undefined, isLoading: boolean | undefined) => {
+  if (tabsCut === undefined || isLoading) {
     return HIDDEN_ITEM_STYLES as never;
   }
 
   return index < tabsCut ? {} : HIDDEN_ITEM_STYLES as never;
 };
 
-const getMenuStyles = (tabsLength: number, tabsCut: number | undefined) => {
-  if (tabsCut === undefined) {
-    return {
-      opacity: 0,
-    };
+const getMenuStyles = (tabsLength: number, tabsCut: number | undefined, isLoading: boolean | undefined) => {
+  if (tabsCut === undefined || isLoading) {
+    return HIDDEN_ITEM_STYLES;
   }
 
   return tabsCut >= tabsLength ? HIDDEN_ITEM_STYLES : {};
@@ -71,6 +71,7 @@ const AdaptiveTabsList = (props: Props) => {
     leftSlotProps,
     stickyEnabled,
     isLoading,
+    variant,
   } = props;
 
   const scrollDirection = useScrollDirection();
@@ -80,10 +81,12 @@ const AdaptiveTabsList = (props: Props) => {
     return [ ...tabs, menuButton ];
   }, [ tabs ]);
 
-  const { tabsCut, tabsRefs, listRef, rightSlotRef, leftSlotRef } = useAdaptiveTabs(tabsList, isMobile);
+  const { tabsCut, tabsRefs, listRef, rightSlotRef, leftSlotRef } = useAdaptiveTabs(tabsList, isLoading || isMobile);
   const isSticky = useIsSticky(listRef, 5, stickyEnabled);
   const activeTabIndex = tabsList.findIndex((tab) => getTabValue(tab) === activeTab) ?? 0;
   useScrollToActiveTab({ activeTabIndex, listRef, tabsRefs, isMobile, isLoading });
+
+  const isReady = !isLoading && tabsCut !== undefined;
 
   return (
     <TabsList
@@ -92,10 +95,6 @@ const AdaptiveTabsList = (props: Props) => {
       alignItems="center"
       whiteSpace="nowrap"
       bgColor={{ _light: 'white', _dark: 'black' }}
-      // initially our cut is 0 and we don't want to show the list
-      // but we want to keep all items in the tabs row so it won't collapse
-      // that's why we only change opacity but not the position itself
-      opacity={ tabsCut ? 1 : 0 }
       marginBottom={ 6 }
       mx={{ base: '-12px', lg: 'unset' }}
       px={{ base: '12px', lg: 'unset' }}
@@ -134,15 +133,11 @@ const AdaptiveTabsList = (props: Props) => {
         </Box>
       )
       }
-      { tabsList.slice(0, isLoading ? 5 : Infinity).map((tab, index) => {
+      { tabsList.map((tab, index) => {
         const value = getTabValue(tab);
         const ref = tabsRefs[index];
 
         if (tab.id === 'menu') {
-          if (isLoading) {
-            return null;
-          }
-
           return (
             <AdaptiveTabsMenu
               key="menu"
@@ -150,7 +145,7 @@ const AdaptiveTabsList = (props: Props) => {
               tabs={ tabs }
               tabsCut={ tabsCut ?? 0 }
               isActive={ activeTabIndex > 0 && tabsCut !== undefined && tabsCut > 0 && activeTabIndex >= tabsCut }
-              { ...getMenuStyles(tabs.length, tabsCut) }
+              { ...getMenuStyles(tabs.length, tabsCut, isLoading) }
             />
           );
         }
@@ -162,19 +157,30 @@ const AdaptiveTabsList = (props: Props) => {
             ref={ ref }
             scrollSnapAlign="start"
             flexShrink={ 0 }
-            { ...getItemStyles(index, tabsCut) }
+            { ...getItemStyles(index, tabsCut, isLoading) }
           >
-            { isLoading ? (
-              <Skeleton loading>
-                { typeof tab.title === 'function' ? tab.title() : tab.title }
-                <TabsCounter count={ tab.count }/>
-              </Skeleton>
-            ) : (
-              <>
-                { typeof tab.title === 'function' ? tab.title() : tab.title }
-                <TabsCounter count={ tab.count }/>
-              </>
-            ) }
+            { typeof tab.title === 'function' ? tab.title() : tab.title }
+            <TabsCounter count={ tab.count }/>
+          </TabsTrigger>
+        );
+      }) }
+      { tabs.slice(0, isReady ? 0 : 5).map((tab, index) => {
+        const value = `${ getTabValue(tab) }-pre`;
+        return (
+          <TabsTrigger
+            key={ value }
+            value={ value }
+            flexShrink={ 0 }
+            bgColor={
+              activeTabIndex === index && (variant === 'solid' || variant === undefined) ?
+                { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } :
+                undefined
+            }
+          >
+            <Skeleton loading>
+              { typeof tab.title === 'function' ? tab.title() : tab.title }
+              <TabsCounter count={ tab.count }/>
+            </Skeleton>
           </TabsTrigger>
         );
       }) }

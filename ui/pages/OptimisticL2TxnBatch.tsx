@@ -12,7 +12,6 @@ import { BLOCK } from 'stubs/block';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -114,15 +113,13 @@ const OptimisticL2TxnBatch = () => {
         backLink={ backLink }
         isLoading={ batchQuery.isPlaceholderData }
       />
-      { batchQuery.isPlaceholderData ?
-        <RoutedTabsSkeleton tabs={ tabs }/> : (
-          <RoutedTabs
-            tabs={ tabs }
-            listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-            rightSlot={ hasPagination && pagination ? <Pagination { ...(pagination) }/> : null }
-            stickyEnabled={ hasPagination }
-          />
-        ) }
+      <RoutedTabs
+        tabs={ tabs }
+        isLoading={ batchQuery.isPlaceholderData }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        rightSlot={ hasPagination && pagination ? <Pagination { ...(pagination) }/> : null }
+        stickyEnabled={ hasPagination }
+      />
     </>
   );
 };

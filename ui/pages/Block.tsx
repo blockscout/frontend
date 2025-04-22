@@ -15,7 +15,6 @@ import getNetworkValidationActionText from 'lib/networks/getNetworkValidationAct
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
 import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockEpochRewards from 'ui/block/BlockEpochRewards';
@@ -183,14 +182,13 @@ const BlockPageContent = () => {
         secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }
       />
-      { blockQuery.isPlaceholderData ? <RoutedTabsSkeleton tabs={ tabs }/> : (
-        <RoutedTabs
-          tabs={ tabs }
-          listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-          rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
-          stickyEnabled={ hasPagination }
-        />
-      ) }
+      <RoutedTabs
+        tabs={ tabs }
+        isLoading={ blockQuery.isPlaceholderData }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
+        stickyEnabled={ hasPagination }
+      />
     </>
   );
 };
