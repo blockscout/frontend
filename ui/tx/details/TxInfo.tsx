@@ -74,6 +74,12 @@ interface Props {
   isLoading: boolean;
   socketStatus?: 'close' | 'error';
 }
+interface CredentialStatusType {
+  credential_address?: string;
+  credential_id: string;
+  credential_status: string;
+  expiration_date: string;
+}
 
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
@@ -268,12 +274,25 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                 <Box gridGap="20px" display="grid">
                   {
                     data.credential_status?.length &&
-                    data.credential_status.map((status: { credential_id: string; credential_status: string; expiration_date: string }, index: number) => {
+                    data.credential_status.map((status: CredentialStatusType, index: number) => {
                       return (
                         <Box
                           key={ index }
-                          color="#000000">
-                          { status.credential_id }
+                          color="#000000"
+                          display="flex"
+                          alignItems="center"
+                        >
+                          { status.credential_id }&nbsp;
+                          <AddressEntity
+                            address={
+                              (
+                                {
+                                  hash: status.credential_address || '',
+                                }
+                              )
+                            }
+                            isLoading={ isLoading }
+                          />
                           <span
                             style={{
                               background: switchCredentialStatus(status.credential_status),
@@ -288,7 +307,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                           <span style={{ color: 'rgba(0, 0, 0, 0.4)' }}>
                             (Expiration Date:&nbsp;
                             { new Date(status.expiration_date).toLocaleString('en-US', { month: 'short', day: '2-digit',
-                              year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).replaceAll(',', '') }
+                              year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replaceAll(',', '') }
                             (+08:00 UTC)
                           </span>
                         </Box>
