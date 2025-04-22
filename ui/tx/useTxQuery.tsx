@@ -77,16 +77,16 @@ export default function useTxQuery(params?: Params): TxQuery {
         ...TX,
         hash: rp1.tx_hash,
         method: rp1.method,
-        credential_id: rp1.credential_id && rp1.credential_id?.toString().replace(',', '、'),
-        credential_status: rp1.credential_id && rp1.credential_id.map((value, index) => {
+        credential_id: rp1.credential_id ? rp1.credential_id?.toString().replace(',', ', ') : '/',
+        credential_status: rp1.credential_id ? rp1.credential_id.map((value, index) => {
           return {
             credential_id: value,
             credential_address: rp1.user_addr[index],
             credential_status: rp1.credential_status[index],
             expiration_date: rp1.expiration_date[index].replace('Z', ''),
           };
-        }),
-        SchemaID: rp1.scheme_id?.length ? rp1.scheme_id[0] : '/',
+        }) : '/',
+        SchemaID: rp1.scheme_id ? rp1.scheme_id?.toString().replace(',', ', ') : '/',
         block_number: rp1.block_number,
         confirmations: rp1.block_confirmations,
         transaction_status: rp1.transaction_status,
