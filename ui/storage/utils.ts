@@ -19,7 +19,7 @@ export const truncateString = (str: string, _length = 32): string => {
 };
 
 export const timeTool = (time: string) => {
-  const now = new Date().getTime();
+  const now = new Date(new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })).getTime();
   const diff = now - new Date(time).getTime();
 
   const seconds = Math.floor(diff / 1000);
