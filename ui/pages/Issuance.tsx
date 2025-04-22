@@ -98,7 +98,7 @@ const ObjectDetails: NextPage = () => {
           Block: v.block_number,
           Method: v.method,
           'From/To': [ v.from_address, v.to_address ],
-          Time: v.tx_time,
+          Time: v.tx_time.replace('Z', ''),
           'Value MOCA': v.tx_value,
           'Fee MOCA': truncateToSignificantDigits(BigNumber(v.tx_fee / 1e18).toString(10), 3).toString(10),
         });
