@@ -29,11 +29,11 @@ const CopyToClipboard = (props: Props) => {
   const iconName = (() => {
     switch (type) {
       case 'link':
-        return 'link';
+        return hasCopied ? 'check' : 'link';
       case 'share':
-        return 'share';
+        return hasCopied ? 'check' : 'share';
       default:
-        return 'copy';
+        return hasCopied ? 'copy_check' : 'copy';
     }
   })();
 
