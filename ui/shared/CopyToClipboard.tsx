@@ -13,10 +13,11 @@ export interface Props extends Omit<IconButtonProps, 'type' | 'loading'> {
   // Chakra v3 doesn't support tooltip inside tooltip - https://github.com/chakra-ui/chakra-ui/issues/9939#issuecomment-2817168121
   // so we disable the copy tooltip manually when the button is inside a tooltip
   noTooltip?: boolean;
+  tooltipInteractive?: boolean;
 }
 
 const CopyToClipboard = (props: Props) => {
-  const { text, type = 'text', isLoading, onClick, boxSize = 5, noTooltip, ...rest } = props;
+  const { text, type = 'text', isLoading, onClick, boxSize = 5, noTooltip, tooltipInteractive, ...rest } = props;
 
   const { hasCopied, copy, disclosure } = useClipboard(text);
 
@@ -76,6 +77,7 @@ const CopyToClipboard = (props: Props) => {
       open={ disclosure.open }
       onOpenChange={ disclosure.onOpenChange }
       closeOnPointerDown={ false }
+      interactive={ tooltipInteractive }
     >
       { button }
     </Tooltip>

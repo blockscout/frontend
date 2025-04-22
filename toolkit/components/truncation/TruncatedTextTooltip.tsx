@@ -11,9 +11,10 @@ export interface TruncatedTextTooltipProps {
   children: React.ReactNode;
   label: React.ReactNode;
   placement?: Placement;
+  interactive?: boolean;
 }
 
-export const TruncatedTextTooltip = React.memo(({ children, label, placement }: TruncatedTextTooltipProps) => {
+export const TruncatedTextTooltip = React.memo(({ children, label, placement, interactive }: TruncatedTextTooltipProps) => {
   const childRef = React.useRef<HTMLElement>(null);
   const [ isTruncated, setTruncated ] = React.useState(false);
   const { open, onToggle, onOpen, onClose } = useDisclosure();
@@ -83,6 +84,7 @@ export const TruncatedTextTooltip = React.memo(({ children, label, placement }: 
         contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
         positioning={{ placement }}
         open={ open }
+        interactive={ interactive }
       >
         { modifiedChildren }
       </Tooltip>

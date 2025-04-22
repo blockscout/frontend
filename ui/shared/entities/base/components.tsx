@@ -115,9 +115,20 @@ const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRig
 export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'noTooltip' | 'variant'> {
   asProp?: React.ElementType;
   text: string;
+  tooltipInteractive?: boolean;
 }
 
-const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, noTooltip, variant }: ContentBaseProps) => {
+const Content = chakra(({
+  className,
+  isLoading,
+  asProp,
+  text,
+  truncation = 'dynamic',
+  tailLength,
+  variant,
+  noTooltip,
+  tooltipInteractive,
+}: ContentBaseProps) => {
   const styles = getContentProps(variant);
 
   if (truncation === 'tail') {
@@ -126,6 +137,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
         className={ className }
         isLoading={ isLoading }
         value={ text }
+        tooltipInteractive={ tooltipInteractive }
         { ...styles }
       />
     );
@@ -140,6 +152,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
             as={ asProp }
             type="long"
             noTooltip={ noTooltip }
+            tooltipInteractive={ tooltipInteractive }
           />
         );
       case 'constant':
@@ -148,6 +161,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
             hash={ text }
             as={ asProp }
             noTooltip={ noTooltip }
+            tooltipInteractive={ tooltipInteractive }
           />
         );
       case 'dynamic':
@@ -157,6 +171,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
             as={ asProp }
             tailLength={ tailLength }
             noTooltip={ noTooltip }
+            tooltipInteractive={ tooltipInteractive }
           />
         );
       case 'none':
@@ -178,7 +193,10 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
   );
 });
 
-export type CopyBaseProps = Pick<CopyToClipboardProps, 'isLoading' | 'text'> & Pick<EntityBaseProps, 'noCopy' | 'noTooltip'>;
+export type CopyBaseProps =
+  Pick<CopyToClipboardProps, 'isLoading' | 'text' | 'tooltipInteractive'> &
+  Pick<EntityBaseProps, 'noCopy' | 'noTooltip'>
+;
 
 const Copy = ({ noCopy, ...props }: CopyBaseProps) => {
   if (noCopy) {
