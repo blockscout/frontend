@@ -20,6 +20,7 @@ import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
+import WatchlistEmailAlert from 'ui/watchlist/WatchlistEmailAlert';
 import WatchListItem from 'ui/watchlist/WatchlistTable/WatchListItem';
 import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
@@ -40,6 +41,8 @@ const WatchList: React.FC = () => {
 
   const [ addressModalData, setAddressModalData ] = useState<WatchlistAddress>();
   const [ deleteModalData, setDeleteModalData ] = useState<WatchlistAddress>();
+
+  const hasEmail = Boolean(profileQuery.data?.email);
 
   const onEditClick = useCallback((data: WatchlistAddress) => {
     setAddressModalData(data);
@@ -75,12 +78,6 @@ const WatchList: React.FC = () => {
     );
   }, [ deleteModalData?.id, queryClient ]);
 
-  const description = (
-    <AccountPageDescription>
-      An email notification can be sent to you when an address on your watch list sends or receives any transactions.
-    </AccountPageDescription>
-  );
-
   const content = (() => {
     const actionBar = pagination.isVisible ? (
       <ActionBar mt={ -6 }>
@@ -90,7 +87,10 @@ const WatchList: React.FC = () => {
 
     return (
       <>
-        { description }
+        { !hasEmail && <WatchlistEmailAlert/> }
+        <AccountPageDescription>
+          An email notification can be sent to you when an address on your watch list sends or receives any transactions.
+        </AccountPageDescription>
         <DataListDisplay
           isError={ isError }
           itemsNum={ data?.items.length }
@@ -105,7 +105,7 @@ const WatchList: React.FC = () => {
                 isLoading={ isPlaceholderData }
                 onDeleteClick={ onDeleteClick }
                 onEditClick={ onEditClick }
-                hasEmail={ Boolean(profileQuery.data?.email) }
+                hasEmail={ hasEmail }
               />
             )) }
           </Box>
@@ -116,7 +116,7 @@ const WatchList: React.FC = () => {
               onDeleteClick={ onDeleteClick }
               onEditClick={ onEditClick }
               top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-              hasEmail={ Boolean(profileQuery.data?.email) }
+              hasEmail={ hasEmail }
             />
           </Box>
         </DataListDisplay>
@@ -133,6 +133,7 @@ const WatchList: React.FC = () => {
           onSuccess={ onAddOrEditSuccess }
           data={ addressModalData }
           isAdd={ !addressModalData }
+          hasEmail={ hasEmail }
         />
         { deleteModalData && (
           <DeleteAddressModal
