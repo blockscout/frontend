@@ -1,6 +1,6 @@
 import { useCallback, useRef, useEffect } from 'react';
 
-import type { PreSubmitTransactionResponse, PreVerifyContractResponse } from '@blockscout/points-types';
+import type { PreVerifyContractResponse } from '@blockscout/points-types';
 
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
@@ -59,15 +59,14 @@ export default function useRewardsActivity() {
     } catch {}
   }, [ apiFetch, checkActivityPassQuery.data, apiToken ]);
 
-  const trackTransaction = useCallback(async(from: string, to: string) => {
-    return (
-      await makeRequest('rewards_user_activity_track_tx', {
-        from_address: from,
-        to_address: to,
-        chain_id: config.chain.id ?? '',
-      })
-    ) as PreSubmitTransactionResponse | undefined;
-  }, [ makeRequest ]);
+  const trackTransaction = useCallback(async(from: string, to: string) =>
+    makeRequest('rewards_user_activity_track_tx', {
+      from_address: from,
+      to_address: to,
+      chain_id: config.chain.id ?? '',
+    }),
+  [ makeRequest ],
+  );
 
   const trackTransactionConfirm = useCallback((hash: string, token: string) =>
     makeRequest('rewards_user_activity_track_tx_confirm', { tx_hash: hash, token }),
@@ -82,11 +81,6 @@ export default function useRewardsActivity() {
       })
     ) as PreVerifyContractResponse | undefined;
   }, [ makeRequest ]);
-
-  const trackContractConfirm = useCallback((token: string) =>
-    makeRequest('rewards_user_activity_track_contract_confirm', { token }),
-  [ makeRequest ],
-  );
 
   const trackUsage = useCallback((action: string) => {
     // check here because this function is called on page load
@@ -115,7 +109,6 @@ export default function useRewardsActivity() {
     trackTransaction,
     trackTransactionConfirm,
     trackContract,
-    trackContractConfirm,
     trackUsage,
   };
 }
