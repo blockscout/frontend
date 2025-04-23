@@ -11,7 +11,7 @@ import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import shortenString from 'lib/shortenString';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
-import Hint from 'ui/shared/Hint';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 import useLogout from 'ui/snippets/auth/useLogout';
 

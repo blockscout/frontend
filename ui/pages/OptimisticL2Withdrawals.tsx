@@ -2,10 +2,10 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { L2_WITHDRAWAL_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';

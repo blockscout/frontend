@@ -6,6 +6,7 @@ import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
 import useProvider from 'lib/web3/useProvider';
 import useSwitchOrAddChain from 'lib/web3/useSwitchOrAddChain';
@@ -62,6 +63,7 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
   const { provider, wallet } = useProvider();
   const switchOrAddChain = useSwitchOrAddChain();
   const isMobile = useIsMobile();
+  const { trackUsage } = useRewardsActivity();
 
   const handleClick = React.useCallback(async() => {
     if (!wallet) {
@@ -89,6 +91,8 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
           description: 'Successfully added token to your wallet',
         });
 
+        await trackUsage('add_token');
+
         mixpanel.logEvent(mixpanel.EventTypes.ADD_TO_WALLET, {
           Target: 'token',
           Wallet: wallet,
@@ -101,7 +105,7 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
         description: (error as Error)?.message || 'Something went wrong',
       });
     }
-  }, [ wallet, token, tokenId, switchOrAddChain, provider ]);
+  }, [ wallet, token, tokenId, switchOrAddChain, provider, trackUsage ]);
 
   if (!provider || !wallet) {
     return null;

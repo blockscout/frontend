@@ -14,10 +14,10 @@ import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Button } from 'toolkit/chakra/button';
-import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
-import Hint from 'ui/shared/Hint';
+import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -129,9 +129,10 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
             />
           </GridItem>
 
-          <GridItem colSpan={{ base: 1, lg: 3 }}>
-            <ReCaptcha ref={ recaptcha.ref }/>
+          <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <ReCaptcha { ...recaptcha }/>
           </GridItem>
+          { !isMobile && <div/> }
 
           <Button
             variant="solid"
@@ -140,6 +141,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
             loading={ formApi.formState.isSubmitting }
             loadingText="Send request"
             w="min-content"
+            disabled={ recaptcha.isInitError }
           >
             Send request
           </Button>

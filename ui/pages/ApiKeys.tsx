@@ -4,12 +4,12 @@ import React, { useCallback, useState } from 'react';
 import type { ApiKey } from 'types/api/account';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { space } from 'lib/html-entities';
 import { API_KEY } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { space } from 'toolkit/utils/htmlEntities';
 import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
 import ApiKeyListItem from 'ui/apiKey/ApiKeyTable/ApiKeyListItem';
 import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';

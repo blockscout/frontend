@@ -6,8 +6,8 @@ import React from 'react';
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import 'graphiql/graphiql.css';
-import isBrowser from 'lib/isBrowser';
 import { useColorMode } from 'toolkit/chakra/color-mode';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 
 const feature = config.features.graphqlApiDocs;
 

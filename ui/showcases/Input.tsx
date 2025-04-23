@@ -3,7 +3,7 @@ import React from 'react';
 import { Field } from 'toolkit/chakra/field';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
-import FilterInput from 'ui/shared/filters/FilterInput';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';

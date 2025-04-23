@@ -1,4 +1,4 @@
-import { Grid, Text, chakra, useUpdateEffect } from '@chakra-ui/react';
+import { Grid, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -14,11 +14,13 @@ import useApiFetch from 'lib/api/useApiFetch';
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import delay from 'lib/delay';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
+import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';
 
 import ContractVerificationFieldAddress from './fields/ContractVerificationFieldAddress';
 import ContractVerificationFieldLicenseType from './fields/ContractVerificationFieldLicenseType';
@@ -49,9 +51,10 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const { handleSubmit, watch, formState, setError, reset, getFieldState, getValues, clearErrors } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
   const methodNameRef = React.useRef<string>();
+  const activityToken = React.useRef<string | undefined>();
 
   const apiFetch = useApiFetch();
-
+  const { trackContract, trackContractConfirm } = useRewardsActivity();
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     const body = prepareRequestBody(data);
 
@@ -75,6 +78,8 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     }
 
     try {
+      const activityResponse = await trackContract(data.address);
+      activityToken.current = activityResponse?.token;
       await apiFetch('contract_verification_via', {
         pathParams: { method: data.method[0], hash: data.address.toLowerCase() },
         fetchParams: {
@@ -89,7 +94,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     return new Promise((resolve) => {
       submitPromiseResolver.current = resolve;
     });
-  }, [ apiFetch, hash, setError ]);
+  }, [ apiFetch, hash, setError, trackContract ]);
 
   const handleFormChange = React.useCallback(() => {
     clearErrors('root');
@@ -127,8 +132,13 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       { send_immediately: true },
     );
 
+    if (activityToken.current) {
+      await trackContractConfirm(activityToken.current);
+      activityToken.current = undefined;
+    }
+
     window.location.assign(route({ pathname: '/address/[hash]', query: { hash: address, tab: 'contract' } }));
-  }, [ setError, address, getValues ]);
+  }, [ setError, address, getValues, trackContractConfirm ]);
 
   const handleSocketError = React.useCallback(() => {
     if (!formState.isSubmitting) {

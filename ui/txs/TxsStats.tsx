@@ -4,9 +4,9 @@ import React from 'react';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import { thinsp } from 'lib/html-entities';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { TXS_STATS, TXS_STATS_MICROSERVICE } from 'stubs/tx';
+import { thinsp } from 'toolkit/utils/htmlEntities';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const isStatsFeatureEnabled = config.features.stats.isEnabled;

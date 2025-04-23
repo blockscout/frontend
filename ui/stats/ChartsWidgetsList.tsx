@@ -5,9 +5,9 @@ import type * as stats from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { apos } from 'lib/html-entities';
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { apos } from 'toolkit/utils/htmlEntities';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import IconSvg from 'ui/shared/IconSvg';

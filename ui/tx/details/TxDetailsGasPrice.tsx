@@ -4,9 +4,9 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
-import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { WEI, WEI_IN_GWEI } from 'toolkit/utils/consts';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 

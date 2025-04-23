@@ -46,7 +46,7 @@ import type { VerifiedContractsFilter } from '../../../types/api/contracts';
 import type { TxExternalTxsConfig } from '../../../types/client/externalTxsConfig';
 
 import { replaceQuotes } from '../../../configs/app/utils';
-import * as regexp from '../../../lib/regexp';
+import * as regexp from '../../../toolkit/utils/regexp';
 import type { IconName } from '../../../ui/shared/IconSvg';
 
 const protocols = [ 'http', 'https' ];

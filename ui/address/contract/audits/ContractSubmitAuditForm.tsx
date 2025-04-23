@@ -10,10 +10,10 @@ import useApiFetch from 'lib/api/useApiFetch';
 import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
-import FormFieldCheckbox from 'ui/shared/forms/fields/FormFieldCheckbox';
-import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
+import { FormFieldCheckbox } from 'toolkit/components/forms/fields/FormFieldCheckbox';
+import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 
 interface Props {
   address?: string;

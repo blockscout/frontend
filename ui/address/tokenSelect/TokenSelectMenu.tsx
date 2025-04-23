@@ -7,7 +7,7 @@ import type { TokenType } from 'types/api/token';
 
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
-import FilterInput from 'ui/shared/filters/FilterInput';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 
 import type { Sort } from '../utils/tokenUtils';

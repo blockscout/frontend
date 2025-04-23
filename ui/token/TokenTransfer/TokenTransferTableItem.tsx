@@ -73,6 +73,7 @@ const TokenTransferTableItem = ({
           mt="5px"
           mode={{ lg: 'compact', xl: 'long' }}
           tokenHash={ token?.address }
+          tokenSymbol={ token?.symbol ?? undefined }
         />
       </TableCell>
       { (token && NFT_TOKEN_TYPE_IDS.includes(token.type)) && (

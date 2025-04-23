@@ -1,5 +1,3 @@
-import type { AlertProps } from 'toolkit/chakra/alert';
-
 export interface AddressMetadataInfo {
   addresses: Record<string, {
     tags: Array<AddressMetadataTag>;
@@ -37,7 +35,7 @@ export interface AddressMetadataTagApi extends Omit<AddressMetadataTag, 'meta'> 
     data?: string;
     alertBgColor?: string;
     alertTextColor?: string;
-    alertStatus?: AlertProps['status'];
+    alertStatus?: string;
   } | null;
 }
 

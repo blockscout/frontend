@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { Badge } from 'toolkit/chakra/badge';
+import IconSvg from 'ui/shared/IconSvg';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
@@ -87,7 +88,7 @@ const BadgeShowcase = () => {
         <SectionHeader>Icon</SectionHeader>
         <SamplesStack>
           <Sample label="iconStart: status/success">
-            <Badge iconStart="status/success">
+            <Badge startElement={ <IconSvg name="status/success" boxSize={ 2.5 }/> }>
               Content
             </Badge>
           </Sample>

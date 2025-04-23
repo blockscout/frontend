@@ -8,11 +8,11 @@ import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
-import { nbsp, ndash } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { Alert } from 'toolkit/chakra/alert';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { nbsp, ndash } from 'toolkit/utils/htmlEntities';
 
 const IndexingBlocksAlert = () => {
   const appProps = useAppContext();

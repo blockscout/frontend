@@ -2,11 +2,11 @@ import { useRouter } from 'next/router';
 
 import type { TabItem } from '../AdaptiveTabs/types';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
+import { castToString } from '../../utils/guards';
 
 export default function useActiveTabFromQuery(tabs: Array<TabItem>) {
   const router = useRouter();
-  const tabFromQuery = getQueryParamString(router.query.tab);
+  const tabFromQuery = castToString(router.query.tab);
 
   if (!tabFromQuery) {
     return;

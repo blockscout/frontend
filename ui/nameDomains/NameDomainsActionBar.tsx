@@ -9,8 +9,8 @@ import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import { Button } from 'toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import { Image } from 'toolkit/chakra/image';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
-import FilterInput from 'ui/shared/filters/FilterInput';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -91,6 +91,7 @@ const NameDomainsActionBar = ({
                 variant="link"
                 onClick={ handleProtocolReset }
                 disabled={ protocolsFilterValue.length === 0 }
+                textStyle="sm"
               >
                 Reset
               </Button>

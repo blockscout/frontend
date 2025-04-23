@@ -11,7 +11,7 @@ import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import * as mixpanel from 'lib/mixpanel';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
-import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
+import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -85,16 +85,16 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
           bgColor="dialog.bg"
           mt={ 6 }
         />
+        <ReCaptcha { ...recaptcha }/>
         <Button
           mt={ 6 }
           type="submit"
-          disabled={ formApi.formState.isSubmitting }
+          disabled={ formApi.formState.isSubmitting || recaptcha.isInitError }
           loading={ formApi.formState.isSubmitting }
           loadingText="Send a code"
         >
           Send a code
         </Button>
-        <ReCaptcha ref={ recaptcha.ref }/>
       </chakra.form>
     </FormProvider>
   );

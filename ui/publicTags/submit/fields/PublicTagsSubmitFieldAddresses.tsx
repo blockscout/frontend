@@ -5,7 +5,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
 import IconSvg from 'ui/shared/IconSvg';
 
 const LIMIT = 20;

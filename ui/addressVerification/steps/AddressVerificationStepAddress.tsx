@@ -19,7 +19,7 @@ import useApiFetch from 'lib/api/useApiFetch';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 
 type Fields = RootFields & AddressVerificationFormFirstStepFields;

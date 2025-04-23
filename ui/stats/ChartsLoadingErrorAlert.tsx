@@ -1,9 +1,9 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { apos } from 'lib/html-entities';
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
+import { apos } from 'toolkit/utils/htmlEntities';
 
 function ChartsLoadingErrorAlert() {
   return (

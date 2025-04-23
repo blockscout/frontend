@@ -8,10 +8,10 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import makePrettyLink from 'lib/makePrettyLink';
 import { Link } from 'toolkit/chakra/link';
+import { BackToButton } from 'toolkit/components/buttons/BackToButton';
+import { makePrettyLink } from 'toolkit/utils/url';
 import RewardsButton from 'ui/rewards/RewardsButton';
-import ButtonBackTo from 'ui/shared/buttons/ButtonBackTo';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
@@ -50,7 +50,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
     <>
       <Flex alignItems="center" mb={{ base: 3, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
         { !isMobile && <NetworkLogo isCollapsed mr={ 4 }/> }
-        <ButtonBackTo
+        <BackToButton
           href={ goBackUrl }
           hint="Back to dApps list"
           loading={ isLoading }

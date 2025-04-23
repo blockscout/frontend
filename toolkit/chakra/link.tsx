@@ -1,16 +1,15 @@
 import type { LinkProps as ChakraLinkProps } from '@chakra-ui/react';
-import { Link as ChakraLink, LinkBox as ChakraLinkBox, LinkOverlay as ChakraLinkOverlay } from '@chakra-ui/react';
+import { Link as ChakraLink, LinkBox as ChakraLinkBox, LinkOverlay as ChakraLinkOverlay, Icon } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import type { LinkProps as NextLinkProps } from 'next/link';
 import React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import ArrowIcon from 'icons/link_external.svg';
 
 import { Skeleton } from './skeleton';
 
 export const LinkExternalIcon = ({ color }: { color?: ChakraLinkProps['color'] }) => (
-  <IconSvg
-    name="link_external"
+  <Icon
     boxSize={ 3 }
     verticalAlign="middle"
     color={ color ?? 'icon.externalLink' }
@@ -18,7 +17,9 @@ export const LinkExternalIcon = ({ color }: { color?: ChakraLinkProps['color'] }
       color: 'inherit',
     }}
     flexShrink={ 0 }
-  />
+  >
+    <ArrowIcon/>
+  </Icon>
 );
 
 interface LinkPropsChakra extends ChakraLinkProps {

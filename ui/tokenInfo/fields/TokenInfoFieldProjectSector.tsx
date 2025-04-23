@@ -4,7 +4,7 @@ import React from 'react';
 import type { Fields } from '../types';
 import type { TokenInfoApplicationConfig } from 'types/api/account';
 
-import FormFieldSelect from 'ui/shared/forms/fields/FormFieldSelect';
+import { FormFieldSelect } from 'toolkit/components/forms/fields/FormFieldSelect';
 
 interface Props {
   readOnly?: boolean;

@@ -1,7 +1,7 @@
 import { debounce } from 'es-toolkit';
 import { useEffect, useState } from 'react';
 
-export default function useViewportSize(debounceTime = 100) {
+export function useViewportSize(debounceTime = 100) {
   const [ viewportSize, setViewportSize ] = useState({ width: 0, height: 0 });
 
   useEffect(() => {

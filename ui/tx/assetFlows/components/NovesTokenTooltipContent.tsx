@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { NovesNft, NovesToken } from 'types/api/noves';
 
-import { HEX_REGEXP } from 'lib/regexp';
+import { HEX_REGEXP } from 'toolkit/utils/regexp';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {

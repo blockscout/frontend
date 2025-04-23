@@ -1,8 +1,8 @@
-import { Table as ChakraTable } from '@chakra-ui/react';
+import { Table as ChakraTable, Icon } from '@chakra-ui/react';
 import { throttle } from 'es-toolkit';
 import * as React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import ArrowIcon from 'icons/arrows/east.svg';
 
 import { Link } from './link';
 
@@ -50,8 +50,7 @@ export const TableColumnHeaderSortable = <F extends string>(props: TableColumnHe
     <TableColumnHeader { ...rest }>
       <Link onClick={ disabled ? undefined : handleSortToggle } position="relative">
         { sortValue.includes(sortField) && (
-          <IconSvg
-            name="arrows/east"
+          <Icon
             w={ 4 }
             h="100%"
             transform={ sortValue.toLowerCase().includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)' }
@@ -59,7 +58,9 @@ export const TableColumnHeaderSortable = <F extends string>(props: TableColumnHe
             left={ indicatorPosition === 'left' ? -5 : undefined }
             right={ indicatorPosition === 'right' ? -5 : undefined }
             top={ 0 }
-          />
+          >
+            <ArrowIcon/>
+          </Icon>
         ) }
         { children }
       </Link>

@@ -4,8 +4,8 @@ import React from 'react';
 import type { TokensSortingValue } from 'types/api/tokens';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
-import FilterInput from 'ui/shared/filters/FilterInput';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Sort from 'ui/shared/sort/Sort';
 import { SORT_OPTIONS } from 'ui/tokens/utils';

@@ -4,9 +4,9 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'lib/html-entities';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';

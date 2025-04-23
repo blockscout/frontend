@@ -5,12 +5,12 @@ import React, { useCallback } from 'react';
 import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import isBrowser from 'lib/isBrowser';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Image } from 'toolkit/chakra/image';
 import { Link, LinkBox } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import AppSecurityReport from './AppSecurityReport';

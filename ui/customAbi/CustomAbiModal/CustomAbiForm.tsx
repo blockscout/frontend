@@ -11,8 +11,8 @@ import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
 import { Button } from 'toolkit/chakra/button';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 export type FormData = CustomAbi | {
   contract_address_hash: string;

@@ -8,7 +8,7 @@ import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
-import ClearButton from 'ui/shared/ClearButton';
+import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import IconSvg from 'ui/shared/IconSvg';
 interface Props extends Omit<HTMLChakraProps<'form'>, 'onChange'> {
   onChange: (value: string) => void;
@@ -111,7 +111,7 @@ const SearchBarInput = (
 
   const endElement = (
     <>
-      <ClearButton onClick={ onClear } isVisible={ value.length > 0 } mx={ 2 }/>
+      <ClearButton onClick={ onClear } visible={ value.length > 0 } mx={ 2 }/>
       { !isMobile && (
         <Center
           boxSize="20px"
