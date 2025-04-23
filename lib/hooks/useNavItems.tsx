@@ -22,6 +22,7 @@ export function isInternalItem(item: NavItem): item is NavItemInternal {
 export default function useNavItems(): ReturnType {
   const router = useRouter();
   const pathname = router.pathname;
+  const queryTab = router.query?.tab;
 
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
@@ -42,7 +43,7 @@ export default function useNavItems(): ReturnType {
       text: 'Transactions',
       nextRoute: { pathname: '/txs' as const },
       icon: 'transactions',
-      isActive: pathname === '/txs' || pathname === '/tx/[hash]',
+      isActive: (pathname === '/txs' || pathname === '/tx/[hash]') && queryTab !== 'issuance' && queryTab !== 'verification',
     };
     const userOps: NavItem | null = config.features.userOps.isEnabled ? {
       text: 'User operations',
@@ -122,13 +123,13 @@ export default function useNavItems(): ReturnType {
       text: 'Issuance Explorer',
       nextRoute: { pathname: '/issuance' as const },
       icon: 'output_roots',
-      isActive: pathname === '/issuance',
+      isActive: pathname === '/issuance' || queryTab === 'issuance',
     };
     const verification = {
       text: 'Verification Explorer',
       nextRoute: { pathname: '/verification' as const },
       icon: 'output_roots',
-      isActive: pathname === '/verification',
+      isActive: pathname === '/verification' || queryTab === 'verification',
     };
     // const buckets = {
     //   text: 'Buckets',
@@ -400,5 +401,5 @@ export default function useNavItems(): ReturnType {
     ].filter(Boolean);
 
     return { mainNavItems, accountNavItems };
-  }, [ pathname ]);
+  }, [ pathname, queryTab ]);
 }
