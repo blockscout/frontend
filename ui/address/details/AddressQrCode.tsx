@@ -87,7 +87,6 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
               <AddressEntity
                 mb={ 3 }
                 fontWeight={ 500 }
-                color="text"
                 address={{ hash }}
                 noLink
               />

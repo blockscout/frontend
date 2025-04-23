@@ -170,7 +170,6 @@ export interface ApiResource {
   endpoint?: string;
   basePath?: string;
   pathParams?: Array<string>;
-  needAuth?: boolean; // for external APIs which require authentication
   headers?: RequestInit['headers'];
 }
 
@@ -214,7 +213,6 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const, 'type' as const ],
     endpoint: getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
     basePath: getFeaturePayload(config.features.verifiedTokens)?.api.basePath,
-    needAuth: true,
   },
 
   verified_addresses: {
@@ -222,7 +220,6 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
     basePath: getFeaturePayload(config.features.verifiedTokens)?.api.basePath,
-    needAuth: true,
   },
 
   token_info_applications_config: {
@@ -230,7 +227,6 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: getFeaturePayload(config.features.addressVerification)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressVerification)?.api.basePath,
-    needAuth: true,
   },
 
   token_info_applications: {
@@ -238,7 +234,6 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const, 'id' as const ],
     endpoint: getFeaturePayload(config.features.addressVerification)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressVerification)?.api.basePath,
-    needAuth: true,
   },
 
   // AUTH

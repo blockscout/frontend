@@ -14,6 +14,7 @@ import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Button } from 'toolkit/chakra/button';
+import { Heading } from 'toolkit/chakra/heading';
 import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
@@ -96,8 +97,10 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
           rowGap={ 3 }
           templateColumns={{ base: '1fr', lg: '1fr 1fr minmax(0, 200px)', xl: '1fr 1fr minmax(0, 250px)' }}
         >
-          <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4">
-            Company info
+          <GridItem colSpan={{ base: 1, lg: 3 }}>
+            <Heading level="2">
+              Company info
+            </Heading>
           </GridItem>
           <FormFieldText<FormFields> name="requesterName" required placeholder="Your name"/>
           <FormFieldEmail<FormFields> name="requesterEmail" required/>
@@ -107,9 +110,11 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
           <FormFieldUrl<FormFields> name="companyWebsite" placeholder="Company website"/>
           { !isMobile && <div/> }
 
-          <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4" mt={{ base: 3, lg: 5 }}>
-            Public tags/labels
-            <Hint label="Submit a public tag proposal for our moderation team to review" ml={ 1 } color="link.primary"/>
+          <GridItem colSpan={{ base: 1, lg: 3 }} mt={{ base: 3, lg: 5 }}>
+            <Heading level="2" display="flex" alignItems="center" columnGap={ 1 }>
+              Public tags/labels
+              <Hint label="Submit a public tag proposal for our moderation team to review"/>
+            </Heading>
           </GridItem>
           <PublicTagsSubmitFieldAddresses/>
           <PublicTagsSubmitFieldTags tagTypes={ config?.tagTypes }/>

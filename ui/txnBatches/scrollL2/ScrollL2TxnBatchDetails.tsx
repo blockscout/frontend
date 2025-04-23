@@ -115,17 +115,21 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
         }
       </DetailedInfo.ItemValue>
 
-      <DetailedInfo.ItemLabel
-        isLoading={ isPlaceholderData }
-        hint="Number of transactions in this batch"
-      >
-        Transactions
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <Link loading={ isPlaceholderData } href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
-          { data.transaction_count.toLocaleString() } transaction{ data.transaction_count === 1 ? '' : 's' }
-        </Link>
-      </DetailedInfo.ItemValue>
+      { typeof data.transaction_count === 'number' ? (
+        <>
+          <DetailedInfo.ItemLabel
+            isLoading={ isPlaceholderData }
+            hint="Number of transactions in this batch"
+          >
+            Transactions
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Link loading={ isPlaceholderData } href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
+              { data.transaction_count.toLocaleString() } transaction{ data.transaction_count === 1 ? '' : 's' }
+            </Link>
+          </DetailedInfo.ItemValue>
+        </>
+      ) : null }
 
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }

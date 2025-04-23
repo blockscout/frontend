@@ -27,7 +27,7 @@ export type ScrollL2TxnBatch = {
   confirmation_transaction: ScrollL2TxnBatchConfirmationTransaction;
   start_block: number;
   end_block: number;
-  transaction_count: number;
+  transaction_count: number | null;
   data_availability: {
     batch_data_container: 'in_blob4844' | 'in_calldata';
   };
