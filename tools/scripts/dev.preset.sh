@@ -27,6 +27,9 @@ dotenv \
   -v NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD) \
   -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
   -v NEXT_PUBLIC_ICON_SPRITE_HASH="${NEXT_PUBLIC_ICON_SPRITE_HASH}" \
+  -v NEXT_PUBLIC_APP_ENV = "development" \
+  -v NEXT_PUBLIC_APP_HOST= "localhost" \
+  -v NEXT_PUBLIC_APP_PORT=3000 \
   -e $config_file \
   -e $secrets_file \
   -- bash -c './deploy/scripts/make_envs_script.sh && next dev -p $NEXT_PUBLIC_APP_PORT'

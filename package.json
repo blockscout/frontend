@@ -9,7 +9,7 @@
     "npm": "^0.9.0"
   },
   "scripts": {
-    "dev": "sh ./tools/scripts/dev.sh",
+    "dev": "npm run dev:preset moonchain_geneva",
     "dev:preset": "sh ./tools/scripts/dev.preset.sh",
     "dev:preset:sync": "tsc -p ./tools/preset-sync/tsconfig.json && node ./tools/preset-sync/index.js",
     "build": "next build",
