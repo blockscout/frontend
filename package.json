@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
+  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": "^22.11.0",
     "npm": "^0.9.0"
