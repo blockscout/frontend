@@ -28,7 +28,7 @@ const OptimisticL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
       <TableBody>
         { items.map((item, index) => (
           <OptimisticL2TxnBatchesTableItem
-            key={ item.internal_id + (isLoading ? String(index) : '') }
+            key={ item.number + (isLoading ? String(index) : '') }
             item={ item }
             isLoading={ isLoading }
           />

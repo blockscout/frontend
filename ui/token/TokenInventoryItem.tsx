@@ -28,7 +28,7 @@ const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
     />
   );
 
-  const url = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address, id: item.id } });
+  const url = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address_hash, id: item.id } });
 
   return (
     <Box

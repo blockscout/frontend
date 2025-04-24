@@ -21,7 +21,7 @@ type Props = AddressNFT & { isLoading: boolean; withTokenLink?: boolean };
 const NFTItem = ({ token, value, isLoading, withTokenLink, ...tokenInstance }: Props) => {
   const valueResult = token.decimals && value ? getCurrencyValue({ value, decimals: token.decimals, accuracy: 2 }).valueStr : value;
   const tokenInstanceLink = tokenInstance.id ?
-    route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address, id: tokenInstance.id } }) :
+    route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address_hash, id: tokenInstance.id } }) :
     undefined;
 
   return (
@@ -41,7 +41,7 @@ const NFTItem = ({ token, value, isLoading, withTokenLink, ...tokenInstance }: P
       <Flex justifyContent="space-between" w="100%" flexWrap="wrap">
         <Flex ml={ 1 } overflow="hidden">
           <Text whiteSpace="pre" color="text.secondary">ID# </Text>
-          <NftEntity hash={ token.address } id={ tokenInstance.id } isLoading={ isLoading } noIcon/>
+          <NftEntity hash={ token.address_hash } id={ tokenInstance.id } isLoading={ isLoading } noIcon/>
         </Flex>
         <Skeleton loading={ isLoading } overflow="hidden" ml={ 1 }>
           { valueResult && (

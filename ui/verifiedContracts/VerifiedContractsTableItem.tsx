@@ -69,7 +69,7 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
       </TableCell>
       <TableCell isNumeric>
         <Skeleton loading={ isLoading } display="inline-block" my={ 1 }>
-          { data.transaction_count ? data.transaction_count.toLocaleString() : '0' }
+          { data.transactions_count ? data.transactions_count.toLocaleString() : '0' }
         </Skeleton>
       </TableCell>
       <TableCell>

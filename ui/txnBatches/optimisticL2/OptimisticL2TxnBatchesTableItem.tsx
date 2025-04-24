@@ -24,7 +24,7 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
-        <BatchEntityL2 number={ item.internal_id } isLoading={ isLoading }/>
+        <BatchEntityL2 number={ item.number } isLoading={ isLoading }/>
       </TableCell>
       <TableCell verticalAlign="middle">
         { item.batch_data_container ? <OptimisticL2TxnBatchDA container={ item.batch_data_container } isLoading={ isLoading }/> : '-' }
@@ -45,22 +45,22 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
         <Link
-          href={ route({ pathname: '/batches/[number]', query: { number: item.internal_id.toString(), tab: 'blocks' } }) }
+          href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'blocks' } }) }
           loading={ isLoading }
           justifyContent="flex-end"
           minW="40px"
         >
-          { item.l2_block_end - item.l2_block_start + 1 }
+          { item.l2_end_block_number - item.l2_start_block_number + 1 }
         </Link>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
         <Link
-          href={ route({ pathname: '/batches/[number]', query: { number: item.internal_id.toString(), tab: 'txs' } }) }
+          href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
           loading={ isLoading }
           justifyContent="flex-end"
           minW="40px"
         >
-          { item.transaction_count }
+          { item.transactions_count }
         </Link>
       </TableCell>
     </TableRow>

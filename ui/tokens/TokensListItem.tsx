@@ -31,11 +31,11 @@ const TokensTableItem = ({
 }: Props) => {
 
   const {
-    address,
+    address_hash: addressHash,
     filecoin_robust_address: filecoinRobustAddress,
     exchange_rate: exchangeRate,
     type,
-    holders,
+    holders_count: holdersCount,
     circulating_market_cap: marketCap,
     origin_chain_id: originalChainId,
   } = token;
@@ -71,7 +71,7 @@ const TokensTableItem = ({
       </Grid>
       <Flex justifyContent="space-between" alignItems="center" width="150px" ml={ 7 } mt={ -2 }>
         <AddressEntity
-          address={{ hash: address, filecoin: { robust: filecoinRobustAddress } }}
+          address={{ hash: addressHash, filecoin: { robust: filecoinRobustAddress } }}
           isLoading={ isLoading }
           truncation="constant"
           linkVariant="secondary"
@@ -95,7 +95,7 @@ const TokensTableItem = ({
       ) }
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } textStyle="sm" fontWeight={ 500 }>Holders</Skeleton>
-        <Skeleton loading={ isLoading } textStyle="sm" color="text.secondary"><span>{ Number(holders).toLocaleString() }</span></Skeleton>
+        <Skeleton loading={ isLoading } textStyle="sm" color="text.secondary"><span>{ Number(holdersCount).toLocaleString() }</span></Skeleton>
       </HStack>
     </ListItemMobile>
   );

@@ -32,7 +32,7 @@ const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
       </Flex>
       <Flex alignItems="center" pl={ 8 }>
         <AddressEntity
-          address={{ hash: token.address }}
+          address={{ hash: token.address_hash }}
           isLoading={ isLoading }
           truncation="constant"
           noIcon

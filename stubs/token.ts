@@ -17,11 +17,11 @@ import { generateListStub } from './utils';
 export const BLOCK_HASH = '0x8fa7b9e5e5e79deeb62d608db22ba9a5cb45388c7ebb9223ae77331c6080dc70';
 
 export const TOKEN_INFO_ERC_20: TokenInfo<'ERC-20'> = {
-  address: ADDRESS_HASH,
+  address_hash: ADDRESS_HASH,
   circulating_market_cap: '117629601.61913824',
   decimals: '18',
   exchange_rate: '0.999997',
-  holders: '16026',
+  holders_count: '16026',
   name: 'Stub Token (goerli)',
   symbol: 'STUB',
   total_supply: '60000000000000000000000',

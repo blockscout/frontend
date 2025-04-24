@@ -40,7 +40,7 @@ const AddressesLabelSearchTableItem = ({
       </TableCell>
       <TableCell isNumeric>
         <Skeleton loading={ isLoading } display="inline-block" lineHeight="24px">
-          { Number(item.transaction_count).toLocaleString() }
+          { Number(item.transactions_count).toLocaleString() }
         </Skeleton>
       </TableCell>
     </TableRow>

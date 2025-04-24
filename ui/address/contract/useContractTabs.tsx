@@ -68,7 +68,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
   });
 
   const verifiedImplementations = React.useMemo(() => {
-    return data?.implementations?.filter(({ name, address }) => name && address && address !== data?.hash) || [];
+    return data?.implementations?.filter(({ name, address_hash: addressHash }) => name && addressHash && addressHash !== data?.hash) || [];
   }, [ data?.hash, data?.implementations ]);
 
   return React.useMemo(() => {

@@ -118,7 +118,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
           if ('token_id' in data && data.token_id) {
             return (
               <NftEntity
-                hash={ data.token.address }
+                hash={ data.token.address_hash }
                 id={ data.token_id }
                 isLoading={ isLoading }
               />
@@ -128,7 +128,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
           }
         }
 
-        return <TxStateTokenIdList items={ data.change } tokenAddress={ data.token.address } isLoading={ isLoading }/>;
+        return <TxStateTokenIdList items={ data.change } tokenAddress={ data.token.address_hash } isLoading={ isLoading }/>;
       })();
 
       return {

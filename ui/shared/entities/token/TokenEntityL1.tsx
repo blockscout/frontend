@@ -16,7 +16,7 @@ const TokenEntityL1 = (props: TokenEntity.EntityProps) => {
 
   const defaultHref = rollupFeature.parentChain.baseUrl + route({
     pathname: '/token/[hash]',
-    query: { hash: props.token.address },
+    query: { hash: props.token.address_hash },
   });
 
   return (

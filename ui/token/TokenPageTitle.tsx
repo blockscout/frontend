@@ -38,7 +38,7 @@ interface Props {
 
 const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
   const appProps = useAppContext();
-  const addressHash = !tokenQuery.isPlaceholderData ? (tokenQuery.data?.address || '') : '';
+  const addressHash = !tokenQuery.isPlaceholderData ? (tokenQuery.data?.address_hash || '') : '';
 
   const verifiedInfoQuery = useApiQuery('token_verified_info', {
     pathParams: { hash: addressHash, chainId: config.chain.id },

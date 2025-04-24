@@ -58,7 +58,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
     switch (data.type) {
       case 'token': {
         const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
-        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
 
         return (
           <>
@@ -66,7 +66,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               <Flex alignItems="center">
                 <TokenEntity.Icon token={{ ...data, type: data.token_type }} isLoading={ isLoading }/>
                 <Link
-                  href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }
+                  href={ route({ pathname: '/token/[hash]', query: { hash: data.address_hash } }) }
                   fontWeight={ 700 }
                   wordBreak="break-all"
                   overflow="hidden"
@@ -111,7 +111,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
         const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
         const addressName = data.name || data.ens_info?.name;
         const address = {
-          hash: data.address,
+          hash: data.address_hash,
           filecoin: {
             robust: data.filecoin_robust_address,
           },
@@ -122,7 +122,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           ens_domain_name: null,
         };
         const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
-        const hash = addressFormat === 'bech32' ? toBech32Address(data.address) : data.address;
+        const hash = addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash;
 
         return (
           <>
@@ -175,7 +175,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
       }
 
       case 'label': {
-        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
 
         return (
           <>
@@ -183,7 +183,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               <Flex alignItems="center">
                 <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="gray.500"/>
                 <Link
-                  href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
+                  href={ route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) }
                   fontWeight={ 700 }
                   wordBreak="break-all"
                   loading={ isLoading }
@@ -375,7 +375,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
 
       case 'ens_domain': {
         const expiresText = data.ens_info?.expiry_date ? ` expires ${ dayjs(data.ens_info.expiry_date).fromNow() }` : '';
-        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
 
         return (
           <>
@@ -383,7 +383,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               <EnsEntity.Container>
                 <EnsEntity.Icon protocol={ data.ens_info.protocol }/>
                 <Link
-                  href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
+                  href={ route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) }
                   fontWeight={ 700 }
                   wordBreak="break-all"
                   loading={ isLoading }

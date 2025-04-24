@@ -12,12 +12,12 @@ interface Props extends TxAuthorization {
   isLoading?: boolean;
 }
 
-const TxAuthorizationsListItem = ({ address, authority, chain_id: chainId, nonce, isLoading }: Props) => {
+const TxAuthorizationsListItem = ({ address_hash: addressHash, authority, chain_id: chainId, nonce, isLoading }: Props) => {
   return (
     <ListItemMobile rowGap={ 3 } fontSize="sm">
       <HStack gap={ 3 } w="100%">
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Address</Skeleton>
-        <AddressEntity address={{ hash: address }} isLoading={ isLoading } noIcon/>
+        <AddressEntity address={{ hash: addressHash }} isLoading={ isLoading } noIcon/>
       </HStack>
       <HStack gap={ 3 } w="100%">
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Authority</Skeleton>

@@ -58,7 +58,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
-  const txNum = data.l2_transaction_count + data.l1_transaction_count;
+  const txNum = data.l2_transactions_count + data.l1_transactions_count;
 
   return (
     <Grid

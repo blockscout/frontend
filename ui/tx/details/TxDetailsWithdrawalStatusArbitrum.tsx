@@ -88,8 +88,8 @@ const TxDetailsWithdrawalStatusArbitrum = ({ data }: Props) => {
         Originating L1 txn hash
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        { data.arbitrum.message_related_info.associated_l1_transaction ?
-          <TxEntityL1 hash={ data.arbitrum.message_related_info.associated_l1_transaction }/> :
+        { data.arbitrum.message_related_info.associated_l1_transaction_hash ?
+          <TxEntityL1 hash={ data.arbitrum.message_related_info.associated_l1_transaction_hash }/> :
           <Text color="text.secondary">Waiting for confirmation</Text>
         }
       </DetailedInfo.ItemValue>

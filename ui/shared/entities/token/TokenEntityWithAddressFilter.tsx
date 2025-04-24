@@ -23,7 +23,7 @@ const TokenEntityWithAddressFilter = (props: Props) => {
       ...props.query,
       to_address_hashes_to_include: [ props.addressHash ],
       from_address_hashes_to_include: [ props.addressHash ],
-      token_contract_address_hashes_to_include: [ props.token.address ],
+      token_contract_address_hashes_to_include: [ props.token.address_hash ],
       token_contract_symbols_to_include: [ props.token.symbol ?? '' ],
     },
   });

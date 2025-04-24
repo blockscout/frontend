@@ -39,14 +39,14 @@ test.describe('search by name', () => {
 test('search by address hash +@mobile', async({ render, mockApiResponse }) => {
   const hooksConfig = {
     router: {
-      query: { q: searchMock.address1.address },
+      query: { q: searchMock.address1.address_hash },
     },
   };
   const data = {
     items: [ searchMock.address1, searchMock.contract2 ],
     next_page_params: null,
   };
-  await mockApiResponse('search', data, { queryParams: { q: searchMock.address1.address } });
+  await mockApiResponse('search', data, { queryParams: { q: searchMock.address1.address_hash } });
 
   const component = await render(<SearchResults/>, { hooksConfig });
 
@@ -181,7 +181,7 @@ test.describe('with apps', () => {
       next_page_params: {
         address_hash: null,
         block_hash: null,
-        holder_count: null,
+        holders_count: null,
         inserted_at: null,
         item_type: 'token' as const,
         items_count: 1,

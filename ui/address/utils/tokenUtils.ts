@@ -69,7 +69,7 @@ export const sortingFns = {
 
 export const filterTokens = (searchTerm: string) => ({ token }: AddressTokenBalance) => {
   if (!token.name) {
-    return !searchTerm ? true : token.address.toLowerCase().includes(searchTerm);
+    return !searchTerm ? true : token.address_hash.toLowerCase().includes(searchTerm);
   }
 
   return token.name?.toLowerCase().includes(searchTerm);

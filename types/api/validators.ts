@@ -19,10 +19,10 @@ export interface ValidatorsStabilityResponse {
 }
 
 export interface ValidatorsStabilityCountersResponse {
-  active_validators_counter: string;
+  active_validators_count: string;
   active_validators_percentage: number;
-  new_validators_counter_24h: string;
-  validators_counter: string;
+  new_validators_count_24h: string;
+  validators_count: string;
 }
 
 export interface ValidatorsStabilityFilters {
@@ -57,8 +57,8 @@ export interface ValidatorsBlackfortResponse {
 }
 
 export interface ValidatorsBlackfortCountersResponse {
-  new_validators_counter_24h: string;
-  validators_counter: string;
+  new_validators_count_24h: string;
+  validators_count: string;
 }
 
 export interface ValidatorsBlackfortSorting {

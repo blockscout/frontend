@@ -89,7 +89,7 @@ export const withRichMetadata: TokenInstance = {
     nft_id: 'c746af09-8dcb-4cec-aa8a-5ff02fffc3f1',
     description: 'All-Conference and All-American honors await Carmelo Anthony during his Freshman season for Syracuse. However, Anthony must first defeat a worthy opponent in Georgetown with a double-double effort of 30 points and 15 rebounds.\n \n\n© Syracuse University',
     immutable_uri: 'https://nftu.com/nft-content/metadata/PAPAYA/92ee5f5c-bce9-4d64-8a25-c7e1e6305572/7741920',
-    contract_address: '0x63cf7b3d5808cb190aa301b55aafd6b4bb95efbb',
+    contract_address_hash: '0x63cf7b3d5808cb190aa301b55aafd6b4bb95efbb',
     is_pack: false,
     pack_open_locked_until: '2022-03-05T16:58:30.998Z',
     rarity_key: 'Rarity',
