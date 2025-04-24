@@ -159,6 +159,7 @@ const SearchBar = ({ isHomepage }: Props) => {
           w={ `${ menuWidth.current }px` }
           ref={ menuRef }
           overflow="hidden"
+          zIndex="modal"
         >
           <PopoverBody
             p={ 0 }
