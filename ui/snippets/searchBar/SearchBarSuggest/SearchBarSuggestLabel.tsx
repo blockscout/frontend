@@ -11,7 +11,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 const SearchBarSuggestLabel = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultLabel>) => {
   const icon = <IconSvg name="publictags_slim" boxSize={ 5 } color="gray.500"/>;
-  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
 
   const name = (
     <Text

@@ -74,7 +74,7 @@ test.describe('proxy contract', () => {
   test('without implementation name', async({ render, page }) => {
     const component = await render(
       <AddressEntity
-        address={{ ...addressMock.contract, implementations: [ { address: addressMock.contract.implementations?.[0].address as string } ] }}
+        address={{ ...addressMock.contract, implementations: [ { address_hash: addressMock.contract.implementations?.[0].address_hash as string } ] }}
       />,
     );
 
@@ -86,7 +86,11 @@ test.describe('proxy contract', () => {
   test('without any name', async({ render, page }) => {
     const component = await render(
       <AddressEntity
-        address={{ ...addressMock.contract, name: undefined, implementations: [ { address: addressMock.contract.implementations?.[0].address as string } ] }}
+        address={{
+          ...addressMock.contract,
+          name: undefined,
+          implementations: [ { address_hash: addressMock.contract.implementations?.[0].address_hash as string } ],
+        }}
       />,
     );
 

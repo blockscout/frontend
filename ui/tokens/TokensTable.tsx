@@ -13,7 +13,7 @@ import TokensTableItem from './TokensTableItem';
 
 const SORT_SEQUENCE: Record<TokensSortingField, Array<TokensSortingValue>> = {
   fiat_value: [ 'fiat_value-desc', 'fiat_value-asc', 'default' ],
-  holder_count: [ 'holder_count-desc', 'holder_count-asc', 'default' ],
+  holders_count: [ 'holders_count-desc', 'holders_count-asc', 'default' ],
   circulating_market_cap: [ 'circulating_market_cap-desc', 'circulating_market_cap-asc', 'default' ],
 };
 
@@ -54,8 +54,8 @@ const TokensTable = ({ items, page, isLoading, sorting, setSorting, top }: Props
             </Link>
           </TableColumnHeader>
           <TableColumnHeader isNumeric w="15%">
-            <Link onClick={ sort('holder_count') } display="flex" justifyContent="end">
-              { sorting?.includes('holder_count') && <IconSvg name="arrows/east-mini" boxSize={ 4 } transform={ sortIconTransform }/> }
+            <Link onClick={ sort('holders_count') } display="flex" justifyContent="end">
+              { sorting?.includes('holders_count') && <IconSvg name="arrows/east-mini" boxSize={ 4 } transform={ sortIconTransform }/> }
               Holders
             </Link>
           </TableColumnHeader>
@@ -63,7 +63,7 @@ const TokensTable = ({ items, page, isLoading, sorting, setSorting, top }: Props
       </TableHeaderSticky>
       <TableBody>
         { items.map((item, index) => (
-          <TokensTableItem key={ item.address + (isLoading ? index : '') } token={ item } index={ index } page={ page } isLoading={ isLoading }/>
+          <TokensTableItem key={ item.address_hash + (isLoading ? index : '') } token={ item } index={ index } page={ page } isLoading={ isLoading }/>
         )) }
       </TableBody>
     </TableRoot>

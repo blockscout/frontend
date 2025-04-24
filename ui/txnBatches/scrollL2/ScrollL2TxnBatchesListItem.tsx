@@ -100,11 +100,11 @@ const ScrollL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
           fontWeight={ 600 }
           minW="40px"
         >
-          { (item.end_block - item.start_block + 1).toLocaleString() }
+          { (item.end_block_number - item.start_block_number + 1).toLocaleString() }
         </Link>
       </ListItemMobileGrid.Value>
 
-      { typeof item.transaction_count === 'number' ? (
+      { typeof item.transactions_count === 'number' ? (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Txn count</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
@@ -114,7 +114,7 @@ const ScrollL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
               fontWeight={ 600 }
               minW="40px"
             >
-              { item.transaction_count.toLocaleString() }
+              { item.transactions_count.toLocaleString() }
             </Link>
           </ListItemMobileGrid.Value>
         </>

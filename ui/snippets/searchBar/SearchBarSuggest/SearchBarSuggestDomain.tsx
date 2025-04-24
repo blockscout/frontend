@@ -13,7 +13,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultDomain>) => {
   const icon = <EnsEntity.Icon protocol={ data.ens_info.protocol }/>;
-  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
 
   const name = (
     <Text

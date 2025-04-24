@@ -53,7 +53,7 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
           <ListItemMobileGrid.Label isLoading={ isLoading }>From</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <AddressEntity
-              address={{ hash: item.origination_address }}
+              address={{ hash: item.origination_address_hash }}
               truncation="constant"
               isLoading={ isLoading }
               fontWeight={ 600 }

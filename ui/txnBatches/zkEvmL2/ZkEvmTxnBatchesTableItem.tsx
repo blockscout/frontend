@@ -51,7 +51,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           my={ 1 }
           loading={ isLoading }
         >
-          { item.transaction_count }
+          { item.transactions_count }
         </Link>
       </TableCell>
       <TableCell pr={ 12 } verticalAlign="middle">

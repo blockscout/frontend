@@ -12,7 +12,7 @@ import type {
 } from 'types/api/search';
 
 export const token1: SearchResultToken = {
-  address: '0x377c5F2B300B25a534d4639177873b7fEAA56d4B',
+  address_hash: '0x377c5F2B300B25a534d4639177873b7fEAA56d4B',
   address_url: '/address/0x377c5F2B300B25a534d4639177873b7fEAA56d4B',
   name: 'Toms NFT',
   symbol: 'TNT',
@@ -27,7 +27,7 @@ export const token1: SearchResultToken = {
 };
 
 export const token2: SearchResultToken = {
-  address: '0xC35Cc7223B0175245E9964f2E3119c261E8e21F9',
+  address_hash: '0xC35Cc7223B0175245E9964f2E3119c261E8e21F9',
   address_url: '/address/0xC35Cc7223B0175245E9964f2E3119c261E8e21F9',
   name: 'TomToken',
   symbol: 'pdE1B',
@@ -68,7 +68,7 @@ export const block3: SearchResultBlock = {
 };
 
 export const address1: SearchResultAddressOrContract = {
-  address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
+  address_hash: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
   name: null,
   type: 'address' as const,
   is_smart_contract_verified: false,
@@ -76,7 +76,7 @@ export const address1: SearchResultAddressOrContract = {
 };
 
 export const address2: SearchResultAddressOrContract = {
-  address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131b',
+  address_hash: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131b',
   name: null,
   type: 'address' as const,
   is_smart_contract_verified: false,
@@ -90,7 +90,7 @@ export const address2: SearchResultAddressOrContract = {
 };
 
 export const contract1: SearchResultAddressOrContract = {
-  address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
+  address_hash: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
   name: 'Unknown contract in this network',
   type: 'contract' as const,
   is_smart_contract_verified: true,
@@ -98,7 +98,7 @@ export const contract1: SearchResultAddressOrContract = {
 };
 
 export const contract2: SearchResultAddressOrContract = {
-  address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
+  address_hash: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
   name: 'Super utko',
   type: 'contract' as const,
   is_smart_contract_verified: true,
@@ -107,7 +107,7 @@ export const contract2: SearchResultAddressOrContract = {
 };
 
 export const label1: SearchResultLabel = {
-  address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
+  address_hash: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
   name: 'utko',
   type: 'label' as const,
   is_smart_contract_verified: true,
@@ -135,7 +135,7 @@ export const blob1: SearchResultBlob = {
 };
 
 export const domain1: SearchResultDomain = {
-  address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+  address_hash: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
   ens_info: {
     address_hash: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
     expiry_date: '2039-09-01T07:36:18.000Z',

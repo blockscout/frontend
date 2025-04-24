@@ -11,7 +11,7 @@ export type MudWorldsResponse = {
 export type MudWorldItem = {
   address: AddressParam;
   coin_balance: string;
-  transaction_count: number | null;
+  transactions_count: number | null;
 };
 
 export type MudWorldSchema = {

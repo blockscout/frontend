@@ -25,7 +25,7 @@ function getRequestParams(token: TokenInfo, tokenId?: string): WatchAssetParams 
       return {
         type: 'ERC20',
         options: {
-          address: token.address,
+          address: token.address_hash,
           symbol: token.symbol || '',
           decimals: Number(token.decimals ?? '18'),
           image: token.icon_url || '',
@@ -40,7 +40,7 @@ function getRequestParams(token: TokenInfo, tokenId?: string): WatchAssetParams 
       return {
         type: token.type === 'ERC-721' ? 'ERC721' : 'ERC1155',
         options: {
-          address: token.address,
+          address: token.address_hash,
           tokenId: tokenId,
         },
       } as never; // There is no official EIP, and therefore no typings for these token types.

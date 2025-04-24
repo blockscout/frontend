@@ -83,16 +83,16 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
         </TableCell>
       ) }
       <TableCell isNumeric >
-        { data.transaction_count > 0 ? (
+        { data.transactions_count > 0 ? (
           <Skeleton loading={ isLoading } display="inline-block">
             <Link href={ route({
               pathname: '/block/[height_or_hash]',
               query: { height_or_hash: String(data.height), tab: 'txs' },
             }) }>
-              { data.transaction_count }
+              { data.transactions_count }
             </Link>
           </Skeleton>
-        ) : data.transaction_count }
+        ) : data.transactions_count }
       </TableCell>
       <TableCell >
         <Skeleton loading={ isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>

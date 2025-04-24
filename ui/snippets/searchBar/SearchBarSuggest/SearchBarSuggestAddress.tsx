@@ -17,12 +17,12 @@ type Props = ItemsProps<SearchResultAddressOrContract | SearchResultMetadataTag>
 
 const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: Props) => {
   const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
-  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
 
   const icon = (
     <AddressEntity.Icon
       address={{
-        hash: data.address,
+        hash: data.address_hash,
         is_contract: data.type === 'contract',
         name: '',
         is_verified: data.is_smart_contract_verified,

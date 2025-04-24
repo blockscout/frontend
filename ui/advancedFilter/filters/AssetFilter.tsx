@@ -74,16 +74,16 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
   });
 
   const onTokenClick = React.useCallback((token: TokenInfo) => () => {
-    setCurrentValue(prev => prev.findIndex(i => i.token.address === token.address) > -1 ? prev : [ { token, mode: 'include' }, ...prev ]);
+    setCurrentValue(prev => prev.findIndex(i => i.token.address_hash === token.address_hash) > -1 ? prev : [ { token, mode: 'include' }, ...prev ]);
   }, []);
 
   const onReset = React.useCallback(() => setCurrentValue([]), []);
 
   const onFilter = React.useCallback(() => {
     setSearchTerm('');
-    handleFilterChange(FILTER_PARAM_INCLUDE, currentValue.filter(i => i.mode === 'include').map(i => i.token.address));
+    handleFilterChange(FILTER_PARAM_INCLUDE, currentValue.filter(i => i.mode === 'include').map(i => i.token.address_hash));
     handleFilterChange(NAME_PARAM_INCLUDE, currentValue.filter(i => i.mode === 'include').map(i => i.token.symbol || ''));
-    handleFilterChange(FILTER_PARAM_EXCLUDE, currentValue.filter(i => i.mode === 'exclude').map(i => i.token.address));
+    handleFilterChange(FILTER_PARAM_EXCLUDE, currentValue.filter(i => i.mode === 'exclude').map(i => i.token.address_hash));
     handleFilterChange(NAME_PARAM_EXCLUDE, currentValue.filter(i => i.mode === 'exclude').map(i => i.token.symbol || ''));
     return;
   }, [ handleFilterChange, currentValue ]);
@@ -104,7 +104,7 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
         initialValue={ searchTerm }
       />
       { !searchTerm && currentValue.map((item, index) => (
-        <Flex key={ item.token.address } alignItems="center">
+        <Flex key={ item.token.address_hash } alignItems="center">
           <Select
             size="sm"
             value={ [ item.mode ] }
@@ -126,14 +126,14 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
           <Flex rowGap={ 3 } flexWrap="wrap" gap={ 3 } mb={ 2 }>
             { [ NATIVE_TOKEN, ...tokensQuery.data.items ].map(token => (
               <Tag
-                key={ token.address }
-                data-id={ token.address }
+                key={ token.address_hash }
+                data-id={ token.address_hash }
                 onClick={ onTokenClick(token) }
                 variant="select"
               >
                 <Flex flexGrow={ 1 } alignItems="center">
-                  { token.address === NATIVE_TOKEN.address ? <NativeTokenIcon boxSize={ 5 } mr={ 2 }/> : <TokenEntity.Icon token={ token }/> }
-                  { token.symbol || token.name || token.address }
+                  { token.address_hash === NATIVE_TOKEN.address_hash ? <NativeTokenIcon boxSize={ 5 } mr={ 2 }/> : <TokenEntity.Icon token={ token }/> }
+                  { token.symbol || token.name || token.address_hash }
                 </Flex>
               </Tag>
             )) }
@@ -143,12 +143,12 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
       { searchTerm && tokensQuery.data && !tokensQuery.data?.items.length && <Text>No tokens found</Text> }
       { searchTerm && tokensQuery.data && Boolean(tokensQuery.data?.items.length) && (
         <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll" mt={ 3 } ml="-4px">
-          <CheckboxGroup value={ currentValue.map(i => i.token.address) } orientation="vertical">
+          <CheckboxGroup value={ currentValue.map(i => i.token.address_hash) } orientation="vertical">
             { tokensQuery.data.items.map(token => (
               <Checkbox
-                key={ token.address }
-                value={ token.address }
-                id={ token.address }
+                key={ token.address_hash }
+                value={ token.address_hash }
+                id={ token.address_hash }
                 onChange={ onTokenClick(token) }
                 overflow="hidden"
                 w="100%"

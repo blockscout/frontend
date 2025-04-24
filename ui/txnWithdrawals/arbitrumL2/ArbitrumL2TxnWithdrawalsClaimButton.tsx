@@ -56,7 +56,7 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHa
 
         const hash = await sendTransactionAsync({
           data: response.calldata as `0x${ string }`,
-          to: response.outbox_address as `0x${ string }`,
+          to: response.outbox_address_hash as `0x${ string }`,
         });
 
         setClaimTxHash(hash);

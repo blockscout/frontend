@@ -84,14 +84,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
       ) }
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
-        { data.transaction_count > 0 ? (
+        { data.transactions_count > 0 ? (
           <Skeleton loading={ isLoading } display="inline-block">
             <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height), tab: 'txs' } }) }>
-              { data.transaction_count }
+              { data.transactions_count }
             </Link>
           </Skeleton>
         ) :
-          <Text color="text.secondary">{ data.transaction_count }</Text>
+          <Text color="text.secondary">{ data.transactions_count }</Text>
         }
       </Flex>
       <Box>

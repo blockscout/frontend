@@ -13,10 +13,10 @@ export const SCROLL_L2_TXN_BATCH: ScrollL2TxnBatch = {
     hash: null,
     timestamp: null,
   },
-  end_block: 1711,
+  end_block_number: 1711,
   number: 273,
-  start_block: 1697,
-  transaction_count: 15,
+  start_block_number: 1697,
+  transactions_count: 15,
   data_availability: {
     batch_data_container: 'in_blob4844',
   },

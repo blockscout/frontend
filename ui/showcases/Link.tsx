@@ -21,7 +21,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
 const TOKEN = {
-  address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  address_hash: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   circulating_market_cap: '139446916652.6728',
   decimals: '6',
   exchange_rate: '0.999921',
@@ -170,11 +170,11 @@ const LinkShowcase = () => {
         <SectionSubHeader>NFT link</SectionSubHeader>
         <SamplesStack>
           <Sample label="Default" vertical w="100%">
-            <NftEntity id="42" hash={ TOKEN.address }/>
+            <NftEntity id="42" hash={ TOKEN.address_hash }/>
             <Box maxW="250px">
-              <NftEntity id="32925298983216553915666621415831103694597106215670571463977478984525997408266" hash={ TOKEN.address }/>
+              <NftEntity id="32925298983216553915666621415831103694597106215670571463977478984525997408266" hash={ TOKEN.address_hash }/>
             </Box>
-            <NftEntity id="4200000" hash={ TOKEN.address } isLoading/>
+            <NftEntity id="4200000" hash={ TOKEN.address_hash } isLoading/>
           </Sample>
         </SamplesStack>
 

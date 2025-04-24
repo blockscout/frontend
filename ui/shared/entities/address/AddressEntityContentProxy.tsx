@@ -40,8 +40,8 @@ const AddressEntityContentProxy = (props: ContentProps) => {
       <Flex flexWrap="wrap" columnGap={ 3 }>
         { implementations.map((item) => (
           <AddressEntity
-            key={ item.address }
-            address={{ hash: item.address, filecoin: { robust: item.filecoin_robust_address } }}
+            key={ item.address_hash }
+            address={{ hash: item.address_hash, filecoin: { robust: item.filecoin_robust_address } }}
             noLink
             noIcon
             noHighlight

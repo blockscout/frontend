@@ -22,8 +22,8 @@ const ValidatorsCounters = () => {
     <Box columnGap={ 3 } rowGap={ 3 } mb={ 6 } display="grid" gridTemplateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)' }}>
       <StatsWidget
         label="Total validators"
-        value={ Number(countersQuery.data.validators_counter).toLocaleString() }
-        diff={ Number(countersQuery.data.new_validators_counter_24h).toLocaleString() }
+        value={ Number(countersQuery.data.validators_count).toLocaleString() }
+        diff={ Number(countersQuery.data.new_validators_count_24h).toLocaleString() }
         isLoading={ countersQuery.isPlaceholderData }
       />
       <StatsWidget

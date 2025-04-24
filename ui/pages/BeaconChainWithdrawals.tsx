@@ -33,8 +33,8 @@ const Withdrawals = () => {
   const countersQuery = useApiQuery('withdrawals_counters', {
     queryOptions: {
       placeholderData: {
-        withdrawal_count: '19091878',
-        withdrawal_sum: '4630710684332438',
+        withdrawals_count: '19091878',
+        withdrawals_sum: '4630710684332438',
       },
     },
   });
@@ -71,8 +71,8 @@ const Withdrawals = () => {
       <Skeleton loading={ countersQuery.isPlaceholderData || isPlaceholderData } display="flex" flexWrap="wrap">
         { countersQuery.data && (
           <Text lineHeight={{ base: '24px', lg: '32px' }}>
-            { BigNumber(countersQuery.data.withdrawal_count).toFormat() } withdrawals processed
-            and { getCurrencyValue({ value: countersQuery.data.withdrawal_sum }).valueStr } { currencyUnits.ether } withdrawn
+            { BigNumber(countersQuery.data.withdrawals_count).toFormat() } withdrawals processed
+            and { getCurrencyValue({ value: countersQuery.data.withdrawals_sum }).valueStr } { currencyUnits.ether } withdrawn
           </Text>
         ) }
       </Skeleton>

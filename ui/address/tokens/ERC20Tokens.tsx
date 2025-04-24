@@ -30,7 +30,7 @@ const ERC20Tokens = ({ tokensQuery }: Props) => {
       <Box hideBelow="lg"><ERC20TokensTable data={ data.items } top={ pagination.isVisible ? 72 : 0 } isLoading={ isPlaceholderData }/></Box>
       <Box hideFrom="lg">{ data.items.map((item, index) => (
         <ERC20TokensListItem
-          key={ item.token.address + (isPlaceholderData ? index : '') }
+          key={ item.token.address_hash + (isPlaceholderData ? index : '') }
           { ...item }
           isLoading={ isPlaceholderData }
         />

@@ -66,7 +66,7 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
       <TableCell>
         { item.total && 'token_id' in item.total && item.token && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null ? (
           <NftEntity
-            hash={ item.token.address }
+            hash={ item.token.address_hash }
             id={ item.total.token_id }
             instance={ item.total.token_instance }
             isLoading={ isLoading }

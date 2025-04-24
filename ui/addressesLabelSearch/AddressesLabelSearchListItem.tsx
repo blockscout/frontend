@@ -39,7 +39,7 @@ const AddressesLabelSearchListItem = ({
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Txn count</Skeleton>
         <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary">
-          <span>{ Number(item.transaction_count).toLocaleString() }</span>
+          <span>{ Number(item.transactions_count).toLocaleString() }</span>
         </Skeleton>
       </HStack>
     </ListItemMobile>

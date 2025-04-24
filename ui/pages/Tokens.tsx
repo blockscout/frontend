@@ -65,7 +65,7 @@ const Tokens = () => {
         50,
         {
           next_page_params: {
-            holder_count: 81528,
+            holders_count: 81528,
             items_count: 50,
             name: '',
             market_cap: null,

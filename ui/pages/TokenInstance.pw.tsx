@@ -10,7 +10,7 @@ import * as pwConfig from 'playwright/utils/config';
 
 import TokenInstance from './TokenInstance';
 
-const hash = tokenMock.tokenInfo.address;
+const hash = tokenMock.tokenInfo.address_hash;
 const id = '42';
 
 test.describe.configure({ mode: 'serial' });

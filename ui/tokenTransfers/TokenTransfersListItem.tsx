@@ -74,7 +74,7 @@ const TokenTransfersListItem = ({ item, isLoading }: Props) => {
           <ListItemMobileGrid.Label isLoading={ isLoading }>Token ID</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value overflow="hidden">
             <NftEntity
-              hash={ item.token.address }
+              hash={ item.token.address_hash }
               id={ item.total.token_id }
               instance={ item.total.token_instance }
               isLoading={ isLoading }

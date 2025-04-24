@@ -9,7 +9,7 @@ export interface VerifiedContract {
   language: 'vyper' | 'yul' | 'solidity' | 'stylus_rust';
   has_constructor_args: boolean;
   optimization_enabled: boolean;
-  transaction_count: number | null;
+  transactions_count: number | null;
   verified_at: string;
   market_cap: string | null;
   license_type: SmartContractLicenseType | null;

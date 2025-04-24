@@ -41,7 +41,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
       <Flex columnGap={ 2 } w="100%">
         <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Txn</Skeleton>
         <Skeleton loading={ props.isLoading } display="inline-block" color="Skeleton_secondary">
-          <span>{ props.transaction_count }</span>
+          <span>{ props.transactions_count }</span>
         </Skeleton>
       </Flex>
       <Flex columnGap={ 2 } w="100%">

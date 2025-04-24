@@ -31,9 +31,9 @@ const OptimisticL2DisputeGamesTableItem = ({ item, isLoading }: Props) => {
       <TableCell verticalAlign="middle">
         <Flex overflow="hidden" w="100%" alignItems="center">
           <Skeleton loading={ isLoading }>
-            <HashStringShorten hash={ item.contract_address } type="long"/>
+            <HashStringShorten hash={ item.contract_address_hash } type="long"/>
           </Skeleton>
-          <CopyToClipboard text={ item.contract_address } ml={ 2 } isLoading={ isLoading }/>
+          <CopyToClipboard text={ item.contract_address_hash } ml={ 2 } isLoading={ isLoading }/>
         </Flex>
       </TableCell>
       <TableCell verticalAlign="middle">

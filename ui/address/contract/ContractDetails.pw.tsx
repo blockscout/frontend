@@ -30,7 +30,11 @@ test.beforeEach(async({ mockApiResponse, page }) => {
 test.describe('full view', () => {
   test.beforeEach(async({ mockApiResponse }) => {
     await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
-    await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.implementations?.[0].address as string } });
+    await mockApiResponse(
+      'contract',
+      contractMock.withChangedByteCode,
+      { pathParams: { hash: addressMock.contract.implementations?.[0].address_hash as string } },
+    );
   });
 
   test('source code +@dark-mode', async({ render, createSocket }) => {
@@ -87,7 +91,11 @@ test.describe('mobile view', () => {
 
   test('source code', async({ render, createSocket, mockApiResponse }) => {
     await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
-    await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.implementations?.[0].address as string } });
+    await mockApiResponse(
+      'contract',
+      contractMock.withChangedByteCode,
+      { pathParams: { hash: addressMock.contract.implementations?.[0].address_hash as string } },
+    );
     const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, `addresses:${ addressMock.contract.hash.toLowerCase() }`);

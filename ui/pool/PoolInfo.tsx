@@ -31,7 +31,7 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
         <TokenEntity
           token={{
             type: 'ERC-20',
-            address: data.base_token_address,
+            address_hash: data.base_token_address,
             name: data.base_token_symbol,
             symbol: data.base_token_symbol,
             icon_url: data.base_token_icon_url,
@@ -50,7 +50,7 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
         <TokenEntity
           token={{
             type: 'ERC-20',
-            address: data.quote_token_address,
+            address_hash: data.quote_token_address,
             name: data.quote_token_symbol,
             symbol: data.quote_token_symbol,
             icon_url: data.quote_token_icon_url,
