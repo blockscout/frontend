@@ -1,7 +1,9 @@
-import { Radio, RadioGroup, Stack, Box } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { type AdvancedFilterParams } from 'types/api/advancedFilter';
+
+import { Radio, RadioGroup } from 'toolkit/chakra/radio';
 
 const FILTER_PARAM = 'address_relation';
 
@@ -18,18 +20,20 @@ type Props = {
 };
 
 const AddressRelationFilter = ({ value = DEFAULT_VALUE, handleFilterChange, onClose }: Props) => {
-  const onFilter = React.useCallback((val: Value) => {
+  const onFilter = React.useCallback(({ value }: { value: string | null }) => {
+    if (!value) {
+      return;
+    }
+
     onClose && onClose();
-    handleFilterChange(FILTER_PARAM, val);
+    handleFilterChange(FILTER_PARAM, value as Value);
   }, [ handleFilterChange, onClose ]);
 
   return (
     <Box w="120px">
-      <RadioGroup onChange={ onFilter } value={ value }>
-        <Stack direction="column">
-          <Radio value="or">OR</Radio>
-          <Radio value="and">AND</Radio>
-        </Stack>
+      <RadioGroup onValueChange={ onFilter } value={ value } orientation="vertical">
+        <Radio value="or">OR</Radio>
+        <Radio value="and">AND</Radio>
       </RadioGroup>
     </Box>
   );

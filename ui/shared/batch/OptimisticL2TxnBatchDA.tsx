@@ -3,7 +3,7 @@ import React from 'react';
 import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
 import type { ExcludeUndefined } from 'types/utils';
 
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
 
 export interface Props {
   container: ExcludeUndefined<OptimisticL2TxnBatchesItem['batch_data_container']>;
@@ -24,9 +24,9 @@ const OptimisticL2TxnBatchDA = ({ container, isLoading }: Props) => {
   })();
 
   return (
-    <Tag colorScheme="yellow" isLoading={ isLoading }>
+    <Badge colorPalette="yellow" loading={ isLoading }>
       { text }
-    </Tag>
+    </Badge>
   );
 };
 

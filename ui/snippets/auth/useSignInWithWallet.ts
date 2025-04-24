@@ -1,19 +1,19 @@
 import React from 'react';
-import { useSignMessage } from 'wagmi';
+import { useSignMessage, useSwitchChain } from 'wagmi';
 
+import type * as rewards from '@blockscout/points-types';
 import type { UserInfo } from 'types/api/account';
-import type { RewardsCheckUserResponse, RewardsConfigResponse, RewardsLoginResponse, RewardsNonceResponse } from 'types/api/rewards';
 
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
-import { YEAR } from 'lib/consts';
 import * as cookies from 'lib/cookies';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import useToast from 'lib/hooks/useToast';
 import type * as mixpanel from 'lib/mixpanel';
 import useWeb3Wallet from 'lib/web3/useWallet';
+import { toaster } from 'toolkit/chakra/toaster';
+import { YEAR } from 'toolkit/utils/consts';
 
 function composeMessage(address: string, nonceBlockscout: string, nonceRewards: string) {
   const feature = config.features.rewards;
@@ -51,9 +51,9 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
   const isConnectingWalletRef = React.useRef(false);
 
   const apiFetch = useApiFetch();
-  const toast = useToast();
   const web3Wallet = useWeb3Wallet({ source });
   const { signMessageAsync } = useSignMessage();
+  const { switchChainAsync } = useSwitchChain();
 
   const getSiweMessage = React.useCallback(async(address: string) => {
     try {
@@ -65,12 +65,12 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
         throw new Error('User already has logged in to rewards');
       }
 
-      const rewardsConfig = await apiFetch('rewards_config') as RewardsConfigResponse;
-      if (!rewardsConfig.auth.shared_siwe_login) {
+      const rewardsConfig = await apiFetch('rewards_config') as rewards.GetConfigResponse;
+      if (!rewardsConfig.auth?.shared_siwe_login) {
         throw new Error('Shared SIWE login is not enabled');
       }
 
-      const rewardsCheckUser = await apiFetch('rewards_check_user', { pathParams: { address } }) as RewardsCheckUserResponse;
+      const rewardsCheckUser = await apiFetch('rewards_check_user', { pathParams: { address } }) as rewards.AuthUserResponse;
       if (!rewardsCheckUser.exists) {
         throw new Error('Rewards user does not exist');
       }
@@ -78,7 +78,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
       const nonceConfig = await apiFetch(
         'rewards_nonce',
         { queryParams: { blockscout_login_address: address, blockscout_login_chain_id: config.chain.id } },
-      ) as RewardsNonceResponse;
+      ) as rewards.AuthNonceResponse;
       if (!nonceConfig.merits_login_nonce || !nonceConfig.nonce) {
         throw new Error('Cannot get merits login nonce');
       }
@@ -100,6 +100,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
 
   const proceedToAuth = React.useCallback(async(address: string) => {
     try {
+      await switchChainAsync({ chainId: Number(config.chain.id) });
       const siweMessage = await getSiweMessage(address);
       const signature = await signMessageAsync({ message: siweMessage.message });
       const recaptchaToken = await executeRecaptchaAsync();
@@ -126,7 +127,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
               signature,
             },
           },
-        }) as RewardsLoginResponse : undefined;
+        }) as rewards.AuthLoginResponse : undefined;
 
       if (!('name' in authResponse)) {
         throw Error('Something went wrong');
@@ -137,15 +138,14 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
       const apiErrorMessage = getErrorObjPayload<{ message: string }>(error)?.message;
       const shortMessage = errorObj && 'shortMessage' in errorObj && typeof errorObj.shortMessage === 'string' ? errorObj.shortMessage : undefined;
       onError?.();
-      toast({
-        status: 'error',
+      toaster.error({
         title: 'Error',
         description: apiErrorMessage || shortMessage || getErrorMessage(error) || 'Something went wrong',
       });
     } finally {
       setIsPending(false);
     }
-  }, [ getSiweMessage, signMessageAsync, executeRecaptchaAsync, isAuth, apiFetch, onSuccess, onError, toast ]);
+  }, [ getSiweMessage, switchChainAsync, signMessageAsync, executeRecaptchaAsync, isAuth, apiFetch, onSuccess, onError ]);
 
   const start = React.useCallback(() => {
     setIsPending(true);

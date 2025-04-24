@@ -1,31 +1,25 @@
-import { useBoolean } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
+import { useToggle } from '@uidotdev/usehooks';
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useMemo, useCallback } from 'react';
-import { useSignMessage } from 'wagmi';
+import { useSignMessage, useSwitchChain } from 'wagmi';
 
-import type {
-  RewardsUserBalancesResponse, RewardsUserDailyCheckResponse,
-  RewardsNonceResponse, RewardsCheckUserResponse,
-  RewardsLoginResponse, RewardsCheckRefCodeResponse,
-  RewardsUserDailyClaimResponse, RewardsUserReferralsResponse,
-  RewardsConfigResponse,
-} from 'types/api/rewards';
+import type * as rewards from '@blockscout/points-types';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import { YEAR } from 'lib/consts';
 import * as cookies from 'lib/cookies';
 import decodeJWT from 'lib/decodeJWT';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import useToast from 'lib/hooks/useToast';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
 import useAccount from 'lib/web3/useAccount';
+import { toaster } from 'toolkit/chakra/toaster';
+import { YEAR } from 'toolkit/utils/consts';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 const feature = config.features.rewards;
@@ -34,18 +28,18 @@ type ContextQueryResult<Response> =
   Pick<UseQueryResult<Response, ResourceError<unknown>>, 'data' | 'isLoading' | 'refetch' | 'isPending' | 'isFetching' | 'isError'>;
 
 type TRewardsContext = {
-  balancesQuery: ContextQueryResult<RewardsUserBalancesResponse>;
-  dailyRewardQuery: ContextQueryResult<RewardsUserDailyCheckResponse>;
-  referralsQuery: ContextQueryResult<RewardsUserReferralsResponse>;
-  rewardsConfigQuery: ContextQueryResult<RewardsConfigResponse>;
-  checkUserQuery: ContextQueryResult<RewardsCheckUserResponse>;
+  balancesQuery: ContextQueryResult<rewards.GetUserBalancesResponse>;
+  dailyRewardQuery: ContextQueryResult<rewards.DailyRewardCheckResponse>;
+  referralsQuery: ContextQueryResult<rewards.GetReferralDataResponse>;
+  rewardsConfigQuery: ContextQueryResult<rewards.GetConfigResponse>;
+  checkUserQuery: ContextQueryResult<rewards.AuthUserResponse>;
   apiToken: string | undefined;
   isInitialized: boolean;
   isLoginModalOpen: boolean;
   openLoginModal: () => void;
   closeLoginModal: () => void;
   saveApiToken: (token: string | undefined) => void;
-  login: (refCode: string) => Promise<{ isNewUser: boolean; reward: string | null; invalidRefCodeError?: boolean }>;
+  login: (refCode: string) => Promise<{ isNewUser: boolean; reward?: string; invalidRefCodeError?: boolean }>;
   claim: () => Promise<void>;
 };
 
@@ -70,7 +64,7 @@ const initialState = {
   openLoginModal: () => {},
   closeLoginModal: () => {},
   saveApiToken: () => {},
-  login: async() => ({ isNewUser: false, reward: null }),
+  login: async() => ({ isNewUser: false }),
   claim: async() => {},
 };
 
@@ -116,13 +110,13 @@ export function RewardsContextProvider({ children }: Props) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
-  const toast = useToast();
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
+  const { switchChainAsync } = useSwitchChain();
   const profileQuery = useProfileQuery();
 
-  const [ isLoginModalOpen, setIsLoginModalOpen ] = useBoolean(false);
-  const [ isInitialized, setIsInitialized ] = useBoolean(false);
+  const [ isLoginModalOpen, setIsLoginModalOpen ] = useToggle(false);
+  const [ isInitialized, setIsInitialized ] = useToggle(false);
   const [ apiToken, setApiToken ] = React.useState<string | undefined>();
 
   // Initialize state with the API token from cookies
@@ -133,7 +127,7 @@ export function RewardsContextProvider({ children }: Props) {
       if (registeredAddress === profileQuery.data?.address_hash) {
         setApiToken(token);
       }
-      setIsInitialized.on();
+      setIsInitialized(true);
     }
   }, [ setIsInitialized, profileQuery ]);
 
@@ -189,22 +183,18 @@ export function RewardsContextProvider({ children }: Props) {
       cookies.set(cookies.NAMES.REWARDS_REFERRAL_CODE, refCode);
       removeQueryParam(router, 'ref');
       if (!apiToken) {
-        setIsLoginModalOpen.on();
+        setIsLoginModalOpen(true);
       }
     }
   }, [ router, apiToken, isInitialized, setIsLoginModalOpen ]);
 
   const errorToast = useCallback((error: unknown) => {
     const apiError = getErrorObjPayload<{ message: string }>(error);
-    toast({
-      position: 'top-right',
+    toaster.error({
       title: 'Error',
       description: apiError?.message || getErrorMessage(error) || 'Something went wrong. Try again later.',
-      status: 'error',
-      variant: 'subtle',
-      isClosable: true,
     });
-  }, [ toast ]);
+  }, [ ]);
 
   // Login to the rewards program
   const login = useCallback(async(refCode: string) => {
@@ -213,18 +203,18 @@ export function RewardsContextProvider({ children }: Props) {
         throw new Error();
       }
       const [ nonceResponse, checkCodeResponse ] = await Promise.all([
-        apiFetch('rewards_nonce') as Promise<RewardsNonceResponse>,
+        apiFetch('rewards_nonce') as Promise<rewards.AuthNonceResponse>,
         refCode ?
-          apiFetch('rewards_check_ref_code', { pathParams: { code: refCode } }) as Promise<RewardsCheckRefCodeResponse> :
-          Promise.resolve({ valid: true, reward: null }),
+          apiFetch('rewards_check_ref_code', { pathParams: { code: refCode } }) as Promise<rewards.AuthCodeResponse> :
+          Promise.resolve({ valid: true, reward: undefined }),
       ]);
       if (!checkCodeResponse.valid) {
         return {
           invalidRefCodeError: true,
           isNewUser: false,
-          reward: null,
         };
       }
+      await switchChainAsync({ chainId: Number(config.chain.id) });
       const message = getMessageToSign(address, nonceResponse.nonce, checkUserQuery.data?.exists, refCode);
       const signature = await signMessageAsync({ message });
       const loginResponse = await apiFetch('rewards_login', {
@@ -236,7 +226,7 @@ export function RewardsContextProvider({ children }: Props) {
             signature,
           },
         },
-      }) as RewardsLoginResponse;
+      }) as rewards.AuthLoginResponse;
       saveApiToken(loginResponse.token);
       return {
         isNewUser: loginResponse.created,
@@ -246,7 +236,7 @@ export function RewardsContextProvider({ children }: Props) {
       errorToast(_error);
       throw _error;
     }
-  }, [ apiFetch, address, signMessageAsync, errorToast, saveApiToken, checkUserQuery ]);
+  }, [ address, apiFetch, checkUserQuery.data?.exists, switchChainAsync, signMessageAsync, saveApiToken, errorToast ]);
 
   // Claim daily reward
   const claim = useCallback(async() => {
@@ -256,12 +246,20 @@ export function RewardsContextProvider({ children }: Props) {
           method: 'POST',
           ...fetchParams,
         },
-      }) as RewardsUserDailyClaimResponse;
+      }) as rewards.DailyRewardClaimResponse;
     } catch (_error) {
       errorToast(_error);
       throw _error;
     }
   }, [ apiFetch, errorToast, fetchParams ]);
+
+  const openLoginModal = React.useCallback(() => {
+    setIsLoginModalOpen(true);
+  }, [ setIsLoginModalOpen ]);
+
+  const closeLoginModal = React.useCallback(() => {
+    setIsLoginModalOpen(false);
+  }, [ setIsLoginModalOpen ]);
 
   const value = useMemo(() => {
     if (!feature.isEnabled) {
@@ -277,14 +275,15 @@ export function RewardsContextProvider({ children }: Props) {
       saveApiToken,
       isInitialized,
       isLoginModalOpen,
-      openLoginModal: setIsLoginModalOpen.on,
-      closeLoginModal: setIsLoginModalOpen.off,
+      openLoginModal,
+      closeLoginModal,
       login,
       claim,
     };
   }, [
-    isLoginModalOpen, setIsLoginModalOpen, balancesQuery, dailyRewardQuery, checkUserQuery,
+    balancesQuery, dailyRewardQuery, checkUserQuery,
     apiToken, login, claim, referralsQuery, rewardsConfigQuery, isInitialized, saveApiToken,
+    isLoginModalOpen, openLoginModal, closeLoginModal,
   ]);
 
   return (

@@ -1,10 +1,10 @@
-import { Tr, Td } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
@@ -18,38 +18,38 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
   const quantity = BigNumber(holder.value).div(BigNumber(10 ** Number(token.decimals))).toFormat();
 
   return (
-    <Tr>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
         <AddressEntity
           address={ holder.address }
           isLoading={ isLoading }
           flexGrow={ 1 }
           fontWeight="700"
         />
-      </Td>
+      </TableCell>
       { (token.type === 'ERC-1155' || token.type === 'ERC-404') && 'token_id' in holder && (
-        <Td verticalAlign="middle">
-          <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <TableCell verticalAlign="middle">
+          <Skeleton loading={ isLoading } display="inline-block">
             { 'token_id' in holder && holder.token_id }
           </Skeleton>
-        </Td>
+        </TableCell>
       ) }
-      <Td verticalAlign="middle" isNumeric>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" wordBreak="break-word">
+      <TableCell verticalAlign="middle" isNumeric>
+        <Skeleton loading={ isLoading } display="inline-block" wordBreak="break-word">
           { quantity }
         </Skeleton>
-      </Td>
+      </TableCell>
       { token.total_supply && token.type !== 'ERC-404' && (
-        <Td verticalAlign="middle" isNumeric>
+        <TableCell verticalAlign="middle" isNumeric>
           <Utilization
             value={ BigNumber(holder.value).div(BigNumber(token.total_supply)).dp(4).toNumber() }
             colorScheme="green"
             display="inline-flex"
             isLoading={ isLoading }
           />
-        </Td>
+        </TableCell>
       ) }
-    </Tr>
+    </TableRow>
   );
 };
 

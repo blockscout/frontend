@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FilterInput from 'ui/shared/filters/FilterInput';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 type Props = {
@@ -8,10 +8,9 @@ type Props = {
   handleFilterChange: (val: string) => void;
   title: string;
   columnName: string;
-  onClose?: () => void;
 };
 
-const AddressMudRecordsKeyFilter = ({ value = '', handleFilterChange, columnName, title, onClose }: Props) => {
+const AddressMudRecordsKeyFilterContent = ({ value = '', handleFilterChange, columnName, title }: Props) => {
   const [ filterValue, setFilterValue ] = React.useState<string>(value);
 
   const onFilter = React.useCallback(() => {
@@ -23,12 +22,11 @@ const AddressMudRecordsKeyFilter = ({ value = '', handleFilterChange, columnName
       title={ title }
       isFilled={ Boolean(filterValue) }
       onFilter={ onFilter }
-      onClose={ onClose }
       isTouched={ filterValue !== value }
     >
       <FilterInput
         initialValue={ value }
-        size="xs"
+        size="sm"
         onChange={ setFilterValue }
         placeholder={ columnName }
       />
@@ -36,4 +34,4 @@ const AddressMudRecordsKeyFilter = ({ value = '', handleFilterChange, columnName
   );
 };
 
-export default AddressMudRecordsKeyFilter;
+export default AddressMudRecordsKeyFilterContent;

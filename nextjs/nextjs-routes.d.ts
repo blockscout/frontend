@@ -38,6 +38,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/block/countdown/[height]", { "height": string }>
     | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
     | StaticRoute<"/blocks">
+    | StaticRoute<"/chakra">
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
     | StaticRoute<"/deposits">

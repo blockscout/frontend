@@ -1,4 +1,3 @@
-import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -64,19 +63,18 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 
 const BlobEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
+  const content = <Content { ...partsProps.content }/>;
 
   return (
     <Container { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      <Link { ...partsProps.link }>
-        <Content { ...partsProps.content }/>
-      </Link>
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
       <Copy { ...partsProps.copy }/>
     </Container>
   );
 };
 
-export default React.memo(chakra<As, EntityProps>(BlobEntity));
+export default React.memo(chakra(BlobEntity));
 
 export {
   Container,

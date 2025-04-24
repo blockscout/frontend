@@ -1,31 +1,30 @@
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FormFields } from '../types';
 
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
+import { Heading } from 'toolkit/chakra/heading';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 interface Props {
-  isReadOnly?: boolean;
+  readOnly?: boolean;
 }
 
-const ContractVerificationFieldAddress = ({ isReadOnly }: Props) => {
+const ContractVerificationFieldAddress = ({ readOnly }: Props) => {
   return (
     <>
       <ContractVerificationFormRow>
-        <chakra.span fontWeight={ 500 } fontSize="lg" fontFamily="heading">
+        <Heading level="2">
           Contract address to verify
-        </chakra.span>
+        </Heading>
       </ContractVerificationFormRow>
       <ContractVerificationFormRow>
         <FormFieldAddress<FormFields>
           name="address"
-          isRequired
+          required
           placeholder="Smart contract / Address (0x...)"
-          isReadOnly={ isReadOnly }
-          size={{ base: 'md', lg: 'lg' }}
+          readOnly={ readOnly }
         />
       </ContractVerificationFormRow>
     </>

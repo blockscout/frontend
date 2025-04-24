@@ -1,4 +1,4 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -6,9 +6,9 @@ import type { TokenType } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
-import { apos } from 'lib/html-entities';
 import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { getTokenTransfersStub } from 'stubs/token';
+import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -72,12 +72,12 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter }: Props) => {
 
   const content = tokenTransferQuery.data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }>
+      <Box hideBelow="lg">
         <TokenTransferTable data={ items } top={ isActionBarHidden ? 0 : ACTION_BAR_HEIGHT_DESKTOP } isLoading={ tokenTransferQuery.isPlaceholderData }/>
-      </Hide>
-      <Show below="lg" ssr={ false }>
+      </Box>
+      <Box hideFrom="lg">
         <TokenTransferList data={ items } isLoading={ tokenTransferQuery.isPlaceholderData }/>
-      </Show>
+      </Box>
     </>
   ) : null;
 
@@ -96,15 +96,16 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter }: Props) => {
   return (
     <DataListDisplay
       isError={ txQuery.isError || tokenTransferQuery.isError }
-      items={ items }
+      itemsNum={ items.length }
       emptyText="There are no token transfers."
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,
         hasActiveFilters: Boolean(numActiveFilters),
       }}
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

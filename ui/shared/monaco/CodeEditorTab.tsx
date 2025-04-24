@@ -1,7 +1,7 @@
 import { Flex, chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { alt } from 'lib/html-entities';
+import { alt } from 'toolkit/utils/htmlEntities';
 import useThemeColors from 'ui/shared/monaco/utils/useThemeColors';
 
 import CodeEditorFileIcon from './CodeEditorFileIcon';
@@ -48,7 +48,7 @@ const CodeEditorTab = ({ isActive, isMainFile, path, onClick, onClose, isCloseDi
       cursor="pointer"
       onClick={ handleClick }
       _hover={{
-        '.codicon-close': {
+        '& .codicon-close': {
           visibility: 'visible',
         },
       }}

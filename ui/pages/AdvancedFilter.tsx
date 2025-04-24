@@ -1,19 +1,9 @@
 import {
-  Table,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Thead,
   Box,
   Text,
-  Tag,
-  TagCloseButton,
   chakra,
   Flex,
-  TagLabel,
   HStack,
-  Link,
 } from '@chakra-ui/react';
 import { omit } from 'es-toolkit';
 import { useRouter } from 'next/router';
@@ -31,6 +21,9 @@ import getValuesArrayFromQuery from 'lib/getValuesArrayFromQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADVANCED_FILTER_ITEM } from 'stubs/advancedFilter';
 import { generateListStub } from 'stubs/utils';
+import { Link } from 'toolkit/chakra/link';
+import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import { Tag } from 'toolkit/chakra/tag';
 import ColumnsButton from 'ui/advancedFilter/ColumnsButton';
 import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import { TABLE_COLUMNS } from 'ui/advancedFilter/constants';
@@ -145,12 +138,12 @@ const AdvancedFilter = () => {
   const content = (
     <AddressHighlightProvider>
       <Box maxW="100%" overflowX="scroll" whiteSpace="nowrap">
-        <Table style={{ tableLayout: 'fixed' }} minWidth="950px" w="100%">
-          <Thead w="100%" display="table">
-            <Tr>
+        <TableRoot tableLayout="fixed" minWidth="950px" w="100%">
+          <TableHeaderSticky>
+            <TableRow>
               { columnsToShow.map(column => {
                 return (
-                  <Th
+                  <TableColumnHeader
                     key={ column.id }
                     isNumeric={ column.isNumeric }
                     minW={ column.width }
@@ -167,33 +160,45 @@ const AdvancedFilter = () => {
                       searchParams={ data?.search_params }
                       isLoading={ isPlaceholderData }
                     />
-                  </Th>
+                  </TableColumnHeader>
                 );
               }) }
-            </Tr>
-          </Thead>
-          <Tbody w="100%" display="table">
+            </TableRow>
+          </TableHeaderSticky>
+          <TableBody>
             { data?.items.map((item, index) => (
-              <Tr key={ item.hash + String(index) }>
-                { columnsToShow.map(column => (
-                  <Td
-                    key={ item.hash + column.id }
-                    isNumeric={ column.isNumeric }
-                    minW={ column.width }
-                    maxW={ column.width }
-                    w={ column.width }
-                    wordBreak="break-word"
-                    whiteSpace="nowrap"
-                    overflow="hidden"
-                    textAlign={ column.id === 'or_and' ? 'center' : 'start' }
-                  >
-                    <ItemByColumn item={ item } column={ column.id } isLoading={ isPlaceholderData }/>
-                  </Td>
-                )) }
-              </Tr>
+              <TableRow key={ item.hash + String(index) }>
+                { columnsToShow.map(column => {
+                  const textAlign = (() => {
+                    if (column.id === 'or_and') {
+                      return 'center';
+                    }
+                    if (column.isNumeric) {
+                      return 'right';
+                    }
+                    return 'start';
+                  })();
+
+                  return (
+                    <TableCell
+                      key={ item.hash + column.id }
+                      isNumeric={ column.isNumeric }
+                      minW={ column.width }
+                      maxW={ column.width }
+                      w={ column.width }
+                      wordBreak="break-word"
+                      whiteSpace="nowrap"
+                      overflow="hidden"
+                      textAlign={ textAlign }
+                    >
+                      <ItemByColumn item={ item } column={ column.id } isLoading={ isPlaceholderData }/>
+                    </TableCell>
+                  );
+                }) }
+              </TableRow>
             )) }
-          </Tbody>
-        </Table>
+          </TableBody>
+        </TableRoot>
       </Box>
     </AddressHighlightProvider>
   );
@@ -223,42 +228,33 @@ const AdvancedFilter = () => {
       </Flex>
       <HStack gap={ 2 } flexWrap="wrap" mb={ 6 }>
         { filterTags.map(t => (
-          <Tag key={ t.name } colorScheme="blue" display="inline-flex">
-            <TagLabel>
-              <chakra.span color="text_secondary">{ t.name }: </chakra.span>
-              <chakra.span color="text">{ t.value }</chakra.span>
-            </TagLabel>
-            <TagCloseButton onClick={ onClearFilter(t.key) }/>
+          <Tag key={ t.name } variant="filter" onClose={ onClearFilter(t.key) } closable label={ t.name }>
+            { t.value }
           </Tag>
         )) }
         { filterTags.length === 0 && (
           <>
-            <Tag colorScheme="blue" display="inline-flex">
-              <TagLabel>
-                <chakra.span color="text_secondary">Type: </chakra.span>
-                <chakra.span color="text">All</chakra.span>
-              </TagLabel>
+            <Tag variant="filter" label="Type">
+              All
             </Tag>
-            <Tag colorScheme="blue" display="inline-flex">
-              <TagLabel>
-                <chakra.span color="text_secondary">Age: </chakra.span>
-                <chakra.span color="text">7d</chakra.span>
-              </TagLabel>
+            <Tag variant="filter" label="Age">
+              7d
             </Tag>
           </>
         ) }
       </HStack>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no transactions."
-        content={ content }
         actionBar={ actionBar }
         filterProps={{
           hasActiveFilters: Object.values(filters).some(Boolean),
           emptyFilteredText: 'No match found for current filter',
         }}
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

@@ -3,8 +3,8 @@ import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { PaginationParams } from 'ui/shared/pagination/types';
-import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
@@ -13,6 +13,9 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
 import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockEpochRewards from 'ui/block/BlockEpochRewards';
@@ -23,13 +26,10 @@ import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
 import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
@@ -57,7 +57,7 @@ const BlockPageContent = () => {
     (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible)
   );
 
-  const tabs: Array<RoutedTab> = React.useMemo(() => ([
+  const tabs: Array<TabItemRegular> = React.useMemo(() => ([
     {
       id: 'index',
       title: 'Details',
@@ -152,7 +152,7 @@ const BlockPageContent = () => {
     <>
       { !config.UI.views.block.hiddenFields?.miner && blockQuery.data?.miner && (
         <Skeleton
-          isLoaded={ !blockQuery.isPlaceholderData }
+          loading={ blockQuery.isPlaceholderData }
           fontFamily="heading"
           display="flex"
           minW={ 0 }
@@ -165,7 +165,11 @@ const BlockPageContent = () => {
           <AddressEntity address={ blockQuery.data.miner }/>
         </Skeleton>
       ) }
-      <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: config.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}/>
+      <NetworkExplorers
+        type="block"
+        pathParam={ heightOrHash }
+        ml={{ base: config.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}
+      />
     </>
   );
 
@@ -179,10 +183,10 @@ const BlockPageContent = () => {
         secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }
       />
-      { blockQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (
+      { blockQuery.isPlaceholderData ? <RoutedTabsSkeleton tabs={ tabs }/> : (
         <RoutedTabs
           tabs={ tabs }
-          tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+          listProps={ isMobile ? undefined : TAB_LIST_PROPS }
           rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
           stickyEnabled={ hasPagination }
         />

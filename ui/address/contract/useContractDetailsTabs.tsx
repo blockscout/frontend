@@ -1,8 +1,10 @@
-import { Alert, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { Address } from 'types/api/address';
 import type { SmartContract } from 'types/api/contract';
 
+import { Alert } from 'toolkit/chakra/alert';
 import CodeViewSnippet from 'ui/shared/CodeViewSnippet';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
@@ -20,19 +22,19 @@ interface Tab {
 interface Props {
   data: SmartContract | undefined;
   isLoading: boolean;
-  addressHash: string;
+  addressData: Address;
   sourceAddress: string;
 }
 
-export default function useContractDetailsTabs({ data, isLoading, addressHash, sourceAddress }: Props): Array<Tab> {
+export default function useContractDetailsTabs({ data, isLoading, addressData, sourceAddress }: Props): Array<Tab> {
 
-  const canBeVerified = !data?.is_self_destructed && !data?.is_verified && data?.proxy_type !== 'eip7702';
+  const canBeVerified = !data?.is_self_destructed && !data?.is_verified && addressData?.proxy_type !== 'eip7702';
 
   return React.useMemo(() => {
     const verificationButton = (
       <ContractDetailsVerificationButton
         isLoading={ isLoading }
-        addressHash={ addressHash }
+        addressHash={ addressData.hash }
         isPartiallyVerified={ Boolean(data?.is_partially_verified) }
       />
     );
@@ -116,5 +118,5 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         ),
       } : undefined,
     ].filter(Boolean);
-  }, [ isLoading, addressHash, data, sourceAddress, canBeVerified ]);
+  }, [ isLoading, addressData, data, sourceAddress, canBeVerified ]);
 }

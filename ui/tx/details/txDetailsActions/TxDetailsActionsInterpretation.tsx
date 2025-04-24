@@ -2,8 +2,8 @@ import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
-import DetailsActionsWrapper from 'ui/shared/DetailsActionsWrapper';
-import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoActionsWrapper from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
 import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 
 interface Props {
@@ -29,7 +29,7 @@ const TxDetailsActionsInterpretation = ({ hash, isTxDataLoading }: Props) => {
 
   return (
     <>
-      <DetailsActionsWrapper isLoading={ isTxDataLoading || txInterpretationQuery.isPlaceholderData } type="tx">
+      <DetailedInfoActionsWrapper isLoading={ isTxDataLoading || txInterpretationQuery.isPlaceholderData } type="tx">
         { actions.map((action, index: number) => (
           <TxInterpretation
             key={ index }
@@ -38,8 +38,8 @@ const TxDetailsActionsInterpretation = ({ hash, isTxDataLoading }: Props) => {
           />
         ),
         ) }
-      </DetailsActionsWrapper>
-      <DetailsInfoItemDivider/>
+      </DetailedInfoActionsWrapper>
+      <DetailedInfo.ItemDivider/>
     </>
   );
 };

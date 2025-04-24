@@ -1,4 +1,4 @@
-import { Box, chakra, Table, Tbody, Tr, Th, Show, Hide } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
@@ -8,23 +8,23 @@ import type { SearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
 import { useSettingsContext } from 'lib/contexts/settings';
-import * as regexp from 'lib/regexp';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import * as regexp from 'toolkit/utils/regexp';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
-import Thead from 'ui/shared/TheadSticky';
 import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
 import HeaderMobile from 'ui/snippets/header/HeaderMobile';
@@ -144,7 +144,7 @@ const SearchResultsPageContent = () => {
 
     return (
       <>
-        <Show below="lg" ssr={ false }>
+        <Box hideFrom="lg">
           { displayedItems.map((item, index) => (
             <SearchResultListItem
               key={ (isLoading ? 'placeholder_' : 'actual_') + index }
@@ -154,18 +154,18 @@ const SearchResultsPageContent = () => {
               addressFormat={ settingsContext?.addressFormat }
             />
           )) }
-        </Show>
-        <Hide below="lg" ssr={ false }>
-          <Table fontWeight={ 500 }>
-            <Thead top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
-              <Tr>
-                <Th width="30%">Search result</Th>
-                <Th width="35%"/>
-                <Th width="35%" pr={ 10 }/>
-                <Th width="150px">Category</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
+        </Box>
+        <Box hideBelow="lg">
+          <TableRoot fontWeight={ 500 }>
+            <TableHeaderSticky top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
+              <TableRow>
+                <TableColumnHeader width="30%">Search result</TableColumnHeader>
+                <TableColumnHeader width="35%"/>
+                <TableColumnHeader width="35%" pr={ 10 }/>
+                <TableColumnHeader width="150px">Category</TableColumnHeader>
+              </TableRow>
+            </TableHeaderSticky>
+            <TableBody>
               { displayedItems.map((item, index) => (
                 <SearchResultTableItem
                   key={ (isLoading ? 'placeholder_' : 'actual_') + index }
@@ -175,9 +175,9 @@ const SearchResultsPageContent = () => {
                   addressFormat={ settingsContext?.addressFormat }
                 />
               )) }
-            </Tbody>
-          </Table>
-        </Hide>
+            </TableBody>
+          </TableRoot>
+        </Box>
       </>
     );
   })();
@@ -190,7 +190,7 @@ const SearchResultsPageContent = () => {
     const resultsCount = pagination.page === 1 && !data?.next_page_params ? displayedItems.length : '50+';
 
     const text = isLoading && pagination.page === 1 ? (
-      <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>
+      <Skeleton loading h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>
     ) : (
       (
         <>
@@ -214,9 +214,9 @@ const SearchResultsPageContent = () => {
 
     return (
       <>
-        <Box display={{ base: 'block', lg: 'none' }}>{ text }</Box>
+        <Box hideFrom="lg">{ text }</Box>
         <ActionBar mt={{ base: 0, lg: -6 }} alignItems="center">
-          <Box display={{ base: 'none', lg: 'block' }}>{ text }</Box>
+          <Box hideBelow="lg">{ text }</Box>
           <Pagination { ...pagination }/>
         </ActionBar>
       </>

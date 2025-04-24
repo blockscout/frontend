@@ -1,13 +1,14 @@
-import { Button, useBoolean, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useMemo } from 'react';
 
-import { SECOND } from 'lib/consts';
 import { useRewardsContext } from 'lib/contexts/rewards';
+import { Button } from 'toolkit/chakra/button';
+import { SECOND } from 'toolkit/utils/consts';
 import splitSecondsInPeriods from 'ui/blockCountdown/splitSecondsInPeriods';
 
 const DailyRewardClaimButton = () => {
   const { balancesQuery, dailyRewardQuery, claim } = useRewardsContext();
-  const [ isClaiming, setIsClaiming ] = useBoolean(false);
+  const [ isClaiming, setIsClaiming ] = React.useState(false);
   const [ timeLeft, setTimeLeft ] = React.useState<string>('');
 
   const dailyRewardValue = useMemo(() =>
@@ -17,7 +18,7 @@ const DailyRewardClaimButton = () => {
   [ dailyRewardQuery.data ]);
 
   const handleClaim = useCallback(async() => {
-    setIsClaiming.on();
+    setIsClaiming(true);
     try {
       await claim();
       await Promise.all([
@@ -25,7 +26,7 @@ const DailyRewardClaimButton = () => {
         dailyRewardQuery.refetch(),
       ]);
     } catch (error) {}
-    setIsClaiming.off();
+    setIsClaiming(false);
   }, [ claim, setIsClaiming, balancesQuery, dailyRewardQuery ]);
 
   useEffect(() => {
@@ -63,7 +64,6 @@ const DailyRewardClaimButton = () => {
   }, [ dailyRewardQuery ]);
 
   const isLoading = isClaiming || dailyRewardQuery.isPending || dailyRewardQuery.isFetching;
-  const timerBgColor = useColorModeValue('gray.200', 'gray.800');
 
   return !isLoading && !dailyRewardQuery.data?.available ? (
     <Flex
@@ -72,7 +72,7 @@ const DailyRewardClaimButton = () => {
       justifyContent="center"
       borderRadius="base"
       color="gray.500"
-      bgColor={ timerBgColor }
+      bgColor={{ _light: 'gray.200', _dark: 'gray.800' }}
       fontSize="md"
       fontWeight="600"
       cursor="default"
@@ -80,7 +80,7 @@ const DailyRewardClaimButton = () => {
       Next claim in { timeLeft || 'N/A' }
     </Flex>
   ) : (
-    <Button onClick={ handleClaim } isLoading={ isLoading }>
+    <Button onClick={ handleClaim } loading={ isLoading }>
       Claim { dailyRewardValue } Merits
     </Button>
   );

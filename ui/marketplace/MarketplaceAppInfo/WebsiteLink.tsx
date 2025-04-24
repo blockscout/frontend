@@ -1,6 +1,7 @@
-import { Link } from '@chakra-ui/react';
 import React from 'react';
 
+import { Link } from 'toolkit/chakra/link';
+import { makePrettyLink } from 'toolkit/utils/url';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -12,23 +13,18 @@ const WebsiteLink = ({ url }: Props) => {
     return null;
   }
 
-  function getHostname(url: string) {
-    try {
-      return new URL(url).hostname;
-    } catch (err) {}
-  }
-
   return (
     <Link
+      external
+      noIcon
       href={ url }
-      target="_blank"
       display="inline-flex"
       alignItems="center"
       columnGap={ 1 }
       mt={ 3 }
     >
-      <IconSvg name="link" boxSize={ 5 } color="text_secondary"/>
-      <span>{ getHostname(url) }</span>
+      <IconSvg name="link" boxSize={ 5 } color="text.secondary"/>
+      <span>{ makePrettyLink(url)?.domain }</span>
     </Link>
   );
 };

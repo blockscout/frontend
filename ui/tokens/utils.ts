@@ -1,13 +1,13 @@
 import type { TokenType } from 'types/api/token';
 import type { TokensSortingValue } from 'types/api/tokens';
-import type { SelectOption } from 'ui/shared/select/types';
 
 import config from 'configs/app';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import type { SelectOption } from 'toolkit/chakra/select';
 
 export const SORT_OPTIONS: Array<SelectOption<TokensSortingValue>> = [
-  { label: 'Default', value: undefined },
+  { label: 'Default', value: 'default' },
   { label: 'Price ascending', value: 'fiat_value-asc' },
   { label: 'Price descending', value: 'fiat_value-desc' },
   { label: 'Holders ascending', value: 'holder_count-asc' },

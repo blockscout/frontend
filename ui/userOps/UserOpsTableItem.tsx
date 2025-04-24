@@ -1,9 +1,9 @@
-import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { UserOpsItem } from 'types/api/userOps';
 
 import config from 'configs/app';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -21,55 +21,54 @@ import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 
 const UserOpsTableItem = ({ item, isLoading, showTx, showSender }: Props) => {
   return (
-    <Tr>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
         <UserOpEntity hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 } truncation="constant_long"/>
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <TimeAgoWithTooltip
           timestamp={ item.timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           display="inline-block"
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <UserOpStatus status={ item.status } isLoading={ isLoading }/>
-      </Td>
+      </TableCell>
       { showSender && (
-        <Td verticalAlign="middle">
+        <TableCell verticalAlign="middle">
           <AddressStringOrParam
             address={ item.address }
             isLoading={ isLoading }
             truncation="constant"
           />
-        </Td>
+        </TableCell>
       ) }
       { showTx && (
-        <Td verticalAlign="middle">
+        <TableCell verticalAlign="middle">
           <TxEntity
             hash={ item.transaction_hash }
             isLoading={ isLoading }
             truncation="constant"
             noIcon
           />
-        </Td>
+        </TableCell>
       ) }
-      <Td verticalAlign="middle">
+      <TableCell verticalAlign="middle">
         <BlockEntity
           number={ Number(item.block_number) }
           isLoading={ isLoading }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           noIcon
         />
-      </Td>
+      </TableCell>
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
-        <Td verticalAlign="middle" isNumeric>
+        <TableCell verticalAlign="middle" isNumeric>
           <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 }/>
-        </Td>
+        </TableCell>
       ) }
-    </Tr>
+    </TableRow>
   );
 };
 

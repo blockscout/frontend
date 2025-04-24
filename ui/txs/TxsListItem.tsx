@@ -9,10 +9,10 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
-import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { space } from 'toolkit/utils/htmlEntities';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -31,14 +31,15 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
+  animation?: string;
 };
 
-const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
+const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement, animation }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   return (
-    <ListItemMobile display="block" width="100%" isAnimated key={ tx.hash }>
-      <Flex justifyContent="space-between" mt={ 4 }>
+    <ListItemMobile display="block" width="100%" animation={ animation } key={ tx.hash }>
+      <Flex justifyContent="space-between" alignItems="flex-start" mt={ 4 }>
         <HStack flexWrap="wrap">
           { tx.translation ? (
             <TxTranslationType
@@ -68,17 +69,17 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           timestamp={ tx.timestamp }
           enableIncrement={ enableTimeIncrement }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight="400"
           fontSize="sm"
         />
       </Flex>
       { tx.method && (
         <Flex mt={ 3 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Method </Skeleton>
+          <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Method </Skeleton>
           <Skeleton
-            isLoaded={ !isLoading }
-            color="text_secondary"
+            loading={ isLoading }
+            color="text.secondary"
             overflow="hidden"
             whiteSpace="nowrap"
             textOverflow="ellipsis"
@@ -89,7 +90,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
       ) }
       { showBlockInfo && tx.block_number !== null && (
         <Flex mt={ 2 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Block </Skeleton>
+          <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Block </Skeleton>
           <BlockEntity
             isLoading={ isLoading }
             number={ tx.block_number }
@@ -107,11 +108,13 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
       />
       { !config.UI.views.tx.hiddenFields?.value && (
         <Flex mt={ 2 } columnGap={ 2 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Value</Skeleton>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
-            { getValueWithUnit(tx.value).toFormat() }
-            { space }
-            { currencyUnits.ether }
+          <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Value</Skeleton>
+          <Skeleton loading={ isLoading } display="inline-block" color="text.secondary" whiteSpace="pre">
+            <span>
+              { getValueWithUnit(tx.value).toFormat() }
+              { space }
+              { currencyUnits.ether }
+            </span>
           </Skeleton>
         </Flex>
       ) }
@@ -119,7 +122,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         <Flex mt={ 2 } mb={ 3 } columnGap={ 2 }>
           { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
             <>
-              <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Fee</Skeleton>
+              <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Fee</Skeleton>
               <TxFee tx={ tx } isLoading={ isLoading }/>
             </>
           ) }

@@ -1,4 +1,4 @@
-import { Flex, Link } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 // import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -8,7 +8,8 @@ import config from 'configs/app';
 // import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
-import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailsActionsWrapper';
+import { Link } from 'toolkit/chakra/link';
+import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 
@@ -74,7 +75,7 @@ const UserOpSubHeading = ({ hash }: Props) => {
     //     />
     //   );
   } else {
-    return <UserOpEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } fontFamily="heading"/>;
+    return <UserOpEntity hash={ hash } noLink noCopy={ false } variant="subheading"/>;
   }
 };
 

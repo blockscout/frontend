@@ -1,13 +1,13 @@
-import { Alert, Grid, GridItem } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Blob } from 'types/api/blobs';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Alert } from 'toolkit/chakra/alert';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 import BlobData from './BlobData';
@@ -26,7 +26,7 @@ const BlobInfo = ({ data, isLoading }: Props) => {
     >
       { !data.blob_data && (
         <GridItem colSpan={{ base: undefined, lg: 2 }} mb={ 3 }>
-          <Skeleton isLoaded={ !isLoading }>
+          <Skeleton loading={ isLoading }>
             <Alert status="warning">This blob is not yet indexed</Alert>
           </Skeleton>
         </GridItem>
@@ -34,75 +34,75 @@ const BlobInfo = ({ data, isLoading }: Props) => {
 
       { data.kzg_proof && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Zero knowledge proof. Allows for quick verification of commitment"
             isLoading={ isLoading }
           >
             Proof
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="pre-wrap" wordBreak="break-all" lineHeight={ 6 } my="-2px">
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="pre-wrap" wordBreak="break-all">
               { data.kzg_proof }
               <CopyToClipboard text={ data.kzg_proof } isLoading={ isLoading }/>
             </Skeleton>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
 
       { data.kzg_commitment && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Commitment to the data in the blob"
             isLoading={ isLoading }
           >
             Commitment
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="pre-wrap" wordBreak="break-all" lineHeight={ 6 } my="-2px">
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="pre-wrap" wordBreak="break-all">
               { data.kzg_commitment }
               <CopyToClipboard text={ data.kzg_commitment } isLoading={ isLoading }/>
             </Skeleton>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
 
       { data.blob_data && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Blob size in bytes"
             isLoading={ isLoading }
           >
             Size, bytes
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="pre-wrap" wordBreak="break-all">
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="pre-wrap" wordBreak="break-all">
               { (data.blob_data.replace('0x', '').length / 2).toLocaleString() }
             </Skeleton>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
 
-      { data.blob_data && <DetailsInfoItemDivider/> }
+      { data.blob_data && <DetailedInfo.ItemDivider/> }
 
       { data.transaction_hashes[0] && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Hash of the transaction with this blob"
             isLoading={ isLoading }
           >
             Transaction hash
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <TxEntity hash={ data.transaction_hashes[0].transaction_hash } isLoading={ isLoading } noIcon noCopy={ false }/>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
 
-      <DetailsSponsoredItem isLoading={ isLoading }/>
+      <DetailedInfoSponsoredItem isLoading={ isLoading }/>
 
       { data.blob_data && (
         <>
-          <DetailsInfoItemDivider/>
+          <DetailedInfo.ItemDivider/>
           <BlobData data={ data.blob_data } hash={ data.hash } isLoading={ isLoading }/>
         </>
       ) }

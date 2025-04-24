@@ -1,14 +1,17 @@
-import { Flex, Box, Td, Tr, Text, Image, Tooltip } from '@chakra-ui/react';
+import { Flex, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Pool } from 'types/api/pools';
 
 import getItemIndex from 'lib/getItemIndex';
 import getPoolLinks from 'lib/pools/getPoolLinks';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PoolEntity from 'ui/shared/entities/pool/PoolEntity';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 
 type Props = {
   item: Pool;
@@ -26,10 +29,10 @@ const PoolsTableItem = ({
   const externalLinks = getPoolLinks(item);
 
   return (
-    <Tr>
-      <Td>
+    <TableRow>
+      <TableCell>
         <Flex gap={ 2 } alignItems="start">
-          <Skeleton isLoaded={ !isLoading }>
+          <Skeleton loading={ isLoading }>
             <Text px={ 2 }>{ getItemIndex(index, page) }</Text>
           </Skeleton>
           <Box overflow="hidden">
@@ -39,32 +42,33 @@ const PoolsTableItem = ({
               noIcon
               isLoading={ isLoading }
               truncation="constant_long"
+              linkVariant="secondary"
             />
           </Box>
         </Flex>
-      </Td>
-      <Td>
-        <Skeleton isLoaded={ !isLoading }>{ item.dex.name }</Skeleton>
-      </Td>
-      <Td isNumeric>
-        <Skeleton isLoaded={ !isLoading }>
+      </TableCell>
+      <TableCell>
+        <Skeleton loading={ isLoading }>{ item.dex.name }</Skeleton>
+      </TableCell>
+      <TableCell isNumeric>
+        <Skeleton loading={ isLoading }>
           ${ Number(item.liquidity).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
-      </Td>
-      <Td isNumeric>
-        <Skeleton isLoaded={ !isLoading } display="flex" gap={ 2 } justifyContent="center">
+      </TableCell>
+      <TableCell isNumeric>
+        <Skeleton loading={ isLoading } display="flex" gap={ 2 } justifyContent="center">
           { externalLinks.map((link) => (
-            <Tooltip label={ link.title } key={ link.url }>
+            <Tooltip content={ link.title } key={ link.url }>
               <Box display="inline-block">
-                <LinkExternal href={ link.url } display="inline-flex">
+                <Link external noIcon href={ link.url } display="inline-flex">
                   <Image src={ link.image } alt={ link.title } boxSize={ 5 }/>
-                </LinkExternal>
+                </Link>
               </Box>
             </Tooltip>
           )) }
         </Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

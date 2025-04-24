@@ -1,7 +1,4 @@
-import {
-  Box,
-  Button,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -13,14 +10,15 @@ import type { ResourceErrorAccount } from 'lib/api/resources';
 import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import { TRANSACTION_HASH_LENGTH, TRANSACTION_HASH_REGEXP } from 'ui/shared/forms/validators/transaction';
+import { Button } from 'toolkit/chakra/button';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { TRANSACTION_HASH_LENGTH, TRANSACTION_HASH_REGEXP } from 'toolkit/components/forms/validators/transaction';
 
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
   data?: Partial<TransactionTag>;
-  onClose: () => void;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
 };
@@ -30,7 +28,7 @@ type Inputs = {
   tag: string;
 };
 
-const TransactionForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisible }) => {
+const TransactionForm: React.FC<Props> = ({ data, onOpenChange, onSuccess, setAlertVisible }) => {
   const [ pending, setPending ] = useState(false);
 
   const formApi = useForm<Inputs>({
@@ -76,7 +74,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVi
     onSuccess: async() => {
       await queryClient.refetchQueries({ queryKey: [ resourceKey('private_tags_tx') ] });
       await onSuccess();
-      onClose();
+      onOpenChange({ open: false });
       setPending(false);
     },
   });
@@ -92,30 +90,29 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVi
         <FormFieldText<Inputs>
           name="transaction"
           placeholder="Transaction hash (0x...)"
-          isRequired
+          required
           rules={{
             maxLength: TRANSACTION_HASH_LENGTH,
             pattern: TRANSACTION_HASH_REGEXP,
           }}
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
           mb={ 5 }
         />
         <FormFieldText<Inputs>
           name="tag"
           placeholder="Private tag (max 35 characters)"
-          isRequired
+          required
           rules={{
             maxLength: TAG_MAX_LENGTH,
           }}
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
           mb={ 8 }
         />
         <Box marginTop={ 8 }>
           <Button
-            size="lg"
             type="submit"
-            isDisabled={ !formApi.formState.isDirty }
-            isLoading={ pending }
+            disabled={ !formApi.formState.isDirty }
+            loading={ pending }
           >
             { data ? 'Save changes' : 'Add tag' }
           </Button>

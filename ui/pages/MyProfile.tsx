@@ -1,9 +1,10 @@
-import { Flex, useDisclosure } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Screen } from 'ui/snippets/auth/types';
 
 import config from 'configs/app';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import MyProfileEmail from 'ui/myProfile/MyProfileEmail';
 import MyProfileWallet from 'ui/myProfile/MyProfileWallet';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
@@ -55,7 +56,7 @@ const MyProfile = () => {
           { config.features.blockchainInteraction.isEnabled &&
             <MyProfileWallet profileQuery={ profileQuery } onAddWallet={ handleAddWalletClick }/> }
         </Flex>
-        { authModal.isOpen && authInitialScreen &&
+        { authModal.open && authInitialScreen &&
           <AuthModal initialScreen={ authInitialScreen } onClose={ authModal.onClose } mixpanelConfig={ MIXPANEL_CONFIG }/> }
       </>
     );

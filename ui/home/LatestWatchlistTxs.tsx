@@ -6,7 +6,7 @@ import { route } from 'nextjs-routes';
 import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { TX } from 'stubs/tx';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Link } from 'toolkit/chakra/link';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
 import LatestTxsItem from './LatestTxsItem';
@@ -53,7 +53,7 @@ const LatestWatchlistTxs = () => {
           ))) }
         </Box>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ txsUrl }>View all watch list transactions</LinkInternal>
+          <Link textStyle="sm" href={ txsUrl }>View all watch list transactions</Link>
         </Flex>
       </>
     );

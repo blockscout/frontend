@@ -6,8 +6,8 @@ import type { HomeStatsWidgetId } from 'types/homepage';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import { WEI } from 'lib/consts';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
+import { WEI } from 'toolkit/utils/consts';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import IconSvg from 'ui/shared/IconSvg';
@@ -108,8 +108,8 @@ const Stats = () => {
           boxSize={ 5 }
           flexShrink={ 0 }
           cursor="pointer"
-          color="icon_info"
-          _hover={{ color: 'link_hovered' }}
+          color="icon.info"
+          _hover={{ color: 'link.primary.hove' }}
         />
       </GasInfoTooltip>
     ) : null;

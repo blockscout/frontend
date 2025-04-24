@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
@@ -13,13 +13,13 @@ import { BLOCK } from 'stubs/block';
 import { SCROLL_L2_TXN_BATCH } from 'stubs/scrollL2';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import ScrollL2TxnBatchDetails from 'ui/txnBatches/scrollL2/ScrollL2TxnBatchDetails';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
@@ -86,7 +86,7 @@ const ScrollL2TxnBatch = () => {
 
   const hasPagination = !isMobile && pagination?.isVisible;
 
-  const tabs: Array<RoutedTab> = React.useMemo(() => ([
+  const tabs: Array<TabItemRegular> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <ScrollL2TxnBatchDetails query={ batchQuery }/> },
     {
       id: 'txs',
@@ -121,10 +121,10 @@ const ScrollL2TxnBatch = () => {
         backLink={ backLink }
       />
       { batchQuery.isPlaceholderData ?
-        <TabsSkeleton tabs={ tabs }/> : (
+        <RoutedTabsSkeleton tabs={ tabs }/> : (
           <RoutedTabs
             tabs={ tabs }
-            tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+            listProps={ isMobile ? undefined : TAB_LIST_PROPS }
             rightSlot={ hasPagination && pagination ? <Pagination { ...(pagination) }/> : null }
             stickyEnabled={ hasPagination }
           />

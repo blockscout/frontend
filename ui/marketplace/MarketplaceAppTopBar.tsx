@@ -1,4 +1,4 @@
-import { chakra, Flex, Tooltip } from '@chakra-ui/react';
+import { chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReport, ContractListTypes } from 'types/client/marketplace';
@@ -8,11 +8,10 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { Link } from 'toolkit/chakra/link';
+import { BackToButton } from 'toolkit/components/buttons/BackToButton';
+import { makePrettyLink } from 'toolkit/utils/url';
 import RewardsButton from 'ui/rewards/RewardsButton';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/links/LinkExternal';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
@@ -44,41 +43,33 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
     return route({ pathname: '/apps' });
   }, [ appProps.referrer ]);
 
-  function getHostname(url: string | undefined) {
-    try {
-      return new URL(url || '').hostname;
-    } catch (err) {}
-  }
-
   const showContractList = React.useCallback((id: string, type: ContractListTypes) => setContractListType(type), []);
   const hideContractList = React.useCallback(() => setContractListType(undefined), []);
 
   return (
     <>
       <Flex alignItems="center" mb={{ base: 3, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
-        { !isMobile && <NetworkLogo isCollapsed/> }
-        <Tooltip label="Back to dApps list">
-          <LinkInternal display="inline-flex" href={ goBackUrl } h="32px" isLoading={ isLoading } ml={ isMobile ? 0 : 4 }>
-            <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400"/>
-          </LinkInternal>
-        </Tooltip>
-        <LinkExternal
+        { !isMobile && <NetworkLogo isCollapsed mr={ 4 }/> }
+        <BackToButton
+          href={ goBackUrl }
+          hint="Back to dApps list"
+          loading={ isLoading }
+        />
+        <Link
+          external
           href={ data?.url }
-          variant="subtle"
-          fontSize="sm"
-          lineHeight={ 5 }
+          variant="underlaid"
+          textStyle="sm"
           minW={ 0 }
           maxW={{ base: 'calc(100% - 114px)', md: 'auto' }}
           display="flex"
-          isLoading={ isLoading }
+          loading={ isLoading }
         >
-          <chakra.span isTruncated>
-            { getHostname(data?.url) }
+          <chakra.span truncate>
+            { makePrettyLink(data?.url)?.domain }
           </chakra.span>
-        </LinkExternal>
-        <Skeleton isLoaded={ !isLoading }>
-          <MarketplaceAppInfo data={ data }/>
-        </Skeleton>
+        </Link>
+        <MarketplaceAppInfo data={ data } isLoading={ isLoading }/>
         { (securityReport || isLoading) && (
           <AppSecurityReport
             id={ data?.id || '' }

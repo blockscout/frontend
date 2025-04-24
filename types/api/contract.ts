@@ -69,7 +69,6 @@ export interface SmartContract {
   };
   verified_twin_address_hash: string | null;
   verified_twin_filecoin_robust_address?: string | null;
-  proxy_type: SmartContractProxyType | null;
   language: string | null;
   license_type: SmartContractLicenseType | null;
   certified?: boolean;

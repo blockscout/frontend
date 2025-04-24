@@ -8,11 +8,12 @@ import Content from './MarketplaceAppInfo/Content';
 
 interface Props {
   data: MarketplaceAppOverview | undefined;
+  isLoading?: boolean;
 }
 
-const MarketplaceAppInfo = ({ data }: Props) => {
+const MarketplaceAppInfo = ({ data, isLoading }: Props) => {
   return (
-    <InfoButton>
+    <InfoButton isLoading={ isLoading }>
       <Content data={ data }/>
     </InfoButton>
   );

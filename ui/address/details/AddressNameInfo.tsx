@@ -2,8 +2,8 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 interface Props {
@@ -15,20 +15,20 @@ const AddressNameInfo = ({ data, isLoading }: Props) => {
   if (data.token) {
     return (
       <>
-        <DetailsInfoItem.Label
+        <DetailedInfo.ItemLabel
           hint="Token name and symbol"
           isLoading={ isLoading }
         >
           Token name
-        </DetailsInfoItem.Label>
-        <DetailsInfoItem.Value>
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
           <TokenEntity
             token={ data.token }
             isLoading={ isLoading }
             noIcon
             noCopy
           />
-        </DetailsInfoItem.Value>
+        </DetailedInfo.ItemValue>
       </>
     );
   }
@@ -36,17 +36,17 @@ const AddressNameInfo = ({ data, isLoading }: Props) => {
   if (data.is_contract && data.name) {
     return (
       <>
-        <DetailsInfoItem.Label
+        <DetailedInfo.ItemLabel
           hint="The name found in the source code of the Contract"
           isLoading={ isLoading }
         >
           Contract name
-        </DetailsInfoItem.Label>
-        <DetailsInfoItem.Value>
-          <Skeleton isLoaded={ !isLoading }>
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
+          <Skeleton loading={ isLoading }>
             { data.name }
           </Skeleton>
-        </DetailsInfoItem.Value>
+        </DetailedInfo.ItemValue>
       </>
     );
   }
@@ -54,17 +54,17 @@ const AddressNameInfo = ({ data, isLoading }: Props) => {
   if (data.name) {
     return (
       <>
-        <DetailsInfoItem.Label
+        <DetailedInfo.ItemLabel
           hint="The name of the validator"
           isLoading={ isLoading }
         >
           Validator name
-        </DetailsInfoItem.Label>
-        <DetailsInfoItem.Value>
-          <Skeleton isLoaded={ !isLoading }>
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
+          <Skeleton loading={ isLoading }>
             { data.name }
           </Skeleton>
-        </DetailsInfoItem.Value>
+        </DetailedInfo.ItemValue>
       </>
     );
   }

@@ -1,9 +1,8 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ArbitrumL2TxnBatchesItem } from 'types/api/arbitrumL2';
 
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import ArbitrumL2TxnBatchesTableItem from './ArbitrumL2TxnBatchesTableItem';
 
@@ -15,19 +14,19 @@ type Props = {
 
 const ArbitrumL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table minW="1000px" style={{ tableLayout: 'auto' }}>
-      <Thead top={ top }>
-        <Tr>
-          <Th>Batch #</Th>
-          <Th>L1 status</Th>
-          <Th>L1 block</Th>
-          <Th>Block count</Th>
-          <Th>L1 transaction</Th>
-          <Th>Age</Th>
-          <Th>Txn count</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot tableLayout="auto" minW="1000px">
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader>Batch #</TableColumnHeader>
+          <TableColumnHeader>L1 status</TableColumnHeader>
+          <TableColumnHeader>L1 block</TableColumnHeader>
+          <TableColumnHeader>Block count</TableColumnHeader>
+          <TableColumnHeader>L1 transaction</TableColumnHeader>
+          <TableColumnHeader>Age</TableColumnHeader>
+          <TableColumnHeader>Txn count</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
           <ArbitrumL2TxnBatchesTableItem
             key={ item.number + (isLoading ? String(index) : '') }
@@ -35,8 +34,8 @@ const ArbitrumL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
             isLoading={ isLoading }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

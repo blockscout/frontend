@@ -5,10 +5,10 @@ import type { AdvancedFilterResponseItem } from 'types/api/advancedFilter';
 
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -31,12 +31,12 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
       if (!type) {
         return null;
       }
-      return <Tag isLoading={ isLoading }>{ type.name }</Tag>;
+      return <Badge loading={ isLoading }>{ type.name }</Badge>;
     }
     case 'method':
-      return item.method ? <Tag isLoading={ isLoading } isTruncated colorScheme="gray">{ item.method }</Tag> : null;
+      return item.method ? <Badge loading={ isLoading } truncated>{ item.method }</Badge> : null;
     case 'age':
-      return <TimeAgoWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text_secondary" fontWeight={ 400 }/>;
+      return <TimeAgoWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text.secondary" fontWeight={ 400 }/>;
     case 'from':
       return (
         <Flex w="100%">
@@ -63,18 +63,18 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
       );
     case 'amount': {
       if (item.token?.type === 'ERC-721') {
-        return <Skeleton isLoaded={ !isLoading }>1</Skeleton>;
+        return <Skeleton loading={ isLoading }>1</Skeleton>;
       }
       if (item.total) {
         return (
-          <Skeleton isLoaded={ !isLoading }>
+          <Skeleton loading={ isLoading }>
             { getCurrencyValue({ value: item.total?.value, decimals: item.total.decimals, accuracy: 8 }).valueStr }
           </Skeleton>
         );
       }
       if (item.value) {
         return (
-          <Skeleton isLoaded={ !isLoading }>
+          <Skeleton loading={ isLoading }>
             { getCurrencyValue({ value: item.value, decimals: config.chain.currency.decimals.toString(), accuracy: 8 }).valueStr }
           </Skeleton>
         );
@@ -84,9 +84,9 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
     case 'asset':
       return item.token ?
         <TokenEntity token={ item.token } isLoading={ isLoading } fontWeight={ 700 } onlySymbol noCopy/> :
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 700 }>{ config.chain.currency.symbol }</Skeleton>;
+        <Skeleton loading={ isLoading } fontWeight={ 700 }>{ config.chain.currency.symbol }</Skeleton>;
     case 'fee':
-      return <Skeleton isLoaded={ !isLoading }>{ item.fee ? getCurrencyValue({ value: item.fee, accuracy: 8 }).valueStr : '-' }</Skeleton>;
+      return <Skeleton loading={ isLoading }>{ item.fee ? getCurrencyValue({ value: item.fee, accuracy: 8 }).valueStr : '-' }</Skeleton>;
     default:
       return null;
   }

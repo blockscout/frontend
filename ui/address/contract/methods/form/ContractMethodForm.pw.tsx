@@ -114,8 +114,8 @@ test('base view +@mobile +@dark-mode', async({ render }) => {
   await component.getByPlaceholder('uint256').last().fill('42');
   await component.getByRole('button', { name: '×' }).last().click();
   await component.getByPlaceholder('bytes32').last().fill('aa');
-  await component.getByRole('button', { name: 'add' }).last().click();
-  await component.getByRole('button', { name: 'add' }).last().click();
+  await component.getByLabel('add').last().click();
+  await component.getByLabel('add').last().click();
   await component.getByPlaceholder('int8', { exact: true }).first().fill('1');
   await component.getByPlaceholder('int8', { exact: true }).last().fill('3');
 
@@ -123,15 +123,15 @@ test('base view +@mobile +@dark-mode', async({ render }) => {
   await component.getByText('parameters').click();
   await component.getByText('additionalRecipients').click();
   await component.getByText('#1 AdditionalRecipient').click();
-  await component.getByRole('button', { name: 'add' }).first().click();
+  await component.getByLabel('add').first().click();
   await component.getByPlaceholder('uint256').nth(1).fill('42');
   await component.getByPlaceholder('address').nth(1).fill('0xd789a607CEac2f0E14867de4EB15b15C9FFB5859');
 
   await component.getByText('struct FulfillmentComponent[][]').click();
-  await component.getByRole('button', { name: 'add' }).nth(1).click();
+  await component.getByLabel('add').nth(1).click();
   await component.getByText('#1 FulfillmentComponent[]').click();
   await component.getByLabel('#1 FulfillmentComponent[] (tuple[])').getByText('#1 FulfillmentComponent (tuple)').click();
-  await component.getByRole('button', { name: 'add' }).nth(1).click();
+  await component.getByLabel('add').nth(1).click();
 
   await component.getByText('ParentArray (int256[2][][3])').click();
   await component.getByText('#1 int256[2][] (int256[2][])').click();

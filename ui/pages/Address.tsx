@@ -1,9 +1,9 @@
-import { Box, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { EntityTag } from 'ui/shared/EntityTags/types';
-import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
@@ -19,6 +19,7 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -54,7 +55,6 @@ import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
 const PREDEFINED_TAG_PRIORITY = 100;
@@ -141,7 +141,6 @@ const AddressPageContent = () => {
   });
 
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
-  const safeIconColor = useColorModeValue('black', 'white');
 
   const xStarQuery = useFetchXStarScore({ hash });
 
@@ -151,7 +150,7 @@ const AddressPageContent = () => {
     Boolean(config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0),
   );
 
-  const tabs: Array<RoutedTab> = React.useMemo(() => {
+  const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
       {
         id: 'index',
@@ -167,7 +166,7 @@ const AddressPageContent = () => {
             return (
               <>
                 <span>{ tabName }</span>
-                <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
+                <IconSvg name="status/success" boxSize="14px" color="green.500"/>
               </>
             );
           }
@@ -379,9 +378,7 @@ const AddressPageContent = () => {
         <EnsEntity
           domain={ addressQuery.data?.ens_domain_name }
           protocol={ !addressEnsDomainsQuery.isPending ? addressMainDomain?.protocol : null }
-          fontFamily="heading"
-          fontSize="lg"
-          fontWeight={ 500 }
+          variant="subheading"
           mr={ 1 }
           maxW="300px"
         />
@@ -395,20 +392,17 @@ const AddressPageContent = () => {
           implementations: null,
         }}
         isLoading={ isLoading }
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
+        variant="subheading"
         noLink
         isSafeAddress={ isSafeAddress }
-        icon={{ color: isSafeAddress ? safeIconColor : undefined }}
-        mr={ 4 }
+        icon={{ color: isSafeAddress ? { _light: 'black', _dark: 'white' } : undefined }}
       />
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
         <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }
       { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
       ) }
-      <AddressQrCode address={{ hash: addressQuery.data?.filecoin?.robust ?? checkSummedHash }} isLoading={ isLoading }/>
+      <AddressQrCode hash={ addressQuery.data?.filecoin?.robust ?? checkSummedHash } isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
@@ -432,7 +426,7 @@ const AddressPageContent = () => {
       { !addressMetadataQuery.isPending &&
         <AddressMetadataAlert tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags } mt="-4px" mb={ 6 }/> }
       { config.features.metasuites.isEnabled && <Box display="none" id="meta-suites__address" data-ready={ !isLoading }/> }
-      <RoutedTabs tabs={ tabs } tabListProps={{ mt: 6 }} isLoading={ isTabsLoading }/>
+      <RoutedTabs tabs={ tabs } isLoading={ isTabsLoading }/>
     </>
   );
 };

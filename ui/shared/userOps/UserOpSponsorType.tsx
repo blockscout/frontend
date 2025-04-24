@@ -1,7 +1,8 @@
-import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import type { UserOpSponsorType as TUserOpSponsorType } from 'types/api/userOps';
+
+import { Badge } from 'toolkit/chakra/badge';
 
 type Props = {
   sponsorType: TUserOpSponsorType;
@@ -22,7 +23,7 @@ const UserOpSponsorType = ({ sponsorType }: Props) => {
     case 'wallet_deposit':
       text = 'Wallet deposit';
   }
-  return <Tag>{ text }</Tag>;
+  return <Badge>{ text }</Badge>;
 };
 
 export default UserOpSponsorType;

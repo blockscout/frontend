@@ -1,5 +1,7 @@
-import { chakra, LinkOverlay } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
+
+import { LinkOverlay } from 'toolkit/chakra/link';
 
 import type { MediaElementProps } from './utils';
 
@@ -41,6 +43,7 @@ const NftHtml = ({ src, transport, onLoad, onError, onClick, ...rest }: Props) =
   return (
     <LinkOverlay
       onClick={ onClick }
+      h="100%"
       { ...rest }
     >
       <chakra.iframe

@@ -7,13 +7,13 @@ import type { BlockTransactionsResponse } from 'types/api/block';
 
 import type { ResourceError } from 'lib/api/resources';
 import { retry } from 'lib/api/useQueryClientConfig';
-import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
 import { GET_BLOCK_WITH_TRANSACTIONS } from 'stubs/RPC';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
+import { SECOND } from 'toolkit/utils/consts';
 import { unknownAddress } from 'ui/shared/address/utils';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

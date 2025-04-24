@@ -1,4 +1,4 @@
-import { Show, Hide } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,10 +7,10 @@ import { AddressFromToFilterValues } from 'types/api/address';
 
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useIsMounted from 'lib/hooks/useIsMounted';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { INTERNAL_TX } from 'stubs/internalTx';
 import { generateListStub } from 'stubs/utils';
+import { apos } from 'toolkit/utils/htmlEntities';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import ActionBar from 'ui/shared/ActionBar';
@@ -68,19 +68,19 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   ) : null ;
 
   const actionBar = (
     <ActionBar mt={ -6 } justifyContent="left">
       <AddressTxsFilter
-        defaultFilter={ filterValue }
+        initialValue={ filterValue }
         onFilterChange={ handleFilterChange }
         hasActiveFilter={ Boolean(filterValue) }
         isLoading={ pagination.isLoading }
@@ -98,12 +98,13 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items.length }
       filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: Boolean(filterValue) }}
       emptyText="There are no internal transactions for this address."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

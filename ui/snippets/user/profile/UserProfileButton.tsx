@@ -1,5 +1,5 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Button, Tooltip, Box, HStack } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
@@ -9,6 +9,8 @@ import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import shortenString from 'lib/shortenString';
 import useWeb3AccountWithDomain from 'lib/web3/useAccountWithDomain';
+import { Button } from 'toolkit/chakra/button';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 import UserIdenticon from '../UserIdenticon';
@@ -22,7 +24,7 @@ interface Props {
   isPending?: boolean;
 }
 
-const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ...rest }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   const [ isFetched, setIsFetched ] = useState(false);
   const isMobile = useIsMobile();
 
@@ -69,30 +71,29 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
 
   return (
     <Tooltip
-      label={ <span>Sign in to My Account to add tags,<br/>create watchlists, access API keys and more</span> }
-      textAlign="center"
-      padding={ 2 }
-      isDisabled={ isMobile || isLoading || Boolean(data) }
+      content={ <span>Sign in to My Account to add tags,<br/>create watchlists, access API keys and more</span> }
+      disabled={ isMobile || isLoading || Boolean(data) }
       openDelay={ 500 }
     >
-      <Button
-        ref={ ref }
-        size={ size }
-        variant={ variant }
-        onClick={ onClick }
-        onFocus={ handleFocus }
-        data-selected={ dataExists }
-        data-warning={ isAutoConnectDisabled }
-        fontSize="sm"
-        lineHeight={ 5 }
-        px={ dataExists ? 2.5 : 4 }
-        fontWeight={ dataExists ? 700 : 600 }
-        isLoading={ isButtonLoading }
-      >
-        { content }
-      </Button>
+      <span>
+        <Button
+          ref={ ref }
+          size={ size }
+          variant={ variant }
+          onClick={ onClick }
+          onFocus={ handleFocus }
+          selected={ dataExists }
+          highlighted={ isAutoConnectDisabled }
+          px={{ base: 2.5, lg: 3 }}
+          fontWeight={ dataExists ? 700 : 600 }
+          loading={ isButtonLoading }
+          { ...rest }
+        >
+          { content }
+        </Button>
+      </span>
     </Tooltip>
   );
 };
 
-export default React.memo(React.forwardRef(UserProfileButton));
+export default React.forwardRef(UserProfileButton);

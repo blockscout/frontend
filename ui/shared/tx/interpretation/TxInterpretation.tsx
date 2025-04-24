@@ -1,4 +1,4 @@
-import { Tooltip, Image, chakra, useColorModeValue } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -15,14 +15,16 @@ import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import * as mixpanel from 'lib/mixpanel/index';
 import { currencyUnits } from 'lib/units';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/links/LinkExternal';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import {
   extractVariables,
@@ -108,7 +110,7 @@ const TxInterpretationElementByType = (
           </chakra.span>
         );
       }
-      return <chakra.span color="text_secondary" whiteSpace="pre">{ value + ' ' }</chakra.span>;
+      return <chakra.span color="text.secondary" whiteSpace="pre">{ value + ' ' }</chakra.span>;
     }
     case 'currency': {
       let numberString = '';
@@ -124,22 +126,22 @@ const TxInterpretationElementByType = (
       return <chakra.span>{ numberString + ' ' }</chakra.span>;
     }
     case 'timestamp': {
-      return <chakra.span color="text_secondary" whiteSpace="pre">{ dayjs(Number(value) * 1000).format('MMM DD YYYY') }</chakra.span>;
+      return <chakra.span color="text.secondary" whiteSpace="pre">{ dayjs(Number(value) * 1000).format('MMM DD YYYY') }</chakra.span>;
     }
     case 'external_link': {
-      return <LinkExternal href={ value.link }>{ value.name }</LinkExternal>;
+      return <Link external href={ value.link }>{ value.name }</Link>;
     }
     case 'method': {
       return (
-        <Tag
-          colorScheme={ value === 'Multicall' ? 'teal' : 'gray' }
-          isTruncated
+        <Badge
+          colorPalette={ value === 'Multicall' ? 'teal' : 'gray' }
+          truncated
           ml={ 1 }
           mr={ 2 }
           verticalAlign="text-top"
         >
           { value }
-        </Tag>
+        </Badge>
       );
     }
     case 'dexTag': {
@@ -147,18 +149,18 @@ const TxInterpretationElementByType = (
       const name = (() => {
         if (value.app_id && config.features.marketplace.isEnabled) {
           return (
-            <LinkInternal
+            <Link
               href={ route({ pathname: '/apps/[id]', query: { id: value.app_id } }) }
             >
               { value.name }
-            </LinkInternal>
+            </Link>
           );
         }
         if (value.url) {
           return (
-            <LinkExternal href={ value.url }>
+            <Link external href={ value.url }>
               { value.name }
-            </LinkExternal>
+            </Link>
           );
         }
         return value.name;
@@ -193,9 +195,9 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, isNov
   const chunks = getStringChunks(intermediateResult);
 
   return (
-    <Skeleton isLoaded={ !isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap">
-      <Tooltip label="Transaction summary">
-        <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 1 } verticalAlign="text-top"/>
+    <Skeleton loading={ isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
+      <Tooltip content="Transaction summary">
+        <IconSvg name="lightning" boxSize={ 5 } color="text.secondary" mr={ 1 } verticalAlign="text-top"/>
       </Tooltip>
       { chunks.map((chunk, index) => {
         let content = null;
@@ -213,17 +215,17 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, isNov
         }
         return (
           <chakra.span key={ chunk + index }>
-            <chakra.span color="text_secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</chakra.span>
+            <chakra.span color="text.secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</chakra.span>
             { index < variablesNames.length && content }
           </chakra.span>
         );
       }) }
       { isNoves && (
-        <Tooltip label="Human readable transaction provided by Noves.fi">
-          <Tag ml={ 2 } display="inline-flex" alignItems="center" verticalAlign="unset" transform="translateY(-2px)">
+        <Tooltip content="Human readable transaction provided by Noves.fi">
+          <Badge ml={ 2 } verticalAlign="unset" transform="translateY(-2px)">
             by
             <Image src={ novesLogoUrl } alt="Noves logo" h="12px" ml={ 1.5 }/>
-          </Tag>
+          </Badge>
         </Tooltip>
       ) }
     </Skeleton>

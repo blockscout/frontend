@@ -1,4 +1,4 @@
-import { Alert, Button, chakra, Flex } from '@chakra-ui/react';
+import { chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -11,7 +11,9 @@ import buildUrl from 'lib/api/buildUrl';
 import type { ResourceName } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
-import useToast from 'lib/hooks/useToast';
+import { Alert } from 'toolkit/chakra/alert';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -35,7 +37,6 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
     },
   });
   const { handleSubmit, formState } = formApi;
-  const toast = useToast();
   const recaptcha = useReCaptcha();
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
@@ -73,17 +74,13 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
       downloadBlob(blob, fileName);
 
     } catch (error) {
-      toast({
-        position: 'top-right',
+      toaster.error({
         title: 'Error',
         description: (error as Error)?.message || 'Something went wrong. Try again later.',
-        status: 'error',
-        variant: 'subtle',
-        isClosable: true,
       });
     }
 
-  }, [ recaptcha, resource, hash, exportType, filterType, filterValue, fileNameTemplate, toast ]);
+  }, [ recaptcha, resource, hash, exportType, filterType, filterValue, fileNameTemplate ]);
 
   if (!config.services.reCaptchaV2.siteKey) {
     return (
@@ -104,15 +101,14 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
           { exportType !== 'holders' && <CsvExportFormField name="from" formApi={ formApi }/> }
           { exportType !== 'holders' && <CsvExportFormField name="to" formApi={ formApi }/> }
         </Flex>
-        <ReCaptcha ref={ recaptcha.ref }/>
+        <ReCaptcha { ...recaptcha }/>
         <Button
           variant="solid"
-          size="lg"
           type="submit"
           mt={ 8 }
-          isLoading={ formState.isSubmitting }
+          loading={ formState.isSubmitting }
           loadingText="Download"
-          isDisabled={ Boolean(formState.errors.from || formState.errors.to) }
+          disabled={ Boolean(formState.errors.from || formState.errors.to || recaptcha.isInitError) }
         >
           Download
         </Button>

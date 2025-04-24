@@ -1,9 +1,10 @@
-import { Button } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2WithdrawalStatus } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
+import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
@@ -72,15 +73,18 @@ const TxDetailsWithdrawalStatusOptimistic = ({ status, l1TxHash }: Props) => {
   })();
 
   const rightSlot = hasClaimButton ? (
-    <Button
-      variant="outline"
-      size="sm"
-      as="a"
+    <Link
       href={ rollupFeature.L2WithdrawalUrl }
+      asChild
       target="_blank"
     >
-      Claim funds
-    </Button>
+      <Button
+        variant="outline"
+        size="sm"
+      >
+        Claim funds
+      </Button>
+    </Link>
   ) : null;
 
   return (
@@ -89,7 +93,7 @@ const TxDetailsWithdrawalStatusOptimistic = ({ status, l1TxHash }: Props) => {
       currentStep={ status }
       rightSlot={ rightSlot }
       my={ hasClaimButton ? '-6px' : 0 }
-      lineHeight={ hasClaimButton ? 8 : undefined }
+      lineHeight={ hasClaimButton ? '32px' : undefined }
     />
   );
 };

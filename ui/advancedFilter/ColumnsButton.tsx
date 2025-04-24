@@ -1,18 +1,11 @@
-import {
-  Button,
-  Grid,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  useDisclosure,
-  Checkbox,
-} from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
-import type { ChangeEvent } from 'react';
 
+import { Button } from 'toolkit/chakra/button';
+import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import { TABLE_COLUMNS } from 'ui/advancedFilter/constants';
-import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -21,46 +14,48 @@ interface Props {
 }
 
 const ColumnsButton = ({ columns, onChange }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
-
-  const onCheckboxClick = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const newCols = { ...columns };
-    const id = event.target.id as ColumnsIds;
-    newCols[id] = event.target.checked;
+  const handleValueChange = React.useCallback((value: Array<string>) => {
+    const newCols = value.reduce((acc, key) => {
+      acc[key as ColumnsIds] = true;
+      return acc;
+    }, {} as Record<ColumnsIds, boolean>);
     onChange(newCols);
-  }, [ onChange, columns ]);
+  }, [ onChange ]);
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+    <PopoverRoot>
       <PopoverTrigger>
         <Button
-          onClick={ onToggle }
-          variant="outline"
-          colorScheme="gray"
+          variant="dropdown"
           size="sm"
-          leftIcon={ <IconSvg name="columns" boxSize={ 5 } color="inherit"/> }
+          px={{ base: 1, lg: 3 }}
         >
-          Columns
+          <IconSvg name="columns" boxSize={ 5 } color="inherit"/>
+          <chakra.span hideBelow="lg">Columns</chakra.span>
         </Button>
       </PopoverTrigger>
       <PopoverContent>
         <PopoverBody px={ 4 } py={ 6 } display="flex" flexDir="column" rowGap={ 5 }>
-          <Grid gridTemplateColumns="160px 160px" gap={ 3 }>
+          <CheckboxGroup
+            defaultValue={ Object.keys(columns).filter((key) => columns[key as ColumnsIds]) }
+            onValueChange={ handleValueChange }
+            display="grid"
+            gridTemplateColumns="160px 160px"
+            gap={ 3 }
+          >
             { TABLE_COLUMNS.map(col => (
               <Checkbox
                 key={ col.id }
-                defaultChecked={ columns[col.id] }
-                onChange={ onCheckboxClick }
-                id={ col.id }
-                size="lg"
+                value={ col.id }
+                size="md"
               >
                 { col.id === 'or_and' ? 'And/Or' : col.name }
               </Checkbox>
             )) }
-          </Grid>
+          </CheckboxGroup>
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   );
 };
 

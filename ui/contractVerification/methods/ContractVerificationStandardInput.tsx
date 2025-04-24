@@ -18,8 +18,8 @@ const ContractVerificationStandardInput = ({ config }: { config: SmartContractVe
   return (
     <ContractVerificationMethod title="Contract verification via Solidity (standard JSON input) " disableScroll={ config.verification_options.length === 1 }>
       { !config?.is_rust_verifier_microservice_enabled && <ContractVerificationFieldName/> }
-      <ContractVerificationFieldCompiler/>
-      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && <ContractVerificationFieldZkCompiler/> }
+      <ContractVerificationFieldCompiler config={ config }/>
+      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && <ContractVerificationFieldZkCompiler config={ config }/> }
       <ContractVerificationFieldSources
         fileTypes={ FILE_TYPES }
         title="Standard Input JSON"

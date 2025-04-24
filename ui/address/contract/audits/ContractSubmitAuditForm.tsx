@@ -1,4 +1,4 @@
-import { Button, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -8,11 +8,12 @@ import type { SmartContractSecurityAuditSubmission } from 'types/api/contract';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import dayjs from 'lib/date/dayjs';
-import useToast from 'lib/hooks/useToast';
-import FormFieldCheckbox from 'ui/shared/forms/fields/FormFieldCheckbox';
-import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
+import { FormFieldCheckbox } from 'toolkit/components/forms/fields/FormFieldCheckbox';
+import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 
 interface Props {
   address?: string;
@@ -39,7 +40,6 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
   const containerRef = React.useRef<HTMLFormElement>(null);
 
   const apiFetch = useApiFetch();
-  const toast = useToast();
 
   const formApi = useForm<Inputs>({
     mode: 'onTouched',
@@ -57,13 +57,9 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
         },
       });
 
-      toast({
-        position: 'top-right',
+      toaster.success({
         title: 'Success',
         description: 'Your audit report has been successfully submitted for review',
-        status: 'success',
-        variant: 'subtle',
-        isClosable: true,
       });
 
       onSuccess();
@@ -77,37 +73,32 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
           setError(errorField, { type: 'custom', message: errorMap[errorField].join(', ') });
         });
       } else {
-        toast({
-          position: 'top-right',
+        toaster.error({
           title: 'Error',
           description: (_error as ResourceError<{ message: string }>)?.payload?.message || 'Something went wrong. Try again later.',
-          status: 'error',
-          variant: 'subtle',
-          isClosable: true,
         });
       }
     }
-  }, [ apiFetch, address, toast, setError, onSuccess ]);
+  }, [ apiFetch, address, setError, onSuccess ]);
 
   return (
     <FormProvider { ...formApi }>
       <form noValidate onSubmit={ handleSubmit(onFormSubmit) } autoComplete="off" ref={ containerRef }>
         <VStack gap={ 5 } alignItems="flex-start">
-          <FormFieldText<Inputs> name="submitter_name" isRequired placeholder="Submitter name"/>
-          <FormFieldEmail<Inputs> name="submitter_email" isRequired placeholder="Submitter email"/>
+          <FormFieldText<Inputs> name="submitter_name" required placeholder="Submitter name"/>
+          <FormFieldEmail<Inputs> name="submitter_email" required placeholder="Submitter email"/>
           <FormFieldCheckbox<Inputs, 'is_project_owner'>
             name="is_project_owner"
             label="I'm the contract owner"
           />
-          <FormFieldText<Inputs> name="project_name" isRequired placeholder="Project name"/>
-          <FormFieldUrl<Inputs> name="project_url" isRequired placeholder="Project URL"/>
-          <FormFieldText<Inputs> name="audit_company_name" isRequired placeholder="Audit company name"/>
-          <FormFieldUrl<Inputs> name="audit_report_url" isRequired placeholder="Audit report URL"/>
+          <FormFieldText<Inputs> name="project_name" required placeholder="Project name"/>
+          <FormFieldUrl<Inputs> name="project_url" required placeholder="Project URL"/>
+          <FormFieldText<Inputs> name="audit_company_name" required placeholder="Audit company name"/>
+          <FormFieldUrl<Inputs> name="audit_report_url" required placeholder="Audit report URL"/>
           <FormFieldText<Inputs>
             name="audit_publish_date"
-            type="date"
-            max={ dayjs().format('YYYY-MM-DD') }
-            isRequired
+            inputProps={{ type: 'date', max: dayjs().format('YYYY-MM-DD') }}
+            required
             placeholder="Audit publish date"
           />
           <FormFieldText<Inputs>
@@ -120,11 +111,10 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
         </VStack>
         <Button
           type="submit"
-          size="lg"
           mt={ 8 }
-          isLoading={ formState.isSubmitting }
+          loading={ formState.isSubmitting }
           loadingText="Send request"
-          isDisabled={ !formState.isDirty }
+          disabled={ !formState.isDirty }
         >
           Send request
         </Button>

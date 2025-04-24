@@ -1,35 +1,52 @@
+import type { ListCollection } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SelectOption } from 'ui/shared/select/types';
-
+import type { SelectOption } from 'toolkit/chakra/select';
+import { SelectContent, SelectItem, SelectRoot, SelectControl } from 'toolkit/chakra/select';
 import FilterButton from 'ui/shared/filters/FilterButton';
-import Select from 'ui/shared/select/Select';
+
 interface Props {
   name: string;
-  options: Array<SelectOption>;
+  collection: ListCollection<SelectOption>;
   hasActiveFilter: boolean;
-  defaultValue?: string;
+  initialValue?: string;
   isLoading?: boolean;
   onChange: (nextValue: string) => void;
 }
 
-const PopoverFilterRadio = ({ name, hasActiveFilter, options, isLoading, onChange, defaultValue }: Props) => {
+const PopoverFilterRadio = ({ name, hasActiveFilter, collection, isLoading, onChange, initialValue }: Props) => {
+
+  const handleValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    onChange(value[0]);
+  }, [ onChange ]);
+
   return (
-    <Select
-      options={ options }
+    <SelectRoot
       name={ name }
-      defaultValue={ defaultValue }
-      onChange={ onChange }
+      collection={ collection }
+      defaultValue={ initialValue ? [ initialValue ] : [ collection.items[0].value ] }
+      onValueChange={ handleValueChange }
+      w="fit-content"
+      variant="plain"
     >
-      { ({ isOpen, onToggle }) => (
+      <SelectControl
+        triggerProps={{ asChild: true, px: { base: 1, lg: 2 } }}
+        noIndicator
+        defaultValue={ [ collection.items[0].value ] }
+      >
         <FilterButton
-          isActive={ isOpen }
-          onClick={ onToggle }
           appliedFiltersNum={ hasActiveFilter ? 1 : 0 }
           isLoading={ isLoading }
         />
-      ) }
-    </Select>
+      </SelectControl>
+      <SelectContent>
+        { collection.items.map((item) => (
+          <SelectItem item={ item } key={ item.value }>
+            { item.label }
+          </SelectItem>
+        )) }
+      </SelectContent>
+    </SelectRoot>
   );
 };
 

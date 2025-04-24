@@ -13,7 +13,6 @@ test('with chain icon', async({ render, mockAssetResponse }) => {
   const component = await render(
     <AddressEntityInterop
       address={ addressMock.withoutName }
-      icon={{ size: 'md' }}
       chain={ interopMock.chain }
     />,
   );
@@ -25,7 +24,6 @@ test('with chain icon stub +@dark-mode', async({ render }) => {
   const component = await render(
     <AddressEntityInterop
       address={ addressMock.withoutName }
-      icon={{ size: 'md' }}
       chain={{ ...interopMock.chain, chain_logo: null }}
     />,
   );

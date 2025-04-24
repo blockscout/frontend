@@ -1,10 +1,9 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ScrollL2MessageItem } from 'types/api/scrollL2';
 
 import config from 'configs/app';
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import ScrollL2WithdrawalsTableItem from './ScrollL2WithdrawalsTableItem';
 
@@ -16,23 +15,23 @@ import ScrollL2WithdrawalsTableItem from './ScrollL2WithdrawalsTableItem';
 
 const ScrollL2WithdrawalsTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table style={{ tableLayout: 'auto' }} minW="950px">
-      <Thead top={ top }>
-        <Tr>
-          <Th>L2 block</Th>
-          <Th>Index</Th>
-          <Th>L2 txn hash</Th>
-          <Th>Age</Th>
-          <Th>L1 txn hash</Th>
-          <Th isNumeric>{ `Value ${ config.chain.currency.symbol }` }</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot tableLayout="auto" minW="950px">
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader>L2 block</TableColumnHeader>
+          <TableColumnHeader>Index</TableColumnHeader>
+          <TableColumnHeader>L2 txn hash</TableColumnHeader>
+          <TableColumnHeader>Age</TableColumnHeader>
+          <TableColumnHeader>L1 txn hash</TableColumnHeader>
+          <TableColumnHeader isNumeric>{ `Value ${ config.chain.currency.symbol }` }</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
           <ScrollL2WithdrawalsTableItem key={ String(item.id) + (isLoading ? index : '') } item={ item } isLoading={ isLoading }/>
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

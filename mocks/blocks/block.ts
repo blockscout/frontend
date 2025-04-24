@@ -3,7 +3,7 @@ import type { RpcBlock } from 'viem';
 
 import type { Block, BlocksResponse, ZilliqaBlockData } from 'types/api/block';
 
-import { ZERO_ADDRESS } from 'lib/consts';
+import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 
 import * as addressMock from '../address/address';
 import * as tokenMock from '../tokens/tokenInfo';

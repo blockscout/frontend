@@ -7,8 +7,8 @@ import type { AddressCounters } from 'types/api/address';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 interface Props {
   prop: keyof AddressCounters;
@@ -31,7 +31,7 @@ const AddressCounterItem = ({ prop, query, address, isAddressQueryLoading, isDeg
   }, []);
 
   if (query.isPlaceholderData || isAddressQueryLoading) {
-    return <Skeleton h={ 5 } w="80px" borderRadius="full"/>;
+    return <Skeleton loading h={ 5 } w="80px" borderRadius="full"/>;
   }
 
   const data = query.data?.[prop];
@@ -55,13 +55,13 @@ const AddressCounterItem = ({ prop, query, address, isAddressQueryLoading, isDeg
       }
 
       return (
-        <LinkInternal
+        <Link
           href={ route({ pathname: '/address/[hash]', query: { hash: address, tab: PROP_TO_TAB[prop] } }) }
           scroll={ false }
           onClick={ handleClick }
         >
           { Number(data).toLocaleString() }
-        </LinkInternal>
+        </Link>
       );
     }
   }

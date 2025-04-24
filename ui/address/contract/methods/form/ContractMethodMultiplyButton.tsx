@@ -1,20 +1,11 @@
-import {
-  chakra,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  Portal,
-  Button,
-  List,
-  ListItem,
-  useDisclosure,
-  Input,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { chakra, List, Input, ListItem } from '@chakra-ui/react';
 import React from 'react';
 
-import { times } from 'lib/html-entities';
-import Popover from 'ui/shared/chakra/Popover';
+import { Button } from 'toolkit/chakra/button';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { times } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -27,19 +18,17 @@ interface Props {
 const ContractMethodMultiplyButton = ({ onClick, isDisabled, initialValue, onChange }: Props) => {
   const [ selectedOption, setSelectedOption ] = React.useState<number | undefined>(initialValue);
   const [ customValue, setCustomValue ] = React.useState<number>();
-  const { isOpen, onToggle, onClose } = useDisclosure();
-
-  const dividerColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
+  const { open, onOpenChange } = useDisclosure();
 
   const handleOptionClick = React.useCallback((event: React.MouseEvent) => {
     const id = Number((event.currentTarget as HTMLDivElement).getAttribute('data-id'));
     if (!Object.is(id, NaN)) {
       setSelectedOption((prev) => prev === id ? undefined : id);
       setCustomValue(undefined);
-      onClose();
+      onOpenChange({ open: false });
       onChange(id);
     }
-  }, [ onClose, onChange ]);
+  }, [ onOpenChange, onChange ]);
 
   const handleInputChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
@@ -59,90 +48,84 @@ const ContractMethodMultiplyButton = ({ onClick, isDisabled, initialValue, onCha
       { Boolean(value) && (
         <Button
           px={ 1 }
-          lineHeight={ 6 }
-          h={ 6 }
+          textStyle="md"
+          size="xs"
           fontWeight={ 500 }
           ml={ 1 }
           variant="subtle"
-          colorScheme="gray"
           display="inline"
           onClick={ handleButtonClick }
-          isDisabled={ isDisabled }
+          disabled={ isDisabled }
           borderBottomRightRadius={ 0 }
           borderTopRightRadius={ 0 }
         >
           { times }
           <chakra.span>10</chakra.span>
-          <chakra.span fontSize="xs" lineHeight={ 4 } verticalAlign="super">{ value }</chakra.span>
+          <chakra.span fontSize="xs" lineHeight="16px" verticalAlign="super">{ value }</chakra.span>
         </Button>
       ) }
-      <Popover placement="bottom-end" isLazy isOpen={ isOpen } onClose={ onClose }>
+      <PopoverRoot open={ open } onOpenChange={ onOpenChange } positioning={{ placement: 'bottom-end' }}>
         <PopoverTrigger>
-          <Button
+          <IconButton
             variant="subtle"
-            colorScheme="gray"
-            size="xs"
             cursor="pointer"
+            boxSize={ 6 }
             p={ 0 }
-            onClick={ onToggle }
-            isActive={ isOpen }
-            isDisabled={ isDisabled }
+            disabled={ isDisabled }
             borderBottomLeftRadius={ 0 }
             borderTopLeftRadius={ 0 }
             borderLeftWidth="1px"
-            borderLeftColor={ dividerColor }
+            borderLeftColor="border.divider"
           >
             <IconSvg
               name="arrows/east-mini"
               transitionDuration="fast"
               transitionProperty="transform"
               transitionTimingFunction="ease-in-out"
-              transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' }
+              transform={ open ? 'rotate(90deg)' : 'rotate(-90deg)' }
               boxSize={ 6 }
             />
-          </Button>
+          </IconButton>
         </PopoverTrigger>
-        <Portal>
-          <PopoverContent w="110px">
-            <PopoverBody py={ 2 }>
-              <List>
-                { [ 8, 12, 16, 18, 20 ].map((id) => (
-                  <ListItem
-                    key={ id }
-                    py={ 2 }
-                    data-id={ id }
-                    onClick={ handleOptionClick }
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    cursor="pointer"
-                  >
-                    <span>10*{ id }</span>
-                    { selectedOption === id && <IconSvg name="check" boxSize={ 6 } color="blue.600"/> }
-                  </ListItem>
-                )) }
-                <ListItem
+        <PopoverContent w="110px">
+          <PopoverBody textStyle="md" py={ 2 }>
+            <List.Root>
+              { [ 8, 12, 16, 18, 20 ].map((id) => (
+                <List.Item
+                  key={ id }
                   py={ 2 }
+                  data-id={ id }
+                  onClick={ handleOptionClick }
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
+                  cursor="pointer"
                 >
-                  <span>10*</span>
-                  <Input
-                    type="number"
-                    min={ 0 }
-                    max={ 100 }
-                    ml={ 3 }
-                    size="xs"
-                    onChange={ handleInputChange }
-                    value={ customValue || '' }
-                  />
-                </ListItem>
-              </List>
-            </PopoverBody>
-          </PopoverContent>
-        </Portal>
-      </Popover>
+                  <span>10*{ id }</span>
+                  { selectedOption === id && <IconSvg name="check" boxSize={ 6 } color="blue.600"/> }
+                </List.Item>
+              )) }
+              <ListItem
+                py={ 2 }
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <span>10*</span>
+                <Input
+                  type="number"
+                  min={ 0 }
+                  max={ 100 }
+                  ml={ 3 }
+                  size="sm"
+                  onChange={ handleInputChange }
+                  value={ customValue || '' }
+                />
+              </ListItem>
+            </List.Root>
+          </PopoverBody>
+        </PopoverContent>
+      </PopoverRoot>
     </>
   );
 };

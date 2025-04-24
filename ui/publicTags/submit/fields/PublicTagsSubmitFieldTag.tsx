@@ -1,4 +1,4 @@
-import { chakra, Flex, Grid, GridItem, IconButton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 import { type FieldError, type FieldErrorsImpl, type Merge } from 'react-hook-form';
 
@@ -6,14 +6,20 @@ import type { FormFields, FormFieldTag } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { FormFieldColor } from 'toolkit/components/forms/fields/FormFieldColor';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
+import { colorValidator } from 'toolkit/components/forms/validators/color';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
-import { validator as colorValidator } from 'ui/shared/forms/validators/color';
 import IconSvg from 'ui/shared/IconSvg';
 
-import PublicTagsSubmitFieldTagColor from './PublicTagsSubmitFieldTagColor';
 import PublicTagsSubmitFieldTagType from './PublicTagsSubmitFieldTagType';
+
+const CIRCLE_BG_COLOR_DEFAULT = {
+  bgColor: { _light: 'gray.100', _dark: 'gray.700' },
+  textColor: { _light: 'blackAlpha.800', _dark: 'whiteAlpha.800' },
+};
 
 interface Props {
   index: number;
@@ -27,8 +33,8 @@ interface Props {
 
 const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRemoveClick, tagTypes, field }: Props) => {
   const isMobile = useIsMobile();
-  const bgColorDefault = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
-  const bgColorError = useColorModeValue('red.50', 'red.900');
+  const bgColorDefault = { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' };
+  const bgColorError = { _light: 'red.50', _dark: 'red.900' };
 
   const handleAddClick = React.useCallback(() => {
     onAddClick?.(index);
@@ -37,10 +43,6 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
   const handleRemoveClick = React.useCallback(() => {
     onRemoveClick?.(index);
   }, [ index, onRemoveClick ]);
-
-  const fieldProps = {
-    size: { base: 'md', lg: 'lg' },
-  };
 
   return (
     <>
@@ -54,9 +56,8 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
             <FormFieldText<FormFields>
               name={ `tags.${ index }.name` }
               placeholder="Tag (max 35 characters)"
-              isRequired
+              required
               rules={{ maxLength: 35 }}
-              { ...fieldProps }
             />
           </GridItem>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
@@ -66,20 +67,17 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
             <FormFieldUrl<FormFields>
               name={ `tags.${ index }.url` }
               placeholder="Label URL"
-              { ...fieldProps }
             />
           </GridItem>
-          <PublicTagsSubmitFieldTagColor
-            fieldType="bgColor"
-            fieldName={ `tags.${ index }.bgColor` }
+          <FormFieldColor<FormFields>
+            name={ `tags.${ index }.bgColor` }
             placeholder="Background (Hex)"
-            error={ errors?.bgColor }
+            sampleDefaultBgColor={ CIRCLE_BG_COLOR_DEFAULT.bgColor }
           />
-          <PublicTagsSubmitFieldTagColor
-            fieldType="textColor"
-            fieldName={ `tags.${ index }.textColor` }
+          <FormFieldColor<FormFields>
+            name={ `tags.${ index }.textColor` }
             placeholder="Text (Hex)"
-            error={ errors?.textColor }
+            sampleDefaultBgColor={ CIRCLE_BG_COLOR_DEFAULT.textColor }
           />
           <GridItem colSpan={{ base: 1, lg: 4 }}>
             <FormFieldText<FormFields>
@@ -88,7 +86,6 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
               maxH="160px"
               rules={{ maxLength: 80 }}
               asComponent="Textarea"
-              { ...fieldProps }
             />
           </GridItem>
         </Grid>
@@ -98,36 +95,38 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
           alignItems="center"
           columnGap={ 5 }
           justifyContent={{ base: 'flex-end', lg: 'flex-start' }}
-          h={{ base: 'auto', lg: '80px' }}
+          h={{ base: 'auto', lg: '60px' }}
         >
           { onAddClick && (
             <IconButton
               aria-label="add"
               data-index={ index }
               variant="outline"
-              boxSize="30px"
+              size="md"
               onClick={ handleAddClick }
-              icon={ <IconSvg name="plus" boxSize={ 5 }/> }
-              isDisabled={ isDisabled }
-            />
+              disabled={ isDisabled }
+            >
+              <IconSvg name="plus"/>
+            </IconButton>
           ) }
           { onRemoveClick && (
             <IconButton
               aria-label="delete"
               data-index={ index }
               variant="outline"
-              boxSize="30px"
+              size="md"
               onClick={ handleRemoveClick }
-              icon={ <IconSvg name="minus" boxSize={ 5 }/> }
-              isDisabled={ isDisabled }
-            />
+              disabled={ isDisabled }
+            >
+              <IconSvg name="minus"/>
+            </IconButton>
           ) }
         </Flex>
         { !isMobile && (
-          <Flex flexDir="column" alignItems="flex-start" mt={ 10 } rowGap={ 2 }>
+          <Flex flexDir="column" alignItems="flex-start" mt={ 4 } rowGap={ 2 }>
             <EntityTag data={{
               name: field.name || 'Tag name',
-              tagType: field.type.value,
+              tagType: field.type[0],
               meta: {
                 tagUrl: field.url,
                 bgColor: field.bgColor && colorValidator(field.bgColor) === true ? field.bgColor : undefined,
@@ -137,8 +136,8 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
               slug: 'new',
               ordinal: 0,
             }}/>
-            <chakra.span color="text_secondary" fontSize="sm">
-              { tagTypes?.find(({ type }) => type === field.type.value)?.description }
+            <chakra.span color="text.secondary" fontSize="sm">
+              { tagTypes?.find(({ type }) => type === field.type[0])?.description }
             </chakra.span>
           </Flex>
         ) }

@@ -1,10 +1,4 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -15,11 +9,11 @@ import type { WatchlistAddress, WatchlistErrors } from 'types/api/account';
 import type { ResourceErrorAccount } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
-import FormFieldCheckbox from 'ui/shared/forms/fields/FormFieldCheckbox';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import AuthModal from 'ui/snippets/auth/AuthModal';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
+import { Alert } from 'toolkit/chakra/alert';
+import { Button } from 'toolkit/chakra/button';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
+import { FormFieldCheckbox } from 'toolkit/components/forms/fields/FormFieldCheckbox';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 import AddressFormNotifications from './AddressFormNotifications';
 
@@ -33,6 +27,8 @@ type Props = {
   onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
   isAdd: boolean;
+  hasEmail: boolean;
+  showEmailAlert?: boolean;
 };
 
 export type Inputs = {
@@ -59,16 +55,12 @@ export type Inputs = {
   };
 };
 
-const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd }) => {
+const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd, hasEmail, showEmailAlert }) => {
   const [ pending, setPending ] = useState(false);
-
-  const profileQuery = useProfileQuery();
-  const userWithoutEmail = profileQuery.data && !profileQuery.data.email;
-  const authModal = useDisclosure();
 
   let notificationsDefault = {} as Inputs['notification_settings'];
   if (!data?.notification_settings) {
-    NOTIFICATIONS.forEach(n => notificationsDefault[n] = { incoming: !userWithoutEmail, outcoming: !userWithoutEmail });
+    NOTIFICATIONS.forEach(n => notificationsDefault[n] = { incoming: hasEmail, outcoming: hasEmail });
   } else {
     notificationsDefault = data.notification_settings;
   }
@@ -77,7 +69,7 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
     defaultValues: {
       address: data?.address_hash || '',
       tag: data?.name || '',
-      notification: data?.notification_methods ? data.notification_methods.email : !userWithoutEmail,
+      notification: data?.notification_methods ? data.notification_methods.email : hasEmail,
       notification_settings: notificationsDefault,
     },
     mode: 'onTouched',
@@ -138,64 +130,56 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
       <form noValidate onSubmit={ formApi.handleSubmit(onSubmit) }>
         <FormFieldAddress<Inputs>
           name="address"
-          isRequired
-          bgColor="dialog_bg"
+          required
+          bgColor="dialog.bg"
           mb={ 5 }
         />
         <FormFieldText<Inputs>
           name="tag"
           placeholder="Private tag (max 35 characters)"
-          isRequired
+          required
           rules={{
             maxLength: TAG_MAX_LENGTH,
           }}
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
           mb={ 8 }
         />
-        { userWithoutEmail ? (
+        { hasEmail ? (
           <>
-            <Alert
-              status="info"
-              colorScheme="gray"
-              display="flex"
-              flexDirection={{ base: 'column', md: 'row' }}
-              alignItems={{ base: 'flex-start', lg: 'center' }}
-              columnGap={ 2 }
-              rowGap={ 2 }
-              w="fit-content"
-            >
-              To receive notifications you need to add an email to your profile.
-              <Button variant="outline" size="sm" onClick={ authModal.onOpen }>Add email</Button>
-            </Alert>
-            { authModal.isOpen && <AuthModal initialScreen={{ type: 'email', isAuth: true }} onClose={ authModal.onClose }/> }
-          </>
-        ) : (
-          <>
-            <Text variant="secondary" fontSize="sm" marginBottom={ 5 }>
+            <Text color="text.secondary" fontSize="sm" marginBottom={ 5 }>
               Please select what types of notifications you will receive
             </Text>
             <Box marginBottom={ 8 }>
               <AddressFormNotifications/>
             </Box>
-            <Text variant="secondary" fontSize="sm" marginBottom={{ base: '10px', lg: 5 }}>Notification methods</Text>
+            <Text color="text.secondary" fontSize="sm" marginBottom={{ base: '10px', lg: 5 }}>Notification methods</Text>
             <FormFieldCheckbox<Inputs, 'notification'>
               name="notification"
               label="Email notifications"
             />
           </>
-        ) }
-        <Box marginTop={ 8 }>
-          <Button
-            size="lg"
-            type="submit"
-            isLoading={ pending }
-            isDisabled={ !formApi.formState.isDirty }
+        ) : null }
+        { !hasEmail && showEmailAlert ? (
+          <Alert
+            status="info"
+            descriptionProps={{ alignItems: 'center', gap: 2 }}
+            w="fit-content"
+            mb={ 6 }
           >
-            { !isAdd ? 'Save changes' : 'Add address' }
-          </Button>
-        </Box>
+            To receive notifications you need to add an email to your profile.
+          </Alert>
+        ) : null }
+        <Button
+          type="submit"
+          loading={ pending }
+          disabled={ !formApi.formState.isDirty }
+          mt={ 8 }
+        >
+          { !isAdd ? 'Save changes' : 'Add address' }
+        </Button>
       </form>
     </FormProvider>
+
   );
 };
 

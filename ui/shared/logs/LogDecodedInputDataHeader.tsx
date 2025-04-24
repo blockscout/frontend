@@ -1,8 +1,8 @@
-import { Divider, Flex, VStack } from '@chakra-ui/react';
+import { Separator, Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 interface Props {
   methodId: string;
@@ -21,7 +21,7 @@ const Item = ({ label, children, isLoading }: { label: string; children: React.R
       flexDir={{ base: 'column', lg: 'row' }}
       alignItems={{ base: 'flex-start', lg: 'center' }}
     >
-      <Skeleton fontWeight={ 600 } w={{ base: 'auto', lg: '80px' }} flexShrink={ 0 } isLoaded={ !isLoading }>
+      <Skeleton fontWeight={ 600 } w={{ base: 'auto', lg: '80px' }} flexShrink={ 0 } loading={ isLoading }>
         { label }
       </Skeleton >
       { children }
@@ -33,20 +33,19 @@ const LogDecodedInputDataHeader = ({ methodId, methodCall, isLoading, rightSlot 
   return (
     <VStack
       align="flex-start"
-      divider={ <Divider/> }
-      fontSize="sm"
-      lineHeight={ 5 }
+      separator={ <Separator/> }
+      textStyle="sm"
       flexGrow={ 1 }
       w="100%"
     >
       <Flex columnGap={ 2 } w="100%">
         <Item label="Method id" isLoading={ isLoading }>
-          <Tag isLoading={ isLoading }>{ methodId }</Tag>
+          <Badge loading={ isLoading }>{ methodId }</Badge>
         </Item>
         { rightSlot }
       </Flex>
       <Item label="Call" isLoading={ isLoading }>
-        <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap" w="100%">{ methodCall }</Skeleton>
+        <Skeleton loading={ isLoading } whiteSpace="pre-wrap" flexGrow={ 1 }>{ methodCall }</Skeleton>
       </Item>
     </VStack>
   );

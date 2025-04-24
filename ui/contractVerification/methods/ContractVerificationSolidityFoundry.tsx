@@ -1,10 +1,11 @@
-import { Box, Flex, Link } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
 import config from 'configs/app';
+import { Link } from 'toolkit/chakra/link';
 
 import ContractVerificationFormCodeSnippet from '../ContractVerificationFormCodeSnippet';
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
@@ -29,7 +30,7 @@ const ContractVerificationSolidityFoundry = () => {
         </Flex>
         <Box whiteSpace="pre-wrap">
           <span>Full tutorial about contract verification via Foundry on Blockscout is available </span>
-          <Link href="https://docs.blockscout.com/for-users/verifying-a-smart-contract/foundry-verification" target="_blank">
+          <Link href="https://docs.blockscout.com/for-users/verifying-a-smart-contract/foundry-verification" external>
             here
           </Link>
         </Box>

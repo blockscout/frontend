@@ -1,13 +1,13 @@
-import { chakra, Box, Center, Heading, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Box, Center } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import FilterInput from 'ui/shared/filters/FilterInput';
+import { Heading } from 'toolkit/chakra/heading';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 
 const BlockCountdownIndex = () => {
   const router = useRouter();
-  const iconColor = useColorModeValue('gray.300', 'gray.600');
 
   const handleFormSubmit = React.useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,11 +21,14 @@ const BlockCountdownIndex = () => {
 
   return (
     <Center h="100%" justifyContent={{ base: 'flex-start', lg: 'center' }} flexDir="column" textAlign="center" pt={{ base: 8, lg: 0 }}>
-      <IconSvg name="block_countdown" color={ iconColor } w={{ base: '160px', lg: '240px' }} h={{ base: '123px', lg: '184px' }}/>
+      <IconSvg
+        name="block_countdown"
+        color={{ _light: 'gray.300', _dark: 'gray.600' }}
+        w={{ base: '160px', lg: '240px' }}
+        h={{ base: '123px', lg: '184px' }}
+      />
       <Heading
-        fontSize={{ base: '18px', lg: '32px' }}
-        lineHeight={{ base: '24px', lg: '40px' }}
-        h={{ base: '24px', lg: '40px' }}
+        level="1"
         mt={{ base: 3, lg: 6 }}
       >
         Block countdown
@@ -41,7 +44,7 @@ const BlockCountdownIndex = () => {
       >
         <FilterInput
           placeholder="Search by block number"
-          size="xs"
+          size="sm"
           type="number"
           name="search_term"
         />

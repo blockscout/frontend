@@ -1,15 +1,15 @@
-import { Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, useOutsideClick, Box } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AppRating } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
-import Popover from 'ui/shared/chakra/Popover';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
+import { Rating } from 'toolkit/chakra/rating';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import Content from './PopoverContent';
-import Stars from './Stars';
 import TriggerButton from './TriggerButton';
 import type { RateFunction } from './useRatings';
 
@@ -28,14 +28,10 @@ type Props = {
   source: EventPayload<EventTypes.APP_FEEDBACK>['Source'];
 };
 
-const Rating = ({
+const MarketplaceRating = ({
   appId, rating, userRating, rate,
   isSending, isLoading, fullView, canRate, source,
 }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
-  // have to implement this solution because popover loses focus on button click inside it (issue: https://github.com/chakra-ui/chakra-ui/issues/7359)
-  const popoverRef = React.useRef(null);
-  useOutsideClick({ ref: popoverRef, handler: onClose });
 
   if (!isEnabled) {
     return null;
@@ -45,30 +41,27 @@ const Rating = ({
     <Skeleton
       display="flex"
       alignItems="center"
-      isLoaded={ !isLoading }
+      loading={ isLoading }
       w={ (isLoading && !fullView) ? '40px' : 'auto' }
     >
       { fullView && (
         <>
-          <Stars filledIndex={ (rating?.value || 0) - 1 }/>
+          <Rating defaultValue={ Math.floor(rating?.value || 0) } readOnly key={ rating?.value }/>
           <Text fontSize="md" ml={ 2 }>{ rating?.value }</Text>
-          { rating?.count && <Text variant="secondary" fontSize="md" ml={ 1 }>({ rating?.count })</Text> }
+          { rating?.count && <Text color="text.secondary" textStyle="md" ml={ 1 }>({ rating?.count })</Text> }
         </>
       ) }
-      <Box ref={ popoverRef }>
-        <Popover isOpen={ isOpen } placement="bottom" isLazy>
-          <PopoverTrigger>
-            <TriggerButton
-              rating={ rating?.value }
-              count={ rating?.count }
-              fullView={ fullView }
-              isActive={ isOpen }
-              onClick={ onToggle }
-              canRate={ canRate }
-            />
-          </PopoverTrigger>
-          <PopoverContent w="250px" mx={ 3 }>
-            <PopoverBody p={ 4 }>
+      <PopoverRoot positioning={{ placement: 'bottom' }}>
+
+        <TriggerButton
+          rating={ rating?.value }
+          count={ rating?.count }
+          fullView={ fullView }
+          canRate={ canRate }
+        />
+        { canRate ? (
+          <PopoverContent w="250px">
+            <PopoverBody>
               <Content
                 appId={ appId }
                 rating={ rating }
@@ -79,10 +72,10 @@ const Rating = ({
               />
             </PopoverBody>
           </PopoverContent>
-        </Popover>
-      </Box>
+        ) : <PopoverContent/> }
+      </PopoverRoot>
     </Skeleton>
   );
 };
 
-export default Rating;
+export default MarketplaceRating;

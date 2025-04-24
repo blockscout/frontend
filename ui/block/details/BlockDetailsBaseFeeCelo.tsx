@@ -1,4 +1,4 @@
-import { Box, Flex, Link } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -6,10 +6,10 @@ import type { AddressParam } from 'types/api/addressParams';
 import type { BlockBaseFeeCelo } from 'types/api/block';
 import type { TokenInfo } from 'types/api/token';
 
-import { WEI, ZERO_ADDRESS } from 'lib/consts';
+import { Link } from 'toolkit/chakra/link';
+import { WEI, ZERO_ADDRESS } from 'toolkit/utils/consts';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -24,7 +24,7 @@ const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: Item
 
   return (
     <Flex alignItems="center" columnGap={ 2 } rowGap={ 1 } flexWrap="wrap">
-      <Box color="text_secondary">{ percentage }% of amount</Box>
+      <Box color="text.secondary">{ percentage }% of amount</Box>
       <Flex columnGap={ 2 }>
         { BigNumber(amount).dividedBy(WEI).toFixed() }
         <TokenEntity token={ token } noCopy onlySymbol/>
@@ -33,7 +33,7 @@ const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: Item
         <>
           <AddressEntity address={ addressFrom } truncation="constant"/>
           <IconSvg name="flame" boxSize={ 5 } color="gray.500"/>
-          <Box color="text_secondary">burnt</Box>
+          <Box color="text.secondary">burnt</Box>
         </>
       ) : <AddressFromTo from={ addressFrom } to={ address }/> }
     </Flex>
@@ -50,28 +50,25 @@ const BlockDetailsBaseFeeCelo = ({ data }: Props) => {
   const totalFeeLabel = (
     <Box whiteSpace="pre-wrap">
       <span>The FeeHandler regularly burns 80% of its tokens. Non-CELO tokens are swapped to CELO beforehand. The remaining 20% are sent to the </span>
-      <Link isExternal href="https://www.ultragreen.money">Green Fund</Link>
+      <Link external href="https://www.ultragreen.money">Green Fund</Link>
       <span>.</span>
     </Box>
   );
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="The contract receiving the base fee, responsible for handling fee usage. This contract is controlled by governance process."
       >
         Base fee handler
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <AddressEntity address={ data.recipient }/>
-      </DetailsInfoItem.Value>
-      <DetailsInfoItem.Label
-        hint={ totalFeeLabel }
-        type="popover"
-      >
+      </DetailedInfo.ItemValue>
+      <DetailedInfo.ItemLabel hint={ totalFeeLabel }>
         Base fee total
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value display="block">
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue display="block">
         <Flex columnGap={ 2 }>
           { totalBaseFee }
           <TokenEntity token={ data.token } noCopy onlySymbol/>
@@ -88,8 +85,8 @@ const BlockDetailsBaseFeeCelo = ({ data }: Props) => {
             )) }
           </Flex>
         ) }
-      </DetailsInfoItem.Value>
-      <DetailsInfoItemDivider/>
+      </DetailedInfo.ItemValue>
+      <DetailedInfo.ItemDivider/>
     </>
   );
 };

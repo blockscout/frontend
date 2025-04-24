@@ -1,7 +1,9 @@
-import { Box, IconButton, PopoverBody, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import Popover from 'ui/shared/chakra/Popover';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 
 import SettingsAddressFormat from './SettingsAddressFormat';
@@ -10,31 +12,36 @@ import SettingsIdentIcon from './SettingsIdentIcon';
 import SettingsScamTokens from './SettingsScamTokens';
 
 const Settings = () => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { open, onOpenChange, onClose } = useDisclosure();
 
   return (
-    <Popover placement="bottom-start" trigger="click" isOpen={ isOpen } onClose={ onClose }>
+    <PopoverRoot
+      positioning={{ placement: 'bottom-start' }}
+      open={ open }
+      onOpenChange={ onOpenChange }
+      // should be false to enable auto-switch to default color theme
+      lazyMount={ false }
+    >
       <PopoverTrigger>
         <IconButton
-          variant="simple"
-          colorScheme="blue"
+          variant="link"
+          size="2xs"
+          borderRadius="sm"
           aria-label="User settings"
-          icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
-          p="1px"
-          boxSize={ 5 }
-          onClick={ onToggle }
-        />
+        >
+          <IconSvg name="gear_slim"/>
+        </IconButton>
       </PopoverTrigger>
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">
-        <PopoverBody boxShadow="2xl" p={ 4 }>
+        <PopoverBody>
           <SettingsColorTheme onSelect={ onClose }/>
-          <Box borderColor="divider" borderTopWidth="1px" my={ 3 }/>
+          <Box borderColor="border.divider" borderTopWidth="1px" my={ 3 }/>
           <SettingsIdentIcon/>
           <SettingsAddressFormat/>
           <SettingsScamTokens/>
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   );
 };
 

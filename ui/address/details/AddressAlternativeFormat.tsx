@@ -3,7 +3,7 @@ import React from 'react';
 import config from 'configs/app';
 import { BECH_32_SEPARATOR, toBech32Address } from 'lib/address/bech32';
 import { useSettingsContext } from 'lib/contexts/settings';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
@@ -24,13 +24,13 @@ const AddressAlternativeFormat = ({ isLoading, addressHash }: Props) => {
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint={ hint }
         isLoading={ isLoading }
       >
         { label }
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <AddressEntity
           address={{ hash: altHash }}
           isLoading={ isLoading }
@@ -38,7 +38,7 @@ const AddressAlternativeFormat = ({ isLoading, addressHash }: Props) => {
           noLink
           noAltHash
         />
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

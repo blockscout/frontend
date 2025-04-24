@@ -2,10 +2,11 @@ import {
   chakra,
   Flex,
   Text,
-  Link,
-  Button,
 } from '@chakra-ui/react';
 import React from 'react';
+
+import { Button } from 'toolkit/chakra/button';
+import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
 
 type Props = {
   title: string;
@@ -14,40 +15,38 @@ type Props = {
   hasReset?: boolean;
   onFilter: () => void;
   onReset?: () => void;
-  onClose?: () => void;
   children: React.ReactNode;
 };
 
-const TableColumnFilter = ({ title, isFilled, isTouched, hasReset, onFilter, onReset, onClose, children }: Props) => {
+const TableColumnFilter = ({ title, isFilled, isTouched, hasReset, onFilter, onReset, children }: Props) => {
   const onFilterClick = React.useCallback(() => {
-    onClose && onClose();
     onFilter();
-  }, [ onClose, onFilter ]);
+  }, [ onFilter ]);
   return (
     <>
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text color="text_secondary" fontWeight="600">{ title }</Text>
+      <Flex alignItems="center" justifyContent="space-between" columnGap={ 6 }>
+        <Text color="text.secondary" fontWeight="600">{ title }</Text>
         { hasReset && (
-          <Link
+          <Button
+            variant="link"
             onClick={ onReset }
-            cursor={ isFilled ? 'pointer' : 'unset' }
-            opacity={ isFilled ? 1 : 0.2 }
-            _hover={{
-              color: isFilled ? 'link_hovered' : 'none',
-            }}
+            disabled={ !isFilled }
+            textStyle="sm"
           >
             Reset
-          </Link>
+          </Button>
         ) }
       </Flex>
       { children }
-      <Button
-        isDisabled={ !isTouched }
-        onClick={ onFilterClick }
-        w="fit-content"
-      >
-        Filter
-      </Button>
+      <PopoverCloseTriggerWrapper>
+        <Button
+          disabled={ !isTouched }
+          onClick={ onFilterClick }
+          w="fit-content"
+        >
+          Filter
+        </Button>
+      </PopoverCloseTriggerWrapper>
     </>
   );
 };

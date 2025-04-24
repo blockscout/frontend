@@ -1,10 +1,11 @@
-import { Box, Td, Tr, Flex, Text, Table, Show, Hide, Divider, VStack } from '@chakra-ui/react';
+import { Box, Flex, Separator, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { TableRoot, TableRow, TableCell } from 'toolkit/chakra/table';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -51,41 +52,41 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true }: Props) =
           mb={ 6 }
         />
       ) }
-      <Show above="lg" ssr={ false }>
-        <Table borderRadius="8px" style={{ tableLayout: 'auto' }} width="100%" overflow="hidden">
+      <Box hideBelow="lg">
+        <TableRoot borderRadius="8px" style={{ tableLayout: 'auto' }} width="100%" overflow="hidden">
           { data?.schema.key_names.length && data?.schema.key_names.map((keyName, index) => (
-            <Tr key={ keyName } borderBottomStyle={ index === data.schema.key_names.length - 1 ? 'hidden' : 'solid' }>
-              <Td fontWeight={ 600 } whiteSpace="nowrap" fontSize="sm">
+            <TableRow key={ keyName } borderBottomStyle={ index === data.schema.key_names.length - 1 ? 'hidden' : 'solid' }>
+              <TableCell fontWeight={ 600 } whiteSpace="nowrap" fontSize="sm">
                 { keyName } ({ data.schema.key_types[index] })
-              </Td>
-              <Td colSpan={ 2 } fontSize="sm">
+              </TableCell>
+              <TableCell colSpan={ 2 } fontSize="sm">
                 <Flex justifyContent="space-between">
                   <TruncatedValue value={ getValueString(data.record.decoded[keyName]) } mr={ 2 }/>
-                  { index === 0 && <Box color="text_secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
+                  { index === 0 && <Box color="text.secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
                 </Flex>
-              </Td>
-            </Tr>
+              </TableCell>
+            </TableRow>
           )) }
           <AddressMudRecordValues data={ data }/>
-        </Table>
-      </Show>
-      <Hide above="lg" ssr={ false }>
+        </TableRoot>
+      </Box>
+      <Box hideFrom="lg">
         <>
           { data?.schema.key_names.length && data?.schema.key_names.map((keyName, index) => (
             <VStack gap={ 1 } key={ keyName } alignItems="start" fontSize="sm">
-              <Divider/>
+              <Separator/>
               <Text fontWeight={ 600 } whiteSpace="nowrap">
                 { keyName } ({ data.schema.key_types[index] })
               </Text>
               <Text wordBreak="break-word">{ getValueString(data.record.decoded[keyName]) }</Text>
-              { index === 0 && <Box color="text_secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
+              { index === 0 && <Box color="text.secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
             </VStack>
           )) }
-          <Table borderRadius="8px" style={{ tableLayout: 'auto' }} width="100%" mt={ 2 } overflow="hidden">
+          <TableRoot borderRadius="8px" style={{ tableLayout: 'auto' }} width="100%" mt={ 2 } overflow="hidden">
             <AddressMudRecordValues data={ data }/>
-          </Table>
+          </TableRoot>
         </>
-      </Hide>
+      </Box>
     </>
   );
 };

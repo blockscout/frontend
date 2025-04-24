@@ -1,4 +1,4 @@
-import { Box, Flex, Link } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -6,6 +6,7 @@ import type { FormFields } from '../types';
 import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import config from 'configs/app';
+import { Link } from 'toolkit/chakra/link';
 
 import ContractVerificationFormCodeSnippet from '../ContractVerificationFormCodeSnippet';
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
@@ -56,7 +57,7 @@ const ContractVerificationSolidityHardhat = ({ config: formConfig }: { config: S
         </Flex>
         <Box whiteSpace="pre-wrap">
           <span>Full tutorial about contract verification via Hardhat on Blockscout is available </span>
-          <Link href="https://docs.blockscout.com/for-users/verifying-a-smart-contract/hardhat-verification-plugin" target="_blank">
+          <Link href="https://docs.blockscout.com/for-users/verifying-a-smart-contract/hardhat-verification-plugin" external>
             here
           </Link>
         </Box>

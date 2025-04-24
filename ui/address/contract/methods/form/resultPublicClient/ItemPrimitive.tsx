@@ -1,13 +1,13 @@
-import { Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import type { AbiParameter } from 'viem';
 
 import { route } from 'nextjs-routes';
 
-import { WEI } from 'lib/consts';
+import { Link } from 'toolkit/chakra/link';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { WEI } from 'toolkit/utils/consts';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import { matchInt } from '../utils';
 import ItemLabel from './ItemLabel';
@@ -44,8 +44,8 @@ const ItemPrimitive = ({ abiParameter, data, level, hideLabel }: Props) => {
     if (abiParameter.type === 'address' && typeof data === 'string') {
       return (
         <>
-          <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: data } }) }>{ data }</LinkInternal>
-          <CopyToClipboard text={ data } size={ 4 } verticalAlign="sub"/>
+          <Link href={ route({ pathname: '/address/[hash]', query: { hash: data } }) }>{ data }</Link>
+          <CopyToClipboard text={ data } boxSize={ 4 } verticalAlign="sub"/>
         </>
       );
     }
@@ -54,7 +54,7 @@ const ItemPrimitive = ({ abiParameter, data, level, hideLabel }: Props) => {
     if (intMatch && typeof data === 'bigint' && intMatch.max > INT_TOOLTIP_THRESHOLD && data > INT_TOOLTIP_THRESHOLD) {
       const dividedValue = BigNumber(data.toString()).div(WEI);
       return (
-        <Tooltip label={ dividedValue.toLocaleString() + ' ETH' }>
+        <Tooltip content={ dividedValue.toLocaleString() + ' ETH' }>
           <span>{ castValueToString(data) }</span>
         </Tooltip>
       );

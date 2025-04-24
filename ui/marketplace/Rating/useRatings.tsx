@@ -6,10 +6,10 @@ import type { AppRating } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import useToast from 'lib/hooks/useToast';
 import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import * as mixpanel from 'lib/mixpanel/index';
 import { ADDRESS_COUNTERS } from 'stubs/address';
+import { toaster } from 'toolkit/chakra/toaster';
 
 const MIN_TRANSACTION_COUNT = 5;
 
@@ -41,7 +41,6 @@ function formatRatings(data: Airtable.Records<Airtable.FieldSet>) {
 
 export default function useRatings() {
   const { address } = useAccount();
-  const toast = useToast();
 
   const addressCountersQuery = useApiQuery<'address_counters', { status: number }>('address_counters', {
     pathParams: { hash: address },
@@ -68,13 +67,12 @@ export default function useRatings() {
       const ratings = formatRatings(data);
       setRatings(ratings);
     } catch (error) {
-      toast({
-        status: 'error',
+      toaster.error({
         title: 'Error loading ratings',
         description: 'Please try again later',
       });
     }
-  }, [ toast ]);
+  }, [ ]);
 
   useEffect(() => {
     async function fetch() {
@@ -97,8 +95,7 @@ export default function useRatings() {
           }).all();
           userRatings = formatRatings(data);
         } catch (error) {
-          toast({
-            status: 'error',
+          toaster.error({
             title: 'Error loading user ratings',
             description: 'Please try again later',
           });
@@ -108,7 +105,7 @@ export default function useRatings() {
       setIsUserRatingLoading(false);
     }
     fetchUserRatings();
-  }, [ address, toast ]);
+  }, [ address ]);
 
   useEffect(() => {
     const isPlaceholderData = addressCountersQuery?.isPlaceholderData;
@@ -163,8 +160,7 @@ export default function useRatings() {
       });
       fetchRatings();
 
-      toast({
-        status: 'success',
+      toaster.success({
         title: 'Awesome! Thank you 💜',
         description: 'Your rating improves the service',
       });
@@ -173,15 +169,14 @@ export default function useRatings() {
         { Action: 'Rating', Source: source, AppId: appId, Score: rating },
       );
     } catch (error) {
-      toast({
-        status: 'error',
+      toaster.error({
         title: 'Ooops! Something went wrong',
         description: 'Please try again later',
       });
     }
 
     setIsSending(false);
-  }, [ address, userRatings, fetchRatings, toast ]);
+  }, [ address, userRatings, fetchRatings ]);
 
   return {
     ratings,

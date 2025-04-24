@@ -1,12 +1,10 @@
-import {
-  Modal,
-  ModalContent,
-  ModalCloseButton,
-  ModalOverlay,
-} from '@chakra-ui/react';
+// eslint-disable-next-line no-restricted-imports
+import { Dialog as ChakraDialog } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
+
+import { DialogContent, DialogRoot, DialogCloseTrigger } from 'toolkit/chakra/dialog';
 
 import NftHtml from './NftHtml';
 import NftImage from './NftImage';
@@ -15,14 +13,14 @@ import useNftMediaInfo from './useNftMediaInfo';
 import type { MediaType } from './utils';
 
 interface Props {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   data: TokenInstance;
   allowedTypes?: Array<MediaType>;
   field: 'animation_url' | 'image_url';
 }
 
-const NftMediaFullscreenModal = ({ isOpen, onClose, data, allowedTypes, field }: Props) => {
+const NftMediaFullscreenModal = ({ open, onOpenChange, data, allowedTypes, field }: Props) => {
   const [ mediaInfoIndex, setMediaInfoIndex ] = React.useState(0);
 
   const mediaInfoQuery = useNftMediaInfo({ data, size: 'original', allowedTypes, field, isEnabled: true });
@@ -81,13 +79,19 @@ const NftMediaFullscreenModal = ({ isOpen, onClose, data, allowedTypes, field }:
   })();
 
   return (
-    <Modal isOpen={ isOpen } onClose={ onClose } motionPreset="none">
-      <ModalOverlay/>
-      <ModalContent w="unset" maxW="100vw" p={ 0 } background="none" boxShadow="none">
-        <ModalCloseButton position="fixed" top={{ base: 2.5, lg: 8 }} right={{ base: 2.5, lg: 8 }} color="whiteAlpha.800"/>
+    <DialogRoot open={ open } onOpenChange={ onOpenChange } motionPreset="none">
+      <DialogContent w="unset" maxW="100vw" p={ 0 } background="none" boxShadow="none">
+        { /* FIXME (maybe): if close trigger is outside of the dialog header, it will not hide backdrop after closing the dialog */ }
+        <ChakraDialog.Header>
+          <DialogCloseTrigger
+            position="fixed"
+            top={ 6 }
+            right={ 6 }
+          />
+        </ChakraDialog.Header>
         { content }
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 

@@ -1,12 +1,15 @@
-import { Image, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
+import { route } from 'nextjs-routes';
+
 import highlightText from 'lib/highlightText';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { Image } from 'toolkit/chakra/image';
 import IconSvg from 'ui/shared/IconSvg';
-import NextLink from 'ui/shared/NextLink';
 
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 interface Props {
@@ -42,17 +45,11 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
             >
               <span dangerouslySetInnerHTML={{ __html: highlightText(data.title, searchTerm) }}/>
             </Text>
-            { data.external && <IconSvg name="link_external" color="icon_link_external" boxSize={ 3 } verticalAlign="middle" flexShrink={ 0 }/> }
+            { data.external && <IconSvg name="link_external" color="icon.externalLink" boxSize={ 3 } verticalAlign="middle" flexShrink={ 0 }/> }
           </Flex>
           <Text
-            variant="secondary"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            style={{
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: 'vertical',
-              display: '-webkit-box',
-            }}
+            color="text.secondary"
+            lineClamp={ 3 }
           >
             { data.description }
           </Text>
@@ -73,7 +70,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
           <span dangerouslySetInnerHTML={{ __html: highlightText(data.title, searchTerm) }}/>
         </Text>
         <Text
-          variant="secondary"
+          color="text.secondary"
           overflow="hidden"
           whiteSpace="nowrap"
           textOverflow="ellipsis"
@@ -84,7 +81,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
         { data.external && (
           <IconSvg
             name="link_external"
-            color="icon_link_external"
+            color="icon.externalLink"
             boxSize={ 3 }
             verticalAlign="middle"
             flexShrink={ 0 }
@@ -94,33 +91,14 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
     );
   })();
 
-  if (data.external) {
-    return (
-      <NextLink
-        href={{
-          pathname: '/apps',
-          query: {
-            selectedAppId: data.id,
-          },
-        }}
-        passHref
-        shallow={ router.pathname === '/apps' }
-        legacyBehavior
-      >
-        <SearchBarSuggestItemLink onClick={ onClick }>
-          { content }
-        </SearchBarSuggestItemLink>
-      </NextLink>
-
-    );
-  }
-
   return (
-    <NextLink href={{ pathname: '/apps/[id]', query: { id: data.id } }} passHref legacyBehavior>
-      <SearchBarSuggestItemLink onClick={ onClick }>
-        { content }
-      </SearchBarSuggestItemLink>
-    </NextLink>
+    <SearchBarSuggestItemLink
+      onClick={ onClick }
+      href={ data.external ? route({ pathname: '/apps', query: { selectedAppId: data.id } }) : route({ pathname: '/apps/[id]', query: { id: data.id } }) }
+      shallow={ data.external && router.pathname === '/apps' }
+    >
+      { content }
+    </SearchBarSuggestItemLink>
   );
 };
 

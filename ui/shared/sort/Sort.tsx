@@ -1,38 +1,71 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SelectOption } from 'ui/shared/select/types';
-
 import useIsMobile from 'lib/hooks/useIsMobile';
-import Select, { type Props as SelectProps } from 'ui/shared/select/Select';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import type { SelectRootProps } from 'toolkit/chakra/select';
+import { SelectContent, SelectItem, SelectRoot, SelectControl, SelectValueText } from 'toolkit/chakra/select';
+import IconSvg from 'ui/shared/IconSvg';
 
-import SortButtonDesktop from './ButtonDesktop';
-import SortButtonMobile from './ButtonMobile';
+export interface Props extends SelectRootProps {
+  isLoading?: boolean;
+}
 
-type Props<Value extends string> = Omit<SelectProps<Value>, 'children'>;
-
-const Sort = <Sort extends string>({ name, options, isLoading, onChange, defaultValue }: Props<Sort>) => {
+const Sort = (props: Props) => {
+  const { collection, isLoading, ...rest } = props;
   const isMobile = useIsMobile(false);
 
+  const trigger = (() => {
+    if (isMobile) {
+      return (
+        <SelectControl triggerProps={{ asChild: true }} noIndicator>
+          <IconButton
+            loadingSkeleton={ isLoading }
+            aria-label="sort"
+            size="md"
+            variant="dropdown"
+          >
+            <IconSvg name="arrows/up-down"/>
+          </IconButton>
+        </SelectControl>
+      );
+    }
+
+    return (
+      <SelectControl
+        loading={ isLoading }
+        _hover={{ color: 'link.primary.hover' }}
+        _open={{ color: 'link.primary.hover' }}
+      >
+        <chakra.span
+          flexShrink={ 0 }
+          fontWeight="normal"
+          color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }}
+          _groupHover={{ color: 'inherit' }}
+          _groupExpanded={{ color: 'inherit' }}
+        >
+          Sort by
+        </chakra.span>
+        <SelectValueText
+          color={{ _light: 'blackAlpha.800', _dark: 'whiteAlpha.800' }}
+          _groupHover={{ color: 'inherit' }}
+          _groupExpanded={{ color: 'inherit' }}
+        />
+      </SelectControl>
+    );
+  })();
+
   return (
-    <Select
-      options={ options }
-      name={ name }
-      defaultValue={ defaultValue }
-      onChange={ onChange }
-    >
-      { ({ isOpen, onToggle, value }) => {
-        return (
-          isMobile ? (
-            <SortButtonMobile isActive={ isOpen || Boolean(value) } onClick={ onToggle } isLoading={ isLoading }/>
-          ) : (
-            <SortButtonDesktop isActive={ isOpen } isLoading={ isLoading } onClick={ onToggle }>
-              { options.find((option: SelectOption<Sort>) => option.value === value || (!option.value && !value))?.label }
-            </SortButtonDesktop>
-          )
-        );
-      } }
-    </Select>
+    <SelectRoot collection={ collection } w="fit-content" variant="plain" { ...rest }>
+      { trigger }
+      <SelectContent>
+        { collection.items.map((item) => (
+          <SelectItem item={ item } key={ item.value }>
+            { item.label }
+          </SelectItem>
+        )) }
+      </SelectContent>
+    </SelectRoot>
   );
 };
 

@@ -1,8 +1,8 @@
-import { Flex, Tooltip } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { route } from 'nextjs-routes';
 
@@ -11,17 +11,18 @@ import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN } from 'stubs/ENS';
+import { Link } from 'toolkit/chakra/link';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
+import useActiveTabFromQuery from 'toolkit/components/RoutedTabs/useActiveTabFromQuery';
 import NameDomainDetails from 'ui/nameDomain/NameDomainDetails';
 import NameDomainHistory from 'ui/nameDomain/NameDomainHistory';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 
 const NameDomain = () => {
   const router = useRouter();
@@ -34,12 +35,12 @@ const NameDomain = () => {
     },
   });
 
-  const tabs: Array<RoutedTab> = [
+  const tabs: Array<TabItemRegular> = [
     { id: 'details', title: 'Details', component: <NameDomainDetails query={ infoQuery }/> },
     { id: 'history', title: 'History', component: <NameDomainHistory domain={ infoQuery.data }/> },
   ];
 
-  const tabIndex = useTabIndexFromQuery(tabs);
+  const activeTab = useActiveTabFromQuery(tabs);
 
   throwOnResourceLoadError(infoQuery);
 
@@ -49,9 +50,6 @@ const NameDomain = () => {
     <Flex
       columnGap={ 3 }
       rowGap={ 3 }
-      fontFamily="heading"
-      fontSize="lg"
-      fontWeight={ 500 }
       alignItems="center"
       w="100%"
       flexWrap={{ base: 'wrap', lg: 'nowrap' }}
@@ -62,21 +60,23 @@ const NameDomain = () => {
         isLoading={ isLoading }
         noLink
         maxW={{ lg: infoQuery.data?.resolved_address ? '300px' : 'max-content' }}
+        variant="subheading"
       />
       { infoQuery.data?.resolved_address && (
-        <Flex alignItems="center" maxW="100%" columnGap={ 3 }>
+        <Flex alignItems="center" maxW="100%" columnGap={ 2 }>
           <AddressEntity
             address={ infoQuery.data?.resolved_address }
             isLoading={ isLoading }
+            variant="subheading"
           />
-          <Tooltip label="Lookup for related domain names">
-            <LinkInternal
+          <Tooltip content="Lookup for related domain names">
+            <Link
               flexShrink={ 0 }
               display="inline-flex"
               href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', address: infoQuery.data?.resolved_address?.hash } }) }
             >
               <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
-            </LinkInternal>
+            </Link>
           </Tooltip>
         </Flex>
       ) }
@@ -89,8 +89,8 @@ const NameDomain = () => {
       <PageTitle title="Name details" secondRow={ titleSecondRow }/>
       { infoQuery.isPlaceholderData ? (
         <>
-          <TabsSkeleton tabs={ tabs } mt={ 6 }/>
-          { tabs[tabIndex]?.component }
+          <RoutedTabsSkeleton tabs={ tabs } mt={ 6 }/>
+          { activeTab?.component }
         </>
       ) : <RoutedTabs tabs={ tabs }/> }
     </>

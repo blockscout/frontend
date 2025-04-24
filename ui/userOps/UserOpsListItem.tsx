@@ -3,7 +3,6 @@ import React from 'react';
 import type { UserOpsItem } from 'types/api/userOps';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -34,7 +33,7 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
         <TimeAgoWithTooltip
           timestamp={ item.timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           display="inline-block"
         />
       </ListItemMobileGrid.Value>
@@ -76,8 +75,7 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
         <BlockEntity
           number={ Number(item.block_number) }
           isLoading={ isLoading }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           noIcon
         />
       </ListItemMobileGrid.Value>
@@ -86,9 +84,7 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Fee</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Skeleton isLoaded={ !isLoading }>
-              <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 } currency={ config.chain.currency.symbol }/>
-            </Skeleton>
+            <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 } currency={ config.chain.currency.symbol }/>
           </ListItemMobileGrid.Value>
         </>
       ) }

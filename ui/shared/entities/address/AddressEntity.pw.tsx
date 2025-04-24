@@ -13,17 +13,17 @@ import { test, expect } from 'playwright/lib';
 
 import AddressEntity from './AddressEntity';
 
-const iconSizes = [ 'md', 'lg' ] as const;
+const variants = [ 'subheading', 'content' ] as const;
 
 test.use({ viewport: { width: 180, height: 140 } });
 
-test.describe('icon size', () => {
-  iconSizes.forEach((size) => {
-    test(`${ size }`, async({ render }) => {
+test.describe('variant', () => {
+  variants.forEach((variant) => {
+    test(`${ variant }`, async({ render }) => {
       const component = await render(
         <AddressEntity
           address={ addressMock.withoutName }
-          icon={{ size }}
+          variant={ variant }
         />,
       );
 
@@ -41,6 +41,7 @@ test.describe('contract', () => {
     );
 
     await component.getByText(/eternal/i).hover();
+    await page.locator('div').filter({ hasText: 'EternalStorageProxy' }).first().waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 
@@ -66,7 +67,7 @@ test.describe('proxy contract', () => {
     );
 
     await component.getByText(/home/i).hover();
-    await expect(page.getByText('Proxy contract')).toBeVisible();
+    await page.getByText(/implementation/i).waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 
@@ -78,7 +79,7 @@ test.describe('proxy contract', () => {
     );
 
     await component.getByText(/eternal/i).hover();
-    await expect(page.getByText('Proxy contract')).toBeVisible();
+    await page.getByText(/implementation/i).waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 
@@ -90,7 +91,7 @@ test.describe('proxy contract', () => {
     );
 
     await component.getByText(addressMock.contract.hash.slice(0, 4)).hover();
-    await expect(page.getByText('Proxy contract')).toBeVisible();
+    await page.getByText(/implementation/i).waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 
@@ -102,7 +103,7 @@ test.describe('proxy contract', () => {
     );
 
     await component.getByText(/eternal/i).hover();
-    await expect(page.getByText('Proxy contract')).toBeVisible();
+    await page.getByText(/implementation/i).waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 
@@ -114,7 +115,7 @@ test.describe('proxy contract', () => {
     );
 
     await component.getByText(/quack/i).hover();
-    await expect(page.getByText('Proxy contract')).toBeVisible();
+    await page.getByText(/implementation/i).waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
 });
@@ -222,6 +223,7 @@ test('hover', async({ page, render }) => {
   );
 
   await component.getByText(addressMock.hash.slice(0, 4)).hover();
+  await page.getByText(addressMock.hash).waitFor({ state: 'visible' });
   await expect(page).toHaveScreenshot();
 });
 

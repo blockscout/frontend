@@ -45,7 +45,7 @@ const ChainIndicatorChartContent = ({ data }: Props) => {
           data={ data[0].items }
           xScale={ axes.x.scale }
           yScale={ axes.y.scale }
-          stroke={ lineColor }
+          stroke={ lineColor[0] }
           animation="left"
           strokeWidth={ 3 }
         />

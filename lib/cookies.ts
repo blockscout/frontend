@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-import isBrowser from './isBrowser';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 
 export enum NAMES {
   NAV_BAR_COLLAPSED = 'nav_bar_collapsed',

@@ -1,4 +1,4 @@
-import { Flex, Input, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -6,7 +6,9 @@ import React from 'react';
 import { ADVANCED_FILTER_AGES, type AdvancedFilterAge, type AdvancedFilterParams } from 'types/api/advancedFilter';
 
 import dayjs from 'lib/date/dayjs';
-import { ndash } from 'lib/html-entities';
+import { Input } from 'toolkit/chakra/input';
+import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
+import { ndash } from 'toolkit/utils/htmlEntities';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 
@@ -48,8 +50,8 @@ const AgeFilter = ({ value = defaultValue, handleFilterChange, onClose }: Props)
     const to = dayjs().toISOString();
     handleFilterChange(FILTER_PARAM_TO, to);
     handleFilterChange(FILTER_PARAM_AGE, age);
-    onClose && onClose();
-  }, [ onClose, handleFilterChange ]);
+    onClose?.();
+  }, [ handleFilterChange, onClose ]);
 
   const onReset = React.useCallback(() => setCurrentValue(defaultValue), []);
 
@@ -76,15 +78,16 @@ const AgeFilter = ({ value = defaultValue, handleFilterChange, onClose }: Props)
       isTouched={ value.age ? value.age !== currentValue.age : !isEqual(currentValue, value) }
       onFilter={ onFilter }
       onReset={ onReset }
-      onClose={ onClose }
       hasReset
     >
       <Flex gap={ 3 }>
-        <TagGroupSelect<AdvancedFilterAge>
-          items={ ADVANCED_FILTER_AGES.map(val => ({ id: val, title: val })) }
-          onChange={ onPresetChange }
-          value={ currentValue.age || undefined }
-        />
+        <PopoverCloseTriggerWrapper>
+          <TagGroupSelect<AdvancedFilterAge>
+            items={ ADVANCED_FILTER_AGES.map(val => ({ id: val, title: val })) }
+            onChange={ onPresetChange }
+            value={ currentValue.age || undefined }
+          />
+        </PopoverCloseTriggerWrapper>
       </Flex>
       <Flex mt={ 3 }>
         <Input
@@ -92,7 +95,7 @@ const AgeFilter = ({ value = defaultValue, handleFilterChange, onClose }: Props)
           onChange={ handleFromChange }
           placeholder="From"
           type="date"
-          size="xs"
+          size="sm"
         />
         <Text mx={ 3 }>{ ndash }</Text>
         <Input
@@ -100,7 +103,7 @@ const AgeFilter = ({ value = defaultValue, handleFilterChange, onClose }: Props)
           onChange={ handleToChange }
           placeholder="To"
           type="date"
-          size="xs"
+          size="sm"
         />
       </Flex>
     </TableColumnFilter>

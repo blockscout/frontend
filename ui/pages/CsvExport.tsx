@@ -11,7 +11,7 @@ import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { nbsp } from 'lib/html-entities';
+import { nbsp } from 'toolkit/utils/htmlEntities';
 import CsvExportForm from 'ui/csvExport/CsvExportForm';
 import ContentLoader from 'ui/shared/ContentLoader';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

@@ -12,7 +12,7 @@ const ChartTooltipBackdrop = () => {
       className="ChartTooltip__backdrop"
       rx={ 12 }
       ry={ 12 }
-      fill={ bgColor }
+      fill={ bgColor[0] }
     />
   );
 };

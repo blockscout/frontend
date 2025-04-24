@@ -1,17 +1,19 @@
-import { Flex, Alert } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
-import { apos } from 'lib/html-entities';
+import { Alert } from 'toolkit/chakra/alert';
+import { Link } from 'toolkit/chakra/link';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import { apos } from 'toolkit/utils/htmlEntities';
 import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton';
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
-import RewardsDashboardInfoCard from 'ui/rewards/dashboard/RewardsDashboardInfoCard';
-import RewardsReadOnlyInputWithCopy from 'ui/rewards/RewardsReadOnlyInputWithCopy';
+import ActivityTab from 'ui/rewards/dashboard/tabs/ActivityTab';
+import ReferralsTab from 'ui/rewards/dashboard/tabs/ReferralsTab';
+import ResourcesTab from 'ui/rewards/dashboard/tabs/ResourcesTab';
 import AdBanner from 'ui/shared/ad/AdBanner';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
@@ -50,10 +52,10 @@ const RewardsDashboard = () => {
           title="Dashboard"
           secondRow={ (
             <span>
-              <LinkExternal href={ `https://merits.blockscout.com/?tab=users&utm_source=${ config.chain.id }&utm_medium=text-banner` }>
+              <Link external href={ `https://merits.blockscout.com/?tab=users&utm_source=${ config.chain.id }&utm_medium=text-banner` }>
                 Explore the Merits Hub
-              </LinkExternal>{ ' ' }
-              to learn more info about a program, spend your Merits, learn how to earn more, and much more.
+              </Link>{ ' ' }
+              to earn, spend, and learn more about the program.
             </span>
           ) }
         />
@@ -65,14 +67,15 @@ const RewardsDashboard = () => {
           <RewardsDashboardCard
             title="All Merits"
             description="Claim your daily Merits and any Merits received from referrals."
-            direction="column-reverse"
+            contentDirection="column-reverse"
+            cardValueStyle={{ minH: { base: '64px', md: '88px' } }}
             contentAfter={ <DailyRewardClaimButton/> }
             hint={ (
               <>
                 Total number of Merits earned from all activities.{ ' ' }
-                <LinkExternal href="https://docs.blockscout.com/using-blockscout/merits">
+                <Link external href="https://docs.blockscout.com/using-blockscout/merits">
                   More info on Merits
-                </LinkExternal>
+                </Link>
               </>
             ) }
           >
@@ -85,7 +88,8 @@ const RewardsDashboard = () => {
           <RewardsDashboardCard
             title="Referrals"
             description="Total number of users who have joined the program using your code or referral link."
-            direction="column-reverse"
+            contentDirection="column-reverse"
+            cardValueStyle={{ minH: { base: '64px', md: '88px' } }}
           >
             <RewardsDashboardCardValue
               value={ referralsQuery.data?.referrals ?
@@ -101,27 +105,20 @@ const RewardsDashboard = () => {
               <>
                 Current number of consecutive days you{ apos }ve claimed your daily Merits.{ ' ' }
                 The longer your streak, the more daily Merits you can earn.{ ' ' }
-                <LinkExternal
-                  href={ `https://x.com/intent/tweet?text=${ encodeURIComponent(shareText) }` }
-                  fontWeight="500"
-                >
+                <Link external href={ `https://x.com/intent/tweet?text=${ encodeURIComponent(shareText) }` } fontWeight="500">
                   Share on X
-                </LinkExternal>
+                </Link>
               </>
             ) }
             hint={ (
               <>
                 See the{ ' ' }
-                <LinkExternal
-                  href="https://docs.blockscout.com/using-blockscout/merits/streak-rewards"
-                  isExternal
-                >
-                  docs
-                </LinkExternal>{ ' ' }
+                <Link external href="https://docs.blockscout.com/using-blockscout/merits/streak-rewards">docs</Link>{ ' ' }
                 to learn how your streak number affects daily rewards
               </>
             ) }
-            direction="column-reverse"
+            contentDirection="column-reverse"
+            cardValueStyle={{ minH: { base: '64px', md: '88px' } }}
           >
             <RewardsDashboardCardValue
               value={
@@ -133,94 +130,26 @@ const RewardsDashboard = () => {
             />
           </RewardsDashboardCard>
         </Flex>
-        <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
-          <RewardsDashboardCard
-            title="Referral program"
-            description={ (
-              <>
-                Refer friends and boost your Merits! You receive a{ ' ' }
-                <Skeleton as="span" isLoaded={ !rewardsConfigQuery.isPending }>
-                  { rewardsConfigQuery.data?.rewards.referral_share ?
-                    `${ Number(rewardsConfigQuery.data?.rewards.referral_share) * 100 }%` :
-                    'N/A'
-                  }
-                </Skeleton>
-                { ' ' }bonus on all Merits earned by your referrals.
-              </>
-            ) }
-          >
-            <Flex
-              flex={ 1 }
-              gap={{ base: 2, lg: 6 }}
-              px={{ base: 4, lg: 6 }}
-              py={{ base: 4, lg: 0 }}
-              flexDirection={{ base: 'column', lg: 'row' }}
-            >
-              <RewardsReadOnlyInputWithCopy
-                label="Referral link"
-                value={ referralsQuery.data?.link || 'N/A' }
-                isLoading={ referralsQuery.isPending }
-                flex={ 2 }
-              />
-              <RewardsReadOnlyInputWithCopy
-                label="Referral code"
-                value={ referralsQuery.data?.code || 'N/A' }
-                isLoading={ referralsQuery.isPending }
-                flex={ 1 }
-              />
-            </Flex>
-          </RewardsDashboardCard>
-          <RewardsDashboardInfoCard
-            title="Badges"
-            description={ `Collect limited and legendary badges by completing different Blockscout related tasks.
-              Go to the badges website to see what${ apos }s available and start your collection today.` }
-            imageSrc="/static/merits/badges.svg"
-            imageWidth="260px"
-            imageHeight="86px"
-            linkText="View badges"
-            linkHref={ `https://merits.blockscout.com/?tab=badges&utm_source=${ config.chain.id }&utm_medium=badges` }
-          />
-        </Flex>
-        <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
-          <RewardsDashboardInfoCard
-            title="Blockscout campaigns"
-            description="Join Blockscout activities to earn bonus Merits and exclusive rewards from our partners!"
-            imageSrc="/static/merits/campaigns.svg"
-            imageWidth="180px"
-            imageHeight="76px"
-            linkText="Check campaigns"
-            linkHref={ `https://merits.blockscout.com/?tab=campaigns&utm_source=${ config.chain.id }&utm_medium=campaigns` }
-          />
-          <RewardsDashboardInfoCard
-            title="Use your Merits"
-            description="Spend your Merits to get exclusive discounts and offers across several web3 products!"
-            imageSrc="/static/merits/offers.svg"
-            imageWidth="180px"
-            imageHeight="86px"
-            linkText="Check offers"
-            linkHref={ `https://merits.blockscout.com/?tab=redeem&utm_source=${ config.chain.id }&utm_medium=redeem` }
-          />
-        </Flex>
-        <Flex w="full" gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
-          <RewardsDashboardCard
-            title="Activity"
-            description="Earn Merits for your everyday Blockscout activities. You deserve to be rewarded for choosing open-source public goods!"
-            availableSoon
-            blurFilter
-          >
-            <RewardsDashboardCardValue label="Activity" value="0%"/>
-            <RewardsDashboardCardValue label="Received" value="0" withIcon/>
-          </RewardsDashboardCard>
-          <RewardsDashboardCard
-            title="Verify contracts"
-            description="Verified contracts are so important for transparency and interaction. Verify your contracts on Blockscout and receive Merits for your efforts." // eslint-disable-line max-len
-            availableSoon
-            blurFilter
-          >
-            <RewardsDashboardCardValue label="Activity" value="0%"/>
-            <RewardsDashboardCardValue label="Received" value="0" withIcon/>
-          </RewardsDashboardCard>
-        </Flex>
+        <RoutedTabs
+          w="full"
+          tabs={ [
+            {
+              id: 'activity',
+              title: 'Activity',
+              component: <ActivityTab/>,
+            },
+            {
+              id: 'referrals',
+              title: 'Referrals',
+              component: <ReferralsTab/>,
+            },
+            {
+              id: 'resources',
+              title: 'Resources',
+              component: <ResourcesTab/>,
+            },
+          ] }
+        />
       </Flex>
     </>
   );

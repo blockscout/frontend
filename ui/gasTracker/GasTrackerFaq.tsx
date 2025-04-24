@@ -1,12 +1,10 @@
-import {
-  Box,
-  Heading,
-  Accordion,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
+import { AccordionRoot } from 'toolkit/chakra/accordion';
+import { Heading } from 'toolkit/chakra/heading';
 
 import GasTrackerFaqItem from './GasTrackerFaqItem';
 
@@ -34,12 +32,12 @@ const FAQ_ITEMS = [
 const GasTrackerFaq = () => {
   return (
     <Box mt={ 12 }>
-      <Heading as="h2" mb={ 4 } fontSize="2xl" fontWeight="medium">FAQ</Heading>
-      <Accordion>
+      <Heading level="2" mb={ 4 }>FAQ</Heading>
+      <AccordionRoot variant="faq">
         { FAQ_ITEMS.map((item, index) => (
           <GasTrackerFaqItem key={ index } question={ item.question } answer={ item.answer }/>
         )) }
-      </Accordion>
+      </AccordionRoot>
     </Box>
   );
 };
