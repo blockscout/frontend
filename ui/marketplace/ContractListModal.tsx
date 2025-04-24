@@ -58,7 +58,6 @@ const ContractListModal = ({ onClose, onBack, type, contracts }: Props) => {
       open={ Boolean(type) }
       onOpenChange={ handleOpenChange }
       size={{ lgDown: 'full', lg: 'md' }}
-      placement="center"
     >
       <DialogContent>
         <DialogHeader display="flex" alignItems="center" mb={ 4 } onBackToClick={ onBack }>
