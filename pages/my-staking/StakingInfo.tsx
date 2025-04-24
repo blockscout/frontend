@@ -90,7 +90,12 @@ const StakingInfo = () => {
                 <StakingModal isOpen={ isOpen } onClose={ onClose } onOpen={ onOpen }>
                     <p style={{ height: '500px' }}>
                         <StakingValidatorSelect />
-                        <StakingModalNumberInput />
+                        <Box paddingTop={ 10 } paddingBottom={ 4 }>
+                            <StakingModalNumberInput />
+                        </Box>
+                        <Box paddingTop={ 10 } paddingBottom={ 4 }>
+                            <StakingModalNumberInput />
+                        </Box>
                     </p>
                     <Button onClick={ onClose }>Close</Button>
                 </StakingModal>

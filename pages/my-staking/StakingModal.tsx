@@ -4,7 +4,8 @@ import {
   Modal,
   ModalContent,
   ModalCloseButton,
-  ModalOverlay,   
+  ModalOverlay,
+  ModalHeader,
   useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -26,9 +27,12 @@ const StakingModal = ({
                 <ModalOverlay
                     bg='blackAlpha.300'
                 />
-            <ModalContent paddingTop={ 4 }>
-            <ModalCloseButton/>
-            { children }
+            <ModalContent height={'auto'} px={'24px'} py={'24px'}>
+                <ModalHeader mb={2}>
+                    Stake
+                </ModalHeader>
+                <ModalCloseButton zIndex={2000} />
+                { children }
             </ModalContent>
         </Modal>
     )
