@@ -101,6 +101,6 @@ export const NATIVE_TOKEN = {
   name: config.chain.currency.name || '',
   icon_url: '',
   symbol: config.chain.currency.symbol || '',
-  address: 'native',
+  address_hash: 'native',
   type: 'ERC-20' as const,
 } as TokenInfo;

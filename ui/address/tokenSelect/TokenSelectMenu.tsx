@@ -78,7 +78,7 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
                 ) }
               </Flex>
               { tokenInfo.items.sort(sortingFns[type](sortDirection)).map((data) =>
-                <TokenSelectItem key={ data.token.address + data.token_id } data={ data }/>) }
+                <TokenSelectItem key={ data.token.address_hash + data.token_id } data={ data }/>) }
             </Box>
           );
         }) }

@@ -14,7 +14,7 @@ import { MetadataUpdateProvider } from 'ui/tokenInstance/contexts/metadataUpdate
 
 import TokenInstanceDetails from './TokenInstanceDetails';
 
-const hash = tokenInfoERC721a.address;
+const hash = tokenInfoERC721a.address_hash;
 
 const addressMetadataQueryParams = {
   addresses: [ hash ],

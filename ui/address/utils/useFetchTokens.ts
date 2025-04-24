@@ -16,7 +16,7 @@ interface Props {
 }
 
 const tokenBalanceItemIdentityFactory = (match: AddressTokenBalance) => (item: AddressTokenBalance) => ((
-  match.token.address === item.token.address &&
+  match.token.address_hash === item.token.address_hash &&
   match.token_id === item.token_id &&
   match.token_instance?.id === item.token_instance?.id
 ));

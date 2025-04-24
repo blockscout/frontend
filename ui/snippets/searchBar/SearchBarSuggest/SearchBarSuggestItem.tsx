@@ -28,13 +28,13 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
   const url = (() => {
     switch (data.type) {
       case 'token': {
-        return route({ pathname: '/token/[hash]', query: { hash: data.address } });
+        return route({ pathname: '/token/[hash]', query: { hash: data.address_hash } });
       }
       case 'contract':
       case 'address':
       case 'label':
       case 'metadata_tag': {
-        return route({ pathname: '/address/[hash]', query: { hash: data.address } });
+        return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
       }
       case 'transaction': {
         return route({ pathname: '/tx/[hash]', query: { hash: data.transaction_hash } });
@@ -54,7 +54,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
         return route({ pathname: '/blobs/[hash]', query: { hash: data.blob_hash } });
       }
       case 'ens_domain': {
-        return route({ pathname: '/address/[hash]', query: { hash: data.address } });
+        return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
       }
     }
   })();

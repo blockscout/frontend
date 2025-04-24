@@ -16,10 +16,10 @@ export const VALIDATOR_STABILITY: ValidatorStability = {
 };
 
 export const VALIDATORS_STABILITY_COUNTERS: ValidatorsStabilityCountersResponse = {
-  active_validators_counter: '42',
+  active_validators_count: '42',
   active_validators_percentage: 7.14,
-  new_validators_counter_24h: '11',
-  validators_counter: '140',
+  new_validators_count_24h: '11',
+  validators_count: '140',
 };
 
 export const VALIDATOR_BLACKFORT: ValidatorBlackfort = {
@@ -31,8 +31,8 @@ export const VALIDATOR_BLACKFORT: ValidatorBlackfort = {
 };
 
 export const VALIDATORS_BLACKFORT_COUNTERS: ValidatorsBlackfortCountersResponse = {
-  new_validators_counter_24h: '11',
-  validators_counter: '140',
+  new_validators_count_24h: '11',
+  validators_count: '140',
 };
 
 export const VALIDATORS_ZILLIQA_ITEM: ValidatorsZilliqaItem = {

@@ -40,30 +40,30 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
 
   const sourceItems: Array<AddressImplementation> = React.useMemo(() => {
     const currentAddressDefaultName = addressData?.proxy_type === 'eip7702' ? 'Current address' : 'Current contract';
-    const currentAddressItem = { address: addressData.hash, name: addressData?.name || currentAddressDefaultName };
+    const currentAddressItem = { address_hash: addressData.hash, name: addressData?.name || currentAddressDefaultName };
     if (!addressData || !addressData.implementations || addressData.implementations.length === 0) {
       return [ currentAddressItem ];
     }
 
     return [
       currentAddressItem,
-      ...(addressData?.implementations.filter((item) => item.address !== addressData.hash && item.name) || []),
+      ...(addressData?.implementations.filter((item) => item.address_hash !== addressData.hash && item.name) || []),
     ];
   }, [ addressData ]);
 
-  const [ selectedItem, setSelectedItem ] = React.useState(sourceItems.find((item) => item.address === sourceAddress) || sourceItems[0]);
+  const [ selectedItem, setSelectedItem ] = React.useState(sourceItems.find((item) => item.address_hash === sourceAddress) || sourceItems[0]);
 
   const contractQuery = useApiQuery('contract', {
-    pathParams: { hash: selectedItem?.address },
+    pathParams: { hash: selectedItem?.address_hash },
     queryOptions: {
-      enabled: Boolean(selectedItem?.address && !mainContractQuery.isPlaceholderData),
+      enabled: Boolean(selectedItem?.address_hash && !mainContractQuery.isPlaceholderData),
       refetchOnMount: false,
       placeholderData: addressData?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
   });
   const { data, isPlaceholderData, isError } = contractQuery;
 
-  const tabs = useContractDetailsTabs({ data, isLoading: isPlaceholderData, addressData, sourceAddress: selectedItem.address });
+  const tabs = useContractDetailsTabs({ data, isLoading: isPlaceholderData, addressData, sourceAddress: selectedItem.address_hash });
 
   const handleContractWasVerifiedMessage: SocketMessage.SmartContractWasVerified['handler'] = React.useCallback(() => {
     queryClient.refetchQueries({

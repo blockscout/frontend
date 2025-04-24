@@ -106,7 +106,7 @@ const TokenPageContent = () => {
 
   useEffect(() => {
     if (tokenQuery.data && !tokenQuery.isPlaceholderData && !config.meta.seo.enhancedDataEnabled) {
-      metadata.update({ pathname: '/token/[hash]', query: { hash: tokenQuery.data.address } }, tokenQuery.data);
+      metadata.update({ pathname: '/token/[hash]', query: { hash: tokenQuery.data.address_hash } }, tokenQuery.data);
     }
   }, [ tokenQuery.data, tokenQuery.isPlaceholderData ]);
 

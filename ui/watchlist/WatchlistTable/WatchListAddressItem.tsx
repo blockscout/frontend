@@ -19,7 +19,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
     name: config.chain.currency.name || '',
     icon_url: '',
     symbol: '',
-    address: '',
+    address_hash: '',
     type: 'ERC-20' as const,
   }), [ ]);
 

@@ -89,7 +89,7 @@ export type Transaction = {
   zkevm_status?: typeof ZKEVM_L2_TX_STATUSES[number];
   zkevm_sequence_hash?: string;
   // zkSync FIELDS
-  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transaction_count' | 'timestamp'> & {
+  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transactions_count' | 'timestamp'> & {
     batch_number: number | null;
   };
   // Zilliqa fields
@@ -123,7 +123,7 @@ type ArbitrumTransactionData = {
   poster_fee: string;
   status: ArbitrumBatchStatus;
   message_related_info: {
-    associated_l1_transaction: string | null;
+    associated_l1_transaction_hash: string | null;
     message_status: ArbitrumTransactionMessageStatus;
   };
 };
@@ -213,7 +213,7 @@ export type ScrollTransactionData = {
 };
 
 export interface TxAuthorization {
-  address: string;
+  address_hash: string;
   authority: string;
   chain_id: number;
   nonce: number;

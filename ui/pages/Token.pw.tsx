@@ -11,7 +11,7 @@ import * as pwConfig from 'playwright/utils/config';
 
 import Token from './Token';
 
-const hash = tokenInfo.address;
+const hash = tokenInfo.address_hash;
 const chainId = config.chain.id;
 
 const hooksConfig = {
@@ -66,7 +66,7 @@ test('with verified info', async({ render, page, createSocket, mockApiResponse, 
 });
 
 test('bridged token', async({ render, page, createSocket, mockApiResponse, mockAssetResponse, mockEnvs }) => {
-  const hash = bridgedTokenA.address;
+  const hash = bridgedTokenA.address_hash;
   const hooksConfig = {
     router: {
       query: { hash, tab: 'token_transfers' },

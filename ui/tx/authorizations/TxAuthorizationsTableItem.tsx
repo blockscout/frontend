@@ -11,11 +11,11 @@ interface Props extends TxAuthorization {
   isLoading?: boolean;
 }
 
-const TxAuthorizationsItem = ({ address, authority, chain_id: chainId, nonce, isLoading }: Props) => {
+const TxAuthorizationsItem = ({ address_hash: addressHash, authority, chain_id: chainId, nonce, isLoading }: Props) => {
   return (
     <TableRow alignItems="top">
       <TableCell>
-        <AddressEntity address={{ hash: address }} isLoading={ isLoading } noIcon/>
+        <AddressEntity address={{ hash: addressHash }} isLoading={ isLoading } noIcon/>
       </TableCell>
       <TableCell verticalAlign="middle">
         <AddressEntity address={{ hash: authority }} isLoading={ isLoading } noIcon/>

@@ -37,7 +37,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
     }
 
     const increment = direction === 'next' ? +1 : -1;
-    const nextId = String(data.internal_id + increment);
+    const nextId = String(data.number + increment);
 
     router.push({ pathname: '/batches/[number]', query: { number: nextId } }, undefined);
   }, [ data, router ]);
@@ -54,7 +54,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
-  const blocksCount = data.l2_block_end - data.l2_block_start + 1;
+  const blocksCount = data.l2_end_block_number - data.l2_start_block_number + 1;
 
   return (
     <Grid
@@ -71,14 +71,14 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isPlaceholderData }>
-          { data.internal_id }
+          { data.number }
         </Skeleton>
         <PrevNext
           ml={ 6 }
           onClick={ handlePrevNextClick }
           prevLabel="View previous txn batch"
           nextLabel="View next txn batch"
-          isPrevDisabled={ data.internal_id === 0 }
+          isPrevDisabled={ data.number === 0 }
           isLoading={ isPlaceholderData }
         />
       </DetailedInfo.ItemValue>
@@ -104,8 +104,8 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isPlaceholderData }>
-          <Link href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'txs' } }) }>
-            { data.transaction_count.toLocaleString() } transaction{ data.transaction_count === 1 ? '' : 's' }
+          <Link href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
+            { data.transactions_count.toLocaleString() } transaction{ data.transactions_count === 1 ? '' : 's' }
           </Link>
           { ' ' }in this batch
         </Skeleton>
@@ -119,7 +119,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isPlaceholderData }>
-          <Link href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'blocks' } }) }>
+          <Link href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'blocks' } }) }>
             { blocksCount.toLocaleString() } block{ blocksCount === 1 ? '' : 's' }
           </Link>
           { ' ' }in this batch

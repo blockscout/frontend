@@ -4,7 +4,7 @@ import type { TokenTransfer } from './tokenTransfer';
 export type TokensResponse = {
   items: Array<TokenInfo>;
   next_page_params: {
-    holder_count: number;
+    holders_count: number;
     items_count: number;
     name: string;
     market_cap: string | null;
@@ -28,7 +28,7 @@ export interface TokenInstanceTransferPagination {
 }
 
 export interface TokensSorting {
-  sort: 'fiat_value' | 'holder_count' | 'circulating_market_cap';
+  sort: 'fiat_value' | 'holders_count' | 'circulating_market_cap';
   order: 'asc' | 'desc';
 }
 

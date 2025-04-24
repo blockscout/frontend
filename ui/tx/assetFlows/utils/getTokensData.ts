@@ -5,8 +5,9 @@ import type { TokenInfo } from 'types/api/token';
 
 import { HEX_REGEXP } from 'toolkit/utils/regexp';
 
-export interface NovesTokenInfo extends Pick<TokenInfo, 'address' | 'name' | 'symbol'> {
+export interface NovesTokenInfo extends Pick<TokenInfo, 'name' | 'symbol'> {
   id?: string | undefined;
+  address?: string;
 }
 
 export interface TokensData {

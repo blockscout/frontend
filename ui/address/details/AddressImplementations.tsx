@@ -38,9 +38,9 @@ const AddressImplementations = ({ data, isLoading, proxyType }: Props) => {
       >
         { data.map((item) => (
           <AddressEntity
-            key={ item.address }
+            key={ item.address_hash }
             address={{
-              hash: item.address,
+              hash: item.address_hash,
               filecoin: { robust: item.filecoin_robust_address },
               name: item.name,
               is_contract: true,

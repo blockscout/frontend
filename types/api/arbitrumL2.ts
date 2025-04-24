@@ -17,7 +17,7 @@ export type ArbitrumL2MessageStatus = 'initiated' | 'sent' | 'confirmed' | 'rela
 export type ArbitrumL2MessagesItem = {
   completion_transaction_hash: string | null;
   id: number;
-  origination_address: string;
+  origination_address_hash: string;
   origination_timestamp: string | null;
   origination_transaction_block_number: number | null;
   origination_transaction_hash: string;
@@ -87,11 +87,11 @@ export type ArbitrumL2TxnBatchDataAvailability = ArbitrumL2TxnBatchDAAnytrust | 
 };
 
 export type ArbitrumL2TxnBatch = {
-  after_acc: string;
-  before_acc: string;
+  after_acc_hash: string;
+  before_acc_hash: string;
   commitment_transaction: ArbitrumL2BatchCommitmentTx;
-  end_block: number;
-  start_block: number;
+  end_block_number: number;
+  start_block_number: number;
   number: number;
   transactions_count: number;
   data_availability: ArbitrumL2TxnBatchDataAvailability;
@@ -118,19 +118,19 @@ export type ArbitrumL2BatchBlocks = {
 
 export interface ArbitrumL2TxnWithdrawalsItem {
   arb_block_number: number;
-  caller: string;
+  caller_address_hash: string;
   callvalue: string;
   completion_transaction_hash: string | null;
   data: string;
-  destination: string;
+  destination_address_hash: string;
   eth_block_number: number;
   id: number;
   l2_timestamp: number;
   status: ArbitrumL2MessageStatus;
   token: {
-    address: string;
+    address_hash: string;
     amount: string | null;
-    destination: string | null;
+    destination_address_hash: string | null;
     name: string | null;
     symbol: string | null;
     decimals: number | null;
@@ -143,7 +143,7 @@ export interface ArbitrumL2TxnWithdrawalsResponse {
 
 export interface ArbitrumL2MessageClaimResponse {
   calldata: string;
-  outbox_address: string;
+  outbox_address_hash: string;
 }
 
 export const ARBITRUM_L2_TX_BATCH_STATUSES = [

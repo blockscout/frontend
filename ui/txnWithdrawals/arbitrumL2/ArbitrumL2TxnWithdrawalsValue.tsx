@@ -26,7 +26,7 @@ const ArbitrumL2TxnWithdrawalsValue = ({ data }: Props) => {
         ...data.token,
         decimals: String(data.token.decimals),
         type: 'ERC-20',
-        holders: null,
+        holders_count: null,
         exchange_rate: null,
         total_supply: null,
         circulating_market_cap: null,

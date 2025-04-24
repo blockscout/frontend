@@ -58,7 +58,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
           fontWeight={ 600 }
           minW="40px"
         >
-          { item.transaction_count }
+          { item.transactions_count }
         </Link>
       </ListItemMobileGrid.Value>
 

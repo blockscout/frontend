@@ -41,7 +41,7 @@ const OptimisticL2TxnBatches = () => {
       <Box hideFrom="lg">
         { data.items.map(((item, index) => (
           <OptimisticL2TxnBatchesListItem
-            key={ item.internal_id + (isPlaceholderData ? String(index) : '') }
+            key={ item.number + (isPlaceholderData ? String(index) : '') }
             item={ item }
             isLoading={ isPlaceholderData }
           />
@@ -61,8 +61,8 @@ const OptimisticL2TxnBatches = () => {
     return (
       <Skeleton loading={ countersQuery.isPlaceholderData || isPlaceholderData } display="flex" flexWrap="wrap">
         Txn batch
-        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].internal_id } </Text>to
-        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].internal_id } </Text>
+        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].number } </Text>to
+        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].number } </Text>
         (total of { countersQuery.data?.toLocaleString() } batches)
       </Skeleton>
     );

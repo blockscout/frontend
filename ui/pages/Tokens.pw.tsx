@@ -19,7 +19,7 @@ const allTokens = {
     tokens.tokenInfoERC1155a, tokens.tokenInfoERC1155b, tokens.tokenInfoERC1155WithoutName,
   ],
   next_page_params: {
-    holder_count: 1,
+    holders_count: 1,
     items_count: 1,
     name: 'a',
     market_cap: '0',
@@ -74,7 +74,7 @@ test.describe('bridged tokens', () => {
       tokens.bridgedTokenC,
     ],
     next_page_params: {
-      holder_count: 1,
+      holders_count: 1,
       items_count: 1,
       name: 'a',
       market_cap: null,

@@ -235,7 +235,7 @@ test.describe('update balances via socket', () => {
           value: '9852000000000000',
           token: {
             ...tokensMock.erc20c.token,
-            address: '0xE2cf36D00C57e01371b94B4206ae2CF841931Adc',
+            address_hash: '0xE2cf36D00C57e01371b94B4206ae2CF841931Adc',
             name: 'Tether USD',
             symbol: 'USDT',
           },

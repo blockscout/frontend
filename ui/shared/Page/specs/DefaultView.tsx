@@ -13,13 +13,13 @@ import PageTitle from '../PageTitle';
 
 const DefaultView = () => {
   const tokenData: TokenInfo = {
-    address: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
+    address_hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
     circulating_market_cap: '117629601.61913824',
     type: 'ERC-20',
     symbol: 'SHAAAAAAAAAAAAA',
     name: null,
     decimals: '18',
-    holders: '1',
+    holders_count: '1',
     exchange_rate: null,
     total_supply: null,
     icon_url: 'https://example.com/logo.png',

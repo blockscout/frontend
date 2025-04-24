@@ -58,7 +58,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
-  const blocksCount = data.end_block - data.start_block + 1;
+  const blocksCount = data.end_block_number - data.start_block_number + 1;
 
   return (
     <Grid
@@ -172,9 +172,9 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue flexWrap="nowrap" >
         <Skeleton loading={ isPlaceholderData } overflow="hidden">
-          <HashStringShortenDynamic hash={ data.before_acc }/>
+          <HashStringShortenDynamic hash={ data.before_acc_hash }/>
         </Skeleton>
-        <CopyToClipboard text={ data.before_acc } isLoading={ isPlaceholderData }/>
+        <CopyToClipboard text={ data.before_acc_hash } isLoading={ isPlaceholderData }/>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
@@ -185,9 +185,9 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue flexWrap="nowrap">
         <Skeleton loading={ isPlaceholderData } overflow="hidden">
-          <HashStringShortenDynamic hash={ data.after_acc }/>
+          <HashStringShortenDynamic hash={ data.after_acc_hash }/>
         </Skeleton>
-        <CopyToClipboard text={ data.after_acc } isLoading={ isPlaceholderData }/>
+        <CopyToClipboard text={ data.after_acc_hash } isLoading={ isPlaceholderData }/>
       </DetailedInfo.ItemValue>
 
       { (data.data_availability.batch_data_container === 'in_anytrust' || data.data_availability.batch_data_container === 'in_celestia') && (

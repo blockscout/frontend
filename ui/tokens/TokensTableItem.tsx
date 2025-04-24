@@ -32,11 +32,11 @@ const TokensTableItem = ({
 }: Props) => {
 
   const {
-    address,
+    address_hash: addressHash,
     filecoin_robust_address: filecoinRobustAddress,
     exchange_rate: exchangeRate,
     type,
-    holders,
+    holders_count: holdersCount,
     circulating_market_cap: marketCap,
     origin_chain_id: originalChainId,
   } = token;
@@ -46,7 +46,7 @@ const TokensTableItem = ({
     undefined;
 
   const tokenAddress: AddressEntityProps['address'] = {
-    hash: address,
+    hash: addressHash,
     filecoin: {
       robust: filecoinRobustAddress,
     },
@@ -120,7 +120,7 @@ const TokensTableItem = ({
           fontWeight={ 500 }
           display="inline-block"
         >
-          { Number(holders).toLocaleString() }
+          { Number(holdersCount).toLocaleString() }
         </Skeleton>
       </TableCell>
     </TableRow>

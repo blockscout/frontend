@@ -159,7 +159,7 @@ export interface SmartContractMudSystemsResponse {
 }
 
 export interface SmartContractMudSystemItem {
-  address: string;
+  address_hash: string;
   name: string;
 }
 
