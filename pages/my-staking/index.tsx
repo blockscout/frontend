@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable */
 
 import { Box, Flex, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
@@ -6,10 +6,11 @@ import orderBy from 'lodash/orderBy';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
-
 import PageNextJs from 'nextjs/PageNextJs';
-
 import { getEnvValue } from 'configs/app/utils';
+
+import TabTable from 'ui/staking/TabTable';
+import StakingInfo from './StakingInfo';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 
@@ -154,6 +155,7 @@ const ObjectDetails: NextPage = () => {
 
   return (
     <PageNextJs pathname="/object">
+      <StakingInfo />
       <Flex justifyContent="space-between" textAlign="left" margin="24px 0">
         <Box width="48%" border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
           <Text>Total Issued Number</Text>
@@ -164,7 +166,7 @@ const ObjectDetails: NextPage = () => {
           <Text>{ Number(new Intl.NumberFormat('en-US').format(totalCredential)) || '-' }</Text>
         </Box>
       </Flex>
-      <TableList
+      { /* <TableList
         totleDate={ 0 }
         showTotal={ true }
         toNext={ toNext }
@@ -175,7 +177,8 @@ const ObjectDetails: NextPage = () => {
         tabThead={ tabThead }
         page="Issuance"
         handleSearchChange={ handleSearchChange() }
-      />
+      /> */ }
+      <TabTable />
     </PageNextJs>
   );
 };

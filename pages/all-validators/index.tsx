@@ -1,15 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable */
 
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Grid, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import orderBy from 'lodash/orderBy';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
-
 import PageNextJs from 'nextjs/PageNextJs';
 
+import InfoBox from './InfoBox';
 import { getEnvValue } from 'configs/app/utils';
+
+import TabChart from './TabChart';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 
@@ -154,17 +156,42 @@ const ObjectDetails: NextPage = () => {
 
   return (
     <PageNextJs pathname="/object">
-      <Flex justifyContent="space-between" textAlign="left" margin="24px 0">
-        <Box width="48%" border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
+
+      <Flex 
+          display={{ base: 'flex-wrap', lg: 'flex' }}
+          justifyContent= {{ base: 'flex-start', lg: 'space-between' }}
+          alignItems="center" marginBottom="24px">
+          <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">Object Details</Text>
+          <Text fontSize="14px" fontWeight="400" lineHeight="20px" color="rgba(0, 0, 0, 0.4)" marginTop="6px">
+            { 'Object ID: ' }
+            <Text as="span" color="#FF57B7">{ '0x1234567890abcdef' }</Text>
+          </Text>
+      </Flex>
+
+      <Grid templateColumns={{ base: '1fr 1fr', lg: '1fr 1fr 1fr 1fr' }} marginBottom = {4} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
+        <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
           <Text>Total Issued Number</Text>
           <Text>{ Number(new Intl.NumberFormat('en-US').format(totalIssued)) || '-' }</Text>
         </Box>
-        <Box width="48%" border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="18px" padding="16px">
+        <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="18px" padding="16px">
           <Text>Total Credential Number</Text>
           <Text>{ Number(new Intl.NumberFormat('en-US').format(totalCredential)) || '-' }</Text>
         </Box>
-      </Flex>
-      <TableList
+        <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
+          <Text>Total Issued Number</Text>
+          <Text>{ Number(new Intl.NumberFormat('en-US').format(totalIssued)) || '-' }</Text>
+        </Box>
+        <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
+          <Text>Total Issued Number</Text>
+          <Text>{ Number(new Intl.NumberFormat('en-US').format(totalIssued)) || '-' }</Text>
+        </Box>
+      </Grid>
+
+      <InfoBox />
+
+      <TabChart />
+
+      {/* <TableList
         totleDate={ 0 }
         showTotal={ true }
         toNext={ toNext }
@@ -175,7 +202,7 @@ const ObjectDetails: NextPage = () => {
         tabThead={ tabThead }
         page="Issuance"
         handleSearchChange={ handleSearchChange() }
-      />
+      /> */}
     </PageNextJs>
   );
 };
