@@ -51,13 +51,13 @@ const TransactionForm: React.FC<Props> = ({ data, onOpenChange, onSuccess, setAl
       const isEdit = data?.id;
 
       if (isEdit) {
-        return apiFetch('private_tags_tx', {
+        return apiFetch('general:private_tags_tx', {
           pathParams: { id: String(data.id) },
           fetchParams: { method: 'PUT', body },
         });
       }
 
-      return apiFetch('private_tags_tx', { fetchParams: { method: 'POST', body } });
+      return apiFetch('general:private_tags_tx', { fetchParams: { method: 'POST', body } });
     },
     onError: (error: ResourceErrorAccount<TransactionTagErrors>) => {
       setPending(false);
@@ -72,7 +72,7 @@ const TransactionForm: React.FC<Props> = ({ data, onOpenChange, onSuccess, setAl
       }
     },
     onSuccess: async() => {
-      await queryClient.refetchQueries({ queryKey: [ resourceKey('private_tags_tx') ] });
+      await queryClient.refetchQueries({ queryKey: [ resourceKey('general:private_tags_tx') ] });
       await onSuccess();
       onOpenChange({ open: false });
       setPending(false);

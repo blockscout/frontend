@@ -12,7 +12,7 @@ interface Props {
 }
 
 const BlockEpochRewards = ({ heightOrHash }: Props) => {
-  const query = useApiQuery('block_epoch', {
+  const query = useApiQuery('general:block_epoch', {
     pathParams: {
       height_or_hash: heightOrHash,
     },

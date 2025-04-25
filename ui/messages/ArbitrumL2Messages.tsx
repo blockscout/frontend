@@ -23,10 +23,10 @@ type Props = {
 const ArbitrumL2Messages = ({ direction }: Props) => {
   const type = direction === 'from-rollup' ? 'withdrawals' : 'deposits';
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'arbitrum_l2_messages',
+    resourceName: 'general:arbitrum_l2_messages',
     pathParams: { direction },
     options: {
-      placeholderData: generateListStub<'arbitrum_l2_messages'>(
+      placeholderData: generateListStub<'general:arbitrum_l2_messages'>(
         ARBITRUM_MESSAGES_ITEM,
         50,
         { next_page_params: { items_count: 50, direction: 'to-rollup', id: 123456 } },
@@ -34,7 +34,7 @@ const ArbitrumL2Messages = ({ direction }: Props) => {
     },
   });
 
-  const countersQuery = useApiQuery('arbitrum_l2_messages_count', {
+  const countersQuery = useApiQuery('general:arbitrum_l2_messages_count', {
     pathParams: { direction },
     queryOptions: {
       placeholderData: 1927029,

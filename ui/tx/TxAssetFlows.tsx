@@ -23,7 +23,7 @@ interface FlowViewProps {
 
 export default function TxAssetFlows(props: FlowViewProps) {
 
-  const { data: queryData, isPlaceholderData, isError } = useApiQuery('noves_transaction', {
+  const { data: queryData, isPlaceholderData, isError } = useApiQuery('general:noves_transaction', {
     pathParams: { hash: props.hash },
     queryOptions: {
       enabled: Boolean(props.hash),

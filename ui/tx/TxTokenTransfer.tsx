@@ -35,7 +35,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter }: Props) => {
   const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(getTokenFilterValue(router.query.type) || []);
 
   const tokenTransferQuery = useQueryWithPages({
-    resourceName: 'tx_token_transfers',
+    resourceName: 'general:tx_token_transfers',
     pathParams: { hash: txQuery.data?.hash.toString() },
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.status && txQuery.data?.hash),

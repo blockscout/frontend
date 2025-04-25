@@ -19,14 +19,14 @@ const DeleteApiKeyModal: React.FC<Props> = ({ open, onOpenChange, data }) => {
   const apiFetch = useApiFetch();
 
   const mutationFn = useCallback(() => {
-    return apiFetch('api_keys', {
+    return apiFetch('general:api_keys', {
       pathParams: { id: data.api_key },
       fetchParams: { method: 'DELETE' },
     });
   }, [ data.api_key, apiFetch ]);
 
   const onSuccess = useCallback(async() => {
-    queryClient.setQueryData([ resourceKey('api_keys') ], (prevData: ApiKeys | undefined) => {
+    queryClient.setQueryData([ resourceKey('general:api_keys') ], (prevData: ApiKeys | undefined) => {
       return prevData?.filter((item) => item.api_key !== data.api_key);
     });
   }, [ data, queryClient ]);

@@ -23,8 +23,11 @@ const SORT_SEQUENCE: Record<TransactionsSortingField, Array<TransactionsSortingV
 };
 
 type Props = {
-  // eslint-disable-next-line max-len
-  query: QueryWithPagesResult<'txs_validated' | 'txs_pending'> | QueryWithPagesResult<'txs_watchlist'> | QueryWithPagesResult<'block_txs'> | QueryWithPagesResult<'zkevm_l2_txn_batch_txs'>;
+
+  query: QueryWithPagesResult<'general:txs_validated' | 'general:txs_pending'> |
+    QueryWithPagesResult<'general:txs_watchlist'> |
+    QueryWithPagesResult<'general:block_txs'> |
+    QueryWithPagesResult<'general:zkevm_l2_txn_batch_txs'>;
   showBlockInfo?: boolean;
   showSocketInfo?: boolean;
   socketInfoAlert?: string;

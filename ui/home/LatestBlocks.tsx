@@ -31,7 +31,7 @@ const LatestBlocks = () => {
   } else {
     blocksMaxCount = isMobile ? 2 : 3;
   }
-  const { data, isPlaceholderData, isError } = useApiQuery('homepage_blocks', {
+  const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_blocks', {
     queryOptions: {
       placeholderData: Array(blocksMaxCount).fill(BLOCK),
     },
@@ -43,7 +43,7 @@ const LatestBlocks = () => {
   });
 
   const queryClient = useQueryClient();
-  const statsQueryResult = useApiQuery('stats', {
+  const statsQueryResult = useApiQuery('general:stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,
@@ -51,7 +51,7 @@ const LatestBlocks = () => {
   });
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('homepage_blocks'), (prevData: Array<Block> | undefined) => {
+    queryClient.setQueryData(getResourceKey('general:homepage_blocks'), (prevData: Array<Block> | undefined) => {
 
       const newData = prevData ? [ ...prevData ] : [];
 

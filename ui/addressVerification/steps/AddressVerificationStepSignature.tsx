@@ -65,10 +65,13 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         signature: data.signature,
       };
 
-      const response = await apiFetch<'address_verification', AddressValidationResponseSuccess, AddressVerificationResponseError>('address_verification', {
-        fetchParams: { method: 'POST', body },
-        pathParams: { chainId: config.chain.id, type: ':verify' },
-      });
+      const response = await apiFetch<'contractInfo:address_verification', AddressValidationResponseSuccess, AddressVerificationResponseError>(
+        'contractInfo:address_verification',
+        {
+          fetchParams: { method: 'POST', body },
+          pathParams: { chainId: config.chain.id, type: ':verify' },
+        },
+      );
 
       if (response.status !== 'SUCCESS') {
         const type = typeof response.status === 'number' ? 'UNKNOWN_STATUS' : response.status;

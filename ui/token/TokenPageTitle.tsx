@@ -40,7 +40,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
   const appProps = useAppContext();
   const addressHash = !tokenQuery.isPlaceholderData ? (tokenQuery.data?.address_hash || '') : '';
 
-  const verifiedInfoQuery = useApiQuery('token_verified_info', {
+  const verifiedInfoQuery = useApiQuery('contractInfo:token_verified_info', {
     pathParams: { hash: addressHash, chainId: config.chain.id },
     queryOptions: { enabled: Boolean(tokenQuery.data) && !tokenQuery.isPlaceholderData && config.features.verifiedTokens.isEnabled },
   });

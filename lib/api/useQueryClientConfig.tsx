@@ -4,6 +4,8 @@ import React from 'react';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 
+import type { ResourceName } from './resources';
+
 export const retry = (failureCount: number, error: unknown) => {
   const errorPayload = getErrorObjPayload<{ status: number }>(error);
   const status = errorPayload?.status || getErrorObjStatusCode(error);
@@ -28,13 +30,14 @@ export default function useQueryClientConfig() {
             return false;
           }
 
-          const EXTERNAL_API_RESOURCES = [
+          const EXTERNAL_API_RESOURCES: Array<ResourceName | 'safe_transaction_api' | 'gas_hawk_saving_potential'> = [
+            'general:contract_solidity_scan_report',
+            'general:address_xstar_score',
+            'general:noves_transaction',
+            'general:noves_address_history',
+            'general:noves_describe_txs',
+            // these resources are not proxied by the backend
             'safe_transaction_api',
-            'contract_solidity_scan_report',
-            'address_xstar_score',
-            'noves_transaction',
-            'noves_address_history',
-            'noves_describe_txs',
             'gas_hawk_saving_potential',
           ];
           const isExternalApiResource = EXTERNAL_API_RESOURCES.some((resource) => query.queryKey[0] === resource);

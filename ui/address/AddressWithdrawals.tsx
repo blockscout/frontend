@@ -24,11 +24,11 @@ const AddressWithdrawals = ({ shouldRender = true, isQueryEnabled = true }: Prop
   const hash = getQueryParamString(router.query.hash);
 
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'address_withdrawals',
+    resourceName: 'general:address_withdrawals',
     pathParams: { hash },
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'address_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:address_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
         index: 5,
         items_count: 50,
       } }),

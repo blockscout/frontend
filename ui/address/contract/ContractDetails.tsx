@@ -53,7 +53,7 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
 
   const [ selectedItem, setSelectedItem ] = React.useState(sourceItems.find((item) => item.address_hash === sourceAddress) || sourceItems[0]);
 
-  const contractQuery = useApiQuery('contract', {
+  const contractQuery = useApiQuery('general:contract', {
     pathParams: { hash: selectedItem?.address_hash },
     queryOptions: {
       enabled: Boolean(selectedItem?.address_hash && !mainContractQuery.isPlaceholderData),
@@ -67,10 +67,10 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
 
   const handleContractWasVerifiedMessage: SocketMessage.SmartContractWasVerified['handler'] = React.useCallback(() => {
     queryClient.refetchQueries({
-      queryKey: getResourceKey('address', { pathParams: { hash: addressData.hash } }),
+      queryKey: getResourceKey('general:address', { pathParams: { hash: addressData.hash } }),
     });
     queryClient.refetchQueries({
-      queryKey: getResourceKey('contract', { pathParams: { hash: addressData.hash } }),
+      queryKey: getResourceKey('general:contract', { pathParams: { hash: addressData.hash } }),
     });
   }, [ addressData.hash, queryClient ]);
 

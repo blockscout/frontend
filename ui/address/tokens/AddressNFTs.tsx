@@ -11,7 +11,7 @@ import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPage
 import NFTItem from './NFTItem';
 
 type Props = {
-  tokensQuery: QueryWithPagesResult<'address_nfts'>;
+  tokensQuery: QueryWithPagesResult<'general:address_nfts'>;
   hasActiveFilters: boolean;
 };
 

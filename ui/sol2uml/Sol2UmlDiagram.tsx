@@ -31,7 +31,7 @@ function composeSources(contract: SmartContract | undefined): visualizer.Visuali
 }
 
 const Sol2UmlDiagram = ({ addressHash }: Props) => {
-  const contractQuery = useApiQuery<'contract', ResourceError>('contract', {
+  const contractQuery = useApiQuery<'general:contract', ResourceError>('general:contract', {
     pathParams: { hash: addressHash },
     queryOptions: {
       enabled: Boolean(addressHash),
@@ -39,7 +39,7 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
     },
   });
 
-  const umlQuery = useApiQuery('visualize_sol2uml', {
+  const umlQuery = useApiQuery('visualize:visualize_sol2uml', {
     fetchParams: {
       method: 'POST',
       body: {

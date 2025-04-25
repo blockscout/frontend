@@ -21,7 +21,7 @@ const TokenTransfers = () => {
   const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(getTokenFilterValue(router.query.type) || []);
 
   const tokenTransfersQuery = useQueryWithPages({
-    resourceName: 'token_transfers_all',
+    resourceName: 'general:token_transfers_all',
     filters: { type: typeFilter },
     options: {
       placeholderData: getTokenTransfersStub(),

@@ -35,7 +35,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
   const hash = router.query.hash?.toString();
 
-  const tokenCountersQuery = useApiQuery('token_counters', {
+  const tokenCountersQuery = useApiQuery('general:token_counters', {
     pathParams: { hash },
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
   });

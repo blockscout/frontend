@@ -2,20 +2,20 @@ import type { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import type { PaginatedResources, ResourceError, ResourcePayload } from 'lib/api/resources';
+import type { PaginatedResourceName, ResourceError, ResourcePayload } from 'lib/api/resources';
 import type { Params as ApiInfiniteQueryParams } from 'lib/api/useApiInfiniteQuery';
 import useApiInfiniteQuery from 'lib/api/useApiInfiniteQuery';
 
-interface Params<Resource extends PaginatedResources> extends ApiInfiniteQueryParams<Resource> {
+interface Params<Resource extends PaginatedResourceName> extends ApiInfiniteQueryParams<Resource> {
   rootRef: React.RefObject<HTMLElement>;
 }
 
-interface ReturnType<Resource extends PaginatedResources> {
+interface ReturnType<Resource extends PaginatedResourceName> {
   cutRef: (node?: Element | null) => void;
   query: UseInfiniteQueryResult<InfiniteData<ResourcePayload<Resource>>, ResourceError<unknown>>;
 }
 
-export default function useLazyLoadedList<Resource extends PaginatedResources>({
+export default function useLazyLoadedList<Resource extends PaginatedResourceName>({
   rootRef,
   resourceName,
   queryOptions,

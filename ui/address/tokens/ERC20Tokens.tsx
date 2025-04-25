@@ -11,7 +11,7 @@ import ERC20TokensListItem from './ERC20TokensListItem';
 import ERC20TokensTable from './ERC20TokensTable';
 
 type Props = {
-  tokensQuery: QueryWithPagesResult<'address_tokens'>;
+  tokensQuery: QueryWithPagesResult<'general:address_tokens'>;
 };
 
 const ERC20Tokens = ({ tokensQuery }: Props) => {

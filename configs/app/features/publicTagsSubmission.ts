@@ -4,6 +4,7 @@ import services from '../services';
 import { getEnvValue } from '../utils';
 import addressMetadata from './addressMetadata';
 
+// TODO @tom2drum move all API hosts to one place
 const apiHost = getEnvValue('NEXT_PUBLIC_ADMIN_SERVICE_API_HOST');
 
 const title = 'Public tag submission';

@@ -16,9 +16,9 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const ScrollL2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'scroll_l2_deposits',
+    resourceName: 'general:scroll_l2_deposits',
     options: {
-      placeholderData: generateListStub<'scroll_l2_deposits'>(
+      placeholderData: generateListStub<'general:scroll_l2_deposits'>(
         SCROLL_L2_MESSAGE_ITEM,
         50,
         { next_page_params: { items_count: 50, id: 1 } },
@@ -26,7 +26,7 @@ const ScrollL2Deposits = () => {
     },
   });
 
-  const countersQuery = useApiQuery('scroll_l2_deposits_count', {
+  const countersQuery = useApiQuery('general:scroll_l2_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },

@@ -19,7 +19,7 @@ interface Props {
 
 const TxState = ({ txQuery }: Props) => {
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'tx_state_changes',
+    resourceName: 'general:tx_state_changes',
     pathParams: { hash: txQuery.data?.hash },
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),

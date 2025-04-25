@@ -15,9 +15,9 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const InteropMessages = () => {
   const interopMessagesQuery = useQueryWithPages({
-    resourceName: 'optimistic_l2_interop_messages',
+    resourceName: 'general:optimistic_l2_interop_messages',
     options: {
-      placeholderData: generateListStub<'optimistic_l2_interop_messages'>(INTEROP_MESSAGE, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:optimistic_l2_interop_messages'>(INTEROP_MESSAGE, 50, { next_page_params: {
         init_transaction_hash: '',
         items_count: 50,
         timestamp: 0,
@@ -25,7 +25,7 @@ const InteropMessages = () => {
     },
   });
 
-  const countQuery = useApiQuery('optimistic_l2_interop_messages_count', {
+  const countQuery = useApiQuery('general:optimistic_l2_interop_messages_count', {
     queryOptions: {
       placeholderData: 1927029,
     },

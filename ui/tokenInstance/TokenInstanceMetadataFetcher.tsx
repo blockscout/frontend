@@ -48,7 +48,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
   const initializeUpdate = React.useCallback(async(tokenProp?: string) => {
     try {
       const token = tokenProp || await recaptcha.executeAsync();
-      await apiFetch<'token_instance_refresh_metadata', unknown, unknown>('token_instance_refresh_metadata', {
+      await apiFetch<'general:token_instance_refresh_metadata', unknown, unknown>('general:token_instance_refresh_metadata', {
         pathParams: { hash, id },
         fetchParams: {
           method: 'PATCH',
@@ -85,7 +85,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       return;
     }
 
-    const queryKey = getResourceKey('token_instance', { queryParams: { hash, id } });
+    const queryKey = getResourceKey('general:token_instance', { queryParams: { hash, id } });
     queryClient.setQueryData(queryKey, (prevData: TokenInstance | undefined): TokenInstance | undefined => {
       if (!prevData) {
         return;

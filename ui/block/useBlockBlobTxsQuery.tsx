@@ -12,12 +12,12 @@ interface Params {
 
 export default function useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab }: Params) {
   const apiQuery = useQueryWithPages({
-    resourceName: 'block_txs',
+    resourceName: 'general:block_txs',
     pathParams: { height_or_hash: heightOrHash },
     filters: { type: 'blob_transaction' },
     options: {
       enabled: Boolean(tab === 'blob_txs' && !blockQuery.isPlaceholderData && blockQuery.data?.blob_transaction_count),
-      placeholderData: generateListStub<'block_txs'>(TX, 3, { next_page_params: null }),
+      placeholderData: generateListStub<'general:block_txs'>(TX, 3, { next_page_params: null }),
       refetchOnMount: false,
     },
   });

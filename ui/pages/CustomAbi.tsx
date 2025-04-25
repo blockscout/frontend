@@ -25,7 +25,7 @@ const CustomAbiPage: React.FC = () => {
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
 
-  const { data, isPlaceholderData, isError } = useApiQuery('custom_abi', {
+  const { data, isPlaceholderData, isError } = useApiQuery('general:custom_abi', {
     queryOptions: {
       placeholderData: Array(3).fill(CUSTOM_ABI),
     },

@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
 
     if (botInfo?.type === 'social_preview') {
       const addressData = await fetchApi({
-        resource: 'address',
+        resource: 'general:address',
         pathParams: { hash: getQueryParamString(ctx.query.hash) },
         timeout: 1_000,
       });
