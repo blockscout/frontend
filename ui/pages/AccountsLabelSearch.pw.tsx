@@ -47,7 +47,7 @@ const hooksConfig = {
 test('base view +@mobile', async({ render, mockTextAd, mockApiResponse }) => {
   await mockTextAd();
   await mockApiResponse(
-    'addresses_metadata_search',
+    'general:addresses_metadata_search',
     addresses,
     {
       queryParams: {

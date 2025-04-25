@@ -10,8 +10,8 @@ test('base view', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
   test.slow();
   await mockEnvs(ENVS_MAP.arbitrumRollup);
   await mockTextAd();
-  await mockApiResponse('arbitrum_l2_txn_batches', arbitrumTxnBatchesMock.baseResponse);
-  await mockApiResponse('arbitrum_l2_txn_batches_count', 9927);
+  await mockApiResponse('general:arbitrum_l2_txn_batches', arbitrumTxnBatchesMock.baseResponse);
+  await mockApiResponse('general:arbitrum_l2_txn_batches_count', 9927);
 
   const component = await render(<ArbitrumL2TxnBatches/>);
   await expect(component).toHaveScreenshot();
@@ -23,8 +23,8 @@ test.describe('mobile', () => {
     test.slow();
     await mockEnvs(ENVS_MAP.arbitrumRollup);
     await mockTextAd();
-    await mockApiResponse('arbitrum_l2_txn_batches', arbitrumTxnBatchesMock.baseResponse);
-    await mockApiResponse('arbitrum_l2_txn_batches_count', 9927);
+    await mockApiResponse('general:arbitrum_l2_txn_batches', arbitrumTxnBatchesMock.baseResponse);
+    await mockApiResponse('general:arbitrum_l2_txn_batches_count', 9927);
 
     const component = await render(<ArbitrumL2TxnBatches/>);
     await expect(component).toHaveScreenshot();

@@ -15,7 +15,7 @@ test.skip('base view +@mobile', async({ render, mockEnvs, mockApiResponse }) => 
       'We are currently lacking pictures of <i>ducks</i>. Please <a href="mailto:duck@blockscout.com">send</a> us one.',
     ],
   ]);
-  await mockApiResponse('homepage_indexing_status', indexingStatus);
+  await mockApiResponse('general:homepage_indexing_status', indexingStatus);
   const component = await render(<Layout>Page Content</Layout>);
   await expect(component).toHaveScreenshot();
 });

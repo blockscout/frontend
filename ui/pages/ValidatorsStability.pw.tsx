@@ -11,8 +11,8 @@ test('base view +@mobile', async({ render, mockApiResponse, mockEnvs, mockTextAd
   await mockEnvs([
     [ 'NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE', chainType ],
   ]);
-  await mockApiResponse('validators_stability', validatorsMock.validatorsResponse);
-  await mockApiResponse('validators_stability_counters', validatorsMock.validatorsCountersResponse);
+  await mockApiResponse('general:validators_stability', validatorsMock.validatorsResponse);
+  await mockApiResponse('general:validators_stability_counters', validatorsMock.validatorsCountersResponse);
   await mockTextAd();
 
   const component = await render(<Validators/>);
