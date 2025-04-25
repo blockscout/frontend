@@ -8,6 +8,7 @@ import config from 'configs/app';
 import isBodyAllowed from 'lib/api/isBodyAllowed';
 import isNeedProxy from 'lib/api/isNeedProxy';
 import { getResourceKey } from 'lib/api/useApiQuery';
+import * as cookies from 'lib/cookies';
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 
@@ -31,11 +32,14 @@ export default function useApiFetch() {
     resourceName: R,
     { pathParams, queryParams, fetchParams, logError }: Params<R> = {},
   ) => {
+    const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
+
     const resource: ApiResource = RESOURCES[resourceName];
     const url = buildUrl(resourceName, pathParams, queryParams);
     const withBody = isBodyAllowed(fetchParams?.method);
     const headers = pickBy({
       'x-endpoint': resource.endpoint && isNeedProxy() ? resource.endpoint : undefined,
+      Authorization: resource.endpoint && resource.needAuth ? apiToken : undefined,
       'x-csrf-token': withBody && csrfToken ? csrfToken : undefined,
       ...resource.headers,
       ...fetchParams?.headers,
