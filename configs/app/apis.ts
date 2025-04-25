@@ -13,7 +13,7 @@ interface ApiPropsFull extends ApiPropsBase {
   host: string;
   protocol: string;
   port?: string;
-  socketEndpoint?: string;
+  socketEndpoint: string;
 }
 
 const generalApi = (() => {

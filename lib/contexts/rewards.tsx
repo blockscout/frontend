@@ -77,8 +77,8 @@ function getMessageToSign(address: string, nonce: string, isLogin?: boolean, ref
   const referralText = refCode ? ` Referral code: ${ refCode }` : '';
   const body = isLogin ? signInText : signUpText + referralText;
 
-  const urlObj = window.location.hostname === 'localhost' && feature.isEnabled ?
-    new URL(feature.api.endpoint) :
+  const urlObj = window.location.hostname === 'localhost' && config.apis.rewards ?
+    new URL(config.apis.rewards.endpoint) :
     window.location;
 
   return [
