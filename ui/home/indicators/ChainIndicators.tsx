@@ -39,7 +39,7 @@ const ChainIndicators = () => {
 
   const queryResult = useChartDataQuery(selectedIndicatorData?.id as ChainIndicatorId);
 
-  const statsMicroserviceQueryResult = useApiQuery('stats:stats_main', {
+  const statsMicroserviceQueryResult = useApiQuery('stats:pages_main', {
     queryOptions: {
       refetchOnMount: false,
       enabled: isStatsFeatureEnabled,

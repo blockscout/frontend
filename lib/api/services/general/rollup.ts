@@ -123,37 +123,36 @@ export const GENERAL_API_ROLLUP_RESOURCES = {
   },
 
   // MUD
-  // TODO @tom2drum rename these resources
   mud_worlds: {
     path: '/api/v2/mud/worlds',
     filterFields: [],
     paginated: true,
   },
-  address_mud_tables: {
+  mud_tables: {
     path: '/api/v2/mud/worlds/:hash/tables',
     pathParams: [ 'hash' as const ],
     filterFields: [ 'q' as const ],
     paginated: true,
   },
-  address_mud_tables_count: {
+  mud_tables_count: {
     path: '/api/v2/mud/worlds/:hash/tables/count',
     pathParams: [ 'hash' as const ],
   },
-  address_mud_records: {
+  mud_records: {
     path: '/api/v2/mud/worlds/:hash/tables/:table_id/records',
     pathParams: [ 'hash' as const, 'table_id' as const ],
     filterFields: [ 'filter_key0' as const, 'filter_key1' as const ],
     paginated: true,
   },
-  address_mud_record: {
+  mud_record: {
     path: '/api/v2/mud/worlds/:hash/tables/:table_id/records/:record_id',
     pathParams: [ 'hash' as const, 'table_id' as const, 'record_id' as const ],
   },
-  contract_mud_systems: {
+  mud_systems: {
     path: '/api/v2/mud/worlds/:hash/systems',
     pathParams: [ 'hash' as const ],
   },
-  contract_mud_system_info: {
+  mud_system_info: {
     path: '/api/v2/mud/worlds/:hash/systems/:system_address',
     pathParams: [ 'hash' as const, 'system_address' as const ],
   },
@@ -381,24 +380,24 @@ R extends 'general:scroll_l2_deposits_count' ? number :
 R extends 'general:scroll_l2_withdrawals' ? ScrollL2MessagesResponse :
 R extends 'general:scroll_l2_withdrawals_count' ? number :
 R extends 'general:mud_worlds' ? MudWorldsResponse :
-R extends 'general:address_mud_tables' ? AddressMudTables :
-R extends 'general:address_mud_tables_count' ? number :
-R extends 'general:address_mud_records' ? AddressMudRecords :
-R extends 'general:address_mud_record' ? AddressMudRecord :
-R extends 'general:contract_mud_systems' ? SmartContractMudSystemsResponse :
-R extends 'general:contract_mud_system_info' ? SmartContractMudSystemInfo :
+R extends 'general:mud_tables' ? AddressMudTables :
+R extends 'general:mud_tables_count' ? number :
+R extends 'general:mud_records' ? AddressMudRecords :
+R extends 'general:mud_record' ? AddressMudRecord :
+R extends 'general:mud_systems' ? SmartContractMudSystemsResponse :
+R extends 'general:mud_system_info' ? SmartContractMudSystemInfo :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
 export type GeneralApiRollupPaginationFilters<R extends GeneralApiRollupResourceName> =
-R extends 'general:address_mud_tables' ? AddressMudTablesFilter :
-R extends 'general:address_mud_records' ? AddressMudRecordsFilter :
+R extends 'general:mud_tables' ? AddressMudTablesFilter :
+R extends 'general:mud_records' ? AddressMudRecordsFilter :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
 export type GeneralApiRollupPaginationSorting<R extends GeneralApiRollupResourceName> =
-R extends 'general:address_mud_records' ? AddressMudRecordsSorting :
+R extends 'general:mud_records' ? AddressMudRecordsSorting :
 never;
 /* eslint-enable @stylistic/indent */

@@ -90,7 +90,7 @@ const AddressPageContent = () => {
     },
   });
 
-  const mudTablesCountQuery = useApiQuery('general:address_mud_tables_count', {
+  const mudTablesCountQuery = useApiQuery('general:mud_tables_count', {
     pathParams: { hash },
     queryOptions: {
       enabled: config.features.mudFramework.isEnabled && areQueriesEnabled && Boolean(hash),

@@ -13,11 +13,11 @@ const feature = config.features.rewards;
 const LAST_EXPLORE_TIME_KEY = 'rewards_activity_last_explore_time';
 
 type RewardsActivityEndpoint =
-  | 'rewards:rewards_user_activity_track_tx'
-  | 'rewards:rewards_user_activity_track_tx_confirm'
-  | 'rewards:rewards_user_activity_track_contract'
-  | 'rewards:rewards_user_activity_track_contract_confirm'
-  | 'rewards:rewards_user_activity_track_usage';
+  | 'rewards:user_activity_track_tx'
+  | 'rewards:user_activity_track_tx_confirm'
+  | 'rewards:user_activity_track_contract'
+  | 'rewards:user_activity_track_contract_confirm'
+  | 'rewards:user_activity_track_usage';
 
 export default function useRewardsActivity() {
   const { apiToken } = useRewardsContext();
@@ -25,7 +25,7 @@ export default function useRewardsActivity() {
   const lastExploreTime = useRef<number>(0);
 
   const profileQuery = useProfileQuery();
-  const checkActivityPassQuery = useApiQuery('rewards:rewards_user_check_activity_pass', {
+  const checkActivityPassQuery = useApiQuery('rewards:user_check_activity_pass', {
     queryOptions: {
       enabled: feature.isEnabled && Boolean(apiToken) && Boolean(profileQuery.data?.address_hash),
     },
@@ -61,7 +61,7 @@ export default function useRewardsActivity() {
 
   const trackTransaction = useCallback(async(from: string, to: string) => {
     return (
-      await makeRequest('rewards:rewards_user_activity_track_tx', {
+      await makeRequest('rewards:user_activity_track_tx', {
         from_address: from,
         to_address: to,
         chain_id: config.chain.id ?? '',
@@ -70,13 +70,13 @@ export default function useRewardsActivity() {
   }, [ makeRequest ]);
 
   const trackTransactionConfirm = useCallback((hash: string, token: string) =>
-    makeRequest('rewards:rewards_user_activity_track_tx_confirm', { tx_hash: hash, token }),
+    makeRequest('rewards:user_activity_track_tx_confirm', { tx_hash: hash, token }),
   [ makeRequest ],
   );
 
   const trackContract = useCallback(async(address: string) => {
     return (
-      await makeRequest('rewards:rewards_user_activity_track_contract', {
+      await makeRequest('rewards:user_activity_track_contract', {
         address,
         chain_id: config.chain.id ?? '',
       })
@@ -84,7 +84,7 @@ export default function useRewardsActivity() {
   }, [ makeRequest ]);
 
   const trackContractConfirm = useCallback((token: string) =>
-    makeRequest('rewards:rewards_user_activity_track_contract_confirm', { token }),
+    makeRequest('rewards:user_activity_track_contract_confirm', { token }),
   [ makeRequest ],
   );
 
@@ -105,7 +105,7 @@ export default function useRewardsActivity() {
       } catch {}
     }
 
-    return makeRequest('rewards:rewards_user_activity_track_usage', {
+    return makeRequest('rewards:user_activity_track_usage', {
       action,
       chain_id: config.chain.id ?? '',
     });

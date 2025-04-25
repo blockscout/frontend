@@ -34,7 +34,7 @@ export default function useLogout() {
       if (config.features.rewards.isEnabled) {
         const rewardsToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
         if (rewardsToken) {
-          await apiFetch('rewards:rewards_logout', { fetchParams: {
+          await apiFetch('rewards:logout', { fetchParams: {
             method: 'POST',
             headers: { Authorization: `Bearer ${ rewardsToken }` },
           } });

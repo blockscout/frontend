@@ -9,7 +9,7 @@ import StatsWidget from 'ui/shared/stats/StatsWidget';
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
 
 const VerifiedContractsCounters = () => {
-  const countersStatsQuery = useApiQuery('stats:stats_contracts', {
+  const countersStatsQuery = useApiQuery('stats:pages_contracts', {
     queryOptions: {
       enabled: isStatsFeatureEnabled,
       placeholderData: isStatsFeatureEnabled ? VERIFIED_CONTRACTS_COUNTERS_MICROSERVICE : undefined,

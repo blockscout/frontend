@@ -16,7 +16,7 @@ test.describe('default view', () => {
 
   test.beforeEach(async({ render, mockApiResponse, mockAssetResponse }) => {
     await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
-    await mockApiResponse('stats:stats_main', statsMainMock.base);
+    await mockApiResponse('stats:pages_main', statsMainMock.base);
     await mockApiResponse('general:stats', statsMock.base);
     await mockApiResponse('general:homepage_blocks', [
       blockMock.base,
@@ -58,7 +58,7 @@ test.describe('mobile', () => {
 
   test('base view', async({ render, page, mockAssetResponse, mockApiResponse }) => {
     await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
-    await mockApiResponse('stats:stats_main', statsMainMock.base);
+    await mockApiResponse('stats:pages_main', statsMainMock.base);
     await mockApiResponse('general:stats', statsMock.base);
     await mockApiResponse('general:homepage_blocks', [
       blockMock.base,

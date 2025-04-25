@@ -12,7 +12,7 @@ import StatsWidget from 'ui/shared/stats/StatsWidget';
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
 
 const TxsStats = () => {
-  const txsStatsQuery = useApiQuery('stats:stats_transactions', {
+  const txsStatsQuery = useApiQuery('stats:pages_transactions', {
     queryOptions: {
       enabled: isStatsFeatureEnabled,
       placeholderData: isStatsFeatureEnabled ? TXS_STATS_MICROSERVICE : undefined,

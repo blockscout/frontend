@@ -59,7 +59,7 @@ test.describe('blockscout provider', () => {
 
   test('with interpretation and action button +@mobile +@dark-mode', async({ render, mockApiResponse, mockAssetResponse }) => {
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
-    await mockApiResponse('metadata:address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
+    await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse('general:tx_interpretation', txInterpretation, { pathParams: { hash } });
     const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>);
@@ -102,7 +102,7 @@ test.describe('blockscout provider', () => {
   }) => {
     delete protocolTagWithMeta?.meta?.appID;
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
-    await mockApiResponse('metadata:address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
+    await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse(
       'general:tx_interpretation',
@@ -116,7 +116,7 @@ test.describe('blockscout provider', () => {
   test('no interpretation, has method called', async({ render, mockApiResponse, mockAssetResponse }) => {
     const newTxQuery = { ...txQuery, data: txMock.withRecipientContract } as TxQuery;
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
-    await mockApiResponse('metadata:address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
+    await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse('general:tx_interpretation', { data: { summaries: [] } }, { pathParams: { hash } });
 
@@ -126,7 +126,7 @@ test.describe('blockscout provider', () => {
 
   test('no interpretation, with action button', async({ render, mockApiResponse, mockAssetResponse }) => {
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
-    await mockApiResponse('metadata:address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
+    await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
 
     const newTxQuery = { ...txQuery, data: { ...txMock.pending, to: addressMock.contract } } as TxQuery;

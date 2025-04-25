@@ -21,7 +21,7 @@ const Stats = () => {
   const [ hasGasTracker, setHasGasTracker ] = React.useState(config.features.gasTracker.isEnabled);
 
   // data from stats microservice is prioritized over data from stats api
-  const statsQuery = useApiQuery('stats:stats_main', {
+  const statsQuery = useApiQuery('stats:pages_main', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: isStatsFeatureEnabled ? HOMEPAGE_STATS_MICROSERVICE : undefined,

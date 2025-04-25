@@ -39,7 +39,7 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
     },
   });
 
-  const umlQuery = useApiQuery('visualize:visualize_sol2uml', {
+  const umlQuery = useApiQuery('visualize:solidity_contract', {
     fetchParams: {
       method: 'POST',
       body: {
@@ -47,7 +47,7 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
       },
     },
     queryOptions: {
-      queryKey: [ 'visualize_sol2uml', addressHash ],
+      queryKey: [ 'solidity_contract', addressHash ],
       enabled: Boolean(contractQuery.data),
       refetchOnMount: false,
     },

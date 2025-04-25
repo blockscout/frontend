@@ -26,8 +26,8 @@ testWithAuth('base view +@dark-mode', async({ render, mockApiResponse, mockEnvs,
   };
 
   await mockApiResponse('general:user_info', profileMock.withEmailAndWallet);
-  await mockApiResponse('rewards:rewards_user_balances', rewardsBalanceMock.base);
-  await mockApiResponse('rewards:rewards_user_daily_check', dailyRewardMock.base);
+  await mockApiResponse('rewards:user_balances', rewardsBalanceMock.base);
+  await mockApiResponse('rewards:user_daily_check', dailyRewardMock.base);
   await mockEnvs([
     ...ENVS_MAP.userOps,
     ...ENVS_MAP.nameService,

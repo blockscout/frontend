@@ -16,9 +16,9 @@ test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, mockEnvs
     [ 'NEXT_PUBLIC_SEO_ENHANCED_DATA_ENABLED', 'true' ],
   ]);
   await mockApiResponse('general:stats', { ...statsMock.base, coin_price: '2442.789' });
-  await mockApiResponse('stats:stats_lines', statsLinesMock.base);
+  await mockApiResponse('stats:lines', statsLinesMock.base);
   const chartApiUrl = await mockApiResponse(
-    'stats:stats_line',
+    'stats:line',
     statsLineMock.averageGasPrice,
     { pathParams: { id: 'averageGasPrice' }, queryParams: { from: '**' } },
   );

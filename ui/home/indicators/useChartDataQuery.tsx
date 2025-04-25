@@ -50,7 +50,7 @@ function getChartData(indicatorId: ChainIndicatorId, data: Array<TimeChartItemRa
 }
 
 export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFetchChartDataResult {
-  const statsDailyTxsQuery = useApiQuery('stats:stats_main', {
+  const statsDailyTxsQuery = useApiQuery('stats:pages_main', {
     queryOptions: {
       refetchOnMount: false,
       enabled: isStatsFeatureEnabled && indicatorId === 'daily_txs',
@@ -58,7 +58,7 @@ export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFet
     },
   });
 
-  const statsDailyOperationalTxsQuery = useApiQuery('stats:stats_main', {
+  const statsDailyOperationalTxsQuery = useApiQuery('stats:pages_main', {
     queryOptions: {
       refetchOnMount: false,
       enabled: isStatsFeatureEnabled && indicatorId === 'daily_operational_txs',
