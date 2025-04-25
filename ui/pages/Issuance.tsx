@@ -2,7 +2,7 @@
 
 import { Box, Flex, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import orderBy from 'lodash/orderBy';
+// import orderBy from 'lodash/orderBy';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -91,7 +91,7 @@ const ObjectDetails: NextPage = () => {
       const rp1 = await (await fetch(url + `/api/v1/explorer/issuancestitle${ hash ? `?cursor=${ hash }` : '' }`,
         { method: 'get' })).json() as RequestType;
       const tableList: Array<IssuanceTalbeListType> = [];
-      orderBy(rp1.title_data, [ 'transaction_status' ]).forEach((v: any) => {
+      rp1.title_data.forEach((v: any) => {
         tableList.push({
           'Credential ID': v.credential_id?.length ? v.credential_id[0] || '/' : '/',
           'Txn hash': v.tx_hash,
