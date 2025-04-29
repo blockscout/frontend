@@ -59,6 +59,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/pools': 'DEX pools',
   '/pools/[hash]': 'Pool details',
   '/interop-messages': 'Interop messages',
+  '/operations': 'Operations',
+  '/operation/[hash]': 'Operation details',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',
