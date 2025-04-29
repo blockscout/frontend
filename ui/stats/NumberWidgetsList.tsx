@@ -3,6 +3,7 @@ import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { STATS_COUNTER } from 'stubs/stats';
+import StatsMore from 'ui/shared/stats/StatsMore';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 import DataFetchAlert from '../shared/DataFetchAlert';
@@ -46,6 +47,7 @@ const NumberWidgetsList = () => {
           );
         })
       }
+      <StatsMore icon={ false }/>
     </Grid>
   );
 };

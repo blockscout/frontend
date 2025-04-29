@@ -11,6 +11,7 @@ import { WEI } from 'toolkit/utils/consts';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import IconSvg from 'ui/shared/IconSvg';
+import StatsMore from 'ui/shared/stats/StatsMore';
 import type { Props as StatsWidgetProps } from 'ui/shared/stats/StatsWidget';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
@@ -217,8 +218,8 @@ const Stats = () => {
 
   return (
     <Grid
-      gridTemplateColumns="1fr 1fr"
-      gridGap={{ base: 1, lg: 2 }}
+      gridTemplateColumns={{ base: '1fr 1fr', md: '1fr 1fr 1fr', lg: '1fr 1fr 1fr 1fr' }}
+      gridGap={{ base: 2, lg: 2 }}
       flexBasis="50%"
       flexGrow={ 1 }
     >
@@ -227,9 +228,11 @@ const Stats = () => {
           key={ item.id }
           { ...item }
           isLoading={ isLoading }
-          _last={ items.length % 2 === 1 && index === items.length - 1 ? { gridColumn: 'span 2' } : undefined }/>
+          _last={ items.length % 2 === 1 && index === items.length - 1 ? { gridColumn: { base: 'span 1', lg: 'span 2' } } : undefined }
+        />
       ),
       ) }
+      <StatsMore/>
     </Grid>
 
   );
