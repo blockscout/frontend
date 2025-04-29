@@ -11,7 +11,13 @@ interface Props {
 
 const TacOperationLifecycleAccordionItemContent = ({ isLast }: Props) => {
   return (
-    <AccordionItemContent ml="9px" pl="17px" pt={ 2 } borderLeftWidth={ isLast ? undefined : '2px' } borderColor="border.divider">
+    <AccordionItemContent
+      ml={{ base: 0, lg: '9px' }}
+      pl={{ base: 0, lg: '17px' }}
+      pt={ 2 }
+      borderLeftWidth={{ base: 0, lg: isLast ? undefined : '2px' }}
+      borderColor="border.divider"
+    >
       <Grid
         gridTemplateColumns="112px 1fr"
         alignItems="flex-start"
@@ -27,14 +33,19 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast }: Props) => {
         <GridItem color="text.secondary" py="6px">
           Status
         </GridItem>
-        <GridItem>
-          <StatusTag type="ok" text="Success" py={ 1 }/>
+        <GridItem py={ 1 }>
+          <StatusTag type="ok" text="Success"/>
         </GridItem>
 
         <GridItem color="text.secondary" py="6px">
           Timestamp
         </GridItem>
-        <GridItem display="inline-flex" alignItems="center" py="6px">
+        <GridItem
+          display="inline-flex"
+          flexWrap="wrap"
+          alignItems="center"
+          py="6px"
+        >
           <DetailedInfoTimestamp timestamp="171973451500" noIcon isLoading={ false }/>
         </GridItem>
 
@@ -46,6 +57,8 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast }: Props) => {
           flexDirection="column"
           rowGap={ 3 }
           py="6px"
+          width="100%"
+          overflow="hidden"
         >
           {
             [
@@ -61,7 +74,12 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast }: Props) => {
         <GridItem color="text.secondary" py="6px">
           Note
         </GridItem>
-        <GridItem display="inline-flex" alignItems="center" py="6px" whiteSpace="pre-wrap">
+        <GridItem
+          display="inline-flex"
+          alignItems="center"
+          py="6px"
+          whiteSpace="pre-wrap"
+        >
           ProxyCallError: UniswapV2Router: Insufficient output amount ProxyCallError: UniswapV2Router: Insufficient output amount
         </GridItem>
       </Grid>

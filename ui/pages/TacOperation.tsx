@@ -34,7 +34,7 @@ const TacOperation = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title="Operation page"
+        title="Operation details"
         backLink={ backLink }
         isLoading={ false }
         secondRow={ titleSecondRow }

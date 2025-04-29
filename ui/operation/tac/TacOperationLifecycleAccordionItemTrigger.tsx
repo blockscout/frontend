@@ -29,13 +29,18 @@ const TacOperationLifecycleAccordionItemTrigger = ({ status, isFirst, isLast }: 
       _after={ !isLast ? {
         position: 'absolute',
         left: '9px',
-        bottom: '0',
+        top: 'calc(100% - 6px)',
         width: '0',
         height: '6px',
         borderColor: 'border.divider',
         borderLeftWidth: '2px',
         content: '""',
       } : undefined }
+      _open={{
+        _after: {
+          height: { base: '14px', lg: '6px' },
+        },
+      }}
     >
       <HStack gap={ 2 } color="green.500">
         <IconSvg name="verification-steps/finalized" boxSize={ 5 }/>
