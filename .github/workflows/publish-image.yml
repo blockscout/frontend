@@ -15,7 +15,9 @@ on:
                 description: Image platforms (you can specify multiple platforms separated by comma)
                 required: false
                 type: string
-                default: linux/amd64
+                default: |
+                    linux/amd64
+                    linux/arm64/v8
     workflow_call:
         inputs:
             tags:
@@ -30,7 +32,9 @@ on:
                 description: Image platforms (you can specify multiple platforms separated by comma)
                 required: false
                 type: string
-                default: linux/amd64
+                default: |
+                    linux/amd64
+                    linux/arm64/v8
 
 jobs:
     run:
