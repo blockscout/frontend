@@ -27,7 +27,6 @@ const MarketplaceDisclaimerModal = ({ isOpen, onClose, appId }: Props) => {
       open={ isOpen }
       onOpenChange={ onClose }
       size={ isMobile ? 'full' : 'md' }
-      placement="center"
     >
       <DialogContent>
         <DialogHeader>

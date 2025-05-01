@@ -1,6 +1,6 @@
 import { useCallback, useRef, useEffect } from 'react';
 
-import type { PreSubmitTransactionResponse, PreVerifyContractResponse } from '@blockscout/points-types';
+import type { PreSubmitTransactionResponse } from '@blockscout/points-types';
 
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
@@ -74,17 +74,11 @@ export default function useRewardsActivity() {
   [ makeRequest ],
   );
 
-  const trackContract = useCallback(async(address: string) => {
-    return (
-      await makeRequest('rewards_user_activity_track_contract', {
-        address,
-        chain_id: config.chain.id ?? '',
-      })
-    ) as PreVerifyContractResponse | undefined;
-  }, [ makeRequest ]);
-
-  const trackContractConfirm = useCallback((token: string) =>
-    makeRequest('rewards_user_activity_track_contract_confirm', { token }),
+  const trackContract = useCallback(async(address: string) =>
+    makeRequest('rewards_user_activity_track_contract', {
+      address,
+      chain_id: config.chain.id ?? '',
+    }),
   [ makeRequest ],
   );
 
@@ -115,7 +109,6 @@ export default function useRewardsActivity() {
     trackTransaction,
     trackTransactionConfirm,
     trackContract,
-    trackContractConfirm,
     trackUsage,
   };
 }

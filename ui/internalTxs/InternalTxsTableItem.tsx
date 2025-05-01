@@ -6,13 +6,13 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean };
@@ -81,9 +81,13 @@ const InternalTxsTableItem = ({
         />
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
-        <Skeleton loading={ isLoading } display="inline-block" minW={ 6 }>
-          { BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
-        </Skeleton>
+        <TruncatedValue
+          value={ BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
+          isLoading={ isLoading }
+          minW={ 6 }
+          maxW="100%"
+          verticalAlign="middle"
+        />
       </TableCell>
     </TableRow>
   );

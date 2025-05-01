@@ -44,11 +44,11 @@ const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick, hasEm
   const showNotificationToast = useCallback((isOn: boolean) => {
     toaster.success({
       title: 'Success',
-      description: !isOn ? 'Email notification is ON' : 'Email notification is OFF',
+      description: isOn ? 'Email notification is ON' : 'Email notification is OFF',
     });
   }, [ ]);
 
-  const { mutate } = useMutation({
+  const { mutate } = useMutation<WatchlistAddress>({
     mutationFn: () => {
       setSwitchDisabled(true);
       const body = { ...item, notification_methods: { email: !notificationEnabled } };
@@ -56,16 +56,16 @@ const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick, hasEm
       return apiFetch('watchlist', {
         pathParams: { id: String(item.id) },
         fetchParams: { method: 'PUT', body },
-      });
+      }) as Promise<WatchlistAddress>;
     },
     onError: () => {
       showErrorToast();
       setNotificationEnabled(prevState => !prevState);
       setSwitchDisabled(false);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       setSwitchDisabled(false);
-      showNotificationToast(!notificationEnabled);
+      showNotificationToast(data.notification_methods.email);
     },
   });
 

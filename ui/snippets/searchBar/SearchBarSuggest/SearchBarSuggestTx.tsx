@@ -12,7 +12,7 @@ const SearchBarSuggestTx = ({ data, isMobile }: ItemsProps<SearchResultTx>) => {
   const icon = <TxEntity.Icon/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
-      <HashStringShortenDynamic hash={ data.transaction_hash } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ data.transaction_hash } noTooltip/>
     </chakra.mark>
   );
   const date = dayjs(data.timestamp).format('llll');

@@ -1,36 +1,28 @@
-import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TxsSocketType } from './types';
+
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
-function getSocketParams(router: NextRouter) {
+function getSocketParams(type: TxsSocketType, page: string) {
 
-  if (
-    router.pathname === '/txs' &&
-    (router.query.tab === 'validated' || router.query.tab === undefined) &&
-    !router.query.block_number &&
-    !router.query.page
-  ) {
-    return { topic: 'transactions:new_transaction' as const, event: 'transaction' as const };
+  switch (type) {
+    case 'txs_home': {
+      return { topic: 'transactions:new_transaction' as const, event: 'transaction' as const };
+    }
+    case 'txs_validated': {
+      return !page || page === '1' ? { topic: 'transactions:new_transaction' as const, event: 'transaction' as const } : {};
+    }
+    case 'txs_pending': {
+      return !page || page === '1' ? { topic: 'transactions:new_pending_transaction' as const, event: 'pending_transaction' as const } : {};
+    }
+    default:
+      return {};
   }
-
-  if (router.pathname === '/') {
-    return { topic: 'transactions:new_transaction' as const, event: 'transaction' as const };
-  }
-
-  if (
-    router.pathname === '/txs' &&
-    router.query.tab === 'pending' &&
-    !router.query.block_number &&
-    !router.query.page
-  ) {
-    return { topic: 'transactions:new_pending_transaction' as const, event: 'pending_transaction' as const };
-  }
-
-  return {};
 }
 
 function assertIsNewTxResponse(response: unknown): response is { transaction: number } {
@@ -40,12 +32,19 @@ function assertIsNewPendingTxResponse(response: unknown): response is { pending_
   return typeof response === 'object' && response !== null && 'pending_transaction' in response;
 }
 
-export default function useNewTxsSocket() {
-  const router = useRouter();
-  const [ num, setNum ] = useGradualIncrement(0);
-  const [ socketAlert, setSocketAlert ] = React.useState('');
+interface Params {
+  type: TxsSocketType;
+  isLoading?: boolean;
+}
 
-  const { topic, event } = getSocketParams(router);
+export default function useNewTxsSocketTypeAll({ type, isLoading }: Params) {
+  const router = useRouter();
+  const page = getQueryParamString(router.query.page);
+
+  const [ num, setNum ] = useGradualIncrement(0);
+  const [ alertText, setAlertText ] = React.useState('');
+
+  const { topic, event } = getSocketParams(type, page);
 
   const handleNewTxMessage = React.useCallback((response: { transaction: number } | { pending_transaction: number } | unknown) => {
     if (assertIsNewTxResponse(response)) {
@@ -57,18 +56,18 @@ export default function useNewTxsSocket() {
   }, [ setNum ]);
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please reload the page.');
+    setAlertText('Connection is lost. Please reload the page.');
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new transactions. Please reload the page.');
+    setAlertText('An error has occurred while fetching new transactions. Please reload the page.');
   }, []);
 
   const channel = useSocketChannel({
     topic,
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: !topic,
+    isDisabled: !topic || Boolean(isLoading),
   });
 
   useSocketMessage({
@@ -78,8 +77,8 @@ export default function useNewTxsSocket() {
   });
 
   if (!topic && !event) {
-    return {};
+    return { };
   }
 
-  return { num, socketAlert };
+  return { num, alertText };
 }

@@ -290,7 +290,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
           <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
             <Skeleton loading={ isLoading } overflow="hidden" display="flex" alignItems="center">
               <Text whiteSpace="nowrap" overflow="hidden">
-                <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>
+                <HashStringShortenDynamic hash={ hash } noTooltip/>
               </Text>
               { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
             </Skeleton>

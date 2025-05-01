@@ -234,10 +234,11 @@ export interface SelectProps extends SelectRootProps {
   portalled?: boolean;
   loading?: boolean;
   errorText?: string;
+  contentProps?: SelectContentProps;
 }
 
 export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
-  const { collection, placeholder, portalled = true, loading, errorText, ...rest } = props;
+  const { collection, placeholder, portalled = true, loading, errorText, contentProps, ...rest } = props;
   return (
     <SelectRoot
       ref={ ref }
@@ -253,7 +254,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
           errorText={ errorText }
         />
       </SelectControl>
-      <SelectContent portalled={ portalled }>
+      <SelectContent portalled={ portalled } { ...contentProps }>
         { collection.items.map((item: SelectOption) => (
           <SelectItem item={ item } key={ item.value }>
             { item.label }

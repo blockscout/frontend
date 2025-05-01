@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TxsSocketType } from './socket/types';
 import type { AddressFromToFilter } from 'types/api/address';
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
@@ -26,9 +27,7 @@ type Props = {
   // eslint-disable-next-line max-len
   query: QueryWithPagesResult<'txs_validated' | 'txs_pending'> | QueryWithPagesResult<'txs_watchlist'> | QueryWithPagesResult<'block_txs'> | QueryWithPagesResult<'zkevm_l2_txn_batch_txs'>;
   showBlockInfo?: boolean;
-  showSocketInfo?: boolean;
-  socketInfoAlert?: string;
-  socketInfoNum?: number;
+  socketType?: TxsSocketType;
   currentAddress?: string;
   filter?: React.ReactNode;
   filterValue?: AddressFromToFilter;
@@ -46,9 +45,7 @@ const TxsContent = ({
   filter,
   filterValue,
   showBlockInfo = true,
-  showSocketInfo = true,
-  socketInfoAlert,
-  socketInfoNum,
+  socketType,
   currentAddress,
   enableTimeIncrement,
   top,
@@ -72,9 +69,7 @@ const TxsContent = ({
       <Box hideFrom="lg">
         <TxsList
           showBlockInfo={ showBlockInfo }
-          showSocketInfo={ showSocketInfo }
-          socketInfoAlert={ socketInfoAlert }
-          socketInfoNum={ socketInfoNum }
+          socketType={ socketType }
           isLoading={ isPlaceholderData }
           enableTimeIncrement={ enableTimeIncrement }
           currentAddress={ currentAddress }
@@ -87,9 +82,7 @@ const TxsContent = ({
           sort={ sort }
           onSortToggle={ onSortToggle }
           showBlockInfo={ showBlockInfo }
-          showSocketInfo={ showSocketInfo }
-          socketInfoAlert={ socketInfoAlert }
-          socketInfoNum={ socketInfoNum }
+          socketType={ socketType }
           top={ top || (query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
           currentAddress={ currentAddress }
           enableTimeIncrement={ enableTimeIncrement }

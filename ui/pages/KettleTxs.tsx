@@ -31,10 +31,7 @@ const KettleTxs = () => {
     <>
       <PageTitle title="Computor transactions" withTextAd/>
       <AddressEntity address={{ hash }} mb={ 6 }/>
-      <TxsWithFrontendSorting
-        query={ query }
-        showSocketInfo={ false }
-      />
+      <TxsWithFrontendSorting query={ query }/>
     </>
   );
 };

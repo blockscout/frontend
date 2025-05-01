@@ -36,7 +36,9 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Pick<EntityProps, 'address' | 'isSafeAddress'> & EntityBase.IconBaseProps;
+type IconProps = Pick<EntityProps, 'address' | 'isSafeAddress'> & EntityBase.IconBaseProps & {
+  tooltipInteractive?: boolean;
+};
 
 const Icon = (props: IconProps) => {
   if (props.noIcon) {
@@ -70,7 +72,7 @@ const Icon = (props: IconProps) => {
     const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract');
 
     return (
-      <Tooltip content={ label.slice(0, 1).toUpperCase() + label.slice(1) }>
+      <Tooltip content={ label.slice(0, 1).toUpperCase() + label.slice(1) } interactive={ props.tooltipInteractive }>
         <span>
           <EntityBase.Icon
             { ...props }
@@ -90,7 +92,7 @@ const Icon = (props: IconProps) => {
   })();
 
   return (
-    <Tooltip content={ label } disabled={ !label }>
+    <Tooltip content={ label } disabled={ !label } interactive={ props.tooltipInteractive }>
       <Flex marginRight={ styles.marginRight } position="relative">
         <AddressIdenticon
           size={ props.variant === 'heading' ? 30 : 20 }
@@ -128,7 +130,12 @@ const Content = chakra((props: ContentProps) => {
     );
 
     return (
-      <Tooltip content={ label } contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}>
+      <Tooltip
+        content={ label }
+        contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
+        triggerProps={{ minW: 0 }}
+        interactive={ props.tooltipInteractive }
+      >
         <Skeleton loading={ props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" { ...styles }>
           { nameText }
         </Skeleton>
@@ -174,7 +181,10 @@ const AddressEntity = (props: EntityProps) => {
   const settingsContext = useSettingsContext();
   const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
 
-  const content = <Content { ...partsProps.content } altHash={ altHash }/>;
+  // inside highlight context all tooltips should be interactive
+  // because non-interactive ones will not pass 'onMouseLeave' event to the parent component
+  // see issue - https://github.com/chakra-ui/chakra-ui/issues/9939#issuecomment-2810567024
+  const content = <Content { ...partsProps.content } altHash={ altHash } tooltipInteractive={ Boolean(highlightContext) }/>;
 
   return (
     <Container
@@ -187,9 +197,9 @@ const AddressEntity = (props: EntityProps) => {
       position="relative"
       zIndex={ 0 }
     >
-      <Icon { ...partsProps.icon }/>
+      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) }/>
       { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
-      <Copy { ...partsProps.copy } altHash={ altHash }/>
+      <Copy { ...partsProps.copy } altHash={ altHash } tooltipInteractive={ Boolean(highlightContext) }/>
     </Container>
   );
 };

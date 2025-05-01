@@ -25,7 +25,14 @@ const AddressEntityContentProxy = (props: ContentProps) => {
         Proxy contract
         { props.address.name ? ` (${ props.address.name })` : '' }
       </Box>
-      <AddressEntity address={{ hash: props.address.hash, filecoin: props.address.filecoin }} noLink noIcon noHighlight justifyContent="center"/>
+      <AddressEntity
+        address={{ hash: props.address.hash, filecoin: props.address.filecoin }}
+        noLink
+        noIcon
+        noHighlight
+        noTooltip
+        justifyContent="center"
+      />
       <Box fontWeight={ 600 } mt={ 2 }>
         Implementation{ implementations.length > 1 ? 's' : '' }
         { implementationName ? ` (${ implementationName })` : '' }
@@ -38,10 +45,10 @@ const AddressEntityContentProxy = (props: ContentProps) => {
             noLink
             noIcon
             noHighlight
+            noTooltip
             minW={ `calc((100% - ${ colNum - 1 } * 12px) / ${ colNum })` }
             flex={ 1 }
             justifyContent={ colNum === 1 ? 'center' : undefined }
-            isTooltipDisabled
           />
         )) }
       </Flex>
@@ -49,13 +56,13 @@ const AddressEntityContentProxy = (props: ContentProps) => {
   );
 
   return (
-    <Tooltip content={ content } interactive contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '410px' } }}>
+    <Tooltip content={ content } interactive contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '410px' } }} triggerProps={{ minW: 0 }}>
       <Box display="inline-flex" w="100%">
         <EntityBase.Content
           { ...props }
           truncation={ nameTag || implementationName || props.address.name ? 'tail' : props.truncation }
           text={ nameTag || implementationName || props.address.name || props.altHash || props.address.hash }
-          isTooltipDisabled
+          noTooltip
         />
       </Box>
     </Tooltip>

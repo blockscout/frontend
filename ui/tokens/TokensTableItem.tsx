@@ -14,6 +14,7 @@ import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
 type Props = {
   token: TokenInfo;
@@ -104,14 +105,18 @@ const TokensTableItem = ({
         </Flex>
       </TableCell>
       <TableCell isNumeric>
-        <Skeleton loading={ isLoading } textStyle="sm" fontWeight={ 500 } display="inline-block">
-          { exchangeRate && `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` }
-        </Skeleton>
+        <TruncatedValue
+          value={ exchangeRate ? `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` : '' }
+          isLoading={ isLoading }
+          maxW="100%"
+        />
       </TableCell>
       <TableCell isNumeric maxWidth="300px" width="300px">
-        <Skeleton loading={ isLoading } textStyle="sm" fontWeight={ 500 } display="inline-block">
-          { marketCap && `$${ BigNumber(marketCap).toFormat() }` }
-        </Skeleton>
+        <TruncatedValue
+          value={ marketCap ? `$${ BigNumber(marketCap).toFormat() }` : '' }
+          isLoading={ isLoading }
+          maxW="100%"
+        />
       </TableCell>
       <TableCell isNumeric>
         <Skeleton

@@ -17,13 +17,13 @@ interface Props {
 const InternalTxsTable = ({ data, currentAddress, isLoading }: Props) => {
   return (
     <AddressHighlightProvider>
-      <TableRoot>
+      <TableRoot minW="900px">
         <TableHeaderSticky top={ 68 }>
           <TableRow>
-            <TableColumnHeader width="15%">Parent txn hash</TableColumnHeader>
+            <TableColumnHeader width="180px">Parent txn hash</TableColumnHeader>
             <TableColumnHeader width="15%">Type</TableColumnHeader>
-            <TableColumnHeader width="10%">Block</TableColumnHeader>
-            <TableColumnHeader width="40%">From/To</TableColumnHeader>
+            <TableColumnHeader width="15%">Block</TableColumnHeader>
+            <TableColumnHeader width="50%">From/To</TableColumnHeader>
             <TableColumnHeader width="20%" isNumeric>
               Value { currencyUnits.ether }
             </TableColumnHeader>

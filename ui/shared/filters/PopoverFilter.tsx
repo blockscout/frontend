@@ -14,7 +14,7 @@ interface Props {
 const PopoverFilter = ({ appliedFiltersNum, children, contentProps, isLoading }: Props) => {
   return (
     <PopoverRoot>
-      <PopoverTrigger>
+      <PopoverTrigger className="group">
         <FilterButton
           appliedFiltersNum={ appliedFiltersNum }
           isLoading={ isLoading }

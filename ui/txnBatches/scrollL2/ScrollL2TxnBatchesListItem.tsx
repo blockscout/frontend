@@ -104,17 +104,21 @@ const ScrollL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         </Link>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Txn count</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Link
-          href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
-          loading={ isLoading }
-          fontWeight={ 600 }
-          minW="40px"
-        >
-          { item.transactions_count.toLocaleString() }
-        </Link>
-      </ListItemMobileGrid.Value>
+      { typeof item.transactions_count === 'number' ? (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Txn count</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <Link
+              href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
+              loading={ isLoading }
+              fontWeight={ 600 }
+              minW="40px"
+            >
+              { item.transactions_count.toLocaleString() }
+            </Link>
+          </ListItemMobileGrid.Value>
+        </>
+      ) : null }
 
     </ListItemMobileGrid.Container>
   );

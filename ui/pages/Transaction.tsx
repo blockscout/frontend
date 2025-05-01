@@ -10,8 +10,6 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { publicClient } from 'lib/web3/client';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
-import useActiveTabFromQuery from 'toolkit/components/RoutedTabs/useActiveTabFromQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
@@ -78,8 +76,6 @@ const TransactionPageContent = () => {
     ].filter(Boolean);
   })();
 
-  const activeTab = useActiveTabFromQuery(tabs);
-
   const txTags: Array<TEntityTag> = data?.transaction_tag ?
     [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 1 } ] : [];
   if (rollupFeature.isEnabled && rollupFeature.interopEnabled && data?.op_interop) {
@@ -113,19 +109,6 @@ const TransactionPageContent = () => {
 
   const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.transaction_tag) } txQuery={ txQuery }/>;
 
-  const content = (() => {
-    if (isPlaceholderData && !showDegradedView) {
-      return (
-        <>
-          <RoutedTabsSkeleton tabs={ tabs } mt={ 6 }/>
-          { activeTab?.component }
-        </>
-      );
-    }
-
-    return <RoutedTabs tabs={ tabs }/>;
-  })();
-
   if (isError && !showDegradedView) {
     if (isCustomAppError(error)) {
       throwOnResourceLoadError({ resource: 'tx', error, isError: true });
@@ -141,7 +124,7 @@ const TransactionPageContent = () => {
         contentAfter={ tags }
         secondRow={ titleSecondRow }
       />
-      { content }
+      <RoutedTabs tabs={ tabs } isLoading={ isPlaceholderData }/>
     </>
   );
 };
