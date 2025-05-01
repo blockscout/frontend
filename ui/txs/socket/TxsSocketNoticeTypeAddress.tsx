@@ -21,7 +21,6 @@ const TxsSocketNoticeTypeAddress = ({ place, isLoading }: Props) => {
   if (place === 'table') {
     return (
       <SocketNewItemsNotice.Desktop
-        url={ window.location.href }
         alert={ alertText }
         num={ num }
         isLoading={ isLoading }
@@ -32,7 +31,6 @@ const TxsSocketNoticeTypeAddress = ({ place, isLoading }: Props) => {
   if (place === 'list') {
     return (
       <SocketNewItemsNotice.Mobile
-        url={ window.location.href }
         num={ num }
         alert={ alertText }
         isLoading={ isLoading }

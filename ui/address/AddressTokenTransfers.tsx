@@ -197,7 +197,6 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
       <Box hideFrom="lg">
         { pagination.page === 1 && (
           <SocketNewItemsNotice.Mobile
-            url={ window.location.href }
             num={ newItemsCount }
             alert={ socketAlert }
             type="token_transfer"

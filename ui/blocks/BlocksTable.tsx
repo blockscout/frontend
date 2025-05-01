@@ -67,7 +67,6 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
         <TableBody>
           { showSocketInfo && (
             <SocketNewItemsNotice.Desktop
-              url={ window.location.href }
               alert={ socketInfoAlert }
               num={ socketInfoNum }
               type="block"
