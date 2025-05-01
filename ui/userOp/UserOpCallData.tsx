@@ -25,6 +25,7 @@ const UserOpDecodedCallData = ({ data }: Props) => {
 
   const toggler = data.call_data && data.execute_call_data ? (
     <UserOpCallDataSwitch
+      id="call-data-switch"
       onChange={ handleSwitchChange }
       initialValue={ false }
       ml={{ base: 3, lg: 'auto' }}
