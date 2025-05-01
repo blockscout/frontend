@@ -15,7 +15,6 @@ import getNetworkValidationActionText from 'lib/networks/getNetworkValidationAct
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
 import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockEpochRewards from 'ui/block/BlockEpochRewards';
@@ -74,7 +73,7 @@ const BlockPageContent = () => {
       component: (
         <>
           { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={ 6 }/> }
-          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>
+          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>
         </>
       ),
     },
@@ -83,7 +82,7 @@ const BlockPageContent = () => {
         id: 'blob_txs',
         title: 'Blob txns',
         component: (
-          <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
+          <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false }/>
         ),
       } : null,
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
@@ -183,14 +182,13 @@ const BlockPageContent = () => {
         secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }
       />
-      { blockQuery.isPlaceholderData ? <RoutedTabsSkeleton tabs={ tabs }/> : (
-        <RoutedTabs
-          tabs={ tabs }
-          listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-          rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
-          stickyEnabled={ hasPagination }
-        />
-      ) }
+      <RoutedTabs
+        tabs={ tabs }
+        isLoading={ blockQuery.isPlaceholderData }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
+        stickyEnabled={ hasPagination }
+      />
     </>
   );
 };

@@ -126,10 +126,10 @@ const ChainIndicators = () => {
       alignItems="stretch"
     >
       <Flex flexGrow={ 1 } flexDir="column">
-        <Flex alignItems="center">
+        <Skeleton loading={ isPlaceholderData } display="flex" alignItems="center" w="fit-content" columnGap={ 1 }>
           <Text fontWeight={ 500 }>{ title }</Text>
-          { hint && <Hint label={ hint } ml={ 1 }/> }
-        </Flex>
+          { hint && <Hint label={ hint }/> }
+        </Skeleton>
         <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end">
           { valueTitle }
           { valueDiff }

@@ -87,12 +87,14 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         </Link>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Link
-          href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
-          loading={ isLoading }
-        >
-          { item.transactions_count.toLocaleString() }
-        </Link>
+        { typeof item.transactions_count === 'number' ? (
+          <Link
+            href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
+            loading={ isLoading }
+          >
+            { item.transactions_count.toLocaleString() }
+          </Link>
+        ) : 'N/A' }
       </TableCell>
     </TableRow>
   );

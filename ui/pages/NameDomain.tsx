@@ -14,8 +14,6 @@ import { ENS_DOMAIN } from 'stubs/ENS';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
-import useActiveTabFromQuery from 'toolkit/components/RoutedTabs/useActiveTabFromQuery';
 import NameDomainDetails from 'ui/nameDomain/NameDomainDetails';
 import NameDomainHistory from 'ui/nameDomain/NameDomainHistory';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -39,8 +37,6 @@ const NameDomain = () => {
     { id: 'details', title: 'Details', component: <NameDomainDetails query={ infoQuery }/> },
     { id: 'history', title: 'History', component: <NameDomainHistory domain={ infoQuery.data }/> },
   ];
-
-  const activeTab = useActiveTabFromQuery(tabs);
 
   throwOnResourceLoadError(infoQuery);
 
@@ -87,12 +83,7 @@ const NameDomain = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle title="Name details" secondRow={ titleSecondRow }/>
-      { infoQuery.isPlaceholderData ? (
-        <>
-          <RoutedTabsSkeleton tabs={ tabs } mt={ 6 }/>
-          { activeTab?.component }
-        </>
-      ) : <RoutedTabs tabs={ tabs }/> }
+      <RoutedTabs tabs={ tabs } isLoading={ infoQuery.isPlaceholderData }/>
     </>
   );
 };

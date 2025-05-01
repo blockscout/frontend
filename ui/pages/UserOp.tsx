@@ -13,8 +13,6 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { USER_OP } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
-import useActiveTabFromQuery from 'toolkit/components/RoutedTabs/useActiveTabFromQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import TxLogs from 'ui/tx/TxLogs';
@@ -82,8 +80,6 @@ const UserOp = () => {
     { id: 'raw', title: 'Raw', component: <UserOpRaw rawData={ userOpQuery.data?.raw } isLoading={ userOpQuery.isPlaceholderData }/> },
   ]), [ userOpQuery, txQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
 
-  const activeTab = useActiveTabFromQuery(tabs);
-
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/ops');
 
@@ -110,13 +106,7 @@ const UserOp = () => {
         backLink={ backLink }
         secondRow={ titleSecondRow }
       />
-      { userOpQuery.isPlaceholderData ? (
-        <>
-          <RoutedTabsSkeleton tabs={ tabs } mt={ 6 }/>
-          { activeTab?.component }
-        </>
-      ) :
-        <RoutedTabs tabs={ tabs }/> }
+      <RoutedTabs tabs={ tabs } isLoading={ userOpQuery.isPlaceholderData }/>
     </>
   );
 };

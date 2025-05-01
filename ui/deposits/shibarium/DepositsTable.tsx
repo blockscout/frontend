@@ -14,7 +14,7 @@ import DepositsTableItem from './DepositsTableItem';
 
 const DepositsTable = ({ items, top, isLoading }: Props) => {
   return (
-    <TableRoot style={{ tableLayout: 'auto' }} minW="950px">
+    <TableRoot tableLayout="auto" minW="950px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader>L1 block No</TableColumnHeader>
@@ -26,7 +26,7 @@ const DepositsTable = ({ items, top, isLoading }: Props) => {
       </TableHeaderSticky>
       <TableBody>
         { items.map((item, index) => (
-          <DepositsTableItem key={ item.l2_transaction_hash + (isLoading ? index : '') } item={ item } isLoading={ isLoading }/>
+          <DepositsTableItem key={ `${ item.l2_transaction_hash }-${ index }` } item={ item } isLoading={ isLoading }/>
         )) }
       </TableBody>
     </TableRoot>

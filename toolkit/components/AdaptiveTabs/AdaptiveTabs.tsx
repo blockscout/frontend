@@ -71,6 +71,7 @@ const AdaptiveTabs = (props: Props) => {
         stickyEnabled={ stickyEnabled }
         activeTab={ activeTab }
         isLoading={ isLoading }
+        variant={ variant }
       />
       { tabs.map((tab) => {
         const value = getTabValue(tab);
