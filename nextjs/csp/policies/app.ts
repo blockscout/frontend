@@ -40,7 +40,7 @@ export function app(): CspDev.DirectiveDescriptor {
       config.app.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
 
       // APIs
-      ...Object.values(config.apis).map((api) => api.endpoint),
+      ...Object.values(config.apis).filter(Boolean).map((api) => api.endpoint),
       config.apis.general.socketEndpoint,
 
       // chain RPC server
