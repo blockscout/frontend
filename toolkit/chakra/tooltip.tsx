@@ -46,6 +46,19 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
 
     const isMobile = useIsMobile();
 
+    const handleOpenChange = React.useCallback((details: { open: boolean }) => {
+      setOpen(details.open);
+      onOpenChange?.(details);
+    }, [ onOpenChange ]);
+
+    const handleOpenChangeManual = React.useCallback((nextOpen: boolean) => {
+      timeoutRef.current && window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = window.setTimeout(() => {
+        setOpen(nextOpen);
+        onOpenChange?.({ open: nextOpen });
+      }, nextOpen ? openDelay : closeDelay);
+    }, [ closeDelay, openDelay, onOpenChange ]);
+
     const handleClickAway = React.useCallback((event: Event) => {
       if (interactive) {
         const closest = (event.target as HTMLElement)?.closest('.chakra-tooltip__positioner');
@@ -54,29 +67,27 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         }
       }
 
-      timeoutRef.current = window.setTimeout(() => {
-        setOpen(false);
-      }, closeDelay);
-    }, [ closeDelay, interactive ]);
+      handleOpenChangeManual(false);
+    }, [ interactive, handleOpenChangeManual ]);
+
     const triggerRef = useClickAway<HTMLButtonElement>(handleClickAway);
 
-    const handleOpenChange = React.useCallback((details: { open: boolean }) => {
-      setOpen(details.open);
-      onOpenChange?.(details);
-    }, [ onOpenChange ]);
-
     const handleTriggerClick = React.useCallback(() => {
-      if (timeoutRef.current) {
-        window.clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = window.setTimeout(() => {
-        setOpen((prev) => !prev);
-      }, open ? closeDelay : openDelay);
-    }, [ open, openDelay, closeDelay ]);
+      handleOpenChangeManual(!open);
+    }, [ handleOpenChangeManual, open ]);
 
     const handleContentClick = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+      // otherwise, the event will be propagated to the trigger
+      // and if the trigger is a link, navigation will be triggered
       event.stopPropagation();
-    }, []);
+
+      if (interactive) {
+        const closestLink = (event.target as HTMLElement)?.closest('a');
+        if (closestLink) {
+          handleOpenChangeManual(false);
+        }
+      }
+    }, [ interactive, handleOpenChangeManual ]);
 
     React.useEffect(() => {
       return () => {
