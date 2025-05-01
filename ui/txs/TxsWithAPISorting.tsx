@@ -11,7 +11,7 @@ import TxsContent from './TxsContent';
 
 type Props = {
 
-  query: QueryWithPagesResult<'address_txs'>;
+  query: QueryWithPagesResult<'general:address_txs'>;
   showBlockInfo?: boolean;
   socketType?: TxsSocketType;
   currentAddress?: string;

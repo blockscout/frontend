@@ -19,14 +19,14 @@ const AppErrorTooManyRequests = () => {
   const handleSubmit = React.useCallback(async() => {
     try {
       const token = await recaptcha.executeAsync();
-      const url = buildUrl('api_v2_key');
+      const url = buildUrl('general:api_v2_key');
 
       await fetch(url, {
         method: 'POST',
         body: { recaptcha_response: token },
         credentials: 'include',
       }, {
-        resource: 'api_v2_key',
+        resource: 'general:api_v2_key',
       });
 
       window.location.reload();

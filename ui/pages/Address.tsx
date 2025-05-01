@@ -74,7 +74,7 @@ const AddressPageContent = () => {
   const areQueriesEnabled = !checkDomainName && !checkAddressFormat;
   const addressQuery = useAddressQuery({ hash, isEnabled: areQueriesEnabled });
 
-  const addressTabsCountersQuery = useApiQuery('address_tabs_counters', {
+  const addressTabsCountersQuery = useApiQuery('general:address_tabs_counters', {
     pathParams: { hash },
     queryOptions: {
       enabled: areQueriesEnabled && Boolean(hash),
@@ -82,7 +82,7 @@ const AddressPageContent = () => {
     },
   });
 
-  const userOpsAccountQuery = useApiQuery('user_ops_account', {
+  const userOpsAccountQuery = useApiQuery('general:user_ops_account', {
     pathParams: { hash },
     queryOptions: {
       enabled: areQueriesEnabled && Boolean(hash) && config.features.userOps.isEnabled,
@@ -90,7 +90,7 @@ const AddressPageContent = () => {
     },
   });
 
-  const mudTablesCountQuery = useApiQuery('address_mud_tables_count', {
+  const mudTablesCountQuery = useApiQuery('general:mud_tables_count', {
     pathParams: { hash },
     queryOptions: {
       enabled: config.features.mudFramework.isEnabled && areQueriesEnabled && Boolean(hash),
@@ -102,7 +102,7 @@ const AddressPageContent = () => {
   const addressMetadataQuery = useAddressMetadataInfoQuery(addressesForMetadataQuery, areQueriesEnabled);
   const userPropfileApiQuery = useAddressProfileApiQuery(hash, addressProfileAPIFeature.isEnabled && areQueriesEnabled);
 
-  const addressEnsDomainsQuery = useApiQuery('addresses_lookup', {
+  const addressEnsDomainsQuery = useApiQuery('bens:addresses_lookup', {
     pathParams: { chainId: config.chain.id },
     queryParams: {
       address: hash,

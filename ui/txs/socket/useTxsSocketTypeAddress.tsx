@@ -52,7 +52,7 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
     setAlertText('');
 
     queryClient.setQueryData(
-      getResourceKey('address_txs', { pathParams: { hash: currentAddress }, queryParams: filterValue ? { filter: filterValue } : undefined }),
+      getResourceKey('general:address_txs', { pathParams: { hash: currentAddress }, queryParams: filterValue ? { filter: filterValue } : undefined }),
       (prevData: AddressTransactionsResponse | undefined) => {
         if (!prevData) {
           return;

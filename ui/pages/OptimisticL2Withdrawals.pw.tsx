@@ -13,8 +13,8 @@ test('base view +@mobile', async({ render, mockTextAd, mockEnvs, mockApiResponse
   test.slow();
   await mockTextAd();
   await mockEnvs(ENVS_MAP.optimisticRollup);
-  await mockApiResponse('optimistic_l2_withdrawals', withdrawalsData);
-  await mockApiResponse('optimistic_l2_withdrawals_count', 397);
+  await mockApiResponse('general:optimistic_l2_withdrawals', withdrawalsData);
+  await mockApiResponse('general:optimistic_l2_withdrawals_count', 397);
   const component = await render(<OptimisticL2Withdrawals/>);
   await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });

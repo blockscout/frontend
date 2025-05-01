@@ -17,8 +17,8 @@ const hooksConfig = {
 
 test('base view +@mobile +@dark-mode', async({ render, mockApiResponse, mockTextAd, mockAssetResponse, page }) => {
   await mockTextAd();
-  await mockApiResponse('pool', poolMock.base, { pathParams: { chainId: config.chain.id, hash: addressHash } });
-  await mockApiResponse('address', addressMock.contract, { pathParams: { hash: poolMock.base.contract_address } });
+  await mockApiResponse('contractInfo:pool', poolMock.base, { pathParams: { chainId: config.chain.id, hash: addressHash } });
+  await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash: poolMock.base.contract_address } });
   await mockAssetResponse(poolMock.base.quote_token_icon_url as string, './playwright/mocks/image_s.jpg');
   await mockAssetResponse(poolMock.base.base_token_icon_url as string, './playwright/mocks/image_md.jpg');
   const component = await render(<Pool/>, { hooksConfig });

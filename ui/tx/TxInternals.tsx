@@ -69,11 +69,11 @@ const TxInternals = ({ txQuery }: Props) => {
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>('default');
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'tx_internal_txs',
+    resourceName: 'general:tx_internal_txs',
     pathParams: { hash: txQuery.data?.hash },
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),
-      placeholderData: generateListStub<'tx_internal_txs'>(INTERNAL_TX, 3, { next_page_params: null }),
+      placeholderData: generateListStub<'general:tx_internal_txs'>(INTERNAL_TX, 3, { next_page_params: null }),
     },
   });
 

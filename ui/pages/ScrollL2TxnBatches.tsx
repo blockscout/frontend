@@ -15,9 +15,9 @@ import ScrollL2TxnBatchesTable from 'ui/txnBatches/scrollL2/ScrollL2TxnBatchesTa
 
 const ScrollL2TxnBatches = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'scroll_l2_txn_batches',
+    resourceName: 'general:scroll_l2_txn_batches',
     options: {
-      placeholderData: generateListStub<'scroll_l2_txn_batches'>(
+      placeholderData: generateListStub<'general:scroll_l2_txn_batches'>(
         SCROLL_L2_TXN_BATCH,
         50,
         {
@@ -30,7 +30,7 @@ const ScrollL2TxnBatches = () => {
     },
   });
 
-  const countersQuery = useApiQuery('scroll_l2_txn_batches_count', {
+  const countersQuery = useApiQuery('general:scroll_l2_txn_batches_count', {
     queryOptions: {
       placeholderData: 123456,
     },

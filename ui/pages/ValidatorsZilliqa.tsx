@@ -18,10 +18,10 @@ const ValidatorsZilliqa = () => {
   const isMobile = useIsMobile();
 
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
-    resourceName: 'validators_zilliqa',
+    resourceName: 'general:validators_zilliqa',
     options: {
       enabled: config.features.validators.isEnabled,
-      placeholderData: generateListStub<'validators_zilliqa'>(
+      placeholderData: generateListStub<'general:validators_zilliqa'>(
         VALIDATORS_ZILLIQA_ITEM,
         50,
         { next_page_params: null },

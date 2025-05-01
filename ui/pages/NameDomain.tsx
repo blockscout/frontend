@@ -26,7 +26,7 @@ const NameDomain = () => {
   const router = useRouter();
   const domainName = getQueryParamString(router.query.name);
 
-  const infoQuery = useApiQuery('domain_info', {
+  const infoQuery = useApiQuery('bens:domain_info', {
     pathParams: { name: domainName, chainId: config.chain.id },
     queryOptions: {
       placeholderData: ENS_DOMAIN,

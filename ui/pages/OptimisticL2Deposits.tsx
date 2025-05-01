@@ -16,9 +16,9 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const OptimisticL2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'optimistic_l2_deposits',
+    resourceName: 'general:optimistic_l2_deposits',
     options: {
-      placeholderData: generateListStub<'optimistic_l2_deposits'>(
+      placeholderData: generateListStub<'general:optimistic_l2_deposits'>(
         L2_DEPOSIT_ITEM,
         50,
         {
@@ -32,7 +32,7 @@ const OptimisticL2Deposits = () => {
     },
   });
 
-  const countersQuery = useApiQuery('optimistic_l2_deposits_count', {
+  const countersQuery = useApiQuery('general:optimistic_l2_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },

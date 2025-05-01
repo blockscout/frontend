@@ -9,7 +9,7 @@ import NameDomain from './NameDomain';
 
 test('details tab', async({ render, mockTextAd, mockApiResponse, mockAssetResponse }) => {
   await mockTextAd();
-  await mockApiResponse('domain_info', ensDomainMock.ensDomainA, {
+  await mockApiResponse('bens:domain_info', ensDomainMock.ensDomainA, {
     pathParams: { chainId: config.chain.id, name: ensDomainMock.ensDomainA.name },
   });
   await mockAssetResponse(ensDomainMock.ensDomainA.protocol?.icon_url as string, './playwright/mocks/image_s.jpg');
@@ -28,10 +28,10 @@ test('details tab', async({ render, mockTextAd, mockApiResponse, mockAssetRespon
 
 test('history tab +@mobile', async({ render, mockTextAd, mockApiResponse, mockAssetResponse }) => {
   await mockTextAd();
-  await mockApiResponse('domain_info', ensDomainMock.ensDomainA, {
+  await mockApiResponse('bens:domain_info', ensDomainMock.ensDomainA, {
     pathParams: { chainId: config.chain.id, name: ensDomainMock.ensDomainA.name },
   });
-  await mockApiResponse('domain_events', {
+  await mockApiResponse('bens:domain_events', {
     items: [
       ensDomainEventsMock.ensDomainEventA,
       ensDomainEventsMock.ensDomainEventB,

@@ -24,7 +24,7 @@ const ZkEvmL2TxnBatch = () => {
   const number = getQueryParamString(router.query.number);
   const tab = getQueryParamString(router.query.tab);
 
-  const batchQuery = useApiQuery('zkevm_l2_txn_batch', {
+  const batchQuery = useApiQuery('general:zkevm_l2_txn_batch', {
     pathParams: { number },
     queryOptions: {
       enabled: Boolean(number),
@@ -33,12 +33,12 @@ const ZkEvmL2TxnBatch = () => {
   });
 
   const batchTxsQuery = useQueryWithPages({
-    resourceName: 'zkevm_l2_txn_batch_txs',
+    resourceName: 'general:zkevm_l2_txn_batch_txs',
     pathParams: { number },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
       // there is no pagination in zkevm_l2_txn_batch_txs
-      placeholderData: generateListStub<'zkevm_l2_txn_batch_txs'>(TX_ZKEVM_L2, 50, { next_page_params: null }),
+      placeholderData: generateListStub<'general:zkevm_l2_txn_batch_txs'>(TX_ZKEVM_L2, 50, { next_page_params: null }),
     },
   });
 

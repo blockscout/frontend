@@ -19,7 +19,7 @@ test.beforeEach(async({ mockTextAd, mockEnvs }) => {
 });
 
 test('base view', async({ render, mockApiResponse }) => {
-  await mockApiResponse('scroll_l2_txn_batch', batchData, { pathParams: { number: batchNumber } });
+  await mockApiResponse('general:scroll_l2_txn_batch', batchData, { pathParams: { number: batchNumber } });
   const component = await render(<ScrollL2TxnBatch/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });
@@ -28,7 +28,7 @@ test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
   test('base view', async({ render, mockApiResponse }) => {
-    await mockApiResponse('scroll_l2_txn_batch', batchData, { pathParams: { number: batchNumber } });
+    await mockApiResponse('general:scroll_l2_txn_batch', batchData, { pathParams: { number: batchNumber } });
     const component = await render(<ScrollL2TxnBatch/>, { hooksConfig });
     await expect(component).toHaveScreenshot();
   });

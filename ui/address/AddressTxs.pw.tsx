@@ -23,7 +23,7 @@ test.describe('base view', () => {
 
   test.beforeEach(async({ render, mockApiResponse }) => {
     await mockApiResponse(
-      'address_txs',
+      'general:address_txs',
       {
         items: [
           txMock.base,
@@ -60,7 +60,7 @@ test.describe('base view', () => {
 
   test('mobile', async({ render, mockApiResponse }) => {
     await mockApiResponse(
-      'address_txs',
+      'general:address_txs',
       {
         items: [
           txMock.base,
@@ -87,7 +87,7 @@ test.describe('socket', () => {
 
   test('with update', async({ render, mockApiResponse, page, createSocket }) => {
     await mockApiResponse(
-      'address_txs',
+      'general:address_txs',
       { items: [ txMock.pending ], next_page_params: DEFAULT_PAGINATION },
       { pathParams: { hash: CURRENT_ADDRESS } },
     );
@@ -117,7 +117,7 @@ test.describe('socket', () => {
 
   test('with overload', async({ render, mockApiResponse, page, createSocket }) => {
     await mockApiResponse(
-      'address_txs',
+      'general:address_txs',
       { items: [ txMock.base ], next_page_params: DEFAULT_PAGINATION },
       { pathParams: { hash: CURRENT_ADDRESS } },
     );
@@ -156,7 +156,7 @@ test.describe('socket', () => {
     };
 
     await mockApiResponse(
-      'address_txs',
+      'general:address_txs',
       { items: [ txMock.base ], next_page_params: DEFAULT_PAGINATION },
       { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { filter: 'from' } },
     );
@@ -192,7 +192,7 @@ test.describe('socket', () => {
     };
 
     await mockApiResponse(
-      'address_txs',
+      'general:address_txs',
       { items: [ txMock.base ], next_page_params: DEFAULT_PAGINATION },
       { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { filter: 'from' } },
     );

@@ -28,7 +28,7 @@ interface Params {
 export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
-  const apiQuery = useApiQuery<'block', { status: number }>('block', {
+  const apiQuery = useApiQuery<'general:block', { status: number }>('general:block', {
     pathParams: { height_or_hash: heightOrHash },
     queryOptions: {
       enabled: Boolean(heightOrHash),

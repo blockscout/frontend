@@ -15,9 +15,9 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const OptimisticL2OutputRoots = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'optimistic_l2_output_roots',
+    resourceName: 'general:optimistic_l2_output_roots',
     options: {
-      placeholderData: generateListStub<'optimistic_l2_output_roots'>(
+      placeholderData: generateListStub<'general:optimistic_l2_output_roots'>(
         L2_OUTPUT_ROOTS_ITEM,
         50,
         {
@@ -30,7 +30,7 @@ const OptimisticL2OutputRoots = () => {
     },
   });
 
-  const countersQuery = useApiQuery('optimistic_l2_output_roots_count', {
+  const countersQuery = useApiQuery('general:optimistic_l2_output_roots_count', {
     queryOptions: {
       placeholderData: 50617,
     },

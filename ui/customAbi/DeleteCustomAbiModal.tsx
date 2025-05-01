@@ -20,14 +20,14 @@ const DeleteCustomAbiModal: React.FC<Props> = ({ open, onOpenChange, data }) => 
   const apiFetch = useApiFetch();
 
   const mutationFn = useCallback(() => {
-    return apiFetch('custom_abi', {
+    return apiFetch('general:custom_abi', {
       pathParams: { id: String(data.id) },
       fetchParams: { method: 'DELETE' },
     });
   }, [ apiFetch, data.id ]);
 
   const onSuccess = useCallback(async() => {
-    queryClient.setQueryData([ resourceKey('custom_abi') ], (prevData: CustomAbis | undefined) => {
+    queryClient.setQueryData([ resourceKey('general:custom_abi') ], (prevData: CustomAbis | undefined) => {
       return prevData?.filter((item) => item.id !== data.id);
     });
   }, [ data, queryClient ]);

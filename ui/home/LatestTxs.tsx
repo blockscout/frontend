@@ -17,7 +17,7 @@ import LatestTxsItemMobile from './LatestTxsItemMobile';
 const LatestTransactions = () => {
   const isMobile = useIsMobile();
   const txsCount = isMobile ? 2 : 6;
-  const { data, isPlaceholderData, isError } = useApiQuery('homepage_txs', {
+  const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_txs', {
     queryOptions: {
       placeholderData: Array(txsCount).fill(TX),
     },

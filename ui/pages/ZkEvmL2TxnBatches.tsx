@@ -15,9 +15,9 @@ import ZkEvmTxnBatchesTable from 'ui/txnBatches/zkEvmL2/ZkEvmTxnBatchesTable';
 
 const ZkEvmL2TxnBatches = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'zkevm_l2_txn_batches',
+    resourceName: 'general:zkevm_l2_txn_batches',
     options: {
-      placeholderData: generateListStub<'zkevm_l2_txn_batches'>(
+      placeholderData: generateListStub<'general:zkevm_l2_txn_batches'>(
         ZKEVM_L2_TXN_BATCHES_ITEM,
         50,
         {
@@ -30,7 +30,7 @@ const ZkEvmL2TxnBatches = () => {
     },
   });
 
-  const countersQuery = useApiQuery('zkevm_l2_txn_batches_count', {
+  const countersQuery = useApiQuery('general:zkevm_l2_txn_batches_count', {
     queryOptions: {
       placeholderData: 5231746,
     },

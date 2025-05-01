@@ -10,7 +10,7 @@ export default function useAccountWithDomain(isEnabled: boolean) {
 
   const isQueryEnabled = config.features.nameService.isEnabled && Boolean(address) && Boolean(isEnabled);
 
-  const domainQuery = useApiQuery('address_domain', {
+  const domainQuery = useApiQuery('bens:address_domain', {
     pathParams: {
       chainId: config.chain.id,
       address,

@@ -16,7 +16,7 @@ const LatestWatchlistTxs = () => {
   useRedirectForInvalidAuthToken();
   const isMobile = useIsMobile();
   const txsCount = isMobile ? 2 : 6;
-  const { data, isPlaceholderData, isError } = useApiQuery('homepage_txs_watchlist', {
+  const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_txs_watchlist', {
     queryOptions: {
       placeholderData: Array(txsCount).fill(TX),
     },

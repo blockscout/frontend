@@ -35,7 +35,7 @@ const ZkSyncL2TxnBatch = () => {
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
 
-  const batchQuery = useApiQuery('zksync_l2_txn_batch', {
+  const batchQuery = useApiQuery('general:zksync_l2_txn_batch', {
     pathParams: { number },
     queryOptions: {
       enabled: Boolean(number),
@@ -44,11 +44,11 @@ const ZkSyncL2TxnBatch = () => {
   });
 
   const batchTxsQuery = useQueryWithPages({
-    resourceName: 'zksync_l2_txn_batch_txs',
+    resourceName: 'general:zksync_l2_txn_batch_txs',
     pathParams: { number },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
-      placeholderData: generateListStub<'zksync_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:zksync_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
         batch_number: '8122',
         block_number: 1338932,
         index: 0,

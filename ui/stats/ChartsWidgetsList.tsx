@@ -38,7 +38,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
     }
   }, [ shouldScrollToSection ]);
 
-  const homeStatsQuery = useApiQuery('stats', {
+  const homeStatsQuery = useApiQuery('general:stats', {
     queryOptions: {
       refetchOnMount: false,
     },

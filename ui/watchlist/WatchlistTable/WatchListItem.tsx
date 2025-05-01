@@ -54,7 +54,7 @@ const WatchListItem = ({ item, isLoading, onEditClick, onDeleteClick, hasEmail }
       setSwitchDisabled(true);
       const body = { ...item, notification_methods: { email: !notificationEnabled } };
       setNotificationEnabled(prevState => !prevState);
-      return apiFetch('watchlist', {
+      return apiFetch('general:watchlist', {
         pathParams: { id: String(item.id) },
         fetchParams: { method: 'PUT', body },
       }) as Promise<WatchlistAddress>;

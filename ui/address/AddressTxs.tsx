@@ -42,13 +42,13 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(initialFilterValue);
 
   const addressTxsQuery = useQueryWithPages({
-    resourceName: 'address_txs',
+    resourceName: 'general:address_txs',
     pathParams: { hash: currentAddress },
     filters: { filter: filterValue },
     sorting: getSortParamsFromValue<TransactionsSortingValue, TransactionsSortingField, TransactionsSorting['order']>(sort),
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'address_txs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:address_txs'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,

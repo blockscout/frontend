@@ -80,7 +80,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
   const isMobile = useIsMobile();
 
-  const externalTxsQuery = useApiQuery('tx_external_transactions', {
+  const externalTxsQuery = useApiQuery('general:tx_external_transactions', {
     pathParams: {
       hash: data?.hash,
     },

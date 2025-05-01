@@ -7,7 +7,7 @@ import { VALIDATORS_STABILITY_COUNTERS } from 'stubs/validators';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const ValidatorsCounters = () => {
-  const countersQuery = useApiQuery('validators_stability_counters', {
+  const countersQuery = useApiQuery('general:validators_stability_counters', {
     queryOptions: {
       enabled: config.features.validators.isEnabled,
       placeholderData: VALIDATORS_STABILITY_COUNTERS,

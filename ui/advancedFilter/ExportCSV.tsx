@@ -29,7 +29,7 @@ const ExportCSV = ({ filters }: Props) => {
         throw new Error('ReCaptcha is not solved');
       }
 
-      const url = buildUrl('advanced_filter_csv', undefined, {
+      const url = buildUrl('general:advanced_filter_csv', undefined, {
         ...filters,
         recaptcha_response: token,
       });

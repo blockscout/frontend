@@ -18,7 +18,7 @@ import NFTItem from './NFTItem';
 import NFTItemContainer from './NFTItemContainer';
 
 type Props = {
-  collectionsQuery: QueryWithPagesResult<'address_collections'>;
+  collectionsQuery: QueryWithPagesResult<'general:address_collections'>;
   address: string;
   hasActiveFilters: boolean;
 };

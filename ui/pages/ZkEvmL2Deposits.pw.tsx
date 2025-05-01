@@ -10,8 +10,8 @@ test('base view +@mobile', async({ render, mockApiResponse, mockEnvs, mockTextAd
   test.slow();
   await mockTextAd();
   await mockEnvs(ENVS_MAP.zkEvmRollup);
-  await mockApiResponse('zkevm_l2_deposits', depositsMock.baseResponse);
-  await mockApiResponse('zkevm_l2_deposits_count', 3971111);
+  await mockApiResponse('general:zkevm_l2_deposits', depositsMock.baseResponse);
+  await mockApiResponse('general:zkevm_l2_deposits_count', 3971111);
 
   const component = await render(<ZkEvmL2Deposits/>);
 

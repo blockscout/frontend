@@ -16,9 +16,9 @@ import WithdrawalsTable from 'ui/withdrawals/shibarium/WithdrawalsTable';
 
 const ShibariumWithdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'shibarium_withdrawals',
+    resourceName: 'general:shibarium_withdrawals',
     options: {
-      placeholderData: generateListStub<'shibarium_withdrawals'>(
+      placeholderData: generateListStub<'general:shibarium_withdrawals'>(
         SHIBARIUM_WITHDRAWAL_ITEM,
         50,
         {
@@ -31,7 +31,7 @@ const ShibariumWithdrawals = () => {
     },
   });
 
-  const countersQuery = useApiQuery('shibarium_withdrawals_count', {
+  const countersQuery = useApiQuery('general:shibarium_withdrawals_count', {
     queryOptions: {
       placeholderData: 23700,
     },

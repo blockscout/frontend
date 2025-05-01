@@ -68,10 +68,10 @@ const AdvancedFilter = () => {
 
   const [ columns, setColumns ] = React.useState<Record<ColumnsIds, boolean>>(COLUMNS_CHECKED);
   const { data, isError, isLoading, pagination, onFilterChange, isPlaceholderData } = useQueryWithPages({
-    resourceName: 'advanced_filter',
+    resourceName: 'general:advanced_filter',
     filters,
     options: {
-      placeholderData: generateListStub<'advanced_filter'>(
+      placeholderData: generateListStub<'general:advanced_filter'>(
         ADVANCED_FILTER_ITEM,
         50,
         {
@@ -92,8 +92,8 @@ const AdvancedFilter = () => {
   });
 
   // maybe don't need to prefetch, but on dev sepolia those requests take several seconds.
-  useApiQuery('tokens', { queryParams: { limit: '7', q: '' }, queryOptions: { refetchOnMount: false } });
-  useApiQuery('advanced_filter_methods', { queryParams: { q: '' }, queryOptions: { refetchOnMount: false } });
+  useApiQuery('general:tokens', { queryParams: { limit: '7', q: '' }, queryOptions: { refetchOnMount: false } });
+  useApiQuery('general:advanced_filter_methods', { queryParams: { q: '' }, queryOptions: { refetchOnMount: false } });
 
   const handleFilterChange = React.useCallback(<T extends keyof AdvancedFilterParams>(field: T, val: AdvancedFilterParams[T]) => {
     setFilters(prevState => {

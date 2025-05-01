@@ -11,7 +11,7 @@ test('base view +@mobile', async({ render, mockApiResponse, mockEnvs, mockTextAd
   await mockEnvs([
     [ 'NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE', chainType ],
   ]);
-  await mockApiResponse('validators_zilliqa', validatorsMock.validatorsResponse);
+  await mockApiResponse('general:validators_zilliqa', validatorsMock.validatorsResponse);
   await mockTextAd();
 
   const component = await render(<Validators/>);

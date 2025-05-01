@@ -9,7 +9,7 @@ import Pools from './Pools';
 test('base view +@dark-mode', async({ render, mockApiResponse, mockTextAd, mockAssetResponse }) => {
   await mockTextAd();
   await mockApiResponse(
-    'pools',
+    'contractInfo:pools',
     { items: [ poolMock.base, poolMock.noIcons, poolMock.base ], next_page_params: null },
     { pathParams: { chainId: config.chain.id } },
   );
@@ -25,7 +25,7 @@ test.describe('mobile', () => {
   test('base view', async({ render, mockApiResponse, mockTextAd, mockAssetResponse }) => {
     await mockTextAd();
     await mockApiResponse(
-      'pools',
+      'contractInfo:pools',
       { items: [ poolMock.base, poolMock.noIcons, poolMock.base ], next_page_params: null },
       { pathParams: { chainId: config.chain.id } },
     );

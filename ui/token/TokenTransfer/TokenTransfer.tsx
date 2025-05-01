@@ -23,7 +23,7 @@ import TokenTransferTable from 'ui/token/TokenTransfer/TokenTransferTable';
 const TABS_HEIGHT = 88;
 
 type Props = {
-  transfersQuery: QueryWithPagesResult<'token_transfers'> | QueryWithPagesResult<'token_instance_transfers'>;
+  transfersQuery: QueryWithPagesResult<'general:token_transfers'> | QueryWithPagesResult<'general:token_instance_transfers'>;
   tokenId?: string;
   tokenInstance?: TokenInstance;
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;

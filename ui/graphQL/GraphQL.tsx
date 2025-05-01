@@ -50,7 +50,7 @@ const GraphQL = () => {
     }
   }`;
 
-  const graphqlUrl = buildUrl('graphql');
+  const graphqlUrl = buildUrl('general:graphql');
 
   const fetcher = createGraphiQLFetcher({
     url: graphqlUrl,

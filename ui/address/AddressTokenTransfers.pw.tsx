@@ -28,7 +28,7 @@ const tokenTransfersWoPagination = {
 };
 
 test('with pagination', async({ render, mockApiResponse }) => {
-  await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+  await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
     pathParams: { hash: CURRENT_ADDRESS },
     queryParams: { type: [] },
   });
@@ -42,7 +42,7 @@ test('with pagination', async({ render, mockApiResponse }) => {
 });
 
 test('without pagination', async({ render, mockApiResponse }) => {
-  await mockApiResponse('address_token_transfers', tokenTransfersWoPagination, {
+  await mockApiResponse('general:address_token_transfers', tokenTransfersWoPagination, {
     pathParams: { hash: CURRENT_ADDRESS },
     queryParams: { type: [] },
   });
@@ -59,7 +59,7 @@ test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
   test('with pagination', async({ render, mockApiResponse }) => {
-    await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
       queryParams: { type: [] },
     });
@@ -73,7 +73,7 @@ test.describe('mobile', () => {
   });
 
   test('without pagination', async({ render, mockApiResponse }) => {
-    await mockApiResponse('address_token_transfers', tokenTransfersWoPagination, {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWoPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
       queryParams: { type: [] },
     });
@@ -94,7 +94,7 @@ test.describe('socket', () => {
         query: { hash: CURRENT_ADDRESS },
       },
     };
-    await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
       queryParams: { type: [] },
     });
@@ -127,7 +127,7 @@ test.describe('socket', () => {
         query: { hash: CURRENT_ADDRESS },
       },
     };
-    await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
       queryParams: { type: [] },
     });
@@ -163,7 +163,7 @@ test.describe('socket', () => {
         query: { hash: CURRENT_ADDRESS, type: 'ERC-1155' },
       },
     };
-    await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
       queryParams: { type: 'ERC-1155' },
     });
@@ -197,7 +197,7 @@ test.describe('socket', () => {
         query: { hash: CURRENT_ADDRESS, type: 'ERC-1155' },
       },
     };
-    await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
       queryParams: { type: 'ERC-1155' },
     });

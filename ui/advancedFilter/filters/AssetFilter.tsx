@@ -66,7 +66,7 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
     });
   }, []);
 
-  const tokensQuery = useApiQuery('tokens', {
+  const tokensQuery = useApiQuery('general:tokens', {
     queryParams: { limit: debouncedSearchTerm ? undefined : '7', q: debouncedSearchTerm },
     queryOptions: {
       refetchOnMount: false,

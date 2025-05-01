@@ -89,7 +89,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
       });
     }
 
-    queryClient.setQueryData(getResourceKey('user_info'), () => screen.profile);
+    queryClient.setQueryData(getResourceKey('general:user_info'), () => screen.profile);
     await csrfQuery.refetch();
 
     if ('rewardsToken' in screen && screen.rewardsToken) {

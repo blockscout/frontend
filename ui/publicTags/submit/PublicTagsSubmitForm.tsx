@@ -61,7 +61,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
     const result = await Promise.all(requestsBody.map(async(body) => {
       return recaptcha.executeAsync()
         .then(() => {
-          return apiFetch<'public_tag_application', unknown, { message: string }>('public_tag_application', {
+          return apiFetch<'admin:public_tag_application', unknown, { message: string }>('admin:public_tag_application', {
             pathParams: { chainId: appConfig.chain.id },
             fetchParams: {
               method: 'POST',

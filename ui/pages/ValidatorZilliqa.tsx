@@ -17,7 +17,7 @@ const ValidatorZilliqa = () => {
   const router = useRouter();
   const blsPublicKey = getQueryParamString(router.query.id);
 
-  const query = useApiQuery('validator_zilliqa', {
+  const query = useApiQuery('general:validator_zilliqa', {
     pathParams: { bls_public_key: blsPublicKey },
     queryOptions: {
       placeholderData: VALIDATOR_ZILLIQA,

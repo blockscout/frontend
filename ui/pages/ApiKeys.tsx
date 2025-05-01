@@ -29,7 +29,7 @@ const ApiKeysPage: React.FC = () => {
   const [ apiKeyModalData, setApiKeyModalData ] = useState<ApiKey>();
   const [ deleteModalData, setDeleteModalData ] = useState<ApiKey>();
 
-  const { data, isPlaceholderData, isError } = useApiQuery('api_keys', {
+  const { data, isPlaceholderData, isError } = useApiQuery('general:api_keys', {
     queryOptions: {
       placeholderData: Array(3).fill(API_KEY),
     },

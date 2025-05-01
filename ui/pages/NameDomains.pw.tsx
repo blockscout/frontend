@@ -10,7 +10,7 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse, mockTextAd }) => {
   await mockTextAd();
   await mockAssetResponse(ensDomainMock.protocolA.icon_url as string, './playwright/mocks/image_s.jpg');
   await mockAssetResponse(ensDomainMock.protocolB.icon_url as string, './playwright/mocks/image_md.jpg');
-  await mockApiResponse('domains_lookup', {
+  await mockApiResponse('bens:domains_lookup', {
     items: [
       ensDomainMock.ensDomainA,
       ensDomainMock.ensDomainB,
@@ -25,7 +25,7 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse, mockTextAd }) => {
     pathParams: { chainId: config.chain.id },
     queryParams: { only_active: true },
   });
-  await mockApiResponse('domain_protocols', {
+  await mockApiResponse('bens:domain_protocols', {
     items: [ ensDomainMock.protocolA, ensDomainMock.protocolB ],
   }, {
     pathParams: { chainId: config.chain.id },

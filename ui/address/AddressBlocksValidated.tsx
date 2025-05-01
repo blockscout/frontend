@@ -41,11 +41,11 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
 
   const addressHash = String(router.query.hash);
   const query = useQueryWithPages({
-    resourceName: 'address_blocks_validated',
+    resourceName: 'general:address_blocks_validated',
     pathParams: { hash: addressHash },
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'address_blocks_validated'>(
+      placeholderData: generateListStub<'general:address_blocks_validated'>(
         BLOCK,
         50,
         {
@@ -66,7 +66,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
     setSocketAlert('');
 
     queryClient.setQueryData(
-      getResourceKey('address_blocks_validated', { pathParams: { hash: addressHash } }),
+      getResourceKey('general:address_blocks_validated', { pathParams: { hash: addressHash } }),
       (prevData: AddressBlocksValidatedResponse | undefined) => {
         if (!prevData) {
           return;

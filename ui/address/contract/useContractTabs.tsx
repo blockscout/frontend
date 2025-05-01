@@ -42,7 +42,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     setIsQueryEnabled(true);
   }, []);
 
-  const contractQuery = useApiQuery('contract', {
+  const contractQuery = useApiQuery('general:contract', {
     pathParams: { hash: data?.hash },
     queryOptions: {
       enabled: isEnabled && isQueryEnabled,
@@ -51,7 +51,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     },
   });
 
-  const mudSystemsQuery = useApiQuery('contract_mud_systems', {
+  const mudSystemsQuery = useApiQuery('general:mud_systems', {
     pathParams: { hash: data?.hash },
     queryOptions: {
       enabled: isEnabled && isQueryEnabled && hasMudTab,

@@ -12,21 +12,21 @@ import StatsWidget from 'ui/shared/stats/StatsWidget';
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
 
 const TxsStats = () => {
-  const txsStatsQuery = useApiQuery('stats_transactions', {
+  const txsStatsQuery = useApiQuery('stats:pages_transactions', {
     queryOptions: {
       enabled: isStatsFeatureEnabled,
       placeholderData: isStatsFeatureEnabled ? TXS_STATS_MICROSERVICE : undefined,
     },
   });
 
-  const txsStatsApiQuery = useApiQuery('txs_stats', {
+  const txsStatsApiQuery = useApiQuery('general:txs_stats', {
     queryOptions: {
       enabled: !isStatsFeatureEnabled,
       placeholderData: !isStatsFeatureEnabled ? TXS_STATS : undefined,
     },
   });
 
-  const statsQuery = useApiQuery('stats', {
+  const statsQuery = useApiQuery('general:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },

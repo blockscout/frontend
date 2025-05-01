@@ -1,21 +1,17 @@
 import type { Feature } from './types';
 
+import apis from '../apis';
 import { getEnvValue } from '../utils';
 
-const contractInfoApiHost = getEnvValue('NEXT_PUBLIC_CONTRACT_INFO_API_HOST');
 const dexPoolsEnabled = getEnvValue('NEXT_PUBLIC_DEX_POOLS_ENABLED') === 'true';
 
 const title = 'DEX Pools';
 
-const config: Feature<{ api: { endpoint: string; basePath: string } }> = (() => {
-  if (contractInfoApiHost && dexPoolsEnabled) {
+const config: Feature<{ }> = (() => {
+  if (apis.contractInfo && dexPoolsEnabled) {
     return Object.freeze({
       title,
       isEnabled: true,
-      api: {
-        endpoint: contractInfoApiHost,
-        basePath: '',
-      },
     });
   }
 

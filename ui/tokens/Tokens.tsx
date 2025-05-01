@@ -12,7 +12,7 @@ import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
 
 interface Props {
-  query: QueryWithPagesResult<'tokens'> | QueryWithPagesResult<'tokens_bridged'>;
+  query: QueryWithPagesResult<'general:tokens'> | QueryWithPagesResult<'general:tokens_bridged'>;
   onSortChange: (value: TokensSortingValue) => void;
   sort: TokensSortingValue;
   actionBar?: React.ReactNode;
