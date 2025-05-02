@@ -1,5 +1,6 @@
 import React from 'react';
 
+import type { TxsSocketType } from './socket/types';
 import type { AddressFromToFilter } from 'types/api/address';
 import type { TransactionsSortingValue } from 'types/api/transaction';
 
@@ -10,11 +11,9 @@ import TxsContent from './TxsContent';
 
 type Props = {
 
-  query: QueryWithPagesResult<'address_txs'>;
+  query: QueryWithPagesResult<'general:address_txs'>;
   showBlockInfo?: boolean;
-  showSocketInfo?: boolean;
-  socketInfoAlert?: string;
-  socketInfoNum?: number;
+  socketType?: TxsSocketType;
   currentAddress?: string;
   filter?: React.ReactNode;
   filterValue?: AddressFromToFilter;
@@ -29,9 +28,7 @@ const TxsWithAPISorting = ({
   filterValue,
   query,
   showBlockInfo = true,
-  showSocketInfo = true,
-  socketInfoAlert,
-  socketInfoNum,
+  socketType,
   currentAddress,
   enableTimeIncrement,
   top,
@@ -49,9 +46,7 @@ const TxsWithAPISorting = ({
       filter={ filter }
       filterValue={ filterValue }
       showBlockInfo={ showBlockInfo }
-      showSocketInfo={ showSocketInfo }
-      socketInfoAlert={ socketInfoAlert }
-      socketInfoNum={ socketInfoNum }
+      socketType={ socketType }
       currentAddress={ currentAddress }
       enableTimeIncrement={ enableTimeIncrement }
       top={ top }

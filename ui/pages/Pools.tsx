@@ -24,7 +24,7 @@ const Pools = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const poolsQuery = useQueryWithPages({
-    resourceName: 'pools',
+    resourceName: 'contractInfo:pools',
     pathParams: { chainId: config.chain.id },
     filters: { query: debouncedSearchTerm },
     options: {

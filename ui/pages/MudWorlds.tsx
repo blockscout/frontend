@@ -13,9 +13,9 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const MudWorlds = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'mud_worlds',
+    resourceName: 'general:mud_worlds',
     options: {
-      placeholderData: generateListStub<'mud_worlds'>(
+      placeholderData: generateListStub<'general:mud_worlds'>(
         MUD_WORLD,
         50,
         {

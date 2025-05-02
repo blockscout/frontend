@@ -39,7 +39,7 @@ const ChainIndicators = () => {
 
   const queryResult = useChartDataQuery(selectedIndicatorData?.id as ChainIndicatorId);
 
-  const statsMicroserviceQueryResult = useApiQuery('stats_main', {
+  const statsMicroserviceQueryResult = useApiQuery('stats:pages_main', {
     queryOptions: {
       refetchOnMount: false,
       enabled: isStatsFeatureEnabled,
@@ -47,7 +47,7 @@ const ChainIndicators = () => {
     },
   });
 
-  const statsApiQueryResult = useApiQuery('stats', {
+  const statsApiQueryResult = useApiQuery('general:stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,
@@ -126,10 +126,10 @@ const ChainIndicators = () => {
       alignItems="stretch"
     >
       <Flex flexGrow={ 1 } flexDir="column">
-        <Flex alignItems="center">
+        <Skeleton loading={ isPlaceholderData } display="flex" alignItems="center" w="fit-content" columnGap={ 1 }>
           <Text fontWeight={ 500 }>{ title }</Text>
-          { hint && <Hint label={ hint } ml={ 1 }/> }
-        </Flex>
+          { hint && <Hint label={ hint }/> }
+        </Skeleton>
         <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end">
           { valueTitle }
           { valueDiff }

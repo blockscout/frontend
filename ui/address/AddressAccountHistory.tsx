@@ -37,11 +37,11 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
   const [ filterValue, setFilterValue ] = React.useState<NovesHistoryFilterValue>(getFilterValue(router.query.filter));
 
   const { data, isError, pagination, isPlaceholderData } = useQueryWithPages({
-    resourceName: 'noves_address_history',
+    resourceName: 'general:noves_address_history',
     pathParams: { address: currentAddress },
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'noves_address_history'>(NOVES_TRANSLATE, 10, { hasNextPage: false, pageNumber: 1, pageSize: 10 }),
+      placeholderData: generateListStub<'general:noves_address_history'>(NOVES_TRANSLATE, 10, { hasNextPage: false, pageNumber: 1, pageSize: 10 }),
     },
   });
 

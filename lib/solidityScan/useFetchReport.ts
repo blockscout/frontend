@@ -11,7 +11,7 @@ interface Params {
   hash: string;
 }
 
-const RESOURCE_NAME = 'contract_solidity_scan_report';
+const RESOURCE_NAME = 'general:contract_solidity_scan_report';
 const ERROR_NAME = 'Invalid response schema';
 
 export default function useFetchReport({ hash }: Params) {

@@ -25,13 +25,13 @@ const AccountsLabelSearch = () => {
   const tagName = getQueryParamString(router.query.tagName);
 
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
-    resourceName: 'addresses_metadata_search',
+    resourceName: 'general:addresses_metadata_search',
     filters: {
       slug,
       tag_type: tagType,
     },
     options: {
-      placeholderData: generateListStub<'addresses_metadata_search'>(
+      placeholderData: generateListStub<'general:addresses_metadata_search'>(
         TOP_ADDRESS,
         50,
         {

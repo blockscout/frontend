@@ -23,7 +23,7 @@ import type { BlockQuery } from './useBlockQuery';
 
 type RpcResponseType = GetBlockReturnType<Chain, boolean, 'latest'> | null;
 
-export type BlockTxsQuery = QueryWithPagesResult<'block_txs'> & {
+export type BlockTxsQuery = QueryWithPagesResult<'general:block_txs'> & {
   isDegradedData: boolean;
 };
 
@@ -37,11 +37,11 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
   const apiQuery = useQueryWithPages({
-    resourceName: 'block_txs',
+    resourceName: 'general:block_txs',
     pathParams: { height_or_hash: heightOrHash },
     options: {
       enabled: Boolean(tab === 'txs' && !blockQuery.isPlaceholderData && !blockQuery.isDegradedData),
-      placeholderData: generateListStub<'block_txs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:block_txs'>(TX, 50, { next_page_params: {
         block_number: 9004925,
         index: 49,
         items_count: 50,
@@ -157,7 +157,7 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
   ) && rpcQuery.data && publicClient);
 
-  const rpcQueryWithPages: QueryWithPagesResult<'block_txs'> = {
+  const rpcQueryWithPages: QueryWithPagesResult<'general:block_txs'> = {
     ...rpcQuery as UseQueryResult<BlockTransactionsResponse, ResourceError>,
     pagination: emptyPagination,
     onFilterChange: () => {},

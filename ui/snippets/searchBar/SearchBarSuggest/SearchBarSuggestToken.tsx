@@ -30,7 +30,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat }: It
 
   const address = (
     <Text color="text.secondary" whiteSpace="nowrap" overflow="hidden">
-      <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ hash } noTooltip/>
     </Text>
   );
 

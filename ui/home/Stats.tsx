@@ -21,7 +21,7 @@ const Stats = () => {
   const [ hasGasTracker, setHasGasTracker ] = React.useState(config.features.gasTracker.isEnabled);
 
   // data from stats microservice is prioritized over data from stats api
-  const statsQuery = useApiQuery('stats_main', {
+  const statsQuery = useApiQuery('stats:pages_main', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: isStatsFeatureEnabled ? HOMEPAGE_STATS_MICROSERVICE : undefined,
@@ -29,7 +29,7 @@ const Stats = () => {
     },
   });
 
-  const apiQuery = useApiQuery('stats', {
+  const apiQuery = useApiQuery('general:stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,
@@ -46,21 +46,21 @@ const Stats = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
 
-  const zkEvmLatestBatchQuery = useApiQuery('homepage_zkevm_latest_batch', {
+  const zkEvmLatestBatchQuery = useApiQuery('general:homepage_zkevm_latest_batch', {
     queryOptions: {
       placeholderData: 12345,
       enabled: rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && config.UI.homepage.stats.includes('latest_batch'),
     },
   });
 
-  const zkSyncLatestBatchQuery = useApiQuery('homepage_zksync_latest_batch', {
+  const zkSyncLatestBatchQuery = useApiQuery('general:homepage_zksync_latest_batch', {
     queryOptions: {
       placeholderData: 12345,
       enabled: rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && config.UI.homepage.stats.includes('latest_batch'),
     },
   });
 
-  const arbitrumLatestBatchQuery = useApiQuery('homepage_arbitrum_latest_batch', {
+  const arbitrumLatestBatchQuery = useApiQuery('general:homepage_arbitrum_latest_batch', {
     queryOptions: {
       placeholderData: 12345,
       enabled: rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && config.UI.homepage.stats.includes('latest_batch'),

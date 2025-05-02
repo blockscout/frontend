@@ -29,7 +29,7 @@ const allTokens = {
 // FIXME: test is flaky, screenshot in docker container is different from local
 test.skip('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
 
-  await mockApiResponse('tokens', allTokens);
+  await mockApiResponse('general:tokens', allTokens);
 
   const component = await render(
     <div>
@@ -49,8 +49,8 @@ test('with search +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
     next_page_params: null,
   };
 
-  await mockApiResponse('tokens', allTokens);
-  await mockApiResponse('tokens', filteredTokens, { queryParams: { q: 'foo' } });
+  await mockApiResponse('general:tokens', allTokens);
+  await mockApiResponse('general:tokens', filteredTokens, { queryParams: { q: 'foo' } });
 
   const component = await render(
     <div>
@@ -94,8 +94,8 @@ test.describe('bridged tokens', () => {
 
   test('base view', async({ render, page, mockApiResponse, mockEnvs }) => {
     await mockEnvs(ENVS_MAP.bridgedTokens);
-    await mockApiResponse('tokens_bridged', bridgedTokens);
-    await mockApiResponse('tokens_bridged', bridgedFilteredTokens, { queryParams: { chain_ids: '99' } });
+    await mockApiResponse('general:tokens_bridged', bridgedTokens);
+    await mockApiResponse('general:tokens_bridged', bridgedFilteredTokens, { queryParams: { chain_ids: '99' } });
 
     const component = await render(
       <div>

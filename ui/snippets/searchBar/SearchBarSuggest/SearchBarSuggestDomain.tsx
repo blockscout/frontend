@@ -32,7 +32,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: I
       whiteSpace="nowrap"
       color="text.secondary"
     >
-      <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ hash } noTooltip/>
     </Text>
   );
 

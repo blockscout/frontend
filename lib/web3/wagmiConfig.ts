@@ -20,7 +20,7 @@ const wagmi = (() => {
         [currentChain.id]: fallback(
           config.chain.rpcUrls
             .map((url) => http(url))
-            .concat(http(`${ config.api.endpoint }/api/eth-rpc`)),
+            .concat(http(`${ config.apis.general.endpoint }/api/eth-rpc`)),
         ),
         ...(parentChain ? { [parentChain.id]: http(parentChain.rpcUrls.default.http[0]) } : {}),
       },

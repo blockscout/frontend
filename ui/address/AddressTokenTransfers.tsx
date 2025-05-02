@@ -84,7 +84,7 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
   );
 
   const { isError, isPlaceholderData, data, pagination, onFilterChange } = useQueryWithPages({
-    resourceName: 'address_token_transfers',
+    resourceName: 'general:address_token_transfers',
     pathParams: { hash: currentAddress },
     filters,
     options: {
@@ -132,7 +132,7 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
 
     if (newItems.length > 0) {
       queryClient.setQueryData(
-        getResourceKey('address_token_transfers', { pathParams: { hash: currentAddress }, queryParams: { ...filters } }),
+        getResourceKey('general:address_token_transfers', { pathParams: { hash: currentAddress }, queryParams: { ...filters } }),
         (prevData: AddressTokenTransferResponse | undefined) => {
           if (!prevData) {
             return;

@@ -6,7 +6,7 @@ import { test, expect } from 'playwright/lib';
 
 import AddressVerificationStepSignature from './AddressVerificationStepSignature';
 
-const VERIFY_ADDRESS_URL = buildUrl('address_verification', { chainId: '1', type: ':verify' });
+const VERIFY_ADDRESS_URL = buildUrl('contractInfo:address_verification', { chainId: '1', type: ':verify' });
 
 test('base view', async({ render, page }) => {
   await page.route(VERIFY_ADDRESS_URL, (route) => route.fulfill({

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import type { TxsSocketType } from './socket/types';
 import type { AddressFromToFilter } from 'types/api/address';
 
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
@@ -8,12 +9,12 @@ import TxsContent from './TxsContent';
 import useTxsSort from './useTxsSort';
 
 type Props = {
-  // eslint-disable-next-line max-len
-  query: QueryWithPagesResult<'txs_validated' | 'txs_pending'> | QueryWithPagesResult<'txs_watchlist'> | QueryWithPagesResult<'block_txs'> | QueryWithPagesResult<'zkevm_l2_txn_batch_txs'>;
+  query: QueryWithPagesResult<'general:txs_validated' | 'general:txs_pending'> |
+    QueryWithPagesResult<'general:txs_watchlist'> |
+    QueryWithPagesResult<'general:block_txs'> |
+    QueryWithPagesResult<'general:zkevm_l2_txn_batch_txs'>;
   showBlockInfo?: boolean;
-  showSocketInfo?: boolean;
-  socketInfoAlert?: string;
-  socketInfoNum?: number;
+  socketType?: TxsSocketType;
   currentAddress?: string;
   filter?: React.ReactNode;
   filterValue?: AddressFromToFilter;
@@ -26,9 +27,7 @@ const TxsWithFrontendSorting = ({
   filterValue,
   query,
   showBlockInfo = true,
-  showSocketInfo = true,
-  socketInfoAlert,
-  socketInfoNum,
+  socketType,
   currentAddress,
   enableTimeIncrement,
   top,
@@ -40,9 +39,7 @@ const TxsWithFrontendSorting = ({
       filter={ filter }
       filterValue={ filterValue }
       showBlockInfo={ showBlockInfo }
-      showSocketInfo={ showSocketInfo }
-      socketInfoAlert={ socketInfoAlert }
-      socketInfoNum={ socketInfoNum }
+      socketType={ socketType }
       currentAddress={ currentAddress }
       enableTimeIncrement={ enableTimeIncrement }
       top={ top }

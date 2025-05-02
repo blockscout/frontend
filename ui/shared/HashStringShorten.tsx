@@ -6,20 +6,27 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 
 interface Props {
   hash: string;
-  isTooltipDisabled?: boolean;
+  noTooltip?: boolean;
+  tooltipInteractive?: boolean;
   type?: 'long' | 'short';
   as?: React.ElementType;
 }
 
-const HashStringShorten = ({ hash, isTooltipDisabled, as = 'span', type }: Props) => {
+const HashStringShorten = ({ hash, noTooltip, as = 'span', type, tooltipInteractive }: Props) => {
   const charNumber = type === 'long' ? 16 : 8;
   if (hash.length <= charNumber) {
     return <chakra.span as={ as }>{ hash }</chakra.span>;
   }
 
+  const content = <chakra.span as={ as }>{ shortenString(hash, charNumber) }</chakra.span>;
+
+  if (noTooltip) {
+    return content;
+  }
+
   return (
-    <Tooltip content={ hash } disabled={ isTooltipDisabled }>
-      <chakra.span as={ as }>{ shortenString(hash, charNumber) }</chakra.span>
+    <Tooltip content={ hash } interactive={ tooltipInteractive }>
+      { content }
     </Tooltip>
   );
 };

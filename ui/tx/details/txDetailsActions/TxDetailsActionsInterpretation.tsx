@@ -12,7 +12,7 @@ interface Props {
 }
 
 const TxDetailsActionsInterpretation = ({ hash, isTxDataLoading }: Props) => {
-  const txInterpretationQuery = useApiQuery('tx_interpretation', {
+  const txInterpretationQuery = useApiQuery('general:tx_interpretation', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash) && !isTxDataLoading,

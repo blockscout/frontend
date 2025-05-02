@@ -18,7 +18,7 @@ test('base view +@mobile', async({ render, mockApiResponse, mockEnvs, mockTextAd
   await mockTextAd();
   await mockEnvs(ENVS_MAP.arbitrumRollup);
   await mockApiResponse(
-    'arbitrum_l2_txn_withdrawals',
+    'general:arbitrum_l2_txn_withdrawals',
     { items: [ txnWithdrawalsMock.unclaimed, txnWithdrawalsMock.claimed ] },
     { pathParams: { hash: TX_HASH } },
   );

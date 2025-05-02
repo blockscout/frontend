@@ -16,18 +16,18 @@ test.describe('default view', () => {
 
   test.beforeEach(async({ render, mockApiResponse, mockAssetResponse }) => {
     await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
-    await mockApiResponse('stats_main', statsMainMock.base);
-    await mockApiResponse('stats', statsMock.base);
-    await mockApiResponse('homepage_blocks', [
+    await mockApiResponse('stats:pages_main', statsMainMock.base);
+    await mockApiResponse('general:stats', statsMock.base);
+    await mockApiResponse('general:homepage_blocks', [
       blockMock.base,
       blockMock.base2,
     ]);
-    await mockApiResponse('homepage_txs', [
+    await mockApiResponse('general:homepage_txs', [
       txMock.base,
       txMock.withContractCreation,
       txMock.withTokenTransfer,
     ]);
-    await mockApiResponse('stats_charts_txs', dailyTxsMock.base);
+    await mockApiResponse('general:stats_charts_txs', dailyTxsMock.base);
 
     component = await render(<Home/>);
   });
@@ -58,18 +58,18 @@ test.describe('mobile', () => {
 
   test('base view', async({ render, page, mockAssetResponse, mockApiResponse }) => {
     await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
-    await mockApiResponse('stats_main', statsMainMock.base);
-    await mockApiResponse('stats', statsMock.base);
-    await mockApiResponse('homepage_blocks', [
+    await mockApiResponse('stats:pages_main', statsMainMock.base);
+    await mockApiResponse('general:stats', statsMock.base);
+    await mockApiResponse('general:homepage_blocks', [
       blockMock.base,
       blockMock.base2,
     ]);
-    await mockApiResponse('homepage_txs', [
+    await mockApiResponse('general:homepage_txs', [
       txMock.base,
       txMock.withContractCreation,
       txMock.withTokenTransfer,
     ]);
-    await mockApiResponse('stats_charts_txs', dailyTxsMock.base);
+    await mockApiResponse('general:stats_charts_txs', dailyTxsMock.base);
 
     const component = await render(<Home/>);
 

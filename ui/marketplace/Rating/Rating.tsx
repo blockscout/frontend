@@ -5,6 +5,7 @@ import type { AppRating } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
+import type { PopoverContentProps } from 'toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
 import { Rating } from 'toolkit/chakra/rating';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -26,11 +27,13 @@ type Props = {
   fullView?: boolean;
   canRate: boolean | undefined;
   source: EventPayload<EventTypes.APP_FEEDBACK>['Source'];
+  popoverContentProps?: PopoverContentProps;
 };
 
 const MarketplaceRating = ({
   appId, rating, userRating, rate,
   isSending, isLoading, fullView, canRate, source,
+  popoverContentProps,
 }: Props) => {
 
   if (!isEnabled) {
@@ -60,7 +63,7 @@ const MarketplaceRating = ({
           canRate={ canRate }
         />
         { canRate ? (
-          <PopoverContent w="250px">
+          <PopoverContent w="250px" { ...popoverContentProps }>
             <PopoverBody>
               <Content
                 appId={ appId }

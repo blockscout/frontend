@@ -1,5 +1,6 @@
 import type { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
+import fetch from 'node-fetch';
 import React from 'react';
 
 import type { NextPageWithLayout } from 'nextjs/types';
@@ -49,19 +50,25 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
 
       const appData = await(async() => {
         if ('configUrl' in feature) {
-          const appList = await fetchApi<never, Array<MarketplaceAppOverview>>({
-            url: config.app.baseUrl + feature.configUrl,
-            route: '/marketplace_config',
-            timeout: 1_000,
-          });
+          const controller = new AbortController();
+          const timeout = setTimeout(() => {
+            controller.abort();
+          }, 1_000);
 
-          if (appList && Array.isArray(appList)) {
-            return appList.find(app => app.id === getQueryParamString(ctx.query.id));
+          try {
+            const response = await fetch(feature.configUrl, { signal: controller.signal });
+            const appList = await response.json() as Array<MarketplaceAppOverview>;
+            clearTimeout(timeout);
+
+            if (appList && Array.isArray(appList)) {
+              return appList.find(app => app.id === getQueryParamString(ctx.query.id));
+            }
+          } catch (error) {} finally {
+            clearTimeout(timeout);
           }
-
         } else {
           return await fetchApi({
-            resource: 'marketplace_dapp',
+            resource: 'admin:marketplace_dapp',
             pathParams: { dappId: getQueryParamString(ctx.query.id), chainId: config.chain.id },
             timeout: 1_000,
           });

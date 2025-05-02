@@ -5,12 +5,12 @@ import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInval
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 type Props = {
-  query: QueryWithPagesResult<'txs_watchlist'>;
+  query: QueryWithPagesResult<'general:txs_watchlist'>;
 };
 
 const TxsWatchlist = ({ query }: Props) => {
   useRedirectForInvalidAuthToken();
-  return <TxsWithFrontendSorting query={ query } showSocketInfo={ false } top={ 88 }/>;
+  return <TxsWithFrontendSorting query={ query } top={ 88 }/>;
 };
 
 export default TxsWatchlist;

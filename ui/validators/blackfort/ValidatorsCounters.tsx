@@ -7,7 +7,7 @@ import { VALIDATORS_BLACKFORT_COUNTERS } from 'stubs/validators';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const ValidatorsCounters = () => {
-  const countersQuery = useApiQuery('validators_blackfort_counters', {
+  const countersQuery = useApiQuery('general:validators_blackfort_counters', {
     queryOptions: {
       enabled: config.features.validators.isEnabled,
       placeholderData: VALIDATORS_BLACKFORT_COUNTERS,

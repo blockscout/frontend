@@ -23,8 +23,8 @@ const MESSAGES_RESPONSE = {
 test('default view', async({ render, mockTextAd, mockAssetResponse, mockApiResponse }) => {
   await mockTextAd();
   await mockAssetResponse(interopMessageMock.chain.chain_logo as string, './playwright/mocks/image_s.jpg');
-  await mockApiResponse('optimistic_l2_interop_messages', MESSAGES_RESPONSE);
-  await mockApiResponse('optimistic_l2_interop_messages_count', 4000000);
+  await mockApiResponse('general:optimistic_l2_interop_messages', MESSAGES_RESPONSE);
+  await mockApiResponse('general:optimistic_l2_interop_messages_count', 4000000);
   const component = await render(<InteropMessages/>);
   await expect(component).toHaveScreenshot();
 });
@@ -34,8 +34,8 @@ test.describe('mobile', () => {
   test('default view', async({ render, mockTextAd, mockAssetResponse, mockApiResponse }) => {
     await mockTextAd();
     await mockAssetResponse(interopMessageMock.chain.chain_logo as string, './playwright/mocks/image_s.jpg');
-    await mockApiResponse('optimistic_l2_interop_messages', MESSAGES_RESPONSE);
-    await mockApiResponse('optimistic_l2_interop_messages_count', 4000000);
+    await mockApiResponse('general:optimistic_l2_interop_messages', MESSAGES_RESPONSE);
+    await mockApiResponse('general:optimistic_l2_interop_messages_count', 4000000);
     const component = await render(<InteropMessages/>);
     await expect(component).toHaveScreenshot();
   });

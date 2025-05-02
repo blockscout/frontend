@@ -26,7 +26,7 @@ const TABS_HEIGHT = 88;
 
 interface Props {
   type?: BlockType;
-  query: QueryWithPagesResult<'blocks'> | QueryWithPagesResult<'optimistic_l2_txn_batch_blocks'>;
+  query: QueryWithPagesResult<'general:blocks'> | QueryWithPagesResult<'general:optimistic_l2_txn_batch_blocks'>;
   enableSocket?: boolean;
   top?: number;
 }
@@ -39,7 +39,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    const queryKey = getResourceKey('blocks', { queryParams: { type } });
+    const queryKey = getResourceKey('general:blocks', { queryParams: { type } });
 
     queryClient.setQueryData(queryKey, (prevData: BlocksResponse | undefined) => {
       const shouldAddToList = !type || type === payload.block.type;

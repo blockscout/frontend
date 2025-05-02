@@ -135,7 +135,6 @@ const MarketplaceAppModal = ({
       open={ Boolean(data.id) }
       onOpenChange={ handleOpenChange }
       size={{ lgDown: 'full', lg: 'md' }}
-      placement="center"
     >
       <DialogContent>
         <Box
@@ -197,6 +196,7 @@ const MarketplaceAppModal = ({
                 fullView
                 canRate={ canRate }
                 source="App modal"
+                popoverContentProps={{ zIndex: 'modal' }}
               />
             </Box>
           ) }
@@ -265,6 +265,7 @@ const MarketplaceAppModal = ({
                   showContractList={ showContractList }
                   source="App modal"
                   popoverPlacement={ isMobile ? 'bottom-start' : 'left' }
+                  popoverContentProps={{ zIndex: 'modal' }}
                 />
               </Flex>
             </Flex>

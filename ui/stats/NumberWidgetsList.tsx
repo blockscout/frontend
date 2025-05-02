@@ -10,7 +10,7 @@ import DataFetchAlert from '../shared/DataFetchAlert';
 const UNITS_WITHOUT_SPACE = [ 's' ];
 
 const NumberWidgetsList = () => {
-  const { data, isPlaceholderData, isError } = useApiQuery('stats_counters', {
+  const { data, isPlaceholderData, isError } = useApiQuery('stats:counters', {
     queryOptions: {
       placeholderData: { counters: Array(10).fill(STATS_COUNTER) },
     },

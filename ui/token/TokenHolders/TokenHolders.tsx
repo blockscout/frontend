@@ -19,7 +19,7 @@ const TABS_HEIGHT = 88;
 
 type Props = {
   token?: TokenInfo;
-  holdersQuery: QueryWithPagesResult<'token_holders'>;
+  holdersQuery: QueryWithPagesResult<'general:token_holders'>;
   shouldRender?: boolean;
   tabsHeight?: number;
 };

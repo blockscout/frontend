@@ -44,14 +44,14 @@ const VerifiedAddresses = () => {
 
   const profileQuery = useProfileQuery();
 
-  const addressesQuery = useApiQuery('verified_addresses', {
+  const addressesQuery = useApiQuery('contractInfo:verified_addresses', {
     pathParams: { chainId: config.chain.id },
     queryOptions: {
       placeholderData: { verifiedAddresses: Array(3).fill(VERIFIED_ADDRESS) },
       enabled: Boolean(profileQuery.data?.email),
     },
   });
-  const applicationsQuery = useApiQuery('token_info_applications', {
+  const applicationsQuery = useApiQuery('admin:token_info_applications', {
     pathParams: { chainId: config.chain.id, id: undefined },
     queryOptions: {
       placeholderData: { submissions: Array(3).fill(TOKEN_INFO_APPLICATION) },
@@ -81,7 +81,7 @@ const VerifiedAddresses = () => {
 
   const handleAddressSubmit = React.useCallback((newItem: VerifiedAddress) => {
     queryClient.setQueryData(
-      getResourceKey('verified_addresses', { pathParams: { chainId: config.chain.id } }),
+      getResourceKey('contractInfo:verified_addresses', { pathParams: { chainId: config.chain.id } }),
       (prevData: VerifiedAddressResponse | undefined) => {
         if (!prevData) {
           return { verifiedAddresses: [ newItem ] };
@@ -96,7 +96,7 @@ const VerifiedAddresses = () => {
   const handleApplicationSubmit = React.useCallback((newItem: TokenInfoApplication) => {
     setSelectedAddress(undefined);
     queryClient.setQueryData(
-      getResourceKey('token_info_applications', { pathParams: { chainId: config.chain.id, id: undefined } }),
+      getResourceKey('admin:token_info_applications', { pathParams: { chainId: config.chain.id, id: undefined } }),
       (prevData: TokenInfoApplications | undefined) => {
         if (!prevData) {
           return { submissions: [ newItem ] };

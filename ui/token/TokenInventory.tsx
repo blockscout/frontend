@@ -18,7 +18,7 @@ import ResetIconButton from 'ui/shared/ResetIconButton';
 import TokenInventoryItem from './TokenInventoryItem';
 
 type Props = {
-  inventoryQuery: QueryWithPagesResult<'token_inventory'>;
+  inventoryQuery: QueryWithPagesResult<'general:token_inventory'>;
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
   ownerFilter?: string;
   shouldRender?: boolean;

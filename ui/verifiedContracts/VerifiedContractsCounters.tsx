@@ -9,14 +9,14 @@ import StatsWidget from 'ui/shared/stats/StatsWidget';
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
 
 const VerifiedContractsCounters = () => {
-  const countersStatsQuery = useApiQuery('stats_contracts', {
+  const countersStatsQuery = useApiQuery('stats:pages_contracts', {
     queryOptions: {
       enabled: isStatsFeatureEnabled,
       placeholderData: isStatsFeatureEnabled ? VERIFIED_CONTRACTS_COUNTERS_MICROSERVICE : undefined,
     },
   });
 
-  const countersApiQuery = useApiQuery('verified_contracts_counters', {
+  const countersApiQuery = useApiQuery('general:verified_contracts_counters', {
     queryOptions: {
       enabled: !isStatsFeatureEnabled,
       placeholderData: !isStatsFeatureEnabled ? VERIFIED_CONTRACTS_COUNTERS : undefined,

@@ -25,11 +25,11 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
 
   const hash = getQueryParamString(router.query.hash);
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'address_logs',
+    resourceName: 'general:address_logs',
     pathParams: { hash },
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'address_logs'>(LOG, 3, { next_page_params: {
+      placeholderData: generateListStub<'general:address_logs'>(LOG, 3, { next_page_params: {
         block_number: 9005750,
         index: 42,
         items_count: 50,

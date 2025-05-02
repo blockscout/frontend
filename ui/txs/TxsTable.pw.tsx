@@ -15,7 +15,6 @@ test('base view +@dark-mode', async({ render }) => {
       onSortToggle={ () => {} }
       top={ 0 }
       showBlockInfo
-      showSocketInfo={ false }
     />,
   );
 
@@ -36,7 +35,6 @@ test.describe('screen xl', () => {
         onSortToggle={ () => {} }
         top={ 0 }
         showBlockInfo
-        showSocketInfo={ false }
       />,
     );
 

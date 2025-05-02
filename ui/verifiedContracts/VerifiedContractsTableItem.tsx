@@ -64,7 +64,7 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
           value={ balance }
           isLoading={ isLoading }
           my={ 1 }
-          w="100%"
+          maxW="100%"
         />
       </TableCell>
       <TableCell isNumeric>

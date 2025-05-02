@@ -19,7 +19,7 @@ export default function useChartQuery(id: string, resolution: Resolution, interv
 
   const [ info, setInfo ] = React.useState<LineChart['info']>(apiData || undefined);
 
-  const lineQuery = useApiQuery('stats_line', {
+  const lineQuery = useApiQuery('stats:line', {
     pathParams: { id },
     queryParams: {
       from: startDate,

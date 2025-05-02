@@ -7,7 +7,7 @@ import parseMetaPayload from './parseMetaPayload';
 
 export default function useAddressMetadataInfoQuery(addresses: Array<string>, isEnabled = true) {
 
-  const resource = 'address_metadata_info';
+  const resource = 'metadata:info';
 
   return useApiQuery<typeof resource, unknown, AddressMetadataInfoFormatted>(resource, {
     queryParams: {

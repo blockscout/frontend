@@ -84,7 +84,7 @@ export default function useMarketplaceApps(
       } else if ('configUrl' in feature) {
         return fetch<Array<MarketplaceAppWithSecurityReport>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
       } else {
-        return apiFetch('marketplace_dapps', { pathParams: { chainId: config.chain.id } });
+        return apiFetch('admin:marketplace_dapps', { pathParams: { chainId: config.chain.id } });
       }
     },
     select: (data) => sortApps(data as Array<MarketplaceAppWithSecurityReport>, snapshotFavoriteApps),

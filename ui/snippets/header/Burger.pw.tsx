@@ -35,6 +35,7 @@ test('base view', async({ render, page }) => {
   await expect(page).toHaveScreenshot();
 
   await page.getByRole('button', { name: 'Network menu' }).click();
+  await page.mouse.move(0, 0);
   await expect(page).toHaveScreenshot();
 });
 
@@ -48,6 +49,7 @@ test.describe('dark mode', () => {
     await expect(page).toHaveScreenshot();
 
     await page.getByRole('button', { name: 'Network menu' }).click();
+    await page.mouse.move(0, 0);
     await expect(page).toHaveScreenshot();
   });
 });

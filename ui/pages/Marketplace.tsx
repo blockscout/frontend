@@ -170,7 +170,7 @@ const Marketplace = () => {
                 <IconSvg name="dots"/>
               </IconButton>
             </MenuTrigger>
-            <MenuContent>
+            <MenuContent zIndex="banner">
               { links.map(({ label, href, icon }) => (
                 <MenuItem key={ label } value={ label } asChild>
                   <Link external href={ href } variant="menu" gap={ 0 }>
@@ -205,6 +205,7 @@ const Marketplace = () => {
         showShadow
         display="flex"
         flexDirection="column"
+        mt={ 0 }
         mx={{ base: -3, lg: -12 }}
         px={{ base: 3, lg: 12 }}
         pt={{ base: 4, lg: 6 }}

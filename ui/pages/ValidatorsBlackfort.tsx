@@ -36,11 +36,11 @@ const ValidatorsBlackfort = () => {
     );
 
   const { isError, isPlaceholderData, data, pagination, onSortingChange } = useQueryWithPages({
-    resourceName: 'validators_blackfort',
+    resourceName: 'general:validators_blackfort',
     sorting: getSortParamsFromValue<ValidatorsBlackfortSortingValue, ValidatorsBlackfortSortingField, ValidatorsBlackfortSorting['order']>(sort),
     options: {
       enabled: config.features.validators.isEnabled,
-      placeholderData: generateListStub<'validators_blackfort'>(
+      placeholderData: generateListStub<'general:validators_blackfort'>(
         VALIDATOR_BLACKFORT,
         50,
         { next_page_params: null },

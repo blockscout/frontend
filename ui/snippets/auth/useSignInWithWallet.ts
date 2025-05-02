@@ -16,10 +16,8 @@ import { toaster } from 'toolkit/chakra/toaster';
 import { YEAR } from 'toolkit/utils/consts';
 
 function composeMessage(address: string, nonceBlockscout: string, nonceRewards: string) {
-  const feature = config.features.rewards;
-
-  const urlObj = window.location.hostname === 'localhost' && feature.isEnabled ?
-    new URL(feature.api.endpoint) :
+  const urlObj = window.location.hostname === 'localhost' && config.apis.rewards ?
+    new URL(config.apis.rewards.endpoint) :
     window.location;
 
   return [
@@ -65,18 +63,18 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
         throw new Error('User already has logged in to rewards');
       }
 
-      const rewardsConfig = await apiFetch('rewards_config') as rewards.GetConfigResponse;
+      const rewardsConfig = await apiFetch('rewards:config') as rewards.GetConfigResponse;
       if (!rewardsConfig.auth?.shared_siwe_login) {
         throw new Error('Shared SIWE login is not enabled');
       }
 
-      const rewardsCheckUser = await apiFetch('rewards_check_user', { pathParams: { address } }) as rewards.AuthUserResponse;
+      const rewardsCheckUser = await apiFetch('rewards:check_user', { pathParams: { address } }) as rewards.AuthUserResponse;
       if (!rewardsCheckUser.exists) {
         throw new Error('Rewards user does not exist');
       }
 
       const nonceConfig = await apiFetch(
-        'rewards_nonce',
+        'rewards:nonce',
         { queryParams: { blockscout_login_address: address, blockscout_login_chain_id: config.chain.id } },
       ) as rewards.AuthNonceResponse;
       if (!nonceConfig.merits_login_nonce || !nonceConfig.nonce) {
@@ -90,7 +88,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
         type: 'shared',
       };
     } catch (error) {
-      const response = await apiFetch('auth_siwe_message', { queryParams: { address } }) as { siwe_message: string };
+      const response = await apiFetch('general:auth_siwe_message', { queryParams: { address } }) as { siwe_message: string };
       return {
         message: response.siwe_message,
         type: 'single',
@@ -109,7 +107,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
         throw new Error('ReCaptcha is not solved');
       }
 
-      const authResource = isAuth ? 'auth_link_address' : 'auth_siwe_verify';
+      const authResource = isAuth ? 'general:auth_link_address' : 'general:auth_siwe_verify';
       const authResponse = await apiFetch<typeof authResource, UserInfo, unknown>(authResource, {
         fetchParams: {
           method: 'POST',
@@ -118,7 +116,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
       });
 
       const rewardsLoginResponse = siweMessage.type === 'shared' ?
-        await apiFetch('rewards_login', {
+        await apiFetch('rewards:login', {
           fetchParams: {
             method: 'POST',
             body: {

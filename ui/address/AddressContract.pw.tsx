@@ -12,9 +12,9 @@ import AddressContract from './AddressContract.pwstory';
 const hash = addressMock.contract.hash;
 
 test.beforeEach(async({ mockApiResponse }) => {
-  await mockApiResponse('address', addressMock.contract, { pathParams: { hash } });
+  await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash } });
   await mockApiResponse(
-    'contract',
+    'general:contract',
     { ...contractInfoMock.verified, abi: [ ...contractMethodsMock.read, ...contractMethodsMock.write ] },
     { pathParams: { hash } },
   );

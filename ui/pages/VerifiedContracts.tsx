@@ -43,11 +43,11 @@ const VerifiedContracts = () => {
   const isMobile = useIsMobile();
 
   const { isError, isPlaceholderData, data, pagination, onFilterChange, onSortingChange } = useQueryWithPages({
-    resourceName: 'verified_contracts',
+    resourceName: 'general:verified_contracts',
     filters: { q: debouncedSearchTerm, filter: type },
     sorting: getSortParamsFromValue<VerifiedContractsSortingValue, VerifiedContractsSortingField, VerifiedContractsSorting['order']>(sort),
     options: {
-      placeholderData: generateListStub<'verified_contracts'>(
+      placeholderData: generateListStub<'general:verified_contracts'>(
         VERIFIED_CONTRACT_INFO,
         50,
         {

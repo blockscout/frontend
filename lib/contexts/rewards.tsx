@@ -77,8 +77,8 @@ function getMessageToSign(address: string, nonce: string, isLogin?: boolean, ref
   const referralText = refCode ? ` Referral code: ${ refCode }` : '';
   const body = isLogin ? signInText : signUpText + referralText;
 
-  const urlObj = window.location.hostname === 'localhost' && feature.isEnabled ?
-    new URL(feature.api.endpoint) :
+  const urlObj = window.location.hostname === 'localhost' && config.apis.rewards ?
+    new URL(config.apis.rewards.endpoint) :
     window.location;
 
   return [
@@ -146,18 +146,18 @@ export function RewardsContextProvider({ children }: Props) {
     { headers: { Authorization: `Bearer ${ apiToken }` } },
   ], [ apiToken ]);
 
-  const balancesQuery = useApiQuery('rewards_user_balances', { queryOptions, fetchParams });
-  const dailyRewardQuery = useApiQuery('rewards_user_daily_check', { queryOptions, fetchParams });
-  const referralsQuery = useApiQuery('rewards_user_referrals', { queryOptions, fetchParams });
-  const rewardsConfigQuery = useApiQuery('rewards_config', { queryOptions: { enabled: feature.isEnabled } });
-  const checkUserQuery = useApiQuery('rewards_check_user', { queryOptions: { enabled: feature.isEnabled }, pathParams: { address } });
+  const balancesQuery = useApiQuery('rewards:user_balances', { queryOptions, fetchParams });
+  const dailyRewardQuery = useApiQuery('rewards:user_daily_check', { queryOptions, fetchParams });
+  const referralsQuery = useApiQuery('rewards:user_referrals', { queryOptions, fetchParams });
+  const rewardsConfigQuery = useApiQuery('rewards:config', { queryOptions: { enabled: feature.isEnabled } });
+  const checkUserQuery = useApiQuery('rewards:check_user', { queryOptions: { enabled: feature.isEnabled }, pathParams: { address } });
 
   // Reset queries when the API token is removed
   useEffect(() => {
     if (isInitialized && !apiToken) {
-      queryClient.resetQueries({ queryKey: getResourceKey('rewards_user_balances'), exact: true });
-      queryClient.resetQueries({ queryKey: getResourceKey('rewards_user_daily_check'), exact: true });
-      queryClient.resetQueries({ queryKey: getResourceKey('rewards_user_referrals'), exact: true });
+      queryClient.resetQueries({ queryKey: getResourceKey('rewards:user_balances'), exact: true });
+      queryClient.resetQueries({ queryKey: getResourceKey('rewards:user_daily_check'), exact: true });
+      queryClient.resetQueries({ queryKey: getResourceKey('rewards:user_referrals'), exact: true });
     }
   }, [ isInitialized, apiToken, queryClient ]);
 
@@ -203,9 +203,9 @@ export function RewardsContextProvider({ children }: Props) {
         throw new Error();
       }
       const [ nonceResponse, checkCodeResponse ] = await Promise.all([
-        apiFetch('rewards_nonce') as Promise<rewards.AuthNonceResponse>,
+        apiFetch('rewards:nonce') as Promise<rewards.AuthNonceResponse>,
         refCode ?
-          apiFetch('rewards_check_ref_code', { pathParams: { code: refCode } }) as Promise<rewards.AuthCodeResponse> :
+          apiFetch('rewards:check_ref_code', { pathParams: { code: refCode } }) as Promise<rewards.AuthCodeResponse> :
           Promise.resolve({ valid: true, reward: undefined }),
       ]);
       if (!checkCodeResponse.valid) {
@@ -217,7 +217,7 @@ export function RewardsContextProvider({ children }: Props) {
       await switchChainAsync({ chainId: Number(config.chain.id) });
       const message = getMessageToSign(address, nonceResponse.nonce, checkUserQuery.data?.exists, refCode);
       const signature = await signMessageAsync({ message });
-      const loginResponse = await apiFetch('rewards_login', {
+      const loginResponse = await apiFetch('rewards:login', {
         fetchParams: {
           method: 'POST',
           body: {
@@ -241,7 +241,7 @@ export function RewardsContextProvider({ children }: Props) {
   // Claim daily reward
   const claim = useCallback(async() => {
     try {
-      await apiFetch('rewards_user_daily_claim', {
+      await apiFetch('rewards:user_daily_claim', {
         fetchParams: {
           method: 'POST',
           ...fetchParams,

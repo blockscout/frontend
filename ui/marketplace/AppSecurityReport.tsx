@@ -12,6 +12,7 @@ import config from 'configs/app';
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Link } from 'toolkit/chakra/link';
+import type { PopoverContentProps } from 'toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { apos } from 'toolkit/utils/htmlEntities';
@@ -30,10 +31,20 @@ type Props = {
   popoverPlacement?: 'bottom-start' | 'bottom-end' | 'left';
   buttonProps?: ButtonProps;
   triggerWrapperProps?: BoxProps;
+  popoverContentProps?: PopoverContentProps;
 };
 
 const AppSecurityReport = ({
-  id, securityReport, showContractList, isLoading, onlyIcon, source, triggerWrapperProps, buttonProps, popoverPlacement = 'bottom-start',
+  id,
+  securityReport,
+  showContractList,
+  isLoading,
+  onlyIcon,
+  source,
+  triggerWrapperProps,
+  buttonProps,
+  popoverPlacement = 'bottom-start',
+  popoverContentProps,
 }: Props) => {
 
   const { open, onOpenChange } = useDisclosure();
@@ -76,7 +87,7 @@ const AppSecurityReport = ({
         wrapperProps={ triggerWrapperProps }
         { ...buttonProps }
       />
-      <PopoverContent w={{ base: 'calc(100vw - 48px)', lg: '328px' }} mx={{ base: 3, lg: 0 }}>
+      <PopoverContent w={{ base: 'calc(100vw - 48px)', lg: '328px' }} mx={{ base: 3, lg: 0 }} { ...popoverContentProps }>
         <PopoverBody px="26px" py="20px" textStyle="sm">
           <Text fontWeight="500" textStyle="xs" mb={ 2 } color="text.secondary">Smart contracts info</Text>
           <Flex alignItems="center" justifyContent="space-between" py={ 1.5 }>

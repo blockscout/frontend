@@ -36,12 +36,12 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
   const hash = getQueryParamString(router.query.hash);
 
   const { data, isPlaceholderData, isError, pagination, onFilterChange } = useQueryWithPages({
-    resourceName: 'address_internal_txs',
+    resourceName: 'general:address_internal_txs',
     pathParams: { hash },
     filters: { filter: filterValue },
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'address_internal_txs'>(
+      placeholderData: generateListStub<'general:address_internal_txs'>(
         INTERNAL_TX,
         50,
         {

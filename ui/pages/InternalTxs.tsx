@@ -16,9 +16,9 @@ const InternalTxs = () => {
   const isMobile = useIsMobile();
 
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
-    resourceName: 'internal_txs',
+    resourceName: 'general:internal_txs',
     options: {
-      placeholderData: generateListStub<'internal_txs'>(
+      placeholderData: generateListStub<'general:internal_txs'>(
         INTERNAL_TX,
         50,
         {

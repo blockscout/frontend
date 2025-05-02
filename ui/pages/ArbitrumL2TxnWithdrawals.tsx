@@ -20,7 +20,7 @@ const ArbitrumL2TxnWithdrawals = () => {
   const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.q) || undefined);
   const [ error, setError ] = React.useState<string | null>(null);
 
-  const { data, isError, isPlaceholderData } = useApiQuery('arbitrum_l2_txn_withdrawals', {
+  const { data, isError, isPlaceholderData } = useApiQuery('general:arbitrum_l2_txn_withdrawals', {
     pathParams: {
       hash: searchTerm,
     },

@@ -51,10 +51,10 @@ const CustomAbiForm: React.FC<Props> = ({ data, onOpenChange, onSuccess, setAler
     const body = { name: data.name, contract_address_hash: data.contract_address_hash, abi: data.abi };
 
     if (!data.id) {
-      return apiFetch('custom_abi', { fetchParams: { method: 'POST', body } });
+      return apiFetch('general:custom_abi', { fetchParams: { method: 'POST', body } });
     }
 
-    return apiFetch('custom_abi', {
+    return apiFetch('general:custom_abi', {
       pathParams: { id: String(data.id) },
       fetchParams: { method: 'PUT', body },
     });
@@ -64,7 +64,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onOpenChange, onSuccess, setAler
     mutationFn: customAbiKey,
     onSuccess: async(data) => {
       const response = data as unknown as CustomAbi;
-      queryClient.setQueryData([ resourceKey('custom_abi') ], (prevData: CustomAbis | undefined) => {
+      queryClient.setQueryData([ resourceKey('general:custom_abi') ], (prevData: CustomAbis | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.id === response.id);
 
         if (isExisting) {

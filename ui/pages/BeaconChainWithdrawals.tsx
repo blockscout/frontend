@@ -21,16 +21,16 @@ const feature = config.features.beaconChain;
 
 const Withdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'withdrawals',
+    resourceName: 'general:withdrawals',
     options: {
-      placeholderData: generateListStub<'withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
         index: 5,
         items_count: 50,
       } }),
     },
   });
 
-  const countersQuery = useApiQuery('withdrawals_counters', {
+  const countersQuery = useApiQuery('general:withdrawals_counters', {
     queryOptions: {
       placeholderData: {
         withdrawals_count: '19091878',

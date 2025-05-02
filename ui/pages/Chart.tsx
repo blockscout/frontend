@@ -147,7 +147,7 @@ const Chart = () => {
 
   if (lineQuery.isError) {
     if (isCustomAppError(lineQuery.error)) {
-      throwOnResourceLoadError({ resource: 'stats_line', error: lineQuery.error, isError: true });
+      throwOnResourceLoadError({ resource: 'stats:line', error: lineQuery.error, isError: true });
     }
   }
 

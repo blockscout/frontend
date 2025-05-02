@@ -50,10 +50,13 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
       const body = {
         contractAddress: data.address,
       };
-      const response = await apiFetch<'address_verification', AddressCheckResponseSuccess, AddressVerificationResponseError>('address_verification', {
-        fetchParams: { method: 'POST', body },
-        pathParams: { chainId: config.chain.id, type: ':prepare' },
-      });
+      const response = await apiFetch<'contractInfo:address_verification', AddressCheckResponseSuccess, AddressVerificationResponseError>(
+        'contractInfo:address_verification',
+        {
+          fetchParams: { method: 'POST', body },
+          pathParams: { chainId: config.chain.id, type: ':prepare' },
+        },
+      );
 
       if (response.status !== 'SUCCESS') {
         const type = typeof response.status === 'number' ? 'UNKNOWN_ERROR' : response.status;

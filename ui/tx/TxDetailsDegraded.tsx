@@ -144,7 +144,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
 
   if (!query.data) {
     if (originalError && isCustomAppError(originalError)) {
-      throwOnResourceLoadError({ resource: 'tx', error: originalError, isError: true });
+      throwOnResourceLoadError({ resource: 'general:tx', error: originalError, isError: true });
     }
 
     return <DataFetchAlert/>;

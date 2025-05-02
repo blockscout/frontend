@@ -1,5 +1,6 @@
 import type { Feature } from './types';
 
+import apis from '../apis';
 import chain from '../chain';
 import { getEnvValue, getExternalAssetFilePath } from '../utils';
 
@@ -9,7 +10,6 @@ const configUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL')
 const submitFormUrl = getEnvValue('NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM');
 const suggestIdeasFormUrl = getEnvValue('NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM');
 const categoriesUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL');
-const adminServiceApiHost = getEnvValue('NEXT_PUBLIC_ADMIN_SERVICE_API_HOST');
 const securityReportsUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL');
 const featuredApp = getEnvValue('NEXT_PUBLIC_MARKETPLACE_FEATURED_APP');
 const bannerContentUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL');
@@ -22,7 +22,7 @@ const title = 'Marketplace';
 
 const config: Feature<(
   { configUrl: string } |
-  { api: { endpoint: string; basePath: string } }
+  { api: { endpoint: string; basePath?: string } }
 ) & {
   submitFormUrl: string;
   categoriesUrl: string | undefined;
@@ -58,14 +58,11 @@ const config: Feature<(
         configUrl,
         ...props,
       });
-    } else if (adminServiceApiHost) {
+    } else if (apis.admin) {
       return Object.freeze({
         title,
         isEnabled: true,
-        api: {
-          endpoint: adminServiceApiHost,
-          basePath: '',
-        },
+        api: apis.admin,
         ...props,
       });
     }

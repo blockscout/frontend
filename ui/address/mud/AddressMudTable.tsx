@@ -41,7 +41,7 @@ const AddressMudTable = ({ tableId, isQueryEnabled = true }: Props) => {
   const hash = getQueryParamString(router.query.hash);
 
   const { data, isLoading, isError, pagination, onSortingChange } = useQueryWithPages({
-    resourceName: 'address_mud_records',
+    resourceName: 'general:mud_records',
     pathParams: { hash, table_id: tableId },
     filters,
     sorting,

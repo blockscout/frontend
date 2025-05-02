@@ -12,14 +12,14 @@ const test = base.extend<{ context: BrowserContext }>({
 });
 
 test('without address', async({ render, mockApiResponse }) => {
-  await mockApiResponse('user_info', profileMock.base);
+  await mockApiResponse('general:user_info', profileMock.base);
   const component = await render(<MyProfile/>);
 
   await expect(component).toHaveScreenshot();
 });
 
 test('without email', async({ render, mockApiResponse }) => {
-  await mockApiResponse('user_info', profileMock.withoutEmail);
+  await mockApiResponse('general:user_info', profileMock.withoutEmail);
   const component = await render(<MyProfile/>);
 
   await expect(component).toHaveScreenshot();

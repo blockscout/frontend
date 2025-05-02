@@ -14,14 +14,14 @@ import IconSvg from 'ui/shared/IconSvg';
 
 const IntTxsIndexingStatus = () => {
 
-  const { data, isError, isPending } = useApiQuery('homepage_indexing_status');
+  const { data, isError, isPending } = useApiQuery('general:homepage_indexing_status');
 
   const bgColor = { base: 'blackAlpha.100', _dark: 'whiteAlpha.100' };
 
   const queryClient = useQueryClient();
 
   const handleInternalTxsIndexStatus: SocketMessage.InternalTxsIndexStatus['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
+    queryClient.setQueryData(getResourceKey('general:homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
 
       const newData = prevData ? { ...prevData } : {} as IndexingStatus;
       newData.finished_indexing = payload.finished;

@@ -50,7 +50,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
     try {
       const token = await recaptcha.executeAsync();
 
-      await apiFetch('auth_send_otp', {
+      await apiFetch('general:auth_send_otp', {
         fetchParams: {
           method: 'POST',
           body: {

@@ -28,13 +28,13 @@ export default function useLogout() {
 
   return React.useCallback(async() => {
     try {
-      await apiFetch('auth_logout');
+      await apiFetch('general:auth_logout');
       cookies.remove(cookies.NAMES.API_TOKEN);
 
       if (config.features.rewards.isEnabled) {
         const rewardsToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
         if (rewardsToken) {
-          await apiFetch('rewards_logout', { fetchParams: {
+          await apiFetch('rewards:logout', { fetchParams: {
             method: 'POST',
             headers: { Authorization: `Bearer ${ rewardsToken }` },
           } });
@@ -43,11 +43,11 @@ export default function useLogout() {
       }
 
       queryClient.resetQueries({
-        queryKey: getResourceKey('user_info'),
+        queryKey: getResourceKey('general:user_info'),
         exact: true,
       });
       queryClient.resetQueries({
-        queryKey: getResourceKey('custom_abi'),
+        queryKey: getResourceKey('general:custom_abi'),
         exact: true,
       });
 

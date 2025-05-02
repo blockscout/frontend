@@ -10,10 +10,14 @@ export interface Props extends Omit<IconButtonProps, 'type' | 'loading'> {
   text: string;
   type?: 'link' | 'text' | 'share';
   isLoading?: boolean;
+  // Chakra v3 doesn't support tooltip inside tooltip - https://github.com/chakra-ui/chakra-ui/issues/9939#issuecomment-2817168121
+  // so we disable the copy tooltip manually when the button is inside a tooltip
+  noTooltip?: boolean;
+  tooltipInteractive?: boolean;
 }
 
 const CopyToClipboard = (props: Props) => {
-  const { text, type = 'text', isLoading, onClick, boxSize = 5, ...rest } = props;
+  const { text, type = 'text', isLoading, onClick, boxSize = 5, noTooltip, tooltipInteractive, ...rest } = props;
 
   const { hasCopied, copy, disclosure } = useClipboard(text);
 
@@ -22,6 +26,37 @@ const CopyToClipboard = (props: Props) => {
     copy();
     onClick?.(event);
   }, [ onClick, copy ]);
+
+  const iconName = (() => {
+    switch (type) {
+      case 'link':
+        return hasCopied ? 'check' : 'link';
+      case 'share':
+        return hasCopied ? 'check' : 'share';
+      default:
+        return hasCopied ? 'copy_check' : 'copy';
+    }
+  })();
+
+  const button = (
+    <IconButton
+      aria-label="copy"
+      boxSize={ boxSize }
+      onClick={ handleClick }
+      ml={ 2 }
+      borderRadius="sm"
+      loadingSkeleton={ isLoading }
+      variant="icon_secondary"
+      size="2xs"
+      { ...rest }
+    >
+      <IconSvg name={ iconName }/>
+    </IconButton>
+  );
+
+  if (noTooltip) {
+    return button;
+  }
 
   const tooltipContent = (() => {
     if (hasCopied) {
@@ -35,17 +70,6 @@ const CopyToClipboard = (props: Props) => {
     return 'Copy to clipboard';
   })();
 
-  const iconName = (() => {
-    switch (type) {
-      case 'link':
-        return 'link';
-      case 'share':
-        return 'share';
-      default:
-        return 'copy';
-    }
-  })();
-
   return (
     <Tooltip
       content={ tooltipContent }
@@ -53,20 +77,9 @@ const CopyToClipboard = (props: Props) => {
       open={ disclosure.open }
       onOpenChange={ disclosure.onOpenChange }
       closeOnPointerDown={ false }
+      interactive={ tooltipInteractive }
     >
-      <IconButton
-        aria-label="copy"
-        boxSize={ boxSize }
-        onClick={ handleClick }
-        ml={ 2 }
-        borderRadius="sm"
-        loadingSkeleton={ isLoading }
-        variant="icon_secondary"
-        size="2xs"
-        { ...rest }
-      >
-        <IconSvg name={ iconName }/>
-      </IconButton>
+      { button }
     </Tooltip>
   );
 };
