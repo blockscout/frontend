@@ -72,7 +72,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                 marginBottom: 0,
               }}
             >
-              <Skeleton loading={ isPlaceholderData } mb={ 4 } display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
+              <Skeleton loading={ isPlaceholderData } mb={ 3 } display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
                 <Heading level="2" id={ section.id }>
                   { section.title }
                 </Heading>

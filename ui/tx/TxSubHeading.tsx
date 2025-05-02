@@ -141,7 +141,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         { appActionData && (
           <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
         ) }
-        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }}/>
+        <NetworkExplorers type="tx" pathParam={ hash } ml="auto"/>
       </Flex>
     </Box>
   );
