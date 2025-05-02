@@ -74,6 +74,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ..
       content={ <span>Sign in to My Account to add tags,<br/>create watchlists, access API keys and more</span> }
       disabled={ isMobile || isLoading || Boolean(data) }
       openDelay={ 500 }
+      disableOnMobile
     >
       <span>
         <Button

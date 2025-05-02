@@ -83,7 +83,7 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
 
   return (
     <PopoverRoot>
-      <Tooltip content="List of names resolved or owned by this address">
+      <Tooltip content="List of names resolved or owned by this address" disableOnMobile>
         <div>
           <PopoverTrigger>
             <Button
