@@ -70,6 +70,12 @@ export default function useNavItems(): ReturnType {
       icon: 'validator',
       isActive: pathname === '/validators',
     } : null;
+    const epochs = config.features.validators.isEnabled ? {
+      text: 'Epoch',
+      nextRoute: { pathname: '/epochs' as const },
+      icon: 'watchlist',
+      isActive: pathname === '/epochs',
+    } : null;
     const rollupDeposits = {
       text: `Deposits (L1${ rightLineArrow }L2)`,
       nextRoute: { pathname: '/deposits' as const },
@@ -173,6 +179,7 @@ export default function useNavItems(): ReturnType {
         blocks,
         topAccounts,
         validators,
+        epochs,
         verifiedContracts,
         ensLookup,
         config.features.beaconChain.isEnabled && {

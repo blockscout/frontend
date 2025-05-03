@@ -80,8 +80,11 @@ const TabsWithScroll = ({
     };
   }, []);
 
-  if (tabs.length === 1) {
-    return <div>{ tabs[0].component }</div>;
+  // if (tabs.length === 1) {
+  //   return <div>{ tabs[0].component }</div>;
+  // }
+  if (tabs.length === 0) {
+    return null;
   }
 
   return (

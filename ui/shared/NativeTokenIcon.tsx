@@ -14,7 +14,7 @@ type Props = {
   type?: 'primary' | 'secondary';
 };
 
-const NativeTokenIcon = ({ isLoading, className, type }: Props) => {
+const NativeTokenIcon = ({ isLoading, className }: Props) => {
   const statsQueryResult = useApiQuery('stats', {
     queryOptions: {
       refetchOnMount: false,
@@ -26,16 +26,14 @@ const NativeTokenIcon = ({ isLoading, className, type }: Props) => {
     return <Skeleton borderRadius="base" className={ className }/>;
   }
 
-  const src = type === 'secondary' ? statsQueryResult.data?.secondary_coin_image : statsQueryResult.data?.coin_image;
-
   return (
     <Image
       borderRadius="base"
       className={ className }
-      src={ src || '' }
+      src=""
       alt={ `${ config.chain.currency.symbol } logo` }
       fallback={ <TokenLogoPlaceholder borderRadius="base" className={ className }/> }
-      fallbackStrategy={ src ? 'onError' : 'beforeLoadOrError' }
+      fallbackStrategy="beforeLoadOrError"
     />
   );
 };

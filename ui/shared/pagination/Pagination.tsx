@@ -11,6 +11,7 @@ interface Props extends PaginationParams {
 }
 
 const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPages, hasNextPage, className, canGoBackwards, isLoading, isVisible }: Props) => {
+  // console.log({ page, onNextPageClick, onPrevPageClick, resetPage, hasPages, hasNextPage, className, canGoBackwards, isLoading, isVisible })
 
   if (!isVisible) {
     return null;
