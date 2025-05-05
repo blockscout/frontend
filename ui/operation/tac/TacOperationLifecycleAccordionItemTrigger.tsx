@@ -1,16 +1,23 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
+import type * as tac from '@blockscout/tac-operation-lifecycle-types';
+
 import { AccordionItemTrigger } from 'toolkit/chakra/accordion';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
+import { STATUS_LABELS } from './utils';
+
 interface Props {
-  status: string;
+  status: tac.OperationStage_StageType;
   isFirst: boolean;
   isLast: boolean;
+  isLoading?: boolean;
+  isSuccess: boolean;
 }
 
-const TacOperationLifecycleAccordionItemTrigger = ({ status, isFirst, isLast }: Props) => {
+const TacOperationLifecycleAccordionItemTrigger = ({ status, isFirst, isLast, isSuccess, isLoading }: Props) => {
   return (
     <AccordionItemTrigger
       position="relative"
@@ -41,10 +48,14 @@ const TacOperationLifecycleAccordionItemTrigger = ({ status, isFirst, isLast }: 
           height: { base: '14px', lg: '6px' },
         },
       }}
+      disabled={ isLoading }
+      noIndicator={ isLoading }
     >
-      <HStack gap={ 2 } color="green.500">
-        <IconSvg name="verification-steps/finalized" boxSize={ 5 }/>
-        { status }
+      <HStack gap={ 2 } color={ isSuccess ? 'green.500' : 'red.600' }>
+        <IconSvg name={ isSuccess ? 'verification-steps/finalized' : 'verification-steps/error' } boxSize={ 5 } isLoading={ isLoading }/>
+        <Skeleton loading={ isLoading }>
+          { STATUS_LABELS[status] }
+        </Skeleton>
       </HStack>
     </AccordionItemTrigger>
   );

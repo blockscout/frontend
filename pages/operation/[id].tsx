@@ -9,7 +9,7 @@ const TacOperation = dynamic(() => import('ui/pages/TacOperation'), { ssr: false
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/operation/[hash]" query={ props.query }>
+    <PageNextJs pathname="/operation/[id]" query={ props.query }>
       <TacOperation/>
     </PageNextJs>
   );

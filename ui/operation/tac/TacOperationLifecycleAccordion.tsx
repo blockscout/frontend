@@ -1,31 +1,34 @@
 import React from 'react';
 
+import type * as tac from '@blockscout/tac-operation-lifecycle-types';
+
 import { AccordionItem, AccordionRoot } from 'toolkit/chakra/accordion';
 
 import TacOperationLifecycleAccordionItemContent from './TacOperationLifecycleAccordionItemContent';
 import TacOperationLifecycleAccordionItemTrigger from './TacOperationLifecycleAccordionItemTrigger';
 
-const items = [
-  { status: 'Collected in TAC' },
-  { status: 'Included in TAC consensus' },
-  { status: 'Executed in TAC' },
-  { status: 'Collected in TON' },
-];
+interface Props {
+  data: tac.OperationDetails['status_history'];
+  isLoading?: boolean;
+}
 
-const TacOperationLifecycleAccordion = () => {
+const TacOperationLifecycleAccordion = ({ data, isLoading }: Props) => {
   return (
     <AccordionRoot maxW="800px" display="flex" flexDirection="column" rowGap={ 6 }>
-      { items.map((item, index) => {
-        const isLast = index === items.length - 1;
+      { data.map((item, index) => {
+        const isLast = index === data.length - 1;
         return (
-          <AccordionItem key={ index } value={ item.status } borderBottomWidth="0px">
+          <AccordionItem key={ index } value={ item.type } borderBottomWidth="0px">
             <TacOperationLifecycleAccordionItemTrigger
-              status={ item.status }
+              status={ item.type }
               isFirst={ index === 0 }
               isLast={ isLast }
+              isLoading={ isLoading }
+              isSuccess={ item.is_success ?? false }
             />
             <TacOperationLifecycleAccordionItemContent
               isLast={ isLast }
+              data={ item }
             />
           </AccordionItem>
         );

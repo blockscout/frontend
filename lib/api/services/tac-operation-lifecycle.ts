@@ -6,6 +6,10 @@ export const TAC_OPERATION_LIFECYCLE_API_RESOURCES = {
     path: '/api/v1/tac/operations',
     paginated: true,
   },
+  operation: {
+    path: '/api/v1/tac/operations/:id',
+    pathParams: [ 'id' ],
+  },
   stat_operations: {
     path: '/api/v1/stat/operations',
   },
@@ -16,6 +20,7 @@ export type TacOperationLifecycleApiResourceName = `tac:${ keyof typeof TAC_OPER
 /* eslint-disable @stylistic/indent */
 export type TacOperationLifecycleApiResourcePayload<R extends TacOperationLifecycleApiResourceName> =
 R extends 'tac:operations' ? tac.OperationsResponse :
+R extends 'tac:operation' ? tac.OperationDetails :
 R extends 'tac:stat_operations' ? tac.GetOperationStatisticsResponse :
 never;
 /* eslint-enable @stylistic/indent */

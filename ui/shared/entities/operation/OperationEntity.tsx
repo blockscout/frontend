@@ -7,10 +7,10 @@ import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { distributeEntityProps } from '../base/utils';
 
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
+type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'id'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/operation/[hash]', query: { hash: props.hash } });
+  const defaultHref = route({ pathname: '/operation/[id]', query: { id: props.id } });
 
   return (
     <EntityBase.Link
@@ -32,24 +32,24 @@ const Icon = (props: EntityBase.IconBaseProps) => {
   );
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'hash'>;
+type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'id'>;
 
 const Content = chakra((props: ContentProps) => {
   return (
     <EntityBase.Content
       { ...props }
-      text={ props.hash }
+      text={ props.id }
     />
   );
 });
 
-type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'hash'>;
+type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'id'>;
 
 const Copy = (props: CopyProps) => {
   return (
     <EntityBase.Copy
       { ...props }
-      text={ props.hash }
+      text={ props.id }
     />
   );
 };
@@ -57,7 +57,7 @@ const Copy = (props: CopyProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  hash: string;
+  id: string;
 }
 
 const OperationEntity = (props: EntityProps) => {

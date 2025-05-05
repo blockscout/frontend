@@ -1,8 +1,11 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { TAC_OPERATION_DETAILS } from 'stubs/operations';
 import TacOperationDetails from 'ui/operation/tac/TacOperationDetails';
 import TextAd from 'ui/shared/ad/TextAd';
 import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
@@ -11,7 +14,16 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 const TacOperation = () => {
   const appProps = useAppContext();
   const router = useRouter();
-  const hash = getQueryParamString(router.query.hash);
+  const id = getQueryParamString(router.query.id);
+
+  const query = useApiQuery('tac:operation', {
+    pathParams: { id },
+    queryOptions: {
+      placeholderData: TAC_OPERATION_DETAILS,
+    },
+  });
+
+  throwOnResourceLoadError(query);
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.endsWith('/operations');
@@ -27,7 +39,7 @@ const TacOperation = () => {
   }, [ appProps.referrer ]);
 
   const titleSecondRow = (
-    <OperationEntity hash={ hash } noLink variant="subheading"/>
+    <OperationEntity id={ id } noLink variant="subheading"/>
   );
 
   return (
@@ -36,10 +48,12 @@ const TacOperation = () => {
       <PageTitle
         title="Operation details"
         backLink={ backLink }
-        isLoading={ false }
+        isLoading={ query.isPlaceholderData }
         secondRow={ titleSecondRow }
       />
-      <TacOperationDetails isLoading={ false }/>
+      { query.data && (
+        <TacOperationDetails isLoading={ query.isPlaceholderData } data={ query.data }/>
+      ) }
     </>
   );
 };

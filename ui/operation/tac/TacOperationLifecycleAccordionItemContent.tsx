@@ -1,15 +1,18 @@
 import { AccordionItemContent, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
+import type * as tac from '@blockscout/tac-operation-lifecycle-types';
+
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 interface Props {
   isLast: boolean;
+  data: tac.OperationStage;
 }
 
-const TacOperationLifecycleAccordionItemContent = ({ isLast }: Props) => {
+const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
   return (
     <AccordionItemContent
       ml={{ base: 0, lg: '9px' }}
@@ -34,20 +37,24 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast }: Props) => {
           Status
         </GridItem>
         <GridItem py={ 1 }>
-          <StatusTag type="ok" text="Success"/>
+          <StatusTag type={ data.is_success ? 'ok' : 'error' } text={ data.is_success ? 'Success' : 'Failed' }/>
         </GridItem>
 
-        <GridItem color="text.secondary" py="6px">
-          Timestamp
-        </GridItem>
-        <GridItem
-          display="inline-flex"
-          flexWrap="wrap"
-          alignItems="center"
-          py="6px"
-        >
-          <DetailedInfoTimestamp timestamp="171973451500" noIcon isLoading={ false }/>
-        </GridItem>
+        { data.timestamp && (
+          <>
+            <GridItem color="text.secondary" py="6px">
+              Timestamp
+            </GridItem>
+            <GridItem
+              display="inline-flex"
+              flexWrap="wrap"
+              alignItems="center"
+              py="6px"
+            >
+              <DetailedInfoTimestamp timestamp={ data.timestamp } noIcon isLoading={ false }/>
+            </GridItem>
+          </>
+        ) }
 
         <GridItem color="text.secondary" py="6px">
           Transactions
@@ -61,27 +68,27 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast }: Props) => {
           overflow="hidden"
         >
           {
-            [
-              '0x047A81aFB05D9B1f8844bf60fcA05DCCFbC584B9',
-              '0x047A81aFB05D9B1f8844bf60fcA05DCCFbC584B1',
-              '0x047A81aFB05D9B1f8844bf60fcA05DCCFbC584B3',
-            ].map((txHash) => {
-              return <TxEntity key={ txHash } hash={ txHash } noCopy={ false } isExternal/>;
+            data.transactions.map((tx) => {
+              return <TxEntity key={ tx.hash } hash={ tx.hash } noCopy={ false } isExternal/>;
             })
           }
         </GridItem>
 
-        <GridItem color="text.secondary" py="6px">
-          Note
-        </GridItem>
-        <GridItem
-          display="inline-flex"
-          alignItems="center"
-          py="6px"
-          whiteSpace="pre-wrap"
-        >
-          ProxyCallError: UniswapV2Router: Insufficient output amount ProxyCallError: UniswapV2Router: Insufficient output amount
-        </GridItem>
+        { data.note && (
+          <>
+            <GridItem color="text.secondary" py="6px">
+              Note
+            </GridItem>
+            <GridItem
+              display="inline-flex"
+              alignItems="center"
+              py="6px"
+              whiteSpace="pre-wrap"
+            >
+              { data.note }
+            </GridItem>
+          </>
+        ) }
       </Grid>
     </AccordionItemContent>
   );
