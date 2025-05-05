@@ -1,15 +1,15 @@
 import type { NextPage } from 'next';
-// import dynamic from 'next/dynamic';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-// const Tokens = dynamic(() => import('ui/pages/Tokens'), { ssr: false });
+const TacOperations = dynamic(() => import('ui/pages/TacOperations'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/operations">
-      <div>Operations</div>
+      <TacOperations/>
     </PageNextJs>
   );
 };
