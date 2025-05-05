@@ -16,7 +16,7 @@ const TacOperationsTableItem = ({ item, isLoading }: Props) => {
     <TableRow>
       <TableCell verticalAlign="middle">
         <OperationEntity
-          hash={ item.operation_id }
+          id={ item.operation_id }
           isLoading={ isLoading }
         />
       </TableCell>

@@ -48,7 +48,7 @@ export default function useNavItems(): ReturnType {
       text: 'Operations',
       nextRoute: { pathname: '/operations' as const },
       icon: 'operation',
-      isActive: pathname === '/operations' || pathname === '/operation/[hash]',
+      isActive: pathname === '/operations' || pathname === '/operation/[id]',
     };
     const internalTxs: NavItem | null = {
       text: 'Internal transactions',

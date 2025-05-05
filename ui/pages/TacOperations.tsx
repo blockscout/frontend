@@ -22,9 +22,8 @@ const TacOperations = () => {
       placeholderData: generateListStub<'tac:operations'>(
         TAC_OPERATION,
         50,
-        { next_page_params: null },
+        { next_page_params: undefined },
       ),
-      select: (data) => ({ ...data, items: data.operations || data.items }),
     },
   });
   const statsQuery = useApiQuery('tac:stat_operations', {
@@ -61,7 +60,7 @@ const TacOperations = () => {
 
   const actionBar = <StickyPaginationWithText text={ text } pagination={ operationsQuery.pagination }/>;
 
-  const content = operationsQuery.data?.operations ? (
+  const content = operationsQuery.data?.items ? (
     <>
       <Box hideFrom="lg">
         { operationsQuery.data.items.map(((item, index) => (
