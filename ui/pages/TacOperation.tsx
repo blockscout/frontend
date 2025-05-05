@@ -10,6 +10,7 @@ import TacOperationDetails from 'ui/operation/tac/TacOperationDetails';
 import TextAd from 'ui/shared/ad/TextAd';
 import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import TacOperationTag from 'ui/shared/TacOperationTag';
 
 const TacOperation = () => {
   const appProps = useAppContext();
@@ -38,6 +39,10 @@ const TacOperation = () => {
     };
   }, [ appProps.referrer ]);
 
+  const titleContentAfter = query.data ? (
+    <TacOperationTag type={ query.data.type } loading={ query.isPlaceholderData }/>
+  ) : null;
+
   const titleSecondRow = (
     <OperationEntity id={ id } noLink variant="subheading"/>
   );
@@ -48,6 +53,7 @@ const TacOperation = () => {
       <PageTitle
         title="Operation details"
         backLink={ backLink }
+        contentAfter={ titleContentAfter }
         isLoading={ query.isPlaceholderData }
         secondRow={ titleSecondRow }
       />

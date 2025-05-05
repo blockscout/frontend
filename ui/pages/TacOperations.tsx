@@ -17,8 +17,6 @@ const TacOperations = () => {
   const operationsQuery = useQueryWithPages({
     resourceName: 'tac:operations',
     options: {
-      // TODO @tom2drum add feature config
-    //   enabled: config.features.validators.isEnabled,
       placeholderData: generateListStub<'tac:operations'>(
         TAC_OPERATION,
         50,

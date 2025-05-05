@@ -32,6 +32,7 @@ const TacOperationStatus = ({ status, isLoading }: Props) => {
         <Tooltip content="Operation: TAC > TON">
           <HStack gap={ 1 } w="fit-content">
             <IconSvg name="brands/tac" boxSize={ 5 } isLoading={ isLoading }/>
+            <IconSvg name="arrows/east" boxSize={ 5 } isLoading={ isLoading } color="text.secondary"/>
             <IconSvg name="brands/ton" boxSize={ 5 } isLoading={ isLoading }/>
           </HStack>
         </Tooltip>
@@ -43,6 +44,7 @@ const TacOperationStatus = ({ status, isLoading }: Props) => {
         <Tooltip content="Operation: TON > TAC">
           <HStack gap={ 1 } w="fit-content">
             <IconSvg name="brands/ton" boxSize={ 5 } isLoading={ isLoading }/>
+            <IconSvg name="arrows/east" boxSize={ 5 } isLoading={ isLoading } color="text.secondary"/>
             <IconSvg name="brands/tac" boxSize={ 5 } isLoading={ isLoading }/>
           </HStack>
         </Tooltip>
