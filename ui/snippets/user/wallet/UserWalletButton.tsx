@@ -42,6 +42,7 @@ const UserWalletButton = ({ size, variant, isPending, isAutoConnectDisabled, add
       content={ <span>Connect your wallet<br/>to Blockscout for<br/>full-featured access</span> }
       disabled={ isMobile || Boolean(address) }
       openDelay={ 500 }
+      disableOnMobile
     >
       <Button
         ref={ ref }

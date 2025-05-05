@@ -60,7 +60,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
     <>
       <AuthGuard onAuthSuccess={ handleAddToFavorite }>
         { ({ onClick }) => (
-          <Tooltip content={ `${ watchListId ? 'Remove address from Watch list' : 'Add address to Watch list' }` }>
+          <Tooltip content={ `${ watchListId ? 'Remove address from Watch list' : 'Add address to Watch list' }` } disableOnMobile>
             <IconButton
               className={ className }
               aria-label="edit"

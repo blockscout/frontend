@@ -64,6 +64,7 @@ const StatsWidget = ({
         justifyContent="space-between"
         columnGap={ 2 }
         w="100%"
+        h="100%"
       >
         { icon && (
           <IconSvg

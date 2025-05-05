@@ -7,6 +7,9 @@ import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 
 import * as Layout from './components';
 
+const TOP_BAR_HEIGHT = 36;
+const HEADER_HEIGHT_MOBILE = 56;
+
 const LayoutDefault = ({ children }: Props) => {
   return (
     <Layout.Container
@@ -17,7 +20,13 @@ const LayoutDefault = ({ children }: Props) => {
     >
       <Layout.TopRow/>
       <HeaderMobile hideSearchBar/>
-      <Layout.MainArea minH="auto" flex={ 1 }>
+      <Layout.MainArea
+        minH={{
+          base: `calc(100dvh - ${ TOP_BAR_HEIGHT + HEADER_HEIGHT_MOBILE }px)`,
+          lg: `calc(100dvh - ${ TOP_BAR_HEIGHT }px)`,
+        }}
+        flex={ 1 }
+      >
         <Layout.MainColumn
           paddingTop={{ base: 0, lg: 0 }}
           paddingBottom={ 0 }

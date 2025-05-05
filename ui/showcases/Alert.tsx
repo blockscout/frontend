@@ -76,7 +76,6 @@ const AlertShowcase = () => {
               </TableHeader>
               <TableBody>
                 <SocketNewItemsNotice.Desktop
-                  url={ window.location.href }
                   num={ 1234 }
                   type="block"
                   isLoading
@@ -95,7 +94,6 @@ const AlertShowcase = () => {
               </TableHeader>
               <TableBody>
                 <SocketNewItemsNotice.Desktop
-                  url={ window.location.href }
                   num={ 1234 }
                   type="block"
                   isLoading={ false }

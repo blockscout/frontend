@@ -58,7 +58,7 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
 
   return (
     <>
-      <Tooltip content="Click to view QR code">
+      <Tooltip content="Click to view QR code" disableOnMobile>
         <IconButton
           className={ className }
           aria-label="Show QR code"

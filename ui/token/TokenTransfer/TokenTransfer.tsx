@@ -89,7 +89,6 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tabsHeight = TABS_
       <Box display={{ base: 'block', lg: 'none' }}>
         { pagination.page === 1 && (
           <SocketNewItemsNotice.Mobile
-            url={ window.location.href }
             num={ newItemsCount }
             alert={ socketAlert }
             type="token_transfer"
