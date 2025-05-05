@@ -9,6 +9,7 @@ import {
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 import { SCROLL_L2_BLOCK_STATUSES } from 'types/api/scrollL2';
 import type { Transaction } from 'types/api/transaction';
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
@@ -38,12 +39,14 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
+import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxFee from 'ui/shared/tx/TxFee';
@@ -68,6 +71,7 @@ import TxInfoScrollFees from './TxInfoScrollFees';
 
 interface Props {
   data: Transaction | undefined;
+  tacOperation?: tac.OperationDetails;
   isLoading: boolean;
   socketStatus?: 'close' | 'error';
 }
@@ -75,7 +79,7 @@ interface Props {
 const externalTxFeature = config.features.externalTxs;
 const rollupFeature = config.features.rollup;
 
-const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
+const TxInfo = ({ data, tacOperation, isLoading, socketStatus }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const isMobile = useIsMobile();
@@ -147,6 +151,24 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         <GridItem colSpan={{ base: undefined, lg: 2 }} mb={ 2 }>
           <TxSocketAlert status={ socketStatus }/>
         </GridItem>
+      ) }
+
+      { tacOperation && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Source operation"
+            isLoading={ isLoading }
+          >
+            Source operation
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue columnGap={ 3 }>
+            <OperationEntity
+              id={ tacOperation.operation_id }
+              isLoading={ isLoading }
+            />
+            <TacOperationStatus status={ tacOperation.type } isLoading={ isLoading }/>
+          </DetailedInfo.ItemValue>
+        </>
       ) }
 
       <TxDetailsInterop data={ data.op_interop } isLoading={ isLoading }/>

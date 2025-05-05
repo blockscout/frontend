@@ -10,6 +10,10 @@ export const TAC_OPERATION_LIFECYCLE_API_RESOURCES = {
     path: '/api/v1/tac/operations/:id',
     pathParams: [ 'id' ],
   },
+  operation_by_tx_hash: {
+    path: '/api/v1/tac/operations\\:byTx/:tx_hash',
+    pathParams: [ 'tx_hash' ],
+  },
   stat_operations: {
     path: '/api/v1/stat/operations',
   },
@@ -21,6 +25,7 @@ export type TacOperationLifecycleApiResourceName = `tac:${ keyof typeof TAC_OPER
 export type TacOperationLifecycleApiResourcePayload<R extends TacOperationLifecycleApiResourceName> =
 R extends 'tac:operations' ? tac.OperationsResponse :
 R extends 'tac:operation' ? tac.OperationDetails :
+R extends 'tac:operation_by_tx_hash' ? tac.OperationDetails :
 R extends 'tac:stat_operations' ? tac.GetOperationStatisticsResponse :
 never;
 /* eslint-enable @stylistic/indent */
