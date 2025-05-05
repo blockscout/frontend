@@ -4,8 +4,8 @@ import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
+import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
-
 interface Props {
   item: tac.OperationBriefDetails;
   isLoading?: boolean;
@@ -28,7 +28,7 @@ const TacOperationsTableItem = ({ item, isLoading }: Props) => {
         />
       </TableCell>
       <TableCell verticalAlign="middle">
-        { item.type }
+        <TacOperationStatus status={ item.type } isLoading={ isLoading }/>
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>
         { item.sender }

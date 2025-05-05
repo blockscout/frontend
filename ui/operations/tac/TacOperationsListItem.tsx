@@ -4,6 +4,7 @@ import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = { item: tac.OperationBriefDetails; isLoading?: boolean };
@@ -30,7 +31,7 @@ const TacOperationsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.type }
+        <TacOperationStatus status={ item.type } isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
       { item.sender && (

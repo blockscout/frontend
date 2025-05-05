@@ -1,10 +1,11 @@
 import { AccordionItemContent, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import type * as tac from '@blockscout/tac-operation-lifecycle-types';
+import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TxEntityTon from 'ui/shared/entities/tx/TxEntityTon';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 interface Props {
@@ -69,7 +70,11 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
         >
           {
             data.transactions.map((tx) => {
-              return <TxEntity key={ tx.hash } hash={ tx.hash } noCopy={ false } isExternal/>;
+              if (tx.type === tac.OperationRelatedTransaction_BlockchainType.TON) {
+                return <TxEntityTon key={ tx.hash } hash={ tx.hash } noCopy={ false }/>;
+              }
+
+              return <TxEntity key={ tx.hash } hash={ tx.hash } icon={{ name: 'brands/tac' }} noCopy={ false }/>;
             })
           }
         </GridItem>
