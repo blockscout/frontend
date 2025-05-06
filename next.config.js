@@ -45,6 +45,9 @@ const moduleExports = {
       'static': 180,
     },
   },
+  generateBuildId: async () => {
+    return process.env.NEXT_BUILD_ID || Date.now().toString(36) + Math.random().toString(36).substring(2);
+  },
 };
 
 module.exports = withBundleAnalyzer(withRoutes(moduleExports));
