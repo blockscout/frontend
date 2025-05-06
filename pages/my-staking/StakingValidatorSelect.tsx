@@ -39,7 +39,14 @@ const StakingValidatorSelect = () => {
                     </Text>
                 </Box>
             </PopoverTrigger>
-            <PopoverContent color='white' width="100%" borderColor='blue.800'>
+            <PopoverContent 
+                color='white'
+                width="100%"
+                borderColor='blue.800'
+                borderRadius="12px"
+                border = '1px solid rgba(0, 46, 51, 0.10)'
+                boxShadow={'0px 4px 16px 0px rgba(0, 0, 0, 0.10)'}
+            >
                 <PopoverHeader pt={0} fontWeight='bold' border='0' color='black'/>
                 <PopoverBody px={0} py={0} >
                     <StakingTabList />

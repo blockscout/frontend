@@ -15,6 +15,7 @@ import {
 import StakingModal from './StakingModal';
 import StakingValidatorSelect from './StakingValidatorSelect';
 import StakingModalNumberInput from './StakingModalNumberInput';
+import SuccessfulContent from 'ui/stakingModal/SuccessfulContent';
 
 
 const StakingInfo = () => {
@@ -88,7 +89,7 @@ const StakingInfo = () => {
                     onClick={ onOpen } 
                     position={'absolute'} borderRadius={9999}>Button</Button> 
                 <StakingModal isOpen={ isOpen } onClose={ onClose } onOpen={ onOpen }>
-                    <p style={{ height: '500px' }}>
+                    <div style={{ height: '500px' }}>
                         <StakingValidatorSelect />
                         <Box paddingTop={ 10 } paddingBottom={ 4 }>
                             <StakingModalNumberInput />
@@ -96,7 +97,8 @@ const StakingInfo = () => {
                         <Box paddingTop={ 10 } paddingBottom={ 4 }>
                             <StakingModalNumberInput />
                         </Box>
-                    </p>
+                        <SuccessfulContent text='Transaction Success' />    
+                    </div>
                     <Button onClick={ onClose }>Close</Button>
                 </StakingModal>
             </Box>
