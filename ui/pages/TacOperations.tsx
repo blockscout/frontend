@@ -1,21 +1,33 @@
 import { Box } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useDebounce from 'lib/hooks/useDebounce';
+import useIsMobile from 'lib/hooks/useIsMobile';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import { TAC_OPERATION } from 'stubs/operations';
 import { generateListStub } from 'stubs/utils';
-import { Skeleton } from 'toolkit/chakra/skeleton';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import { apos } from 'toolkit/utils/htmlEntities';
 import TacOperationsListItem from 'ui/operations/tac/TacOperationsListItem';
 import TacOperationsTable from 'ui/operations/tac/TacOperationsTable';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
-const TacOperations = () => {
 
-  const operationsQuery = useQueryWithPages({
+const TacOperations = () => {
+  const router = useRouter();
+  const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.q) || undefined);
+
+  const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
+
+  const isMobile = useIsMobile();
+
+  const { isError, isPlaceholderData, data, pagination, onFilterChange } = useQueryWithPages({
     resourceName: 'tac:operations',
+    filters: { q: debouncedSearchTerm },
     options: {
       placeholderData: generateListStub<'tac:operations'>(
         TAC_OPERATION,
@@ -24,56 +36,53 @@ const TacOperations = () => {
       ),
     },
   });
-  const statsQuery = useApiQuery('tac:stat_operations', {
-    queryOptions: {
-      placeholderData: {
-        timestamp: 0,
-        operations: {
-          total_operations: 1234567,
-          pending_operations: 0,
-          processing_operations: 0,
-          finalized_operations: 0,
-          failed_operations: 0,
-          sync_completeness: 0,
-          last_timestamp: 0,
-        },
-      },
-    },
-  });
 
-  const text = (() => {
-    if (statsQuery.isError) {
-      return null;
-    }
+  const handleSearchTermChange = React.useCallback((value: string) => {
+    onFilterChange({ q: value });
+    setSearchTerm(value);
+  }, [ onFilterChange ]);
 
-    return (
-      <Skeleton
-        loading={ statsQuery.isPlaceholderData }
-        display="inline-block"
-      >
-        A total of { Number(statsQuery.data?.operations?.total_operations || 0).toLocaleString() } operations found
-      </Skeleton>
-    );
-  })();
+  const filterInput = (
+    <FilterInput
+      w={{ base: '100%', lg: '460px' }}
+      size="sm"
+      onChange={ handleSearchTermChange }
+      placeholder="Search by operation, tx hash, sender"
+      initialValue={ searchTerm }
+    />
+  );
 
-  const actionBar = <StickyPaginationWithText text={ text } pagination={ operationsQuery.pagination }/>;
+  const actionBar = (
+    <>
+      <Box gap={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
+        { filterInput }
+      </Box>
+      { (!isMobile || pagination.isVisible) && (
+        <ActionBar mt={ -6 }>
+          <Box gap={ 3 } display={{ base: 'none', lg: 'flex' }}>
+            { filterInput }
+          </Box>
+          <Pagination ml="auto" { ...pagination }/>
+        </ActionBar>
+      ) }
+    </>
+  );
 
-  const content = operationsQuery.data?.items ? (
+  const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { operationsQuery.data.items.map(((item, index) => (
+        { data.items.map(((item, index) => (
           <TacOperationsListItem
-            key={ String(item.operation_id) + (operationsQuery.isPlaceholderData ? index : '') }
-            isLoading={ operationsQuery.isPlaceholderData }
+            key={ String(item.operation_id) + (isPlaceholderData ? index : '') }
+            isLoading={ isPlaceholderData }
             item={ item }
           />
         ))) }
       </Box>
       <Box hideBelow="lg">
         <TacOperationsTable
-          items={ operationsQuery.data.items }
-          top={ operationsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ operationsQuery.isPlaceholderData }
+          items={ data.items }
+          isLoading={ isPlaceholderData }
         />
       </Box>
     </>
@@ -83,9 +92,13 @@ const TacOperations = () => {
     <>
       <PageTitle title="Operations" withTextAd/>
       <DataListDisplay
-        isError={ operationsQuery.isError }
-        itemsNum={ operationsQuery.data?.items?.length }
+        isError={ isError }
+        itemsNum={ data?.items?.length }
         emptyText="There are no operations."
+        filterProps={{
+          emptyFilteredText: `Couldn${ apos }t find any operation that matches your query.`,
+          hasActiveFilters: Boolean(searchTerm),
+        }}
         actionBar={ actionBar }
       >
         { content }

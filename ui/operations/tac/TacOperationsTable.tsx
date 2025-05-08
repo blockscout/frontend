@@ -8,14 +8,13 @@ import TacOperationsTableItem from './TacOperationsTableItem';
 
  type Props = {
    items: Array<tac.OperationBriefDetails>;
-   top: number;
    isLoading?: boolean;
  };
 
-const TacOperationsTable = ({ items, top, isLoading }: Props) => {
+const TacOperationsTable = ({ items, isLoading }: Props) => {
   return (
     <TableRoot tableLayout="auto" minW="950px">
-      <TableHeaderSticky top={ top }>
+      <TableHeaderSticky>
         <TableRow>
           <TableColumnHeader>Operation</TableColumnHeader>
           <TableColumnHeader>Age</TableColumnHeader>
