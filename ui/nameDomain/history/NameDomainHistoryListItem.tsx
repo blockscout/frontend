@@ -10,7 +10,7 @@ import { stripTrailingSlash } from 'toolkit/utils/url';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeWithTooltip from 'ui/shared/TimeWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
   event: bens.DomainEvent;

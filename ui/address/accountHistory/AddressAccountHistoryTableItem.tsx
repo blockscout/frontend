@@ -8,7 +8,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import IconSvg from 'ui/shared/IconSvg';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
-import TimeWithTooltip from 'ui/shared/TimeWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   isPlaceholderData: boolean;

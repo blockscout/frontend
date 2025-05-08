@@ -9,7 +9,7 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { WEI, ZERO } from 'toolkit/utils/consts';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TimeWithTooltip from 'ui/shared/TimeWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;

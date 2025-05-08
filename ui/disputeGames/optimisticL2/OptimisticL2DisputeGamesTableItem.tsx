@@ -9,7 +9,7 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShorten from 'ui/shared/HashStringShorten';
-import TimeWithTooltip from 'ui/shared/TimeWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const faultProofSystemFeature = config.features.faultProofSystem;
 

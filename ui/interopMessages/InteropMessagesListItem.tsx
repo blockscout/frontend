@@ -8,7 +8,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import InteropMessageStatus from 'ui/shared/statusTag/InteropMessageStatus';
-import TimeWithTooltip from 'ui/shared/TimeWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 import InteropMessageAdditionalInfo from './InteropMessageAdditionalInfo';
 import InteropMessageDestinationTx from './InteropMessageDestinationTx';

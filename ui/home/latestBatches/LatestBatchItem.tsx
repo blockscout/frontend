@@ -6,7 +6,7 @@ import { route } from 'nextjs-routes';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
-import TimeWithTooltip from 'ui/shared/TimeWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   number: number;

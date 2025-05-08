@@ -10,7 +10,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
-import TimeWithTooltip from 'ui/shared/TimeWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
  type Props = {
    item: AddressEpochRewardsItem;
