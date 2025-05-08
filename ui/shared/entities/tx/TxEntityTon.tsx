@@ -13,9 +13,10 @@ const TxEntityTon = (props: TxEntity.EntityProps) => {
     return null;
   }
 
-  const defaultHref = `${ stripTrailingSlash(tacFeature.explorerUrl) }/tx/${ props.hash }`;
+  const formattedHash = props.hash.replace(/^0x/, '');
+  const defaultHref = `${ stripTrailingSlash(tacFeature.explorerUrl) }/tx/${ formattedHash }`;
 
-  return <TxEntity.default { ...props } href={ props.href ?? defaultHref } icon={{ name: 'brands/ton' }} isExternal/>;
+  return <TxEntity.default { ...props } hash={ formattedHash } href={ props.href ?? defaultHref } icon={{ name: 'brands/ton' }} isExternal/>;
 };
 
 export default chakra(TxEntityTon);

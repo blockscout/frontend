@@ -1,5 +1,7 @@
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
+import { STATUS_LABELS } from 'ui/operation/tac/utils';
+
 export function getTacOperationTags(data: tac.OperationDetails) {
   const typeTag = (() => {
     switch (data.type) {
@@ -16,7 +18,13 @@ export function getTacOperationTags(data: tac.OperationDetails) {
     }
   })();
 
+  const statusTag = (() => {
+    const currentStatus = data.status_history[data.status_history.length - 1].type;
+    return STATUS_LABELS[currentStatus];
+  })();
+
   return [
+    statusTag ? { slug: 'tac_operation_status', name: statusTag, tagType: 'custom' as const, ordinal: 0, data: statusTag } : null,
     typeTag ? { slug: 'tac_operation_type', name: typeTag, tagType: 'custom' as const, ordinal: 0, data: typeTag } : null,
   ].filter(Boolean);
 }

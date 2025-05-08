@@ -11,13 +11,14 @@ import StatusTag from './StatusTag';
 interface Props {
   status: tac.OperationType;
   isLoading?: boolean;
+  noTooltip?: boolean;
 }
 
-const TacOperationStatus = ({ status, isLoading }: Props) => {
+const TacOperationStatus = ({ status, isLoading, noTooltip }: Props) => {
   switch (status) {
     case 'TON_TAC_TON': {
       return (
-        <Tooltip content="Operation: TON > TAC > TON">
+        <Tooltip content="Operation: TON > TAC > TON" disabled={ noTooltip }>
           <HStack gap={ 1 } w="fit-content">
             <IconSvg name="brands/ton" boxSize={ 5 } isLoading={ isLoading }/>
             <IconSvg name="arrows/revert" boxSize={ 5 } isLoading={ isLoading } color="text.secondary"/>
@@ -29,7 +30,7 @@ const TacOperationStatus = ({ status, isLoading }: Props) => {
 
     case 'TAC_TON': {
       return (
-        <Tooltip content="Operation: TAC > TON">
+        <Tooltip content="Operation: TAC > TON" disabled={ noTooltip } >
           <HStack gap={ 1 } w="fit-content">
             <IconSvg name="brands/tac" boxSize={ 5 } isLoading={ isLoading }/>
             <IconSvg name="arrows/east" boxSize={ 5 } isLoading={ isLoading } color="text.secondary"/>
@@ -41,7 +42,7 @@ const TacOperationStatus = ({ status, isLoading }: Props) => {
 
     case 'TON_TAC': {
       return (
-        <Tooltip content="Operation: TON > TAC">
+        <Tooltip content="Operation: TON > TAC" disabled={ noTooltip }>
           <HStack gap={ 1 } w="fit-content">
             <IconSvg name="brands/ton" boxSize={ 5 } isLoading={ isLoading }/>
             <IconSvg name="arrows/east" boxSize={ 5 } isLoading={ isLoading } color="text.secondary"/>
@@ -53,7 +54,7 @@ const TacOperationStatus = ({ status, isLoading }: Props) => {
 
     case 'ERROR':
       return (
-        <Tooltip content="Transaction sent from TON, unsuccessfully executed on TAC and funds returned to TON back">
+        <Tooltip content="Transaction sent from TON, unsuccessfully executed on TAC and funds returned to TON back" disabled={ noTooltip }>
           <StatusTag type="error" text="Rollback" isLoading={ isLoading }/>
         </Tooltip>
       );
