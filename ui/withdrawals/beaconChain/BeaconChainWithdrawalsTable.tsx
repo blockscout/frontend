@@ -7,6 +7,7 @@ import type { WithdrawalsItem } from 'types/api/withdrawals';
 import config from 'configs/app';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import BeaconChainWithdrawalsTableItem from './BeaconChainWithdrawalsTableItem';
 
@@ -41,7 +42,7 @@ const BeaconChainWithdrawalsTable = ({ items, isLoading, top, view }: Props) => 
           <TableColumnHeader minW="200px">Validator index</TableColumnHeader>
           { view !== 'block' && <TableColumnHeader w="25%">Block</TableColumnHeader> }
           { view !== 'address' && <TableColumnHeader w="25%">To</TableColumnHeader> }
-          { view !== 'block' && <TableColumnHeader w="25%">Age</TableColumnHeader> }
+          { view !== 'block' && <TableColumnHeader w="25%"><TimeFormatToggle/></TableColumnHeader> }
           <TableColumnHeader w="25%">{ `Value ${ feature.currency.symbol }` }</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>

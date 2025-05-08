@@ -61,6 +61,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         <TimeWithTooltip
           timestamp={ tx.timestamp }
           enableIncrement
+          timeFormat="relative"
           isLoading={ isLoading }
           color="text.secondary"
           fontWeight="400"

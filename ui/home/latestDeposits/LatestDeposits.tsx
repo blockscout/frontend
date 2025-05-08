@@ -91,6 +91,7 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
             { item.timestamp ? (
               <TimeWithTooltip
                 timestamp={ item.timestamp }
+                timeFormat="relative"
                 isLoading={ isLoading }
                 color="text.secondary"
               />
@@ -120,6 +121,7 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
         { item.timestamp ? (
           <TimeWithTooltip
             timestamp={ item.timestamp }
+            timeFormat="relative"
             isLoading={ isLoading }
             color="text.secondary"
             w="fit-content"

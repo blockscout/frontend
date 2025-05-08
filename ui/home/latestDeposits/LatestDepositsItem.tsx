@@ -61,6 +61,7 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
             { l1BlockLink }
             <TimeWithTooltip
               timestamp={ timestamp }
+              timeFormat="relative"
               isLoading={ isLoading }
               color="text.secondary"
             />
@@ -88,6 +89,7 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
         { l1TxLink }
         <TimeWithTooltip
           timestamp={ timestamp }
+          timeFormat="relative"
           isLoading={ isLoading }
           color="text.secondary"
           w="fit-content"

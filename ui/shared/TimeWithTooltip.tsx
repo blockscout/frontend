@@ -1,6 +1,9 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TimeFormat } from 'types/settings';
+
+import { useSettingsContext } from 'lib/contexts/settings';
 import dayjs from 'lib/date/dayjs';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -12,17 +15,30 @@ type Props = {
   isLoading?: boolean;
   enableIncrement?: boolean;
   className?: string;
+  timeFormat?: TimeFormat;
 };
 
-const TimeWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncrement, className }: Props) => {
-  const timeAgo = useTimeAgoIncrement(timestamp || '', enableIncrement && !isLoading);
+const TimeWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncrement, className, timeFormat: timeFormatProp }: Props) => {
+
+  const settings = useSettingsContext();
+  const timeFormat = timeFormatProp || settings?.timeFormat || 'relative';
+  const timeAgo = useTimeAgoIncrement(timestamp || '', enableIncrement && !isLoading && timeFormat === 'relative');
+
   if (!timestamp && !fallbackText) {
     return null;
   }
 
-  const content = timestamp ?
-    <Tooltip content={ dayjs(timestamp).format('llll') }><span>{ timeAgo }</span></Tooltip> :
-    <span>{ fallbackText }</span>;
+  const content = (() => {
+    if (!timestamp) {
+      return fallbackText;
+    }
+
+    if (timeFormat === 'relative') {
+      return <Tooltip content={ dayjs(timestamp).format('llll') }><span>{ timeAgo }</span></Tooltip>;
+    }
+
+    return <Tooltip content={ timeAgo }><span>{ dayjs(timestamp).format('lll') }</span></Tooltip>;
+  })();
 
   return (
     <Skeleton loading={ isLoading } className={ className }>

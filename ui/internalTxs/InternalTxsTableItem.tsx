@@ -52,6 +52,7 @@ const InternalTxsTableItem = ({
             color="text.secondary"
             fontWeight="400"
             fontSize="sm"
+            w="fit-content"
           />
         </Flex>
       </TableCell>

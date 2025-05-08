@@ -38,6 +38,7 @@ const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading, animat
         <TimeWithTooltip
           timestamp={ timestamp }
           enableIncrement={ !isLoading }
+          timeFormat="relative"
           isLoading={ isLoading }
           color="text.secondary"
           display="inline-block"

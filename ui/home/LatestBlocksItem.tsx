@@ -46,6 +46,7 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
         <TimeWithTooltip
           timestamp={ block.timestamp }
           enableIncrement={ !isLoading }
+          timeFormat="relative"
           isLoading={ isLoading }
           color="text.secondary"
           display="inline-block"

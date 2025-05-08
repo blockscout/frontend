@@ -39,7 +39,7 @@ const TokenTransferTableItem = ({
   return (
     <TableRow alignItems="top">
       <TableCell>
-        <Flex alignItems="center" py="7px">
+        <Flex flexDirection="column" alignItems="flex-start" mt="5px" rowGap={ 3 }>
           <TxEntity
             hash={ txHash }
             isLoading={ isLoading }
@@ -54,7 +54,6 @@ const TokenTransferTableItem = ({
             display="inline-block"
             color="gray.500"
             fontWeight="400"
-            ml="10px"
           />
         </Flex>
       </TableCell>

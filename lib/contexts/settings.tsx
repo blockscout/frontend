@@ -29,7 +29,7 @@ export function SettingsContextProvider({ children }: SettingsProviderProps) {
   );
 
   const [ timeFormat, setTimeFormat ] = React.useState<TimeFormat>(
-    cookies.get(cookies.NAMES.TIME_FORMAT, appCookies) as TimeFormat,
+    cookies.get(cookies.NAMES.TIME_FORMAT, appCookies) as TimeFormat || 'relative',
   );
 
   const toggleAddressFormat = React.useCallback(() => {
