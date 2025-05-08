@@ -38,12 +38,12 @@ const BeaconChainWithdrawalsTable = ({ items, isLoading, top, view }: Props) => 
     <TableRoot style={{ tableLayout: 'auto' }} minW="950px">
       <TableHeaderSticky top={ top }>
         <TableRow>
-          <TableColumnHeader minW="140px">Index</TableColumnHeader>
-          <TableColumnHeader minW="200px">Validator index</TableColumnHeader>
-          { view !== 'block' && <TableColumnHeader w="25%">Block</TableColumnHeader> }
-          { view !== 'address' && <TableColumnHeader w="25%">To</TableColumnHeader> }
-          { view !== 'block' && <TableColumnHeader w="25%"><TimeFormatToggle/></TableColumnHeader> }
-          <TableColumnHeader w="25%">{ `Value ${ feature.currency.symbol }` }</TableColumnHeader>
+          <TableColumnHeader>Index</TableColumnHeader>
+          <TableColumnHeader>Validator index</TableColumnHeader>
+          { view !== 'block' && <TableColumnHeader>Block</TableColumnHeader> }
+          { view !== 'address' && <TableColumnHeader>To</TableColumnHeader> }
+          { view !== 'block' && <TableColumnHeader><TimeFormatToggle/></TableColumnHeader> }
+          <TableColumnHeader>{ `Value ${ feature.currency.symbol }` }</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

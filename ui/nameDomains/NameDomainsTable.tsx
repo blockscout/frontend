@@ -15,6 +15,7 @@ interface Props {
   onSortToggle: (field: SortField) => void;
 }
 
+// TODO @tom2drum: add time format toggle
 const NameDomainsTable = ({ data, isLoading, sort, onSortToggle }: Props) => {
   return (
     <TableRoot>
