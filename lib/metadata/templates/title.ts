@@ -8,6 +8,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/txs/kettle/[hash]': '%network_name% kettle %hash% transactions',
   '/tx/[hash]': '%network_name% transaction %hash%',
   '/blocks': '%network_name% blocks',
+  '/epochs': '%network_name% epochs',
   '/block/[height_or_hash]': '%network_name% block %height_or_hash%',
   '/block/countdown': '%network_name% block countdown index',
   '/block/countdown/[height]': '%network_name% block %height% countdown',

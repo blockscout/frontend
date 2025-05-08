@@ -11,6 +11,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/txs/kettle/[hash]': DEFAULT_TEMPLATE,
   '/tx/[hash]': 'View transaction %hash% on %network_title%',
   '/blocks': DEFAULT_TEMPLATE,
+  '/epochs': DEFAULT_TEMPLATE,
   '/block/[height_or_hash]': 'View the transactions, token transfers, and uncles for block %height_or_hash%',
   '/block/countdown': DEFAULT_TEMPLATE,
   '/block/countdown/[height]': DEFAULT_TEMPLATE,

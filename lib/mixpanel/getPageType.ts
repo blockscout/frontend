@@ -6,6 +6,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/txs/kettle/[hash]': 'Kettle transactions',
   '/tx/[hash]': 'Transaction details',
   '/blocks': 'Blocks',
+  '/epochs': 'Epochs',
   '/block/[height_or_hash]': 'Block details',
   '/block/countdown': 'Block countdown search',
   '/block/countdown/[height]': 'Block countdown',
