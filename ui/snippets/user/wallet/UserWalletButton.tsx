@@ -39,25 +39,27 @@ const UserWalletButton = ({ size, variant, isPending, isAutoConnectDisabled, add
 
   return (
     <Tooltip
-      content={ <span>Connect your wallet<br/>to Blockscout for<br/>full-featured access</span> }
+      content="Connect your wallet to Blockscout for full-featured access"
       disabled={ isMobile || Boolean(address) }
       openDelay={ 500 }
       disableOnMobile
     >
-      <Button
-        ref={ ref }
-        size={ size }
-        variant={ variant }
-        selected={ Boolean(address) }
-        highlighted={ isAutoConnectDisabled }
-        px={{ base: 2.5, lg: 3 }}
-        fontWeight={ address ? 700 : 600 }
-        loading={ isPending }
-        loadingText={ isMobile ? undefined : 'Connecting' }
-        { ...rest }
-      >
-        { content }
-      </Button>
+      <span>
+        <Button
+          ref={ ref }
+          size={ size }
+          variant={ variant }
+          selected={ Boolean(address) }
+          highlighted={ isAutoConnectDisabled }
+          px={{ base: 2.5, lg: 3 }}
+          fontWeight={ address ? 700 : 600 }
+          loading={ isPending }
+          loadingText={ isMobile ? undefined : 'Connecting' }
+          { ...rest }
+        >
+          { content }
+        </Button>
+      </span>
     </Tooltip>
   );
 };
