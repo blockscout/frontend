@@ -118,6 +118,23 @@ test('search by tx hash +@mobile', async({ render, mockApiResponse }) => {
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
+test('search by tac operation hash +@mobile', async({ render, mockApiResponse, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.tac);
+  const hooksConfig = {
+    router: {
+      query: { q: searchMock.tacOperation1.tac_operation.operation_id },
+    },
+  };
+  const data = {
+    items: [ searchMock.tacOperation1 ],
+    next_page_params: null,
+  };
+  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.tacOperation1.tac_operation.operation_id } });
+  const component = await render(<SearchResults/>, { hooksConfig });
+
+  await expect(component.locator('main')).toHaveScreenshot();
+});
+
 test('search by blob hash +@mobile', async({ render, mockApiResponse, mockEnvs }) => {
   const hooksConfig = {
     router: {
