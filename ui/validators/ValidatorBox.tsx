@@ -3,7 +3,8 @@ import {
     Tabs, Tab, TabList, TabPanels, TabPanel, Box
 } from '@chakra-ui/react';
 import React from 'react';
-import AnalyticsChart from './AnalyticsChart';
+import ValidatorChart from 'ui/validators/ValidatorChart';
+import ValidatorDelegator from 'ui/validators/ValidatorDelegator';
 
 const TabChart = () => {
 
@@ -16,10 +17,11 @@ const TabChart = () => {
                     }}
                 >
                     <TabList padding={'20px 10px 0 24px'} borderBottom="1px solid rgba(0, 0, 0, 0.06)">
-                        <Tab>My Validators</Tab>
-                        <Tab>Activity</Tab>
+                        <Tab>Analytics</Tab>
+                        <Tab>Validator Activities</Tab>
+                        <Tab>Delegators</Tab>
                     </TabList>
-                    <div style={{ 
+                    {/* <div style={{ 
                         display: 'flex', 
                         alignItems: 'center',
                         position: 'absolute',
@@ -29,17 +31,20 @@ const TabChart = () => {
                         borderRadius: '5px',
                     }}>
                         hahahahh
-                    </div>
+                    </div> */}
                 </div>
 
                 <TabPanels color="#000" >
                     <TabPanel>
                         <p>
-                            <AnalyticsChart />
+                            <ValidatorChart />
                         </p>
                     </TabPanel>
                     <TabPanel>
                         <p>22222!</p>
+                    </TabPanel>
+                    <TabPanel>
+                        <ValidatorDelegator />
                     </TabPanel>
                 </TabPanels>
             </Tabs>

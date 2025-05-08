@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { Box, Heading, Grid, Text,  Flex } from '@chakra-ui/react';
 import { Tooltip, useDisclosure } from '@chakra-ui/react';
-import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import {
   useColorModeValue,
   chakra,
@@ -25,23 +24,7 @@ const sectionTitleProps = {
 
 
 
-const mockData  = [
-    {
-        label: 'Validator',
-        tipsInfo: 'Validator info',
-        value: <Text color="red"> hahahrwetwetweah </Text>,
-    },
-    {
-        label: 'Validator',
-        tipsInfo: 'Validator info',
-        value: <Text color="green"> hatwetwetwhahah </Text>,
-    },
-    {
-        label: 'Validator',
-        tipsInfo: 'Validator info',
-        value: <Text color="blue"> hahaetwetwehah </Text>,
-    },
-]
+
 
 const InfoBoxItemLabel = ({ 
     label,
@@ -62,7 +45,12 @@ const InfoBoxItemLabel = ({
                     onClose={ onClose }
                     placement='right'
                     hasArrow = { false }
-                    label={ tipsInfo }
+                    label={ 
+                    <p
+                        style={{
+                            maxWidth: '70vw',
+                        }}
+                    >{ tipsInfo }</p> }
                     bg="white"
                     color="gray.500"
                     border="1px solid"
@@ -107,7 +95,7 @@ const InfoBoxItem = ({
         <Box flex="1" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" p="24px">
             <Heading as="h4" size="sm" mb={ 2 }> { titleText } </Heading>
             {
-                mockData.map((item, index) => (
+                dataList.map((item, index) => (
                     <Box { ...sectionProps } key={ index } 
                         borderBottom = { index === dataList.length - 1 ? 'none' : '1px solid' }
                     >
@@ -124,18 +112,80 @@ const InfoBoxItem = ({
     )
 }
 
-const InfoBox = () => {
+const InfoBox = ({
+    overViewInfo,
+    isDetailInfoLoading
+}: {
+    overViewInfo: {
+        totalStake: string;
+        liveApr: string;
+        uptime: string;
+        commissionRate: string;
+        validatorStake: string;
+        validatorRewards: string;
+        blocksValidated: string;
+    };
+    isDetailInfoLoading: boolean;
+}) => {
+
+    const OverviewData  = [
+        {
+            label: 'Total Stake',
+            tipsInfo: 'Total amount of tokens currently staked with the validator.',
+            value: <Text > { overViewInfo.totalStake } </Text>,
+        },
+        {
+            label: 'Live APR',
+            tipsInfo: 'The current annual percentage return estimated from staking tokens with the validator.',
+            value: <Text > { overViewInfo.liveApr } </Text>,
+        },
+        {
+            label: 'Uptime',
+            tipsInfo: 'The reliability and availability of a validator node, shown as an uptime percentage.',
+            value: <Text > { overViewInfo.uptime } </Text>,
+        },
+        {
+            label: 'Commission Rate',
+            tipsInfo: `The percentage fee charged by validators from delegators' staking rewards.`,
+            value: <Text > { overViewInfo.commissionRate } </Text>,
+        },
+    ];
+    
+    
+    const MoreData  = [
+        {
+            label: `Validator's Stake`,
+            tipsInfo: 'Amount of tokens the validator itself has staked.',
+            value: <Text > { overViewInfo.validatorStake } </Text>,
+        },
+        {
+            label: `Validator's Rewards`,
+            tipsInfo: 'Rewards earned by the validator from network participation.',
+            value: <Text > { overViewInfo.validatorStake } </Text>,
+        },
+        {
+            label: 'Uptime',
+            tipsInfo: 'Rewards distributed to users staking their tokens with this validator.',
+            value: <Text > { overViewInfo.uptime } </Text>,
+        },
+        {
+            label: 'Recently Validated Blocks',
+            tipsInfo: `Number of successfully validated blocks in the last 10,000 blocks.`,
+            value: <Text > { overViewInfo.blocksValidated } </Text>,
+        },
+    ]
+
     return (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} marginBottom = {4} rowGap={"20px"} columnGap={ 6 } mb={ 8 }>
       
             <InfoBoxItem
-                dataList={ [1, 2, 3] }
-                titleText="Validator"
+                dataList={ OverviewData }
+                titleText="Overview"
             />
 
             <InfoBoxItem
-                dataList={ [1, 2, 3] }
-                titleText="Validator"
+                dataList={ MoreData }
+                titleText="More"
             />
         </Grid>
     )

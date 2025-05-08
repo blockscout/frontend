@@ -1,17 +1,15 @@
 /* eslint-disable */
 
-import { Box, Flex, Grid, Text } from '@chakra-ui/react';
+import { Box, Flex, Button , Grid, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import orderBy from 'lodash/orderBy';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
-
-import InfoBox from './InfoBox';
+import ValidatorsTable from 'ui/validators/ValidatorsTable';
 import { getEnvValue } from 'configs/app/utils';
 
-import TabChart from './TabChart';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 
@@ -60,14 +58,36 @@ const ObjectDetails: NextPage = () => {
 
   const [ tableList, setTableList ] = React.useState<Array<IssuanceTalbeListType>>([]);
 
-  const tabThead = [ 'Credential ID', 'Txn hash', 'Block', 'Method', 'From/To', 'Time', 'Value MOCA', 'Fee MOCA' ];
 
-  const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
+  const [ isOverviewStatsLoading, setIsOverviewStatsLoading ] = React.useState<boolean>(false);
+
+  const tabThead = [ 
+    'Validators',
+    'Voting Power',
+    'Commission Rate',
+    'Live APR',
+    'Status',
+    'Total Stake',
+    'Uptime',
+    'Status',
+    ' '
+  ]; 
+  // const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
+  const url = "http://192.168.0.97:8080"
   const [ totalIssued, setTotalIssued ] = React.useState<number>(0);
   const [ totalCredential, setTotalCredential ] = React.useState<number>(0);
   const [ loading, setLoading ] = React.useState<boolean>(false);
   const [ nextCursor, setNextCursor ] = React.useState<string>('');
   const [ previousCursor, setpreviousCursor ] = React.useState<string>('');
+
+  const  [ totalDelegators, setTotalDelegators ] = React.useState<number>(0);
+  const  [ totalValidators, setTotalValidators ] = React.useState<number>(0);
+  const  [ totalStaked, setTotalStaked ] = React.useState<any>(null);
+  const [ totalEpoch, setTotalEpoch ] = React.useState<any>({});
+
+
+  const [ tableDataList, setTableDataList ] = React.useState<Array<any>>([]);
+  const [ isTableLoading, setIsTableLoading ] = React.useState<boolean>(false);
 
   const handleSearchChange = () => () => {};
 
@@ -117,21 +137,50 @@ const ObjectDetails: NextPage = () => {
     }
   }, [ url ]);
 
-  const requestTotal = React.useCallback(async() => {
+
+
+  const requestOverviewStats = React.useCallback(async() => {
     try {
-      setLoading(true);
-      const rp2 = await (await fetch(url + '/api/v1/explorer/totalissuancesinfo', { method: 'get' })).json() as {
-        total_credential_number: number; total_issued_number: number;
-      };
-      setLoading(false);
-      setTotalIssued(rp2.total_credential_number);
-      setTotalCredential(rp2.total_issued_number);
-    } catch (error: any) {
-      setLoading(false);
+      setIsOverviewStatsLoading(true);
+      const res = await (await fetch(url + '/api/network/overview-stats', { method: 'get' })).json() as any
+      setIsOverviewStatsLoading(false);
+      if(res && res.code === 200) {
+        const { 
+          delegatorCount,
+          validatorCount,
+          totalStake,
+          epoch,
+        } = res.data;
+        setTotalDelegators(delegatorCount);
+        setTotalValidators(validatorCount);
+        setTotalStaked(totalStake);
+        setTotalEpoch(epoch || {});
+      }
+    }
+    catch (error: any) {
+      setIsOverviewStatsLoading(false);
       throw Error(error);
     }
-  }, [ url ]);
+  }
+  , [ url ]);
 
+
+  const requestTableList = React.useCallback(async() => {
+    try {
+      setIsTableLoading(true);
+      const res = await (await fetch(url + '/api/network/validators/list', { method: 'get' })).json() as any
+      setIsTableLoading(false);
+      if(res && res.code === 200) {
+        setTableDataList(res.data.validators);
+      }
+    }
+    catch (error: any) {
+      setIsTableLoading(false);
+      throw Error(error);
+    }
+  }
+  , [ url ]);
+  
   const propsPage = React.useCallback((value: number) => {
     window.scrollTo({
       top: 0,
@@ -147,62 +196,81 @@ const ObjectDetails: NextPage = () => {
     });
   }, [ queryParams.page, request, nextCursor, previousCursor ]);
 
+
   React.useEffect(() => {
     if (url) {
-      request();
-      requestTotal();
+      requestOverviewStats();
+      requestTableList();
     }
-  }, [ requestTotal, request, url ]);
+  }, [ url, requestOverviewStats, requestTableList]);
 
   return (
     <PageNextJs pathname="/object">
 
       <Flex 
           display={{ base: 'flex-wrap', lg: 'flex' }}
-          justifyContent= {{ base: 'flex-start', lg: 'space-between' }}
+          justifyContent= {{ base: 'space-between' , lg:  'flex-start' }}
           alignItems="center" marginBottom="24px">
-          <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">Object Details</Text>
-          <Text fontSize="14px" fontWeight="400" lineHeight="20px" color="rgba(0, 0, 0, 0.4)" marginTop="6px">
-            { 'Object ID: ' }
-            <Text as="span" color="#FF57B7">{ '0x1234567890abcdef' }</Text>
-          </Text>
+          <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">MOCA Staking</Text>
+
+          <Button
+              onClick={() => {
+                window.open('https://moca.network/staking', '_blank');
+              }}
+              px = "6px"
+              py = "2px"
+              width={ 'auto' }
+              height={ 'auto' }
+              marginLeft={"8px"}
+              variant="surface"
+              color="#FF57B7"
+              borderRadius={9999}
+              backgroundColor="#FEE5F4"
+            >
+              <Text 
+                fontSize="12px"
+                fontWeight="400"
+                lineHeight="140%"
+                color="#FF57B7"
+                fontFamily="Inter"
+              >MOCA Staking</Text>
+          </Button>
       </Flex>
 
       <Grid templateColumns={{ base: '1fr 1fr', lg: '1fr 1fr 1fr 1fr' }} marginBottom = {4} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
-          <Text>Total Issued Number</Text>
-          <Text>{ Number(new Intl.NumberFormat('en-US').format(totalIssued)) || '-' }</Text>
+          <Text>Total Staking</Text>
+          <Text>{ totalStaked || '-' }</Text>
         </Box>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="18px" padding="16px">
-          <Text>Total Credential Number</Text>
-          <Text>{ Number(new Intl.NumberFormat('en-US').format(totalCredential)) || '-' }</Text>
+          <Text>Epoch</Text>
+          <Text>{ totalEpoch.current || '-' }</Text>
         </Box>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
-          <Text>Total Issued Number</Text>
-          <Text>{ Number(new Intl.NumberFormat('en-US').format(totalIssued)) || '-' }</Text>
+          <Text>Validators</Text>
+          <Text>{ totalValidators || '0' }</Text>
         </Box>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
-          <Text>Total Issued Number</Text>
-          <Text>{ Number(new Intl.NumberFormat('en-US').format(totalIssued)) || '-' }</Text>
+          <Text>Delegators</Text>
+          <Text>{ totalDelegators || '0' }</Text>
         </Box>
       </Grid>
 
-      <InfoBox />
+      {/* <InfoBox /> */}
 
-      <TabChart />
+      {/* <TabChart /> */}
 
-      {/* <TableList
-        totleDate={ 0 }
-        showTotal={ true }
-        toNext={ toNext }
-        currPage={ queryParams.page }
-        propsPage={ propsPage }
-        loading={ loading }
-        tableList={ tableList }
-        tabThead={ tabThead }
-        page="Issuance"
-        handleSearchChange={ handleSearchChange() }
-      /> */}
+      <ValidatorsTable 
+        data={ tableDataList }
+        isLoading={ isTableLoading }
+        onPageChange={ propsPage }
+        onPageSizeChange={ (pageSize: number) => {
+          updateQueryParams({ offset: 0, page: 1 });
+        } }
+        onSortChange={ (sortBy: string, sortOrder: string) => {
+          updateQueryParams({ offset: 0, page: 1 });
+        } }
+      />
     </PageNextJs>
   );
 };
