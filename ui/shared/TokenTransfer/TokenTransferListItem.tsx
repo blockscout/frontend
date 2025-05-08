@@ -15,7 +15,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
-import TimeAgoWithTooltip from '../TimeAgoWithTooltip';
+import TimeWithTooltip from '../TimeWithTooltip';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
@@ -78,7 +78,7 @@ const TokenTransferListItem = ({
             truncation="constant_long"
             fontWeight="700"
           />
-          <TimeAgoWithTooltip
+          <TimeWithTooltip
             timestamp={ timestamp }
             enableIncrement={ enableTimeIncrement }
             isLoading={ isLoading }

@@ -15,7 +15,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
-import TimeAgoWithTooltip from '../TimeAgoWithTooltip';
+import TimeWithTooltip from '../TimeWithTooltip';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
@@ -91,7 +91,7 @@ const TokenTransferTableItem = ({
             mt="7px"
             truncation="constant_long"
           />
-          <TimeAgoWithTooltip
+          <TimeWithTooltip
             timestamp={ timestamp }
             enableIncrement={ enableTimeIncrement }
             isLoading={ isLoading }

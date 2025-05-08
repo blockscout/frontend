@@ -14,7 +14,7 @@ type Props = {
   className?: string;
 };
 
-const TimeAgoWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncrement, className }: Props) => {
+const TimeWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncrement, className }: Props) => {
   const timeAgo = useTimeAgoIncrement(timestamp || '', enableIncrement && !isLoading);
   if (!timestamp && !fallbackText) {
     return null;
@@ -31,4 +31,4 @@ const TimeAgoWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncremen
   );
 };
 
-export default chakra(TimeAgoWithTooltip);
+export default chakra(TimeWithTooltip);

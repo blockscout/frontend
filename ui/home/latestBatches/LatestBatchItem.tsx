@@ -6,7 +6,7 @@ import { route } from 'nextjs-routes';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/TimeWithTooltip';
 
 type Props = {
   number: number;
@@ -35,7 +35,7 @@ const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading, animat
           fontWeight={ 500 }
           mr="auto"
         />
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ timestamp }
           enableIncrement={ !isLoading }
           isLoading={ isLoading }
