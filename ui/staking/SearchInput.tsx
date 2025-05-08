@@ -58,7 +58,6 @@ const FilterInput = (props: Props) => {
       _placeholder={{ color: 'rgba(0, 0, 0, 0.3)' }}
       fontWeight="400" fontSize="12px"
       borderColor="rgba(0, 46, 51, 0.1)"
-      width="344px"
       display="flex"
       alignItems="center"
     >

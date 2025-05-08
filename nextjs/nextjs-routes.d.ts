@@ -62,12 +62,6 @@ declare module "nextjs-routes" {
     | StaticRoute<"/issuance">
     | StaticRoute<"/login">
     | StaticRoute<"/mud-worlds">
-    | StaticRoute<"/my-staking/StakingInfo">
-    | StaticRoute<"/my-staking/StakingModal">
-    | StaticRoute<"/my-staking/StakingModalNumberInput">
-    | StaticRoute<"/my-staking/StakingTabList">
-    | StaticRoute<"/my-staking/StakingValidatorList">
-    | StaticRoute<"/my-staking/StakingValidatorSelect">
     | StaticRoute<"/my-staking">
     | DynamicRoute<"/name-domains/[name]", { "name": string }>
     | StaticRoute<"/name-domains">

@@ -24,10 +24,10 @@ const StakingModal = ({
 
     return (
         <Modal isOpen={ isOpen } onClose={ onClose }>
-                <ModalOverlay
-                    bg='blackAlpha.300'
-                />
-            <ModalContent height={'auto'} px={'24px'} py={'24px'}>
+            <ModalOverlay
+                bg='blackAlpha.300'
+            />
+            <ModalContent height={'auto'} maxWidth={"600px"} px={'24px'} py={'24px'}>
                 <ModalHeader mb={2}>
                     Stake
                 </ModalHeader>

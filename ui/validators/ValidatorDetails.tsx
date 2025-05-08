@@ -6,6 +6,27 @@ import { Text } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
+
+// {
+//     totalStake: string;
+//     liveApr: string;
+//     uptime: string;
+//     commissionRate: string;
+//     validatorStake: string;
+//     validatorRewards: string;
+//     blocksValidated: string;
+// };
+
+type OverViewInfoType = {
+    totalStake: string;
+    commissionRate: string;
+    validatorStake: string;
+    uptime: string;
+    blocksValidated: string;
+    validatorRewards : string;
+    liveApr: string;
+}
+
 const  ValidatorDetails = () => {
 
     const router = useRouter();
@@ -18,7 +39,7 @@ const  ValidatorDetails = () => {
     const [ delegatorsTablePage, setDelegatorsTablePage ] = React.useState(1);
     const [ delegatorsTableNextPage, setDelegatorsTableNextPage ] = React.useState(0);
 
-    const [ overViewInfo , setOverViewInfo ] = React.useState({});
+    const [ overViewInfo , setOverViewInfo ] = React.useState({} as OverViewInfoType);
 
     const requestBasicDetailInfo = React.useCallback(async( _addr : string) => {
         try {
@@ -26,17 +47,17 @@ const  ValidatorDetails = () => {
             const res = await (await fetch(url + '/api/network/validators/details/' + _addr, { method: 'get' })).json() as any
             setIsDetailInfoLoading(false);
             if(res && res.code === 200) {
-                const { validator, status, totalStake, commissionRate, validatorStake, uptime, blocksValidated, liveApr } = res.data;
-                setOverViewInfo({
-                    validator: validator,
-                    status: status,
-                    totalStake: totalStake,
-                    commissionRate: commissionRate,
-                    validatorStake: validatorStake,
-                    uptime: uptime,
-                    blocksValidated: blocksValidated,
-                    liveApr: liveApr
-                });
+                // const { validator, status, totalStake, commissionRate, validatorStake, uptime, blocksValidated, liveApr } = res.data;
+                // setOverViewInfo({
+                //     validator: validator,
+                //     status: status,
+                //     totalStake: totalStake,
+                //     commissionRate: commissionRate,
+                //     validatorStake: validatorStake,
+                //     uptime: uptime,
+                //     blocksValidated: blocksValidated,
+                //     liveApr: liveApr
+                // });
                 const uploadProperties = res.uploadProperties;
             }
         }

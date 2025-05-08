@@ -58,7 +58,7 @@ const StakingTabList = () => {
 
                 <TabPanels color="#000" >
                     <TabPanel>
-                        <p>1111</p>
+
                     </TabPanel>
                     <TabPanel>
                         <p>22222!</p>
