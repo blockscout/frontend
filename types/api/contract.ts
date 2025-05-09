@@ -26,11 +26,13 @@ export type SmartContractProxyType =
   | 'eip930'
   | 'eip2535'
   | 'eip7702'
+  | 'erc7760'
   | 'master_copy'
   | 'basic_implementation'
   | 'basic_get_implementation'
   | 'comptroller'
   | 'clone_with_immutable_arguments'
+  | 'resolved_delegate_proxy'
   | 'unknown'
   | null;
 

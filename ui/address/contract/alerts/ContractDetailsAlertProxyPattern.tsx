@@ -40,6 +40,17 @@ const PROXY_TYPES: Partial<Record<NonNullable<SmartContractProxyType>, {
     link: 'https://github.com/ethereum/EIPs/issues/930',
     description: 'Eternal storage',
   },
+  erc7760: {
+    name: 'ERC-7760',
+    link: 'https://eips.ethereum.org/EIPS/eip-7760',
+    description: 'Minimal Upgradeable Proxies',
+  },
+  resolved_delegate_proxy: {
+    name: 'ResolvedDelegateProxy',
+    // eslint-disable-next-line max-len
+    link: 'https://github.com/ethereum-optimism/optimism/blob/9580179013a04b15e6213ae8aa8d43c3f559ed9a/packages/contracts-bedrock/src/legacy/ResolvedDelegateProxy.sol',
+    description: 'OP stack: legacy proxy contract that makes use of the AddressManager to resolve the implementation address',
+  },
   clone_with_immutable_arguments: {
     name: 'Clones with immutable arguments',
     link: 'https://github.com/wighawag/clones-with-immutable-args',
