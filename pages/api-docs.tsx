@@ -1,19 +1,15 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import config from 'configs/app';
-import SwaggerUI from 'ui/apiDocs/SwaggerUI';
-import PageTitle from 'ui/shared/Page/PageTitle';
+const ApiDocs = dynamic(() => import('ui/pages/ApiDocs'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/api-docs">
-      <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } API documentation` : 'API documentation' }
-      />
-      <SwaggerUI/>
+      <ApiDocs/>
     </PageNextJs>
   );
 };
