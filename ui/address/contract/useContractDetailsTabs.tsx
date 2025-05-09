@@ -8,7 +8,7 @@ import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractDetailsConstructorArgs from './ContractDetailsConstructorArgs';
 import ContractDetailsVerificationButton from './ContractDetailsVerificationButton';
-import ContractSourceCode from './ContractSourceCode';
+// import ContractSourceCode from './ContractSourceCode';
 import type { CONTRACT_DETAILS_TAB_IDS } from './utils';
 
 interface Tab {
@@ -24,7 +24,7 @@ interface Props {
   sourceAddress: string;
 }
 
-export default function useContractDetailsTabs({ data, isLoading, addressHash, sourceAddress }: Props): Array<Tab> {
+export default function useContractDetailsTabs({ data, isLoading, addressHash }: Props): Array<Tab> {
 
   const canBeVerified = !data?.is_self_destructed && !data?.is_verified;
 
@@ -44,13 +44,13 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         component: (
           <Flex flexDir="column" rowGap={ 6 }>
             <ContractDetailsConstructorArgs data={ data } isLoading={ isLoading }/>
-            { data?.source_code && (
+            { /* { data?.source_code && (
               <ContractSourceCode
                 data={ data }
                 isLoading={ isLoading }
                 sourceAddress={ sourceAddress }
               />
-            ) }
+            ) } */ }
           </Flex>
         ),
       } : undefined,
@@ -116,5 +116,5 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         ),
       } : undefined,
     ].filter(Boolean);
-  }, [ isLoading, addressHash, data, sourceAddress, canBeVerified ]);
+  }, [ isLoading, addressHash, data, canBeVerified ]);
 }
