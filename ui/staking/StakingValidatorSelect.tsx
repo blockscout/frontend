@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react';
 import StakingTabList from 'ui/staking/StakingTabList';
-
+import ValidatorItemBar from 'ui/staking/ValidatorItemBar';
 
 const StakingValidatorSelect = () => {
     
@@ -27,21 +27,20 @@ const StakingValidatorSelect = () => {
             matchWidth={true}
         >
             <PopoverTrigger>
-                <Box 
-                    width="100%" 
-                    height="40px"
-                    cursor={"pointer"}
-                    border = { isOpen ? '1px solid red' : '1px solid gray' }
-                    borderRadius="9999px" display="flex" 
-                    alignItems="center" justifyContent="center">
-                    <Text fontSize="14px" color="black" onClick={onToggle} userSelect={"none"}>
-                        Manage Your Channels
-                    </Text>
+                <Box width="100%">
+                    <ValidatorItemBar
+                        showArrow={true}
+                        liveApr={0}
+                        isFocused={ isOpen }
+                        validatorName={'Select Validator'}
+                        validatorAvatar={null}
+                        onClick={onToggle}
+                    />
                 </Box>
             </PopoverTrigger>
             <PopoverContent 
                 color='white'
-                width="100%"
+                width="inherit"
                 borderColor='blue.800'
                 borderRadius="12px"
                 border = '1px solid rgba(0, 46, 51, 0.10)'

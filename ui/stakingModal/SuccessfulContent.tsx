@@ -13,6 +13,7 @@ const SuccessfulContent = ({
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
+            width="100%" height="auto"
         >
             <img 
                 src="/static/check-badge.svg"

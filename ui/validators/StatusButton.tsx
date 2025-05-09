@@ -53,3 +53,5 @@ const StatusButton = ({ status, onClick }: { status: statusstring; onClick?: () 
         </Button>
     );
 }
+
+export default StatusButton;

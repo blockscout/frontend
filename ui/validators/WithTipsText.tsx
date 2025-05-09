@@ -8,9 +8,11 @@ import IconSvg from 'ui/shared/IconSvg';
 const WithTipsText = ({
     label,
     tips,
+    placement = 'top',
 }: {
     label: string | React.ReactNode;
     tips: string | React.ReactNode;
+    placement?: 'top' | 'bottom' | 'left' | 'right';
 }) => {
     
     const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
@@ -25,20 +27,14 @@ const WithTipsText = ({
                     isOpen={ isOpen }
                     onOpen={ onOpen }
                     onClose={ onClose }
-                    placement='right'
+                    placement= { placement }
                     hasArrow = { false }
-                    border= "0.5px solid rgba(0, 46, 51, 0.10)"
-                    backgroundColor="white"
-                    boxShadow="0px 2px 12px 0px rgba(0, 0, 0, 0.10)"
-                    padding = {"8px"}
-                    borderRadius="8px"
                     label={ 
                         <Box
                             maxWidth={{
                                 base: '70vw',
-                                lg: '300px',
+                                lg: '195px',
                             }}
-                            as="div"
                             fontSize="12px"
                             fontWeight="400"
                             color="rgba(0, 0, 0, 0.60)"
@@ -46,10 +42,16 @@ const WithTipsText = ({
                             fontStyle="normal"
                             textTransform="capitalize"
                             fontFamily="HarmonyOS Sans"
+                            as="div"
                         >
                             { tips }
                         </Box>
                     }
+                    border= "0.5px solid rgba(0, 46, 51, 0.10)"
+                    backgroundColor="white"
+                    boxShadow="0px 2px 12px 0px rgba(0, 0, 0, 0.10)"
+                    padding = {"8px"}
+                    borderRadius="8px"
                 >
                     <Button
                         variant="unstyled"

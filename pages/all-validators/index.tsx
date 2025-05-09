@@ -9,9 +9,11 @@ import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
 import ValidatorsTable from 'ui/validators/ValidatorsTable';
 import { getEnvValue } from 'configs/app/utils';
-
+import WithTipsText from 'ui/validators/WithTipsText';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
+
+
 
 type RequestType = {
   has_next: boolean;
@@ -30,6 +32,8 @@ type RequestType = {
     tx_value: string;
   }>;
 };
+
+
 type IssuanceTalbeListType = {
   'Credential ID': string;
   'Txn hash': string;
@@ -40,6 +44,7 @@ type IssuanceTalbeListType = {
   'Value MOCA': string;
   'Fee MOCA': string;
 };
+
 const ObjectDetails: NextPage = () => {
   const [ queryParams, setQueryParams ] = React.useState<{ offset: number; searchTerm: string; page: number }>({
     offset: 0,
@@ -61,17 +66,10 @@ const ObjectDetails: NextPage = () => {
 
   const [ isOverviewStatsLoading, setIsOverviewStatsLoading ] = React.useState<boolean>(false);
 
-  const tabThead = [ 
-    'Validators',
-    'Voting Power',
-    'Commission Rate',
-    'Live APR',
-    'Status',
-    'Total Stake',
-    'Uptime',
-    'Status',
-    ' '
-  ]; 
+
+
+
+
   // const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
   const url = "http://192.168.0.97:8080"
   const [ totalIssued, setTotalIssued ] = React.useState<number>(0);
@@ -239,19 +237,59 @@ const ObjectDetails: NextPage = () => {
 
       <Grid templateColumns={{ base: '1fr 1fr', lg: '1fr 1fr 1fr 1fr' }} marginBottom = {4} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
-          <Text>Total Staking</Text>
+          <WithTipsText
+            placement='right'
+            label={  <Text
+              fontSize="12px"
+              display="inline"
+              lineHeight="16px"
+              fontStyle="normal"
+              textTransform="capitalize"
+              fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Total Staking</Text> }
+            tips={ `Total Amount Staked Across the Blockchain Network` }
+          />
           <Text>{ totalStaked || '-' }</Text>
         </Box>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="18px" padding="16px">
-          <Text>Epoch</Text>
+          <WithTipsText
+            placement='right'
+            label={ <Text
+              fontSize="12px"
+              display="inline"
+              lineHeight="16px"
+              fontStyle="normal"
+              textTransform="capitalize"
+              fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Epoch</Text> }
+            tips={ `A fixed period in PoS blockchains for validator selection, staking, and reward distribution.` }
+          />
           <Text>{ totalEpoch.current || '-' }</Text>
         </Box>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
-          <Text>Validators</Text>
+          <WithTipsText
+            placement='right'
+            label={ <Text
+              fontSize="12px"
+              display="inline"
+              lineHeight="16px"
+              fontStyle="normal"
+              textTransform="capitalize"
+              fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Validators</Text> }
+            tips={ `Node operator responsible for verifying transactions, securing the blockchain, and earning staking rewards.` }
+          />
           <Text>{ totalValidators || '0' }</Text>
         </Box>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
-          <Text>Delegators</Text>
+          <WithTipsText
+            placement='right'
+            label={ <Text
+              fontSize="12px"
+              display="inline"
+              lineHeight="16px"
+              fontStyle="normal"
+              textTransform="capitalize"
+              fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Delegators</Text> }
+            tips={ `Individual who stakes their tokens with a validator, earning rewards without running a node directly.` }
+          />
           <Text>{ totalDelegators || '0' }</Text>
         </Box>
       </Grid>

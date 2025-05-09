@@ -23,7 +23,7 @@ const StakingModal = ({
 }) => {
 
     return (
-        <Modal isOpen={ isOpen } onClose={ onClose }>
+        <Modal isOpen={ isOpen } onClose={ onClose } closeOnOverlayClick={false} isCentered>
             <ModalOverlay
                 bg='blackAlpha.300'
             />

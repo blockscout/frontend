@@ -17,6 +17,7 @@ import StakingValidatorSelect from 'ui/staking/StakingValidatorSelect';
 import StakingModalNumberInput from 'ui/staking/StakingModalNumberInput';
 import SuccessfulContent from 'ui/stakingModal/SuccessfulContent';
 import EarnInfoBox from 'ui/staking/EarnInfoBox';
+import HeadsUpInfo from 'ui/staking/HeadsUpInfo';
 import React from 'react';
 
 
@@ -51,7 +52,7 @@ const icon_4 = (
 
 const icon_eye = (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M8 10.0004C9.10457 10.0004 10 9.10496 10 8.00039C10 6.89582 9.10457 6.00039 8 6.00039C6.89543 6.00039 6 6.89582 6 8.00039C6 9.10496 6.89543 10.0004 8 10.0004Z" fill="black" fill-opacity="0.2"/>
+        <path d="M8 10.0004C9.10457 10.0004 10 9.10496 10 8.00039C10 6.89582 9.10457 6.00039 8 6.00039C6.89543 6.00039 6 6.89582 6 8.00039C6 9.10496 6.89543 10.0004 8 10.0004Z" fill="black" fillOpacity="0.2"/>
         <path fillRule="evenodd" clipRule="evenodd" d="M0.531404 8.47269C0.413913 8.16738 0.414015 7.8289 0.531688 7.52365C1.68702 4.52669 4.59464 2.40039 7.99887 2.40039C11.4048 2.40039 14.3136 4.5288 15.4678 7.52809C15.5853 7.83341 15.5852 8.17189 15.4675 8.47713C14.3121 11.4741 11.4045 13.6004 8.0003 13.6004C4.59438 13.6004 1.68558 11.472 0.531404 8.47269ZM11.2003 8.00039C11.2003 9.7677 9.76761 11.2004 8.0003 11.2004C6.23299 11.2004 4.8003 9.7677 4.8003 8.00039C4.8003 6.23308 6.23299 4.80039 8.0003 4.80039C9.76761 4.80039 11.2003 6.23308 11.2003 8.00039Z" fill="black" fillOpacity="0.2"/>
     </svg>
 );
@@ -305,19 +306,34 @@ const StakingInfo = () => {
                 </Box>
 
                 <StakingModal isOpen={ isOpen } onClose={ onClose } onOpen={ onOpen }>
-                    <div style={{ maxHeight: '590px' }}>
+                    <div style={{ maxHeight: '590px'}}>
                         <StakingValidatorSelect />
-                        <Box paddingTop={ 10 } paddingBottom={ 4 }>
-                            <StakingModalNumberInput />
-                        </Box>
-                        <Box paddingTop={ 10 } paddingBottom={ 4 }>
-                            <EarnInfoBox 
-                                yearlyEarnings = { 0 }
-                                monthlyEarnings = { 0 }
-                                dailyEarnings = { 0 }
-                            />
-                        </Box>
-                        <SuccessfulContent text='Transaction Success' />    
+                        <Flex
+                            flexDirection="column"
+                            justifyContent="flex-start"
+                            alignItems="flex-start"
+                            width="100%"
+                            gap="16px"
+                            marginTop="16px"
+                        >
+                            <Box width="100%" height="auto">
+                                <StakingModalNumberInput />
+                            </Box>
+                            <Box width="100%" height="auto">
+                                <EarnInfoBox 
+                                    yearlyEarnings = { 0 }
+                                    monthlyEarnings = { 0 }
+                                    dailyEarnings = { 0 }
+                                />
+                            </Box>
+                            <Box width="100%" height="auto">
+                                <HeadsUpInfo
+                                    label="Heads Up"
+                                    value="You will be charged a 10% fee on your earnings."
+                                />
+                            </Box>
+                            <SuccessfulContent text='Transaction Success' />    
+                        </Flex>
                     </div>
                     <Button onClick={ onClose }>Close</Button>
                 </StakingModal>

@@ -46,17 +46,28 @@ const InfoBoxItemLabel = ({
                     placement='right'
                     hasArrow = { false }
                     label={ 
-                    <p
-                        style={{
-                            maxWidth: '70vw',
-                        }}
-                    >{ tipsInfo }</p> }
-                    bg="white"
-                    color="gray.500"
-                    border="1px solid"
-                    borderColor="divider"
+                        <Box
+                            maxWidth={{
+                                base: '70vw',
+                                lg: '260px',
+                            }}
+                            fontSize="12px"
+                            fontWeight="400"
+                            color="rgba(0, 0, 0, 0.60)"
+                            lineHeight="16px"
+                            fontStyle="normal"
+                            textTransform="capitalize"
+                            fontFamily="HarmonyOS Sans"
+                            as="div"
+                        >
+                            { tipsInfo }
+                        </Box>
+                    }
+                    border= "0.5px solid rgba(0, 46, 51, 0.10)"
+                    backgroundColor="white"
+                    boxShadow="0px 2px 12px 0px rgba(0, 0, 0, 0.10)"
+                    padding = {"8px"}
                     borderRadius="8px"
-                    padding = { 2 }
                 >
                     <Button
                         variant="unstyled"
