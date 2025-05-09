@@ -37,8 +37,12 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
         pathParams: { hash: getQueryParamString(ctx.query.hash) },
         timeout: 500,
       });
+      const apiData = tokenData ? {
+        ...tokenData,
+        symbol_or_name: tokenData.symbol ?? tokenData.name ?? '',
+      } : null;
 
-      (await baseResponse.props).apiData = tokenData ?? null;
+      (await baseResponse.props).apiData = apiData;
     }
   }
 

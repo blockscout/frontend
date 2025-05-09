@@ -88,7 +88,7 @@ const TokenInstanceContent = () => {
     if (tokenInstanceQuery.data && !tokenInstanceQuery.isPlaceholderData && tokenQuery.data && !tokenQuery.isPlaceholderData) {
       metadata.update(
         { pathname: '/token/[hash]/instance/[id]', query: { hash: tokenQuery.data.address_hash, id: tokenInstanceQuery.data.id } },
-        { symbol: tokenQuery.data.symbol ?? '' },
+        { symbol_or_name: tokenQuery.data.symbol ?? tokenQuery.data.name ?? '' },
       );
     }
   }, [ tokenInstanceQuery.data, tokenInstanceQuery.isPlaceholderData, tokenQuery.data, tokenQuery.isPlaceholderData ]);

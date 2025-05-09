@@ -37,8 +37,8 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
         timeout: 1_000,
       });
 
-      (await baseResponse.props).apiData = tokenData && tokenData.symbol ? {
-        symbol: tokenData.symbol,
+      (await baseResponse.props).apiData = tokenData ? {
+        symbol_or_name: tokenData.symbol ?? tokenData.name ?? '',
       } : null;
     }
   }
