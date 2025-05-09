@@ -158,16 +158,16 @@ noSideBarCookieTest.describe('cookie set to false', () => {
   });
 
   noSideBarCookieTest('', async() => {
-    const networkMenu = component.locator('button[aria-label="Network menu"]');
-    await expect(networkMenu).toBeVisible();
+    const chainIcon = component.getByLabel('Network icon placeholder');
+    await expect(chainIcon).toBeHidden();
   });
 
   noSideBarCookieTest.describe('xl screen', () => {
     noSideBarCookieTest.use({ viewport: pwConfig.viewport.xl });
 
     noSideBarCookieTest('', async() => {
-      const networkMenu = component.locator('button[aria-label="Network menu"]');
-      await expect(networkMenu).toBeVisible();
+      const chainIcon = component.getByLabel('Network icon placeholder');
+      await expect(chainIcon).toBeHidden();
     });
   });
 });
@@ -189,8 +189,8 @@ sideBarCookieTest.describe('cookie set to true', () => {
       { hooksConfig },
     );
 
-    const networkMenu = component.locator('button[aria-label="Network menu"]');
-    await expect(networkMenu).toBeHidden();
+    const chainIcon = component.getByLabel('Network icon placeholder');
+    await expect(chainIcon).toBeVisible();
   });
 });
 
