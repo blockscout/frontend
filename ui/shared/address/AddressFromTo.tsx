@@ -36,6 +36,8 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
   ) ?? 'long';
 
   const Entity = tokenHash && tokenSymbol ? AddressEntityWithTokenFilter : AddressEntity;
+  const isOutgoing = current ? current.toLowerCase() === from.hash.toLowerCase() : false;
+  const isIncoming = current ? current.toLowerCase() === to?.hash?.toLowerCase() : false;
 
   if (mode === 'compact') {
     return (
@@ -49,8 +51,8 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           <Entity
             address={ from }
             isLoading={ isLoading }
-            noLink={ current === from.hash }
-            noCopy={ current === from.hash }
+            noLink={ isOutgoing }
+            noCopy={ isOutgoing }
             noIcon={ noIcon }
             tokenHash={ tokenHash }
             tokenSymbol={ tokenSymbol }
@@ -63,8 +65,8 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           <Entity
             address={ to }
             isLoading={ isLoading }
-            noLink={ current === to.hash }
-            noCopy={ current === to.hash }
+            noLink={ isIncoming }
+            noCopy={ isIncoming }
             noIcon={ noIcon }
             tokenHash={ tokenHash }
             tokenSymbol={ tokenSymbol }
@@ -78,7 +80,6 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
     );
   }
 
-  const isOutgoing = current === from.hash;
   const iconSize = 20;
 
   return (
@@ -102,8 +103,8 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         <Entity
           address={ to }
           isLoading={ isLoading }
-          noLink={ current === to.hash }
-          noCopy={ current === to.hash }
+          noLink={ isIncoming }
+          noCopy={ isIncoming }
           noIcon={ noIcon }
           tokenHash={ tokenHash }
           tokenSymbol={ tokenSymbol }
