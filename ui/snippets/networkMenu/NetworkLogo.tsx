@@ -32,6 +32,7 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
       height="100%"
       color={{ base: 'blue.600', _dark: 'white' }}
       display={ display }
+      aria-label={ isSmall ? 'Network icon placeholder' : 'Network logo placeholder' }
     />
   );
 };
@@ -72,7 +73,7 @@ const NetworkLogo = ({ isCollapsed, onClick, className }: Props) => {
         w="100%"
         h="100%"
         src={ iconSrc }
-        alt={ `${ config.chain.name } network logo` }
+        alt={ `${ config.chain.name } network icon` }
         fallback={ <LogoFallback isCollapsed={ isCollapsed } isSmall/> }
         display={{ base: 'none', lg: isCollapsed === false ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}
         filter={{ _dark: !config.UI.navigation.icon.dark ? INVERT_FILTER : undefined }}
