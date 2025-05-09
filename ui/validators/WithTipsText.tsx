@@ -4,7 +4,6 @@ import { Tooltip, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import IconSvg from 'ui/shared/IconSvg';
 
-
 const WithTipsText = ({
     label,
     tips,
@@ -18,7 +17,7 @@ const WithTipsText = ({
     const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
 
     return (
-        <Text fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)">
+        <Box fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)">
             <Box display="inline-block">
                 <span>
                     { label }
@@ -73,7 +72,7 @@ const WithTipsText = ({
                         </Button>
                 </Tooltip>
             </Box>
-        </Text>
+        </Box>
     );
 }
 export default WithTipsText;

@@ -244,11 +244,12 @@ const ObjectDetails: NextPage = () => {
               display="inline"
               lineHeight="16px"
               fontStyle="normal"
+              as={'span'}
               textTransform="capitalize"
               fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Total Staking</Text> }
             tips={ `Total Amount Staked Across the Blockchain Network` }
           />
-          <Text>{ totalStaked || '-' }</Text>
+          <Text as={'span'}>{ totalStaked || '-' }</Text>
         </Box>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="18px" padding="16px">
           <WithTipsText
@@ -258,11 +259,12 @@ const ObjectDetails: NextPage = () => {
               display="inline"
               lineHeight="16px"
               fontStyle="normal"
+              as={'span'}
               textTransform="capitalize"
               fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Epoch</Text> }
             tips={ `A fixed period in PoS blockchains for validator selection, staking, and reward distribution.` }
           />
-          <Text>{ totalEpoch.current || '-' }</Text>
+          <Text as={'span'}>{ totalEpoch.current || '-' }</Text>
         </Box>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
           <WithTipsText
@@ -272,6 +274,7 @@ const ObjectDetails: NextPage = () => {
               display="inline"
               lineHeight="16px"
               fontStyle="normal"
+              as={'span'}
               textTransform="capitalize"
               fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Validators</Text> }
             tips={ `Node operator responsible for verifying transactions, securing the blockchain, and earning staking rewards.` }
@@ -286,11 +289,12 @@ const ObjectDetails: NextPage = () => {
               display="inline"
               lineHeight="16px"
               fontStyle="normal"
+              as={'span'}
               textTransform="capitalize"
               fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Delegators</Text> }
             tips={ `Individual who stakes their tokens with a validator, earning rewards without running a node directly.` }
           />
-          <Text>{ totalDelegators || '0' }</Text>
+          <Text as={'span'}>{ totalDelegators || '0' }</Text>
         </Box>
       </Grid>
 
