@@ -19,7 +19,7 @@ const WithTipsText = ({
     return (
         <Box fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)">
             <Box display="inline-block">
-                <span>
+                <span style={{ marginRight: '2px' }}>
                     { label }
                 </span>
                 <Tooltip 

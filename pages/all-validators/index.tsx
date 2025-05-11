@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { Box, Flex, Button , Grid, Text } from '@chakra-ui/react';
+import { Box, Flex, Button , Progress , Grid, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import orderBy from 'lodash/orderBy';
 import type { NextPage } from 'next';
@@ -10,9 +10,9 @@ import PageNextJs from 'nextjs/PageNextJs';
 import ValidatorsTable from 'ui/validators/ValidatorsTable';
 import { getEnvValue } from 'configs/app/utils';
 import WithTipsText from 'ui/validators/WithTipsText';
+import TableFilter from 'ui/validators/TableFilter';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
-
 
 
 type RequestType = {
@@ -78,9 +78,9 @@ const ObjectDetails: NextPage = () => {
   const [ nextCursor, setNextCursor ] = React.useState<string>('');
   const [ previousCursor, setpreviousCursor ] = React.useState<string>('');
 
-  const  [ totalDelegators, setTotalDelegators ] = React.useState<number>(0);
-  const  [ totalValidators, setTotalValidators ] = React.useState<number>(0);
-  const  [ totalStaked, setTotalStaked ] = React.useState<any>(null);
+  const [ totalDelegators, setTotalDelegators ] = React.useState<number>(0);
+  const [ totalValidators, setTotalValidators ] = React.useState<number>(0);
+  const [ totalStaked, setTotalStaked ] = React.useState<any>(null);
   const [ totalEpoch, setTotalEpoch ] = React.useState<any>({});
 
 
@@ -235,7 +235,7 @@ const ObjectDetails: NextPage = () => {
           </Button>
       </Flex>
 
-      <Grid templateColumns={{ base: '1fr 1fr', lg: '1fr 1fr 1fr 1fr' }} marginBottom = {4} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
+      <Grid templateColumns={{ md: '1fr', lg: '1fr 1fr', xl: '1fr 1fr 1fr 1fr ' }} marginBottom = {4} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
           <WithTipsText
             placement='right'
@@ -264,7 +264,21 @@ const ObjectDetails: NextPage = () => {
               fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Epoch</Text> }
             tips={ `A fixed period in PoS blockchains for validator selection, staking, and reward distribution.` }
           />
-          <Text as={'span'}>{ totalEpoch.current || '-' }</Text>
+          <Flex alignItems="center" justifyContent="space-between">
+              <Text as={'span'}>{ totalEpoch.current || '-' }</Text>
+              <Box width={"168px"} display="flex" alignItems="center" justifyContent="center" flexDirection="column">
+                  <Flex alignItems="center" justifyContent="space-between" width="100%">
+                      <Text fontSize="12px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
+                        { totalEpoch.total || '-' }
+                      </Text>
+                      <Text fontSize="12px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
+                        { totalEpoch.next || '-' }
+                      </Text>
+                  </Flex>
+                  <Progress colorScheme='pink' opacity={0.8}
+                  size='sm' value={20} width="100%" height="4px" marginTop="6px" />
+              </Box>
+          </Flex>
         </Box>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
           <WithTipsText
@@ -301,6 +315,9 @@ const ObjectDetails: NextPage = () => {
       {/* <InfoBox /> */}
 
       {/* <TabChart /> */}
+
+
+      <TableFilter />
 
       <ValidatorsTable 
         data={ tableDataList }

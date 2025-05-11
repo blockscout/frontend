@@ -1,7 +1,14 @@
 /* eslint-disable */
 import { Flex, Text, Box } from '@chakra-ui/react';
 import { validator } from 'mocks/address/address';
+import ValidatorInfo from 'ui/staking/ValidatorInfo';
 
+
+const expandIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+        <path d="M4 6.5L8 10.5L12 6.5" stroke="black" strokeOpacity="0.2" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+);
 
 const ValidatorItemBar = ({
     showArrow = false,
@@ -37,29 +44,44 @@ const ValidatorItemBar = ({
                 gap="8px"
                 padding="16px"
             >
-                <Text
-                    fontSize="14px"
-                    fontWeight="500"
+                <ValidatorInfo />
+                <Flex
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    alignItems="center"
                     width="auto"
-                    textAlign={"left"}
-                    color="#000"
-                    fontStyle="normal"
-                    lineHeight="140%"
-                    fontFamily="HarmonyOS Sans"
+                    gap="8px"
                 >
-                    { validatorName }
-                </Text>
-                <Text
-                    fontSize="12px"
-                    fontWeight="500"
-                    textAlign={"left"}
-                    color="rgba(0, 0, 0, 0.60)"
-                    fontStyle="normal"
-                    lineHeight="140%"
-                    fontFamily="HarmonyOS Sans"
-                >
-                    { liveApr }%
-                </Text>
+                    <Text
+                        fontSize="12px"
+                        fontWeight="500"
+                        textAlign={"left"}
+                        color="rgba(0, 0, 0, 0.60)"
+                        fontStyle="normal"
+                        lineHeight="140%"
+                        userSelect="none"
+                        as ="span"
+                        fontFamily="HarmonyOS Sans"
+                    >
+                        { liveApr }%
+                    </Text>
+                    {
+                        showArrow && (
+                            <Box
+                                width="16px"
+                                height="16px"
+                                borderRadius="9999px"
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                                transform={ isFocused ? 'rotate(0deg)' : 'rotate(-180deg)' }
+                                transition="transform 0.3s ease-in-out"
+                            >
+                                { expandIcon }
+                            </Box>
+                        )
+                    }
+                </Flex>
             </Flex>
         </Box>
     );

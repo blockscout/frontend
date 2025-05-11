@@ -7,7 +7,7 @@ import { debounce, orderBy } from 'lodash';
 import StatusButton from 'ui/validators/StatusButton';
 import WithTipsText from 'ui/validators/WithTipsText';
 import StakeButton  from 'ui/validators/StakeButton';
-
+import Pagination from 'ui/validators/Pagination';
 
 
 type tableHeadType = {
@@ -148,15 +148,21 @@ const CustomTableHeader = ({
         }
     };
 
+    const w = width || 'auto';
+
+    const _w = width || '200px'; 
+
     return (
         <Th
-            _first={{ p: "14px 10px 10px 10px" }}
+            _first={{ p: "4px 10px 10px 10px" }}
             color="rgba(0, 0, 0, 0.6)"
-            p="14px 10px 10px 10px"
+            p="4px 10px 10px 10px"
             bg="#FFFF"
             borderBottom="1px"
             borderColor="rgba(0, 0, 0, 0.1)"
-            width={ width || 'auto' }
+            width={{ base: _w , lg: w }}
+            minWidth={'240px'}
+            flexShrink={ 0 }
         >
             <Flex
                 flexDirection="row"
@@ -260,24 +266,34 @@ const ValidatorsTable = (props: {
 
 
     return (
-    <TableContainer
-        position="relative"
-        border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px 78px 4px"
-    >
-            <Table>
+        <TableContainer
+            position="relative"
+            border="1px"
+            borderRadius="12px"
+            borderColor="rgba(0, 0, 0, 0.06)"
+            padding="24px"
+            overflowX="auto"
+            width="100%"
+            maxWidth="100%"
+        >
+            <Table variant="simple">
                 <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
-                    {tableHeaders}
+                    { tableHeaders }
                 </Thead>
                 <Tbody>
                     {sortedData.map((validator: any, index: number) => (
-                        <Tr key={index} >
-                            {tableHead.map((item: tableHeadType, index: number) => (
+                        <Tr key={index}
+                            borderBottom={'none'}
+                            _last={{ borderBottom: 'none' }} 
+                            _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
+                            onClick={() => handleRowClick(validator)}
+                        >
+                            { tableHead.map((item: tableHeadType, index: number) => (
                                 <Td
                                     key={index}
                                     p="14px 10px 10px 10px"
                                     color="rgba(0, 0, 0, 0.6)"
-                                    borderBottom="1px"
-                                    borderColor="rgba(0, 0, 0, 0.1)"
+                                    borderBottom={'none'} _last={{ borderBottom: 'none' }} 
                                     onClick={() => handleRowClick(validator)}
                                 >
                                     {item.render ? item.render(validator) : validator[item.key]}
@@ -287,6 +303,15 @@ const ValidatorsTable = (props: {
                     ))}
                 </Tbody>
             </Table>
+            {/* page, onNextPageClick, onPrevPageClick, resetPage, hasPages, hasNextPage, className, canGoBackwards, isLoading, isVisible  */}
+            <Flex
+                justifyContent="flex-end"
+                alignItems="center"
+                zIndex='200'
+                width="100%"
+                >
+                <Pagination />
+            </Flex>
         </TableContainer>
     );
 }

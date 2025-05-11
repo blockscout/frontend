@@ -32,7 +32,7 @@ const FilterInput = (props: Props) => {
   const [ search, setSearch ] = useState<string>(initialValue);
   const [ isFocused, setIsFocused ] = useState<boolean>(false);
   const color = useColorModeValue('rgba(0, 0, 0, 0.3)', 'rgba(255, 255, 255, 0.3)');
-  const borderColor = useColorModeValue('rgba(0, 0, 0, 0.1)', 'rgba(255, 255, 255, 0.1)');
+  const borderColor = 'rgba(0, 46, 51, 0.10)';
   const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearch(value);
@@ -62,7 +62,7 @@ const FilterInput = (props: Props) => {
         borderColor="rgba(0, 46, 51, 0.1)"
         display="flex"
         alignItems="center"
-        width={{ base: '100%', lg: '320px' }}
+        width={ '100%' }
     >
       <InputLeftElement
         w="16px" h="16px" position="absolute"
@@ -78,6 +78,7 @@ const FilterInput = (props: Props) => {
           pl="40px"
           borderRadius="29px" height="42px"
           borderWidth="1px"
+          borderColor={ isFocused ? '#FF57B7' : borderColor }
           fontSize="12px"
           fontWeight="400"
           color="#000"

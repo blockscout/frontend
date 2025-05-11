@@ -1,8 +1,10 @@
 /* eslint-disable */
+"use client";
+
 import { Table, Tbody, Thead , TableContainer, Tr, Th,  Td } from '@chakra-ui/react';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import { route } from 'nextjs-routes';
-
+import Pagination from 'ui/staking/Pagination';
 
 const CustomTableHeader = ({ width, children }: { children: React.ReactNode ; width?: string }) => {
     return (
@@ -68,29 +70,32 @@ const ValidatorsTable = (props: {
             
     
         return (
-        <Table>
-            <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
-                {tableHeaders}
-            </Thead>
-            <Tbody>
-                {data.map((validator: any, index: number) => (
-                    <Tr key={index} >
-                        <Td>
-                            <LinkInternal
-                                href={ route({ pathname: '/validator-detail/[addr]', query: { addr: validator.validator } }) }
-                            >
-                                { validator.validator }
-                            </LinkInternal>
-                        </Td>
-                        <Td>{validator.votingPower}</Td>
-                        <Td>{validator.commissionRate}</Td>
-                        <Td>{validator.liveApr}</Td>
-                        <Td>{validator.totalStake}</Td>
-                        <Td>{validator.uptime}</Td>
-                    </Tr>
-                ))}
-            </Tbody>
-        </Table>
+        <>
+            <Table>
+                <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
+                    {tableHeaders}
+                </Thead>
+                <Tbody>
+                    {data.map((validator: any, index: number) => (
+                        <Tr key={index} >
+                            <Td>
+                                <LinkInternal
+                                    href={ route({ pathname: '/validator-detail/[addr]', query: { addr: validator.validator } }) }
+                                >
+                                    { validator.validator }
+                                </LinkInternal>
+                            </Td>
+                            <Td>{validator.votingPower}</Td>
+                            <Td>{validator.commissionRate}</Td>
+                            <Td>{validator.liveApr}</Td>
+                            <Td>{validator.totalStake}</Td>
+                            <Td>{validator.uptime}</Td>
+                        </Tr>
+                    ))}
+                </Tbody>
+            </Table>
+            <Pagination />
+        </>
     );
 }
 

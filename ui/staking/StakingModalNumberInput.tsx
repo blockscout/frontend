@@ -21,14 +21,41 @@ const StakingModalNumberInput = () => {
   return (
     <InputGroup height={'auto'} width={'100%'} borderRadius={'16px'}>
       <Input
-          pr='60px'
-          pb='70px'
+          pr='145px'
+          pb='44px'
           height={'auto'}
-          type={'text'}
-          placeholder='Enter password'
+          type={'number'}
+          style={{
+            color: '#FF57B7 !important',
+          }}
           borderRadius={'16px'}
+          _placeholder={{
+            fontFamily: "HarmonyOS Sans",
+            fontSize: '40px',
+            fontStyle: 'normal',
+            fontWeight: 700,
+            lineHeight: '140%',
+            color: 'rgba(0, 0, 0, 0.10)'
+          }}
+          _focus={{
+            color: '#FF57B7',
+            border: '1px solid #FF57B7',
+          }}
+          _hover={{
+            color: '#FF57B7',
+          }}
+          _active={{
+            color: '#FF57B7',
+          }}
+          fontFamily={'HarmonyOS Sans'}
+          fontSize={'40px'}
+          fontStyle={'normal'}
+          color={'#FF57B7'}
+          fontWeight={700}
+          lineHeight={'140%'} /* 56px */
           border = {'1px solid rgba(0, 46, 51, 0.10)'}
           backdropFilter='blur(5px)'
+          placeholder = '0.00'
       />
       <InputRightElement width='auto' top={'14px'} right={'16px'} height='auto'>
         <Flex flexDirection={'column'} width='auto' height='auto'>
@@ -63,28 +90,45 @@ const StakingModalNumberInput = () => {
                     </Flex>
                 </Flex>
             </Box>
-            <Flex width='auto' height='auto' marginTop={'8px'} justifyContent={'flex-end'} alignItems='flex-end'>
-                hahhaa
-                <Text fontSize='sm' color='gray.500'>
-                    $342525.00
-                </Text>
-            </Flex>
         </Flex>
       </InputRightElement>
       <Flex 
-        justifyContent="space-between"
+        
         zIndex='200'
         px="16px"
-        alignItems="flex-end"
         w="100%"
+        height="20px"
+        py = { 0}
         position={"absolute"}
-        bottom={0}
+        justifyContent="space-between"
+        alignItems="center"
+        bottom={"16px"}
         left={0}
-        paddingBottom={2}
       >
-          <Text fontSize='sm' color='gray.500'>
-              $342525.00
-          </Text>
+            <Text
+                fontSize="14px"
+                fontWeight="500"
+                color="rgba(0, 0, 0, 0.30)"
+                textAlign="center"
+                fontStyle="normal"
+                lineHeight="140%"
+                as ="span"
+                fontFamily="HarmonyOS Sans"
+            >
+               $--
+            </Text>
+            <Text
+                fontSize="14px"
+                fontWeight="500"
+                color="rgba(0, 0, 0, 0.60)"
+                textAlign="center"
+                fontStyle="normal"
+                lineHeight="140%"
+                as ="span"
+                fontFamily="HarmonyOS Sans"
+            >
+               Available: <span  style={{ color: '#000' }}>0.00 MOCA</span>
+            </Text>
       </Flex>
     </InputGroup>
   )

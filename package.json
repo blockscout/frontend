@@ -71,6 +71,7 @@
     "@types/papaparse": "^5.3.5",
     "@types/react-scroll": "^1.8.4",
     "airtable": "^0.12.2",
+    "antd": "^5.25.1",
     "axios": "^1.9.0",
     "bignumber.js": "^9.1.0",
     "blo": "^1.1.1",

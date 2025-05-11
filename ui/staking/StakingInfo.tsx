@@ -18,6 +18,7 @@ import StakingModalNumberInput from 'ui/staking/StakingModalNumberInput';
 import SuccessfulContent from 'ui/stakingModal/SuccessfulContent';
 import EarnInfoBox from 'ui/staking/EarnInfoBox';
 import HeadsUpInfo from 'ui/staking/HeadsUpInfo';
+import ModalFooterBtnGroup from 'ui/staking/ModalFooterBtnGroup';
 import React from 'react';
 
 
@@ -335,7 +336,14 @@ const StakingInfo = () => {
                             <SuccessfulContent text='Transaction Success' />    
                         </Flex>
                     </div>
-                    <Button onClick={ onClose }>Close</Button>
+                    <ModalFooterBtnGroup
+                        onCancel={ onClose }
+                        onConfirm={ onClose }
+                        cancelText="Cancel"
+                        confirmText="Confirm"
+                        isSubmitting={ true }
+                        isDisabled={ false }
+                    />
                 </StakingModal>
             </Box>
         </Grid>

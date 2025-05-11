@@ -6,6 +6,7 @@ import { Box } from '@chakra-ui/react';
 import MyValidatorsTable from 'ui/staking/MyValidatorsTable';
 import ActivityListTable from 'ui/staking/ActivityListTable';
 import SearchInput from './SearchInput';
+import DatePicker from './DatePickerFilter';
 import React from 'react';
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
     const [ myValidatorTablePage, setMyValidatorTablePage ] = React.useState<number>(1);
     const [ myValidatorTablePageSize, setMyValidatorTablePageSize ] = React.useState<number>(10);
 
+    const [ currentTabIndex, setCurrentTabIndex ] = React.useState<number>(0);
 
 
     // Mock function to simulate loading
@@ -42,8 +44,21 @@ const App = () => {
     );
 
 
+    const datepicker = (
+        <DatePicker />
+    );
+
+
   return (
-        <Tabs color="#FF57B7" colorScheme="#FF57B7" marginTop={ { base: '24px', lg: '0' } }>
+        <Tabs color="#FF57B7" colorScheme="#FF57B7" marginTop={ { base: '24px', lg: '0' } }
+            index = { currentTabIndex }
+            onChange = { (index: number) => {
+                console
+                    .log('Tab changed to:', index);
+                setCurrentTabIndex(index);
+            }
+        }
+        >
             <Box 
                 style={{
                     position: 'relative',
@@ -67,7 +82,19 @@ const App = () => {
                         backgroundColor: '#fff',
                         borderRadius: '5px',
                 }}>
-                    { searchInput }
+                    { currentTabIndex === 0 ? (
+                        <Box 
+                            width = {{ base: '100%', lg: 'auto' }}
+                        >
+                            { searchInput }
+                        </Box>
+                    ) : (
+                        <Box 
+                            width = {{ base: '100%', lg: 'auto' }}
+                        >
+                            { datepicker }
+                        </Box>
+                    )}
                 </Box>
             </Box>
 

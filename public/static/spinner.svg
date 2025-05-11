@@ -1,0 +1,13 @@
+<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#a)" data-figma-skip-parse="true">
+    <foreignObject x="-1222.22" y="-1222.22" width="2444.44" height="2444.44" transform="rotate(90 0 10) scale(.009)">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="background:conic-gradient(from 90deg,#fff 0deg,rgba(255,255,255,0) 360deg);height:100%;width:100%;opacity:1"/>
+    </foreignObject>
+  </g>
+  <path d="M19 10h-1a8 8 0 0 1-8 8v2c5.523 0 10-4.477 10-10h-1Zm-9 9v-1a8 8 0 0 1-8-8H0c0 5.523 4.477 10 10 10v-1Zm-9-9h1a8 8 0 0 1 8-8V0C4.477 0 0 4.477 0 10h1Zm9-9v1a8 8 0 0 1 8 8h2c0-5.523-4.477-10-10-10v1Z" data-figma-gradient-fill="{&quot;type&quot;:&quot;GRADIENT_ANGULAR&quot;,&quot;stops&quot;:[{&quot;color&quot;:{&quot;r&quot;:1.0,&quot;g&quot;:1.0,&quot;b&quot;:1.0,&quot;a&quot;:1.0},&quot;position&quot;:0.0},{&quot;color&quot;:{&quot;r&quot;:1.0,&quot;g&quot;:1.0,&quot;b&quot;:1.0,&quot;a&quot;:0.0},&quot;position&quot;:1.0}],&quot;stopsVar&quot;:[{&quot;color&quot;:{&quot;r&quot;:1.0,&quot;g&quot;:1.0,&quot;b&quot;:1.0,&quot;a&quot;:1.0},&quot;position&quot;:0.0},{&quot;color&quot;:{&quot;r&quot;:1.0,&quot;g&quot;:1.0,&quot;b&quot;:1.0,&quot;a&quot;:0.0},&quot;position&quot;:1.0}],&quot;transform&quot;:{&quot;m00&quot;:1.1021821408568715e-15,&quot;m01&quot;:-18.0,&quot;m02&quot;:19.0,&quot;m10&quot;:18.0,&quot;m11&quot;:1.1021821408568715e-15,&quot;m12&quot;:1.0},&quot;opacity&quot;:1.0,&quot;blendMode&quot;:&quot;NORMAL&quot;,&quot;visible&quot;:true}"/>
+  <defs>
+    <clipPath id="a">
+      <path d="M19 10h-1a8 8 0 0 1-8 8v2c5.523 0 10-4.477 10-10h-1Zm-9 9v-1a8 8 0 0 1-8-8H0c0 5.523 4.477 10 10 10v-1Zm-9-9h1a8 8 0 0 1 8-8V0C4.477 0 0 4.477 0 10h1Zm9-9v1a8 8 0 0 1 8 8h2c0-5.523-4.477-10-10-10v1Z"/>
+    </clipPath>
+  </defs>
+</svg>
