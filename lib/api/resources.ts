@@ -15,7 +15,11 @@ import { REWARDS_API_RESOURCES } from './services/rewards';
 import type { StatsApiResourceName, StatsApiResourcePayload } from './services/stats';
 import { STATS_API_RESOURCES } from './services/stats';
 import { TAC_OPERATION_LIFECYCLE_API_RESOURCES } from './services/tac-operation-lifecycle';
-import type { TacOperationLifecycleApiResourceName, TacOperationLifecycleApiResourcePayload } from './services/tac-operation-lifecycle';
+import type {
+  TacOperationLifecycleApiPaginationFilters,
+  TacOperationLifecycleApiResourceName,
+  TacOperationLifecycleApiResourcePayload,
+} from './services/tac-operation-lifecycle';
 import type { IsPaginated } from './services/utils';
 import { VISUALIZE_API_RESOURCES } from './services/visualize';
 import type { VisualizeApiResourceName, VisualizeApiResourcePayload } from './services/visualize';
@@ -81,6 +85,7 @@ export type PaginationFilters<R extends ResourceName> =
 R extends BensApiResourceName ? BensApiPaginationFilters<R> :
 R extends GeneralApiResourceName ? GeneralApiPaginationFilters<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiPaginationFilters<R> :
+R extends TacOperationLifecycleApiResourceName ? TacOperationLifecycleApiPaginationFilters<R> :
 never;
 /* eslint-enable @stylistic/indent */
 

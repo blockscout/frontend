@@ -2,9 +2,10 @@ import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import { STATUS_LABELS } from 'ui/operation/tac/utils';
 
-export function getTacOperationTags(data: tac.OperationDetails) {
+export function getTacOperationTags(data: tac.OperationDetails, txHash: string) {
   const typeTag = (() => {
-    switch (data.type) {
+    // TODO @tom2drum remove "as unknown" once the type is fixed
+    switch (data.type as unknown) {
       case 'TON_TAC_TON':
         return 'TON > TAC > TON';
       case 'TAC_TON':
@@ -13,14 +14,19 @@ export function getTacOperationTags(data: tac.OperationDetails) {
         return 'TON > TAC';
       case 'ERROR':
         return 'Rollback';
+      case 'PENDING':
+        return 'Pending';
       default:
         return null;
     }
   })();
 
   const statusTag = (() => {
-    const currentStatus = data.status_history[data.status_history.length - 1].type;
-    return STATUS_LABELS[currentStatus];
+    const currentStep = data.status_history.find((step) => step.transactions.some((tx) => tx.hash.toLowerCase() === txHash.toLowerCase()));
+    if (!currentStep) {
+      return null;
+    }
+    return STATUS_LABELS[currentStep.type];
   })();
 
   return [

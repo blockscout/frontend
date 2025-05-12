@@ -27,7 +27,7 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
       { data?.sender && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Sender"
+            hint="The address on the source chain that starts a cross‑chain operation"
             isLoading={ isLoading }
           >
             Sender
@@ -41,7 +41,7 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
       { data.timestamp && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Timestamp"
+            hint="Block time on the source chain when a cross‑chain operation is formed and sent"
             isLoading={ isLoading }
           >
             Timestamp
@@ -55,7 +55,7 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
       { statusHistory.length > 0 && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Lifecycle"
+            hint="Stages of a cross‑chain operation"
             isLoading={ isLoading }
           >
             Lifecycle

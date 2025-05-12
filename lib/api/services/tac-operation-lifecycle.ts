@@ -5,6 +5,7 @@ export const TAC_OPERATION_LIFECYCLE_API_RESOURCES = {
   operations: {
     path: '/api/v1/tac/operations',
     paginated: true,
+    filterFields: [ 'q' ],
   },
   operation: {
     path: '/api/v1/tac/operations/:id',
@@ -27,5 +28,11 @@ R extends 'tac:operations' ? tac.OperationsResponse :
 R extends 'tac:operation' ? tac.OperationDetails :
 R extends 'tac:operation_by_tx_hash' ? tac.OperationDetails :
 R extends 'tac:stat_operations' ? tac.GetOperationStatisticsResponse :
+never;
+/* eslint-enable @stylistic/indent */
+
+/* eslint-disable @stylistic/indent */
+export type TacOperationLifecycleApiPaginationFilters<R extends TacOperationLifecycleApiResourceName> =
+R extends 'tac:operations' ? { q: string } :
 never;
 /* eslint-enable @stylistic/indent */

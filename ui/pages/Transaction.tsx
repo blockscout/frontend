@@ -98,7 +98,7 @@ const TransactionPageContent = () => {
     }
   }
   if (tacOperationQuery.data) {
-    txTags.push(...getTacOperationTags(tacOperationQuery.data));
+    txTags.push(...getTacOperationTags(tacOperationQuery.data, hash));
   }
 
   const tags = (

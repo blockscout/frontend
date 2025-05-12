@@ -13,7 +13,8 @@ interface Props extends BadgeProps {
 const TacOperationTag = ({ type, ...rest }: Props) => {
 
   const text = (() => {
-    switch (type) {
+    // TODO @tom2drum remove "as unknown" once the type is fixed
+    switch (type as unknown) {
       case 'TON_TAC_TON':
         return `TON ${ rightLineArrow } TAC ${ rightLineArrow } TON`;
       case 'TAC_TON':
@@ -22,6 +23,8 @@ const TacOperationTag = ({ type, ...rest }: Props) => {
         return `TON ${ rightLineArrow } TAC`;
       case 'ERROR':
         return 'Rollback';
+      case 'PENDING':
+        return 'Pending';
       default:
         return null;
     }

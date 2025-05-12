@@ -2,7 +2,8 @@ import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 export const tacOperation: tac.OperationDetails = {
   operation_id: '0x35f5d9c2bf07477ede48935c7130945faf17a3e5f69a7d20ce3725676513095c',
-  type: 'TON_TAC_TON',
+  // TODO @tom2drum remove "as" once the type is fixed
+  type: 'TON_TAC_TON' as tac.OperationType,
   timestamp: '2025-05-08T07:20:05.000Z',
   sender: undefined,
   status_history: [

@@ -15,46 +15,45 @@ interface Props {
 }
 
 const TacOperationStatus = ({ status, isLoading, noTooltip }: Props) => {
-  switch (status) {
+  // TODO @tom2drum remove "as unknown" once the type is fixed
+  switch (status as unknown) {
     case 'TON_TAC_TON': {
       return (
-        <Tooltip content="Operation: TON > TAC > TON" disabled={ noTooltip }>
-          <HStack gap={ 1 } w="fit-content">
-            <IconSvg name="brands/ton" boxSize={ 5 } isLoading={ isLoading }/>
-            <IconSvg name="arrows/revert" boxSize={ 5 } isLoading={ isLoading } color="text.secondary"/>
-            <IconSvg name="brands/tac" boxSize={ 5 } isLoading={ isLoading }/>
-          </HStack>
-        </Tooltip>
+        <HStack gap={ 1 } w="fit-content">
+          <IconSvg name="brands/ton" boxSize={ 5 } isLoading={ isLoading }/>
+          <IconSvg name="arrows/revert" boxSize={ 5 } isLoading={ isLoading } color="text.secondary"/>
+          <IconSvg name="brands/tac" boxSize={ 5 } isLoading={ isLoading }/>
+        </HStack>
       );
     }
 
     case 'TAC_TON': {
       return (
-        <Tooltip content="Operation: TAC > TON" disabled={ noTooltip } >
-          <HStack gap={ 1 } w="fit-content">
-            <IconSvg name="brands/tac" boxSize={ 5 } isLoading={ isLoading }/>
-            <IconSvg name="arrows/east" boxSize={ 5 } isLoading={ isLoading } color="text.secondary"/>
-            <IconSvg name="brands/ton" boxSize={ 5 } isLoading={ isLoading }/>
-          </HStack>
-        </Tooltip>
+        <HStack gap={ 1 } w="fit-content">
+          <IconSvg name="brands/tac" boxSize={ 5 } isLoading={ isLoading }/>
+          <IconSvg name="arrows/east" boxSize={ 5 } isLoading={ isLoading } color="text.secondary"/>
+          <IconSvg name="brands/ton" boxSize={ 5 } isLoading={ isLoading }/>
+        </HStack>
       );
     }
 
     case 'TON_TAC': {
       return (
-        <Tooltip content="Operation: TON > TAC" disabled={ noTooltip }>
-          <HStack gap={ 1 } w="fit-content">
-            <IconSvg name="brands/ton" boxSize={ 5 } isLoading={ isLoading }/>
-            <IconSvg name="arrows/east" boxSize={ 5 } isLoading={ isLoading } color="text.secondary"/>
-            <IconSvg name="brands/tac" boxSize={ 5 } isLoading={ isLoading }/>
-          </HStack>
-        </Tooltip>
+        <HStack gap={ 1 } w="fit-content">
+          <IconSvg name="brands/ton" boxSize={ 5 } isLoading={ isLoading }/>
+          <IconSvg name="arrows/east" boxSize={ 5 } isLoading={ isLoading } color="text.secondary"/>
+          <IconSvg name="brands/tac" boxSize={ 5 } isLoading={ isLoading }/>
+        </HStack>
       );
     }
 
     case 'ERROR':
       return (
-        <Tooltip content="Transaction sent from TON, unsuccessfully executed on TAC and funds returned to TON back" disabled={ noTooltip }>
+        <Tooltip
+          // eslint-disable-next-line max-len
+          content="The cross‑chain operation was reverted and the original assets and state were returned to the sender after a failure on the destination chain"
+          disabled={ noTooltip }
+        >
           <StatusTag type="error" text="Rollback" isLoading={ isLoading }/>
         </Tooltip>
       );

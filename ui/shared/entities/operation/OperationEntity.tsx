@@ -45,11 +45,11 @@ const Content = chakra((props: ContentProps) => {
 
 type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'id'>;
 
-const Copy = (props: CopyProps) => {
+const Copy = ({ id, ...props }: CopyProps) => {
   return (
     <EntityBase.Copy
       { ...props }
-      text={ props.id }
+      text={ id }
     />
   );
 };
@@ -73,7 +73,7 @@ const OperationEntity = (props: EntityProps) => {
   );
 };
 
-export default React.memo(chakra(OperationEntity));
+export default React.memo(OperationEntity);
 
 export {
   Container,

@@ -156,7 +156,7 @@ const TxInfo = ({ data, tacOperation, isLoading, socketStatus }: Props) => {
       { tacOperation && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Source operation"
+            hint="Hash of the cross‑chain operation that this transaction is part of"
             isLoading={ isLoading }
           >
             Source operation
