@@ -4,7 +4,7 @@ import config from 'configs/app';
 
 const restApiDocs = config.features.restApiDocs;
 
-export const SECTIONS = [
+export const REST_API_SECTIONS = [
   restApiDocs.isEnabled && {
     id: 'blockscout-api',
     title: 'Blockscout API',

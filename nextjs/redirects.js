@@ -269,6 +269,12 @@ const oldUrls = [
 async function redirects() {
   return [
     ...oldUrls.map((item) => ({ ...item, permanent: false })),
+    // DEPRECATED ROUTES
+    {
+      source: '/graphiql',
+      destination: '/graphql?tab=graphql',
+      permanent: false,
+    },
   ];
 }
 

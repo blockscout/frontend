@@ -5,6 +5,7 @@ import { getEnvValue } from '../utils';
 const DEFAULT_URL = `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml`;
 const envValue = getEnvValue('NEXT_PUBLIC_API_SPEC_URL');
 
+// TODO @tom2drum refactor feature
 const title = 'REST API documentation';
 
 const config: Feature<{ specUrl: string }> = (() => {

@@ -7,10 +7,10 @@ import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoo
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import SwaggerUI from './SwaggerUI';
-import { SECTIONS } from './utils';
+import { REST_API_SECTIONS } from './utils';
 
 const RestApi = () => {
-  const { value, onValueChange, scrollToItemFromUrl } = useAccordion(SECTIONS);
+  const { value, onValueChange, scrollToItemFromUrl } = useAccordion(REST_API_SECTIONS);
 
   React.useEffect(() => {
     scrollToItemFromUrl();
@@ -18,17 +18,17 @@ const RestApi = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
 
-  if (SECTIONS.length === 0) {
+  if (REST_API_SECTIONS.length === 0) {
     return null;
   }
 
-  if (SECTIONS.length === 1) {
-    return <SwaggerUI { ...SECTIONS[0].swagger }/>;
+  if (REST_API_SECTIONS.length === 1) {
+    return <SwaggerUI { ...REST_API_SECTIONS[0].swagger }/>;
   }
 
   return (
     <AccordionRoot onValueChange={ onValueChange } value={ value }>
-      { SECTIONS.map((section, index) => (
+      { REST_API_SECTIONS.map((section, index) => (
         <AccordionItem key={ index } value={ section.id }>
           <AccordionItemTrigger>
             <CopyToClipboard
