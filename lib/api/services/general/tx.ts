@@ -1,6 +1,6 @@
 import type { ApiResource } from '../../types';
 import type { TxBlobs } from 'types/api/blobs';
-import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
+import type { InternalTransactionFilters, InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
@@ -94,6 +94,7 @@ export const GENERAL_API_TX_RESOURCES = {
   internal_txs: {
     path: '/api/v2/internal-transactions',
     paginated: true,
+    filterFields: [ 'transaction_hash' as const ],
   },
 } satisfies Record<string, ApiResource>;
 
@@ -125,5 +126,6 @@ export type GeneralApiTxPaginationFilters<R extends GeneralApiTxResourceName> =
 R extends 'general:txs_validated' | 'general:txs_pending' ? TTxsFilters :
 R extends 'general:txs_with_blobs' ? TTxsWithBlobsFilters :
 R extends 'general:tx_token_transfers' ? TokenTransferFilters :
+R extends 'general:internal_txs' ? InternalTransactionFilters :
 never;
 /* eslint-enable @stylistic/indent */

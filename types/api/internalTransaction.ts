@@ -34,3 +34,7 @@ export interface InternalTransactionsResponse {
     transaction_index: number;
   } | null;
 }
+
+export interface InternalTransactionFilters {
+  transaction_hash: string;
+}
