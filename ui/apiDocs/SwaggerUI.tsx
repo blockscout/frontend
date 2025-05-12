@@ -11,12 +11,9 @@ import React from 'react';
 
 import type { SwaggerRequest } from './types';
 
-import config from 'configs/app';
 import ContentLoader from 'ui/shared/ContentLoader';
 
 import 'swagger-ui-react/swagger-ui.css';
-
-const feature = config.features.restApiDocs;
 
 const NeverShowInfoPlugin = () => {
   return {
@@ -115,10 +112,6 @@ const SwaggerUI = ({ url, requestInterceptor }: Props) => {
       wordBreak: 'break-all',
     },
   };
-
-  if (!feature.isEnabled) {
-    return null;
-  }
 
   return (
     <Box css={ swaggerStyle }>

@@ -2,14 +2,14 @@ import type { SwaggerRequest } from './types';
 
 import config from 'configs/app';
 
-const restApiDocs = config.features.restApiDocs;
+const feature = config.features.apiDocs;
 
 export const REST_API_SECTIONS = [
-  restApiDocs.isEnabled && {
-    id: 'blockscout-api',
-    title: 'Blockscout API',
+  feature.isEnabled && {
+    id: 'blockscout-core-api',
+    title: 'Blockscout core API',
     swagger: {
-      url: restApiDocs.specUrl,
+      url: feature.coreApiSwaggerUrl,
       requestInterceptor: (req: SwaggerRequest) => {
         const DEFAULT_SERVER = 'blockscout.com/poa/core';
 

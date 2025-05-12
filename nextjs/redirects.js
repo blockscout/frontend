@@ -272,7 +272,7 @@ async function redirects() {
     // DEPRECATED ROUTES
     {
       source: '/graphiql',
-      destination: '/graphql?tab=graphql',
+      destination: '/graphql?tab=graphql_api',
       permanent: false,
     },
   ];

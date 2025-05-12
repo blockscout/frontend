@@ -20,8 +20,9 @@ import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
-import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation';
-import type { NavItemExternal, NavigationLinkId, NavigationLayout } from '../../../types/client/navigation';
+import type { ApiDocsTabId } from '../../../types/views/apiDocs';
+import { API_DOCS_TABS } from '../../../types/views/apiDocs';
+import type { NavItemExternal, NavigationLayout } from '../../../types/client/navigation';
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
 import type { BridgedTokenChain, TokenBridge } from '../../../types/client/token';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from '../../../types/client/txInterpretation';
@@ -435,6 +436,21 @@ const celoSchema = yup
       }),
   });
 
+const apiDocsScheme = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_API_DOCS_TABS: yup.array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<ApiDocsTabId>().oneOf(API_DOCS_TABS)),
+    NEXT_PUBLIC_API_SPEC_URL: yup
+      .string()
+      .test(urlTest),
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
+    .string()
+    .matches(regexp.HEX_REGEXP),
+  });
+
 const adButlerConfigSchema = yup
   .object<AdButlerConfig>()
   .transform(replaceQuotes)
@@ -795,11 +811,6 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(navItemExternalSchema),
-    NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .of(yup.string<NavigationLinkId>().oneOf(NAVIGATION_LINK_IDS)),
     NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES: yup
       .array()
       .transform(replaceQuotes)
@@ -913,14 +924,6 @@ const schema = yup
     NEXT_PUBLIC_MAX_CONTENT_WIDTH_ENABLED: yup.boolean(),
 
     // 5. Features configuration
-    NEXT_PUBLIC_API_SPEC_URL: yup
-      .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_API_SPEC_URL, it should be either URL-string or "none" string literal', (data) => {
-        const isNoneSchema = yup.string().oneOf([ 'none' ]);
-        const isUrlStringSchema = yup.string().test(urlTest);
-
-        return isNoneSchema.isValidSync(data) || isUrlStringSchema.isValidSync(data);
-      }),
     NEXT_PUBLIC_STATS_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_STATS_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().test(urlTest),
@@ -929,14 +932,6 @@ const schema = yup
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_METADATA_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup.string().test(urlTest),
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
-      .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_GRAPHIQL_TRANSACTION, it should be either Hex-string or "none" string literal', (data) => {
-        const isNoneSchema = yup.string().oneOf([ 'none' ]);
-        const isHashStringSchema = yup.string().matches(regexp.HEX_REGEXP);
-
-        return isNoneSchema.isValidSync(data) || isHashStringSchema.isValidSync(data);
-      }),
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
       .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_WEB3_WALLETS, it should be either array or "none" string literal', (data) => {
@@ -1070,6 +1065,7 @@ const schema = yup
   .concat(celoSchema)
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
-  .concat(sentrySchema);
+  .concat(sentrySchema)
+  .concat(apiDocsScheme);
 
 export default schema;

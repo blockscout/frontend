@@ -188,7 +188,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
 };
 
 export const apiDocs: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.restApiDocs.isEnabled) {
+  if (!config.features.apiDocs.isEnabled) {
     return {
       notFound: true,
     };

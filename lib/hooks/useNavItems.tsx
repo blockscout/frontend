@@ -223,7 +223,7 @@ export default function useNavItems(): ReturnType {
       },
     ].filter(Boolean);
 
-    const apiNavItem: NavItem | null = config.features.restApiDocs.isEnabled ? {
+    const apiNavItem: NavItem | null = config.features.apiDocs.isEnabled ? {
       text: 'API',
       nextRoute: { pathname: '/api-docs' as const },
       icon: 'restAPI',
