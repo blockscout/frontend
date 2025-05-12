@@ -90,6 +90,7 @@ const FilterInput = (props: Props) => {
           _placeholder={{
             fontSize: '12px',
             fontWeight: 400,
+            userSelect: 'none',
             lineHeight: '140%',
             color: 'rgba(0, 0, 0, 0.3)',
             fontFamily: 'HarmonyOS Sans',

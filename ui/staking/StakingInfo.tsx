@@ -225,7 +225,7 @@ const StakingInfo = () => {
                     <Flex p="0" height={'100%'} flexDirection="column" justifyContent={{ base: 'flex-start', lg: 'space-between' }} alignItems='flex-start' gap={ 4 }>
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
-                            label="Staked Amount"
+                            label="Claimable Rewards"
                             amount="0.00"
                             value="($0.00)"
                             isWrapper={true}
@@ -268,7 +268,7 @@ const StakingInfo = () => {
                     <Box>
                         <NumberStats
                             icon={<IconContainer>{icon_2}</IconContainer>}
-                            label="Staked Amount"
+                            label="Withdrawing Amount"
                             amount="0.00"
                             value="($0.00)"
                             hide={isHideNumber}
@@ -278,7 +278,7 @@ const StakingInfo = () => {
                     <Box>
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
-                            label="Staked Amount"
+                            label="Total Rewards"
                             amount="0.00"
                             value="($0.00)"
                             hide={isHideNumber}
@@ -287,7 +287,7 @@ const StakingInfo = () => {
                     <Box>
                         <NumberStats
                             icon={<IconContainer>{icon_4}</IconContainer>}
-                            label="Staked Amount"
+                            label="Available Balance"
                             amount="0.00"
                             value="($0.00)"
                             hide={isHideNumber}

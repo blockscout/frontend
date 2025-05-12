@@ -202,6 +202,19 @@ const ObjectDetails: NextPage = () => {
     }
   }, [ url, requestOverviewStats, requestTableList]);
 
+
+  const  formatSeconds = (seconds : number ) => {
+  const days = Math.floor(seconds / (24 * 3600));
+  const hours = Math.floor((seconds % (24 * 3600)) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+
+  let result = '';
+  if (days > 0) result += `${days} d `;
+  result += `${hours} h ${minutes} m`;
+
+  return result.trim();
+}
+
   return (
     <PageNextJs pathname="/object">
 
@@ -267,16 +280,20 @@ const ObjectDetails: NextPage = () => {
           <Flex alignItems="center" justifyContent="space-between">
               <Text as={'span'}>{ totalEpoch.current || '-' }</Text>
               <Box width={"168px"} display="flex" alignItems="center" justifyContent="center" flexDirection="column">
-                  <Flex alignItems="center" justifyContent="space-between" width="100%">
+                  <Flex alignItems="center" justifyContent="space-between" width="100%" userSelect="none">
                       <Text fontSize="12px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
-                        { totalEpoch.total || '-' }
+                        { totalEpoch.progress || 0 } %
                       </Text>
                       <Text fontSize="12px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
-                        { totalEpoch.next || '-' }
+                        { formatSeconds(Number(totalEpoch.remainingTime || 0 ))}
                       </Text>
                   </Flex>
-                  <Progress colorScheme='pink' opacity={0.8}
-                  size='sm' value={20} width="100%" height="4px" marginTop="6px" />
+                  <Progress
+                    colorScheme='pink'
+                    opacity={0.8}
+                    size='sm' 
+                    value={ totalEpoch.progress || 0}
+                    width="100%" height="4px" marginTop="6px" />
               </Box>
           </Flex>
         </Box>

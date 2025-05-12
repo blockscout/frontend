@@ -1,12 +1,14 @@
 /* eslint-disable */
+import React, { useEffect } from 'react';
 import ValidatorInfoBox from 'ui/validators/ValidatorInfoBox';
 import ValidatorBox from 'ui/validators/ValidatorBox';
 import { useRouter } from 'next/router';
 import { Text } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import IconSvg from 'ui/shared/IconSvg';
+import PageTitle from 'ui/shared/Page/PageTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
-
-
+import { formatPubKey } from 'ui/storage/utils';
+import { Flex, Box, Tooltip } from '@chakra-ui/react';
 // {
 //     totalStake: string;
 //     liveApr: string;
@@ -92,16 +94,47 @@ const  ValidatorDetails = () => {
         }
     }, [ addr, requestBasicDetailInfo, requestDelegatorsInfo]);
 
+    const routerFallback = () => () => {
+        router.back();
+    };
 
     return (
         <div>
-            <Text
-                fontSize="2xl"
-                fontWeight="bold"
-                marginBottom="4"
-            >
-                { addr}
-            </Text>
+            <Flex align="center" marginBottom="24px">
+                <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
+                <PageTitle marginBottom="0" title="Validator Detail" withTextAd/>
+            </Flex>
+            <Tooltip
+                isDisabled={ true }
+                label={ "hidehiier" } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                    <Flex 
+                        alignItems="center"
+                        justifyContent={{ base: 'flex-start', md: 'space-between' }}
+                        direction={{ base: 'column', md: 'row' }}
+                        padding="16px"
+                    >
+                        <Text
+                            fontSize="2xl"
+                            fontWeight="bold"
+                            marginBottom="4"
+                            as ="span"
+                        >
+                            MOCA Labs
+                        </Text>
+                        <Text
+                            marginBottom="4"
+                            color="rgba(0, 0, 0, 0.60)"
+                            fontSize="16px"
+                            display="inline"
+                            lineHeight="16px"
+                            fontStyle="normal"
+                            as={'span'}
+                            textTransform="capitalize"
+                        >
+                            { addr}
+                        </Text>
+                    </Flex>
+            </Tooltip>
             <ValidatorInfoBox overViewInfo={ overViewInfo } isDetailInfoLoading={ isDetailInfoLoading } />
             <ValidatorBox />
         </div>

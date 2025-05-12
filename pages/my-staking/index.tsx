@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+import useAccount from 'lib/web3/useAccount';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import orderBy from 'lodash/orderBy';
@@ -68,6 +69,9 @@ const ObjectDetails: NextPage = () => {
   const [ nextCursor, setNextCursor ] = React.useState<string>('');
   const [ previousCursor, setpreviousCursor ] = React.useState<string>('');
 
+  const { address } = useAccount();
+
+
   const handleSearchChange = () => () => {};
 
   function truncateToSignificantDigits(numberStr: string, significantDigits: number) {
@@ -112,7 +116,6 @@ const ObjectDetails: NextPage = () => {
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
-      throw Error(error);
     }
   }, [ url ]);
 
@@ -127,7 +130,6 @@ const ObjectDetails: NextPage = () => {
       setTotalCredential(rp2.total_issued_number);
     } catch (error: any) {
       setLoading(false);
-      throw Error(error);
     }
   }, [ url ]);
 

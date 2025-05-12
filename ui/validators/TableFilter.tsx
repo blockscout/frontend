@@ -72,6 +72,7 @@ const TableFilter = () => {
                                 fontStyle="normal"
                                 as={'span'}
                                 textTransform="capitalize"
+                                userSelect={"none"}
                                 fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Active Validators Only</Text>
                             <Switch  colorScheme='pink'/>
                         </Flex>

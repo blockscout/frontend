@@ -44,7 +44,7 @@ const PlainButton = ({
             display="flex"
             alignItems="center"
             justifyContent="center"
-            _hover={{ backgroundColor: disabledBgColor , opacity: 0.9 }}
+            _hover={{ backgroundColor: disabledBgColor , opacity: 0.8 }}
             width={ width }
             height={ height }
             variant='solid'
@@ -99,13 +99,13 @@ const ModalFooterBtnGroup = ({
             <PlainButton 
                 text={ cancelText }
                 onClick={ onCancel }
-                disabled={ isDisabled || isSubmitting }
+                disabled={ false }
                 width="100px"
                 height="40px"
-                bgColor="rgba(0, 0, 0, 0.10)"
-                disabledBgColor="rgba(0, 0, 0, 0.06)"
-                textColor="rgba(0, 0, 0, 0.60)"
-                disabledTextColor="rgba(0, 0, 0, 0.45)"
+                bgColor="transparent"
+                disabledBgColor="transparent"
+                textColor="#FF57B7"
+                disabledTextColor="rgba(255, 87, 183, 0.5)"
             />
             <PlainButton 
                 text={ confirmText }
