@@ -208,7 +208,19 @@ const NumberStats = ({
     )
 }
 
-const StakingInfo = () => {
+const StakingInfo = ({
+    stakedAmount = 0,
+    claimableRewards = 0,
+    withdrawingAmount = 0,
+    totalRewards = 0,
+    handleClaimAll = no_op,
+}: {
+    stakedAmount?: number | string;
+    claimableRewards?: number | string;
+    withdrawingAmount?: number | string;
+    totalRewards?: number | string;
+    handleClaimAll?: () => void;
+}) => {
     
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -226,7 +238,7 @@ const StakingInfo = () => {
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Claimable Rewards"
-                            amount="0.00"
+                            amount={ Number(claimableRewards || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
                             value="($0.00)"
                             isWrapper={true}
                             hide={isHideNumber}
@@ -234,7 +246,7 @@ const StakingInfo = () => {
                         <Flex alignItems="center" mt={4} justifyContent="flex-start" gap={6}>
                             <PlainButton 
                                 text="Claim all"
-                                onClick={ no_op }
+                                onClick={ handleClaimAll }
                                 disabled={ false }
                             />
                             <PlainButton2 
@@ -259,7 +271,7 @@ const StakingInfo = () => {
                         <NumberStats
                             icon={<IconContainer>{icon_1}</IconContainer>}
                             label="Staked Amount"
-                            amount="0.00"
+                            amount={ Number(stakedAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
                             value="($0.00)"
                             hide={isHideNumber}
                         />
@@ -269,7 +281,7 @@ const StakingInfo = () => {
                         <NumberStats
                             icon={<IconContainer>{icon_2}</IconContainer>}
                             label="Withdrawing Amount"
-                            amount="0.00"
+                            amount={ Number(withdrawingAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
                             value="($0.00)"
                             hide={isHideNumber}
                         />
@@ -279,7 +291,7 @@ const StakingInfo = () => {
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Total Rewards"
-                            amount="0.00"
+                            amount={ Number(totalRewards || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
                             value="($0.00)"
                             hide={isHideNumber}
                         />

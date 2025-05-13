@@ -12,6 +12,7 @@ import { getEnvValue } from 'configs/app/utils';
 
 import TabTable from 'ui/staking/TabTable';
 import StakingInfo from 'ui/staking/StakingInfo';
+import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 
@@ -62,7 +63,8 @@ const ObjectDetails: NextPage = () => {
 
   const tabThead = [ 'Credential ID', 'Txn hash', 'Block', 'Method', 'From/To', 'Time', 'Value MOCA', 'Fee MOCA' ];
 
-  const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
+  // const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
+  const url = "http://192.168.0.97:8080"
   const [ totalIssued, setTotalIssued ] = React.useState<number>(0);
   const [ totalCredential, setTotalCredential ] = React.useState<number>(0);
   const [ loading, setLoading ] = React.useState<boolean>(false);
@@ -70,6 +72,8 @@ const ObjectDetails: NextPage = () => {
   const [ previousCursor, setpreviousCursor ] = React.useState<string>('');
 
   const { address } = useAccount();
+
+  const { token } = useStakeLoginContextValue();
 
 
   const handleSearchChange = () => () => {};
@@ -133,32 +137,155 @@ const ObjectDetails: NextPage = () => {
     }
   }, [ url ]);
 
-  const propsPage = React.useCallback((value: number) => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-    if (value > queryParams.page) {
-      request(nextCursor);
-    } else {
-      request(previousCursor);
+
+
+  const [ stakedAmount, setStakedAmount ] = React.useState<string>('0');
+  const [ claimableRewards, setClaimableRewards ] = React.useState<string>('0');
+  const [ withdrawingAmount , setWithdrawingAmount ] = React.useState<string>('0');
+  const [ totalRewards, setTotalRewards ] = React.useState<string>('0');
+
+  const requestMyStakingInfo = React.useCallback(async() => {
+    try {
+      setLoading(true);
+      const res = await (await fetch(url + '/api/me/staking/summary', { 
+          method: 'get',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ token }`,
+          },
+        })).json() as  any;
+      if(res && res.code === 200) {
+        setStakedAmount(res.data.stakedAmount);
+        setClaimableRewards(res.data.claimableRewards);
+        setWithdrawingAmount(res.data.withdrawingAmount);
+        setTotalRewards(res.data.totalRewards);
+      }
+      setLoading(false);
+    } catch (error: any) {
+      setLoading(false);
     }
-    updateQueryParams({
-      page: value,
-    });
-  }, [ queryParams.page, request, nextCursor, previousCursor ]);
+  }, [ url ]);
+
+
+    const requestMyStakingTableList = React.useCallback(async() => {
+    try {
+      setLoading(true);
+      const res = await (await fetch(url + '/api/me/staking/delegations', { 
+          method: 'get',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ token }`,
+          },
+        })).json() as  any;
+      if(res && res.code === 200) {
+        console.log('res', res);
+      }
+      setLoading(false);
+    } catch (error: any) {
+      setLoading(false);
+    }
+  }, [ url ]);
+
+
+    const requestMyActivityTableList = React.useCallback(async({
+      limit = 10,
+      offset = 0,
+      countTotal = false,
+      reverse = false,
+    }) => {
+      try {
+        setLoading(true);
+        const paramStr = new URLSearchParams({
+          limit: limit.toString(),
+          offset: offset.toString(),
+          countTotal: countTotal.toString(),
+          reverse: reverse.toString(),
+        }).toString();
+        const res = await (await fetch(url + '/api/me/staking/delegations' + '?' + paramStr, {
+            method: 'get',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${ token }`,
+            },
+            
+          })).json() as  any;
+        if(res && res.code === 200) {
+          console.log('res', res);
+        }
+        setLoading(false);
+      } catch (error: any) {
+        setLoading(false);
+      }
+    }, [ url ]);
+
+
+    const handleClaimAll = React.useCallback(async() => {
+      try {
+        setLoading(true);
+        const res = await (await fetch(url + '/api/me/staking/claim', { 
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${ token }`,
+            },
+          })).json() as  any;
+        if(res && res.code === 200) {
+          console.log('res', res);
+        }
+        setLoading(false);
+      } catch (error: any) {
+        setLoading(false);
+      }
+    } , [ url ]);
+
+    const propsPage = React.useCallback((value: number) => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      if (value > queryParams.page) {
+        request(nextCursor);
+      } else {
+        request(previousCursor);
+      }
+      updateQueryParams({
+        page: value,
+      });
+    }, [ queryParams.page, request, nextCursor, previousCursor ]);
 
   React.useEffect(() => {
     if (url) {
-      request();
-      requestTotal();
+      requestMyStakingInfo();
     }
-  }, [ requestTotal, request, url ]);
+  }, [ requestMyStakingInfo , url ]);
+
+  React.useEffect(() => {
+    if (url) {
+      requestMyStakingTableList();
+    }
+  }, [ requestMyStakingTableList , url ]);
+
+  React.useEffect(() => {
+    if (url) {
+      requestMyActivityTableList({
+        limit: 10,
+        offset: 0,
+        countTotal: true,
+        reverse: false,
+      });
+    }
+  }, [ requestMyActivityTableList , url ]);
+
 
   return (
     <PageNextJs pathname="/object">
-      <StakingInfo />
-      
+      <StakingInfo
+        stakedAmount={ stakedAmount }
+        claimableRewards={ claimableRewards }
+        withdrawingAmount={ withdrawingAmount }
+        totalRewards={ totalRewards }
+        handleClaimAll={ handleClaimAll }
+      />
       { /* <TableList
         totleDate={ 0 }
         showTotal={ true }

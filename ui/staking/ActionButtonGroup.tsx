@@ -15,10 +15,11 @@ const ChevronDownIcon = () => {
     );
 }
 
-const PlainButton = ({text, onClick, disabled = false} : {
+const PlainButton = ({text,  onClick,  disabled = false , width = '72px'}: {
     text: string,
     onClick?: () => void,
     disabled?: boolean
+    width?: string,
 }) => {
     return (
         <Button
@@ -28,10 +29,11 @@ const PlainButton = ({text, onClick, disabled = false} : {
             alignItems="center"
             justifyContent="center"
             _hover={{ backgroundColor: "#FFCBEC" , opacity: 0.9 }}
-            width={ '72px' }
-            height={ 'auto' }
+            width={ width }
+            height={ '22px' }
             variant='solid'
-            padding = { '4px 20px' }
+            flexShrink={ 0 }
+            padding = { '0 20px' }
             backgroundColor = { disabled ? '#FFCBEC' : '#FF57B7' }
             cursor={ disabled ? 'not-allowed' : 'pointer' }
             borderRadius={9999}
@@ -47,6 +49,11 @@ const PlainButton = ({text, onClick, disabled = false} : {
     );
 }
 
+const dropIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
+        <path d="M3.5 4.5L6.5 7.5L9.5 4.5" stroke="black" strokeOpacity="0.2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+)
 
 const ActionButtonGroup = ({
     showClaim = false,
@@ -68,15 +75,17 @@ const ActionButtonGroup = ({
         <Flex
             width="100%"
             height="auto"
-            padding = { '0 20px' }
+            padding = { '14px 0  10px' }
             alignItems="center"
-            justifyContent="space-between"
+            justifyContent="center"
         >
             <Flex
                 width="100%"
                 height="auto"
                 alignItems="center"
-                justifyContent="space-between"
+                flexShrink={ 0 }
+                justifyContent="center"
+                gap={ '10px' }
             >
                 { showClaim && 
                     <PlainButton
@@ -92,13 +101,51 @@ const ActionButtonGroup = ({
                         disabled={ disableStake }
                     />
                 }
-                <Menu placement="bottom-end">
-                    <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        Actions
-                    </MenuButton>
-                    <MenuList>
-                        <MenuItem>Download</MenuItem>
-                        <MenuItem>Create a Copy</MenuItem>
+                <Menu placement="bottom-end" >
+                    <div style={{ width: "72px" }} >
+                        <MenuButton 
+                            display="flex"
+                            flexDirection="row"
+                            alignItems="center"
+                            justifyContent="center"
+                            _hover={{ opacity: 0.9 }}
+                            _active={{ opacity: 0.9 }}
+                            width={ '100%' }
+                            height={ '22px' }
+                            paddingInlineEnd={ "8px" }
+                            variant='solid'
+                            backgroundColor = { 'rgba(0, 0, 0, 0.10)'}
+                            cursor={'pointer'  }
+                            borderRadius={9999}
+                            as={Button} rightIcon={<ChevronDownIcon />}>
+                            <Text 
+                                fontSize="12px"
+                                fontWeight="400"
+                                lineHeight="22px"
+                                as={'span'}
+                                paddingBottom={ "2px" }
+                                color = {'rgba(0, 0, 0, 0.60)' }
+                                fontFamily="HarmonyOS Sans"
+                            >More</Text>
+                        </MenuButton>
+                    </div>
+
+                    <MenuList width='110px' minWidth='110px' zIndex={ 1000 }
+                        fontSize="14px"
+                        fontWeight="500"
+                        lineHeight="22px"
+                        color ="#000"
+                        fontFamily="HarmonyOS Sans"
+                    >
+                        <MenuItem
+                            
+                            _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                            _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                            >Withdraw</MenuItem>
+                        <MenuItem
+                            _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                            _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                            >Move Stake</MenuItem>
                     </MenuList>
                 </Menu>
             </Flex>

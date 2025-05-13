@@ -17,6 +17,7 @@ type tableHeadType = {
     render?: (value: any) => React.ReactNode;
     width?: string;
     tips?: string;
+    minWidth?: string;
     sortBy?: string;
     sortOrder?: string;
 }
@@ -67,6 +68,7 @@ const tableHead: tableHeadType[] = [
         label: 'Commission Rate',
         key: 'commissionRate',
         tips: 'Validator name',
+        minWidth: '300px',
         allowSort: true,
     },
     {
@@ -122,7 +124,8 @@ const CustomTableHeader = ({
     sortKey,
     sortOrder,
     setSort,
-    setSortOrder
+    setSortOrder,
+    minWidth = '180px',
 }: { 
     children: React.ReactNode
     width?: string | number
@@ -132,6 +135,7 @@ const CustomTableHeader = ({
     sortOrder?: sortOrderType
     setSort?: (sort: string) => void
     setSortOrder?: (sortOrder: sortOrderType) => void
+    minWidth?: string
 }) => {
 
     const handleSort = () => {
@@ -149,8 +153,8 @@ const CustomTableHeader = ({
     };
 
     const w = width || 'auto';
-
     const _w = width || '200px'; 
+    const _minWidth = minWidth || '180px';
 
     return (
         <Th
@@ -161,7 +165,7 @@ const CustomTableHeader = ({
             borderBottom="1px"
             borderColor="rgba(0, 0, 0, 0.1)"
             width={{ base: _w , lg: w }}
-            minWidth={'240px'}
+            minWidth={_minWidth}
             flexShrink={ 0 }
         >
             <Flex
@@ -197,7 +201,7 @@ const CustomTableHeader = ({
 }
 
 
-const ValidatorsTable = (props: {
+const ActivityListTable = (props: {
     data: any;
     isLoading: boolean;
     onPageChange: (page: number) => void;
@@ -266,15 +270,18 @@ const ValidatorsTable = (props: {
 
 
     return (
-        <TableContainer
-            position="relative"
-            border="1px"
-            borderRadius="12px"
-            borderColor="rgba(0, 0, 0, 0.06)"
-            padding="24px"
-            overflowX="auto"
-            width="100%"
-            maxWidth="100%"
+        <div style={{
+                width: '100%',
+                height: 'auto',
+                overflowX: 'auto',
+                overflowY: 'hidden',
+                borderRadius: '5px',
+                backgroundColor: '#fff',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+            }}
         >
             <Table variant="simple">
                 <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
@@ -309,12 +316,12 @@ const ValidatorsTable = (props: {
                 alignItems="center"
                 zIndex='200'
                 width="100%"
-                >
+            >
                 <Pagination />
             </Flex>
-        </TableContainer>
+        </div>
     );
 }
 
 
-export default ValidatorsTable;
+export default ActivityListTable;

@@ -59,7 +59,7 @@ const FilterInput = (props: Props) => {
         fontWeight="400" fontSize="12px"
         _focus={{ borderColor: '#FF57B7 !important' }}
         
-        borderColor="rgba(0, 46, 51, 0.1)"
+        borderColor="rgba(0, 46, 51, 0.10)"
         display="flex"
         alignItems="center"
         width={{ base: '100%', lg: '320px' }}

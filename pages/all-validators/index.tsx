@@ -11,6 +11,7 @@ import ValidatorsTable from 'ui/validators/ValidatorsTable';
 import { getEnvValue } from 'configs/app/utils';
 import WithTipsText from 'ui/validators/WithTipsText';
 import TableFilter from 'ui/validators/TableFilter';
+import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 
@@ -67,9 +68,6 @@ const ObjectDetails: NextPage = () => {
   const [ isOverviewStatsLoading, setIsOverviewStatsLoading ] = React.useState<boolean>(false);
 
 
-
-
-
   // const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
   const url = "http://192.168.0.97:8080"
   const [ totalIssued, setTotalIssued ] = React.useState<number>(0);
@@ -82,7 +80,6 @@ const ObjectDetails: NextPage = () => {
   const [ totalValidators, setTotalValidators ] = React.useState<number>(0);
   const [ totalStaked, setTotalStaked ] = React.useState<any>(null);
   const [ totalEpoch, setTotalEpoch ] = React.useState<any>({});
-
 
   const [ tableDataList, setTableDataList ] = React.useState<Array<any>>([]);
   const [ isTableLoading, setIsTableLoading ] = React.useState<boolean>(false);
@@ -204,24 +201,25 @@ const ObjectDetails: NextPage = () => {
 
 
   const  formatSeconds = (seconds : number ) => {
-  const days = Math.floor(seconds / (24 * 3600));
-  const hours = Math.floor((seconds % (24 * 3600)) / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
+      const days = Math.floor(seconds / (24 * 3600));
+      const hours = Math.floor((seconds % (24 * 3600)) / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
 
-  let result = '';
-  if (days > 0) result += `${days} d `;
-  result += `${hours} h ${minutes} m`;
+      let result = '';
+      if (days > 0) result += `${days} d `;
+      result += `${hours} h ${minutes} m`;
 
-  return result.trim();
-}
+      return result.trim();
+  }
 
   return (
     <PageNextJs pathname="/object">
 
       <Flex 
-          display={{ base: 'flex-wrap', lg: 'flex' }}
-          justifyContent= {{ base: 'space-between' , lg:  'flex-start' }}
-          alignItems="center" marginBottom="24px">
+          display={{ base: 'flex', lg: 'flex' }}
+          userSelect="none"
+          justifyContent= {{ lg:  'flex-start' }}
+          alignItems="baseline" marginBottom="24px">
           <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">MOCA Staking</Text>
 
           <Button

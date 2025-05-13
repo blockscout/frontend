@@ -79,7 +79,7 @@
     "crypto-js": "^4.2.0",
     "d3": "^7.6.1",
     "dappscout-iframe": "0.2.5",
-    "dayjs": "^1.11.5",
+    "dayjs": "^1.11.13",
     "dom-to-image": "^2.6.0",
     "ethers": "^6.13.2",
     "focus-visible": "^5.2.0",

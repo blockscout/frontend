@@ -9,6 +9,40 @@ import SearchInput from './SearchInput';
 import DatePicker from './DatePickerFilter';
 import React from 'react';
 
+
+
+const mockData = [
+    {
+        "validatorAddress": "0x766CE7525d33Fb091B97acb4dCfB1Df7A9aB70Cf",
+        "liveAPR": "12.5",
+        "commission": "5.0",
+        "status": "Active",
+        "myStake": "50.000000",
+        "myRewards": "2.500000",
+        "claimable": "0.750000"
+      },
+      {
+        "validatorAddress": "0x8A7F7C5B9387aCA1E0a5f9c3B22dDC46248a8975",
+        "liveAPR": "11.8",
+        "commission": "10.0",
+        "status": "Active",
+        "myStake": "30.000000",
+        "myRewards": "1.800000",
+        "claimable": "0.500000"
+    },
+    {
+        "validatorAddress": "0xA1B2C3D4E5F60708090A0B0C0D0E0F1011121314",
+        "liveAPR": "10.2",
+        "commission": "7.5",
+        "status": "Jailed",
+        "myStake": "20.000000",
+        "myRewards": "1.200000",
+        "claimable": "0.300000"
+    }
+];
+
+
+
 const App = () => {
     const [ searchTerm, setSearchTerm ] = React.useState<string>('');
     const [ isInitialLoading, setIsInitialLoading ] = React.useState<boolean>(false);
@@ -53,8 +87,6 @@ const App = () => {
         <Tabs color="#FF57B7" colorScheme="#FF57B7" marginTop={ { base: '24px', lg: '0' } }
             index = { currentTabIndex }
             onChange = { (index: number) => {
-                console
-                    .log('Tab changed to:', index);
                 setCurrentTabIndex(index);
             }
         }
@@ -90,7 +122,7 @@ const App = () => {
                         </Box>
                     ) : (
                         <Box 
-                            width = {{ base: '100%', lg: 'auto' }}
+                            width = {{ base: '100%', lg: '235px' , }}
                         >
                             { datepicker }
                         </Box>
@@ -101,7 +133,7 @@ const App = () => {
             <TabPanels color="#000" >
                 <TabPanel>
                     <MyValidatorsTable 
-                        data={ myValidatorTableData }
+                        data={ mockData }
                         isLoading={ myValidatorTableisLoading }
                         onPageChange={ () => {} }
                         onPageSizeChange={ () => {} }
