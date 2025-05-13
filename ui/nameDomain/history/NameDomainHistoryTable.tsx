@@ -31,7 +31,7 @@ const NameDomainHistoryTable = ({ history, domain, isLoading, sort, onSortToggle
             onSortToggle={ onSortToggle }
             contentAfter={ <TimeFormatToggle/> }
           >
-            Age
+            Timestamp
           </TableColumnHeaderSortable>
           <TableColumnHeader width="25%">From</TableColumnHeader>
           <TableColumnHeader width="25%">Method</TableColumnHeader>

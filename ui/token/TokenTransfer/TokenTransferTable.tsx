@@ -7,7 +7,6 @@ import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TextSeparator from 'ui/shared/TextSeparator';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 import TokenTransferTableItem from 'ui/token/TokenTransfer/TokenTransferTableItem';
@@ -35,8 +34,6 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
           <TableRow>
             <TableColumnHeader width="280px">
               Txn hash
-              <TextSeparator my={ 2 } color="border.divider"/>
-              Timestamp
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader width="200px">Method</TableColumnHeader>

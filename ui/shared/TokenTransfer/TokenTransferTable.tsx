@@ -5,7 +5,6 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TextSeparator from 'ui/shared/TextSeparator';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import TokenTransferTableItem from 'ui/shared/TokenTransfer/TokenTransferTableItem';
 
@@ -44,8 +43,6 @@ const TokenTransferTable = ({
             { showTxInfo && (
               <TableColumnHeader width="260px">
                 Txn hash
-                <TextSeparator my={ 2 } color="border.divider"/>
-                Timestamp
                 <TimeFormatToggle/>
               </TableColumnHeader>
             ) }

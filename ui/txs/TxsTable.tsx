@@ -9,7 +9,6 @@ import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TextSeparator from 'ui/shared/TextSeparator';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import TxsSocketNotice from './socket/TxsSocketNotice';
@@ -57,8 +56,6 @@ const TxsTable = ({
             <TableColumnHeader width="54px"></TableColumnHeader>
             <TableColumnHeader width="260px">
               Txn hash
-              <TextSeparator my={ 2 } color="border.divider"/>
-              Timestamp
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader width="160px">Type</TableColumnHeader>

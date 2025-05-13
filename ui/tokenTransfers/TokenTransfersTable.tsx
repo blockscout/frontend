@@ -4,7 +4,6 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TextSeparator from 'ui/shared/TextSeparator';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import TokenTransferTableItem from 'ui/tokenTransfers/TokenTransfersTableItem';
 
@@ -22,8 +21,6 @@ const TokenTransferTable = ({ items, top, isLoading }: Props) => {
           <TableRow>
             <TableColumnHeader>
               Txn hash
-              <TextSeparator my={ 2 } color="border.divider"/>
-              Timestamp
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader>Method</TableColumnHeader>

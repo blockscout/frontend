@@ -5,7 +5,6 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TextSeparator from 'ui/shared/TextSeparator';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import InternalTxsTableItem from './InternalTxsTableItem';
@@ -24,8 +23,6 @@ const InternalTxsTable = ({ data, currentAddress, isLoading }: Props) => {
           <TableRow>
             <TableColumnHeader width="280px">
               Parent txn hash
-              <TextSeparator my={ 2 } color="border.divider"/>
-              Timestamp
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader width="15%">Type</TableColumnHeader>

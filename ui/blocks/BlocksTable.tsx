@@ -11,7 +11,6 @@ import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import BlocksTableItem from 'ui/blocks/BlocksTableItem';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TextSeparator from 'ui/shared/TextSeparator';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 interface Props {
@@ -51,8 +50,6 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
           <TableRow>
             <TableColumnHeader width="240px">
               Block
-              <TextSeparator my={ 2 } color="border.divider"/>
-              Timestamp
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader width="120px">Size, bytes</TableColumnHeader>
