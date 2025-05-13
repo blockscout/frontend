@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 
-// import CodeViewSnippet from 'ui/shared/CodeViewSnippet';
+import CodeViewSnippet from 'ui/shared/CodeViewSnippet';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractDetailsConstructorArgs from './ContractDetailsConstructorArgs';
@@ -55,33 +55,33 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         ),
       } : undefined,
 
-      // data?.compiler_settings ? {
-      //   id: 'contract_compiler' as const,
-      //   title: 'Compiler',
-      //   component: (
-      //     <CodeViewSnippet
-      //       data={ JSON.stringify(data.compiler_settings, undefined, 2) }
-      //       language="json"
-      //       title="Compiler Settings"
-      //       copyData={ JSON.stringify(data.compiler_settings) }
-      //       isLoading={ isLoading }
-      //     />
-      //   ),
-      // } : undefined,
+      data?.compiler_settings ? {
+        id: 'contract_compiler' as const,
+        title: 'Compiler',
+        component: (
+          <CodeViewSnippet
+            data={ JSON.stringify(data.compiler_settings, undefined, 2) }
+            language="json"
+            title="Compiler Settings"
+            copyData={ JSON.stringify(data.compiler_settings) }
+            isLoading={ isLoading }
+          />
+        ),
+      } : undefined,
 
-      // data?.abi ? {
-      //   id: 'contract_abi' as const,
-      //   title: 'ABI',
-      //   component: (
-      //     <CodeViewSnippet
-      //       data={ JSON.stringify(data.abi, undefined, 2) }
-      //       language="json"
-      //       title="Contract ABI"
-      //       copyData={ JSON.stringify(data.abi) }
-      //       isLoading={ isLoading }
-      //     />
-      //   ),
-      // } : undefined,
+      data?.abi ? {
+        id: 'contract_abi' as const,
+        title: 'ABI',
+        component: (
+          <CodeViewSnippet
+            data={ JSON.stringify(data.abi, undefined, 2) }
+            language="json"
+            title="Contract ABI"
+            copyData={ JSON.stringify(data.abi) }
+            isLoading={ isLoading }
+          />
+        ),
+      } : undefined,
 
       (data?.creation_bytecode || data?.deployed_bytecode) ? {
         id: 'contract_bytecode' as const,
