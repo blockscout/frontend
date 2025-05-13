@@ -41,6 +41,7 @@ const config: Feature<{
   DA: {
     celestia: {
       namespace: string | undefined;
+      celeniumUrl: string | undefined;
     };
   };
 }> = (() => {
@@ -59,6 +60,7 @@ const config: Feature<{
       DA: {
         celestia: {
           namespace: type === 'arbitrum' ? getEnvValue('NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE') : undefined,
+          celeniumUrl: getEnvValue('NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL'),
         },
       },
     });
