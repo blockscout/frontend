@@ -1,13 +1,14 @@
-import { Tr, Td, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -29,8 +30,8 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
   }) : { valueStr: null };
 
   return (
-    <Tr>
-      <Td>
+    <TableRow>
+      <TableCell>
         <TxEntity
           hash={ item.transaction_hash }
           isLoading={ isLoading }
@@ -42,18 +43,18 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
           timestamp={ item.timestamp }
           enableIncrement
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight="400"
           display="inline-block"
         />
-      </Td>
-      <Td maxW="120px">
-        { item.method && <Tag isLoading={ isLoading }>{ item.method }</Tag> }
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell maxW="120px">
+        { item.method && <Badge loading={ isLoading }>{ item.method }</Badge> }
+      </TableCell>
+      <TableCell>
         <BlockEntity number={ item.block_number } isLoading={ isLoading } noIcon/>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         <AddressFromTo
           maxW={{ lg: '220px', xl: '320px' }}
           from={ item.from }
@@ -61,21 +62,22 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
           mode={{ lg: 'compact', xl: 'long' }}
         />
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         { item.total && 'token_id' in item.total && item.token && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null ? (
           <NftEntity
-            hash={ item.token.address }
+            hash={ item.token.address_hash }
             id={ item.total.token_id }
+            instance={ item.total.token_instance }
             isLoading={ isLoading }
             maxW="140px"
           />
         ) : '-' }
-      </Td>
-      <Td isNumeric verticalAlign="top">
+      </TableCell>
+      <TableCell isNumeric verticalAlign="top">
         { (item.token && valueStr) ? (
           <Flex gap={ 2 } overflow="hidden" justifyContent="flex-end">
-            <Skeleton isLoaded={ !isLoading } wordBreak="break-all">
+            <Skeleton loading={ isLoading } wordBreak="break-all">
               { valueStr }
             </Skeleton>
             <TokenEntity
@@ -90,8 +92,8 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
           </Flex>
         ) : '-'
         }
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

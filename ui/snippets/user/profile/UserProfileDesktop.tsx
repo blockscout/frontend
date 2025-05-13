@@ -1,4 +1,4 @@
-import { PopoverBody, PopoverContent, PopoverTrigger, useDisclosure, type ButtonProps } from '@chakra-ui/react';
+import { type ButtonProps } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,7 +7,8 @@ import type { Screen } from 'ui/snippets/auth/types';
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel';
 import useAccount from 'lib/web3/useAccount';
-import Popover from 'ui/shared/chakra/Popover';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
@@ -41,7 +42,7 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
     }
 
     if (router.pathname === '/apps/[id]' && config.features.blockchainInteraction.isEnabled) {
-      setAuthInitialScreen({ type: 'connect_wallet' });
+      setAuthInitialScreen({ type: 'connect_wallet', loginToRewards: true });
     }
 
     authModal.onOpen();
@@ -50,21 +51,32 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
   const handleAddEmailClick = React.useCallback(() => {
     setAuthInitialScreen({ type: 'email', isAuth: true });
     authModal.onOpen();
-  }, [ authModal ]);
+    profileMenu.onClose();
+  }, [ authModal, profileMenu ]);
 
   const handleAddAddressClick = React.useCallback(() => {
-    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true });
+    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true, loginToRewards: true });
     authModal.onOpen();
-  }, [ authModal ]);
+    profileMenu.onClose();
+  }, [ authModal, profileMenu ]);
 
   const handleAuthModalClose = React.useCallback(() => {
     setAuthInitialScreen(initialScreen);
     authModal.onClose();
   }, [ authModal ]);
 
+  const handleLoginClick = React.useCallback(() => {
+    authModal.onOpen();
+    profileMenu.onClose();
+  }, [ authModal, profileMenu ]);
+
+  const handleProfileMenuOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    !open && profileMenu.onOpenChange({ open });
+  }, [ profileMenu ]);
+
   return (
     <>
-      <Popover openDelay={ 300 } placement="bottom-end" isLazy isOpen={ profileMenu.isOpen } onClose={ profileMenu.onClose }>
+      <PopoverRoot positioning={{ placement: 'bottom-end' }} open={ profileMenu.open } onOpenChange={ handleProfileMenuOpenChange }>
         <PopoverTrigger>
           <UserProfileButton
             profileQuery={ profileQuery }
@@ -73,21 +85,21 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
             onClick={ handleProfileButtonClick }
           />
         </PopoverTrigger>
-        { (profileQuery.data || web3Address) && (
+        { (profileQuery.data || web3Address) && profileMenu.open && (
           <PopoverContent w="280px">
             <PopoverBody>
               <UserProfileContent
                 data={ profileQuery.data }
                 onClose={ profileMenu.onClose }
-                onLogin={ authModal.onOpen }
+                onLogin={ handleLoginClick }
                 onAddEmail={ handleAddEmailClick }
                 onAddAddress={ handleAddAddressClick }
               />
             </PopoverBody>
           </PopoverContent>
         ) }
-      </Popover>
-      { authModal.isOpen && (
+      </PopoverRoot>
+      { authModal.open && (
         <AuthModal
           onClose={ handleAuthModalClose }
           initialScreen={ authInitialScreen }

@@ -1,26 +1,25 @@
-import { Grid, GridItem, Link, Text } from '@chakra-ui/react';
+import { Grid, GridItem, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
 
 import { ZKSYNC_L2_TX_BATCH_STATUSES, type ZkSyncBatch } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
-import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { currencyUnits } from 'lib/units';
+import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { WEI, WEI_IN_GWEI } from 'toolkit/utils/consts';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import PrevNext from 'ui/shared/PrevNext';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
@@ -33,7 +32,6 @@ interface Props {
 
 const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
   const router = useRouter();
-  const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const { data, isPlaceholderData, isError, error } = query;
 
@@ -48,14 +46,6 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
     router.push({ pathname: '/batches/[number]', query: { number: nextId } }, undefined);
   }, [ data, router ]);
 
-  const handleCutClick = React.useCallback(() => {
-    setIsExpanded((flag) => !flag);
-    scroller.scrollTo('ZkSyncL2TxnBatchDetails__cutLink', {
-      duration: 500,
-      smooth: true,
-    });
-  }, []);
-
   if (isError) {
     if (isCustomAppError(error)) {
       throwOnResourceLoadError({ isError, error });
@@ -68,7 +58,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
-  const txNum = data.l2_transaction_count + data.l1_transaction_count;
+  const txNum = data.l2_transactions_count + data.l1_transactions_count;
 
   return (
     <Grid
@@ -77,14 +67,14 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
       overflow="hidden"
     >
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on Ethereum."
         isLoading={ isPlaceholderData }
       >
         Txn batch number
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Skeleton loading={ isPlaceholderData }>
           { data.number }
         </Skeleton>
         <PrevNext
@@ -95,100 +85,82 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           isPrevDisabled={ data.number === 0 }
           isLoading={ isPlaceholderData }
         />
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Status is the short interpretation of the batch lifecycle"
         isLoading={ isPlaceholderData }
       >
         Status
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES.slice(1) } currentStep={ data.status } isLoading={ isPlaceholderData }/>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Date and time at which batch is produced"
         isLoading={ isPlaceholderData }
       >
         Timestamp
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        { data.timestamp ? <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/> : 'Undefined' }
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        { data.timestamp ? <DetailedInfoTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/> : 'Undefined' }
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Number of transactions inside the batch."
         isLoading={ isPlaceholderData }
       >
         Transactions
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Skeleton loading={ isPlaceholderData }>
+          <Link href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
             { txNum } transaction{ txNum === 1 ? '' : 's' }
-          </LinkInternal>
+          </Link>
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItemDivider/>
+      <DetailedInfo.ItemDivider/>
 
       <ZkSyncL2TxnBatchHashesInfo isLoading={ isPlaceholderData } data={ data }/>
 
-      <GridItem colSpan={{ base: undefined, lg: 2 }}>
-        <Element name="ZkSyncL2TxnBatchDetails__cutLink">
-          <Skeleton isLoaded={ !isPlaceholderData } mt={ 6 } display="inline-block">
-            <Link
-              display="inline-block"
-              fontSize="sm"
-              textDecorationLine="underline"
-              textDecorationStyle="dashed"
-              onClick={ handleCutClick }
-            >
-              { isExpanded ? 'Hide details' : 'View details' }
-            </Link>
-          </Skeleton>
-        </Element>
-      </GridItem>
+      <CollapsibleDetails loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
+        <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
-      { isExpanded && (
-        <>
-          <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+        <DetailedInfo.ItemLabel
+          hint="L1 batch root is a hash that summarizes batch data and submitted to the L1"
+        >
+          Root hash
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue
+          flexWrap="nowrap"
+          alignSelf="flex-start"
+        >
+          <TruncatedValue value={ data.root_hash }/>
+          <CopyToClipboard text={ data.root_hash }/>
+        </DetailedInfo.ItemValue>
 
-          <DetailsInfoItem.Label
-            hint="L1 batch root is a hash that summarizes batch data and submitted to the L1"
-          >
-            Root hash
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value
-            flexWrap="nowrap"
-            alignSelf="flex-start"
-          >
-            <TruncatedValue value={ data.root_hash }/>
-            <CopyToClipboard text={ data.root_hash }/>
-          </DetailsInfoItem.Value>
+        <DetailedInfo.ItemLabel
+          hint="Gas price for the batch settlement transaction on L1"
+        >
+          L1 gas price
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
+          <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
+          <Text color="text.secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
+        </DetailedInfo.ItemValue>
 
-          <DetailsInfoItem.Label
-            hint="Gas price for the batch settlement transaction on L1"
-          >
-            L1 gas price
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
-            <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
-          </DetailsInfoItem.Value>
-
-          <DetailsInfoItem.Label
-            hint='The gas price below which the "baseFee" of the batch should not fall'
-          >
-            L2 fair gas price
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <Text mr={ 1 }>{ BigNumber(data.l2_fair_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
-            <Text variant="secondary">({ BigNumber(data.l2_fair_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
-          </DetailsInfoItem.Value>
-        </>
-      ) }
+        <DetailedInfo.ItemLabel
+          hint='The gas price below which the "baseFee" of the batch should not fall'
+        >
+          L2 fair gas price
+        </DetailedInfo.ItemLabel>
+        <DetailedInfo.ItemValue>
+          <Text mr={ 1 }>{ BigNumber(data.l2_fair_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
+          <Text color="text.secondary">({ BigNumber(data.l2_fair_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
+        </DetailedInfo.ItemValue>
+      </CollapsibleDetails>
     </Grid>
   );
 };

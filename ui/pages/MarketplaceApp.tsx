@@ -1,4 +1,4 @@
-import { Box, Center, useColorMode, Flex } from '@chakra-ui/react';
+import { Center, chakra, Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { DappscoutIframeProvider, useDappscoutIframe } from 'dappscout-iframe';
 import { useRouter } from 'next/router';
@@ -16,6 +16,7 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useFetch from 'lib/hooks/useFetch';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { useColorMode } from 'toolkit/chakra/color-mode';
 import ContentLoader from 'ui/shared/ContentLoader';
 
 import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';
@@ -82,12 +83,11 @@ const MarketplaceAppContent = ({ address, data, isPending, appUrl }: Props) => {
       ) }
 
       { (data && isReady) && (
-        <Box
+        <chakra.iframe
           key={ iframeKey }
           allow={ IFRAME_ALLOW_ATTRIBUTE }
           ref={ iframeRef }
           sandbox={ IFRAME_SANDBOX_ATTRIBUTE }
-          as="iframe"
           h="100%"
           w="100%"
           display={ isFrameLoading ? 'none' : 'block' }
@@ -126,7 +126,7 @@ const MarketplaceApp = () => {
         }
         return item;
       } else {
-        return apiFetch('marketplace_dapp', { pathParams: { chainId: config.chain.id, dappId: id } });
+        return apiFetch('admin:marketplace_dapp', { pathParams: { chainId: config.chain.id, dappId: id } });
       }
     },
     enabled: feature.isEnabled,

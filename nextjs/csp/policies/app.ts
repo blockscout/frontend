@@ -40,18 +40,12 @@ export function app(): CspDev.DirectiveDescriptor {
       config.app.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
 
       // APIs
-      config.api.endpoint,
-      config.api.socket,
-      getFeaturePayload(config.features.stats)?.api.endpoint,
-      getFeaturePayload(config.features.sol2uml)?.api.endpoint,
-      getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
-      getFeaturePayload(config.features.addressVerification)?.api.endpoint,
-      getFeaturePayload(config.features.nameService)?.api.endpoint,
-      getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
-      getFeaturePayload(config.features.rewards)?.api.endpoint,
+      ...Object.values(config.apis).filter(Boolean).map((api) => api.endpoint),
+      config.apis.general.socketEndpoint,
 
       // chain RPC server
       ...config.chain.rpcUrls,
+      ...(getFeaturePayload(config.features.rollup)?.parentChain?.rpcUrls ?? []),
       'https://infragrid.v.network', // RPC providers
 
       // github (spec for api-docs page)
@@ -70,8 +64,7 @@ export function app(): CspDev.DirectiveDescriptor {
       config.app.isDev ? KEY_WORDS.UNSAFE_EVAL : '',
 
       // hash of ColorModeScript: system + dark
-      '\'sha256-e7MRMmTzLsLQvIy1iizO1lXf7VWYoQ6ysj5fuUzvRwE=\'',
-      '\'sha256-9A7qFFHmxdWjZMQmfzYD2XWaNHLu1ZmQB0Ds4Go764k=\'',
+      '\'sha256-yYJq8IP5/WhJj6zxyTmujEqBFs/MufRufp2QKJFU76M=\'',
 
       // CapybaraRunner
       '\'sha256-5+YTmTcBwCYdJ8Jetbr6kyjGp0Ry/H7ptpoun6CrSwQ=\'',

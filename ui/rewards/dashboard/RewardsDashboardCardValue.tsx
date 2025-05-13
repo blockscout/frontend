@@ -1,35 +1,33 @@
 import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import HintPopover from 'ui/shared/HintPopover';
+import { Heading } from 'toolkit/chakra/heading';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Hint } from 'toolkit/components/Hint/Hint';
 
 import MeritsIcon from '../MeritsIcon';
 
 type Props = {
-  label: string;
+  label?: string;
   value: number | string | undefined;
   withIcon?: boolean;
   hint?: string | React.ReactNode;
   isLoading?: boolean;
+  bottomText?: string;
 };
 
-const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading }: Props) => (
+const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomText }: Props) => (
   <Flex key={ label } flexDirection="column" alignItems="center" gap={ 2 }>
-    <Flex alignItems="center" gap={ 1 }>
-      { hint && (
-        <HintPopover
-          label={ hint }
-          popoverContentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '210px' } }}
-          popoverBodyProps={{ textAlign: 'center' }}
-        />
-      ) }
-      <Text fontSize="xs" fontWeight="500" variant="secondary">
-        { label }
-      </Text>
-    </Flex>
+    { label && (
+      <Flex alignItems="center" gap={ 1 }>
+        { hint && <Hint label={ hint }/> }
+        <Text textStyle="xs" fontWeight="500" color="text.secondary">
+          { label }
+        </Text>
+      </Flex>
+    ) }
     <Skeleton
-      isLoaded={ !isLoading }
+      loading={ isLoading }
       display="flex"
       alignItems="center"
       justifyContent="center"
@@ -37,10 +35,17 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading }: Props
       minW="100px"
     >
       { withIcon && <MeritsIcon boxSize={ 8 }/> }
-      <Text fontSize={{ base: '24px', md: '32px' }} lineHeight={{ base: '24px', md: 1.5 }} fontWeight="500">
+      <Heading level="1">
         { value }
-      </Text>
+      </Heading>
     </Skeleton>
+    { bottomText && (
+      <Skeleton loading={ isLoading }>
+        <Text textStyle="xs" fontWeight="500" color="text.secondary">
+          { bottomText }
+        </Text>
+      </Skeleton>
+    ) }
   </Flex>
 );
 

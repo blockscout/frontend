@@ -1,20 +1,16 @@
-import { Heading } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import { Heading } from 'toolkit/chakra/heading';
+import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import LatestOptimisticDeposits from 'ui/home/latestDeposits/LatestOptimisticDeposits';
 import LatestTxs from 'ui/home/LatestTxs';
 import LatestWatchlistTxs from 'ui/home/LatestWatchlistTxs';
-import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 import useAuth from 'ui/snippets/auth/useIsAuth';
 
 import LatestArbitrumDeposits from './latestDeposits/LatestArbitrumDeposits';
 
 const rollupFeature = config.features.rollup;
-
-const TAB_LIST_PROPS = {
-  mb: { base: 3, lg: 3 },
-};
 
 const TransactionsHome = () => {
   const isAuth = useAuth();
@@ -29,15 +25,15 @@ const TransactionsHome = () => {
     ].filter(Boolean);
     return (
       <>
-        <Heading as="h4" size="sm" mb={ 3 }>Transactions</Heading>
-        <TabsWithScroll tabs={ tabs } lazyBehavior="keepMounted" tabListProps={ TAB_LIST_PROPS }/>
+        <Heading level="3" mb={ 3 }>Transactions</Heading>
+        <AdaptiveTabs tabs={ tabs } unmountOnExit={ false } listProps={{ mb: 3 }}/>
       </>
     );
   }
 
   return (
     <>
-      <Heading as="h4" size="sm" mb={ 3 }>Latest transactions</Heading>
+      <Heading level="3" mb={ 3 }>Latest transactions</Heading>
       <LatestTxs/>
     </>
   );

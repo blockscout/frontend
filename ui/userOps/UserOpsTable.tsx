@@ -1,10 +1,9 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { UserOpsItem } from 'types/api/userOps';
 
 import config from 'configs/app';
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import UserOpsTableItem from './UserOpsTableItem';
 
@@ -18,19 +17,19 @@ import UserOpsTableItem from './UserOpsTableItem';
 
 const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
   return (
-    <Table minW="1000px">
-      <Thead top={ top }>
-        <Tr>
-          <Th w="60%">User op hash</Th>
-          <Th w="110px">Age</Th>
-          <Th w="140px">Status</Th>
-          { showSender && <Th w="160px">Sender</Th> }
-          { showTx && <Th w="160px">Tx hash</Th> }
-          <Th w="40%">Block</Th>
-          { !config.UI.views.tx.hiddenFields?.tx_fee && <Th w="120px" isNumeric>{ `Fee ${ config.chain.currency.symbol }` }</Th> }
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot minW="1000px">
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader w="60%">User op hash</TableColumnHeader>
+          <TableColumnHeader w="110px">Age</TableColumnHeader>
+          <TableColumnHeader w="140px">Status</TableColumnHeader>
+          { showSender && <TableColumnHeader w="160px">Sender</TableColumnHeader> }
+          { showTx && <TableColumnHeader w="160px">Tx hash</TableColumnHeader> }
+          <TableColumnHeader w="40%">Block</TableColumnHeader>
+          { !config.UI.views.tx.hiddenFields?.tx_fee && <TableColumnHeader w="120px" isNumeric>{ `Fee ${ config.chain.currency.symbol }` }</TableColumnHeader> }
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => {
           return (
             <UserOpsTableItem
@@ -42,8 +41,8 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
             />
           );
         }) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

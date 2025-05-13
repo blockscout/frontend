@@ -1,11 +1,10 @@
-import { Flex, Box, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
-import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import IconSvg from 'ui/shared/IconSvg';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
@@ -46,28 +45,24 @@ const NavigationDesktop = () => {
     }
   }, [ handleTogglerClick ]);
 
-  const chevronIconStyles = {
-    bgColor: useColorModeValue('white', 'black'),
-    color: useColorModeValue('blackAlpha.400', 'whiteAlpha.400'),
-    borderColor: 'divider',
-  };
-
   const isExpanded = isCollapsed === false;
 
   return (
     <Flex
       display={{ base: 'none', lg: 'flex' }}
-      role="group"
+      className="group"
       position="relative"
       flexDirection="column"
       alignItems="stretch"
       borderRight="1px solid"
-      borderColor="divider"
+      borderColor="border.divider"
       px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}
       py={ 12 }
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
-      { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
       onClick={ handleContainerClick }
+      transitionProperty="width, padding"
+      transitionDuration="normal"
+      transitionTimingFunction="ease"
     >
       <TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
       <Box
@@ -88,7 +83,7 @@ const NavigationDesktop = () => {
         { Boolean(config.UI.navigation.featuredNetworks) && <NetworkMenu isCollapsed={ isCollapsed }/> }
       </Box>
       <Box as="nav" mt={ 6 } w="100%">
-        <VStack as="ul" spacing="1" alignItems="flex-start">
+        <VStack as="ul" gap="1" alignItems="flex-start">
           { mainNavItems.map((item) => {
             if (isGroupItem(item)) {
               return <NavLinkGroup key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
@@ -99,8 +94,8 @@ const NavigationDesktop = () => {
         </VStack>
       </Box>
       { isAuth && (
-        <Box as="nav" borderTopWidth="1px" borderColor="divider" w="100%" mt={ 3 } pt={ 3 }>
-          <VStack as="ul" spacing="1" alignItems="flex-start">
+        <Box as="nav" borderTopWidth="1px" borderColor="border.divider" w="100%" mt={ 3 } pt={ 3 }>
+          <VStack as="ul" gap="1" alignItems="flex-start">
             <NavLinkRewards isCollapsed={ isCollapsed }/>
             { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>) }
           </VStack>
@@ -110,12 +105,13 @@ const NavigationDesktop = () => {
         name="arrows/east-mini"
         width={ 6 }
         height={ 6 }
-        border="1px"
-        _hover={{ color: 'link_hovered' }}
+        _hover={{ color: 'link.primary.hover' }}
         borderRadius="base"
-        { ...chevronIconStyles }
+        bgColor={{ base: 'white', _dark: 'black' }}
+        color={{ base: 'blackAlpha.400', _dark: 'whiteAlpha.400' }}
+        borderWidth="1px"
+        borderColor="border.divider"
         transform={{ lg: isExpanded ? 'rotate(0)' : 'rotate(180deg)', xl: isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }}
-        { ...getDefaultTransitionProps({ transitionProperty: 'transform, left' }) }
         transformOrigin="center"
         position="absolute"
         top="104px"
@@ -125,6 +121,9 @@ const NavigationDesktop = () => {
         aria-label="Expand/Collapse menu"
         display="none"
         _groupHover={{ display: 'block' }}
+        transitionProperty="transform, left"
+        transitionDuration="normal"
+        transitionTimingFunction="ease"
       />
     </Flex>
   );

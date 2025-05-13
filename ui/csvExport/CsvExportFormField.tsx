@@ -5,7 +5,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import type { FormFields } from './types';
 
 import dayjs from 'lib/date/dayjs';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 interface Props {
   formApi: UseFormReturn<FormFields>;
@@ -38,12 +38,10 @@ const CsvExportFormField = ({ formApi, name }: Props) => {
   return (
     <FormFieldText<FormFields, typeof name>
       name={ name }
-      type="date"
-      max={ dayjs().format('YYYY-MM-DD') }
+      inputProps={{ type: 'date', max: dayjs().format('YYYY-MM-DD') }}
       placeholder={ capitalize(name) }
-      isRequired
+      required
       rules={{ validate }}
-      size={{ base: 'md', lg: 'lg' }}
       maxW={{ base: 'auto', lg: '220px' }}
     />
   );

@@ -9,7 +9,7 @@ on:
 
 jobs:
   cleanup_release:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_helmfile.yaml@master
+    uses: blockscout/actions/.github/workflows/cleanup_helmfile.yaml@main
     with:
       appName: review-l2-$GITHUB_REF_NAME_SLUG
       globalEnv: review
@@ -18,7 +18,7 @@ jobs:
       vaultRole: ci-dev
     secrets: inherit
   cleanup_l2_release:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_helmfile.yaml@master
+    uses: blockscout/actions/.github/workflows/cleanup_helmfile.yaml@main
     with:
       appName: review-$GITHUB_REF_NAME_SLUG
       globalEnv: review

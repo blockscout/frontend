@@ -21,6 +21,8 @@ on:
             - eth_sepolia
             - eth_goerli
             - filecoin
+            - immutable
+            - neon_devnet
             - optimism
             - optimism_celestia
             - optimism_sepolia
@@ -53,14 +55,15 @@ jobs:
     needs: make_slug
     uses: './.github/workflows/publish-image.yml'
     with:
-        tags: ghcr.io/blockscout/frontend:review-${{ needs.make_slug.outputs.REF_SLUG }}
+        tags: |
+          type=raw,value=review-${{ needs.make_slug.outputs.REF_SLUG }}
         build_args: ENVS_PRESET=${{ inputs.envs_preset }}
     secrets: inherit
 
   deploy_review_l2:
     name: Deploy frontend (L2)
     needs: [ make_slug, publish_image ]
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
+    uses: blockscout/actions/.github/workflows/deploy_helmfile.yaml@main
     with:
       appName: review-l2-${{ needs.make_slug.outputs.REF_SLUG }}
       globalEnv: review

@@ -15,23 +15,21 @@ import AddressCsvExportLink from './AddressCsvExportLink';
 import useAddressQuery from './utils/useAddressQuery';
 
 type Props = {
-  scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
 };
 
-const AddressLogs = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
+const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
   const hash = getQueryParamString(router.query.hash);
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'address_logs',
+    resourceName: 'general:address_logs',
     pathParams: { hash },
-    scrollRef,
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'address_logs'>(LOG, 3, { next_page_params: {
+      placeholderData: generateListStub<'general:address_logs'>(LOG, 3, { next_page_params: {
         block_number: 9005750,
         index: 42,
         items_count: 50,
@@ -70,11 +68,12 @@ const AddressLogs = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: 
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items?.length }
       emptyText="There are no logs for this address."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

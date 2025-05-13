@@ -6,11 +6,11 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { nbsp } from 'lib/html-entities';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { nbsp } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import Pagination from 'ui/shared/pagination/Pagination';
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const BlocksTabSlot = ({ pagination }: Props) => {
-  const statsQuery = useApiQuery('stats', {
+  const statsQuery = useApiQuery('general:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },
@@ -31,15 +31,15 @@ const BlocksTabSlot = ({ pagination }: Props) => {
           <Text as="span" fontSize="sm">
             Network utilization (last 50 blocks):{ nbsp }
           </Text>
-          <Skeleton display="inline-block" fontSize="sm" color="blue.400" fontWeight={ 600 } isLoaded={ !statsQuery.isPlaceholderData }>
+          <Skeleton display="inline-block" fontSize="sm" color="blue.400" fontWeight={ 600 } loading={ statsQuery.isPlaceholderData }>
             <span>{ statsQuery.data.network_utilization_percentage.toFixed(2) }%</span>
           </Skeleton>
         </Box>
       ) }
-      <LinkInternal display="inline-flex" alignItems="center" href={ route({ pathname: '/block/countdown' }) }>
+      <Link href={ route({ pathname: '/block/countdown' }) }>
         <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
-      </LinkInternal>
+      </Link>
       <Pagination my={ 1 } { ...pagination }/>
     </Flex>
   );

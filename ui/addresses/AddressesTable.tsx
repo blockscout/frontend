@@ -1,12 +1,11 @@
-import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import type BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
-import { ZERO } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import { ZERO } from 'toolkit/utils/consts';
 
 import AddressesTableItem from './AddressesTableItem';
 
@@ -21,17 +20,17 @@ interface Props {
 const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading }: Props) => {
   const hasPercentage = !totalSupply.eq(ZERO);
   return (
-    <Table>
-      <Thead top={ top }>
-        <Tr>
-          <Th width="64px">Rank</Th>
-          <Th width={ hasPercentage ? '50%' : '60%' }>Address</Th>
-          <Th width={ hasPercentage ? '20%' : '25%' } isNumeric>{ `Balance ${ currencyUnits.ether }` }</Th>
-          { hasPercentage && <Th width="15%" isNumeric>Percentage</Th> }
-          <Th width="15%" isNumeric>Txn count</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot>
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader width="64px">Rank</TableColumnHeader>
+          <TableColumnHeader width={ hasPercentage ? '50%' : '60%' }>Address</TableColumnHeader>
+          <TableColumnHeader width={ hasPercentage ? '20%' : '25%' } isNumeric>{ `Balance ${ currencyUnits.ether }` }</TableColumnHeader>
+          { hasPercentage && <TableColumnHeader width="15%" isNumeric>Percentage</TableColumnHeader> }
+          <TableColumnHeader width="15%" isNumeric>Txn count</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
           <AddressesTableItem
             key={ item.hash + (isLoading ? index : '') }
@@ -42,8 +41,8 @@ const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading }: 
             isLoading={ isLoading }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

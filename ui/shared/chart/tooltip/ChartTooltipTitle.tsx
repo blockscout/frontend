@@ -17,7 +17,7 @@ const ChartTooltipTitle = ({ resolution = Resolution.DAY }: { resolution?: Resol
       <text
         className="ChartTooltip__title"
         transform="translate(0,0)"
-        fill={ titleColor }
+        fill={ titleColor[0] }
         opacity={ 0 }
         dominantBaseline="hanging"
       >

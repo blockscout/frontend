@@ -1,5 +1,5 @@
 import type { GridProps, HTMLChakraProps } from '@chakra-ui/react';
-import { Box, Grid, Flex, Text, Link, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Grid, Flex, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -9,8 +9,9 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
-import { copy } from 'lib/html-entities';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { copy } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
@@ -26,13 +27,12 @@ const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ confi
 
 const Footer = () => {
 
-  const { data: backendVersionData } = useApiQuery('config_backend_version', {
+  const { data: backendVersionData } = useApiQuery('general:config_backend_version', {
     queryOptions: {
       staleTime: Infinity,
     },
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
-  const logoColor = useColorModeValue('blue.600', 'white');
 
   const BLOCKSCOUT_LINKS = [
     {
@@ -45,7 +45,7 @@ const Footer = () => {
       icon: 'social/twitter' as const,
       iconSize: '18px',
       text: 'X (ex-Twitter)',
-      url: 'https://twitter.com/auroraisnear',
+      url: 'https://x.com/auroraisnear',
     },
     {
       icon: 'social/discord' as const,
@@ -102,11 +102,13 @@ const Footer = () => {
   }, []);
 
   const renderProjectInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
+    const logoColor = { base: 'blue.600', _dark: 'white' };
+
     return (
       <Box gridArea={ gridArea }>
-        <Flex columnGap={ 2 } fontSize="xs" lineHeight={ 5 } alignItems="center" color="text">
+        <Flex columnGap={ 2 } textStyle="xs" alignItems="center">
           <span>Made with</span>
-          <Link href="https://www.blockscout.com" isExternal display="inline-flex" color={ logoColor } _hover={{ color: logoColor }}>
+          <Link href="https://www.blockscout.com" target="_blank" display="inline-flex" color={ logoColor } _hover={{ color: logoColor }}>
             <IconSvg
               name="networks/logo-placeholder"
               width="80px"
@@ -117,7 +119,7 @@ const Footer = () => {
         <Text mt={ 3 } fontSize="xs">
           Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
         </Text>
-        <Box mt={ 6 } alignItems="start" fontSize="xs" lineHeight={ 5 }>
+        <Box mt={ 6 } alignItems="start" textStyle="xs">
           { apiVersionUrl && (
             <Text>
               Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
@@ -134,12 +136,12 @@ const Footer = () => {
         </Box>
       </Box>
     );
-  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink, logoColor ]);
+  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink ]);
 
   const containerProps: HTMLChakraProps<'div'> = {
     as: 'footer',
     borderTopWidth: '1px',
-    borderTopColor: 'solid',
+    borderTopColor: 'border.divider',
   };
 
   const contentProps: GridProps = {
@@ -157,11 +159,11 @@ const Footer = () => {
     }
 
     return (
-      <Box gridArea={ gridArea } fontSize="xs" lineHeight={ 5 } mt={ 6 } color="text">
+      <Box gridArea={ gridArea } textStyle="xs" mt={ 6 }>
         <span>This site is protected by reCAPTCHA and the Google </span>
-        <Link href="https://policies.google.com/privacy" isExternal>Privacy Policy</Link>
+        <Link href="https://policies.google.com/privacy" external noIcon>Privacy Policy</Link>
         <span> and </span>
-        <Link href="https://policies.google.com/terms" isExternal>Terms of Service</Link>
+        <Link href="https://policies.google.com/terms" external noIcon>Terms of Service</Link>
         <span> apply.</span>
       </Box>
     );
@@ -195,8 +197,8 @@ const Footer = () => {
                 .slice(0, colNum)
                 .map(linkGroup => (
                   <Box key={ linkGroup.title }>
-                    <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" isLoaded={ !isPlaceholderData }>{ linkGroup.title }</Skeleton>
-                    <VStack spacing={ 1 } alignItems="start">
+                    <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" loading={ isPlaceholderData }>{ linkGroup.title }</Skeleton>
+                    <VStack gap={ 1 } alignItems="start">
                       { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text } isLoading={ isPlaceholderData }/>) }
                     </VStack>
                   </Box>

@@ -1,17 +1,17 @@
-import { Show, Hide, Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
 import useDebounce from 'lib/hooks/useDebounce';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { POOL } from 'stubs/pools';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import { apos } from 'toolkit/utils/htmlEntities';
 import PoolsListItem from 'ui/pools/PoolsListItem';
 import PoolsTable from 'ui/pools/PoolsTable';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import FilterInput from 'ui/shared/filters/FilterInput';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -24,7 +24,7 @@ const Pools = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const poolsQuery = useQueryWithPages({
-    resourceName: 'pools',
+    resourceName: 'contractInfo:pools',
     pathParams: { chainId: config.chain.id },
     filters: { query: debouncedSearchTerm },
     options: {
@@ -39,7 +39,7 @@ const Pools = () => {
 
   const content = (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         { poolsQuery.data?.items.map((item, index) => (
           <PoolsListItem
             key={ item.contract_address + (poolsQuery.isPlaceholderData ? index : '') }
@@ -47,22 +47,22 @@ const Pools = () => {
             item={ item }
           />
         )) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <PoolsTable
           items={ poolsQuery.data?.items ?? [] }
           top={ poolsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ poolsQuery.isPlaceholderData }
           page={ poolsQuery.pagination.page }
         />
-      </Hide>
+      </Box>
     </>
   );
 
   const filter = (
     <FilterInput
       w={{ base: '100%', lg: '360px' }}
-      size="xs"
+      size="sm"
       onChange={ handleSearchTermChange }
       placeholder="Pair, token symbol or token address"
       initialValue={ searchTerm }
@@ -78,9 +78,9 @@ const Pools = () => {
         mt={ -6 }
         display={{ base: poolsQuery.pagination.isVisible ? 'flex' : 'none', lg: 'flex' }}
       >
-        <Hide below="lg">
+        <Box hideBelow="lg">
           { filter }
-        </Hide>
+        </Box>
         <Pagination { ...poolsQuery.pagination } ml="auto"/>
       </ActionBar>
     </>
@@ -94,15 +94,16 @@ const Pools = () => {
       />
       <DataListDisplay
         isError={ poolsQuery.isError }
-        items={ poolsQuery.data?.items }
+        itemsNum={ poolsQuery.data?.items.length }
         emptyText="There are no pools."
-        content={ content }
         actionBar={ actionBar }
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find pools that matches your filter query.`,
           hasActiveFilters: Boolean(debouncedSearchTerm),
         }}
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

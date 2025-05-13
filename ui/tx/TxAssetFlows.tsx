@@ -1,4 +1,4 @@
-import { Table, Tbody, Tr, Th, Box, Text, Show, Hide } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { chunk } from 'es-toolkit';
 import React, { useMemo, useState } from 'react';
 
@@ -6,12 +6,12 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar from 'ui/shared/ActionBar';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Pagination from 'ui/shared/pagination/Pagination';
-import TheadSticky from 'ui/shared/TheadSticky';
 
 import TxAssetFlowsListItem from './assetFlows/TxAssetFlowsListItem';
 import TxAssetFlowsTableItem from './assetFlows/TxAssetFlowsTableItem';
@@ -23,7 +23,7 @@ interface FlowViewProps {
 
 export default function TxAssetFlows(props: FlowViewProps) {
 
-  const { data: queryData, isPlaceholderData, isError } = useApiQuery('noves_transaction', {
+  const { data: queryData, isPlaceholderData, isError } = useApiQuery('general:noves_transaction', {
     pathParams: { hash: props.hash },
     queryOptions: {
       enabled: Boolean(props.hash),
@@ -53,7 +53,7 @@ export default function TxAssetFlows(props: FlowViewProps) {
   const actionBar = (
     <ActionBar mt={ -6 } pb={{ base: 6, md: 5 }} flexDir={{ base: 'column', md: 'initial' }} gap={{ base: '2', md: 'initial' }} >
       <Box display="flex" alignItems="center" gap={ 1 }>
-        <Skeleton borderRadius="sm" isLoaded={ !isPlaceholderData } >
+        <Skeleton borderRadius="sm" loading={ isPlaceholderData } >
           <Text fontWeight="400" mr={ 1 }>
             Wallet
           </Text>
@@ -72,7 +72,7 @@ export default function TxAssetFlows(props: FlowViewProps) {
 
   const content = (
     <>
-      <Hide above="lg" >
+      <Box hideFrom="lg">
         { data?.map((item, i) => (
           <TxAssetFlowsListItem
             key={ `${ i }-${ item.accountAddress }` }
@@ -80,21 +80,21 @@ export default function TxAssetFlows(props: FlowViewProps) {
             isPlaceholderData={ isPlaceholderData }
           />
         )) }
-      </Hide>
+      </Box>
 
-      <Show above="lg">
-        <Table>
-          <TheadSticky top={ 75 }>
-            <Tr>
-              <Th>
+      <Box hideBelow="lg">
+        <TableRoot>
+          <TableHeaderSticky top={ 75 }>
+            <TableRow>
+              <TableColumnHeader>
                 Actions
-              </Th>
-              <Th width="450px">
+              </TableColumnHeader>
+              <TableColumnHeader width="450px">
                 From/To
-              </Th>
-            </Tr>
-          </TheadSticky>
-          <Tbody>
+              </TableColumnHeader>
+            </TableRow>
+          </TableHeaderSticky>
+          <TableBody>
             { data?.map((item, i) => (
               <TxAssetFlowsTableItem
                 key={ `${ i }-${ item.accountAddress }` }
@@ -102,19 +102,20 @@ export default function TxAssetFlows(props: FlowViewProps) {
                 isPlaceholderData={ isPlaceholderData }
               />
             )) }
-          </Tbody>
-        </Table>
-      </Show>
+          </TableBody>
+        </TableRoot>
+      </Box>
     </>
   );
 
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data }
+      itemsNum={ data?.length }
       emptyText="There are no transfers."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 }

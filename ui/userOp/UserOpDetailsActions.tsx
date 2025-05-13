@@ -2,8 +2,8 @@ import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
-import DetailsActionsWrapper from 'ui/shared/DetailsActionsWrapper';
-import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoActionsWrapper from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
 import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const TxDetailsActionsInterpretation = ({ hash, isUserOpDataLoading }: Props) => {
-  const interpretationQuery = useApiQuery('user_op_interpretation', {
+  const interpretationQuery = useApiQuery('general:user_op_interpretation', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash) && !isUserOpDataLoading,
@@ -29,7 +29,7 @@ const TxDetailsActionsInterpretation = ({ hash, isUserOpDataLoading }: Props) =>
 
   return (
     <>
-      <DetailsActionsWrapper isLoading={ isUserOpDataLoading || interpretationQuery.isPlaceholderData } type="user_op">
+      <DetailedInfoActionsWrapper isLoading={ isUserOpDataLoading || interpretationQuery.isPlaceholderData } type="user_op">
         { actions.map((action, index: number) => (
           <TxInterpretation
             key={ index }
@@ -38,8 +38,8 @@ const TxDetailsActionsInterpretation = ({ hash, isUserOpDataLoading }: Props) =>
           />
         ),
         ) }
-      </DetailsActionsWrapper>
-      <DetailsInfoItemDivider/>
+      </DetailedInfoActionsWrapper>
+      <DetailedInfo.ItemDivider/>
     </>
   );
 };

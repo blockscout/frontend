@@ -3,9 +3,9 @@ import React, { useMemo } from 'react';
 
 import type { NovesResponseData } from 'types/api/noves';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -26,7 +26,7 @@ const AddressAccountHistoryListItem = (props: Props) => {
 
   return (
     <ListItemMobile rowGap={ 4 } w="full">
-      <Skeleton borderRadius="sm" isLoaded={ !props.isPlaceholderData } w="full">
+      <Skeleton borderRadius="sm" loading={ props.isPlaceholderData } w="full">
         <Flex justifyContent="space-between" w="full">
           <Flex columnGap={ 2 }>
             <IconSvg
@@ -43,21 +43,21 @@ const AddressAccountHistoryListItem = (props: Props) => {
           </Flex>
           <TimeAgoWithTooltip
             timestamp={ props.tx.rawTransactionData.timestamp * 1000 }
-            color="text_secondary"
+            color="text.secondary"
             borderRadius="sm"
             fontWeight={ 500 }
           />
         </Flex>
       </Skeleton>
-      <Skeleton borderRadius="sm" isLoaded={ !props.isPlaceholderData }>
-        <LinkInternal
+      <Skeleton borderRadius="sm" loading={ props.isPlaceholderData }>
+        <Link
           href={ `/tx/${ props.tx.rawTransactionData.transactionHash }` }
           fontWeight="bold"
           whiteSpace="break-spaces"
           wordBreak="break-word"
         >
           { parsedDescription }
-        </LinkInternal>
+        </Link>
       </Skeleton>
 
       <Box maxW="full">

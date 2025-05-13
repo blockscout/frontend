@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Grid, GridItem, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -24,11 +24,9 @@ const BlockEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
 
-  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-
   const { cutRef, query } = useLazyLoadedList({
     rootRef,
-    resourceName: 'block_election_rewards',
+    resourceName: 'general:block_election_rewards',
     pathParams: { height_or_hash: heightOrHash, reward_type: formatRewardType(type) },
     queryOptions: {
       refetchOnMount: false,
@@ -40,12 +38,12 @@ const BlockEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
   return (
     <Box
       p={ 4 }
-      bgColor={ bgColor }
+      bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
       borderRadius="base"
       maxH="360px"
       overflowY="scroll"
       fontWeight={ 400 }
-      lineHeight={ 5 }
+      textStyle="sm"
     >
       { query.data && (
         <Grid
@@ -92,7 +90,7 @@ const BlockEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
 
       { query.isFetching && <ContentLoader maxW="200px" mt={ 3 }/> }
 
-      { query.isError && <Text color="error" mt={ 3 }>Something went wrong. Unable to load next page.</Text> }
+      { query.isError && <Text color="text.error" mt={ 3 }>Something went wrong. Unable to load next page.</Text> }
 
       <Box h="0" w="100px" ref={ cutRef }/>
     </Box>

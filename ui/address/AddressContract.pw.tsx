@@ -12,9 +12,9 @@ import AddressContract from './AddressContract.pwstory';
 const hash = addressMock.contract.hash;
 
 test.beforeEach(async({ mockApiResponse }) => {
-  await mockApiResponse('address', addressMock.contract, { pathParams: { hash } });
+  await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash } });
   await mockApiResponse(
-    'contract',
+    'general:contract',
     { ...contractInfoMock.verified, abi: [ ...contractMethodsMock.read, ...contractMethodsMock.write ] },
     { pathParams: { hash } },
   );
@@ -33,7 +33,7 @@ test.describe('ABI functionality', () => {
 
     await expect(component.getByRole('button', { name: 'Connect wallet' })).toBeVisible();
     await component.getByText('FLASHLOAN_PREMIUM_TOTAL').click();
-    await expect(component.getByRole('button', { name: 'Read' })).toBeVisible();
+    await expect(component.getByLabel('FLASHLOAN_PREMIUM_TOTAL').getByRole('button', { name: 'Read' })).toBeVisible();
   });
 
   test('read, no wallet client', async({ render, createSocket, mockEnvs }) => {
@@ -49,7 +49,7 @@ test.describe('ABI functionality', () => {
 
     await expect(component.getByRole('button', { name: 'Connect wallet' })).toBeHidden();
     await component.getByText('FLASHLOAN_PREMIUM_TOTAL').click();
-    await expect(component.getByRole('button', { name: 'Read' })).toBeVisible();
+    await expect(component.getByLabel('FLASHLOAN_PREMIUM_TOTAL').getByRole('button', { name: 'Read' })).toBeVisible();
   });
 
   test('write', async({ render, createSocket }) => {

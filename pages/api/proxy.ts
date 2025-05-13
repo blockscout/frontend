@@ -13,7 +13,7 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
 
   const url = new URL(
     nextReq.url.replace(/^\/node-api\/proxy/, ''),
-    nextReq.headers['x-endpoint']?.toString() || appConfig.api.endpoint,
+    nextReq.headers['x-endpoint']?.toString() || appConfig.apis.general.endpoint,
   );
   const apiRes = await fetchFactory(nextReq)(
     url.toString(),

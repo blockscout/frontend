@@ -22,7 +22,7 @@ const ContractVerificationForAddress = () => {
   const hash = getQueryParamString(router.query.hash);
   const method = getQueryParamString(router.query.method) as SmartContractVerificationMethod;
 
-  const contractQuery = useApiQuery('contract', {
+  const contractQuery = useApiQuery('general:contract', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),
@@ -89,10 +89,10 @@ const ContractVerificationForAddress = () => {
       <AddressEntity
         address={{ hash, is_contract: true }}
         noLink
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
+        variant="subheading"
         mb={ 12 }
+        w="min-content"
+        maxW="100%"
       />
       { content }
     </>

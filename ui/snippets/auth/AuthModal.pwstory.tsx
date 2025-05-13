@@ -1,5 +1,8 @@
-import { Box, Button, useDisclosure } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
+
+import { Button } from 'toolkit/chakra/button';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 import AuthModal from './AuthModal';
 import useIsAuth from './useIsAuth';
@@ -21,7 +24,7 @@ const AuthModalStory = ({ flow }: Props) => {
   return (
     <>
       <Button onClick={ authModal.onOpen }>{ flow === 'email_login' ? 'Log in' : 'Link email' }</Button>
-      { authModal.isOpen && <AuthModal initialScreen={ initialScreen } onClose={ handleClose }/> }
+      { authModal.open && <AuthModal initialScreen={ initialScreen } onClose={ handleClose }/> }
       <Box>Status: { isAuth ? 'Authenticated' : 'Not authenticated' }</Box>
     </>
   );

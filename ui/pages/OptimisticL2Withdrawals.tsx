@@ -1,12 +1,12 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { L2_WITHDRAWAL_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -16,9 +16,9 @@ import OptimisticL2WithdrawalsTable from 'ui/withdrawals/optimisticL2/Optimistic
 
 const OptimisticL2Withdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'optimistic_l2_withdrawals',
+    resourceName: 'general:optimistic_l2_withdrawals',
     options: {
-      placeholderData: generateListStub<'optimistic_l2_withdrawals'>(
+      placeholderData: generateListStub<'general:optimistic_l2_withdrawals'>(
         L2_WITHDRAWAL_ITEM,
         50,
         {
@@ -31,7 +31,7 @@ const OptimisticL2Withdrawals = () => {
     },
   });
 
-  const countersQuery = useApiQuery('optimistic_l2_withdrawals_count', {
+  const countersQuery = useApiQuery('general:optimistic_l2_withdrawals_count', {
     queryOptions: {
       placeholderData: 23700,
     },
@@ -39,16 +39,18 @@ const OptimisticL2Withdrawals = () => {
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>{ data.items.map(((item, index) => (
-        <OptimisticL2WithdrawalsListItem
-          key={ String(item.msg_nonce_version) + item.msg_nonce + (isPlaceholderData ? index : '') }
-          item={ item }
-          isLoading={ isPlaceholderData }
-        />
-      ))) }</Show>
-      <Hide below="lg" ssr={ false }>
+      <Box hideFrom="lg">
+        { data.items.map(((item, index) => (
+          <OptimisticL2WithdrawalsListItem
+            key={ String(item.msg_nonce_version) + item.msg_nonce + (isPlaceholderData ? index : '') }
+            item={ item }
+            isLoading={ isPlaceholderData }
+          />
+        ))) }
+      </Box>
+      <Box hideBelow="lg">
         <OptimisticL2WithdrawalsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   ) : null;
 
@@ -59,7 +61,7 @@ const OptimisticL2Withdrawals = () => {
 
     return (
       <Skeleton
-        isLoaded={ !countersQuery.isPlaceholderData }
+        loading={ countersQuery.isPlaceholderData }
         display="inline-block"
       >
         A total of { countersQuery.data?.toLocaleString() } withdrawals found
@@ -74,11 +76,12 @@ const OptimisticL2Withdrawals = () => {
       <PageTitle title={ `Withdrawals (L2${ nbsp }${ rightLineArrow }${ nbsp }L1)` } withTextAd/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items?.length }
         emptyText="There are no withdrawals."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

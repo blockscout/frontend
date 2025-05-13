@@ -1,12 +1,13 @@
-import { Tr, Td, Text, Flex } from '@chakra-ui/react';
+import { Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { Tag } from 'toolkit/chakra/tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 type Props = {
@@ -29,13 +30,13 @@ const AddressesTableItem = ({
   const addressBalanceChunks = addressBalance.dp(8).toFormat().split('.');
 
   return (
-    <Tr>
-      <Td>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" minW={ 6 } lineHeight="24px">
+    <TableRow>
+      <TableCell>
+        <Skeleton loading={ isLoading } display="inline-block" minW={ 6 } lineHeight="24px">
           { index }
         </Skeleton>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         <Flex alignItems="center" columnGap={ 2 }>
           <AddressEntity
             address={ item }
@@ -44,27 +45,27 @@ const AddressesTableItem = ({
             my="2px"
           />
           { item.public_tags && item.public_tags.length ? item.public_tags.map(tag => (
-            <Tag key={ tag.label } isLoading={ isLoading } isTruncated>{ tag.display_name }</Tag>
+            <Tag key={ tag.label } loading={ isLoading } truncated>{ tag.display_name }</Tag>
           )) : null }
         </Flex>
-      </Td>
-      <Td isNumeric>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" maxW="100%">
+      </TableCell>
+      <TableCell isNumeric>
+        <Skeleton loading={ isLoading } display="inline-block" maxW="100%">
           <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] + (addressBalanceChunks[1] ? '.' : '') }</Text>
-          <Text lineHeight="24px" variant="secondary" as="span">{ addressBalanceChunks[1] }</Text>
+          <Text lineHeight="24px" color="text.secondary" as="span">{ addressBalanceChunks[1] }</Text>
         </Skeleton>
-      </Td>
+      </TableCell>
       { hasPercentage && (
-        <Td isNumeric>
+        <TableCell isNumeric>
           <Text lineHeight="24px">{ addressBalance.div(totalSupply).multipliedBy(100).dp(8).toFormat() + '%' }</Text>
-        </Td>
+        </TableCell>
       ) }
-      <Td isNumeric>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" lineHeight="24px">
-          { Number(item.transaction_count).toLocaleString() }
+      <TableCell isNumeric>
+        <Skeleton loading={ isLoading } display="inline-block" lineHeight="24px">
+          { Number(item.transactions_count).toLocaleString() }
         </Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

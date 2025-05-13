@@ -2,6 +2,7 @@ import type { Transaction } from 'types/api/transaction';
 
 import type { UserTags, AddressImplementation, AddressParam, AddressFilecoinParams } from './addressParams';
 import type { Block, EpochRewardsType } from './block';
+import type { SmartContractProxyType } from './contract';
 import type { InternalTransaction } from './internalTransaction';
 import type { MudWorldSchema, MudWorldTable } from './mudWorlds';
 import type { NFTTokenType, TokenInfo, TokenInstance, TokenType } from './token';
@@ -19,7 +20,6 @@ export interface Address extends UserTags {
   zilliqa?: AddressZilliqaParams;
   // TODO: if we are happy with tabs-counters method, should we delete has_something fields?
   has_beacon_chain_withdrawals?: boolean;
-  has_decompiled_code: boolean;
   has_logs: boolean;
   has_token_transfers: boolean;
   has_tokens: boolean;
@@ -31,6 +31,7 @@ export interface Address extends UserTags {
   name: string | null;
   token: TokenInfo | null;
   watchlist_address_id: number | null;
+  proxy_type?: SmartContractProxyType | null;
 }
 
 export interface AddressZilliqaParams {

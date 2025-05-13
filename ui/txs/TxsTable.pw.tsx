@@ -10,11 +10,11 @@ test('base view +@dark-mode', async({ render }) => {
   const component = await render(
     <TxsTable
       txs={ [ txMock.base, txMock.withWatchListNames ] }
+      sort="default"
       // eslint-disable-next-line react/jsx-no-bind
-      sort={ () => () => {} }
+      onSortToggle={ () => {} }
       top={ 0 }
       showBlockInfo
-      showSocketInfo={ false }
     />,
   );
 
@@ -30,11 +30,11 @@ test.describe('screen xl', () => {
     const component = await render(
       <TxsTable
         txs={ [ txMock.base, txMock.withWatchListNames ] }
+        sort="default"
         // eslint-disable-next-line react/jsx-no-bind
-        sort={ () => () => {} }
+        onSortToggle={ () => {} }
         top={ 0 }
         showBlockInfo
-        showSocketInfo={ false }
       />,
     );
 

@@ -1,11 +1,11 @@
-import { PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { getRecentSearchKeywords } from 'lib/recentSearchKeywords';
-import Popover from 'ui/shared/chakra/Popover';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import SearchBarBackdrop from 'ui/snippets/searchBar/SearchBarBackdrop';
 import SearchBarInput from 'ui/snippets/searchBar/SearchBarInput';
 import SearchBarRecentKeywords from 'ui/snippets/searchBar/SearchBarRecentKeywords';
@@ -17,13 +17,17 @@ type Props = {
 };
 
 const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }: Props) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { open, onClose, onOpen } = useDisclosure();
   const inputRef = React.useRef<HTMLFormElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
   const isMobile = useIsMobile();
 
   const recentSearchKeywords = getRecentSearchKeywords();
+
+  const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    open && onOpen();
+  }, [ onOpen ]);
 
   const handleFocus = React.useCallback(() => {
     onOpen();
@@ -47,7 +51,7 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
     inputRef.current?.querySelector('input')?.focus();
   }, [ handleSearchTermChange ]);
 
-  const menuPaddingX = isMobile ? 32 : 0;
+  const menuPaddingX = isMobile ? 24 : 0;
   const calculateMenuWidth = React.useCallback(() => {
     menuWidth.current = (inputRef.current?.getBoundingClientRect().width || 0) - menuPaddingX;
   }, [ menuPaddingX ]);
@@ -68,17 +72,15 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
     };
   }, [ calculateMenuWidth ]);
 
-  const isSuggestOpen = isOpen && recentSearchKeywords.length > 0 && searchTerm.trim().length === 0;
+  const isSuggestOpen = open && recentSearchKeywords.length > 0 && searchTerm.trim().length === 0;
 
   return (
     <>
-      <Popover
-        isOpen={ isSuggestOpen }
+      <PopoverRoot
+        open={ isSuggestOpen }
         autoFocus={ false }
-        onClose={ onClose }
-        placement="bottom-start"
-        offset={ isMobile ? [ 16, -12 ] : [ 0, 8 ] }
-        isLazy
+        onOpenChange={ handleOpenChange }
+        positioning={{ offset: { mainAxis: isMobile ? 0 : 8, crossAxis: isMobile ? 12 : 0 } }}
       >
         <PopoverTrigger>
           <SearchBarInput
@@ -98,7 +100,7 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
             <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
           </PopoverBody>
         </PopoverContent>
-      </Popover>
+      </PopoverRoot>
       <SearchBarBackdrop isOpen={ isSuggestOpen }/>
     </>
   );

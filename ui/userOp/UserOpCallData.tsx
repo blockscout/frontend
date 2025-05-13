@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { UserOp } from 'types/api/userOps';
 
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import RawInputData from 'ui/shared/RawInputData';
 
 import UserOpCallDataSwitch from './UserOpCallDataSwitch';
@@ -25,6 +25,7 @@ const UserOpDecodedCallData = ({ data }: Props) => {
 
   const toggler = data.call_data && data.execute_call_data ? (
     <UserOpCallDataSwitch
+      id="call-data-switch"
       onChange={ handleSwitchChange }
       initialValue={ false }
       ml={{ base: 3, lg: 'auto' }}
@@ -35,14 +36,14 @@ const UserOpDecodedCallData = ({ data }: Props) => {
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Data that’s passed to the sender for execution"
       >
         { labelText }
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <RawInputData hex={ callData } rightSlot={ toggler }/>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

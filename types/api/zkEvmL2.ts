@@ -42,7 +42,7 @@ export type ZkEvmL2TxnBatchesItem = {
   sequence_transaction_hash: string | null;
   status: string;
   timestamp: string | null;
-  transaction_count: number;
+  transactions_count: number;
 };
 
 export type ZkEvmL2TxnBatchesResponse = {

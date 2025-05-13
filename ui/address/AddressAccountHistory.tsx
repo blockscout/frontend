@@ -1,5 +1,4 @@
-import { Box, Hide, Show, Table,
-  Tbody, Th, Tr } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -11,13 +10,13 @@ import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { generateListStub } from 'stubs/utils';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import AddressAccountHistoryTableItem from 'ui/address/accountHistory/AddressAccountHistoryTableItem';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import { getFromToValue } from 'ui/shared/Noves/utils';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import TheadSticky from 'ui/shared/TheadSticky';
 
 import AddressAccountHistoryListItem from './accountHistory/AddressAccountHistoryListItem';
 import AccountHistoryFilter from './AddressAccountHistoryFilter';
@@ -25,12 +24,11 @@ import AccountHistoryFilter from './AddressAccountHistoryFilter';
 const getFilterValue = (getFilterValueFromQuery<NovesHistoryFilterValue>).bind(null, NovesHistoryFilterValues);
 
 type Props = {
-  scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
 };
 
-const AddressAccountHistory = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
+const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -39,12 +37,11 @@ const AddressAccountHistory = ({ scrollRef, shouldRender = true, isQueryEnabled 
   const [ filterValue, setFilterValue ] = React.useState<NovesHistoryFilterValue>(getFilterValue(router.query.filter));
 
   const { data, isError, pagination, isPlaceholderData } = useQueryWithPages({
-    resourceName: 'noves_address_history',
+    resourceName: 'general:noves_address_history',
     pathParams: { address: currentAddress },
-    scrollRef,
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'noves_address_history'>(NOVES_TRANSLATE, 10, { hasNextPage: false, pageNumber: 1, pageSize: 10 }),
+      placeholderData: generateListStub<'general:noves_address_history'>(NOVES_TRANSLATE, 10, { hasNextPage: false, pageNumber: 1, pageSize: 10 }),
     },
   });
 
@@ -75,7 +72,7 @@ const AddressAccountHistory = ({ scrollRef, shouldRender = true, isQueryEnabled 
 
   const content = (
     <Box position="relative">
-      <Hide above="lg" ssr={ false }>
+      <Box hideFrom="lg">
         { filteredData?.map((item, i) => (
           <AddressAccountHistoryListItem
             key={ `${ i }-${ item.rawTransactionData.transactionHash }` }
@@ -84,24 +81,24 @@ const AddressAccountHistory = ({ scrollRef, shouldRender = true, isQueryEnabled 
             isPlaceholderData={ isPlaceholderData }
           />
         )) }
-      </Hide>
+      </Box>
 
-      <Show above="lg" ssr={ false }>
-        <Table>
-          <TheadSticky top={ 75 }>
-            <Tr>
-              <Th width="120px">
+      <Box hideBelow="lg">
+        <TableRoot>
+          <TableHeaderSticky top={ 75 }>
+            <TableRow>
+              <TableColumnHeader width="120px">
                 Age
-              </Th>
-              <Th>
+              </TableColumnHeader>
+              <TableColumnHeader>
                 Action
-              </Th>
-              <Th width="320px">
+              </TableColumnHeader>
+              <TableColumnHeader width="320px">
                 From/To
-              </Th>
-            </Tr>
-          </TheadSticky>
-          <Tbody maxWidth="full">
+              </TableColumnHeader>
+            </TableRow>
+          </TableHeaderSticky>
+          <TableBody maxWidth="full">
             { filteredData?.map((item, i) => (
               <AddressAccountHistoryTableItem
                 key={ `${ i }-${ item.rawTransactionData.transactionHash }` }
@@ -110,24 +107,25 @@ const AddressAccountHistory = ({ scrollRef, shouldRender = true, isQueryEnabled 
                 isPlaceholderData={ isPlaceholderData }
               />
             )) }
-          </Tbody>
-        </Table>
-      </Show>
+          </TableBody>
+        </TableRoot>
+      </Box>
     </Box>
   );
 
   return (
     <DataListDisplay
       isError={ isError }
-      items={ filteredData }
+      itemsNum={ filteredData?.length }
       emptyText="There are no transactions."
-      content={ content }
       actionBar={ actionBar }
       filterProps={{
         hasActiveFilters: Boolean(filterValue),
         emptyFilteredText: 'No match found for current filter',
       }}
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

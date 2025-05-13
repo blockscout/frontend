@@ -3,6 +3,7 @@ import type { ArbitrumBatchStatus, ArbitrumL2TxData } from './arbitrumL2';
 import type { BlockTransactionsResponse } from './block';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
+import type { ChainInfo, MessageStatus } from './interop';
 import type { NovesTxTranslation } from './noves';
 import type { OptimisticL2WithdrawalStatus } from './optimisticL2';
 import type { ScrollL2BlockStatus } from './scrollL2';
@@ -15,7 +16,7 @@ export type TransactionRevertReason = {
   raw: string;
 } | DecodedInput;
 
-type WrappedTransactionFields = 'decoded_input' | 'fee' | 'gas_limit' | 'gas_price' | 'hash' | 'max_fee_per_gas' |
+export type WrappedTransactionFields = 'decoded_input' | 'fee' | 'gas_limit' | 'gas_price' | 'hash' | 'max_fee_per_gas' |
 'max_priority_fee_per_gas' | 'method' | 'nonce' | 'raw_input' | 'to' | 'type' | 'value';
 
 export interface OpWithdrawal {
@@ -45,7 +46,7 @@ export type Transaction = {
   max_priority_fee_per_gas: string | null;
   priority_fee: string | null;
   base_fee_per_gas: string | null;
-  tx_burnt_fee: string | null;
+  transaction_burnt_fee: string | null;
   nonce: number;
   position: number | null;
   revert_reason: TransactionRevertReason | null;
@@ -88,7 +89,7 @@ export type Transaction = {
   zkevm_status?: typeof ZKEVM_L2_TX_STATUSES[number];
   zkevm_sequence_hash?: string;
   // zkSync FIELDS
-  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transaction_count' | 'timestamp'> & {
+  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transactions_count' | 'timestamp'> & {
     batch_number: number | null;
   };
   // Zilliqa fields
@@ -108,6 +109,10 @@ export type Transaction = {
   error?: string;
   arbitrum?: ArbitrumTransactionData;
   scroll?: ScrollTransactionData;
+  // EIP-7702
+  authorization_list?: Array<TxAuthorization>;
+  // Interop
+  op_interop?: InteropTransactionInfo;
 };
 
 type ArbitrumTransactionData = {
@@ -121,12 +126,12 @@ type ArbitrumTransactionData = {
   poster_fee: string;
   status: ArbitrumBatchStatus;
   message_related_info: {
-    associated_l1_transaction: string | null;
-    message_status: ArbitrumMessageStatus;
+    associated_l1_transaction_hash: string | null;
+    message_status: ArbitrumTransactionMessageStatus;
   };
 };
 
-export type ArbitrumMessageStatus = 'Relayed' | 'Syncing with base layer' | 'Waiting for confirmation' | 'Ready for relay' | 'Settlement pending';
+export type ArbitrumTransactionMessageStatus = 'Relayed' | 'Syncing with base layer' | 'Waiting for confirmation' | 'Ready for relay' | 'Settlement pending';
 
 export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];
 
@@ -194,7 +199,7 @@ export interface TransactionsSorting {
 
 export type TransactionsSortingField = TransactionsSorting['sort'];
 
-export type TransactionsSortingValue = `${ TransactionsSortingField }-${ TransactionsSorting['order'] }`;
+export type TransactionsSortingValue = `${ TransactionsSortingField }-${ TransactionsSorting['order'] }` | 'default';
 
 export type ScrollTransactionData = {
   l1_fee: string;
@@ -209,3 +214,22 @@ export type ScrollTransactionData = {
   l2_block_status: ScrollL2BlockStatus;
   queue_index: number;
 };
+
+export interface TxAuthorization {
+  address_hash: string;
+  authority: string;
+  chain_id: number;
+  nonce: number;
+}
+
+export interface InteropTransactionInfo {
+  nonce: number;
+  payload: string;
+  init_chain?: ChainInfo | null;
+  relay_chain?: ChainInfo | null;
+  init_transaction_hash?: string;
+  relay_transaction_hash?: string;
+  sender: string;
+  status: MessageStatus;
+  target: string;
+}

@@ -13,8 +13,8 @@ const hooksConfig = {
 };
 
 test('base view +@dark-mode', async({ render, page, mockApiResponse }) => {
-  await mockApiResponse('address_coin_balance', balanceHistoryMock.baseResponse, { pathParams: { hash: addressHash } });
-  await mockApiResponse('address_coin_balance_chart', balanceHistoryMock.chartResponse, { pathParams: { hash: addressHash } });
+  await mockApiResponse('general:address_coin_balance', balanceHistoryMock.baseResponse, { pathParams: { hash: addressHash } });
+  await mockApiResponse('general:address_coin_balance_chart', balanceHistoryMock.chartResponse, { pathParams: { hash: addressHash } });
   const component = await render(<AddressCoinBalance/>, { hooksConfig });
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-Balances-small"]')?.getAttribute('opacity') === '1';
@@ -28,8 +28,8 @@ test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
   test('base view', async({ render, page, mockApiResponse }) => {
-    await mockApiResponse('address_coin_balance', balanceHistoryMock.baseResponse, { pathParams: { hash: addressHash } });
-    await mockApiResponse('address_coin_balance_chart', balanceHistoryMock.chartResponse, { pathParams: { hash: addressHash } });
+    await mockApiResponse('general:address_coin_balance', balanceHistoryMock.baseResponse, { pathParams: { hash: addressHash } });
+    await mockApiResponse('general:address_coin_balance_chart', balanceHistoryMock.chartResponse, { pathParams: { hash: addressHash } });
     const component = await render(<AddressCoinBalance/>, { hooksConfig });
     await page.waitForFunction(() => {
       return document.querySelector('path[data-name="chart-Balances-small"]')?.getAttribute('opacity') === '1';

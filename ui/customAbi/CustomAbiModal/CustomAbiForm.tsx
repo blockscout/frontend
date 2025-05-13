@@ -1,7 +1,4 @@
-import {
-  Box,
-  Button,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -13,8 +10,9 @@ import type { ResourceErrorAccount } from 'lib/api/resources';
 import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { Button } from 'toolkit/chakra/button';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 export type FormData = CustomAbi | {
   contract_address_hash: string;
@@ -23,7 +21,7 @@ export type FormData = CustomAbi | {
 
 type Props = {
   data: FormData;
-  onClose: () => void;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   onSuccess?: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
 };
@@ -36,7 +34,7 @@ type Inputs = {
 
 const NAME_MAX_LENGTH = 255;
 
-const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisible }) => {
+const CustomAbiForm: React.FC<Props> = ({ data, onOpenChange, onSuccess, setAlertVisible }) => {
   const formApi = useForm<Inputs>({
     defaultValues: {
       contract_address_hash: data?.contract_address_hash || '',
@@ -53,10 +51,10 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisi
     const body = { name: data.name, contract_address_hash: data.contract_address_hash, abi: data.abi };
 
     if (!data.id) {
-      return apiFetch('custom_abi', { fetchParams: { method: 'POST', body } });
+      return apiFetch('general:custom_abi', { fetchParams: { method: 'POST', body } });
     }
 
-    return apiFetch('custom_abi', {
+    return apiFetch('general:custom_abi', {
       pathParams: { id: String(data.id) },
       fetchParams: { method: 'PUT', body },
     });
@@ -66,7 +64,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisi
     mutationFn: customAbiKey,
     onSuccess: async(data) => {
       const response = data as unknown as CustomAbi;
-      queryClient.setQueryData([ resourceKey('custom_abi') ], (prevData: CustomAbis | undefined) => {
+      queryClient.setQueryData([ resourceKey('general:custom_abi') ], (prevData: CustomAbis | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.id === response.id);
 
         if (isExisting) {
@@ -82,7 +80,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisi
         return [ response, ...(prevData || []) ];
       });
       await onSuccess?.();
-      onClose();
+      onOpenChange({ open: false });
     },
     onError: (error: ResourceErrorAccount<CustomAbiErrors>) => {
       const errorMap = error.payload?.errors;
@@ -110,37 +108,36 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisi
         <FormFieldAddress<Inputs>
           name="contract_address_hash"
           placeholder="Smart contract address (0x...)"
-          isRequired
-          bgColor="dialog_bg"
-          isReadOnly={ Boolean(data && 'contract_address_hash' in data) }
+          required
+          bgColor="dialog.bg"
+          readOnly={ Boolean(data && 'contract_address_hash' in data) }
           mb={ 5 }
         />
         <FormFieldText<Inputs>
           name="name"
           placeholder="Project name"
-          isRequired
+          required
           rules={{
             maxLength: NAME_MAX_LENGTH,
           }}
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
           mb={ 5 }
         />
         <FormFieldText<Inputs>
           name="abi"
           placeholder="Custom ABI [{...}] (JSON format)"
-          isRequired
+          required
           asComponent="Textarea"
-          bgColor="dialog_bg"
-          size="lg"
+          bgColor="dialog.bg"
+          size="2xl"
           minH="300px"
           mb={ 8 }
         />
         <Box>
           <Button
-            size="lg"
             type="submit"
-            isDisabled={ !formApi.formState.isDirty }
-            isLoading={ isPending }
+            disabled={ !formApi.formState.isDirty }
+            loading={ isPending }
           >
             { data && 'id' in data ? 'Save' : 'Create custom ABI' }
           </Button>

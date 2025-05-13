@@ -10,7 +10,7 @@ import DataFetchAlert from '../shared/DataFetchAlert';
 const UNITS_WITHOUT_SPACE = [ 's' ];
 
 const NumberWidgetsList = () => {
-  const { data, isPlaceholderData, isError } = useApiQuery('stats_counters', {
+  const { data, isPlaceholderData, isError } = useApiQuery('stats:counters', {
     queryOptions: {
       placeholderData: { counters: Array(10).fill(STATS_COUNTER) },
     },
@@ -23,7 +23,7 @@ const NumberWidgetsList = () => {
   return (
     <Grid
       gridTemplateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
-      gridGap={ 4 }
+      gridGap={{ base: 1, lg: 2 }}
     >
       {
         data?.counters?.map(({ id, title, value, units, description }, index) => {

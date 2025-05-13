@@ -3,7 +3,7 @@ import type { SearchResult, SearchResultItem } from 'types/api/search';
 import { ADDRESS_HASH } from './addressParams';
 
 export const SEARCH_RESULT_ITEM: SearchResultItem = {
-  address: ADDRESS_HASH,
+  address_hash: ADDRESS_HASH,
   address_url: '/address/0x3714A8C7824B22271550894f7555f0a672f97809',
   name: 'USDC',
   symbol: 'USDC',
@@ -20,7 +20,7 @@ export const SEARCH_RESULT_ITEM: SearchResultItem = {
 export const SEARCH_RESULT_NEXT_PAGE_PARAMS: SearchResult['next_page_params'] = {
   address_hash: ADDRESS_HASH,
   block_hash: null,
-  holder_count: 11,
+  holders_count: 11,
   inserted_at: '2023-05-19T17:21:19.203681Z',
   item_type: 'token',
   items_count: 50,

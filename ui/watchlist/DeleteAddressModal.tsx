@@ -8,18 +8,18 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   onSuccess: () => Promise<void>;
   data: Pick<WatchlistAddress, 'address_hash' | 'id'>;
 };
 
-const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data }) => {
+const DeleteAddressModal: React.FC<Props> = ({ open, onOpenChange, onSuccess, data }) => {
   const isMobile = useIsMobile();
   const apiFetch = useApiFetch();
 
   const mutationFn = useCallback(() => {
-    return apiFetch('watchlist', {
+    return apiFetch('general:watchlist', {
       pathParams: { id: String(data.id) },
       fetchParams: { method: 'DELETE' },
     });
@@ -36,8 +36,8 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data 
 
   return (
     <DeleteModal
-      isOpen={ isOpen }
-      onClose={ onClose }
+      open={ open }
+      onOpenChange={ onOpenChange }
       title="Remove address from watch list"
       renderContent={ renderModalContent }
       mutationFn={ mutationFn }

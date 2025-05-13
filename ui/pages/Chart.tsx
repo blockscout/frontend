@@ -1,4 +1,4 @@
-import { Button, Flex, Link, Text } from '@chakra-ui/react';
+import { createListCollection, Flex, Text } from '@chakra-ui/react';
 import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -11,12 +11,15 @@ import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import isBrowser from 'lib/isBrowser';
 import * as metadata from 'lib/metadata';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { Button } from 'toolkit/chakra/button';
+import type { SelectOption } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
 import ChartMenu from 'ui/shared/chart/ChartMenu';
 import ChartWidgetContent from 'ui/shared/chart/ChartWidgetContent';
@@ -25,7 +28,6 @@ import useZoom from 'ui/shared/chart/useZoom';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Select from 'ui/shared/select/Select';
 import { STATS_RESOLUTIONS } from 'ui/stats/constants';
 
 const DEFAULT_RESOLUTION = Resolution.DAY;
@@ -108,11 +110,11 @@ const Chart = () => {
     );
   }, [ setIntervalState, router ]);
 
-  const onResolutionChange = React.useCallback((resolution: Resolution) => {
-    setResolution(resolution);
+  const onResolutionChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setResolution(value[0] as Resolution);
     router.push({
       pathname: router.pathname,
-      query: { ...router.query, resolution },
+      query: { ...router.query, resolution: value[0] },
     },
     undefined,
     { shallow: true },
@@ -121,7 +123,7 @@ const Chart = () => {
 
   const handleReset = React.useCallback(() => {
     handleZoomReset();
-    onResolutionChange(DEFAULT_RESOLUTION);
+    onResolutionChange({ value: [ DEFAULT_RESOLUTION ] });
   }, [ handleZoomReset, onResolutionChange ]);
 
   const { items, info, lineQuery } = useChartQuery(id, resolution, interval);
@@ -145,7 +147,7 @@ const Chart = () => {
 
   if (lineQuery.isError) {
     if (isCustomAppError(lineQuery.error)) {
-      throwOnResourceLoadError({ resource: 'stats_line', error: lineQuery.error, isError: true });
+      throwOnResourceLoadError({ resource: 'stats:line', error: lineQuery.error, isError: true });
     }
   }
 
@@ -155,22 +157,24 @@ const Chart = () => {
 
   const shareButton = (
     <Button
-      leftIcon={ <IconSvg name="share" w={ 4 } h={ 4 }/> }
-      colorScheme="blue"
       size="sm"
       variant="outline"
       onClick={ onShare }
       ml={ 6 }
+      loadingSkeleton={ lineQuery.isPlaceholderData }
     >
+      <IconSvg name="share" w={ 4 } h={ 4 }/>
       Share
     </Button>
   );
 
-  const resolutionOptions = React.useMemo(() => {
+  const resolutionCollection = React.useMemo(() => {
     const resolutions = lineQuery.data?.info?.resolutions || [];
-    return STATS_RESOLUTIONS
+    const items = STATS_RESOLUTIONS
       .filter((resolution) => resolutions.includes(resolution.id))
       .map((resolution) => ({ value: resolution.id, label: resolution.title }));
+
+    return createListCollection<SelectOption>({ items });
   }, [ lineQuery.data?.info?.resolutions ]);
 
   return (
@@ -194,21 +198,22 @@ const Chart = () => {
             (!info && lineQuery.data?.info?.resolutions && lineQuery.data?.info?.resolutions.length > 1)
           ) && (
             <Flex alignItems="center" gap={ 3 }>
-              <Skeleton isLoaded={ !isInfoLoading }>
+              <Skeleton loading={ isInfoLoading }>
                 { isMobile ? 'Res.' : 'Resolution' }
               </Skeleton>
               <Select
-                options={ resolutionOptions }
-                defaultValue={ defaultResolution }
-                onChange={ onResolutionChange }
-                isLoading={ isInfoLoading }
+                collection={ resolutionCollection }
+                placeholder="Select resolution"
+                defaultValue={ [ defaultResolution ] }
+                onValueChange={ onResolutionChange }
                 w={{ base: 'fit-content', lg: '160px' }}
-                fontWeight={ 600 }
+                loading={ isInfoLoading }
               />
             </Flex>
           ) }
           { (Boolean(zoomRange)) && (
-            <Link
+            <Button
+              variant="link"
               onClick={ handleReset }
               display="flex"
               alignItems="center"
@@ -216,7 +221,7 @@ const Chart = () => {
             >
               <IconSvg name="repeat" w={ 5 } h={ 5 }/>
               { !isMobile && 'Reset' }
-            </Link>
+            </Button>
           ) }
         </Flex>
         <Flex alignItems="center" gap={ 3 }>
@@ -227,14 +232,11 @@ const Chart = () => {
             (
               <CopyToClipboard
                 text={ config.app.baseUrl + router.asPath }
-                size={ 5 }
                 type="link"
-                variant="outline"
-                colorScheme="blue"
-                display="flex"
-                borderRadius="8px"
-                width={ 8 }
-                height={ 8 }
+                ml={ 0 }
+                borderRadius="none"
+                variant="icon_secondary"
+                size="md"
               />
             )
           )) }
@@ -242,6 +244,7 @@ const Chart = () => {
             <ChartMenu
               items={ items }
               title={ info?.title || '' }
+              description={ info?.description || '' }
               isLoading={ lineQuery.isPlaceholderData }
               chartRef={ ref }
               resolution={ resolution }

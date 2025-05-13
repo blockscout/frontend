@@ -1,4 +1,3 @@
-import { Alert, AlertIcon, AlertTitle } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -9,17 +8,18 @@ import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
-import { nbsp, ndash } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Alert } from 'toolkit/chakra/alert';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { nbsp, ndash } from 'toolkit/utils/htmlEntities';
 
 const IndexingBlocksAlert = () => {
   const appProps = useAppContext();
   const cookiesString = appProps.cookies;
   const [ hasAlertCookie ] = React.useState(cookies.get(cookies.NAMES.INDEXING_ALERT, cookiesString) === 'true');
 
-  const { data, isError, isPending } = useApiQuery('homepage_indexing_status', {
+  const { data, isError, isPending } = useApiQuery('general:homepage_indexing_status', {
     queryOptions: {
       enabled: !config.UI.indexingAlert.blocks.isHidden,
     },
@@ -34,7 +34,7 @@ const IndexingBlocksAlert = () => {
   const queryClient = useQueryClient();
 
   const handleBlocksIndexStatus: SocketMessage.BlocksIndexStatus['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
+    queryClient.setQueryData(getResourceKey('general:homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
 
       const newData = prevData ? { ...prevData } : {} as IndexingStatus;
       newData.finished_indexing_blocks = payload.finished;
@@ -51,7 +51,7 @@ const IndexingBlocksAlert = () => {
 
   useSocketMessage({
     channel: blockIndexingChannel,
-    event: 'block_index_status',
+    event: 'index_status',
     handler: handleBlocksIndexStatus,
   });
 
@@ -64,7 +64,7 @@ const IndexingBlocksAlert = () => {
   }
 
   if (isPending) {
-    return hasAlertCookie ? <Skeleton h={{ base: '96px', lg: '48px' }} w="100%"/> : null;
+    return hasAlertCookie ? <Skeleton loading h={{ base: '96px', lg: '48px' }} w="100%"/> : null;
   }
 
   if (data.finished_indexing_blocks !== false) {
@@ -72,12 +72,9 @@ const IndexingBlocksAlert = () => {
   }
 
   return (
-    <Alert status="info" colorScheme="gray" py={ 3 } borderRadius="md">
-      <AlertIcon display={{ base: 'none', lg: 'flex' }}/>
-      <AlertTitle>
-        { `${ data.indexed_blocks_ratio && `${ Math.floor(Number(data.indexed_blocks_ratio) * 100) }% Blocks Indexed${ nbsp }${ ndash } ` }
+    <Alert status="info" py={ 3 } borderRadius="md" showIcon>
+      { `${ data.indexed_blocks_ratio && `${ Math.floor(Number(data.indexed_blocks_ratio) * 100) }% Blocks Indexed${ nbsp }${ ndash } ` }
           We're indexing this chain right now. Some of the counts may be inaccurate.` }
-      </AlertTitle>
     </Alert>
   );
 };

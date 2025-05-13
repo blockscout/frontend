@@ -1,12 +1,13 @@
-import { Box, Grid, Heading, List, ListItem } from '@chakra-ui/react';
+import { Box, Grid } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type * as stats from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { apos } from 'lib/html-entities';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Heading } from 'toolkit/chakra/heading';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { apos } from 'toolkit/utils/htmlEntities';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import IconSvg from 'ui/shared/IconSvg';
@@ -37,7 +38,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
     }
   }, [ shouldScrollToSection ]);
 
-  const homeStatsQuery = useApiQuery('stats', {
+  const homeStatsQuery = useApiQuery('general:stats', {
     queryOptions: {
       refetchOnMount: false,
     },
@@ -61,30 +62,30 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
         <ChartsLoadingErrorAlert/>
       ) }
 
-      <List ref={ sectionRef }>
+      <section ref={ sectionRef }>
         {
           charts?.map((section) => (
-            <ListItem
+            <Box
               key={ section.id }
-              mb={ 8 }
+              mb={{ base: 6, lg: 8 }}
               _last={{
                 marginBottom: 0,
               }}
             >
-              <Skeleton isLoaded={ !isPlaceholderData } mb={ 4 } display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
-                <Heading size="md" id={ section.id }>
+              <Skeleton loading={ isPlaceholderData } mb={{ base: 3, lg: 4 }} display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
+                <Heading level="2" id={ section.id }>
                   { section.title }
                 </Heading>
                 { section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
                   <GasInfoTooltip data={ homeStatsQuery.data } dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }>
-                    <IconSvg name="info" boxSize={ 5 } display="block" cursor="pointer" color="icon_info" _hover={{ color: 'link_hovered' }}/>
+                    <IconSvg name="info" boxSize={ 5 } display="block" cursor="pointer" color="icon.info" _hover={{ color: 'link.primary.hover' }}/>
                   </GasInfoTooltip>
                 ) }
               </Skeleton>
 
               <Grid
                 templateColumns={{ lg: 'repeat(2, minmax(0, 1fr))' }}
-                gap={ 4 }
+                gap={{ base: 3, lg: 4 }}
               >
                 { section.charts.map((chart) => (
                   <ChartWidgetContainer
@@ -100,10 +101,10 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                   />
                 )) }
               </Grid>
-            </ListItem>
+            </Box>
           ))
         }
-      </List>
+      </section>
     </Box>
   );
 };

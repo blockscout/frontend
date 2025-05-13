@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { FormFields } from '../types';
 
-import FormFieldCheckbox from 'ui/shared/forms/fields/FormFieldCheckbox';
+import { FormFieldCheckbox } from 'toolkit/components/forms/fields/FormFieldCheckbox';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 

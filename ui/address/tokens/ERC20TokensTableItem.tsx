@@ -1,11 +1,12 @@
-import { Tr, Td, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
@@ -23,10 +24,8 @@ const ERC20TokensTableItem = ({
   } = getCurrencyValue({ value: value, exchangeRate: token.exchange_rate, decimals: token.decimals, accuracy: 8, accuracyUsd: 2 });
 
   return (
-    <Tr
-      role="group"
-    >
-      <Td verticalAlign="middle">
+    <TableRow role="group" >
+      <TableCell verticalAlign="middle">
         <TokenEntity
           token={ token }
           isLoading={ isLoading }
@@ -34,34 +33,34 @@ const ERC20TokensTableItem = ({
           jointSymbol
           fontWeight="700"
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <Flex alignItems="center" width="150px" justifyContent="space-between">
           <AddressEntity
-            address={{ hash: token.address }}
+            address={{ hash: token.address_hash }}
             isLoading={ isLoading }
             truncation="constant"
             noIcon
           />
           <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading } opacity="0" _groupHover={{ opacity: 1 }}/>
         </Flex>
-      </Td>
-      <Td isNumeric verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+      </TableCell>
+      <TableCell isNumeric verticalAlign="middle">
+        <Skeleton loading={ isLoading } display="inline-block">
           { token.exchange_rate && `$${ Number(token.exchange_rate).toLocaleString() }` }
         </Skeleton>
-      </Td>
-      <Td isNumeric verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline">
+      </TableCell>
+      <TableCell isNumeric verticalAlign="middle">
+        <Skeleton loading={ isLoading } display="inline">
           { tokenQuantity }
         </Skeleton>
-      </Td>
-      <Td isNumeric verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline">
+      </TableCell>
+      <TableCell isNumeric verticalAlign="middle">
+        <Skeleton loading={ isLoading } display="inline">
           { tokenValue && `$${ tokenValue }` }
         </Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

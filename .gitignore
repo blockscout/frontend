@@ -16,6 +16,7 @@
 /public/assets/configs
 /public/icons/sprite.svg
 /public/icons/sprite.*.svg
+/public/icons/registry.json
 /public/icons/README.md
 /public/static/og_image.png
 /public/sitemap.xml
@@ -30,6 +31,7 @@
 *.pem
 .tools
 grafana
+.cursor
 
 # debug
 npm-debug.log*
@@ -59,3 +61,4 @@ yarn-error.log*
 
 # build outputs
 /tools/preset-sync/index.js
+/toolkit/package/dist

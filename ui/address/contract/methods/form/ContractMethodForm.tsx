@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Tooltip, chakra, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -7,8 +7,11 @@ import { encodeFunctionData, type AbiFunction } from 'viem';
 import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '../types';
 
 import config from 'configs/app';
-import { SECOND } from 'lib/consts';
 import * as mixpanel from 'lib/mixpanel/index';
+import { Button } from 'toolkit/chakra/button';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { SECOND } from 'toolkit/utils/consts';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { isReadMethod } from '../utils';
@@ -139,10 +142,10 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     const buttonCallStrategy = methodType === 'write' ? 'write' : 'read';
 
     return (
-      <Tooltip label={ isDisabled ? NO_WALLET_CLIENT_TEXT : undefined } maxW="300px">
+      <Tooltip content={ NO_WALLET_CLIENT_TEXT } disabled={ !isDisabled }>
         <Button
-          isLoading={ callStrategy === buttonCallStrategy && isLoading }
-          isDisabled={ isLoading || isDisabled }
+          loading={ callStrategy === buttonCallStrategy && isLoading }
+          disabled={ isLoading || isDisabled }
           onClick={ handleButtonClick }
           loadingText={ text }
           variant="outline"
@@ -174,8 +177,8 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
 
     return (
       <Button
-        isLoading={ callStrategy === buttonCallStrategy && isLoading }
-        isDisabled={ isLoading }
+        loading={ callStrategy === buttonCallStrategy && isLoading }
+        disabled={ isLoading }
         onClick={ handleButtonClick }
         loadingText={ text }
         variant="outline"
@@ -183,7 +186,6 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
         flexShrink={ 0 }
         width="min-content"
         px={ 4 }
-        mr={ 3 }
         type="submit"
         data-call-strategy={ buttonCallStrategy }
       >
@@ -210,15 +212,14 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
 
     return (
       <Tooltip
-        isDisabled={ isDisabled }
-        label="Copied"
+        disabled={ isDisabled }
+        content="Copied"
         closeDelay={ SECOND }
-        isOpen={ calldataButtonTooltip.isOpen }
-        onClose={ calldataButtonTooltip.onClose }
+        open={ calldataButtonTooltip.open }
       >
         <Button
-          isLoading={ callStrategy === buttonCallStrategy && isLoading }
-          isDisabled={ isDisabled }
+          loading={ callStrategy === buttonCallStrategy && isLoading }
+          disabled={ isDisabled }
           onClick={ handleButtonClick }
           loadingText={ text }
           variant="outline"
@@ -226,7 +227,6 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
           flexShrink={ 0 }
           width="min-content"
           px={ 4 }
-          ml={ 3 }
           type="submit"
           data-call-strategy={ buttonCallStrategy }
         >
@@ -282,21 +282,22 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
               return <ContractMethodFieldInput key={ index } { ...props } path={ `${ index }` }/>;
             }) }
           </Flex>
-          { secondaryButton }
-          { primaryButton }
-          { copyCallDataButton }
-          { result && !isLoading && (
-            <Button
-              variant="simple"
-              colorScheme="blue"
-              size="sm"
-              onClick={ onReset }
-              ml={ 1 }
-            >
-              <IconSvg name="repeat" boxSize={ 5 } mr={ 1 }/>
-              Reset
-            </Button>
-          ) }
+          <Flex flexDir="row" gap={ 3 }>
+            { secondaryButton }
+            { primaryButton }
+            { copyCallDataButton }
+            { result && !isLoading && (
+              <Button
+                variant="link"
+                size="sm"
+                onClick={ onReset }
+                gap={ 1 }
+              >
+                <IconSvg name="repeat" boxSize={ 5 }/>
+                Reset
+              </Button>
+            ) }
+          </Flex>
         </chakra.form>
       </FormProvider>
       { result && result.source === 'wallet_client' && (

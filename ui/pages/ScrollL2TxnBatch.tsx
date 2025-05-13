@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
@@ -13,13 +13,12 @@ import { BLOCK } from 'stubs/block';
 import { SCROLL_L2_TXN_BATCH } from 'stubs/scrollL2';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import ScrollL2TxnBatchDetails from 'ui/txnBatches/scrollL2/ScrollL2TxnBatchDetails';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
@@ -38,7 +37,7 @@ const ScrollL2TxnBatch = () => {
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
 
-  const batchQuery = useApiQuery('scroll_l2_txn_batch', {
+  const batchQuery = useApiQuery('general:scroll_l2_txn_batch', {
     pathParams: { number },
     queryOptions: {
       enabled: Boolean(number),
@@ -47,11 +46,11 @@ const ScrollL2TxnBatch = () => {
   });
 
   const batchTxsQuery = useQueryWithPages({
-    resourceName: 'scroll_l2_txn_batch_txs',
+    resourceName: 'general:scroll_l2_txn_batch_txs',
     pathParams: { number },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
-      placeholderData: generateListStub<'scroll_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:scroll_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
         batch_number: 8122,
         block_number: 1338932,
         index: 0,
@@ -61,11 +60,11 @@ const ScrollL2TxnBatch = () => {
   });
 
   const batchBlocksQuery = useQueryWithPages({
-    resourceName: 'scroll_l2_txn_batch_blocks',
+    resourceName: 'general:scroll_l2_txn_batch_blocks',
     pathParams: { number },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'blocks'),
-      placeholderData: generateListStub<'scroll_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:scroll_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
         batch_number: 8122,
         block_number: 1338932,
         items_count: 50,
@@ -86,12 +85,12 @@ const ScrollL2TxnBatch = () => {
 
   const hasPagination = !isMobile && pagination?.isVisible;
 
-  const tabs: Array<RoutedTab> = React.useMemo(() => ([
+  const tabs: Array<TabItemRegular> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <ScrollL2TxnBatchDetails query={ batchQuery }/> },
     {
       id: 'txs',
       title: 'Transactions',
-      component: <TxsWithFrontendSorting query={ batchTxsQuery } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
+      component: <TxsWithFrontendSorting query={ batchTxsQuery } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
     },
     {
       id: 'blocks',
@@ -120,15 +119,13 @@ const ScrollL2TxnBatch = () => {
         title={ `Txn batch #${ number }` }
         backLink={ backLink }
       />
-      { batchQuery.isPlaceholderData ?
-        <TabsSkeleton tabs={ tabs }/> : (
-          <RoutedTabs
-            tabs={ tabs }
-            tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-            rightSlot={ hasPagination && pagination ? <Pagination { ...(pagination) }/> : null }
-            stickyEnabled={ hasPagination }
-          />
-        ) }
+      <RoutedTabs
+        tabs={ tabs }
+        isLoading={ batchQuery.isPlaceholderData }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        rightSlot={ hasPagination && pagination ? <Pagination { ...(pagination) }/> : null }
+        stickyEnabled={ hasPagination }
+      />
     </>
   );
 };

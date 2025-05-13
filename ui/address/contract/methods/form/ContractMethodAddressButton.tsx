@@ -1,7 +1,8 @@
-import { Button, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import useAccount from 'lib/web3/useAccount';
+import { Button } from 'toolkit/chakra/button';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 
 interface Props {
   onClick: (address: string) => void;
@@ -16,16 +17,15 @@ const ContractMethodAddressButton = ({ onClick, isDisabled }: Props) => {
   }, [ address, onClick ]);
 
   return (
-    <Tooltip label={ !address ? 'Connect your wallet to enter your address.' : undefined }>
+    <Tooltip content="Connect your wallet to enter your address." disabled={ Boolean(address) } disableOnMobile>
       <Button
         variant="subtle"
-        colorScheme="gray"
         size="xs"
-        fontSize="normal"
+        textStyle="md"
         fontWeight={ 500 }
         ml={ 1 }
         onClick={ handleClick }
-        isDisabled={ isDisabled || !address }
+        disabled={ isDisabled || !address }
       >
         Self
       </Button>

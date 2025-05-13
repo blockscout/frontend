@@ -1,12 +1,4 @@
-import {
-  IconButton,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  useClipboard,
-  useColorModeValue,
-  VisuallyHidden,
-} from '@chakra-ui/react';
+import { useCopyToClipboard } from '@uidotdev/usehooks';
 import domToImage from 'dom-to-image';
 import React from 'react';
 
@@ -14,10 +6,12 @@ import type { TimeChartItem } from './types';
 import type { Resolution } from '@blockscout/stats-types';
 
 import dayjs from 'lib/date/dayjs';
-import isBrowser from 'lib/isBrowser';
 import saveAsCSV from 'lib/saveAsCSV';
-import Menu from 'ui/shared/chakra/Menu';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 import IconSvg from 'ui/shared/IconSvg';
 
 import FullscreenChartModal from './FullscreenChartModal';
@@ -52,19 +46,15 @@ const ChartMenu = ({
   handleZoomReset,
 }: Props) => {
   const pngBackgroundColor = useColorModeValue('white', 'black');
-  const [ isFullscreen, setIsFullscreen ] = React.useState(false);
+  const fullscreenDialog = useDisclosure();
 
-  const { onCopy } = useClipboard(chartUrl ?? '');
+  const [ , copyToClipboard ] = useCopyToClipboard();
 
   const isInBrowser = isBrowser();
 
   const showChartFullscreen = React.useCallback(() => {
-    setIsFullscreen(true);
-  }, []);
-
-  const clearFullscreenChart = React.useCallback(() => {
-    setIsFullscreen(false);
-  }, []);
+    fullscreenDialog.onOpenChange({ open: true });
+  }, [ fullscreenDialog ]);
 
   const handleFileSaveClick = React.useCallback(() => {
     // wait for context menu to close
@@ -111,6 +101,10 @@ const ChartMenu = ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const hasShare = isInBrowser && (window.navigator.share as any);
 
+  const handleCopy = React.useCallback(() => {
+    copyToClipboard(chartUrl ?? '');
+  }, [ chartUrl, copyToClipboard ]);
+
   const handleShare = React.useCallback(async() => {
     try {
       await window.navigator.share({
@@ -123,66 +117,53 @@ const ChartMenu = ({
 
   return (
     <>
-      <Menu>
-        <Skeleton isLoaded={ !isLoading } borderRadius="base">
-          <MenuButton
-            w="36px"
-            h="32px"
-            icon={ <IconSvg name="dots" boxSize={ 4 } transform="rotate(-90deg)"/> }
-            colorScheme="gray"
-            variant="simple"
-            as={ IconButton }
-          >
-            <VisuallyHidden>
-              Open chart options menu
-            </VisuallyHidden>
-          </MenuButton>
-        </Skeleton>
-        <MenuList>
+      <MenuRoot>
+        <MenuTrigger asChild>
+          <IconButton variant="icon_secondary" size="md" aria-label="Open chart options menu" loadingSkeleton={ isLoading }>
+            <IconSvg name="dots"/>
+          </IconButton>
+        </MenuTrigger>
+        <MenuContent>
           { chartUrl && (
             <MenuItem
-              display="flex"
-              alignItems="center"
-              onClick={ hasShare ? handleShare : onCopy }
+              value={ hasShare ? 'share' : 'copy' }
+              onClick={ hasShare ? handleShare : handleCopy }
               closeOnSelect={ hasShare ? false : true }
             >
-              <IconSvg name={ hasShare ? 'share' : 'copy' } boxSize={ 5 } mr={ 3 }/>
+              <IconSvg name={ hasShare ? 'share' : 'copy' } boxSize={ 5 }/>
               { hasShare ? 'Share' : 'Copy link' }
             </MenuItem>
           ) }
           <MenuItem
-            display="flex"
-            alignItems="center"
+            value="fullscreen"
             onClick={ showChartFullscreen }
           >
-            <IconSvg name="scope" boxSize={ 5 } mr={ 3 }/>
+            <IconSvg name="scope" boxSize={ 5 }/>
             View fullscreen
           </MenuItem>
           <MenuItem
-            display="flex"
-            alignItems="center"
+            value="save-png"
             onClick={ handleFileSaveClick }
           >
-            <IconSvg name="files/image" boxSize={ 5 } mr={ 3 }/>
+            <IconSvg name="files/image" boxSize={ 5 }/>
             Save as PNG
           </MenuItem>
           <MenuItem
-            display="flex"
-            alignItems="center"
+            value="save-csv"
             onClick={ handleSVGSavingClick }
           >
-            <IconSvg name="files/csv" boxSize={ 5 } mr={ 3 }/>
+            <IconSvg name="files/csv" boxSize={ 5 }/>
             Save as CSV
           </MenuItem>
-        </MenuList>
-      </Menu>
-      { items && isFullscreen && (
+        </MenuContent>
+      </MenuRoot>
+      { items && (
         <FullscreenChartModal
-          isOpen
+          open={ fullscreenDialog.open }
+          onOpenChange={ fullscreenDialog.onOpenChange }
           items={ items }
           title={ title }
           description={ description }
-          onClose={ clearFullscreenChart }
           units={ units }
           resolution={ resolution }
           zoomRange={ zoomRange }

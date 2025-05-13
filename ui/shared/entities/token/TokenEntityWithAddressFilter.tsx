@@ -3,6 +3,8 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import config from 'configs/app';
+
 import * as TokenEntity from './TokenEntity';
 
 interface Props extends TokenEntity.EntityProps {
@@ -10,14 +12,19 @@ interface Props extends TokenEntity.EntityProps {
 }
 
 const TokenEntityWithAddressFilter = (props: Props) => {
+
+  if (!config.features.advancedFilter.isEnabled) {
+    return <TokenEntity.default { ...props }/>;
+  }
+
   const defaultHref = route({
-    pathname: '/address/[hash]',
+    pathname: '/advanced-filter',
     query: {
       ...props.query,
-      hash: props.addressHash,
-      tab: 'token_transfers',
-      token: props.token.address,
-      scroll_to_tabs: 'true',
+      to_address_hashes_to_include: [ props.addressHash ],
+      from_address_hashes_to_include: [ props.addressHash ],
+      token_contract_address_hashes_to_include: [ props.token.address_hash ],
+      token_contract_symbols_to_include: [ props.token.symbol ?? '' ],
     },
   });
 

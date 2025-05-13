@@ -1,4 +1,4 @@
-import { Flex, Text, Tooltip } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
@@ -6,9 +6,10 @@ import type { SmartContract } from 'types/api/contract';
 import { route } from 'nextjs-routes';
 
 import formatLanguageName from 'lib/contracts/formatLanguageName';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import CodeEditor from 'ui/shared/monaco/CodeEditor';
 import formatFilePath from 'ui/shared/monaco/utils/formatFilePath';
 
@@ -54,10 +55,10 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
   }, [ data ]);
 
   const heading = (
-    <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>
+    <Skeleton loading={ isLoading } fontWeight={ 500 }>
       <span>Contract source code</span>
       { data?.language &&
-        <Text whiteSpace="pre" as="span" variant="secondary"> ({ formatLanguageName(data.language) })</Text> }
+        <Text whiteSpace="pre" as="span" color="text.secondary"> ({ formatLanguageName(data.language) })</Text> }
     </Skeleton>
   );
 
@@ -66,16 +67,16 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
     null;
 
   const diagramLink = data?.can_be_visualized_via_sol2uml ? (
-    <Tooltip label="Visualize contract code using Sol2Uml JS library">
-      <LinkInternal
+    <Tooltip content="Visualize contract code using Sol2Uml JS library">
+      <Link
         href={ route({ pathname: '/visualize/sol2uml', query: { address: sourceAddress } }) }
         ml={{ base: '0', lg: 'auto' }}
-        isLoading={ isLoading }
+        loading={ isLoading }
       >
-        <Skeleton isLoaded={ !isLoading }>
+        <Skeleton loading={ isLoading }>
           View UML diagram
         </Skeleton>
-      </LinkInternal>
+      </Link>
     </Tooltip>
   ) : null;
 
@@ -83,7 +84,7 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
     <ContractCodeIdes hash={ sourceAddress } isLoading={ isLoading }/> :
     null;
 
-  const copyToClipboard = data && editorData?.length === 1 ? (
+  const copyToClipboard = data && editorData?.length === 1 && data.source_code ? (
     <CopyToClipboard
       text={ data.source_code }
       isLoading={ isLoading }
@@ -94,7 +95,7 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
 
   const content = (() => {
     if (isLoading) {
-      return <Skeleton h="557px" w="100%"/>;
+      return <Skeleton loading h="557px" w="100%"/>;
     }
 
     if (!editorData) {

@@ -9,5 +9,5 @@ export default function isNeedProxy() {
     return true;
   }
 
-  return config.app.host === 'localhost' && config.app.host !== config.api.host;
+  return config.app.host === 'localhost' && config.app.host !== config.apis.general.host;
 }

@@ -1,60 +1,49 @@
-import { Table, Tbody, Tr, Th, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
-import IconSvg from 'ui/shared/IconSvg';
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import NameDomainHistoryTableItem from './NameDomainHistoryTableItem';
-import type { Sort } from './utils';
+import type { SortField, Sort } from './utils';
 import { sortFn } from './utils';
 
 interface Props {
   history: bens.ListDomainEventsResponse | undefined;
   domain: bens.DetailedDomain | undefined;
   isLoading?: boolean;
-  sort: Sort | undefined;
-  onSortToggle: (event: React.MouseEvent) => void;
+  sort: Sort;
+  onSortToggle: (field: SortField) => void;
 }
 
 const NameDomainHistoryTable = ({ history, domain, isLoading, sort, onSortToggle }: Props) => {
-  const sortIconTransform = sort?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
-
   return (
-    <Table>
-      <Thead top={ 0 }>
-        <Tr>
-          <Th width="25%">Txn hash</Th>
-          <Th width="25%" pl={ 9 }>
-            <Link display="flex" alignItems="center" justifyContent="flex-start" position="relative" data-field="timestamp" onClick={ onSortToggle }>
-              { sort?.includes('timestamp') && (
-                <IconSvg
-                  name="arrows/east"
-                  boxSize={ 4 }
-                  transform={ sortIconTransform }
-                  color="link"
-                  position="absolute"
-                  left={ -5 }
-                  top={ 0 }
-                />
-              ) }
-              <span>Age</span>
-            </Link>
-          </Th>
-          <Th width="25%">From</Th>
-          <Th width="25%">Method</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot>
+      <TableHeaderSticky top={ 0 }>
+        <TableRow>
+          <TableColumnHeader width="25%">Txn hash</TableColumnHeader>
+          <TableColumnHeaderSortable
+            width="25%"
+            pl={ 9 }
+            sortField="timestamp"
+            sortValue={ sort }
+            onSortToggle={ onSortToggle }
+          >
+            Age
+          </TableColumnHeaderSortable>
+          <TableColumnHeader width="25%">From</TableColumnHeader>
+          <TableColumnHeader width="25%">Method</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         {
           history?.items
             .slice()
             .sort(sortFn(sort))
             .map((item, index) => <NameDomainHistoryTableItem key={ index } event={ item } domain={ domain } isLoading={ isLoading }/>)
         }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

@@ -1,17 +1,14 @@
-import {
-  Tr,
-  Td,
-  Switch,
-} from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { WatchlistAddress } from 'types/api/account';
 
 import useApiFetch from 'lib/api/useApiFetch';
-import useToast from 'lib/hooks/useToast';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Switch } from 'toolkit/chakra/switch';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { Tag } from 'toolkit/chakra/tag';
+import { toaster } from 'toolkit/chakra/toaster';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 import WatchListAddressItem from './WatchListAddressItem';
@@ -35,53 +32,40 @@ const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick, hasEm
     return onDeleteClick(item);
   }, [ item, onDeleteClick ]);
 
-  const errorToast = useToast();
   const apiFetch = useApiFetch();
 
   const showErrorToast = useCallback(() => {
-    errorToast({
-      position: 'top-right',
+    toaster.error({
+      title: 'Error',
       description: 'There has been an error processing your request',
-      colorScheme: 'red',
-      status: 'error',
-      variant: 'subtle',
-      isClosable: true,
-      icon: null,
     });
-  }, [ errorToast ]);
+  }, [ ]);
 
-  const notificationToast = useToast();
   const showNotificationToast = useCallback((isOn: boolean) => {
-    notificationToast({
-      position: 'top-right',
-      description: !isOn ? 'Email notification is ON' : 'Email notification is OFF',
-      colorScheme: 'green',
-      status: 'success',
-      variant: 'subtle',
+    toaster.success({
       title: 'Success',
-      isClosable: true,
-      icon: null,
+      description: isOn ? 'Email notification is ON' : 'Email notification is OFF',
     });
-  }, [ notificationToast ]);
+  }, [ ]);
 
-  const { mutate } = useMutation({
+  const { mutate } = useMutation<WatchlistAddress>({
     mutationFn: () => {
       setSwitchDisabled(true);
       const body = { ...item, notification_methods: { email: !notificationEnabled } };
       setNotificationEnabled(prevState => !prevState);
-      return apiFetch('watchlist', {
+      return apiFetch('general:watchlist', {
         pathParams: { id: String(item.id) },
         fetchParams: { method: 'PUT', body },
-      });
+      }) as Promise<WatchlistAddress>;
     },
     onError: () => {
       showErrorToast();
       setNotificationEnabled(prevState => !prevState);
       setSwitchDisabled(false);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       setSwitchDisabled(false);
-      showNotificationToast(!notificationEnabled);
+      showNotificationToast(data.notification_methods.email);
     },
   });
 
@@ -90,27 +74,26 @@ const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick, hasEm
   }, [ mutate ]);
 
   return (
-    <Tr alignItems="top" key={ item.address_hash }>
-      <Td><WatchListAddressItem item={ item } isLoading={ isLoading }/></Td>
-      <Td>
-        <Tag isLoading={ isLoading } isTruncated>{ item.name }</Tag>
-      </Td>
-      <Td>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+    <TableRow alignItems="top" key={ item.address_hash }>
+      <TableCell><WatchListAddressItem item={ item } isLoading={ isLoading }/></TableCell>
+      <TableCell>
+        <Tag loading={ isLoading } truncated>{ item.name }</Tag>
+      </TableCell>
+      <TableCell>
+        <Skeleton loading={ isLoading } display="inline-block">
           <Switch
-            colorScheme="blue"
             size="md"
-            isChecked={ notificationEnabled }
-            onChange={ onSwitch }
-            isDisabled={ !hasEmail || switchDisabled }
+            checked={ notificationEnabled }
+            onCheckedChange={ onSwitch }
+            disabled={ !hasEmail || switchDisabled }
             aria-label="Email notification"
           />
         </Skeleton>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

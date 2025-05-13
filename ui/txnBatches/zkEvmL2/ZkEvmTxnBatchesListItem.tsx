@@ -6,10 +6,9 @@ import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Link } from 'toolkit/chakra/link';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -31,8 +30,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
         <BatchEntityL2
           isLoading={ isLoading }
           number={ item.number }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           fontWeight={ 600 }
         />
       </ListItemMobileGrid.Value>
@@ -54,15 +52,14 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn count</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <LinkInternal
+        <Link
           href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
-          isLoading={ isLoading }
+          loading={ isLoading }
           fontWeight={ 600 }
+          minW="40px"
         >
-          <Skeleton isLoaded={ !isLoading } minW="40px">
-            { item.transaction_count }
-          </Skeleton>
-        </LinkInternal>
+          { item.transactions_count }
+        </Link>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Verify tx hash</ListItemMobileGrid.Label>
@@ -71,8 +68,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
           <TxEntityL1
             isLoading={ isLoading }
             hash={ item.verify_transaction_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
+            textStyle="sm"
             truncation="constant_long"
           />
         ) : <Text>Pending</Text> }
@@ -84,8 +80,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
           <TxEntityL1
             isLoading={ isLoading }
             hash={ item.sequence_transaction_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
+            textStyle="sm"
             truncation="constant_long"
           />
         ) : <Text>Pending</Text> }

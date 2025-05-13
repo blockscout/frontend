@@ -16,28 +16,28 @@ interface Props {
 }
 
 const tokenBalanceItemIdentityFactory = (match: AddressTokenBalance) => (item: AddressTokenBalance) => ((
-  match.token.address === item.token.address &&
+  match.token.address_hash === item.token.address_hash &&
   match.token_id === item.token_id &&
   match.token_instance?.id === item.token_instance?.id
 ));
 
 export default function useFetchTokens({ hash, enabled }: Props) {
-  const erc20query = useApiQuery('address_tokens', {
+  const erc20query = useApiQuery('general:address_tokens', {
     pathParams: { hash },
     queryParams: { type: 'ERC-20' },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
-  const erc721query = useApiQuery('address_tokens', {
+  const erc721query = useApiQuery('general:address_tokens', {
     pathParams: { hash },
     queryParams: { type: 'ERC-721' },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
-  const erc1155query = useApiQuery('address_tokens', {
+  const erc1155query = useApiQuery('general:address_tokens', {
     pathParams: { hash },
     queryParams: { type: 'ERC-1155' },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
-  const erc404query = useApiQuery('address_tokens', {
+  const erc404query = useApiQuery('general:address_tokens', {
     pathParams: { hash },
     queryParams: { type: 'ERC-404' },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
@@ -46,7 +46,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
   const queryClient = useQueryClient();
 
   const updateTokensData = React.useCallback((type: TokenType, payload: AddressTokensBalancesSocketMessage) => {
-    const queryKey = getResourceKey('address_tokens', { pathParams: { hash }, queryParams: { type } });
+    const queryKey = getResourceKey('general:address_tokens', { pathParams: { hash }, queryParams: { type } });
 
     queryClient.setQueryData(queryKey, (prevData: AddressTokensResponse | undefined) => {
       const items = prevData?.items.map((currentItem) => {

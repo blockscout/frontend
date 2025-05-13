@@ -3,6 +3,7 @@ import type { Route } from 'nextjs-routes';
 export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/': 'Homepage',
   '/txs': 'Transactions',
+  '/internal-txs': 'Internal transactions',
   '/txs/kettle/[hash]': 'Kettle transactions',
   '/tx/[hash]': 'Transaction details',
   '/blocks': 'Blocks',
@@ -26,7 +27,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/graphiql': 'GraphQL',
   '/search-results': 'Search results',
   '/auth/profile': 'Profile',
-  '/account/rewards': 'Merits',
+  '/account/merits': 'Merits',
   '/account/watchlist': 'Watchlist',
   '/account/api-key': 'API keys',
   '/account/custom-abi': 'Custom ABI',
@@ -34,6 +35,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/account/verified-addresses': 'Verified addresses',
   '/public-tags/submit': 'Submit public tag',
   '/withdrawals': 'Withdrawals',
+  '/txn-withdrawals': 'Txn withdrawals',
   '/visualize/sol2uml': 'Solidity UML diagram',
   '/csv-export': 'Export data to CSV file',
   '/deposits': 'Deposits (L1 > L2)',
@@ -41,6 +43,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/dispute-games': 'Dispute games',
   '/batches': 'Txn batches',
   '/batches/[number]': 'L2 txn batch details',
+  '/batches/celestia/[height]/[commitment]': 'L2 txn batch details',
   '/blobs/[hash]': 'Blob details',
   '/ops': 'User operations',
   '/op/[hash]': 'User operation details',
@@ -48,16 +51,19 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/name-domains': 'Domains search and resolve',
   '/name-domains/[name]': 'Domain details',
   '/validators': 'Validators list',
+  '/validators/[id]': 'Validator details',
   '/gas-tracker': 'Gas tracker',
   '/mud-worlds': 'MUD worlds',
   '/token-transfers': 'Token transfers',
   '/advanced-filter': 'Advanced filter',
   '/pools': 'DEX pools',
   '/pools/[hash]': 'Pool details',
+  '/interop-messages': 'Interop messages',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',
   '/sprite': 'Sprite',
+  '/chakra': 'Chakra UI showcase',
   '/api/metrics': 'Node API: Prometheus metrics',
   '/api/monitoring/invalid-api-schema': 'Node API: Prometheus metrics',
   '/api/log': 'Node API: Request log',
@@ -66,7 +72,6 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/api/csrf': 'Node API: CSRF token',
   '/api/healthz': 'Node API: Health check',
   '/api/config': 'Node API: App config',
-  '/api/sprite': 'Node API: SVG sprite content',
 };
 
 export default function getPageType(pathname: Route['pathname']) {

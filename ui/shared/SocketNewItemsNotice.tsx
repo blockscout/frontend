@@ -1,8 +1,10 @@
-import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Tr, Td } from '@chakra-ui/react';
-import { transparentize } from '@chakra-ui/theme-tools';
+import { Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Alert } from 'toolkit/chakra/alert';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 
 interface InjectedProps {
   content: React.ReactNode;
@@ -12,14 +14,16 @@ interface Props {
   type?: 'transaction' | 'token_transfer' | 'deposit' | 'block';
   children?: (props: InjectedProps) => React.JSX.Element;
   className?: string;
-  url: string;
+  url?: string;
   alert?: string;
   num?: number;
   isLoading?: boolean;
 }
 
 const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, type = 'transaction', isLoading }: Props) => {
-  const theme = useTheme();
+  const handleLinkClick = React.useCallback(() => {
+    window.location.reload();
+  }, []);
 
   const alertContent = (() => {
     if (alert) {
@@ -49,30 +53,23 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
 
     return (
       <>
-        <Link href={ url }>{ num.toLocaleString() } more { name }{ num > 1 ? 's' : '' }</Link>
+        <Link href={ url } onClick={ !url ? handleLinkClick : undefined }>{ num.toLocaleString() } more { name }{ num > 1 ? 's' : '' }</Link>
         <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
       </>
     );
   })();
 
-  const color = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
-  const bgColor = useColorModeValue('orange.50', transparentize('orange.200', 0.16)(theme));
-
   const content = !isLoading ? (
     <Alert
       className={ className }
-      status="warning"
+      status="warning_table"
       px={ 4 }
       py="6px"
-      fontWeight={ 400 }
       fontSize="sm"
-      lineHeight={ 5 }
-      bgColor={ bgColor }
-      color={ color }
     >
       { alertContent }
     </Alert>
-  ) : <Skeleton className={ className } h="33px"/>;
+  ) : <Skeleton className={ className } h="36px" loading/>;
 
   return children ? children({ content }) : content;
 });
@@ -90,7 +87,7 @@ export const Desktop = ({ ...props }: Props) => {
       my={ props.isLoading ? '6px' : 0 }
       { ...props }
     >
-      { ({ content }) => <Tr><Td colSpan={ 100 } p={ 0 } _first={{ p: 0 }} _last={{ p: 0 }}>{ content }</Td></Tr> }
+      { ({ content }) => <TableRow><TableCell colSpan={ 100 } p={ 0 } _first={{ p: 0 }} _last={{ p: 0 }}>{ content }</TableCell></TableRow> }
     </SocketNewItemsNotice>
   );
 };

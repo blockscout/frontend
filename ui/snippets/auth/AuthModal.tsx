@@ -1,4 +1,3 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -7,9 +6,11 @@ import type { Screen, ScreenSuccess } from './types';
 
 import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
+import { useRewardsContext } from 'lib/contexts/rewards';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
-import IconSvg from 'ui/shared/IconSvg';
+import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
+import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';
 import AuthModalScreenEmail from './screens/AuthModalScreenEmail';
@@ -22,7 +23,7 @@ const feature = config.features.account;
 
 interface Props {
   initialScreen: Screen;
-  onClose: (isSuccess?: boolean) => void;
+  onClose: (isSuccess?: boolean, rewardsApiToken?: string) => void;
   mixpanelConfig?: {
     wallet_connect?: {
       source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
@@ -37,6 +38,9 @@ interface Props {
 const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Props) => {
   const [ steps, setSteps ] = React.useState<Array<Screen>>([ initialScreen ]);
   const [ isSuccess, setIsSuccess ] = React.useState(false);
+  const [ rewardsApiToken, setRewardsApiToken ] = React.useState<string | undefined>(undefined);
+
+  const { saveApiToken } = useRewardsContext();
 
   const router = useRouter();
   const csrfQuery = useGetCsrfToken();
@@ -85,17 +89,28 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
       });
     }
 
-    queryClient.setQueryData(getResourceKey('user_info'), () => screen.profile);
+    queryClient.setQueryData(getResourceKey('general:user_info'), () => screen.profile);
     await csrfQuery.refetch();
+
+    if ('rewardsToken' in screen && screen.rewardsToken) {
+      setRewardsApiToken(screen.rewardsToken);
+      saveApiToken(screen.rewardsToken);
+    }
+
     onNextStep(screen);
-  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, csrfQuery, queryClient ]);
+  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, csrfQuery, queryClient, saveApiToken ]);
 
   const onModalClose = React.useCallback(() => {
-    onClose(isSuccess);
-  }, [ isSuccess, onClose ]);
+    onClose(isSuccess, rewardsApiToken);
+  }, [ isSuccess, rewardsApiToken, onClose ]);
+
+  const onModalOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    !open && onClose(isSuccess, rewardsApiToken);
+  }, [ onClose, isSuccess, rewardsApiToken ]);
+
+  const currentStep = steps[steps.length - 1];
 
   const header = (() => {
-    const currentStep = steps[steps.length - 1];
     switch (currentStep.type) {
       case 'select_method':
         return 'Select a way to login';
@@ -112,7 +127,6 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   })();
 
   const content = (() => {
-    const currentStep = steps[steps.length - 1];
     switch (currentStep.type) {
       case 'select_method':
         return <AuthModalScreenSelectMethod onSelectMethod={ onNextStep }/>;
@@ -122,6 +136,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
             onSuccess={ onAuthSuccess }
             onError={ onReset }
             isAuth={ currentStep.isAuth }
+            loginToRewards={ currentStep.loginToRewards }
             source={ mixpanelConfig?.wallet_connect?.source }
           />
         );
@@ -153,6 +168,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
             onClose={ onModalClose }
             isAuth={ currentStep.isAuth }
             profile={ currentStep.profile }
+            rewardsToken={ currentStep.rewardsToken }
           />
         );
     }
@@ -163,29 +179,28 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   }
 
   return (
-    <Modal isOpen onClose={ onModalClose } size={{ base: 'full', lg: 'sm' }}>
-      <ModalOverlay/>
-      <ModalContent p={ 6 } maxW={{ lg: '400px' }}>
-        <ModalHeader fontWeight="500" textStyle="h3" mb={ 2 } display="flex" alignItems="center" columnGap={ 2 }>
-          { steps.length > 1 && !steps[steps.length - 1].type.startsWith('success') && (
-            <IconSvg
-              name="arrows/east"
-              boxSize={ 6 }
-              transform="rotate(180deg)"
-              color="gray.400"
-              flexShrink={ 0 }
-              onClick={ onPrevStep }
-              cursor="pointer"
-            />
-          ) }
+    <DialogRoot
+      open
+      onOpenChange={ onModalOpenChange }
+      size={{ lgDown: 'full', lg: 'sm' }}
+      // we need to allow user interact with element outside of dialog otherwise they can't click on recaptcha
+      modal={ false }
+      // FIXME if we allow to close on interact outside, the dialog will be closed when user click on recaptcha
+      closeOnInteractOutside={ ![ 'email', 'otp_code', 'connect_wallet', 'select_method' ].includes(currentStep.type) }
+      trapFocus={ false }
+      preventScroll={ false }
+    >
+      <DialogContent>
+        <DialogHeader
+          startElement={ steps.length > 1 && !steps[steps.length - 1].type.startsWith('success') && <BackToButton onClick={ onPrevStep }/> }
+        >
           { header }
-        </ModalHeader>
-        <ModalCloseButton top={ 6 } right={ 6 } color="gray.400"/>
-        <ModalBody mb={ 0 }>
+        </DialogHeader>
+        <DialogBody>
           { content }
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 

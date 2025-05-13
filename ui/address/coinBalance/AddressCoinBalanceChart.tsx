@@ -11,7 +11,7 @@ interface Props {
 }
 
 const AddressCoinBalanceChart = ({ addressHash }: Props) => {
-  const { data, isPending, isError } = useApiQuery('address_coin_balance_chart', {
+  const { data, isPending, isError } = useApiQuery('general:address_coin_balance_chart', {
     pathParams: { hash: addressHash },
   });
 
@@ -34,7 +34,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       isLoading={ isPending }
       h="300px"
       units={ currencyUnits.ether }
-      emptyText={ data?.days && `Insufficient data for the past ${ data.days } days` }
+      emptyText={ data?.days ? `Insufficient data for the past ${ data.days } days` : undefined }
     />
   );
 };

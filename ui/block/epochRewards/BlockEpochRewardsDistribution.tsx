@@ -4,7 +4,7 @@ import React from 'react';
 import type { BlockEpoch } from 'types/api/block';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TokenTransferSnippet from 'ui/shared/TokenTransferSnippet/TokenTransferSnippet';
 
 interface Props {
@@ -14,6 +14,10 @@ interface Props {
 
 const BlockEpochRewardsDistribution = ({ data, isLoading }: Props) => {
   const isMobile = useIsMobile();
+
+  if (!data.distribution) {
+    return null;
+  }
 
   if (!data.distribution.community_transfer && !data.distribution.carbon_offsetting_transfer && !data.distribution.reserve_bolster_transfer) {
     return null;
@@ -28,41 +32,41 @@ const BlockEpochRewardsDistribution = ({ data, isLoading }: Props) => {
     >
       { data.distribution.community_transfer && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Funds allocation to support Celo projects and community initiatives"
             isLoading={ isLoading }
           >
             Community fund
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <TokenTransferSnippet data={ data.distribution.community_transfer } isLoading={ isLoading } noAddressIcons={ isMobile }/>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
       { data.distribution.carbon_offsetting_transfer && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Funds allocation to support projects that make Celo carbon-negative"
             isLoading={ isLoading }
           >
             Carbon offset fund
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <TokenTransferSnippet data={ data.distribution.carbon_offsetting_transfer } isLoading={ isLoading } noAddressIcons={ isMobile }/>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
       { data.distribution.reserve_bolster_transfer && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Funds allocation to strengthen Celo’s reserve for network stability and security"
             isLoading={ isLoading }
           >
             Reserve bolster
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <TokenTransferSnippet data={ data.distribution.reserve_bolster_transfer } isLoading={ isLoading } noAddressIcons={ isMobile }/>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
     </Grid>

@@ -18,7 +18,7 @@ export const contract1: VerifiedContract = {
   language: 'solidity',
   market_cap: null,
   optimization_enabled: false,
-  transaction_count: 7334224,
+  transactions_count: 7334224,
   verified_at: '2022-09-16T18:49:29.605179Z',
   license_type: 'mit',
 };
@@ -42,7 +42,7 @@ export const contract2: VerifiedContract = {
   language: 'vyper',
   market_cap: null,
   optimization_enabled: true,
-  transaction_count: 440,
+  transactions_count: 440,
   verified_at: '2021-09-07T20:01:56.076979Z',
   license_type: 'bsd_3_clause',
 };
@@ -68,7 +68,7 @@ export const contract3: VerifiedContract = {
   license_type: 'none',
   market_cap: null,
   optimization_enabled: false,
-  transaction_count: 0,
+  transactions_count: 0,
   verified_at: '2024-12-03T14:05:42.796224Z',
 };
 

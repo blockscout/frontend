@@ -1,5 +1,9 @@
-import { chakra, IconButton, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
+
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Link } from 'toolkit/chakra/link';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 
 import IconSvg from '../IconSvg';
 
@@ -10,25 +14,21 @@ interface Props {
 }
 
 const LinkNewTab = ({ className, label, href }: Props) => {
-  const iconColor = useColorModeValue('gray.400', 'gray.500');
 
   return (
-    <Tooltip label={ label }>
+    <Tooltip content={ label }>
       <IconButton
+        asChild
         aria-label={ label ?? 'Open link' }
-        icon={ <IconSvg name="open-link" boxSize={ 5 }/> }
-        w="20px"
-        h="20px"
-        color={ iconColor }
-        variant="simple"
-        display="inline-block"
-        flexShrink={ 0 }
-        as="a"
-        href={ href }
-        target="_blank"
+        variant="icon_secondary"
+        boxSize={ 5 }
         className={ className }
         borderRadius={ 0 }
-      />
+      >
+        <Link href={ href } target="_blank">
+          <IconSvg name="open-link"/>
+        </Link>
+      </IconButton>
     </Tooltip>
   );
 };

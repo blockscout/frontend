@@ -4,11 +4,11 @@ import type { OptimisticL2WithdrawalsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
@@ -28,7 +28,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Msg nonce</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block">
           { item.msg_nonce_version + '-' + item.msg_nonce }
         </Skeleton>
       </ListItemMobileGrid.Value>
@@ -51,8 +51,6 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
         <TxEntity
           isLoading={ isLoading }
           hash={ item.l2_transaction_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
           truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
@@ -73,8 +71,8 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         { item.status === 'Ready for relay' && rollupFeature.L2WithdrawalUrl ?
-          <LinkExternal href={ rollupFeature.L2WithdrawalUrl }>{ item.status }</LinkExternal> :
-          <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton> }
+          <Link external href={ rollupFeature.L2WithdrawalUrl }>{ item.status }</Link> :
+          <Skeleton loading={ isLoading } display="inline-block">{ item.status }</Skeleton> }
       </ListItemMobileGrid.Value>
 
       { item.l1_transaction_hash && (
@@ -84,8 +82,6 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
             <TxEntityL1
               isLoading={ isLoading }
               hash={ item.l1_transaction_hash }
-              fontSize="sm"
-              lineHeight={ 5 }
               truncation="constant_long"
             />
           </ListItemMobileGrid.Value>

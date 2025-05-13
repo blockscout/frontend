@@ -1,12 +1,14 @@
-import { Heading, Flex, Tooltip, Link, chakra, useDisclosure } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { Heading } from 'toolkit/chakra/heading';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { BackToButton } from 'toolkit/components/buttons/BackToButton';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import TextAd from 'ui/shared/ad/TextAd';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 type BackLinkProp = { label: string; url: string } | { label: string; onClick: () => void };
 
@@ -24,48 +26,7 @@ type Props = {
 
 const TEXT_MAX_LINES = 1;
 
-const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
-  if (!props) {
-    return null;
-  }
-
-  if (props.isLoading) {
-    return (
-      <Skeleton
-        boxSize={ 6 }
-        display="inline-block"
-        flexShrink={ 0 }
-        borderRadius="base"
-        mr={ 3 }
-        my={ 2 }
-        verticalAlign="text-bottom"
-        isLoaded={ !props.isLoading }
-      />
-    );
-  }
-
-  const icon = <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400" flexShrink={ 0 }/>;
-
-  if ('url' in props) {
-    return (
-      <Tooltip label={ props.label }>
-        <LinkInternal display="inline-flex" href={ props.url } h="40px" mr={ 3 }>
-          { icon }
-        </LinkInternal>
-      </Tooltip>
-    );
-  }
-
-  return (
-    <Tooltip label={ props.label }>
-      <Link display="inline-flex" onClick={ props.onClick } h="40px" mr={ 3 }>
-        { icon }
-      </Link>
-    </Tooltip>
-  );
-};
-
-const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading, afterTitle, beforeTitle, secondRow }: Props) => {
+const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading = false, afterTitle, beforeTitle, secondRow }: Props) => {
   const tooltip = useDisclosure();
   const isMobile = useIsMobile();
   const [ isTextTruncated, setIsTextTruncated ] = React.useState(false);
@@ -102,6 +63,14 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
     };
   }, [ updatedTruncateState ]);
 
+  const handleTooltipOpenChange = React.useCallback((details: { open: boolean }) => {
+    if (details.open) {
+      tooltip.onOpen();
+    } else {
+      tooltip.onClose();
+    }
+  }, [ tooltip ]);
+
   return (
     <Flex className={ className } flexDir="column" rowGap={ 3 } mb={ 6 }>
       <Flex
@@ -112,24 +81,31 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         alignItems="center"
       >
         <Flex h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }} maxW="100%" alignItems="center">
-          { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
+          { backLink && (
+            <BackToButton
+              hint={ backLink.label }
+              href={ 'url' in backLink ? backLink.url : undefined }
+              onClick={ 'onClick' in backLink ? backLink.onClick : undefined }
+              loadingSkeleton={ isLoading }
+              mr={ 3 }
+            />
+          ) }
           { beforeTitle }
           <Skeleton
-            isLoaded={ !isLoading }
+            loading={ isLoading }
             overflow="hidden"
           >
             <Tooltip
-              label={ title }
-              isOpen={ tooltip.isOpen }
-              onClose={ tooltip.onClose }
-              maxW={{ base: 'calc(100vw - 32px)', lg: '500px' }}
+              content={ title }
+              open={ tooltip.open }
+              onOpenChange={ handleTooltipOpenChange }
+              contentProps={{ maxW: { base: 'calc(100vw - 32px)', lg: '500px' } }}
               closeOnScroll={ isMobile ? true : false }
-              isDisabled={ !isTextTruncated }
+              disabled={ !isTextTruncated }
             >
               <Heading
                 ref={ headingRef }
-                as="h1"
-                size="lg"
+                level="1"
                 whiteSpace="normal"
                 wordBreak="break-all"
                 style={{
@@ -155,7 +131,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> }
       </Flex>
       { secondRow && (
-        <Skeleton isLoaded={ !isLoading } alignItems="center" minH={ 10 } overflow="hidden" display="flex" _empty={{ display: 'none' }}>
+        <Skeleton loading={ isLoading } alignItems="center" minH={ 10 } overflow="hidden" display="flex" _empty={{ display: 'none' }}>
           { secondRow }
         </Skeleton>
       ) }

@@ -1,9 +1,9 @@
-import { Alert, Box, Button, chakra, Flex, Link, Radio, RadioGroup } from '@chakra-ui/react';
+import { Box, chakra, Flex } from '@chakra-ui/react';
 import { useAppKit } from '@reown/appkit/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useSignMessage, useAccount } from 'wagmi';
+import { useSignMessage, useAccount, useSwitchChain } from 'wagmi';
 
 import type {
   AddressVerificationFormSecondStepFields,
@@ -18,9 +18,13 @@ import type { VerifiedAddress } from 'types/api/account';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import shortenString from 'lib/shortenString';
+import { Alert } from 'toolkit/chakra/alert';
+import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
+import { Radio, RadioGroup } from 'toolkit/chakra/radio';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { SIGNATURE_REGEXP } from 'toolkit/components/forms/validators/signature';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import { SIGNATURE_REGEXP } from 'ui/shared/forms/validators/signature';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 
 type Fields = RootFields & AddressVerificationFormSecondStepFields;
@@ -61,10 +65,13 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         signature: data.signature,
       };
 
-      const response = await apiFetch<'address_verification', AddressValidationResponseSuccess, AddressVerificationResponseError>('address_verification', {
-        fetchParams: { method: 'POST', body },
-        pathParams: { chainId: config.chain.id, type: ':verify' },
-      });
+      const response = await apiFetch<'contractInfo:address_verification', AddressValidationResponseSuccess, AddressVerificationResponseError>(
+        'contractInfo:address_verification',
+        {
+          fetchParams: { method: 'POST', body },
+          pathParams: { chainId: config.chain.id, type: ':verify' },
+        },
+      );
 
       if (response.status !== 'SUCCESS') {
         const type = typeof response.status === 'number' ? 'UNKNOWN_STATUS' : response.status;
@@ -80,9 +87,14 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
   const onSubmit = handleSubmit(onFormSubmit);
 
   const { signMessage, isPending: isSigning } = useSignMessage();
+  const { switchChainAsync } = useSwitchChain();
 
-  const handleSignMethodChange = React.useCallback((value: typeof signMethod) => {
-    setSignMethod(value);
+  const handleSignMethodChange = React.useCallback(({ value }: { value: string | null }) => {
+    if (!value) {
+      return;
+    }
+
+    setSignMethod(value as SignMethod);
     clearErrors('root');
   }, [ clearErrors ]);
 
@@ -91,13 +103,14 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     openWeb3Modal();
   }, [ clearErrors, openWeb3Modal ]);
 
-  const handleWeb3SignClick = React.useCallback(() => {
+  const handleWeb3SignClick = React.useCallback(async() => {
     clearErrors('root');
 
     if (!isConnected) {
       return setError('root', { type: 'manual', message: 'Please connect to your Web3 wallet first' });
     }
 
+    await switchChainAsync({ chainId: Number(config.chain.id) });
     const message = getValues('message');
     signMessage({ message }, {
       onSuccess: (data) => {
@@ -108,7 +121,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         return setError('root', { type: 'SIGNING_FAIL', message: (error as Error)?.message || 'Oops! Something went wrong' });
       },
     });
-  }, [ clearErrors, isConnected, getValues, signMessage, setError, setValue, onSubmit ]);
+  }, [ clearErrors, isConnected, getValues, signMessage, setError, setValue, onSubmit, switchChainAsync ]);
 
   const handleManualSignClick = React.useCallback(() => {
     clearErrors('root');
@@ -119,9 +132,8 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     if (signMethod === 'manual') {
       return (
         <Button
-          size="lg"
           onClick={ handleManualSignClick }
-          isLoading={ formState.isSubmitting }
+          loading={ formState.isSubmitting }
           loadingText="Verifying"
         >
           Verify
@@ -131,9 +143,8 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
 
     return (
       <Button
-        size="lg"
         onClick={ isConnected ? handleWeb3SignClick : handleOpenWeb3Modal }
-        isLoading={ formState.isSubmitting || isSigning }
+        loading={ formState.isSubmitting || isSigning }
         loadingText={ isSigning ? 'Signing' : 'Verifying' }
       >
         { isConnected ? 'Sign and verify' : 'Connect wallet' }
@@ -212,20 +223,28 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
           </Flex>
         ) }
         <Flex rowGap={ 5 } flexDir="column">
-          <div>
-            <CopyToClipboard text={ signingMessage } ml="auto" display="block"/>
+          <Flex flexDir="column">
+            <CopyToClipboard text={ signingMessage } ml="auto"/>
             <FormFieldText<Fields>
               name="message"
               placeholder="Message to sign"
-              isRequired
+              required
               asComponent="Textarea"
-              isReadOnly
-              maxH={{ base: '140px', lg: '80px' }}
-              bgColor="dialog_bg"
+              readOnly
+              inputProps={{
+                h: { base: '175px', lg: '100px' },
+                minH: 'auto',
+              }}
             />
-          </div>
+          </Flex>
           { !noWeb3Provider && (
-            <RadioGroup onChange={ handleSignMethodChange } value={ signMethod } display="flex" flexDir="column" rowGap={ 4 }>
+            <RadioGroup
+              onValueChange={ handleSignMethodChange }
+              value={ signMethod }
+              display="flex"
+              flexDir="column"
+              rowGap={ 4 }
+            >
               <Radio value="wallet">Sign via Web3 wallet</Radio>
               <Radio value="manual">Sign manually</Radio>
             </RadioGroup>
@@ -234,9 +253,9 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
             <FormFieldText<Fields>
               name="signature"
               placeholder="Signature hash"
-              isRequired
+              required
               rules={{ pattern: SIGNATURE_REGEXP }}
-              bgColor="dialog_bg"
+              bgColor="dialog.bg"
             />
           ) }
         </Flex>

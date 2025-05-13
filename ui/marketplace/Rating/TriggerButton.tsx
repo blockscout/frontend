@@ -1,16 +1,18 @@
-import { Button, chakra, useColorModeValue, Tooltip, useDisclosure, Text } from '@chakra-ui/react';
+import { chakra, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
+import type { ButtonProps } from 'toolkit/chakra/button';
+import { Button } from 'toolkit/chakra/button';
+import { PopoverTrigger } from 'toolkit/chakra/popover';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
-type Props = {
+interface Props extends ButtonProps {
   rating?: number;
   count?: number;
   fullView?: boolean;
-  isActive: boolean;
-  onClick: () => void;
   canRate: boolean | undefined;
 };
 
@@ -25,65 +27,53 @@ const getTooltipText = (canRate: boolean | undefined) => {
 };
 
 const TriggerButton = (
-  { rating, count, fullView, isActive, onClick, canRate }: Props,
+  { rating, count, fullView, canRate, onClick, ...rest }: Props,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
-  const textColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
   const onFocusCapture = usePreventFocusAfterModalClosing();
 
-  // have to implement controlled tooltip on mobile because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
-  const { isOpen, onToggle, onClose } = useDisclosure();
   const isMobile = useIsMobile();
-
-  const handleClick = React.useCallback(() => {
-    if (canRate) {
-      onClick();
-    } else if (isMobile) {
-      onToggle();
-    }
-  }, [ canRate, isMobile, onToggle, onClick ]);
 
   return (
     <Tooltip
-      label={ getTooltipText(canRate) }
-      openDelay={ 100 }
-      textAlign="center"
+      content={ getTooltipText(canRate) }
       closeOnClick={ Boolean(canRate) || isMobile }
-      isOpen={ isMobile ? isOpen : undefined }
+      disableOnMobile={ canRate }
     >
-      <Button
-        ref={ ref }
-        size="xs"
-        variant="outline"
-        border={ 0 }
-        p={ 0 }
-        onClick={ handleClick }
-        fontSize={ fullView ? 'md' : 'sm' }
-        fontWeight={ fullView ? '400' : '500' }
-        lineHeight="21px"
-        ml={ fullView ? 3 : 0 }
-        isActive={ isActive }
-        onFocusCapture={ onFocusCapture }
-        cursor={ canRate ? 'pointer' : 'default' }
-        onMouseLeave={ isMobile ? onClose : undefined }
-      >
-        { !fullView && (
-          <IconSvg
-            name={ rating ? 'star_filled' : 'star_outline' }
-            color={ rating ? 'yellow.400' : 'gray.400' }
-            boxSize={ 5 }
-            mr={ 1 }
-          />
-        ) }
-        { (rating && !fullView) ? (
-          <chakra.span color={ textColor } transition="inherit" display="inline-flex">
-            { rating }
-            <Text variant="secondary" ml={ 1 }>({ count })</Text>
-          </chakra.span>
-        ) : (
-          'Rate it!'
-        ) }
-      </Button>
+      <div>
+        <PopoverTrigger>
+          <Button
+            ref={ ref }
+            size="xs"
+            variant="link"
+            p={ 0 }
+            fontSize={ fullView ? 'md' : 'sm' }
+            fontWeight={ fullView ? '400' : '500' }
+            lineHeight="21px"
+            ml={ fullView ? 3 : 0 }
+            onFocusCapture={ onFocusCapture }
+            cursor={ canRate ? 'pointer' : 'default' }
+            { ...rest }
+          >
+            { !fullView && (
+              <IconSvg
+                name={ rating ? 'star_filled' : 'star_outline' }
+                color={ rating ? 'yellow.400' : 'gray.400' }
+                boxSize={ 5 }
+                mr={ 1 }
+              />
+            ) }
+            { (rating && !fullView) ? (
+              <chakra.span color={{ _light: 'blackAlpha.800', _dark: 'whiteAlpha.800' }} transition="inherit" display="inline-flex">
+                { rating }
+                <Text color="text.secondary" ml={ 1 }>({ count })</Text>
+              </chakra.span>
+            ) : (
+              'Rate it!'
+            ) }
+          </Button>
+        </PopoverTrigger>
+      </div>
     </Tooltip>
   );
 };

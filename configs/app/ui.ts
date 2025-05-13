@@ -5,7 +5,7 @@ import type { NetworkExplorer } from 'types/networks';
 import type { ColorThemeId } from 'types/settings';
 import type { FontFamily } from 'types/ui';
 
-import { COLOR_THEMES } from 'lib/settings/colorTheme';
+import { COLOR_THEMES, type ColorTheme } from 'lib/settings/colorTheme';
 
 import * as features from './features';
 import * as views from './ui/views';
@@ -49,7 +49,7 @@ const highlightedRoutes = (() => {
 
 const defaultColorTheme = (() => {
   const envValue = getEnvValue('NEXT_PUBLIC_COLOR_THEME_DEFAULT') as ColorThemeId | undefined;
-  return COLOR_THEMES.find((theme) => theme.id === envValue);
+  return COLOR_THEMES.find((theme) => theme.id === envValue) as ColorTheme | undefined;
 })();
 
 const UI = Object.freeze({

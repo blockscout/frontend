@@ -1,4 +1,4 @@
-import { Box, Grid, Link } from '@chakra-ui/react';
+import { Box, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
@@ -14,12 +14,13 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import { TOKEN_COUNTERS } from 'stubs/token';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { TokenTabs } from 'ui/pages/Token';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import TokenNftMarketplaces from './TokenNftMarketplaces';
@@ -34,7 +35,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
   const hash = router.query.hash?.toString();
 
-  const tokenCountersQuery = useApiQuery('token_counters', {
+  const tokenCountersQuery = useApiQuery('general:token_counters', {
     pathParams: { hash },
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
   });
@@ -65,11 +66,9 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     const tab: TokenTabs = item === 'token_holders_count' ? 'holders' : 'token_transfers';
 
     return (
-      <Skeleton isLoaded={ !tokenCountersQuery.isPlaceholderData }>
-        <Link onClick={ changeUrlAndScroll(tab) }>
-          { Number(itemValue).toLocaleString() }
-        </Link>
-      </Skeleton>
+      <Link onClick={ changeUrlAndScroll(tab) } loading={ tokenCountersQuery.isPlaceholderData }>
+        { Number(itemValue).toLocaleString() }
+      </Link>
     );
   }, [ tokenCountersQuery.data, tokenCountersQuery.isPlaceholderData, changeUrlAndScroll ]);
 
@@ -105,91 +104,91 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     >
       { exchangeRate && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Price per token on the exchanges"
             isLoading={ tokenQuery.isPlaceholderData }
           >
             Price
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
               <span>{ `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` }</span>
             </Skeleton>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
 
       { marketCap && (
         <>
-          <DetailsInfoItem.Label
-            hint="Total supply * Price"
+          <DetailedInfo.ItemLabel
+            hint="Circulating supply * Price"
             isLoading={ tokenQuery.isPlaceholderData }
           >
-            Fully diluted market cap
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
+            Market cap
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
               <span>{ `$${ BigNumber(marketCap).toFormat() }` }</span>
             </Skeleton>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="The total amount of tokens issued"
         isLoading={ tokenQuery.isPlaceholderData }
       >
         Max total supply
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue
         alignSelf="center"
         wordBreak="break-word"
         whiteSpace="pre-wrap"
       >
-        <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } w="100%" display="flex">
+        <Skeleton loading={ tokenQuery.isPlaceholderData } w="100%" display="flex">
           <TruncatedValue value={ totalSupplyValue || '0' } maxW="80%" flexShrink={ 0 }/>
           <Box flexShrink={ 0 }> </Box>
           <TruncatedValue value={ symbol || '' }/>
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Number of accounts holding the token"
         isLoading={ tokenQuery.isPlaceholderData }
       >
         Holders
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !tokenCountersQuery.isPlaceholderData }>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Skeleton loading={ tokenCountersQuery.isPlaceholderData }>
           { countersItem('token_holders_count') }
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Number of transfer for the token"
         isLoading={ tokenQuery.isPlaceholderData }
       >
         Transfers
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !tokenCountersQuery.isPlaceholderData }>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Skeleton loading={ tokenCountersQuery.isPlaceholderData }>
           { countersItem('transfers_count') }
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
       { decimals && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Number of digits that come after the decimal place when displaying token value"
             isLoading={ tokenQuery.isPlaceholderData }
           >
             Decimals
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } minW={ 6 }>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Skeleton loading={ tokenQuery.isPlaceholderData } minW={ 6 }>
               { decimals }
             </Skeleton>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
 
@@ -204,20 +203,20 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
       { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && appActionData) && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="Link to the dapp"
           >
             Dapp
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue
             py="1px"
           >
             <AppActionButton data={ appActionData } height="30px" source="NFT collection"/>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
 
-      <DetailsSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
+      <DetailedInfoSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
     </Grid>
   );
 };

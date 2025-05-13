@@ -1,11 +1,14 @@
-import { Flex, Input, Tag, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 
-import { ndash } from 'lib/html-entities';
+import { Input } from 'toolkit/chakra/input';
+import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
+import { Tag } from 'toolkit/chakra/tag';
+import { ndash } from 'toolkit/utils/htmlEntities';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 const FILTER_PARAM_FROM = 'amount_from';
@@ -44,10 +47,9 @@ type AmountValue = { from?: string; to?: string };
 type Props = {
   value?: AmountValue;
   handleFilterChange: (filed: keyof AdvancedFilterParams, value?: string) => void;
-  onClose?: () => void;
 };
 
-const AmountFilter = ({ value = {}, handleFilterChange, onClose }: Props) => {
+const AmountFilter = ({ value = {}, handleFilterChange }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<AmountValue>(value || defaultValue);
 
   const handleFromChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -69,8 +71,7 @@ const AmountFilter = ({ value = {}, handleFilterChange, onClose }: Props) => {
     const to = (event.currentTarget as HTMLDivElement).getAttribute('data-id') as string;
     handleFilterChange(FILTER_PARAM_FROM, '');
     handleFilterChange(FILTER_PARAM_TO, to);
-    onClose && onClose();
-  }, [ handleFilterChange, onClose ]);
+  }, [ handleFilterChange ]);
 
   return (
     <TableColumnFilter
@@ -79,25 +80,26 @@ const AmountFilter = ({ value = {}, handleFilterChange, onClose }: Props) => {
       isTouched={ !isEqual(currentValue, value) }
       onFilter={ onFilter }
       onReset={ onReset }
-      onClose={ onClose }
       hasReset
     >
-      <Flex gap={ 3 }>
-        { PRESETS.map(preset => (
-          <Tag
-            key={ preset.value }
-            data-id={ preset.value }
-            onClick={ onPresetClick }
-            variant="select"
-          >
-            { preset.name }
-          </Tag>
-        )) }
-      </Flex>
+      <PopoverCloseTriggerWrapper>
+        <Flex gap={ 3 }>
+          { PRESETS.map(preset => (
+            <Tag
+              key={ preset.value }
+              data-id={ preset.value }
+              onClick={ onPresetClick }
+              variant="select"
+            >
+              { preset.name }
+            </Tag>
+          )) }
+        </Flex>
+      </PopoverCloseTriggerWrapper>
       <Flex mt={ 3 } alignItems="center">
-        <Input value={ currentValue.from } onChange={ handleFromChange } placeholder="From" type="number" size="xs"/>
+        <Input value={ currentValue.from } onChange={ handleFromChange } placeholder="From" type="number" size="sm"/>
         <Text mx={ 3 }>{ ndash }</Text>
-        <Input value={ currentValue.to } onChange={ handleToChange } placeholder="To" type="number" size="xs"/>
+        <Input value={ currentValue.to } onChange={ handleToChange } placeholder="To" type="number" size="sm"/>
       </Flex>
     </TableColumnFilter>
   );

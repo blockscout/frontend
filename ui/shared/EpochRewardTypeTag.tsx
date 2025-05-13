@@ -1,16 +1,17 @@
-import { Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EpochRewardsType } from 'types/api/block';
 
-import Tag from 'ui/shared/chakra/Tag';
+import type { BadgeProps } from 'toolkit/chakra/badge';
+import { Badge } from 'toolkit/chakra/badge';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 
 type Props = {
   type: EpochRewardsType;
   isLoading?: boolean;
 };
 
-const TYPE_TAGS: Record<EpochRewardsType, { text: string; label: string; color: string }> = {
+const TYPE_TAGS: Record<EpochRewardsType, { text: string; label: string; color: BadgeProps['colorPalette'] }> = {
   group: {
     text: 'Validator group rewards',
     // eslint-disable-next-line max-len
@@ -39,10 +40,10 @@ const EpochRewardTypeTag = ({ type, isLoading }: Props) => {
   const { text, label, color } = TYPE_TAGS[type];
 
   return (
-    <Tooltip label={ label } maxW="322px" textAlign="center">
-      <Tag colorScheme={ color } isLoading={ isLoading }>
+    <Tooltip content={ label }>
+      <Badge colorPalette={ color } loading={ isLoading }>
         { text }
-      </Tag>
+      </Badge>
     </Tooltip>
   );
 };

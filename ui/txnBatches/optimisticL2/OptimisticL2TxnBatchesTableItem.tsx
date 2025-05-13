@@ -1,4 +1,3 @@
-import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
@@ -6,10 +5,11 @@ import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
@@ -22,50 +22,48 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   }
 
   return (
-    <Tr>
-      <Td verticalAlign="middle">
-        <BatchEntityL2 number={ item.internal_id } isLoading={ isLoading }/>
-      </Td>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
+        <BatchEntityL2 number={ item.number } isLoading={ isLoading }/>
+      </TableCell>
+      <TableCell verticalAlign="middle">
         { item.batch_data_container ? <OptimisticL2TxnBatchDA container={ item.batch_data_container } isLoading={ isLoading }/> : '-' }
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <TimeAgoWithTooltip
           timestamp={ item.l1_timestamp }
           isLoading={ isLoading }
           display="inline-block"
-          color="text_secondary"
+          color="text.secondary"
           my={ 1 }
         />
-      </Td>
-      <Td verticalAlign="middle" isNumeric>
-        <Skeleton isLoaded={ !isLoading } minW="40px" display="inline-block">
+      </TableCell>
+      <TableCell verticalAlign="middle" isNumeric>
+        <Skeleton loading={ isLoading } minW="40px" display="inline-block">
           { item.l1_transaction_hashes.length }
         </Skeleton>
-      </Td>
-      <Td verticalAlign="middle" isNumeric>
-        <LinkInternal
-          href={ route({ pathname: '/batches/[number]', query: { number: item.internal_id.toString(), tab: 'blocks' } }) }
-          isLoading={ isLoading }
+      </TableCell>
+      <TableCell verticalAlign="middle" isNumeric>
+        <Link
+          href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'blocks' } }) }
+          loading={ isLoading }
           justifyContent="flex-end"
+          minW="40px"
         >
-          <Skeleton isLoaded={ !isLoading } minW="40px" display="inline-block">
-            { item.l2_block_end - item.l2_block_start + 1 }
-          </Skeleton>
-        </LinkInternal>
-      </Td>
-      <Td verticalAlign="middle" isNumeric>
-        <LinkInternal
-          href={ route({ pathname: '/batches/[number]', query: { number: item.internal_id.toString(), tab: 'txs' } }) }
-          isLoading={ isLoading }
+          { item.l2_end_block_number - item.l2_start_block_number + 1 }
+        </Link>
+      </TableCell>
+      <TableCell verticalAlign="middle" isNumeric>
+        <Link
+          href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
+          loading={ isLoading }
           justifyContent="flex-end"
+          minW="40px"
         >
-          <Skeleton isLoaded={ !isLoading } minW="40px" display="inline-block">
-            { item.transaction_count }
-          </Skeleton>
-        </LinkInternal>
-      </Td>
-    </Tr>
+          { item.transactions_count }
+        </Link>
+      </TableCell>
+    </TableRow>
   );
 };
 

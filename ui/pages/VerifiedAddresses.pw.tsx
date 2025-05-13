@@ -17,18 +17,18 @@ test.beforeEach(async({ mockAssetResponse }) => {
 });
 
 test('base view +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { chainId: '1' } });
-  await mockApiResponse('token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.DEFAULT, { pathParams: { chainId: '1', id: undefined } });
-  await mockApiResponse('user_info', profileMock.base);
+  await mockApiResponse('contractInfo:verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { chainId: '1' } });
+  await mockApiResponse('admin:token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.DEFAULT, { pathParams: { chainId: '1', id: undefined } });
+  await mockApiResponse('general:user_info', profileMock.base);
 
   const component = await render(<VerifiedAddresses/>);
   await expect(component).toHaveScreenshot();
 });
 
 test('user without email', async({ render, mockApiResponse }) => {
-  await mockApiResponse('verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { chainId: '1' } });
-  await mockApiResponse('token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.DEFAULT, { pathParams: { chainId: '1', id: undefined } });
-  await mockApiResponse('user_info', profileMock.withoutEmail);
+  await mockApiResponse('contractInfo:verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { chainId: '1' } });
+  await mockApiResponse('admin:token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.DEFAULT, { pathParams: { chainId: '1', id: undefined } });
+  await mockApiResponse('general:user_info', profileMock.withoutEmail);
 
   const component = await render(<VerifiedAddresses/>);
 
@@ -36,11 +36,11 @@ test('user without email', async({ render, mockApiResponse }) => {
 });
 
 test('address verification flow', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { chainId: '1' } });
-  await mockApiResponse('token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.DEFAULT, { pathParams: { chainId: '1', id: undefined } });
-  await mockApiResponse('address_verification', mocks.ADDRESS_CHECK_RESPONSE.SUCCESS as never, { pathParams: { chainId: '1', type: ':prepare' } });
-  await mockApiResponse('address_verification', mocks.ADDRESS_VERIFY_RESPONSE.SUCCESS as never, { pathParams: { chainId: '1', type: ':verify' } });
-  await mockApiResponse('user_info', profileMock.base);
+  await mockApiResponse('contractInfo:verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { chainId: '1' } });
+  await mockApiResponse('admin:token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.DEFAULT, { pathParams: { chainId: '1', id: undefined } });
+  await mockApiResponse('contractInfo:address_verification', mocks.ADDRESS_CHECK_RESPONSE.SUCCESS as never, { pathParams: { chainId: '1', type: ':prepare' } });
+  await mockApiResponse('contractInfo:address_verification', mocks.ADDRESS_VERIFY_RESPONSE.SUCCESS as never, { pathParams: { chainId: '1', type: ':verify' } });
+  await mockApiResponse('general:user_info', profileMock.base);
 
   await render(<VerifiedAddresses/>);
 
@@ -65,13 +65,13 @@ test('address verification flow', async({ render, mockApiResponse, page }) => {
 });
 
 test('application update flow', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { chainId: '1' } });
-  await mockApiResponse('token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.FOR_UPDATE, { pathParams: { chainId: '1', id: undefined } });
-  await mockApiResponse('user_info', profileMock.base);
-  await mockApiResponse('token_info_applications_config', mocks.TOKEN_INFO_FORM_CONFIG, { pathParams: { chainId: '1' } });
+  await mockApiResponse('contractInfo:verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { chainId: '1' } });
+  await mockApiResponse('admin:token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.FOR_UPDATE, { pathParams: { chainId: '1', id: undefined } });
+  await mockApiResponse('general:user_info', profileMock.base);
+  await mockApiResponse('admin:token_info_applications_config', mocks.TOKEN_INFO_FORM_CONFIG, { pathParams: { chainId: '1' } });
 
   await mockApiResponse(
-    'token_info_applications',
+    'admin:token_info_applications',
     mocks.TOKEN_INFO_APPLICATION.UPDATED_ITEM as never, // this mock is for PUT request
     { pathParams: { chainId: '1', id: mocks.TOKEN_INFO_APPLICATION.UPDATED_ITEM.id } },
   );

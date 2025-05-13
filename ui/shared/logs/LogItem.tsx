@@ -1,4 +1,4 @@
-import { Grid, GridItem, Tooltip, Button, useColorModeValue, Alert, Link } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Log } from 'types/api/log';
@@ -6,14 +6,18 @@ import type { Log } from 'types/api/log';
 import { route } from 'nextjs-routes';
 
 // import searchIcon from 'icons/search.svg';
-import { space } from 'lib/html-entities';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Alert } from 'toolkit/chakra/alert';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { space } from 'toolkit/utils/htmlEntities';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import LogTopic from 'ui/shared/logs/LogTopic';
 import type { DataType } from 'ui/shared/RawInputData';
 import RawInputData from 'ui/shared/RawInputData';
+
+import LogIndex from './LogIndex';
 
 type Props = Log & {
   type: 'address' | 'transaction';
@@ -23,14 +27,11 @@ type Props = Log & {
 
 const RowHeader = ({ children, isLoading }: { children: React.ReactNode; isLoading?: boolean }) => (
   <GridItem _notFirst={{ my: { base: 4, lg: 0 } }}>
-    <Skeleton fontWeight={ 500 } isLoaded={ !isLoading } display="inline-block">{ children }</Skeleton>
+    <Skeleton fontWeight={ 500 } loading={ isLoading } display="inline-block">{ children }</Skeleton>
   </GridItem>
 );
 
 const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash: txHash, isLoading, defaultDataType }: Props) => {
-
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const dataBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   const hasTxInfo = type === 'address' && txHash;
 
@@ -41,7 +42,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash
       py={ 8 }
       _notFirst={{
         borderTopWidth: '1px',
-        borderTopColor: borderColor,
+        borderTopColor: { _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' },
       }}
       _first={{
         pt: 0,
@@ -62,12 +63,14 @@ const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash
             hash={ txHash }
             isLoading={ isLoading }
             mr={{ base: 9, lg: 4 }}
+            w="100%"
           />
         ) : (
           <AddressEntity
             address={ address }
             isLoading={ isLoading }
             mr={{ base: 9, lg: 4 }}
+            w="100%"
           />
         ) }
         { /* api doesn't have find topic feature yet */ }
@@ -76,13 +79,15 @@ const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash
             <Icon as={ searchIcon } boxSize={ 5 }/>
           </Link>
         </Tooltip> */ }
-        <Skeleton isLoaded={ !isLoading } ml="auto" borderRadius="base">
-          <Tooltip label="Log index">
-            <Button variant="outline" colorScheme="gray" data-selected="true" size="sm" fontWeight={ 400 }>
-              { index }
-            </Button>
-          </Tooltip>
-        </Skeleton>
+        <LogIndex
+          isLoading={ isLoading }
+          textStyle="sm"
+          ml="auto"
+          minW={ 8 }
+          height={ 8 }
+        >
+          { index }
+        </LogIndex>
       </GridItem>
       { decoded && (
         <>
@@ -107,7 +112,13 @@ const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash
       { defaultDataType ? (
         <RawInputData hex={ data } isLoading={ isLoading } defaultDataType={ defaultDataType } minHeight="53px"/>
       ) : (
-        <Skeleton isLoaded={ !isLoading } p={ 4 } fontSize="sm" borderRadius="md" bgColor={ isLoading ? undefined : dataBgColor }>
+        <Skeleton
+          loading={ isLoading }
+          p={ 4 }
+          fontSize="sm"
+          borderRadius="md"
+          bgColor={ isLoading ? undefined : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } }
+        >
           { data }
         </Skeleton>
       ) }

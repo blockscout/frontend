@@ -2,8 +2,8 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { PaginationParams } from 'ui/shared/pagination/types';
-import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
@@ -16,10 +16,10 @@ import {
   getTokenInstanceTransfersStub,
   getTokenInstanceHoldersStub,
 } from 'stubs/token';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 import { MetadataUpdateProvider } from 'ui/tokenInstance/contexts/metadataUpdate';
@@ -40,7 +40,7 @@ const TokenInstanceContent = () => {
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  const tokenQuery = useApiQuery('token', {
+  const tokenQuery = useApiQuery('general:token', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash && id),
@@ -48,7 +48,7 @@ const TokenInstanceContent = () => {
     },
   });
 
-  const tokenInstanceQuery = useApiQuery('token_instance', {
+  const tokenInstanceQuery = useApiQuery('general:token_instance', {
     pathParams: { hash, id },
     queryOptions: {
       enabled: Boolean(hash && id),
@@ -57,7 +57,7 @@ const TokenInstanceContent = () => {
   });
 
   const transfersQuery = useQueryWithPages({
-    resourceName: 'token_instance_transfers',
+    resourceName: 'general:token_instance_transfers',
     pathParams: { hash, id },
     scrollRef,
     options: {
@@ -73,7 +73,7 @@ const TokenInstanceContent = () => {
     !tokenInstanceQuery.data.is_unique;
 
   const holdersQuery = useQueryWithPages({
-    resourceName: 'token_instance_holders',
+    resourceName: 'general:token_instance_holders',
     pathParams: { hash, id },
     scrollRef,
     options: {
@@ -87,20 +87,33 @@ const TokenInstanceContent = () => {
   React.useEffect(() => {
     if (tokenInstanceQuery.data && !tokenInstanceQuery.isPlaceholderData && tokenQuery.data && !tokenQuery.isPlaceholderData) {
       metadata.update(
-        { pathname: '/token/[hash]/instance/[id]', query: { hash: tokenQuery.data.address, id: tokenInstanceQuery.data.id } },
+        { pathname: '/token/[hash]/instance/[id]', query: { hash: tokenQuery.data.address_hash, id: tokenInstanceQuery.data.id } },
         { symbol: tokenQuery.data.symbol ?? '' },
       );
     }
   }, [ tokenInstanceQuery.data, tokenInstanceQuery.isPlaceholderData, tokenQuery.data, tokenQuery.isPlaceholderData ]);
 
-  const tabs: Array<RoutedTab> = [
+  const tabs: Array<TabItemRegular> = [
     {
       id: 'token_transfers',
       title: 'Token transfers',
-      component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id } tokenQuery={ tokenQuery } shouldRender={ !isLoading }/>,
+      component: (
+        <TokenTransfer
+          transfersQuery={ transfersQuery }
+          tokenId={ id }
+          tokenQuery={ tokenQuery }
+          tokenInstance={ tokenInstanceQuery.data }
+          shouldRender={ !isLoading }
+          tabsHeight={ 80 }
+        />
+      ),
     },
     shouldFetchHolders ?
-      { id: 'holders', title: 'Holders', component: <TokenHolders holdersQuery={ holdersQuery } token={ tokenQuery.data } shouldRender={ !isLoading }/> } :
+      {
+        id: 'holders',
+        title: 'Holders',
+        component: <TokenHolders holdersQuery={ holdersQuery } token={ tokenQuery.data } shouldRender={ !isLoading } tabsHeight={ 80 }/>,
+      } :
       undefined,
     { id: 'metadata', title: 'Metadata', component: (
       <TokenInstanceMetadata
@@ -138,7 +151,7 @@ const TokenInstanceContent = () => {
 
       <RoutedTabs
         tabs={ tabs }
-        tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
+        listProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
         isLoading={ isLoading }
         rightSlot={ !isMobile && pagination?.isVisible ? <Pagination { ...pagination }/> : null }
         stickyEnabled={ !isMobile }

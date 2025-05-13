@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Grid, useColorModeValue, chakra } from '@chakra-ui/react';
+import { Box, Flex, Text, Grid, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SolidityScanReportSeverityDistribution } from 'lib/solidityScan/schema';
@@ -30,8 +30,6 @@ type ItemProps = {
 };
 
 const SolidityScanReportItem = ({ item, vulnerabilities, vulnerabilitiesCount }: ItemProps) => {
-  const bgBar = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const yetAnotherGrayColor = useColorModeValue('gray.400', 'gray.500');
   const vulnerability = vulnerabilities[item.id];
 
   if (vulnerability === undefined) {
@@ -43,10 +41,10 @@ const SolidityScanReportItem = ({ item, vulnerabilities, vulnerabilitiesCount }:
       <Box w={ 3 } h={ 3 } bg={ item.color } borderRadius="6px" mr={ 2 }></Box>
       <Flex justifyContent="space-between" mr={ 3 }>
         <Text>{ item.name }</Text>
-        <Text color={ vulnerability > 0 ? 'text' : yetAnotherGrayColor }>{ vulnerabilities[item.id] }</Text>
+        <Text color={ vulnerability > 0 ? 'text' : { _light: 'gray.400', _dark: 'gray.500' } }>{ vulnerabilities[item.id] }</Text>
       </Flex>
-      <Box bg={ bgBar } h="10px" borderRadius="8px">
-        <Box bg={ item.color } w={ vulnerability / vulnerabilitiesCount } h="10px" borderRadius="8px"/>
+      <Box bg={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }} h="10px" borderRadius="8px">
+        <Box bg={ item.color } w={ `${ vulnerability / vulnerabilitiesCount * 100 }%` } h="10px" borderRadius="8px"/>
       </Box>
     </>
   );

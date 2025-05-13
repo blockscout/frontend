@@ -10,11 +10,12 @@ test.beforeEach(async({ mockEnvs }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS', '[{"text":"Swap","icon":"swap","dappId":"uniswap"}]' ],
     [ 'NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL', 'DUCK' ],
+    [ 'NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED', 'true' ],
   ]);
 });
 
 test('default view +@dark-mode +@mobile', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('general:stats', statsMock.base);
   const component = await render(<TopBar/>);
 
   await component.getByText(/\$1\.39/).click();
@@ -26,7 +27,7 @@ test('default view +@dark-mode +@mobile', async({ render, mockApiResponse, page 
 });
 
 test('with secondary coin price +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('stats', statsMock.withSecondaryCoin);
+  await mockApiResponse('general:stats', statsMock.withSecondaryCoin);
   const component = await render(<TopBar/>);
   await expect(component).toHaveScreenshot();
 });
@@ -34,7 +35,7 @@ test('with secondary coin price +@mobile', async({ render, mockApiResponse }) =>
 test('with horizontal nav bar layout', async({ render, mockApiResponse, mockEnvs, mockConfigResponse, mockAssetResponse, page }) => {
   const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
 
-  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('general:stats', statsMock.base);
   await mockEnvs([
     [ 'NEXT_PUBLIC_NAVIGATION_LAYOUT', 'horizontal' ],
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
@@ -54,7 +55,7 @@ test('with DeFi dropdown +@dark-mode +@mobile', async({ render, page, mockApiRes
       '[{"text":"Swap","icon":"swap","dappId":"uniswap"},{"text":"Payment link","icon":"payment_link","url":"https://example.com"}]',
     ],
   ]);
-  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('general:stats', statsMock.base);
 
   const component = await render(<TopBar/>);
 
@@ -71,7 +72,7 @@ test('with Get gas button', async({ render, mockApiResponse, mockEnvs, mockAsset
       `{"name": "Need gas?", "dapp_id": "duck", "url_template": "https://duck.url/{chainId}", "logo": "${ ICON_URL }"}`,
     ],
   ]);
-  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('general:stats', statsMock.base);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 
   const component = await render(<TopBar/>);

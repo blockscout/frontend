@@ -1,14 +1,14 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { SHIBARIUM_DEPOSIT_ITEM } from 'stubs/shibarium';
 import { generateListStub } from 'stubs/utils';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import DepositsListItem from 'ui/deposits/shibarium/DepositsListItem';
 import DepositsTable from 'ui/deposits/shibarium/DepositsTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -16,9 +16,9 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const L2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'shibarium_deposits',
+    resourceName: 'general:shibarium_deposits',
     options: {
-      placeholderData: generateListStub<'shibarium_deposits'>(
+      placeholderData: generateListStub<'general:shibarium_deposits'>(
         SHIBARIUM_DEPOSIT_ITEM,
         50,
         {
@@ -31,7 +31,7 @@ const L2Deposits = () => {
     },
   });
 
-  const countersQuery = useApiQuery('shibarium_deposits_count', {
+  const countersQuery = useApiQuery('general:shibarium_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },
@@ -39,18 +39,18 @@ const L2Deposits = () => {
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         { data.items.map(((item, index) => (
           <DepositsListItem
-            key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
+            key={ `${ item.l2_transaction_hash }-${ index }` }
             isLoading={ isPlaceholderData }
             item={ item }
           />
         ))) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <DepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   ) : null;
 
@@ -61,7 +61,7 @@ const L2Deposits = () => {
 
     return (
       <Skeleton
-        isLoaded={ !countersQuery.isPlaceholderData }
+        loading={ countersQuery.isPlaceholderData }
         display="inline-block"
       >
         A total of { countersQuery.data?.toLocaleString() } deposits found
@@ -76,11 +76,12 @@ const L2Deposits = () => {
       <PageTitle title={ `Deposits (L1${ nbsp }${ rightLineArrow }${ nbsp }L2)` } withTextAd/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no deposits."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

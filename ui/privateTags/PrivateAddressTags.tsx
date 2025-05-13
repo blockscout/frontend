@@ -1,13 +1,15 @@
-import { Box, Button, useDisclosure } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
 import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
 import { PRIVATE_TAG_ADDRESS } from 'stubs/account';
+import { Button } from 'toolkit/chakra/button';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -19,7 +21,7 @@ import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags = () => {
   const { data: addressTagsData, isError, isPlaceholderData, refetch, pagination } = useQueryWithPages({
-    resourceName: 'private_tags_address',
+    resourceName: 'general:private_tags_address',
     options: {
       refetchOnMount: false,
       placeholderData: { items: Array(5).fill(PRIVATE_TAG_ADDRESS), next_page_params: null },
@@ -41,9 +43,9 @@ const PrivateAddressTags = () => {
     await refetch();
   }, [ refetch ]);
 
-  const onAddressModalClose = useCallback(() => {
-    setAddressModalData(undefined);
-    addressModalProps.onClose();
+  const onAddressModalOpenChange = useCallback(({ open }: { open: boolean }) => {
+    !open && setAddressModalData(undefined);
+    addressModalProps.onOpenChange({ open });
   }, [ addressModalProps ]);
 
   const onDeleteClick = useCallback((data: AddressTag) => {
@@ -51,35 +53,10 @@ const PrivateAddressTags = () => {
     deleteModalProps.onOpen();
   }, [ deleteModalProps ]);
 
-  const onDeleteModalClose = useCallback(() => {
-    setDeleteModalData(undefined);
-    deleteModalProps.onClose();
+  const onDeleteModalOpenChange = useCallback(({ open }: { open: boolean }) => {
+    !open && setDeleteModalData(undefined);
+    deleteModalProps.onOpenChange({ open });
   }, [ deleteModalProps ]);
-
-  const list = (
-    <>
-      <Box display={{ base: 'block', lg: 'none' }}>
-        { addressTagsData?.items.map((item: AddressTag, index: number) => (
-          <AddressTagListItem
-            item={ item }
-            key={ item.id + (isPlaceholderData ? String(index) : '') }
-            onDeleteClick={ onDeleteClick }
-            onEditClick={ onEditClick }
-            isLoading={ isPlaceholderData }
-          />
-        )) }
-      </Box>
-      <Box display={{ base: 'none', lg: 'block' }}>
-        <AddressTagTable
-          isLoading={ isPlaceholderData }
-          data={ addressTagsData?.items }
-          onDeleteClick={ onDeleteClick }
-          onEditClick={ onEditClick }
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-        />
-      </Box>
-    </>
-  );
 
   const actionBar = pagination.isVisible ? (
     <ActionBar mt={ -6 }>
@@ -95,14 +72,33 @@ const PrivateAddressTags = () => {
       </AccountPageDescription>
       <DataListDisplay
         isError={ isError }
-        items={ addressTagsData?.items }
+        itemsNum={ addressTagsData?.items.length }
         emptyText=""
-        content={ list }
         actionBar={ actionBar }
-      />
-      <Skeleton mt={ 8 } isLoaded={ !isPlaceholderData } display="inline-block">
+      >
+        <Box display={{ base: 'block', lg: 'none' }}>
+          { addressTagsData?.items.map((item: AddressTag, index: number) => (
+            <AddressTagListItem
+              item={ item }
+              key={ item.id + (isPlaceholderData ? String(index) : '') }
+              onDeleteClick={ onDeleteClick }
+              onEditClick={ onEditClick }
+              isLoading={ isPlaceholderData }
+            />
+          )) }
+        </Box>
+        <Box display={{ base: 'none', lg: 'block' }}>
+          <AddressTagTable
+            isLoading={ isPlaceholderData }
+            data={ addressTagsData?.items }
+            onDeleteClick={ onDeleteClick }
+            onEditClick={ onEditClick }
+            top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          />
+        </Box>
+      </DataListDisplay>
+      <Skeleton mt={ 8 } loading={ isPlaceholderData } display="inline-block">
         <Button
-          size="lg"
           onClick={ addressModalProps.onOpen }
         >
           Add address tag
@@ -112,13 +108,13 @@ const PrivateAddressTags = () => {
         { ...addressModalProps }
         data={ addressModalData }
         pageType={ PAGE_TYPE_DICT['/account/tag-address'] }
-        onClose={ onAddressModalClose }
+        onOpenChange={ onAddressModalOpenChange }
         onSuccess={ onAddOrEditSuccess }
       />
       { deleteModalData && (
         <DeletePrivateTagModal
           { ...deleteModalProps }
-          onClose={ onDeleteModalClose }
+          onOpenChange={ onDeleteModalOpenChange }
           data={ deleteModalData }
           type="address"
         />

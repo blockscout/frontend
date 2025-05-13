@@ -1,26 +1,24 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
-import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOCK } from 'stubs/block';
-import { L2_TXN_BATCH } from 'stubs/L2';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import OptimisticL2TxnBatchDetails from 'ui/txnBatches/optimisticL2/OptimisticL2TxnBatchDetails';
+import useBatchQuery from 'ui/txnBatches/optimisticL2/useBatchQuery';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
@@ -35,23 +33,19 @@ const OptimisticL2TxnBatch = () => {
   const router = useRouter();
   const appProps = useAppContext();
   const number = getQueryParamString(router.query.number);
+  const height = getQueryParamString(router.query.height);
+  const commitment = getQueryParamString(router.query.commitment);
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
 
-  const batchQuery = useApiQuery('optimistic_l2_txn_batch', {
-    pathParams: { number },
-    queryOptions: {
-      enabled: Boolean(number),
-      placeholderData: L2_TXN_BATCH,
-    },
-  });
+  const batchQuery = useBatchQuery();
 
   const batchTxsQuery = useQueryWithPages({
-    resourceName: 'optimistic_l2_txn_batch_txs',
-    pathParams: { number },
+    resourceName: 'general:optimistic_l2_txn_batch_txs',
+    pathParams: { number: String(batchQuery.data?.number) },
     options: {
-      enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.internal_id && tab === 'txs'),
-      placeholderData: generateListStub<'optimistic_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
+      enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
+      placeholderData: generateListStub<'general:optimistic_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
         block_number: 1338932,
         index: 1,
         items_count: 50,
@@ -60,18 +54,18 @@ const OptimisticL2TxnBatch = () => {
   });
 
   const batchBlocksQuery = useQueryWithPages({
-    resourceName: 'optimistic_l2_txn_batch_blocks',
-    pathParams: { number },
+    resourceName: 'general:optimistic_l2_txn_batch_blocks',
+    pathParams: { number: String(batchQuery.data?.number) },
     options: {
-      enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.internal_id && tab === 'blocks'),
-      placeholderData: generateListStub<'optimistic_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
+      enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'blocks'),
+      placeholderData: generateListStub<'general:optimistic_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
         batch_number: 1338932,
         items_count: 50,
       } }),
     },
   });
 
-  throwOnAbsentParamError(number);
+  throwOnAbsentParamError(number || (height && commitment));
   throwOnResourceLoadError(batchQuery);
 
   let pagination;
@@ -84,12 +78,12 @@ const OptimisticL2TxnBatch = () => {
 
   const hasPagination = !isMobile && pagination?.isVisible;
 
-  const tabs: Array<RoutedTab> = React.useMemo(() => ([
+  const tabs: Array<TabItemRegular> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <OptimisticL2TxnBatchDetails query={ batchQuery }/> },
     {
       id: 'txs',
       title: 'Transactions',
-      component: <TxsWithFrontendSorting query={ batchTxsQuery } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
+      component: <TxsWithFrontendSorting query={ batchTxsQuery } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
     },
     {
       id: 'blocks',
@@ -115,18 +109,17 @@ const OptimisticL2TxnBatch = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `Batch #${ number }` }
+        title={ `Batch #${ batchQuery.data?.number }` }
         backLink={ backLink }
+        isLoading={ batchQuery.isPlaceholderData }
       />
-      { batchQuery.isPlaceholderData ?
-        <TabsSkeleton tabs={ tabs }/> : (
-          <RoutedTabs
-            tabs={ tabs }
-            tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-            rightSlot={ hasPagination && pagination ? <Pagination { ...(pagination) }/> : null }
-            stickyEnabled={ hasPagination }
-          />
-        ) }
+      <RoutedTabs
+        tabs={ tabs }
+        isLoading={ batchQuery.isPlaceholderData }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        rightSlot={ hasPagination && pagination ? <Pagination { ...(pagination) }/> : null }
+        stickyEnabled={ hasPagination }
+      />
     </>
   );
 };

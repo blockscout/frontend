@@ -1,10 +1,13 @@
-import { Td, Tr, Link, Tooltip, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
 
 import dayjs from 'lib/date/dayjs';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -37,7 +40,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
 
   const tokenInfo = (() => {
     if (isLoading) {
-      return <Skeleton height={ 6 } width="140px"/>;
+      return <Skeleton loading height={ 6 } width="140px"/>;
     }
 
     if (!item.metadata.tokenName) {
@@ -51,7 +54,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
     const token = {
       type: 'ERC-20' as const,
       icon_url: application.iconUrl,
-      address: application.tokenAddress,
+      address_hash: application.tokenAddress,
       name: item.metadata.tokenName,
       symbol: '',
     };
@@ -67,43 +70,43 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
   })();
 
   return (
-    <Tr>
-      <Td>
+    <TableRow>
+      <TableCell>
         <AddressEntity
           address={{ hash: item.contractAddress, is_contract: true }}
           isLoading={ isLoading }
           fontWeight="600"
         />
-      </Td>
-      <Td fontSize="sm" verticalAlign="middle" pr={ 1 }>
+      </TableCell>
+      <TableCell fontSize="sm" verticalAlign="middle" pr={ 1 }>
         { tokenInfo }
-      </Td>
-      <Td pl="0">
+      </TableCell>
+      <TableCell pl="0">
         { item.metadata.tokenName && application && !isLoading ? (
-          <Tooltip label={ isLoading ? undefined : 'Edit' }>
+          <Tooltip content="Edit" disabled={ isLoading } disableOnMobile>
             <IconButton
               aria-label="edit"
-              variant="simple"
-              boxSize={ 5 }
+              variant="link"
+              size="2xs"
               borderRadius="none"
-              flexShrink={ 0 }
               onClick={ handleEditClick }
-              icon={ <IconSvg name="edit" boxSize={ 4 } flexShrink={ 0 }/> }
-            />
+            >
+              <IconSvg name="edit"/>
+            </IconButton>
           </Tooltip>
         ) : null }
-      </Td>
-      <Td fontSize="sm">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+      </TableCell>
+      <TableCell fontSize="sm">
+        <Skeleton loading={ isLoading } display="inline-block">
           <VerifiedAddressesStatus status={ item.metadata.tokenName ? application?.status : undefined }/>
         </Skeleton>
-      </Td>
-      <Td fontSize="sm" color="text_secondary">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+      </TableCell>
+      <TableCell fontSize="sm" color="text.secondary">
+        <Skeleton loading={ isLoading } display="inline-block">
           { item.metadata.tokenName && application ? dayjs(application.updatedAt).format('MMM DD, YYYY') : null }
         </Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

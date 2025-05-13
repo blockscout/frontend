@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { UserOp } from 'types/api/userOps';
 
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 
 import UserOpCallDataSwitch from './UserOpCallDataSwitch';
@@ -25,6 +25,7 @@ const UserOpDecodedCallData = ({ data }: Props) => {
 
   const toggler = data.decoded_call_data && data.decoded_execute_call_data ? (
     <UserOpCallDataSwitch
+      id="decoded-call-data-switch"
       onChange={ handleSwitchChange }
       initialValue={ false }
       ml={{ base: 0, lg: 'auto' }}
@@ -35,17 +36,17 @@ const UserOpDecodedCallData = ({ data }: Props) => {
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint={ labelText }
       >
         { labelText }
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue
         flexDir={{ base: 'column', lg: 'row' }}
         alignItems={{ base: 'flex-start', lg: 'center' }}
       >
         <LogDecodedInputData data={ callData } rightSlot={ toggler }/>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

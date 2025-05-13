@@ -22,7 +22,7 @@ export const txnBatchesData: ZkEvmL2TxnBatchesResponse = {
       verify_transaction_hash: '0x48139721f792d3a68c3781b4cf50e66e8fc7dbb38adff778e09066ea5be9adb8',
       sequence_transaction_hash: '0x6aa081e8e33a085e4ec7124fcd8a5f7d36aac0828f176e80d4b70e313a11695b',
       number: 5218590,
-      transaction_count: 9,
+      transactions_count: 9,
     },
     {
       timestamp: '2023-06-01T14:46:48.000000Z',
@@ -30,7 +30,7 @@ export const txnBatchesData: ZkEvmL2TxnBatchesResponse = {
       verify_transaction_hash: null,
       sequence_transaction_hash: null,
       number: 5218591,
-      transaction_count: 9,
+      transactions_count: 9,
     },
   ],
   next_page_params: {

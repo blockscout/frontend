@@ -1,5 +1,8 @@
-import { Link } from '@chakra-ui/react';
 import React from 'react';
+
+import type { SmartContractVerificationConfig } from 'types/client/contract';
+
+import { Link } from 'toolkit/chakra/link';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
 import ContractVerificationFieldCompiler from '../fields/ContractVerificationFieldCompiler';
@@ -9,7 +12,7 @@ import ContractVerificationFieldSources from '../fields/ContractVerificationFiel
 const MAIN_SOURCES_TYPES = [ '.vy' as const ];
 const INTERFACE_TYPES = [ '.vy' as const, '.json' as const ];
 
-const ContractVerificationVyperMultiPartFile = () => {
+const ContractVerificationVyperMultiPartFile = ({ config }: { config: SmartContractVerificationConfig }) => {
 
   const interfacesHint = (
     <>
@@ -21,8 +24,8 @@ const ContractVerificationVyperMultiPartFile = () => {
 
   return (
     <ContractVerificationMethod title="Contract verification via Vyper (multi-part files)">
-      <ContractVerificationFieldCompiler isVyper/>
-      <ContractVerificationFieldEvmVersion isVyper/>
+      <ContractVerificationFieldCompiler config={ config } isVyper/>
+      <ContractVerificationFieldEvmVersion isVyper config={ config }/>
       <ContractVerificationFieldSources
         name="sources"
         fileTypes={ MAIN_SOURCES_TYPES }
