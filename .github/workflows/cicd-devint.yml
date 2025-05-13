@@ -22,6 +22,41 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  notify_to_lark:
+    name: Notify to Lark
+    runs-on: ubuntu-latest
+    outputs:
+      version_info: ${{ steps.meta.outputs.version_info }}
+      commit_logs: ${{ steps.meta.outputs.commit_logs }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "Get Github version info"
+        id: meta
+        run: |
+          commit_id=`echo ${GITHUB_SHA} | cut -c1-8`
+          repository_url=${{ github.event.repository.html_url }}
+          version_info="[${{ github.ref_name }}](${repository_url}/tree/${{ github.ref_name }}) (commit=[${commit_id}](${repository_url}/commit/${{ github.sha }}))"
+          echo "version_info=$version_info" >> $GITHUB_OUTPUT
+
+          commit_logs=$(git log ${{ github.event.before }}..${{ github.sha }} --pretty=format:"%h(%an) - %s")
+          echo "commit_logs=$commit_logs" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: "Notify begin message to Lark"
+        uses: kevin-rd/lark-notify@v1.8
+        env:
+          LARK_WEBHOOK: ${{ secrets.LARK_WEBHOOK }}
+        with:
+          header_template: "blue"
+          header_content: ${{ github.repository }} 待部署通知
+          message_env_tag: "devint"
+          message_version: "${{ steps.meta.outputs.version_info }}"
+          message_commit_logs: "${{ steps.meta.outputs.commit_logs }}"
+
+
   publish_image:
     name: Publish Docker Image
     uses: './.github/workflows/publish-image.yml'
@@ -29,20 +64,16 @@ jobs:
     with:
       tags: zkmelabs/blockscout-frontend:develop
 
-  deploy_with_k8s:
-    runs-on: ubuntu-latest
-    needs: publish_image
-    steps:
-      - name: "Deploy new Deployment"
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_DEV }}
-        with:
-          args: -n mechain-dev rollout restart deployment blockscout-frontend
 
-      - name: "Check Deployment"
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_DEV }}
-        with:
-          args: -n mechain-dev rollout status deployment blockscout-frontend --timeout=600s
+  deploy_with_k8s:
+    name: Deploy to devint on k8s
+    uses: './.github/workflows/deploy-to-k8s.yml'
+    needs:
+      - notify_to_lark
+      - publish_image
+    secrets: inherit
+    with:
+      namespace_k8s: mechain-dev
+      release_name: blockscout-frontend
+      version_info: "${{ needs.notify_to_lark.outputs.version_info }}"
+      commit_info: "${{ needs.notify_to_lark.outputs.commit_logs }}"
