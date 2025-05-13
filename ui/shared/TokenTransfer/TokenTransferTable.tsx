@@ -41,7 +41,7 @@ const TokenTransferTable = ({
             <TableColumnHeader width="230px">Token</TableColumnHeader>
             <TableColumnHeader width="160px">Token ID</TableColumnHeader>
             { showTxInfo && (
-              <TableColumnHeader width="260px">
+              <TableColumnHeader width="200px">
                 Txn hash
                 <TimeFormatToggle/>
               </TableColumnHeader>

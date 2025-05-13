@@ -16,7 +16,7 @@ interface Props {
 const TokenTransferTable = ({ items, top, isLoading }: Props) => {
   return (
     <AddressHighlightProvider>
-      <TableRoot minW="1050px" tableLayout="auto">
+      <TableRoot minW="950px" tableLayout="auto">
         <TableHeaderSticky top={ top }>
           <TableRow>
             <TableColumnHeader>

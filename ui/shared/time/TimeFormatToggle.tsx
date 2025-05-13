@@ -15,6 +15,7 @@ const TimeFormatToggle = (props: Props) => {
   return (
     <Tooltip content="Toggle time format">
       <IconButton
+        aria-label="Toggle time format"
         variant="icon_secondary"
         onClick={ settings?.toggleTimeFormat }
         boxSize={ 5 }

@@ -50,11 +50,11 @@ const TxsTable = ({
 
   return (
     <AddressHighlightProvider>
-      <TableRoot minWidth="1030px">
+      <TableRoot minWidth="950px">
         <TableHeaderSticky top={ top }>
           <TableRow>
             <TableColumnHeader width="54px"></TableColumnHeader>
-            <TableColumnHeader width="260px">
+            <TableColumnHeader width="180px">
               Txn hash
               <TimeFormatToggle/>
             </TableColumnHeader>

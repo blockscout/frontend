@@ -45,10 +45,10 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
 
   return (
     <AddressHighlightProvider>
-      <TableRoot minWidth="1130px" fontWeight={ 500 }>
+      <TableRoot minWidth="1070px" fontWeight={ 500 }>
         <TableHeaderSticky top={ top }>
           <TableRow>
-            <TableColumnHeader width="240px">
+            <TableColumnHeader width="180px">
               Block
               <TimeFormatToggle/>
             </TableColumnHeader>
