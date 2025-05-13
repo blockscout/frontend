@@ -23,6 +23,7 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
         <TableRow>
           <TableColumnHeader w="60%">User op hash</TableColumnHeader>
           <TableColumnHeader w="180px">
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader w="140px">Status</TableColumnHeader>

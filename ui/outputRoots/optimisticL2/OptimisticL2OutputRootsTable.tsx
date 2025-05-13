@@ -20,6 +20,7 @@ const OptimisticL2OutputRootsTable = ({ items, top, isLoading }: Props) => {
         <TableRow>
           <TableColumnHeader width="160px">L2 output index</TableColumnHeader>
           <TableColumnHeader width="20%">
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader width="20%">L2 block #</TableColumnHeader>

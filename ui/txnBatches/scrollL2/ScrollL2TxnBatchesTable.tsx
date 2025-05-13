@@ -24,6 +24,7 @@ const ScrollL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader>Committed block</TableColumnHeader>
           <TableColumnHeader>Committed txn hash</TableColumnHeader>
           <TableColumnHeader>
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader>Finalized block</TableColumnHeader>

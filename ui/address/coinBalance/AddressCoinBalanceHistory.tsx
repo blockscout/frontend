@@ -33,6 +33,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
               <TableColumnHeader width="20%">Block</TableColumnHeader>
               <TableColumnHeader width="20%">Txn</TableColumnHeader>
               <TableColumnHeader width="20%">
+                Timestamp
                 <TimeFormatToggle/>
               </TableColumnHeader>
               <TableColumnHeader width="20%" isNumeric pr={ 1 }>Balance { currencyUnits.ether }</TableColumnHeader>

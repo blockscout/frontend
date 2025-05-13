@@ -25,6 +25,7 @@ const ArbitrumL2MessagesTable = ({ items, direction, top, isLoading }: Props) =>
           <TableColumnHeader>Message #</TableColumnHeader>
           <TableColumnHeader>L2 transaction</TableColumnHeader>
           <TableColumnHeader>
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader>Status</TableColumnHeader>

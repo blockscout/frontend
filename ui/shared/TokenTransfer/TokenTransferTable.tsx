@@ -45,6 +45,7 @@ const TokenTransferTable = ({
               <TableColumnHeader width="260px">
                 Txn hash
                 <TextSeparator my={ 2 } color="border.divider"/>
+                Timestamp
                 <TimeFormatToggle/>
               </TableColumnHeader>
             ) }

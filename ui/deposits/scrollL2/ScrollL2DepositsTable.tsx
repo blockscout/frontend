@@ -23,6 +23,7 @@ const ScrollL2DepositsTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader>Index</TableColumnHeader>
           <TableColumnHeader>L1 txn hash</TableColumnHeader>
           <TableColumnHeader>
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader>L2 txn hash</TableColumnHeader>

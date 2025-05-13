@@ -24,6 +24,7 @@ const ArbitrumL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader>Block count</TableColumnHeader>
           <TableColumnHeader>L1 transaction</TableColumnHeader>
           <TableColumnHeader>
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader>Txn count</TableColumnHeader>

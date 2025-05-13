@@ -36,6 +36,7 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
             <TableColumnHeader width="280px">
               Txn hash
               <TextSeparator my={ 2 } color="border.divider"/>
+              Timestamp
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader width="200px">Method</TableColumnHeader>

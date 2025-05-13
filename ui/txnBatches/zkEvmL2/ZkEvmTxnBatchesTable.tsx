@@ -21,6 +21,7 @@ const TxnBatchesTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader width="40%">Batch #</TableColumnHeader>
           <TableColumnHeader width="60%">Status</TableColumnHeader>
           <TableColumnHeader width="180px">
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader width="100px">Txn count</TableColumnHeader>

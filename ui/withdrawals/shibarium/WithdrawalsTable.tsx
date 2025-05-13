@@ -23,6 +23,7 @@ const WithdrawalsTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader>L1 txn hash</TableColumnHeader>
           <TableColumnHeader>User</TableColumnHeader>
           <TableColumnHeader>
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
         </TableRow>

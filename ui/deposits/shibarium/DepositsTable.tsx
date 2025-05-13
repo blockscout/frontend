@@ -23,6 +23,7 @@ const DepositsTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader>L2 txn hash</TableColumnHeader>
           <TableColumnHeader>User</TableColumnHeader>
           <TableColumnHeader>
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
         </TableRow>

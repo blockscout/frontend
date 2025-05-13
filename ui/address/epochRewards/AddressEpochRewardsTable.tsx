@@ -22,6 +22,7 @@ const AddressEpochRewardsTable = ({ items, isLoading, top }: Props) => {
           <TableColumnHeader>
             Block
             <TextSeparator my={ 2 } color="border.divider"/>
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader>Reward type</TableColumnHeader>

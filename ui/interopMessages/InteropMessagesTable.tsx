@@ -21,6 +21,7 @@ const InteropMessagesTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader/>
           <TableColumnHeader>Message</TableColumnHeader>
           <TableColumnHeader>
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader>Status</TableColumnHeader>

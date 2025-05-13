@@ -154,9 +154,10 @@ const AdvancedFilter = () => {
                   >
                     { Boolean(column.name) && (
                       <chakra.span mr={ 2 } lineHeight="24px" verticalAlign="middle">
-                        { column.id === 'age' ? <TimeFormatToggle/> : column.name }
+                        { column.name }
                       </chakra.span>
                     ) }
+                    { column.id === 'age' && <TimeFormatToggle ml={ 0 } mr={ 1 } verticalAlign="middle"/> }
                     <FilterByColumn
                       column={ column.id }
                       columnName={ column.name }

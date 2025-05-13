@@ -53,7 +53,8 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
           <TableColumnHeader width="50%">Language / Compiler version</TableColumnHeader>
           <TableColumnHeader width="80px">Settings</TableColumnHeader>
           <TableColumnHeader width="200px">
-            <TimeFormatToggle relativeText="Verified" absoluteText="Verified"/>
+            Verified
+            <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader width="130px">License</TableColumnHeader>
         </TableRow>

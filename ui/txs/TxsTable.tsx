@@ -58,6 +58,7 @@ const TxsTable = ({
             <TableColumnHeader width="260px">
               Txn hash
               <TextSeparator my={ 2 } color="border.divider"/>
+              Timestamp
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader width="160px">Type</TableColumnHeader>

@@ -21,6 +21,7 @@ const OptimisticL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader>Batch ID</TableColumnHeader>
           <TableColumnHeader>Storage</TableColumnHeader>
           <TableColumnHeader>
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader isNumeric>L1 txn count</TableColumnHeader>

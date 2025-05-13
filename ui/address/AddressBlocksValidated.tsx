@@ -109,6 +109,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
             <TableRow>
               <TableColumnHeader>Block</TableColumnHeader>
               <TableColumnHeader>
+                Timestamp
                 <TimeFormatToggle/>
               </TableColumnHeader>
               <TableColumnHeader>Txn</TableColumnHeader>

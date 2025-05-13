@@ -21,6 +21,7 @@ const OptimisticDepositsTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader>L1 block No</TableColumnHeader>
           <TableColumnHeader>L2 txn hash</TableColumnHeader>
           <TableColumnHeader>
+            Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader>L1 txn hash</TableColumnHeader>

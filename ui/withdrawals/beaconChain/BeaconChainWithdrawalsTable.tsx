@@ -42,7 +42,7 @@ const BeaconChainWithdrawalsTable = ({ items, isLoading, top, view }: Props) => 
           <TableColumnHeader>Validator index</TableColumnHeader>
           { view !== 'block' && <TableColumnHeader>Block</TableColumnHeader> }
           { view !== 'address' && <TableColumnHeader>To</TableColumnHeader> }
-          { view !== 'block' && <TableColumnHeader><TimeFormatToggle/></TableColumnHeader> }
+          { view !== 'block' && <TableColumnHeader>Timestamp<TimeFormatToggle/></TableColumnHeader> }
           <TableColumnHeader>{ `Value ${ feature.currency.symbol }` }</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>

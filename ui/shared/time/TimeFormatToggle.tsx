@@ -1,24 +1,32 @@
 import React from 'react';
 
 import { useSettingsContext } from 'lib/contexts/settings';
-import type { LinkProps } from 'toolkit/chakra/link';
-import { Link } from 'toolkit/chakra/link';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import type { IconButtonProps } from 'toolkit/chakra/icon-button';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import IconSvg from 'ui/shared/IconSvg';
 
-interface Props extends LinkProps {
-  relativeText?: string;
-  absoluteText?: string;
-}
+interface Props extends IconButtonProps {}
 
-const TimeFormatToggle = ({ relativeText, absoluteText, ...props }: Props) => {
+const TimeFormatToggle = (props: Props) => {
   const settings = useSettingsContext();
   const timeFormat = settings?.timeFormat || 'relative';
 
-  const text = timeFormat === 'relative' ? relativeText || 'Age' : absoluteText || 'Time and date (UTC)';
-
   return (
-    <Link onClick={ settings?.toggleTimeFormat } variant="secondary" textDecoration="underline dashed" { ...props }>
-      { text }
-    </Link>
+    <Tooltip content="Toggle time format">
+      <IconButton
+        variant="icon_secondary"
+        onClick={ settings?.toggleTimeFormat }
+        boxSize={ 5 }
+        selected={ timeFormat === 'absolute' }
+        borderRadius="sm"
+        ml={ 2 }
+        verticalAlign="bottom"
+        { ...props }
+      >
+        <IconSvg name="clock-light" boxSize="14px"/>
+      </IconButton>
+    </Tooltip>
   );
 };
 

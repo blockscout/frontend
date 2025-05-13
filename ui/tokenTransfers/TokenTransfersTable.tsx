@@ -23,6 +23,7 @@ const TokenTransferTable = ({ items, top, isLoading }: Props) => {
             <TableColumnHeader>
               Txn hash
               <TextSeparator my={ 2 } color="border.divider"/>
+              Timestamp
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader>Method</TableColumnHeader>

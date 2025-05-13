@@ -22,9 +22,10 @@ const InternalTxsTable = ({ data, currentAddress, isLoading }: Props) => {
       <TableRoot minW="900px">
         <TableHeaderSticky top={ 68 }>
           <TableRow>
-            <TableColumnHeader width="320px">
+            <TableColumnHeader width="280px">
               Parent txn hash
               <TextSeparator my={ 2 } color="border.divider"/>
+              Timestamp
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader width="15%">Type</TableColumnHeader>

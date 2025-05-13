@@ -52,6 +52,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
             <TableColumnHeader width="240px">
               Block
               <TextSeparator my={ 2 } color="border.divider"/>
+              Timestamp
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader width="120px">Size, bytes</TableColumnHeader>
