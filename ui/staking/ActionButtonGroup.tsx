@@ -56,19 +56,25 @@ const dropIcon = (
 )
 
 const ActionButtonGroup = ({
+    validatorAddress = '',
     showClaim = false,
     showStake = false,
     disableClaim = false,
     disableStake = false,
-    onClaim = no_op,
-    onStake = no_op,
+    handleWithdraw = no_op,
+    handleMoveStake = no_op,
+    handleStake = no_op,
+    handleClaim = no_op,
 }: {
     showClaim?: boolean,
     showStake?: boolean,
     disableClaim?: boolean,
     disableStake?: boolean,
-    onClaim?: () => void,
-    onStake?: () => void,
+    validatorAddress?: string,
+    handleWithdraw?: (address: string) => void,
+    handleMoveStake?: (address: string) => void,
+    handleStake?: (address: string) => void,
+    handleClaim?: (address: string) => void,
 }) => {
 
     return (
@@ -90,14 +96,18 @@ const ActionButtonGroup = ({
                 { showClaim && 
                     <PlainButton
                         text={ 'Claim' }
-                        onClick={ onClaim }
+                        onClick={ () => {
+                            !disableClaim && handleClaim(validatorAddress) 
+                        }}
                         disabled={ disableClaim }
                     />
                 }
                 { showStake && 
                     <PlainButton
                         text={ 'Stake' }
-                        onClick={ onStake }
+                        onClick={ () => {
+                            !disableStake && handleStake(validatorAddress)
+                        }}
                         disabled={ disableStake }
                     />
                 }
@@ -138,11 +148,18 @@ const ActionButtonGroup = ({
                         fontFamily="HarmonyOS Sans"
                     >
                         <MenuItem
-                            
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleWithdraw(validatorAddress);
+                            }}
                             _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             >Withdraw</MenuItem>
                         <MenuItem
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleMoveStake(validatorAddress);
+                            }}
                             _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             >Move Stake</MenuItem>

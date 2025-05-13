@@ -129,12 +129,14 @@ const InfoBox = ({
 }: {
     overViewInfo: {
         totalStake: string;
-        liveApr: string;
+        commissionRate?: string;
+        validatorStake?: string;
         uptime: string;
-        commissionRate: string;
-        validatorStake: string;
-        validatorRewards: string;
         blocksValidated: string;
+        validatorRewards ?: string;
+        liveApr?: string;
+        validator?: string;
+        status?: string;
     };
     isDetailInfoLoading: boolean;
 }) => {

@@ -13,7 +13,13 @@ import {
 import React from 'react';
 
 
-const StakingModalNumberInput = () => {
+const StakingModalNumberInput = ({
+    value,
+    setValue,
+}: {
+    value: string;
+    setValue: (value: string) => void;
+}) => {
 
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
@@ -25,6 +31,8 @@ const StakingModalNumberInput = () => {
           pb='44px'
           height={'auto'}
           type={'number'}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
           style={{
             color: '#FF57B7 !important',
           }}

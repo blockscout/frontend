@@ -45,16 +45,24 @@ const icon_no_order = (
 );
 
 
+const getShortAddress = (address: string) => {
+    if (address.length > 10) {
+        return `${address.slice(0, 5)}...${address.slice(-5)}`;
+    }
+    return address;
+}
+
+
 const tableHead: tableHeadType[] = [
     {
         label: 'Validators',
         key: 'validator',
-        width : '400px',
+        width : '300px',
         render: (record) => (
             <LinkInternal
                 href={ route({ pathname: '/validator-detail/[addr]', query: { addr: record.validator } }) }
             >
-                { record.validator }
+                { getShortAddress(record.validator) }
             </LinkInternal>
         )
     },
@@ -67,20 +75,20 @@ const tableHead: tableHeadType[] = [
     {
         label: 'Commission Rate',
         key: 'commissionRate',
-        tips: 'Validator name',
-        minWidth: '300px',
+        tips: 'The fee percentage a node operator charges on staking rewards.',
+        width: '220px',
         allowSort: true,
     },
     {
         label: 'Live APR',
-        tips: 'Validator name',
+        tips: 'Current annualized return from staking on the node.',
         key: 'liveApr',
         allowSort: true,
     },
     {
         label: 'Total Stake',
         key: 'totalStake',
-        tips: 'Validator name',
+        tips: 'Total tokens staked on a node',
         allowSort: true,
     },
     {
@@ -92,6 +100,7 @@ const tableHead: tableHeadType[] = [
     {
         label: 'Status',
         key: 'status',
+        tips: 'Percentage of time the node remains active and reliable',
         allowSort: false,
         render: (record) => (
             <StatusButton
@@ -201,20 +210,24 @@ const CustomTableHeader = ({
 }
 
 
-const ActivityListTable = (props: {
+const TableApp = (props: {
     data: any;
     isLoading: boolean;
-    onPageChange: (page: number) => void;
-    onPageSizeChange: (pageSize: number) => void;
-    onSortChange: (sortBy: string, sortOrder: string) => void;
+    totalCount: number;
+    currentPage: number;
+    onJumpPrevPage: () => void;
+    onJumpNextPage: () => void;
+    nextKey: string | null;
 }) => {
 
     const {
         data,
         isLoading,
-        onPageChange,
-        onPageSizeChange,
-        onSortChange
+        currentPage,
+        onJumpPrevPage,
+        onJumpNextPage,
+        totalCount,
+        nextKey
     } = props;
 
     const [sortBy, setSortBy] = React.useState<string>('');
@@ -241,6 +254,7 @@ const ActivityListTable = (props: {
                 <CustomTableHeader 
                     key={index}
                     width={ item.width }
+                    minWidth={ item.minWidth }
                     allowSort={ item.allowSort }
                     sortKey = { sortBy }
                     sortOrder = { sortOrder }
@@ -259,69 +273,77 @@ const ActivityListTable = (props: {
         </Tr>
     );
 
-
-    if (isLoading) {
-        return (
-            <div>
-                Loading...
-            </div>
-        );
-    }
-
-
     return (
         <div style={{
                 width: '100%',
                 height: 'auto',
                 overflowX: 'auto',
                 overflowY: 'hidden',
-                borderRadius: '5px',
                 backgroundColor: '#fff',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
                 alignItems: 'flex-start',
+                border: 'solid 1px rgba(0, 0, 0, 0.06)',
+                borderRadius: '12px',
+                padding: '24px'
             }}
         >
-            <Table variant="simple">
-                <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
-                    { tableHeaders }
-                </Thead>
-                <Tbody>
-                    {sortedData.map((validator: any, index: number) => (
-                        <Tr key={index}
-                            borderBottom={'none'}
-                            _last={{ borderBottom: 'none' }} 
-                            _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
-                            onClick={() => handleRowClick(validator)}
-                        >
-                            { tableHead.map((item: tableHeadType, index: number) => (
-                                <Td
-                                    key={index}
-                                    p="14px 10px 10px 10px"
-                                    color="rgba(0, 0, 0, 0.6)"
-                                    borderBottom={'none'} _last={{ borderBottom: 'none' }} 
-                                    onClick={() => handleRowClick(validator)}
-                                >
-                                    {item.render ? item.render(validator) : validator[item.key]}
-                                </Td>
-                            ))}
-                        </Tr>
-                    ))}
-                </Tbody>
-            </Table>
+            { isLoading ? (
+                <div style={{ width: '100%', height: 'auto', 
+                    display: 'flex', minHeight: '200px',
+                        justifyContent: 'center', alignItems: 'center', marginTop: '16px'}}>
+                    <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#FFCBEC' }}></div>
+                </div>
+                ) : (
+                <Table variant="simple">
+                    <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
+                        { tableHeaders }
+                    </Thead>
+                    <Tbody>
+                        {sortedData.map((validator: any, index: number) => (
+                            <Tr key={index}
+                                borderBottom={'none'}
+                                _last={{ borderBottom: 'none' }} 
+                                _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
+                                onClick={() => handleRowClick(validator)}
+                            >
+                                { tableHead.map((item: tableHeadType, index: number) => (
+                                    <Td
+                                        key={index}
+                                        p="14px 10px 10px 10px"
+                                        color="rgba(0, 0, 0, 0.6)"
+                                        borderBottom={'none'} _last={{ borderBottom: 'none' }} 
+                                        onClick={() => handleRowClick(validator)}
+                                    >
+                                        {item.render ? item.render(validator) : validator[item.key]}
+                                    </Td>
+                                ))}
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+            )}
             {/* page, onNextPageClick, onPrevPageClick, resetPage, hasPages, hasNextPage, className, canGoBackwards, isLoading, isVisible  */}
             <Flex
                 justifyContent="flex-end"
                 alignItems="center"
                 zIndex='200'
                 width="100%"
+                marginTop={ '16px'}
             >
-                <Pagination />
+                <Pagination 
+                    totalCount={ props.totalCount }
+                    currentPage={ currentPage }
+                    onJumpPrevPage={ onJumpPrevPage }
+                    onJumpNextPage={ onJumpNextPage }
+                    isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
+                    isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
+                />
             </Flex>
         </div>
     );
 }
 
 
-export default ActivityListTable;
+export default TableApp;

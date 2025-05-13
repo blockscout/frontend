@@ -12,9 +12,7 @@ import { getEnvValue } from 'configs/app/utils';
 import WithTipsText from 'ui/validators/WithTipsText';
 import TableFilter from 'ui/validators/TableFilter';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
-
-const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
-
+import { getFormatterFloat } from 'ui/staking/numberFormat';
 
 type RequestType = {
   has_next: boolean;
@@ -46,26 +44,79 @@ type IssuanceTalbeListType = {
   'Fee MOCA': string;
 };
 
-const ObjectDetails: NextPage = () => {
-  const [ queryParams, setQueryParams ] = React.useState<{ offset: number; searchTerm: string; page: number }>({
-    offset: 0,
-    searchTerm: '',
+type ValidatorQueryParams = {
+  /** 验证者状态过滤，支持数字或字符串类型 */
+  status?: number | 'active' | 'inactive' | 'unbonding';
+
+  /** 分页键，用于获取下一页数据 */
+  nextKey?: string; // 默认值 '0x00'
+
+  page?: number; // 默认值 1
+
+  /** 每页返回的验证者数量 */
+  limit?: number; // 默认值 10
+
+  /** 是否返回总记录数 */
+  countTotal?: boolean; // 默认值 true
+
+  /** 是否按投票权重倒序排列 */
+  reverse?: boolean; // 默认值 true
+};
+
+
+const icon_link = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+    <path fillRule="evenodd" clipRule="evenodd" d="M2.55001 3.30001C2.30148 3.30001 2.10001 3.50148 2.10001 3.75001V8.85001C2.10001 9.09854 2.30148 9.30001 2.55001 9.30001H7.65001C7.89854 9.30001 8.10001 9.09854 8.10001 8.85001V6.45001C8.10001 6.20148 8.30148 6.00001 8.55001 6.00001C8.79854 6.00001 9.00001 6.20148 9.00001 6.45001V8.85001C9.00001 9.5956 8.3956 10.2 7.65001 10.2H2.55001C1.80443 10.2 1.20001 9.5956 1.20001 8.85001V3.75001C1.20001 3.00443 1.80443 2.40001 2.55001 2.40001H5.55001C5.79854 2.40001 6.00001 2.60148 6.00001 2.85001C6.00001 3.09854 5.79854 3.30001 5.55001 3.30001H2.55001Z" 
+    fill="#FF57B7"/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M3.71632 7.65192C3.88306 7.83622 4.16763 7.85044 4.35192 7.6837L9.90001 2.664V4.35001C9.90001 4.59854 10.1015 4.80001 10.35 4.80001C10.5985 4.80001 10.8 4.59854 10.8 4.35001V1.65001C10.8 1.40148 10.5985 1.20001 10.35 1.20001H7.65001C7.40148 1.20001 7.20001 1.40148 7.20001 1.65001C7.20001 1.89854 7.40148 2.10001 7.65001 2.10001H9.18192L3.7481 7.01632C3.56381 7.18306 3.54958 7.46763 3.71632 7.65192Z" fill="#FF57B7"/>
+  </svg>
+)
+
+const InfoNumberWrapper = ({
+  number
+}: {
+  number: string | number;
+}) => {
+  return (
+    <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">
+      { getFormatterFloat(number) }
+    </Text>
+  );
+}
+
+
+const AllValidatorPage: NextPage = () => {
+
+
+  const limit = 100;
+
+  const [ queryParams, setQueryParams ] = React.useState<{ 
+    status?: ValidatorQueryParams['status'];
+    nextKey?: string;
+    page?: ValidatorQueryParams['page'];
+    limit?: ValidatorQueryParams['limit'];
+    countTotal?: ValidatorQueryParams['countTotal'];
+    reverse?: ValidatorQueryParams['reverse'];
+  }>({
+    nextKey: '',
     page: 1,
   });
 
-  const updateQueryParams = (newParams: Partial<{ offset: number; searchTerm: string; page: number }>) => {
-    setQueryParams(prevParams => ({
+  const updateQueryParams = (newParams: Partial<ValidatorQueryParams>) => {
+    setQueryParams((prevParams) => ({
       ...prevParams,
       ...newParams,
     }));
-  };
+  }
 
   const [ toNext, setToNext ] = React.useState<boolean>(true);
-
   const [ tableList, setTableList ] = React.useState<Array<IssuanceTalbeListType>>([]);
-
-
   const [ isOverviewStatsLoading, setIsOverviewStatsLoading ] = React.useState<boolean>(false);
+
+  const [ isActiveOnly, setIsActiveOnly ] = React.useState<boolean>(false);
+  const [ searchValue, setSearchValue ] = React.useState<string>('');
+  const [ totalCount, setTotalCount ] = React.useState<number>(0);
+
 
 
   // const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
@@ -78,59 +129,27 @@ const ObjectDetails: NextPage = () => {
 
   const [ totalDelegators, setTotalDelegators ] = React.useState<number>(0);
   const [ totalValidators, setTotalValidators ] = React.useState<number>(0);
-  const [ totalStaked, setTotalStaked ] = React.useState<any>(null);
+  const [ totalStaked, setTotalStaked ] = React.useState<any>(0);
   const [ totalEpoch, setTotalEpoch ] = React.useState<any>({});
+  
+  const [ nextKey , setNextKey ] = React.useState<string>('0x00');
+  const [ currentPage, setCurrentPage ] = React.useState<number>(1);
 
   const [ tableDataList, setTableDataList ] = React.useState<Array<any>>([]);
   const [ isTableLoading, setIsTableLoading ] = React.useState<boolean>(false);
 
   const handleSearchChange = () => () => {};
 
-  function truncateToSignificantDigits(numberStr: string, significantDigits: number) {
-    const num = new BigNumber(numberStr);
-    if (num.isZero()) return num;
-
-    const exponent = num.e || 0;
-
-    let decimalPlaces;
-    if (num.abs().isLessThan(1)) {
-      decimalPlaces = Math.abs(exponent) + significantDigits - 1;
-    } else {
-      const integerDigits = exponent + 1;
-      decimalPlaces = Math.max(significantDigits - integerDigits, 0);
-    }
-
-    return num.decimalPlaces(decimalPlaces, BigNumber.ROUND_DOWN);
-  }
-
-  const request = React.useCallback(async(hash?: string) => {
-    try {
-      setLoading(true);
-      const rp1 = await (await fetch(url + `/api/v1/explorer/issuancestitle${ hash ? `?cursor=${ hash }` : '' }`,
-        { method: 'get' })).json() as RequestType;
-      const tableList: Array<IssuanceTalbeListType> = [];
-      orderBy(rp1.title_data, [ 'transaction_status' ]).forEach((v: any) => {
-        tableList.push({
-          'Credential ID': v.credential_id || '/',
-          'Txn hash': v.tx_hash,
-          Block: v.block_number,
-          Method: v.method,
-          'From/To': [ v.from_address, v.to_address ],
-          Time: v.tx_time,
-          'Value MOCA': v.tx_value,
-          'Fee MOCA': truncateToSignificantDigits(BigNumber(v.tx_fee / 1e18).toString(10), 3).toString(10),
-        });
+  const filteredList = React.useMemo(() => {
+    const _ = searchValue.toLowerCase();
+    if (searchValue.trim()) {
+      return tableDataList.filter((item: any) => {
+        const searchString = searchValue.toLowerCase();
+        return (item.validator || "").toLowerCase().includes(_)
       });
-      setNextCursor(rp1.next_cursor);
-      setpreviousCursor(rp1?.previous_cursor || '');
-      setToNext(rp1.has_next);
-      setTableList(tableList);
-      setLoading(false);
-    } catch (error: any) {
-      setLoading(false);
-      throw Error(error);
     }
-  }, [ url ]);
+    return tableDataList;
+  }, [ tableDataList, searchValue ]);
 
 
 
@@ -154,7 +173,6 @@ const ObjectDetails: NextPage = () => {
     }
     catch (error: any) {
       setIsOverviewStatsLoading(false);
-      throw Error(error);
     }
   }
   , [ url ]);
@@ -163,33 +181,26 @@ const ObjectDetails: NextPage = () => {
   const requestTableList = React.useCallback(async() => {
     try {
       setIsTableLoading(true);
-      const res = await (await fetch(url + '/api/network/validators/list', { method: 'get' })).json() as any
+      const param = new URLSearchParams();
+      param.append('limit', limit.toString());
+      param.append('nextKey', queryParams.nextKey || '0x00');
+      if (isActiveOnly) {
+        param.append('status', 'active');
+      }
+      const res = await (await fetch(url + `/api/network/validators/list?${param.toString()}`, { method: 'get' })).json() as any;
       setIsTableLoading(false);
       if(res && res.code === 200) {
         setTableDataList(res.data.validators);
+        setTotalCount(res.data.pagination.total);
+        setNextKey(res.data.pagination.nextKey);
+        setCurrentPage( queryParams.page || 1 );
       }
     }
     catch (error: any) {
       setIsTableLoading(false);
-      throw Error(error);
     }
   }
-  , [ url ]);
-  
-  const propsPage = React.useCallback((value: number) => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-    if (value > queryParams.page) {
-      request(nextCursor);
-    } else {
-      request(previousCursor);
-    }
-    updateQueryParams({
-      page: value,
-    });
-  }, [ queryParams.page, request, nextCursor, previousCursor ]);
+  , [ url , isActiveOnly, queryParams.nextKey ]);
 
 
   React.useEffect(() => {
@@ -207,7 +218,8 @@ const ObjectDetails: NextPage = () => {
 
       let result = '';
       if (days > 0) result += `${days} d `;
-      result += `${hours} h ${minutes} m`;
+      if (hours > 0) result += `${hours} h `;
+      result += `${minutes} m`;
 
       return result.trim();
   }
@@ -224,7 +236,7 @@ const ObjectDetails: NextPage = () => {
 
           <Button
               onClick={() => {
-                window.open('https://moca.network/staking', '_blank');
+                window.open('https://moca.network', '_blank');
               }}
               px = "6px"
               py = "2px"
@@ -235,6 +247,10 @@ const ObjectDetails: NextPage = () => {
               color="#FF57B7"
               borderRadius={9999}
               backgroundColor="#FEE5F4"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap="2px"
             >
               <Text 
                 fontSize="12px"
@@ -242,7 +258,8 @@ const ObjectDetails: NextPage = () => {
                 lineHeight="140%"
                 color="#FF57B7"
                 fontFamily="Inter"
-              >MOCA Staking</Text>
+              >Staking Tutorial</Text>
+              {icon_link}
           </Button>
       </Flex>
 
@@ -260,7 +277,7 @@ const ObjectDetails: NextPage = () => {
               fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Total Staking</Text> }
             tips={ `Total Amount Staked Across the Blockchain Network` }
           />
-          <Text as={'span'}>{ totalStaked || '-' }</Text>
+          <InfoNumberWrapper  number = { totalStaked || '-' } />
         </Box>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="18px" padding="16px">
           <WithTipsText
@@ -276,7 +293,7 @@ const ObjectDetails: NextPage = () => {
             tips={ `A fixed period in PoS blockchains for validator selection, staking, and reward distribution.` }
           />
           <Flex alignItems="center" justifyContent="space-between">
-              <Text as={'span'}>{ totalEpoch.current || '-' }</Text>
+              <InfoNumberWrapper  number = { totalEpoch.current || '-' } />
               <Box width={"168px"} display="flex" alignItems="center" justifyContent="center" flexDirection="column">
                   <Flex alignItems="center" justifyContent="space-between" width="100%" userSelect="none">
                       <Text fontSize="12px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
@@ -308,7 +325,7 @@ const ObjectDetails: NextPage = () => {
               fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Validators</Text> }
             tips={ `Node operator responsible for verifying transactions, securing the blockchain, and earning staking rewards.` }
           />
-          <Text>{ totalValidators || '0' }</Text>
+          <InfoNumberWrapper number = { totalValidators || '0' } />
         </Box>
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
           <WithTipsText
@@ -323,30 +340,40 @@ const ObjectDetails: NextPage = () => {
               fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Delegators</Text> }
             tips={ `Individual who stakes their tokens with a validator, earning rewards without running a node directly.` }
           />
-          <Text as={'span'}>{ totalDelegators || '0' }</Text>
+          <InfoNumberWrapper number = { totalDelegators || '0' } />
         </Box>
       </Grid>
-
-      {/* <InfoBox /> */}
-
-      {/* <TabChart /> */}
-
-
-      <TableFilter />
+      <TableFilter 
+          totalCount = { totalCount }
+          isActiveOnly = { isActiveOnly }
+          setIsActiveOnly = {  (value: boolean) => {
+            setIsActiveOnly(value);
+            // updateQueryParams({ offset: 0, page: 1 });
+          }}
+          searchValue = { searchValue }
+          setSearchValue = { (value: string) => {
+            setSearchValue(value);
+            // updateQueryParams({ offset: 0, page: 1 });
+          }}
+      />
 
       <ValidatorsTable 
-        data={ tableDataList }
-        isLoading={ isTableLoading }
-        onPageChange={ propsPage }
-        onPageSizeChange={ (pageSize: number) => {
-          updateQueryParams({ offset: 0, page: 1 });
-        } }
-        onSortChange={ (sortBy: string, sortOrder: string) => {
-          updateQueryParams({ offset: 0, page: 1 });
-        } }
+          data={ filteredList }
+          nextKey={ nextKey }
+          isLoading={ isTableLoading }
+          totalCount={ totalCount }
+          currentPage={ currentPage }
+          onJumpPrevPage={ () => {
+              setToNext(false);
+              updateQueryParams({ nextKey: nextKey, page: currentPage - 1 });
+          }}
+          onJumpNextPage={ () => {
+              setToNext(true);
+              updateQueryParams({ nextKey: nextKey , page: currentPage + 1 });
+          }}
       />
     </PageNextJs>
   );
 };
 
-export default React.memo(ObjectDetails);
+export default React.memo(AllValidatorPage);

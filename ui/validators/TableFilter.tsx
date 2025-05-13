@@ -3,7 +3,19 @@
 import { Box, Flex, Switch , Grid, Text } from '@chakra-ui/react';
 import SearchInput from 'ui/validators/SearchInput';
 
-const TableFilter = () => {
+const TableFilter = ({
+  totalCount = 0,
+  isActiveOnly,
+  setIsActiveOnly,
+  searchValue,
+  setSearchValue,
+}: {
+  totalCount: number;
+  isActiveOnly: boolean;
+  setIsActiveOnly: (value: boolean) => void;
+  searchValue: string;
+  setSearchValue: (value: string) => void;
+}) => {
     return (
     <Box
         width="100%"
@@ -34,6 +46,7 @@ const TableFilter = () => {
                               height="42px"
                               border="solid 1px rgba(0, 46, 51, 0.10)"
                               padding = "0 16px"
+                              gap="12px"
                               borderRadius={'9999px'}
                             >
                                 <Text
@@ -51,7 +64,7 @@ const TableFilter = () => {
                                   fontStyle="normal"
                                   as={'span'}
                                   textTransform="capitalize"
-                                  fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">300</Text>
+                                  fontFamily="HarmonyOS Sans" fontWeight="500" color="#A80C53"> { totalCount } </Text>
                           </Box>
                     </Box>
                     <Box
@@ -74,7 +87,7 @@ const TableFilter = () => {
                                 textTransform="capitalize"
                                 userSelect={"none"}
                                 fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Active Validators Only</Text>
-                            <Switch  colorScheme='pink'/>
+                            <Switch  colorScheme='pink' checked={ isActiveOnly } onChange={ (e) => setIsActiveOnly(e.target.checked) }/>
                         </Flex>
                     </Box>
                 </Flex>
@@ -83,9 +96,9 @@ const TableFilter = () => {
                   height="auto"
                 >
                     <SearchInput 
-                        onChange={ () => {}}
+                        onChange={(searchTerm) => setSearchValue(searchTerm)}
+                        initialValue={ searchValue }
                         placeholder="Search for Validators"
-                        initialValue={ ''}
                         isLoading={ false }
                         type="text"
                         name="search"

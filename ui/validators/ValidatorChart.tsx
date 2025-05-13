@@ -11,7 +11,7 @@ const TabChart = () => {
             <Tabs 
                 variant="solid-rounded"
             >
-                <div 
+                {/* <div 
                     style={{
                         position: 'relative',
                         width: '100%',
@@ -73,19 +73,19 @@ const TabChart = () => {
                             transform: 'translateY(-50%)',
                             justifyContent: 'flex-start',
                         }}>
-                            你好
+                            <span> </span>
                     </div>
-                </div>
+                </div> */}
 
                 <TabPanels color="#000" >
                     <TabPanel>
-                        <p>1111</p>
+                        <p></p>
                     </TabPanel>
                     <TabPanel>
-                        <p>22222!</p>
+                        <p></p>
                     </TabPanel>
                     <TabPanel>
-                        <p>342352352</p>
+                        <p></p>
                     </TabPanel>
                 </TabPanels>
             </Tabs>

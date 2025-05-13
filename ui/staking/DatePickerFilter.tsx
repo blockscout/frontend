@@ -4,8 +4,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { Button , Flex } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-
-
+import PlainButton from './PlainButton';
 
 const icon_calendar = (
     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
@@ -112,26 +111,31 @@ const DatePickerFilter = () => {
                             <Flex 
                                 justifyContent='flex-end'
                                 alignItems="center"
-                                padding="8px 0"
+                                padding="12px 0"
                                 gap="8px"
                                 width="100%"
                             >
-                                <Button
+                                <PlainButton 
+                                    text={ "Cancel" }
                                     onClick={ handleCancelSelect }
-                                    variant="solid"
-                                    size="sm"
-                                    colorScheme="gray"
-                                >
-                                    Cancel
-                                </Button>
-                                <Button
+                                    disabled={ false }
+                                    width="48px"
+                                    height="24px"
+                                    bgColor="transparent"
+                                    disabledBgColor="transparent"
+                                    textColor="#FF57B7" 
+                                    fontSize="12px"
+                                    disabledTextColor="rgba(255, 87, 183, 0.5)"
+                                />
+                                <PlainButton 
+                                    text={ "OK" }
                                     onClick={ handleConfirmSelect }
-                                    variant="solid"
-                                    size="sm"
-                                    colorScheme="pink"
-                                >
-                                    Confirm
-                                </Button>
+                                    disabled={ false }
+                                    isSubmitting={ false }
+                                    width="48px"
+                                    height="24px"
+                                    fontSize="12px"
+                                />
                             </Flex>
                         )}
                     />

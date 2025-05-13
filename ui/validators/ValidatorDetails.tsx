@@ -9,27 +9,36 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { formatPubKey } from 'ui/storage/utils';
 import { Flex, Box, Tooltip } from '@chakra-ui/react';
-// {
-//     totalStake: string;
-//     liveApr: string;
-//     uptime: string;
-//     commissionRate: string;
-//     validatorStake: string;
-//     validatorRewards: string;
-//     blocksValidated: string;
-// };
+
 
 type OverViewInfoType = {
     totalStake: string;
-    commissionRate: string;
-    validatorStake: string;
+    commissionRate?: string;
+    validatorStake?: string;
     uptime: string;
     blocksValidated: string;
-    validatorRewards : string;
-    liveApr: string;
+    validatorRewards ?: string;
+    liveApr?: string;
+    validator?: string;
+    status?: string;
 }
 
-const  ValidatorDetails = () => {
+
+type ValidatorQueryParams = {
+  /** 验证者状态过滤，支持数字或字符串类型 */
+  status?: number | 'active' | 'inactive' | 'unbonding';
+  /** 分页键，用于获取下一页数据 */
+  nextKey?: string; // 默认值 '0x00'
+  page?: number; // 默认值 1
+  /** 每页返回的验证者数量 */
+  limit?: number; // 默认值 10
+  /** 是否返回总记录数 */
+  countTotal?: boolean; // 默认值 true
+  /** 是否按投票权重倒序排列 */
+  reverse?: boolean; // 默认值 true
+};
+
+const ValidatorDetails = () => {
 
     const router = useRouter();
     const addr = getQueryParamString(router.query.addr);
@@ -38,10 +47,9 @@ const  ValidatorDetails = () => {
     const [ isDetailInfoLoading, setIsDetailInfoLoading ] = React.useState(false);
     const [ isDelegatorsInfoLoading, setIsDelegatorsInfoLoading ] = React.useState(false);
 
-    const [ delegatorsTablePage, setDelegatorsTablePage ] = React.useState(1);
-    const [ delegatorsTableNextPage, setDelegatorsTableNextPage ] = React.useState(0);
-
     const [ overViewInfo , setOverViewInfo ] = React.useState({} as OverViewInfoType);
+    
+    
 
     const requestBasicDetailInfo = React.useCallback(async( _addr : string) => {
         try {
@@ -49,17 +57,27 @@ const  ValidatorDetails = () => {
             const res = await (await fetch(url + '/api/network/validators/details/' + _addr, { method: 'get' })).json() as any
             setIsDetailInfoLoading(false);
             if(res && res.code === 200) {
-                // const { validator, status, totalStake, commissionRate, validatorStake, uptime, blocksValidated, liveApr } = res.data;
-                // setOverViewInfo({
-                //     validator: validator,
-                //     status: status,
-                //     totalStake: totalStake,
-                //     commissionRate: commissionRate,
-                //     validatorStake: validatorStake,
-                //     uptime: uptime,
-                //     blocksValidated: blocksValidated,
-                //     liveApr: liveApr
-                // });
+                const {
+                    validator,
+                    status,
+                    totalStake,
+                    commissionRate,
+                    validatorStake,
+                    uptime,
+                    blocksValidated,
+                    liveApr,
+                    validatorRewards
+                } = res.data;
+                setOverViewInfo({
+                    validator: validator,
+                    status: status,
+                    totalStake: totalStake,
+                    commissionRate: commissionRate,
+                    validatorStake: validatorStake,
+                    uptime: uptime,
+                    blocksValidated: blocksValidated,
+                    liveApr: liveApr
+                });
                 const uploadProperties = res.uploadProperties;
             }
         }
@@ -70,33 +88,18 @@ const  ValidatorDetails = () => {
     }
     , [ url, addr]);
 
-    const requestDelegatorsInfo = React.useCallback(async( _addr : string) => {
-        try {
-            setIsDelegatorsInfoLoading(true);
-            const res = await (await fetch(url + '/api/network/validators/delegations/' + _addr, { method: 'get' })).json() as any
-            setIsDelegatorsInfoLoading(false);
-            if(res && res.code === 200) {
-                console.log(res.data);
-            }
-        }
-        catch (error: any) {
-            setIsDelegatorsInfoLoading(false);
-            throw Error(error);
-        }
-    }
-    , [ url, addr]);
-    
+
 
     useEffect(() => {
         if (!!addr) {
             requestBasicDetailInfo(addr);
-            requestDelegatorsInfo(addr);
         }
-    }, [ addr, requestBasicDetailInfo, requestDelegatorsInfo]);
+    }, [ addr, requestBasicDetailInfo]);
 
     const routerFallback = () => () => {
         router.back();
     };
+    
 
     return (
         <div>
@@ -119,7 +122,7 @@ const  ValidatorDetails = () => {
                             marginBottom="4"
                             as ="span"
                         >
-                            MOCA Labs
+                            <span></span>
                         </Text>
                         <Text
                             marginBottom="4"
@@ -136,7 +139,7 @@ const  ValidatorDetails = () => {
                     </Flex>
             </Tooltip>
             <ValidatorInfoBox overViewInfo={ overViewInfo } isDetailInfoLoading={ isDetailInfoLoading } />
-            <ValidatorBox />
+            <ValidatorBox address={ addr } />
         </div>
     );
 }

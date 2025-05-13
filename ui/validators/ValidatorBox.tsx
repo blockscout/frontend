@@ -4,9 +4,17 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import ValidatorChart from 'ui/validators/ValidatorChart';
-import ValidatorDelegator from 'ui/validators/ValidatorDelegator';
+import DelegatorsTable from 'ui/validators/DelegatorsTable';
 
-const TabChart = () => {
+const TabChart = ({
+    address
+}: {
+    address: string;
+}) => {
+
+    const [ activitiesCount, setActivitiesCount ] = React.useState(0);
+    const [ delegatorsCount, setDelegatorsCount ] = React.useState(0);
+
 
     return (
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px">
@@ -19,7 +27,7 @@ const TabChart = () => {
                     <TabList padding={'20px 10px 0 24px'} borderBottom="1px solid rgba(0, 0, 0, 0.06)">
                         <Tab>Analytics</Tab>
                         <Tab>Validator Activities</Tab>
-                        <Tab>Delegators</Tab>
+                        <Tab>{`Delegators (${delegatorsCount})`}</Tab>
                     </TabList>
                     {/* <div style={{ 
                         display: 'flex', 
@@ -41,10 +49,16 @@ const TabChart = () => {
                         </p>
                     </TabPanel>
                     <TabPanel>
-                        <p>22222!</p>
+                        <span>
+                            
+                        </span>
                     </TabPanel>
                     <TabPanel>
-                        <ValidatorDelegator />
+                        <DelegatorsTable 
+                            addr = { address }
+                            totalCount = { delegatorsCount }
+                            setTotalCount = { setDelegatorsCount }
+                        />
                     </TabPanel>
                 </TabPanels>
             </Tabs>

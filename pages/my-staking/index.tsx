@@ -73,9 +73,6 @@ const ObjectDetails: NextPage = () => {
 
   const { address } = useAccount();
 
-  const { token } = useStakeLoginContextValue();
-
-
   const handleSearchChange = () => () => {};
 
   function truncateToSignificantDigits(numberStr: string, significantDigits: number) {
@@ -151,7 +148,6 @@ const ObjectDetails: NextPage = () => {
           method: 'get',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${ token }`,
           },
         })).json() as  any;
       if(res && res.code === 200) {
@@ -168,22 +164,21 @@ const ObjectDetails: NextPage = () => {
 
 
     const requestMyStakingTableList = React.useCallback(async() => {
-    try {
-      setLoading(true);
-      const res = await (await fetch(url + '/api/me/staking/delegations', { 
-          method: 'get',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${ token }`,
-          },
-        })).json() as  any;
-      if(res && res.code === 200) {
-        console.log('res', res);
-      }
-      setLoading(false);
-    } catch (error: any) {
-      setLoading(false);
-    }
+        try {
+          setLoading(true);
+          const res = await (await fetch(url + '/api/me/staking/delegations', { 
+              method: 'get',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            })).json() as  any;
+          if(res && res.code === 200) {
+            console.log('res', res);
+          }
+          setLoading(false);
+        } catch (error: any) {
+          setLoading(false);
+        }
   }, [ url ]);
 
 
@@ -201,11 +196,10 @@ const ObjectDetails: NextPage = () => {
           countTotal: countTotal.toString(),
           reverse: reverse.toString(),
         }).toString();
-        const res = await (await fetch(url + '/api/me/staking/delegations' + '?' + paramStr, {
+        const res = await (await fetch(url + '/api/me/staking/activity' + '?' + paramStr, {
             method: 'get',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${ token }`,
             },
             
           })).json() as  any;
@@ -226,7 +220,6 @@ const ObjectDetails: NextPage = () => {
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${ token }`,
             },
           })).json() as  any;
         if(res && res.code === 200) {

@@ -12,13 +12,7 @@ import {
 import {
   useDisclosure,
 } from '@chakra-ui/react';
-import StakingModal from './StakingModal';
-import StakingValidatorSelect from 'ui/staking/StakingValidatorSelect';
-import StakingModalNumberInput from 'ui/staking/StakingModalNumberInput';
-import SuccessfulContent from 'ui/stakingModal/SuccessfulContent';
-import EarnInfoBox from 'ui/staking/EarnInfoBox';
-import HeadsUpInfo from 'ui/staking/HeadsUpInfo';
-import ModalFooterBtnGroup from 'ui/staking/ModalFooterBtnGroup';
+import CommonModal from './CommonModal';
 import React from 'react';
 
 
@@ -318,45 +312,15 @@ const StakingInfo = ({
                     />
                 </Box>
 
-                <StakingModal isOpen={ isOpen } onClose={ onClose } onOpen={ onOpen }>
-                    <div style={{ maxHeight: '590px'}}>
-                        <StakingValidatorSelect />
-                        <Flex
-                            flexDirection="column"
-                            justifyContent="flex-start"
-                            alignItems="flex-start"
-                            width="100%"
-                            gap="16px"
-                            marginTop="16px"
-                        >
-                            <Box width="100%" height="auto">
-                                <StakingModalNumberInput />
-                            </Box>
-                            <Box width="100%" height="auto">
-                                <EarnInfoBox 
-                                    yearlyEarnings = { 0 }
-                                    monthlyEarnings = { 0 }
-                                    dailyEarnings = { 0 }
-                                />
-                            </Box>
-                            <Box width="100%" height="auto">
-                                <HeadsUpInfo
-                                    label="Heads Up"
-                                    value="You will be charged a 10% fee on your earnings."
-                                />
-                            </Box>
-                            <SuccessfulContent text='Transaction Success' />    
-                        </Flex>
-                    </div>
-                    <ModalFooterBtnGroup
-                        onCancel={ onClose }
-                        onConfirm={ onClose }
-                        cancelText="Cancel"
-                        confirmText="Confirm"
-                        isSubmitting={ true }
-                        isDisabled={ false }
-                    />
-                </StakingModal>
+                <CommonModal 
+                    isOpen = { isOpen }
+                    onClose = { onClose }
+                    title = "Stake More"
+                    content = "Stake More"
+                    onSubmit = { no_op }
+                    onOpen = { onOpen }
+                    isSuccess = { false }
+                />
             </Box>
         </Grid>
     );
