@@ -31,6 +31,18 @@ test('zkSync contract', async({ render, mockEnvs }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('Via contract', async({ render, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.viaRollup);
+  const props = {
+    data: contractMock.via,
+    isLoading: false,
+    addressHash: addressMock.contract.hash,
+  };
+  const component = await render(<ContractDetailsInfo { ...props }/>);
+
+  await expect(component).toHaveScreenshot();
+});
+
 test('stylus rust contract', async({ render, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.zkSyncRollup);
   const props = {

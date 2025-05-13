@@ -41,6 +41,11 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
     [ 'NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS', 'none' ],
   ],
+  ViaRollup: [
+    [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'via' ],
+    [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
+    [ 'NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS', 'none' ],
+  ],
   scrollRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'scroll' ],
     [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],

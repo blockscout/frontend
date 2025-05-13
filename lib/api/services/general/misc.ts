@@ -95,6 +95,9 @@ export const GENERAL_API_MISC_RESOURCES = {
   homepage_zksync_latest_batch: {
     path: '/api/v2/main-page/zksync/batches/latest-number',
   },
+  homepage_via_latest_batch: {
+    path: '/api/v2/main-page/via/batches/latest-number',
+  },
   homepage_arbitrum_latest_batch: {
     path: '/api/v2/main-page/arbitrum/batches/latest-number',
   },
@@ -255,6 +258,7 @@ R extends 'general:homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnB
 R extends 'general:homepage_indexing_status' ? IndexingStatus :
 R extends 'general:homepage_zkevm_latest_batch' ? number :
 R extends 'general:homepage_zksync_latest_batch' ? number :
+R extends 'general:homepage_via_latest_batch' ? number :
 R extends 'general:homepage_arbitrum_latest_batch' ? number :
 R extends 'general:quick_search' ? Array<SearchResultItem> :
 R extends 'general:search' ? SearchResult :

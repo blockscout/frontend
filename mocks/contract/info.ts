@@ -104,6 +104,13 @@ export const zkSync: SmartContract = {
   optimization_runs: 's',
 };
 
+export const via: SmartContract = {
+  ...verified,
+  zk_compiler_version: 'v1.2.5',
+  optimization_enabled: true,
+  optimization_runs: 's',
+};
+
 export const stylusRust: SmartContract = {
   ...verified,
   language: 'stylus_rust',
