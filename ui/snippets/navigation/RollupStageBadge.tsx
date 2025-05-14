@@ -19,7 +19,7 @@ const RollupStageBadge = (props: HTMLChakraProps<'div'>) => {
       const tooltipContent = (
         <>
           The decentralization and maturity of the chain. Learn more at{ ' ' }
-          <Link href="https://l2beat.com" external>
+          <Link href="https://l2beat.com?utm_source=blockscout&utm_medium=explorer" external>
             l2beat.com
           </Link>
         </>
