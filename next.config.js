@@ -44,6 +44,14 @@ const moduleExports = {
       dynamic: 30,
       'static': 180,
     },
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      }
+    }
   },
 };
 
