@@ -131,6 +131,8 @@
 	| "restAPI"
 	| "rocket_xl"
 	| "rocket"
+	| "rollup/stage-1"
+	| "rollup/stage-2"
 	| "RPC"
 	| "scope"
 	| "score/score-not-ok"
