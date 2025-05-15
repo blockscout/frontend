@@ -5,10 +5,10 @@ import { finalized } from './txnBatches';
 
 export const batchData: ArbitrumL2TxnBatch = {
   ...finalized,
-  after_acc: '0xcd064f3409015e8e6407e492e5275a185e492c6b43ccf127f22092d8057a9ffb',
-  before_acc: '0x2ed7c4985eb778d76ec400a43805e7feecc8c2afcdb492dbe5caf227de6d37bc',
-  start_block: 1245209,
-  end_block: 1245490,
+  after_acc_hash: '0xcd064f3409015e8e6407e492e5275a185e492c6b43ccf127f22092d8057a9ffb',
+  before_acc_hash: '0x2ed7c4985eb778d76ec400a43805e7feecc8c2afcdb492dbe5caf227de6d37bc',
+  start_block_number: 1245209,
+  end_block_number: 1245490,
   data_availability: {
     batch_data_container: 'in_blob4844',
   },
@@ -16,10 +16,10 @@ export const batchData: ArbitrumL2TxnBatch = {
 
 export const batchDataAnytrust: ArbitrumL2TxnBatch = {
   ...finalized,
-  after_acc: '0xcd064f3409015e8e6407e492e5275a185e492c6b43ccf127f22092d8057a9ffb',
-  before_acc: '0x2ed7c4985eb778d76ec400a43805e7feecc8c2afcdb492dbe5caf227de6d37bc',
-  start_block: 1245209,
-  end_block: 1245490,
+  after_acc_hash: '0xcd064f3409015e8e6407e492e5275a185e492c6b43ccf127f22092d8057a9ffb',
+  before_acc_hash: '0x2ed7c4985eb778d76ec400a43805e7feecc8c2afcdb492dbe5caf227de6d37bc',
+  start_block_number: 1245209,
+  end_block_number: 1245490,
   data_availability: {
     batch_data_container: 'in_anytrust',
     bls_signature: '0x142577943e30b1ad1b4e40a1c08e00c24a68d6c366f953e361048b7127e327b5bdb8f168ba986beae40cfaf79ea2788004d750555684751e361d6f6445e5c521b45ac93a76da24add241a4a5410ca3a09fa82cf0aafd78801cbd0ad99d5be6b3',
@@ -36,5 +36,18 @@ export const batchDataAnytrust: ArbitrumL2TxnBatch = {
         trusted: true,
       },
     ],
+  },
+};
+
+export const batchDataCelestia: ArbitrumL2TxnBatch = {
+  ...finalized,
+  after_acc_hash: '0xcd064f3409015e8e6407e492e5275a185e492c6b43ccf127f22092d8057a9ffb',
+  before_acc_hash: '0x2ed7c4985eb778d76ec400a43805e7feecc8c2afcdb492dbe5caf227de6d37bc',
+  start_block_number: 1245209,
+  end_block_number: 1245490,
+  data_availability: {
+    batch_data_container: 'in_celestia',
+    height: 4520041,
+    transaction_commitment: '0x3ebe5a43f47fbf69db003e543bb27e4875929ede2fa9a25d09f0bd082d5d20f0',
   },
 };

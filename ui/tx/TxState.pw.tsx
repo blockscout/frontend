@@ -14,7 +14,7 @@ const hooksConfig = {
 };
 
 test('base view +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('tx_state_changes', txStateMock.baseResponse, { pathParams: { hash: txMock.base.hash } });
+  await mockApiResponse('general:tx_state_changes', txStateMock.baseResponse, { pathParams: { hash: txMock.base.hash } });
   const txQuery = {
     data: txMock.base,
     isPlaceholderData: false,

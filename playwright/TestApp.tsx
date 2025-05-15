@@ -1,4 +1,3 @@
-import { ChakraProvider } from '@chakra-ui/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
@@ -14,8 +13,8 @@ import { MarketplaceContext } from 'lib/contexts/marketplace';
 import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { SettingsContextProvider } from 'lib/contexts/settings';
 import { SocketProvider } from 'lib/socket/context';
-import currentChain from 'lib/web3/currentChain';
-import theme from 'theme/theme';
+import { currentChain } from 'lib/web3/chains';
+import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 
 import { port as socketPort } from './utils/socket';
 
@@ -39,6 +38,7 @@ const defaultAppContext = {
     query: {},
     adBannerProvider: 'slise' as const,
     apiData: null,
+    uuid: '123',
   },
 };
 
@@ -72,7 +72,7 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketp
   }));
 
   return (
-    <ChakraProvider theme={ theme }>
+    <ChakraProvider>
       <QueryClientProvider client={ queryClient }>
         <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ socketPort }` : undefined }>
           <AppContextProvider { ...appContext }>

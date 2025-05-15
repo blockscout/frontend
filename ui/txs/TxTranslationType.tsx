@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { TransactionType } from 'types/api/transaction';
 
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
 
 import { camelCaseToSentence } from './noves/utils';
 import TxType from './TxType';
@@ -22,9 +22,9 @@ const TxTranslationType = ({ types, isLoading, translatationType }: Props) => {
   }
 
   return (
-    <Tag colorScheme="purple" isLoading={ isLoading }>
+    <Badge colorPalette="purple" loading={ isLoading }>
       { camelCaseToSentence(translatationType) }
-    </Tag>
+    </Badge>
   );
 
 };

@@ -1,17 +1,25 @@
-import {
-  Box, Flex, Heading, IconButton, Image, Link, Modal, ModalBody,
-  ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tag, Text, useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { MarketplaceAppWithSecurityReport, AppRating } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { nbsp } from 'lib/html-entities';
-import isBrowser from 'lib/isBrowser';
 import * as mixpanel from 'lib/mixpanel/index';
+import { Badge } from 'toolkit/chakra/badge';
+import { Button } from 'toolkit/chakra/button';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogRoot } from 'toolkit/chakra/dialog';
+import { Heading } from 'toolkit/chakra/heading';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { nbsp } from 'toolkit/utils/htmlEntities';
+import { isBrowser } from 'toolkit/utils/isBrowser';
+import { makePrettyLink } from 'toolkit/utils/url';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
@@ -20,7 +28,6 @@ import AppSecurityReport from './AppSecurityReport';
 import FavoriteIcon from './FavoriteIcon';
 import MarketplaceAppGraphLinks from './MarketplaceAppGraphLinks';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
-import MarketplaceAppModalLink from './MarketplaceAppModalLink';
 import Rating from './Rating/Rating';
 import type { RateFunction } from './Rating/useRatings';
 
@@ -38,7 +45,7 @@ type Props = {
   isRatingSending: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
-  graphLinks?: Array<{ text: string; url: string }>;
+  graphLinks?: Array<{ title: string; url: string }>;
 };
 
 const MarketplaceAppModal = ({
@@ -97,14 +104,23 @@ const MarketplaceAppModal = ({
     }
   }
 
+  const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    if (!open) {
+      onClose();
+    }
+  }, [ onClose ]);
+
   const handleFavoriteClick = useCallback(() => {
     onFavoriteClick(id, isFavorite, 'App modal');
   }, [ onFavoriteClick, id, isFavorite ]);
 
   const showContractList = useCallback((id: string, type: ContractListTypes) => {
     onClose();
-    showContractListProp(id, type, true);
-  }, [ onClose, showContractListProp ]);
+    // FIXME: This is a workaround to avoid the dialog closing before the modal is opened
+    window.setTimeout(() => {
+      showContractListProp(id, type, true);
+    }, 100);
+  }, [ showContractListProp, onClose ]);
 
   const showAllContracts = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Total contracts', Info: id, Source: 'App modal' });
@@ -114,28 +130,16 @@ const MarketplaceAppModal = ({
   const isMobile = useIsMobile();
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
 
-  function getHostname(url: string | undefined) {
-    try {
-      return new URL(url || '').hostname;
-    } catch (err) {}
-  }
-
-  const iconColor = useColorModeValue('blue.600', 'gray.400');
-
   return (
-    <Modal
-      isOpen={ Boolean(data.id) }
-      onClose={ onClose }
-      size={ isMobile ? 'full' : 'md' }
-      isCentered
+    <DialogRoot
+      open={ Boolean(data.id) }
+      onOpenChange={ handleOpenChange }
+      size={{ lgDown: 'full', lg: 'md' }}
     >
-      <ModalOverlay/>
-
-      <ModalContent>
+      <DialogContent>
         <Box
           display="grid"
           gridTemplateColumns={{ base: 'auto 1fr' }}
-          paddingRight={{ md: 12 }}
           marginBottom={{ base: 6, md: 8 }}
         >
           <Flex
@@ -155,24 +159,22 @@ const MarketplaceAppModal = ({
 
           <Flex alignItems="center" mb={{ md: 2 }} gridColumn={ 2 }>
             <Heading
-              as="h2"
-              fontSize={{ base: '2xl', md: '32px' }}
+              level="2"
               fontWeight="medium"
-              lineHeight={{ md: 10 }}
               mr={ 2 }
             >
               { title }
             </Heading>
             <MarketplaceAppIntegrationIcon external={ external } internalWallet={ internalWallet }/>
             <MarketplaceAppGraphLinks links={ graphLinks } ml={ 2 }/>
+            <DialogCloseTrigger ml="auto"/>
           </Flex>
 
           <Text
-            variant="secondary"
+            color="text.secondary"
             gridColumn={ 2 }
-            fontSize={{ base: 'sm', md: 'md' }}
+            textStyle={{ base: 'sm', md: 'md' }}
             fontWeight="normal"
-            lineHeight={{ md: 6 }}
           >
             By{ nbsp }{ author }
           </Text>
@@ -194,6 +196,7 @@ const MarketplaceAppModal = ({
                 fullView
                 canRate={ canRate }
                 source="App modal"
+                popoverContentProps={{ zIndex: 'modal' }}
               />
             </Box>
           ) }
@@ -204,46 +207,38 @@ const MarketplaceAppModal = ({
           >
             <Flex flexWrap="wrap" gap={ 6 }>
               <Flex width={{ base: '100%', md: 'auto' }}>
-                <MarketplaceAppModalLink
-                  id={ data.id }
-                  url={ url }
-                  external={ external }
-                  title={ title }
-                />
+                <Link href={ external ? url : route({ pathname: '/apps/[id]', query: { id: data.id } }) } external={ external } noIcon mr={ 2 }>
+                  <Button size="sm">
+                    Launch app
+                  </Button>
+                </Link>
 
                 <IconButton
                   aria-label="Mark as favorite"
                   title="Mark as favorite"
-                  variant="outline"
-                  colorScheme="gray"
-                  w={ 9 }
-                  h={ 8 }
-                  flexShrink={ 0 }
+                  variant="icon_secondary"
+                  size="md"
                   onClick={ handleFavoriteClick }
-                  icon={ <FavoriteIcon isFavorite={ isFavorite } color={ iconColor }/> }
-                />
+                  selected={ isFavorite }
+                >
+                  <FavoriteIcon isFavorite={ isFavorite }/>
+                </IconButton>
 
                 <CopyToClipboard
                   text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
-                  icon="share"
-                  size={ 4 }
-                  variant="outline"
-                  colorScheme="gray"
-                  w={ 9 }
-                  h={ 8 }
-                  color={ iconColor }
-                  _hover={{ color: iconColor }}
-                  display="inline-flex"
-                  borderRadius="base"
+                  type="share"
+                  variant="icon_secondary"
+                  size="md"
+                  borderRadius="none"
+                  ml={ 0 }
+                  boxSize={ 8 }
                 />
               </Flex>
             </Flex>
           </Box>
         </Box>
 
-        <ModalCloseButton/>
-
-        <ModalBody mb={ 6 }>
+        <DialogBody mb={ 6 }>
           { securityReport && (
             <Flex
               direction={{ base: 'column', md: 'row' }}
@@ -270,39 +265,40 @@ const MarketplaceAppModal = ({
                   showContractList={ showContractList }
                   source="App modal"
                   popoverPlacement={ isMobile ? 'bottom-start' : 'left' }
+                  popoverContentProps={{ zIndex: 'modal' }}
                 />
               </Flex>
             </Flex>
           ) }
           <Text>{ description }</Text>
-        </ModalBody>
+        </DialogBody>
 
-        <ModalFooter
+        <DialogFooter
           display="flex"
           flexDirection={{ base: 'column', md: 'row' }}
           justifyContent={{ base: 'flex-start', md: 'space-between' }}
-          alignItems={{ base: 'flex-start', md: 'center' }}
+          alignItems="flex-start"
           gap={ 3 }
         >
-          <Flex gap={ 2 }>
+          <Flex gap={ 2 } flexWrap="wrap">
             { categories.map((category) => (
-              <Tag
-                colorScheme="blue"
+              <Badge
+                colorPalette="blue"
                 key={ category }
               >
                 { category }
-              </Tag>
+              </Badge>
             )) }
           </Flex>
 
-          <Flex alignItems="center" gap={ 3 }>
+          <Flex alignItems="center" gap={ 3 } my="2px">
             { site && (
               <Link
-                isExternal
+                external
                 href={ site }
                 display="flex"
                 alignItems="center"
-                fontSize="sm"
+                textStyle="sm"
               >
                 <IconSvg
                   name="link"
@@ -318,7 +314,7 @@ const MarketplaceAppModal = ({
                   overflow="hidden"
                   textOverflow="ellipsis"
                 >
-                  { getHostname(site) }
+                  { makePrettyLink(site)?.domain }
                 </Text>
               </Link>
             ) }
@@ -332,23 +328,21 @@ const MarketplaceAppModal = ({
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                isExternal
-                w={ 5 }
-                h={ 5 }
+                external
+                noIcon
+                flexShrink={ 0 }
               >
                 <IconSvg
                   name={ icon }
-                  w="20px"
-                  h="20px"
-                  display="block"
-                  color="text_secondary"
+                  color="text.secondary"
+                  boxSize={ 5 }
                 />
               </Link>
             )) }
           </Flex>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 

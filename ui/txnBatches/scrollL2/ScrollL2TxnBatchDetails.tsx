@@ -9,15 +9,15 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ScrollL2TxnBatchDA from 'ui/shared/batch/ScrollL2TxnBatchDA';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import ScrollL2TxnBatchStatus from 'ui/shared/statusTag/ScrollL2TxnBatchStatus';
 
@@ -53,7 +53,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
-  const blocksCount = data.end_block - data.start_block + 1;
+  const blocksCount = data.end_block_number - data.start_block_number + 1;
 
   return (
     <Grid
@@ -62,14 +62,14 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
       overflow="hidden"
     >
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on L1"
       >
         Txn batch number
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Skeleton loading={ isPlaceholderData }>
           { data.number }
         </Skeleton>
         <PrevNext
@@ -80,139 +80,139 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
           isPrevDisabled={ data.number === 0 }
           isLoading={ isPlaceholderData }
         />
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Data availability container"
       >
         Container
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <ScrollL2TxnBatchDA container={ data.data_availability.batch_data_container } isLoading={ isPlaceholderData }/>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Status of this batch"
       >
         Status
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <ScrollL2TxnBatchStatus status={ data.confirmation_transaction.hash ? 'Finalized' : 'Committed' } isLoading={ isPlaceholderData }/>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Date and time at which batch is finalized to L1"
       >
         Finalized timestamp
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         { data.confirmation_transaction.timestamp ?
-          <DetailsTimestamp timestamp={ data.confirmation_transaction.timestamp }isLoading={ isPlaceholderData }/> :
-          <Skeleton isLoaded={ !isPlaceholderData } display="inline-block">Pending</Skeleton>
+          <DetailedInfoTimestamp timestamp={ data.confirmation_transaction.timestamp }isLoading={ isPlaceholderData }/> :
+          <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton>
         }
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
-        isLoading={ isPlaceholderData }
-        hint="Number of transactions in this batch"
-      >
-        Transactions
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
-            { data.transaction_count.toLocaleString() } transaction{ data.transaction_count === 1 ? '' : 's' }
-          </LinkInternal>
-        </Skeleton>
-      </DetailsInfoItem.Value>
+      { typeof data.transactions_count === 'number' ? (
+        <>
+          <DetailedInfo.ItemLabel
+            isLoading={ isPlaceholderData }
+            hint="Number of transactions in this batch"
+          >
+            Transactions
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Link loading={ isPlaceholderData } href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
+              { data.transactions_count.toLocaleString() } transaction{ data.transactions_count === 1 ? '' : 's' }
+            </Link>
+          </DetailedInfo.ItemValue>
+        </>
+      ) : null }
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Number of L2 blocks in this batch"
       >
         Blocks
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'blocks' } }) }>
-            { blocksCount.toLocaleString() } block{ blocksCount === 1 ? '' : 's' }
-          </LinkInternal>
-        </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Link loading={ isPlaceholderData } href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'blocks' } }) }>
+          { blocksCount.toLocaleString() } block{ blocksCount === 1 ? '' : 's' }
+        </Link>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Date and time at which batch is committed to L1"
       >
         Committed timestamp
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         { data.commitment_transaction.timestamp ?
-          <DetailsTimestamp timestamp={ data.commitment_transaction.timestamp }isLoading={ isPlaceholderData }/> :
-          <Skeleton isLoaded={ !isPlaceholderData } display="inline-block">Pending</Skeleton>
+          <DetailedInfoTimestamp timestamp={ data.commitment_transaction.timestamp }isLoading={ isPlaceholderData }/> :
+          <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton>
         }
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Hash of L1 transaction this batch was committed in"
       >
         Committed transaction hash
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <TxEntityL1
           isLoading={ isPlaceholderData }
           hash={ data.commitment_transaction.hash }
           maxW="100%"
         />
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="L1 block that includes transaction with this batch commitment"
       >
         Committed block
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         <BlockEntityL1
           isLoading={ isPlaceholderData }
           number={ data.commitment_transaction.block_number }
         />
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="Hash of L1 transaction this batch was finalized in"
       >
         Finalized transaction hash
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         { data.confirmation_transaction.hash ? (
           <TxEntityL1
             isLoading={ isPlaceholderData }
             hash={ data.confirmation_transaction.hash }
             maxW="100%"
           />
-        ) : <Skeleton isLoaded={ !isPlaceholderData } display="inline-block">Pending</Skeleton> }
-      </DetailsInfoItem.Value>
+        ) : <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton> }
+      </DetailedInfo.ItemValue>
 
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="L1 block that includes transaction with this batch finalization data"
       >
         Finalized block
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         { data.confirmation_transaction.block_number ? (
           <BlockEntityL1
             isLoading={ isPlaceholderData }
             number={ data.confirmation_transaction.block_number }
           />
-        ) : <Skeleton isLoaded={ !isPlaceholderData } display="inline-block">Pending</Skeleton> }
-      </DetailsInfoItem.Value>
+        ) : <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton> }
+      </DetailedInfo.ItemValue>
     </Grid>
   );
 };

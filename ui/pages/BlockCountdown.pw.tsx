@@ -12,7 +12,7 @@ test('short period until the block +@mobile', async({ render, mockApiResponse })
     },
   };
 
-  await mockApiResponse('block_countdown', {
+  await mockApiResponse('general:block_countdown', {
     result: {
       CountdownBlock: height,
       CurrentBlock: '1234567700',
@@ -38,7 +38,7 @@ test('long period until the block +@mobile', async({ render, mockApiResponse }) 
     },
   };
 
-  await mockApiResponse('block_countdown', {
+  await mockApiResponse('general:block_countdown', {
     result: {
       CountdownBlock: height,
       CurrentBlock: '1234567700',

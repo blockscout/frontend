@@ -42,17 +42,19 @@ export const HOMEPAGE_STATS: HomeStats = {
   tvl: '1767425.102766552',
 };
 
+const STATS_CHART_INFO: stats.LineChartInfo = {
+  id: 'chart_0',
+  title: 'Average transaction fee',
+  description: 'The average amount in ETH spent per transaction',
+  units: 'ETH',
+  resolutions: [ 'DAY', 'MONTH' ],
+};
+
 export const STATS_CHARTS_SECTION: stats.LineChartSection = {
   id: 'placeholder',
   title: 'Placeholder',
   charts: [
-    {
-      id: 'chart_0',
-      title: 'Average transaction fee',
-      description: 'The average amount in ETH spent per transaction',
-      units: 'ETH',
-      resolutions: [ 'DAY', 'MONTH' ],
-    },
+    STATS_CHART_INFO,
     {
       id: 'chart_1',
       title: 'Transactions fees',
@@ -87,4 +89,22 @@ export const STATS_COUNTER: stats.Counter = {
   title: 'Placeholder Counter',
   description: 'Placeholder description',
   units: '',
+};
+
+export const HOMEPAGE_STATS_MICROSERVICE: stats.MainPageStats = {
+  average_block_time: STATS_COUNTER,
+  total_addresses: STATS_COUNTER,
+  total_blocks: STATS_COUNTER,
+  total_transactions: STATS_COUNTER,
+  yesterday_transactions: STATS_COUNTER,
+  total_operational_transactions: STATS_COUNTER,
+  yesterday_operational_transactions: STATS_COUNTER,
+  daily_new_transactions: {
+    chart: [],
+    info: STATS_CHART_INFO,
+  },
+  daily_new_operational_transactions: {
+    chart: [],
+    info: STATS_CHART_INFO,
+  },
 };

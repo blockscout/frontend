@@ -1,9 +1,11 @@
+import type * as stats from '@blockscout/stats-types';
 import type { SmartContract, SmartContractMudSystemsResponse } from 'types/api/contract';
 import type { VerifiedContract, VerifiedContractsCounters } from 'types/api/contracts';
 
 import type { SolidityScanReport } from 'lib/solidityScan/schema';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
+import { STATS_COUNTER } from './stats';
 
 export const CONTRACT_CODE_UNVERIFIED = {
   creation_bytecode: '0x60806040526e',
@@ -69,7 +71,7 @@ export const VERIFIED_CONTRACT_INFO: VerifiedContract = {
   language: 'solidity',
   market_cap: null,
   optimization_enabled: false,
-  transaction_count: 565058,
+  transactions_count: 565058,
   verified_at: '2023-04-10T13:16:33.884921Z',
   license_type: 'mit',
 };
@@ -79,6 +81,13 @@ export const VERIFIED_CONTRACTS_COUNTERS: VerifiedContractsCounters = {
   new_smart_contracts_24h: '12345',
   verified_smart_contracts: '654321',
   new_verified_smart_contracts_24h: '1234',
+};
+
+export const VERIFIED_CONTRACTS_COUNTERS_MICROSERVICE: stats.ContractsPageStats = {
+  total_contracts: STATS_COUNTER,
+  new_contracts_24h: STATS_COUNTER,
+  total_verified_contracts: STATS_COUNTER,
+  new_verified_contracts_24h: STATS_COUNTER,
 };
 
 export const SOLIDITY_SCAN_REPORT: SolidityScanReport = {
@@ -104,7 +113,7 @@ export const MUD_SYSTEMS: SmartContractMudSystemsResponse = {
   items: [
     {
       name: 'sy.AccessManagement',
-      address: ADDRESS_HASH,
+      address_hash: ADDRESS_HASH,
     },
   ],
 };

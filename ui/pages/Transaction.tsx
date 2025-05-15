@@ -1,21 +1,21 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
+import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { publicClient } from 'lib/web3/client';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxAssetFlows from 'ui/tx/TxAssetFlows';
+import TxAuthorizations from 'ui/tx/TxAuthorizations';
 import TxBlobs from 'ui/tx/TxBlobs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsDegraded from 'ui/tx/TxDetailsDegraded';
@@ -30,6 +30,7 @@ import TxUserOps from 'ui/tx/TxUserOps';
 import useTxQuery from 'ui/tx/useTxQuery';
 
 const txInterpretation = config.features.txInterpretation;
+const rollupFeature = config.features.rollup;
 
 const TransactionPageContent = () => {
   const router = useRouter();
@@ -41,7 +42,7 @@ const TransactionPageContent = () => {
 
   const showDegradedView = publicClient && ((isError && error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
 
-  const tabs: Array<RoutedTab> = (() => {
+  const tabs: Array<TabItemRegular> = (() => {
     const detailsComponent = showDegradedView ?
       <TxDetailsDegraded hash={ hash } txQuery={ txQuery }/> :
       <TxDetails txQuery={ txQuery }/>;
@@ -69,15 +70,27 @@ const TransactionPageContent = () => {
       { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
       { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
       { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
+      txQuery.data?.authorization_list?.length ?
+        { id: 'authorizations', title: 'Authorizations', component: <TxAuthorizations txQuery={ txQuery }/> } :
+        undefined,
     ].filter(Boolean);
   })();
 
-  const tabIndex = useTabIndexFromQuery(tabs);
+  const txTags: Array<TEntityTag> = data?.transaction_tag ?
+    [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 1 } ] : [];
+  if (rollupFeature.isEnabled && rollupFeature.interopEnabled && data?.op_interop) {
+    if (data.op_interop.init_chain !== undefined) {
+      txTags.push({ slug: 'relay_tx', name: 'Relay tx', tagType: 'custom' as const, ordinal: 0 });
+    }
+    if (data.op_interop.relay_chain !== undefined) {
+      txTags.push({ slug: 'init_tx', name: 'Source tx', tagType: 'custom' as const, ordinal: 0 });
+    }
+  }
 
   const tags = (
     <EntityTags
       isLoading={ isPlaceholderData }
-      tags={ data?.transaction_tag ? [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const } ] : [] }
+      tags={ txTags }
     />
   );
 
@@ -96,22 +109,9 @@ const TransactionPageContent = () => {
 
   const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.transaction_tag) } txQuery={ txQuery }/>;
 
-  const content = (() => {
-    if (isPlaceholderData && !showDegradedView) {
-      return (
-        <>
-          <TabsSkeleton tabs={ tabs } mt={ 6 }/>
-          { tabs[tabIndex]?.component }
-        </>
-      );
-    }
-
-    return <RoutedTabs tabs={ tabs }/>;
-  })();
-
   if (isError && !showDegradedView) {
     if (isCustomAppError(error)) {
-      throwOnResourceLoadError({ resource: 'tx', error, isError: true });
+      throwOnResourceLoadError({ resource: 'general:tx', error, isError: true });
     }
   }
 
@@ -124,7 +124,7 @@ const TransactionPageContent = () => {
         contentAfter={ tags }
         secondRow={ titleSecondRow }
       />
-      { content }
+      <RoutedTabs tabs={ tabs } isLoading={ isPlaceholderData }/>
     </>
   );
 };

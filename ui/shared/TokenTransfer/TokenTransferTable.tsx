@@ -1,11 +1,10 @@
-import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import { default as Thead } from 'ui/shared/TheadSticky';
 import TokenTransferTableItem from 'ui/shared/TokenTransfer/TokenTransferTableItem';
 
 interface Props {
@@ -34,21 +33,20 @@ const TokenTransferTable = ({
 
   return (
     <AddressHighlightProvider>
-      <Table minW="950px">
-        <Thead top={ top }>
-          <Tr>
-            { showTxInfo && <Th width="44px"></Th> }
-            <Th width="230px">Token</Th>
-            <Th width="160px">Token ID</Th>
-            { showTxInfo && <Th width="200px">Txn hash</Th> }
-            <Th width="60%">From/To</Th>
-            <Th width="40%" isNumeric>Value</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+      <TableRoot minW="950px">
+        <TableHeaderSticky top={ top }>
+          <TableRow>
+            { showTxInfo && <TableColumnHeader width="44px"></TableColumnHeader> }
+            <TableColumnHeader width="230px">Token</TableColumnHeader>
+            <TableColumnHeader width="160px">Token ID</TableColumnHeader>
+            { showTxInfo && <TableColumnHeader width="200px">Txn hash</TableColumnHeader> }
+            <TableColumnHeader width="60%">From/To</TableColumnHeader>
+            <TableColumnHeader width="40%" isNumeric>Value</TableColumnHeader>
+          </TableRow>
+        </TableHeaderSticky>
+        <TableBody>
           { showSocketInfo && (
             <SocketNewItemsNotice.Desktop
-              url={ window.location.href }
               alert={ socketInfoAlert }
               num={ socketInfoNum }
               type="token_transfer"
@@ -65,8 +63,8 @@ const TokenTransferTable = ({
               isLoading={ isLoading }
             />
           )) }
-        </Tbody>
-      </Table>
+        </TableBody>
+      </TableRoot>
     </AddressHighlightProvider>
   );
 };

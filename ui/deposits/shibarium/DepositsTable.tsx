@@ -1,9 +1,8 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ShibariumDepositsItem } from 'types/api/shibarium';
 
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import DepositsTableItem from './DepositsTableItem';
 
@@ -15,22 +14,22 @@ import DepositsTableItem from './DepositsTableItem';
 
 const DepositsTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table style={{ tableLayout: 'auto' }} minW="950px">
-      <Thead top={ top }>
-        <Tr>
-          <Th>L1 block No</Th>
-          <Th>L1 txn hash</Th>
-          <Th>L2 txn hash</Th>
-          <Th>User</Th>
-          <Th>Age</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot tableLayout="auto" minW="950px">
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader>L1 block No</TableColumnHeader>
+          <TableColumnHeader>L1 txn hash</TableColumnHeader>
+          <TableColumnHeader>L2 txn hash</TableColumnHeader>
+          <TableColumnHeader>User</TableColumnHeader>
+          <TableColumnHeader>Age</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
-          <DepositsTableItem key={ item.l2_transaction_hash + (isLoading ? index : '') } item={ item } isLoading={ isLoading }/>
+          <DepositsTableItem key={ `${ item.l2_transaction_hash }-${ index }` } item={ item } isLoading={ isLoading }/>
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

@@ -49,13 +49,13 @@ interface SocketMessageParamsGeneric<Event extends string | undefined, Payload e
 
 export namespace SocketMessage {
   export type NewBlock = SocketMessageParamsGeneric<'new_block', NewBlockSocketResponse>;
-  export type BlocksIndexStatus = SocketMessageParamsGeneric<'block_index_status', { finished: boolean; ratio: string }>;
-  export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'internal_txs_index_status', { finished: boolean; ratio: string }>;
+  export type BlocksIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
+  export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
   export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;
   export type TxRawTrace = SocketMessageParamsGeneric<'raw_trace', RawTracesResponse>;
   export type NewTx = SocketMessageParamsGeneric<'transaction', { transaction: number }>;
   export type NewPendingTx = SocketMessageParamsGeneric<'pending_transaction', { pending_transaction: number }>;
-  export type NewOptimisticDeposits = SocketMessageParamsGeneric<'deposits', { deposits: number }>;
+  export type NewOptimisticDeposits = SocketMessageParamsGeneric<'new_optimism_deposits', { deposits: number }>;
   export type NewArbitrumDeposits = SocketMessageParamsGeneric<'new_messages_to_rollup_amount', { new_messages_to_rollup_amount: number }>;
   export type AddressBalance = SocketMessageParamsGeneric<'balance', { balance: string; block_number: number; exchange_rate: string }>;
   export type AddressCurrentCoinBalance =

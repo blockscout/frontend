@@ -1,4 +1,5 @@
-import { Box, Text, Link, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, chakra, Flex, Divider, Icon } from '@chakra-ui/react';
+import type { BoxProps, ButtonProps } from '@chakra-ui/react';
+import { Box, Text, Flex, Separator, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppSecurityReport } from 'types/client/marketplace';
@@ -9,9 +10,12 @@ import config from 'configs/app';
 // Probably because of the gradient
 // eslint-disable-next-line no-restricted-imports
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
-import { apos } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
-import Popover from 'ui/shared/chakra/Popover';
+import { Link } from 'toolkit/chakra/link';
+import type { PopoverContentProps } from 'toolkit/chakra/popover';
+import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { apos } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
@@ -24,29 +28,42 @@ type Props = {
   isLoading?: boolean;
   onlyIcon?: boolean;
   source: 'Discovery view' | 'App modal' | 'App page';
-  className?: string;
   popoverPlacement?: 'bottom-start' | 'bottom-end' | 'left';
+  buttonProps?: ButtonProps;
+  triggerWrapperProps?: BoxProps;
+  popoverContentProps?: PopoverContentProps;
 };
 
 const AppSecurityReport = ({
-  id, securityReport, showContractList, isLoading, onlyIcon, source, className, popoverPlacement = 'bottom-start',
+  id,
+  securityReport,
+  showContractList,
+  isLoading,
+  onlyIcon,
+  source,
+  triggerWrapperProps,
+  buttonProps,
+  popoverPlacement = 'bottom-start',
+  popoverContentProps,
 }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+
+  const { open, onOpenChange } = useDisclosure();
 
   const handleButtonClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Security score', Info: id, Source: source });
-    onToggle();
-  }, [ id, source, onToggle ]);
+  }, [ id, source ]);
 
   const showAnalyzedContracts = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Analyzed contracts', Info: id, Source: 'Security score popup' });
     showContractList(id, ContractListTypes.ANALYZED);
-  }, [ showContractList, id ]);
+    onOpenChange({ open: false });
+  }, [ showContractList, id, onOpenChange ]);
 
   const showAllContracts = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Total contracts', Info: id, Source: 'Security score popup' });
     showContractList(id, ContractListTypes.ALL);
-  }, [ showContractList, id ]);
+    onOpenChange({ open: false });
+  }, [ showContractList, id, onOpenChange ]);
 
   const {
     securityScore = 0,
@@ -60,31 +77,29 @@ const AppSecurityReport = ({
   }
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement={ popoverPlacement } isLazy>
-      <PopoverTrigger>
-        <SolidityscanReportButton
-          score={ securityScore }
-          isLoading={ isLoading }
-          onClick={ handleButtonClick }
-          isActive={ isOpen }
-          onlyIcon={ onlyIcon }
-          label={ <>The security score is based on analysis<br/>of a DApp{ apos }s smart contracts.</> }
-          className={ className }
-        />
-      </PopoverTrigger>
-      <PopoverContent w={{ base: 'calc(100vw - 24px)', lg: '328px' }} mx={{ base: 3, lg: 0 }}>
-        <PopoverBody px="26px" py="20px" fontSize="sm">
-          <Text fontWeight="500" fontSize="xs" mb={ 2 } variant="secondary">Smart contracts info</Text>
+    <PopoverRoot open={ open } onOpenChange={ onOpenChange } positioning={{ placement: popoverPlacement }}>
+      <SolidityscanReportButton
+        score={ securityScore }
+        isLoading={ isLoading }
+        onClick={ handleButtonClick }
+        onlyIcon={ onlyIcon }
+        label={ <>The security score is based on analysis<br/>of a DApp{ apos }s smart contracts.</> }
+        wrapperProps={ triggerWrapperProps }
+        { ...buttonProps }
+      />
+      <PopoverContent w={{ base: 'calc(100vw - 48px)', lg: '328px' }} mx={{ base: 3, lg: 0 }} { ...popoverContentProps }>
+        <PopoverBody px="26px" py="20px" textStyle="sm">
+          <Text fontWeight="500" textStyle="xs" mb={ 2 } color="text.secondary">Smart contracts info</Text>
           <Flex alignItems="center" justifyContent="space-between" py={ 1.5 }>
             <Flex alignItems="center">
               <IconSvg name="contracts/verified_many" boxSize={ 5 } color="green.500" mr={ 1 }/>
               <Text>Verified contracts</Text>
             </Flex>
-            <Link fontSize="sm" fontWeight="500" onClick={ showAllContracts }>
+            <Link textStyle="sm" fontWeight="500" onClick={ showAllContracts }>
               { securityReport?.overallInfo.verifiedNumber ?? 0 } of { securityReport?.overallInfo.totalContractsNumber ?? 0 }
             </Link>
           </Flex>
-          <Divider my={ 3 }/>
+          <Separator my={ 3 }/>
           <Box mb={ 5 }>
             { solidityScanContractsNumber } smart contract{ solidityScanContractsNumber === 1 ? ' was' : 's were' } evaluated to determine
             this protocol{ apos }s overall security score on the { config.chain.name } network by { ' ' }
@@ -96,7 +111,7 @@ const AppSecurityReport = ({
           <SolidityscanReportScore score={ securityScore } mb={ 5 }/>
           { issueSeverityDistribution && totalIssues > 0 && (
             <Box mb={ 5 }>
-              <Text py="7px" variant="secondary" fontSize="xs" fontWeight={ 500 }>Threat score & vulnerabilities</Text>
+              <Text py="7px" color="text.secondary" textStyle="xs" fontWeight={ 500 }>Threat score & vulnerabilities</Text>
               <SolidityscanReportDetails vulnerabilities={ issueSeverityDistribution } vulnerabilitiesCount={ totalIssues }/>
             </Box>
           ) }
@@ -105,8 +120,8 @@ const AppSecurityReport = ({
           </Link>
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   );
 };
 
-export default chakra(AppSecurityReport);
+export default AppSecurityReport;

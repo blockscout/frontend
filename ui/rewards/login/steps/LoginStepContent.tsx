@@ -1,88 +1,108 @@
-import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl, Alert, Divider } from '@chakra-ui/react';
+import { Text, Box, Flex, Separator } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
-import React, { useCallback, useState, useEffect, useMemo } from 'react';
+import React from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
 import * as cookies from 'lib/cookies';
-import { apos } from 'lib/html-entities';
 import useWallet from 'lib/web3/useWallet';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
-import LinkExternal from 'ui/shared/links/LinkExternal';
+import { Alert } from 'toolkit/chakra/alert';
+import { Button } from 'toolkit/chakra/button';
+import { Field } from 'toolkit/chakra/field';
+import { Image } from 'toolkit/chakra/image';
+import { Input } from 'toolkit/chakra/input';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Switch } from 'toolkit/chakra/switch';
+import { apos } from 'toolkit/utils/htmlEntities';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 type Props = {
-  goNext: (isReferral: boolean) => void;
+  goNext: (isReferral: boolean, reward: string | undefined) => void;
   closeModal: () => void;
-  openAuthModal: (isAuth: boolean) => void;
+  openAuthModal: (isAuth: boolean, trySharedLogin?: boolean) => void;
 };
 
 const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
   const router = useRouter();
   const { connect, isConnected, address } = useWallet({ source: 'Merits' });
   const savedRefCode = cookies.get(cookies.NAMES.REWARDS_REFERRAL_CODE);
-  const [ isRefCodeUsed, setIsRefCodeUsed ] = useBoolean(Boolean(savedRefCode));
-  const [ isLoading, setIsLoading ] = useBoolean(false);
-  const [ refCode, setRefCode ] = useState(savedRefCode || '');
-  const [ refCodeError, setRefCodeError ] = useBoolean(false);
-  const { login, checkUserQuery } = useRewardsContext();
+  const [ isRefCodeUsed, setIsRefCodeUsed ] = React.useState(Boolean(savedRefCode));
+  const [ isLoading, setIsLoading ] = React.useState(false);
+  const [ refCode, setRefCode ] = React.useState(savedRefCode || '');
+  const [ refCodeError, setRefCodeError ] = React.useState(false);
+  const { login, checkUserQuery, rewardsConfigQuery } = useRewardsContext();
   const profileQuery = useProfileQuery();
 
-  const isAddressMismatch = useMemo(() =>
+  const isAddressMismatch = React.useMemo(() =>
     Boolean(address) &&
     Boolean(profileQuery.data?.address_hash) &&
     profileQuery.data?.address_hash !== address,
   [ address, profileQuery.data ]);
 
-  const isLoggedIntoAccountWithWallet = useMemo(() =>
+  const isLoggedIntoAccountWithWallet = React.useMemo(() =>
     !profileQuery.isLoading && profileQuery.data?.address_hash,
   [ profileQuery ]);
 
-  const isSignUp = useMemo(() =>
+  const isSignUp = React.useMemo(() =>
     isConnected && !isAddressMismatch && !checkUserQuery.isFetching && !checkUserQuery.data?.exists,
   [ isConnected, isAddressMismatch, checkUserQuery ]);
+
+  const canTrySharedLogin = rewardsConfigQuery.data?.auth?.shared_siwe_login && checkUserQuery.data?.exists !== false && !isLoggedIntoAccountWithWallet;
 
   const handleRefCodeChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setRefCode(event.target.value);
   }, []);
 
-  const loginToRewardsProgram = useCallback(async() => {
+  const loginToRewardsProgram = React.useCallback(async() => {
     try {
-      setRefCodeError.off();
-      setIsLoading.on();
-      const { isNewUser, invalidRefCodeError } = await login(isSignUp && isRefCodeUsed ? refCode : '');
+      setRefCodeError(false);
+      setIsLoading(true);
+      const { isNewUser, reward, invalidRefCodeError } = await login(isSignUp && isRefCodeUsed ? refCode : '');
       if (invalidRefCodeError) {
-        setRefCodeError.on();
+        setRefCodeError(true);
       } else {
         if (isNewUser) {
-          goNext(Boolean(refCode));
+          goNext(isRefCodeUsed, reward);
         } else {
           closeModal();
-          router.push({ pathname: '/account/rewards' }, undefined, { shallow: true });
+          router.push({ pathname: '/account/merits' }, undefined, { shallow: true });
         }
       }
     } catch (error) {}
-    setIsLoading.off();
-  }, [ login, goNext, setIsLoading, router, closeModal, refCode, setRefCodeError, isRefCodeUsed, isSignUp ]);
+    setIsLoading(false);
+  }, [ login, goNext, router, closeModal, refCode, isRefCodeUsed, isSignUp ]);
 
-  useEffect(() => {
-    if (isSignUp && isRefCodeUsed && refCode.length > 0 && refCode.length !== 6) {
-      setRefCodeError.on();
-    } else {
-      setRefCodeError.off();
+  React.useEffect(() => {
+    const isInvalid = isSignUp && isRefCodeUsed && refCode.length > 0 && refCode.length !== 6 && refCode.length !== 12;
+    setRefCodeError(isInvalid);
+  }, [ refCode, isRefCodeUsed, isSignUp ]);
+
+  const handleButtonClick = React.useCallback(() => {
+    if (canTrySharedLogin) {
+      return openAuthModal(Boolean(profileQuery.data?.email), true);
     }
-  }, [ refCode, isRefCodeUsed, isSignUp ]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleLogin = useCallback(async() => {
+    if (!isConnected) {
+      return connect();
+    }
+
     if (isLoggedIntoAccountWithWallet) {
-      loginToRewardsProgram();
-    } else {
-      openAuthModal(Boolean(profileQuery.data?.email));
+      return loginToRewardsProgram();
     }
-  }, [ loginToRewardsProgram, openAuthModal, isLoggedIntoAccountWithWallet, profileQuery ]);
 
-  const buttonText = useMemo(() => {
+    return openAuthModal(Boolean(profileQuery.data?.email));
+  }, [ loginToRewardsProgram, openAuthModal, profileQuery, connect, isConnected, isLoggedIntoAccountWithWallet, canTrySharedLogin ]);
+
+  const handleToggleChange = React.useCallback(() => {
+    setIsRefCodeUsed((prev) => !prev);
+  }, []);
+
+  const buttonText = React.useMemo(() => {
+    if (canTrySharedLogin) {
+      return 'Continue with wallet';
+    }
+
     if (!isConnected) {
       return 'Connect wallet';
     }
@@ -90,50 +110,50 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
       return isSignUp ? 'Get started' : 'Continue';
     }
     return profileQuery.data?.email ? 'Add wallet to account' : 'Log in to account';
-  }, [ isConnected, isLoggedIntoAccountWithWallet, profileQuery.data, isSignUp ]);
+  }, [ canTrySharedLogin, isConnected, isLoggedIntoAccountWithWallet, profileQuery.data?.email, isSignUp ]);
 
   return (
     <>
       <Image
-        src="/static/merits_program.png"
+        src="/static/merits/merits_program.png"
         alt="Merits program"
         mb={ 3 }
-        fallback={ <Skeleton w="full" h="120px" mb={ 3 }/> }
+        fallback={ <Skeleton loading w="full" h="120px" mb={ 3 }/> }
       />
       <Box mb={ 6 }>
         Merits are awarded for a variety of different Blockscout activities. Connect a wallet to get started.
-        <LinkExternal href="https://docs.blockscout.com/using-blockscout/merits" ml={ 1 } fontWeight="500">
+        <Link external href="https://docs.blockscout.com/using-blockscout/merits" ml={ 1 } fontWeight="500">
           More about Blockscout Merits
-        </LinkExternal>
+        </Link>
       </Box>
       { isSignUp && isLoggedIntoAccountWithWallet && (
         <Box mb={ 6 }>
-          <Divider bgColor="divider" mb={ 6 }/>
+          <Separator mb={ 6 }/>
           <Flex w="full" alignItems="center" justifyContent="space-between">
             I have a referral code
             <Switch
-              colorScheme="blue"
               size="md"
-              isChecked={ isRefCodeUsed }
-              onChange={ setIsRefCodeUsed.toggle }
+              checked={ isRefCodeUsed }
+              onCheckedChange={ handleToggleChange }
               aria-label="Referral code switch"
             />
           </Flex>
           { isRefCodeUsed && (
-            <>
-              <FormControl variant="floating" id="referral-code" mt={ 3 }>
-                <Input
-                  fontWeight="500"
-                  value={ refCode }
-                  onChange={ handleRefCodeChange }
-                  isInvalid={ refCodeError }
-                />
-                <FormInputPlaceholder text="Code"/>
-              </FormControl>
-              <Text fontSize="sm" variant="secondary" mt={ 1 } color={ refCodeError ? 'red.500' : undefined }>
-                { refCodeError ? 'Incorrect code or format' : 'The code should be in format XXXXXX' }
-              </Text>
-            </>
+            <Field
+              label="Code"
+              floating
+              id="referral-code"
+              size="lg"
+              mt={ 3 }
+              invalid={ refCodeError }
+              helperText="The code should be in format XXXXXX"
+              errorText={ refCodeError ? 'Incorrect code or format (6 or 12 characters)' : undefined }
+            >
+              <Input
+                value={ refCode }
+                onChange={ handleRefCodeChange }
+              />
+            </Field>
           ) }
         </Box>
       ) }
@@ -144,18 +164,17 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
       ) }
       <Button
         variant="solid"
-        colorScheme="blue"
         w="full"
         whiteSpace="normal"
         mb={ 4 }
-        onClick={ isConnected ? handleLogin : connect }
-        isLoading={ isLoading || profileQuery.isLoading || checkUserQuery.isFetching }
+        onClick={ handleButtonClick }
+        loading={ isLoading || profileQuery.isLoading || checkUserQuery.isFetching }
         loadingText={ isLoading ? 'Sign message in your wallet' : undefined }
-        isDisabled={ isAddressMismatch || refCodeError }
+        disabled={ isAddressMismatch || refCodeError }
       >
         { buttonText }
       </Button>
-      <Text fontSize="sm" color={ useColorModeValue('blackAlpha.500', 'whiteAlpha.500') } textAlign="center">
+      <Text textStyle="sm" color="text.secondary" textAlign="center">
         Already registered for Blockscout Merits on another network or chain? Connect the same wallet here.
       </Text>
     </>

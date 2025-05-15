@@ -1,13 +1,13 @@
-import { Image } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Pool } from 'types/api/pools';
 
 import getPoolLinks from 'lib/pools/getPoolLinks';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PoolEntity from 'ui/shared/entities/pool/PoolEntity';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 type Props = {
@@ -27,38 +27,24 @@ const UserOpsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Contract</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <AddressEntity address={{ hash: item.contract_address }} noIcon isLoading={ isLoading }/>
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>FDV</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading }>
-          ${ Number(item.fully_diluted_valuation_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
-        </Skeleton>
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Market cap</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading }>
-          ${ Number(item.market_cap_usd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
-        </Skeleton>
+        <AddressEntity address={{ hash: item.contract_address }} noIcon linkVariant="secondary" isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Liquidity</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading }>
+        <Skeleton loading={ isLoading }>
           ${ Number(item.liquidity).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }) }
         </Skeleton>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>View in</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading }>
+        <Skeleton loading={ isLoading }>
           { externalLinks.map((link) => (
-            <LinkExternal href={ link.url } key={ link.url } display="inline-flex">
+            <Link external href={ link.url } key={ link.url } display="inline-flex">
               <Image src={ link.image } alt={ link.title } boxSize={ 5 } mr={ 2 }/>
               { link.title }
-            </LinkExternal>
+            </Link>
           )) }
         </Skeleton>
       </ListItemMobileGrid.Value>

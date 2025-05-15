@@ -5,10 +5,10 @@ import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
@@ -26,7 +26,7 @@ const OptimisticL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Batch ID</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <BatchEntityL2 number={ item.internal_id } isLoading={ isLoading }/>
+        <BatchEntityL2 number={ item.number } isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
       { item.batch_data_container && (
@@ -51,33 +51,31 @@ const OptimisticL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn count</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } minW="40px">
+        <Skeleton loading={ isLoading } minW="40px">
           { item.l1_transaction_hashes.length }
         </Skeleton>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 blocks</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <LinkInternal
-          href={ route({ pathname: '/batches/[number]', query: { number: item.internal_id.toString(), tab: 'blocks' } }) }
-          isLoading={ isLoading }
+        <Link
+          href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'blocks' } }) }
+          loading={ isLoading }
+          minW="40px"
         >
-          <Skeleton isLoaded={ !isLoading } minW="40px">
-            { item.l2_block_end - item.l2_block_start + 1 }
-          </Skeleton>
-        </LinkInternal>
+          { item.l2_end_block_number - item.l2_start_block_number + 1 }
+        </Link>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <LinkInternal
-          href={ route({ pathname: '/batches/[number]', query: { number: item.internal_id.toString(), tab: 'txs' } }) }
-          isLoading={ isLoading }
+        <Link
+          href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
+          loading={ isLoading }
+          minW="40px"
         >
-          <Skeleton isLoaded={ !isLoading } minW="40px">
-            { item.transaction_count }
-          </Skeleton>
-        </LinkInternal>
+          { item.transactions_count }
+        </Link>
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>

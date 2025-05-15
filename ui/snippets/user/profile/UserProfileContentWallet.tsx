@@ -1,11 +1,13 @@
-import { chakra, Box, Button, Flex, IconButton, useColorModeValue, Spinner } from '@chakra-ui/react';
+import { chakra, Box, Flex, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
 import delay from 'lib/delay';
 import useWeb3AccountWithDomain from 'lib/web3/useAccountWithDomain';
 import useWeb3Wallet from 'lib/web3/useWallet';
+import { Button } from 'toolkit/chakra/button';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -14,7 +16,6 @@ interface Props {
 }
 
 const UserProfileContentWallet = ({ onClose, className }: Props) => {
-  const walletSnippetBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const web3Wallet = useWeb3Wallet({ source: 'Profile dropdown' });
 
   const web3AccountWithDomain = useWeb3AccountWithDomain(true);
@@ -31,30 +32,42 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
     onClose?.();
   }, [ web3Wallet, onClose ]);
 
+  const handleAddressClick = React.useCallback(() => {
+    onClose?.();
+  }, [ onClose ]);
+
   const content = (() => {
     if (web3Wallet.isConnected && web3AccountWithDomain.address) {
       return (
-        <Flex alignItems="center" columnGap={ 2 } bgColor={ walletSnippetBgColor } px={ 2 } py="10px" borderRadius="base" justifyContent="space-between">
+        <Flex
+          alignItems="center"
+          columnGap={ 2 }
+          bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
+          px={ 2 }
+          py="10px"
+          borderRadius="base"
+          justifyContent="space-between"
+        >
           <AddressEntity
             address={{ hash: web3AccountWithDomain.address, ens_domain_name: web3AccountWithDomain.domain }}
             isLoading={ web3AccountWithDomain.isLoading }
-            isTooltipDisabled
             truncation="dynamic"
             fontSize="sm"
             fontWeight={ 500 }
             noAltHash
+            noTooltip
+            onClick={ handleAddressClick }
           />
           { web3Wallet.isReconnecting ? <Spinner size="sm" m="2px" flexShrink={ 0 }/> : (
             <IconButton
               aria-label="Open wallet"
-              icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
-              variant="simple"
-              color="icon_info"
-              boxSize={ 5 }
+              variant="icon_secondary"
+              size="2xs"
               onClick={ handleOpenWalletClick }
-              isLoading={ web3Wallet.isOpen }
-              flexShrink={ 0 }
-            />
+              loading={ web3Wallet.isOpen }
+            >
+              <IconSvg name="gear_slim"/>
+            </IconButton>
           ) }
         </Flex>
       );
@@ -64,7 +77,7 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
       <Button
         size="sm"
         onClick={ handleConnectWalletClick }
-        isLoading={ web3Wallet.isOpen }
+        loading={ web3Wallet.isOpen }
         loadingText="Connect Wallet"
         w="100%"
       >
@@ -75,7 +88,7 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
 
   return (
     <Box className={ className }>
-      <Flex px={ 1 } mb="2px" fontSize="xs" alignItems="center" lineHeight={ 6 } fontWeight="500">
+      <Flex px={ 1 } mb="1" textStyle="xs" alignItems="center" fontWeight="500">
         <span>Connected wallet</span>
         <Hint
           label={

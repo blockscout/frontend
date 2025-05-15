@@ -1,16 +1,12 @@
-import {
-  Box, Modal, Text, ModalBody,
-  ModalCloseButton, ModalContent, ModalHeader, ModalOverlay,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppSecurityReport } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'lib/html-entities';
+import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
+import { apos } from 'toolkit/utils/htmlEntities';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ContractSecurityReport from './ContractSecurityReport';
 
@@ -28,7 +24,11 @@ const titles = {
 };
 
 const ContractListModal = ({ onClose, onBack, type, contracts }: Props) => {
-  const isMobile = useIsMobile();
+  const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    if (!open) {
+      onClose();
+    }
+  }, [ onClose ]);
 
   const displayedContracts = React.useMemo(() => {
     if (!contracts) {
@@ -54,35 +54,17 @@ const ContractListModal = ({ onClose, onBack, type, contracts }: Props) => {
   }
 
   return (
-    <Modal
-      isOpen={ Boolean(type) }
-      onClose={ onClose }
-      size={ isMobile ? 'full' : 'md' }
-      isCentered
+    <DialogRoot
+      open={ Boolean(type) }
+      onOpenChange={ handleOpenChange }
+      size={{ lgDown: 'full', lg: 'md' }}
     >
-      <ModalOverlay/>
-      <ModalContent>
-        <ModalHeader display="flex" alignItems="center" mb={ 4 }>
-          { onBack && (
-            <IconSvg
-              name="arrows/east"
-              w={ 6 }
-              h={ 10 }
-              transform="rotate(180deg)"
-              verticalAlign="middle"
-              color="gray.400"
-              mr={ 3 }
-              cursor="pointer"
-              onClick={ onBack }
-            />
-          ) }
-          <Text fontWeight="500" textStyle="h3">
-            { titles[type] }
-          </Text>
-        </ModalHeader>
-        <ModalCloseButton/>
-        <ModalBody
-          maxH={ isMobile ? 'auto' : '352px' }
+      <DialogContent>
+        <DialogHeader display="flex" alignItems="center" mb={ 4 } onBackToClick={ onBack }>
+          { titles[type] }
+        </DialogHeader>
+        <DialogBody
+          maxH={{ base: 'max-content', lg: '352px' }}
           overflow="scroll"
           mb={ 0 }
           display="grid"
@@ -110,9 +92,9 @@ const ContractListModal = ({ onClose, onBack, type, contracts }: Props) => {
               />
             </React.Fragment>
           )) }
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 

@@ -1,14 +1,8 @@
-import {
-  Table,
-  Tbody,
-  Tr,
-  Th,
-} from '@chakra-ui/react';
 import React from 'react';
 
 import type { WatchlistAddress } from 'types/api/account';
 
-import TheadSticky from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import WatchlistTableItem from './WatchListTableItem';
 
@@ -23,16 +17,16 @@ interface Props {
 
 const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick, top, hasEmail }: Props) => {
   return (
-    <Table minWidth="600px">
-      <TheadSticky top={ top }>
-        <Tr>
-          <Th width="70%">Address</Th>
-          <Th width="30%">Private tag</Th>
-          <Th width="160px">Email notification</Th>
-          <Th width="108px"></Th>
-        </Tr>
-      </TheadSticky>
-      <Tbody>
+    <TableRoot minWidth="600px">
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader width="70%">Address</TableColumnHeader>
+          <TableColumnHeader width="30%">Private tag</TableColumnHeader>
+          <TableColumnHeader width="160px">Email notification</TableColumnHeader>
+          <TableColumnHeader width="108px"></TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { data?.map((item, index) => (
           <WatchlistTableItem
             key={ item.address_hash + (isLoading ? index : '') }
@@ -43,8 +37,8 @@ const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick, top, hasE
             hasEmail={ hasEmail }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 type Props = Pick<Transaction, 'nonce' | 'type' | 'position'> & { queueIndex?: number };
@@ -11,20 +11,21 @@ type Props = Pick<Transaction, 'nonce' | 'type' | 'position'> & { queueIndex?: n
 const TxDetailsOther = ({ nonce, type, position, queueIndex }: Props) => {
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Other data related to this transaction"
       >
         Other
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
         {
           [
             typeof type === 'number' && (
               <Box key="type">
                 <Text as="span" fontWeight="500">Txn type: </Text>
                 <Text fontWeight="600" as="span">{ type }</Text>
-                { type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
-                { type === 3 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-4844)</Text> }
+                { type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color="text.secondary">(EIP-1559)</Text> }
+                { type === 3 && <Text fontWeight="400" as="span" ml={ 1 } color="text.secondary">(EIP-4844)</Text> }
+                { type === 4 && <Text fontWeight="400" as="span" ml={ 1 } color="text.secondary">(EIP-7702)</Text> }
               </Box>
             ),
             queueIndex !== undefined ? (
@@ -47,13 +48,13 @@ const TxDetailsOther = ({ nonce, type, position, queueIndex }: Props) => {
           ]
             .filter(Boolean)
             .map((item, index) => (
-              <>
+              <React.Fragment key={ index }>
                 { index !== 0 && <TextSeparator/> }
                 { item }
-              </>
+              </React.Fragment>
             ))
         }
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

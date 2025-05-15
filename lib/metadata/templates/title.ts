@@ -5,6 +5,7 @@ import config from 'configs/app';
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/': '%network_name% blockchain explorer - View %network_name% stats',
   '/txs': '%network_name% transactions - %network_name% explorer',
+  '/internal-txs': '%network_name% internal transactions - %network_name% explorer',
   '/txs/kettle/[hash]': '%network_name% kettle %hash% transactions',
   '/tx/[hash]': '%network_name% transaction %hash%',
   '/blocks': '%network_name% blocks',
@@ -28,7 +29,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/graphiql': 'GraphQL for %network_name% - %network_name% data query',
   '/search-results': '%network_name% search result for %q%',
   '/auth/profile': '%network_name% - my profile',
-  '/account/rewards': '%network_name% - rewards',
+  '/account/merits': '%network_name% - Merits',
   '/account/watchlist': '%network_name% - watchlist',
   '/account/api-key': '%network_name% - API keys',
   '/account/custom-abi': '%network_name% - custom ABI',
@@ -36,6 +37,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/account/verified-addresses': '%network_name% - my verified addresses',
   '/public-tags/submit': '%network_name% - public tag requests',
   '/withdrawals': '%network_name% withdrawals - track on %network_name% explorer',
+  '/txn-withdrawals': '%network_name% L2 to L1 message relayer',
   '/visualize/sol2uml': '%network_name% Solidity UML diagram',
   '/csv-export': '%network_name% export data to CSV',
   '/deposits': '%network_name% deposits (L1 > L2)',
@@ -43,6 +45,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/dispute-games': '%network_name% dispute games',
   '/batches': '%network_name% txn batches',
   '/batches/[number]': '%network_name% L2 txn batch %number%',
+  '/batches/celestia/[height]/[commitment]': '%network_name% L2 txn batch %height% %commitment%',
   '/blobs/[hash]': '%network_name% blob %hash% details',
   '/ops': 'User operations on %network_name% - %network_name% explorer',
   '/op/[hash]': '%network_name% user operation %hash%',
@@ -50,16 +53,19 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/name-domains': '%network_name% name domains - %network_name% explorer',
   '/name-domains/[name]': '%network_name% %name% domain details',
   '/validators': '%network_name% validators list',
+  '/validators/[id]': '%network_name% validator %id% details',
   '/gas-tracker': 'Track %network_name% gas fees in %network_gwei%',
   '/mud-worlds': '%network_name% MUD worlds list',
   '/token-transfers': '%network_name% token transfers',
   '/advanced-filter': '%network_name% advanced filter',
   '/pools': '%network_name% DEX pools',
   '/pools/[hash]': '%network_name% pool details',
+  '/interop-messages': '%network_name% interop messages',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',
   '/sprite': '%network_name% SVG sprite',
+  '/chakra': '%network_name% Chakra UI showcase',
   '/api/metrics': '%network_name% node API prometheus metrics',
   '/api/monitoring/invalid-api-schema': '%network_name% node API prometheus metrics',
   '/api/log': '%network_name% node API request log',
@@ -68,7 +74,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/csrf': '%network_name% node API CSRF token',
   '/api/healthz': '%network_name% node API health check',
   '/api/config': '%network_name% node API app config',
-  '/api/sprite': '%network_name% node API SVG sprite content',
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {

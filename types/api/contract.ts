@@ -25,11 +25,14 @@ export type SmartContractProxyType =
   | 'eip1822'
   | 'eip930'
   | 'eip2535'
+  | 'eip7702'
+  | 'erc7760'
   | 'master_copy'
   | 'basic_implementation'
   | 'basic_get_implementation'
   | 'comptroller'
   | 'clone_with_immutable_arguments'
+  | 'resolved_delegate_proxy'
   | 'unknown'
   | null;
 
@@ -68,7 +71,6 @@ export interface SmartContract {
   };
   verified_twin_address_hash: string | null;
   verified_twin_filecoin_robust_address?: string | null;
-  proxy_type: SmartContractProxyType | null;
   language: string | null;
   license_type: SmartContractLicenseType | null;
   certified?: boolean;
@@ -159,7 +161,7 @@ export interface SmartContractMudSystemsResponse {
 }
 
 export interface SmartContractMudSystemItem {
-  address: string;
+  address_hash: string;
   name: string;
 }
 

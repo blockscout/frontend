@@ -9,8 +9,8 @@ import type {
   Erc404TotalPayload,
 } from 'types/api/tokenTransfer';
 
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import TokenTransferSnippetFiat from './TokenTransferSnippetFiat';
 import TokenTransferSnippetNft from './TokenTransferSnippetNft';
@@ -26,7 +26,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
   const content = (() => {
 
     if (isLoading) {
-      return <Skeleton w="250px" h={ 6 }/>;
+      return <Skeleton loading w="250px" h={ 6 }/>;
     }
 
     switch (data.token?.type) {
@@ -44,6 +44,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
           <TokenTransferSnippetNft
             token={ data.token }
             tokenId={ total.token_id }
+            instance={ total.token_instance }
             value="1"
           />
         );
@@ -56,6 +57,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
             key={ total.token_id }
             token={ data.token }
             tokenId={ total.token_id }
+            instance={ total.token_instance }
             value={ total.value }
           />
         );

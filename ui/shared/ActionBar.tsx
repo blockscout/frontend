@@ -1,8 +1,8 @@
-import { Flex, useColorModeValue, chakra } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
-import useIsSticky from 'lib/hooks/useIsSticky';
+import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 
 type Props = {
   children: React.ReactNode;
@@ -19,7 +19,6 @@ const ActionBar = ({ children, className, showShadow }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const scrollDirection = useScrollDirection();
   const isSticky = useIsSticky(ref, TOP_UP + 5);
-  const bgColor = useColorModeValue('white', 'black');
 
   if (!React.Children.toArray(children).filter(Boolean).length) {
     return null;
@@ -28,8 +27,9 @@ const ActionBar = ({ children, className, showShadow }: Props) => {
   return (
     <Flex
       className={ className }
-      backgroundColor={ bgColor }
+      backgroundColor={{ _light: 'white', _dark: 'black' }}
       pt={ 6 }
+      mt={ -6 }
       pb={{ base: 6, lg: 3 }}
       mx={{ base: -3, lg: 0 }}
       px={{ base: 3, lg: 0 }}

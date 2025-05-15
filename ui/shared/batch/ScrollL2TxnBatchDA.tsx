@@ -3,7 +3,7 @@ import React from 'react';
 import type { ScrollL2TxnBatch } from 'types/api/scrollL2';
 import type { ExcludeUndefined } from 'types/utils';
 
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
 
 export interface Props {
   container: ExcludeUndefined<ScrollL2TxnBatch['data_availability']['batch_data_container']>;
@@ -22,9 +22,9 @@ const ScrollL2TxnBatchDA = ({ container, isLoading }: Props) => {
   })();
 
   return (
-    <Tag colorScheme="yellow" isLoading={ isLoading }>
+    <Badge colorPalette="yellow" loading={ isLoading }>
       { text }
-    </Tag>
+    </Badge>
   );
 };
 

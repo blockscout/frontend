@@ -25,3 +25,7 @@ jobs:
     name: Publish Docker image
     uses: './.github/workflows/publish-image.yml'
     secrets: inherit
+    with:
+      tags: |
+        type=ref,event=branch
+        type=raw,value=unstable

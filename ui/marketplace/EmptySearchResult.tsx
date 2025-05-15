@@ -3,10 +3,10 @@ import React from 'react';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
-import { apos } from 'lib/html-entities';
+import { Link } from 'toolkit/chakra/link';
+import { apos } from 'toolkit/utils/htmlEntities';
 import EmptySearchResultDefault from 'ui/shared/EmptySearchResult';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 
 const feature = config.features.marketplace;
 
@@ -29,7 +29,7 @@ const EmptySearchResult = ({ favoriteApps, selectedCategoryId }: Props) => (
           { 'suggestIdeasFormUrl' in feature && (
             <>
               { ' ' }Have a groundbreaking idea or app suggestion?<br/>
-              <LinkExternal href={ feature.suggestIdeasFormUrl }>Share it with us</LinkExternal>
+              <Link external href={ feature.suggestIdeasFormUrl }>Share it with us</Link>
             </>
           ) }
         </>

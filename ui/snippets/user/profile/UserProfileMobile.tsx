@@ -1,4 +1,3 @@
-import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,6 +6,8 @@ import type { Screen } from 'ui/snippets/auth/types';
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel';
 import useAccount from 'lib/web3/useAccount';
+import { DrawerBody, DrawerContent, DrawerRoot, DrawerTrigger } from 'toolkit/chakra/drawer';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
@@ -35,7 +36,7 @@ const UserProfileMobile = () => {
     }
 
     if (router.pathname === '/apps/[id]' && config.features.blockchainInteraction.isEnabled) {
-      setAuthInitialScreen({ type: 'connect_wallet' });
+      setAuthInitialScreen({ type: 'connect_wallet', loginToRewards: true });
     }
 
     authModal.onOpen();
@@ -44,47 +45,55 @@ const UserProfileMobile = () => {
   const handleAddEmailClick = React.useCallback(() => {
     setAuthInitialScreen({ type: 'email', isAuth: true });
     authModal.onOpen();
-  }, [ authModal ]);
+    profileMenu.onClose();
+  }, [ authModal, profileMenu ]);
 
   const handleAddAddressClick = React.useCallback(() => {
-    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true });
+    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true, loginToRewards: true });
     authModal.onOpen();
-  }, [ authModal ]);
+    profileMenu.onClose();
+  }, [ authModal, profileMenu ]);
 
   const handleAuthModalClose = React.useCallback(() => {
     setAuthInitialScreen(initialScreen);
     authModal.onClose();
   }, [ authModal ]);
 
+  const handleLoginClick = React.useCallback(() => {
+    authModal.onOpen();
+    profileMenu.onClose();
+  }, [ authModal, profileMenu ]);
+
+  const handleProfileMenuOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    !open && profileMenu.onOpenChange({ open });
+  }, [ profileMenu ]);
+
   return (
     <>
-      <UserProfileButton
-        profileQuery={ profileQuery }
-        variant="header"
-        onClick={ handleProfileButtonClick }
-      />
-      { (profileQuery.data || web3Address) && (
-        <Drawer
-          isOpen={ profileMenu.isOpen }
-          placement="right"
-          onClose={ profileMenu.onClose }
-          autoFocus={ false }
-        >
-          <DrawerOverlay/>
-          <DrawerContent maxWidth="300px">
-            <DrawerBody p={ 6 }>
-              <UserProfileContent
-                data={ profileQuery.data }
-                onClose={ profileMenu.onClose }
-                onLogin={ authModal.onOpen }
-                onAddEmail={ handleAddEmailClick }
-                onAddAddress={ handleAddAddressClick }
-              />
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
-      ) }
-      { authModal.isOpen && (
+      <DrawerRoot
+        open={ profileMenu.open }
+        onOpenChange={ handleProfileMenuOpenChange }
+      >
+        <DrawerTrigger>
+          <UserProfileButton
+            profileQuery={ profileQuery }
+            variant="header"
+            onClick={ handleProfileButtonClick }
+          />
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerBody>
+            <UserProfileContent
+              data={ profileQuery.data }
+              onClose={ profileMenu.onClose }
+              onLogin={ handleLoginClick }
+              onAddEmail={ handleAddEmailClick }
+              onAddAddress={ handleAddAddressClick }
+            />
+          </DrawerBody>
+        </DrawerContent>
+      </DrawerRoot>
+      { authModal.open && (
         <AuthModal
           onClose={ handleAuthModalClose }
           initialScreen={ authInitialScreen }

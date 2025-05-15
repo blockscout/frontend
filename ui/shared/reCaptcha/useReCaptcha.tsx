@@ -6,11 +6,12 @@ export default function useReCaptcha() {
   const rejectCb = React.useRef<((error: Error) => void) | null>(null);
 
   const [ isOpen, setIsOpen ] = React.useState(false);
+  const [ isInitError, setIsInitError ] = React.useState(false);
 
-  const executeAsync = React.useCallback(async() => {
+  const executeAsync: () => Promise<string | null> = React.useCallback(async() => {
     setIsOpen(true);
     const tokenPromise = ref.current?.executeAsync() || Promise.reject(new Error('Unable to execute ReCaptcha'));
-    const modalOpenPromise = new Promise<void>((resolve, reject) => {
+    const modalOpenPromise = new Promise<null>((resolve, reject) => {
       rejectCb.current = reject;
     });
 
@@ -20,6 +21,10 @@ export default function useReCaptcha() {
   const handleContainerClick = React.useCallback(() => {
     setIsOpen(false);
     rejectCb.current?.(new Error('ReCaptcha is not solved'));
+  }, []);
+
+  const handleInitError = React.useCallback(() => {
+    setIsInitError(true);
   }, []);
 
   React.useEffect(() => {
@@ -35,5 +40,5 @@ export default function useReCaptcha() {
     };
   }, [ isOpen, handleContainerClick ]);
 
-  return React.useMemo(() => ({ ref, executeAsync }), [ ref, executeAsync ]);
+  return React.useMemo(() => ({ ref, executeAsync, isInitError, onInitError: handleInitError }), [ ref, executeAsync, isInitError, handleInitError ]);
 }

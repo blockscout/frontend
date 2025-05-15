@@ -1,13 +1,14 @@
-import { Tr, Td, Flex, Box } from '@chakra-ui/react';
+import { Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -45,15 +46,15 @@ const TokenTransferTableItem = ({
   }) : { usd: null, valueStr: null };
 
   return (
-    <Tr alignItems="top">
+    <TableRow alignItems="top">
       { showTxInfo && txHash && (
-        <Td>
+        <TableCell>
           <Box my="3px">
             <TxAdditionalInfo hash={ txHash } isLoading={ isLoading }/>
           </Box>
-        </Td>
+        </TableCell>
       ) }
-      <Td>
+      <TableCell>
         { token ? (
           <>
             <TokenEntity
@@ -64,23 +65,24 @@ const TokenTransferTableItem = ({
               mt={ 1 }
             />
             <Flex columnGap={ 2 } rowGap={ 2 } mt={ 2 } flexWrap="wrap">
-              <Tag isLoading={ isLoading }>{ getTokenTypeName(token.type) }</Tag>
-              <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
+              <Badge loading={ isLoading }>{ getTokenTypeName(token.type) }</Badge>
+              <Badge colorPalette="orange" loading={ isLoading }>{ getTokenTransferTypeText(type) }</Badge>
             </Flex>
           </>
         ) : 'N/A' }
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         { total && 'token_id' in total && total.token_id !== null && token && (
           <NftEntity
-            hash={ token.address }
+            hash={ token.address_hash }
             id={ total.token_id }
+            instance={ total.token_instance }
             isLoading={ isLoading }
           />
         ) }
-      </Td>
+      </TableCell>
       { showTxInfo && txHash && (
-        <Td>
+        <TableCell>
           <TxEntity
             hash={ txHash }
             isLoading={ isLoading }
@@ -93,14 +95,14 @@ const TokenTransferTableItem = ({
             timestamp={ timestamp }
             enableIncrement={ enableTimeIncrement }
             isLoading={ isLoading }
-            color="text_secondary"
+            color="text.secondary"
             fontWeight="400"
             mt="10px"
             display="inline-block"
           />
-        </Td>
+        </TableCell>
       ) }
-      <Td>
+      <TableCell>
         <AddressFromTo
           from={ from }
           to={ to }
@@ -109,20 +111,20 @@ const TokenTransferTableItem = ({
           mt={ 1 }
           mode={{ lg: 'compact', xl: 'long' }}
         />
-      </Td>
-      <Td isNumeric verticalAlign="top">
+      </TableCell>
+      <TableCell isNumeric verticalAlign="top">
         { valueStr && (
-          <Skeleton isLoaded={ !isLoading } display="inline-block" mt="7px" wordBreak="break-all">
+          <Skeleton loading={ isLoading } display="inline-block" mt="7px" wordBreak="break-all">
             { valueStr }
           </Skeleton>
         ) }
         { usd && (
-          <Skeleton isLoaded={ !isLoading } color="text_secondary" mt="10px" ml="auto" w="min-content">
+          <Skeleton loading={ isLoading } color="text.secondary" mt="10px" ml="auto" w="min-content">
             <span>${ usd }</span>
           </Skeleton>
         ) }
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

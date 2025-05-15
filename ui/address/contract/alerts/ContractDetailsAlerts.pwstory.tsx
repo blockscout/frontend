@@ -7,7 +7,7 @@ import ContractDetailsAlerts from './ContractDetailsAlerts';
 
 const ContractDetailsAlertsPwStory = (props: Props) => {
   const channel = useSocketChannel({
-    topic: `addresses:${ props.addressHash.toLowerCase() }`,
+    topic: `addresses:${ props.addressData.hash.toLowerCase() }`,
     isDisabled: false,
   });
 

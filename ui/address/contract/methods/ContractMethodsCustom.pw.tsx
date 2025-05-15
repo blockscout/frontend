@@ -28,7 +28,7 @@ authTest('without data', async({ render }) => {
 
 authTest('with data', async({ render, mockApiResponse }) => {
   const abi: Array<AbiItem> = [ ...methodsMock.read, ...methodsMock.write ];
-  await mockApiResponse('custom_abi', [ {
+  await mockApiResponse('general:custom_abi', [ {
     abi,
     contract_address_hash: addressHash,
     contract_address: addressMock.withName,

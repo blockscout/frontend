@@ -39,14 +39,14 @@ const TxDetailsAction = ({ action }: Props) => {
       const amount1 = BigNumber(data.amount1).toFormat();
       const [ text0, text1 ] = getActionText(type);
       const token0 = {
-        address: data.symbol0 === 'Ether' ? '' : data.address0,
+        address_hash: data.symbol0 === 'Ether' ? '' : data.address0,
         name: data.symbol0 === 'Ether' ? config.chain.currency.symbol || null : data.symbol0,
         type: 'ERC-20' as const,
         symbol: null,
         icon_url: null,
       };
       const token1 = {
-        address: data.symbol1 === 'Ether' ? '' : data.address1,
+        address_hash: data.symbol1 === 'Ether' ? '' : data.address1,
         name: data.symbol1 === 'Ether' ? config.chain.currency.symbol || null : data.symbol1,
         type: 'ERC-20' as const,
         symbol: null,
@@ -55,7 +55,7 @@ const TxDetailsAction = ({ action }: Props) => {
 
       return (
         <Flex flexWrap="wrap" columnGap={ 2 } rowGap={ 2 } alignItems="center" fontWeight={ 500 }>
-          <chakra.span color="text_secondary">{ text0 }</chakra.span>
+          <chakra.span color="text.secondary">{ text0 }</chakra.span>
 
           <span>{ amount0 }</span>
 
@@ -70,7 +70,7 @@ const TxDetailsAction = ({ action }: Props) => {
             flexShrink={ 0 }
           />
 
-          <chakra.span color="text_secondary">{ type === 'swap' ? 'for' : 'and' }</chakra.span>
+          <chakra.span color="text.secondary">{ type === 'swap' ? 'for' : 'and' }</chakra.span>
 
           <span>{ amount1 }</span>
 
@@ -85,7 +85,7 @@ const TxDetailsAction = ({ action }: Props) => {
             flexShrink={ 0 }
           />
 
-          <chakra.span color="text_secondary">{ text1 }</chakra.span>
+          <chakra.span color="text.secondary">{ text1 }</chakra.span>
 
           <Flex columnGap={ 2 }>
             <IconSvg name="uniswap" boxSize={ 5 } color="white" bgColor="#ff007a" borderRadius="full" p="2px"/>
@@ -97,7 +97,7 @@ const TxDetailsAction = ({ action }: Props) => {
 
     case 'mint_nft' : {
       const token = {
-        address: data.address,
+        address_hash: data.address,
         name: data.name,
         type: 'ERC-20' as const,
         symbol: null,
@@ -107,7 +107,7 @@ const TxDetailsAction = ({ action }: Props) => {
       return (
         <div>
           <Flex rowGap={ 2 } columnGap={ 2 } flexWrap="wrap" alignItems="center" whiteSpace="pre-wrap" fontWeight={ 500 }>
-            <chakra.span color="text_secondary">Minted</chakra.span>
+            <chakra.span color="text.secondary">Minted</chakra.span>
 
             <TokenEntity
               token={ token }
@@ -116,7 +116,7 @@ const TxDetailsAction = ({ action }: Props) => {
               rowGap={ 2 }
             />
 
-            <chakra.span color="text_secondary">to</chakra.span>
+            <chakra.span color="text.secondary">to</chakra.span>
 
             <AddressEntity
               address={{ hash: data.to }}
@@ -132,8 +132,8 @@ const TxDetailsAction = ({ action }: Props) => {
                 return (
                   <Flex key={ data.address + id } whiteSpace="pre-wrap" columnGap={ 2 }>
                     <chakra.span flexShrink={ 0 }>1</chakra.span>
-                    <chakra.span color="text_secondary" flexShrink={ 0 }>of token ID</chakra.span>
-                    <NftEntity hash={ data.address } id={ id } w="min-content" icon={{ size: 'md' }}/>
+                    <chakra.span color="text.secondary" flexShrink={ 0 }>of token ID</chakra.span>
+                    <NftEntity hash={ data.address } id={ id } w="min-content" variant="content"/>
                   </Flex>
                 );
               })

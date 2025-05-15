@@ -1,10 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import { Box, Text, Button, Flex } from '@chakra-ui/react';
+import { Box, Text, Flex } from '@chakra-ui/react';
 import Script from 'next/script';
 import React from 'react';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { Button } from 'toolkit/chakra/button';
+import { Heading } from 'toolkit/chakra/heading';
+import { Link } from 'toolkit/chakra/link';
 const easterEggBadgeFeature = config.features.easterEggBadge;
 
 const CapybaraRunner = () => {
@@ -34,7 +37,7 @@ const CapybaraRunner = () => {
 
   return (
     <>
-      <Box as="h2" mt={ 12 } mb={ 2 } fontWeight={ 600 } fontSize="xl">Score 1000 to win a special prize!</Box>
+      <Heading level="2" mt={ 12 } mb={ 2 }>Score 1000 to win a special prize!</Heading>
       <Box mb={ 4 }>{ isMobile ? 'Tap below to start' : 'Press space to start' }</Box>
       <Script strategy="lazyOnload" src="/static/capibara/index.js"/>
       <Box width={{ base: '100%', lg: '600px' }} height="300px" p="50px 0">
@@ -50,7 +53,13 @@ const CapybaraRunner = () => {
         <Flex flexDirection="column" alignItems="center" justifyContent="center" gap={ 4 } mt={ 10 }>
           <Text fontSize="2xl" fontWeight="bold">You unlocked a hidden badge!</Text>
           <Text fontSize="lg" textAlign="center">Congratulations! You’re eligible to claim an epic hidden badge!</Text>
-          <Button as="a" href={ easterEggBadgeFeature.badgeClaimLink } target="_blank">Claim</Button>
+          <Link
+            href={ easterEggBadgeFeature.badgeClaimLink }
+            target="_blank"
+            asChild
+          >
+            <Button>Claim</Button>
+          </Link>
         </Flex>
       ) }
     </>

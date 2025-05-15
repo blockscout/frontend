@@ -75,31 +75,29 @@ const formConfig: SmartContractVerificationConfig = {
 };
 
 test('flatten source code method +@dark-mode +@mobile', async({ render, page }) => {
+  test.slow();
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select license
-  await component.getByLabel(/contract license/i).focus();
-  await component.getByLabel(/contract license/i).fill('mit');
-  await page.getByRole('button', { name: /mit license/i }).click();
+  await component.locator('button').filter({ hasText: 'Contract license' }).click();
+  await page.getByRole('option', { name: 'MIT License' }).click();
 
   // select method
-  await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).fill('solidity');
-  await page.getByRole('button', { name: /single file/i }).click();
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Solidity (Single file)' }).click();
 
   await page.getByText(/add contract libraries/i).click();
   await page.locator('button[aria-label="add"]').click();
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });
 
 test('standard input json method', async({ render, page }) => {
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
-  await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).fill('solidity');
-  await page.getByRole('button', { name: /standard json input/i }).click();
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Solidity (Standard JSON input)' }).click();
 
   await expect(component).toHaveScreenshot();
 });
@@ -115,9 +113,8 @@ test.describe('sourcify', () => {
     );
 
     // select method
-    await component.getByLabel(/verification method/i).focus();
-    await component.getByLabel(/verification method/i).fill('solidity');
-    await page.getByRole('button', { name: /sourcify/i }).click();
+    await component.locator('button').filter({ hasText: 'Verification method' }).click();
+    await page.getByRole('option', { name: 'Solidity (Sourcify)' }).click();
 
     await page.getByText(/drop files/i).click();
     await page.locator('input[name="sources"]').setInputFiles([
@@ -141,9 +138,8 @@ test.describe('sourcify', () => {
       },
     });
 
-    await component.getByLabel(/contract name/i).focus();
-    await component.getByLabel(/contract name/i).fill('e');
-    const contractNameOption = page.getByRole('button', { name: /MockERC20/i });
+    await component.locator('button').filter({ hasText: 'Contract name*' }).click();
+    const contractNameOption = page.getByRole('option', { name: 'MockERC20' });
 
     await expect(contractNameOption).toBeVisible();
 
@@ -155,9 +151,8 @@ test('multi-part files method', async({ render, page }) => {
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
-  await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).fill('solidity');
-  await page.getByRole('button', { name: /multi-part files/i }).click();
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Solidity (Multi-part files)' }).click();
 
   await expect(component).toHaveScreenshot();
 });
@@ -166,9 +161,8 @@ test('vyper contract method', async({ render, page }) => {
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
-  await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).fill('vyper');
-  await page.getByRole('button', { name: /contract/i }).click();
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Vyper (Contract)' }).click();
 
   await expect(component).toHaveScreenshot();
 });
@@ -177,9 +171,8 @@ test('vyper multi-part method', async({ render, page }) => {
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
-  await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).fill('vyper');
-  await page.getByRole('button', { name: /multi-part files/i }).click();
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Vyper (Multi-part files)' }).click();
 
   await expect(component).toHaveScreenshot();
 });
@@ -188,9 +181,8 @@ test('vyper vyper-standard-input method', async({ render, page }) => {
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
-  await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).fill('vyper');
-  await page.getByRole('button', { name: /standard json input/i }).click();
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Vyper (Standard JSON input)' }).click();
 
   await expect(component).toHaveScreenshot();
 });
@@ -199,9 +191,8 @@ test('solidity-hardhat method', async({ render, page }) => {
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
-  await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).fill('hardhat');
-  await page.getByRole('button', { name: /hardhat/i }).click();
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Solidity (Hardhat)' }).click();
 
   await expect(component).toHaveScreenshot();
 });
@@ -210,9 +201,8 @@ test('solidity-foundry method', async({ render, page }) => {
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
-  await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).fill('foundry');
-  await page.getByRole('button', { name: /foundry/i }).click();
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Solidity (Foundry)' }).click();
 
   await expect(component).toHaveScreenshot();
 });
@@ -241,9 +231,8 @@ test('verification of stylus rust contract', async({ render, page }) => {
   const component = await render(<ContractVerificationForm config={ stylusRustFormConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
-  await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).fill('stylus');
-  await page.getByRole('button', { name: /stylus/i }).click();
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Stylus (GitHub repository)' }).click();
 
   // check validation of github repository field
   const githubRepositoryField = component.getByLabel(/github repository url/i);

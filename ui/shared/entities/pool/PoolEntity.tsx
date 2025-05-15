@@ -1,5 +1,4 @@
-import type { As } from '@chakra-ui/react';
-import { Flex, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Pool } from 'types/api/pools';
@@ -7,9 +6,9 @@ import type { Pool } from 'types/api/pools';
 import { route } from 'nextjs-routes';
 
 import { getPoolTitle } from 'lib/pools/getPoolTitle';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import { distributeEntityProps } from '../base/utils';
 import * as TokenEntity from '../token/TokenEntity';
@@ -32,8 +31,8 @@ const Link = chakra((props: LinkProps) => {
 type IconProps = Pick<EntityProps, 'pool' | 'className'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
-  const bgColor = useColorModeValue('white', 'black');
-  const borderColor = useColorModeValue('whiteAlpha.800', 'blackAlpha.800');
+  const bgColor = { _light: 'white', _dark: 'black' };
+  const borderColor = { _light: 'whiteAlpha.800', _dark: 'blackAlpha.800' };
   return (
     <Flex>
       <Flex
@@ -44,11 +43,11 @@ const Icon = (props: IconProps) => {
       >
         <TokenEntity.Icon
           marginRight={ 0 }
-          size={ props.size }
+          variant={ props.variant }
           token={{
             icon_url: props.pool.base_token_icon_url,
             symbol: props.pool.base_token_symbol,
-            address: props.pool.base_token_address,
+            address_hash: props.pool.base_token_address,
             name: '',
             type: 'ERC-20',
           }}
@@ -64,11 +63,11 @@ const Icon = (props: IconProps) => {
       >
         <TokenEntity.Icon
           marginRight={ 0 }
-          size={ props.size }
+          variant={ props.variant }
           token={{
             icon_url: props.pool.quote_token_icon_url,
             symbol: props.pool.quote_token_symbol,
-            address: props.pool.quote_token_address,
+            address_hash: props.pool.quote_token_address,
             name: '',
             type: 'ERC-20',
           }}
@@ -87,7 +86,7 @@ const Content = chakra((props: ContentProps) => {
   return (
     <TruncatedTextTooltip label={ nameString }>
       <Skeleton
-        isLoaded={ !props.isLoading }
+        loading={ props.isLoading }
         display="inline-block"
         whiteSpace="nowrap"
         overflow="hidden"
@@ -108,18 +107,17 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 
 const PoolEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
+  const content = <Content { ...partsProps.content }/>;
 
   return (
     <Container w="100%" { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      <Link { ...partsProps.link }>
-        <Content { ...partsProps.content }/>
-      </Link>
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
     </Container>
   );
 };
 
-export default React.memo(chakra<As, EntityProps>(PoolEntity));
+export default React.memo(chakra(PoolEntity));
 
 export {
   Container,

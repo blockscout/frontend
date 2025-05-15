@@ -1,18 +1,18 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TxsSocketType } from './socket/types';
 import type { Transaction } from 'types/api/transaction';
 
+import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
+import TxsSocketNotice from './socket/TxsSocketNotice';
 import TxsListItem from './TxsListItem';
 
 interface Props {
   showBlockInfo: boolean;
-  showSocketInfo?: boolean;
-  socketInfoAlert?: string;
-  socketInfoNum?: number;
+  socketType?: TxsSocketType;
   enableTimeIncrement?: boolean;
   currentAddress?: string;
   isLoading: boolean;
@@ -21,17 +21,15 @@ interface Props {
 
 const TxsList = (props: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(props.items, !props.isLoading);
+  const initialList = useInitialList({
+    data: props.items ?? [],
+    idFn: (item) => item.hash,
+    enabled: !props.isLoading,
+  });
 
   return (
     <Box>
-      { props.showSocketInfo && (
-        <SocketNewItemsNotice.Mobile
-          url={ window.location.href }
-          num={ props.socketInfoNum }
-          alert={ props.socketInfoAlert }
-          isLoading={ props.isLoading }
-        />
-      ) }
+      { props.socketType && <TxsSocketNotice type={ props.socketType } place="list" isLoading={ props.isLoading }/> }
       { props.items.slice(0, renderedItemsNum).map((tx, index) => (
         <TxsListItem
           key={ tx.hash + (props.isLoading ? index : '') }
@@ -40,6 +38,7 @@ const TxsList = (props: Props) => {
           currentAddress={ props.currentAddress }
           enableTimeIncrement={ props.enableTimeIncrement }
           isLoading={ props.isLoading }
+          animation={ initialList.getAnimationProp(tx) }
         />
       )) }
       <Box ref={ cutRef } h={ 0 }/>

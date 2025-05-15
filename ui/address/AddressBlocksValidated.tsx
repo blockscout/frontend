@@ -1,4 +1,4 @@
-import { Hide, Show, Table, Tbody, Th, Tr } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -14,12 +14,12 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
 import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import { default as Thead } from 'ui/shared/TheadSticky';
 
 import AddressBlocksValidatedListItem from './blocksValidated/AddressBlocksValidatedListItem';
 import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksValidatedTableItem';
@@ -27,12 +27,11 @@ import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksVali
 const OVERLOAD_COUNT = 75;
 
 interface Props {
-  scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
 }
 
-const AddressBlocksValidated = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
+const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState('');
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
@@ -42,12 +41,11 @@ const AddressBlocksValidated = ({ scrollRef, shouldRender = true, isQueryEnabled
 
   const addressHash = String(router.query.hash);
   const query = useQueryWithPages({
-    resourceName: 'address_blocks_validated',
+    resourceName: 'general:address_blocks_validated',
     pathParams: { hash: addressHash },
-    scrollRef,
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'address_blocks_validated'>(
+      placeholderData: generateListStub<'general:address_blocks_validated'>(
         BLOCK,
         50,
         {
@@ -68,7 +66,7 @@ const AddressBlocksValidated = ({ scrollRef, shouldRender = true, isQueryEnabled
     setSocketAlert('');
 
     queryClient.setQueryData(
-      getResourceKey('address_blocks_validated', { pathParams: { hash: addressHash } }),
+      getResourceKey('general:address_blocks_validated', { pathParams: { hash: addressHash } }),
       (prevData: AddressBlocksValidatedResponse | undefined) => {
         if (!prevData) {
           return;
@@ -104,21 +102,20 @@ const AddressBlocksValidated = ({ scrollRef, shouldRender = true, isQueryEnabled
 
   const content = query.data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }>
-        <Table style={{ tableLayout: 'auto' }}>
-          <Thead top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
-            <Tr>
-              <Th>Block</Th>
-              <Th>Age</Th>
-              <Th>Txn</Th>
-              <Th>Gas used</Th>
+      <Box hideBelow="lg">
+        <TableRoot style={{ tableLayout: 'auto' }}>
+          <TableHeaderSticky top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
+            <TableRow>
+              <TableColumnHeader>Block</TableColumnHeader>
+              <TableColumnHeader>Age</TableColumnHeader>
+              <TableColumnHeader>Txn</TableColumnHeader>
+              <TableColumnHeader>Gas used</TableColumnHeader>
               { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled &&
-              <Th isNumeric>Reward { currencyUnits.ether }</Th> }
-            </Tr>
-          </Thead>
-          <Tbody>
+                <TableColumnHeader isNumeric>Reward { currencyUnits.ether }</TableColumnHeader> }
+            </TableRow>
+          </TableHeaderSticky>
+          <TableBody>
             <SocketNewItemsNotice.Desktop
-              url={ window.location.href }
               num={ newItemsCount }
               alert={ socketAlert }
               type="block"
@@ -132,13 +129,12 @@ const AddressBlocksValidated = ({ scrollRef, shouldRender = true, isQueryEnabled
                 isLoading={ query.isPlaceholderData }
               />
             )) }
-          </Tbody>
-        </Table>
-      </Hide>
-      <Show below="lg" ssr={ false }>
+          </TableBody>
+        </TableRoot>
+      </Box>
+      <Box hideFrom="lg">
         { query.pagination.page === 1 && (
           <SocketNewItemsNotice.Mobile
-            url={ window.location.href }
             num={ newItemsCount }
             alert={ socketAlert }
             type="block"
@@ -153,7 +149,7 @@ const AddressBlocksValidated = ({ scrollRef, shouldRender = true, isQueryEnabled
             isLoading={ query.isPlaceholderData }
           />
         )) }
-      </Show>
+      </Box>
     </>
   ) : null;
 
@@ -166,11 +162,12 @@ const AddressBlocksValidated = ({ scrollRef, shouldRender = true, isQueryEnabled
   return (
     <DataListDisplay
       isError={ query.isError }
-      items={ query.data?.items }
+      itemsNum={ query.data?.items.length }
       emptyText="There are no validated blocks for this address."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

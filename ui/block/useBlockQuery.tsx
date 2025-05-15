@@ -8,11 +8,11 @@ import type { Block } from 'types/api/block';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { retry } from 'lib/api/useQueryClientConfig';
-import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import { publicClient } from 'lib/web3/client';
 import { BLOCK } from 'stubs/block';
 import { GET_BLOCK } from 'stubs/RPC';
+import { SECOND } from 'toolkit/utils/consts';
 import { unknownAddress } from 'ui/shared/address/utils';
 
 type RpcResponseType = GetBlockReturnType<Chain, false, 'latest'> | null;
@@ -28,7 +28,7 @@ interface Params {
 export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
-  const apiQuery = useApiQuery<'block', { status: number }>('block', {
+  const apiQuery = useApiQuery<'general:block', { status: number }>('general:block', {
     pathParams: { height_or_hash: heightOrHash },
     queryOptions: {
       enabled: Boolean(heightOrHash),
@@ -65,7 +65,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
       return {
         height: Number(block.number),
         timestamp: dayjs.unix(Number(block.timestamp)).format(),
-        transaction_count: block.transactions.length,
+        transactions_count: block.transactions.length,
         miner: { ...unknownAddress, hash: block.miner },
         size: Number(block.size),
         hash: block.hash,

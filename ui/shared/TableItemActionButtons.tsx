@@ -1,8 +1,9 @@
-import { Tooltip, IconButton, HStack } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
@@ -14,42 +15,33 @@ type Props = {
 const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props) => {
   const onFocusCapture = usePreventFocusAfterModalClosing();
 
-  if (isLoading) {
-    return (
-      <HStack spacing={ 6 } alignSelf="flex-end">
-        <Skeleton boxSize={ 5 } flexShrink={ 0 } borderRadius="sm"/>
-        <Skeleton boxSize={ 5 } flexShrink={ 0 } borderRadius="sm"/>
-      </HStack>
-    );
-  }
-
   return (
-    <HStack spacing={ 6 } alignSelf="flex-end">
-      <Tooltip label="Edit">
+    <HStack gap={ 6 } alignSelf="flex-end">
+      <Tooltip content="Edit" disableOnMobile>
         <IconButton
           aria-label="edit"
-          variant="simple"
-          boxSize={ 5 }
+          variant="link"
+          size="2xs"
           onClick={ onEditClick }
-          icon={ <IconSvg name="edit" boxSize={ 5 }/> }
           onFocusCapture={ onFocusCapture }
-          display="inline-block"
-          flexShrink={ 0 }
+          loadingSkeleton={ isLoading }
           borderRadius="none"
-        />
+        >
+          <IconSvg name="edit"/>
+        </IconButton>
       </Tooltip>
-      <Tooltip label="Delete">
+      <Tooltip content="Delete" disableOnMobile>
         <IconButton
           aria-label="delete"
-          variant="simple"
-          boxSize={ 5 }
+          variant="link"
+          size="2xs"
           onClick={ onDeleteClick }
-          icon={ <IconSvg name="delete" boxSize={ 5 }/> }
           onFocusCapture={ onFocusCapture }
-          display="inline-block"
-          flexShrink={ 0 }
+          loadingSkeleton={ isLoading }
           borderRadius="none"
-        />
+        >
+          <IconSvg name="delete"/>
+        </IconButton>
       </Tooltip>
     </HStack>
   );

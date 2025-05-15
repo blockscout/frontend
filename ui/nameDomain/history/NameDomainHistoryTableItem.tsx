@@ -1,4 +1,3 @@
-import { Tr, Td } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
@@ -6,8 +5,9 @@ import type * as bens from '@blockscout/bens-types';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import stripTrailingSlash from 'lib/stripTrailingSlash';
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { stripTrailingSlash } from 'toolkit/utils/url';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -29,8 +29,8 @@ const NameDomainHistoryTableItem = ({ isLoading, event, domain }: Props) => {
   };
 
   return (
-    <Tr>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
         <TxEntity
           { ...txEntityProps }
           hash={ event.transaction_hash }
@@ -39,22 +39,22 @@ const NameDomainHistoryTableItem = ({ isLoading, event, domain }: Props) => {
           noIcon
           truncation="constant_long"
         />
-      </Td>
-      <Td pl={ 9 } verticalAlign="middle">
+      </TableCell>
+      <TableCell pl={ 9 } verticalAlign="middle">
         <TimeAgoWithTooltip
           timestamp={ event.timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           display="inline-block"
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         { event.from_address && <AddressEntity address={ event.from_address } isLoading={ isLoading } truncation="constant"/> }
-      </Td>
-      <Td verticalAlign="middle">
-        { event.action && <Tag colorScheme="gray" isLoading={ isLoading }>{ event.action }</Tag> }
-      </Td>
-    </Tr>
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        { event.action && <Badge colorPalette="gray" loading={ isLoading }>{ event.action }</Badge> }
+      </TableCell>
+    </TableRow>
   );
 };
 

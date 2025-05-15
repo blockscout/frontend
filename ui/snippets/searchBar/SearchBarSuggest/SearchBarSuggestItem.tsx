@@ -1,5 +1,3 @@
-import type { LinkProps as NextLinkProps } from 'next/link';
-import NextLink from 'next/link';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/client/search';
@@ -30,12 +28,13 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
   const url = (() => {
     switch (data.type) {
       case 'token': {
-        return route({ pathname: '/token/[hash]', query: { hash: data.address } });
+        return route({ pathname: '/token/[hash]', query: { hash: data.address_hash } });
       }
       case 'contract':
       case 'address':
-      case 'label': {
-        return route({ pathname: '/address/[hash]', query: { hash: data.address } });
+      case 'label':
+      case 'metadata_tag': {
+        return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
       }
       case 'transaction': {
         return route({ pathname: '/tx/[hash]', query: { hash: data.transaction_hash } });
@@ -55,7 +54,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
         return route({ pathname: '/blobs/[hash]', query: { hash: data.blob_hash } });
       }
       case 'ens_domain': {
-        return route({ pathname: '/address/[hash]', query: { hash: data.address } });
+        return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
       }
     }
   })();
@@ -72,6 +71,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
           />
         );
       }
+      case 'metadata_tag':
       case 'contract':
       case 'address': {
         return (
@@ -112,11 +112,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
   })();
 
   return (
-    <NextLink href={ url as NextLinkProps['href'] } passHref legacyBehavior>
-      <SearchBarSuggestItemLink onClick={ onClick }>
-        { content }
-      </SearchBarSuggestItemLink>
-    </NextLink>
+    <SearchBarSuggestItemLink onClick={ onClick } href={ url }>
+      { content }
+    </SearchBarSuggestItemLink>
   );
 };
 

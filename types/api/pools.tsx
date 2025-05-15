@@ -15,8 +15,10 @@ export type Pool = {
   quote_token_address: string;
   quote_token_symbol: string;
   quote_token_icon_url: string | null;
-  fully_diluted_valuation_usd: string;
-  market_cap_usd: string;
+  base_token_fully_diluted_valuation_usd: string | null;
+  base_token_market_cap_usd: string | null;
+  quote_token_fully_diluted_valuation_usd: string | null;
+  quote_token_market_cap_usd: string | null;
   liquidity: string;
   dex: {
     id: string;

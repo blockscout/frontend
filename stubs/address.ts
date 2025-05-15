@@ -22,13 +22,12 @@ export const ADDRESS_INFO: Address = {
   creation_transaction_hash: null,
   creator_address_hash: ADDRESS_HASH,
   exchange_rate: null,
-  has_decompiled_code: false,
   has_logs: true,
   has_token_transfers: false,
   has_tokens: false,
   has_validated_blocks: false,
   hash: ADDRESS_HASH,
-  implementations: [ { address: ADDRESS_HASH, name: 'Transparent Upgradable Proxy' } ],
+  implementations: [ { address_hash: ADDRESS_HASH, name: 'Transparent Upgradable Proxy' } ],
   is_contract: true,
   is_verified: true,
   name: 'ChainLink Token (goerli)',
@@ -59,7 +58,7 @@ export const ADDRESS_TABS_COUNTERS: AddressTabsCounters = {
 
 export const TOP_ADDRESS: AddressesItem = {
   coin_balance: '11886682377162664596540805',
-  transaction_count: '1835',
+  transactions_count: '1835',
   hash: '0x4f7A67464B5976d7547c860109e4432d50AfB38e',
   implementations: null,
   is_contract: false,

@@ -15,7 +15,7 @@ const hooksConfig = {
 };
 
 test('base view +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('address_mud_records', mudRecords, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID } });
+  await mockApiResponse('general:mud_records', mudRecords, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID } });
 
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -28,7 +28,7 @@ test('base view +@mobile', async({ render, mockApiResponse }) => {
 });
 
 test('expanded view +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('address_mud_records', mudRecords, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID } });
+  await mockApiResponse('general:mud_records', mudRecords, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID } });
 
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -37,14 +37,14 @@ test('expanded view +@mobile', async({ render, mockApiResponse }) => {
     { hooksConfig },
   );
 
-  await component.locator('a[aria-label="show/hide columns"]').first().click();
+  await component.getByLabel('show/hide columns').click();
 
   await expect(component).toHaveScreenshot();
 });
 
 test('empty +@mobile', async({ render, mockApiResponse }) => {
   await mockApiResponse(
-    'address_mud_records',
+    'general:mud_records',
     { ...mudRecords, items: [] },
     { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID } });
 

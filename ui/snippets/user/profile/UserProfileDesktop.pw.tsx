@@ -12,7 +12,7 @@ const test = base.extend<{ context: BrowserContext }>({
 });
 
 test('without address', async({ render, page, mockApiResponse }) => {
-  await mockApiResponse('user_info', profileMock.base);
+  await mockApiResponse('general:user_info', profileMock.base);
   await render(<UserProfileDesktop/>, undefined, { marketplaceContext: { isAutoConnectDisabled: true, setIsAutoConnectDisabled: () => {} } });
   await page.getByText(/tom/i).click();
 
@@ -22,7 +22,7 @@ test('without address', async({ render, page, mockApiResponse }) => {
 });
 
 test('without email', async({ render, page, mockApiResponse }) => {
-  await mockApiResponse('user_info', profileMock.withoutEmail);
+  await mockApiResponse('general:user_info', profileMock.withoutEmail);
   await render(<UserProfileDesktop/>);
   await page.getByText(/my profile/i).click();
 

@@ -1,73 +1,48 @@
-import { chakra, Flex } from '@chakra-ui/react';
-import type { GroupBase, SelectComponentsConfig, SingleValueProps } from 'chakra-react-select';
-import { chakraComponents } from 'chakra-react-select';
+import { createListCollection } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
-import type { Option } from 'ui/shared/forms/inputs/select/types';
 
-import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
+import type { SelectOption } from 'toolkit/chakra/select';
+import { FormFieldSelect } from 'toolkit/components/forms/fields/FormFieldSelect';
 import IconSvg from 'ui/shared/IconSvg';
-
 interface Props {
   index: number;
   tagTypes: Array<PublicTagType> | undefined;
 }
 
 const PublicTagsSubmitFieldTagType = ({ index, tagTypes }: Props) => {
-  const { watch } = useFormContext<FormFields>();
 
-  const typeOptions = React.useMemo(() => tagTypes?.map((type) => ({
-    value: type.type,
-    label: capitalize(type.type),
-  })) ?? [], [ tagTypes ]);
+  const getItemIcon = React.useCallback((type: PublicTagType) => {
+    switch (type.type) {
+      case 'name':
+        return <IconSvg name="publictags_slim" boxSize={ 5 } flexShrink={ 0 }/>;
+      case 'protocol':
+      case 'generic':
+        return <span>#</span>;
+      default:
+        return null;
+    }
+  }, []);
 
-  const fieldValue = watch(`tags.${ index }.type`).value;
+  const collection = React.useMemo(() => {
+    const items = tagTypes?.map((type) => ({
+      value: type.type,
+      label: capitalize(type.type),
+      icon: getItemIcon(type),
+    })) ?? [];
 
-  const selectComponents: SelectComponentsConfig<Option, boolean, GroupBase<Option>> = React.useMemo(() => {
-    type SingleValueComponentProps = SingleValueProps<Option, boolean, GroupBase<Option>> & { children: React.ReactNode };
-    const SingleValue = ({ children, ...props }: SingleValueComponentProps) => {
-      switch (fieldValue) {
-        case 'name': {
-          return (
-            <chakraComponents.SingleValue { ...props }>
-              <Flex alignItems="center" columnGap={ 1 }>
-                <IconSvg name="publictags_slim" boxSize={ 4 } flexShrink={ 0 } color="gray.400"/>
-                { children }
-              </Flex>
-            </chakraComponents.SingleValue>
-          );
-        }
-        case 'protocol':
-        case 'generic': {
-          return (
-            <chakraComponents.SingleValue { ...props }>
-              <chakra.span color="gray.400">#</chakra.span> { children }
-            </chakraComponents.SingleValue>
-          );
-        }
-
-        default: {
-          return (<chakraComponents.SingleValue { ...props }>{ children }</chakraComponents.SingleValue>);
-        }
-      }
-    };
-
-    return { SingleValue };
-  }, [ fieldValue ]);
+    return createListCollection<SelectOption>({ items });
+  }, [ tagTypes, getItemIcon ]);
 
   return (
-    <FormFieldFancySelect<FormFields, `tags.${ number }.type`>
+    <FormFieldSelect<FormFields, `tags.${ number }.type`>
       name={ `tags.${ index }.type` }
       placeholder="Tag type"
-      options={ typeOptions }
-      isRequired
-      isAsync={ false }
-      isSearchable={ false }
-      components={ selectComponents }
+      collection={ collection }
+      required
     />
   );
 };

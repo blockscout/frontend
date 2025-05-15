@@ -1,22 +1,16 @@
 import type { Feature } from './types';
 
+import apis from '../apis';
 import services from '../services';
-import { getEnvValue } from '../utils';
 import addressMetadata from './addressMetadata';
-
-const apiHost = getEnvValue('NEXT_PUBLIC_ADMIN_SERVICE_API_HOST');
 
 const title = 'Public tag submission';
 
-const config: Feature<{ api: { endpoint: string; basePath: string } }> = (() => {
-  if (services.reCaptchaV2.siteKey && addressMetadata.isEnabled && apiHost) {
+const config: Feature<{}> = (() => {
+  if (services.reCaptchaV2.siteKey && addressMetadata.isEnabled && apis.admin) {
     return Object.freeze({
       title,
       isEnabled: true,
-      api: {
-        endpoint: apiHost,
-        basePath: '',
-      },
     });
   }
 

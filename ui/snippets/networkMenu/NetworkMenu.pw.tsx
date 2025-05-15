@@ -27,6 +27,6 @@ test('base view +@dark-mode', async({ render, page, mockConfigResponse, mockAsse
   await component.locator('button[aria-label="Network menu"]').click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 450, height: 550 } });
 
-  await component.getByText(/poa/i).hover();
+  await page.getByRole('link', { name: 'POA' }).hover();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 450, height: 550 } });
 });

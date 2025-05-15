@@ -1,10 +1,11 @@
-import { Flex, Td, Tr } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2DisputeGamesItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShorten from 'ui/shared/HashStringShorten';
@@ -20,49 +21,47 @@ const OptimisticL2DisputeGamesTableItem = ({ item, isLoading }: Props) => {
   }
 
   return (
-    <Tr>
-      <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.index }</Skeleton>
-      </Td>
-      <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.game_type }</Skeleton>
-      </Td>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
+        <Skeleton loading={ isLoading } display="inline-block">{ item.index }</Skeleton>
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <Skeleton loading={ isLoading } display="inline-block">{ item.game_type }</Skeleton>
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <Flex overflow="hidden" w="100%" alignItems="center">
-          <Skeleton isLoaded={ !isLoading }>
-            <HashStringShorten hash={ item.contract_address } type="long"/>
+          <Skeleton loading={ isLoading }>
+            <HashStringShorten hash={ item.contract_address_hash } type="long"/>
           </Skeleton>
-          <CopyToClipboard text={ item.contract_address } ml={ 2 } isLoading={ isLoading }/>
+          <CopyToClipboard text={ item.contract_address_hash } ml={ 2 } isLoading={ isLoading }/>
         </Flex>
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <BlockEntityL2
           isLoading={ isLoading }
           number={ item.l2_block_number }
-          fontSize="sm"
-          lineHeight={ 5 }
           noIcon
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <TimeAgoWithTooltip
           timestamp={ item.created_at }
           isLoading={ isLoading }
           display="inline-block"
         />
-      </Td>
-      <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <Skeleton loading={ isLoading } display="inline-block">{ item.status }</Skeleton>
+      </TableCell>
+      <TableCell>
         <TimeAgoWithTooltip
           timestamp={ item.resolved_at }
           fallbackText="N/A"
           isLoading={ isLoading }
           display="inline-block"
         />
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

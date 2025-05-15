@@ -5,6 +5,7 @@ import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
 import config from 'configs/app';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 
 import { getNativeCoinValue } from './utils';
 
@@ -18,6 +19,7 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
   const { data: walletClient } = useWalletClient();
   const { isConnected, chainId, address: account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
+  const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
 
   return React.useCallback(async({ args, item, addressHash }) => {
     if (!isConnected) {
@@ -29,10 +31,11 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     }
 
     if (chainId && String(chainId) !== config.chain.id) {
-      await switchChainAsync?.({ chainId: Number(config.chain.id) });
+      await switchChainAsync({ chainId: Number(config.chain.id) });
     }
 
     const address = getAddress(addressHash);
+    const activityResponse = await trackTransaction(account ?? '', address);
 
     if (item.type === 'receive' || item.type === 'fallback') {
       const value = getNativeCoinValue(args[0]);
@@ -40,6 +43,11 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
         to: address,
         value,
       });
+
+      if (activityResponse?.token) {
+        await trackTransactionConfirm(hash, activityResponse.token);
+      }
+
       return { source: 'wallet_client', data: { hash } };
     }
 
@@ -68,6 +76,10 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       account,
     });
 
+    if (activityResponse?.token) {
+      await trackTransactionConfirm(hash, activityResponse.token);
+    }
+
     return { source: 'wallet_client', data: { hash } };
-  }, [ chainId, isConnected, switchChainAsync, walletClient, account ]);
+  }, [ chainId, isConnected, switchChainAsync, walletClient, account, trackTransaction, trackTransactionConfirm ]);
 }

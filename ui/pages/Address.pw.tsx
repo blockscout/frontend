@@ -23,10 +23,10 @@ test.beforeEach(async({ mockTextAd }) => {
 
 test.describe('fetched bytecode', () => {
   test('should refetch address query', async({ render, mockApiResponse, createSocket, page }) => {
-    const addressApiUrl = await mockApiResponse('address', addressMock.validator, { pathParams: { hash: addressMock.hash } });
-    await mockApiResponse('address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressMock.hash } });
-    await mockApiResponse('address_tabs_counters', addressTabCountersMock.base, { pathParams: { hash: addressMock.hash } });
-    await mockApiResponse('address_txs', { items: [], next_page_params: null }, { pathParams: { hash: addressMock.hash } });
+    const addressApiUrl = await mockApiResponse('general:address', addressMock.validator, { pathParams: { hash: addressMock.hash } });
+    await mockApiResponse('general:address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressMock.hash } });
+    await mockApiResponse('general:address_tabs_counters', addressTabCountersMock.base, { pathParams: { hash: addressMock.hash } });
+    await mockApiResponse('general:address_txs', { items: [], next_page_params: null }, { pathParams: { hash: addressMock.hash } });
     await render(<Address/>, { hooksConfig }, { withSocket: true });
 
     const socket = await createSocket();
@@ -40,10 +40,10 @@ test.describe('fetched bytecode', () => {
 });
 
 test('degradation view', async({ render, page, mockRpcResponse, mockApiResponse }) => {
-  await mockApiResponse('address', null as never, { pathParams: { hash: addressMock.hash }, status: 500 });
-  await mockApiResponse('address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressMock.hash } });
-  await mockApiResponse('address_tabs_counters', null as never, { pathParams: { hash: addressMock.hash }, status: 500 });
-  await mockApiResponse('address_txs', null as never, { pathParams: { hash: addressMock.hash }, status: 500 });
+  await mockApiResponse('general:address', null as never, { pathParams: { hash: addressMock.hash }, status: 500 });
+  await mockApiResponse('general:address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressMock.hash } });
+  await mockApiResponse('general:address_tabs_counters', null as never, { pathParams: { hash: addressMock.hash }, status: 500 });
+  await mockApiResponse('general:address_txs', null as never, { pathParams: { hash: addressMock.hash }, status: 500 });
   await mockRpcResponse({
     Method: 'eth_getBalance',
     Parameters: [ addressMock.hash, 'latest' ],

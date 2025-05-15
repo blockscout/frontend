@@ -6,12 +6,10 @@ import type { NavItem } from 'types/client/navigation';
 import { route } from 'nextjs-routes';
 
 import { isInternalItem } from 'lib/hooks/useNavItems';
-import LinkExternal from 'ui/shared/links/LinkExternal';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Link } from 'toolkit/chakra/link';
 
 import LightningLabel from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
-import useColors from '../useColors';
 import { checkRouteHighlight } from '../utils';
 
 interface Props {
@@ -23,12 +21,7 @@ interface Props {
 const NavLink = ({ className, item, noIcon }: Props) => {
   const isInternalLink = isInternalItem(item);
 
-  const colors = useColors();
-  const color = 'isActive' in item && item.isActive ? colors.text.active : colors.text.default;
-  const bgColor = 'isActive' in item && item.isActive ? colors.bg.active : colors.bg.default;
-
-  const Link = isInternalLink ? LinkInternal : LinkExternal;
-  const href = isInternalLink ? route(item.nextRoute) : item.url;
+  const isActive = 'isActive' in item && item.isActive;
 
   const isHighlighted = checkRouteHighlight(item);
 
@@ -38,23 +31,29 @@ const NavLink = ({ className, item, noIcon }: Props) => {
     >
       <Link
         className={ className }
-        href={ href }
+        href={ isInternalLink ? route(item.nextRoute) : item.url }
+        external={ !isInternalLink }
         display="flex"
         alignItems="center"
-        color={ color }
-        bgColor={ bgColor }
-        _hover={{ textDecoration: 'none', color: colors.text.hover }}
+        variant="navigation"
+        { ...(isActive ? { 'data-selected': true } : {}) }
         w="224px"
         px={ 2 }
         py="9px"
-        fontSize="sm"
-        lineHeight={ 5 }
+        textStyle="sm"
         fontWeight={ 500 }
         borderRadius="base"
       >
         { !noIcon && <NavLinkIcon item={ item } mr={ 3 }/> }
         <chakra.span>{ item.text }</chakra.span>
-        { isHighlighted && <LightningLabel iconColor={ bgColor } position={{ lg: 'static' }} ml={{ lg: '2px' }} isCollapsed={ false }/> }
+        { isHighlighted && (
+          <LightningLabel
+            iconColor={ isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg.group' }
+            position={{ lg: 'static' }}
+            ml={{ lg: '2px' }}
+            isCollapsed={ false }
+          />
+        ) }
       </Link>
     </chakra.li>
   );

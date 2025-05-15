@@ -12,7 +12,7 @@ interface Props {
 }
 
 const BlockEpochRewards = ({ heightOrHash }: Props) => {
-  const query = useApiQuery('block_epoch', {
+  const query = useApiQuery('general:block_epoch', {
     pathParams: {
       height_or_hash: heightOrHash,
     },
@@ -25,7 +25,7 @@ const BlockEpochRewards = ({ heightOrHash }: Props) => {
     return <DataFetchAlert/>;
   }
 
-  if (!query.data) {
+  if (!query.data || (!query.data.aggregated_election_rewards && !query.data.distribution)) {
     return <span>No block epoch rewards data</span>;
   }
 

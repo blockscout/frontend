@@ -1,31 +1,36 @@
-import { MenuButton, MenuItem, MenuList, Flex, IconButton } from '@chakra-ui/react';
+import { createListCollection, Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import { MarketplaceCategory } from 'types/client/marketplace';
-import type { TabItem } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useGraphLinks from 'lib/hooks/useGraphLinks';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Link } from 'toolkit/chakra/link';
+import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
+import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import Banner from 'ui/marketplace/Banner';
 import ContractListModal from 'ui/marketplace/ContractListModal';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
+import type { SortValue } from 'ui/marketplace/utils';
 import { SORT_OPTIONS } from 'ui/marketplace/utils';
 import ActionBar from 'ui/shared/ActionBar';
-import Menu from 'ui/shared/chakra/Menu';
-import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 import type { IconName } from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Sort from 'ui/shared/sort/Sort';
-import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
 import useMarketplace from '../marketplace/useMarketplace';
+
+const sortCollection = createListCollection({ items: SORT_OPTIONS });
+
 const feature = config.features.marketplace;
 
 const links: Array<{ label: string; href: string; icon: IconName }> = [];
@@ -84,7 +89,7 @@ const Marketplace = () => {
   const graphLinksQuery = useGraphLinks();
 
   const categoryTabs = React.useMemo(() => {
-    const tabs: Array<TabItem> = categories.map(category => ({
+    const tabs: Array<TabItemRegular> = categories.map(category => ({
       id: category.name,
       title: category.name,
       count: category.count,
@@ -100,7 +105,7 @@ const Marketplace = () => {
 
     tabs.unshift({
       id: MarketplaceCategory.FAVORITES,
-      title: () => <IconSvg name="heart_filled" boxSize={ 5 } verticalAlign="middle" mt={ -1 }/>,
+      title: () => <IconSvg name="heart_filled" boxSize={ 5 }/>,
       count: favoriteApps.length,
       component: null,
     });
@@ -108,15 +113,15 @@ const Marketplace = () => {
     return tabs;
   }, [ categories, appsTotal, favoriteApps.length ]);
 
-  const selectedCategoryIndex = React.useMemo(() => {
-    const index = categoryTabs.findIndex(c => c.id === selectedCategoryId);
-    return index === -1 ? 0 : index;
+  const selectedTabId = React.useMemo(() => {
+    const tab = categoryTabs.find(c => c.id === selectedCategoryId);
+    return typeof tab?.id === 'string' ? tab.id : undefined;
   }, [ categoryTabs, selectedCategoryId ]);
 
   const selectedApp = displayedApps.find(app => app.id === selectedAppId);
 
-  const handleCategoryChange = React.useCallback((index: number) => {
-    const tabId = categoryTabs[index].id;
+  const handleCategoryChange = React.useCallback(({ value }: { value: string }) => {
+    const tabId = categoryTabs.find(c => c.id === value)?.id;
     if (typeof tabId === 'string') {
       onCategoryChange(tabId);
     }
@@ -137,6 +142,10 @@ const Marketplace = () => {
     }
   }, [ clearSelectedAppId, showAppInfo, selectedApp ]);
 
+  const handleSortChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setSorting(value[0] as SortValue);
+  }, [ setSorting ]);
+
   throwOnResourceLoadError(isError && error ? { isError, error } : { isError: false, error: null });
 
   if (!feature.isEnabled) {
@@ -151,32 +160,33 @@ const Marketplace = () => {
         title="DAppscout"
         mb={ 2 }
         contentAfter={ (isMobile && links.length > 1) ? (
-          <Menu>
-            <MenuButton
-              as={ IconButton }
-              size="sm"
-              variant="outline"
-              colorScheme="gray"
-              px="9px"
-              ml="auto"
-              icon={ <IconSvg name="dots" boxSize="18px"/> }
-            />
-            <MenuList minW="max-content">
+          <MenuRoot>
+            <MenuTrigger asChild>
+              <IconButton
+                variant="icon_secondary"
+                size="md"
+                ml="auto"
+              >
+                <IconSvg name="dots"/>
+              </IconButton>
+            </MenuTrigger>
+            <MenuContent zIndex="banner">
               { links.map(({ label, href, icon }) => (
-                <MenuItem key={ label } as="a" href={ href } target="_blank" py={ 2 } px={ 4 }>
-                  <IconSvg name={ icon } boxSize={ 4 } mr={ 2.5 }/>
-                  { label }
-                  <IconSvg name="link_external" boxSize={ 3 } color="icon_link_external" ml={ 2 }/>
+                <MenuItem key={ label } value={ label } asChild>
+                  <Link external href={ href } variant="menu" gap={ 0 }>
+                    <IconSvg name={ icon } boxSize={ 4 } mr={ 2 }/>
+                    { label }
+                  </Link>
                 </MenuItem>
               )) }
-            </MenuList>
-          </Menu>
+            </MenuContent>
+          </MenuRoot>
         ) : (
           <Flex ml="auto">
             { links.map(({ label, href }) => (
-              <LinkExternal key={ label } href={ href } variant="subtle" fontSize="sm" lineHeight={ 5 } ml={ 2 }>
+              <Link external key={ label } href={ href } variant="underlaid" textStyle="sm" ml={ 2 }>
                 { label }
-              </LinkExternal>
+              </Link>
             )) }
           </Flex>
         ) }
@@ -195,15 +205,16 @@ const Marketplace = () => {
         showShadow
         display="flex"
         flexDirection="column"
+        mt={ 0 }
         mx={{ base: -3, lg: -12 }}
         px={{ base: 3, lg: 12 }}
         pt={{ base: 4, lg: 6 }}
         pb={{ base: 4, lg: 3 }}
       >
-        <TabsWithScroll
+        <AdaptiveTabs
           tabs={ categoryTabs }
-          onTabChange={ handleCategoryChange }
-          defaultTabIndex={ selectedCategoryIndex }
+          onValueChange={ handleCategoryChange }
+          defaultValue={ selectedTabId }
           marginBottom={ -2 }
           isLoading={ isCategoriesPlaceholderData }
         />
@@ -212,8 +223,9 @@ const Marketplace = () => {
           { showSort && (
             <Sort
               name="dapps_sorting"
-              options={ SORT_OPTIONS }
-              onChange={ setSorting }
+              collection={ sortCollection }
+              onValueChange={ handleSortChange }
+              defaultValue={ [ sortCollection.items[0].value ] }
               isLoading={ isPlaceholderData }
             />
           ) }
@@ -221,8 +233,8 @@ const Marketplace = () => {
             initialValue={ filterQuery }
             onChange={ onSearchInputChange }
             placeholder="Find app by name or keyword..."
-            isLoading={ isPlaceholderData }
-            size={ showSort ? 'xs' : 'sm' }
+            loading={ isPlaceholderData }
+            size="sm"
             w={{ base: '100%', lg: '350px' }}
           />
         </Flex>

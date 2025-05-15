@@ -1,10 +1,10 @@
-import { Box, Hide, PopoverArrow, PopoverContent, PopoverTrigger, Show, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import type { FC } from 'react';
 import React from 'react';
 
-import { HEX_REGEXP } from 'lib/regexp';
-import Popover from 'ui/shared/chakra/Popover';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { HEX_REGEXP } from 'toolkit/utils/regexp';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -17,8 +17,6 @@ interface Props {
 }
 
 const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
-  const popoverBg = useColorModeValue('gray.700', 'gray.300');
-
   const token = React.useMemo(() => {
     const action = item.action;
 
@@ -28,7 +26,7 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
     const token = {
       name: name || '',
       symbol: (symbol?.toLowerCase() === name?.toLowerCase() ? undefined : symbol) || '',
-      address: action.nft?.address || action.token?.address || '',
+      address_hash: action.nft?.address || action.token?.address || '',
       icon_url: '',
       type: action.nft ? 'ERC-721' as const : 'ERC-20' as const,
     };
@@ -36,12 +34,49 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
     return token;
   }, [ item.action ]);
 
-  const validTokenAddress = token.address ? HEX_REGEXP.test(token.address) : false;
+  const validTokenAddress = token.address_hash ? HEX_REGEXP.test(token.address_hash) : false;
+
+  const tooltipContent = (
+    <NovesTokenTooltipContent
+      token={ item.action.token || item.action.nft }
+      amount={ item.action.amount }
+    />
+  );
 
   return (
-    <Skeleton borderRadius="sm" isLoaded={ isLoaded }>
-      <Hide above="lg">
-        <Box display="flex" gap={ 2 } cursor="pointer" flexWrap="wrap">
+    <Skeleton borderRadius="sm" loading={ !isLoaded }>
+      <Box hideFrom="lg" display="flex" gap={ 2 } cursor="pointer" flexWrap="wrap">
+        <Text fontWeight="700" >
+          { item.action.label }
+        </Text>
+        <Text fontWeight="500">
+          { item.action.amount }
+        </Text>
+        <TokenEntity
+          token={ token }
+          noCopy
+          noSymbol
+          noLink={ !validTokenAddress }
+          fontWeight="500"
+          color="link.primary"
+          w="fit-content"
+        />
+      </Box>
+
+      <Tooltip
+        content={ tooltipContent }
+        openDelay={ 50 }
+        closeDelay={ 50 }
+        positioning={{ placement: 'bottom' }}
+        interactive
+      >
+        <Box hideBelow="lg" display="flex" gap={ 2 } cursor="pointer" w="fit-content" maxW="100%" alignItems="center">
+          <IconSvg
+            name="lightning"
+            height="5"
+            width="5"
+            color={{ _light: 'gray.500', _dark: 'gray.400' }}
+          />
           <Text fontWeight="700" >
             { item.action.label }
           </Text>
@@ -51,68 +86,14 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
           <TokenEntity
             token={ token }
             noCopy
-            noSymbol
+            jointSymbol
             noLink={ !validTokenAddress }
             fontWeight="500"
-            color="link"
+            color="link.primary"
             w="fit-content"
           />
         </Box>
-      </Hide>
-      <Show above="lg">
-
-        <Popover
-          trigger="hover"
-          openDelay={ 50 }
-          closeDelay={ 50 }
-          arrowSize={ 15 }
-          arrowShadowColor="transparent"
-          placement="bottom"
-          flip={ false }
-        >
-          <PopoverTrigger>
-            <Box display="flex" gap={ 2 } cursor="pointer" w="fit-content" maxW="100%" alignItems="center">
-              <IconSvg
-                name="lightning"
-                height="5"
-                width="5"
-                color="gray.500"
-                _dark={{ color: 'gray.400' }}
-              />
-              <Text fontWeight="700" >
-                { item.action.label }
-              </Text>
-              <Text fontWeight="500">
-                { item.action.amount }
-              </Text>
-              <TokenEntity
-                token={ token }
-                noCopy
-                jointSymbol
-                noLink={ !validTokenAddress }
-                fontWeight="500"
-                color="link"
-                w="fit-content"
-              />
-            </Box>
-
-          </PopoverTrigger>
-          <PopoverContent
-            bg={ popoverBg }
-            shadow="lg"
-            width="fit-content"
-            zIndex="modal"
-            padding={ 2 }
-          >
-            <PopoverArrow bg={ popoverBg }/>
-
-            <NovesTokenTooltipContent
-              token={ item.action.token || item.action.nft }
-              amount={ item.action.amount }
-            />
-          </PopoverContent>
-        </Popover>
-      </Show>
+      </Tooltip>
     </Skeleton>
   );
 };

@@ -1,6 +1,5 @@
-import { Box, Heading, Flex, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
@@ -9,11 +8,13 @@ import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 import { route } from 'nextjs-routes';
 
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useInitialList from 'lib/hooks/useInitialList';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { ZKEVM_L2_TXN_BATCHES_ITEM } from 'stubs/zkEvmL2';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Heading } from 'toolkit/chakra/heading';
+import { Link } from 'toolkit/chakra/link';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
 import LatestBatchItem from './LatestBatchItem';
@@ -23,14 +24,20 @@ const LatestZkEvmL2Batches = () => {
   const batchesMaxCount = isMobile ? 2 : 5;
   const queryClient = useQueryClient();
 
-  const { data, isPlaceholderData, isError } = useApiQuery('homepage_zkevm_l2_batches', {
+  const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_zkevm_l2_batches', {
     queryOptions: {
       placeholderData: { items: Array(batchesMaxCount).fill(ZKEVM_L2_TXN_BATCHES_ITEM) },
     },
   });
 
+  const initialList = useInitialList({
+    data: data?.items ?? [],
+    idFn: (batch) => batch.number,
+    enabled: !isPlaceholderData,
+  });
+
   const handleNewBatchMessage: SocketMessage.NewZkEvmL2Batch['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('homepage_zkevm_l2_batches'), (prevData: { items: Array<ZkEvmL2TxnBatchesItem> } | undefined) => {
+    queryClient.setQueryData(getResourceKey('general:homepage_zkevm_l2_batches'), (prevData: { items: Array<ZkEvmL2TxnBatchesItem> } | undefined) => {
       const newItems = prevData?.items ? [ ...prevData.items ] : [];
 
       if (newItems.some((batch => batch.number === payload.batch.number))) {
@@ -62,25 +69,24 @@ const LatestZkEvmL2Batches = () => {
 
     content = (
       <>
-        <VStack spacing={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
-          <AnimatePresence initial={ false } >
-            { dataToShow.map(((batch, index) => {
-              const status = <ZkEvmL2TxnBatchStatus status={ batch.status } isLoading={ isPlaceholderData }/>;
-              return (
-                <LatestBatchItem
-                  key={ batch.number + (isPlaceholderData ? String(index) : '') }
-                  number={ batch.number }
-                  txCount={ batch.transaction_count }
-                  timestamp={ batch.timestamp }
-                  status={ status }
-                  isLoading={ isPlaceholderData }
-                />
-              );
-            })) }
-          </AnimatePresence>
+        <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
+          { dataToShow.map(((batch, index) => {
+            const status = <ZkEvmL2TxnBatchStatus status={ batch.status } isLoading={ isPlaceholderData }/>;
+            return (
+              <LatestBatchItem
+                key={ batch.number + (isPlaceholderData ? String(index) : '') }
+                number={ batch.number }
+                txCount={ batch.transactions_count }
+                timestamp={ batch.timestamp }
+                status={ status }
+                isLoading={ isPlaceholderData }
+                animation={ initialList.getAnimationProp(batch) }
+              />
+            );
+          })) }
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/batches' }) }>View all batches</LinkInternal>
+          <Link textStyle="sm" href={ route({ pathname: '/batches' }) }>View all batches</Link>
         </Flex>
       </>
     );
@@ -88,7 +94,7 @@ const LatestZkEvmL2Batches = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm" mb={ 3 }>Latest batches</Heading>
+      <Heading level="3" mb={ 3 }>Latest batches</Heading>
       { content }
     </Box>
   );

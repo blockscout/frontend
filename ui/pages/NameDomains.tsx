@@ -1,4 +1,4 @@
-import { Box, Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,17 +7,17 @@ import type { EnsDomainLookupFiltersOptions, EnsLookupSorting } from 'types/api/
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN } from 'stubs/ENS';
 import { generateListStub } from 'stubs/utils';
+import { ADDRESS_REGEXP } from 'toolkit/components/forms/validators/address';
+import { apos } from 'toolkit/utils/htmlEntities';
 import NameDomainsActionBar from 'ui/nameDomains/NameDomainsActionBar';
 import NameDomainsListItem from 'ui/nameDomains/NameDomainsListItem';
 import NameDomainsTable from 'ui/nameDomains/NameDomainsTable';
 import type { Sort, SortField } from 'ui/nameDomains/utils';
 import { SORT_OPTIONS, getNextSortValue } from 'ui/nameDomains/utils';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import { ADDRESS_REGEXP } from 'ui/shared/forms/validators/address';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
@@ -41,7 +41,7 @@ const NameDomains = () => {
 
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q || '');
   const [ filterValue, setFilterValue ] = React.useState<EnsDomainLookupFiltersOptions>(initialFilters);
-  const [ sort, setSort ] = React.useState<Sort | undefined>(initialSort);
+  const [ sort, setSort ] = React.useState<Sort>(initialSort ?? 'default');
   const [ protocolsFilter, setProtocolsFilter ] = React.useState<Array<string>>(protocols);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -49,7 +49,7 @@ const NameDomains = () => {
   const sortParams = getSortParamsFromValue<Sort, EnsLookupSorting['sort'], EnsLookupSorting['order']>(sort);
 
   const addressesLookupQuery = useQueryWithPages({
-    resourceName: 'addresses_lookup',
+    resourceName: 'bens:addresses_lookup',
     pathParams: { chainId: config.chain.id },
     filters: {
       address: debouncedSearchTerm,
@@ -61,12 +61,12 @@ const NameDomains = () => {
     sorting: sortParams,
     options: {
       enabled: isAddressSearch,
-      placeholderData: generateListStub<'addresses_lookup'>(ENS_DOMAIN, 50, { next_page_params: undefined }),
+      placeholderData: generateListStub<'bens:addresses_lookup'>(ENS_DOMAIN, 50, { next_page_params: undefined }),
     },
   });
 
   const domainsLookupQuery = useQueryWithPages({
-    resourceName: 'domains_lookup',
+    resourceName: 'bens:domains_lookup',
     pathParams: { chainId: config.chain.id },
     filters: {
       name: debouncedSearchTerm,
@@ -76,11 +76,11 @@ const NameDomains = () => {
     sorting: sortParams,
     options: {
       enabled: !isAddressSearch,
-      placeholderData: generateListStub<'domains_lookup'>(ENS_DOMAIN, 50, { next_page_params: undefined }),
+      placeholderData: generateListStub<'bens:domains_lookup'>(ENS_DOMAIN, 50, { next_page_params: undefined }),
     },
   });
 
-  const protocolsQuery = useApiQuery('domain_protocols', {
+  const protocolsQuery = useApiQuery('bens:domain_protocols', {
     pathParams: { chainId: config.chain.id },
   });
 
@@ -91,7 +91,7 @@ const NameDomains = () => {
     const hasInactiveFilter = filterValue.some((value) => value === 'with_inactive');
     if (isAddressSearch) {
       setFilterValue([ 'owned_by' as const, 'resolved_to' as const, hasInactiveFilter ? 'with_inactive' as const : undefined ].filter(Boolean));
-      onFilterChange<'addresses_lookup'>({
+      onFilterChange<'bens:addresses_lookup'>({
         address: debouncedSearchTerm,
         resolved_to: true,
         owned_by: true,
@@ -100,7 +100,7 @@ const NameDomains = () => {
       });
     } else {
       setFilterValue([ hasInactiveFilter ? 'with_inactive' as const : undefined ].filter(Boolean));
-      onFilterChange<'domains_lookup'>({
+      onFilterChange<'bens:domains_lookup'>({
         name: debouncedSearchTerm,
         only_active: !hasInactiveFilter,
         protocols: protocolsFilter,
@@ -110,11 +110,10 @@ const NameDomains = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isAddressSearch ]);
 
-  const handleSortToggle = React.useCallback((event: React.MouseEvent) => {
+  const handleSortToggle = React.useCallback((field: SortField) => {
     if (isLoading) {
       return;
     }
-    const field = (event.currentTarget as HTMLDivElement).getAttribute('data-field') as SortField | undefined;
 
     if (field) {
       setSort((prevValue) => {
@@ -129,7 +128,7 @@ const NameDomains = () => {
     setSearchTerm(value);
     const isAddressSearch = ADDRESS_REGEXP.test(value);
     if (isAddressSearch) {
-      onFilterChange<'addresses_lookup'>({
+      onFilterChange<'bens:addresses_lookup'>({
         address: value,
         resolved_to: filterValue.includes('resolved_to'),
         owned_by: filterValue.includes('owned_by'),
@@ -137,7 +136,7 @@ const NameDomains = () => {
         protocols: protocolsFilter,
       });
     } else {
-      onFilterChange<'domains_lookup'>({
+      onFilterChange<'bens:domains_lookup'>({
         name: value,
         only_active: !filterValue.includes('with_inactive'),
         protocols: protocolsFilter,
@@ -150,7 +149,7 @@ const NameDomains = () => {
 
     const isAddressSearch = ADDRESS_REGEXP.test(debouncedSearchTerm);
     if (isAddressSearch) {
-      onFilterChange<'addresses_lookup'>({
+      onFilterChange<'bens:addresses_lookup'>({
         address: debouncedSearchTerm,
         resolved_to: value.includes('resolved_to'),
         owned_by: value.includes('owned_by'),
@@ -158,7 +157,7 @@ const NameDomains = () => {
         protocols: protocolsFilter,
       });
     } else {
-      onFilterChange<'domains_lookup'>({
+      onFilterChange<'bens:domains_lookup'>({
         name: debouncedSearchTerm,
         only_active: !value.includes('with_inactive'),
         protocols: protocolsFilter,
@@ -171,7 +170,7 @@ const NameDomains = () => {
 
     const isAddressSearch = ADDRESS_REGEXP.test(debouncedSearchTerm);
     if (isAddressSearch) {
-      onFilterChange<'addresses_lookup'>({
+      onFilterChange<'bens:addresses_lookup'>({
         address: debouncedSearchTerm,
         resolved_to: filterValue.includes('resolved_to'),
         owned_by: filterValue.includes('owned_by'),
@@ -179,7 +178,7 @@ const NameDomains = () => {
         protocols: nextValue,
       });
     } else {
-      onFilterChange<'domains_lookup'>({
+      onFilterChange<'bens:domains_lookup'>({
         name: debouncedSearchTerm,
         only_active: !filterValue.includes('with_inactive'),
         protocols: nextValue,
@@ -192,25 +191,23 @@ const NameDomains = () => {
 
   const content = (
     <>
-      <Show below="lg" ssr={ false }>
-        <Box>
-          { data?.items.map((item, index) => (
-            <NameDomainsListItem
-              key={ item.id + (isLoading ? index : '') }
-              { ...item }
-              isLoading={ isLoading }
-            />
-          )) }
-        </Box>
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      <Box hideFrom="lg">
+        { data?.items.map((item, index) => (
+          <NameDomainsListItem
+            key={ item.id + (isLoading ? index : '') }
+            { ...item }
+            isLoading={ isLoading }
+          />
+        )) }
+      </Box>
+      <Box hideBelow="lg">
         <NameDomainsTable
           data={ data }
           isLoading={ isLoading }
           sort={ sort }
           onSortToggle={ handleSortToggle }
         />
-      </Hide>
+      </Box>
     </>
   );
 
@@ -239,15 +236,16 @@ const NameDomains = () => {
       />
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no name domains."
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find name domains that match your filter query.`,
           hasActiveFilters,
         }}
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

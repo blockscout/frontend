@@ -1,4 +1,4 @@
-import { chakra, Button, Text } from '@chakra-ui/react';
+import { chakra, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -8,9 +8,10 @@ import type { EmailFormFields, Screen } from '../types';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
-import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
+import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -27,7 +28,6 @@ interface Props {
 const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
 
   const apiFetch = useApiFetch();
-  const toast = useToast();
   const recaptcha = useReCaptcha();
 
   const formApi = useForm<EmailFormFields>({
@@ -41,7 +41,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
     try {
       const token = await recaptcha.executeAsync();
 
-      await apiFetch('auth_send_otp', {
+      await apiFetch('general:auth_send_otp', {
         fetchParams: {
           method: 'POST',
           body: {
@@ -64,13 +64,12 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
       }
       onSubmit({ type: 'otp_code', email: formData.email, isAuth });
     } catch (error) {
-      toast({
-        status: 'error',
+      toaster.error({
         title: 'Error',
         description: getErrorObjPayload<{ message: string }>(error)?.message || getErrorMessage(error) || 'Something went wrong',
       });
     }
-  }, [ recaptcha, apiFetch, isAuth, onSubmit, mixpanelConfig?.account_link_info.source, toast ]);
+  }, [ recaptcha, apiFetch, isAuth, onSubmit, mixpanelConfig?.account_link_info.source ]);
 
   return (
     <FormProvider { ...formApi }>
@@ -81,21 +80,21 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         <Text>Account email, used for transaction notifications from your watchlist.</Text>
         <FormFieldEmail<EmailFormFields>
           name="email"
-          isRequired
+          required
           placeholder="Email"
-          bgColor="dialog_bg"
+          bgColor="dialog.bg"
           mt={ 6 }
         />
+        <ReCaptcha { ...recaptcha }/>
         <Button
           mt={ 6 }
           type="submit"
-          isDisabled={ formApi.formState.isSubmitting }
-          isLoading={ formApi.formState.isSubmitting }
+          disabled={ formApi.formState.isSubmitting || recaptcha.isInitError }
+          loading={ formApi.formState.isSubmitting }
           loadingText="Send a code"
         >
           Send a code
         </Button>
-        <ReCaptcha ref={ recaptcha.ref }/>
       </chakra.form>
     </FormProvider>
   );

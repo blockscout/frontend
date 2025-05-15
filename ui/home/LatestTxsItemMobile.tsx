@@ -11,8 +11,8 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import { currencyUnits } from 'lib/units';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -32,10 +32,9 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
   return (
     <Box
       width="100%"
-      borderTop="1px solid"
-      borderColor="divider"
+      borderBottom="1px solid"
+      borderColor="border.divider"
       py={ 4 }
-      _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
       display={{ base: 'block', lg: 'none' }}
     >
       <Flex justifyContent="space-between">
@@ -63,7 +62,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           timestamp={ tx.timestamp }
           enableIncrement
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight="400"
           fontSize="sm"
           ml={ 3 }
@@ -78,15 +77,15 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         mb={ 3 }
       />
       { !config.UI.views.tx.hiddenFields?.value && (
-        <Skeleton isLoaded={ !isLoading } mb={ 2 } fontSize="sm" w="fit-content">
+        <Skeleton loading={ isLoading } mb={ 2 } fontSize="sm" w="fit-content">
           <Text as="span">Value </Text>
-          <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
+          <Text as="span" color="text.secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
         </Skeleton>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" w="fit-content" display="flex" whiteSpace="pre">
+        <Skeleton loading={ isLoading } fontSize="sm" w="fit-content" display="flex" whiteSpace="pre">
           <Text as="span">Fee </Text>
-          <TxFee tx={ tx } accuracy={ 5 } color="text_secondary"/>
+          <TxFee tx={ tx } accuracy={ 5 } color="text.secondary"/>
         </Skeleton>
       ) }
     </Box>

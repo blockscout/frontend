@@ -15,9 +15,9 @@ export const batchData = {
   data_availability: {
     batch_data_container: 'in_blob4844' as const,
   },
-  start_block: 456000,
-  end_block: 789000,
-  transaction_count: 654,
+  start_block_number: 456000,
+  end_block_number: 789000,
+  transactions_count: 654,
 };
 
 export const baseResponse: ScrollL2BatchesResponse = {
@@ -38,9 +38,9 @@ export const baseResponse: ScrollL2BatchesResponse = {
       data_availability: {
         batch_data_container: 'in_calldata',
       },
-      start_block: 456000,
-      end_block: 789000,
-      transaction_count: 962,
+      start_block_number: 456000,
+      end_block_number: 789000,
+      transactions_count: 962,
     },
   ],
   next_page_params: {

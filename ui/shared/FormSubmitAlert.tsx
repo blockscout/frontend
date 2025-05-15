@@ -1,12 +1,11 @@
-import { Alert, AlertDescription } from '@chakra-ui/react';
 import React from 'react';
+
+import { Alert } from 'toolkit/chakra/alert';
 
 const FormSubmitAlert = () => {
   return (
     <Alert status="error">
-      <AlertDescription>
-        There has been an error processing your request
-      </AlertDescription>
+      There has been an error processing your request
     </Alert>
   );
 };

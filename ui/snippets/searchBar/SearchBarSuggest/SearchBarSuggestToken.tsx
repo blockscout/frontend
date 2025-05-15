@@ -13,9 +13,9 @@ import IconSvg from 'ui/shared/IconSvg';
 
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultToken>) => {
   const icon = <TokenEntity.Icon token={{ ...data, type: data.token_type }}/>;
-  const verifiedIcon = <IconSvg name="certified" boxSize={ 4 } color="green.500" ml={ 1 }/>;
-  const certifiedIcon = <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/>;
-  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+  const verifiedIcon = <IconSvg name="certified" boxSize={ 4 } color="green.500" ml={ 1 } flexShrink={ 0 }/>;
+  const certifiedIcon = <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 } flexShrink={ 0 }/>;
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
 
   const name = (
     <Text
@@ -29,8 +29,8 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat }: It
   );
 
   const address = (
-    <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
-      <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>
+    <Text color="text.secondary" whiteSpace="nowrap" overflow="hidden">
+      <HashStringShortenDynamic hash={ hash } noTooltip/>
     </Text>
   );
 

@@ -10,7 +10,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
 import CurrencyValue from 'ui/shared/CurrencyValue';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 
 interface Props {
@@ -28,7 +28,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
     }
 
     setLastBlockNumber(blockNumber);
-    const queryKey = getResourceKey('address', { pathParams: { hash: data.hash } });
+    const queryKey = getResourceKey('general:address', { pathParams: { hash: data.hash } });
     queryClient.setQueryData(queryKey, (prevData: Address | undefined) => {
       if (!prevData) {
         return;
@@ -67,13 +67,13 @@ const AddressBalance = ({ data, isLoading }: Props) => {
 
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint={ `${ currencyUnits.ether } balance` }
         isLoading={ isLoading }
       >
         Balance
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value alignSelf="center" flexWrap="nowrap">
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue alignSelf="flex-start" flexWrap="nowrap">
         <NativeTokenIcon boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
         <CurrencyValue
           value={ data.coin_balance || '0' }
@@ -85,7 +85,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
           flexWrap="wrap"
           isLoading={ isLoading }
         />
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

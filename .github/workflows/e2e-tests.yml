@@ -13,6 +13,10 @@ jobs:
     name: Publish Docker image
     uses: './.github/workflows/publish-image.yml'
     secrets: inherit
+    with:
+      # NOTE: by default the image will be built with type=ref,event=tag; so we don't need to specify it here
+      tags: |
+        type=raw,value=e2e
 
   deploy_e2e:
     name: Deploy E2E instance
@@ -46,5 +50,27 @@ jobs:
   test:
     name: Run tests
     needs: deploy_e2e
-    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
-    secrets: inherit
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Get Vault credentials
+        id: retrieve-vault-secrets
+        uses: hashicorp/vault-action@v2.4.1
+        with:
+          url: https://vault.k8s.blockscout.com
+          role: ci-dev
+          path: github-jwt
+          method: jwt
+          tlsSkipVerify: false
+          exportToken: true
+          secrets: |
+            ci/data/dev/github token | WORKFLOW_TRIGGER_TOKEN ;
+      - name: Trigger tests
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: blockscout
+          repo: blockscout-ci-cd
+          github_token: ${{ env.WORKFLOW_TRIGGER_TOKEN }}
+          workflow_file_name: e2e_new.yaml
+          ref: master
+          wait_interval: 30

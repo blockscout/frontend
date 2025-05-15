@@ -1,19 +1,20 @@
-import { Alert } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContractProxyType } from 'types/api/contract';
 
-import LinkExternal from 'ui/shared/links/LinkExternal';
+import { Alert } from 'toolkit/chakra/alert';
+import { Link } from 'toolkit/chakra/link';
 
 interface Props {
   type: NonNullable<SmartContractProxyType>;
+  isLoading: boolean;
 }
 
-const PROXY_TYPES: Record<NonNullable<SmartContractProxyType>, {
+const PROXY_TYPES: Partial<Record<NonNullable<SmartContractProxyType>, {
   name: string;
   link?: string;
   description?: string;
-}> = {
+}>> = {
   eip1167: {
     name: 'EIP-1167',
     link: 'https://eips.ethereum.org/EIPS/eip-1167',
@@ -39,6 +40,17 @@ const PROXY_TYPES: Record<NonNullable<SmartContractProxyType>, {
     link: 'https://github.com/ethereum/EIPs/issues/930',
     description: 'Eternal storage',
   },
+  erc7760: {
+    name: 'ERC-7760',
+    link: 'https://eips.ethereum.org/EIPS/eip-7760',
+    description: 'Minimal Upgradeable Proxies',
+  },
+  resolved_delegate_proxy: {
+    name: 'ResolvedDelegateProxy',
+    // eslint-disable-next-line max-len
+    link: 'https://github.com/ethereum-optimism/optimism/blob/9580179013a04b15e6213ae8aa8d43c3f559ed9a/packages/contracts-bedrock/src/legacy/ResolvedDelegateProxy.sol',
+    description: 'OP stack: legacy proxy contract that makes use of the AddressManager to resolve the implementation address',
+  },
   clone_with_immutable_arguments: {
     name: 'Clones with immutable arguments',
     link: 'https://github.com/wighawag/clones-with-immutable-args',
@@ -62,7 +74,7 @@ const PROXY_TYPES: Record<NonNullable<SmartContractProxyType>, {
   },
 };
 
-const ContractCodeProxyPattern = ({ type }: Props) => {
+const ContractCodeProxyPattern = ({ type, isLoading }: Props) => {
   const proxyInfo = PROXY_TYPES[type];
 
   if (!proxyInfo || type === 'unknown') {
@@ -70,10 +82,10 @@ const ContractCodeProxyPattern = ({ type }: Props) => {
   }
 
   return (
-    <Alert status="warning" flexWrap="wrap" whiteSpace="pre-wrap">
+    <Alert status="warning" whiteSpace="pre-wrap" loading={ isLoading }>
       { proxyInfo.link ? (
         <>
-          This proxy smart-contract is detected via <LinkExternal href={ proxyInfo.link }>{ proxyInfo.name }</LinkExternal>
+          This proxy smart-contract is detected via <Link href={ proxyInfo.link } external>{ proxyInfo.name }</Link>
           { proxyInfo.description && ` - ${ proxyInfo.description }` }
         </>
       ) : (

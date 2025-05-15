@@ -80,12 +80,22 @@ jobs:
         secrets: inherit
         with:
             platforms: linux/amd64,linux/arm64/v8
+            # NOTE: by default the image will be built with type=ref,event=tag; so we need to specify it here
+            tags: |
+                type=raw,value=latest
 
     sync_envs_docs:
         name: Sync ENV variables docs
         uses: './.github/workflows/sync-envs-docs.yml'
         needs: publish_image
         secrets: inherit
+
+    publish_toolkit:
+        name: Publish toolkit package to NPM
+        uses: './.github/workflows/toolkit-npm-publisher.yml'
+        secrets: inherit
+        with:
+            version: ${{ github.ref_name }}
 
     # Temporary disable this step because it is broken
     # There is an issue with building web3modal deps

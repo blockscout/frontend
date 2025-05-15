@@ -39,13 +39,13 @@ test.beforeEach(async({ mockApiResponse }) => {
     next_page_params: nextPageParams,
   };
 
-  await mockApiResponse('address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
-  await mockApiResponse('address_tokens', response20, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
-  await mockApiResponse('address_tokens', response721, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } });
-  await mockApiResponse('address_tokens', response1155, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' } });
-  await mockApiResponse('address_tokens', response404, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' } });
-  await mockApiResponse('address_nfts', tokensMock.nfts, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
-  await mockApiResponse('address_collections', tokensMock.collections, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
+  await mockApiResponse('general:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('general:address_tokens', response20, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
+  await mockApiResponse('general:address_tokens', response721, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } });
+  await mockApiResponse('general:address_tokens', response1155, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' } });
+  await mockApiResponse('general:address_tokens', response404, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' } });
+  await mockApiResponse('general:address_nfts', tokensMock.nfts, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
+  await mockApiResponse('general:address_collections', tokensMock.collections, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
 });
 
 test('erc20 +@dark-mode', async({ render }) => {
@@ -144,7 +144,7 @@ test.describe('mobile', () => {
       { hooksConfig },
     );
 
-    await component.getByLabel('list').click();
+    await component.locator('button').filter({ hasText: 'List' }).click();
 
     await expect(component).toHaveScreenshot();
   });
@@ -198,10 +198,18 @@ test.describe('update balances via socket', () => {
       next_page_params: null,
     };
 
-    const erc20ApiUrl = await mockApiResponse('address_tokens', response20, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
-    const erc721ApiUrl = await mockApiResponse('address_tokens', response721, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } });
-    const erc1155ApiUrl = await mockApiResponse('address_tokens', response1155, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' } });
-    const erc404ApiUrl = await mockApiResponse('address_tokens', response404, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' } });
+    const erc20ApiUrl = await mockApiResponse('general:address_tokens', response20, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
+    const erc721ApiUrl = await mockApiResponse('general:address_tokens', response721, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } });
+    const erc1155ApiUrl = await mockApiResponse(
+      'general:address_tokens',
+      response1155,
+      { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' } },
+    );
+    const erc404ApiUrl = await mockApiResponse(
+      'general:address_tokens',
+      response404,
+      { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' } },
+    );
 
     const component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
@@ -235,7 +243,7 @@ test.describe('update balances via socket', () => {
           value: '9852000000000000',
           token: {
             ...tokensMock.erc20c.token,
-            address: '0xE2cf36D00C57e01371b94B4206ae2CF841931Adc',
+            address_hash: '0xE2cf36D00C57e01371b94B4206ae2CF841931Adc',
             name: 'Tether USD',
             symbol: 'USDT',
           },

@@ -1,4 +1,4 @@
-import { Box, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 interface Props {
@@ -7,14 +7,12 @@ interface Props {
 }
 
 const Container = ({ children, className }: Props) => {
-  const bgColor = useColorModeValue('white', 'black');
-
   return (
     <Box
       className={ className }
       minWidth={{ base: '100vw', lg: 'fit-content' }}
       m="0 auto"
-      bgColor={ bgColor }
+      bgColor={{ _light: 'white', _dark: 'black' }}
     >
       { children }
     </Box>

@@ -1,12 +1,11 @@
 import type { IconProps } from '@chakra-ui/react';
-import { Icon, useColorModeValue } from '@chakra-ui/react';
+import { Icon } from '@chakra-ui/react';
 import React from 'react';
 
 // eslint-disable-next-line no-restricted-imports
 import logoIcon from 'icons/networks/logo-placeholder.svg';
 
 const ChartWatermarkIcon = (props: IconProps) => {
-  const watermarkColor = useColorModeValue('link', 'white');
   return (
     <Icon
       { ...props }
@@ -18,7 +17,7 @@ const ChartWatermarkIcon = (props: IconProps) => {
       transform="translate(-50%, -50%)"
       pointerEvents="none"
       viewBox="0 0 114 20"
-      color={ watermarkColor }
+      color={{ _light: 'link', _dark: 'white' }}
     />
   );
 };

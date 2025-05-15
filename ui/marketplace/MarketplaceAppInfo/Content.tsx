@@ -34,13 +34,13 @@ const Content = ({ data }: Props) => {
   return (
     <Flex fontSize="sm" flexDir="column" rowGap={ 5 }>
       <div>
-        <Text variant="secondary" fontSize="xs">Project info</Text>
+        <Text color="text.secondary" textStyle="xs">Project info</Text>
         <Text fontSize="sm" mt={ 3 }>{ data?.shortDescription }</Text>
         <WebsiteLink url={ data?.site }/>
       </div>
       { socialLinks.length > 0 && (
         <div>
-          <Text variant="secondary" fontSize="xs">Links</Text>
+          <Text color="text.secondary" textStyle="xs">Links</Text>
           <Grid templateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} columnGap={ 4 } rowGap={ 3 } mt={ 3 }>
             { socialLinks.map((link, index) => <SocialLink key={ index } { ...link }/>) }
           </Grid>

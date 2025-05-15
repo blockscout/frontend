@@ -60,6 +60,12 @@ export const withoutName: AddressParam = {
   ens_domain_name: null,
 };
 
+export const delegated: AddressParam = {
+  ...withoutName,
+  is_verified: true,
+  proxy_type: 'eip7702',
+};
+
 export const token: Address = {
   hash: hash,
   implementations: null,
@@ -76,7 +82,6 @@ export const token: Address = {
   creation_transaction_hash: '0xc38cf7377bf72d6436f63c37b01b24d032101f20ec1849286dc703c712f10c98',
   creator_address_hash: '0x34A9c688512ebdB575e82C50c9803F6ba2916E72',
   exchange_rate: '0.04311',
-  has_decompiled_code: false,
   has_logs: false,
   has_token_transfers: true,
   has_tokens: true,
@@ -90,7 +95,6 @@ export const eoa: Address = {
   creation_transaction_hash: '0xf2aff6501b632604c39978b47d309813d8a1bcca721864bbe86abf59704f195e',
   creator_address_hash: '0x803ad3F50b9e1fF68615e8B053A186e1be288943',
   exchange_rate: '0.04311',
-  has_decompiled_code: false,
   has_logs: true,
   has_token_transfers: false,
   has_tokens: true,
@@ -114,14 +118,13 @@ export const contract: Address = {
   creation_transaction_hash: '0xf2aff6501b632604c39978b47d309813d8a1bcca721864bbe86abf59704f195e',
   creator_address_hash: '0x803ad3F50b9e1fF68615e8B053A186e1be288943',
   exchange_rate: '0.04311',
-  has_decompiled_code: false,
   has_logs: true,
   has_token_transfers: false,
   has_tokens: false,
   has_validated_blocks: false,
   hash: hash,
   implementations: [
-    { address: '0x2F4F4A52295940C576417d29F22EEb92B440eC89', name: 'HomeBridge' },
+    { address_hash: '0x2F4F4A52295940C576417d29F22EEb92B440eC89', name: 'HomeBridge' },
   ],
   is_contract: true,
   is_verified: true,
@@ -140,7 +143,6 @@ export const validator: Address = {
   creation_transaction_hash: null,
   creator_address_hash: null,
   exchange_rate: '0.00432018',
-  has_decompiled_code: false,
   has_logs: false,
   has_token_transfers: false,
   has_tokens: false,

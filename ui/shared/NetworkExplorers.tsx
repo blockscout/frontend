@@ -1,16 +1,13 @@
-import {
-  Image,
-  useColorModeValue,
-  chakra,
-} from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
 
 import config from 'configs/app';
-import stripTrailingSlash from 'lib/stripTrailingSlash';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { stripTrailingSlash } from 'toolkit/utils/url';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import VerifyWith from 'ui/shared/VerifyWith';
 
 interface Props {
@@ -20,24 +17,22 @@ interface Props {
 }
 
 const NetworkExplorers = ({ className, type, pathParam }: Props) => {
-  const defaultIconColor = useColorModeValue('gray.400', 'gray.500');
-
   const explorersLinks = React.useMemo(() => {
     return config.UI.explorers.items
       .filter((explorer) => typeof explorer.paths[type] === 'string')
       .map((explorer) => {
         const url = new URL(stripTrailingSlash(explorer.paths[type] || '') + '/' + pathParam, explorer.baseUrl);
         return (
-          <LinkExternal h="34px" key={ explorer.baseUrl } href={ url.toString() } alignItems="center" display="inline-flex" minW="120px">
+          <Link external h="34px" key={ explorer.baseUrl } href={ url.toString() } alignItems="center" display="inline-flex" minW="120px">
             { explorer.logo ?
               <Image boxSize={ 5 } mr={ 2 } src={ explorer.logo } alt={ `${ explorer.title } icon` }/> :
-              <IconSvg name="explorer" boxSize={ 5 } color={ defaultIconColor } mr={ 2 }/>
+              <IconSvg name="explorer" boxSize={ 5 } color={{ _light: 'gray.400', _dark: 'gray.500' }} mr={ 2 }/>
             }
             { explorer.title }
-          </LinkExternal>
+          </Link>
         );
       });
-  }, [ pathParam, type, defaultIconColor ]);
+  }, [ pathParam, type ]);
 
   if (explorersLinks.length === 0) {
     return null;

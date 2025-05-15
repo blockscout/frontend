@@ -1,8 +1,9 @@
-import { Box, Flex, useColorMode } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
 import { COLOR_THEMES } from 'lib/settings/colorTheme';
+import { useColorMode } from 'toolkit/chakra/color-mode';
 
 import SettingsSample from './SettingsSample';
 
@@ -28,6 +29,7 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     window.document.documentElement.style.setProperty(varName, hex);
 
     cookies.set(cookies.NAMES.COLOR_MODE_HEX, hex);
+    cookies.set(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);
     window.localStorage.setItem(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);
   }, [ setColorMode ]);
 
@@ -70,7 +72,7 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
   return (
     <div>
       <Box fontWeight={ 600 }>Color theme</Box>
-      <Box color="text_secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
+      <Box color="text.secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
       <Flex>
         { COLOR_THEMES.map((theme) => (
           <SettingsSample

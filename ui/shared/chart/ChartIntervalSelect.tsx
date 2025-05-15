@@ -1,18 +1,20 @@
-import type { TagProps } from '@chakra-ui/react';
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { StatsInterval, StatsIntervalIds } from 'types/client/stats';
-import type { SelectOption } from 'ui/shared/select/types';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Select from 'ui/shared/select/Select';
+import { Select } from 'toolkit/chakra/select';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import type { TagProps } from 'toolkit/chakra/tag';
 import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 import { STATS_INTERVALS } from 'ui/stats/constants';
 
-const intervalList = Object.keys(STATS_INTERVALS).map((id: string) => ({
-  value: id,
-  label: STATS_INTERVALS[id as StatsIntervalIds].title,
-})) as Array<SelectOption>;
+const intervalCollection = createListCollection({
+  items: Object.keys(STATS_INTERVALS).map((id: string) => ({
+    value: id,
+    label: STATS_INTERVALS[id as StatsIntervalIds].title,
+  })),
+});
 
 const intervalListShort = Object.keys(STATS_INTERVALS).map((id: string) => ({
   id: id,
@@ -27,20 +29,24 @@ type Props = {
 };
 
 const ChartIntervalSelect = ({ interval, onIntervalChange, isLoading, selectTagSize }: Props) => {
+
+  const handleItemSelect = React.useCallback(({ value }: { value: Array<string> }) => {
+    onIntervalChange(value[0] as StatsIntervalIds);
+  }, [ onIntervalChange ]);
+
   return (
     <>
-      <Skeleton display={{ base: 'none', lg: 'flex' }} borderRadius="base" isLoaded={ !isLoading }>
+      <Skeleton hideBelow="lg" borderRadius="base" loading={ isLoading }>
         <TagGroupSelect<StatsIntervalIds> items={ intervalListShort } onChange={ onIntervalChange } value={ interval } tagSize={ selectTagSize }/>
       </Skeleton>
       <Select
-        options={ intervalList }
-        defaultValue={ interval }
-        onChange={ onIntervalChange }
-        isLoading={ isLoading }
-        w={{ base: '100%', lg: '136px' }}
-        display={{ base: 'flex', lg: 'none' }}
-        flexShrink={ 0 }
-        fontWeight={ 600 }
+        collection={ intervalCollection }
+        placeholder="Select interval"
+        defaultValue={ [ interval ] }
+        onValueChange={ handleItemSelect }
+        hideFrom="lg"
+        w="100%"
+        loading={ isLoading }
       />
     </>
   );

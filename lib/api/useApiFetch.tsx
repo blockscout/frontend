@@ -13,8 +13,8 @@ import type { Params as FetchParams } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 
 import buildUrl from './buildUrl';
-import { RESOURCES } from './resources';
-import type { ApiResource, ResourceName, ResourcePathParams } from './resources';
+import getResourceParams from './getResourceParams';
+import type { ResourceName, ResourcePathParams } from './resources';
 
 export interface Params<R extends ResourceName> {
   pathParams?: ResourcePathParams<R>;
@@ -26,7 +26,7 @@ export interface Params<R extends ResourceName> {
 export default function useApiFetch() {
   const fetch = useFetch();
   const queryClient = useQueryClient();
-  const { token: csrfToken } = queryClient.getQueryData<CsrfData>(getResourceKey('csrf')) || {};
+  const { token: csrfToken } = queryClient.getQueryData<CsrfData>(getResourceKey('general:csrf')) || {};
 
   return React.useCallback(<R extends ResourceName, SuccessType = unknown, ErrorType = unknown>(
     resourceName: R,
@@ -34,12 +34,12 @@ export default function useApiFetch() {
   ) => {
     const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
 
-    const resource: ApiResource = RESOURCES[resourceName];
+    const { api, apiName, resource } = getResourceParams(resourceName);
     const url = buildUrl(resourceName, pathParams, queryParams);
     const withBody = isBodyAllowed(fetchParams?.method);
     const headers = pickBy({
-      'x-endpoint': resource.endpoint && isNeedProxy() ? resource.endpoint : undefined,
-      Authorization: resource.endpoint && resource.needAuth ? apiToken : undefined,
+      'x-endpoint': api.endpoint && apiName !== 'general' && isNeedProxy() ? api.endpoint : undefined,
+      Authorization: [ 'admin', 'contractInfo' ].includes(apiName) ? apiToken : undefined,
       'x-csrf-token': withBody && csrfToken ? csrfToken : undefined,
       ...resource.headers,
       ...fetchParams?.headers,

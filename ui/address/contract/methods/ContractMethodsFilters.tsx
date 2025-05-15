@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { MethodType } from './types';
 
-import FilterInput from 'ui/shared/filters/FilterInput';
-import RadioButtonGroup from 'ui/shared/radioButtonGroup/RadioButtonGroup';
+import { ButtonGroupRadio, Button } from 'toolkit/chakra/button';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 
 import type { MethodsFilters } from './useMethodsFilters';
 import { TYPE_FILTER_OPTIONS } from './utils';
@@ -18,8 +18,8 @@ interface Props {
 
 const ContractMethodsFilters = ({ defaultMethodType, defaultSearchTerm, onChange, isLoading }: Props) => {
 
-  const handleTypeChange = React.useCallback((value: MethodType) => {
-    onChange({ type: 'method_type', value });
+  const handleTypeChange = React.useCallback((value: string) => {
+    onChange({ type: 'method_type', value: value as MethodType });
   }, [ onChange ]);
 
   const handleSearchTermChange = React.useCallback((value: string) => {
@@ -28,21 +28,25 @@ const ContractMethodsFilters = ({ defaultMethodType, defaultSearchTerm, onChange
 
   return (
     <Flex columnGap={ 3 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }}>
-      <RadioButtonGroup<MethodType>
-        name="contract-methods-filter"
+      <ButtonGroupRadio
         defaultValue={ defaultMethodType }
-        options={ TYPE_FILTER_OPTIONS }
         onChange={ handleTypeChange }
         w={{ lg: 'fit-content' }}
-        isLoading={ isLoading }
-      />
+        loading={ isLoading }
+      >
+        { TYPE_FILTER_OPTIONS.map((option) => (
+          <Button key={ option.value } value={ option.value } size="sm" px={ 3 }>
+            { option.title }
+          </Button>
+        )) }
+      </ButtonGroupRadio>
       <FilterInput
         initialValue={ defaultSearchTerm }
         onChange={ handleSearchTermChange }
         placeholder="Search by method name"
         w={{ base: '100%', lg: '450px' }}
-        size="xs"
-        isLoading={ isLoading }
+        size="sm"
+        loading={ isLoading }
       />
     </Flex>
   );

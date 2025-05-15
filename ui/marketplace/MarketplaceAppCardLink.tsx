@@ -1,7 +1,10 @@
-import { LinkOverlay, chakra } from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
+
+import { route } from 'nextjs-routes';
+
+import { LinkOverlay } from 'toolkit/chakra/link';
 
 type Props = {
   id: string;
@@ -17,16 +20,16 @@ const MarketplaceAppCardLink = ({ url, external, id, title, onClick, className }
     onClick?.(event, id);
   }, [ onClick, id ]);
 
-  return external ? (
-    <LinkOverlay href={ url } isExternal={ true } marginRight={ 2 } className={ className }>
+  return (
+    <LinkOverlay
+      href={ external ? url : route({ pathname: '/apps/[id]', query: { id } }) }
+      marginRight={ 2 }
+      className={ className }
+      external={ external }
+      onClick={ handleClick }
+    >
       { title }
     </LinkOverlay>
-  ) : (
-    <NextLink href={{ pathname: '/apps/[id]', query: { id } }} passHref legacyBehavior>
-      <LinkOverlay onClick={ handleClick } marginRight={ 2 } className={ className }>
-        { title }
-      </LinkOverlay>
-    </NextLink>
   );
 };
 

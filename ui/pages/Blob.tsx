@@ -16,7 +16,7 @@ const BlobPageContent = () => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isPlaceholderData, isError, error } = useApiQuery('blob', {
+  const { data, isPlaceholderData, isError, error } = useApiQuery('general:blob', {
     pathParams: { hash },
     queryOptions: {
       placeholderData: BLOB,
@@ -27,7 +27,7 @@ const BlobPageContent = () => {
   const content = (() => {
     if (isError) {
       if (isCustomAppError(error)) {
-        throwOnResourceLoadError({ resource: 'blob', error, isError: true });
+        throwOnResourceLoadError({ resource: 'general:blob', error, isError: true });
       }
 
       return <DataFetchAlert/>;
@@ -41,7 +41,7 @@ const BlobPageContent = () => {
   })();
 
   const titleSecondRow = (
-    <BlobEntity hash={ hash } noLink fontWeight={ 500 } fontFamily="heading"/>
+    <BlobEntity hash={ hash } noLink variant="subheading"/>
   );
 
   return (

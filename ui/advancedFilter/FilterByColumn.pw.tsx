@@ -18,7 +18,7 @@ const columns: Array<ColumnsIds> = [
 ];
 
 const filters = {
-  tx_types: [ 'coin_transfer' as const ],
+  transaction_types: [ 'coin_transfer' as const ],
   methods: [ '0xa9059cbb' ],
   age: '7d' as const,
   address_relation: 'or' as const,
@@ -38,11 +38,11 @@ const searchParams = {
 
 for (const column of columns) {
   test(`${ column } filter +@dark-mode`, async({ page, render, mockApiResponse }) => {
-    await mockApiResponse('tokens', {
+    await mockApiResponse('general:tokens', {
       items: [],
       next_page_params: null,
     });
-    await mockApiResponse('advanced_filter_methods', [], { queryParams: { q: '' } });
+    await mockApiResponse('general:advanced_filter_methods', [], { queryParams: { q: '' } });
     await render(
       <FilterByColumn
         filters={ filters }
