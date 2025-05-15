@@ -12,6 +12,7 @@ export enum NAMES {
   COLOR_MODE_HEX = 'chakra-ui-color-mode-hex',
   ADDRESS_IDENTICON_TYPE = 'address_identicon_type',
   ADDRESS_FORMAT = 'address_format',
+  TIME_FORMAT = 'time_format',
   INDEXING_ALERT = 'indexing_alert',
   ADBLOCK_DETECTED = 'adblock_detected',
   MIXPANEL_DEBUG = '_mixpanel_debug',

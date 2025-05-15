@@ -8,7 +8,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import InteropMessageStatus from 'ui/shared/statusTag/InteropMessageStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 import InteropMessageAdditionalInfo from './InteropMessageAdditionalInfo';
 import InteropMessageDestinationTx from './InteropMessageDestinationTx';
@@ -29,7 +29,7 @@ const InteropMessagesListItem = ({ item, isLoading }: Props) => {
       <Flex alignItems="flex-start" flexDirection="column" gap={ 2 } w="100%">
         <HStack w="100%">
           <Text fontWeight={ 500 } flexGrow={ 1 }>#{ item.nonce }</Text>
-          <TimeAgoWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text.secondary"/>
+          <TimeWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text.secondary"/>
         </HStack>
         <Grid templateColumns="120px 1fr" rowGap={ 2 }>
           <Text as="span" color="text.secondary">Source tx</Text>

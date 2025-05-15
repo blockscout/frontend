@@ -8,7 +8,7 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -51,7 +51,7 @@ const OptimisticL2DisputeGamesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.created_at }
           isLoading={ isLoading }
           display="inline-block"
@@ -66,7 +66,7 @@ const OptimisticL2DisputeGamesListItem = ({ item, isLoading }: Props) => {
       { item.resolved_at && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Resolution age</ListItemMobileGrid.Label><ListItemMobileGrid.Value>
-            <TimeAgoWithTooltip
+            <TimeWithTooltip
               timestamp={ item.resolved_at }
               isLoading={ isLoading }
               display="inline-block"

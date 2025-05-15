@@ -11,7 +11,7 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const feature = config.features.beaconChain;
 
@@ -73,7 +73,7 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <TimeAgoWithTooltip
+            <TimeWithTooltip
               timestamp={ item.timestamp }
               isLoading={ isLoading }
               display="inline-block"

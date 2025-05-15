@@ -16,7 +16,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -63,9 +63,10 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               hash={ tx.hash }
               fontWeight="700"
             />
-            <TimeAgoWithTooltip
+            <TimeWithTooltip
               timestamp={ tx.timestamp }
               enableIncrement
+              timeFormat="relative"
               isLoading={ isLoading }
               color="text.secondary"
               textStyle="sm"

@@ -3,6 +3,7 @@ import React from 'react';
 import type { InteropMessage } from 'types/api/interop';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import InteropMessagesTableItem from './InteropMessagesTableItem';
 
@@ -19,7 +20,10 @@ const InteropMessagesTable = ({ items, top, isLoading }: Props) => {
         <TableRow>
           <TableColumnHeader/>
           <TableColumnHeader>Message</TableColumnHeader>
-          <TableColumnHeader>Age</TableColumnHeader>
+          <TableColumnHeader>
+            Timestamp
+            <TimeFormatToggle/>
+          </TableColumnHeader>
           <TableColumnHeader>Status</TableColumnHeader>
           <TableColumnHeader>Source tx</TableColumnHeader>
           <TableColumnHeader>Destination tx</TableColumnHeader>

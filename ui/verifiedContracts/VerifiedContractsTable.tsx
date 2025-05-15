@@ -7,6 +7,7 @@ import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import { SORT_SEQUENCE } from 'ui/verifiedContracts/utils';
 
 import VerifiedContractsTableItem from './VerifiedContractsTableItem';
@@ -25,7 +26,7 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
   }, [ sort, setSorting ]);
 
   return (
-    <TableRoot minW="950px">
+    <TableRoot minW="1100px">
       <TableHeaderSticky top={ ACTION_BAR_HEIGHT_DESKTOP }>
         <TableRow>
           <TableColumnHeader width="50%">Contract</TableColumnHeader>
@@ -51,7 +52,10 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
           </TableColumnHeaderSortable>
           <TableColumnHeader width="50%">Language / Compiler version</TableColumnHeader>
           <TableColumnHeader width="80px">Settings</TableColumnHeader>
-          <TableColumnHeader width="150px">Verified</TableColumnHeader>
+          <TableColumnHeader width="200px">
+            Verified
+            <TimeFormatToggle/>
+          </TableColumnHeader>
           <TableColumnHeader width="130px">License</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>

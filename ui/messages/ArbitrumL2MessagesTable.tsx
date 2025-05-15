@@ -3,6 +3,7 @@ import React from 'react';
 import type { ArbitrumL2MessagesItem } from 'types/api/arbitrumL2';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import type { MessagesDirection } from './ArbitrumL2Messages';
 import ArbitrumL2MessagesTableItem from './ArbitrumL2MessagesTableItem';
@@ -23,7 +24,10 @@ const ArbitrumL2MessagesTable = ({ items, direction, top, isLoading }: Props) =>
           { direction === 'from-rollup' && <TableColumnHeader>From</TableColumnHeader> }
           <TableColumnHeader>Message #</TableColumnHeader>
           <TableColumnHeader>L2 transaction</TableColumnHeader>
-          <TableColumnHeader>Age</TableColumnHeader>
+          <TableColumnHeader>
+            Timestamp
+            <TimeFormatToggle/>
+          </TableColumnHeader>
           <TableColumnHeader>Status</TableColumnHeader>
           <TableColumnHeader>L1 transaction</TableColumnHeader>
         </TableRow>

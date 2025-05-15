@@ -10,7 +10,7 @@ import { WEI, ZERO } from 'toolkit/utils/consts';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
@@ -59,7 +59,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
       ) }
       <Flex columnGap={ 2 } w="100%">
         <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Age</Skeleton>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ props.block_timestamp }
           enableIncrement={ props.page === 1 }
           isLoading={ props.isLoading }

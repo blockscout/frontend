@@ -3,6 +3,7 @@ import React from 'react';
 import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import OptimisticL2TxnBatchesTableItem from './OptimisticL2TxnBatchesTableItem';
 
@@ -19,7 +20,10 @@ const OptimisticL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
         <TableRow>
           <TableColumnHeader>Batch ID</TableColumnHeader>
           <TableColumnHeader>Storage</TableColumnHeader>
-          <TableColumnHeader>Age</TableColumnHeader>
+          <TableColumnHeader>
+            Timestamp
+            <TimeFormatToggle/>
+          </TableColumnHeader>
           <TableColumnHeader isNumeric>L1 txn count</TableColumnHeader>
           <TableColumnHeader isNumeric>L2 blocks</TableColumnHeader>
           <TableColumnHeader isNumeric>Txn</TableColumnHeader>

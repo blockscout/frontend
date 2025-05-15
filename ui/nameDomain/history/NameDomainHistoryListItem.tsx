@@ -10,7 +10,7 @@ import { stripTrailingSlash } from 'toolkit/utils/url';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
   event: bens.DomainEvent;
@@ -37,7 +37,7 @@ const NameDomainHistoryListItem = ({ isLoading, domain, event }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ event.timestamp }
           isLoading={ isLoading }
           color="text.secondary"
