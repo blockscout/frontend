@@ -34,6 +34,7 @@ on:
             - shibarium
             - scroll_sepolia
             - stability
+            - tac_turin
             - zkevm
             - zilliqa_prototestnet
             - zksync

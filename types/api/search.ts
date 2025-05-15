@@ -1,4 +1,5 @@
 import type * as bens from '@blockscout/bens-types';
+import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 import type { TokenType } from 'types/api/token';
 
 import type { AddressMetadataTagApi } from './addressMetadata';
@@ -14,6 +15,7 @@ export const SEARCH_RESULT_TYPES = {
   user_operation: 'user_operation',
   blob: 'blob',
   metadata_tag: 'metadata_tag',
+  tac_operation: 'tac_operation',
 } as const;
 
 export type SearchResultType = typeof SEARCH_RESULT_TYPES[keyof typeof SEARCH_RESULT_TYPES];
@@ -54,6 +56,11 @@ interface SearchResultAddressData {
 export interface SearchResultAddressOrContract extends SearchResultAddressData {
   type: 'address' | 'contract';
   ens_info?: SearchResultEnsInfo;
+}
+
+export interface SearchResultTacOperation {
+  type: 'tac_operation';
+  tac_operation: tac.OperationDetails;
 }
 
 export interface SearchResultMetadataTag extends SearchResultAddressData {
@@ -120,7 +127,8 @@ export type SearchResultItem =
   SearchResultUserOp |
   SearchResultBlob |
   SearchResultDomain |
-  SearchResultMetadataTag;
+  SearchResultMetadataTag |
+  SearchResultTacOperation;
 
 export interface SearchResult {
   items: Array<SearchResultItem>;

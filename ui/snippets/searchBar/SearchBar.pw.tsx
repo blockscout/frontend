@@ -124,6 +124,17 @@ test('search by tx hash +@mobile', async({ render, page, mockApiResponse }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
+test('search by tac operation hash +@mobile', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('general:quick_search', [
+    searchMock.tacOperation1,
+  ], { queryParams: { q: searchMock.tacOperation1.tac_operation.operation_id } });
+  await render(<SearchBar/>);
+  await page.getByPlaceholder(/search/i).fill(searchMock.tacOperation1.tac_operation.operation_id);
+  await page.waitForResponse(apiUrl);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
+});
+
 test('search by blob hash +@mobile', async({ render, page, mockApiResponse, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.dataAvailability);
   const apiUrl = await mockApiResponse('general:quick_search', [
