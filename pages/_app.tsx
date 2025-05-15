@@ -16,7 +16,6 @@ import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { SettingsContextProvider } from 'lib/contexts/settings';
 import { initGrowthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
-import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
 import { SocketProvider } from 'lib/socket/context';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
@@ -49,26 +48,28 @@ const ERROR_SCREEN_STYLES: HTMLChakraProps<'div'> = {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  // to avoid hydration mismatch between server and client
-  // we have to render the app only on client (when it is mounted)
-  // https://github.com/pacocoursey/next-themes?tab=readme-ov-file#avoid-hydration-mismatch
-  const [ mounted, setMounted ] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useLoadFeatures(pageProps.uuid);
-  useNotifyOnNavigation();
 
   const growthBook = initGrowthBook(pageProps.uuid);
+  useLoadFeatures(growthBook);
+
   const queryClient = useQueryClientConfig();
 
-  if (!mounted) {
-    return null;
-  }
+  const content = (() => {
+    const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
 
-  const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
+    return (
+      <>
+        { getLayout(<Component { ...pageProps }/>) }
+        <Toaster/>
+        { config.features.rewards.isEnabled && (
+          <>
+            <RewardsLoginModal/>
+            <RewardsActivityTracker/>
+          </>
+        ) }
+      </>
+    );
+  })();
 
   return (
     <ChakraProvider>
@@ -86,14 +87,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                       <RewardsContextProvider>
                         <MarketplaceContextProvider>
                           <SettingsContextProvider>
-                            { getLayout(<Component { ...pageProps }/>) }
-                            <Toaster/>
-                            { config.features.rewards.isEnabled && (
-                              <>
-                                <RewardsLoginModal/>
-                                <RewardsActivityTracker/>
-                              </>
-                            ) }
+                            { content }
                           </SettingsContextProvider>
                         </MarketplaceContextProvider>
                       </RewardsContextProvider>
