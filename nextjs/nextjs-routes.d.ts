@@ -44,7 +44,6 @@ declare module "nextjs-routes" {
     | StaticRoute<"/deposits">
     | StaticRoute<"/dispute-games">
     | StaticRoute<"/gas-tracker">
-    | StaticRoute<"/graphiql">
     | StaticRoute<"/">
     | StaticRoute<"/internal-txs">
     | StaticRoute<"/interop-messages">

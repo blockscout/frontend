@@ -12,7 +12,6 @@ const CANONICAL_ROUTES: Array<Route['pathname']> = [
   '/tokens',
   '/stats',
   '/api-docs',
-  '/graphiql',
   '/gas-tracker',
   '/apps',
 ];
