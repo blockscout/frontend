@@ -59,8 +59,8 @@ export function app(): CspDev.DirectiveDescriptor {
 
       'https://infragrid.v.network', // RPC providers
       'https://price.assetchain.org/api/v1/price', // RWA stats
-      'https://explorerapi-testnet.assetchain.org:16761/api',
-      'https://explorerapi.assetchain.org:16761/api',
+      'https://explorerapi-testnet.assetchain.org/api',
+      'https://explorerapi.assetchain.org/api',
       'https://scan.assetchain.org/api-docs',
       'https://scan-testnet.assetchain.org/api-docs',
       'https://scan.assetchain.org/*',
