@@ -13,7 +13,7 @@ const ModalFooterBtnGroup = ({
     isDisabled = false,
 }: {
     onCancel?: () => void,
-    onConfirm?: () => void,
+    onConfirm?: (e : React.MouseEvent<HTMLButtonElement>) => void,
     cancelText?: string,
     confirmText?: string,
     isSubmitting?: boolean,
@@ -23,7 +23,7 @@ const ModalFooterBtnGroup = ({
         <Flex
             width="100%"
             height="auto"
-            padding = { '0 20px' }
+            padding = { '0' }
             alignItems="center"
             justifyContent="flex-end"
             gap="12px"
@@ -34,10 +34,10 @@ const ModalFooterBtnGroup = ({
                 disabled={ false }
                 width="100px"
                 height="40px"
-                bgColor="transparent"
-                disabledBgColor="transparent"
-                textColor="#FF57B7"
-                disabledTextColor="rgba(255, 87, 183, 0.5)"
+                bgColor="rgba(0, 0, 0, 0.10)"
+                disabledBgColor="rgba(0, 0, 0, 0.07)"
+                textColor="rgba(0, 0, 0, 0.60);"
+                disabledTextColor="rgba(0, 0, 0, 0.60);"
             />
             <PlainButton 
                 text={ confirmText }

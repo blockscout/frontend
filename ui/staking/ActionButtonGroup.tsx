@@ -61,27 +61,33 @@ const ActionButtonGroup = ({
     showStake = false,
     disableClaim = false,
     disableStake = false,
+    currentRecord = {},
+    setAvailableAmount = no_op,
     handleWithdraw = no_op,
     handleMoveStake = no_op,
     handleStake = no_op,
     handleClaim = no_op,
+    setCurrentAddress = no_op,
 }: {
     showClaim?: boolean,
     showStake?: boolean,
     disableClaim?: boolean,
     disableStake?: boolean,
     validatorAddress?: string,
-    handleWithdraw?: (address: string) => void,
-    handleMoveStake?: (address: string) => void,
-    handleStake?: (address: string) => void,
-    handleClaim?: (address: string) => void,
+    currentRecord?: any,
+    handleWithdraw?: (address: string, record?: any) => void,
+    handleMoveStake?: (address: string, record?: any) => void,
+    handleStake?: (address: string, record?: any) => void,
+    handleClaim?: (address: string, record?: any) => void,
+    setCurrentAddress?: (address: string) => void,
+    setAvailableAmount?: (value: string) => void,
 }) => {
 
     return (
         <Flex
             width="100%"
             height="auto"
-            padding = { '14px 0  10px' }
+            padding = { '0' }
             alignItems="center"
             justifyContent="center"
         >
@@ -97,7 +103,12 @@ const ActionButtonGroup = ({
                     <PlainButton
                         text={ 'Claim' }
                         onClick={ () => {
-                            !disableClaim && handleClaim(validatorAddress) 
+                            if (!disableClaim) {
+                                handleClaim(validatorAddress, currentRecord);
+                                // setAvailableAmount(currentRecord?.availableAmount || '0');
+                                setCurrentAddress(validatorAddress);
+                            }
+                            setCurrentAddress(validatorAddress);
                         }}
                         disabled={ disableClaim }
                     />
@@ -106,7 +117,11 @@ const ActionButtonGroup = ({
                     <PlainButton
                         text={ 'Stake' }
                         onClick={ () => {
-                            !disableStake && handleStake(validatorAddress)
+                            if (!disableStake) {
+                                handleStake(validatorAddress, currentRecord);
+                                setCurrentAddress(validatorAddress);
+                                // setAvailableAmount(currentRecord?.availableAmount || '0');
+                            }
                         }}
                         disabled={ disableStake }
                     />
@@ -150,7 +165,8 @@ const ActionButtonGroup = ({
                         <MenuItem
                             onClick={(e) => {
                                 e.stopPropagation();
-                                handleWithdraw(validatorAddress);
+                                setCurrentAddress(validatorAddress);
+                                handleWithdraw(validatorAddress, currentRecord);
                             }}
                             _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
@@ -158,7 +174,8 @@ const ActionButtonGroup = ({
                         <MenuItem
                             onClick={(e) => {
                                 e.stopPropagation();
-                                handleMoveStake(validatorAddress);
+                                handleMoveStake(validatorAddress, currentRecord);
+                                setCurrentAddress(validatorAddress);
                             }}
                             _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}

@@ -212,25 +212,6 @@ const ObjectDetails: NextPage = () => {
       }
     }, [ url ]);
 
-
-    const handleClaimAll = React.useCallback(async() => {
-      try {
-        setLoading(true);
-        const res = await (await fetch(url + '/api/me/staking/claim', { 
-            method: 'post',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })).json() as  any;
-        if(res && res.code === 200) {
-          console.log('res', res);
-        }
-        setLoading(false);
-      } catch (error: any) {
-        setLoading(false);
-      }
-    } , [ url ]);
-
     const propsPage = React.useCallback((value: number) => {
       window.scrollTo({
         top: 0,
@@ -277,7 +258,6 @@ const ObjectDetails: NextPage = () => {
         claimableRewards={ claimableRewards }
         withdrawingAmount={ withdrawingAmount }
         totalRewards={ totalRewards }
-        handleClaimAll={ handleClaimAll }
       />
       { /* <TableList
         totleDate={ 0 }

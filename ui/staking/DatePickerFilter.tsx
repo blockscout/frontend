@@ -19,24 +19,32 @@ const DatePicker = dynamic(async () => {
     return DatePicker.default.RangePicker;
 }, { ssr: false, });
 
-const DatePickerFilter = () => {
+const DatePickerFilter = ({
+    value,
+    setValue,
+}: {
+    value: any;
+    setValue: (val: any) => void;
+}) => {
 
     const [open, setOpen] = useState(false);
-    const [dates, setDates] = useState<any>([]);
-    const [value, setValue] = useState<any>([null, null]);
+    const [dates, setDates] = useState<any>(value);
     const [ shouldClose , setShouldClose ] = useState<boolean>(false);
+    
+    const allowClose =  React.useMemo(() => {
+        if ( dates[0] && dates[1]) {
+            return true;
+        }
+        return false;
+    } , [dates]);
 
     const handleCalendarChange = (val: any) => {
         setDates(val);
-        // 如果两个时间都选择完毕，可以自动打开“确认”按钮
-        if (val[0] && val[1]) {
-            setValue(val);
-        }
     };
 
 
     const handleConfirmSelect = () => {
-        console.log('Confirm Select', dates);
+        setValue(dates);
         setShouldClose(true);
     }
 
@@ -47,8 +55,7 @@ const DatePickerFilter = () => {
 
 
     const handleChange = (val: any) => {
-        setValue(val);
-        setDates([]);
+        setDates(val);
         setOpen(false);
     };
 
@@ -130,7 +137,7 @@ const DatePickerFilter = () => {
                                 <PlainButton 
                                     text={ "OK" }
                                     onClick={ handleConfirmSelect }
-                                    disabled={ false }
+                                    disabled={ !allowClose }
                                     isSubmitting={ false }
                                     width="48px"
                                     height="24px"

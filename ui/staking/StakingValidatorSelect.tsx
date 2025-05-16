@@ -16,23 +16,51 @@ import React from 'react';
 import StakingTabList from 'ui/staking/StakingTabList';
 import ValidatorItemBar from 'ui/staking/ValidatorItemBar';
 
-const StakingValidatorSelect = () => {
-    
-    const { isOpen, onToggle, onClose } = useDisclosure();
+
+
+const getShortAddress = (address: string) => {
+    if( !address) {
+        return '';
+    }
+    if ( address.length > 10) {
+        return `${address.slice(0, 12)}...${address.slice(-4)}`;
+    }
+    return address;
+}
+
+
+const Selector = ({
+    myValidatorsList,
+    allValidatorsList,
+    selectedValidator,
+    setSelectedValidator,
+    isOpen,
+    onToggle,
+    onClose,
+}: {
+    myValidatorsList: any[];
+    allValidatorsList: any[];
+    selectedValidator: any;
+    setSelectedValidator: (validator: any) => void;
+    isOpen: boolean;
+    onToggle: () => void;
+    onClose: () => void;
+}) => {
 
     return (
         <Popover
             placement='bottom'
-            closeOnBlur={false}
+            closeOnBlur={ false }
             matchWidth={true}
+            isOpen={isOpen}
         >
             <PopoverTrigger>
                 <Box width="100%">
                     <ValidatorItemBar
                         showArrow={true}
-                        liveApr={0}
+                        liveApr={ (Number(selectedValidator.liveApr || 0) * 100) + '%' }
                         isFocused={ isOpen }
-                        validatorName={'Select Validator'}
+                        validatorName={ getShortAddress(selectedValidator.validatorAddress) }
                         validatorAvatar={null}
                         onClick={onToggle}
                     />
@@ -43,15 +71,57 @@ const StakingValidatorSelect = () => {
                 width="inherit"
                 borderColor='blue.800'
                 borderRadius="12px"
+                overflowY="hidden"
                 border = '1px solid rgba(0, 46, 51, 0.10)'
                 boxShadow={'0px 4px 16px 0px rgba(0, 0, 0, 0.10)'}
             >
                 <PopoverHeader pt={0} fontWeight='bold' border='0' color='black'/>
-                <PopoverBody px={0} py={0} >
-                    <StakingTabList />
+                <PopoverBody px={0} py={0} borderRadius={"12px"}>
+                    <StakingTabList 
+                        myValidatorsList={myValidatorsList}
+                        allValidatorsList={allValidatorsList}
+                        onClose ={ onClose }
+                        setSelectedValidator={ (validator: any) => {
+                            setSelectedValidator(validator);
+                        }}
+                    />
                 </PopoverBody>
             </PopoverContent>
         </Popover>
+    );
+}
+
+const StakingValidatorSelect = ({
+    myValidatorsList,
+    allValidatorsList,
+    selectedValidator,
+    setSelectedValidator,
+    isOpen,
+    onToggle,
+    onClose,
+}: {
+    myValidatorsList: any[];
+    allValidatorsList: any[];
+    selectedValidator: any;
+    setSelectedValidator: (validator: any) => void;
+    isOpen: boolean;
+    onToggle: () => void;
+    onClose: () => void;
+}) => {
+
+
+    return (
+        <Flex width="100%" flexDirection="column" alignItems="center" userSelect="none">
+            <Selector
+                myValidatorsList={myValidatorsList}
+                allValidatorsList={allValidatorsList}
+                selectedValidator={selectedValidator}
+                setSelectedValidator={setSelectedValidator}
+                isOpen={isOpen}
+                onToggle={onToggle}
+                onClose={ onClose}
+            />
+        </Flex>
     );
 }
 

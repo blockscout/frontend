@@ -12,14 +12,14 @@ const expandIcon = (
 
 const ValidatorItemBar = ({
     showArrow = false,
-    liveApr = 0,
+    liveApr = "0",
     isFocused = false,
     validatorName = '',
     validatorAvatar = null,
     onClick = () => {},
 }: {
     showArrow?: boolean;
-    liveApr?: number;
+    liveApr?: string | number;
     isFocused?: boolean;
     validatorName?: string;
     validatorAvatar?: string | null;
@@ -29,7 +29,7 @@ const ValidatorItemBar = ({
         <Box 
             width="100%" 
             height="40px"
-            cursor={"pointer"}
+            cursor={showArrow ? 'pointer' : 'default'}
             position="relative"
             border = { isFocused ? '1px solid #FF57B7' : '1px solid rgba(0, 46, 51, 0.10)' }
             borderRadius="9999px" display="flex" 
@@ -44,7 +44,7 @@ const ValidatorItemBar = ({
                 gap="8px"
                 padding="16px"
             >
-                <ValidatorInfo />
+                <ValidatorInfo  validatorName = {validatorName} />
                 <Flex
                     flexDirection="row"
                     justifyContent="space-between"
@@ -63,7 +63,7 @@ const ValidatorItemBar = ({
                         as ="span"
                         fontFamily="HarmonyOS Sans"
                     >
-                        { liveApr }%
+                        { liveApr } 
                     </Text>
                     {
                         showArrow && (

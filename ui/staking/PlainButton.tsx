@@ -30,7 +30,7 @@ const PlainButton = ({
     isSubmitting = false,
 }: {
     text: string,
-    onClick?: () => void,
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void,
     disabled?: boolean
     bgColor?: string
     disabledBgColor?: string

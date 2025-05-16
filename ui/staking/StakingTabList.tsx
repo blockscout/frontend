@@ -6,13 +6,23 @@ import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 
-const StakingTabList = () => {
-
+const StakingTabList = ({
+    myValidatorsList,
+    allValidatorsList,
+    setSelectedValidator,
+    onClose,
+}: {
+    myValidatorsList: any[];
+    allValidatorsList: any[];
+    setSelectedValidator: (validator: any) => void;
+    onClose: () => void;
+}) => {
     return (
-        <Box>
+        <Box  borderRadius={"12px"}>
             <Tabs 
                 variant="solid-rounded"
                 size='sm'
+                borderRadius={"12px"}
             >
                 <div 
                     style={{
@@ -84,7 +94,7 @@ const StakingTabList = () => {
                             lineHeight="20px"
                             fontFamily="HarmonyOS Sans"
                         >
-                            Other Validators
+                            All Validators
                         </Text>
                         <Text
                             fontSize="12px"
@@ -100,12 +110,70 @@ const StakingTabList = () => {
                     </Flex>
                 </Box>
 
-                <TabPanels color="#000" >
-                    <TabPanel>
-
+                <TabPanels color="#000" borderRadius={"12px"}>
+                    <TabPanel padding="0" >
+                        <Box
+                            width="100%"
+                            backgroundColor="#fff"
+                            padding="0"
+                            maxHeight="300px"
+                            overflowY="auto"
+                        >
+                            {myValidatorsList.map((validator) => (
+                                <Flex 
+                                    key={validator.validatorAddress} 
+                                    flexDirection="row"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    width="100%"
+                                    padding="8px 16px"
+                                    cursor="pointer"
+                                    onClick={() => {
+                                        setSelectedValidator(validator)
+                                        onClose();
+                                    }}
+                                    _hover={{
+                                        backgroundColor: '#FEF1F9',
+                                    }}
+                                    borderBottom="1px solid rgba(0, 46, 51, 0.10)"
+                                >
+                                    <Text>{validator.validatorAddress}</Text>
+                                    <Text>{ Number(validator.liveApr || 0) * 100 }%</Text>
+                                </Flex>
+                            ))}
+                        </Box>
                     </TabPanel>
-                    <TabPanel>
-                        
+                    <TabPanel padding="0" boxShadow="none">
+                        <Box
+                            width="100%"
+                            backgroundColor="#fff"
+                            padding="0"
+                            maxHeight="300px"
+                            overflowY="auto"
+                        >
+                            {allValidatorsList.map((validator) => (
+                                <Flex 
+                                    key={validator.validatorAddress} 
+                                    flexDirection="row"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    onClick={() => {
+                                        setSelectedValidator(validator)
+                                        onClose();
+                                    }}
+                                    width="100%"
+                                    cursor="pointer"
+                                    _hover={{
+                                        backgroundColor: '#FEF1F9',
+                                    }}
+                                    padding="8px 16px"
+                                    borderBottom="1px solid rgba(0, 46, 51, 0.10)"
+                                >
+                                    <Text>{validator.validatorAddress}</Text>
+                                    <Text>{ Number(validator.liveApr || 0) * 100 }%</Text>
+                                </Flex>
+                            ))}
+                        </Box>
                     </TabPanel>
                 </TabPanels>
             </Tabs>

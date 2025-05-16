@@ -85,10 +85,9 @@ const InfoNumberWrapper = ({
 }
 
 
+const defaultLimit = 100;
+
 const AllValidatorPage: NextPage = () => {
-
-
-  const limit = 100;
 
   const [ queryParams, setQueryParams ] = React.useState<{ 
     status?: ValidatorQueryParams['status'];
@@ -182,7 +181,7 @@ const AllValidatorPage: NextPage = () => {
     try {
       setIsTableLoading(true);
       const param = new URLSearchParams();
-      param.append('limit', limit.toString());
+      param.append('limit', defaultLimit.toString());
       param.append('nextKey', queryParams.nextKey || '0x00');
       if (isActiveOnly) {
         param.append('status', 'active');

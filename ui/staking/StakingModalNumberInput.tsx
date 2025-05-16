@@ -15,14 +15,24 @@ import React from 'react';
 
 const StakingModalNumberInput = ({
     value,
+    availableAmount = '0.00',
     setValue,
+    uneditable = false,
 }: {
     value: string;
+    availableAmount: string;
+    uneditable?: boolean;
     setValue: (value: string) => void;
 }) => {
 
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
+
+  const availableAmountNumber = Number(availableAmount.replace(/,/g, ''));
+
+  const handleMaxClick = () => {
+    setValue(availableAmountNumber.toFixed(7).toString());
+  }
 
   return (
     <InputGroup height={'auto'} width={'100%'} borderRadius={'16px'}>
@@ -60,6 +70,7 @@ const StakingModalNumberInput = ({
           fontStyle={'normal'}
           color={'#FF57B7'}
           fontWeight={700}
+          disabled={uneditable}
           lineHeight={'140%'} /* 56px */
           border = {'1px solid rgba(0, 46, 51, 0.10)'}
           backdropFilter='blur(5px)'
@@ -87,10 +98,11 @@ const StakingModalNumberInput = ({
                       }}
                       height='auto'
                       colorScheme='pink'
+                      onClick={handleMaxClick}
                     >MAX</Button>
                     <Flex flexDirection={'row'} width='auto' height='auto' alignItems='center' justifyContent={'flex-end'}>
                         <Text fontSize='sm' color='gray.500'>
-                            0.00
+                          Is 
                         </Text>
                         <Text fontSize='sm' color='gray.500'>
                           Moca
@@ -135,7 +147,14 @@ const StakingModalNumberInput = ({
                 as ="span"
                 fontFamily="HarmonyOS Sans"
             >
-               Available: <span  style={{ color: '#000' }}>0.00 MOCA</span>
+               Available: <span  style={{ color: '#000' }}>
+                <span>
+                  {availableAmountNumber.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })} Moca
+                </span>
+               </span>
             </Text>
       </Flex>
     </InputGroup>

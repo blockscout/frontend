@@ -1,14 +1,22 @@
 /* eslint-disable */
 import { Table, Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
-import LinkInternal from 'ui/shared/links/LinkInternal';
-import { route } from 'nextjs-routes';
+import {  useDisclosure, } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { debounce, orderBy } from 'lodash';
+import useAccount from 'lib/web3/useAccount';
 import StatusButton from 'ui/validators/StatusButton';
-import WithTipsText from 'ui/staking/WithTipsText';
+import WithTipsText from 'ui/validators/WithTipsText';
 import ActionButtonGroup  from 'ui/staking/ActionButtonGroup';
 import Pagination from 'ui/validators/Pagination';
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import styles from 'ui/staking/spinner.module.css';
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(advancedFormat);
 
 type tableHeadType = {
     label: string | React.ReactNode;
@@ -23,7 +31,22 @@ type tableHeadType = {
     noCellPadding?: boolean;
 }
 
+type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 type sortOrderType = 'asc' | 'desc' | '';
+
+type ValidatorQueryParams = {
+  /** 验证者状态过滤，支持数字或字符串类型 */
+  status?: number | 'active' | 'inactive' | 'unbonding';
+  /** 分页键，用于获取下一页数据 */
+  nextKey?: string; // 默认值 '0x00'
+  page?: number; // 默认值 1
+  /** 每页返回的验证者数量 */
+  limit?: number; // 默认值 10
+  /** 是否返回总记录数 */
+  countTotal?: boolean; // 默认值 true
+  /** 是否按投票权重倒序排列 */
+  reverse?: boolean; // 默认值 true
+};
 
 const icon_asc = (
     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -45,60 +68,22 @@ const icon_no_order = (
     </svg>
 );
 
-const getShortAddress = (address: string) => {
-    if (address.length > 10) {
-        return `${address.slice(0, 5)}...${address.slice(-5)}`;
-    }
-    return address;
+
+const dayjsToDateString = (date: any, format = 'YYYY-MM-DD') => {
+    return dayjs(date).format(format);
 }
 
 
-const tableHead: tableHeadType[] = [
-    {
-        label: 'Txn Hash',
-        key: 'txHash',
-        minWidth: '190px',
-        width: '17%',
-        render: (record) => (<span style={{ color: 'rgba(0, 0, 0, 0.6)' }}>{ getShortAddress(record.validatorAddress || "") }</span>),
-    },
-    {
-        label: 'Activity',
-        key: 'activity',
-        allowSort: true,
-        width: '16%',
-        minWidth: '190px',
-    },
-    {
-        label: 'Amount',
-        key: 'amount',
-        allowSort: true,
-        width: '16%',
-        minWidth: '190px',
-    },
-    {
-        label: 'From',
-        key: 'from',
-        allowSort: true,
-        width: '16%',
-        minWidth: '190px',
-    },
-    {
-        label: 'To',
-        key: 'to',
-        allowSort: true,
-        width: '16%',
-        minWidth: '190px',
-    },
-    {
-        label: 'Date',
-        key: 'date',
-        width: 'auto',
-        allowSort: true,
-        minWidth: '190px',
-    },
-];
 
-    
+const getShortAddress = (address: string) => {
+    if( !address) {
+        return '';
+    }
+    if ( address.length > 10) {
+        return `${address.slice(0, 12)}...${address.slice(-4)}`;
+    }
+    return address;
+}
 
 const CustomTableHeader = ({
     selfKey,
@@ -109,7 +94,7 @@ const CustomTableHeader = ({
     sortOrder,
     setSort,
     setSortOrder,
-    minWidth = '70px',
+    minWidth = '180px',
 }: { 
     children: React.ReactNode
     width?: string | number
@@ -136,8 +121,9 @@ const CustomTableHeader = ({
         }
     };
 
-    const w = width || minWidth ;
-    const _minWidth = minWidth || '90px';
+    const w = width || 'auto';
+    const _w = width || '200px'; 
+    const _minWidth = minWidth || '180px';
 
     return (
         <Th
@@ -147,7 +133,7 @@ const CustomTableHeader = ({
             bg="#FFFF"
             borderBottom="1px"
             borderColor="rgba(0, 0, 0, 0.1)"
-            width={{ base: w, lg: w }}
+            width={{ base: _w , lg: w }}
             minWidth={_minWidth}
             flexShrink={ 0 }
         >
@@ -184,31 +170,37 @@ const CustomTableHeader = ({
 }
 
 
-const ActivityListTable = (props: {
-    data : any[];
+const TableApp = (props: {
+    data: any;
     isLoading: boolean;
-    onPageChange: (page: number) => void;
-    onPageSizeChange: (pageSize: number) => void;
-    onSortChange: (sortBy: string, sortOrder: string) => void;
+    totalCount: number;
+    currentPage: number;
+    onJumpPrevPage: () => void;
+    onJumpNextPage: () => void;
+    nextKey: string | null;
 }) => {
 
     const {
         data,
         isLoading,
-        onPageChange,
-        onPageSizeChange,
-        onSortChange
+        currentPage,
+        onJumpPrevPage,
+        onJumpNextPage,
+        totalCount,
+        nextKey
     } = props;
-    
 
     const [sortBy, setSortBy] = React.useState<string>('');
     const [sortOrder, setSortOrder] = React.useState<sortOrderType>('');
 
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [ isTxLoading, setIsTxLoading ] = React.useState<boolean>(false);
+    const [ currentTxType, setCurrentTxType ] = React.useState<txType>('Withdraw');
+    const [ modalTitle, setModalTitle ] = React.useState<string>('Withdraw');
+    const [ currentAddress, setCurrentAddress ] = React.useState<string>('');
+    const [ currentAmount, setCurrentAmount ] = React.useState<string>('');
 
-    const handleRowClick = (item: any) => {
-        console.log('Row clicked:', item);
-    };
-
+    const handleRowClick = (item: any) => { }
 
     const sortedData = React.useMemo(() => {
         if (sortBy && sortOrder) {
@@ -216,7 +208,60 @@ const ActivityListTable = (props: {
         }
         return data;
     }, [data, sortBy, sortOrder]);
-        
+
+
+
+
+    const url = "http://192.168.0.97:8080";
+
+
+    const tableHead: tableHeadType[] = [
+        {
+            label: 'Txn Hash',
+            key: 'txnHash',
+            minWidth: '190px',
+            width: '17%',
+            render: (record) => (<span style={{ color: '#A80C53' }}>{ getShortAddress(record.txnHash || "") }</span>),
+        },
+        {
+            label: 'Activity',
+            key: 'activityType',
+            allowSort: true,
+            width: '16%',
+            minWidth: '190px',
+        },
+        {
+            label: 'Amount',
+            key: 'amount',
+            allowSort: true,
+            width: '16%',
+            minWidth: '190px',
+        },
+        {
+            label: 'From',
+            key: 'from',
+            allowSort: true,
+            width: '16%',
+            minWidth: '190px',
+            render: (record) => (<span style={{ color: 'black' }}>{ getShortAddress(record.txnHash || "") }</span>),
+        },
+        {
+            label: 'To',
+            key: 'to',
+            allowSort: true,
+            width: '16%',
+            minWidth: '190px',
+            render: (record) => (<span style={{ color: 'black' }}>{ getShortAddress(record.txnHash || "") }</span>),
+        },
+        {
+            label: 'Date',
+            key: 'date',
+            width: 'auto',
+            allowSort: true,
+            minWidth: '190px',
+            render: (record) => (<span style={{ color: 'black' }}>{ dayjs.utc(record.date).format('DD MMM YYYY HH:mm [UTC]') }</span>),
+        },
+    ];
 
 
     const tableHeaders = (
@@ -225,13 +270,13 @@ const ActivityListTable = (props: {
                 <CustomTableHeader 
                     key={index}
                     width={ item.width }
+                    minWidth={ item.minWidth }
                     allowSort={ item.allowSort }
                     sortKey = { sortBy }
                     sortOrder = { sortOrder }
                     setSort = { setSortBy }
                     setSortOrder = { setSortOrder }
                     selfKey = { item.key }
-                    minWidth={ item.minWidth }
                 >
                     { ( item.tips ? ( 
                         <WithTipsText 
@@ -244,69 +289,186 @@ const ActivityListTable = (props: {
         </Tr>
     );
 
-
-    if (isLoading) {
-        return (
-            <div>
-                Loading...
-            </div>
-        );
-    }
-
-
     return (
         <div style={{
                 width: '100%',
                 height: 'auto',
                 overflowX: 'auto',
                 overflowY: 'hidden',
-                borderRadius: '5px',
                 backgroundColor: '#fff',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
                 alignItems: 'flex-start',
+                borderRadius: '12px',
             }}
         >
-            <Table variant="simple" style={{ width: '100%' , tableLayout: 'fixed' }}>
-                <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
-                    { tableHeaders }
-                </Thead>
-                <Tbody>
-                    {sortedData.map((validator: any, index: number) => (
-                        <Tr key={index}
-                            borderBottom={'none'}
-                            _last={{ borderBottom: 'none' }} 
-                            _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
-                            onClick={() => handleRowClick(validator)}
-                        >
-                            { tableHead.map((item: tableHeadType, index: number) => (
-                                <Td
-                                    key={index}
-                                    p= { item.noCellPadding ? "0" : "14px 10px 10px 10px" }
-                                    color="rgba(0, 0, 0, 0.6)"
-                                    borderBottom={'none'} _last={{ borderBottom: 'none' }} 
-                                    onClick={() => handleRowClick(validator)}
-                                >
-                                    {item.render ? item.render(validator) : validator[item.key]}
-                                </Td>
-                            ))}
-                        </Tr>
-                    ))}
-                </Tbody>
-            </Table>
-            {/* page, onNextPageClick, onPrevPageClick, resetPage, hasPages, hasNextPage, className, canGoBackwards, isLoading, isVisible  */}
+            { isLoading ? (
+                <div style={{ width: '100%', height: 'auto', 
+                    display: 'flex', minHeight: '200px',
+                        justifyContent: 'center', alignItems: 'center', marginTop: '56px', position: 'relative'}}>
+                    <Box className={ styles.loader }></Box>
+                </div>
+                ) : (
+                <Table variant="simple">
+                    <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
+                        { tableHeaders }
+                    </Thead>
+                    <Tbody>
+                        {sortedData.map((validator: any, index: number) => (
+                            <Tr key={index}
+                                borderBottom={'none'}
+                                _last={{ borderBottom: 'none' }} 
+                                _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
+                                onClick={() => handleRowClick(validator)}
+                            >
+                                { tableHead.map((item: tableHeadType, index: number) => (
+                                    <Td
+                                        key={index}
+                                        p= { '12px 0' }
+                                        color="rgba(0, 0, 0, 0.6)"
+                                        borderBottom={'none'} _last={{ borderBottom: 'none' }} 
+                                        onClick={() => handleRowClick(validator)}
+                                    >
+                                        {item.render ? item.render(validator) : validator[item.key]}
+                                    </Td>
+                                ))}
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+            )}
+
             <Flex
                 justifyContent="flex-end"
                 alignItems="center"
                 zIndex='200'
                 width="100%"
+                marginTop={ '16px'}
             >
-                <Pagination />
+                <Pagination 
+                    totalCount={ props.totalCount }
+                    currentPage={ currentPage }
+                    onJumpPrevPage={ onJumpPrevPage }
+                    onJumpNextPage={ onJumpNextPage }
+                    isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
+                    isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
+                />
             </Flex>
         </div>
     );
 }
 
 
-export default ActivityListTable;
+const initial_nextKey = '0' ;
+const defaultLimit = 15;
+
+
+const TableWrapper = ({
+    selectDateRange
+}: {
+    selectDateRange: Array<any>
+}) => {
+
+    const url = "http://192.168.0.97:8080";
+
+    const { address: userAddr } = useAccount();
+
+
+
+    const [ toNext, setToNext ] = React.useState<boolean>(true);
+    const [ nextKey , setNextKey ] = React.useState<string>(initial_nextKey);
+    const [ currentPage, setCurrentPage ] = React.useState<number>(1);
+    const [ tableData, setTableData ] = React.useState<any[]>([]);
+    const [ isTableLoading, setIsTableLoading ] = React.useState(false);
+    const [ totalCount, setTotalCount ] = React.useState<number>(0);
+    
+
+    const [ queryParams, setQueryParams ] = React.useState<{ 
+        status?: ValidatorQueryParams['status'];
+        nextKey?: string;
+        page?: ValidatorQueryParams['page'];
+        limit?: ValidatorQueryParams['limit'];
+        countTotal?: ValidatorQueryParams['countTotal'];
+        reverse?: ValidatorQueryParams['reverse'];
+      }>({
+        nextKey: '',
+        page: 1,
+    });
+    
+    const updateQueryParams = (newParams: Partial<ValidatorQueryParams>) => {
+        setQueryParams((prevParams) => ({
+          ...prevParams,
+          ...newParams,
+        }));
+    }
+
+
+
+
+    const requestActivityList = React.useCallback(async( _addr : string = '', _selectDateRange: any) => {
+
+        try {
+            setIsTableLoading(true);
+            const param = new URLSearchParams();
+            param.append('limit', defaultLimit.toString());
+            param.append('nextKey', queryParams.nextKey || initial_nextKey);
+            param.append('address', (_addr || '').toLowerCase());
+            if (_selectDateRange) {
+                _selectDateRange[0] && param.append('startDate', dayjsToDateString(_selectDateRange[0]));
+                _selectDateRange[1] && param.append('endDate', dayjsToDateString(_selectDateRange[1]));
+            }
+            const res = await (await fetch(url + '/api/me/staking/activity' + '?' + param.toString(),
+                { method: 'get' })).json() as any
+            setIsTableLoading(false);
+            if(res && res.code === 200) {
+                setTableData(res.data.activities || []);
+                setTotalCount(res.data.pagination.total);
+                setNextKey(res.data.pagination.nextKey);
+                setCurrentPage( queryParams.page || 1 );
+            }
+        }
+        catch (error: any) {
+            setIsTableLoading(false);
+            throw Error(error);
+        }
+    }
+    , [ url ]);
+
+    useEffect(() => {
+        if (!userAddr) {
+            return;
+        }
+        requestActivityList(userAddr, selectDateRange);
+    }, [ userAddr, selectDateRange , requestActivityList ]);
+
+    return (
+        <Box
+            width="100%"
+            height="auto"
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+        >
+            <TableApp
+                data={ tableData }
+                isLoading={ isTableLoading }
+                totalCount={ totalCount }
+                currentPage={ currentPage }
+                onJumpPrevPage={ () => {
+                    setToNext(false);
+                    updateQueryParams({ nextKey: nextKey, page: currentPage - 1 });
+                }}
+                onJumpNextPage={ () => {
+                    setToNext(true);
+                    updateQueryParams({ nextKey: nextKey , page: currentPage + 1 });
+                }}
+                nextKey={ nextKey }
+            />
+        </Box>
+    );
+}
+
+
+export default React.memo(TableWrapper);

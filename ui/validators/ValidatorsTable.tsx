@@ -1,5 +1,7 @@
 /* eslint-disable */
-import { Table, Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
+import { Table, Tbody, Thead , Flex, TableContainer, Tr, Th,  Td } from '@chakra-ui/react';
+import { Box, Button, useDisclosure } from '@chakra-ui/react';
+import useAccount from 'lib/web3/useAccount';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import { route } from 'nextjs-routes';
 import React, { useEffect } from 'react';
@@ -8,7 +10,24 @@ import StatusButton from 'ui/validators/StatusButton';
 import WithTipsText from 'ui/validators/WithTipsText';
 import StakeButton  from 'ui/validators/StakeButton';
 import Pagination from 'ui/validators/Pagination';
+import CommonModal from 'ui/staking/CommonModal';
+import { getEnvValue } from 'configs/app/utils';
+import { useWalletClient, usePublicClient } from 'wagmi';
+import { useSendTransaction } from 'wagmi';
+import { useAccount as useWagmiAccount , useBalance } from 'wagmi'
+import { toBigInt , parseUnits} from 'ethers';
+import { formatUnits } from 'viem'
+import styles from 'ui/staking/spinner.module.css';
 
+
+type unsignedTx = {
+    to: string;
+    data: `0x${string}`;
+    value: string;
+    gasLimit: string;
+    chainId: string;
+    from: string;
+};
 
 type tableHeadType = {
     label: string | React.ReactNode;
@@ -22,7 +41,11 @@ type tableHeadType = {
     sortOrder?: string;
 }
 
+
+
+
 type sortOrderType = 'asc' | 'desc' | '';
+type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
 const icon_asc = (
     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -45,85 +68,17 @@ const icon_no_order = (
 );
 
 
+
 const getShortAddress = (address: string) => {
-    if (address.length > 10) {
-        return `${address.slice(0, 5)}...${address.slice(-5)}`;
+    if( !address) {
+        return '';
+    }
+    if ( address.length > 10) {
+        return `${address.slice(0, 12)}...${address.slice(-4)}`;
     }
     return address;
 }
 
-
-const tableHead: tableHeadType[] = [
-    {
-        label: 'Validators',
-        key: 'validator',
-        width : '300px',
-        render: (record) => (
-            <LinkInternal
-                href={ route({ pathname: '/validator-detail/[addr]', query: { addr: record.validator } }) }
-            >
-                { getShortAddress(record.validator) }
-            </LinkInternal>
-        )
-    },
-    {
-        label: 'Voting Power',
-        tips: `Represents a node's influence in network decisions, proportional to its stake.` ,
-        key: 'votingPower',
-        allowSort: true,
-    },
-    {
-        label: 'Commission Rate',
-        key: 'commissionRate',
-        tips: 'The fee percentage a node operator charges on staking rewards.',
-        width: '220px',
-        allowSort: true,
-    },
-    {
-        label: 'Live APR',
-        tips: 'Current annualized return from staking on the node.',
-        key: 'liveApr',
-        allowSort: true,
-    },
-    {
-        label: 'Total Stake',
-        key: 'totalStake',
-        tips: 'Total tokens staked on a node',
-        allowSort: true,
-    },
-    {
-        label: 'Uptime',
-        key: 'uptime',
-        tips: 'Validator name',
-        allowSort: false,
-    },
-    {
-        label: 'Status',
-        key: 'status',
-        tips: 'Percentage of time the node remains active and reliable',
-        allowSort: false,
-        render: (record) => (
-            <StatusButton
-                status={record.status}
-            />
-        )
-    },
-    {
-        label: <span></span>,
-        key: 'action',
-        allowSort: false,
-        width: 'auto',
-        render: (record) => (
-            <StakeButton
-                text = "Stake"
-                onClick = { () => console.log('Stake clicked') }
-                disabled = { false }
-            />
-        )
-    }
-];
-
-    
 
 const CustomTableHeader = ({
     selfKey,
@@ -233,11 +188,31 @@ const TableApp = (props: {
     const [sortBy, setSortBy] = React.useState<string>('');
     const [sortOrder, setSortOrder] = React.useState<sortOrderType>('');
 
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [ isTxLoading, setIsTxLoading ] = React.useState<boolean>(false);
+    const [ currentTxType, setCurrentTxType ] = React.useState<txType>('Withdraw');
+    const [ modalTitle, setModalTitle ] = React.useState<string>('Withdraw');
+    const [ currentAddress, setCurrentAddress ] = React.useState<string>('');
+    const [ currentFromAddress, setCurrentFromAddress ] = React.useState<string>('');
+    const [ currentItem , setCurrentItem ] = React.useState<any>({});
+    const [ currentFromItem , setCurrentFromItem ] = React.useState<any>({});
+    const [ currentAmount, setCurrentAmount ] = React.useState<string>('');
+    const [ transactionStage , setTransactionStage ] = React.useState<string>('edit'); // 'edit' | 'submitting' | 'success' | ' .... '
+    const { data: walletClient } = useWalletClient();
+    const publicClient = usePublicClient();
 
-    const handleRowClick = (item: any) => {
-        console.log('Row clicked:', item);
-    };
+    const [ transactionHash, setTransactionHash ] = React.useState<string>('');
+    const handleCloseModal = () => {
+        setCurrentTxType('Withdraw');
+        setModalTitle('Withdraw');
+        setTransactionStage('edit');
+        setCurrentItem({});
+        setCurrentAddress('');
+        onClose();
+    }
 
+
+    const handleRowClick = (item: any) => { }
 
     const sortedData = React.useMemo(() => {
         if (sortBy && sortOrder) {
@@ -245,8 +220,194 @@ const TableApp = (props: {
         }
         return data;
     }, [data, sortBy, sortOrder]);
-        
 
+
+
+    const handleStake = (address: string, record: any) => {
+        setCurrentItem({
+            validatorAddress: record.validator,
+            liveApr: record.liveApr,
+        });
+        setCurrentAddress(address);
+        setModalTitle('Stake');
+        setCurrentTxType('Stake');
+        onOpen();
+    };  
+
+
+
+    const url = "http://192.168.0.97:8080";
+
+    const sendTxHashToServer  = React.useCallback(async (txHash: string, param: any) => {
+        if (!txHash) return;
+        const _newParam = {
+            ...param,
+            txHash: txHash
+        }
+        const res = await (await fetch(url + '/api/staking/broadcast', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body:  JSON.stringify(_newParam),
+        })).json() as  any;
+    } , [url]);
+
+    const { address: userAddr } = useAccount();
+
+    const { data: balanceData } = useBalance({ address: userAddr});
+    const [ availableAmount, setAvailableAmount ] = React.useState<string>('0.00');
+
+    useEffect(() => {
+        if (balanceData && !!balanceData.value) {
+            const formattedBalanceStr = formatUnits(balanceData.value, 18);
+            setAvailableAmount(formattedBalanceStr);
+        }
+    }, [userAddr , balanceData]);
+
+    const { sendTransactionAsync } = useSendTransaction();
+    
+    const signAndSend = async ( amount :string, unsignedTx: unsignedTx | null | undefined ) => {
+
+        if (!unsignedTx) throw new Error('Unsigned transaction null or undefined');
+
+        if (!walletClient) throw new Error('Wallet client not found')
+        if (!publicClient) throw new Error('Public client not found')
+
+        const _unsignedTx = {
+            to: unsignedTx.to as `0x${string}`,
+            data: unsignedTx.data as `0x${string}`,
+            value: currentTxType === 'Stake' ? parseUnits(amount, 18) : BigInt(0),
+            gas: BigInt(unsignedTx.gasLimit),
+            gasPrice: parseUnits('20', 'gwei'),
+        }
+
+        const txHash = await sendTransactionAsync(_unsignedTx);
+
+        return txHash;
+    }
+
+    const handleSubmit = React.useCallback(async (targetAddress: string, txType: string, amount: string, from?: string) => {
+        let param = null;
+        let apiPath = null;
+        if (currentTxType === 'Stake') {
+            param = {
+                "address": userAddr,
+                "validatorAddress": targetAddress,
+                "amount": amount,
+                "stakingType": currentTxType
+            };
+            apiPath = '/api/staking/prepare/stake';
+        }
+        setTransactionStage('submitting');
+
+        try {
+            setIsTxLoading (true);
+            const res = await (await fetch(url + apiPath, {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body:  JSON.stringify(param),
+                })).json() as  any;
+            if(res && res.code === 200) {
+                if(res.data && res.data.unsignedTx) {
+                    const { unsignedTx } = res.data;
+                    signAndSend(amount , unsignedTx).then((txHash: string) => {
+                        setTransactionStage('success');
+                        setTransactionHash(txHash);
+                        sendTxHashToServer(txHash, param);
+                    }).catch((error: any) => {
+                        setTransactionStage('error');
+                        console.error('Error signing transaction:', error);
+                    }).finally(() => {
+                        setIsTxLoading (false);
+                    });
+                }
+            } else {
+                setTransactionStage('error');
+                setIsTxLoading (false);
+            }
+        } catch (error: any) {
+            setIsTxLoading (false);
+            setTransactionStage('error');
+        } 
+    }, [ url , currentTxType,  userAddr]);
+
+    const tableHead: tableHeadType[] = [
+        {
+            label: 'Validators',
+            key: 'validator',
+            width : '300px',
+            render: (record) => (
+                <LinkInternal
+                    href={ route({ pathname: '/validator-detail/[addr]', query: { addr: record.validator } }) }
+                >
+                    { getShortAddress(record.validator) }
+                </LinkInternal>
+            )
+        },
+        {
+            label: 'Voting Power',
+            tips: `Represents a node's influence in network decisions, proportional to its stake.` ,
+            key: 'votingPower',
+            allowSort: true,
+        },
+        {
+            label: 'Commission Rate',
+            key: 'commissionRate',
+            tips: 'The fee percentage a node operator charges on staking rewards.',
+            width: '220px',
+            allowSort: true,
+        },
+        {
+            label: 'Live APR',
+            tips: 'Current annualized return from staking on the node.',
+            key: 'liveApr',
+            allowSort: true,
+        },
+        {
+            label: 'Total Stake',
+            key: 'totalStake',
+            tips: 'Total tokens staked on a node',
+            allowSort: true,
+        },
+        {
+            label: 'Uptime',
+            key: 'uptime',
+            tips: 'Validator name',
+            allowSort: false,
+        },
+        {
+            label: 'Status',
+            key: 'status',
+            tips: 'Percentage of time the node remains active and reliable',
+            allowSort: false,
+            render: (record) => (
+                <StatusButton
+                    status={record.status}
+                />
+            )
+        },
+        {
+            label: <span></span>,
+            key: 'action',
+            allowSort: false,
+            width: 'auto',
+            render: (record) => (
+                <StakeButton
+                    text = "Stake"
+                    onClick = { () => {
+                        handleStake(record.validator, record);
+                        setCurrentAddress(record.validator);
+                    }}
+                    disabled = { false }
+                />
+            )
+        }
+    ];
+
+    
 
     const tableHeaders = (
         <Tr>
@@ -273,6 +434,7 @@ const TableApp = (props: {
         </Tr>
     );
 
+
     return (
         <div style={{
                 width: '100%',
@@ -292,8 +454,8 @@ const TableApp = (props: {
             { isLoading ? (
                 <div style={{ width: '100%', height: 'auto', 
                     display: 'flex', minHeight: '200px',
-                        justifyContent: 'center', alignItems: 'center', marginTop: '16px'}}>
-                    <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#FFCBEC' }}></div>
+                        justifyContent: 'center', alignItems: 'center', marginTop: '56px', position: 'relative'}}>
+                    <Box className={ styles.loader }></Box>
                 </div>
                 ) : (
                 <Table variant="simple">
@@ -324,7 +486,29 @@ const TableApp = (props: {
                     </Tbody>
                 </Table>
             )}
-            {/* page, onNextPageClick, onPrevPageClick, resetPage, hasPages, hasNextPage, className, canGoBackwards, isLoading, isVisible  */}
+            <CommonModal 
+                isOpen = { isOpen }
+                onClose = { handleCloseModal }
+                title = { modalTitle}
+                transactionStage = { transactionStage }
+                currentTxType = { currentTxType }
+                availableAmount = { availableAmount }
+                setAvailableAmount = { setAvailableAmount }
+                onSubmit = { handleSubmit }
+                onOpen = { onOpen }
+                txhash= { transactionHash }
+                isSubmitting = { isTxLoading }
+                currentAmount = { currentAmount }
+                setCurrentAmount = { setCurrentAmount }
+                currentAddress = { currentAddress }
+                setCurrentFromItem = { setCurrentFromItem }
+                setCurrentAddress = { setCurrentAddress }
+                currentItem = { currentItem }
+                currentFromItem = { currentFromItem }
+                currentFromAddress = { currentFromAddress }
+                setCurrentFromAddress = { setCurrentFromAddress }
+                setCurrentItem = { setCurrentItem }
+            />
             <Flex
                 justifyContent="flex-end"
                 alignItems="center"

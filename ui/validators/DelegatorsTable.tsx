@@ -4,11 +4,9 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 import { route } from 'nextjs-routes';
 import React, { useEffect } from 'react';
 import { debounce, orderBy } from 'lodash';
-import StatusButton from 'ui/validators/StatusButton';
 import WithTipsText from 'ui/validators/WithTipsText';
-import StakeButton  from 'ui/validators/StakeButton';
 import Pagination from 'ui/validators/Pagination';
-
+import styles from 'ui/staking/spinner.module.css';
 
 type tableHeadType = {
     label: string | React.ReactNode;
@@ -60,44 +58,45 @@ const icon_no_order = (
 );
 
 
+
 const getShortAddress = (address: string) => {
-    if (address.length > 10) {
-        return `${address.slice(0, 5)}...${address.slice(-5)}`;
+    if( !address) {
+        return '';
+    }
+    if ( address.length > 10) {
+        return `${address.slice(0, 12)}...${address.slice(-4)}`;
     }
     return address;
 }
 
-
 const tableHead: tableHeadType[] = [
     {
-        label: 'Txn Hash',
-        key: 'validator',
+        label: 'Delegators',
+        key: 'delegatorAddress',
         width : '25%',
-        render: (record) => (
-            <LinkInternal
-                href={ route({ pathname: '/validator-detail/[addr]', query: { addr: record.validator } }) }
-            >
-                { getShortAddress(record.validator) }
-            </LinkInternal>
-        )
+        render: (record: any) => (
+            <span>
+                { getShortAddress(record.delegatorAddress) }
+            </span>
+        ),
     },
     {
-        label: 'Voting Power',
-        key: 'votingPower',
+        label: 'Stake Amount',
+        key: 'stakeAmount',
         width : '25%',
         allowSort: true,
     },
         {
-        label: 'Voting Power',
-        key: 'votingPower',
+        label: 'Total Earned',
+        key: 'totalEarned',
         width : '25%',
         allowSort: true,
     },
     {
-        label: 'Voting Power',
-        key: 'votingPower',
+        label: 'Start Date',
+        key: 'startDate',
         width : '25%',
-        allowSort: true,
+        allowSort: false,
     },
 ];
 
@@ -268,8 +267,8 @@ const TableApp = (props: {
             { isLoading ? (
                 <div style={{ width: '100%', height: 'auto', 
                     display: 'flex', minHeight: '200px',
-                        justifyContent: 'center', alignItems: 'center', marginTop: '16px'}}>
-                    <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#FFCBEC' }}></div>
+                        justifyContent: 'center', alignItems: 'center', marginTop: '56px', position: 'relative'}}>
+                    <Box className={ styles.loader }></Box>
                 </div>
                 ) : (
                 <Table variant="simple">
@@ -322,6 +321,9 @@ const TableApp = (props: {
 }
 
 
+const initial_nextKey = '0x00';
+const defaultLimit = 15;
+
 const TableWrapper = (props: {
     addr: string;
     totalCount: number;
@@ -329,11 +331,11 @@ const TableWrapper = (props: {
 }) => {
 
     const { addr, totalCount, setTotalCount } = props;
-    const url = "http://192.168.0.97:8080"
+    const url = "http://192.168.0.97:8080";
 
 
     const [ toNext, setToNext ] = React.useState<boolean>(true);
-    const [ nextKey , setNextKey ] = React.useState<string>('0x00');
+    const [ nextKey , setNextKey ] = React.useState<string>(initial_nextKey);
     const [ currentPage, setCurrentPage ] = React.useState<number>(1);
     const [ tableData, setTableData ] = React.useState<any[]>([]);
     const [ isTableLoading, setIsTableLoading ] = React.useState(false);
@@ -360,10 +362,17 @@ const TableWrapper = (props: {
     const requestDelegatorsInfo = React.useCallback(async( _addr : string) => {
         try {
             setIsTableLoading(true);
-            const res = await (await fetch(url + '/api/network/validators/delegations/' + _addr, { method: 'get' })).json() as any
+            const param = new URLSearchParams();
+            param.append('limit', defaultLimit.toString());
+            param.append('nextKey', queryParams.nextKey || initial_nextKey);
+            const res = await (await fetch(url + '/api/network/validators/delegations/' + _addr + '?' + param.toString(),
+                { method: 'get' })).json() as any
             setIsTableLoading(false);
             if(res && res.code === 200) {
-                console.log(res.data);
+                setTableData(res.data.delegators || []);
+                setTotalCount(res.data.pagination.total);
+                setNextKey(res.data.pagination.nextKey);
+                setCurrentPage( queryParams.page || 1 );
             }
         }
         catch (error: any) {
@@ -394,13 +403,13 @@ const TableWrapper = (props: {
                 isLoading={ isTableLoading }
                 totalCount={ totalCount }
                 currentPage={ currentPage }
-                onJumpPrevPage={() => {
-                    setCurrentPage(currentPage - 1);
+                onJumpPrevPage={ () => {
                     setToNext(false);
+                    updateQueryParams({ nextKey: nextKey, page: currentPage - 1 });
                 }}
-                onJumpNextPage={() => {
-                    setCurrentPage(currentPage + 1);
+                onJumpNextPage={ () => {
                     setToNext(true);
+                    updateQueryParams({ nextKey: nextKey , page: currentPage + 1 });
                 }}
                 nextKey={ nextKey }
             />
