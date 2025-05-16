@@ -6,6 +6,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/': 'Homepage',
   '/txs': 'Root page',
   '/epochs': 'Root page',
+  '/epoch/[id]': 'Regular page',
   '/txs/kettle/[hash]': 'Regular page',
   '/tx/[hash]': 'Regular page',
   '/blocks': 'Root page',
