@@ -17,13 +17,14 @@ const FormFieldSelectAsyncContent = <
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
 >(props: Props<FormFields, Name>) => {
-  const { name, rules, size = 'lg', ...rest } = props;
+  const { name, rules, size = 'lg', controllerProps, ...rest } = props;
 
   const { control } = useFormContext<FormFields>();
   const { field, fieldState, formState } = useController<FormFields, typeof name>({
     control,
     name,
     rules,
+    ...controllerProps,
   });
 
   const isDisabled = formState.isSubmitting;

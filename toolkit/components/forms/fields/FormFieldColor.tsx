@@ -33,6 +33,7 @@ const FormFieldColorContent = <
   size = 'lg',
   disabled,
   sampleDefaultBgColor,
+  controllerProps,
   ...restProps
 }: Props<FormFields, Name>) => {
   const { control } = useFormContext<FormFields>();
@@ -45,6 +46,7 @@ const FormFieldColorContent = <
       validate: colorValidator,
       maxLength: 7,
     },
+    ...controllerProps,
   });
 
   const [ value, setValue ] = React.useState('');

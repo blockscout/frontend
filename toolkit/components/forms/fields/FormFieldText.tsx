@@ -33,6 +33,7 @@ const FormFieldTextContent = <
   size: sizeProp,
   disabled,
   floating: floatingProp,
+  controllerProps,
   ...restProps
 }: Props<FormFields, Name>) => {
   const defaultSize = asComponent === 'Textarea' ? '2xl' : 'lg';
@@ -44,6 +45,7 @@ const FormFieldTextContent = <
     control,
     name,
     rules: { ...rules, required: restProps.required },
+    ...controllerProps,
   });
 
   const handleBlur = React.useCallback(() => {
