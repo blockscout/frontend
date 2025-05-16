@@ -12,11 +12,14 @@ import { FilterInput } from '../components/filters/FilterInput';
 import { CloseButton } from './close-button';
 import { Skeleton } from './skeleton';
 
-export interface SelectOption<Value extends string = string> {
-  value: Value;
+export type SelectOption<Value extends string = string> = ({
   label: string;
+} | {
+  renderLabel: () => React.ReactNode;
+}) & {
+  value: Value;
   icon?: React.ReactNode;
-}
+};
 
 export interface SelectControlProps extends ChakraSelect.ControlProps {
   noIndicator?: boolean;
@@ -160,7 +163,7 @@ export const SelectValueText = React.forwardRef<
               WebkitBoxOrient: 'vertical',
               display: '-webkit-box',
             }}>
-              { context.collection.stringifyItem(item) }
+              { 'renderLabel' in item ? item.renderLabel() : context.collection.stringifyItem(item) }
             </span>
           </Flex>
         </>
@@ -257,7 +260,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
       <SelectContent portalled={ portalled } { ...contentProps }>
         { collection.items.map((item: SelectOption) => (
           <SelectItem item={ item } key={ item.value }>
-            { item.label }
+            { 'renderLabel' in item ? item.renderLabel() : item.label }
           </SelectItem>
         )) }
       </SelectContent>
@@ -323,7 +326,7 @@ export const SelectAsync = React.forwardRef<HTMLDivElement, SelectAsyncProps>((p
         </Box>
         { collection.items.map((item) => (
           <SelectItem item={ item } key={ item.value }>
-            { item.label }
+            { 'renderLabel' in item ? item.renderLabel() : item.label }
           </SelectItem>
         )) }
       </SelectContent>
