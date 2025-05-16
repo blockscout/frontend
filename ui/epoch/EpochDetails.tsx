@@ -193,7 +193,7 @@ const EpochDetails = ({ epochData, isLoading }: Props) => {
                     Validator ID
                   </Th>
                   <Th columnGap={ 1 } width="50%">
-                    Rewards
+                    All-Time Rewards
                   </Th>
                 </Tr>
               </Thead>
