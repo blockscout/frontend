@@ -16,7 +16,9 @@ import { useWalletClient, usePublicClient } from 'wagmi';
 import { useSendTransaction } from 'wagmi';
 import { useAccount as useWagmiAccount , useBalance } from 'wagmi'
 import { toBigInt , parseUnits} from 'ethers';
-import { formatUnits } from 'viem'
+import { formatUnits } from 'viem';
+import FloatToPercent from 'ui/validators/FloatToPercent';
+import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import styles from 'ui/staking/spinner.module.css';
 
 
@@ -343,7 +345,17 @@ const TableApp = (props: {
                 <LinkInternal
                     href={ route({ pathname: '/validator-detail/[addr]', query: { addr: record.validator } }) }
                 >
-                    { getShortAddress(record.validator) }
+                    <span 
+                        style={{ 
+                            color: '#A80C53',
+                            fontFamily: "HarmonyOS Sans",
+                            fontSize: '12px',
+                            fontStyle: 'normal',
+                            fontWeight: 500,
+                            lineHeight: 'normal',
+                            textTransform: 'capitalize',
+                        }}
+                    > { getShortAddress(record.validator) } </span>
                 </LinkInternal>
             )
         },
@@ -352,31 +364,97 @@ const TableApp = (props: {
             tips: `Represents a node's influence in network decisions, proportional to its stake.` ,
             key: 'votingPower',
             allowSort: true,
+            render: (record) => (
+                <span 
+                    style={{ 
+                        color: '#A80C53',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textTransform: 'capitalize',
+                    }}
+                >
+                    { FloatToPercent(record.votingPower) }
+                </span>
+            )
         },
         {
             label: 'Commission Rate',
             key: 'commissionRate',
-            tips: 'The fee percentage a node operator charges on staking rewards.',
+            tips: `The percentage fee charged by validators from delegators' staking rewards.` ,
             width: '220px',
             allowSort: true,
+            render: (record) => (
+                <span 
+                    style={{ 
+                        color: '#A80C53',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textTransform: 'capitalize',
+                    }}
+                >
+                    { FloatToPercent(record.commissionRate) }
+                </span>
+            )
         },
         {
             label: 'Live APR',
-            tips: 'Current annualized return from staking on the node.',
+            tips: 'The current annual percentage return estimated from staking tokens with the validator.',
             key: 'liveApr',
             allowSort: true,
+            render: (record) => (
+                <span 
+                    style={{ 
+                        color: '#000',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textTransform: 'capitalize',
+                    }}
+                >
+                    { FloatToPercent(record.commissionRate) }
+                </span>
+            )
         },
         {
             label: 'Total Stake',
             key: 'totalStake',
-            tips: 'Total tokens staked on a node',
+            tips: 'Total amount of tokens currently staked with the validator.',
             allowSort: true,
+            render: (record) => (
+                <TableTokenAmount
+                    amount = { record.totalStake }
+                    symbol = 'Moca'
+                />
+            )
         },
         {
             label: 'Uptime',
             key: 'uptime',
-            tips: 'Validator name',
+            tips: 'The reliability and availability of a validator node, shown as an uptime percentage.',
             allowSort: false,
+            render: (record) => (
+                <span 
+                    style={{ 
+                        color: '#000',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textTransform: 'capitalize',
+                    }}
+                >
+                    { FloatToPercent(record.uptime) }
+                </span>
+            )
         },
         {
             label: 'Status',

@@ -9,8 +9,12 @@ import StatusButton from 'ui/validators/StatusButton';
 import WithTipsText from 'ui/validators/WithTipsText';
 import ActionButtonGroup  from 'ui/staking/ActionButtonGroup';
 import Pagination from 'ui/validators/Pagination';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import { formatUnits } from 'viem';
+import FloatToPercent from 'ui/validators/FloatToPercent';
 import { toBigInt , parseUnits} from 'ethers';
+import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
 import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
 import styles from 'ui/staking/spinner.module.css';
 
@@ -84,39 +88,6 @@ const getShortAddress = (address: string) => {
     }
     return address;
 }
-
-const tableHead: tableHeadType[] = [
-    {
-        label: 'Delegators',
-        key: 'delegatorAddress',
-        width : '25%',
-        render: (record: any) => (
-            <span>
-                { getShortAddress(record.delegatorAddress) }
-            </span>
-        ),
-    },
-    {
-        label: 'Stake Amount',
-        key: 'stakeAmount',
-        width : '25%',
-        allowSort: true,
-    },
-        {
-        label: 'Total Earned',
-        key: 'totalEarned',
-        width : '25%',
-        allowSort: true,
-    },
-    {
-        label: 'Start Date',
-        key: 'startDate',
-        width : '25%',
-        allowSort: false,
-    },
-];
-
-    
 
 const CustomTableHeader = ({
     selfKey,
@@ -465,31 +436,78 @@ const TableApp = (props: {
             key: 'validatorAddress',
             minWidth: '190px',
             width: '250px',
-            render: (record) => (<span style={{ color: 'rgba(0, 0, 0, 0.6)' }}>{ getShortAddress(record.validatorAddress || "") }</span>),
+                        render: (record) => (
+                <span 
+                    style={{ 
+                        color: '#A80C53',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textTransform: 'capitalize',
+                    }}
+                >
+                   { getShortAddress(record.validatorAddress || "") }
+                </span>
+            )
         },
         {
             label: 'Live APR',
             key: 'liveAPR',
             allowSort: true,
             width: '160px',
+            render: (record) => (
+                <span 
+                    style={{ 
+                        color: '#A80C53',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textTransform: 'capitalize',
+                    }}
+                >
+                    { FloatToPercent(record.liveAPR) }
+                </span>
+            )
         },
         {
             label: 'My Stake',
             key: 'myStake',
             allowSort: true,
             width: '160px',
+            render: (record) => (
+                <TableTokenAmount
+                    amount = { record.myStake }
+                    symbol = 'Moca'
+                />
+            )
         },
         {
             label: 'My Rewards',
             key: 'myRewards',
             allowSort: true,
             width: '160px',
+            render: (record) => (
+                <TableTokenAmount
+                    amount = { record.myRewards }
+                    symbol = 'Moca'
+                />
+            )
         },
         {
             label: 'Claimable',
             key: 'claimable',
             allowSort: true,
             width: '160px',
+            render: (record) => (
+                <TableTokenAmount
+                    amount = { record.claimable }
+                    symbol = 'Moca'
+                />
+            )
         },
         {
             label: 'Commission',
@@ -559,6 +577,20 @@ const TableApp = (props: {
             ))}
         </Tr>
     );
+
+    const { isConnected: WalletConnected } = useAccount();
+
+    if (!WalletConnected) {
+        return (
+            <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
+                <EmptyPlaceholder
+                    tipsTextArray={ ['Looks like you haven’t staked yet. Choose a ', 'validator to get started.'] }
+                    showButton={ true }
+                    buttonText={ 'Connect Wallet' }
+                />
+            </div>
+        );
+    }
 
     return (
         <div style={{

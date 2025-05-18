@@ -38,8 +38,8 @@ const FromAndToSelect = ({
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
             <WithTextWrapper text="From">
                 <ValidatorItemBar
-                    showArrow={false}
-                    liveApr={ (Number(FromItem?.liveApr || 0) * 100 ) + '%' }
+                    showArrow={false} 
+                    liveApr={ (Number(FromItem?.liveApr || 0) * 100).toFixed(1)   + '%' }
                     validatorName = {FromItem?.validatorAddress || ''}
                     validatorAvatar={null}
                     onClick={() => {} }

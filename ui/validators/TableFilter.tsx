@@ -54,6 +54,7 @@ const TableFilter = ({
                                   display="inline"
                                   lineHeight="16px"
                                   fontStyle="normal"
+                                  userSelect={"none"}
                                   as={'span'}
                                   textTransform="capitalize"
                                   fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">All Validators</Text>

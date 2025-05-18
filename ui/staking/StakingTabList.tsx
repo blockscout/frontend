@@ -139,7 +139,7 @@ const StakingTabList = ({
                                     borderBottom="1px solid rgba(0, 46, 51, 0.10)"
                                 >
                                     <Text>{validator.validatorAddress}</Text>
-                                    <Text>{ Number(validator.liveApr || 0) * 100 }%</Text>
+                                    <Text>{ (Number(validator.liveApr || 0) * 100).toFixed(1) }%</Text>
                                 </Flex>
                             ))}
                         </Box>
@@ -171,7 +171,8 @@ const StakingTabList = ({
                                     borderBottom="1px solid rgba(0, 46, 51, 0.10)"
                                 >
                                     <Text>{validator.validatorAddress}</Text>
-                                    <Text>{ Number(validator.liveApr || 0) * 100 }%</Text>
+                                    <Text>{  (Number(validator.liveApr  || 0) * 100).toFixed(1)  }%</Text>
+                                   
                                 </Flex>
                             ))}
                         </Box>

@@ -391,7 +391,7 @@ const StakingInfo = ({
         setCurrentAddress("0x1234");
         setCurrentTxType('ClaimAll');
         setModalTitle('Claim All');
-        setCurrentAmount(String(claimableRewards ));
+        setCurrentAmount(Number(String(claimableRewards)).toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 }));
         setAvailableAmount(String(claimableRewards));
         onOpen();
     }, [claimableRewards]);

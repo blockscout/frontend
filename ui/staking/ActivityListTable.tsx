@@ -11,7 +11,8 @@ import Pagination from 'ui/validators/Pagination';
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import styles from 'ui/staking/spinner.module.css';
 
 dayjs.extend(utc);
@@ -221,7 +222,21 @@ const TableApp = (props: {
             key: 'txnHash',
             minWidth: '190px',
             width: '17%',
-            render: (record) => (<span style={{ color: '#A80C53' }}>{ getShortAddress(record.txnHash || "") }</span>),
+            render: (record) => (
+                <span 
+                    style={{ 
+                        color: '#A80C53',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textTransform: 'capitalize',
+                    }}
+                >
+                   { getShortAddress(record.txnHash || "") }
+                </span>
+            )
         },
         {
             label: 'Activity',
@@ -229,6 +244,21 @@ const TableApp = (props: {
             allowSort: true,
             width: '16%',
             minWidth: '190px',
+            render: (record) => (
+                <span 
+                    style={{ 
+                        color: '#000',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textTransform: 'capitalize',
+                    }}
+                >
+                    { record.activityType }
+                </span>
+            )
         },
         {
             label: 'Amount',
@@ -236,6 +266,12 @@ const TableApp = (props: {
             allowSort: true,
             width: '16%',
             minWidth: '190px',
+            render: (record) => (
+                <TableTokenAmount
+                    amount = { record.amount }
+                    symbol = 'Moca'
+                />
+            )
         },
         {
             label: 'From',
@@ -243,7 +279,18 @@ const TableApp = (props: {
             allowSort: true,
             width: '16%',
             minWidth: '190px',
-            render: (record) => (<span style={{ color: 'black' }}>{ getShortAddress(record.from || "") }</span>),
+            render: (record) => (
+                <span 
+                    style={{ 
+                        color: '#000',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textTransform: 'capitalize',
+                    }}
+                >{ getShortAddress(record.from || "") }</span>),
         },
         {
             label: 'To',
@@ -251,7 +298,18 @@ const TableApp = (props: {
             allowSort: true,
             width: '16%',
             minWidth: '190px',
-            render: (record) => (<span style={{ color: 'black' }}>{ getShortAddress(record.to || "") }</span>),
+            render: (record) => (
+                <span 
+                    style={{ 
+                        color: '#000',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textTransform: 'capitalize',
+                    }}
+                >{ getShortAddress(record.to || "") }</span>),
         },
         {
             label: 'Date',
@@ -259,7 +317,18 @@ const TableApp = (props: {
             width: 'auto',
             allowSort: true,
             minWidth: '190px',
-            render: (record) => (<span style={{ color: 'black' }}>{ dayjs.utc(record.date).format('DD MMM YYYY HH:mm [UTC]') }</span>),
+            render: (record) => (
+                <span 
+                    style={{ 
+                        color: '#000',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textTransform: 'capitalize',
+                    }}
+                >{ dayjs.utc(record.date).format('DD MMM YYYY HH:mm [UTC]') }</span>),
         },
     ];
 
