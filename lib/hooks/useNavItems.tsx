@@ -134,7 +134,7 @@ export default function useNavItems(): ReturnType {
       text: 'All validators',
       nextRoute: { pathname: '/all-validators' as const },
       icon: 'output_roots',
-      isActive: pathname.startsWith('/all-validators') || pathname.startsWith('/validator-detail'),
+      isActive: pathname.startsWith('/all-validato') || pathname.startsWith('/validator-detail'),
     };
     const myStaking = {
       text: 'My staking',

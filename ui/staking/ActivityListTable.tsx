@@ -243,7 +243,7 @@ const TableApp = (props: {
             allowSort: true,
             width: '16%',
             minWidth: '190px',
-            render: (record) => (<span style={{ color: 'black' }}>{ getShortAddress(record.txnHash || "") }</span>),
+            render: (record) => (<span style={{ color: 'black' }}>{ getShortAddress(record.from || "") }</span>),
         },
         {
             label: 'To',
@@ -251,7 +251,7 @@ const TableApp = (props: {
             allowSort: true,
             width: '16%',
             minWidth: '190px',
-            render: (record) => (<span style={{ color: 'black' }}>{ getShortAddress(record.txnHash || "") }</span>),
+            render: (record) => (<span style={{ color: 'black' }}>{ getShortAddress(record.to || "") }</span>),
         },
         {
             label: 'Date',
@@ -433,7 +433,7 @@ const TableWrapper = ({
             throw Error(error);
         }
     }
-    , [ url ]);
+  , [ url , queryParams.nextKey ]);
 
     useEffect(() => {
         if (!userAddr) {

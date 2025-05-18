@@ -379,8 +379,7 @@ const TableWrapper = (props: {
             setIsTableLoading(false);
             throw Error(error);
         }
-    }
-    , [ url, addr]);
+    }, [ url , addr, queryParams.nextKey ]);
 
     useEffect(() => {
         if (addr) {

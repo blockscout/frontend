@@ -733,7 +733,7 @@ const TableWrapper = ({
             throw Error(error);
         }
     }
-    , [ url ]);
+  , [ url , queryParams.nextKey ]);
 
     useEffect(() => {
         if (!userAddr) {

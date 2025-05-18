@@ -92,6 +92,7 @@ const StakingTabList = ({
                             textAlign="left"
                             fontStyle="normal"
                             lineHeight="20px"
+                            userSelect="none"
                             fontFamily="HarmonyOS Sans"
                         >
                             All Validators
