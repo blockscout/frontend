@@ -8,7 +8,7 @@ import type { ExcludeUndefined } from 'types/utils';
 import type { RadioGroupProps, RadioProps } from '../../../chakra/radio';
 import { Radio, RadioGroup } from '../../../chakra/radio';
 
-export interface Props<
+export interface FormFieldRadioProps<
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
 > extends Pick<FormFieldPropsBase<FormFields>, 'rules' | 'controllerProps'>,
@@ -29,7 +29,7 @@ const FormFieldRadioContent = <
   disabled,
   controllerProps,
   ...rest
-}: Props<FormFields, Name>) => {
+}: FormFieldRadioProps<FormFields, Name>) => {
   const { control } = useFormContext<FormFields>();
   const { field, formState } = useController<FormFields, typeof name>({
     control,

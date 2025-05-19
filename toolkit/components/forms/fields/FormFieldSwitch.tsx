@@ -7,7 +7,7 @@ import type { FormFieldPropsBase } from './types';
 import { Switch } from '../../../chakra/switch';
 import type { SwitchProps } from '../../../chakra/switch';
 
-type Props<
+export type FormFieldSwitchProps<
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
 > = Pick<
@@ -27,7 +27,7 @@ const FormFieldSwitchContent = <
   controllerProps,
   disabled,
   ...rest
-}: Props<FormFields, Name>) => {
+}: FormFieldSwitchProps<FormFields, Name>) => {
   const { control } = useFormContext<FormFields>();
   const { field, formState } = useController<FormFields, Name>({
     control,

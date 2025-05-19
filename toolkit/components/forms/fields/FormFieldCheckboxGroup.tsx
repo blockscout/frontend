@@ -6,7 +6,7 @@ import type { FormFieldPropsBase } from './types';
 import type { CheckboxGroupProps, CheckboxProps } from '../../../chakra/checkbox';
 import { Checkbox, CheckboxGroup } from '../../../chakra/checkbox';
 
-interface Props<
+export interface FormFieldCheckboxGroupProps<
   FormFields extends FieldValues,
   Name extends Path<FormFields> = Path<FormFields>,
 > extends Pick<FormFieldPropsBase<FormFields, Name>, 'rules' | 'name' | 'onChange' | 'readOnly' | 'controllerProps'>,
@@ -18,7 +18,7 @@ interface Props<
 const FormFieldCheckboxGroupContent = <
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
->(props: Props<FormFields, Name>) => {
+>(props: FormFieldCheckboxGroupProps<FormFields, Name>) => {
   const { name, options, disabled, controllerProps, itemProps, rules, onChange, ...rest } = props;
 
   const { control } = useFormContext<FormFields>();

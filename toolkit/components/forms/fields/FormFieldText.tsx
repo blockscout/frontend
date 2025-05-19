@@ -12,7 +12,7 @@ import type { TextareaProps } from '../../../chakra/textarea';
 import { Textarea } from '../../../chakra/textarea';
 import { getFormFieldErrorText } from '../utils/getFormFieldErrorText';
 
-interface Props<
+export interface FormFieldTextProps<
   FormFields extends FieldValues,
   Name extends Path<FormFields> = Path<FormFields>,
 > extends FormFieldPropsBase<FormFields, Name> {
@@ -35,7 +35,7 @@ const FormFieldTextContent = <
   floating: floatingProp,
   controllerProps,
   ...restProps
-}: Props<FormFields, Name>) => {
+}: FormFieldTextProps<FormFields, Name>) => {
   const defaultSize = asComponent === 'Textarea' ? '2xl' : 'lg';
   const size = sizeProp || defaultSize;
   const floating = floatingProp !== undefined ? floatingProp : size === defaultSize;

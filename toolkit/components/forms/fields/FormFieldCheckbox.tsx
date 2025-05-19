@@ -6,7 +6,7 @@ import type { FormFieldPropsBase } from './types';
 import { Checkbox } from '../../../chakra/checkbox';
 import type { CheckboxProps } from '../../../chakra/checkbox';
 
-interface Props<
+export interface FormFieldCheckboxProps<
   FormFields extends FieldValues,
   Name extends Path<FormFields> = Path<FormFields>,
 > extends Pick<FormFieldPropsBase<FormFields, Name>, 'rules' | 'name' | 'onChange' | 'readOnly' | 'controllerProps'>, Omit<CheckboxProps, 'name' | 'onChange'> {
@@ -24,7 +24,7 @@ const FormFieldCheckboxContent = <
   readOnly,
   controllerProps,
   ...rest
-}: Props<FormFields, Name>) => {
+}: FormFieldCheckboxProps<FormFields, Name>) => {
   const { control } = useFormContext<FormFields>();
   const { field, formState } = useController<FormFields, typeof name>({
     control,

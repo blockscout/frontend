@@ -13,7 +13,7 @@ import { InputGroup } from '../../../chakra/input-group';
 import { getFormFieldErrorText } from '../utils/getFormFieldErrorText';
 import { colorValidator } from '../validators/color';
 
-interface Props<
+export interface FormFieldColorProps<
   FormFields extends FieldValues,
   Name extends Path<FormFields> = Path<FormFields>,
 > extends FormFieldPropsBase<FormFields, Name> {
@@ -35,7 +35,7 @@ const FormFieldColorContent = <
   sampleDefaultBgColor,
   controllerProps,
   ...restProps
-}: Props<FormFields, Name>) => {
+}: FormFieldColorProps<FormFields, Name>) => {
   const { control } = useFormContext<FormFields>();
   const { field, fieldState, formState } = useController<FormFields, typeof name>({
     control,
