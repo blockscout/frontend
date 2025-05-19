@@ -30,7 +30,7 @@ const NativeTokenIcon = ({ isLoading, className }: Props) => {
     <Image
       borderRadius="base"
       className={ className }
-      src=""
+      src="/static/assetchain-rwa.png"
       alt={ `${ config.chain.currency.symbol } logo` }
       fallback={ <TokenLogoPlaceholder borderRadius="base" className={ className }/> }
       fallbackStrategy="beforeLoadOrError"

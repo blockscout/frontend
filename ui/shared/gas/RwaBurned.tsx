@@ -1,4 +1,5 @@
 import { chakra } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
 interface Props {
@@ -12,7 +13,7 @@ const GasPrice = ({ data, prefix, className }: Props) => {
   return (
     <span className={ className }>
       { prefix }
-      { data ? data.toFixed(2) : 'N/A' }
+      { data ? BigNumber(data.toFixed(2)).toFormat() : 'N/A' }
     </span>
   );
 };
