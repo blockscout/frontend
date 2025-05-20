@@ -6,6 +6,10 @@ import config from 'configs/app';
 import IconSvg from 'ui/shared/IconSvg';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 
+const rollupFeature = config.features.rollup;
+const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';
+const isArbitrumRollup = rollupFeature.isEnabled && rollupFeature.type === 'arbitrum';
+
 const INDICATORS: Array<TChainIndicator> = [
   {
     id: 'daily_txs',
@@ -24,11 +28,27 @@ const INDICATORS: Array<TChainIndicator> = [
   {
     id: 'daily_operational_txs',
     title: 'Daily op txns',
-    titleMicroservice: (stats) => stats.daily_new_operational_transactions?.info?.title,
+    titleMicroservice: (stats) => {
+      if (isArbitrumRollup) {
+        return stats.daily_new_operational_transactions?.info?.title;
+      } else if (isOptimisticRollup) {
+        return stats.op_stack_daily_new_operational_transactions?.info?.title;
+      }
+      return '';
+    },
     value: () => 'N/A',
-    valueMicroservice: (stats) => stats.yesterday_operational_transactions?.value === null ?
-      'N/A' :
-      Number(stats.yesterday_operational_transactions?.value).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
+    valueMicroservice: (stats) => {
+      if (isArbitrumRollup) {
+        return stats.yesterday_operational_transactions?.value === null ?
+          'N/A' :
+          Number(stats.yesterday_operational_transactions?.value).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' });
+      } else if (isOptimisticRollup) {
+        return stats.op_stack_yesterday_operational_transactions?.value === null ?
+          'N/A' :
+          Number(stats.op_stack_yesterday_operational_transactions?.value).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' });
+      }
+      return;
+    },
     icon: <IconSvg name="transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
     hint: `Number of operational transactions yesterday (0:00 - 23:59 UTC). The chart displays daily operational transactions for the past 30 days.`,
     hintMicroservice: (stats) => stats.daily_new_operational_transactions?.info?.description,

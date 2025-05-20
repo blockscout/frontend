@@ -6,6 +6,10 @@ import useApiQuery from 'lib/api/useApiQuery';
 
 import prepareChartItems from './utils/prepareChartItems';
 
+const rollupFeature = config.features.rollup;
+const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';
+const isArbitrumRollup = rollupFeature.isEnabled && rollupFeature.type === 'arbitrum';
+
 const CHART_ITEMS: Record<ChainIndicatorId, Pick<TimeChartDataItem, 'name' | 'valueFormatter'>> = {
   daily_txs: {
     name: 'Tx/day',
@@ -62,7 +66,14 @@ export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFet
     queryOptions: {
       refetchOnMount: false,
       enabled: isStatsFeatureEnabled && indicatorId === 'daily_operational_txs',
-      select: (data) => data.daily_new_operational_transactions?.chart.map((item) => ({ date: new Date(item.date), value: Number(item.value) })) || [],
+      select: (data) => {
+        if (isArbitrumRollup) {
+          return data.daily_new_operational_transactions?.chart.map((item) => ({ date: new Date(item.date), value: Number(item.value) })) || [];
+        } else if (isOptimisticRollup) {
+          return data.op_stack_daily_new_operational_transactions?.chart.map((item) => ({ date: new Date(item.date), value: Number(item.value) })) || [];
+        }
+        return [];
+      },
     },
   });
 
