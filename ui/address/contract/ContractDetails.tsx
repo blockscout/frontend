@@ -51,12 +51,12 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
   const contractQuery = useApiQuery('general:contract', {
     pathParams: { hash: selectedItem?.address_hash },
     queryOptions: {
-      enabled: Boolean(selectedItem?.address_hash && !mainContractQuery.isPlaceholderData),
+      enabled: Boolean(selectedItem?.address_hash && !mainContractQuery.isPlaceholderData && selectedItem.address_hash !== addressData.hash),
       refetchOnMount: false,
       placeholderData: addressData?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
   });
-  const { data, isPlaceholderData, isError } = contractQuery;
+  const { data, isPlaceholderData, isError } = selectedItem.address_hash !== addressData.hash ? contractQuery : mainContractQuery;
 
   const tabs = useContractDetailsTabs({ data, isLoading: isPlaceholderData, addressData, sourceAddress: selectedItem.address_hash });
 
