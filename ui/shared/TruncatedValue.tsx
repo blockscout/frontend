@@ -3,18 +3,19 @@ import type { Placement } from '@floating-ui/dom';
 import React from 'react';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 
 interface Props {
   className?: string;
   isLoading?: boolean;
   value: string;
   tooltipPlacement?: Placement;
+  tooltipInteractive?: boolean;
 }
 
-const TruncatedValue = ({ className, isLoading, value, tooltipPlacement }: Props) => {
+const TruncatedValue = ({ className, isLoading, value, tooltipPlacement, tooltipInteractive }: Props) => {
   return (
-    <TruncatedTextTooltip label={ value } placement={ tooltipPlacement }>
+    <TruncatedTextTooltip label={ value } placement={ tooltipPlacement } interactive={ tooltipInteractive }>
       <Skeleton
         className={ className }
         loading={ isLoading }

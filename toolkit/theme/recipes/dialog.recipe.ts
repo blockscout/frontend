@@ -162,7 +162,7 @@ export const recipe = defineSlotRecipe({
       full: {
         content: {
           maxW: '100vw',
-          minH: '100vh',
+          minH: '100dvh',
           '--dialog-margin': '0',
           borderRadius: '0',
         },
@@ -207,7 +207,7 @@ export const recipe = defineSlotRecipe({
   defaultVariants: {
     size: 'md',
     scrollBehavior: 'inside',
-    placement: 'center',
+    placement: { base: 'top', lg: 'center' },
     motionPreset: 'scale',
   },
 });

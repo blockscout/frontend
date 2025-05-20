@@ -42,7 +42,7 @@ function formatRatings(data: Airtable.Records<Airtable.FieldSet>) {
 export default function useRatings() {
   const { address } = useAccount();
 
-  const addressCountersQuery = useApiQuery<'address_counters', { status: number }>('address_counters', {
+  const addressCountersQuery = useApiQuery<'general:address_counters', { status: number }>('general:address_counters', {
     pathParams: { hash: address },
     queryOptions: {
       enabled: Boolean(address),

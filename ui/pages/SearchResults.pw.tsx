@@ -28,7 +28,7 @@ test.describe('search by name', () => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'false' ],
     ]);
-    await mockApiResponse('search', data, { queryParams: { q: 'o' } });
+    await mockApiResponse('general:search', data, { queryParams: { q: 'o' } });
     await mockAssetResponse(searchMock.token1.icon_url as string, './playwright/mocks/image_s.jpg');
     const component = await render(<SearchResults/>, { hooksConfig });
 
@@ -39,14 +39,14 @@ test.describe('search by name', () => {
 test('search by address hash +@mobile', async({ render, mockApiResponse }) => {
   const hooksConfig = {
     router: {
-      query: { q: searchMock.address1.address },
+      query: { q: searchMock.address1.address_hash },
     },
   };
   const data = {
     items: [ searchMock.address1, searchMock.contract2 ],
     next_page_params: null,
   };
-  await mockApiResponse('search', data, { queryParams: { q: searchMock.address1.address } });
+  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.address1.address_hash } });
 
   const component = await render(<SearchResults/>, { hooksConfig });
 
@@ -63,7 +63,7 @@ test('search by meta tag +@mobile', async({ render, mockApiResponse }) => {
     items: [ searchMock.metatag1, searchMock.metatag2, searchMock.metatag3 ],
     next_page_params: null,
   };
-  await mockApiResponse('search', data, { queryParams: { q: 'utko' } });
+  await mockApiResponse('general:search', data, { queryParams: { q: 'utko' } });
 
   const component = await render(<SearchResults/>, { hooksConfig });
 
@@ -80,7 +80,7 @@ test('search by block number +@mobile', async({ render, mockApiResponse }) => {
     items: [ searchMock.block1, searchMock.block2, searchMock.block3 ],
     next_page_params: null,
   };
-  await mockApiResponse('search', data, { queryParams: { q: searchMock.block1.block_number } });
+  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.block1.block_number } });
   const component = await render(<SearchResults/>, { hooksConfig });
 
   await expect(component.locator('main')).toHaveScreenshot();
@@ -96,7 +96,7 @@ test('search by block hash +@mobile', async({ render, mockApiResponse }) => {
     items: [ searchMock.block1 ],
     next_page_params: null,
   };
-  await mockApiResponse('search', data, { queryParams: { q: searchMock.block1.block_hash } });
+  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.block1.block_hash } });
   const component = await render(<SearchResults/>, { hooksConfig });
 
   await expect(component.locator('main')).toHaveScreenshot();
@@ -112,7 +112,7 @@ test('search by tx hash +@mobile', async({ render, mockApiResponse }) => {
     items: [ searchMock.tx1 ],
     next_page_params: null,
   };
-  await mockApiResponse('search', data, { queryParams: { q: searchMock.tx1.transaction_hash } });
+  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.tx1.transaction_hash } });
   const component = await render(<SearchResults/>, { hooksConfig });
 
   await expect(component.locator('main')).toHaveScreenshot();
@@ -129,7 +129,7 @@ test('search by blob hash +@mobile', async({ render, mockApiResponse, mockEnvs }
     next_page_params: null,
   };
   await mockEnvs(ENVS_MAP.dataAvailability);
-  await mockApiResponse('search', data, { queryParams: { q: searchMock.blob1.blob_hash } });
+  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.blob1.blob_hash } });
   const component = await render(<SearchResults/>, { hooksConfig });
 
   await expect(component.locator('main')).toHaveScreenshot();
@@ -146,7 +146,7 @@ test('search by domain name +@mobile', async({ render, mockApiResponse, mockEnvs
     next_page_params: null,
   };
   await mockEnvs(ENVS_MAP.nameService);
-  await mockApiResponse('search', data, { queryParams: { q: searchMock.domain1.ens_info.name } });
+  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.domain1.ens_info.name } });
   const component = await render(<SearchResults/>, { hooksConfig });
   await expect(component.locator('main')).toHaveScreenshot();
 });
@@ -162,7 +162,7 @@ test('search by user op hash +@mobile', async({ render, mockApiResponse, mockEnv
     next_page_params: null,
   };
   await mockEnvs(ENVS_MAP.userOps);
-  await mockApiResponse('search', data, { queryParams: { q: searchMock.userOp1.user_operation_hash } });
+  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.userOp1.user_operation_hash } });
   const component = await render(<SearchResults/>, { hooksConfig });
 
   await expect(component.locator('main')).toHaveScreenshot();
@@ -181,7 +181,7 @@ test.describe('with apps', () => {
       next_page_params: {
         address_hash: null,
         block_hash: null,
-        holder_count: null,
+        holders_count: null,
         inserted_at: null,
         item_type: 'token' as const,
         items_count: 1,
@@ -194,7 +194,7 @@ test.describe('with apps', () => {
       [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
       [ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL ],
     ]);
-    await mockApiResponse('search', data, { queryParams: { q: 'o' } });
+    await mockApiResponse('general:search', data, { queryParams: { q: 'o' } });
     await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, appsMock);
     await mockAssetResponse(appsMock[0].logo, './playwright/mocks/image_s.jpg');
     await mockAssetResponse(appsMock[1].logo, './playwright/mocks/image_s.jpg');
@@ -213,7 +213,7 @@ test.describe('block countdown', () => {
   };
 
   test('no results', async({ render, mockApiResponse }) => {
-    await mockApiResponse('search', { items: [], next_page_params: null }, { queryParams: { q: blockHeight } });
+    await mockApiResponse('general:search', { items: [], next_page_params: null }, { queryParams: { q: blockHeight } });
     const component = await render(<SearchResults/>, { hooksConfig });
 
     await expect(component.locator('main')).toHaveScreenshot();
@@ -221,7 +221,7 @@ test.describe('block countdown', () => {
 
   test('with results +@mobile', async({ render, mockApiResponse }) => {
     await mockApiResponse(
-      'search',
+      'general:search',
       { items: [ { ...searchMock.token1, name: '1234567890123456789' } ], next_page_params: null },
       { queryParams: { q: blockHeight } },
     );

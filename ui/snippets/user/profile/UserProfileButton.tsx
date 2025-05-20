@@ -42,8 +42,11 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ..
     e.preventDefault();
   }, []);
 
+  const isButtonLoading = isPending || !isFetched || web3AccountWithDomain.isLoading;
+  const dataExists = !isButtonLoading && (Boolean(data) || Boolean(web3AccountWithDomain.address));
+
   const content = (() => {
-    if (web3AccountWithDomain.address) {
+    if (web3AccountWithDomain.address && !isButtonLoading) {
       return (
         <HStack gap={ 2 }>
           <UserIdenticon address={ web3AccountWithDomain.address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
@@ -54,7 +57,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ..
       );
     }
 
-    if (!data) {
+    if (!data || isButtonLoading) {
       return 'Log in';
     }
 
@@ -66,14 +69,12 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ..
     );
   })();
 
-  const isButtonLoading = isPending || !isFetched;
-  const dataExists = !isButtonLoading && (Boolean(data) || Boolean(web3AccountWithDomain.address));
-
   return (
     <Tooltip
       content={ <span>Sign in to My Account to add tags,<br/>create watchlists, access API keys and more</span> }
       disabled={ isMobile || isLoading || Boolean(data) }
       openDelay={ 500 }
+      disableOnMobile
     >
       <span>
         <Button

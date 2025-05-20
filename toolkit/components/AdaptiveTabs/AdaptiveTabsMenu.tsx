@@ -1,13 +1,14 @@
+import { Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TabItem } from './types';
 
-import { PopoverBody, PopoverCloseTriggerWrapper, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
-import { TabsCounter, TabsTrigger } from 'toolkit/chakra/tabs';
-import IconSvg from 'ui/shared/IconSvg';
+import DotsIcon from 'icons/dots.svg';
 
 import { IconButton } from '../../chakra/icon-button';
 import type { IconButtonProps } from '../../chakra/icon-button';
+import { PopoverBody, PopoverCloseTriggerWrapper, PopoverContent, PopoverRoot, PopoverTrigger } from '../../chakra/popover';
+import { TabsCounter, TabsTrigger } from '../../chakra/tabs';
 import { getTabValue } from './utils';
 
 interface Props extends IconButtonProps {
@@ -38,7 +39,7 @@ const AdaptiveTabsMenu = ({ tabs, tabsCut, isActive, ...props }: Props, ref: Rea
           px="18px"
           { ...props }
         >
-          <IconSvg name="dots" boxSize={ 5 }/>
+          <Icon boxSize={ 5 }><DotsIcon/></Icon>
         </IconButton>
       </PopoverTrigger>
       <PopoverContent>

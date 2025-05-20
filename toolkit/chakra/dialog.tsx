@@ -1,8 +1,7 @@
 import { Dialog as ChakraDialog, Portal } from '@chakra-ui/react';
 import * as React from 'react';
 
-import ButtonBackTo from 'ui/shared/buttons/ButtonBackTo';
-
+import { BackToButton } from '../components/buttons/BackToButton';
 import { CloseButton } from './close-button';
 
 interface DialogContentProps extends ChakraDialog.ContentProps {
@@ -62,7 +61,7 @@ export const DialogHeader = React.forwardRef<
 >(function DialogHeader(props, ref) {
   const { startElement: startElementProp, onBackToClick, ...rest } = props;
 
-  const startElement = startElementProp ?? (onBackToClick && <ButtonBackTo onClick={ onBackToClick }/>);
+  const startElement = startElementProp ?? (onBackToClick && <BackToButton onClick={ onBackToClick }/>);
 
   return (
     <ChakraDialog.Header ref={ ref } { ...rest }>

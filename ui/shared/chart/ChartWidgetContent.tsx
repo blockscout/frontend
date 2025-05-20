@@ -4,9 +4,9 @@ import React from 'react';
 import type { TimeChartItem } from './types';
 import type { Resolution } from '@blockscout/stats-types';
 
-import { apos } from 'lib/html-entities';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { apos } from 'toolkit/utils/htmlEntities';
 
 import ChartWatermarkIcon from './ChartWatermarkIcon';
 import ChartWidgetGraph from './ChartWidgetGraph';

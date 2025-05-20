@@ -1,7 +1,7 @@
 import { Field as ChakraField } from '@chakra-ui/react';
 import * as React from 'react';
 
-import { space } from 'lib/html-entities';
+import { space } from 'toolkit/utils/htmlEntities';
 
 import getComponentDisplayName from '../utils/getComponentDisplayName';
 import type { InputProps } from './input';

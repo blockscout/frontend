@@ -6,9 +6,9 @@ import type { WatchlistAddress } from 'types/api/account';
 
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import { nbsp } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { nbsp } from 'toolkit/utils/htmlEntities';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -19,7 +19,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
     name: config.chain.currency.name || '',
     icon_url: '',
     symbol: '',
-    address: '',
+    address_hash: '',
     type: 'ERC-20' as const,
   }), [ ]);
 

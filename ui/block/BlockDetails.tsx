@@ -10,8 +10,6 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
-import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
-import { space } from 'lib/html-entities';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
@@ -21,6 +19,8 @@ import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'toolkit/utils/consts';
+import { space } from 'toolkit/utils/htmlEntities';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -114,7 +114,7 @@ const BlockDetails = ({ query }: Props) => {
   const txsNum = (() => {
     const blockTxsNum = (
       <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }) }>
-        { data.transaction_count } txn{ data.transaction_count === 1 ? '' : 's' }
+        { data.transactions_count } txn{ data.transactions_count === 1 ? '' : 's' }
       </Link>
     );
 
@@ -179,7 +179,7 @@ const BlockDetails = ({ query }: Props) => {
             L1 block height
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <BlockEntityL1 isLoading={ isPlaceholderData } number={ data.arbitrum.l1_block_height }/>
+            <BlockEntityL1 isLoading={ isPlaceholderData } number={ data.arbitrum.l1_block_number }/>
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -209,8 +209,8 @@ const BlockDetails = ({ query }: Props) => {
             Batch
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue columnGap={ 3 }>
-            { data.optimism.internal_id ?
-              <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.optimism.internal_id }/> :
+            { data.optimism.number ?
+              <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.optimism.number }/> :
               <Skeleton loading={ isPlaceholderData }>Pending</Skeleton> }
             { data.optimism.batch_data_container && (
               <OptimisticL2TxnBatchDA

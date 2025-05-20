@@ -6,6 +6,7 @@ import type { BadgeProps } from 'toolkit/chakra/badge';
 import { Badge } from 'toolkit/chakra/badge';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import type { IconName } from 'ui/shared/IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
 
 export type StatusTagType = 'ok' | 'error' | 'pending';
 
@@ -38,9 +39,11 @@ const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
       break;
   }
 
+  const startElement = <IconSvg name={ icon } boxSize={ 2.5 }/>;
+
   return (
     <Tooltip content={ errorText } disabled={ !errorText }>
-      <Badge colorPalette={ colorPalette } loading={ isLoading } className={ className } iconStart={ icon }>
+      <Badge colorPalette={ colorPalette } loading={ isLoading } className={ className } startElement={ startElement }>
         { capitalizedText }
       </Badge>
     </Tooltip>

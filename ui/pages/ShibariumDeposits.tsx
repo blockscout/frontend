@@ -2,10 +2,10 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { SHIBARIUM_DEPOSIT_ITEM } from 'stubs/shibarium';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import DepositsListItem from 'ui/deposits/shibarium/DepositsListItem';
 import DepositsTable from 'ui/deposits/shibarium/DepositsTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -16,9 +16,9 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const L2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'shibarium_deposits',
+    resourceName: 'general:shibarium_deposits',
     options: {
-      placeholderData: generateListStub<'shibarium_deposits'>(
+      placeholderData: generateListStub<'general:shibarium_deposits'>(
         SHIBARIUM_DEPOSIT_ITEM,
         50,
         {
@@ -31,7 +31,7 @@ const L2Deposits = () => {
     },
   });
 
-  const countersQuery = useApiQuery('shibarium_deposits_count', {
+  const countersQuery = useApiQuery('general:shibarium_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },
@@ -42,7 +42,7 @@ const L2Deposits = () => {
       <Box hideFrom="lg">
         { data.items.map(((item, index) => (
           <DepositsListItem
-            key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
+            key={ `${ item.l2_transaction_hash }-${ index }` }
             isLoading={ isPlaceholderData }
             item={ item }
           />

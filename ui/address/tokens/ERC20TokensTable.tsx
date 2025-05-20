@@ -26,7 +26,7 @@ const ERC20TokensTable = ({ data, top, isLoading }: Props) => {
       </TableHeaderSticky>
       <TableBody>
         { data.map((item, index) => (
-          <ERC20TokensTableItem key={ item.token.address + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
+          <ERC20TokensTableItem key={ item.token.address_hash + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
         )) }
       </TableBody>
     </TableRoot>

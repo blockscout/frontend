@@ -4,9 +4,9 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import { ZERO } from 'lib/consts';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { currencyUnits } from 'lib/units';
+import { ZERO } from 'toolkit/utils/consts';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import IconSvg from 'ui/shared/IconSvg';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
@@ -20,7 +20,7 @@ const TokenBalances = () => {
 
   const hash = router.query.hash?.toString();
 
-  const addressQuery = useApiQuery('address', {
+  const addressQuery = useApiQuery('general:address', {
     pathParams: { hash },
     queryOptions: { enabled: Boolean(hash), refetchOnMount: false },
   });

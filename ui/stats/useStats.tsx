@@ -19,7 +19,7 @@ function isChartNameMatches(q: string, chart: stats.LineChartInfo) {
 export default function useStats() {
   const router = useRouter();
 
-  const { data, isPlaceholderData, isError } = useApiQuery('stats_lines', {
+  const { data, isPlaceholderData, isError } = useApiQuery('stats:lines', {
     queryOptions: {
       placeholderData: STATS_CHARTS,
     },

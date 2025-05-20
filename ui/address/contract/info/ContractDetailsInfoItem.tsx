@@ -2,7 +2,7 @@ import { chakra, Flex, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import Hint from 'ui/shared/Hint';
+import { Hint } from 'toolkit/components/Hint/Hint';
 
 interface Props {
   label: string;

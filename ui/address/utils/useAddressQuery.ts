@@ -7,10 +7,10 @@ import type { Address } from 'types/api/address';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { retry } from 'lib/api/useQueryClientConfig';
-import { SECOND } from 'lib/consts';
 import { publicClient } from 'lib/web3/client';
 import { ADDRESS_INFO } from 'stubs/address';
 import { GET_BALANCE } from 'stubs/RPC';
+import { SECOND } from 'toolkit/utils/consts';
 
 type RpcResponseType = [
     bigint | null,
@@ -30,7 +30,7 @@ const NO_RPC_FALLBACK_ERROR_CODES = [ 403 ];
 export default function useAddressQuery({ hash, isEnabled = true }: Params): AddressQuery {
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
-  const apiQuery = useApiQuery<'address', { status: number }>('address', {
+  const apiQuery = useApiQuery<'general:address', { status: number }>('general:address', {
     pathParams: { hash },
     queryOptions: {
       enabled: isEnabled && Boolean(hash),

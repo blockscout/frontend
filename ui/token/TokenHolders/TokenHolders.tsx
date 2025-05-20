@@ -19,7 +19,7 @@ const TABS_HEIGHT = 88;
 
 type Props = {
   token?: TokenInfo;
-  holdersQuery: QueryWithPagesResult<'token_holders'>;
+  holdersQuery: QueryWithPagesResult<'general:token_holders'>;
   shouldRender?: boolean;
   tabsHeight?: number;
 };
@@ -40,7 +40,7 @@ const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true, tabsHei
     <ActionBar mt={ -6 }>
       { token && (
         <AddressCsvExportLink
-          address={ token.address }
+          address={ token.address_hash }
           params={{ type: 'holders' }}
           isLoading={ holdersQuery.pagination.isLoading }
         />

@@ -10,17 +10,17 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
-import useUpdateEffect from 'lib/hooks/useUpdateEffect';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
+import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
+import { noWhitespaceValidator } from 'toolkit/components/forms/validators/text';
+import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
-import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
-import { noWhitespaceValidator } from 'ui/shared/forms/validators/text';
 
 import TokenInfoFieldIconUrl from './fields/TokenInfoFieldIconUrl';
 import TokenInfoFieldProjectSector from './fields/TokenInfoFieldProjectSector';
@@ -44,7 +44,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
 
   const apiFetch = useApiFetch();
 
-  const configQuery = useApiQuery('token_info_applications_config', {
+  const configQuery = useApiQuery('admin:token_info_applications_config', {
     pathParams: { chainId: config.chain.id },
   });
 
@@ -66,7 +66,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
       const submission = prepareRequestBody(data);
       const isNewApplication = !application?.id || [ 'REJECTED', 'APPROVED' ].includes(application.status);
 
-      const result = await apiFetch<'token_info_applications', TokenInfoApplication, { message: string }>('token_info_applications', {
+      const result = await apiFetch<'admin:token_info_applications', TokenInfoApplication, { message: string }>('admin:token_info_applications', {
         pathParams: { chainId: config.chain.id, id: !isNewApplication ? application.id : undefined },
         fetchParams: {
           method: isNewApplication ? 'POST' : 'PUT',

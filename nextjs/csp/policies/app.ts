@@ -40,15 +40,8 @@ export function app(): CspDev.DirectiveDescriptor {
       config.app.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
 
       // APIs
-      config.api.endpoint,
-      config.api.socket,
-      getFeaturePayload(config.features.stats)?.api.endpoint,
-      getFeaturePayload(config.features.sol2uml)?.api.endpoint,
-      getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
-      getFeaturePayload(config.features.addressVerification)?.api.endpoint,
-      getFeaturePayload(config.features.nameService)?.api.endpoint,
-      getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
-      getFeaturePayload(config.features.rewards)?.api.endpoint,
+      ...Object.values(config.apis).filter(Boolean).map((api) => api.endpoint),
+      config.apis.general.socketEndpoint,
 
       // chain RPC server
       ...config.chain.rpcUrls,

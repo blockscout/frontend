@@ -19,14 +19,14 @@ const AppErrorTooManyRequests = () => {
   const handleSubmit = React.useCallback(async() => {
     try {
       const token = await recaptcha.executeAsync();
-      const url = buildUrl('api_v2_key');
+      const url = buildUrl('general:api_v2_key');
 
       await fetch(url, {
         method: 'POST',
         body: { recaptcha_response: token },
         credentials: 'include',
       }, {
-        resource: 'api_v2_key',
+        resource: 'general:api_v2_key',
       });
 
       window.location.reload();
@@ -51,8 +51,8 @@ const AppErrorTooManyRequests = () => {
       <Text color="text.secondary" mt={ 3 }>
         You have exceeded the request rate for a given time period. Please reduce the number of requests and try again soon.
       </Text>
-      <ReCaptcha ref={ recaptcha.ref }/>
-      <Button onClick={ handleSubmit } mt={ 8 }>Try again</Button>
+      <ReCaptcha { ...recaptcha }/>
+      <Button onClick={ handleSubmit } disabled={ recaptcha.isInitError } mt={ 8 }>Try again</Button>
     </>
   );
 };

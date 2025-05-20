@@ -47,7 +47,6 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
         <TableBody>
           { showSocketInfo && (
             <SocketNewItemsNotice.Desktop
-              url={ window.location.href }
               alert={ socketInfoAlert }
               num={ socketInfoNum }
               type="token_transfer"

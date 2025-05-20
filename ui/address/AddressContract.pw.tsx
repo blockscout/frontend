@@ -13,9 +13,9 @@ const hash = addressMock.contract.hash;
 
 test.describe('ABI functionality', () => {
   test.beforeEach(async({ mockApiResponse }) => {
-    await mockApiResponse('address', addressMock.contract, { pathParams: { hash } });
+    await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash } });
     await mockApiResponse(
-      'contract',
+      'general:contract',
       { ...contractInfoMock.verified, abi: [ ...contractMethodsMock.read, ...contractMethodsMock.write ] },
       { pathParams: { hash } },
     );
@@ -100,8 +100,8 @@ test.describe('auto verification status', () => {
   let contractApiUrl: string;
 
   test.beforeEach(async({ mockApiResponse }) => {
-    await mockApiResponse('address', addressData, { pathParams: { hash } });
-    contractApiUrl = await mockApiResponse('contract', contractInfoMock.nonVerified, { pathParams: { hash } });
+    await mockApiResponse('general:address', addressData, { pathParams: { hash } });
+    contractApiUrl = await mockApiResponse('general:contract', contractInfoMock.nonVerified, { pathParams: { hash } });
   });
 
   test('base flow', async({ render, createSocket }) => {

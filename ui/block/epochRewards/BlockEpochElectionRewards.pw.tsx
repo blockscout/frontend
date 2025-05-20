@@ -14,7 +14,7 @@ const hooksConfig = {
 
 test('base view', async({ render, mockApiResponse }) => {
   await mockApiResponse(
-    'block_election_rewards',
+    'general:block_election_rewards',
     blockEpochMock.electionRewardDetails1,
     { pathParams: { height_or_hash: heightOrHash, reward_type: 'voter' } },
   );
@@ -25,7 +25,7 @@ test('base view', async({ render, mockApiResponse }) => {
 
 test('base view +@mobile -@default', async({ render, mockApiResponse }) => {
   await mockApiResponse(
-    'block_election_rewards',
+    'general:block_election_rewards',
     blockEpochMock.electionRewardDetails1,
     { pathParams: { height_or_hash: heightOrHash, reward_type: 'voter' } },
   );

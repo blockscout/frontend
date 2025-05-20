@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
       (config.meta.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview')
     ) {
       const chartData = await fetchApi({
-        resource: 'stats_line',
+        resource: 'stats:line',
         pathParams: { id: getQueryParamString(ctx.query.id) },
         queryParams: { from: dayjs().format('YYYY-MM-DD'), to: dayjs().format('YYYY-MM-DD') },
         timeout: 1000,

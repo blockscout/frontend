@@ -28,7 +28,7 @@ interface Props {
 }
 
 const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
-  const appActionData = useAppActionData(token?.address, !isLoading);
+  const appActionData = useAppActionData(token?.address_hash, !isLoading);
   const isMounted = useIsMounted();
 
   const handleCounterItemClick = React.useCallback(() => {
@@ -69,7 +69,7 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
             </>
           ) }
 
-          <TokenInstanceCreatorAddress hash={ isLoading ? '' : token.address }/>
+          <TokenInstanceCreatorAddress hash={ isLoading ? '' : token.address_hash }/>
 
           <DetailedInfo.ItemLabel
             hint="This token instance unique token ID"
@@ -86,11 +86,11 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
             </Flex>
           </DetailedInfo.ItemValue>
 
-          <TokenInstanceTransfersCount hash={ isLoading ? '' : token.address } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
+          <TokenInstanceTransfersCount hash={ isLoading ? '' : token.address_hash } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
 
           <TokenNftMarketplaces
             isLoading={ isLoading }
-            hash={ token.address }
+            hash={ token.address_hash }
             id={ data.id }
             appActionData={ appActionData }
             source="NFT item"

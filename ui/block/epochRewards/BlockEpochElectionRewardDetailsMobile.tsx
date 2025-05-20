@@ -27,7 +27,7 @@ const BlockEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
 
   const { cutRef, query } = useLazyLoadedList({
     rootRef,
-    resourceName: 'block_election_rewards',
+    resourceName: 'general:block_election_rewards',
     pathParams: { height_or_hash: heightOrHash, reward_type: formatRewardType(type) },
     queryOptions: {
       refetchOnMount: false,

@@ -10,12 +10,12 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { retry } from 'lib/api/useQueryClientConfig';
-import { SECOND } from 'lib/consts';
 import delay from 'lib/delay';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { TX, TX_ZKEVM_L2 } from 'stubs/tx';
+import { SECOND } from 'toolkit/utils/consts';
 
 const rollupFeature = config.features.rollup;
 
@@ -38,7 +38,7 @@ export default function useTxQuery(params?: Params): TxQuery {
 
   const hash = params?.hash ?? getQueryParamString(router.query.hash);
 
-  const queryResult = useApiQuery<'tx', { status: number }>('tx', {
+  const queryResult = useApiQuery<'general:tx', { status: number }>('general:tx', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash) && params?.isEnabled !== false,
@@ -61,7 +61,7 @@ export default function useTxQuery(params?: Params): TxQuery {
   const handleStatusUpdateMessage: SocketMessage.TxStatusUpdate['handler'] = React.useCallback(async() => {
     await delay(5 * SECOND);
     queryClient.invalidateQueries({
-      queryKey: getResourceKey('tx', { pathParams: { hash } }),
+      queryKey: getResourceKey('general:tx', { pathParams: { hash } }),
     });
   }, [ queryClient, hash ]);
 

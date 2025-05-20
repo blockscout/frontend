@@ -33,7 +33,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
 
   const appActionData = useAppActionData(txQuery.data?.to?.hash, !txQuery.isPlaceholderData);
 
-  const txInterpretationQuery = useApiQuery('tx_interpretation', {
+  const txInterpretationQuery = useApiQuery('general:tx_interpretation', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash) && (hasInterpretationFeature && !isNovesInterpretation),
@@ -41,7 +41,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
     },
   });
 
-  const novesInterpretationQuery = useApiQuery('noves_transaction', {
+  const novesInterpretationQuery = useApiQuery('general:noves_transaction', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash) && isNovesInterpretation,
@@ -141,7 +141,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         { appActionData && (
           <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
         ) }
-        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }}/>
+        <NetworkExplorers type="tx" pathParam={ hash } ml="auto"/>
       </Flex>
     </Box>
   );

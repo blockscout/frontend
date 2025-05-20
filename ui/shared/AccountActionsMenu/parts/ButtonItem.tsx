@@ -15,7 +15,7 @@ interface Props {
 
 const ButtonItem = ({ className, label, onClick, icon, isDisabled }: Props) => {
   return (
-    <Tooltip content={ label } disabled={ isDisabled }>
+    <Tooltip content={ label } disabled={ isDisabled } disableOnMobile>
       <IconButton
         aria-label={ label }
         className={ className }
@@ -23,9 +23,8 @@ const ButtonItem = ({ className, label, onClick, icon, isDisabled }: Props) => {
         disabled={ isDisabled }
         variant="icon_secondary"
         boxSize={ 8 }
-        _icon={{ boxSize: 6 }}
       >
-        { typeof icon === 'string' ? <IconSvg name={ icon }/> : icon }
+        { typeof icon === 'string' ? <IconSvg name={ icon } boxSize={ 6 }/> : icon }
       </IconButton>
     </Tooltip>
   );

@@ -4,7 +4,7 @@ import React from 'react';
 import type { MethodType } from './types';
 
 import { ButtonGroupRadio, Button } from 'toolkit/chakra/button';
-import FilterInput from 'ui/shared/filters/FilterInput';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 
 import type { MethodsFilters } from './useMethodsFilters';
 import { TYPE_FILTER_OPTIONS } from './utils';

@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 
+import type { AlertProps } from 'toolkit/chakra/alert';
 import { Alert } from 'toolkit/chakra/alert';
 
 interface Props {
@@ -22,7 +23,7 @@ const AddressMetadataAlert = ({ tags, className }: Props) => {
       { noteTags.map((noteTag) => (
         <Alert
           key={ noteTag.name }
-          status={ noteTag.meta?.alertStatus ?? 'error' }
+          status={ noteTag.meta?.alertStatus as AlertProps['status'] ?? 'error' }
           bgColor={ noteTag.meta?.alertBgColor }
           color={ noteTag.meta?.alertTextColor }
           whiteSpace="pre-wrap"

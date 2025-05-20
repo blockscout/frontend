@@ -7,10 +7,10 @@ import { AddressFromToFilterValues } from 'types/api/address';
 
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useIsMounted from 'lib/hooks/useIsMounted';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { INTERNAL_TX } from 'stubs/internalTx';
 import { generateListStub } from 'stubs/utils';
+import { apos } from 'toolkit/utils/htmlEntities';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import ActionBar from 'ui/shared/ActionBar';
@@ -36,12 +36,12 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
   const hash = getQueryParamString(router.query.hash);
 
   const { data, isPlaceholderData, isError, pagination, onFilterChange } = useQueryWithPages({
-    resourceName: 'address_internal_txs',
+    resourceName: 'general:address_internal_txs',
     pathParams: { hash },
     filters: { filter: filterValue },
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'address_internal_txs'>(
+      placeholderData: generateListStub<'general:address_internal_txs'>(
         INTERNAL_TX,
         50,
         {

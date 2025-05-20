@@ -51,7 +51,7 @@ const ZkSyncTxnBatchesTableItem = ({ item, isLoading }: Props) => {
           minW="40px"
           my={ 1 }
         >
-          { item.transaction_count }
+          { item.transactions_count }
         </Link>
       </TableCell>
       <TableCell verticalAlign="middle">

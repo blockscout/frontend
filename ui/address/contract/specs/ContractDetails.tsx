@@ -9,7 +9,7 @@ import useContractTabs from '../useContractTabs';
 const ContractDetails = () => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
-  const addressQuery = useApiQuery('address', { pathParams: { hash } });
+  const addressQuery = useApiQuery('general:address', { pathParams: { hash } });
   const channel = useSocketChannel({
     topic: `addresses:${ hash?.toLowerCase() }`,
     isDisabled: !addressQuery.data,

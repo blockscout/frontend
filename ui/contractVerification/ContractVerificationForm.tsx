@@ -1,4 +1,4 @@
-import { Grid, Text, chakra, useUpdateEffect } from '@chakra-ui/react';
+import { Grid, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -14,11 +14,13 @@ import useApiFetch from 'lib/api/useApiFetch';
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import delay from 'lib/delay';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
+import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';
 
 import ContractVerificationFieldAddress from './fields/ContractVerificationFieldAddress';
 import ContractVerificationFieldLicenseType from './fields/ContractVerificationFieldLicenseType';
@@ -51,13 +53,13 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const methodNameRef = React.useRef<string>();
 
   const apiFetch = useApiFetch();
-
+  const { trackContract } = useRewardsActivity();
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     const body = prepareRequestBody(data);
 
     if (!hash) {
       try {
-        const response = await apiFetch<'contract', SmartContract>('contract', {
+        const response = await apiFetch<'general:contract', SmartContract>('general:contract', {
           pathParams: { hash: data.address.toLowerCase() },
         });
 
@@ -75,7 +77,8 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     }
 
     try {
-      await apiFetch('contract_verification_via', {
+      await trackContract(data.address);
+      await apiFetch('general:contract_verification_via', {
         pathParams: { method: data.method[0], hash: data.address.toLowerCase() },
         fetchParams: {
           method: 'POST',
@@ -89,7 +92,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     return new Promise((resolve) => {
       submitPromiseResolver.current = resolve;
     });
-  }, [ apiFetch, hash, setError ]);
+  }, [ apiFetch, hash, setError, trackContract ]);
 
   const handleFormChange = React.useCallback(() => {
     clearErrors('root');

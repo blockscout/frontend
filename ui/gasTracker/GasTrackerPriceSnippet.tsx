@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { GasPriceInfo, GasPrices } from 'types/api/stats';
 
-import { SECOND } from 'lib/consts';
-import { asymp } from 'lib/html-entities';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { SECOND } from 'toolkit/utils/consts';
+import { asymp } from 'toolkit/utils/htmlEntities';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';

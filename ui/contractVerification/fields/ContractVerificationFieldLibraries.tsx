@@ -1,10 +1,10 @@
-import { useUpdateEffect } from '@chakra-ui/react';
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
 import { Checkbox } from 'toolkit/chakra/checkbox';
+import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 import ContractVerificationFieldLibraryItem from './ContractVerificationFieldLibraryItem';

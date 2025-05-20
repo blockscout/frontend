@@ -7,7 +7,7 @@ import { httpLogger } from 'nextjs/utils/logger';
 export default async function csrfHandler(_req: NextApiRequest, res: NextApiResponse) {
   httpLogger(_req, res);
 
-  const url = buildUrl('csrf');
+  const url = buildUrl('general:csrf');
   const response = await fetchFactory(_req)(url);
 
   if (response.status === 200) {

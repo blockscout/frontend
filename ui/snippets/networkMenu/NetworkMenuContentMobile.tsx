@@ -58,6 +58,7 @@ const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
           collection={ selectCollection }
           placeholder="Select network type"
           mb={ 3 }
+          contentProps={{ zIndex: 'modal' }}
         />
       ) }
       <VStack as="ul" gap={ 2 } alignItems="stretch">

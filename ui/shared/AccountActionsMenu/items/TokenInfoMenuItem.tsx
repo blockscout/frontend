@@ -21,19 +21,19 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
   const modal = useDisclosure();
   const isAuth = useIsAuth();
 
-  const verifiedAddressesQuery = useApiQuery('verified_addresses', {
+  const verifiedAddressesQuery = useApiQuery('contractInfo:verified_addresses', {
     pathParams: { chainId: config.chain.id },
     queryOptions: {
       enabled: isAuth,
     },
   });
-  const applicationsQuery = useApiQuery('token_info_applications', {
+  const applicationsQuery = useApiQuery('admin:token_info_applications', {
     pathParams: { chainId: config.chain.id, id: undefined },
     queryOptions: {
       enabled: isAuth,
     },
   });
-  const tokenInfoQuery = useApiQuery('token_verified_info', {
+  const tokenInfoQuery = useApiQuery('contractInfo:token_verified_info', {
     pathParams: { hash, chainId: config.chain.id },
     queryOptions: {
       refetchOnMount: false,

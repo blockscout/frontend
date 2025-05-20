@@ -2,9 +2,9 @@ import { Box, Text } from '@chakra-ui/react';
 import type { FC } from 'react';
 import React from 'react';
 
-import { HEX_REGEXP } from 'lib/regexp';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { HEX_REGEXP } from 'toolkit/utils/regexp';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -26,7 +26,7 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
     const token = {
       name: name || '',
       symbol: (symbol?.toLowerCase() === name?.toLowerCase() ? undefined : symbol) || '',
-      address: action.nft?.address || action.token?.address || '',
+      address_hash: action.nft?.address || action.token?.address || '',
       icon_url: '',
       type: action.nft ? 'ERC-721' as const : 'ERC-20' as const,
     };
@@ -34,7 +34,7 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
     return token;
   }, [ item.action ]);
 
-  const validTokenAddress = token.address ? HEX_REGEXP.test(token.address) : false;
+  const validTokenAddress = token.address_hash ? HEX_REGEXP.test(token.address_hash) : false;
 
   const tooltipContent = (
     <NovesTokenTooltipContent

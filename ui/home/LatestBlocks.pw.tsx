@@ -9,31 +9,31 @@ import { test, expect } from 'playwright/lib';
 import LatestBlocks from './LatestBlocks';
 
 test('default view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
-  await mockApiResponse('stats', statsMock.base);
-  await mockApiResponse('homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('general:stats', statsMock.base);
+  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(<LatestBlocks/>);
   await expect(component).toHaveScreenshot();
 });
 
 test('L2 view', async({ render, mockEnvs, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.optimisticRollup);
-  await mockApiResponse('stats', statsMock.base);
-  await mockApiResponse('homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('general:stats', statsMock.base);
+  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(<LatestBlocks/>);
   await expect(component).toHaveScreenshot();
 });
 
 test('no reward view', async({ render, mockEnvs, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.blockHiddenFields);
-  await mockApiResponse('stats', statsMock.base);
-  await mockApiResponse('homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('general:stats', statsMock.base);
+  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(<LatestBlocks/>);
   await expect(component).toHaveScreenshot();
 });
 
 test('with long block height', async({ render, mockApiResponse }) => {
-  await mockApiResponse('stats', statsMock.base);
-  await mockApiResponse('homepage_blocks', [ { ...blockMock.base, height: 123456789012345 } ]);
+  await mockApiResponse('general:stats', statsMock.base);
+  await mockApiResponse('general:homepage_blocks', [ { ...blockMock.base, height: 123456789012345 } ]);
   const component = await render(<LatestBlocks/>);
   await expect(component).toHaveScreenshot();
 });
@@ -41,8 +41,8 @@ test('with long block height', async({ render, mockApiResponse }) => {
 test.describe('socket', () => {
   test.describe.configure({ mode: 'serial' });
   test('new item', async({ render, mockApiResponse, createSocket }) => {
-    await mockApiResponse('stats', statsMock.base);
-    await mockApiResponse('homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+    await mockApiResponse('general:stats', statsMock.base);
+    await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
     const component = await render(<LatestBlocks/>, undefined, { withSocket: true });
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, 'blocks:new_block');

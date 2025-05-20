@@ -2,10 +2,10 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { generateListStub } from 'stubs/utils';
 import { ZKEVM_DEPOSITS_ITEM } from 'stubs/zkEvmL2';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import ZkEvmL2DepositsListItem from 'ui/deposits/zkEvmL2/ZkEvmL2DepositsListItem';
 import ZkEvmL2DepositsTable from 'ui/deposits/zkEvmL2/ZkEvmL2DepositsTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -16,9 +16,9 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const ZkEvmL2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'zkevm_l2_deposits',
+    resourceName: 'general:zkevm_l2_deposits',
     options: {
-      placeholderData: generateListStub<'zkevm_l2_deposits'>(
+      placeholderData: generateListStub<'general:zkevm_l2_deposits'>(
         ZKEVM_DEPOSITS_ITEM,
         50,
         { next_page_params: { items_count: 50, index: 1 } },
@@ -26,7 +26,7 @@ const ZkEvmL2Deposits = () => {
     },
   });
 
-  const countersQuery = useApiQuery('zkevm_l2_deposits_count', {
+  const countersQuery = useApiQuery('general:zkevm_l2_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },

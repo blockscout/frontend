@@ -2,10 +2,10 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { SHIBARIUM_WITHDRAWAL_ITEM } from 'stubs/shibarium';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -14,11 +14,11 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 import WithdrawalsListItem from 'ui/withdrawals/shibarium/WithdrawalsListItem';
 import WithdrawalsTable from 'ui/withdrawals/shibarium/WithdrawalsTable';
 
-const L2Withdrawals = () => {
+const ShibariumWithdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'shibarium_withdrawals',
+    resourceName: 'general:shibarium_withdrawals',
     options: {
-      placeholderData: generateListStub<'shibarium_withdrawals'>(
+      placeholderData: generateListStub<'general:shibarium_withdrawals'>(
         SHIBARIUM_WITHDRAWAL_ITEM,
         50,
         {
@@ -31,7 +31,7 @@ const L2Withdrawals = () => {
     },
   });
 
-  const countersQuery = useApiQuery('shibarium_withdrawals_count', {
+  const countersQuery = useApiQuery('general:shibarium_withdrawals_count', {
     queryOptions: {
       placeholderData: 23700,
     },
@@ -42,7 +42,7 @@ const L2Withdrawals = () => {
       <Box hideFrom="lg">
         { data.items.map(((item, index) => (
           <WithdrawalsListItem
-            key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
+            key={ `${ item.l2_transaction_hash }-${ index }` }
             item={ item }
             isLoading={ isPlaceholderData }
           />
@@ -83,4 +83,4 @@ const L2Withdrawals = () => {
   );
 };
 
-export default L2Withdrawals;
+export default ShibariumWithdrawals;

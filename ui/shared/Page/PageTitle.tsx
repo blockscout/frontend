@@ -6,9 +6,9 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import TextAd from 'ui/shared/ad/TextAd';
-import ButtonBackTo from 'ui/shared/buttons/ButtonBackTo';
 
 type BackLinkProp = { label: string; url: string } | { label: string; onClick: () => void };
 
@@ -82,7 +82,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
       >
         <Flex h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }} maxW="100%" alignItems="center">
           { backLink && (
-            <ButtonBackTo
+            <BackToButton
               hint={ backLink.label }
               href={ 'url' in backLink ? backLink.url : undefined }
               onClick={ 'onClick' in backLink ? backLink.onClick : undefined }

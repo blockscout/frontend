@@ -28,12 +28,12 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
   const sourceAddress = getQueryParamString(router.query.source_address);
   const tab = getQueryParamString(router.query.tab);
 
-  const [ selectedItem, setSelectedItem ] = React.useState(items.find((item) => item.address === sourceAddress) || items[0]);
+  const [ selectedItem, setSelectedItem ] = React.useState(items.find((item) => item.address_hash === sourceAddress) || items[0]);
 
-  const systemInfoQuery = useApiQuery('contract_mud_system_info', {
-    pathParams: { hash: addressHash, system_address: selectedItem.address },
+  const systemInfoQuery = useApiQuery('general:mud_system_info', {
+    pathParams: { hash: addressHash, system_address: selectedItem.address_hash },
     queryOptions: {
-      enabled: Boolean(selectedItem?.address),
+      enabled: Boolean(selectedItem?.address_hash),
       refetchOnMount: false,
     },
   });
@@ -63,7 +63,7 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
         />
       </div>
       <ContractMethodsContainer
-        key={ selectedItem.address }
+        key={ selectedItem.address_hash }
         isLoading={ systemInfoQuery.isPending }
         isEmpty={ abi.length === 0 }
         type={ filters.methodType }
@@ -74,7 +74,7 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
           tab={ tab }
           addressHash={ addressHash }
           visibleItems={ filters.visibleItems }
-          sourceAddress={ selectedItem.address }
+          sourceAddress={ selectedItem.address_hash }
         />
       </ContractMethodsContainer>
     </Flex>

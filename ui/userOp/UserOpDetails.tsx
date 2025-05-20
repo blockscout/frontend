@@ -7,12 +7,12 @@ import type { UserOp } from 'types/api/userOps';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
-import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { WEI, WEI_IN_GWEI } from 'toolkit/utils/consts';
+import { space } from 'toolkit/utils/htmlEntities';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';

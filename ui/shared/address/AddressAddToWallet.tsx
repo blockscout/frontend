@@ -6,6 +6,7 @@ import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
 import useProvider from 'lib/web3/useProvider';
 import useSwitchOrAddChain from 'lib/web3/useSwitchOrAddChain';
@@ -24,7 +25,7 @@ function getRequestParams(token: TokenInfo, tokenId?: string): WatchAssetParams 
       return {
         type: 'ERC20',
         options: {
-          address: token.address,
+          address: token.address_hash,
           symbol: token.symbol || '',
           decimals: Number(token.decimals ?? '18'),
           image: token.icon_url || '',
@@ -39,7 +40,7 @@ function getRequestParams(token: TokenInfo, tokenId?: string): WatchAssetParams 
       return {
         type: token.type === 'ERC-721' ? 'ERC721' : 'ERC1155',
         options: {
-          address: token.address,
+          address: token.address_hash,
           tokenId: tokenId,
         },
       } as never; // There is no official EIP, and therefore no typings for these token types.
@@ -62,6 +63,7 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
   const { provider, wallet } = useProvider();
   const switchOrAddChain = useSwitchOrAddChain();
   const isMobile = useIsMobile();
+  const { trackUsage } = useRewardsActivity();
 
   const handleClick = React.useCallback(async() => {
     if (!wallet) {
@@ -89,6 +91,8 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
           description: 'Successfully added token to your wallet',
         });
 
+        await trackUsage('add_token');
+
         mixpanel.logEvent(mixpanel.EventTypes.ADD_TO_WALLET, {
           Target: 'token',
           Wallet: wallet,
@@ -101,7 +105,7 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
         description: (error as Error)?.message || 'Something went wrong',
       });
     }
-  }, [ wallet, token, tokenId, switchOrAddChain, provider ]);
+  }, [ wallet, token, tokenId, switchOrAddChain, provider, trackUsage ]);
 
   if (!provider || !wallet) {
     return null;

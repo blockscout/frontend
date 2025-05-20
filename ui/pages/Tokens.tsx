@@ -56,16 +56,16 @@ const Tokens = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const tokensQuery = useQueryWithPages({
-    resourceName: tab === 'bridged' ? 'tokens_bridged' : 'tokens',
+    resourceName: tab === 'bridged' ? 'general:tokens_bridged' : 'general:tokens',
     filters: tab === 'bridged' ? { q: debouncedSearchTerm, chain_ids: bridgeChains } : { q: debouncedSearchTerm, type: tokenTypes },
     sorting: getSortParamsFromValue<TokensSortingValue, TokensSortingField, TokensSorting['order']>(sort),
     options: {
-      placeholderData: generateListStub<'tokens'>(
+      placeholderData: generateListStub<'general:tokens'>(
         TOKEN_INFO_ERC_20,
         50,
         {
           next_page_params: {
-            holder_count: 81528,
+            holders_count: 81528,
             items_count: 50,
             name: '',
             market_cap: null,

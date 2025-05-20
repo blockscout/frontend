@@ -15,9 +15,9 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const Accounts = () => {
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
-    resourceName: 'addresses',
+    resourceName: 'general:addresses',
     options: {
-      placeholderData: generateListStub<'addresses'>(
+      placeholderData: generateListStub<'general:addresses'>(
         TOP_ADDRESS,
         50,
         {

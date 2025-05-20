@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ARBITRUM_L2_TXN_WITHDRAWALS_ITEM } from 'stubs/arbitrumL2';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import { FormFieldError } from 'toolkit/components/forms/components/FormFieldError';
+import { TRANSACTION_HASH_REGEXP } from 'toolkit/components/forms/validators/transaction';
+import { apos } from 'toolkit/utils/htmlEntities';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import FilterInput from 'ui/shared/filters/FilterInput';
-import FieldError from 'ui/shared/forms/components/FieldError';
-import { TRANSACTION_HASH_REGEXP } from 'ui/shared/forms/validators/transaction';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import ArbitrumL2TxnWithdrawalsList from 'ui/txnWithdrawals/arbitrumL2/ArbitrumL2TxnWithdrawalsList';
 import ArbitrumL2TxnWithdrawalsTable from 'ui/txnWithdrawals/arbitrumL2/ArbitrumL2TxnWithdrawalsTable';
@@ -20,7 +20,7 @@ const ArbitrumL2TxnWithdrawals = () => {
   const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.q) || undefined);
   const [ error, setError ] = React.useState<string | null>(null);
 
-  const { data, isError, isPlaceholderData } = useApiQuery('arbitrum_l2_txn_withdrawals', {
+  const { data, isError, isPlaceholderData } = useApiQuery('general:arbitrum_l2_txn_withdrawals', {
     pathParams: {
       hash: searchTerm,
     },
@@ -90,7 +90,7 @@ const ArbitrumL2TxnWithdrawals = () => {
           onBlur={ handleSearchInputBlur }
         />
       </chakra.form>
-      { error && <FieldError message={ error }/> }
+      { error && <FormFieldError message={ error }/> }
       <DataListDisplay
         mt={ 6 }
         isError={ isError }

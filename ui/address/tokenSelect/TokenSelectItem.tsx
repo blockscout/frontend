@@ -68,7 +68,7 @@ const TokenSelectItem = ({ data }: Props) => {
     }
   })();
 
-  const url = route({ pathname: '/token/[hash]', query: { hash: data.token.address } });
+  const url = route({ pathname: '/token/[hash]', query: { hash: data.token.address_hash } });
 
   return (
     <Link

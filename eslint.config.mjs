@@ -29,7 +29,7 @@ const RESTRICTED_MODULES = {
       name: '@chakra-ui/react',
       importNames: [
         'Menu', 'useToast', 'useDisclosure', 'useClipboard', 'Tooltip', 'Skeleton', 'IconButton', 'Button', 'ButtonGroup', 'Link', 'LinkBox', 'LinkOverlay',
-        'Dialog', 'DialogRoot', 'DialogContent', 'DialogHeader', 'DialogCloseTrigger',
+        'Dialog', 'DialogRoot', 'DialogContent', 'DialogHeader', 'DialogCloseTrigger', 'DialogBody',
         'Tag', 'Switch', 'Image', 'Popover', 'PopoverTrigger', 'PopoverContent', 'PopoverBody', 'PopoverFooter',
         'DrawerRoot', 'DrawerBody', 'DrawerContent', 'DrawerOverlay', 'DrawerBackdrop', 'DrawerTrigger', 'Drawer',
         'Alert', 'AlertIcon', 'AlertTitle', 'AlertDescription',
@@ -37,7 +37,7 @@ const RESTRICTED_MODULES = {
         'Heading', 'Badge', 'Tabs', 'Show', 'Hide', 'Checkbox', 'CheckboxGroup',
         'Table', 'TableRoot', 'TableBody', 'TableHeader', 'TableRow', 'TableCell',
         'Menu', 'MenuRoot', 'MenuTrigger', 'MenuContent', 'MenuItem', 'MenuTriggerItem', 'MenuRadioItemGroup', 'MenuContextTrigger',
-        'Rating', 'RatingGroup',
+        'Rating', 'RatingGroup', 'Textarea',
       ],
       message: 'Please use corresponding component or hook from "toolkit" instead',
     },
@@ -65,9 +65,7 @@ export default tseslint.config(
   { ignores: [
     'deploy/tools/',
     'public/',
-    'theme/dist/',
     '.git/',
-    'theme/webpack.config.js',
     'next.config.js',
   ] },
 
@@ -455,6 +453,8 @@ export default tseslint.config(
   {
     files: [
       'toolkit/chakra/**',
+      'toolkit/components/**',
+      'toolkit/package/**',
     ],
     rules: {
       // for toolkit components allow to import @chakra-ui/react directly

@@ -25,7 +25,7 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
   }, [ sort, setSorting ]);
 
   return (
-    <TableRoot>
+    <TableRoot minW="950px">
       <TableHeaderSticky top={ ACTION_BAR_HEIGHT_DESKTOP }>
         <TableRow>
           <TableColumnHeader width="50%">Contract</TableColumnHeader>

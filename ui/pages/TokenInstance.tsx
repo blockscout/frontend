@@ -40,7 +40,7 @@ const TokenInstanceContent = () => {
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  const tokenQuery = useApiQuery('token', {
+  const tokenQuery = useApiQuery('general:token', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash && id),
@@ -48,7 +48,7 @@ const TokenInstanceContent = () => {
     },
   });
 
-  const tokenInstanceQuery = useApiQuery('token_instance', {
+  const tokenInstanceQuery = useApiQuery('general:token_instance', {
     pathParams: { hash, id },
     queryOptions: {
       enabled: Boolean(hash && id),
@@ -57,7 +57,7 @@ const TokenInstanceContent = () => {
   });
 
   const transfersQuery = useQueryWithPages({
-    resourceName: 'token_instance_transfers',
+    resourceName: 'general:token_instance_transfers',
     pathParams: { hash, id },
     scrollRef,
     options: {
@@ -73,7 +73,7 @@ const TokenInstanceContent = () => {
     !tokenInstanceQuery.data.is_unique;
 
   const holdersQuery = useQueryWithPages({
-    resourceName: 'token_instance_holders',
+    resourceName: 'general:token_instance_holders',
     pathParams: { hash, id },
     scrollRef,
     options: {
@@ -87,8 +87,8 @@ const TokenInstanceContent = () => {
   React.useEffect(() => {
     if (tokenInstanceQuery.data && !tokenInstanceQuery.isPlaceholderData && tokenQuery.data && !tokenQuery.isPlaceholderData) {
       metadata.update(
-        { pathname: '/token/[hash]/instance/[id]', query: { hash: tokenQuery.data.address, id: tokenInstanceQuery.data.id } },
-        { symbol: tokenQuery.data.symbol ?? '' },
+        { pathname: '/token/[hash]/instance/[id]', query: { hash: tokenQuery.data.address_hash, id: tokenInstanceQuery.data.id } },
+        { symbol_or_name: tokenQuery.data.symbol ?? tokenQuery.data.name ?? '' },
       );
     }
   }, [ tokenInstanceQuery.data, tokenInstanceQuery.isPlaceholderData, tokenQuery.data, tokenQuery.isPlaceholderData ]);

@@ -9,12 +9,12 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
-import { WEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { WEI } from 'toolkit/utils/consts';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -84,14 +84,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
       ) }
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
-        { data.transaction_count > 0 ? (
+        { data.transactions_count > 0 ? (
           <Skeleton loading={ isLoading } display="inline-block">
             <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height), tab: 'txs' } }) }>
-              { data.transaction_count }
+              { data.transactions_count }
             </Link>
           </Skeleton>
         ) :
-          <Text color="text.secondary">{ data.transaction_count }</Text>
+          <Text color="text.secondary">{ data.transactions_count }</Text>
         }
       </Flex>
       <Box>

@@ -12,7 +12,7 @@ import zIndex from './foundations/zIndex';
 import globalCss from './globalCss';
 import { recipes, slotRecipes } from './recipes';
 
-const customConfig = defineConfig({
+export const customConfig = defineConfig({
   globalCss,
   theme: {
     breakpoints,

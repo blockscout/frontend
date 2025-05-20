@@ -21,11 +21,12 @@ interface Props {
   className?: string;
   isLoading?: boolean;
   tokenHash?: string;
+  tokenSymbol?: string;
   truncation?: EntityProps['truncation'];
   noIcon?: boolean;
 }
 
-const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', noIcon }: Props) => {
+const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', tokenSymbol = '', noIcon }: Props) => {
   const mode = useBreakpointValue(
     {
       base: (typeof modeProp === 'object' && 'base' in modeProp ? modeProp.base : modeProp),
@@ -34,7 +35,9 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
     },
   ) ?? 'long';
 
-  const Entity = tokenHash ? AddressEntityWithTokenFilter : AddressEntity;
+  const Entity = tokenHash && tokenSymbol ? AddressEntityWithTokenFilter : AddressEntity;
+  const isOutgoing = current ? current.toLowerCase() === from.hash.toLowerCase() : false;
+  const isIncoming = current ? current.toLowerCase() === to?.hash?.toLowerCase() : false;
 
   if (mode === 'compact') {
     return (
@@ -48,10 +51,11 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           <Entity
             address={ from }
             isLoading={ isLoading }
-            noLink={ current === from.hash }
-            noCopy={ current === from.hash }
+            noLink={ isOutgoing }
+            noCopy={ isOutgoing }
             noIcon={ noIcon }
             tokenHash={ tokenHash }
+            tokenSymbol={ tokenSymbol }
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
@@ -61,10 +65,11 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           <Entity
             address={ to }
             isLoading={ isLoading }
-            noLink={ current === to.hash }
-            noCopy={ current === to.hash }
+            noLink={ isIncoming }
+            noCopy={ isIncoming }
             noIcon={ noIcon }
             tokenHash={ tokenHash }
+            tokenSymbol={ tokenSymbol }
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
@@ -75,7 +80,6 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
     );
   }
 
-  const isOutgoing = current === from.hash;
   const iconSize = 20;
 
   return (
@@ -87,6 +91,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         noCopy={ isOutgoing }
         noIcon={ noIcon }
         tokenHash={ tokenHash }
+        tokenSymbol={ tokenSymbol }
         truncation="constant"
         mr={ isOutgoing ? 4 : 2 }
       />
@@ -98,10 +103,11 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         <Entity
           address={ to }
           isLoading={ isLoading }
-          noLink={ current === to.hash }
-          noCopy={ current === to.hash }
+          noLink={ isIncoming }
+          noCopy={ isIncoming }
           noIcon={ noIcon }
           tokenHash={ tokenHash }
+          tokenSymbol={ tokenSymbol }
           truncation="constant"
           ml={ 3 }
         />

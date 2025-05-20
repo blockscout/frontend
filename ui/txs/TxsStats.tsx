@@ -4,29 +4,29 @@ import React from 'react';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import { thinsp } from 'lib/html-entities';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { TXS_STATS, TXS_STATS_MICROSERVICE } from 'stubs/tx';
+import { thinsp } from 'toolkit/utils/htmlEntities';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
 
 const TxsStats = () => {
-  const txsStatsQuery = useApiQuery('stats_transactions', {
+  const txsStatsQuery = useApiQuery('stats:pages_transactions', {
     queryOptions: {
       enabled: isStatsFeatureEnabled,
       placeholderData: isStatsFeatureEnabled ? TXS_STATS_MICROSERVICE : undefined,
     },
   });
 
-  const txsStatsApiQuery = useApiQuery('txs_stats', {
+  const txsStatsApiQuery = useApiQuery('general:txs_stats', {
     queryOptions: {
       enabled: !isStatsFeatureEnabled,
       placeholderData: !isStatsFeatureEnabled ? TXS_STATS : undefined,
     },
   });
 
-  const statsQuery = useApiQuery('stats', {
+  const statsQuery = useApiQuery('general:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },

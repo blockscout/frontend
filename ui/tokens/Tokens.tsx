@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TokensSortingValue } from 'types/api/tokens';
 
-import { apos } from 'lib/html-entities';
+import { apos } from 'toolkit/utils/htmlEntities';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
@@ -12,7 +12,7 @@ import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
 
 interface Props {
-  query: QueryWithPagesResult<'tokens'> | QueryWithPagesResult<'tokens_bridged'>;
+  query: QueryWithPagesResult<'general:tokens'> | QueryWithPagesResult<'general:tokens_bridged'>;
   onSortChange: (value: TokensSortingValue) => void;
   sort: TokensSortingValue;
   actionBar?: React.ReactNode;
@@ -35,7 +35,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
         { description }
         { data.items.map((item, index) => (
           <TokensListItem
-            key={ item.address + (isPlaceholderData ? index : '') }
+            key={ item.address_hash + (isPlaceholderData ? index : '') }
             token={ item }
             index={ index }
             page={ pagination.page }

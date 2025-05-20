@@ -3,21 +3,14 @@ import fetch, { AbortError } from 'node-fetch';
 import buildUrl from 'nextjs/utils/buildUrl';
 import { httpLogger } from 'nextjs/utils/logger';
 
-import { RESOURCES } from 'lib/api/resources';
 import type { ResourceName, ResourcePathParams, ResourcePayload } from 'lib/api/resources';
-import { SECOND } from 'lib/consts';
 import metrics from 'lib/monitoring/metrics';
+import { SECOND } from 'toolkit/utils/consts';
 
-type Params<R extends ResourceName> = (
-  {
-    resource: R;
-    pathParams?: ResourcePathParams<R>;
-    queryParams?: Record<string, string | number | undefined>;
-  } | {
-    url: string;
-    route: string;
-  }
-) & {
+type Params<R extends ResourceName> = {
+  resource: R;
+  pathParams?: ResourcePathParams<R>;
+  queryParams?: Record<string, string | number | undefined>;
   timeout?: number;
 };
 
@@ -27,15 +20,14 @@ export default async function fetchApi<R extends ResourceName = never, S = Resou
     controller.abort();
   }, params.timeout || SECOND);
 
-  const url = 'url' in params ? params.url : buildUrl(params.resource, params.pathParams, params.queryParams);
-  const route = 'route' in params ? params.route : RESOURCES[params.resource]['path'];
+  const url = buildUrl(params.resource, params.pathParams, params.queryParams);
 
   const end = metrics?.apiRequestDuration.startTimer();
 
   try {
     const response = await fetch(url, { signal: controller.signal });
 
-    const duration = end?.({ route, code: response.status });
+    const duration = end?.({ route: params.resource, code: response.status });
     if (response.status === 200) {
       httpLogger.logger.info({ message: 'API fetch', url, code: response.status, duration });
     } else {
@@ -45,7 +37,7 @@ export default async function fetchApi<R extends ResourceName = never, S = Resou
     return await response.json() as Promise<S>;
   } catch (error) {
     const code = error instanceof AbortError ? 504 : 500;
-    const duration = end?.({ route, code });
+    const duration = end?.({ route: params.resource, code });
     httpLogger.logger.error({ message: 'API fetch', url, code, duration });
   } finally {
     clearTimeout(timeout);

@@ -14,7 +14,7 @@ const GAS_PRICE_CHART_ID = 'averageGasPrice';
 
 const GasTrackerChart = () => {
   const [ isChartLoadingError, setChartLoadingError ] = React.useState(false);
-  const { data, isPlaceholderData, isError } = useApiQuery('stats_lines', {
+  const { data, isPlaceholderData, isError } = useApiQuery('stats:lines', {
     queryOptions: {
       placeholderData: STATS_CHARTS,
     },

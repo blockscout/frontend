@@ -36,7 +36,7 @@ interface Props {
 }
 
 export default function useContractTabs({ addressData, isEnabled, hasMudTab, channel }: Props): ReturnType {
-  const contractQuery = useApiQuery('contract', {
+  const contractQuery = useApiQuery('general:contract', {
     pathParams: { hash: addressData?.hash },
     queryOptions: {
       enabled: isEnabled,
@@ -45,7 +45,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
     },
   });
 
-  const mudSystemsQuery = useApiQuery('contract_mud_systems', {
+  const mudSystemsQuery = useApiQuery('general:mud_systems', {
     pathParams: { hash: addressData?.hash },
     queryOptions: {
       enabled: isEnabled && hasMudTab,
@@ -55,16 +55,16 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
   });
 
   const verifiedImplementations = React.useMemo(() => {
-    return addressData?.implementations?.filter(({ name, address }) => name && address && address !== addressData?.hash) || [];
+    return addressData?.implementations?.filter(({ name, address_hash: addressHash }) => name && addressHash && addressHash !== addressData?.hash) || [];
   }, [ addressData?.hash, addressData?.implementations ]);
 
   return React.useMemo(() => {
     return {
       tabs: [
-        addressData?.hash && {
+        addressData && {
           id: 'contract_code' as const,
           title: 'Code',
-          component: <ContractDetails mainContractQuery={ contractQuery } channel={ channel } addressHash={ addressData.hash }/>,
+          component: <ContractDetails mainContractQuery={ contractQuery } channel={ channel } addressData={ addressData }/>,
           subTabs: CONTRACT_DETAILS_TAB_IDS as unknown as Array<string>,
         },
         contractQuery.data?.abi && {
@@ -79,7 +79,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
             <ContractMethodsProxy
               implementations={ verifiedImplementations }
               isLoading={ contractQuery.isPlaceholderData }
-              proxyType={ contractQuery.data?.proxy_type }
+              proxyType={ addressData?.proxy_type }
             />
           ),
         },
@@ -99,7 +99,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
       isLoading: contractQuery.isPlaceholderData,
     };
   }, [
-    addressData?.hash,
+    addressData,
     contractQuery,
     channel,
     verifiedImplementations,

@@ -11,7 +11,7 @@ import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { nbsp } from 'lib/html-entities';
+import { nbsp } from 'toolkit/utils/htmlEntities';
 import CsvExportForm from 'ui/csvExport/CsvExportForm';
 import ContentLoader from 'ui/shared/ContentLoader';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -29,39 +29,39 @@ interface ExportTypeEntity {
 const EXPORT_TYPES: Record<CsvExportParams['type'], ExportTypeEntity> = {
   transactions: {
     text: 'transactions',
-    resource: 'csv_export_txs',
+    resource: 'general:csv_export_txs',
     fileNameTemplate: 'transactions',
     filterType: 'address',
     filterValues: AddressFromToFilterValues,
   },
   'internal-transactions': {
     text: 'internal transactions',
-    resource: 'csv_export_internal_txs',
+    resource: 'general:csv_export_internal_txs',
     fileNameTemplate: 'internal_transactions',
     filterType: 'address',
     filterValues: AddressFromToFilterValues,
   },
   'token-transfers': {
     text: 'token transfers',
-    resource: 'csv_export_token_transfers',
+    resource: 'general:csv_export_token_transfers',
     fileNameTemplate: 'token_transfers',
     filterType: 'address',
     filterValues: AddressFromToFilterValues,
   },
   logs: {
     text: 'logs',
-    resource: 'csv_export_logs',
+    resource: 'general:csv_export_logs',
     fileNameTemplate: 'logs',
     filterType: 'topic',
   },
   holders: {
     text: 'holders',
-    resource: 'csv_export_token_holders',
+    resource: 'general:csv_export_token_holders',
     fileNameTemplate: 'holders',
   },
   'epoch-rewards': {
     text: 'epoch rewards',
-    resource: 'csv_export_epoch_rewards',
+    resource: 'general:csv_export_epoch_rewards',
     fileNameTemplate: 'epoch_rewards',
   },
 };
@@ -79,21 +79,21 @@ const CsvExport = () => {
   const filterTypeFromQuery = router.query.filterType?.toString() || null;
   const filterValueFromQuery = router.query.filterValue?.toString();
 
-  const addressQuery = useApiQuery('address', {
+  const addressQuery = useApiQuery('general:address', {
     pathParams: { hash: addressHash },
     queryOptions: {
       enabled: Boolean(addressHash),
     },
   });
 
-  const tokenQuery = useApiQuery('token', {
+  const tokenQuery = useApiQuery('general:token', {
     pathParams: { hash: addressHash },
     queryOptions: {
       enabled: Boolean(addressHash) && exportTypeParam === 'holders',
     },
   });
 
-  const configQuery = useApiQuery('config_csv_export', {
+  const configQuery = useApiQuery('general:config_csv_export', {
     queryOptions: {
       enabled: Boolean(addressHash),
     },

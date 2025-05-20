@@ -29,7 +29,7 @@ const Pool = () => {
   const appProps = useAppContext();
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isPlaceholderData, isError, error } = useApiQuery('pool', {
+  const { data, isPlaceholderData, isError, error } = useApiQuery('contractInfo:pool', {
     pathParams: { hash, chainId: config.chain.id },
     queryOptions: {
       placeholderData: POOL,
@@ -37,7 +37,7 @@ const Pool = () => {
     },
   });
 
-  const addressQuery = useApiQuery('address', {
+  const addressQuery = useApiQuery('general:address', {
     pathParams: { hash: data?.contract_address },
     queryOptions: {
       enabled: Boolean(data?.contract_address),
@@ -48,7 +48,7 @@ const Pool = () => {
   const content = (() => {
     if (isError) {
       if (isCustomAppError(error)) {
-        throwOnResourceLoadError({ resource: 'pool', error, isError: true });
+        throwOnResourceLoadError({ resource: 'contractInfo:pool', error, isError: true });
       }
 
       return <DataFetchAlert/>;

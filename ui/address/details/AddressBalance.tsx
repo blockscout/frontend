@@ -28,7 +28,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
     }
 
     setLastBlockNumber(blockNumber);
-    const queryKey = getResourceKey('address', { pathParams: { hash: data.hash } });
+    const queryKey = getResourceKey('general:address', { pathParams: { hash: data.hash } });
     queryClient.setQueryData(queryKey, (prevData: Address | undefined) => {
       if (!prevData) {
         return;
@@ -73,7 +73,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
       >
         Balance
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue alignSelf="center" flexWrap="nowrap">
+      <DetailedInfo.ItemValue alignSelf="flex-start" flexWrap="nowrap">
         <NativeTokenIcon boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
         <CurrencyValue
           value={ data.coin_balance || '0' }

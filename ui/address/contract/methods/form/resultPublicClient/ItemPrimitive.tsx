@@ -4,9 +4,9 @@ import type { AbiParameter } from 'viem';
 
 import { route } from 'nextjs-routes';
 
-import { WEI } from 'lib/consts';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { WEI } from 'toolkit/utils/consts';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import { matchInt } from '../utils';

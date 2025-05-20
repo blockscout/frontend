@@ -46,8 +46,8 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHa
     try {
       setIsPending(true);
 
-      const response = await apiFetch<'arbitrum_l2_message_claim', ArbitrumL2MessageClaimResponse, ResourceError<unknown>>(
-        'arbitrum_l2_message_claim',
+      const response = await apiFetch<'general:arbitrum_l2_message_claim', ArbitrumL2MessageClaimResponse, ResourceError<unknown>>(
+        'general:arbitrum_l2_message_claim',
         { pathParams: { id: messageId.toString() },
         });
 
@@ -56,7 +56,7 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHa
 
         const hash = await sendTransactionAsync({
           data: response.calldata as `0x${ string }`,
-          to: response.outbox_address as `0x${ string }`,
+          to: response.outbox_address_hash as `0x${ string }`,
         });
 
         setClaimTxHash(hash);
@@ -84,7 +84,7 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHa
 
   const handleSuccess = React.useCallback(() => {
     queryClient.setQueryData(
-      getResourceKey('arbitrum_l2_txn_withdrawals', { pathParams: { hash: txHash } }),
+      getResourceKey('general:arbitrum_l2_txn_withdrawals', { pathParams: { hash: txHash } }),
       (prevData: ArbitrumL2TxnWithdrawalsResponse | undefined) => {
         if (!prevData) {
           return;

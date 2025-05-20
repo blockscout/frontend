@@ -101,14 +101,14 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
           { exportType !== 'holders' && <CsvExportFormField name="from" formApi={ formApi }/> }
           { exportType !== 'holders' && <CsvExportFormField name="to" formApi={ formApi }/> }
         </Flex>
-        <ReCaptcha ref={ recaptcha.ref }/>
+        <ReCaptcha { ...recaptcha }/>
         <Button
           variant="solid"
           type="submit"
           mt={ 8 }
           loading={ formState.isSubmitting }
           loadingText="Download"
-          disabled={ Boolean(formState.errors.from || formState.errors.to) }
+          disabled={ Boolean(formState.errors.from || formState.errors.to || recaptcha.isInitError) }
         >
           Download
         </Button>

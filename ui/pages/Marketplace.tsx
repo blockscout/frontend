@@ -13,6 +13,7 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
 import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import Banner from 'ui/marketplace/Banner';
 import ContractListModal from 'ui/marketplace/ContractListModal';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
@@ -21,7 +22,6 @@ import MarketplaceList from 'ui/marketplace/MarketplaceList';
 import type { SortValue } from 'ui/marketplace/utils';
 import { SORT_OPTIONS } from 'ui/marketplace/utils';
 import ActionBar from 'ui/shared/ActionBar';
-import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 import type { IconName } from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -170,7 +170,7 @@ const Marketplace = () => {
                 <IconSvg name="dots"/>
               </IconButton>
             </MenuTrigger>
-            <MenuContent>
+            <MenuContent zIndex="banner">
               { links.map(({ label, href, icon }) => (
                 <MenuItem key={ label } value={ label } asChild>
                   <Link external href={ href } variant="menu" gap={ 0 }>
@@ -205,6 +205,7 @@ const Marketplace = () => {
         showShadow
         display="flex"
         flexDirection="column"
+        mt={ 0 }
         mx={{ base: -3, lg: -12 }}
         px={{ base: 3, lg: 12 }}
         pt={{ base: 4, lg: 6 }}

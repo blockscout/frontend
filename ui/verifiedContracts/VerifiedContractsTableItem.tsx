@@ -64,12 +64,12 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
           value={ balance }
           isLoading={ isLoading }
           my={ 1 }
-          w="100%"
+          maxW="100%"
         />
       </TableCell>
       <TableCell isNumeric>
         <Skeleton loading={ isLoading } display="inline-block" my={ 1 }>
-          { data.transaction_count ? data.transaction_count.toLocaleString() : '0' }
+          { data.transactions_count ? data.transactions_count.toLocaleString() : '0' }
         </Skeleton>
       </TableCell>
       <TableCell>

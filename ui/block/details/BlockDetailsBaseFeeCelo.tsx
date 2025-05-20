@@ -6,8 +6,8 @@ import type { AddressParam } from 'types/api/addressParams';
 import type { BlockBaseFeeCelo } from 'types/api/block';
 import type { TokenInfo } from 'types/api/token';
 
-import { WEI, ZERO_ADDRESS } from 'lib/consts';
 import { Link } from 'toolkit/chakra/link';
+import { WEI, ZERO_ADDRESS } from 'toolkit/utils/consts';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

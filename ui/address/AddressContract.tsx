@@ -6,13 +6,13 @@ import type { SocketMessage } from 'lib/socket/types';
 import type { Address } from 'types/api/address';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
-import { SECOND } from 'lib/consts';
 import delay from 'lib/delay';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import { SECOND } from 'toolkit/utils/consts';
 
 import type { TContractAutoVerificationStatus } from './contract/ContractAutoVerificationStatus';
 import ContractAutoVerificationStatus from './contract/ContractAutoVerificationStatus';
@@ -60,10 +60,10 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab }: Props) =
   const handleContractWasVerifiedMessage: SocketMessage.SmartContractWasVerified['handler'] = React.useCallback(async() => {
     setAutoVerificationStatus('success');
     await queryClient.refetchQueries({
-      queryKey: getResourceKey('address', { pathParams: { hash: addressData?.hash } }),
+      queryKey: getResourceKey('general:address', { pathParams: { hash: addressData?.hash } }),
     });
     await queryClient.refetchQueries({
-      queryKey: getResourceKey('contract', { pathParams: { hash: addressData?.hash } }),
+      queryKey: getResourceKey('general:contract', { pathParams: { hash: addressData?.hash } }),
     });
     setAutoVerificationStatus(null);
   }, [ addressData?.hash, queryClient ]);

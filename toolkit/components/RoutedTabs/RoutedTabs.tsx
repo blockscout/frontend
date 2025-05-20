@@ -23,7 +23,7 @@ const RoutedTabs = (props: Props) => {
       return;
     }
 
-    const queryForPathname = pickBy(router.query, (value, key) => router.pathname.includes(`[${ key }]`));
+    const queryForPathname = pickBy(router.query, (_, key) => router.pathname.includes(`[${ key }]`));
     router.push(
       { pathname: router.pathname, query: { ...queryForPathname, tab: value } },
       undefined,

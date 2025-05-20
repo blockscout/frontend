@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { DAY, HOUR, MINUTE, SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
+import { DAY, HOUR, MINUTE, SECOND } from 'toolkit/utils/consts';
 
 function getUnits(diff: number) {
   if (diff < MINUTE) {

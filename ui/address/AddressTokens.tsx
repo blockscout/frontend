@@ -40,7 +40,8 @@ const TAB_LIST_PROPS_MOBILE = {
   my: 8,
 };
 
-const getTokenFilterValue = (getFilterValuesFromQuery<NFTTokenType>).bind(null, NFT_TOKEN_TYPE_IDS);
+const getTokenFilterValue: (type: string | Array<string> | undefined) => Array<NFTTokenType> | undefined =
+(getFilterValuesFromQuery<NFTTokenType>).bind(null, NFT_TOKEN_TYPE_IDS);
 
 type Props = {
   shouldRender?: boolean;
@@ -62,35 +63,35 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const hash = getQueryParamString(router.query.hash);
 
   const erc20Query = useQueryWithPages({
-    resourceName: 'address_tokens',
+    resourceName: 'general:address_tokens',
     pathParams: { hash },
     filters: { type: 'ERC-20' },
     scrollRef,
     options: {
       enabled: isQueryEnabled && (!tab || tab === 'tokens' || tab === 'tokens_erc20'),
       refetchOnMount: false,
-      placeholderData: generateListStub<'address_tokens'>(ADDRESS_TOKEN_BALANCE_ERC_20, 10, { next_page_params: null }),
+      placeholderData: generateListStub<'general:address_tokens'>(ADDRESS_TOKEN_BALANCE_ERC_20, 10, { next_page_params: null }),
     },
   });
 
   const collectionsQuery = useQueryWithPages({
-    resourceName: 'address_collections',
+    resourceName: 'general:address_collections',
     pathParams: { hash },
     scrollRef,
     options: {
       enabled: isQueryEnabled && tab === 'tokens_nfts' && nftDisplayType === 'collection',
-      placeholderData: generateListStub<'address_collections'>(ADDRESS_COLLECTION, 10, { next_page_params: null }),
+      placeholderData: generateListStub<'general:address_collections'>(ADDRESS_COLLECTION, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },
   });
 
   const nftsQuery = useQueryWithPages({
-    resourceName: 'address_nfts',
+    resourceName: 'general:address_nfts',
     pathParams: { hash },
     scrollRef,
     options: {
       enabled: isQueryEnabled && tab === 'tokens_nfts' && nftDisplayType === 'list',
-      placeholderData: generateListStub<'address_nfts'>(ADDRESS_NFT_1155, 10, { next_page_params: null }),
+      placeholderData: generateListStub<'general:address_nfts'>(ADDRESS_NFT_1155, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },
   });

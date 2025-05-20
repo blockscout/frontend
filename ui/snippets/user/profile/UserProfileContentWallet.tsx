@@ -6,8 +6,8 @@ import useWeb3AccountWithDomain from 'lib/web3/useAccountWithDomain';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -51,11 +51,11 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
           <AddressEntity
             address={{ hash: web3AccountWithDomain.address, ens_domain_name: web3AccountWithDomain.domain }}
             isLoading={ web3AccountWithDomain.isLoading }
-            isTooltipDisabled
             truncation="dynamic"
             fontSize="sm"
             fontWeight={ 500 }
             noAltHash
+            noTooltip
             onClick={ handleAddressClick }
           />
           { web3Wallet.isReconnecting ? <Spinner size="sm" m="2px" flexShrink={ 0 }/> : (

@@ -6,7 +6,7 @@ import { route } from 'nextjs-routes';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import Hint from 'ui/shared/Hint';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import IconSvg, { type IconName } from 'ui/shared/IconSvg';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
@@ -64,6 +64,7 @@ const StatsWidget = ({
         justifyContent="space-between"
         columnGap={ 2 }
         w="100%"
+        h="100%"
       >
         { icon && (
           <IconSvg

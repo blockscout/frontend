@@ -126,7 +126,7 @@ const MarketplaceApp = () => {
         }
         return item;
       } else {
-        return apiFetch('marketplace_dapp', { pathParams: { chainId: config.chain.id, dappId: id } });
+        return apiFetch('admin:marketplace_dapp', { pathParams: { chainId: config.chain.id, dappId: id } });
       }
     },
     enabled: feature.isEnabled,

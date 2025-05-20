@@ -37,7 +37,7 @@ const ERC20TokensTableItem = ({
       <TableCell verticalAlign="middle">
         <Flex alignItems="center" width="150px" justifyContent="space-between">
           <AddressEntity
-            address={{ hash: token.address }}
+            address={{ hash: token.address_hash }}
             isLoading={ isLoading }
             truncation="constant"
             noIcon

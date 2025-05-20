@@ -3,7 +3,7 @@ import React from 'react';
 import type { FormFields } from '../types';
 
 import { Heading } from 'toolkit/chakra/heading';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 

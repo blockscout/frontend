@@ -46,7 +46,7 @@ import type { VerifiedContractsFilter } from '../../../types/api/contracts';
 import type { TxExternalTxsConfig } from '../../../types/client/externalTxsConfig';
 
 import { replaceQuotes } from '../../../configs/app/utils';
-import * as regexp from '../../../lib/regexp';
+import * as regexp from '../../../toolkit/utils/regexp';
 import type { IconName } from '../../../ui/shared/IconSvg';
 
 const protocols = [ 'http', 'https' ];
@@ -416,6 +416,14 @@ const rollupSchema = yup
         is: (value: string) => value === 'arbitrum',
         then: (schema) => schema,
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' '),
+      }),
+    NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL: yup
+      .string()
+      .test(urlTest)
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: (value: string) => value === 'arbitrum' || value === 'optimistic',
+        then: (schema) => schema,
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' or \'optimistic\''),
       }),
   });
 

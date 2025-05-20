@@ -17,7 +17,7 @@ import GetGasButton from './GetGasButton';
 const TopBarStats = () => {
   const isMobile = useIsMobile();
 
-  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('stats', {
+  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('general:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
       refetchOnMount: false,

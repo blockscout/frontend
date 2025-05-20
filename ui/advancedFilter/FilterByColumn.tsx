@@ -71,7 +71,7 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
         <TableColumnFilterWrapper
           columnName="And/Or"
           isLoading={ isLoading }
-          selected={ false }
+          selected
           w="106px"
           value={ filters.address_relation === 'and' ? 'AND' : 'OR' }
         >

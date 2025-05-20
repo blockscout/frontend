@@ -8,11 +8,11 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
-import { WEI } from 'lib/consts';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { WEI } from 'toolkit/utils/consts';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -83,16 +83,16 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
         </TableCell>
       ) }
       <TableCell isNumeric >
-        { data.transaction_count > 0 ? (
+        { data.transactions_count > 0 ? (
           <Skeleton loading={ isLoading } display="inline-block">
             <Link href={ route({
               pathname: '/block/[height_or_hash]',
               query: { height_or_hash: String(data.height), tab: 'txs' },
             }) }>
-              { data.transaction_count }
+              { data.transactions_count }
             </Link>
           </Skeleton>
-        ) : data.transaction_count }
+        ) : data.transactions_count }
       </TableCell>
       <TableCell >
         <Skeleton loading={ isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>

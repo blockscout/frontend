@@ -1,5 +1,6 @@
 import React from 'react';
 
+import type { TxsSocketType } from './socket/types';
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
 import config from 'configs/app';
@@ -8,8 +9,8 @@ import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
+import TxsSocketNotice from './socket/TxsSocketNotice';
 import TxsTableItem from './TxsTableItem';
 
 type Props = {
@@ -18,9 +19,7 @@ type Props = {
   onSortToggle: (field: TransactionsSortingField) => void;
   top: number;
   showBlockInfo: boolean;
-  showSocketInfo: boolean;
-  socketInfoAlert?: string;
-  socketInfoNum?: number;
+  socketType?: TxsSocketType;
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
@@ -32,9 +31,7 @@ const TxsTable = ({
   onSortToggle,
   top,
   showBlockInfo,
-  showSocketInfo,
-  socketInfoAlert,
-  socketInfoNum,
+  socketType,
   currentAddress,
   enableTimeIncrement,
   isLoading,
@@ -96,14 +93,7 @@ const TxsTable = ({
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
-          { showSocketInfo && (
-            <SocketNewItemsNotice.Desktop
-              url={ window.location.href }
-              alert={ socketInfoAlert }
-              num={ socketInfoNum }
-              isLoading={ isLoading }
-            />
-          ) }
+          { socketType && <TxsSocketNotice type={ socketType } place="table" isLoading={ isLoading }/> }
           { txs.slice(0, renderedItemsNum).map((item, index) => (
             <TxsTableItem
               key={ item.hash + (isLoading ? index : '') }

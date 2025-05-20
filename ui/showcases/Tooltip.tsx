@@ -15,7 +15,7 @@ const TooltipShowcase = () => {
             <Tooltip content="Tooltip content">
               <span>Default</span>
             </Tooltip>
-            <Tooltip content="Tooltip content">
+            <Tooltip content="Tooltip content" interactive>
               <Utilization value={ 0.5 }/>
             </Tooltip>
           </Sample>

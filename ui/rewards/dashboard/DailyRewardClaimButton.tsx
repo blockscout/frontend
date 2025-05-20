@@ -1,9 +1,9 @@
 import { Flex } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useMemo } from 'react';
 
-import { SECOND } from 'lib/consts';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { Button } from 'toolkit/chakra/button';
+import { SECOND } from 'toolkit/utils/consts';
 import splitSecondsInPeriods from 'ui/blockCountdown/splitSecondsInPeriods';
 
 const DailyRewardClaimButton = () => {

@@ -72,14 +72,15 @@ const TokenTransferTableItem = ({
           isLoading={ isLoading }
           mt="5px"
           mode={{ lg: 'compact', xl: 'long' }}
-          tokenHash={ token?.address }
+          tokenHash={ token?.address_hash }
+          tokenSymbol={ token?.symbol ?? undefined }
         />
       </TableCell>
       { (token && NFT_TOKEN_TYPE_IDS.includes(token.type)) && (
         <TableCell>
           { total && 'token_id' in total && token && total.token_id !== null ? (
             <NftEntity
-              hash={ token.address }
+              hash={ token.address_hash }
               id={ total.token_id }
               instance={ instance || total.token_instance }
               noLink={ Boolean(tokenId && tokenId === total.token_id) }

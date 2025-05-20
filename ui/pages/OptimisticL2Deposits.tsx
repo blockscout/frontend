@@ -2,10 +2,10 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import OptimisticDepositsListItem from 'ui/deposits/optimisticL2/OptimisticDepositsListItem';
 import OptimisticDepositsTable from 'ui/deposits/optimisticL2/OptimisticDepositsTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -16,9 +16,9 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const OptimisticL2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'optimistic_l2_deposits',
+    resourceName: 'general:optimistic_l2_deposits',
     options: {
-      placeholderData: generateListStub<'optimistic_l2_deposits'>(
+      placeholderData: generateListStub<'general:optimistic_l2_deposits'>(
         L2_DEPOSIT_ITEM,
         50,
         {
@@ -32,7 +32,7 @@ const OptimisticL2Deposits = () => {
     },
   });
 
-  const countersQuery = useApiQuery('optimistic_l2_deposits_count', {
+  const countersQuery = useApiQuery('general:optimistic_l2_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },

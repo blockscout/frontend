@@ -27,7 +27,7 @@ interface Params {
 export default function useAddressCountersQuery({ hash, addressQuery }: Params): AddressCountersQuery {
   const enabled = Boolean(hash) && !addressQuery.isPlaceholderData;
 
-  const apiQuery = useApiQuery<'address_counters', { status: number }>('address_counters', {
+  const apiQuery = useApiQuery<'general:address_counters', { status: number }>('general:address_counters', {
     pathParams: { hash },
     queryOptions: {
       enabled: enabled && !addressQuery.isDegradedData,

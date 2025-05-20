@@ -47,7 +47,7 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
       { direction === 'from-rollup' && (
         <TableCell verticalAlign="middle">
           <AddressEntity
-            address={{ hash: item.origination_address }}
+            address={{ hash: item.origination_address_hash }}
             truncation="constant"
             isLoading={ isLoading }
             fontWeight={ 600 }

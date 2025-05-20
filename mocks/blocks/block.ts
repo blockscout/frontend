@@ -3,7 +3,7 @@ import type { RpcBlock } from 'viem';
 
 import type { Block, BlocksResponse, ZilliqaBlockData } from 'types/api/block';
 
-import { ZERO_ADDRESS } from 'lib/consts';
+import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 
 import * as addressMock from '../address/address';
 import * as tokenMock from '../tokens/tokenInfo';
@@ -52,7 +52,7 @@ export const base: Block = {
   state_root: 'TODO',
   timestamp: '2022-11-11T11:59:35Z',
   total_difficulty: '10258276095980170141167591583995189665817672619',
-  transaction_count: 5,
+  transactions_count: 5,
   transaction_fees: '26853607500000000',
   type: 'block',
   uncles_hashes: [],
@@ -89,7 +89,7 @@ export const genesis: Block = {
   state_root: 'TODO',
   timestamp: '2017-12-16T00:13:24.000000Z',
   total_difficulty: '131072',
-  transaction_count: 0,
+  transactions_count: 0,
   transaction_fees: '0',
   type: 'block',
   uncles_hashes: [],
@@ -111,7 +111,7 @@ export const base2: Block = {
     ens_domain_name: null,
   },
   timestamp: '2022-11-11T11:46:05Z',
-  transaction_count: 253,
+  transactions_count: 253,
   gas_target_percentage: 23.6433,
   gas_used: '6333342',
   gas_used_percentage: 87.859504,

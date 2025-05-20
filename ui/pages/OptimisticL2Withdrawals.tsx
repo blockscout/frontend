@@ -2,10 +2,10 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { L2_WITHDRAWAL_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -16,9 +16,9 @@ import OptimisticL2WithdrawalsTable from 'ui/withdrawals/optimisticL2/Optimistic
 
 const OptimisticL2Withdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'optimistic_l2_withdrawals',
+    resourceName: 'general:optimistic_l2_withdrawals',
     options: {
-      placeholderData: generateListStub<'optimistic_l2_withdrawals'>(
+      placeholderData: generateListStub<'general:optimistic_l2_withdrawals'>(
         L2_WITHDRAWAL_ITEM,
         50,
         {
@@ -31,7 +31,7 @@ const OptimisticL2Withdrawals = () => {
     },
   });
 
-  const countersQuery = useApiQuery('optimistic_l2_withdrawals_count', {
+  const countersQuery = useApiQuery('general:optimistic_l2_withdrawals_count', {
     queryOptions: {
       placeholderData: 23700,
     },

@@ -3,7 +3,7 @@ import { useAppKit } from '@reown/appkit/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useSignMessage, useAccount } from 'wagmi';
+import { useSignMessage, useAccount, useSwitchChain } from 'wagmi';
 
 import type {
   AddressVerificationFormSecondStepFields,
@@ -22,9 +22,9 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { SIGNATURE_REGEXP } from 'toolkit/components/forms/validators/signature';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import { SIGNATURE_REGEXP } from 'ui/shared/forms/validators/signature';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 
 type Fields = RootFields & AddressVerificationFormSecondStepFields;
@@ -65,10 +65,13 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         signature: data.signature,
       };
 
-      const response = await apiFetch<'address_verification', AddressValidationResponseSuccess, AddressVerificationResponseError>('address_verification', {
-        fetchParams: { method: 'POST', body },
-        pathParams: { chainId: config.chain.id, type: ':verify' },
-      });
+      const response = await apiFetch<'contractInfo:address_verification', AddressValidationResponseSuccess, AddressVerificationResponseError>(
+        'contractInfo:address_verification',
+        {
+          fetchParams: { method: 'POST', body },
+          pathParams: { chainId: config.chain.id, type: ':verify' },
+        },
+      );
 
       if (response.status !== 'SUCCESS') {
         const type = typeof response.status === 'number' ? 'UNKNOWN_STATUS' : response.status;
@@ -84,6 +87,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
   const onSubmit = handleSubmit(onFormSubmit);
 
   const { signMessage, isPending: isSigning } = useSignMessage();
+  const { switchChainAsync } = useSwitchChain();
 
   const handleSignMethodChange = React.useCallback(({ value }: { value: string | null }) => {
     if (!value) {
@@ -99,13 +103,14 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     openWeb3Modal();
   }, [ clearErrors, openWeb3Modal ]);
 
-  const handleWeb3SignClick = React.useCallback(() => {
+  const handleWeb3SignClick = React.useCallback(async() => {
     clearErrors('root');
 
     if (!isConnected) {
       return setError('root', { type: 'manual', message: 'Please connect to your Web3 wallet first' });
     }
 
+    await switchChainAsync({ chainId: Number(config.chain.id) });
     const message = getValues('message');
     signMessage({ message }, {
       onSuccess: (data) => {
@@ -116,7 +121,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         return setError('root', { type: 'SIGNING_FAIL', message: (error as Error)?.message || 'Oops! Something went wrong' });
       },
     });
-  }, [ clearErrors, isConnected, getValues, signMessage, setError, setValue, onSubmit ]);
+  }, [ clearErrors, isConnected, getValues, signMessage, setError, setValue, onSubmit, switchChainAsync ]);
 
   const handleManualSignClick = React.useCallback(() => {
     clearErrors('root');

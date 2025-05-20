@@ -2,10 +2,10 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { generateListStub } from 'stubs/utils';
 import { ZKEVM_WITHDRAWALS_ITEM } from 'stubs/zkEvmL2';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -16,9 +16,9 @@ import ZkEvmL2WithdrawalsTable from 'ui/withdrawals/zkEvmL2/ZkEvmL2WithdrawalsTa
 
 const ZkEvmL2Withdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'zkevm_l2_withdrawals',
+    resourceName: 'general:zkevm_l2_withdrawals',
     options: {
-      placeholderData: generateListStub<'zkevm_l2_withdrawals'>(
+      placeholderData: generateListStub<'general:zkevm_l2_withdrawals'>(
         ZKEVM_WITHDRAWALS_ITEM,
         50,
         { next_page_params: { items_count: 50, index: 1 } },
@@ -26,7 +26,7 @@ const ZkEvmL2Withdrawals = () => {
     },
   });
 
-  const countersQuery = useApiQuery('zkevm_l2_withdrawals_count', {
+  const countersQuery = useApiQuery('general:zkevm_l2_withdrawals_count', {
     queryOptions: {
       placeholderData: 1927029,
     },

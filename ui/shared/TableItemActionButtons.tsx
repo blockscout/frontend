@@ -17,7 +17,7 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props
 
   return (
     <HStack gap={ 6 } alignSelf="flex-end">
-      <Tooltip content="Edit">
+      <Tooltip content="Edit" disableOnMobile>
         <IconButton
           aria-label="edit"
           variant="link"
@@ -30,7 +30,7 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props
           <IconSvg name="edit"/>
         </IconButton>
       </Tooltip>
-      <Tooltip content="Delete">
+      <Tooltip content="Delete" disableOnMobile>
         <IconButton
           aria-label="delete"
           variant="link"

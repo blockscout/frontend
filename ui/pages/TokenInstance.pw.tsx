@@ -10,17 +10,17 @@ import * as pwConfig from 'playwright/utils/config';
 
 import TokenInstance from './TokenInstance';
 
-const hash = tokenMock.tokenInfo.address;
+const hash = tokenMock.tokenInfo.address_hash;
 const id = '42';
 
 test.describe.configure({ mode: 'serial' });
 
 test.beforeEach(async({ mockApiResponse, mockAssetResponse, mockTextAd }) => {
-  await mockApiResponse('token', tokenMock.tokenInfo, { pathParams: { hash } });
-  await mockApiResponse('address', addressMock.token, { pathParams: { hash } });
-  await mockApiResponse('token_instance', tokenInstanceMock.unique, { pathParams: { hash, id } });
-  await mockApiResponse('token_instance_transfers', { items: [], next_page_params: null }, { pathParams: { hash, id } });
-  await mockApiResponse('token_instance_transfers_count', { transfers_count: 420 }, { pathParams: { hash, id } });
+  await mockApiResponse('general:token', tokenMock.tokenInfo, { pathParams: { hash } });
+  await mockApiResponse('general:address', addressMock.token, { pathParams: { hash } });
+  await mockApiResponse('general:token_instance', tokenInstanceMock.unique, { pathParams: { hash, id } });
+  await mockApiResponse('general:token_instance_transfers', { items: [], next_page_params: null }, { pathParams: { hash, id } });
+  await mockApiResponse('general:token_instance_transfers_count', { transfers_count: 420 }, { pathParams: { hash, id } });
   await mockTextAd();
   for (const marketplace of config.UI.views.nft.marketplaces) {
     await mockAssetResponse(marketplace.logo_url, './playwright/mocks/image_svg.svg');
@@ -47,7 +47,7 @@ test('metadata update', async({ render, page, createSocket, mockApiResponse, moc
     name: 'Carmelo Anthony',
     description: 'Updated description',
   };
-  await mockApiResponse('token_instance_refresh_metadata', {} as never, { pathParams: { hash, id } });
+  await mockApiResponse('general:token_instance_refresh_metadata', {} as never, { pathParams: { hash, id } });
   await mockAssetResponse(newMetadata.image_url, './playwright/mocks/image_long.jpg');
 
   const component = await render(<TokenInstance/>, { hooksConfig }, { withSocket: true });

@@ -31,7 +31,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
   const router = useRouter();
   const height = getQueryParamString(router.query.height);
 
-  const { data, isPending, isError, error } = useApiQuery('block_countdown', {
+  const { data, isPending, isError, error } = useApiQuery('general:block_countdown', {
     queryParams: {
       module: 'block',
       action: 'getblockcountdown',
@@ -58,7 +58,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
   }, [ data?.result, handleTimerFinish, isError, isPending ]);
 
   if (isError) {
-    throwOnResourceLoadError({ isError, error, resource: 'block_countdown' });
+    throwOnResourceLoadError({ isError, error, resource: 'general:block_countdown' });
   }
 
   if (isPending || !data?.result) {

@@ -1,7 +1,7 @@
 import { HStack, StackSeparator } from '@chakra-ui/react';
 import React from 'react';
 
-import { SECOND } from 'lib/consts';
+import { SECOND } from 'toolkit/utils/consts';
 
 import BlockCountdownTimerItem from './BlockCountdownTimerItem';
 import splitSecondsInPeriods from './splitSecondsInPeriods';

@@ -8,13 +8,13 @@ import type { TokenInstance } from 'types/api/token';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';
-import { MINUTE, SECOND } from 'lib/consts';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import { toaster } from 'toolkit/chakra/toaster';
+import { MINUTE, SECOND } from 'toolkit/utils/consts';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -48,7 +48,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
   const initializeUpdate = React.useCallback(async(tokenProp?: string) => {
     try {
       const token = tokenProp || await recaptcha.executeAsync();
-      await apiFetch<'token_instance_refresh_metadata', unknown, unknown>('token_instance_refresh_metadata', {
+      await apiFetch<'general:token_instance_refresh_metadata', unknown, unknown>('general:token_instance_refresh_metadata', {
         pathParams: { hash, id },
         fetchParams: {
           method: 'PATCH',
@@ -85,7 +85,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       return;
     }
 
-    const queryKey = getResourceKey('token_instance', { queryParams: { hash, id } });
+    const queryKey = getResourceKey('general:token_instance', { queryParams: { hash, id } });
     queryClient.setQueryData(queryKey, (prevData: TokenInstance | undefined): TokenInstance | undefined => {
       if (!prevData) {
         return;
@@ -170,7 +170,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
               <Center h="80px">
                 <Spinner size="lg"/>
               </Center>
-              <ReCaptcha ref={ recaptcha.ref }/>
+              <ReCaptcha { ...recaptcha } hideWarning/>
             </>
           ) : (
             <Alert status="error">

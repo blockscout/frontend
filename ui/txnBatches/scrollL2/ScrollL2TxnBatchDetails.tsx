@@ -53,7 +53,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
-  const blocksCount = data.end_block - data.start_block + 1;
+  const blocksCount = data.end_block_number - data.start_block_number + 1;
 
   return (
     <Grid
@@ -115,17 +115,21 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
         }
       </DetailedInfo.ItemValue>
 
-      <DetailedInfo.ItemLabel
-        isLoading={ isPlaceholderData }
-        hint="Number of transactions in this batch"
-      >
-        Transactions
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <Link loading={ isPlaceholderData } href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
-          { data.transaction_count.toLocaleString() } transaction{ data.transaction_count === 1 ? '' : 's' }
-        </Link>
-      </DetailedInfo.ItemValue>
+      { typeof data.transactions_count === 'number' ? (
+        <>
+          <DetailedInfo.ItemLabel
+            isLoading={ isPlaceholderData }
+            hint="Number of transactions in this batch"
+          >
+            Transactions
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Link loading={ isPlaceholderData } href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
+              { data.transactions_count.toLocaleString() } transaction{ data.transactions_count === 1 ? '' : 's' }
+            </Link>
+          </DetailedInfo.ItemValue>
+        </>
+      ) : null }
 
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }

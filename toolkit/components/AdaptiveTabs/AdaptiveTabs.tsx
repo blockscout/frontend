@@ -1,9 +1,8 @@
 import React from 'react';
 
-import type { TabsProps } from 'toolkit/chakra/tabs';
-import { TabsContent, TabsRoot } from 'toolkit/chakra/tabs';
-import useViewportSize from 'toolkit/hooks/useViewportSize';
-
+import type { TabsProps } from '../../chakra/tabs';
+import { TabsContent, TabsRoot } from '../../chakra/tabs';
+import { useViewportSize } from '../../hooks/useViewportSize';
 import AdaptiveTabsList, { type BaseProps as AdaptiveTabsListProps } from './AdaptiveTabsList';
 import { getTabValue } from './utils';
 
@@ -68,6 +67,7 @@ const AdaptiveTabs = (props: Props) => {
         stickyEnabled={ stickyEnabled }
         activeTab={ activeTab }
         isLoading={ isLoading }
+        variant={ variant }
       />
       { tabs.map((tab) => {
         const value = getTabValue(tab);

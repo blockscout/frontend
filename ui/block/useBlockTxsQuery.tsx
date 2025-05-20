@@ -7,13 +7,13 @@ import type { BlockTransactionsResponse } from 'types/api/block';
 
 import type { ResourceError } from 'lib/api/resources';
 import { retry } from 'lib/api/useQueryClientConfig';
-import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
 import { GET_BLOCK_WITH_TRANSACTIONS } from 'stubs/RPC';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
+import { SECOND } from 'toolkit/utils/consts';
 import { unknownAddress } from 'ui/shared/address/utils';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -23,7 +23,7 @@ import type { BlockQuery } from './useBlockQuery';
 
 type RpcResponseType = GetBlockReturnType<Chain, boolean, 'latest'> | null;
 
-export type BlockTxsQuery = QueryWithPagesResult<'block_txs'> & {
+export type BlockTxsQuery = QueryWithPagesResult<'general:block_txs'> & {
   isDegradedData: boolean;
 };
 
@@ -37,11 +37,11 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
   const apiQuery = useQueryWithPages({
-    resourceName: 'block_txs',
+    resourceName: 'general:block_txs',
     pathParams: { height_or_hash: heightOrHash },
     options: {
       enabled: Boolean(tab === 'txs' && !blockQuery.isPlaceholderData && !blockQuery.isDegradedData),
-      placeholderData: generateListStub<'block_txs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:block_txs'>(TX, 50, { next_page_params: {
         block_number: 9004925,
         index: 49,
         items_count: 50,
@@ -157,7 +157,7 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
   ) && rpcQuery.data && publicClient);
 
-  const rpcQueryWithPages: QueryWithPagesResult<'block_txs'> = {
+  const rpcQueryWithPages: QueryWithPagesResult<'general:block_txs'> = {
     ...rpcQuery as UseQueryResult<BlockTransactionsResponse, ResourceError>,
     pagination: emptyPagination,
     onFilterChange: () => {},

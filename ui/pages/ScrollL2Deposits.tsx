@@ -2,10 +2,10 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { SCROLL_L2_MESSAGE_ITEM } from 'stubs/scrollL2';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import ScrollL2DepositsListItem from 'ui/deposits/scrollL2/ScrollL2DepositsListItem';
 import ScrollL2DepositsTable from 'ui/deposits/scrollL2/ScrollL2DepositsTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -16,9 +16,9 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const ScrollL2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'scroll_l2_deposits',
+    resourceName: 'general:scroll_l2_deposits',
     options: {
-      placeholderData: generateListStub<'scroll_l2_deposits'>(
+      placeholderData: generateListStub<'general:scroll_l2_deposits'>(
         SCROLL_L2_MESSAGE_ITEM,
         50,
         { next_page_params: { items_count: 50, id: 1 } },
@@ -26,7 +26,7 @@ const ScrollL2Deposits = () => {
     },
   });
 
-  const countersQuery = useApiQuery('scroll_l2_deposits_count', {
+  const countersQuery = useApiQuery('general:scroll_l2_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },

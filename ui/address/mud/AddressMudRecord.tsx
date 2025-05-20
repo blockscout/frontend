@@ -25,7 +25,7 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true }: Props) =
 
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isLoading, isError } = useApiQuery('address_mud_record', {
+  const { data, isLoading, isError } = useApiQuery('general:mud_record', {
     pathParams: { hash, table_id: tableId, record_id: recordId },
     queryOptions: {
       enabled: isQueryEnabled,

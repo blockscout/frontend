@@ -20,7 +20,7 @@ export interface BlockBaseFeeCelo {
 export interface Block {
   height: number;
   timestamp: string;
-  transaction_count: number;
+  transactions_count: number;
   miner: AddressParam;
   size: number;
   hash: string;
@@ -56,7 +56,7 @@ export interface Block {
   excess_blob_gas?: string;
   blob_transaction_count?: number;
   // ZKSYNC FIELDS
-  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transaction_count' | 'timestamp'> & {
+  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transactions_count' | 'timestamp'> & {
     batch_number: number | null;
   };
   arbitrum?: ArbitrumBlockData;
@@ -76,7 +76,7 @@ type ArbitrumBlockData = {
   commitment_transaction: ArbitrumL2TxData;
   confirmation_transaction: ArbitrumL2TxData;
   delayed_messages: number;
-  l1_block_height: number;
+  l1_block_number: number;
   send_count: number;
   send_root: string;
   status: ArbitrumBatchStatus;
@@ -84,7 +84,7 @@ type ArbitrumBlockData = {
 
 export interface OptimismBlockData {
   batch_data_container: OptimisticL2BatchDataContainer;
-  internal_id: number;
+  number: number;
   blobs: Array<OptimisticL2BlobTypeEip4844> | Array<OptimisticL2BlobTypeCelestia> | null;
   l1_timestamp: string;
   l1_transaction_hashes: Array<string>;

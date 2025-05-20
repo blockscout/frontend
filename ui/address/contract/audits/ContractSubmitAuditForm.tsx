@@ -10,10 +10,10 @@ import useApiFetch from 'lib/api/useApiFetch';
 import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
-import FormFieldCheckbox from 'ui/shared/forms/fields/FormFieldCheckbox';
-import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
+import { FormFieldCheckbox } from 'toolkit/components/forms/fields/FormFieldCheckbox';
+import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 
 interface Props {
   address?: string;
@@ -49,7 +49,7 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
 
   const onFormSubmit: SubmitHandler<Inputs> = React.useCallback(async(data) => {
     try {
-      await apiFetch<'contract_security_audits', SmartContractSecurityAuditSubmission, AuditSubmissionErrors>('contract_security_audits', {
+      await apiFetch<'general:contract_security_audits', SmartContractSecurityAuditSubmission, AuditSubmissionErrors>('general:contract_security_audits', {
         pathParams: { hash: address },
         fetchParams: {
           method: 'POST',

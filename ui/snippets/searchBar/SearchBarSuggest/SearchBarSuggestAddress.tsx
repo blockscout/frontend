@@ -7,22 +7,22 @@ import type { SearchResultAddressOrContract, SearchResultMetadataTag } from 'typ
 import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
+import { ADDRESS_REGEXP } from 'toolkit/components/forms/validators/address';
 import SearchResultEntityTag from 'ui/searchResults/SearchResultEntityTag';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import { ADDRESS_REGEXP } from 'ui/shared/forms/validators/address';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 type Props = ItemsProps<SearchResultAddressOrContract | SearchResultMetadataTag>;
 
 const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: Props) => {
   const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
-  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
 
   const icon = (
     <AddressEntity.Icon
       address={{
-        hash: data.address,
+        hash: data.address_hash,
         is_contract: data.type === 'contract',
         name: '',
         is_verified: data.is_smart_contract_verified,
@@ -55,7 +55,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
   const tagEl = data.type === 'metadata_tag' ? (
     <SearchResultEntityTag metadata={ data.metadata } searchTerm={ searchTerm } ml={{ base: 0, lg: 'auto' }}/>
   ) : null;
-  const addressEl = <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>;
+  const addressEl = <HashStringShortenDynamic hash={ hash } noTooltip/>;
 
   if (isMobile) {
     return (

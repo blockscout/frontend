@@ -54,7 +54,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
     const token = {
       type: 'ERC-20' as const,
       icon_url: application.iconUrl,
-      address: application.tokenAddress,
+      address_hash: application.tokenAddress,
       name: item.metadata.tokenName,
       symbol: '',
     };
@@ -83,7 +83,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
       </TableCell>
       <TableCell pl="0">
         { item.metadata.tokenName && application && !isLoading ? (
-          <Tooltip content="Edit" disabled={ isLoading }>
+          <Tooltip content="Edit" disabled={ isLoading } disableOnMobile>
             <IconButton
               aria-label="edit"
               variant="link"

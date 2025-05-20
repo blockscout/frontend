@@ -12,7 +12,6 @@ import { BLOCK } from 'stubs/block';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import RoutedTabsSkeleton from 'toolkit/components/RoutedTabs/RoutedTabsSkeleton';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -42,11 +41,11 @@ const OptimisticL2TxnBatch = () => {
   const batchQuery = useBatchQuery();
 
   const batchTxsQuery = useQueryWithPages({
-    resourceName: 'optimistic_l2_txn_batch_txs',
-    pathParams: { number: String(batchQuery.data?.internal_id) },
+    resourceName: 'general:optimistic_l2_txn_batch_txs',
+    pathParams: { number: String(batchQuery.data?.number) },
     options: {
-      enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.internal_id && tab === 'txs'),
-      placeholderData: generateListStub<'optimistic_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
+      enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
+      placeholderData: generateListStub<'general:optimistic_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
         block_number: 1338932,
         index: 1,
         items_count: 50,
@@ -55,11 +54,11 @@ const OptimisticL2TxnBatch = () => {
   });
 
   const batchBlocksQuery = useQueryWithPages({
-    resourceName: 'optimistic_l2_txn_batch_blocks',
-    pathParams: { number: String(batchQuery.data?.internal_id) },
+    resourceName: 'general:optimistic_l2_txn_batch_blocks',
+    pathParams: { number: String(batchQuery.data?.number) },
     options: {
-      enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.internal_id && tab === 'blocks'),
-      placeholderData: generateListStub<'optimistic_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
+      enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'blocks'),
+      placeholderData: generateListStub<'general:optimistic_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
         batch_number: 1338932,
         items_count: 50,
       } }),
@@ -84,7 +83,7 @@ const OptimisticL2TxnBatch = () => {
     {
       id: 'txs',
       title: 'Transactions',
-      component: <TxsWithFrontendSorting query={ batchTxsQuery } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
+      component: <TxsWithFrontendSorting query={ batchTxsQuery } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
     },
     {
       id: 'blocks',
@@ -110,19 +109,17 @@ const OptimisticL2TxnBatch = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `Batch #${ batchQuery.data?.internal_id }` }
+        title={ `Batch #${ batchQuery.data?.number }` }
         backLink={ backLink }
         isLoading={ batchQuery.isPlaceholderData }
       />
-      { batchQuery.isPlaceholderData ?
-        <RoutedTabsSkeleton tabs={ tabs }/> : (
-          <RoutedTabs
-            tabs={ tabs }
-            listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-            rightSlot={ hasPagination && pagination ? <Pagination { ...(pagination) }/> : null }
-            stickyEnabled={ hasPagination }
-          />
-        ) }
+      <RoutedTabs
+        tabs={ tabs }
+        isLoading={ batchQuery.isPlaceholderData }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        rightSlot={ hasPagination && pagination ? <Pagination { ...(pagination) }/> : null }
+        stickyEnabled={ hasPagination }
+      />
     </>
   );
 };

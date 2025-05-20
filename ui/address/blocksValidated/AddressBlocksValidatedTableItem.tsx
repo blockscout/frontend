@@ -42,7 +42,7 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
       </TableCell>
       <TableCell>
         <Skeleton loading={ props.isLoading } display="inline-block" fontWeight="500">
-          <span>{ props.transaction_count }</span>
+          <span>{ props.transactions_count }</span>
         </Skeleton>
       </TableCell>
       <TableCell>

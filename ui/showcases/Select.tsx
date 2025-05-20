@@ -6,7 +6,7 @@ import { Checkbox } from 'toolkit/chakra/checkbox';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select, SelectAsync } from 'toolkit/chakra/select';
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
-import type { IconName } from 'ui/shared/IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
 import Sort from 'ui/shared/sort/Sort';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import { SORT_OPTIONS } from 'ui/txs/useTxsSort';
@@ -15,7 +15,7 @@ import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHead
 
 const frameworks = createListCollection<SelectOption>({
   items: [
-    { label: 'React.js is the most popular framework', value: 'react', icon: 'API' as IconName },
+    { label: 'React.js is the most popular framework', value: 'react', icon: <IconSvg name="API" boxSize={ 5 } flexShrink={ 0 }/> },
     { label: 'Vue.js is the second most popular framework', value: 'vue' },
     { label: 'Angular', value: 'angular' },
     { label: 'Svelte', value: 'svelte' },

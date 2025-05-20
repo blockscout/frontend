@@ -124,7 +124,7 @@ export const contract: Address = {
   has_validated_blocks: false,
   hash: hash,
   implementations: [
-    { address: '0x2F4F4A52295940C576417d29F22EEb92B440eC89', name: 'HomeBridge' },
+    { address_hash: '0x2F4F4A52295940C576417d29F22EEb92B440eC89', name: 'HomeBridge' },
   ],
   is_contract: true,
   is_verified: true,

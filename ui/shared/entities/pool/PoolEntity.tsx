@@ -7,8 +7,8 @@ import { route } from 'nextjs-routes';
 
 import { getPoolTitle } from 'lib/pools/getPoolTitle';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import { distributeEntityProps } from '../base/utils';
 import * as TokenEntity from '../token/TokenEntity';
@@ -47,7 +47,7 @@ const Icon = (props: IconProps) => {
           token={{
             icon_url: props.pool.base_token_icon_url,
             symbol: props.pool.base_token_symbol,
-            address: props.pool.base_token_address,
+            address_hash: props.pool.base_token_address,
             name: '',
             type: 'ERC-20',
           }}
@@ -67,7 +67,7 @@ const Icon = (props: IconProps) => {
           token={{
             icon_url: props.pool.quote_token_icon_url,
             symbol: props.pool.quote_token_symbol,
-            address: props.pool.quote_token_address,
+            address_hash: props.pool.quote_token_address,
             name: '',
             type: 'ERC-20',
           }}

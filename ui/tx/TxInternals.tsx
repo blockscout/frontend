@@ -4,12 +4,12 @@ import React from 'react';
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import compareBns from 'lib/bigint/compareBns';
-// import { apos } from 'lib/html-entities';
+// import { apos } from 'toolkit/utils/htmlEntities';
 import { INTERNAL_TX } from 'stubs/internalTx';
 import { generateListStub } from 'stubs/utils';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-// import FilterInput from 'ui/shared/filters/FilterInput';
+// import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import { default as getNextSortValueShared } from 'ui/shared/sort/getNextSortValue';
@@ -69,11 +69,11 @@ const TxInternals = ({ txQuery }: Props) => {
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>('default');
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'tx_internal_txs',
+    resourceName: 'general:tx_internal_txs',
     pathParams: { hash: txQuery.data?.hash },
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),
-      placeholderData: generateListStub<'tx_internal_txs'>(INTERNAL_TX, 3, { next_page_params: null }),
+      placeholderData: generateListStub<'general:tx_internal_txs'>(INTERNAL_TX, 3, { next_page_params: null }),
     },
   });
 

@@ -9,13 +9,14 @@ import type { PaginationParams } from './types';
 
 import type { Route } from 'nextjs-routes';
 
-import type { PaginatedResources, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'lib/api/resources';
-import { RESOURCES, SORTING_FIELDS } from 'lib/api/resources';
+import getResourceParams from 'lib/api/getResourceParams';
+import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'lib/api/resources';
+import { SORTING_FIELDS } from 'lib/api/resources';
 import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
-export interface Params<Resource extends PaginatedResources> {
+export interface Params<Resource extends PaginatedResourceName> {
   resourceName: Resource;
   options?: UseApiQueryParams<Resource>['queryOptions'];
   pathParams?: UseApiQueryParams<Resource>['pathParams'];
@@ -42,7 +43,7 @@ function getPaginationParamsFromQuery(queryString: string | Array<string> | unde
   return {};
 }
 
-function getNextPageParams<R extends PaginatedResources>(data: ResourcePayload<R> | undefined) {
+function getNextPageParams<R extends PaginatedResourceName>(data: ResourcePayload<R> | undefined) {
   if (!data || typeof data !== 'object' || !('next_page_params' in data)) {
     return;
   }
@@ -50,15 +51,15 @@ function getNextPageParams<R extends PaginatedResources>(data: ResourcePayload<R
   return data.next_page_params;
 }
 
-export type QueryWithPagesResult<Resource extends PaginatedResources> =
+export type QueryWithPagesResult<Resource extends PaginatedResourceName> =
 UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
 {
-  onFilterChange: <R extends PaginatedResources = Resource>(filters: PaginationFilters<R>) => void;
+  onFilterChange: <R extends PaginatedResourceName = Resource>(filters: PaginationFilters<R>) => void;
   onSortingChange: (sorting?: PaginationSorting<Resource>) => void;
   pagination: PaginationParams;
 };
 
-export default function useQueryWithPages<Resource extends PaginatedResources>({
+export default function useQueryWithPages<Resource extends PaginatedResourceName>({
   resourceName,
   filters,
   sorting,
@@ -66,7 +67,6 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   pathParams,
   scrollRef,
 }: Params<Resource>): QueryWithPagesResult<Resource> {
-  const resource = RESOURCES[resourceName];
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -151,13 +151,14 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     });
   }, [ queryClient, resourceName, router, scrollToTop ]);
 
-  const onFilterChange = useCallback(<R extends PaginatedResources = Resource>(newFilters: PaginationFilters<R> | undefined) => {
+  const onFilterChange = useCallback(<R extends PaginatedResourceName = Resource>(newFilters: PaginationFilters<R> | undefined) => {
+    const { resource } = getResourceParams(resourceName);
     const newQuery: typeof router.query = omit(
       router.query,
       [
         'next_page_params',
         'page',
-        ...('filterFields' in resource ? resource.filterFields : []),
+        ...(resource.filterFields || []),
       ],
     );
     if (newFilters) {
@@ -181,7 +182,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
       setPage(1);
       setPageParams(INITIAL_PAGE_PARAMS);
     });
-  }, [ router, resource, scrollToTop ]);
+  }, [ router, resourceName, scrollToTop ]);
 
   const onSortingChange = useCallback((newSorting: PaginationSorting<Resource> | undefined) => {
     const newQuery: typeof router.query = {

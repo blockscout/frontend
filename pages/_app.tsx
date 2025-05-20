@@ -16,12 +16,12 @@ import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { SettingsContextProvider } from 'lib/contexts/settings';
 import { initGrowthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
-import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
 import { SocketProvider } from 'lib/socket/context';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
 import RewardsLoginModal from 'ui/rewards/login/RewardsLoginModal';
+import RewardsActivityTracker from 'ui/rewards/RewardsActivityTracker';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
@@ -48,26 +48,28 @@ const ERROR_SCREEN_STYLES: HTMLChakraProps<'div'> = {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  // to avoid hydration mismatch between server and client
-  // we have to render the app only on client (when it is mounted)
-  // https://github.com/pacocoursey/next-themes?tab=readme-ov-file#avoid-hydration-mismatch
-  const [ mounted, setMounted ] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useLoadFeatures(pageProps.uuid);
-  useNotifyOnNavigation();
 
   const growthBook = initGrowthBook(pageProps.uuid);
+  useLoadFeatures(growthBook);
+
   const queryClient = useQueryClientConfig();
 
-  if (!mounted) {
-    return null;
-  }
+  const content = (() => {
+    const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
 
-  const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
+    return (
+      <>
+        { getLayout(<Component { ...pageProps }/>) }
+        <Toaster/>
+        { config.features.rewards.isEnabled && (
+          <>
+            <RewardsLoginModal/>
+            <RewardsActivityTracker/>
+          </>
+        ) }
+      </>
+    );
+  })();
 
   return (
     <ChakraProvider>
@@ -81,13 +83,11 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
               <QueryClientProvider client={ queryClient }>
                 <GrowthBookProvider growthbook={ growthBook }>
                   <ScrollDirectionProvider>
-                    <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
+                    <SocketProvider url={ `${ config.apis.general.socketEndpoint }${ config.apis.general.basePath ?? '' }/socket/v2` }>
                       <RewardsContextProvider>
                         <MarketplaceContextProvider>
                           <SettingsContextProvider>
-                            { getLayout(<Component { ...pageProps }/>) }
-                            <Toaster/>
-                            { config.features.rewards.isEnabled && <RewardsLoginModal/> }
+                            { content }
                           </SettingsContextProvider>
                         </MarketplaceContextProvider>
                       </RewardsContextProvider>

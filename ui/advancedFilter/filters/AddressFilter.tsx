@@ -9,7 +9,7 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import { Select } from 'toolkit/chakra/select';
-import ClearButton from 'ui/shared/ClearButton';
+import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -71,7 +71,7 @@ const AddressFilterInput = ({ address, mode, onModeChange, onChange, onClear, is
       />
       <InputGroup
         flexGrow={ 1 }
-        endElement={ <ClearButton onClick={ onClear } mx={ 2 } isDisabled={ !address }/> }
+        endElement={ <ClearButton onClick={ onClear } mx={ 2 } disabled={ !address }/> }
       >
         <Input value={ address } onChange={ onChange } placeholder="Smart contract / Address (0x...)*" size="sm" autoComplete="off"/>
       </InputGroup>

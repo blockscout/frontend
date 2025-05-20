@@ -2,7 +2,7 @@ import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
-import useIsSticky from 'lib/hooks/useIsSticky';
+import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 
 type Props = {
   children: React.ReactNode;
@@ -29,6 +29,7 @@ const ActionBar = ({ children, className, showShadow }: Props) => {
       className={ className }
       backgroundColor={{ _light: 'white', _dark: 'black' }}
       pt={ 6 }
+      mt={ -6 }
       pb={{ base: 6, lg: 3 }}
       mx={{ base: -3, lg: 0 }}
       px={{ base: 3, lg: 0 }}

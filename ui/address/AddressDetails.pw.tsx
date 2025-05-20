@@ -21,8 +21,8 @@ test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
   test('contract', async({ render, mockApiResponse, page }) => {
-    await mockApiResponse('address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
-    await mockApiResponse('address_counters', countersMock.forContract, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('general:address_counters', countersMock.forContract, { pathParams: { hash: ADDRESS_HASH } });
 
     const component = await render(<AddressDetails addressQuery={{ data: addressMock.contract } as AddressQuery}/>, { hooksConfig });
 
@@ -33,8 +33,8 @@ test.describe('mobile', () => {
   });
 
   test('validator', async({ render, page, mockApiResponse }) => {
-    await mockApiResponse('address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
-    await mockApiResponse('address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('general:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('general:address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
 
     const component = await render(<AddressDetails addressQuery={{ data: addressMock.validator } as AddressQuery}/>, { hooksConfig });
 
@@ -45,8 +45,8 @@ test.describe('mobile', () => {
   });
 
   test('filecoin', async({ render, mockApiResponse, page }) => {
-    await mockApiResponse('address', addressMock.filecoin, { pathParams: { hash: ADDRESS_HASH } });
-    await mockApiResponse('address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('general:address', addressMock.filecoin, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('general:address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
 
     const component = await render(<AddressDetails addressQuery={{ data: addressMock.filecoin } as AddressQuery}/>, { hooksConfig });
 
@@ -58,8 +58,8 @@ test.describe('mobile', () => {
 });
 
 test('contract', async({ render, page, mockApiResponse }) => {
-  await mockApiResponse('address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
-  await mockApiResponse('address_counters', countersMock.forContract, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('general:address_counters', countersMock.forContract, { pathParams: { hash: ADDRESS_HASH } });
 
   const component = await render(<AddressDetails addressQuery={{ data: addressMock.contract } as AddressQuery}/>, { hooksConfig });
 
@@ -71,12 +71,12 @@ test('contract', async({ render, page, mockApiResponse }) => {
 
 // there's an unexpected timeout occurred in this test
 test.fixme('token', async({ render, mockApiResponse, injectMetaMaskProvider, page }) => {
-  await mockApiResponse('address', addressMock.token, { pathParams: { hash: ADDRESS_HASH } });
-  await mockApiResponse('address_counters', countersMock.forToken, { pathParams: { hash: ADDRESS_HASH } });
-  await mockApiResponse('address_tokens', tokensMock.erc20List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' }, times: 1 });
-  await mockApiResponse('address_tokens', tokensMock.erc721List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' }, times: 1 });
-  await mockApiResponse('address_tokens', tokensMock.erc1155List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' }, times: 1 });
-  await mockApiResponse('address_tokens', tokensMock.erc404List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' }, times: 1 });
+  await mockApiResponse('general:address', addressMock.token, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('general:address_counters', countersMock.forToken, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('general:address_tokens', tokensMock.erc20List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' }, times: 1 });
+  await mockApiResponse('general:address_tokens', tokensMock.erc721List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' }, times: 1 });
+  await mockApiResponse('general:address_tokens', tokensMock.erc1155List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' }, times: 1 });
+  await mockApiResponse('general:address_tokens', tokensMock.erc404List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' }, times: 1 });
   await injectMetaMaskProvider();
 
   const component = await render(
@@ -93,8 +93,8 @@ test.fixme('token', async({ render, mockApiResponse, injectMetaMaskProvider, pag
 });
 
 test('validator', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
-  await mockApiResponse('address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('general:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('general:address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
 
   const component = await render(<AddressDetails addressQuery={{ data: addressMock.validator } as AddressQuery}/>, { hooksConfig });
 
@@ -105,8 +105,8 @@ test('validator', async({ render, mockApiResponse, page }) => {
 });
 
 test('filecoin', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('address', addressMock.filecoin, { pathParams: { hash: ADDRESS_HASH } });
-  await mockApiResponse('address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('general:address', addressMock.filecoin, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('general:address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
 
   const component = await render(<AddressDetails addressQuery={{ data: addressMock.filecoin } as AddressQuery}/>, { hooksConfig });
 

@@ -9,8 +9,8 @@ import type { ResourceErrorAccount } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
 import { Button } from 'toolkit/chakra/button';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 const TAG_MAX_LENGTH = 35;
 
@@ -46,13 +46,13 @@ const AddressForm: React.FC<Props> = ({ data, onOpenChange, onSuccess, setAlertV
 
       const isEdit = data?.id;
       if (isEdit) {
-        return apiFetch('private_tags_address', {
+        return apiFetch('general:private_tags_address', {
           pathParams: { id: String(data.id) },
           fetchParams: { method: 'PUT', body },
         });
       }
 
-      return apiFetch('private_tags_address', { fetchParams: { method: 'POST', body } });
+      return apiFetch('general:private_tags_address', { fetchParams: { method: 'POST', body } });
     },
     onError: (error: ResourceErrorAccount<AddressTagErrors>) => {
       setPending(false);

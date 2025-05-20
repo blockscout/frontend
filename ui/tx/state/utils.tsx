@@ -5,13 +5,13 @@ import React from 'react';
 import type { TxStateChange } from 'types/api/txStateChanges';
 
 import config from 'configs/app';
-import { ZERO_ADDRESS } from 'lib/consts';
-import { nbsp, space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { ZERO_ADDRESS } from 'toolkit/utils/consts';
+import { nbsp, space } from 'toolkit/utils/htmlEntities';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
@@ -118,7 +118,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
           if ('token_id' in data && data.token_id) {
             return (
               <NftEntity
-                hash={ data.token.address }
+                hash={ data.token.address_hash }
                 id={ data.token_id }
                 isLoading={ isLoading }
               />
@@ -128,7 +128,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
           }
         }
 
-        return <TxStateTokenIdList items={ data.change } tokenAddress={ data.token.address } isLoading={ isLoading }/>;
+        return <TxStateTokenIdList items={ data.change } tokenAddress={ data.token.address_hash } isLoading={ isLoading }/>;
       })();
 
       return {

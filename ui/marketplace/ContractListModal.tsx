@@ -4,8 +4,8 @@ import React from 'react';
 import type { MarketplaceAppSecurityReport } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
-import { apos } from 'lib/html-entities';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
+import { apos } from 'toolkit/utils/htmlEntities';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 import ContractSecurityReport from './ContractSecurityReport';
@@ -58,7 +58,6 @@ const ContractListModal = ({ onClose, onBack, type, contracts }: Props) => {
       open={ Boolean(type) }
       onOpenChange={ handleOpenChange }
       size={{ lgDown: 'full', lg: 'md' }}
-      placement="center"
     >
       <DialogContent>
         <DialogHeader display="flex" alignItems="center" mb={ 4 } onBackToClick={ onBack }>

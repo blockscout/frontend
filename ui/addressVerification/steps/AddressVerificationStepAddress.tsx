@@ -19,7 +19,7 @@ import useApiFetch from 'lib/api/useApiFetch';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
-import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 
 type Fields = RootFields & AddressVerificationFormFirstStepFields;
@@ -50,10 +50,13 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
       const body = {
         contractAddress: data.address,
       };
-      const response = await apiFetch<'address_verification', AddressCheckResponseSuccess, AddressVerificationResponseError>('address_verification', {
-        fetchParams: { method: 'POST', body },
-        pathParams: { chainId: config.chain.id, type: ':prepare' },
-      });
+      const response = await apiFetch<'contractInfo:address_verification', AddressCheckResponseSuccess, AddressVerificationResponseError>(
+        'contractInfo:address_verification',
+        {
+          fetchParams: { method: 'POST', body },
+          pathParams: { chainId: config.chain.id, type: ':prepare' },
+        },
+      );
 
       if (response.status !== 'SUCCESS') {
         const type = typeof response.status === 'number' ? 'UNKNOWN_ERROR' : response.status;

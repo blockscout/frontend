@@ -40,7 +40,7 @@ test('with logo, long name and symbol', async({ page, render }) => {
         type: 'ERC-20',
         name: 'This token is the best token ever',
         symbol: 'DUCK DUCK DUCK',
-        address: tokenMock.tokenInfo.address,
+        address_hash: tokenMock.tokenInfo.address_hash,
         icon_url: LOGO_URL,
       }}
     />,
