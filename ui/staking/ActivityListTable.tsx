@@ -4,15 +4,17 @@ import {  useDisclosure, } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { debounce, orderBy } from 'lodash';
 import useAccount from 'lib/web3/useAccount';
-import StatusButton from 'ui/validators/StatusButton';
+import axios from 'axios';
+import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
 import WithTipsText from 'ui/validators/WithTipsText';
-import ActionButtonGroup  from 'ui/staking/ActionButtonGroup';
+import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import Pagination from 'ui/validators/Pagination';
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import TableTokenAmount from 'ui/staking/TableTokenAmount';
+import { TextWithIcon } from 'ui/staking/ActivityListTableCell';
 import styles from 'ui/staking/spinner.module.css';
 
 dayjs.extend(utc);
@@ -213,7 +215,7 @@ const TableApp = (props: {
 
 
 
-    const url = "http://192.168.0.97:8080";
+  const { serverUrl : url } = useStakeLoginContextValue();
 
 
     const tableHead: tableHeadType[] = [
@@ -256,7 +258,9 @@ const TableApp = (props: {
                         textTransform: 'capitalize',
                     }}
                 >
-                    { record.activityType }
+                    <TextWithIcon 
+                        text = { record.activityType || "" }
+                    />
                 </span>
             )
         },
@@ -434,12 +438,14 @@ const defaultLimit = 15;
 
 
 const TableWrapper = ({
-    selectDateRange
+    selectDateRange,
+    handleStake
 }: {
     selectDateRange: Array<any>
+    handleStake: () => void;
 }) => {
 
-    const url = "http://192.168.0.97:8080";
+    const { serverUrl : url } = useStakeLoginContextValue();
 
     const { address: userAddr } = useAccount();
 
@@ -487,12 +493,23 @@ const TableWrapper = ({
                 _selectDateRange[0] && param.append('startDate', dayjsToDateString(_selectDateRange[0]));
                 _selectDateRange[1] && param.append('endDate', dayjsToDateString(_selectDateRange[1]));
             }
-            const res = await (await fetch(url + '/api/me/staking/activity' + '?' + param.toString(),
-                { method: 'get' })).json() as any
+            // const res = await (await fetch(url + '/api/me/staking/activity' + '?' + param.toString(),
+            //     { method: 'get' })).json() as any
+            const res = await axios.get(url + '/api/me/staking/activity' + '?' + param.toString(), { 
+                timeout: 10000,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                console.error('Error fetching data:', error);
+                return null;
+            });
             setIsTableLoading(false);
             if(res && res.code === 200) {
                 setTableData(res.data.activities || []);
-                setTotalCount(res.data.pagination.total);
+                setTotalCount(Number(res.data.pagination.total || "0"))
                 setNextKey(res.data.pagination.nextKey);
                 setCurrentPage( queryParams.page || 1 );
             }
@@ -510,6 +527,44 @@ const TableWrapper = ({
         }
         requestActivityList(userAddr, selectDateRange);
     }, [ userAddr, selectDateRange , requestActivityList ]);
+
+
+    const { isConnected: WalletConnected } = useAccount();
+
+    const noStake = false;
+
+    if (!WalletConnected) {
+        return (
+            <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
+                <EmptyPlaceholder
+                    tipsTextArray={ ['Your Stake activity will appear here'] }
+                    showButton={ "connect" }
+                    buttonText={ 'Connect Wallet' }
+                />
+            </div>
+        );
+    } else if (noStake) {
+        return (
+            <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
+                <EmptyPlaceholder
+                    tipsTextArray={ [`Looks like you haven’t staked yet. Choose a`, 'validator to get started.'] }
+                    showButton={ true }
+                    buttonText={ 'Stake' }
+                    buttonOnClick={ handleStake }
+                />
+            </div>
+        );
+    } else if (tableData.length === 0) {
+        return (
+            <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
+                <EmptyPlaceholder
+                    tipsTextArray={ [`No matching records.` ] }
+                    showButton={ false }
+                />
+            </div>
+        );
+    }
+
 
     return (
         <Box

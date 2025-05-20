@@ -17,6 +17,7 @@ const WithTextWrapper = ({ children , text }: {
                 lineHeight: '140%',
                 textAlign: 'left',
                 userSelect: 'none',
+                marginBottom: '12px',
             }}>
                 {text}
             </div>

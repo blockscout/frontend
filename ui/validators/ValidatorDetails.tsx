@@ -5,11 +5,37 @@ import ValidatorBox from 'ui/validators/ValidatorBox';
 import { useRouter } from 'next/router';
 import { Text } from '@chakra-ui/react';
 import IconSvg from 'ui/shared/IconSvg';
+import { Avatar } from '@chakra-ui/react';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { formatPubKey } from 'ui/storage/utils';
+import axios from 'axios';
+import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import { Flex, Box, Tooltip } from '@chakra-ui/react';
+import { IconButton, useClipboard,} from '@chakra-ui/react';
 
+
+const copyIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <rect x="5.05566" y="5.44446" width="7" height="7" rx="0.583333" stroke="#FF57B7" strokeWidth="1.12" strokeLinejoin="round"/>
+        <path d="M8.94434 5.44442V2.91665C8.94434 2.59448 8.68317 2.33331 8.361 2.33331H2.52767C2.2055 2.33331 1.94434 2.59448 1.94434 2.91665V8.74998C1.94434 9.07215 2.2055 9.33331 2.52767 9.33331H5.05545" stroke="#FF57B7" strokeWidth="1.12" strokeLinejoin="round"/>
+    </svg>
+)
+
+const checkedMarkIcon = (
+    <svg
+        className="icon"
+        viewBox="0 0 1024 1024"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        p-id="1495" 
+        width="14" height="14" 
+    >   
+        <path 
+            d="M414.165333 609.834667L810.666667 213.333333l60.330666 60.330667L414.165333 730.496 170.666667 486.997333 230.997333 426.666667z" p-id="1496"
+            fill="#FF57B7">
+        </path>
+    </svg>
+)
 
 type OverViewInfoType = {
     totalStake: string;
@@ -42,19 +68,39 @@ const ValidatorDetails = () => {
 
     const router = useRouter();
     const addr = getQueryParamString(router.query.addr);
-    const url = "http://192.168.0.97:8080";
+    const { serverUrl : url } = useStakeLoginContextValue();
 
     const [ isDetailInfoLoading, setIsDetailInfoLoading ] = React.useState(false);
     const [ isDelegatorsInfoLoading, setIsDelegatorsInfoLoading ] = React.useState(false);
 
     const [ overViewInfo , setOverViewInfo ] = React.useState({} as OverViewInfoType);
+
+    const { hasCopied, onCopy } = useClipboard(addr, 1000);
+    const [ copied, setCopied ] = React.useState(false);
     
-    
+    useEffect(() => {
+    if (hasCopied) {
+        setCopied(true);
+    } else {
+        setCopied(false);
+    }
+    }, [ hasCopied ]);
 
     const requestBasicDetailInfo = React.useCallback(async( _addr : string) => {
         try {
             setIsDetailInfoLoading(true);
-            const res = await (await fetch(url + '/api/network/validators/details/' + _addr, { method: 'get' })).json() as any
+            // const res = await (await fetch(url + '/api/network/validators/details/' + _addr, { method: 'get' })).json() as any
+            const res = await axios.get(url + '/api/network/validators/details/' + _addr, { 
+                timeout: 10000,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                console.error('Error fetching data:', error);
+                return null;
+            });
             setIsDetailInfoLoading(false);
             if(res && res.code === 200) {
                 const {
@@ -109,32 +155,77 @@ const ValidatorDetails = () => {
             </Flex>
             <Tooltip
                 isDisabled={ true }
-                label={ "hidehiier" } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                label={ addr || ''}
+                padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                     <Flex 
                         alignItems="center"
                         justifyContent={{ base: 'flex-start', md: 'space-between' }}
                         direction={{ base: 'column', md: 'row' }}
-                        padding="16px"
+                        marginBottom="20px"
+                        marginTop="24px"
                     >
                         <Text
-                            fontSize="2xl"
-                            fontWeight="bold"
-                            marginBottom="4"
-                            as ="span"
+                            as="span"
+                            alignItems="center"
+                            justifyContent={{ base: 'flex-start', md: 'center' } }
+                            width={{ base: '100%', md: 'auto' }}
+                            height="auto"
                         >
-                            <span></span>
+                            <Flex
+                                flexDirection="row"
+                                justifyContent= {{ base: 'flex-start', md: 'center' } }
+                                alignItems="center"
+                                width= {{ base: '100%', md: 'auto' }}
+                                height="auto"
+                                gap="8px"
+                            >
+                                <Avatar
+                                    name="Validator Name"
+                                    src="/static/moca-brand.svg"
+                                    size='2xs'
+                                    width="32px"
+                                    height="32px"
+                                    borderRadius="full"
+                                    marginRight="4px"
+                                />
+                                <Text 
+                                    fontSize="20px"
+                                    fontWeight="700"
+                                    textAlign={"left"}
+                                    color="rgba(0, 0, 0)"
+                                    fontStyle="normal"
+                                    fontFamily="HarmonyOS Sans"
+                                    lineHeight="normal"
+                                    textTransform="capitalize"
+                                    userSelect="none"
+                                    as ="span"
+                                > Validator </Text>
+                            </Flex>
                         </Text>
                         <Text
-                            marginBottom="4"
                             color="rgba(0, 0, 0, 0.60)"
                             fontSize="16px"
                             display="inline"
-                            lineHeight="16px"
+                            fontWeight="500"
+                            lineHeight="normal"
                             fontStyle="normal"
                             as={'span'}
                             textTransform="capitalize"
                         >
                             { addr}
+                            <IconButton
+                                aria-label="copy"
+                                icon={ copied ? checkedMarkIcon : copyIcon }
+                                variant="link"
+                                colorScheme="blackAlpha"
+                                size="xs"
+                                marginLeft="8px"
+                                onClick={ (event) => {
+                                    event.stopPropagation();
+                                    onCopy();
+                                    setCopied(true);
+                                } }
+                            />
                         </Text>
                     </Flex>
             </Tooltip>

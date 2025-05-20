@@ -48,10 +48,8 @@ export const icon_my_wallet = (
 );
 
 export const TextWithIcon = ({
-    icon,
     text,
 }: {
-    icon: React.ReactNode;
     text: string;
 }) => {
 
@@ -61,7 +59,14 @@ export const TextWithIcon = ({
                 marginRight: '4px',
                 width: '16px',
                 height: '16px',
-            }}>{icon}</span>
+            }}>
+                { text ==='Stake' && icon_stake }
+                { text ==='Claim' && icon_claim }
+                { text ==='ClaimAll' && icon_claim }
+                { text ==='Withdraw' && icon_withdraw }
+                { text ==='Compound' && icon_compound }
+                { text ==='MoveStake' && icon_move_stake }
+            </span>
             <span
                 style={{
                     color: "#000",

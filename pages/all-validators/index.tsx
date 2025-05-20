@@ -2,7 +2,7 @@
 
 import { Box, Flex, Button , Progress , Grid, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import orderBy from 'lodash/orderBy';
+import axios from 'axios';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -119,7 +119,7 @@ const AllValidatorPage: NextPage = () => {
 
 
   // const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
-  const url = "http://192.168.0.97:8080"
+  const { serverUrl : url } = useStakeLoginContextValue();
   const [ totalIssued, setTotalIssued ] = React.useState<number>(0);
   const [ totalCredential, setTotalCredential ] = React.useState<number>(0);
   const [ loading, setLoading ] = React.useState<boolean>(false);
@@ -155,7 +155,22 @@ const AllValidatorPage: NextPage = () => {
   const requestOverviewStats = React.useCallback(async() => {
     try {
       setIsOverviewStatsLoading(true);
-      const res = await (await fetch(url + '/api/network/overview-stats', { method: 'get' })).json() as any
+      // const res = await (await fetch(url + '/api/network/overview-stats', { method: 'get' })).json() as any
+      const res = await axios.get(url + '/api/network/overview-stats', {
+        method: 'get',
+        timeout: 5000,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((response) => {
+          return response.data;
+      }).catch((error) => {
+          console.error(error);
+          return null; 
+      });
+
+      console.log('res', res);
+
       setIsOverviewStatsLoading(false);
       if(res && res.code === 200) {
         const { 
@@ -186,11 +201,23 @@ const AllValidatorPage: NextPage = () => {
       if (isActiveOnly) {
         param.append('status', 'active');
       }
-      const res = await (await fetch(url + `/api/network/validators/list?${param.toString()}`, { method: 'get' })).json() as any;
+      // const res = await (await fetch(url + `/api/network/validators/list?${param.toString()}`, { method: 'get' })).json() as any;
+      const res = await axios.get(url + `/api/network/validators/list?${param.toString()}`, {
+        method: 'get',
+        timeout: 5000,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((response) => {
+          return response.data;
+      }).catch((error) => {
+          console.error(error);
+          return null; 
+      });
       setIsTableLoading(false);
       if(res && res.code === 200) {
         setTableDataList(res.data.validators);
-        setTotalCount(res.data.pagination.total);
+        setTotalCount(Number(res.data.pagination.total || "0"))
         setNextKey(res.data.pagination.nextKey);
         setCurrentPage( queryParams.page || 1 );
       }

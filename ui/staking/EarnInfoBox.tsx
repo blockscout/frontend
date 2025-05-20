@@ -43,12 +43,14 @@ const LabelAndValue = (props: {
 
 const EarnInfoBox = (props: {
     apr: number | string;
+    amount?: number | string;
 }) => {
 
-    const { apr } = props;
-    const dailyEarnings = (Number(apr) / 365);
-    const monthlyEarnings = (Number(apr) / 12);
-    const yearlyEarnings = (Number(apr));
+    const { apr , amount = "0.00" } = props;
+    const yearlyEarnings = ( Number(apr) * Number(amount));
+    const monthlyEarnings = ( yearlyEarnings / 12 );
+    const dailyEarnings = ( yearlyEarnings / 365 );
+    
 
     return (
         <Box 
@@ -95,9 +97,9 @@ const EarnInfoBox = (props: {
                 gap="8px"
                 marginTop="12px"
             >
-                <LabelAndValue label="Yearly Earnings" value={ yearlyEarnings.toFixed(2) } />
-                <LabelAndValue label="Monthly Earnings" value={ monthlyEarnings.toFixed(2) } />
-                <LabelAndValue label="Daily Earnings" value={ dailyEarnings.toFixed(2) } />
+                <LabelAndValue label="Yearly Earnings" value={ yearlyEarnings.toFixed(4) } />
+                <LabelAndValue label="Monthly Earnings" value={ monthlyEarnings.toFixed(4) } />
+                <LabelAndValue label="Daily Earnings" value={ dailyEarnings.toFixed(4) } />
             </Flex>
         </Box>
     );

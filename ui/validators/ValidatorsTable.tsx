@@ -11,12 +11,13 @@ import WithTipsText from 'ui/validators/WithTipsText';
 import StakeButton  from 'ui/validators/StakeButton';
 import Pagination from 'ui/validators/Pagination';
 import CommonModal from 'ui/staking/CommonModal';
-import { getEnvValue } from 'configs/app/utils';
+import axios from 'axios';
 import { useWalletClient, usePublicClient } from 'wagmi';
 import { useSendTransaction } from 'wagmi';
 import { useAccount as useWagmiAccount , useBalance } from 'wagmi'
 import { toBigInt , parseUnits} from 'ethers';
 import { formatUnits } from 'viem';
+import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import FloatToPercent from 'ui/validators/FloatToPercent';
 import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import styles from 'ui/staking/spinner.module.css';
@@ -199,6 +200,7 @@ const TableApp = (props: {
     const [ currentItem , setCurrentItem ] = React.useState<any>({});
     const [ currentFromItem , setCurrentFromItem ] = React.useState<any>({});
     const [ currentAmount, setCurrentAmount ] = React.useState<string>('');
+    const [ apr , setApr ] = React.useState<string>('0.00');
     const [ transactionStage , setTransactionStage ] = React.useState<string>('edit'); // 'edit' | 'submitting' | 'success' | ' .... '
     const { data: walletClient } = useWalletClient();
     const publicClient = usePublicClient();
@@ -232,13 +234,12 @@ const TableApp = (props: {
         });
         setCurrentAddress(address);
         setModalTitle('Stake');
+        setApr(record.liveApr);
         setCurrentTxType('Stake');
         onOpen();
     };  
 
-
-
-    const url = "http://192.168.0.97:8080";
+    const { serverUrl : url } = useStakeLoginContextValue();
 
     const sendTxHashToServer  = React.useCallback(async (txHash: string, param: any) => {
         if (!txHash) return;
@@ -246,13 +247,24 @@ const TableApp = (props: {
             ...param,
             txHash: txHash
         }
-        const res = await (await fetch(url + '/api/staking/broadcast', {
-            method: 'post',
+        // const res = await (await fetch(url + '/api/staking/broadcast', {
+        //     method: 'post',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body:  JSON.stringify(_newParam),
+        // })).json() as  any;
+        const res =  await axios.post(url + '/api/staking/broadcast', _newParam, {
+            timeout: 5000,
             headers: {
-                'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
             },
-            body:  JSON.stringify(_newParam),
-        })).json() as  any;
+        }).then((response) => {
+            return response.data;
+        }).catch((error) => {
+            console.error(error);
+            return null; 
+        });
     } , [url]);
 
     const { address: userAddr } = useAccount();
@@ -305,13 +317,26 @@ const TableApp = (props: {
 
         try {
             setIsTxLoading (true);
-            const res = await (await fetch(url + apiPath, {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body:  JSON.stringify(param),
-                })).json() as  any;
+            // const res = await (await fetch(url + apiPath, {
+            //         method: 'post',
+                    
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
+            //         body:  JSON.stringify(param),
+            //     })).json() as  any;
+
+            const res =  await axios.post(url + apiPath, param, {
+                timeout: 5000,
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                console.error(error);
+                return null; 
+            });
             if(res && res.code === 200) {
                 if(res.data && res.data.unsignedTx) {
                     const { unsignedTx } = res.data;
@@ -419,7 +444,7 @@ const TableApp = (props: {
                         textTransform: 'capitalize',
                     }}
                 >
-                    { FloatToPercent(record.commissionRate) }
+                    { FloatToPercent(record.liveApr) }
                 </span>
             )
         },
@@ -568,6 +593,7 @@ const TableApp = (props: {
                 isOpen = { isOpen }
                 onClose = { handleCloseModal }
                 title = { modalTitle}
+                currentApr={apr}
                 transactionStage = { transactionStage }
                 currentTxType = { currentTxType }
                 availableAmount = { availableAmount }

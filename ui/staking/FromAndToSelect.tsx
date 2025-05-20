@@ -4,6 +4,7 @@ import StakingValidatorSelect from 'ui/staking/StakingValidatorSelect';
 import WithTextWrapper from 'ui/staking/WithTextWrapper';
 import React from 'react';
 import ValidatorItemBar from 'ui/staking/ValidatorItemBar';
+import { garnet } from '@reown/appkit/networks';
 
 const FromAndToSelect = ({
     FromItem,
@@ -13,6 +14,7 @@ const FromAndToSelect = ({
     myValidatorsList,
     allValidatorsList,
     setCurrentToAddress,
+    setApr,
 }: {
     FromItem: any;
     currentToItem: any;
@@ -21,6 +23,7 @@ const FromAndToSelect = ({
     setCurrentFromAddress: (address: string) => void;
     allValidatorsList: any[];
     setCurrentToAddress: (address: string) => void;
+    setApr: (apr: number | string) => void;
 }) => {
 
     const [ isFromOpen, setFromIsOpen ] = React.useState(false);
@@ -35,8 +38,8 @@ const FromAndToSelect = ({
         setToIsOpen(false);
     }
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-            <WithTextWrapper text="From">
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '16px' }}>
+            <WithTextWrapper text="From Validator">
                 <ValidatorItemBar
                     showArrow={false} 
                     liveApr={ (Number(FromItem?.liveApr || 0) * 100).toFixed(1)   + '%' }
@@ -45,12 +48,13 @@ const FromAndToSelect = ({
                     onClick={() => {} }
                 />
             </WithTextWrapper>
-            <WithTextWrapper text="To">
+            <WithTextWrapper text="To Validator">
                 <StakingValidatorSelect 
                     myValidatorsList={ myValidatorsList }
                     allValidatorsList={ allValidatorsList }
                     selectedValidator={ currentToItem }
                     isOpen={ isToOpen }
+                    setApr={ setApr }
                     onToggle={ onToToggle }
                     onClose={ onToClose }
                     setSelectedValidator={ (validator: any) => {

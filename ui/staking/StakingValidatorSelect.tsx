@@ -58,7 +58,7 @@ const Selector = ({
                 <Box width="100%">
                     <ValidatorItemBar
                         showArrow={true}
-                        liveApr={ (Number(selectedValidator.liveApr || 0) * 100) + '%' }
+                        liveApr={ (Number(selectedValidator.liveApr || 0) * 100).toFixed(2) + '%' }
                         isFocused={ isOpen }
                         validatorName={ getShortAddress(selectedValidator.validatorAddress) }
                         validatorAvatar={null}
@@ -99,6 +99,7 @@ const StakingValidatorSelect = ({
     isOpen,
     onToggle,
     onClose,
+    setApr,
 }: {
     myValidatorsList: any[];
     allValidatorsList: any[];
@@ -107,6 +108,7 @@ const StakingValidatorSelect = ({
     isOpen: boolean;
     onToggle: () => void;
     onClose: () => void;
+    setApr: (apr: number | string) => void;
 }) => {
 
 
@@ -116,7 +118,10 @@ const StakingValidatorSelect = ({
                 myValidatorsList={myValidatorsList}
                 allValidatorsList={allValidatorsList}
                 selectedValidator={selectedValidator}
-                setSelectedValidator={setSelectedValidator}
+                setSelectedValidator={(validator: any) => {
+                    setSelectedValidator(validator);
+                    setApr(validator?.liveApr);
+                }}
                 isOpen={isOpen}
                 onToggle={onToggle}
                 onClose={ onClose}

@@ -1,12 +1,24 @@
 /* eslint-disable */
 import { Table, Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
-import LinkInternal from 'ui/shared/links/LinkInternal';
-import { route } from 'nextjs-routes';
+import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
+import axios from 'axios';
 import React, { useEffect } from 'react';
 import { debounce, orderBy } from 'lodash';
+import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import WithTipsText from 'ui/validators/WithTipsText';
 import Pagination from 'ui/validators/Pagination';
+import { useClipboard } from '@chakra-ui/react';
+import { Avatar, Text } from '@chakra-ui/react';
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+import advancedFormat from 'dayjs/plugin/advancedFormat';
 import styles from 'ui/staking/spinner.module.css';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(advancedFormat);
+
 
 type tableHeadType = {
     label: string | React.ReactNode;
@@ -59,6 +71,8 @@ const icon_no_order = (
 
 
 
+
+
 const getShortAddress = (address: string) => {
     if( !address) {
         return '';
@@ -69,15 +83,54 @@ const getShortAddress = (address: string) => {
     return address;
 }
 
+
+const ValidatorInfo = ({
+    validatorName
+}: {
+    validatorName: string;
+}) => {
+
+    return (
+        <Flex
+            flexDirection="row"
+            justifyContent="flex-start"
+            alignItems="center"
+            width="auto"
+        >
+            <Avatar
+                name="Validator Name"
+                src="/static/moca-brand.svg"
+                size='2xs'
+                width="16px"
+                height="16px"
+                borderRadius="full"
+                marginRight="4px"
+            />
+            <Text 
+                fontSize="12px"
+                fontWeight="500"
+                textAlign={"left"}
+                color="#A80C53"
+                fontStyle="normal"
+                fontFamily="HarmonyOS Sans"
+                lineHeight="normal"
+                textTransform="capitalize"
+                userSelect="none"
+                as ="span"
+            > { getShortAddress(validatorName) } </Text>
+        </Flex>
+    )
+}
+
 const tableHead: tableHeadType[] = [
     {
         label: 'Delegators',
         key: 'delegatorAddress',
         width : '25%',
         render: (record: any) => (
-            <span>
-                { getShortAddress(record.delegatorAddress) }
-            </span>
+            <ValidatorInfo
+                validatorName={ getShortAddress(record.delegatorAddress) }
+            />
         ),
     },
     {
@@ -85,18 +138,41 @@ const tableHead: tableHeadType[] = [
         key: 'stakeAmount',
         width : '25%',
         allowSort: true,
+        render: (record) => (
+            <TableTokenAmount
+                amount = { record.stakeAmount }
+                symbol = 'Moca'
+            />
+        )
     },
         {
         label: 'Total Earned',
         key: 'totalEarned',
         width : '25%',
         allowSort: true,
+        render: (record) => (
+            <TableTokenAmount
+                amount = { record.totalEarned }
+                symbol = 'Moca'
+            />
+        )
     },
     {
         label: 'Start Date',
         key: 'startDate',
         width : '25%',
         allowSort: false,
+        render: (record) => (
+            <span style={{ 
+                color: '#000',
+                fontFamily: "HarmonyOS Sans",
+                fontSize: '12px',
+                fontStyle: 'normal',
+                fontWeight: 500,
+                lineHeight: 'normal',
+                textTransform: 'capitalize',
+            }}>{ !!record.startDate ? dayjs.utc(record.startDate).format('DD MMM YYYY HH:mm [UTC]') : '-' }</span>
+        ),
     },
 ];
 
@@ -331,8 +407,7 @@ const TableWrapper = (props: {
 }) => {
 
     const { addr, totalCount, setTotalCount } = props;
-    const url = "http://192.168.0.97:8080";
-
+    const { serverUrl : url } = useStakeLoginContextValue();
 
     const [ toNext, setToNext ] = React.useState<boolean>(true);
     const [ nextKey , setNextKey ] = React.useState<string>(initial_nextKey);
@@ -365,12 +440,23 @@ const TableWrapper = (props: {
             const param = new URLSearchParams();
             param.append('limit', defaultLimit.toString());
             param.append('nextKey', queryParams.nextKey || initial_nextKey);
-            const res = await (await fetch(url + '/api/network/validators/delegations/' + _addr + '?' + param.toString(),
-                { method: 'get' })).json() as any
+            // const res = await (await fetch(url + '/api/network/validators/delegations/' + _addr + '?' + param.toString(),
+            //     { method: 'get' })).json() as any
+            const res = await axios.get(url + '/api/network/validators/delegations/' + _addr + '?' + param.toString(), { 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                timeout: 10000,
+            }).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                console.error('Error fetching data:', error);
+                return null;
+            });
             setIsTableLoading(false);
             if(res && res.code === 200) {
                 setTableData(res.data.delegators || []);
-                setTotalCount(res.data.pagination.total);
+                setTotalCount(Number(res.data.pagination.total || "0"))
                 setNextKey(res.data.pagination.nextKey);
                 setCurrentPage( queryParams.page || 1 );
             }

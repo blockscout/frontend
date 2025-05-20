@@ -41,10 +41,26 @@ const ValidatorItemBar = ({
                 justifyContent="space-between"
                 alignItems="center"
                 width="100%"
-                gap="8px"
                 padding="16px"
             >
-                <ValidatorInfo  validatorName = {validatorName} />
+                {
+                    (!!validatorName) ? (
+                        <ValidatorInfo  validatorName = {validatorName} />
+                    ) : (
+                        <Text
+                            fontSize="14px"
+                            fontWeight="400"
+                            textAlign={"left"}
+                            color="rgba(0, 0, 0, 0.30)"
+                            fontStyle="normal"
+                            lineHeight="140%"
+                            userSelect="none"
+                            as ="span"
+                        >
+                            Select a Validator
+                        </Text>
+                    )
+                }
                 <Flex
                     flexDirection="row"
                     justifyContent="space-between"
@@ -52,19 +68,36 @@ const ValidatorItemBar = ({
                     width="auto"
                     gap="8px"
                 >
-                    <Text
-                        fontSize="12px"
-                        fontWeight="500"
-                        textAlign={"left"}
-                        color="rgba(0, 0, 0, 0.60)"
-                        fontStyle="normal"
-                        lineHeight="140%"
-                        userSelect="none"
-                        as ="span"
-                        fontFamily="HarmonyOS Sans"
-                    >
-                        { liveApr } 
-                    </Text>
+                    {
+                        !!validatorName && (
+                        <Text
+                            fontSize="12px"
+                            fontWeight="500"
+                            textAlign={"left"}
+                            color="#FF57B7"
+                            fontStyle="normal"
+                            lineHeight="140%"
+                            userSelect="none"
+                            as ="span"
+                            fontFamily="HarmonyOS Sans"
+                        >
+                            <span style={{ 
+                                color: 'rgba(0, 0, 0, 0.60)',
+                                fontSize: '12px',
+                                fontWeight: 400,
+                                lineHeight: '20px',
+                                textTransform: 'capitalize',
+                                // font-family: "HarmonyOS Sans";
+                                // font-size: 12px;
+                                // font-style: normal;
+                                // font-weight: 400;
+                                // line-height: 20px; /* 166.667% */
+                                // text-transform: capitalize;
+                            }}>Live APR</span> 
+                            <span> { liveApr }</span>
+                        </Text>
+                    )
+                    }
                     {
                         showArrow && (
                             <Box

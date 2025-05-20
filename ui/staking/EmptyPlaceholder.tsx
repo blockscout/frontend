@@ -1,8 +1,14 @@
 /* eslint-disable */
-
 import { Box, Flex, Text } from '@chakra-ui/react';
+import { PopoverBody, PopoverContent, PopoverTrigger, useDisclosure, type ButtonProps } from '@chakra-ui/react';
 import React from 'react';
 import { Button } from '@chakra-ui/react';
+import { useMarketplaceContext } from 'lib/contexts/marketplace';
+import useWeb3AccountWithDomain from 'lib/web3/useAccountWithDomain';
+import useWeb3Wallet from 'lib/web3/useWallet';
+import Popover from 'ui/shared/chakra/Popover';
+import UserWalletButton from 'ui/snippets/user/wallet/UserWalletButton';
+import UserWalletMenuContent from 'ui/snippets/user/wallet/UserWalletMenuContent';
 
 
 const no_op = () => {};
@@ -52,11 +58,35 @@ const EmptyPlaceholder = ({
     buttonOnClick = () => {},
 }: {
     tipsTextArray?: string[];
-    showButton?: boolean;
+    showButton?: boolean | string;
     buttonText?: string;
     buttonOnClick?: () => void;
 }) => {
+    const walletMenu = useDisclosure();
 
+    const web3Wallet = useWeb3Wallet({ source: 'Header' });
+    const web3AccountWithDomain = useWeb3AccountWithDomain(web3Wallet.isConnected);
+    const { isAutoConnectDisabled } = useMarketplaceContext();
+
+    const isPending =
+        (web3Wallet.isConnected && web3AccountWithDomain.isLoading) ||
+        (!web3Wallet.isConnected && web3Wallet.isOpen);
+
+    const handleOpenWalletClick = React.useCallback(() => {
+        web3Wallet.openModal();
+        walletMenu.onClose();
+    }, [ web3Wallet, walletMenu ]);
+
+    const handleDisconnectClick = React.useCallback(() => {
+        web3Wallet.disconnect();
+        walletMenu.onClose();
+    }, [ web3Wallet, walletMenu ]);
+
+      const handleConnectWalletClick = React.useCallback(() => {
+        console.log('handleConnectWalletClick');
+        web3Wallet.openModal
+      }, [ walletMenu ]);
+    
     return (
         <Box
             width="100%"
@@ -79,7 +109,7 @@ const EmptyPlaceholder = ({
                         draggable="false"
                         width="93px"
                         height="78.3px"
-                        src="/static/empty_placeholder.png"/>        
+                        src="/static/NotDate.png"/>        
                 </div>
 
                 <div style={{
@@ -116,13 +146,39 @@ const EmptyPlaceholder = ({
                     height: 'auto',
                     alignItems: 'center',
                 }}>
-                    { showButton && 
+                    { showButton === true  && 
                         <PlainButton
                             text={ buttonText }
                             onClick={ buttonOnClick }
                             width = 'auto'
                         />
                     }
+                    {
+                        showButton === "connect" &&
+                                <Popover openDelay={ 300 } placement="bottom-end" isLazy isOpen={ walletMenu.isOpen } onClose={ walletMenu.onClose }>
+                                <PopoverTrigger>
+                                        <PlainButton
+                                            text={ "Connect Wallet" }
+                                            onClick={ web3Wallet.isConnected ? walletMenu.onOpen : web3Wallet.openModal }
+                                            width = 'auto'
+                                        />
+                                </PopoverTrigger>
+                                { web3AccountWithDomain.address && (
+                                    <PopoverContent w="235px">
+                                    <PopoverBody>
+                                        <UserWalletMenuContent
+                                        address={ web3AccountWithDomain.address }
+                                        domain={ web3AccountWithDomain.domain }
+                                        isAutoConnectDisabled={ isAutoConnectDisabled }
+                                        isReconnecting={ web3Wallet.isReconnecting }
+                                        onOpenWallet={ handleOpenWalletClick }
+                                        onDisconnect={ handleDisconnectClick }
+                                        />
+                                    </PopoverBody>
+                                    </PopoverContent>
+                                ) }
+                                </Popover>
+                    }   
                 </div>
             </Flex>
         </Box>

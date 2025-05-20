@@ -23,6 +23,37 @@ const sectionTitleProps = {
 };
 
 
+const TokenAmount = ({
+    amount,
+    isLoading = false,
+}: {
+    amount: string | number;
+    isLoading?: boolean;
+}) => {
+    return (
+        <Skeleton isLoaded={ !isLoading } >
+            <span
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 'auto',
+                    height: 'auto',
+                    gap: '6px',
+                }}
+            >
+                <span style={{ color: '#A80C53' }}>
+                    { amount } 
+                </span>
+
+                <span style={{ color: 'black' }}>
+                    {' '}
+                    Moca
+                </span>
+            </span>
+        </Skeleton>
+    )
+}
 
 
 
@@ -38,7 +69,7 @@ const InfoBoxItemLabel = ({
 
     return (
         <Text fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)" p="12px 0">
-            <Box display="inline-block">
+            <Box display="flex" alignItems="center" gap={ "4px" } as="span">
                 <Tooltip 
                     isOpen={ isOpen }
                     onOpen={ onOpen }
@@ -74,8 +105,8 @@ const InfoBoxItemLabel = ({
                         display="inline-flex"
                         alignItems="center"
                         borderRadius="8px"
-                        w="24px"
-                        h="24px"
+                        w="14px"
+                        h="14px"
                         cursor="pointer"
                         flexShrink={ 0 }
                         aria-label="Transaction info"
@@ -88,7 +119,15 @@ const InfoBoxItemLabel = ({
                             />
                         </Button>
                 </Tooltip>
-                <span>
+                <span style={{
+                    fontSize: '12px',
+                    fontWeight: '400',
+                    color: 'rgba(0, 0, 0, 0.4)',
+                    lineHeight: 'normal',
+                    fontStyle: 'normal',
+                    textTransform: 'capitalize',
+                    fontFamily: 'HarmonyOS Sans',
+                }}>
                     { label }
                 </span>
             </Box>
@@ -108,11 +147,24 @@ const InfoBoxItem = ({
             {
                 dataList.map((item, index) => (
                     <Box { ...sectionProps } key={ index } 
+                        p="12px 0"
                         borderBottom = { index === dataList.length - 1 ? 'none' : '1px solid' }
                     >
-                        <Flex justifyContent="space-between">
+                        <Flex justifyContent="space-between" height={ '29px' } alignItems="center">
                             <InfoBoxItemLabel  label={ item.label } tipsInfo={ item.tipsInfo } />
-                            <Box p="12px 0">
+                            <Box 
+                                fontSize="12px"
+                                fontWeight="500"
+                                color="#000"
+                                lineHeight="normal"
+                                fontStyle="normal"
+                                textTransform="capitalize"
+                                fontFamily="HarmonyOS Sans"
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="flex-end"
+                                width="auto"
+                            >
                                 { item.value }
                             </Box>
                         </Flex>
@@ -145,7 +197,7 @@ const InfoBox = ({
         {
             label: 'Total Stake',
             tipsInfo: 'Total amount of tokens currently staked with the validator.',
-            value: <Text > { overViewInfo.totalStake } </Text>,
+            value: <TokenAmount amount={ overViewInfo.totalStake } isLoading={ isDetailInfoLoading } />,
         },
         {
             label: 'Live APR',
@@ -155,12 +207,12 @@ const InfoBox = ({
         {
             label: 'Uptime',
             tipsInfo: 'The reliability and availability of a validator node, shown as an uptime percentage.',
-            value: <Text > { overViewInfo.uptime } </Text>,
+            value: <Text > { overViewInfo.uptime }% </Text>,
         },
         {
             label: 'Commission Rate',
             tipsInfo: `The percentage fee charged by validators from delegators' staking rewards.`,
-            value: <Text > { overViewInfo.commissionRate } </Text>,
+            value: <Text > { overViewInfo.commissionRate }% </Text>,
         },
     ];
     
@@ -169,22 +221,22 @@ const InfoBox = ({
         {
             label: `Validator's Stake`,
             tipsInfo: 'Amount of tokens the validator itself has staked.',
-            value: <Text > { overViewInfo.validatorStake } </Text>,
+            value: <TokenAmount amount={ overViewInfo.validatorStake ||  0} isLoading={ isDetailInfoLoading } />,
         },
         {
             label: `Validator's Rewards`,
             tipsInfo: 'Rewards earned by the validator from network participation.',
-            value: <Text > { overViewInfo.validatorStake } </Text>,
+            value: <TokenAmount amount={ overViewInfo.validatorRewards || 0 } isLoading={ isDetailInfoLoading } />,
         },
         {
             label: 'Uptime',
             tipsInfo: 'Rewards distributed to users staking their tokens with this validator.',
-            value: <Text > { overViewInfo.uptime } </Text>,
+            value: <span > { overViewInfo.uptime } % </span>,
         },
         {
             label: 'Recently Validated Blocks',
             tipsInfo: `Number of successfully validated blocks in the last 10,000 blocks.`,
-            value: <Text > { overViewInfo.blocksValidated } </Text>,
+            value: <span > { overViewInfo.blocksValidated } </span>,
         },
     ]
 

@@ -10,21 +10,10 @@ import {
 import { useDisclosure, } from '@chakra-ui/react';
 import CommonModal from './CommonModal';
 import React from 'react';
-import { formatUnits } from 'viem';
-import { toBigInt , parseUnits} from 'ethers';
-import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
+
 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
-
-type unsignedTx = {
-    to: string;
-    data: `0x${string}`;
-    value: string;
-    gasLimit: string;
-    chainId: string;
-    from: string;
-};
 
 
 const icon_1 = (
@@ -218,209 +207,68 @@ const StakingInfo = ({
     claimableRewards = 0,
     withdrawingAmount = 0,
     totalRewards = 0,
+    handleCloseModal,
+    isOpen,
+    handleClaimAll,
+    handleCompound,
+    handleStakeMore,
+    handleSubmit,
+    setAvailableAmount,
+    setCurrentAmount,
+    extraDescription,
+    transactionStage,
+    currentItem,
+    currentFromItem,
+    currentFromAddress,
+    setCurrentFromAddress,
+    setCurrentFromItem,
+    currentTxType,
+    availableAmount,
+    isTxLoading,
+    currentAddress,
+    setCurrentAddress,
+    transactionHash,
+    isHideNumber,
+    setIsHideNumber,
+    onOpen = no_op,
+    modalTitle = 'Stake',
+    currentAmount,
+    setCurrentItem,
+    setCurrentTxType
 }: {
     stakedAmount?: number | string;
     claimableRewards?: number | string;
     withdrawingAmount?: number | string;
     totalRewards?: number | string;
+    handleCloseModal: () => void;
+    isOpen: boolean;
+    handleClaimAll: () => void;
+    handleCompound: () => void;
+    handleStakeMore: () => void;
+    handleSubmit: (targetAddress: string, txType: string, amount: string, from?: string) => Promise<void>;
+    setAvailableAmount: (amount: string) => void;
+    setCurrentAmount: (amount: string) => void;
+    extraDescription: string | null;
+    transactionStage: string;
+    currentItem: string;
+    currentFromItem: string;
+    currentFromAddress: string;
+    setCurrentFromAddress: (address: string) => void;
+    setCurrentFromItem: (item: string) => void; 
+    currentTxType: txType;
+    availableAmount: string;
+    isTxLoading: boolean;
+    currentAddress: string;
+    setCurrentAddress: (address: string) => void;
+    setCurrentTxType: (txType: txType) => void;
+    transactionHash: string;
+    isHideNumber: boolean;
+    setIsHideNumber: (isHide: boolean) => void;
+    onOpen?: () => void;
+    modalTitle?: string;
+    currentAmount: string;
+    setCurrentItem: (item: string) => void;
 }) => {
-    
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const [ isHideNumber, setIsHideNumber ] = React.useState<boolean>(false);
-
-    const url = "http://192.168.0.97:8080" ; 
-    const { address: userAddr } = useAccount();
-
-    const { data: balanceData } = useBalance({ address: userAddr});
-    const [ availableAmount, setAvailableAmount ] = React.useState<string>('0.00');
-
-    const formattedBalanceStr = React.useMemo(() => {
-        if (balanceData && !!balanceData.value) {
-            return formatUnits(balanceData.value, 18);
-        }
-        return '0.00';
-    }, [userAddr , balanceData]);
-
-    const [ isTxLoading, setIsTxLoading ] = React.useState<boolean>(false);
-    const [ currentTxType, setCurrentTxType ] = React.useState<txType>('Withdraw');
-    const [ modalTitle, setModalTitle ] = React.useState<string>('Withdraw');
-    const [ currentAddress, setCurrentAddress ] = React.useState<string>('');
-    const [ currentFromAddress, setCurrentFromAddress ] = React.useState<string>('');
-    const [ currentItem , setCurrentItem ] = React.useState<any>({});
-    const [ currentFromItem , setCurrentFromItem ] = React.useState<any>({});
-    const [ currentAmount, setCurrentAmount ] = React.useState<string>('');
-    const [ transactionStage , setTransactionStage ] = React.useState<string>('edit'); // 'edit' | 'submitting' | 'success' | ' .... '
-    const { data: walletClient } = useWalletClient();
-    const publicClient = usePublicClient();
-    const { sendTransactionAsync } = useSendTransaction();
-    const [ transactionHash, setTransactionHash ] = React.useState<string>('');
-    const [ extraDescription, setExtraDescription ] = React.useState<string | null>(null);
-
-    const signAndSend = async ( amount :string, unsignedTx: unsignedTx | null | undefined ) => {
-
-        if (!unsignedTx) throw new Error('Unsigned transaction null or undefined');
-
-        if (!walletClient) throw new Error('Wallet client not found')
-        if (!publicClient) throw new Error('Public client not found')
-
-        const _unsignedTx = {
-            to: unsignedTx.to as `0x${string}`,
-            data: unsignedTx.data as `0x${string}`,
-            value: currentTxType === 'Stake' ? parseUnits(amount, 18) : BigInt(0),
-            gas: BigInt(unsignedTx.gasLimit),
-            gasPrice: parseUnits('20', 'gwei'),
-        }
-
-        const txHash = await sendTransactionAsync(_unsignedTx);
-
-        return txHash;
-    }
-    
-
-    const sendTxHashToServer  = React.useCallback(async (txHash: string, param: any) => {
-        if (!txHash) return;
-        const _newParam = {
-            ...param,
-            txHash: txHash
-        }
-        const res = await (await fetch(url + '/api/staking/broadcast', {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body:  JSON.stringify(_newParam),
-        })).json() as  any;
-    } , [url]);
-
-
-    const handleSubmit = React.useCallback(async (targetAddress: string, txType: string, amount: string, from?: string) => {
-        let param = null;
-        let apiPath = null;
-        if (txType === 'ClaimAll' || txType === 'Compound-Claim') {
-            param = {
-                "address": userAddr,
-                "stakingType": "ClaimAll"
-            };
-            apiPath = '/api/staking/distribution/prepare/claim-all';
-        } else if (txType === 'Compound-Stake') {
-            param = {
-                "address": userAddr,
-                "validatorAddress": targetAddress,
-                "amount": amount,
-                "stakingType": currentTxType
-            };
-            apiPath = '/api/staking/prepare/stake';
-        }
-        setTransactionStage('submitting');
-
-        if (txType === 'Compound-Claim') {
-            try {
-                setIsTxLoading (true);
-                const res = await (await fetch(url + apiPath, {
-                        method: 'post',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body:  JSON.stringify(param),
-                    })).json() as  any;
-                if(res && res.code === 200) {
-                    if(res.data && res.data.unsignedTx) {
-                        const { unsignedTx } = res.data;
-                        signAndSend(amount , unsignedTx).then((txHash: string) => {
-                            setTransactionStage('edit');
-                            setCurrentAddress('');
-                            setCurrentItem({});
-                            setCurrentTxType('Compound-Stake');
-                            setExtraDescription(null);
-                            setModalTitle('Compounding');
-                            setCurrentAmount("0.00");
-                            setAvailableAmount(formattedBalanceStr);
-                            sendTxHashToServer(txHash, param);
-                        }).catch((error: any) => {
-                            console.error('Error signing transaction:', error);
-                        }).finally(() => {
-                            setIsTxLoading (false);
-                        });
-                    }
-                } else {
-                    setTransactionStage('error');
-                    setIsTxLoading (false);
-                }
-            } catch (error: any) {
-                setIsTxLoading (false);
-                setTransactionStage('error');
-            } 
-            
-        } else {
-        
-            try {
-                setIsTxLoading (true);
-                const res = await (await fetch(url + apiPath, {
-                        method: 'post',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body:  JSON.stringify(param),
-                    })).json() as  any;
-                if(res && res.code === 200) {
-                    if(res.data && res.data.unsignedTx) {
-                        const { unsignedTx } = res.data;
-                        signAndSend(amount , unsignedTx).then((txHash: string) => {
-                            setTransactionHash(txHash);
-                            setTransactionStage('success');
-                            sendTxHashToServer(txHash, param);
-                        }).catch((error: any) => {
-                            setTransactionStage('error');
-                            console.error('Error signing transaction:', error);
-                        }).finally(() => {
-                            setIsTxLoading (false);
-                        });
-                    }
-                } else {
-                    setTransactionStage('error');
-                    setIsTxLoading (false);
-                }
-            } catch (error: any) {
-                setIsTxLoading (false);
-                setTransactionStage('error');
-            } 
-        }
-    }, [ url , currentTxType,  userAddr]);
-
-    const handleClaimAll = React.useCallback(() => {
-        setCurrentAddress("0x1234");
-        setCurrentTxType('ClaimAll');
-        setModalTitle('Claim All');
-        setCurrentAmount(Number(String(claimableRewards)).toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 }));
-        setAvailableAmount(String(claimableRewards));
-        onOpen();
-    }, [claimableRewards]);
-
-    const handleCompound = React.useCallback(() => {
-        setCurrentAddress("0x1234");
-        setCurrentTxType('Compound-Claim');
-        setExtraDescription('Please claim your reward before proceeding.');
-        setModalTitle('Compounding');
-        setCurrentAmount("0.00");
-        setAvailableAmount(String(claimableRewards ));
-        onOpen();
-    }, [claimableRewards]);
-    // claim all/  compond ,   general claimable 
-
-    const handleStakeMore = () => {
-        setCurrentTxType('ChooseStake');
-        setModalTitle('Stake More');
-        setCurrentAmount("0.00");
-        setCurrentItem({});
-        setAvailableAmount(formattedBalanceStr);
-        onOpen();
-    }
-
-    const handleCloseModal = () => {
-        onClose();
-        setExtraDescription(null);
-    }
-    
 
     return (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 2fr' }} 
@@ -439,7 +287,7 @@ const StakingInfo = ({
                             isWrapper={true}
                             hide={isHideNumber}
                         />
-                        <Flex alignItems="center" mt={4} justifyContent="flex-start" gap={6}>
+                        <Flex alignItems="center" mt={4} justifyContent="flex-start" gap={"12px"}>
                             <PlainButton 
                                 text="Claim all"
                                 onClick={ handleClaimAll }
@@ -527,6 +375,7 @@ const StakingInfo = ({
                     txhash= { transactionHash }
                     isSubmitting = { isTxLoading }
                     currentAmount = { currentAmount }
+                    setCurrentItem = { setCurrentItem }
                     setCurrentAmount = { setCurrentAmount }
                     currentAddress = { currentAddress }
                     setCurrentFromItem = { setCurrentFromItem }
@@ -535,7 +384,6 @@ const StakingInfo = ({
                     currentFromItem = { currentFromItem }
                     currentFromAddress = { currentFromAddress }
                     setCurrentFromAddress = { setCurrentFromAddress }
-                    setCurrentItem = { setCurrentItem }
                 />
             </Box>
         </Grid>

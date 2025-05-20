@@ -11,6 +11,7 @@ const initialState = {
     loginFunction: async (address: string, token: string) => {},
     logoutFunction: async () => {},
     tokenPrice: 0,
+    serverUrl: 'https://devzk-staking.bitkinetic.com',
     setTokenPrice: (price: number) => {},
 };
 
@@ -22,8 +23,8 @@ export function StakeLoginContextProvider(props: any) {
     const [ isPendingSignature, setIsPendingSignature ] = React.useState(false);
     const [ token, setToken ] = React.useState(initialState.token);
     const [ address, setAddress ] = React.useState(initialState.address);
-    const [ tokenPrice, setTokenPrice ] = React.useState("0");
-
+    const [ tokenPrice, setTokenPrice ] = React.useState("0")
+    const [ serverUrl, setServerUrl ] = React.useState('https://devzk-staking.bitkinetic.com');
 
 
     const loginFunction = async (address: string, token: string) => {
@@ -31,6 +32,7 @@ export function StakeLoginContextProvider(props: any) {
         setToken(token);
         setAddress(address);
     };
+
     const logoutFunction = async () => {
         setIsAuthenticated(false);
         setToken('');
@@ -50,8 +52,9 @@ export function StakeLoginContextProvider(props: any) {
         logoutFunction,
         tokenPrice,
         setTokenPrice,
+        serverUrl,
     }), [
-      isAuthenticated, isPendingSignature, token, address, tokenPrice,
+        isAuthenticated, isPendingSignature, token, address, tokenPrice,
     ]);
     return (
         <AppContext.Provider value={ value }>

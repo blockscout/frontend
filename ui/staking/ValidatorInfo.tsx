@@ -28,16 +28,28 @@ const ValidatorInfo = ({
             justifyContent="center"
             alignItems="center"
             width="auto"
-            gap="8px"
         >
             <Avatar
                 name="Validator Name"
-                src="https://bit.ly/broken-link"
+                src="/static/moca-brand.svg"
                 size='2xs'
+                width="20px"
+                height="20px"
                 borderRadius="full"
-                marginRight="8px"
+                marginRight="4px"
             />
-            <Text fontSize="16px" fontWeight="bold"> { getShortAddress(validatorName) } </Text>
+            <Text 
+                fontSize="14px"
+                fontWeight="500"
+                textAlign={"left"}
+                color="rgba(0, 0, 0)"
+                fontStyle="normal"
+                fontFamily="HarmonyOS Sans"
+                lineHeight="normal"
+                textTransform="capitalize"
+                userSelect="none"
+                as ="span"
+            > { getShortAddress(validatorName) } </Text>
         </Flex>
     )
 }

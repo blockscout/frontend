@@ -32,8 +32,8 @@ const PlainButton = ({text,  onClick,  disabled = false , width = '142px'}: {
             borderRadius={9999}
         >
             <Text 
-                fontSize="12px"
-                fontWeight="400"
+                fontSize="14px"
+                fontWeight="500"
                 lineHeight="normal"
                 color = {'white' }
                 fontFamily="HarmonyOS Sans"
@@ -56,21 +56,21 @@ const CancelBtn = ({text,  onClick,  disabled = false , width = '142px'}: {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            _hover={{ backgroundColor: "#FFCBEC" , opacity: 0.9 }}
+            _hover={{ backgroundColor: "rgba(0, 0, 0, 0.10)" , opacity: 0.9 }}
             width={ width }
             height={ '40px' }
             variant='solid'
             flexShrink={ 0 }
             padding = { '0 20px' }
-            backgroundColor = { disabled ? '#FFCBEC' : '#FF57B7' }
+            backgroundColor = { disabled ? 'rgba(0, 0, 0, 0.07)' : 'rgba(0, 0, 0, 0.10)' }
             cursor={ disabled ? 'not-allowed' : 'pointer' }
             borderRadius={9999}
         >
             <Text 
-                fontSize="12px"
-                fontWeight="400"
+                fontSize="14px"
+                fontWeight="500"
                 lineHeight="normal"
-                color = {'white' }
+                color = {'rgba(0, 0, 0, 0.60)' }
                 fontFamily="HarmonyOS Sans"
             >{ text }</Text>
         </Button>
@@ -91,11 +91,12 @@ const SuccessfulContent = ({
 
     const router = useRouter();
 
-    const handleViewTransaction = React.useCallback(() => {
+    const handleViewTransaction = () => {
+        console.log('handleViewTransaction', txhash);
         if (txhash) {
             router.push({ pathname: '/tx/[hash]', query: { hash: txhash } });
         }
-    }, [ txhash, router ]);
+    };
 
     return (
         <Flex

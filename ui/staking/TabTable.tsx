@@ -10,7 +10,11 @@ import DatePicker from './DatePickerFilter';
 import React from 'react';
 
 
-const App = () => {
+const App = ({
+    handleStake,
+}: {
+    handleStake: () => void;
+}) => {
     const [ searchTerm, setSearchTerm ] = React.useState<string>('');
     const [ isInitialLoading, setIsInitialLoading ] = React.useState<boolean>(false);
 
@@ -94,11 +98,13 @@ const App = () => {
                 <TabPanel>
                     <MyValidatorsTable 
                         searchTerm={ searchTerm }
+                        handleStake={ handleStake }
                     />
                 </TabPanel>
                 <TabPanel>
                     <ActivityListTable 
                         selectDateRange={ selectDateRange }
+                        handleStake={ handleStake }
                     />
                 </TabPanel>
             </TabPanels>

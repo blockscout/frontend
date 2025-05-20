@@ -14,11 +14,12 @@ const TableTokenAmount = ({
             fontWeight: 500,
             lineHeight: 'normal',
             width: '100%',
-            textTransform: 'capitalize'
+            textTransform: 'capitalize',
+            textAlign: 'center',
         }}
     >
         <span>{ Number(amount).toLocaleString('en-US') }</span>
-        <span style={{ color: '#000', marginLeft: '4px' , marginRight: '80px'}}>{ symbol }</span>
+        <span style={{ color: '#000', marginLeft: '4px' }}>{ symbol }</span>
     </span>
     );
 }

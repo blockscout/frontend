@@ -12,7 +12,9 @@ import HeadsUpInfo from 'ui/staking/HeadsUpInfo';
 import StakingValidatorSelect from 'ui/staking/StakingValidatorSelect';
 import WithTextWrapper from 'ui/staking/WithTextWrapper';
 import FromAndToSelect from 'ui/staking/FromAndToSelect';
+import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import React from 'react';
+import axios from 'axios';
 
 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
@@ -32,6 +34,7 @@ const CommonModal = ({
     transactionStage,
     extraDescription = null,
     currentItem,
+    currentApr,
     currentFromItem,
     currentAddress,
     currentFromAddress,
@@ -50,15 +53,16 @@ const CommonModal = ({
     onSubmit: (targetAddress: string, txType: string, amount: string, target?: string) => void;
     onOpen: () => void;
     currentAmount: string;
+     transactionStage: string;
     setCurrentAmount: (value: string) => void;
     currentTxType: txType;
-    transactionStage: string;
     availableAmount: string;
     setAvailableAmount: (value: string) => void;
     extraDescription?: string | null;
     currentAddress?: string;
     currentItem?: any;
     currentToItem?: any;
+    currentApr?: string;
     currentFromItem?: any;
     currentFromAddress?: string;
     setCurrentAddress: (value: string) => void;
@@ -72,6 +76,19 @@ const CommonModal = ({
 
     const [ loading, setLoading ] = React.useState<boolean>(false);
 
+    const [ apr , setApr ] = React.useState<string | number>("0.00");
+
+    const handleSetApr = (value: string | number) => {
+        console.log('handleSetApr', value);
+        setApr(value);
+    }
+
+    React.useEffect(() => {
+        if( currentApr ) {
+            setApr(currentApr);
+        }
+    }, [ currentApr ]);
+
     const [ myValidatorsList, setMyValidatorsList ] = React.useState<any[]>([]);
     const [ allValidatorsList, setAllValidatorsList ] = React.useState<any[]>([]);
 
@@ -84,8 +101,8 @@ const CommonModal = ({
     }
     , [ transactionStage ]);
 
-    const url = "http://192.168.0.97:8080";
-
+    const { serverUrl : url } = useStakeLoginContextValue();
+    
     const selectable = React.useMemo(() => {
         if (currentTxType === 'ChooseStake' || currentTxType === 'MoveStake' || currentTxType === 'Compound-Stake') {
             return true;
@@ -104,12 +121,24 @@ const CommonModal = ({
             const param = new URLSearchParams();
             param.append('limit', '100');
             param.append('address', (userAddr || '').toLowerCase());
-            const res = await (await fetch(url + '/api/me/staking/delegations?' + param.toString(), {
-                method: 'get',
+            // const res = await (await fetch(url + '/api/me/staking/delegations?' + param.toString(), {
+            //     method: 'get',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            // })).json() as  any;
+            const res = await axios.get(url + '/api/me/staking/delegations?' + param.toString(), {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-            })).json() as  any;
+                timeout: 10000,
+            }).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                console.error('Error fetching data:', error);
+                return null;
+            });
+            setLoading(false);
             if(res && res.code === 200) {
                 const _temp = (res.data.validators || []).map((item: any) => {
                     return {
@@ -131,12 +160,22 @@ const CommonModal = ({
             setLoading(true);
             const param = new URLSearchParams();
             param.append('limit', '100');
-            const res = await (await fetch(url + '/api/network/validators/list' + '?' + param.toString(), {
+            // const res = await (await fetch(url + '/api/network/validators/list' + '?' + param.toString(), {
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            // })).json() as  any;
+            const res = await axios.get(url + '/api/network/validators/list' + '?' + param.toString(), {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-            })).json() as  any;
-            setLoading(false);
+                timeout: 10000,
+            }).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                console.error('Error fetching data:', error);
+                return null;
+            });
             if(res && res.code === 200) {
                 const _temp = (res.data.validators || []).map((item: any) => {
                     return {
@@ -257,10 +296,9 @@ const CommonModal = ({
                                         ( currentTxType === 'MoveStake' ) ? (
                                                 <FromAndToSelect
                                                     FromItem = { currentItem }
-
                                                     currentToItem = { currentToItem }
                                                     setCurrentToItem = { setCurrentToItem }
-                                                    
+                                                    setApr = { handleSetApr }
                                                     setCurrentFromAddress = { setCurrentFromAddress }
                                                     setCurrentToAddress = { setCurrentToAddress }
                                                     myValidatorsList = { myValidatorsList }
@@ -272,6 +310,7 @@ const CommonModal = ({
                                                         isOpen={ isPopOverOpen }
                                                         onToggle={ handlePopOverToggle }
                                                         onClose={ handlePopOverClose }
+                                                        setApr = { handleSetApr }
                                                         myValidatorsList={ myValidatorsList }
                                                         allValidatorsList={ allValidatorsList }
                                                         selectedValidator={ currentItem }
@@ -309,7 +348,8 @@ const CommonModal = ({
                                         currentTxType !== 'Withdraw' && (
                                             <Box width="100%" height="auto">
                                                 <EarnInfoBox 
-                                                    apr = { "0.00" }
+                                                    amount = { currentAmount }
+                                                    apr = { apr }
                                                 />
                                             </Box>
                                         )
@@ -320,7 +360,7 @@ const CommonModal = ({
                                             <Box width="100%" height="auto">
                                                 <HeadsUpInfo
                                                     label="Heads Up"
-                                                    value="You will be charged a 10% fee on your earnings."
+                                                    value="It takes 1 days to receive MOCA after you withdraw."
                                                 />
                                             </Box>
                                         )

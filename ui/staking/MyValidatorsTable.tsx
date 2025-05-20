@@ -9,9 +9,10 @@ import StatusButton from 'ui/validators/StatusButton';
 import WithTipsText from 'ui/validators/WithTipsText';
 import ActionButtonGroup  from 'ui/staking/ActionButtonGroup';
 import Pagination from 'ui/validators/Pagination';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
+import axios from 'axios';
 import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import { formatUnits } from 'viem';
+import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import FloatToPercent from 'ui/validators/FloatToPercent';
 import { toBigInt , parseUnits} from 'ethers';
 import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
@@ -182,6 +183,7 @@ const TableApp = (props: {
     onJumpPrevPage: () => void;
     onJumpNextPage: () => void;
     nextKey: string | null;
+    handleStake: () => void;
 }) => {
 
     const {
@@ -191,7 +193,8 @@ const TableApp = (props: {
         onJumpPrevPage,
         onJumpNextPage,
         totalCount,
-        nextKey
+        nextKey,
+        handleStake: handleStakeMore,
     } = props;
 
     const [sortBy, setSortBy] = React.useState<string>('');
@@ -221,6 +224,8 @@ const TableApp = (props: {
     const { data: walletClient } = useWalletClient();
     const publicClient = usePublicClient();
 
+    const [ apr , setApr ] = React.useState<string>('0.00');
+
     const [ targetValidatorAddress, setTargetValidatorAddress ] = React.useState<string>('');
     const [ targetValidator, setTargetValidator ] = React.useState<any>({});
 
@@ -235,7 +240,7 @@ const TableApp = (props: {
         onClose();
     }
 
-    const url = "http://192.168.0.97:8080";
+    const { serverUrl : url } = useStakeLoginContextValue();
 
     const sendTxHashToServer  = React.useCallback(async (txHash: string, param: any) => {
         if (!txHash) return;
@@ -243,13 +248,21 @@ const TableApp = (props: {
             ...param,
             txHash: txHash
         }
-        const res = await (await fetch(url + '/api/staking/broadcast', {
-            method: 'post',
+        // const res = await (await fetch(url + '/api/staking/broadcast', {
+        //     method: 'post',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body:  JSON.stringify(_newParam),
+        // })).json() as  any;
+        const res = await axios.post(url + '/api/staking/broadcast', _newParam, {
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body:  JSON.stringify(_newParam),
-        })).json() as  any;
+            }
+        }).then((response) => response.data).catch((error) => {
+            console.error('Error fetching data:', error);
+            return null;
+        });
     } , [url]);
 
     const { address: userAddr } = useAccount();
@@ -279,6 +292,7 @@ const TableApp = (props: {
         setCurrentAmount("0.00");
         setAvailableAmount(formattedBalanceStr);
         setModalTitle('Stake');
+        setApr(record.liveAPR);
         setCurrentTxType('Stake');
         onOpen();
     };  
@@ -399,13 +413,21 @@ const TableApp = (props: {
 
         try {
             setIsTxLoading (true);
-            const res = await (await fetch(url + apiPath, {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body:  JSON.stringify(param),
-                })).json() as  any;
+            // const res = await (await fetch(url + apiPath, {
+            //         method: 'post',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
+            //         body:  JSON.stringify(param),
+            //     })).json() as  any;
+            const res = await axios.post(url + apiPath, param, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => response.data).catch((error) => {
+                console.error('Error fetching data:', error);
+                return null;
+            });
             if(res && res.code === 200) {
                 if(res.data && res.data.unsignedTx) {
                     const { unsignedTx } = res.data;
@@ -580,13 +602,35 @@ const TableApp = (props: {
 
     const { isConnected: WalletConnected } = useAccount();
 
+    const noStake = false;
+
     if (!WalletConnected) {
         return (
             <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
                 <EmptyPlaceholder
-                    tipsTextArray={ ['Looks like you haven’t staked yet. Choose a ', 'validator to get started.'] }
-                    showButton={ true }
+                    tipsTextArray={ ['Your Stake information will appear here'] }
+                    showButton={ "connect" }
                     buttonText={ 'Connect Wallet' }
+                />
+            </div>
+        );
+    } else if (noStake) {
+        return (
+            <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
+                <EmptyPlaceholder
+                    tipsTextArray={ [`Looks like you haven’t staked yet. Choose a`, 'validator to get started.'] }
+                    showButton={ true }
+                    buttonText={ 'Stake' }
+                    buttonOnClick={ handleStakeMore }
+                />
+            </div>
+        );
+    } else if ( data.length === 0) {
+        return (
+            <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
+                <EmptyPlaceholder
+                    tipsTextArray={ [`No matching records.` ] }
+                    showButton={ false }
                 />
             </div>
         );
@@ -618,7 +662,7 @@ const TableApp = (props: {
                         { tableHeaders }
                     </Thead>
                     <Tbody>
-                        {sortedData.map((validator: any, index: number) => (
+                        { sortedData.map((validator: any, index: number) => (
                             <Tr key={index}
                                 borderBottom={'none'}
                                 _last={{ borderBottom: 'none' }} 
@@ -645,6 +689,7 @@ const TableApp = (props: {
                 isOpen = { isOpen }
                 onClose = { handleCloseModal }
                 title = { modalTitle}
+                currentApr={ apr }
                 transactionStage = { transactionStage }
                 currentTxType = { currentTxType }
                 availableAmount = { availableAmount }
@@ -694,12 +739,14 @@ const defaultLimit = 15;
 
 
 const TableWrapper = ({
-    searchTerm
+    searchTerm,
+    handleStake
 }: {
     searchTerm: string;
+    handleStake: () => void;
 }) => {
 
-    const url = "http://192.168.0.97:8080";
+    const { serverUrl : url } = useStakeLoginContextValue();
 
     const { address: userAddr } = useAccount();
     const [ toNext, setToNext ] = React.useState<boolean>(true);
@@ -750,12 +797,20 @@ const TableWrapper = ({
             param.append('limit', defaultLimit.toString());
             param.append('nextKey', queryParams.nextKey || initial_nextKey);
             param.append('address', (_addr || '').toLowerCase());
-            const res = await (await fetch(url + '/api/me/staking/delegations' + '?' + param.toString(),
-                { method: 'get' })).json() as any
+            // const res = await (await fetch(url + '/api/me/staking/delegations' + '?' + param.toString(),
+            //     { method: 'get' })).json() as any
+            const res = await axios.get(url + '/api/me/staking/delegations' + '?' + param.toString(), {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => response.data).catch((error) => {
+                console.error('Error fetching data:', error);
+                return null;
+            });
             setIsTableLoading(false);
             if(res && res.code === 200) {
                 setTableData(res.data.validators || []);
-                setTotalCount(res.data.pagination.total);
+                setTotalCount(Number(res.data.pagination.total || "0"))
                 setNextKey(res.data.pagination.nextKey);
                 setCurrentPage( queryParams.page || 1 );
             }
@@ -788,6 +843,7 @@ const TableWrapper = ({
                 isLoading={ isTableLoading }
                 totalCount={ totalCount }
                 currentPage={ currentPage }
+                handleStake={ handleStake }
                 onJumpPrevPage={ () => {
                     setToNext(false);
                     updateQueryParams({ nextKey: nextKey, page: currentPage - 1 });
