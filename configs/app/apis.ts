@@ -4,12 +4,12 @@ import { stripTrailingSlash } from 'toolkit/utils/url';
 
 import { getEnvValue } from './utils';
 
-interface ApiPropsBase {
+export interface ApiPropsBase {
   endpoint: string;
   basePath?: string;
 }
 
-interface ApiPropsFull extends ApiPropsBase {
+export interface ApiPropsFull extends ApiPropsBase {
   host: string;
   protocol: string;
   port?: string;

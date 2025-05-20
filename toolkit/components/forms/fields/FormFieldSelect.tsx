@@ -8,7 +8,7 @@ import type { SelectProps } from '../../../chakra/select';
 import { Select } from '../../../chakra/select';
 import { getFormFieldErrorText } from '../utils/getFormFieldErrorText';
 
-type Props<
+export type FormFieldSelectProps<
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
 > = FormFieldPropsBase<FormFields, Name> & SelectProps;
@@ -16,14 +16,15 @@ type Props<
 const FormFieldSelectContent = <
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
->(props: Props<FormFields, Name>) => {
-  const { name, rules, size = 'lg', ...rest } = props;
+>(props: FormFieldSelectProps<FormFields, Name>) => {
+  const { name, rules, size = 'lg', controllerProps, ...rest } = props;
 
   const { control } = useFormContext<FormFields>();
   const { field, fieldState, formState } = useController<FormFields, typeof name>({
     control,
     name,
     rules,
+    ...controllerProps,
   });
 
   const isDisabled = formState.isSubmitting;
