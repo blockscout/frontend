@@ -10,8 +10,10 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PoolEntity from 'ui/shared/entities/pool/PoolEntity';
+import HashStringShorten from 'ui/shared/HashStringShorten';
 
 type Props = {
   item: Pool;
@@ -37,13 +39,20 @@ const PoolsTableItem = ({
           </Skeleton>
           <Box overflow="hidden">
             <PoolEntity pool={ item } fontWeight={ 700 } mb={ 2 } isLoading={ isLoading }/>
-            <AddressEntity
-              address={{ hash: item.contract_address }}
-              noIcon
-              isLoading={ isLoading }
-              truncation="constant_long"
-              linkVariant="secondary"
-            />
+            { item.is_contract ? (
+              <AddressEntity
+                address={{ hash: item.pool_id }}
+                noIcon
+                isLoading={ isLoading }
+                truncation="constant_long"
+                linkVariant="secondary"
+              />
+            ) : (
+              <Flex color="text.secondary" alignItems="center">
+                <HashStringShorten hash={ item.pool_id } type="long"/>
+                <CopyToClipboard text={ item.pool_id }/>
+              </Flex>
+            ) }
           </Box>
         </Flex>
       </TableCell>
