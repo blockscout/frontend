@@ -167,12 +167,12 @@ const EmptyPlaceholder = ({
                                     <PopoverContent w="235px">
                                     <PopoverBody>
                                         <UserWalletMenuContent
-                                        address={ web3AccountWithDomain.address }
-                                        domain={ web3AccountWithDomain.domain }
-                                        isAutoConnectDisabled={ isAutoConnectDisabled }
-                                        isReconnecting={ web3Wallet.isReconnecting }
-                                        onOpenWallet={ handleOpenWalletClick }
-                                        onDisconnect={ handleDisconnectClick }
+                                            address={ web3AccountWithDomain.address }
+                                            domain={ web3AccountWithDomain.domain }
+                                            isAutoConnectDisabled={ isAutoConnectDisabled }
+                                            isReconnecting={ web3Wallet.isReconnecting }
+                                            onOpenWallet={ handleOpenWalletClick }
+                                            onDisconnect={ handleDisconnectClick }
                                         />
                                     </PopoverBody>
                                     </PopoverContent>
