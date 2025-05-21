@@ -1,0 +1,6 @@
+.stake-date-picker .ant-picker-range-separator{
+    padding: 0 10px 0 0;
+    margin-left: -2px;
+}
+
+.stake-date-picker  .ant-picker-input { text-align: center;}

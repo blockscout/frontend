@@ -23,6 +23,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/address/[hash]/contract-verification", { "hash": string }>
     | DynamicRoute<"/address/[hash]", { "hash": string }>
     | StaticRoute<"/advanced-filter">
+    | StaticRoute<"/all-validators">
     | StaticRoute<"/api/auth/callback/discord">
     | StaticRoute<"/api/auth/session">
     | StaticRoute<"/api/config">
@@ -36,15 +37,15 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/proxy">
     | StaticRoute<"/api/sprite">
     | StaticRoute<"/api-docs">
-    | StaticRoute<"/apps">
     | DynamicRoute<"/apps/[id]", { "id": string }>
+    | StaticRoute<"/apps">
     | StaticRoute<"/auth/profile">
-    | StaticRoute<"/batches">
     | DynamicRoute<"/batches/[number]", { "number": string }>
+    | StaticRoute<"/batches">
     | DynamicRoute<"/blobs/[hash]", { "hash": string }>
-    | StaticRoute<"/block/countdown">
-    | DynamicRoute<"/block/countdown/[height]", { "height": string }>
     | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
+    | DynamicRoute<"/block/countdown/[height]", { "height": string }>
+    | StaticRoute<"/block/countdown">
     | StaticRoute<"/blocks">
     | DynamicRoute<"/bucket-details/[address]", { "address": string }>
     | StaticRoute<"/bucket">
@@ -61,15 +62,16 @@ declare module "nextjs-routes" {
     | StaticRoute<"/issuance">
     | StaticRoute<"/login">
     | StaticRoute<"/mud-worlds">
-    | StaticRoute<"/name-domains">
+    | StaticRoute<"/my-staking">
     | DynamicRoute<"/name-domains/[name]", { "name": string }>
+    | StaticRoute<"/name-domains">
     | DynamicRoute<"/object-details/[address]", { "address": string }>
     | StaticRoute<"/object">
     | DynamicRoute<"/op/[hash]", { "hash": string }>
     | StaticRoute<"/ops">
     | StaticRoute<"/output-roots">
-    | StaticRoute<"/pools">
     | DynamicRoute<"/pools/[hash]", { "hash": string }>
+    | StaticRoute<"/pools">
     | StaticRoute<"/public-tags/submit">
     | StaticRoute<"/search-results">
     | StaticRoute<"/sprite">
@@ -82,6 +84,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/tx/[hash]", { "hash": string }>
     | StaticRoute<"/txs">
     | DynamicRoute<"/txs/kettle/[hash]", { "hash": string }>
+    | DynamicRoute<"/validator-detail/[addr]", { "addr": string }>
     | StaticRoute<"/validators">
     | StaticRoute<"/verification">
     | StaticRoute<"/verified-contracts">
