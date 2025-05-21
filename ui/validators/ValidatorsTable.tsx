@@ -265,7 +265,6 @@ const TableApp = (props: {
         }).then((response) => {
             return response.data;
         }).catch((error) => {
-            console.error(error);
             return null; 
         });
     } , [url]);
@@ -337,7 +336,6 @@ const TableApp = (props: {
             }).then((response) => {
                 return response.data;
             }).catch((error) => {
-                console.error(error);
                 return null; 
             });
             if(res && res.code === 200) {
@@ -349,7 +347,6 @@ const TableApp = (props: {
                         sendTxHashToServer(txHash, param);
                     }).catch((error: any) => {
                         setTransactionStage('error');
-                        console.error('Error signing transaction:', error);
                     }).finally(() => {
                         setIsTxLoading (false);
                     });

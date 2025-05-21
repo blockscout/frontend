@@ -169,7 +169,6 @@ const CommonModal = ({
             }).then((response) => {
                 return response.data;
             }).catch((error) => {
-                console.error('Error fetching data:', error);
                 return null;
             });
             setLoading(false);
@@ -207,7 +206,6 @@ const CommonModal = ({
             }).then((response) => {
                 return response.data;
             }).catch((error) => {
-                console.error('Error fetching data:', error);
                 return null;
             });
             if(res && res.code === 200) {

@@ -262,7 +262,6 @@ const TableApp = (props: {
                 'Content-Type': 'application/json',
             }
         }).then((response) => response.data).catch((error) => {
-            console.error('Error fetching data:', error);
             return null;
         });
     } , [url]);
@@ -395,7 +394,6 @@ const TableApp = (props: {
             apiPath = '/api/staking/distribution/prepare/claim';
         } else if (currentTxType === 'MoveStake') {
             if(!targetValidator || !targetValidator.validatorAddress) {
-                console.error('MoveStake targetValidator is null or undefined');
                 return;
             }
             param = {
@@ -430,7 +428,6 @@ const TableApp = (props: {
                     'Content-Type': 'application/json',
                 }
             }).then((response) => response.data).catch((error) => {
-                console.error('Error fetching data:', error);
                 return null;
             });
             if(res && res.code === 200) {
@@ -442,7 +439,6 @@ const TableApp = (props: {
                         sendTxHashToServer(txHash, param);
                     }).catch((error: any) => {
                         setTransactionStage('error');
-                        console.error('Error signing transaction:', error);
                     }).finally(() => {
                         setIsTxLoading (false);
                     });
@@ -810,7 +806,6 @@ const TableWrapper = ({
                     'Content-Type': 'application/json',
                 }
             }).then((response) => response.data).catch((error) => {
-                console.error('Error fetching data:', error);
                 return null;
             });
             setIsTableLoading(false);
