@@ -47,15 +47,13 @@ const init = () => {
   } catch (error) {}
 };
 
+init();
+
 interface Props {
   children: React.ReactNode;
 }
 
 const DefaultProvider = ({ children }: Props) => {
-
-  React.useEffect(() => {
-    init();
-  }, []);
 
   return (
     <WagmiProvider config={ wagmiConfig.config }>
@@ -71,11 +69,6 @@ const Web3ModalProvider = ({ children }: Props) => {
   React.useEffect(() => {
     setThemeMode(colorMode);
   }, [ colorMode, setThemeMode ]);
-
-  React.useEffect(() => {
-    init();
-  }, []);
-
   return (
     <DefaultProvider>
       { children }
