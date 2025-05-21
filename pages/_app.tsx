@@ -17,6 +17,7 @@ import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
 import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { SettingsContextProvider } from 'lib/contexts/settings';
+import { StakeLoginContextProvider } from 'lib/contexts/stakeLogin';
 import { growthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
 import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
@@ -30,6 +31,7 @@ import Layout from 'ui/shared/layout/Layout';
 import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
 
 import 'lib/setLocale';
+import './global.css';
 
 // import 'focus-visible/dist/focus-visible';
 
@@ -75,8 +77,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                         <RewardsContextProvider>
                           <MarketplaceContextProvider>
                             <SettingsContextProvider>
-                              { getLayout(<Component { ...pageProps }/>) }
-                              { config.features.rewards.isEnabled && <RewardsLoginModal/> }
+                              <StakeLoginContextProvider>
+                                { getLayout(<Component { ...pageProps }/>) }
+                                { config.features.rewards.isEnabled && <RewardsLoginModal/> }
+                              </StakeLoginContextProvider>
                             </SettingsContextProvider>
                           </MarketplaceContextProvider>
                         </RewardsContextProvider>

@@ -28,6 +28,8 @@ export function ad(): CspDev.DirectiveDescriptor {
       'v1.getittech.io',
       'ipapi.co',
       'http://154.48.244.46:9090/v1/graphql',
+      'http://192.168.0.97:8080',
+      'https://devzk-staking.bitkinetic.com',
       'https://testnet-storage.mechain.tech/v1/graphql',
       'https://devint-storage.mechain.tech/v1/graphql',
       'https://devzk-credential.bitkinetic.com',

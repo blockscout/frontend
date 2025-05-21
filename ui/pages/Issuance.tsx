@@ -12,6 +12,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 import { getEnvValue } from 'configs/app/utils';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
+
 type RequestType = {
   has_next: boolean;
   has_more: boolean;
