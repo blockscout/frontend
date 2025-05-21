@@ -31,7 +31,18 @@ const StakingModalNumberInput = ({
   const availableAmountNumber = Number(availableAmount.replace(/,/g, ''));
 
   const handleMaxClick = () => {
-    setValue(availableAmountNumber.toFixed(7).toString());
+    setValue(availableAmountNumber.toFixed(4).toString());
+  }
+
+  const limitDecimals = (input: HTMLInputElement) => {
+      const value = input.value;
+      // 匹配整数或最多4位小数
+      const match = value.match(/^(\d+)(\.\d{0,4})?/);
+      if (match) {
+        input.value = match[0];
+      } else {
+        input.value = '';
+      }
   }
 
   return (
@@ -42,11 +53,16 @@ const StakingModalNumberInput = ({
           height={'auto'}
           type={'number'}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => {
+            const input = e.target;
+            limitDecimals(input);
+            setValue(input.value);
+          }}
           style={{
             color: '#FF57B7 !important',
           }}
           borderRadius={'16px'}
+          onWheel={(e) => e.currentTarget.blur()}
           _placeholder={{
             fontFamily: "HarmonyOS Sans",
             fontSize: '40px',

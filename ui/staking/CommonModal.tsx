@@ -53,7 +53,7 @@ const CommonModal = ({
     onSubmit: (targetAddress: string, txType: string, amount: string, target?: string) => void;
     onOpen: () => void;
     currentAmount: string;
-     transactionStage: string;
+    transactionStage: string;
     setCurrentAmount: (value: string) => void;
     currentTxType: txType;
     availableAmount: string;
@@ -109,6 +109,7 @@ const CommonModal = ({
         }
         return false;
     }, [ currentTxType ]);
+    
 
     const { address: userAddr } = useAccount();
 
@@ -254,6 +255,7 @@ const CommonModal = ({
 
 
     const [ isPopOverOpen, setIsPopOverOpen ] = React.useState(false);
+    
     const handlePopOverOpen = () => {
         setIsPopOverOpen(true);
     }
@@ -263,6 +265,32 @@ const CommonModal = ({
     const handlePopOverToggle = () => {
         setIsPopOverOpen((prev) => !prev);
     }
+
+
+    const isInputAmountValid = React.useMemo(() => {
+        if (!currentAmount) {
+            return false;
+        }
+        return true;
+    }, [ currentAmount ]);
+
+    const isSelectedValidatorValid = React.useMemo(() => {
+        if (currentTxType === 'ChooseStake' || currentTxType === 'MoveStake' || currentTxType === 'Compound-Stake') {
+
+            if(!currentItem || !currentItem.validatorAddress) {
+                return false;
+            }
+            if(currentTxType === 'MoveStake' && currentToItem.validatorAddress === currentFromItem.validatorAddress) {
+                return false;
+            }
+        }
+
+        return true;
+    }, [ currentItem, currentTxType , currentFromItem , currentToItem ]);
+
+
+
+
     return (
         <StakingModal 
             isOpen={ isOpen }
@@ -376,7 +404,7 @@ const CommonModal = ({
                     cancelText="Cancel"
                     confirmText= { ConfirmBtnText }
                     isSubmitting={ isSubmitting }
-                    isDisabled={ false }
+                    isDisabled={ !(isInputAmountValid && isSelectedValidatorValid) || loading }
                 />
             </>
             )

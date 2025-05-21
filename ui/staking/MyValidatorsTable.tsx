@@ -328,7 +328,10 @@ const TableApp = (props: {
             validatorAddress: record.validatorAddress,
             liveApr: record.liveAPR,
         });
-        setCurrentItem(record);
+        setCurrentItem({
+            validatorAddress: record.validatorAddress,
+            liveApr: record.liveAPR,
+        });
         setTargetValidator({});
         setAvailableAmount(record.myStake);
         setCurrentAmount("0.00");

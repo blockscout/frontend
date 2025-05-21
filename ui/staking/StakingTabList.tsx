@@ -5,7 +5,7 @@ import {
 import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 import ValidatorInfo from 'ui/staking/ValidatorInfo';
-
+import EmptyRecords from 'ui/staking/EmptyRecords';
 
 
 
@@ -140,6 +140,7 @@ const StakingTabList = ({
                             maxHeight="300px"
                             overflowY="auto"
                         >
+                            { myValidatorsList.length === 0 && ( <EmptyRecords text="You haven't stake in a bonded Validators" /> )}
                             { myValidatorsList.map((validator) => (
                                 <Flex 
                                     key={validator.validatorAddress} 
@@ -208,6 +209,7 @@ const StakingTabList = ({
                             maxHeight="300px"
                             overflowY="auto"
                         >
+                            { allValidatorsList.length === 0 && ( <EmptyRecords text="No validators" /> )}
                             {allValidatorsList.map((validator) => (
                                 <Flex 
                                     key={validator.validatorAddress} 

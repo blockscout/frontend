@@ -44,9 +44,9 @@ const TabChart = ({
 
                 <TabPanels color="#000" >
                     <TabPanel>
-                        <p>
+                        <div>
                             <ValidatorChart />
-                        </p>
+                        </div>
                     </TabPanel>
                     <TabPanel>
                         <span>

@@ -18,7 +18,10 @@ const TableTokenAmount = ({
             textAlign: 'center',
         }}
     >
-        <span>{ Number(amount).toLocaleString('en-US') }</span>
+        <span>{ Number(amount).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }) }</span>
         <span style={{ color: '#000', marginLeft: '4px' }}>{ symbol }</span>
     </span>
     );

@@ -2,6 +2,18 @@
 import React from 'react';
 
 
+
+const amountFormat = (amount: string) => {
+    const v = Number(amount);
+    if (isNaN(v)) {
+        return amount;
+    }
+    return v.toLocaleString('en-US', {
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4,
+    });
+}
+
 const ReadOnlyInput = ({
     amount,
     price,
@@ -34,7 +46,7 @@ const ReadOnlyInput = ({
                         textAlign: 'left',
                     }}
                 >
-                    { amount }
+                    { amountFormat(amount) }
                 </span>
                 <div style={{
                     display: 'flex',
