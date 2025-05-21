@@ -7,6 +7,7 @@ import { route } from 'nextjs-routes';
 
 import { toBech32Address } from 'lib/address/bech32';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { useSettingsContext } from 'lib/contexts/settings';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -24,12 +25,15 @@ const getDisplayedAddress = (address: AddressProp, altHash?: string) => {
 };
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } });
+  const defaultHref = props.subchain ?
+    route({ pathname: '/subchain/[subchain-id]/address/[hash]', query: { ...props.query, hash: props.address.hash, 'subchain-id': props.subchain.id } }) :
+    route({ pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } });
 
   return (
     <EntityBase.Link
       { ...props }
       href={ props.href ?? defaultHref }
+      ml={ props.subchain ? 2 : 0 }
     >
       { props.children }
     </EntityBase.Link>
@@ -73,14 +77,15 @@ const Icon = (props: IconProps) => {
 
     return (
       <Tooltip content={ label.slice(0, 1).toUpperCase() + label.slice(1) } interactive={ props.tooltipInteractive }>
-        <span>
+        <Box position="relative">
           <EntityBase.Icon
             { ...props }
             name={ isProxy ? 'contracts/proxy' : contractIconName }
             color={ isVerified ? 'green.500' : undefined }
             borderRadius={ 0 }
           />
-        </span>
+          { props.subchain && <EntityBase.IconShield src={ props.subchain.icon } right="-1px"/> }
+        </Box>
       </Tooltip>
     );
   }
@@ -99,6 +104,7 @@ const Icon = (props: IconProps) => {
           hash={ getDisplayedAddress(props.address) }
         />
         { isDelegatedAddress && <AddressIconDelegated isVerified={ Boolean(props.address.is_verified) }/> }
+        { props.subchain && <EntityBase.IconShield src={ props.subchain.icon }/> }
       </Flex>
     </Tooltip>
   );
@@ -179,6 +185,7 @@ const AddressEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
   const highlightContext = useAddressHighlightContext(props.noHighlight);
   const settingsContext = useSettingsContext();
+  const multichainContext = useMultichainContext();
   const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
 
   // inside highlight context all tooltips should be interactive
@@ -197,8 +204,8 @@ const AddressEntity = (props: EntityProps) => {
       position="relative"
       zIndex={ 0 }
     >
-      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
+      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) } subchain={ multichainContext?.subchain }/>
+      { props.noLink ? content : <Link { ...partsProps.link } subchain={ multichainContext?.subchain }>{ content }</Link> }
       <Copy { ...partsProps.copy } altHash={ altHash } tooltipInteractive={ Boolean(highlightContext) }/>
     </Container>
   );

@@ -10,6 +10,7 @@ import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
@@ -66,6 +67,7 @@ const xScoreFeature = config.features.xStarScore;
 const AddressPageContent = () => {
   const router = useRouter();
   const appProps = useAppContext();
+  const { subchain } = useMultichainContext() || {};
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -413,11 +415,13 @@ const AddressPageContent = () => {
     </Flex>
   );
 
+  const subchainText = subchain ? ` on ${ subchain.name }` : '';
+
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details` }
+        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details${ subchainText }` }
         backLink={ backLink }
         contentAfter={ titleContentAfter }
         secondRow={ titleSecondRow }

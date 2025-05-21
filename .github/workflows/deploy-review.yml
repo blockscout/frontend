@@ -27,6 +27,7 @@ on:
             - neon_devnet
             - optimism
             - optimism_celestia
+            - optimism_multichain
             - optimism_sepolia
             - polygon
             - rari_testnet

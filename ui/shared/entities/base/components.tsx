@@ -2,6 +2,10 @@ import { chakra, Flex } from '@chakra-ui/react';
 import type { IconProps } from '@chakra-ui/react';
 import React from 'react';
 
+import type { SubchainConfig } from 'types/multichain';
+
+import type { ImageProps } from 'toolkit/chakra/image';
+import { Image } from 'toolkit/chakra/image';
 import type { LinkProps } from 'toolkit/chakra/link';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -58,9 +62,10 @@ const Container = chakra(({ className, children, ...props }: ContainerBaseProps)
 export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query'> {
   children: React.ReactNode;
   variant?: LinkProps['variant'];
+  subchain?: SubchainConfig;
 }
 
-const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, variant }: LinkBaseProps) => {
+const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, variant, ...rest }: LinkBaseProps) => {
   const styles = {
     display: 'inline-flex',
     alignItems: 'center',
@@ -79,6 +84,7 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, v
       external={ isExternal }
       onClick={ onClick }
       variant={ variant }
+      { ...rest }
     >
       { children }
     </LinkToolkit>
@@ -87,6 +93,7 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, v
 
 interface EntityIconProps extends Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> {
   name?: IconName;
+  subchain?: SubchainConfig;
 }
 
 export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant'>, EntityIconProps {}
@@ -108,6 +115,23 @@ const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRig
       color={ color ?? { _light: 'gray.500', _dark: 'gray.400' } }
       minW={ 0 }
       flexShrink={ 0 }
+    />
+  );
+};
+
+const IconShield = (props: ImageProps) => {
+  return (
+    <Image
+      position="absolute"
+      bottom="-5px"
+      right="-9px"
+      boxSize="18px"
+      borderRadius="full"
+      borderWidth="1px"
+      borderStyle="solid"
+      borderColor="global.body.bg"
+      backgroundColor="global.body.bg"
+      { ...props }
     />
   );
 };
@@ -210,6 +234,7 @@ export {
   Container,
   Link,
   Icon,
+  IconShield,
   Copy,
   Content,
 };

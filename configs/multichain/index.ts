@@ -8,7 +8,7 @@ const config = {
       explorer: {
         url: 'https://optimism-interop-alpha-0.blockscout.com',
       },
-      icon: 'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/shibarium-light.png',
+      icon: 'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/arbitrum-one-icon-light.svg',
       apis: {
         general: {
           endpoint: 'https://optimism-interop-alpha-0.blockscout.com',

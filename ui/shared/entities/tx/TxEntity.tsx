@@ -3,6 +3,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { distributeEntityProps } from '../base/utils';
@@ -10,7 +11,9 @@ import { distributeEntityProps } from '../base/utils';
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/tx/[hash]', query: { hash: props.hash } });
+  const defaultHref = props.subchain ?
+    route({ pathname: '/subchain/[subchain-id]/tx/[hash]', query: { hash: props.hash, 'subchain-id': props.subchain.id } }) :
+    route({ pathname: '/tx/[hash]', query: { hash: props.hash } });
 
   return (
     <EntityBase.Link
@@ -63,13 +66,14 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 }
 
 const TxEntity = (props: EntityProps) => {
+  const multichainContext = useMultichainContext();
   const partsProps = distributeEntityProps(props);
   const content = <Content { ...partsProps.content }/>;
 
   return (
     <Container { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
+      { props.noLink ? content : <Link { ...partsProps.link } subchain={ multichainContext?.subchain }>{ content }</Link> }
       <Copy { ...partsProps.copy }/>
     </Container>
   );

@@ -8,6 +8,7 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -45,6 +46,7 @@ const BlockPageContent = () => {
   const appProps = useAppContext();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
   const tab = getQueryParamString(router.query.tab);
+  const { subchain } = useMultichainContext() || {};
 
   const blockQuery = useBlockQuery({ heightOrHash });
   const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
@@ -135,15 +137,17 @@ const BlockPageContent = () => {
   }
 
   const title = (() => {
+    const subchainText = subchain ? ` on ${ subchain.name }` : '';
+
     switch (blockQuery.data?.type) {
       case 'reorg':
-        return `Reorged block #${ blockQuery.data?.height }`;
+        return `Reorged block #${ blockQuery.data?.height }${ subchainText }`;
 
       case 'uncle':
-        return `Uncle block #${ blockQuery.data?.height }`;
+        return `Uncle block #${ blockQuery.data?.height }${ subchainText }`;
 
       default:
-        return `Block #${ blockQuery.data?.height }`;
+        return `Block #${ blockQuery.data?.height }${ subchainText }`;
     }
   })();
 

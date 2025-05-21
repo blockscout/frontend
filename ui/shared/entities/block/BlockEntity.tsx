@@ -3,6 +3,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { distributeEntityProps } from '../base/utils';
@@ -11,7 +12,9 @@ type LinkProps = EntityBase.LinkBaseProps & Partial<Pick<EntityProps, 'hash' | '
 
 const Link = chakra((props: LinkProps) => {
   const heightOrHash = props.hash ?? String(props.number);
-  const defaultHref = route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash } });
+  const defaultHref = props.subchain ?
+    route({ pathname: '/subchain/[subchain-id]/block/[height_or_hash]', query: { height_or_hash: heightOrHash, 'subchain-id': props.subchain.id } }) :
+    route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash } });
 
   return (
     <EntityBase.Link
@@ -52,6 +55,7 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 }
 
 const BlockEntity = (props: EntityProps) => {
+  const multichainContext = useMultichainContext();
   const partsProps = distributeEntityProps(props);
 
   const content = <Content { ...partsProps.content }/>;
@@ -59,7 +63,7 @@ const BlockEntity = (props: EntityProps) => {
   return (
     <Container { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
+      { props.noLink ? content : <Link { ...partsProps.link } subchain={ multichainContext?.subchain }>{ content }</Link> }
     </Container>
   );
 };
