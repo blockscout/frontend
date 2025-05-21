@@ -16,7 +16,7 @@ import * as TokenEntity from '../token/TokenEntity';
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'pool'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/pools/[hash]', query: { hash: props.pool.contract_address } });
+  const defaultHref = route({ pathname: '/pools/[hash]', query: { hash: props.pool.pool_id } });
 
   return (
     <EntityBase.Link

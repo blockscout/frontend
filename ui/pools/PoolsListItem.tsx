@@ -6,8 +6,10 @@ import getPoolLinks from 'lib/pools/getPoolLinks';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PoolEntity from 'ui/shared/entities/pool/PoolEntity';
+import HashStringShorten from 'ui/shared/HashStringShorten';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 type Props = {
@@ -15,7 +17,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-const UserOpsListItem = ({ item, isLoading }: Props) => {
+const PoolsListItem = ({ item, isLoading }: Props) => {
   const externalLinks = getPoolLinks(item);
   return (
     <ListItemMobileGrid.Container gridTemplateColumns="100px auto">
@@ -25,10 +27,24 @@ const UserOpsListItem = ({ item, isLoading }: Props) => {
         <PoolEntity pool={ item } fontWeight={ 700 } isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Contract</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <AddressEntity address={{ hash: item.contract_address }} noIcon linkVariant="secondary" isLoading={ isLoading }/>
-      </ListItemMobileGrid.Value>
+      { item.is_contract && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Contract</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <AddressEntity address={{ hash: item.pool_id }} noIcon linkVariant="secondary" isLoading={ isLoading } truncation="constant_long"/>
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
+
+      { !item.is_contract && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Pool ID</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <HashStringShorten hash={ item.pool_id } type="long"/>
+            <CopyToClipboard text={ item.pool_id }/>
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Liquidity</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
@@ -52,4 +68,4 @@ const UserOpsListItem = ({ item, isLoading }: Props) => {
   );
 };
 
-export default UserOpsListItem;
+export default PoolsListItem;

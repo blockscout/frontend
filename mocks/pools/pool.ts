@@ -1,7 +1,8 @@
 import type { Pool } from 'types/api/pools';
 
 export const base: Pool = {
-  contract_address: '0x06da0fd433c1a5d7a4faa01111c044910a184553',
+  pool_id: '0x06da0fd433c1a5d7a4faa01111c044910a184553',
+  is_contract: true,
   chain_id: '1',
   base_token_address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
   base_token_symbol: 'USDT',

@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -17,9 +17,11 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
 import PoolInfo from 'ui/pool/PoolInfo';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as PoolEntity from 'ui/shared/entities/pool/PoolEntity';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import InfoButton from 'ui/shared/InfoButton';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import VerifyWith from 'ui/shared/VerifyWith';
@@ -38,9 +40,9 @@ const Pool = () => {
   });
 
   const addressQuery = useApiQuery('general:address', {
-    pathParams: { hash: data?.contract_address },
+    pathParams: { hash: data?.pool_id },
     queryOptions: {
-      enabled: Boolean(data?.contract_address),
+      enabled: Boolean(data?.is_contract),
       placeholderData: addressStubs.ADDRESS_INFO,
     },
   });
@@ -81,10 +83,27 @@ const Pool = () => {
       });
   }, [ externalLinks ]);
 
+  const poolIdOrContract = React.useMemo(() => {
+    if (data?.is_contract && addressQuery.data) {
+      return <AddressEntity address={ addressQuery.data } isLoading={ addressQuery.isPlaceholderData }/>;
+    } else if (data?.pool_id) {
+      return (
+        <Skeleton loading={ isPlaceholderData } display="flex" alignItems="center" overflow="hidden">
+          <Flex overflow="hidden">
+            <HashStringShortenDynamic hash={ data?.pool_id }/>
+          </Flex>
+          <CopyToClipboard text={ data?.pool_id }/>
+        </Skeleton>
+      );
+    }
+
+    return null;
+  }, [ data, isPlaceholderData, addressQuery.isPlaceholderData, addressQuery.data ]);
+
   const titleSecondRow = (
     <Flex alignItems="center" justifyContent="space-between" w="100%">
-      { addressQuery.data ? <AddressEntity address={ addressQuery.data } isLoading={ addressQuery.isPlaceholderData }/> : <Box/> }
-      <Flex gap={ 2 }>
+      { poolIdOrContract }
+      <Flex gap={ 2 } ml={ 2 }>
         <InfoButton>
           { `This Liquidity Provider (LP) token represents ${ data?.base_token_symbol }/${ data?.quote_token_symbol } pairing.` }
         </InfoButton>
