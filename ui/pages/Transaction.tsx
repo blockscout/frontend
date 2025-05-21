@@ -6,6 +6,7 @@ import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { publicClient } from 'lib/web3/client';
@@ -35,6 +36,7 @@ const rollupFeature = config.features.rollup;
 const TransactionPageContent = () => {
   const router = useRouter();
   const appProps = useAppContext();
+  const { subchain } = useMultichainContext() || {};
 
   const hash = getQueryParamString(router.query.hash);
   const txQuery = useTxQuery();
@@ -119,7 +121,7 @@ const TransactionPageContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title="Transaction details"
+        title={ subchain ? `Transaction details on ${ subchain.name }` : 'Transaction details' }
         backLink={ backLink }
         contentAfter={ tags }
         secondRow={ titleSecondRow }

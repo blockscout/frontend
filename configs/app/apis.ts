@@ -124,7 +124,7 @@ const visualizeApi = (() => {
   });
 })();
 
-type Apis = {
+export type Apis = {
   general: ApiPropsFull;
 } & Partial<Record<Exclude<ApiName, 'general'>, ApiPropsBase>>;
 
