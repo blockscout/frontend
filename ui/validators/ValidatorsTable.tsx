@@ -6,6 +6,7 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 import { route } from 'nextjs-routes';
 import React, { useEffect } from 'react';
 import { debounce, orderBy } from 'lodash';
+import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
 import StatusButton from 'ui/validators/StatusButton';
 import WithTipsText from 'ui/validators/WithTipsText';
 import StakeButton  from 'ui/validators/StakeButton';
@@ -173,6 +174,7 @@ const TableApp = (props: {
     isLoading: boolean;
     totalCount: number;
     currentPage: number;
+    searchTerm: string;
     onJumpPrevPage: () => void;
     onJumpNextPage: () => void;
     nextKey: string | null;
@@ -182,6 +184,7 @@ const TableApp = (props: {
         data,
         isLoading,
         currentPage,
+        searchTerm,
         onJumpPrevPage,
         onJumpNextPage,
         totalCount,
@@ -538,6 +541,40 @@ const TableApp = (props: {
     );
 
 
+    const { isConnected: WalletConnected } = useAccount();
+
+    const spinner = ( <div style={{ width: '100%', height: 'auto', display: 'flex', minHeight: '200px',
+            justifyContent: 'center', alignItems: 'center', marginTop: '56px', position: 'relative'}}>
+        <Box className={ styles.loader }></Box>
+    </div> );
+
+    if (!WalletConnected) {
+        return (
+            <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
+                <EmptyPlaceholder
+                    tipsTextArray={ ['Your Stake information will appear here'] }
+                    showButton={ "connect" }
+                    buttonText={ 'Connect Wallet' }
+                />
+            </div>
+        );
+    }
+    else if (isLoading) {
+        return spinner;
+    }
+    else if ( !!searchTerm && data.length === 0) {
+        return (
+            <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
+                <EmptyPlaceholder
+                    tipsTextArray={ [`No matching records.` ] }
+                    showButton={ false }
+                />
+            </div>
+        );
+    }
+    
+
+
     return (
         <div style={{
                 width: '100%',
@@ -554,41 +591,33 @@ const TableApp = (props: {
                 padding: '24px'
             }}
         >
-            { isLoading ? (
-                <div style={{ width: '100%', height: 'auto', 
-                    display: 'flex', minHeight: '200px',
-                        justifyContent: 'center', alignItems: 'center', marginTop: '56px', position: 'relative'}}>
-                    <Box className={ styles.loader }></Box>
-                </div>
-                ) : (
-                <Table variant="simple">
-                    <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
-                        { tableHeaders }
-                    </Thead>
-                    <Tbody>
-                        {sortedData.map((validator: any, index: number) => (
-                            <Tr key={index}
-                                borderBottom={'none'}
-                                _last={{ borderBottom: 'none' }} 
-                                _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
-                                onClick={() => handleRowClick(validator)}
-                            >
-                                { tableHead.map((item: tableHeadType, index: number) => (
-                                    <Td
-                                        key={index}
-                                        p="14px 10px 10px 10px"
-                                        color="rgba(0, 0, 0, 0.6)"
-                                        borderBottom={'none'} _last={{ borderBottom: 'none' }} 
-                                        onClick={() => handleRowClick(validator)}
-                                    >
-                                        {item.render ? item.render(validator) : validator[item.key]}
-                                    </Td>
-                                ))}
-                            </Tr>
-                        ))}
-                    </Tbody>
-                </Table>
-            )}
+            <Table variant="simple">
+                <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
+                    { tableHeaders }
+                </Thead>
+                <Tbody>
+                    {sortedData.map((validator: any, index: number) => (
+                        <Tr key={index}
+                            borderBottom={'none'}
+                            _last={{ borderBottom: 'none' }} 
+                            _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
+                            onClick={() => handleRowClick(validator)}
+                        >
+                            { tableHead.map((item: tableHeadType, index: number) => (
+                                <Td
+                                    key={index}
+                                    p="14px 10px 10px 10px"
+                                    color="rgba(0, 0, 0, 0.6)"
+                                    borderBottom={'none'} _last={{ borderBottom: 'none' }} 
+                                    onClick={() => handleRowClick(validator)}
+                                >
+                                    {item.render ? item.render(validator) : validator[item.key]}
+                                </Td>
+                            ))}
+                        </Tr>
+                    ))}
+                </Tbody>
+            </Table>
             <CommonModal 
                 isOpen = { isOpen }
                 onClose = { handleCloseModal }

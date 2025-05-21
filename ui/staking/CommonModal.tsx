@@ -13,8 +13,39 @@ import StakingValidatorSelect from 'ui/staking/StakingValidatorSelect';
 import WithTextWrapper from 'ui/staking/WithTextWrapper';
 import FromAndToSelect from 'ui/staking/FromAndToSelect';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
-import React from 'react';
+import React ,  { useEffect } from 'react';
 import axios from 'axios';
+
+
+const formatNumberWithCommas  = (input: string) => {
+  if (!input) return "";
+
+  // 移除现有逗号
+  let value = input.replace(/,/g, '');
+
+  // 校验是否为合法数字格式（可为空、小数点结尾等）
+  if (!/^[-]?\d*\.?\d*$/.test(value)) return "";
+
+  // 拆分整数和小数部分
+  let [integerPart, decimalPart = ""] = value.split(".");
+
+  // 去除整数前的多余0（保留单独的0）
+  if (integerPart) {
+    const isNegative = integerPart.startsWith("-");
+    integerPart = integerPart.replace(/^-?0+(?=\d)/, isNegative ? "-" : "");
+  }
+
+  // 限制小数部分最多 4 位
+  decimalPart = decimalPart.slice(0, 4);
+
+  // 添加千位分隔符
+  const isNegative = integerPart.startsWith("-");
+  const absInt = isNegative ? integerPart.slice(1) : integerPart;
+  const formattedInt = absInt.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  const result = isNegative ? `-${formattedInt}` : formattedInt;
+  return decimalPart ? `${result}.${decimalPart}` : result;
+}
 
 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
@@ -77,6 +108,8 @@ const CommonModal = ({
     const [ loading, setLoading ] = React.useState<boolean>(false);
 
     const [ apr , setApr ] = React.useState<string | number>("0.00");
+
+    const [ inputStr , setInputStr ] = React.useState<string>(currentAmount);
 
     const handleSetApr = (value: string | number) => {
         console.log('handleSetApr', value);
@@ -197,6 +230,7 @@ const CommonModal = ({
 
     const handleCloseModal = () => {
         setCurrentAmount("0");
+        setInputStr("0.00");
         onClose();
     }
 
@@ -266,13 +300,36 @@ const CommonModal = ({
         setIsPopOverOpen((prev) => !prev);
     }
 
+    const isOverAmount = React.useMemo(() => {
+        if (currentTxType === 'Claim' || currentTxType === 'ClaimAll' || currentTxType === 'Compound-Claim') {
+            return false;
+        }
+        const _ca = Number(currentAmount);
+        const _va = Number(availableAmount);
+        if( isNaN(_ca) || isNaN(_va)) {
+            return false;
+        }
+        if ( _ca > _va ) {
+            return true;
+        }
+        return false;
+    }, [ currentAmount, availableAmount, currentTxType ]);
+
 
     const isInputAmountValid = React.useMemo(() => {
         if (!currentAmount) {
             return false;
         }
+        if (!currentTxType.includes('Claim') ) {
+            if (Number(currentAmount) > Number(availableAmount)) {
+                return false;
+            }
+        }
+        if (Number(currentAmount) <= 0) {
+            return false;
+        }
         return true;
-    }, [ currentAmount ]);
+    } , [ currentAmount, availableAmount, currentTxType ]);
 
     const isSelectedValidatorValid = React.useMemo(() => {
         if (currentTxType === 'ChooseStake' || currentTxType === 'MoveStake' || currentTxType === 'Compound-Stake') {
@@ -368,7 +425,14 @@ const CommonModal = ({
                                     <Box width="100%" height="auto">
                                         <StakingModalNumberInput 
                                             value = { currentAmount }
+                                            handleMaxClick = { () => {
+                                                setCurrentAmount(availableAmount);
+                                                setInputStr(formatNumberWithCommas(availableAmount));
+                                            }}
+                                            isOverAmount = { isOverAmount }
                                             setValue = { setCurrentAmount }
+                                            inputStr = { inputStr }
+                                            setInputStr = { setInputStr }
                                             availableAmount = { availableAmount }
                                         />
                                     </Box>

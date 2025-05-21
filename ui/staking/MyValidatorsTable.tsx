@@ -184,12 +184,14 @@ const TableApp = (props: {
     onJumpNextPage: () => void;
     nextKey: string | null;
     handleStake: () => void;
+    searchTerm: string;
 }) => {
 
     const {
         data,
         isLoading,
         currentPage,
+        searchTerm,
         onJumpPrevPage,
         onJumpNextPage,
         totalCount,
@@ -605,6 +607,11 @@ const TableApp = (props: {
 
     const { isConnected: WalletConnected } = useAccount();
 
+    const spinner = ( <div style={{ width: '100%', height: 'auto', display: 'flex', minHeight: '200px',
+            justifyContent: 'center', alignItems: 'center', marginTop: '56px', position: 'relative'}}>
+        <Box className={ styles.loader }></Box>
+    </div> );
+
     const noStake = false;
 
     if (!WalletConnected) {
@@ -617,14 +624,16 @@ const TableApp = (props: {
                 />
             </div>
         );
-    } else if (noStake) {
+    }
+    else if (isLoading) {
+        return spinner;
+    }
+    else if ( !!searchTerm && data.length === 0) {
         return (
             <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
                 <EmptyPlaceholder
-                    tipsTextArray={ [`Looks like you haven’t staked yet. Choose a`, 'validator to get started.'] }
-                    showButton={ true }
-                    buttonText={ 'Stake' }
-                    buttonOnClick={ handleStakeMore }
+                    tipsTextArray={ [`No matching records.` ] }
+                    showButton={ false }
                 />
             </div>
         );
@@ -632,8 +641,10 @@ const TableApp = (props: {
         return (
             <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
                 <EmptyPlaceholder
-                    tipsTextArray={ [`No matching records.` ] }
-                    showButton={ false }
+                    tipsTextArray={ [`Looks like you haven’t staked yet. Choose a`, 'validator to get started.'] }
+                    showButton={ true }
+                    buttonText={ 'Stake' }
+                    buttonOnClick={ handleStakeMore }
                 />
             </div>
         );
@@ -653,41 +664,33 @@ const TableApp = (props: {
                 borderRadius: '12px',
             }}
         >
-            { isLoading ? (
-                <div style={{ width: '100%', height: 'auto', 
-                    display: 'flex', minHeight: '200px',
-                        justifyContent: 'center', alignItems: 'center', marginTop: '56px', position: 'relative'}}>
-                    <Box className={ styles.loader }></Box>
-                </div>
-                ) : (
-                <Table variant="simple">
-                    <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
-                        { tableHeaders }
-                    </Thead>
-                    <Tbody>
-                        { sortedData.map((validator: any, index: number) => (
-                            <Tr key={index}
-                                borderBottom={'none'}
-                                _last={{ borderBottom: 'none' }} 
-                                _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
-                                onClick={() => handleRowClick(validator)}
-                            >
-                                { tableHead.map((item: tableHeadType, index: number) => (
-                                    <Td
-                                        key={index}
-                                        p= { '12px 0' }
-                                        color="rgba(0, 0, 0, 0.6)"
-                                        borderBottom={'none'} _last={{ borderBottom: 'none' }} 
-                                        onClick={() => handleRowClick(validator)}
-                                    >
-                                        {item.render ? item.render(validator) : validator[item.key]}
-                                    </Td>
-                                ))}
-                            </Tr>
-                        ))}
-                    </Tbody>
-                </Table>
-            )}
+            <Table variant="simple">
+                <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
+                    { tableHeaders }
+                </Thead>
+                <Tbody>
+                    { sortedData.map((validator: any, index: number) => (
+                        <Tr key={index}
+                            borderBottom={'none'}
+                            _last={{ borderBottom: 'none' }} 
+                            _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
+                            onClick={() => handleRowClick(validator)}
+                        >
+                            { tableHead.map((item: tableHeadType, index: number) => (
+                                <Td
+                                    key={index}
+                                    p= { '12px 0' }
+                                    color="rgba(0, 0, 0, 0.6)"
+                                    borderBottom={'none'} _last={{ borderBottom: 'none' }} 
+                                    onClick={() => handleRowClick(validator)}
+                                >
+                                    {item.render ? item.render(validator) : validator[item.key]}
+                                </Td>
+                            ))}
+                        </Tr>
+                    ))}
+                </Tbody>
+            </Table>
             <CommonModal 
                 isOpen = { isOpen }
                 onClose = { handleCloseModal }
@@ -749,7 +752,7 @@ const TableWrapper = ({
     handleStake: () => void;
 }) => {
 
-    const { serverUrl : url } = useStakeLoginContextValue();
+    const { serverUrl : url , tokenPrice} = useStakeLoginContextValue();
 
     const { address: userAddr } = useAccount();
     const [ toNext, setToNext ] = React.useState<boolean>(true);
@@ -843,6 +846,7 @@ const TableWrapper = ({
         >
             <TableApp
                 data={ filteredData }
+                searchTerm={ searchTerm }
                 isLoading={ isTableLoading }
                 totalCount={ totalCount }
                 currentPage={ currentPage }

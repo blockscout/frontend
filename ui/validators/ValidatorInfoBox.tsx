@@ -175,6 +175,25 @@ const InfoBoxItem = ({
     )
 }
 
+const percentageFormat = (value: number | string) => {
+    const _n = Number(value);
+    if (isNaN(_n)) {
+        return '0.00%';
+    }
+    if (_n > 1) {
+        return `${_n.toFixed(2)}%`;
+    }
+    return `${(_n * 100).toFixed(2)}%`;
+}
+
+const integerFormat = (value: number | string) => {
+    const _n = Number(value);
+    if (isNaN(_n)) {
+        return '0';
+    }
+    return `${ _n.toLocaleString('en-US') }`;
+}
+
 const InfoBox = ({
     overViewInfo,
     isDetailInfoLoading
@@ -189,6 +208,7 @@ const InfoBox = ({
         liveApr?: string;
         validator?: string;
         status?: string;
+        delegatorRewards?: string;
     };
     isDetailInfoLoading: boolean;
 }) => {
@@ -207,12 +227,12 @@ const InfoBox = ({
         {
             label: 'Uptime',
             tipsInfo: 'The reliability and availability of a validator node, shown as an uptime percentage.',
-            value: <Text > { overViewInfo.uptime }% </Text>,
+            value: <Text > { percentageFormat(overViewInfo.uptime) } </Text>,
         },
         {
             label: 'Commission Rate',
             tipsInfo: `The percentage fee charged by validators from delegators' staking rewards.`,
-            value: <Text > { overViewInfo.commissionRate }% </Text>,
+            value: <Text > { percentageFormat(overViewInfo.commissionRate || 0) } </Text>,
         },
     ];
     
@@ -229,14 +249,14 @@ const InfoBox = ({
             value: <TokenAmount amount={ overViewInfo.validatorRewards || 0 } isLoading={ isDetailInfoLoading } />,
         },
         {
-            label: 'Uptime',
+            label: `Delegator's Rewards`,
             tipsInfo: 'Rewards distributed to users staking their tokens with this validator.',
-            value: <span > { overViewInfo.uptime } % </span>,
+            value:<TokenAmount amount={ overViewInfo.delegatorRewards || 0 } isLoading={ isDetailInfoLoading } /> ,
         },
         {
             label: 'Recently Validated Blocks',
             tipsInfo: `Number of successfully validated blocks in the last 10,000 blocks.`,
-            value: <span > { overViewInfo.blocksValidated } </span>,
+            value: <span > { integerFormat(overViewInfo.blocksValidated )} </span>,
         },
     ]
 

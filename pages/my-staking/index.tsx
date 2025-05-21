@@ -165,12 +165,23 @@ const ObjectDetails: NextPage = () => {
   const requestMyStakingInfo = React.useCallback(async() => {
     try {
       setLoading(true);
-      const res = await (await fetch(url + '/api/me/staking/summary', { 
-          method: 'get',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })).json() as  any;
+      // const res = await (await fetch(url + '/api/me/staking/summary', { 
+      //     method: 'get',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   })).json() as  any;
+      const res = await axios.get(url + '/api/me/staking/summary', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000,
+      }).then((response) => {
+        return response.data;
+      }).catch((error) => {
+        console.error('Error fetching data:', error);
+        return null;
+      });
       if(res && res.code === 200) {
         setStakedAmount(res.data.stakedAmount);
         setClaimableRewards(res.data.claimableRewards);
@@ -187,12 +198,23 @@ const ObjectDetails: NextPage = () => {
     const requestMyStakingTableList = React.useCallback(async() => {
         try {
           setLoading(true);
-          const res = await (await fetch(url + '/api/me/staking/delegations', { 
-              method: 'get',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            })).json() as  any;
+          // const res = await (await fetch(url + '/api/me/staking/delegations', { 
+          //     method: 'get',
+          //     headers: {
+          //       'Content-Type': 'application/json',
+          //     },
+          //   })).json() as  any;
+          const res = await axios.get(url + '/api/me/staking/delegations', {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            timeout: 10000,
+          }).then((response) => {
+            return response.data;
+          }).catch((error) => {
+            console.error('Error fetching data:', error);
+            return null;
+          });
           if(res && res.code === 200) {
             console.log('res', res);
           }
@@ -217,13 +239,24 @@ const ObjectDetails: NextPage = () => {
           countTotal: countTotal.toString(),
           reverse: reverse.toString(),
         }).toString();
-        const res = await (await fetch(url + '/api/me/staking/activity' + '?' + paramStr, {
-            method: 'get',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+        // const res = await (await fetch(url + '/api/me/staking/activity' + '?' + paramStr, {
+        //     method: 'get',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
             
-          })).json() as  any;
+        //   })).json() as  any;
+        const res = await axios.get(url + '/api/me/staking/activity' + '?' + paramStr, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          timeout: 10000,
+        }).then((response) => {
+          return response.data;
+        }).catch((error) => {
+          console.error('Error fetching data:', error);
+          return null;
+        });
         if(res && res.code === 200) {
           console.log('res', res);
         }

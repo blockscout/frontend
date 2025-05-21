@@ -21,9 +21,11 @@ const DatePicker = dynamic(async () => {
 
 const DatePickerFilter = ({
     value,
+    isDisabled = false,
     setValue,
 }: {
     value: any;
+    isDisabled?: boolean;
     setValue: (val: any) => void;
 }) => {
 
@@ -100,6 +102,7 @@ const DatePickerFilter = ({
                         className="stake-date-picker"
                         showNow={false}
                         value={value}
+                        disabled={isDisabled}
                         open={open}
                         separator = {
                             <span style={{ padding: 0 }}>

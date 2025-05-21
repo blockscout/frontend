@@ -386,6 +386,7 @@ const AllValidatorPage: NextPage = () => {
       <ValidatorsTable 
           data={ filteredList }
           nextKey={ nextKey }
+          searchTerm={ searchValue }
           isLoading={ isTableLoading }
           totalCount={ totalCount }
           currentPage={ currentPage }

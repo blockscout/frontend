@@ -10,40 +10,122 @@ import {
     Button,
     Text,
 } from '@chakra-ui/react';
-import React from 'react';
+import React , { useEffect } from 'react';
+import { formatUnits } from 'viem';
+import useAccount from 'lib/web3/useAccount';
+import { useBalance, usePublicClient } from 'wagmi';
+import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 
+
+const valueFormatter = (price : string | number | null) => {
+    if ( price === null || Number.isNaN(price)) {
+        return `$--`
+    }
+    if (price === 0) {
+        return `$0.00`
+    }
+    return `$${Number(price).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    })}`
+}
+
+const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | number ) => {
+    if ( tokenAmount === "" || Number.isNaN(Number(tokenAmount)) ) {
+        return null;
+    }
+    const amount = Number(tokenAmount || 0);
+    const price = Number(tokenPrice || 0);
+    return (amount * price);
+}
 
 const StakingModalNumberInput = ({
     value,
     availableAmount = '0.00',
     setValue,
+    inputStr,
+    setInputStr,
+    isOverAmount = false,
     uneditable = false,
+    handleMaxClick
 }: {
     value: string;
     availableAmount: string;
     uneditable?: boolean;
     setValue: (value: string) => void;
+    inputStr: string;
+    isOverAmount?: boolean;
+    setInputStr: (value: string) => void;
+    handleMaxClick: () => void;
 }) => {
 
-  const [show, setShow] = React.useState(false)
-  const handleClick = () => setShow(!show)
+
+  const { address: userAddr } = useAccount();
+  const { data: balanceData } = useBalance({ address: userAddr});
+  const { tokenPrice } = useStakeLoginContextValue();
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
+
+  const formattedBalanceStr = React.useMemo(() => {
+      if (balanceData && !!balanceData.value) {
+          return formatUnits(balanceData.value, 18);
+      }
+      return '0.00';
+  }, [userAddr , balanceData]);
+
 
   const availableAmountNumber = Number(availableAmount.replace(/,/g, ''));
 
-  const handleMaxClick = () => {
-    setValue(availableAmountNumber.toFixed(4).toString());
+
+  const amountStringFormatter = (amount: string) => {
+    return amount.replace(/,/g, "")
   }
 
-  const limitDecimals = (input: HTMLInputElement) => {
-      const value = input.value;
-      // 匹配整数或最多4位小数
-      const match = value.match(/^(\d+)(\.\d{0,4})?/);
-      if (match) {
-        input.value = match[0];
-      } else {
-        input.value = '';
-      }
-  }
+
+  const overTips  = <span 
+    style={{
+      color: '#EE6969',
+      fontFamily: 'HarmonyOS Sans',
+      fontSize: '14px',
+      fontStyle: 'normal',
+      fontWeight: 500,
+      lineHeight: '140%',
+    }}>
+    Amount exceeds available balance
+  </span>
+
+
+  const handleChange = (e : any ) => {
+    let value = e.target.value.replace(/,/g, ''); // 移除现有逗号
+    let formattedValue = '';
+
+    // 允许临时状态：空输入、"0."、"-" 等
+    if (!value || value === '-' || /^-?\d+\.?$|^-?0\.?\d{0,4}$/.test(value)) {
+        e.target.lastValidValue = value; // 保存临时状态
+        formattedValue = value; // 直接显示用户输入
+    } else {
+        // 验证输入格式：整数部分任意长度，小数部分最多四位
+        if (!/^-?\d*\.?\d{0,4}$/.test(value)) {
+            // 输入无效，回退到上一个有效值
+            e.target.value = e.target.lastValidValue || '';
+            return;
+        }
+
+        // 保存当前有效值
+        e.target.lastValidValue = value;
+
+        // 分离整数和小数部分
+        let [integerPart, decimalPart = ''] = value.split('.');
+
+        // 添加逗号到整数部分
+        integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+        // 拼接整数和小数部分
+        formattedValue = decimalPart ? `${integerPart}.${decimalPart}` : integerPart;
+    }
+      setInputStr(formattedValue);
+      setValue(amountStringFormatter(formattedValue));
+  };
 
   return (
     <InputGroup height={'auto'} width={'100%'} borderRadius={'16px'}>
@@ -51,13 +133,9 @@ const StakingModalNumberInput = ({
           pr='145px'
           pb='44px'
           height={'auto'}
-          type={'number'}
-          value={value}
-          onChange={(e) => {
-            const input = e.target;
-            limitDecimals(input);
-            setValue(input.value);
-          }}
+          type={'text'}
+          value={inputStr}
+          onChange={ handleChange }
           style={{
             color: '#FF57B7 !important',
           }}
@@ -73,7 +151,7 @@ const StakingModalNumberInput = ({
           }}
           _focus={{
             color: '#FF57B7',
-            border: '1px solid #FF57B7',
+            border: isOverAmount ? '1px solid #EE6969' : '1px solidrgb(7, 7, 7)',
           }}
           _hover={{
             color: '#FF57B7',
@@ -88,7 +166,7 @@ const StakingModalNumberInput = ({
           fontWeight={700}
           disabled={uneditable}
           lineHeight={'140%'} /* 56px */
-          border = {'1px solid rgba(0, 46, 51, 0.10)'}
+          border = { isOverAmount ? '1px solid #EE6969' : '1px solid rgba(0, 46, 51, 0.10)'}
           backdropFilter='blur(5px)'
           placeholder = '0.00'
       />
@@ -114,7 +192,7 @@ const StakingModalNumberInput = ({
                       }}
                       height='auto'
                       colorScheme='pink'
-                      onClick={handleMaxClick}
+                      onClick={ handleMaxClick}
                     >MAX</Button>
                     <Flex flexDirection={'row'} width='auto' height='auto' alignItems='center' justifyContent={'flex-end'}>
                         <Text fontSize='sm' color='gray.500'>
@@ -151,12 +229,12 @@ const StakingModalNumberInput = ({
                 as ="span"
                 fontFamily="HarmonyOS Sans"
             >
-               $--
+                {  isOverAmount ? ( overTips ) : valueFormatter(valueCalculator(value, tokenPrice)) }
             </Text>
             <Text
                 fontSize="14px"
                 fontWeight="500"
-                color="rgba(0, 0, 0, 0.60)"
+                color="rgba(189, 167, 167, 0.6)"
                 textAlign="center"
                 fontStyle="normal"
                 lineHeight="140%"

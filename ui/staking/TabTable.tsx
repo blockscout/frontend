@@ -20,7 +20,9 @@ const App = ({
 
 
     const [ currentTabIndex, setCurrentTabIndex ] = React.useState<number>(0);
-    const [ selectDateRange, setSelectDateRange ] = React.useState<any>([null , null])
+    const [ selectDateRange, setSelectDateRange ] = React.useState<any>([null , null]);
+
+    const [ disableSelectDateRange, setDisableSelectDateRange ] = React.useState<boolean>(false);
 
 
     // Mock function to simulate loading
@@ -84,6 +86,7 @@ const App = ({
                         >
                             <DatePicker 
                                 value={ selectDateRange }
+                                isDisabled={ disableSelectDateRange }
                                 setValue={ (v: any) => {
                                     console.log('date range', v);
                                     setSelectDateRange(v);
@@ -105,6 +108,7 @@ const App = ({
                     <ActivityListTable 
                         selectDateRange={ selectDateRange }
                         handleStake={ handleStake }
+                        setDisableSelectDateRange = { setDisableSelectDateRange}
                     />
                 </TabPanel>
             </TabPanels>

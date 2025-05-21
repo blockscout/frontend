@@ -7,13 +7,28 @@ import {
     StatNumber,
     StatHelpText,
 } from '@chakra-ui/react';
-import { useDisclosure, } from '@chakra-ui/react';
 import CommonModal from './CommonModal';
-import React from 'react';
+import React , { useEffect } from 'react';
+import { formatUnits } from 'viem';
+import { toBigInt , parseUnits} from 'ethers';
+import axios from 'axios';
+import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
+import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
+import { token } from 'mocks/address/address';
 
 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
+
+const valueFormatter = ( priceStr : string ) => {
+    return `($${priceStr})`
+}
+
+const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | number ) => {
+    const amount = Number(tokenAmount || 0);
+    const price = Number(tokenPrice || 0);
+    return (amount * price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
 
 const icon_1 = (
@@ -186,7 +201,7 @@ const NumberStats = ({
                                     MOCA
                                 </Text>
                                 <Text fontSize="12px" fontWeight="500" color="rgba(0, 0, 0, 0.20)" lineHeight="20px" fontStyle="normal" textTransform="capitalize" fontFamily="HarmonyOS Sans">
-                                    {hide ? '****' : value}
+                                    {hide ? '(****)' : value}
                                 </Text>
                             </Flex>
                         </StatHelpText>
@@ -270,6 +285,18 @@ const StakingInfo = ({
     setCurrentItem: (item: string) => void;
 }) => {
 
+
+    const { address: userAddr } = useAccount();
+
+    const { data: balanceData } = useBalance({ address: userAddr});
+    const { tokenPrice} = useStakeLoginContextValue();
+    const formattedBalanceStr = React.useMemo(() => {
+        if (balanceData && !!balanceData.value) {
+            return formatUnits(balanceData.value, 18);
+        }
+        return '0.00';
+    }, [userAddr , balanceData]);
+
     return (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 2fr' }} 
             paddingRight={{ base: '0', lg: '24px' }}
@@ -283,7 +310,7 @@ const StakingInfo = ({
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Claimable Rewards"
                             amount={ Number(claimableRewards || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
-                            value="($0.00)"
+                            value= { valueFormatter(valueCalculator(claimableRewards, tokenPrice)) }
                             isWrapper={true}
                             hide={isHideNumber}
                         />
@@ -316,7 +343,7 @@ const StakingInfo = ({
                             icon={<IconContainer>{icon_1}</IconContainer>}
                             label="Staked Amount"
                             amount={ Number(stakedAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
-                            value="($0.00)"
+                            value= { valueFormatter(valueCalculator(stakedAmount, tokenPrice)) }
                             hide={isHideNumber}
                         />
                     </Box>
@@ -326,7 +353,7 @@ const StakingInfo = ({
                             icon={<IconContainer>{icon_2}</IconContainer>}
                             label="Withdrawing Amount"
                             amount={ Number(withdrawingAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
-                            value="($0.00)"
+                            value= { valueFormatter(valueCalculator(withdrawingAmount, tokenPrice)) }
                             hide={isHideNumber}
                         />
                     </Box>
@@ -336,7 +363,7 @@ const StakingInfo = ({
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Total Rewards"
                             amount={ Number(totalRewards || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
-                            value="($0.00)"
+                            value= { valueFormatter(valueCalculator(totalRewards, tokenPrice)) }
                             hide={isHideNumber}
                         />
                     </Box>
@@ -344,8 +371,8 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_4}</IconContainer>}
                             label="Available Balance"
-                            amount="0.00"
-                            value="($0.00)"
+                            amount= { Number(formattedBalanceStr || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
+                            value= { valueFormatter(valueCalculator(formattedBalanceStr, tokenPrice)) }
                             hide={isHideNumber}
                         />
                     </Box>

@@ -10,7 +10,7 @@ const initialState = {
     nonce: '',
     loginFunction: async (address: string, token: string) => {},
     logoutFunction: async () => {},
-    tokenPrice: 0,
+    tokenPrice: "1.00",
     serverUrl: 'https://devzk-staking.bitkinetic.com',
     setTokenPrice: (price: number) => {},
 };
@@ -23,7 +23,7 @@ export function StakeLoginContextProvider(props: any) {
     const [ isPendingSignature, setIsPendingSignature ] = React.useState(false);
     const [ token, setToken ] = React.useState(initialState.token);
     const [ address, setAddress ] = React.useState(initialState.address);
-    const [ tokenPrice, setTokenPrice ] = React.useState("0")
+    const [ tokenPrice, setTokenPrice ] = React.useState("1.00")
     const [ serverUrl, setServerUrl ] = React.useState('https://devzk-staking.bitkinetic.com');
 
 

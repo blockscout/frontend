@@ -47,6 +47,7 @@ type OverViewInfoType = {
     liveApr?: string;
     validator?: string;
     status?: string;
+    delegatorRewards?: string;
 }
 
 
@@ -112,7 +113,8 @@ const ValidatorDetails = () => {
                     uptime,
                     blocksValidated,
                     liveApr,
-                    validatorRewards
+                    validatorRewards,
+                    delegatorRewards
                 } = res.data;
                 setOverViewInfo({
                     validator: validator,
@@ -122,7 +124,8 @@ const ValidatorDetails = () => {
                     validatorStake: validatorStake,
                     uptime: uptime,
                     blocksValidated: blocksValidated,
-                    liveApr: liveApr
+                    liveApr: liveApr,
+                    delegatorRewards: delegatorRewards,
                 });
                 const uploadProperties = res.uploadProperties;
             }
@@ -213,19 +216,21 @@ const ValidatorDetails = () => {
                             textTransform="capitalize"
                         >
                             { addr}
-                            <IconButton
-                                aria-label="copy"
-                                icon={ copied ? checkedMarkIcon : copyIcon }
-                                variant="link"
-                                colorScheme="blackAlpha"
-                                size="xs"
-                                marginLeft="8px"
-                                onClick={ (event) => {
-                                    event.stopPropagation();
-                                    onCopy();
-                                    setCopied(true);
-                                } }
-                            />
+                            <Tooltip label= { copied ? 'Copied' : 'Copy' } placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                                <IconButton
+                                    aria-label="copy"
+                                    icon={ copied ? checkedMarkIcon : copyIcon }
+                                    variant="link"
+                                    colorScheme="blackAlpha"
+                                    size="xs"
+                                    marginLeft="8px"
+                                    onClick={ (event) => {
+                                        event.stopPropagation();
+                                        onCopy();
+                                        setCopied(true);
+                                    } }
+                                />
+                            </Tooltip>
                         </Text>
                     </Flex>
             </Tooltip>
