@@ -1,5 +1,4 @@
-import { useColorMode } from '@chakra-ui/react';
-import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
+import { createAppKit } from '@reown/appkit/react';
 import React from 'react';
 import { WagmiProvider } from 'wagmi';
 
@@ -63,12 +62,7 @@ const DefaultProvider = ({ children }: Props) => {
 };
 
 const Web3ModalProvider = ({ children }: Props) => {
-  const { colorMode } = useColorMode();
-  const { setThemeMode } = useAppKitTheme();
 
-  React.useEffect(() => {
-    setThemeMode(colorMode);
-  }, [ colorMode, setThemeMode ]);
   return (
     <DefaultProvider>
       { children }
@@ -76,6 +70,4 @@ const Web3ModalProvider = ({ children }: Props) => {
   );
 };
 
-const Provider = feature.isEnabled ? Web3ModalProvider : DefaultProvider;
-
-export default Provider;
+export default Web3ModalProvider;

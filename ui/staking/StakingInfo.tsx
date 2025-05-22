@@ -297,6 +297,9 @@ const StakingInfo = ({
         return '0.00';
     }, [userAddr , balanceData]);
 
+
+    const { isConnected: WalletConnected } = useAccount();
+
     return (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 2fr' }} 
             paddingRight={{ base: '0', lg: '24px' }}
@@ -318,12 +321,12 @@ const StakingInfo = ({
                             <PlainButton 
                                 text="Claim all"
                                 onClick={ handleClaimAll }
-                                disabled={ false }
+                                disabled={ !WalletConnected || Number(claimableRewards) === 0 || Number(claimableRewards) < 0 }
                             />
                             <PlainButton2 
                                 text="Compounding"
                                 onClick={ handleCompound }
-                                disabled={ false }
+                                disabled={ !WalletConnected || Number(claimableRewards) === 0 || Number(claimableRewards) < 0 }
                             />
                         </Flex>
                     </Flex>
@@ -385,7 +388,7 @@ const StakingInfo = ({
                     <PlainButton 
                         text="Stake More"
                         onClick={ handleStakeMore }
-                        disabled={ false }
+                        disabled={ !WalletConnected || Number(formattedBalanceStr) === 0 || Number(formattedBalanceStr) < 0 }
                     />
                 </Box>
                 <CommonModal 

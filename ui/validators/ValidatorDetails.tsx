@@ -99,7 +99,6 @@ const ValidatorDetails = () => {
             }).then((response) => {
                 return response.data;
             }).catch((error) => {
-                console.error('Error fetching data:', error);
                 return null;
             });
             setIsDetailInfoLoading(false);
