@@ -9,15 +9,17 @@ import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
+import multichainConfig from 'configs/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import Address from 'ui/pages/Address';
+import AddressMultichain from 'ui/pages/AddressMultichain';
 
 const pathname: Route['pathname'] = '/address/[hash]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      <Address/>
+      { multichainConfig ? <AddressMultichain/> : <Address/> }
     </PageNextJs>
   );
 };
@@ -27,7 +29,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
   const baseResponse = await gSSP.base<typeof pathname>(ctx);
 
-  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse) {
+  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse && !multichainConfig) {
     const botInfo = detectBotRequest(ctx.req);
 
     if (botInfo?.type === 'social_preview') {
