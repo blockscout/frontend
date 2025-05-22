@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import React , { useEffect } from 'react';
 import { formatUnits } from 'viem';
+import { Avatar } from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
 import { useBalance, usePublicClient } from 'wagmi';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
@@ -194,11 +195,24 @@ const StakingModalNumberInput = ({
                       colorScheme='pink'
                       onClick={ handleMaxClick}
                     >MAX</Button>
-                    <Flex flexDirection={'row'} width='auto' height='auto' alignItems='center' justifyContent={'flex-end'}>
-                        <Text fontSize='sm' color='gray.500'>
-                          Is 
-                        </Text>
-                        <Text fontSize='sm' color='gray.500'>
+                    <Flex flexDirection={'row'} width='auto' gap={"4px"} height='auto' alignItems='center' justifyContent={'flex-end'}>
+                        <Avatar
+                            name="Validator Name"
+                            src="/static/moca-brand.svg"
+                            size='2xs'
+                            width="20px"
+                            height="20px"
+                            borderRadius="full"
+                        />
+                        <Text
+                            fontSize="14px"
+                            fontWeight="500"
+                            color="rgba(0, 0, 0, 0.60)"
+                            textAlign="center"
+                            fontStyle="normal"
+                            lineHeight="normal"
+                            fontFamily="HarmonyOS Sans"
+                        >
                           Moca
                         </Text>
                     </Flex>
@@ -234,21 +248,21 @@ const StakingModalNumberInput = ({
             <Text
                 fontSize="14px"
                 fontWeight="500"
-                color="rgba(189, 167, 167, 0.6)"
+                color="rgba(0, 0, 0, 0.30)"
                 textAlign="center"
                 fontStyle="normal"
                 lineHeight="140%"
                 as ="span"
                 fontFamily="HarmonyOS Sans"
             >
-               Available: <span  style={{ color: '#000' }}>
-                <span>
-                  {availableAmountNumber.toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })} Moca
-                </span>
-               </span>
+                 Available:<span  style={{ color: '#000' }}>
+                                <span>
+                                  {availableAmountNumber.toLocaleString('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })} Moca
+                                </span>
+                            </span>
             </Text>
       </Flex>
     </InputGroup>
