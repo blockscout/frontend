@@ -61,6 +61,9 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/pools': 'Root page',
   '/pools/[hash]': 'Regular page',
   '/interop-messages': 'Root page',
+  '/subchain/[subchain-id]/address/[hash]': 'Regular page',
+  '/subchain/[subchain-id]/block/[height_or_hash]': 'Regular page',
+  '/subchain/[subchain-id]/tx/[hash]': 'Regular page',
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',
