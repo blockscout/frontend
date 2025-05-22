@@ -12,7 +12,7 @@ const config = {
       apis: {
         general: {
           endpoint: 'https://optimism-interop-alpha-0.blockscout.com',
-          basePath: '/',
+          basePath: '',
           host: 'optimism-interop-alpha-0.blockscout.com',
           protocol: 'https',
           socketEndpoint: 'wss://optimism-interop-alpha-0.blockscout.com',
@@ -29,7 +29,7 @@ const config = {
       apis: {
         general: {
           endpoint: 'https://optimism-interop-alpha-1.blockscout.com',
-          basePath: '/',
+          basePath: '',
           host: 'optimism-interop-alpha-1.blockscout.com',
           protocol: 'https',
           socketEndpoint: 'wss://optimism-interop-alpha-1.blockscout.com',

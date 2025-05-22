@@ -4,7 +4,6 @@ import React from 'react';
 import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
 import type { TransactionsSorting, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
-import type { SubchainConfig } from 'types/multichain';
 
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import { TX } from 'stubs/tx';
@@ -19,10 +18,9 @@ const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null,
 interface Props {
   addressHash: string;
   enabled: boolean;
-  subchain?: SubchainConfig;
 }
 
-export default function useAddressTxsQuery({ addressHash, enabled, subchain }: Props) {
+export default function useAddressTxsQuery({ addressHash, enabled }: Props) {
   const router = useRouter();
 
   const [ sort, setSort ] = React.useState<TransactionsSortingValue>(getSortValueFromQuery<TransactionsSortingValue>(router.query, SORT_OPTIONS) || 'default');
@@ -43,7 +41,6 @@ export default function useAddressTxsQuery({ addressHash, enabled, subchain }: P
         items_count: 50,
       } }),
     },
-    subchain,
   });
 
   const onFilterChange = React.useCallback((val: string | Array<string>) => {

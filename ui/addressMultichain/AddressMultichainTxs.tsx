@@ -4,7 +4,6 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
-import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -12,7 +11,6 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressTxsFilter from 'ui/address/AddressTxsFilter';
 import useAddressTxsQuery from 'ui/address/useAddressTxsQuery';
 import SubchainSelect from 'ui/shared/multichain/SubchainSelect';
-import useSubchainSelect from 'ui/shared/multichain/useSubchainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
@@ -31,12 +29,9 @@ const AddressMultichainTxs = () => {
   const hash = getQueryParamString(router.query.hash);
   const tab = getQueryParamString(router.query.tab);
 
-  const subchainSelect = useSubchainSelect();
-
   const txsQueryLocal = useAddressTxsQuery({
     addressHash: hash,
     enabled: tab === 'local_txs',
-    subchain: multichainConfig.chains.find((chain) => chain.id === subchainSelect.value[0]),
   });
 
   const txsLocalFilter = tab === 'local_txs' ? (
@@ -54,8 +49,8 @@ const AddressMultichainTxs = () => {
         { txsLocalFilter }
         <SubchainSelect
           loading={ txsQueryLocal.query.pagination.isLoading }
-          value={ subchainSelect.value }
-          onValueChange={ subchainSelect.onChange }
+          value={ txsQueryLocal.query.subchainValue }
+          onValueChange={ txsQueryLocal.query.onSubchainValueChange }
         />
       </HStack>
       <HStack gap={ 6 }>
@@ -80,7 +75,7 @@ const AddressMultichainTxs = () => {
       id: 'local_txs',
       title: 'Local',
       component: (
-        <MultichainProvider subchainId={ subchainSelect.value[0] }>
+        <MultichainProvider subchainId={ txsQueryLocal.query.subchainValue?.[0] }>
           <TxsWithAPISorting
             filter={ txsLocalFilter }
             filterValue={ txsQueryLocal.filterValue }
