@@ -4,13 +4,15 @@ import type { NextPageWithLayout } from 'nextjs/types';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
+import multichainConfig from 'configs/multichain';
 import Home from 'ui/pages/Home';
+import HomeMultichain from 'ui/pages/HomeMultichain';
 import LayoutHome from 'ui/shared/layout/LayoutHome';
 
 const Page: NextPageWithLayout = () => {
   return (
     <PageNextJs pathname="/">
-      <Home/>
+      { multichainConfig ? <HomeMultichain/> : <Home/> }
     </PageNextJs>
   );
 };

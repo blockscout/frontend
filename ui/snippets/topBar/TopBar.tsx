@@ -2,6 +2,7 @@ import { Flex, Separator, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import multichainConfig from 'configs/multichain';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
@@ -23,7 +24,7 @@ const TopBar = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <TopBarStats/>
+        { !multichainConfig ? <TopBarStats/> : <div/> }
         <Flex alignItems="center">
           { config.features.deFiDropdown.isEnabled && (
             <>
