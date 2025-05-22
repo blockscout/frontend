@@ -106,10 +106,10 @@ const ObjectDetails: NextPage = () => {
           ],
         } : { removed: { _eq: false } },
         // order: { update_time: 'desc' },
-        order: { object_id: 'desc' },
+        order: { update_time: 'desc' },
         limit: 21,
         offset: queryParams.offset,
-        distinctOn: 'object_id',
+        distinctOn: 'update_time',
       },
       {
         tableName: 'objects_aggregate',
