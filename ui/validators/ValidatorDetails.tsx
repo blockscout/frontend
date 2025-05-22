@@ -182,7 +182,7 @@ const ValidatorDetails = () => {
                                 gap="8px"
                             >
                                 <Avatar
-                                    name="Validator Name"
+                                    name="MOCA"
                                     src="/static/moca-brand.svg"
                                     size='2xs'
                                     width="32px"

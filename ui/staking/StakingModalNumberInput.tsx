@@ -197,7 +197,7 @@ const StakingModalNumberInput = ({
                     >MAX</Button>
                     <Flex flexDirection={'row'} width='auto' gap={"4px"} height='auto' alignItems='center' justifyContent={'flex-end'}>
                         <Avatar
-                            name="Validator Name"
+                            name="MOCA"
                             src="/static/moca-brand.svg"
                             size='2xs'
                             width="20px"
