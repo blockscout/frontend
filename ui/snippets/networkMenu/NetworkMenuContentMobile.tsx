@@ -15,14 +15,15 @@ interface Props {
 }
 
 const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
+  const [ defaultTab ] = tabs ?? [ 'Mainnets' ];
   const selectedNetwork = items?.find(({ isActive }) => isActive);
-  const [ selectedTab, setSelectedTab ] = React.useState<NetworkGroup>('Mainnets');
+  const [ selectedTab, setSelectedTab ] = React.useState<NetworkGroup>(defaultTab);
 
   React.useEffect(() => {
     if (items) {
-      setSelectedTab(tabs.find((tab) => selectedNetwork?.group === tab) || 'Mainnets');
+      setSelectedTab(tabs.find((tab) => selectedNetwork?.group === tab) ?? defaultTab);
     }
-  }, [ items, selectedNetwork?.group, tabs ]);
+  }, [ defaultTab, items, selectedNetwork?.group, tabs ]);
 
   const handleSelectChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setSelectedTab(value[0] as NetworkGroup);
@@ -61,7 +62,8 @@ const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
           contentProps={{ zIndex: 'modal' }}
         />
       ) }
-      <VStack as="ul" gap={ 2 } alignItems="stretch">
+      { selectedTab ? <h6 className="network-title">"{ selectedTab }" Chains</h6> : null }
+      <VStack as="ul" gap={ 2 } alignItems="stretch" className="network-menu">
         { items
           .filter(({ group }) => group === selectedTab)
           .map((network) => (
