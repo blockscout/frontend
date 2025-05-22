@@ -30,7 +30,7 @@ const ValidatorInfo = ({
             width="auto"
         >
             <Avatar
-                name="Validator Name"
+                name="MOCA"
                 src="/static/moca-brand.svg"
                 size='2xs'
                 width="20px"
