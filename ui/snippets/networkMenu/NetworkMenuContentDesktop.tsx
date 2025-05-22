@@ -15,10 +15,11 @@ interface Props {
 }
 
 const NetworkMenuPopup = ({ items, tabs }: Props) => {
+  const [ defaultTab ] = tabs ?? [ 'Mainnets' ];
   const selectedNetwork = items?.find(({ isActive }) => isActive);
-  const defaultTab = tabs.find((tab) => selectedNetwork?.group === tab);
+  const selectedTab = tabs.find((tab) => selectedNetwork?.group === tab) ?? defaultTab;
 
-  const [ value, setValue ] = React.useState<NetworkGroup>(defaultTab ?? 'Mainnets');
+  const [ value, setValue ] = React.useState<NetworkGroup>(selectedTab);
 
   const handleTabChange = React.useCallback(({ value }: { value: string }) => {
     setValue(value as NetworkGroup);
@@ -72,7 +73,8 @@ const NetworkMenuPopup = ({ items, tabs }: Props) => {
       <Box>
         { tabs.map((tab) => (
           <TabsContent key={ tab } value={ tab } p={ 0 }>
-            <VStack as="ul" gap={ 1 } alignItems="stretch" maxH="516px" overflowY="scroll">
+            { defaultTab ? <h6 className="network-title">"{ defaultTab }" Chains</h6> : null }
+            <VStack as="ul" gap={ 1 } alignItems="stretch" maxH="516px" overflowY="scroll" className="network-menu">
               { items
                 .filter((network) => network.group === tab)
                 .map((network) => (
