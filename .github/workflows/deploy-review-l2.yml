@@ -26,6 +26,7 @@ on:
             - optimism
             - optimism_celestia
             - optimism_sepolia
+            - optimism_multichain
             - polygon
             - rootstock
             - scroll_sepolia
