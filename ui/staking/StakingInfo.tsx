@@ -12,7 +12,7 @@ import React , { useEffect } from 'react';
 import { formatUnits } from 'viem';
 import { toBigInt , parseUnits} from 'ethers';
 import axios from 'axios';
-import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
+import { usePublicClient , useBalance , useAccount as useWagmiAccount } from 'wagmi';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import { token } from 'mocks/address/address';
 
@@ -77,7 +77,7 @@ const PlainButton = ({text, onClick, disabled = false} : {
 }) => {
     return (
         <Button
-            onClick={ onClick || no_op }
+            onClick={ disabled ? onClick : no_op }
             display="flex"
             alignItems="center"
             justifyContent="center"
@@ -109,7 +109,7 @@ const PlainButton2 = ({text, onClick, disabled = false} : {
 }) => {
     return (
         <Button
-            onClick={ onClick || no_op }
+            onClick={ disabled ? onClick : no_op }
             px = "8px"
             py = "4px"
             width={ '100px' }
@@ -299,6 +299,15 @@ const StakingInfo = ({
 
 
     const { isConnected: WalletConnected } = useAccount();
+
+    const { chain } = useWagmiAccount();
+    const publicClient = usePublicClient();
+
+    useEffect(() => {
+        console.log('当前链ID:', chain?.id);
+        console.log('当前链名称:', chain?.name);
+        console.log('当前RPC:', publicClient?.transport?.url ?? '未知或未显式设置');
+    }, [chain, publicClient]);
 
     return (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 2fr' }} 
