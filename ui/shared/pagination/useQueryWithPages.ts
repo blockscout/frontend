@@ -6,6 +6,7 @@ import React, { useCallback } from 'react';
 import { animateScroll } from 'react-scroll';
 
 import type { PaginationParams } from './types';
+import type { SubchainConfig } from 'types/multichain';
 
 import type { Route } from 'nextjs-routes';
 
@@ -23,6 +24,7 @@ export interface Params<Resource extends PaginatedResourceName> {
   filters?: PaginationFilters<Resource>;
   sorting?: PaginationSorting<Resource>;
   scrollRef?: React.RefObject<HTMLDivElement>;
+  subchain?: SubchainConfig;
 }
 
 type NextPageParams = Record<string, unknown>;
@@ -66,6 +68,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   options,
   pathParams,
   scrollRef,
+  subchain,
 }: Params<Resource>): QueryWithPagesResult<Resource> {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -90,6 +93,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       staleTime: page === 1 ? 0 : Infinity,
       ...options,
     },
+    subchain,
   });
   const { data } = queryResult;
   const nextPageParams = getNextPageParams(data);

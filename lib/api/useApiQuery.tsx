@@ -1,6 +1,8 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
+import type { SubchainConfig } from 'types/multichain';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
 
@@ -13,10 +15,15 @@ export interface Params<R extends ResourceName, E = unknown, D = ResourcePayload
   fetchParams?: Pick<FetchParams, 'body' | 'method' | 'headers'>;
   queryOptions?: Partial<Omit<UseQueryOptions<ResourcePayload<R>, ResourceError<E>, D>, 'queryFn'>>;
   logError?: boolean;
+  subchain?: SubchainConfig;
+}
+
+export interface GetResourceKeyParams<R extends ResourceName, E = unknown, D = ResourcePayload<R>>
+  extends Pick<Params<R, E, D>, 'pathParams' | 'queryParams'> {
   subchainId?: string;
 }
 
-export function getResourceKey<R extends ResourceName>(resource: R, { pathParams, queryParams, subchainId }: Params<R> = {}) {
+export function getResourceKey<R extends ResourceName>(resource: R, { pathParams, queryParams, subchainId }: GetResourceKeyParams<R> = {}) {
   if (pathParams || queryParams) {
     return [ resource, subchainId, { ...pathParams, ...queryParams } ].filter(Boolean);
   }
@@ -26,10 +33,10 @@ export function getResourceKey<R extends ResourceName>(resource: R, { pathParams
 
 export default function useApiQuery<R extends ResourceName, E = unknown, D = ResourcePayload<R>>(
   resource: R,
-  { queryOptions, pathParams, queryParams, fetchParams, logError }: Params<R, E, D> = {},
+  { queryOptions, pathParams, queryParams, fetchParams, logError, subchain: subchainProp }: Params<R, E, D> = {},
 ) {
   const apiFetch = useApiFetch();
-  const { subchain } = useMultichainContext() || {};
+  const { subchain } = useMultichainContext() || { subchain: subchainProp };
 
   return useQuery<ResourcePayload<R>, ResourceError<E>, D>({
     queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams, subchainId: subchain?.id }),

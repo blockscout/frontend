@@ -8,6 +8,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 
 interface MultichainProviderProps {
   children: React.ReactNode;
+  subchainId?: string;
 }
 
 interface TMultichainContext {
@@ -16,10 +17,17 @@ interface TMultichainContext {
 
 export const MultichainContext = React.createContext<TMultichainContext | null>(null);
 
-export function MultichainProvider({ children }: MultichainProviderProps) {
+export function MultichainProvider({ children, subchainId: subchainIdProp }: MultichainProviderProps) {
   const router = useRouter();
+  const subchainIdQueryParam = router.pathname.includes('subchain-id') ? getQueryParamString(router.query['subchain-id']) : undefined;
 
-  const subchainId = getQueryParamString(router.query['subchain-id']);
+  const [ subchainId, setSubchainId ] = React.useState<string | undefined>(subchainIdProp ?? subchainIdQueryParam);
+
+  React.useEffect(() => {
+    if (subchainIdProp) {
+      setSubchainId(subchainIdProp);
+    }
+  }, [ subchainIdProp ]);
 
   const subchain = React.useMemo(() => {
     if (!subchainId) {
