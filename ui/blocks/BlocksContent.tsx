@@ -90,7 +90,6 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
       <Box hideFrom="lg">
         { query.pagination.page === 1 && enableSocket && (
           <SocketNewItemsNotice.Mobile
-            url={ window.location.href }
             num={ newItemsCount }
             alert={ socketAlert }
             type="block"

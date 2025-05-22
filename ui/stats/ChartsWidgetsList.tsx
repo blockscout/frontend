@@ -67,12 +67,12 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
           charts?.map((section) => (
             <Box
               key={ section.id }
-              mb={ 8 }
+              mb={{ base: 6, lg: 8 }}
               _last={{
                 marginBottom: 0,
               }}
             >
-              <Skeleton loading={ isPlaceholderData } mb={ 4 } display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
+              <Skeleton loading={ isPlaceholderData } mb={{ base: 3, lg: 4 }} display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
                 <Heading level="2" id={ section.id }>
                   { section.title }
                 </Heading>
@@ -85,7 +85,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
 
               <Grid
                 templateColumns={{ lg: 'repeat(2, minmax(0, 1fr))' }}
-                gap={ 4 }
+                gap={{ base: 3, lg: 4 }}
               >
                 { section.charts.map((chart) => (
                   <ChartWidgetContainer

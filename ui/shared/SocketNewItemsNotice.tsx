@@ -14,13 +14,17 @@ interface Props {
   type?: 'transaction' | 'token_transfer' | 'deposit' | 'block';
   children?: (props: InjectedProps) => React.JSX.Element;
   className?: string;
-  url: string;
+  url?: string;
   alert?: string;
   num?: number;
   isLoading?: boolean;
 }
 
 const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, type = 'transaction', isLoading }: Props) => {
+  const handleLinkClick = React.useCallback(() => {
+    window.location.reload();
+  }, []);
+
   const alertContent = (() => {
     if (alert) {
       return alert;
@@ -49,7 +53,7 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
 
     return (
       <>
-        <Link href={ url }>{ num.toLocaleString() } more { name }{ num > 1 ? 's' : '' }</Link>
+        <Link href={ url } onClick={ !url ? handleLinkClick : undefined }>{ num.toLocaleString() } more { name }{ num > 1 ? 's' : '' }</Link>
         <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
       </>
     );

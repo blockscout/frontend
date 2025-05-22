@@ -5,13 +5,14 @@ import { Switch } from 'toolkit/chakra/switch';
 import { Hint } from 'toolkit/components/Hint/Hint';
 
 interface Props {
+  id: string;
   onChange: (isChecked: boolean) => void;
   initialValue?: boolean;
   isDisabled?: boolean;
   className?: string;
 }
 
-const UserOpCallDataSwitch = ({ className, initialValue, isDisabled, onChange }: Props) => {
+const UserOpCallDataSwitch = ({ className, initialValue, isDisabled, onChange, id }: Props) => {
   const [ isChecked, setIsChecked ] = React.useState(initialValue ?? false);
 
   const handleChange = React.useCallback(() => {
@@ -26,7 +27,7 @@ const UserOpCallDataSwitch = ({ className, initialValue, isDisabled, onChange }:
     <Flex ml="auto" alignItems="center" gap={ 2 }>
       <Switch
         className={ className }
-        id="call-data-switch"
+        id={ id }
         checked={ isChecked }
         disabled={ isDisabled }
         onCheckedChange={ handleChange }

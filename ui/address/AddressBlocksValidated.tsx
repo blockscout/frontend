@@ -116,7 +116,6 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
           </TableHeaderSticky>
           <TableBody>
             <SocketNewItemsNotice.Desktop
-              url={ window.location.href }
               num={ newItemsCount }
               alert={ socketAlert }
               type="block"
@@ -136,7 +135,6 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
       <Box hideFrom="lg">
         { query.pagination.page === 1 && (
           <SocketNewItemsNotice.Mobile
-            url={ window.location.href }
             num={ newItemsCount }
             alert={ socketAlert }
             type="block"

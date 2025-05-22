@@ -66,7 +66,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
           noCopy
           noSymbol
         />
-        <Tooltip content="Edit" disabled={ isLoading }>
+        <Tooltip content="Edit" disabled={ isLoading } disableOnMobile>
           <IconButton
             aria-label="edit"
             variant="link"

@@ -9,7 +9,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
-// import GetitBanner from './GetitBanner';
 import HypeBanner from './HypeBanner';
 import SliseBanner from './SliseBanner';
 
@@ -29,8 +28,6 @@ const AdBannerContent = ({ className, isLoading, provider, platform }: Props) =>
         return <AdbutlerBanner platform={ platform }/>;
       case 'coinzilla':
         return <CoinzillaBanner platform={ platform }/>;
-      // case 'getit':
-      //   return <GetitBanner platform={ platform }/>;
       case 'hype':
         return <HypeBanner platform={ platform }/>;
       case 'slise':

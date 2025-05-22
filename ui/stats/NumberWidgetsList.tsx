@@ -23,7 +23,7 @@ const NumberWidgetsList = () => {
   return (
     <Grid
       gridTemplateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
-      gridGap={ 4 }
+      gridGap={{ base: 1, lg: 2 }}
     >
       {
         data?.counters?.map(({ id, title, value, units, description }, index) => {

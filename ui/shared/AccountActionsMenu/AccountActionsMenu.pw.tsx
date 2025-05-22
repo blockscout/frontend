@@ -11,8 +11,6 @@ const test = base.extend<{ context: BrowserContext }>({
   context: contextWithAuth,
 });
 
-test.use({ viewport: { width: 200, height: 200 } });
-
 test.describe('with multiple items', () => {
   const hooksConfig = {
     router: {
@@ -30,14 +28,14 @@ test.describe('with multiple items', () => {
     const component = await render(<AccountActionsMenu/>, { hooksConfig });
     await component.getByRole('button').click();
 
-    await expect(page).toHaveScreenshot();
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 200, height: 200 } });
   });
 
   test('base view with styles', async({ render, page }) => {
     const component = await render(<AccountActionsMenu m={ 2 } outline="1px solid lightpink"/>, { hooksConfig });
     await component.getByRole('button').click();
 
-    await expect(page).toHaveScreenshot();
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 200, height: 200 } });
   });
 
   test('loading', async({ render }) => {
@@ -65,15 +63,15 @@ test.describe('with one item', () => {
   test('base view', async({ render, page }) => {
     const component = await render(<AccountActionsMenu/>, { hooksConfig });
     await component.getByRole('button').hover();
-
-    await expect(page).toHaveScreenshot();
+    await expect(page.getByText('Add private tag')).toBeVisible();
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 200, height: 200 } });
   });
 
   test('base view with styles', async({ render, page }) => {
     const component = await render(<AccountActionsMenu m={ 2 } outline="1px solid lightpink"/>, { hooksConfig });
     await component.getByRole('button').hover();
-
-    await expect(page).toHaveScreenshot();
+    await expect(page.getByText('Add private tag')).toBeVisible();
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 200, height: 200 } });
   });
 
   test('loading', async({ render }) => {
