@@ -1,5 +1,6 @@
 import { Accordion, Icon } from '@chakra-ui/react';
 import * as React from 'react';
+import { scroller } from 'react-scroll';
 
 import IndicatorIcon from 'icons/arrows/east-mini.svg';
 
@@ -89,3 +90,37 @@ export const AccordionRoot = (props: Accordion.RootProps) => {
 };
 
 export const AccordionItem = Accordion.Item;
+
+export function useAccordion(items: Array<{ id: string }>) {
+  const [ value, setValue ] = React.useState<Array<string>>([]);
+
+  const onValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setValue(value);
+  }, []);
+
+  const scrollToItemFromUrl = React.useCallback(() => {
+    const hash = window.location.hash.replace('#', '');
+
+    if (!hash) {
+      return;
+    }
+
+    const itemToScroll = items.find((item) => item.id === hash);
+    if (itemToScroll) {
+      scroller.scrollTo(itemToScroll.id, {
+        duration: 500,
+        smooth: true,
+        offset: -100,
+      });
+      setValue([ itemToScroll.id ]);
+    }
+  }, [ items ]);
+
+  return React.useMemo(() => {
+    return {
+      value,
+      onValueChange,
+      scrollToItemFromUrl,
+    };
+  }, [ value, onValueChange, scrollToItemFromUrl ]);
+}
