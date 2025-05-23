@@ -4,6 +4,7 @@ const TableTokenAmount = ({
     amount,
     symbol = 'Moca'
 }: { amount: number | string ; symbol: string }) => {
+
     return (
     <span 
         style={{ 
@@ -20,7 +21,7 @@ const TableTokenAmount = ({
     >
         <span>{ Number(amount).toLocaleString('en-US', {
             minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
+            maximumFractionDigits: 8,
         }) }</span>
         <span style={{ color: '#000', marginLeft: '4px' }}>{ symbol }</span>
     </span>
