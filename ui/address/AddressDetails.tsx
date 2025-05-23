@@ -31,9 +31,10 @@ import type { AddressQuery } from './utils/useAddressQuery';
 
 interface Props {
   addressQuery: AddressQuery;
+  isLoading?: boolean;
 }
 
-const AddressDetails = ({ addressQuery }: Props) => {
+const AddressDetails = ({ addressQuery, isLoading }: Props) => {
   const router = useRouter();
 
   const addressHash = getQueryParamString(router.query.hash);
@@ -85,9 +86,9 @@ const AddressDetails = ({ addressQuery }: Props) => {
 
   return (
     <>
-      { addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={ addressQuery.isPlaceholderData } mb={ 6 }/> }
+      { addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={ isLoading } mb={ 6 }/> }
       <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} >
-        <AddressAlternativeFormat isLoading={ addressQuery.isPlaceholderData } addressHash={ addressHash }/>
+        <AddressAlternativeFormat isLoading={ isLoading } addressHash={ addressHash }/>
 
         { data.filecoin?.id && (
           <>
@@ -133,13 +134,13 @@ const AddressDetails = ({ addressQuery }: Props) => {
           </>
         ) }
 
-        <AddressNameInfo data={ data } isLoading={ addressQuery.isPlaceholderData }/>
+        <AddressNameInfo data={ data } isLoading={ isLoading }/>
 
         { data.is_contract && data.creation_transaction_hash && (creatorAddressHash) && (
           <>
             <DetailedInfo.ItemLabel
               hint="Transaction and address of creation"
-              isLoading={ addressQuery.isPlaceholderData }
+              isLoading={ isLoading }
             >
               Creator
             </DetailedInfo.ItemLabel>
@@ -154,15 +155,15 @@ const AddressDetails = ({ addressQuery }: Props) => {
             </DetailedInfo.ItemValue>
           </>
         ) }
-        { !addressQuery.isPlaceholderData && data.is_contract && data.implementations && data.implementations?.length > 0 && (
+        { !isLoading && data.is_contract && data.implementations && data.implementations?.length > 0 && (
           <AddressImplementations
             data={ data.implementations }
-            isLoading={ addressQuery.isPlaceholderData }
+            isLoading={ isLoading }
             proxyType={ data.proxy_type }
           />
         ) }
 
-        <AddressBalance data={ data } isLoading={ addressQuery.isPlaceholderData }/>
+        <AddressBalance data={ data } isLoading={ isLoading }/>
 
         { data.has_tokens && (
           <>
@@ -180,12 +181,12 @@ const AddressDetails = ({ addressQuery }: Props) => {
           <>
             <DetailedInfo.ItemLabel
               hint="Total net worth in USD of all tokens for the address"
-              isLoading={ addressQuery.isPlaceholderData }
+              isLoading={ isLoading }
             >
               Net worth
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue alignSelf="center" py={ 0 }>
-              <AddressNetWorth addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ addressQuery.isPlaceholderData }/>
+              <AddressNetWorth addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ isLoading }/>
             </DetailedInfo.ItemValue>
           </>
         )
@@ -193,7 +194,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
 
         <DetailedInfo.ItemLabel
           hint="Number of transactions related to this address"
-          isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+          isLoading={ isLoading || countersQuery.isPlaceholderData }
         >
           Transactions
         </DetailedInfo.ItemLabel>
@@ -214,7 +215,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
           <>
             <DetailedInfo.ItemLabel
               hint="Number of transfers to/from this address"
-              isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+              isLoading={ isLoading || countersQuery.isPlaceholderData }
             >
               Transfers
             </DetailedInfo.ItemLabel>
@@ -237,7 +238,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
           <>
             <DetailedInfo.ItemLabel
               hint="Gas used by the address"
-              isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+              isLoading={ isLoading || countersQuery.isPlaceholderData }
             >
               Gas used
             </DetailedInfo.ItemLabel>
@@ -266,7 +267,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
           <>
             <DetailedInfo.ItemLabel
               hint={ `Number of blocks ${ getNetworkValidationActionText() } by this ${ getNetworkValidatorTitle() }` }
-              isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+              isLoading={ isLoading || countersQuery.isPlaceholderData }
             >
               { `Blocks ${ getNetworkValidationActionText() }` }
             </DetailedInfo.ItemLabel>
@@ -289,20 +290,20 @@ const AddressDetails = ({ addressQuery }: Props) => {
           <>
             <DetailedInfo.ItemLabel
               hint="Block number in which the address was updated"
-              isLoading={ addressQuery.isPlaceholderData }
+              isLoading={ isLoading }
             >
               Last balance update
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
               <BlockEntity
                 number={ data.block_number_balance_updated_at }
-                isLoading={ addressQuery.isPlaceholderData }
+                isLoading={ isLoading }
               />
             </DetailedInfo.ItemValue>
           </>
         ) }
 
-        <DetailedInfoSponsoredItem isLoading={ addressQuery.isPlaceholderData }/>
+        <DetailedInfoSponsoredItem isLoading={ isLoading }/>
       </DetailedInfo.Container>
     </>
   );

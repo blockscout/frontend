@@ -7,7 +7,7 @@ import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
-  isLoading: boolean;
+  isLoading?: boolean;
   addressHash: string;
 }
 

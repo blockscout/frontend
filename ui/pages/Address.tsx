@@ -155,7 +155,7 @@ const AddressPageContent = () => {
       {
         id: 'index',
         title: 'Details',
-        component: <AddressDetails addressQuery={ addressQuery }/>,
+        component: <AddressDetails addressQuery={ addressQuery } isLoading={ isTabsLoading }/>,
       },
       addressQuery.data?.is_contract ? {
         id: 'contract',
@@ -370,7 +370,13 @@ const AddressPageContent = () => {
 
   // API always returns hash in check-summed format except for addresses that are not in the database
   // In this case it returns 404 with empty payload, so we calculate check-summed hash on the client
-  const checkSummedHash = React.useMemo(() => addressQuery.data?.hash ?? getCheckedSummedAddress(hash), [ hash, addressQuery.data?.hash ]);
+  const checkSummedHash = React.useMemo(() => {
+    if (isLoading) {
+      return getCheckedSummedAddress(hash);
+    }
+
+    return addressQuery.data?.hash ?? getCheckedSummedAddress(hash);
+  }, [ hash, addressQuery.data?.hash, isLoading ]);
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
