@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { createContext, useContext } from 'react';
 
+const _URL = 'https://devzk-staking.bitkinetic.com';
 
 const initialState = {
     isAuthenticated: false,
@@ -11,7 +12,7 @@ const initialState = {
     loginFunction: async (address: string, token: string) => {},
     logoutFunction: async () => {},
     tokenPrice: "1.00",
-    serverUrl: 'https://devzk-staking.bitkinetic.com',
+    serverUrl: _URL , 
     setTokenPrice: (price: number) => {},
 };
 
@@ -24,7 +25,7 @@ export function StakeLoginContextProvider(props: any) {
     const [ token, setToken ] = React.useState(initialState.token);
     const [ address, setAddress ] = React.useState(initialState.address);
     const [ tokenPrice, setTokenPrice ] = React.useState("1.00")
-    const [ serverUrl, setServerUrl ] = React.useState('https://devzk-staking.bitkinetic.com');
+    const [ serverUrl, setServerUrl ] = React.useState(_URL);
 
 
     const loginFunction = async (address: string, token: string) => {

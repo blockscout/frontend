@@ -4,8 +4,6 @@ import React from 'react';
 import { Button, Text } from '@chakra-ui/react';
 
 
-const no_op = () => { };
-
 const PlainButton = ({ text, onClick, disabled = false} : {
     text: string,
     onClick?: () => void,
@@ -13,7 +11,12 @@ const PlainButton = ({ text, onClick, disabled = false} : {
 }) => {
     return (
         <Button
-            onClick={ onClick || no_op }
+            onClick={ () => {
+                if (disabled) {
+                    return;
+                }
+                onClick && onClick();
+            }}
             py = "4px"
             display="flex"
             alignItems="center"

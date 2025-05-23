@@ -12,7 +12,7 @@ import React , { useEffect } from 'react';
 import { formatUnits } from 'viem';
 import { toBigInt , parseUnits} from 'ethers';
 import axios from 'axios';
-import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
+import { usePublicClient , useBalance , useAccount as useWagmiAccount } from 'wagmi';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import { token } from 'mocks/address/address';
 
@@ -77,7 +77,12 @@ const PlainButton = ({text, onClick, disabled = false} : {
 }) => {
     return (
         <Button
-            onClick={ onClick || no_op }
+            onClick={ () => {
+                if (disabled) {
+                    return;
+                }
+                onClick && onClick();
+            }}
             display="flex"
             alignItems="center"
             justifyContent="center"
@@ -109,7 +114,13 @@ const PlainButton2 = ({text, onClick, disabled = false} : {
 }) => {
     return (
         <Button
-            onClick={ onClick || no_op }
+            onClick={ () => { 
+                if ( disabled ) {
+                    return;
+                } else {
+                    onClick && onClick();
+                }
+            }}
             px = "8px"
             py = "4px"
             width={ '100px' }
@@ -249,6 +260,7 @@ const StakingInfo = ({
     modalTitle = 'Stake',
     currentAmount,
     setCurrentItem,
+    callback = no_op,
     setCurrentTxType
 }: {
     stakedAmount?: number | string;
@@ -280,6 +292,7 @@ const StakingInfo = ({
     isHideNumber: boolean;
     setIsHideNumber: (isHide: boolean) => void;
     onOpen?: () => void;
+    callback?: () => void;
     modalTitle?: string;
     currentAmount: string;
     setCurrentItem: (item: string) => void;
@@ -296,6 +309,13 @@ const StakingInfo = ({
         }
         return '0.00';
     }, [userAddr , balanceData]);
+
+
+    const { isConnected: WalletConnected } = useAccount();
+
+    const { chain } = useWagmiAccount();
+    const publicClient = usePublicClient();
+
 
     return (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 2fr' }} 
@@ -318,12 +338,12 @@ const StakingInfo = ({
                             <PlainButton 
                                 text="Claim all"
                                 onClick={ handleClaimAll }
-                                disabled={ false }
+                                disabled={ !WalletConnected || Number(claimableRewards) === 0 || Number(claimableRewards) < 0 }
                             />
                             <PlainButton2 
                                 text="Compounding"
                                 onClick={ handleCompound }
-                                disabled={ false }
+                                disabled={ !WalletConnected || Number(claimableRewards) === 0 || Number(claimableRewards) < 0 }
                             />
                         </Flex>
                     </Flex>
@@ -385,7 +405,7 @@ const StakingInfo = ({
                     <PlainButton 
                         text="Stake More"
                         onClick={ handleStakeMore }
-                        disabled={ false }
+                        disabled={ !WalletConnected || Number(formattedBalanceStr) === 0 || Number(formattedBalanceStr) < 0 }
                     />
                 </Box>
                 <CommonModal 
@@ -396,6 +416,7 @@ const StakingInfo = ({
                     transactionStage = { transactionStage }
                     currentTxType = { currentTxType }
                     availableAmount = { availableAmount }
+                    callback = { callback }
                     setAvailableAmount = { setAvailableAmount }
                     onSubmit = { handleSubmit }
                     onOpen = { onOpen }

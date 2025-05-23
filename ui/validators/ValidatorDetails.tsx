@@ -99,7 +99,6 @@ const ValidatorDetails = () => {
             }).then((response) => {
                 return response.data;
             }).catch((error) => {
-                console.error('Error fetching data:', error);
                 return null;
             });
             setIsDetailInfoLoading(false);
@@ -183,7 +182,7 @@ const ValidatorDetails = () => {
                                 gap="8px"
                             >
                                 <Avatar
-                                    name="Validator Name"
+                                    name="MOCA"
                                     src="/static/moca-brand.svg"
                                     size='2xs'
                                     width="32px"

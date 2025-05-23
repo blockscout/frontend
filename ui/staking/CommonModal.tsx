@@ -13,8 +13,9 @@ import StakingValidatorSelect from 'ui/staking/StakingValidatorSelect';
 import WithTextWrapper from 'ui/staking/WithTextWrapper';
 import FromAndToSelect from 'ui/staking/FromAndToSelect';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
-import React ,  { useEffect } from 'react';
+import React ,  { useCallback, useEffect } from 'react';
 import axios from 'axios';
+import styles from 'ui/staking/spinner.module.css';
 
 
 const formatNumberWithCommas  = (input: string) => {
@@ -72,6 +73,7 @@ const CommonModal = ({
     setCurrentAddress,
     setCurrentFromAddress,
     setCurrentItem,
+    callback,
     currentToItem,
     setCurrentToItem = () => {},
     setCurrentToAddress = () => {},
@@ -101,18 +103,25 @@ const CommonModal = ({
     setCurrentFromItem: (value: any) => void;
     setCurrentItem: (value: any) => void;
     setCurrentToItem ?: (value: any) => void;
+    callback ?: () => void;
     setCurrentToAddress ?: (value: string) => void;
     txhash?: string;
 }) => {
 
     const [ loading, setLoading ] = React.useState<boolean>(false);
 
+    const spinner = (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '180px',
+            width: '100%', marginTop: '10px' }}>
+            <span className ="modal-spinner"></span>
+        </div>
+    );
+
     const [ apr , setApr ] = React.useState<string | number>("0.00");
 
     const [ inputStr , setInputStr ] = React.useState<string>(currentAmount);
 
     const handleSetApr = (value: string | number) => {
-        console.log('handleSetApr', value);
         setApr(value);
     }
 
@@ -155,12 +164,6 @@ const CommonModal = ({
             const param = new URLSearchParams();
             param.append('limit', '100');
             param.append('address', (userAddr || '').toLowerCase());
-            // const res = await (await fetch(url + '/api/me/staking/delegations?' + param.toString(), {
-            //     method: 'get',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            // })).json() as  any;
             const res = await axios.get(url + '/api/me/staking/delegations?' + param.toString(), {
                 headers: {
                     'Content-Type': 'application/json',
@@ -169,7 +172,6 @@ const CommonModal = ({
             }).then((response) => {
                 return response.data;
             }).catch((error) => {
-                console.error('Error fetching data:', error);
                 return null;
             });
             setLoading(false);
@@ -207,7 +209,6 @@ const CommonModal = ({
             }).then((response) => {
                 return response.data;
             }).catch((error) => {
-                console.error('Error fetching data:', error);
                 return null;
             });
             if(res && res.code === 200) {
@@ -331,13 +332,22 @@ const CommonModal = ({
         return true;
     } , [ currentAmount, availableAmount, currentTxType ]);
 
+
+    useEffect(() => {
+        console.log('currentToItem', currentToItem);
+        console.log('currentFromItem', currentFromItem);
+    }, [ currentToItem, currentFromItem ]);
+
     const isSelectedValidatorValid = React.useMemo(() => {
         if (currentTxType === 'ChooseStake' || currentTxType === 'MoveStake' || currentTxType === 'Compound-Stake') {
 
             if(!currentItem || !currentItem.validatorAddress) {
                 return false;
             }
-            if(currentTxType === 'MoveStake' && currentToItem.validatorAddress === currentFromItem.validatorAddress) {
+            if(currentTxType === 'MoveStake' && (
+                currentToItem.validatorAddress === currentFromItem.validatorAddress ||
+                !currentToItem.validatorAddress)
+            ) {
                 return false;
             }
         }
@@ -346,7 +356,12 @@ const CommonModal = ({
     }, [ currentItem, currentTxType , currentFromItem , currentToItem ]);
 
 
-
+    const handleCloseDialog = useCallback(() => {
+        handleCloseModal();
+        if ( transactionStage === 'success' ) {
+            callback && callback();
+        }
+    }, [ transactionStage, callback ]);
 
     return (
         <StakingModal 
@@ -357,122 +372,131 @@ const CommonModal = ({
             isSuccess={ isSuccess }
             extraDescription={ extraDescription }
         >
-            { isSuccess ? (
+            { transactionStage === 'success' && (
                 <SuccessfulContent 
                     text='Transaction Success'
                     txhash = { txhash || '' }
-                    onClose={ handleCloseModal }
+                    onClose={ () => {
+                        handleCloseDialog();
+                    }}
                 />
-            ) : (
-            <>
-                <div style={{ maxHeight: '590px', marginBottom: '80px', overflowY: 'auto' }}>
-                    {
-                        (currentTxType === 'Claim' || currentTxType === 'ClaimAll' || currentTxType === 'Compound-Claim') ? (
-                            <Box width="100%" height="auto">
-                                <ReadOnlyInput 
-                                    amount = { currentAmount }
-                                    price = { currentAmount }
-                                />
-                            </Box>
-                        ): (
-                            <>
-                                { 
-                                    selectable ? (
-                                        ( currentTxType === 'MoveStake' ) ? (
-                                                <FromAndToSelect
-                                                    FromItem = { currentItem }
-                                                    currentToItem = { currentToItem }
-                                                    setCurrentToItem = { setCurrentToItem }
-                                                    setApr = { handleSetApr }
-                                                    setCurrentFromAddress = { setCurrentFromAddress }
-                                                    setCurrentToAddress = { setCurrentToAddress }
-                                                    myValidatorsList = { myValidatorsList }
-                                                    allValidatorsList = { allValidatorsList }
-                                                /> 
-                                            ) : ( 
-                                                <WithTextWrapper text="Validators">
-                                                    <StakingValidatorSelect 
-                                                        isOpen={ isPopOverOpen }
-                                                        onToggle={ handlePopOverToggle }
-                                                        onClose={ handlePopOverClose }
+            )}
+
+            { transactionStage === 'comfirming' && ( spinner ) }
+            { (transactionStage !== 'success' && transactionStage !== 'comfirming') && (
+                <>
+                    <div style={{ maxHeight: '590px', marginBottom: '80px', overflowY: 'auto' }}>
+                        {
+                            (currentTxType === 'Claim' || currentTxType === 'ClaimAll' || currentTxType === 'Compound-Claim') ? (
+                                <Box width="100%" height="auto">
+                                    <ReadOnlyInput 
+                                        amount = { currentAmount }
+                                        price = { currentAmount }
+                                    />
+                                </Box>
+                            ): (
+                                <>
+                                    { 
+                                        selectable ? (
+                                            ( currentTxType === 'MoveStake' ) ? (
+                                                    <FromAndToSelect
+                                                        FromItem = { currentItem }
+                                                        currentToItem = { currentToItem }
+                                                        setCurrentToItem = { setCurrentToItem }
                                                         setApr = { handleSetApr }
-                                                        myValidatorsList={ myValidatorsList }
-                                                        allValidatorsList={ allValidatorsList }
-                                                        selectedValidator={ currentItem }
-                                                        setSelectedValidator={ (validator: any) => setCurrentItem(validator) }
+                                                        setCurrentFromAddress = { setCurrentFromAddress }
+                                                        setCurrentToAddress = { setCurrentToAddress }
+                                                        myValidatorsList = { myValidatorsList }
+                                                        setCurrentAddress = { setCurrentAddress }
+                                                        allValidatorsList = { allValidatorsList }
+                                                    /> 
+                                                ) : ( 
+                                                    <WithTextWrapper text="Validators">
+                                                        <StakingValidatorSelect 
+                                                            isOpen={ isPopOverOpen }
+                                                            onToggle={ handlePopOverToggle }
+                                                            onClose={ handlePopOverClose }
+                                                            setApr = { handleSetApr }
+                                                            setCurrentAddress = { setCurrentAddress }
+                                                            myValidatorsList={ myValidatorsList }
+                                                            allValidatorsList={ allValidatorsList }
+                                                            selectedValidator={ currentItem }
+                                                            setSelectedValidator={ (validator: any) => setCurrentItem(validator) }
+                                                        />
+                                                    </WithTextWrapper>
+                                            )
+                                        ) : (
+                                            <ValidatorItemBar
+                                                showArrow={false}
+                                                liveApr={ (Number(currentItem?.liveApr  || 0) * 100).toFixed(1) + '%' }
+                                                validatorName = {currentItem?.validatorAddress || ''}
+                                                validatorAvatar={null}
+                                                onClick={() => {} }
+                                            />
+                                        )
+                                    }
+
+                                    <Flex
+                                        flexDirection="column"
+                                        justifyContent="flex-start"
+                                        alignItems="flex-start"
+                                        width="100%"
+                                        gap="16px"
+                                        marginTop="16px"
+                                    >
+                                        <Box width="100%" height="auto">
+                                            <StakingModalNumberInput 
+                                                value = { currentAmount }
+                                                handleMaxClick = { () => {
+                                                    setCurrentAmount(availableAmount);
+                                                    setInputStr(formatNumberWithCommas(availableAmount));
+                                                }}
+                                                isOverAmount = { isOverAmount }
+                                                setValue = { setCurrentAmount }
+                                                inputStr = { inputStr }
+                                                setInputStr = { setInputStr }
+                                                availableAmount = { availableAmount }
+                                            />
+                                        </Box>
+                                        {
+                                            currentTxType !== 'Withdraw' && (
+                                                <Box width="100%" height="auto">
+                                                    <EarnInfoBox 
+                                                        amount = { currentAmount }
+                                                        apr = { apr }
                                                     />
-                                                </WithTextWrapper>
-                                        )
-                                    ) : (
-                                        <ValidatorItemBar
-                                            showArrow={false}
-                                            liveApr={ (Number(currentItem?.liveApr  || 0) * 100).toFixed(1) + '%' }
-                                            validatorName = {currentItem?.validatorAddress || ''}
-                                            validatorAvatar={null}
-                                            onClick={() => {} }
-                                        />
-                                    )
-                                }
+                                                </Box>
+                                            )
+                                        }
 
-                                <Flex
-                                    flexDirection="column"
-                                    justifyContent="flex-start"
-                                    alignItems="flex-start"
-                                    width="100%"
-                                    gap="16px"
-                                    marginTop="16px"
-                                >
-                                    <Box width="100%" height="auto">
-                                        <StakingModalNumberInput 
-                                            value = { currentAmount }
-                                            handleMaxClick = { () => {
-                                                setCurrentAmount(availableAmount);
-                                                setInputStr(formatNumberWithCommas(availableAmount));
-                                            }}
-                                            isOverAmount = { isOverAmount }
-                                            setValue = { setCurrentAmount }
-                                            inputStr = { inputStr }
-                                            setInputStr = { setInputStr }
-                                            availableAmount = { availableAmount }
-                                        />
-                                    </Box>
-                                    {
-                                        currentTxType !== 'Withdraw' && (
-                                            <Box width="100%" height="auto">
-                                                <EarnInfoBox 
-                                                    amount = { currentAmount }
-                                                    apr = { apr }
-                                                />
-                                            </Box>
-                                        )
-                                    }
-
-                                    {
-                                        currentTxType === 'Withdraw' && (
-                                            <Box width="100%" height="auto">
-                                                <HeadsUpInfo
-                                                    label="Heads Up"
-                                                    value="It takes 1 days to receive MOCA after you withdraw."
-                                                />
-                                            </Box>
-                                        )
-                                    }
-                                </Flex>
-                            </>
-                        )
-                    }
-                </div>
-                <ModalFooterBtnGroup
-                    onCancel={ handleCloseModal }
-                    onConfirm={ (e) => handleSubmit(e) }
-                    cancelText="Cancel"
-                    confirmText= { ConfirmBtnText }
-                    isSubmitting={ isSubmitting }
-                    isDisabled={ !(isInputAmountValid && isSelectedValidatorValid) || loading }
-                />
-            </>
-            )
-        }   
+                                        {
+                                            currentTxType === 'Withdraw' && (
+                                                <Box width="100%" height="auto">
+                                                    <HeadsUpInfo
+                                                        label="Heads Up"
+                                                        value="It takes 1 days to receive MOCA after you withdraw."
+                                                    />
+                                                </Box>
+                                            )
+                                        }
+                                    </Flex>
+                                </>
+                            )
+                        }
+                    </div>
+                    <ModalFooterBtnGroup
+                        onCancel={ handleCloseDialog }
+                        onConfirm={ (e) => {
+                            handleSubmit(e);
+                        }}
+                        cancelText="Cancel"
+                        confirmText= { ConfirmBtnText }
+                        isSubmitting={ isSubmitting }
+                        isDisabled={ !(isInputAmountValid && isSelectedValidatorValid) || loading }
+                    />
+                </>
+                )
+            }   
         </StakingModal>
     )
 }

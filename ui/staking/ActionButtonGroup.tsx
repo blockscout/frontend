@@ -1,11 +1,33 @@
 /* eslint-disable */
 
 import React from 'react';
+import { useMemo , useEffect} from 'react';
 import { Box, Flex, Button , Grid, Text } from '@chakra-ui/react';
 import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
+import useAccount from 'lib/web3/useAccount';
+
+
+const CustomMenuItem = (props: any) => {
+    const { children, disabled, onClick , ...rest } = props;
+    return (
+        <MenuItem
+            {...rest}
+            onClick={(e: any) => {
+                e.stopPropagation();
+                if (disabled) {
+                    return;
+                }
+                onClick && onClick(e);
+            }}
+            cursor={disabled ? 'not-allowed' : 'pointer'}
+            opacity={ disabled ? 0.6 : 1}
+        >
+            {children}
+        </MenuItem>
+    );
+}
 
 const no_op = () => {};
-
 
 const ChevronDownIcon = () => {
     return (
@@ -23,7 +45,12 @@ const PlainButton = ({text,  onClick,  disabled = false , width = '72px'}: {
 }) => {
     return (
         <Button
-            onClick={ onClick || no_op }
+            onClick={ () => {
+                if (disabled) {
+                    return;
+                }
+                onClick && onClick();
+            }}
             py = "4px"
             display="flex"
             alignItems="center"
@@ -82,6 +109,50 @@ const ActionButtonGroup = ({
     setCurrentAddress?: (address: string) => void,
     setAvailableAmount?: (value: string) => void,
 }) => {
+    const { isConnected: WalletConnected } = useAccount();
+
+    const isValidatorJailed = useMemo(() => {
+        if (!currentRecord || !currentRecord?.status) {
+            return false;
+        }
+        return currentRecord?.status === "Jailed";
+    } , [currentRecord]);
+
+    const isWalletNotConnected = useMemo(() => {
+        return !WalletConnected;
+    }, [WalletConnected]);
+
+    const _disableClaim = useMemo(() => {
+        if (!currentRecord || !currentRecord?.claimable) {
+            return true;
+        } else if (isNaN(Number(currentRecord?.claimable))) {
+            return true;
+        } else if (Number(currentRecord?.claimable) < 0.00000001 ) {
+            return true;
+        }
+        return false;
+    }, [currentRecord]);
+
+
+    const _disableWithdrawAndMove = useMemo(() => {
+        if (!currentRecord || !currentRecord?.myStake) {
+            return true;
+        } else if (isNaN(Number(currentRecord?.myStake))) {
+            return true;
+        } else if (Number(currentRecord?.myStake) < 0.00000001 ) {
+            return true;
+        }
+        return false;
+    }, [currentRecord]);
+
+    const neverStaked = useMemo(() => {
+        // 连接钱包后，没有质押时，Stake可用，其余禁用
+        if (Number(currentRecord?.myStake) === 0) {
+            return true;
+        }
+        return false;
+    }, [currentRecord]);
+
 
     return (
         <Flex
@@ -110,7 +181,7 @@ const ActionButtonGroup = ({
                             }
                             setCurrentAddress(validatorAddress);
                         }}
-                        disabled={ disableClaim }
+                        disabled={ disableClaim || isWalletNotConnected || _disableClaim || neverStaked }
                     />
                 }
                 { showStake && 
@@ -123,7 +194,7 @@ const ActionButtonGroup = ({
                                 // setAvailableAmount(currentRecord?.availableAmount || '0');
                             }
                         }}
-                        disabled={ disableStake }
+                        disabled={ disableStake || isWalletNotConnected || isValidatorJailed }
                     />
                 }
                 <Menu placement="bottom-end" >
@@ -160,26 +231,31 @@ const ActionButtonGroup = ({
                         fontWeight="500"
                         lineHeight="22px"
                         color ="#000"
+                        padding={ '4px' }
                         fontFamily="HarmonyOS Sans"
                     >
-                        <MenuItem
-                            onClick={(e) => {
+                        <CustomMenuItem
+                            onClick={(e: any) => {
                                 e.stopPropagation();
                                 setCurrentAddress(validatorAddress);
                                 handleWithdraw(validatorAddress, currentRecord);
                             }}
+                            borderRadius={"8px"}
+                            disabled={ isWalletNotConnected || _disableWithdrawAndMove || neverStaked }
                             _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
-                            >Withdraw</MenuItem>
-                        <MenuItem
-                            onClick={(e) => {
+                            >Withdraw</CustomMenuItem>
+                        <CustomMenuItem
+                            onClick={(e: any) => {
                                 e.stopPropagation();
                                 handleMoveStake(validatorAddress, currentRecord);
                                 setCurrentAddress(validatorAddress);
                             }}
+                            borderRadius={"8px"}
+                            disabled={ isWalletNotConnected || _disableWithdrawAndMove || neverStaked }
                             _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
-                            >Move Stake</MenuItem>
+                            >Move Stake</CustomMenuItem>
                     </MenuList>
                 </Menu>
             </Flex>

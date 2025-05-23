@@ -18,6 +18,9 @@ const moduleExports = {
     'swagger-ui-react',
   ],
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack(config) {
     config.module.rules.push(
       {

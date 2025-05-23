@@ -30,9 +30,7 @@ const StakingModal = ({
 
     return (
         <Modal isOpen={ isOpen } onClose={ onClose } closeOnOverlayClick={false} isCentered>
-            <ModalOverlay
-                bg='blackAlpha.300'
-            />
+            <ModalOverlay bg='blackAlpha.300' />
             <ModalContent height={'auto'} maxWidth={"600px"} px={'24px'} py={'24px'}>
                 <ModalHeader mb={"24px"}>
                     {
@@ -56,7 +54,7 @@ const StakingModal = ({
                                             lineHeight="140%"
                                             color ="rgba(0, 0, 0, 0.60)"
                                             fontFamily="HarmonyOS Sans"
-                                            mt={'12px'}
+                                            mt='12px'
                                         >
                                             { extraDescription }
                                         </Text>

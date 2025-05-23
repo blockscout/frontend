@@ -1,11 +1,11 @@
 /* eslint-disable */
 import { Table, Tbody, Thead , Flex, TableContainer, Tr, Th,  Td } from '@chakra-ui/react';
-import { Box, Button, useDisclosure } from '@chakra-ui/react';
+import { Box, useDisclosure } from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import { route } from 'nextjs-routes';
 import React, { useEffect } from 'react';
-import { debounce, orderBy } from 'lodash';
+import { orderBy } from 'lodash';
 import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
 import StatusButton from 'ui/validators/StatusButton';
 import WithTipsText from 'ui/validators/WithTipsText';
@@ -16,7 +16,8 @@ import axios from 'axios';
 import { useWalletClient, usePublicClient } from 'wagmi';
 import { useSendTransaction } from 'wagmi';
 import { useAccount as useWagmiAccount , useBalance } from 'wagmi'
-import { toBigInt , parseUnits} from 'ethers';
+import { parseUnits} from 'ethers';
+import isTxConfirmed from 'ui/staking/TransactionConfirmed';
 import { formatUnits } from 'viem';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import FloatToPercent from 'ui/validators/FloatToPercent';
@@ -174,6 +175,7 @@ const TableApp = (props: {
     isLoading: boolean;
     totalCount: number;
     currentPage: number;
+    fetcher: ( params ?: any ) => void;
     searchTerm: string;
     onJumpPrevPage: () => void;
     onJumpNextPage: () => void;
@@ -188,6 +190,7 @@ const TableApp = (props: {
         onJumpPrevPage,
         onJumpNextPage,
         totalCount,
+        fetcher,
         nextKey
     } = props;
 
@@ -265,7 +268,6 @@ const TableApp = (props: {
         }).then((response) => {
             return response.data;
         }).catch((error) => {
-            console.error(error);
             return null; 
         });
     } , [url]);
@@ -337,19 +339,28 @@ const TableApp = (props: {
             }).then((response) => {
                 return response.data;
             }).catch((error) => {
-                console.error(error);
                 return null; 
             });
             if(res && res.code === 200) {
                 if(res.data && res.data.unsignedTx) {
                     const { unsignedTx } = res.data;
                     signAndSend(amount , unsignedTx).then((txHash: string) => {
-                        setTransactionStage('success');
                         setTransactionHash(txHash);
-                        sendTxHashToServer(txHash, param);
+                        setTransactionStage('comfirming');
+                        isTxConfirmed(txHash).then((isConfirmed: boolean) => {
+                            if (isConfirmed) {
+                                setTransactionStage('success');
+                                sendTxHashToServer(txHash, param);
+                            } else {
+                                setIsTxLoading (false);
+                                setTransactionStage('error');
+                            }
+                        }).catch((error: any) => {
+                            setTransactionStage('error');
+                            setIsTxLoading (false);
+                        });
                     }).catch((error: any) => {
                         setTransactionStage('error');
-                        console.error('Error signing transaction:', error);
                     }).finally(() => {
                         setIsTxLoading (false);
                     });
@@ -629,6 +640,7 @@ const TableApp = (props: {
                 setAvailableAmount = { setAvailableAmount }
                 onSubmit = { handleSubmit }
                 onOpen = { onOpen }
+                callback = { fetcher }
                 txhash= { transactionHash }
                 isSubmitting = { isTxLoading }
                 currentAmount = { currentAmount }

@@ -14,6 +14,7 @@ import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import { formatUnits } from 'viem';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import FloatToPercent from 'ui/validators/FloatToPercent';
+import isTxConfirmed from 'ui/staking/TransactionConfirmed';
 import { toBigInt , parseUnits} from 'ethers';
 import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
 import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
@@ -180,6 +181,7 @@ const TableApp = (props: {
     isLoading: boolean;
     totalCount: number;
     currentPage: number;
+    fetcher: (params?: any) => void;
     onJumpPrevPage: () => void;
     onJumpNextPage: () => void;
     nextKey: string | null;
@@ -195,6 +197,7 @@ const TableApp = (props: {
         onJumpPrevPage,
         onJumpNextPage,
         totalCount,
+        fetcher,
         nextKey,
         handleStake: handleStakeMore,
     } = props;
@@ -260,9 +263,9 @@ const TableApp = (props: {
         const res = await axios.post(url + '/api/staking/broadcast', _newParam, {
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            timeout: 5000
         }).then((response) => response.data).catch((error) => {
-            console.error('Error fetching data:', error);
             return null;
         });
     } , [url]);
@@ -395,7 +398,6 @@ const TableApp = (props: {
             apiPath = '/api/staking/distribution/prepare/claim';
         } else if (currentTxType === 'MoveStake') {
             if(!targetValidator || !targetValidator.validatorAddress) {
-                console.error('MoveStake targetValidator is null or undefined');
                 return;
             }
             param = {
@@ -430,7 +432,6 @@ const TableApp = (props: {
                     'Content-Type': 'application/json',
                 }
             }).then((response) => response.data).catch((error) => {
-                console.error('Error fetching data:', error);
                 return null;
             });
             if(res && res.code === 200) {
@@ -438,11 +439,21 @@ const TableApp = (props: {
                     const { unsignedTx } = res.data;
                     signAndSend(amount , unsignedTx).then((txHash: string) => {
                         setTransactionHash(txHash);
-                        setTransactionStage('success');
-                        sendTxHashToServer(txHash, param);
+                        setTransactionStage('comfirming');
+                        isTxConfirmed(txHash).then((isConfirmed: boolean) => {
+                            if (isConfirmed) {
+                                setTransactionStage('success');
+                                sendTxHashToServer(txHash, param);
+                            } else {
+                                setIsTxLoading (false);
+                                setTransactionStage('error');
+                            }
+                        }).catch((error: any) => {
+                            setTransactionStage('error');
+                            setIsTxLoading (false);
+                        });
                     }).catch((error: any) => {
                         setTransactionStage('error');
-                        console.error('Error signing transaction:', error);
                     }).finally(() => {
                         setIsTxLoading (false);
                     });
@@ -463,7 +474,7 @@ const TableApp = (props: {
             key: 'validatorAddress',
             minWidth: '190px',
             width: '250px',
-                        render: (record) => (
+            render: (record) => (
                 <span 
                     style={{ 
                         color: '#A80C53',
@@ -542,6 +553,23 @@ const TableApp = (props: {
             width: '160px',
             tips: 'This is the commission rate charged by the validator.',
             allowSort: false,
+            render: (record) => (
+                <div 
+                    style={{ 
+                        color: '#000',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        width: '100%',
+                        fontWeight: 500,
+                        lineHeight: 'normal',
+                        textAlign: 'center',
+                        textTransform: 'capitalize',
+                    }}
+                >
+                   { (Number(record.commission)*100 ).toFixed(2) }%
+                </div>
+            )
         },
         {
             label: 'Status',
@@ -702,6 +730,7 @@ const TableApp = (props: {
                 setAvailableAmount = { setAvailableAmount }
                 onSubmit = { handleSubmit }
                 onOpen = { onOpen }
+                callback =  { fetcher } 
                 txhash= { transactionHash }
                 isSubmitting = { isTxLoading }
                 currentAmount = { currentAmount }
@@ -795,22 +824,19 @@ const TableWrapper = ({
 
 
 
-    const requestDelegatorsInfo = React.useCallback(async( _addr : string) => {
-
+    const requestDelegatorsInfo = React.useCallback(async() => {
+        if (!userAddr) return;
         try {
             setIsTableLoading(true);
             const param = new URLSearchParams();
             param.append('limit', defaultLimit.toString());
             param.append('nextKey', queryParams.nextKey || initial_nextKey);
-            param.append('address', (_addr || '').toLowerCase());
-            // const res = await (await fetch(url + '/api/me/staking/delegations' + '?' + param.toString(),
-            //     { method: 'get' })).json() as any
+            param.append('address', (userAddr || '').toLowerCase());
             const res = await axios.get(url + '/api/me/staking/delegations' + '?' + param.toString(), {
                 headers: {
                     'Content-Type': 'application/json',
                 }
             }).then((response) => response.data).catch((error) => {
-                console.error('Error fetching data:', error);
                 return null;
             });
             setIsTableLoading(false);
@@ -826,14 +852,14 @@ const TableWrapper = ({
             throw Error(error);
         }
     }
-  , [ url , queryParams.nextKey ]);
+  , [ url , userAddr,  queryParams.nextKey ]);
 
     useEffect(() => {
         if (!userAddr) {
             return;
         }
-        requestDelegatorsInfo(userAddr);
-    }, [ userAddr, requestDelegatorsInfo ]);
+        requestDelegatorsInfo();
+    }, [ requestDelegatorsInfo ]);
 
     return (
         <Box
@@ -849,6 +875,7 @@ const TableWrapper = ({
                 searchTerm={ searchTerm }
                 isLoading={ isTableLoading }
                 totalCount={ totalCount }
+                fetcher = { requestDelegatorsInfo } 
                 currentPage={ currentPage }
                 handleStake={ handleStake }
                 onJumpPrevPage={ () => {

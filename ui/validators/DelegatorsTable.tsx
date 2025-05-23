@@ -98,7 +98,7 @@ const ValidatorInfo = ({
             width="auto"
         >
             <Avatar
-                name="Validator Name"
+                name="MOCA"
                 src="/static/moca-brand.svg"
                 size='2xs'
                 width="16px"
@@ -450,7 +450,6 @@ const TableWrapper = (props: {
             }).then((response) => {
                 return response.data;
             }).catch((error) => {
-                console.error('Error fetching data:', error);
                 return null;
             });
             setIsTableLoading(false);
