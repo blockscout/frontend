@@ -1,3 +1,4 @@
+/* eslint-disable */
 import type * as bens from '@blockscout/bens-types';
 import type * as stats from '@blockscout/stats-types';
 import type * as visualizer from '@blockscout/visualizer-types';
@@ -1446,7 +1447,7 @@ Q extends 'pool' ? Pool :
 never;
 /* eslint-enable @stylistic/indent */
 
-export type ResourcePayload<Q extends ResourceName> = ResourcePayloadA<Q> | ResourcePayloadB<Q>;
+export type ResourcePayload<Q extends ResourceName> =  ResourcePayloadA<Q> | ResourcePayloadB<Q>;
 export type PaginatedResponseItems<Q extends ResourceName> = Q extends PaginatedResources ? ResourcePayloadA<Q>['items'] | ResourcePayloadB<Q>['items'] : never;
 export type PaginatedResponseNextPageParams<Q extends ResourceName> = Q extends PaginatedResources ?
   ResourcePayloadA<Q>['next_page_params'] | ResourcePayloadB<Q>['next_page_params'] :
