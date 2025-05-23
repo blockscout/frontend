@@ -43,7 +43,12 @@ const PlainButton = ({
 }) => {
     return (
         <Button
-            onClick={ onClick || no_op }
+            onClick={ (e) => {
+                if (disabled) {
+                    return;
+                }
+                onClick && onClick(e);
+            }}
             py = "4px"
             display="flex"
             alignItems="center"

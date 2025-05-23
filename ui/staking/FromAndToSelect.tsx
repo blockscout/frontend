@@ -13,6 +13,7 @@ const FromAndToSelect = ({
     setCurrentFromAddress,  
     myValidatorsList,
     allValidatorsList,
+    setCurrentAddress,
     setCurrentToAddress,
     setApr,
 }: {
@@ -23,6 +24,7 @@ const FromAndToSelect = ({
     setCurrentFromAddress: (address: string) => void;
     allValidatorsList: any[];
     setCurrentToAddress: (address: string) => void;
+    setCurrentAddress: (address: string) => void;
     setApr: (apr: number | string) => void;
 }) => {
 
@@ -58,8 +60,8 @@ const FromAndToSelect = ({
                     onToggle={ onToToggle }
                     onClose={ onToClose }
                     setSelectedValidator={ (validator: any) => {
-                        console.log('setSelectedValidator', validator);
                         setCurrentToItem(validator);
+                        setCurrentAddress(validator?.validatorAddress);
                         setCurrentToAddress(validator?.validatorAddress);
                     } }
                 />

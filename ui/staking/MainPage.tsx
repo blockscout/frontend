@@ -2,15 +2,15 @@
 "use client";
 
 import useAccount from 'lib/web3/useAccount';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { waitForTransactionReceipt } from '@wagmi/core'
 import BigNumber from 'bignumber.js';
 import orderBy from 'lodash/orderBy';
 import type { NextPage } from 'next';
-import dynamic from 'next/dynamic';
+import isTxConfirmed from './TransactionConfirmed';
 import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
 import { formatUnits } from 'viem';
-import Web3ModalProvider from 'ui/staking/Web3Provider';
+import useProvider from 'lib/web3/useProvider';
 import { toBigInt , parseUnits} from 'ethers';
 import axios from 'axios';
 import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
@@ -79,6 +79,7 @@ const ObjectDetails: NextPage = () => {
   };
 
   const [ toNext, setToNext ] = React.useState<boolean>(true);
+  const { provider } = useProvider();
 
   const [ tableList, setTableList ] = React.useState<Array<IssuanceTalbeListType>>([]);
 
@@ -91,7 +92,7 @@ const ObjectDetails: NextPage = () => {
   const [ loading, setLoading ] = React.useState<boolean>(false);
   const [ nextCursor, setNextCursor ] = React.useState<string>('');
   const [ previousCursor, setpreviousCursor ] = React.useState<string>('');
-
+  const { address: userAddr } = useAccount();
   const { address } = useAccount();
 
   const handleSearchChange = () => () => {};
@@ -163,15 +164,12 @@ const ObjectDetails: NextPage = () => {
   const [ totalRewards, setTotalRewards ] = React.useState<string>('0');
 
   const requestMyStakingInfo = React.useCallback(async() => {
+    if (!userAddr) return;
+    const param = new URLSearchParams();
+    param.append('address', (userAddr || '').toLowerCase());
     try {
       setLoading(true);
-      // const res = await (await fetch(url + '/api/me/staking/summary', { 
-      //     method: 'get',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   })).json() as  any;
-      const res = await axios.get(url + '/api/me/staking/summary', {
+      const res = await axios.get(url + '/api/me/staking/summary' + '?' + param.toString(), {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -191,19 +189,16 @@ const ObjectDetails: NextPage = () => {
     } catch (error: any) {
       setLoading(false);
     }
-  }, [ url ]);
+  }, [ url , userAddr]);
 
 
     const requestMyStakingTableList = React.useCallback(async() => {
+        if (!address) return;
+        const param = new URLSearchParams();
+        param.append('address', (address || '').toLowerCase());
         try {
           setLoading(true);
-          // const res = await (await fetch(url + '/api/me/staking/delegations', { 
-          //     method: 'get',
-          //     headers: {
-          //       'Content-Type': 'application/json',
-          //     },
-          //   })).json() as  any;
-          const res = await axios.get(url + '/api/me/staking/delegations', {
+          const res = await axios.get(url + '/api/me/staking/delegations' + '?' + param.toString(), {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -220,48 +215,43 @@ const ObjectDetails: NextPage = () => {
         } catch (error: any) {
           setLoading(false);
         }
-  }, [ url ]);
+  }, [ url, address ]);
 
-
-    const requestMyActivityTableList = React.useCallback(async({
-      limit = 10,
-      offset = 0,
-      countTotal = false,
-      reverse = false,
-    }) => {
-      try {
-        setLoading(true);
-        const paramStr = new URLSearchParams({
-          limit: limit.toString(),
-          offset: offset.toString(),
-          countTotal: countTotal.toString(),
-          reverse: reverse.toString(),
-        }).toString();
-        // const res = await (await fetch(url + '/api/me/staking/activity' + '?' + paramStr, {
-        //     method: 'get',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-            
-        //   })).json() as  any;
-        const res = await axios.get(url + '/api/me/staking/activity' + '?' + paramStr, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          timeout: 10000,
-        }).then((response) => {
-          return response.data;
-        }).catch((error) => {
-          return null;
-        });
-        if(res && res.code === 200) {
-          console.log('res', res);
-        }
-        setLoading(false);
-      } catch (error: any) {
-        setLoading(false);
+  const requestMyActivityTableList = React.useCallback(async({
+    limit = 10,
+    offset = 0,
+    countTotal = false,
+    reverse = false,
+    _addr = address,
+  }) => {
+    if (!_addr) return;
+    try {
+      setLoading(true);
+      const paramStr = new URLSearchParams({
+        limit: limit.toString(),
+        offset: offset.toString(),
+        countTotal: countTotal.toString(),
+        reverse: reverse.toString(),
+        address: (_addr || '').toLowerCase(),
+      }).toString();
+      const res = await axios.get(url + '/api/me/staking/activity' + '?' + paramStr, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000,
+      }).then((response) => {
+        return response.data;
+      }).catch((error) => {
+        return null;
+      });
+      if(res && res.code === 200) {
+        console.log('res', res);
       }
-    }, [ url ]);
+      setLoading(false);
+    } catch (error: any) {
+      setLoading(false);
+    }
+  }, [ url ]);
 
     const propsPage = React.useCallback((value: number) => {
       window.scrollTo({
@@ -290,22 +280,23 @@ const ObjectDetails: NextPage = () => {
     }
   }, [ requestMyStakingTableList , url ]);
 
-  React.useEffect(() => {
-    if (url) {
-      requestMyActivityTableList({
-        limit: 10,
-        offset: 0,
-        countTotal: true,
-        reverse: false,
-      });
-    }
-  }, [ requestMyActivityTableList , url ]);
+    React.useEffect(() => {
+      if (url) {
+        requestMyActivityTableList({
+          limit: 10,
+          offset: 0,
+          countTotal: true,
+          reverse: false,
+          _addr: address,
+        });
+      }
+    }, [ requestMyActivityTableList , address , url ]);
 
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [ isHideNumber, setIsHideNumber ] = React.useState<boolean>(false);
 
-    const { address: userAddr } = useAccount();
+
 
     const { data: balanceData } = useBalance({ address: userAddr});
     const [ availableAmount, setAvailableAmount ] = React.useState<string>('0.00');
@@ -370,7 +361,7 @@ const ObjectDetails: NextPage = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            timeout: 10000,
+            timeout: 5000,
         }).then((response) => {
             return response.data;
         }).catch((error) => {
@@ -394,6 +385,14 @@ const ObjectDetails: NextPage = () => {
                 "validatorAddress": targetAddress,
                 "amount": amount,
                 "stakingType": currentTxType
+            };
+            apiPath = '/api/staking/prepare/stake';
+        } else if (txType === 'ChooseStake') {
+            param = {
+                "address": userAddr,
+                "validatorAddress": targetAddress,
+                "amount": amount,
+                "stakingType": "Stake"
             };
             apiPath = '/api/staking/prepare/stake';
         }
@@ -423,15 +422,30 @@ const ObjectDetails: NextPage = () => {
                     if(res.data && res.data.unsignedTx) {
                         const { unsignedTx } = res.data;
                         signAndSend(amount , unsignedTx).then((txHash: string) => {
-                            setTransactionStage('edit');
-                            setCurrentAddress('');
-                            setCurrentItem({});
-                            setCurrentTxType('Compound-Stake');
-                            setExtraDescription(null);
-                            setModalTitle('Compounding');
-                            setCurrentAmount("0.00");
-                            setAvailableAmount(formattedBalanceStr);
-                            sendTxHashToServer(txHash, param);
+                            setTransactionHash(txHash);
+                            setTransactionStage('comfirming');
+                            isTxConfirmed(txHash).then((isConfirmed: boolean) => {
+                                if (isConfirmed) {
+                                    setTransactionStage('edit');
+                                    sendTxHashToServer(txHash, param);
+
+                                    // back to stake 
+                                    setCurrentAddress('');
+                                    setCurrentItem({});
+                                    setCurrentTxType('Compound-Stake');
+                                    setExtraDescription(null);
+                                    setModalTitle('Compounding');
+                                    setCurrentAmount("0.00");
+                                    setAvailableAmount(formattedBalanceStr);
+
+                                } else {
+                                    setIsTxLoading (false);
+                                    setTransactionStage('error');
+                                }
+                            }).catch((error: any) => {
+                                setTransactionStage('error');
+                                setIsTxLoading (false);
+                            });
                         }).catch((error: any) => {
                             setTransactionStage('error');
                         }).finally(() => {
@@ -466,8 +480,19 @@ const ObjectDetails: NextPage = () => {
                         const { unsignedTx } = res.data;
                         signAndSend(amount , unsignedTx).then((txHash: string) => {
                             setTransactionHash(txHash);
-                            setTransactionStage('success');
-                            sendTxHashToServer(txHash, param);
+                            setTransactionStage('comfirming');
+                            isTxConfirmed(txHash).then((isConfirmed: boolean) => {
+                                if (isConfirmed) {
+                                    setTransactionStage('success');
+                                    sendTxHashToServer(txHash, param);
+                                } else {
+                                    setIsTxLoading (false);
+                                    setTransactionStage('error');
+                                }
+                            }).catch((error: any) => {
+                                setTransactionStage('error');
+                                setIsTxLoading (false);
+                            });
                         }).catch((error: any) => {
                             setTransactionStage('error');
                         }).finally(() => {
@@ -530,6 +555,10 @@ const ObjectDetails: NextPage = () => {
         totalRewards={ totalRewards }
         isOpen = { isOpen }
         handleCloseModal = { handleCloseModal }
+        callback = { () => {
+          requestMyStakingInfo();
+          requestMyStakingTableList();
+        }}
         modalTitle = { modalTitle}
         extraDescription = { extraDescription }
         transactionStage = { transactionStage }
