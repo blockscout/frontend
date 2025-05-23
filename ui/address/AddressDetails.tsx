@@ -31,7 +31,7 @@ import type { AddressQuery } from './utils/useAddressQuery';
 
 interface Props {
   addressQuery: AddressQuery;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 const AddressDetails = ({ addressQuery, isLoading }: Props) => {
