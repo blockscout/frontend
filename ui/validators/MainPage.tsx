@@ -311,7 +311,8 @@ const AllValidatorPage: NextPage = () => {
                 fontStyle="normal"
                 as={'span'}
                 textTransform="capitalize"
-                fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Epoch</Text> }
+                fontFamily="HarmonyOS Sans"
+                fontWeight="400" color="rgba(0, 0, 0, 0.4)">Epoch</Text> }
                 tips={ `A fixed period in PoS blockchains for validator selection, staking, and reward distribution.` }
             />
             <Flex alignItems="center" justifyContent="space-between">
