@@ -485,7 +485,9 @@ const TableWrapper = ({
 
 
     const requestActivityList = React.useCallback(async( _addr : string = '', _selectDateRange: any) => {
-
+        if (!_addr) {
+            return;
+        }
         try {
             setIsTableLoading(true);
             const param = new URLSearchParams();
@@ -496,8 +498,6 @@ const TableWrapper = ({
                 _selectDateRange[0] && param.append('startDate', dayjsToDateString(_selectDateRange[0]));
                 _selectDateRange[1] && param.append('endDate', dayjsToDateString(_selectDateRange[1]));
             }
-            // const res = await (await fetch(url + '/api/me/staking/activity' + '?' + param.toString(),
-            //     { method: 'get' })).json() as any
             const res = await axios.get(url + '/api/me/staking/activity' + '?' + param.toString(), { 
                 timeout: 10000,
                 headers: {

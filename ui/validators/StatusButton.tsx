@@ -32,7 +32,7 @@ const StatusButton = ({ status, onClick }: { status: statusstring; onClick?: () 
     
     return (
         <Button
-            onClick={ onClick || no_op }
+            onClick={onClick}
             px = "8px"
             py = "4px"
             width={ 'auto' }

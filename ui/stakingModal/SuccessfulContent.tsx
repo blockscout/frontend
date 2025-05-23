@@ -16,7 +16,12 @@ const PlainButton = ({text,  onClick,  disabled = false , width = '142px'}: {
 
     return (
         <Button
-            onClick={ onClick || no_op }
+            onClick={ () => {
+                if (disabled) {
+                    return;
+                }
+                onClick && onClick();
+            }}
             py = "4px"
             display="flex"
             alignItems="center"
@@ -51,7 +56,12 @@ const CancelBtn = ({text,  onClick,  disabled = false , width = '142px'}: {
 }) => {
     return (
         <Button
-            onClick={ onClick || no_op }
+            onClick={ () => {
+                if (disabled) {
+                    return;
+                }
+                onClick && onClick();
+            }}
             py = "4px"
             display="flex"
             alignItems="center"
@@ -136,7 +146,7 @@ const SuccessfulContent = ({
                 />
                 <PlainButton
                     text="Got it"
-                    onClick={onClose}
+                    onClick={ onClose }
                     width="142px"
                 />
             </Flex>

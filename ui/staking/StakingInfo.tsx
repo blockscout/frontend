@@ -77,7 +77,12 @@ const PlainButton = ({text, onClick, disabled = false} : {
 }) => {
     return (
         <Button
-            onClick={ disabled ? onClick : no_op }
+            onClick={ () => {
+                if (disabled) {
+                    return;
+                }
+                onClick && onClick();
+            }}
             display="flex"
             alignItems="center"
             justifyContent="center"
@@ -109,7 +114,13 @@ const PlainButton2 = ({text, onClick, disabled = false} : {
 }) => {
     return (
         <Button
-            onClick={ disabled ? onClick : no_op }
+            onClick={ () => { 
+                if ( disabled ) {
+                    return;
+                } else {
+                    onClick && onClick();
+                }
+            }}
             px = "8px"
             py = "4px"
             width={ '100px' }
@@ -249,6 +260,7 @@ const StakingInfo = ({
     modalTitle = 'Stake',
     currentAmount,
     setCurrentItem,
+    callback = no_op,
     setCurrentTxType
 }: {
     stakedAmount?: number | string;
@@ -280,6 +292,7 @@ const StakingInfo = ({
     isHideNumber: boolean;
     setIsHideNumber: (isHide: boolean) => void;
     onOpen?: () => void;
+    callback?: () => void;
     modalTitle?: string;
     currentAmount: string;
     setCurrentItem: (item: string) => void;
@@ -303,11 +316,6 @@ const StakingInfo = ({
     const { chain } = useWagmiAccount();
     const publicClient = usePublicClient();
 
-    useEffect(() => {
-        console.log('当前链ID:', chain?.id);
-        console.log('当前链名称:', chain?.name);
-        console.log('当前RPC:', publicClient?.transport?.url ?? '未知或未显式设置');
-    }, [chain, publicClient]);
 
     return (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 2fr' }} 
@@ -408,6 +416,7 @@ const StakingInfo = ({
                     transactionStage = { transactionStage }
                     currentTxType = { currentTxType }
                     availableAmount = { availableAmount }
+                    callback = { callback }
                     setAvailableAmount = { setAvailableAmount }
                     onSubmit = { handleSubmit }
                     onOpen = { onOpen }

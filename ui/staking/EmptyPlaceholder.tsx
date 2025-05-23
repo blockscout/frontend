@@ -16,11 +16,14 @@ const PlainButton = ({text,  onClick,  disabled = false , width = '72px'}: {
     width?: string,
 }) => {
 
-
-
     return (
         <Button
-            onClick={ onClick || no_op }
+            onClick={ () => {
+                if (disabled) {
+                    return;
+                }
+                onClick && onClick();
+            }}
             py = "4px"
             display="flex"
             alignItems="center"
@@ -103,6 +106,7 @@ const EmptyPlaceholder = ({
                         
                         { tipsTextArray.map((text, index) => (
                             <span
+                                key={ index }
                                 style={{
                                     color: 'rgba(0, 0, 0, 0.40)',
                                     textAlign: 'center',

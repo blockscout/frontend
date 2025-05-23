@@ -96,6 +96,7 @@ const StakingValidatorSelect = ({
     allValidatorsList,
     selectedValidator,
     setSelectedValidator,
+    setCurrentAddress,
     isOpen,
     onToggle,
     onClose,
@@ -104,6 +105,7 @@ const StakingValidatorSelect = ({
     myValidatorsList: any[];
     allValidatorsList: any[];
     selectedValidator: any;
+    setCurrentAddress: (address: string) => void;
     setSelectedValidator: (validator: any) => void;
     isOpen: boolean;
     onToggle: () => void;
@@ -121,6 +123,7 @@ const StakingValidatorSelect = ({
                 setSelectedValidator={(validator: any) => {
                     setSelectedValidator(validator);
                     setApr(validator?.liveApr);
+                    setCurrentAddress(validator?.validatorAddress);
                 }}
                 isOpen={isOpen}
                 onToggle={onToggle}
