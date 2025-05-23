@@ -326,10 +326,7 @@ const ObjectDetails: NextPage = () => {
     const signAndSend = async ( amount :string, unsignedTx: unsignedTx | null | undefined ) => {
 
         if (!unsignedTx) throw new Error('Unsigned transaction null or undefined');
-
-        if (!walletClient) throw new Error('Wallet client not found')
-        if (!publicClient) throw new Error('Public client not found')
-
+        
         const _unsignedTx = {
             to: unsignedTx.to as `0x${string}`,
             data: unsignedTx.data as `0x${string}`,
@@ -514,7 +511,7 @@ const ObjectDetails: NextPage = () => {
         setCurrentAddress("0x1234");
         setCurrentTxType('ClaimAll');
         setModalTitle('Claim All');
-        setCurrentAmount(Number(String(claimableRewards)).toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 }));
+        setCurrentAmount(Number(String(claimableRewards)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 }));
         setAvailableAmount(String(claimableRewards));
         onOpen();
     }, [claimableRewards]);
@@ -524,7 +521,7 @@ const ObjectDetails: NextPage = () => {
         setCurrentTxType('Compound-Claim');
         setExtraDescription('Please claim your reward before proceeding.');
         setModalTitle('Compounding');
-        setCurrentAmount("0.00");
+        setCurrentAmount(Number(String(claimableRewards)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 }));
         setAvailableAmount(String(claimableRewards ));
         onOpen();
     }, [claimableRewards]);

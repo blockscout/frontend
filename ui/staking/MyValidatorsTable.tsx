@@ -226,9 +226,6 @@ const TableApp = (props: {
     const [ currentFromItem , setCurrentFromItem ] = React.useState<any>({});
     const [ currentAmount, setCurrentAmount ] = React.useState<string>('');
     const [ transactionStage , setTransactionStage ] = React.useState<string>('edit'); // 'edit' | 'submitting' | 'success' | ' .... '
-    const { data: walletClient } = useWalletClient();
-    const publicClient = usePublicClient();
-
     const [ apr , setApr ] = React.useState<string>('0.00');
 
     const [ targetValidatorAddress, setTargetValidatorAddress ] = React.useState<string>('');
@@ -243,6 +240,7 @@ const TableApp = (props: {
         setCurrentItem({});
         setCurrentAddress('');
         onClose();
+        setIsTxLoading(false);
     }
 
     const { serverUrl : url } = useStakeLoginContextValue();
@@ -353,9 +351,6 @@ const TableApp = (props: {
 
         if (!unsignedTx) throw new Error('Unsigned transaction null or undefined');
 
-        if (!walletClient) throw new Error('Wallet client not found')
-        if (!publicClient) throw new Error('Public client not found')
-
         const _unsignedTx = {
             to: unsignedTx.to as `0x${string}`,
             data: unsignedTx.data as `0x${string}`,
@@ -428,16 +423,18 @@ const TableApp = (props: {
             //         body:  JSON.stringify(param),
             //     })).json() as  any;
             const res = await axios.post(url + apiPath, param, {
+                timeout: 5000,
                 headers: {
                     'Content-Type': 'application/json',
-                }
-            }).then((response) => response.data).catch((error) => {
-                return null;
+                },
+            }).then((response) => {
+                return response.data;
             });
-            if(res && res.code === 200) {
+            if( !!res && res.code === 200) {
                 if(res.data && res.data.unsignedTx) {
                     const { unsignedTx } = res.data;
                     signAndSend(amount , unsignedTx).then((txHash: string) => {
+                        console.log('txHash', txHash);
                         setTransactionHash(txHash);
                         setTransactionStage('comfirming');
                         isTxConfirmed(txHash).then((isConfirmed: boolean) => {
@@ -453,9 +450,8 @@ const TableApp = (props: {
                             setIsTxLoading (false);
                         });
                     }).catch((error: any) => {
-                        setTransactionStage('error');
-                    }).finally(() => {
                         setIsTxLoading (false);
+                        setTransactionStage('error');
                     });
                 }
             } else {
