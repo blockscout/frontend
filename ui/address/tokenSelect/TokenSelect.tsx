@@ -9,6 +9,7 @@ import type { Address } from 'types/api/address';
 import { route } from 'nextjs-routes';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -26,14 +27,19 @@ const TokenSelect = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const queryClient = useQueryClient();
+  const { subchain } = useMultichainContext() || {};
 
   const addressHash = getQueryParamString(router.query.hash);
-  const addressResourceKey = getResourceKey('general:address', { pathParams: { hash: addressHash } });
+  const addressResourceKey = getResourceKey('general:address', { pathParams: { hash: addressHash }, subchainId: subchain?.id });
 
   const addressQueryData = queryClient.getQueryData<Address>(addressResourceKey);
 
   const { data, isError, isPending } = useFetchTokens({ hash: addressQueryData?.hash });
-  const tokensResourceKey = getResourceKey('general:address_tokens', { pathParams: { hash: addressQueryData?.hash }, queryParams: { type: 'ERC-20' } });
+  const tokensResourceKey = getResourceKey('general:address_tokens', {
+    pathParams: { hash: addressQueryData?.hash },
+    queryParams: { type: 'ERC-20' },
+    subchainId: subchain?.id,
+  });
   const tokensIsFetching = useIsFetching({ queryKey: tokensResourceKey });
 
   const handleIconButtonClick = React.useCallback(() => {

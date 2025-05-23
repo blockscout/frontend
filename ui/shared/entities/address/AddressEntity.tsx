@@ -33,7 +33,6 @@ const Link = chakra((props: LinkProps) => {
     <EntityBase.Link
       { ...props }
       href={ props.href ?? defaultHref }
-      ml={ props.subchain ? 2 : 0 }
     >
       { props.children }
     </EntityBase.Link>
