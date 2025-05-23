@@ -56,6 +56,7 @@ const FromAndToSelect = ({
                     allValidatorsList={ allValidatorsList }
                     selectedValidator={ currentToItem }
                     isOpen={ isToOpen }
+                    setCurrentAddress ={ setCurrentAddress }
                     setApr={ setApr }
                     onToggle={ onToToggle }
                     onClose={ onToClose }
