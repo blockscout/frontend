@@ -6,6 +6,14 @@
 .stake-date-picker  .ant-picker-input { text-align: center;}
 
 
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: url('/assets/fonts/HarmonyOS_Sans_Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 .modal-spinner {
     width: 40px;
     height: 40px;
