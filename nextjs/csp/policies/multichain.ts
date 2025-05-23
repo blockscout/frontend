@@ -9,7 +9,7 @@ export function multichain(): CspDev.DirectiveDescriptor {
         .map((chain) => {
           return [
             ...Object.values(chain.apis).filter(Boolean).map((api) => api.endpoint),
-            chain.apis.general.socketEndpoint,
+            chain.apis.general.socketEndpoint + '/websocket',
           ];
         }).flat(),
     ],

@@ -1,5 +1,7 @@
 import type { MultichainConfig } from 'types/multichain';
 
+import appConfig from 'configs/app';
+
 const config = {
   chains: [
     {
@@ -9,14 +11,14 @@ const config = {
       explorer: {
         url: 'https://optimism-interop-alpha-0.blockscout.com',
       },
-      icon: 'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/arbitrum-one-icon-light.svg',
+      icon: '/static/duck.png',
       apis: {
         general: {
           endpoint: 'https://optimism-interop-alpha-0.blockscout.com',
           basePath: '',
           host: 'optimism-interop-alpha-0.blockscout.com',
           protocol: 'https',
-          socketEndpoint: 'wss://optimism-interop-alpha-0.blockscout.com',
+          socketEndpoint: `${ appConfig.app.isDev ? 'ws' : 'wss' }://optimism-interop-alpha-0.blockscout.com/socket/v2`,
         },
       },
     },
@@ -27,14 +29,14 @@ const config = {
       explorer: {
         url: 'https://optimism-interop-alpha-1.blockscout.com',
       },
-      icon: 'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/gnosis.svg',
+      icon: '/static/goose.png',
       apis: {
         general: {
           endpoint: 'https://optimism-interop-alpha-1.blockscout.com',
           basePath: '',
           host: 'optimism-interop-alpha-1.blockscout.com',
           protocol: 'https',
-          socketEndpoint: 'wss://optimism-interop-alpha-1.blockscout.com',
+          socketEndpoint: `${ appConfig.app.isDev ? 'ws' : 'wss' }://optimism-interop-alpha-1.blockscout.com/socket/v2`,
         },
       },
     },

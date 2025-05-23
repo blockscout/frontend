@@ -1,11 +1,15 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { SocketMessage } from 'lib/socket/types';
 import type { SubchainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Heading } from 'toolkit/chakra/heading';
@@ -21,6 +25,7 @@ interface Props {
 }
 
 const HomeSubchainWidget = ({ data }: Props) => {
+  const queryClient = useQueryClient();
 
   const blocksQuery = useApiQuery('general:homepage_blocks', {
     subchainId: data.id,
@@ -36,6 +41,23 @@ const HomeSubchainWidget = ({ data }: Props) => {
     },
   });
 
+  const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
+    const queryKey = getResourceKey('general:homepage_blocks', { subchainId: data.id });
+    queryClient.setQueryData(queryKey, () => {
+      return [ payload.block ];
+    });
+  }, [ queryClient, data.id ]);
+
+  const channel = useSocketChannel({
+    topic: 'blocks:new_block',
+    isDisabled: blocksQuery.isPlaceholderData || blocksQuery.isError,
+  });
+  useSocketMessage({
+    channel,
+    event: 'new_block',
+    handler: handleNewBlockMessage,
+  });
+
   return (
     <Box
       bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
@@ -47,7 +69,7 @@ const HomeSubchainWidget = ({ data }: Props) => {
       textStyle="sm"
     >
       <HStack gap={ 3 }>
-        <Image src={ data.icon } alt={ data.name } boxSize="30px"/>
+        <Image src={ data.icon } alt={ data.name } boxSize="30px" borderRadius="full"/>
         <Heading level="3">{ data.name }</Heading>
       </HStack>
       <VStack gap={ 2 } mt={ 5 } alignItems="flex-start">

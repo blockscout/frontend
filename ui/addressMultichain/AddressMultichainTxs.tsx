@@ -4,8 +4,10 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { SocketProvider } from 'lib/socket/context';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 // import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressTxsFilter from 'ui/address/AddressTxsFilter';
@@ -65,6 +67,8 @@ const AddressMultichainTxs = () => {
     </>
   ) : null;
 
+  const subchain = multichainConfig.chains.find(chain => chain.id === txsQueryLocal.query.subchainValue?.[0]);
+
   const tabs: Array<TabItemRegular> = [
     {
       id: 'cross_chain_txs',
@@ -75,19 +79,21 @@ const AddressMultichainTxs = () => {
       id: 'local_txs',
       title: 'Local',
       component: (
-        <MultichainProvider subchainId={ txsQueryLocal.query.subchainValue?.[0] }>
-          <TxsWithAPISorting
-            filter={ txsLocalFilter }
-            filterValue={ txsQueryLocal.filterValue }
-            query={ txsQueryLocal.query }
-            currentAddress={ hash }
-            enableTimeIncrement
-            socketType="address_txs"
-            top={ ACTION_BAR_HEIGHT_DESKTOP }
-            sorting={ txsQueryLocal.sort }
-            setSort={ txsQueryLocal.setSort }
-          />
-        </MultichainProvider>
+        <SocketProvider url={ subchain?.apis.general.socketEndpoint }>
+          <MultichainProvider subchainId={ txsQueryLocal.query.subchainValue?.[0] }>
+            <TxsWithAPISorting
+              filter={ txsLocalFilter }
+              filterValue={ txsQueryLocal.filterValue }
+              query={ txsQueryLocal.query }
+              currentAddress={ hash }
+              enableTimeIncrement
+              socketType="address_txs"
+              top={ ACTION_BAR_HEIGHT_DESKTOP }
+              sorting={ txsQueryLocal.sort }
+              setSort={ txsQueryLocal.setSort }
+            />
+          </MultichainProvider>
+        </SocketProvider>
       ),
     },
   ];
