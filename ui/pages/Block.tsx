@@ -81,7 +81,7 @@ const BlockPageContent = () => {
         </>
       ),
     },
-    {
+    blockQuery.data?.internal_transactions_count ? {
       id: 'internal_txs',
       title: 'Internal txns',
       component: (
@@ -90,7 +90,7 @@ const BlockPageContent = () => {
           <BlockInternalTxs query={ blockInternalTxsQuery } top={ hasPagination ? TABS_HEIGHT : 0 }/>
         </>
       ),
-    },
+    } : null,
     config.features.dataAvailability.isEnabled && blockQuery.data?.blob_transaction_count ?
       {
         id: 'blob_txs',

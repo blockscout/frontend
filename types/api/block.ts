@@ -22,6 +22,7 @@ export interface Block {
   height: number;
   timestamp: string;
   transactions_count: number;
+  internal_transactions_count: number;
   miner: AddressParam;
   size: number;
   hash: string;

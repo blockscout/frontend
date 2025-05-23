@@ -12,7 +12,7 @@ type Props = {
   showBlockInfo?: boolean;
 };
 
-const InternalTxsList = ({ data, currentAddress, isLoading, showBlockInfo }: Props) => {
+const InternalTxsList = ({ data, currentAddress, isLoading, showBlockInfo = true }: Props) => {
   return (
     <Box>
       { data.map((item, index) => (
