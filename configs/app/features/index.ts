@@ -36,6 +36,7 @@ export { default as saveOnGas } from './saveOnGas';
 export { default as sol2uml } from './sol2uml';
 export { default as stats } from './stats';
 export { default as suave } from './suave';
+export { default as tac } from './tac';
 export { default as txInterpretation } from './txInterpretation';
 export { default as userOps } from './userOps';
 export { default as addressProfileAPI } from './addressProfileAPI';
