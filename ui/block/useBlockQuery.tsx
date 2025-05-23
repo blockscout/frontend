@@ -66,6 +66,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
         height: Number(block.number),
         timestamp: dayjs.unix(Number(block.timestamp)).format(),
         transactions_count: block.transactions.length,
+        internal_transactions_count: 0,
         miner: { ...unknownAddress, hash: block.miner },
         size: Number(block.size),
         hash: block.hash,
