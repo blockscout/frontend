@@ -39,14 +39,12 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
-import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxFee from 'ui/shared/tx/TxFee';
@@ -66,12 +64,13 @@ import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
 import TxDetailsInterop from './TxDetailsInterop';
+import TxDetailsTacOperation from './TxDetailsTacOperation';
 import TxDetailsWithdrawalStatusArbitrum from './TxDetailsWithdrawalStatusArbitrum';
 import TxInfoScrollFees from './TxInfoScrollFees';
 
 interface Props {
   data: Transaction | undefined;
-  tacOperation?: tac.OperationDetails;
+  tacOperations?: Array<tac.OperationDetails>;
   isLoading: boolean;
   socketStatus?: 'close' | 'error';
 }
@@ -79,7 +78,7 @@ interface Props {
 const externalTxFeature = config.features.externalTxs;
 const rollupFeature = config.features.rollup;
 
-const TxInfo = ({ data, tacOperation, isLoading, socketStatus }: Props) => {
+const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const isMobile = useIsMobile();
@@ -153,23 +152,7 @@ const TxInfo = ({ data, tacOperation, isLoading, socketStatus }: Props) => {
         </GridItem>
       ) }
 
-      { tacOperation && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint="Hash of the cross‑chain operation that this transaction is part of"
-            isLoading={ isLoading }
-          >
-            Source operation
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue columnGap={ 3 }>
-            <OperationEntity
-              id={ tacOperation.operation_id }
-              isLoading={ isLoading }
-            />
-            <TacOperationStatus status={ tacOperation.type } isLoading={ isLoading }/>
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
+      { tacOperations && tacOperations.length > 0 && <TxDetailsTacOperation tacOperations={ tacOperations } isLoading={ isLoading } txHash={ data.hash }/> }
 
       <TxDetailsInterop data={ data.op_interop } isLoading={ isLoading }/>
 

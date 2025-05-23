@@ -26,7 +26,7 @@ export type TacOperationLifecycleApiResourceName = `tac:${ keyof typeof TAC_OPER
 export type TacOperationLifecycleApiResourcePayload<R extends TacOperationLifecycleApiResourceName> =
 R extends 'tac:operations' ? tac.OperationsResponse :
 R extends 'tac:operation' ? tac.OperationDetails :
-R extends 'tac:operation_by_tx_hash' ? tac.OperationDetails :
+R extends 'tac:operation_by_tx_hash' ? tac.OperationsFullResponse :
 R extends 'tac:stat_operations' ? tac.GetOperationStatisticsResponse :
 never;
 /* eslint-enable @stylistic/indent */

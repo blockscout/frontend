@@ -12,7 +12,7 @@ import type { TxQuery } from './useTxQuery';
 
 interface Props {
   txQuery: TxQuery;
-  tacOperationQuery?: UseQueryResult<tac.OperationDetails, ResourceError>;
+  tacOperationQuery?: UseQueryResult<tac.OperationsFullResponse, ResourceError>;
 }
 
 const TxDetails = ({ txQuery, tacOperationQuery }: Props) => {
@@ -25,7 +25,7 @@ const TxDetails = ({ txQuery, tacOperationQuery }: Props) => {
       <TestnetWarning mb={ 6 } isLoading={ txQuery.isPlaceholderData }/>
       <TxInfo
         data={ txQuery.data }
-        tacOperation={ tacOperationQuery?.data }
+        tacOperations={ tacOperationQuery?.data?.items }
         isLoading={ txQuery.isPlaceholderData || (tacOperationQuery?.isPlaceholderData ?? false) }
         socketStatus={ txQuery.socketStatus }
       />

@@ -32,7 +32,7 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
-import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
+import TacOperationTag from 'ui/shared/TacOperationTag';
 
 import SearchResultEntityTag from './SearchResultEntityTag';
 
@@ -345,7 +345,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                     mr={ 2 }
                   />
                 </OperationEntity.Link>
-                <TacOperationStatus status={ data.tac_operation.type }/>
+                <TacOperationTag type={ data.tac_operation.type }/>
               </OperationEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>

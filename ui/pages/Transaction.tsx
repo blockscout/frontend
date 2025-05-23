@@ -29,7 +29,6 @@ import TxSubHeading from 'ui/tx/TxSubHeading';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
 import TxUserOps from 'ui/tx/TxUserOps';
 import useTxQuery from 'ui/tx/useTxQuery';
-import { getTacOperationTags } from 'ui/tx/utils';
 
 const txInterpretation = config.features.txInterpretation;
 const rollupFeature = config.features.rollup;
@@ -96,9 +95,6 @@ const TransactionPageContent = () => {
     if (data.op_interop.relay_chain !== undefined) {
       txTags.push({ slug: 'init_tx', name: 'Source tx', tagType: 'custom' as const, ordinal: 0 });
     }
-  }
-  if (tacOperationQuery.data) {
-    txTags.push(...getTacOperationTags(tacOperationQuery.data, hash));
   }
 
   const tags = (

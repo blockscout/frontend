@@ -32,7 +32,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
-import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
+import TacOperationTag from 'ui/shared/TacOperationTag';
 
 import SearchResultEntityTag from './SearchResultEntityTag';
 
@@ -233,7 +233,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
                 mr={ 2 }
               />
             </OperationEntity.Link>
-            <TacOperationStatus status={ data.tac_operation.type }/>
+            <TacOperationTag type={ data.tac_operation.type }/>
           </OperationEntity.Container>
         );
       }
