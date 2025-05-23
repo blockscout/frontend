@@ -329,7 +329,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Claimable Rewards"
-                            amount={ Number(claimableRewards || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
+                            amount={ Number(claimableRewards || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 }) }
                             value= { valueFormatter(valueCalculator(claimableRewards, tokenPrice)) }
                             isWrapper={true}
                             hide={isHideNumber}

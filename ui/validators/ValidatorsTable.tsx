@@ -290,9 +290,6 @@ const TableApp = (props: {
 
         if (!unsignedTx) throw new Error('Unsigned transaction null or undefined');
 
-        if (!walletClient) throw new Error('Wallet client not found')
-        if (!publicClient) throw new Error('Public client not found')
-
         const _unsignedTx = {
             to: unsignedTx.to as `0x${string}`,
             data: unsignedTx.data as `0x${string}`,
