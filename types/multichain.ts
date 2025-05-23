@@ -3,6 +3,7 @@ import type { Apis } from 'configs/app/apis';
 export interface SubchainConfig {
   id: string;
   name: string;
+  chainId: number;
   explorer: {
     url: string;
   };

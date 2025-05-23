@@ -5,6 +5,7 @@ const config = {
     {
       id: 'optimism-interop-alpha-0',
       name: 'OP Interop Alpha 0',
+      chainId: 420120000,
       explorer: {
         url: 'https://optimism-interop-alpha-0.blockscout.com',
       },
@@ -22,6 +23,7 @@ const config = {
     {
       id: 'optimism-interop-alpha-1',
       name: 'OP Interop Alpha 1',
+      chainId: 420120001,
       explorer: {
         url: 'https://optimism-interop-alpha-1.blockscout.com',
       },
