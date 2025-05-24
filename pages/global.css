@@ -35,3 +35,36 @@
     }
 } 
   
+
+
+.node-staking-custom-table .ant-table-thead > tr > th {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-bottom: none !important;
+}
+
+.node-staking-custom-table .ant-table {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.node-staking-custom-table .ant-table-thead > tr > th {
+  border-right: none !important; /* 去掉右边框 */
+  border-bottom: none !important; /* 可选：去掉底部分割线 */
+}
+
+/* 额外：去除表格本身的边框和阴影 */
+.node-staking-custom-table .ant-table {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.node-staking-custom-table .ant-table-cell  {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.node-staking-custom-table th::before {
+  content: '';
+  display: none;
+}
