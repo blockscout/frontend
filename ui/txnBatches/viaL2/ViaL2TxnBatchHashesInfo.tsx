@@ -38,7 +38,7 @@ const ViaL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
           <>
             <TxEntityL1
               isLoading={ isLoading }
-              hash={ data.commit_transaction_hash }
+              hash={ data.commit_transaction_hash.replace('0x', '') }
               maxW="100%"
               noCopy={ false }
             />
@@ -65,7 +65,7 @@ const ViaL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
           <>
             <TxEntityL1
               isLoading={ isLoading }
-              hash={ data.prove_transaction_hash }
+              hash={ data.prove_transaction_hash.replace('0x', '') }
               maxW="100%"
               noCopy={ false }
             />
@@ -88,11 +88,11 @@ const ViaL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
         flexDir="column"
         alignItems="flex-start"
       >
-        { data.execute_transaction_hash ? (
+        { data.prove_transaction_hash && data.execute_transaction_hash ? (
           <>
             <TxEntityL1
               isLoading={ isLoading }
-              hash={ data.execute_transaction_hash }
+              hash={ data.prove_transaction_hash.replace('0x', '') }
               maxW="100%"
               noCopy={ false }
             />
