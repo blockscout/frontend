@@ -511,7 +511,7 @@ const ObjectDetails: NextPage = () => {
         setCurrentAddress("0x1234");
         setCurrentTxType('ClaimAll');
         setModalTitle('Claim All');
-        setCurrentAmount(Number(String(claimableRewards)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 }));
+        setCurrentAmount(String(claimableRewards));
         setAvailableAmount(String(claimableRewards));
         onOpen();
     }, [claimableRewards]);
@@ -521,8 +521,8 @@ const ObjectDetails: NextPage = () => {
         setCurrentTxType('Compound-Claim');
         setExtraDescription('Please claim your reward before proceeding.');
         setModalTitle('Compounding');
-        setCurrentAmount(Number(String(claimableRewards)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 }));
-        setAvailableAmount(String(claimableRewards ));
+        setCurrentAmount(String(claimableRewards));
+        setAvailableAmount(String(claimableRewards));
         onOpen();
     }, [claimableRewards]);
     // claim all/  compond ,   general claimable 

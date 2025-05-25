@@ -230,7 +230,7 @@ const CommonModal = ({
     , [ url ]);
 
     const handleCloseModal = () => {
-        setCurrentAmount("0");
+        setCurrentAmount("0.00");
         setInputStr("0.00");
         onClose();
     }
@@ -321,22 +321,17 @@ const CommonModal = ({
         if (!currentAmount) {
             return false;
         }
+        if (Number(currentAmount) < 0 || isNaN(Number(currentAmount)) || Number(currentAmount) === 0) {
+            return false;
+        }
         if (!currentTxType.includes('Claim') ) {
             if (Number(currentAmount) > Number(availableAmount)) {
                 return false;
             }
         }
-        if (Number(currentAmount) <= 0) {
-            return false;
-        }
         return true;
     } , [ currentAmount, availableAmount, currentTxType ]);
 
-
-    useEffect(() => {
-        console.log('currentToItem', currentToItem);
-        console.log('currentFromItem', currentFromItem);
-    }, [ currentToItem, currentFromItem ]);
 
     const isSelectedValidatorValid = React.useMemo(() => {
         if (currentTxType === 'ChooseStake' || currentTxType === 'MoveStake' || currentTxType === 'Compound-Stake') {
@@ -447,9 +442,11 @@ const CommonModal = ({
                                         <Box width="100%" height="auto">
                                             <StakingModalNumberInput 
                                                 value = { currentAmount }
+                                                currentTxType = { currentTxType }
                                                 handleMaxClick = { () => {
-                                                    setCurrentAmount(availableAmount);
-                                                    setInputStr(formatNumberWithCommas(availableAmount));
+                                                    const _t = Math.floor(Number(availableAmount || 0) * 100) / 100;
+                                                    setCurrentAmount(_t.toString());
+                                                    setInputStr(formatNumberWithCommas(_t.toString()));
                                                 }}
                                                 isOverAmount = { isOverAmount }
                                                 setValue = { setCurrentAmount }
@@ -492,7 +489,7 @@ const CommonModal = ({
                         cancelText="Cancel"
                         confirmText= { ConfirmBtnText }
                         isSubmitting={ isSubmitting }
-                        isDisabled={ !(isInputAmountValid && isSelectedValidatorValid) || loading }
+                        isDisabled={ !(isInputAmountValid && isSelectedValidatorValid) }
                     />
                 </>
                 )

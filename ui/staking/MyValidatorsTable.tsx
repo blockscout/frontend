@@ -563,7 +563,10 @@ const TableApp = (props: {
                         textTransform: 'capitalize',
                     }}
                 >
-                   { (Number(record.commission)*100 ).toFixed(2) }%
+                   { (Number(record.commission)*100 ).toLocaleString('en-US', { 
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2
+                    }) }%
                 </div>
             )
         },
@@ -675,6 +678,7 @@ const TableApp = (props: {
     }
 
     return (
+    <>
         <div style={{
                 width: '100%',
                 height: 'auto',
@@ -744,23 +748,39 @@ const TableApp = (props: {
                 setCurrentToAddress = { setTargetValidatorAddress }
             />
             
-            <Flex
-                justifyContent="flex-end"
-                alignItems="center"
-                zIndex='200'
-                width="100%"
-                marginTop={ '16px'}
-            >
-                <Pagination 
-                    totalCount={ props.totalCount }
-                    currentPage={ currentPage }
-                    onJumpPrevPage={ onJumpPrevPage }
-                    onJumpNextPage={ onJumpNextPage }
-                    isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
-                    isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
-                />
-            </Flex>
+
         </div>
+        <Flex
+            justifyContent="justify-between"
+            alignItems="center"
+            zIndex='200'
+            width="100%"
+            marginTop={ '16px'}
+        >
+            <span 
+                style={{ 
+                    color: 'rgba(0, 0, 0, 0.60)',
+                    fontFamily: "HarmonyOS Sans",
+                    fontSize: '12px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    visibility: 'hidden',
+                    lineHeight: 'normal',
+                    textWrap: 'nowrap',
+                }}
+            >
+                Total: { totalCount }
+            </span>
+            <Pagination 
+                totalCount={ props.totalCount }
+                currentPage={ currentPage }
+                onJumpPrevPage={ onJumpPrevPage }
+                onJumpNextPage={ onJumpNextPage }
+                isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
+                isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
+            />
+        </Flex>
+    </>
     );
 }
 

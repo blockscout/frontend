@@ -1,4 +1,5 @@
 /* eslint-disable */
+import TokenAmountFormat from "ui/validators/TokenAmountFormat";
 
 const TableTokenAmount = ({ 
     amount,
@@ -19,10 +20,7 @@ const TableTokenAmount = ({
             textAlign: 'center',
         }}
     >
-        <span>{ Number(amount).toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 8,
-        }) }</span>
+        <span>{ TokenAmountFormat(amount) }</span>
         <span style={{ color: '#000', marginLeft: '4px' }}>{ symbol }</span>
     </span>
     );

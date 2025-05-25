@@ -10,7 +10,7 @@ import {
     Button,
     Text,
 } from '@chakra-ui/react';
-import React , { useEffect } from 'react';
+import React , { useEffect, useMemo } from 'react';
 import { formatUnits } from 'viem';
 import { Avatar } from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
@@ -42,6 +42,7 @@ const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | n
 
 const StakingModalNumberInput = ({
     value,
+    currentTxType,
     availableAmount = '0.00',
     setValue,
     inputStr,
@@ -53,6 +54,7 @@ const StakingModalNumberInput = ({
     value: string;
     availableAmount: string;
     uneditable?: boolean;
+    currentTxType: string;
     setValue: (value: string) => void;
     inputStr: string;
     isOverAmount?: boolean;
@@ -83,17 +85,19 @@ const StakingModalNumberInput = ({
   }
 
 
-  const overTips  = <span 
-    style={{
-      color: '#EE6969',
-      fontFamily: 'HarmonyOS Sans',
-      fontSize: '14px',
-      fontStyle: 'normal',
-      fontWeight: 500,
-      lineHeight: '140%',
-    }}>
-    Amount exceeds available balance
-  </span>
+  const overTips = useMemo(() => (
+    <span
+      style={{
+        color: '#EE6969',
+        fontFamily: 'HarmonyOS Sans',
+        fontSize: '14px',
+        fontStyle: 'normal',
+        fontWeight: 500,
+        lineHeight: '140%',
+      }}>
+      { currentTxType.includes('Stake') ? "Insufficient Balance" : "Amount exceeds available balance" }
+    </span>
+  ), [currentTxType]);
 
 
   const handleChange = (e : any ) => {
@@ -101,12 +105,12 @@ const StakingModalNumberInput = ({
     let formattedValue = '';
 
     // 允许临时状态：空输入、"0."、"-" 等
-    if (!value || value === '-' || /^-?\d+\.?$|^-?0\.?\d{0,4}$/.test(value)) {
+    if (!value || value === '-' || /^-?\d+\.?$|^-?0\.?\d{0,2}$/.test(value)) {
         e.target.lastValidValue = value; // 保存临时状态
         formattedValue = value; // 直接显示用户输入
     } else {
         // 验证输入格式：整数部分任意长度，小数部分最多四位
-        if (!/^-?\d*\.?\d{0,4}$/.test(value)) {
+        if (!/^-?\d*\.?\d{0,2}$/.test(value)) {
             // 输入无效，回退到上一个有效值
             e.target.value = e.target.lastValidValue || '';
             return;

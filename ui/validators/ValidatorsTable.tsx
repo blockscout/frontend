@@ -500,7 +500,7 @@ const TableApp = (props: {
                         handleStake(record.validator, record);
                         setCurrentAddress(record.validator);
                     }}
-                    disabled = { false }
+                    disabled = { record.status !== 'Active' }
                 />
             )
         }
@@ -602,6 +602,7 @@ const TableApp = (props: {
 
 
     return (
+    <>
         <div style={{
                 width: '100%',
                 height: 'auto',
@@ -626,6 +627,36 @@ const TableApp = (props: {
                     pagination={false}
                 />
             </div>
+            <Flex
+                justifyContent="justify-between"
+                alignItems="center"
+                zIndex='200'
+                width="100%"
+                marginTop={ '16px'}
+            >
+                <span 
+                    style={{ 
+                        color: 'rgba(0, 0, 0, 0.60)',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        visibility: 'hidden',
+                        lineHeight: 'normal',
+                        textWrap: 'nowrap',
+                    }}
+                >
+                    Total: { totalCount }
+                </span>
+                <Pagination 
+                    totalCount={ props.totalCount }
+                    currentPage={ currentPage }
+                    onJumpPrevPage={ onJumpPrevPage }
+                    onJumpNextPage={ onJumpNextPage }
+                    isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
+                    isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
+                />
+            </Flex>
             <CommonModal 
                 isOpen = { isOpen }
                 onClose = { handleCloseModal }
@@ -651,23 +682,8 @@ const TableApp = (props: {
                 setCurrentFromAddress = { setCurrentFromAddress }
                 setCurrentItem = { setCurrentItem }
             />
-            <Flex
-                justifyContent="flex-end"
-                alignItems="center"
-                zIndex='200'
-                width="100%"
-                marginTop={ '16px'}
-            >
-                <Pagination 
-                    totalCount={ props.totalCount }
-                    currentPage={ currentPage }
-                    onJumpPrevPage={ onJumpPrevPage }
-                    onJumpNextPage={ onJumpNextPage }
-                    isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
-                    isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
-                />
-            </Flex>
         </div>
+    </>
     );
 }
 

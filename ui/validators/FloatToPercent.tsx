@@ -1,15 +1,13 @@
 /* eslint-disable */
 
-const FloatToPercent = (value: number | string) : string => {
-    if (typeof value === 'number') {
-        return `${(value * 100).toFixed(2)}%`;
-    } else if (typeof value === 'string') {
-        const numValue = parseFloat(value);
-        if (!isNaN(numValue)) {
-        return `${(numValue * 100).toFixed(2)}%`;
-        }
-    }
-    return '';
-}
+const FloatToPercent = (value: number | string): string => {
+    const numValue = typeof value === 'number' ? value : Number(value);
+    if (isNaN(numValue)) return '';
+
+    return `${(numValue * 100).toLocaleString('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    })}%`;
+};
 
 export default FloatToPercent;

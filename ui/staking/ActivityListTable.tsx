@@ -5,6 +5,8 @@ import React, { useEffect } from 'react';
 import { debounce, orderBy } from 'lodash';
 import useAccount from 'lib/web3/useAccount';
 import axios from 'axios';
+import { route } from 'nextjs-routes';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
 import WithTipsText from 'ui/validators/WithTipsText';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
@@ -178,6 +180,9 @@ const TableApp = (props: {
     isLoading: boolean;
     totalCount: number;
     currentPage: number;
+    dateOrder: string | null;
+    setDateOrder: (order: string | null) => void;
+    setToFirstpageRequest: () => void;
     onJumpPrevPage: () => void;
     onJumpNextPage: () => void;
     nextKey: string | null;
@@ -190,18 +195,34 @@ const TableApp = (props: {
         onJumpPrevPage,
         onJumpNextPage,
         totalCount,
+        dateOrder,
+        setDateOrder,
+        setToFirstpageRequest,
         nextKey
     } = props;
 
-    const [sortBy, setSortBy] = React.useState<string>('');
-    const [sortOrder, setSortOrder] = React.useState<sortOrderType>('');
-
+    const [ sortBy, setSortBy] = React.useState<string>('');
+    const [ sortOrder, setSortOrder] = React.useState<sortOrderType>('');
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [ isTxLoading, setIsTxLoading ] = React.useState<boolean>(false);
     const [ currentTxType, setCurrentTxType ] = React.useState<txType>('Withdraw');
     const [ modalTitle, setModalTitle ] = React.useState<string>('Withdraw');
     const [ currentAddress, setCurrentAddress ] = React.useState<string>('');
     const [ currentAmount, setCurrentAmount ] = React.useState<string>('');
+
+    useEffect(() => {
+        if (sortBy === 'date' && sortOrder) {
+            setDateOrder(sortOrder);
+        } else {
+            setDateOrder(null);
+        }
+    }, [sortBy, sortOrder]);
+
+    useEffect(() => {
+        if (dateOrder) {
+            setToFirstpageRequest();
+        }
+    }, [dateOrder, setToFirstpageRequest]);
 
     const handleRowClick = (item: any) => { }
 
@@ -218,6 +239,7 @@ const TableApp = (props: {
     const { serverUrl : url } = useStakeLoginContextValue();
 
 
+
     const tableHead: tableHeadType[] = [
         {
             label: 'Txn Hash',
@@ -225,6 +247,9 @@ const TableApp = (props: {
             minWidth: '190px',
             width: '17%',
             render: (record) => (
+            <LinkInternal
+                href={ route({ pathname: '/tx/[hash]', query: { hash: record.txnHash } }) }
+            >
                 <span 
                     style={{ 
                         color: '#A80C53',
@@ -238,6 +263,7 @@ const TableApp = (props: {
                 >
                    { getShortAddress(record.txnHash || "") }
                 </span>
+            </LinkInternal>
             )
         },
         {
@@ -363,6 +389,7 @@ const TableApp = (props: {
     );
 
     return (
+    <>
         <div style={{
                 width: '100%',
                 height: 'auto',
@@ -403,24 +430,38 @@ const TableApp = (props: {
                     ))}
                 </Tbody>
             </Table>
-
-            <Flex
-                justifyContent="flex-end"
-                alignItems="center"
-                zIndex='200'
-                width="100%"
-                marginTop={ '16px'}
-            >
-                <Pagination 
-                    totalCount={ props.totalCount }
-                    currentPage={ currentPage }
-                    onJumpPrevPage={ onJumpPrevPage }
-                    onJumpNextPage={ onJumpNextPage }
-                    isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
-                    isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
-                />
-            </Flex>
         </div>
+        <Flex
+            justifyContent="justify-between"
+            alignItems="center"
+            zIndex='200'
+            width="100%"
+            marginTop={ '16px'}
+        >
+            <span 
+                style={{ 
+                    color: 'rgba(0, 0, 0, 0.60)',
+                    fontFamily: "HarmonyOS Sans",
+                    fontSize: '12px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    visibility: 'hidden',
+                    lineHeight: 'normal',
+                    textWrap: 'nowrap',
+                }}
+            >
+                Total: { totalCount }
+            </span>
+            <Pagination 
+                totalCount={ props.totalCount }
+                currentPage={ currentPage }
+                onJumpPrevPage={ onJumpPrevPage }
+                onJumpNextPage={ onJumpNextPage }
+                isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
+                isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
+            />
+        </Flex>
+    </>
     );
 }
 
@@ -451,6 +492,8 @@ const TableWrapper = ({
     const [ tableData, setTableData ] = React.useState<any[]>([]);
     const [ isTableLoading, setIsTableLoading ] = React.useState(false);
     const [ totalCount, setTotalCount ] = React.useState<number>(0);
+
+    const [ dateOrder, setDateOrder ] = React.useState<string | null >(null);
 
     useEffect(() => {
         if ( tableData.length === 0 ) {
@@ -494,6 +537,8 @@ const TableWrapper = ({
             param.append('limit', defaultLimit.toString());
             param.append('nextKey', queryParams.nextKey || initial_nextKey);
             param.append('address', (_addr || '').toLowerCase());
+            param.append('countTotal', 'true');
+            param.append('reverse', dateOrder === 'desc' ? 'true' : 'false');
             if (_selectDateRange) {
                 _selectDateRange[0] && param.append('startDate', dayjsToDateString(_selectDateRange[0]));
                 _selectDateRange[1] && param.append('endDate', dayjsToDateString(_selectDateRange[1]));
@@ -593,6 +638,13 @@ const TableWrapper = ({
                 isLoading={ isTableLoading }
                 totalCount={ totalCount }
                 currentPage={ currentPage }
+                dateOrder={ dateOrder }
+                setDateOrder={ setDateOrder }
+                setToFirstpageRequest={ () => {
+                    setToNext(false);
+                    setNextKey(initial_nextKey);
+                    updateQueryParams({ nextKey: initial_nextKey, page: 1 });
+                }}
                 onJumpPrevPage={ () => {
                     setToNext(false);
                     updateQueryParams({ nextKey: nextKey, page: currentPage - 1 });

@@ -8,7 +8,7 @@ import {
   Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
-
+import FloatToPercent from 'ui/validators/FloatToPercent';
 import IconSvg from 'ui/shared/IconSvg';
 
 const sectionProps = {
@@ -181,9 +181,15 @@ const percentageFormat = (value: number | string) => {
         return '0.00%';
     }
     if (_n > 1) {
-        return `${_n.toFixed(2)}%`;
+        return `${_n.toLocaleString('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        })}%`;
     }
-    return `${(_n * 100).toFixed(2)}%`;
+    return `${(_n * 100).toLocaleString('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    })}%`;
 }
 
 const integerFormat = (value: number | string) => {
@@ -217,12 +223,12 @@ const InfoBox = ({
         {
             label: 'Total Stake',
             tipsInfo: 'Total amount of tokens currently staked with the validator.',
-            value: <TokenAmount amount={ overViewInfo.totalStake } isLoading={ isDetailInfoLoading } />,
+            value: <TokenAmount amount={ FloatToPercent((overViewInfo.totalStake || 0)) } isLoading={ isDetailInfoLoading } />,
         },
         {
             label: 'Live APR',
             tipsInfo: 'The current annual percentage return estimated from staking tokens with the validator.',
-            value: <Text > { overViewInfo.liveApr } </Text>,
+            value: <Text > { FloatToPercent(overViewInfo.liveApr || 0) } </Text>,
         },
         {
             label: 'Uptime',
@@ -241,17 +247,19 @@ const InfoBox = ({
         {
             label: `Validator's Stake`,
             tipsInfo: 'Amount of tokens the validator itself has staked.',
-            value: <TokenAmount amount={ overViewInfo.validatorStake ||  0} isLoading={ isDetailInfoLoading } />,
+            value: <TokenAmount amount={ FloatToPercent(overViewInfo.validatorStake ||  0)} isLoading={ isDetailInfoLoading } />,
         },
         {
             label: `Validator's Rewards`,
             tipsInfo: 'Rewards earned by the validator from network participation.',
-            value: <TokenAmount amount={ overViewInfo.validatorRewards || 0 } isLoading={ isDetailInfoLoading } />,
+            value: <TokenAmount amount={ FloatToPercent(overViewInfo.validatorRewards || 0 ) } isLoading={ isDetailInfoLoading } />,
         },
         {
             label: `Delegator's Rewards`,
             tipsInfo: 'Rewards distributed to users staking their tokens with this validator.',
-            value:<TokenAmount amount={ overViewInfo.delegatorRewards || 0 } isLoading={ isDetailInfoLoading } /> ,
+            value:<TokenAmount 
+            amount={ FloatToPercent(overViewInfo.delegatorRewards || 0 ) } 
+            isLoading={ isDetailInfoLoading } /> ,
         },
         {
             label: 'Recently Validated Blocks',
