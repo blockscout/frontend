@@ -9,8 +9,8 @@ const amountFormat = (amount: string) => {
         return amount;
     }
     return v.toLocaleString('en-US', {
-        minimumFractionDigits: 4,
-        maximumFractionDigits: 4,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 8,
     });
 }
 

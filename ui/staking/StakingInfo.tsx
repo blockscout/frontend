@@ -15,19 +15,19 @@ import axios from 'axios';
 import { usePublicClient , useBalance , useAccount as useWagmiAccount } from 'wagmi';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import { token } from 'mocks/address/address';
-
+import TokenAmountFormat from 'ui/validators/TokenAmountFormat';
 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
 
-const valueFormatter = ( priceStr : string ) => {
+const valueFormatter = ( priceStr : string | number ) => {
     return `($${priceStr})`
 }
 
 const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | number ) => {
-    const amount = Number(tokenAmount || 0);
-    const price = Number(tokenPrice || 0);
-    return (amount * price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const amount = typeof tokenAmount === 'string' ? Number(tokenAmount) : tokenAmount;
+    const price = typeof tokenPrice === 'string' ? Number(tokenPrice) : tokenPrice;
+    return TokenAmountFormat(amount * price);
 }
 
 
@@ -229,10 +229,10 @@ const NumberStats = ({
 }
 
 const StakingInfo = ({
-    stakedAmount = 0,
-    claimableRewards = 0,
-    withdrawingAmount = 0,
-    totalRewards = 0,
+    stakedAmount = "0.00",
+    claimableRewards = "0.00",
+    withdrawingAmount = "0.00",
+    totalRewards = "0.00",
     handleCloseModal,
     isOpen,
     handleClaimAll,

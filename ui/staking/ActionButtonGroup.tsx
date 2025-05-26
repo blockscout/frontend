@@ -174,11 +174,9 @@ const ActionButtonGroup = ({
                     <PlainButton
                         text={ 'Claim' }
                         onClick={ () => {
-                            if (!disableClaim) {
-                                handleClaim(validatorAddress, currentRecord);
-                                // setAvailableAmount(currentRecord?.availableAmount || '0');
-                                setCurrentAddress(validatorAddress);
-                            }
+                            setCurrentAddress(validatorAddress);
+                            handleClaim(validatorAddress, currentRecord);
+                            // setAvailableAmount(currentRecord?.availableAmount || '0');
                             setCurrentAddress(validatorAddress);
                         }}
                         disabled={ disableClaim || isWalletNotConnected || _disableClaim || neverStaked }
