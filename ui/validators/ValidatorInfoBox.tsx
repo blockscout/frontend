@@ -11,6 +11,7 @@ import React from 'react';
 import FloatToPercent from 'ui/validators/FloatToPercent';
 import IconSvg from 'ui/shared/IconSvg';
 import TokenAmountFormat from './TokenAmountFormat';
+import percentageFormat from 'ui/validators/PercentageFormat';
 
 const sectionProps = {
     borderBottom: '1px solid',
@@ -176,22 +177,6 @@ const InfoBoxItem = ({
     )
 }
 
-const percentageFormat = (value: number | string) => {
-    const _n = Number(value);
-    if (isNaN(_n)) {
-        return '0.00%';
-    }
-    if (_n > 1) {
-        return `${_n.toLocaleString('en-US', {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2
-        })}%`;
-    }
-    return `${(_n * 100).toLocaleString('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-    })}%`;
-}
 
 const integerFormat = (value: number | string) => {
     const _n = Number(value);
@@ -229,7 +214,7 @@ const InfoBox = ({
         {
             label: 'Live APR',
             tipsInfo: 'The current annual percentage return estimated from staking tokens with the validator.',
-            value: <Text > { FloatToPercent(overViewInfo.liveApr || 0) } </Text>,
+            value: <Text > { percentageFormat(overViewInfo.liveApr || 0) } </Text>,
         },
         {
             label: 'Uptime',

@@ -1,8 +1,7 @@
 /* eslint-disable */
-
-const FloatToPercent = (value: number | string): string => {
-    const _n = Number(value);
-    if (value === 0) {
+const percentageFormat = (num: number | string) => {
+    const _n = Number(num);
+    if (num === 0) {
         return '0';
     }
 
@@ -20,4 +19,4 @@ const FloatToPercent = (value: number | string): string => {
 }
 
 
-export default FloatToPercent;
+export default  percentageFormat ;

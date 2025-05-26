@@ -548,10 +548,7 @@ const TableApp = (props: {
                         textTransform: 'capitalize',
                     }}
                 >
-                   { (Number(record.commission)*100 ).toLocaleString('en-US', { 
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2
-                    }) }%
+                    { FloatToPercent(record.commission) }
                 </div>
             )
         },
