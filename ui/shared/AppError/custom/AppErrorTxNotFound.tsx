@@ -60,6 +60,9 @@ const AppErrorTxNotFound = () => {
           <chakra.span fontWeight={ 600 }>sender/exchange/wallet/transaction provider</chakra.span>
           <span> for additional information.</span>
         </List.Item>
+        <List.Item>
+          <span>If you don’t want to look for a txn and just want to have fun, <Link onClick={ showPuzzle }>solve the puzzle</Link>, and be rewarded with a secret prize.</span>
+        </List.Item>
       </List.Root>
       { isPuzzleOpen && <Puzzle15/> }
       <Link href={ route({ pathname: '/' }) } asChild>

@@ -1,6 +1,13 @@
-import { Grid, Box, Flex, Button } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { Grid, Box, Flex, Text } from '@chakra-ui/react';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+
+import config from 'configs/app';
+import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
+
+import Confetti from './Confetti';
+
+const easterEggPuzzleBadgeFeature = config.features.easterEggPuzzleBadge;
 
 const getPossibleMoves = (emptyIndex: number): Array<number> => {
 
@@ -74,7 +81,7 @@ const Puzzle15 = () => {
 
   useEffect(() => {
     const img = new Image();
-    img.src = '/static/duck.jpg';
+    img.src = '/static/4x4-easter-game.png';
     img.onload = () => setImage(img);
   }, []);
 
@@ -134,25 +141,31 @@ const Puzzle15 = () => {
   }, [ isWon, moveTile ]);
 
   return (
-    <Flex flexDirection="column" alignItems="center" justifyContent="center">
+    <Flex flexDirection="column" alignItems="center" justifyContent="center" gap={ 4 } my={ 10 }>
+      { isWon && <Confetti/> }
       <Grid templateColumns="repeat(4, 1fr)" w="400px" h="400px">
         { tiles.map((tile, index) => (
-          <motion.div
+          <div
             key={ tile }
-            layout
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             onClick={ handleTileClick(index) }
+            style={{
+              transition: 'all 0.3s ease',
+              transform: 'translate3d(0, 0, 0)',
+            }}
           >
             <Box position="relative">
               <canvas
                 ref={ (el) => {
                   canvasRefs.current[index] = el;
                 } }
-                width="100"
-                height="100"
+                width="512"
+                height="512"
                 style={{
                   display: tile !== 15 ? 'block' : 'none',
                   border: '1px solid gray',
+                  width: '100px',
+                  height: '100px',
+                  imageRendering: 'pixelated',
                 }}
               />
               <Box
@@ -174,10 +187,28 @@ const Puzzle15 = () => {
                 { tile !== 15 && tile + 1 }
               </Box>
             </Box>
-          </motion.div>
+          </div>
         )) }
       </Grid>
-      { isWon && <Button mt={ 10 }>Claim NFT</Button> }
+      { !isWon && (
+        <>
+          <Text mt={ 10 }>Put the pieces together and win a prize</Text>
+          <Text mb={ 4 }>Click on a square to move it</Text>
+        </>
+      ) }
+      { isWon && easterEggPuzzleBadgeFeature.isEnabled && (
+        <Flex flexDirection="column" alignItems="center" justifyContent="center" gap={ 4 } mt={ 10 }>
+          <Text fontSize="2xl" fontWeight="bold">You unlocked a hidden badge!</Text>
+          <Text fontSize="lg" textAlign="center">Congratulations! You're eligible to claim an epic hidden badge!</Text>
+          <Link
+            href={ easterEggPuzzleBadgeFeature.badgeClaimLink }
+            target="_blank"
+            asChild
+          >
+            <Button>Claim</Button>
+          </Link>
+        </Flex>
+      ) }
     </Flex>
   );
 };

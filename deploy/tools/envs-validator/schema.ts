@@ -1045,6 +1045,7 @@ const schema = yup
     NEXT_PUBLIC_REWARDS_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_XSTAR_SCORE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK: yup.string().test(urlTest),
+    NEXT_PUBLIC_PUZZLE_GAME_BADGE_CLAIM_LINK: yup.string().test(urlTest),
     NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG: yup.mixed().test(
       'shape',
       'Invalid schema were provided for NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG, it should have chain_name, chain_logo_url, and explorer_url_template',
