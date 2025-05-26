@@ -109,6 +109,9 @@ const CommonModal = ({
 }) => {
 
     const [ loading, setLoading ] = React.useState<boolean>(false);
+    const [ isMyValidatorLoading, setIsMyValidatorLoading ] = React.useState<boolean>(false);
+    const [ isAllValidatorLoading, setIsAllValidatorLoading ] = React.useState<boolean>(false);
+
 
     const spinner = (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '180px',
@@ -160,6 +163,7 @@ const CommonModal = ({
             return;
         }
         try {
+            setIsMyValidatorLoading(true);
             setLoading(true);
             const param = new URLSearchParams();
             param.append('limit', '100');
@@ -170,11 +174,14 @@ const CommonModal = ({
                 },
                 timeout: 10000,
             }).then((response) => {
+                setIsMyValidatorLoading(false);
                 return response.data;
             }).catch((error) => {
+                setIsMyValidatorLoading(false);
                 return null;
             });
             setLoading(false);
+            setIsMyValidatorLoading(false);
             if(res && res.code === 200) {
                 const _temp = (res.data.validators || []).map((item: any) => {
                     return {
@@ -183,17 +190,19 @@ const CommonModal = ({
                         liveApr: item.liveAPR,
                     }
                 });
+                setIsMyValidatorLoading(false);
                 setMyValidatorsList(_temp);
             }
             setLoading(false);
         } catch (error: any) {
             setLoading(false);
+            setIsMyValidatorLoading(false);
         }
     }, [ url , userAddr]);
 
     const requestAlValidatorsList = React.useCallback(async() => {
         try {
-            setLoading(true);
+            setIsAllValidatorLoading(true);
             const param = new URLSearchParams();
             param.append('limit', '100');
             // const res = await (await fetch(url + '/api/network/validators/list' + '?' + param.toString(), {
@@ -207,8 +216,10 @@ const CommonModal = ({
                 },
                 timeout: 10000,
             }).then((response) => {
+                setIsAllValidatorLoading(false);
                 return response.data;
             }).catch((error) => {
+                setIsAllValidatorLoading(false);
                 return null;
             });
             if(res && res.code === 200) {
@@ -219,12 +230,14 @@ const CommonModal = ({
                         validatorAddress: item.validator,
                     }
                 });
+                setIsAllValidatorLoading(false);
                 setAllValidatorsList(_temp);
             }
         }
         catch (error: any) {
             setLoading(false);
-        throw Error(error);
+            setIsAllValidatorLoading(false);
+            throw Error(error);
         }
     }
     , [ url ]);
@@ -399,6 +412,8 @@ const CommonModal = ({
                                                     <FromAndToSelect
                                                         FromItem = { currentItem }
                                                         currentToItem = { currentToItem }
+                                                        isMyValidatorLoading = { isMyValidatorLoading }
+                                                        isAllValidatorLoading = { isAllValidatorLoading }
                                                         setCurrentToItem = { setCurrentToItem }
                                                         setApr = { handleSetApr }
                                                         setCurrentFromAddress = { setCurrentFromAddress }
@@ -412,6 +427,8 @@ const CommonModal = ({
                                                         <StakingValidatorSelect 
                                                             isOpen={ isPopOverOpen }
                                                             onToggle={ handlePopOverToggle }
+                                                            isMyValidatorLoading = { isMyValidatorLoading }
+                                                            isAllValidatorLoading = { isAllValidatorLoading }
                                                             onClose={ handlePopOverClose }
                                                             setApr = { handleSetApr }
                                                             setCurrentAddress = { setCurrentAddress }

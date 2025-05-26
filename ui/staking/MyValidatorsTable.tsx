@@ -305,7 +305,7 @@ const TableApp = (props: {
             liveApr: record.liveAPR,
         });
         setAvailableAmount(record.myStake);
-        setCurrentAmount(record.myStake);
+        setCurrentAmount("0.00");
         setCurrentAddress(address); 
         setCurrentTxType('Withdraw');
         setModalTitle('Withdraw');
@@ -323,7 +323,7 @@ const TableApp = (props: {
         });
         setTargetValidator({});
         setAvailableAmount(record.myStake);
-        setCurrentAmount(record.myStake);
+        setCurrentAmount("0.00");
         setCurrentAddress(address); 
         setCurrentTxType('MoveStake');
         setModalTitle('Move Stake');

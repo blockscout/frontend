@@ -6,7 +6,7 @@ import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 import ValidatorInfo from 'ui/staking/ValidatorInfo';
 import EmptyRecords from 'ui/staking/EmptyRecords';
-
+import styles from 'ui/staking/spinner.module.css';
 
 
 const getShortAddress = (address: string) => {
@@ -24,12 +24,24 @@ const StakingTabList = ({
     allValidatorsList,
     setSelectedValidator,
     onClose,
+    isMyValidatorLoading = false,
+    isAllValidatorLoading = false,
 }: {
     myValidatorsList: any[];
     allValidatorsList: any[];
     setSelectedValidator: (validator: any) => void;
     onClose: () => void;
+    isMyValidatorLoading?: boolean;
+    isAllValidatorLoading?: boolean;
 }) => {
+
+    const spinner = (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '180px',
+            width: '100%', marginTop: '10px' }}>
+            <span className ="modal-spinner"></span>
+        </div>
+    );
+
     return (
         <Box  borderRadius={"12px"}>
             <Tabs 
@@ -140,7 +152,9 @@ const StakingTabList = ({
                             maxHeight="300px"
                             overflowY="auto"
                         >
-                            { myValidatorsList.length === 0 && ( <EmptyRecords text="You haven't stake in a bonded Validators" /> )}
+                            { myValidatorsList.length === 0 && ( 
+                                isMyValidatorLoading ? spinner :
+                                <EmptyRecords text="You haven't stake in a bonded Validators" /> )}
                             { myValidatorsList.map((validator) => (
                                 <Flex 
                                     key={validator.validatorAddress} 
@@ -209,7 +223,9 @@ const StakingTabList = ({
                             maxHeight="300px"
                             overflowY="auto"
                         >
-                            { allValidatorsList.length === 0 && ( <EmptyRecords text="No validators" /> )}
+                            { allValidatorsList.length === 0 && (
+                                isAllValidatorLoading ? spinner :
+                                 <EmptyRecords text="No validators" /> )}
                             {allValidatorsList.map((validator) => (
                                 <Flex 
                                     key={validator.validatorAddress} 

@@ -16,6 +16,8 @@ const FromAndToSelect = ({
     setCurrentAddress,
     setCurrentToAddress,
     setApr,
+    isMyValidatorLoading = false,
+    isAllValidatorLoading = false,
 }: {
     FromItem: any;
     currentToItem: any;
@@ -26,6 +28,8 @@ const FromAndToSelect = ({
     setCurrentToAddress: (address: string) => void;
     setCurrentAddress: (address: string) => void;
     setApr: (apr: number | string) => void;
+    isMyValidatorLoading?: boolean;
+    isAllValidatorLoading?: boolean;
 }) => {
 
     const [ isFromOpen, setFromIsOpen ] = React.useState(false);
@@ -58,6 +62,8 @@ const FromAndToSelect = ({
                     isOpen={ isToOpen }
                     setCurrentAddress ={ setCurrentAddress }
                     setApr={ setApr }
+                    isMyValidatorLoading={ isMyValidatorLoading }
+                    isAllValidatorLoading={ isAllValidatorLoading }
                     onToggle={ onToToggle }
                     onClose={ onToClose }
                     setSelectedValidator={ (validator: any) => {

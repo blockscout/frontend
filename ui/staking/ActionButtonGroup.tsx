@@ -145,14 +145,6 @@ const ActionButtonGroup = ({
         return false;
     }, [currentRecord]);
 
-    const neverStaked = useMemo(() => {
-        // 连接钱包后，没有质押时，Stake可用，其余禁用
-        if (Number(currentRecord?.myStake) === 0) {
-            return true;
-        }
-        return false;
-    }, [currentRecord]);
-
 
     return (
         <Flex
@@ -179,7 +171,7 @@ const ActionButtonGroup = ({
                             // setAvailableAmount(currentRecord?.availableAmount || '0');
                             setCurrentAddress(validatorAddress);
                         }}
-                        disabled={ disableClaim || isWalletNotConnected || _disableClaim || neverStaked }
+                        disabled={ disableClaim || isWalletNotConnected || _disableClaim}
                     />
                 }
                 { showStake && 
@@ -239,7 +231,7 @@ const ActionButtonGroup = ({
                                 handleWithdraw(validatorAddress, currentRecord);
                             }}
                             borderRadius={"8px"}
-                            disabled={ isWalletNotConnected || _disableWithdrawAndMove || neverStaked }
+                            disabled={ isWalletNotConnected || _disableWithdrawAndMove  }
                             _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             >Withdraw</CustomMenuItem>
@@ -250,7 +242,7 @@ const ActionButtonGroup = ({
                                 setCurrentAddress(validatorAddress);
                             }}
                             borderRadius={"8px"}
-                            disabled={ isWalletNotConnected || _disableWithdrawAndMove || neverStaked }
+                            disabled={ isWalletNotConnected || _disableWithdrawAndMove ||  isValidatorJailed }
                             _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                             >Move Stake</CustomMenuItem>
