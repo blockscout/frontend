@@ -4,7 +4,7 @@
 import { Box, Flex, Button , Progress , Grid, Text } from '@chakra-ui/react';
 import axios from 'axios';
 import type { NextPage } from 'next';
-import React from 'react';
+import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import ValidatorsTable from 'ui/validators/ValidatorsTable';
 import WithTipsText from 'ui/validators/WithTipsText';
 import TableFilter from 'ui/validators/TableFilter';
@@ -84,6 +84,7 @@ const InfoNumberWrapper = ({
 
 
 const defaultLimit = 100;
+const initial_nextKey = '0x00'; // 默认的 nextKey 值
 
 const AllValidatorPage: NextPage = () => {
 
@@ -112,10 +113,6 @@ const AllValidatorPage: NextPage = () => {
 
   const [ isActiveOnly, setIsActiveOnly ] = React.useState<boolean>(false);
   const [ searchValue, setSearchValue ] = React.useState<string>('');
-  const [ totalCount, setTotalCount ] = React.useState<number>(0);
-
-
-
   // const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
   const { serverUrl : url } = useStakeLoginContextValue();
   const [ totalIssued, setTotalIssued ] = React.useState<number>(0);
@@ -129,11 +126,16 @@ const AllValidatorPage: NextPage = () => {
   const [ totalStaked, setTotalStaked ] = React.useState<any>(0);
   const [ totalEpoch, setTotalEpoch ] = React.useState<any>({});
   
-  const [ nextKey , setNextKey ] = React.useState<string>('0x00');
-  const [ currentPage, setCurrentPage ] = React.useState<number>(1);
+  const [nextKey, setNextKey] = useState<string | null>(initial_nextKey);
+  const [currentPageKey, setCurrentPageKey] = useState<string | null>(initial_nextKey);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [tableData, setTableData] = useState<any[]>([]);
+  const [isTableLoading, setIsTableLoading] = useState(false);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [keyStack, setKeyStack] = useState<(string | null)[]>([initial_nextKey]);
+  const currentKeyRef = useRef<string | null>(initial_nextKey);
 
   const [ tableDataList, setTableDataList ] = React.useState<Array<any>>([]);
-  const [ isTableLoading, setIsTableLoading ] = React.useState<boolean>(false);
 
   const handleSearchChange = () => () => {};
 
@@ -192,9 +194,10 @@ const AllValidatorPage: NextPage = () => {
   const requestTableList = React.useCallback(async() => {
     try {
       setIsTableLoading(true);
+      const key = currentKeyRef.current;
       const param = new URLSearchParams();
+      param.append('nextKey', key || initial_nextKey);
       param.append('limit', defaultLimit.toString());
-      param.append('nextKey', queryParams.nextKey || '0x00');
       if (isActiveOnly) {
         param.append('status', 'active');
       }
@@ -212,10 +215,11 @@ const AllValidatorPage: NextPage = () => {
       });
       setIsTableLoading(false);
       if(res && res.code === 200) {
-        setTableDataList(res.data.validators);
-        setTotalCount(Number(res.data.pagination.total || "0"))
+        setTableDataList(res.data.validators || []);
         setNextKey(res.data.pagination.nextKey);
-        setCurrentPage( queryParams.page || 1 );
+        setTotalCount(Number(res.data.pagination.total || "0"))
+        setNextKey( res.data.pagination.nextKey || null );
+        setCurrentPageKey(key ?? null);
       }
     }
     catch (error: any) {
@@ -245,6 +249,26 @@ const AllValidatorPage: NextPage = () => {
 
       return result.trim();
   }
+
+    const jumpToPrevPage = useCallback(() => {
+        if (isTableLoading || currentPage <= 1) return;
+        const prevKey = keyStack[currentPage - 2] ?? null;
+        currentKeyRef.current = prevKey;
+
+        setCurrentPage((prev) => prev - 1);
+        requestTableList();
+    }, [nextKey, isTableLoading, currentPage, requestTableList]);
+
+    // 上一页
+    const jumpToNextPage = useCallback(() => {
+        if (isTableLoading || !nextKey) return;
+        const nextKeyToUse = nextKey;
+        currentKeyRef.current = nextKeyToUse;
+
+        setKeyStack((prev) => [...prev.slice(0, currentPage), nextKeyToUse]);
+        setCurrentPage((prev) => prev + 1);
+        requestTableList();
+    }, [currentPage, keyStack, isTableLoading, requestTableList]);
 
   return (
     <>
@@ -388,14 +412,8 @@ const AllValidatorPage: NextPage = () => {
                 isLoading={ isTableLoading }
                 totalCount={ totalCount }
                 currentPage={ currentPage }
-                onJumpPrevPage={ () => {
-                    setToNext(false);
-                    updateQueryParams({ nextKey: nextKey, page: currentPage - 1 });
-                }}
-                onJumpNextPage={ () => {
-                    setToNext(true);
-                    updateQueryParams({ nextKey: nextKey , page: currentPage + 1 });
-                }}
+                onJumpPrevPage={ jumpToPrevPage }
+                onJumpNextPage={ jumpToNextPage }
             />
         </Web3ModalProvider>
     </>

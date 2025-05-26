@@ -3,7 +3,7 @@ import { Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-u
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import { Table } from 'antd';
 import axios from 'axios';
-import React, { useEffect , useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import { debounce, orderBy } from 'lodash';
 import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import WithTipsText from 'ui/validators/WithTipsText';
@@ -454,10 +454,13 @@ const TableWrapper = (props: {
     const { serverUrl : url } = useStakeLoginContextValue();
 
     const [ toNext, setToNext ] = React.useState<boolean>(true);
-    const [ nextKey , setNextKey ] = React.useState<string>(initial_nextKey);
-    const [ currentPage, setCurrentPage ] = React.useState<number>(1);
-    const [ tableData, setTableData ] = React.useState<any[]>([]);
-    const [ isTableLoading, setIsTableLoading ] = React.useState(false);
+    const [nextKey, setNextKey] = useState<string | null>(initial_nextKey);
+    const [currentPageKey, setCurrentPageKey] = useState<string | null>(initial_nextKey);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [tableData, setTableData] = useState<any[]>([]);
+    const [isTableLoading, setIsTableLoading] = useState(false);
+    const [keyStack, setKeyStack] = useState<(string | null)[]>([initial_nextKey]);
+    const currentKeyRef = useRef<string | null>(initial_nextKey);
 
     const [ queryParams, setQueryParams ] = React.useState<{ 
         status?: ValidatorQueryParams['status'];
@@ -478,15 +481,19 @@ const TableWrapper = (props: {
         }));
     }
 
-    const requestDelegatorsInfo = React.useCallback(async( _addr : string) => {
+    const requestDelegatorsInfo = React.useCallback(async() => {
+        if  (!addr) {
+            return;
+        }
         try {
             setIsTableLoading(true);
+            const key = currentKeyRef.current;
             const param = new URLSearchParams();
+            param.append('nextKey', key || initial_nextKey);
             param.append('limit', defaultLimit.toString());
-            param.append('nextKey', queryParams.nextKey || initial_nextKey);
             // const res = await (await fetch(url + '/api/network/validators/delegations/' + _addr + '?' + param.toString(),
             //     { method: 'get' })).json() as any
-            const res = await axios.get(url + '/api/network/validators/delegations/' + _addr + '?' + param.toString(), { 
+            const res = await axios.get(url + '/api/network/validators/delegations/' + addr + '?' + param.toString(), { 
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -500,8 +507,8 @@ const TableWrapper = (props: {
             if(res && res.code === 200) {
                 setTableData(res.data.delegators || []);
                 setTotalCount(Number(res.data.pagination.total || "0"))
-                setNextKey(res.data.pagination.nextKey);
-                setCurrentPage( queryParams.page || 1 );
+                setNextKey( res.data.pagination.nextKey || null );
+                setCurrentPageKey(key ?? null);
             }
         }
         catch (error: any) {
@@ -511,10 +518,28 @@ const TableWrapper = (props: {
     }, [ url , addr, queryParams.nextKey ]);
 
     useEffect(() => {
-        if (addr) {
-            requestDelegatorsInfo(addr);
-        }
-    }, [ addr, requestDelegatorsInfo ]);
+        requestDelegatorsInfo();
+    }, [ requestDelegatorsInfo ]);
+
+    const jumpToPrevPage = useCallback(() => {
+        if (isTableLoading || currentPage <= 1) return;
+        const prevKey = keyStack[currentPage - 2] ?? null;
+        currentKeyRef.current = prevKey;
+
+        setCurrentPage((prev) => prev - 1);
+        requestDelegatorsInfo();
+    }, [nextKey, isTableLoading, currentPage, requestDelegatorsInfo]);
+
+    // 上一页
+    const jumpToNextPage = useCallback(() => {
+        if (isTableLoading || !nextKey) return;
+        const nextKeyToUse = nextKey;
+        currentKeyRef.current = nextKeyToUse;
+
+        setKeyStack((prev) => [...prev.slice(0, currentPage), nextKeyToUse]);
+        setCurrentPage((prev) => prev + 1);
+        requestDelegatorsInfo();
+    }, [currentPage, keyStack, isTableLoading, requestDelegatorsInfo]);
 
     return (
         <Box
@@ -531,14 +556,8 @@ const TableWrapper = (props: {
                 isLoading={ isTableLoading }
                 totalCount={ totalCount }
                 currentPage={ currentPage }
-                onJumpPrevPage={ () => {
-                    setToNext(false);
-                    updateQueryParams({ nextKey: nextKey, page: currentPage - 1 });
-                }}
-                onJumpNextPage={ () => {
-                    setToNext(true);
-                    updateQueryParams({ nextKey: nextKey , page: currentPage + 1 });
-                }}
+                onJumpPrevPage={ jumpToPrevPage }
+                onJumpNextPage={ jumpToNextPage }
                 nextKey={ nextKey }
             />
         </Box>

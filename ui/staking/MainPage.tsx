@@ -218,7 +218,7 @@ const ObjectDetails: NextPage = () => {
   }, [ url, address ]);
 
   const requestMyActivityTableList = React.useCallback(async({
-    limit = 10,
+    limit = 15,
     offset = 0,
     countTotal = false,
     reverse = false,

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
 import {  useDisclosure, } from '@chakra-ui/react';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import { Table } from 'antd';
 import { orderBy } from 'lodash';
 import useAccount from 'lib/web3/useAccount';
@@ -15,7 +15,7 @@ import Pagination from 'ui/validators/Pagination';
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import advancedFormat from 'dayjs/plugin/advancedFormat';
+import advancedFormat from 'dayjs/plugin/advancedFormat'; 
 import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import { TextWithIcon } from 'ui/staking/ActivityListTableCell';
 import styles from 'ui/staking/spinner.module.css';
@@ -174,6 +174,10 @@ const TableApp = (props: {
     totalCount: number;
     currentPage: number;
     dateOrder: string | null;
+    sortBy: string;
+    sortOrder: sortOrderType;
+    setSortBy: (sortBy: string) => void;
+    setSortOrder: (sortOrder: sortOrderType) => void;
     setDateOrder: (order: string | null) => void;
     setToFirstpageRequest: () => void;
     onJumpPrevPage: () => void;
@@ -190,32 +194,13 @@ const TableApp = (props: {
         totalCount,
         dateOrder,
         setDateOrder,
+        sortBy,
+        sortOrder,
+        setSortBy,
+        setSortOrder,
         setToFirstpageRequest,
         nextKey
     } = props;
-
-    const [ sortBy, setSortBy] = React.useState<string>('');
-    const [ sortOrder, setSortOrder] = React.useState<sortOrderType>('');
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const [ isTxLoading, setIsTxLoading ] = React.useState<boolean>(false);
-    const [ currentTxType, setCurrentTxType ] = React.useState<txType>('Withdraw');
-    const [ modalTitle, setModalTitle ] = React.useState<string>('Withdraw');
-    const [ currentAddress, setCurrentAddress ] = React.useState<string>('');
-    const [ currentAmount, setCurrentAmount ] = React.useState<string>('');
-
-    useEffect(() => {
-        if (sortBy === 'date' && sortOrder) {
-            setDateOrder(sortOrder);
-        } else {
-            setDateOrder(null);
-        }
-    }, [sortBy, sortOrder]);
-
-    useEffect(() => {
-        if (dateOrder) {
-            setToFirstpageRequest();
-        }
-    }, [dateOrder, setToFirstpageRequest]);
 
     const handleRowClick = (item: any) => { }
 
@@ -520,16 +505,22 @@ const TableWrapper = ({
 
     const { address: userAddr } = useAccount();
 
-
+    const [ sortBy, setSortBy] = React.useState<string>('');
+    const [ sortOrder, setSortOrder] = React.useState<sortOrderType>('');
 
     const [ toNext, setToNext ] = React.useState<boolean>(true);
-    const [ nextKey , setNextKey ] = React.useState<string>(initial_nextKey);
-    const [ currentPage, setCurrentPage ] = React.useState<number>(1);
-    const [ tableData, setTableData ] = React.useState<any[]>([]);
-    const [ isTableLoading, setIsTableLoading ] = React.useState(false);
-    const [ totalCount, setTotalCount ] = React.useState<number>(0);
+
+    const [nextKey, setNextKey] = useState<string | null>(initial_nextKey);
+    const [currentPageKey, setCurrentPageKey] = useState<string | null>(initial_nextKey);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [tableData, setTableData] = useState<any[]>([]);
+    const [isTableLoading, setIsTableLoading] = useState(false);
+    const [totalCount, setTotalCount] = useState<number>(0);
+    const [keyStack, setKeyStack] = useState<(string | null)[]>([initial_nextKey]);
+    const currentKeyRef = useRef<string | null>(initial_nextKey);
 
     const [ dateOrder, setDateOrder ] = React.useState<string | null >(null);
+
 
     useEffect(() => {
         if ( tableData.length === 0 ) {
@@ -541,43 +532,19 @@ const TableWrapper = ({
     }, [ tableData, setDisableSelectDateRange ]);
     
 
-    const [ queryParams, setQueryParams ] = React.useState<{ 
-        status?: ValidatorQueryParams['status'];
-        nextKey?: string;
-        page?: ValidatorQueryParams['page'];
-        limit?: ValidatorQueryParams['limit'];
-        countTotal?: ValidatorQueryParams['countTotal'];
-        reverse?: ValidatorQueryParams['reverse'];
-      }>({
-        nextKey: '',
-        page: 1,
-    });
-    
-    const updateQueryParams = (newParams: Partial<ValidatorQueryParams>) => {
-        setQueryParams((prevParams) => ({
-          ...prevParams,
-          ...newParams,
-        }));
-    }
-
-
-
-
-    const requestActivityList = React.useCallback(async( _addr : string = '', _selectDateRange: any) => {
-        if (!_addr) {
-            return;
-        }
+    const requestActivityList = React.useCallback(async() => {
         try {
             setIsTableLoading(true);
+            const key = currentKeyRef.current;
             const param = new URLSearchParams();
             param.append('limit', defaultLimit.toString());
-            param.append('nextKey', queryParams.nextKey || initial_nextKey);
-            param.append('address', (_addr || '').toLowerCase());
+            param.append('nextKey', key || initial_nextKey);
+            param.append('address', (userAddr || '').toLowerCase());
             param.append('countTotal', 'true');
             param.append('reverse', dateOrder === 'desc' ? 'true' : 'false');
-            if (_selectDateRange) {
-                _selectDateRange[0] && param.append('startDate', dayjsToDateString(_selectDateRange[0]));
-                _selectDateRange[1] && param.append('endDate', dayjsToDateString(_selectDateRange[1]));
+            if (selectDateRange) {
+                selectDateRange[0] && param.append('startDate', dayjsToDateString(selectDateRange[0]));
+                selectDateRange[1] && param.append('endDate', dayjsToDateString(selectDateRange[1]));
             }
             const res = await axios.get(url + '/api/me/staking/activity' + '?' + param.toString(), { 
                 timeout: 10000,
@@ -591,10 +558,12 @@ const TableWrapper = ({
             });
             setIsTableLoading(false);
             if(res && res.code === 200) {
+                console.log('requestActivityList res: ', res);
+                console.log('requestActivityList nextKey ', res.data.pagination.nextKey);
                 setTableData(res.data.activities || []);
                 setTotalCount(Number(res.data.pagination.total || "0"))
-                setNextKey(res.data.pagination.nextKey);
-                setCurrentPage( queryParams.page || 1 );
+                setNextKey( res.data.pagination.nextKey || null );
+                setCurrentPageKey(key ?? null);
             }
         }
         catch (error: any) {
@@ -602,14 +571,51 @@ const TableWrapper = ({
             throw Error(error);
         }
     }
-  , [ url , queryParams.nextKey ]);
+  , [ url , userAddr, selectDateRange ]);
 
     useEffect(() => {
-        if (!userAddr) {
-            return;
+        requestActivityList();
+    }, [ requestActivityList ]);
+
+    const jumpToPrevPage = useCallback(() => {
+        if (isTableLoading || currentPage <= 1) return;
+        const prevKey = keyStack[currentPage - 2] ?? null;
+        currentKeyRef.current = prevKey;
+
+        setCurrentPage((prev) => prev - 1);
+        requestActivityList();
+    }, [nextKey, isTableLoading, currentPage, requestActivityList]);
+
+    // 上一页
+    const jumpToNextPage = useCallback(() => {
+        if (isTableLoading || !nextKey) return;
+        const nextKeyToUse = nextKey;
+        currentKeyRef.current = nextKeyToUse;
+
+        setKeyStack((prev) => [...prev.slice(0, currentPage), nextKeyToUse]);
+        setCurrentPage((prev) => prev + 1);
+        requestActivityList();
+    }, [currentPage, keyStack, isTableLoading, requestActivityList]);
+
+    const setToFirstpageRequest = useCallback(() => {
+        if (isTableLoading || currentPage === 1) return;
+        const firstKey = initial_nextKey ?? null;
+        currentKeyRef.current = firstKey;
+        setCurrentPage(1);
+        setKeyStack([firstKey]); // 重置历史栈
+        requestActivityList();
+    }, [isTableLoading, currentPage, initial_nextKey, requestActivityList]);
+
+        useEffect(() => {
+        if (sortBy === 'date' && sortOrder) {
+            setDateOrder(sortOrder);
+            if (sortOrder === 'asc') {
+                setToFirstpageRequest();
+            }
+        } else {
+            setDateOrder(null);
         }
-        requestActivityList(userAddr, selectDateRange);
-    }, [ userAddr, selectDateRange , requestActivityList ]);
+    }, [sortBy, sortOrder]);
 
 
     const { isConnected: WalletConnected } = useAccount();
@@ -660,6 +666,8 @@ const TableWrapper = ({
     }
 
 
+  
+
     return (
         <Box
             width="100%"
@@ -675,20 +683,14 @@ const TableWrapper = ({
                 totalCount={ totalCount }
                 currentPage={ currentPage }
                 dateOrder={ dateOrder }
+                sortBy={ sortBy }
+                sortOrder={ sortOrder }
+                setSortBy={ setSortBy }
+                setSortOrder={ setSortOrder }
                 setDateOrder={ setDateOrder }
-                setToFirstpageRequest={ () => {
-                    setToNext(false);
-                    setNextKey(initial_nextKey);
-                    updateQueryParams({ nextKey: initial_nextKey, page: 1 });
-                }}
-                onJumpPrevPage={ () => {
-                    setToNext(false);
-                    updateQueryParams({ nextKey: nextKey, page: currentPage - 1 });
-                }}
-                onJumpNextPage={ () => {
-                    setToNext(true);
-                    updateQueryParams({ nextKey: nextKey , page: currentPage + 1 });
-                }}
+                setToFirstpageRequest={() => {}}
+                onJumpPrevPage={ jumpToPrevPage }
+                onJumpNextPage={ jumpToNextPage }
                 nextKey={ nextKey }
             />
         </Box>
