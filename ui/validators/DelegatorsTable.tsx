@@ -1,8 +1,9 @@
 /* eslint-disable */
-import { Table, Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
+import { Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
+import { Table } from 'antd';
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import React, { useEffect , useMemo } from 'react';
 import { debounce, orderBy } from 'lodash';
 import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import WithTipsText from 'ui/validators/WithTipsText';
@@ -214,22 +215,7 @@ const CustomTableHeader = ({
         }
     };
 
-    const w = width || 'auto';
-    const _w = width || '200px'; 
-    const _minWidth = minWidth || '180px';
-
     return (
-        <Th
-            _first={{ p: "4px 10px 10px 10px" }}
-            color="rgba(0, 0, 0, 0.6)"
-            p="4px 10px 10px 10px"
-            bg="#FFFF"
-            borderBottom="1px"
-            borderColor="rgba(0, 0, 0, 0.1)"
-            width={{ base: _w , lg: w }}
-            minWidth={_minWidth}
-            flexShrink={ 0 }
-        >
             <Flex
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -238,7 +224,7 @@ const CustomTableHeader = ({
                 userSelect={'none'}
                 gap="2px" 
             >
-                <span style={{ color: 'rgba(0, 0, 0, 0.40)' }}>
+                <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' , fontWeight: 400 }}>
                     { children }
                 </span>
                 { allowSort && (
@@ -258,7 +244,6 @@ const CustomTableHeader = ({
                     </Box>
                 )}
             </Flex>
-        </Th>
     );
 }
 
@@ -326,6 +311,67 @@ const TableApp = (props: {
         </Tr>
     );
 
+
+    const getColumnContent = (item: tableHeadType) => {
+        const content = (item.tips ? (
+                <WithTipsText 
+                    label={ item.label }
+                    tips={ item.tips }
+                />
+            ) : item.label);
+        if (item.allowSort === true) {
+            return (
+                <CustomTableHeader
+                    selfKey={ item.key }
+                    width={ item.width }
+                    allowSort={ item.allowSort }
+                    sortKey={ sortBy }
+                    sortOrder={ sortOrder }
+                    setSort={ setSortBy }
+                    setSortOrder={ setSortOrder }
+                    minWidth={ item.minWidth }
+                >
+                    { content }
+                </CustomTableHeader>
+            );
+        }
+        return (
+            <span
+                style={{
+                    color: 'rgba(0, 0, 0, 0.40)',
+                    fontFamily: "HarmonyOS Sans",
+                    fontSize: '12px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    lineHeight: 'normal',
+                    textTransform: 'capitalize',
+                }}  
+            >
+                { content }
+            </span> 
+        );
+    };
+        
+    const CustomHeaderToAntDesignTableColumns = (tableHead: tableHeadType[]) => {
+        return tableHead.map((item: tableHeadType) => ({
+            title: getColumnContent(item),
+            dataIndex: item.key,
+            key: item.key,
+            width: 'auto',
+            render: (value: any, record: any) => {
+                if (item.render) {
+                    return item.render(record);
+                }
+                return value;
+            },
+        }));
+    };
+
+    const AntDesignTableColumns = useMemo(() => {
+        return CustomHeaderToAntDesignTableColumns(tableHead);
+    }
+    , [tableHead, sortBy, sortOrder]);
+
     return (
     <>
         <div style={{
@@ -348,33 +394,15 @@ const TableApp = (props: {
                     <Box className={ styles.loader }></Box>
                 </div>
                 ) : (
-                <Table variant="simple">
-                    <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
-                        { tableHeaders }
-                    </Thead>
-                    <Tbody>
-                        {sortedData.map((validator: any, index: number) => (
-                            <Tr key={index}
-                                borderBottom={'none'}
-                                _last={{ borderBottom: 'none' }} 
-                                _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
-                                onClick={() => handleRowClick(validator)}
-                            >
-                                { tableHead.map((item: tableHeadType, index: number) => (
-                                    <Td
-                                        key={index}
-                                        p="14px 10px 10px 10px"
-                                        color="rgba(0, 0, 0, 0.6)"
-                                        borderBottom={'none'} _last={{ borderBottom: 'none' }} 
-                                        onClick={() => handleRowClick(validator)}
-                                    >
-                                        {item.render ? item.render(validator) : validator[item.key]}
-                                    </Td>
-                                ))}
-                            </Tr>
-                        ))}
-                    </Tbody>
-                </Table>
+                <div style={{ overflowX: 'auto', width: '100%' }}>
+                    <Table
+                        columns={AntDesignTableColumns}
+                        dataSource={sortedData}
+                        className="node-staking-custom-table"
+                        scroll={{ x: 'auto' }}
+                        pagination={false}
+                    />
+                </div>
             )}
             {/* page, onNextPageClick, onPrevPageClick, resetPage, hasPages, hasNextPage, className, canGoBackwards, isLoading, isVisible  */}
         </div>

@@ -1,8 +1,10 @@
 /* eslint-disable */
-import { Table, Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
+import { Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
 import {  useDisclosure, } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { debounce, orderBy } from 'lodash';
+import { Table } from 'antd';
+import { useMemo } from 'react';
 import useAccount from 'lib/web3/useAccount';
 import CommonModal from 'ui/staking/CommonModal';
 import StatusButton from 'ui/validators/StatusButton';
@@ -127,22 +129,7 @@ const CustomTableHeader = ({
         }
     };
 
-    const w = width || 'auto';
-    const _w = width || '200px'; 
-    const _minWidth = minWidth || '180px';
-
     return (
-        <Th
-            _first={{ p: "4px 10px 10px 10px" }}
-            color="rgba(0, 0, 0, 0.6)"
-            p="4px 10px 10px 10px"
-            bg="#FFFF"
-            borderBottom="1px"
-            borderColor="rgba(0, 0, 0, 0.1)"
-            width={{ base: _w , lg: w }}
-            minWidth={_minWidth}
-            flexShrink={ 0 }
-        >
             <Flex
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -151,7 +138,7 @@ const CustomTableHeader = ({
                 userSelect={'none'}
                 gap="2px" 
             >
-                <span style={{ color: 'rgba(0, 0, 0, 0.40)' }}>
+                <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' , fontWeight: 400 }}>
                     { children }
                 </span>
                 { allowSort && (
@@ -162,6 +149,7 @@ const CustomTableHeader = ({
                         alignItems="center"
                         width="12px"
                         height="12px"
+                        fontSize="12px"
                         cursor="pointer"
                         onClick={handleSort}
                     >
@@ -171,10 +159,8 @@ const CustomTableHeader = ({
                     </Box>
                 )}
             </Flex>
-        </Th>
     );
 }
-
 
 const TableApp = (props: {
     data: any;
@@ -632,6 +618,70 @@ const TableApp = (props: {
         </Tr>
     );
 
+
+
+
+    const getColumnContent = (item: tableHeadType) => {
+        const content = (item.tips ? (
+                <WithTipsText 
+                    label={ item.label }
+                    tips={ item.tips }
+                />
+            ) : item.label);
+        if (item.allowSort === true) {
+            return (
+                <CustomTableHeader
+                    selfKey={ item.key }
+                    width={ item.width }
+                    allowSort={ item.allowSort }
+                    sortKey={ sortBy }
+                    sortOrder={ sortOrder }
+                    setSort={ setSortBy }
+                    setSortOrder={ setSortOrder }
+                    minWidth={ item.minWidth }
+                >
+                    { content }
+                </CustomTableHeader>
+            );
+        }
+        return (
+            <span
+                style={{
+                    color: 'rgba(0, 0, 0, 0.40)',
+                    fontFamily: "HarmonyOS Sans",
+                    fontSize: '12px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    lineHeight: 'normal',
+                    textTransform: 'capitalize',
+                }}  
+            >
+                { content }
+            </span> 
+        );
+    };
+        
+    const CustomHeaderToAntDesignTableColumns = (tableHead: tableHeadType[]) => {
+        return tableHead.map((item: tableHeadType) => ({
+            title: getColumnContent(item),
+            dataIndex: item.key,
+            key: item.key,
+            width: 'auto',
+            render: (value: any, record: any) => {
+                if (item.render) {
+                    return item.render(record);
+                }
+                return value;
+            },
+        }));
+    };
+
+    const AntDesignTableColumns = useMemo(() => {
+        return CustomHeaderToAntDesignTableColumns(tableHead);
+    }
+    , [tableHead, sortBy, sortOrder]);
+
+
     const { isConnected: WalletConnected } = useAccount();
 
     const spinner = ( <div style={{ width: '100%', height: 'auto', display: 'flex', minHeight: '200px',
@@ -692,33 +742,15 @@ const TableApp = (props: {
                 borderRadius: '12px',
             }}
         >
-            <Table variant="simple">
-                <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
-                    { tableHeaders }
-                </Thead>
-                <Tbody>
-                    { sortedData.map((validator: any, index: number) => (
-                        <Tr key={index}
-                            borderBottom={'none'}
-                            _last={{ borderBottom: 'none' }} 
-                            _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
-                            onClick={() => handleRowClick(validator)}
-                        >
-                            { tableHead.map((item: tableHeadType, index: number) => (
-                                <Td
-                                    key={index}
-                                    p= { '12px 0' }
-                                    color="rgba(0, 0, 0, 0.6)"
-                                    borderBottom={'none'} _last={{ borderBottom: 'none' }} 
-                                    onClick={() => handleRowClick(validator)}
-                                >
-                                    {item.render ? item.render(validator) : validator[item.key]}
-                                </Td>
-                            ))}
-                        </Tr>
-                    ))}
-                </Tbody>
-            </Table>
+            <div style={{ overflowX: 'auto', width: '100%' }}>
+                <Table
+                    columns={AntDesignTableColumns}
+                    dataSource={sortedData}
+                    className="node-staking-custom-table"
+                    scroll={{ x: 'auto' }}
+                    pagination={false}
+                />
+            </div>
             <CommonModal 
                 isOpen = { isOpen }
                 onClose = { handleCloseModal }

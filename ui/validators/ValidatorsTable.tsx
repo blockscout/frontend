@@ -131,7 +131,7 @@ const CustomTableHeader = ({
                 userSelect={'none'}
                 gap="2px" 
             >
-                <span style={{ color: 'rgba(0, 0, 0, 0.40)' }}>
+                <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' , fontWeight: 400 }}>
                     { children }
                 </span>
                 { allowSort && (
