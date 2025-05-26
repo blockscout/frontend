@@ -487,7 +487,7 @@ const TableApp = (props: {
 }
 
 
-const initial_nextKey = '0' ;
+const initial_nextKey = '0x00' ;
 const defaultLimit = 15;
 
 
@@ -541,7 +541,7 @@ const TableWrapper = ({
             param.append('nextKey', key || initial_nextKey);
             param.append('address', (userAddr || '').toLowerCase());
             param.append('countTotal', 'true');
-            param.append('reverse', dateOrder === 'desc' ? 'true' : 'false');
+            param.append('reverse', dateOrder === 'asc' ? 'false' : 'true');
             if (selectDateRange) {
                 selectDateRange[0] && param.append('startDate', dayjsToDateString(selectDateRange[0]));
                 selectDateRange[1] && param.append('endDate', dayjsToDateString(selectDateRange[1]));
@@ -571,7 +571,7 @@ const TableWrapper = ({
             throw Error(error);
         }
     }
-  , [ url , userAddr, selectDateRange ]);
+  , [ url , userAddr, dateOrder , selectDateRange ]);
 
     useEffect(() => {
         requestActivityList();
@@ -606,11 +606,13 @@ const TableWrapper = ({
         requestActivityList();
     }, [isTableLoading, currentPage, initial_nextKey, requestActivityList]);
 
-        useEffect(() => {
-        if (sortBy === 'date' && sortOrder) {
-            setDateOrder(sortOrder);
-            if (sortOrder === 'asc') {
-                setToFirstpageRequest();
+    useEffect(() => {
+        if (sortBy === 'date') {
+            setToFirstpageRequest();
+            if (!!sortOrder) {
+                setDateOrder(sortOrder);
+            } else {
+                setDateOrder(null);
             }
         } else {
             setDateOrder(null);

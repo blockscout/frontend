@@ -350,7 +350,7 @@ const TableApp = (props: {
     }
 
 
-    const handleSubmit = React.useCallback(async (mainAddr: string, txType: string, amount: string, target?: string) => {
+    const handleSubmit = React.useCallback(async (mainAddr: string, txType: string, amount: string, source?: string) => {
         let param = null;
         let apiPath = null;
         if (currentTxType === 'Stake') {
@@ -377,13 +377,13 @@ const TableApp = (props: {
             };
             apiPath = '/api/staking/distribution/prepare/claim';
         } else if (currentTxType === 'MoveStake') {
-            if(!targetValidator || !targetValidator.validatorAddress) {
+            if(!source) {
                 return;
             }
             param = {
                 "address": userAddr,
-                "validatorAddress": mainAddr || "",
-                "targetValidatorAddress": targetValidator.validatorAddress,
+                "validatorAddress": source || "",
+                "targetValidatorAddress": mainAddr,
                 "amount": amount,
                 "stakingType": "MoveStake"
             };

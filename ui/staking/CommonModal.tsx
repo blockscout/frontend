@@ -13,7 +13,7 @@ import StakingValidatorSelect from 'ui/staking/StakingValidatorSelect';
 import WithTextWrapper from 'ui/staking/WithTextWrapper';
 import FromAndToSelect from 'ui/staking/FromAndToSelect';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
-import React ,  { useCallback, useEffect } from 'react';
+import React ,  { useMemo, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import styles from 'ui/staking/spinner.module.css';
 
@@ -83,7 +83,7 @@ const CommonModal = ({
     isSubmitting: boolean;
     onClose: () => void;
     title: string;
-    onSubmit: (targetAddress: string, txType: string, amount: string, target?: string) => void;
+    onSubmit: (targetAddress: string, txType: string, amount: string, source?: string) => void;
     onOpen: () => void;
     currentAmount: string;
     transactionStage: string;
@@ -157,6 +157,14 @@ const CommonModal = ({
     
 
     const { address: userAddr } = useAccount();
+
+    const sourceValidatorAddress = useMemo(() => {
+        if (currentTxType === 'MoveStake' && currentFromItem && currentFromItem.validatorAddress) {
+            return currentFromItem.validatorAddress;
+        }
+        return null;
+    }
+    , [ currentTxType, currentFromItem ]);
 
     const requestMyValidatorsList = React.useCallback(async() => {
         if ( !userAddr) {
@@ -267,7 +275,10 @@ const CommonModal = ({
         } else if (currentTxType === 'Claim' || currentTxType === 'ClaimAll' || currentTxType === 'Compound-Claim') {
             onSubmit(currentAddress, currentTxType, "0");
         } else if (currentTxType === 'MoveStake') { 
-            onSubmit(currentAddress, currentTxType, currentAmount);
+            if (!sourceValidatorAddress) {
+                return;
+            }
+            onSubmit(currentAddress, currentTxType, currentAmount, sourceValidatorAddress);
         }
     };
 
@@ -355,7 +366,7 @@ const CommonModal = ({
                 return false;
             }
             if(currentTxType === 'MoveStake' && (
-                currentToItem.validatorAddress === currentFromItem.validatorAddress ||
+                currentToItem.validatorAddress === sourceValidatorAddress ||
                 !currentToItem.validatorAddress)
             ) {
                 return false;
@@ -364,6 +375,11 @@ const CommonModal = ({
 
         return true;
     }, [ currentItem, currentTxType , currentFromItem , currentToItem ]);
+
+
+    useEffect(() => {
+        console.log('currentFromItem changed:', currentFromItem);
+    }, [ currentFromItem ]);
 
 
     const handleCloseDialog = useCallback(() => {
