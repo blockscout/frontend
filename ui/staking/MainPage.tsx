@@ -538,6 +538,7 @@ const ObjectDetails: NextPage = () => {
 
     const handleCloseModal = () => {
         onClose();
+        setTransactionStage('edit');
         setExtraDescription(null);
     }
     

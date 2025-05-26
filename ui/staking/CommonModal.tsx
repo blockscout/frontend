@@ -232,6 +232,8 @@ const CommonModal = ({
     const handleCloseModal = () => {
         setCurrentAmount("0.00");
         setInputStr("0.00");
+        setAvailableAmount("0.00");
+        setCurrentItem(null);
         onClose();
     }
 
@@ -471,7 +473,7 @@ const CommonModal = ({
                                                 <Box width="100%" height="auto">
                                                     <HeadsUpInfo
                                                         label="Heads Up"
-                                                        value="It takes 1 days to receive MOCA after you withdraw."
+                                                        value="It takes 21 days to receive MOCA after you withdraw."
                                                     />
                                                 </Box>
                                             )

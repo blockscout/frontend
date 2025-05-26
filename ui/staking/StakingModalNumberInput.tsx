@@ -132,6 +132,14 @@ const StakingModalNumberInput = ({
       setValue(amountStringFormatter(formattedValue));
   };
 
+  const prefix = useMemo(() => {
+    if (currentTxType.includes('Stake')) {
+      return 'Balance:';
+    }
+    return 'Available:';
+  }
+  , [currentTxType]);
+
   return (
     <InputGroup height={'auto'} width={'100%'} borderRadius={'16px'}>
       <Input
@@ -259,7 +267,7 @@ const StakingModalNumberInput = ({
                 as ="span"
                 fontFamily="HarmonyOS Sans"
             >
-                 Available:<span  style={{ color: '#000' }}>
+                 { prefix }<span  style={{ color: '#000' }}>
                                 <span>
                                   {availableAmountNumber.toLocaleString('en-US', {
                                     minimumFractionDigits: 2,

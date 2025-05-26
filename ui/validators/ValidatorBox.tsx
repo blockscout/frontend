@@ -16,17 +16,23 @@ const TabChart = ({
     const [ delegatorsCount, setDelegatorsCount ] = React.useState(0);
 
 
+    const [ tabIndex, setTabIndex ] = React.useState(2);
+    const handleTabsChange = (index: number) => {
+        setTabIndex(index);
+    };
+
+
     return (
         <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px">
-            <Tabs color="#FF57B7" colorScheme="#FF57B7">
+            <Tabs color="#FF57B7" colorScheme="#FF57B7" index={tabIndex} onChange={handleTabsChange}>
                 <div 
                     style={{
                         position: 'relative',
                     }}
                 >
                     <TabList padding={'20px 10px 0 24px'} borderBottom="1px solid rgba(0, 0, 0, 0.06)">
-                        <Tab>Analytics</Tab>
-                        <Tab>Validator Activities</Tab>
+                        <Tab isDisabled>Analytics</Tab>
+                        <Tab isDisabled>Validator Activities</Tab>
                         <Tab>{`Delegators (${delegatorsCount})`}</Tab>
                     </TabList>
                     {/* <div style={{ 
@@ -48,7 +54,7 @@ const TabChart = ({
                             <ValidatorChart />
                         </div>
                     </TabPanel>
-                    <TabPanel>
+                    <TabPanel >
                         <span>
                             
                         </span>

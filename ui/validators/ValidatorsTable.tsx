@@ -7,6 +7,7 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 import { route } from 'nextjs-routes';
 import React, { useEffect , useMemo } from 'react';
 import { orderBy } from 'lodash';
+import { useAppKit, createAppKit } from '@reown/appkit/react';
 import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
 import StatusButton from 'ui/validators/StatusButton';
 import WithTipsText from 'ui/validators/WithTipsText';
@@ -207,6 +208,8 @@ const TableApp = (props: {
     }
 
 
+    const { open: openModal } = useAppKit();
+
     const handleRowClick = (item: any) => { }
 
     const sortedData = React.useMemo(() => {
@@ -268,6 +271,9 @@ const TableApp = (props: {
             setAvailableAmount(formattedBalanceStr);
         }
     }, [userAddr , balanceData]);
+
+
+    const { isConnected: WalletConnected } = useAccount();
 
     const { sendTransactionAsync } = useSendTransaction();
     
@@ -497,6 +503,10 @@ const TableApp = (props: {
                 <StakeButton
                     text = "Stake"
                     onClick = { () => {
+                        if  (!WalletConnected) {
+                            openModal();
+                            return;
+                        }
                         handleStake(record.validator, record);
                         setCurrentAddress(record.validator);
                     }}
@@ -567,25 +577,13 @@ const TableApp = (props: {
     , [tableHead, sortBy, sortOrder]);
 
 
-    const { isConnected: WalletConnected } = useAccount();
 
     const spinner = ( <div style={{ width: '100%', height: 'auto', display: 'flex', minHeight: '200px',
             justifyContent: 'center', alignItems: 'center', marginTop: '56px', position: 'relative'}}>
         <Box className={ styles.loader }></Box>
     </div> );
 
-    if (!WalletConnected) {
-        return (
-            <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
-                <EmptyPlaceholder
-                    tipsTextArray={ ['Your Stake information will appear here'] }
-                    showButton={ "connect" }
-                    buttonText={ 'Connect Wallet' }
-                />
-            </div>
-        );
-    }
-    else if (isLoading) {
+    if (isLoading) {
         return spinner;
     }
     else if ( !!searchTerm && data.length === 0) {

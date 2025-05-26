@@ -10,6 +10,7 @@ import {
 import React from 'react';
 import FloatToPercent from 'ui/validators/FloatToPercent';
 import IconSvg from 'ui/shared/IconSvg';
+import TokenAmountFormat from './TokenAmountFormat';
 
 const sectionProps = {
     borderBottom: '1px solid',
@@ -43,7 +44,7 @@ const TokenAmount = ({
                 }}
             >
                 <span style={{ color: '#A80C53' }}>
-                    { amount } 
+                    { TokenAmountFormat(amount) } 
                 </span>
 
                 <span style={{ color: 'black' }}>
@@ -223,7 +224,7 @@ const InfoBox = ({
         {
             label: 'Total Stake',
             tipsInfo: 'Total amount of tokens currently staked with the validator.',
-            value: <TokenAmount amount={ FloatToPercent((overViewInfo.totalStake || 0)) } isLoading={ isDetailInfoLoading } />,
+            value: <TokenAmount amount={ (overViewInfo.totalStake || 0) } isLoading={ isDetailInfoLoading } />,
         },
         {
             label: 'Live APR',
