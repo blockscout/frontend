@@ -81,7 +81,7 @@ const Puzzle15 = () => {
 
   useEffect(() => {
     const img = new Image();
-    img.src = '/static/4x4-easter-game.png';
+    img.src = '/static/4x4-easter-game-cut.png';
     img.onload = () => setImage(img);
   }, []);
 
@@ -141,7 +141,7 @@ const Puzzle15 = () => {
   }, [ isWon, moveTile ]);
 
   return (
-    <Flex flexDirection="column" alignItems="center" justifyContent="center" gap={ 4 } my={ 10 }>
+    <Flex flexDirection="column" alignItems="center" justifyContent="center" my={ 10 }>
       { isWon && <Confetti/> }
       <Grid templateColumns="repeat(4, 1fr)" w="400px" h="400px">
         { tiles.map((tile, index) => (
@@ -193,7 +193,7 @@ const Puzzle15 = () => {
       { !isWon && (
         <>
           <Text mt={ 10 }>Put the pieces together and win a prize</Text>
-          <Text mb={ 4 }>Click on a square to move it</Text>
+          <Text mb={ 1 }>Click on a square to move it</Text>
         </>
       ) }
       { isWon && easterEggPuzzleBadgeFeature.isEnabled && (
