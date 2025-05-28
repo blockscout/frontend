@@ -15,6 +15,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/account/watchlist">
     | StaticRoute<"/accounts">
     | DynamicRoute<"/accounts/label/[slug]", { "slug": string }>
+    | StaticRoute<"/add-delegation">
     | DynamicRoute<"/address/[hash]/contract-verification", { "hash": string }>
     | DynamicRoute<"/address/[hash]", { "hash": string }>
     | StaticRoute<"/advanced-filter">
@@ -59,6 +60,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/public-tags/submit">
     | StaticRoute<"/search-results">
     | StaticRoute<"/sprite">
+    | StaticRoute<"/staking">
     | DynamicRoute<"/stats/[id]", { "id": string }>
     | StaticRoute<"/stats">
     | DynamicRoute<"/token/[hash]", { "hash": string }>

@@ -35,7 +35,9 @@ export default function useApiInfiniteQuery<R extends PaginatedResources>({
     },
     initialPageParam: null,
     getNextPageParam: (lastPage) => {
-      return lastPage.next_page_params as TPageParam<R>;
+      if ('next_page_params' in lastPage) {
+        return lastPage.next_page_params as TPageParam<R>;
+      }
     },
     ...queryOptions,
   });
