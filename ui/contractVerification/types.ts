@@ -94,5 +94,19 @@ export interface FormFieldsStylusGitHubRepo extends FormFieldsBase {
   path_prefix: string;
 }
 
-export type FormFields = FormFieldsFlattenSourceCode | FormFieldsStandardInput | FormFieldsStandardInputZk | FormFieldsSourcify |
-FormFieldsMultiPartFile | FormFieldsVyperContract | FormFieldsVyperMultiPartFile | FormFieldsVyperStandardInput | FormFieldsStylusGitHubRepo;
+export interface FormFieldsAddDelegation extends FormFieldsBase {
+  delegation_amount: number;
+  validator_id: Option;
+}
+
+export type FormFields =
+  FormFieldsFlattenSourceCode |
+  FormFieldsStandardInput |
+  FormFieldsStandardInputZk |
+  FormFieldsSourcify |
+  FormFieldsMultiPartFile |
+  FormFieldsVyperContract |
+  FormFieldsVyperMultiPartFile |
+  FormFieldsVyperStandardInput |
+  FormFieldsStylusGitHubRepo |
+  FormFieldsAddDelegation;

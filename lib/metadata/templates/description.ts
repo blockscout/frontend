@@ -17,6 +17,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/block/countdown': DEFAULT_TEMPLATE,
   '/block/countdown/[height]': DEFAULT_TEMPLATE,
   '/accounts': DEFAULT_TEMPLATE,
+  '/add-delegation': DEFAULT_TEMPLATE,
+  '/staking': DEFAULT_TEMPLATE,
   '/accounts/label/[slug]': DEFAULT_TEMPLATE,
   '/address/[hash]': 'View the account balance, transactions, and other data for %hash% on the %network_title%',
   '/verified-contracts': DEFAULT_TEMPLATE,
