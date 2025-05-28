@@ -158,7 +158,7 @@ const AllValidatorPage: NextPage = () => {
       // const res = await (await fetch(url + '/api/network/overview-stats', { method: 'get' })).json() as any
       const res = await axios.get(url + '/api/network/overview-stats', {
         method: 'get',
-        timeout: 5000,
+        timeout: 10000,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -204,7 +204,7 @@ const AllValidatorPage: NextPage = () => {
       // const res = await (await fetch(url + `/api/network/validators/list?${param.toString()}`, { method: 'get' })).json() as any;
       const res = await axios.get(url + `/api/network/validators/list?${param.toString()}`, {
         method: 'get',
-        timeout: 5000,
+        timeout: 10000,
         headers: {
           'Content-Type': 'application/json',
         },

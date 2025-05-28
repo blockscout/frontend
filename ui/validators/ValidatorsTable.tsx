@@ -249,7 +249,7 @@ const TableApp = (props: {
         //     body:  JSON.stringify(_newParam),
         // })).json() as  any;
         const res =  await axios.post(url + '/api/staking/broadcast', _newParam, {
-            timeout: 5000,
+            timeout: 10000,
             headers: {
             'Content-Type': 'application/json',
             },
@@ -320,7 +320,7 @@ const TableApp = (props: {
             //     })).json() as  any;
 
             const res =  await axios.post(url + apiPath, param, {
-                timeout: 5000,
+                timeout: 10000,
                 headers: {
                 'Content-Type': 'application/json',
                 },

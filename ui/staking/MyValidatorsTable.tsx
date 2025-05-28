@@ -247,7 +247,7 @@ const TableApp = (props: {
             headers: {
                 'Content-Type': 'application/json',
             },
-            timeout: 5000
+            timeout: 10000
         }).then((response) => response.data).catch((error) => {
             return null;
         });
@@ -408,7 +408,7 @@ const TableApp = (props: {
             //         body:  JSON.stringify(param),
             //     })).json() as  any;
             const res = await axios.post(url + apiPath, param, {
-                timeout: 5000,
+                timeout: 10000,
                 headers: {
                     'Content-Type': 'application/json',
                 },
