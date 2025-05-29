@@ -27,7 +27,7 @@ const PoolsTable = ({ items, page, isLoading, top }: Props) => {
       </TableHeaderSticky>
       <TableBody>
         { items.map((item, index) => (
-          <PoolsTableItem key={ item.contract_address + (isLoading ? index : '') } item={ item } index={ index } page={ page } isLoading={ isLoading }/>
+          <PoolsTableItem key={ item.pool_id + (isLoading ? index : '') } item={ item } index={ index } page={ page } isLoading={ isLoading }/>
         )) }
       </TableBody>
     </TableRoot>
