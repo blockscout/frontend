@@ -183,6 +183,22 @@ export default function useNavItems(): ReturnType {
           ensLookup,
         ].filter(Boolean),
       ];
+    } else if (rollupFeature.isEnabled && rollupFeature.type === 'via') {
+      blockchainNavItems = [
+        [
+          txs,
+          internalTxs,
+          userOps,
+          blocks,
+          rollupTxnBatches,
+        ].filter(Boolean),
+        [
+          topAccounts,
+          validators,
+          verifiedContracts,
+          ensLookup,
+        ].filter(Boolean),
+      ];
     } else {
       blockchainNavItems = [
         txs,

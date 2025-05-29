@@ -12,6 +12,7 @@ import React from 'react';
 import { SCROLL_L2_BLOCK_STATUSES } from 'types/api/scrollL2';
 import type { Transaction } from 'types/api/transaction';
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
+import { VIA_L2_TX_BATCH_STATUSES } from 'types/api/viaL2';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
@@ -60,6 +61,7 @@ import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxExternalTxs from 'ui/tx/TxExternalTxs';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
+import ViaL2TxnBatchHashesInfo from 'ui/txnBatches/viaL2/ViaL2TxnBatchHashesInfo';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
 import TxDetailsInterop from './TxDetailsInterop';
@@ -185,7 +187,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       >
         {
           rollupFeature.isEnabled &&
-          (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'scroll') ?
+          (rollupFeature.type === 'zkEvm' ||
+            rollupFeature.type === 'zkSync' ||
+            rollupFeature.type === 'via' ||
+            rollupFeature.type === 'arbitrum' ||
+            rollupFeature.type === 'scroll') ?
             'L2 status and method' :
             'Status and method'
         }
@@ -293,6 +299,20 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
+      { data.via && !config.UI.views.tx.hiddenFields?.L1_status && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Status is the short interpretation of the batch lifecycle"
+            isLoading={ isLoading }
+          >
+            L1 status
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <VerificationSteps steps={ VIA_L2_TX_BATCH_STATUSES } currentStep={ data.via.status } isLoading={ isLoading }/>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
+
       <DetailedInfo.ItemLabel
         hint="Block number containing the transaction"
         isLoading={ isLoading }
@@ -354,6 +374,25 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               <BatchEntityL2
                 isLoading={ isLoading }
                 number={ data.zksync.batch_number }
+              />
+            ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
+
+      { data.via && !config.UI.views.tx.hiddenFields?.batch && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Batch number"
+            isLoading={ isLoading }
+          >
+            Batch
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            { data.via.batch_number ? (
+              <BatchEntityL2
+                isLoading={ isLoading }
+                number={ data.via.batch_number }
               />
             ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
           </DetailedInfo.ItemValue>
@@ -943,6 +982,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         ) }
 
         { data.zksync && <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isLoading }/> }
+        { data.via && <ViaL2TxnBatchHashesInfo data={ data.via } isLoading={ isLoading }/> }
       </CollapsibleDetails>
     </DetailedInfo.Container>
   );
