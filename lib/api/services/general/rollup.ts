@@ -40,6 +40,7 @@ import type {
   ScrollL2MessagesResponse,
 } from 'types/api/scrollL2';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
+import type { ViaBatch, ViaBatchesResponse, ViaBatchTxs } from 'types/api/viaL2';
 import type {
   ZkEvmL2DepositsResponse,
   ZkEvmL2TxnBatch,
@@ -227,6 +228,26 @@ export const GENERAL_API_ROLLUP_RESOURCES = {
     paginated: true,
   },
 
+  // via
+  via_l2_txn_batches: {
+    path: '/api/v2/via/batches',
+    filterFields: [],
+    paginated: true,
+  },
+  via_l2_txn_batches_count: {
+    path: '/api/v2/via/batches/count',
+  },
+  via_l2_txn_batch: {
+    path: '/api/v2/via/batches/:number',
+    pathParams: [ 'number' as const ],
+  },
+  via_l2_txn_batch_txs: {
+    path: '/api/v2/transactions/via-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
+    paginated: true,
+  },
+
   // zkEvm
   zkevm_l2_deposits: {
     path: '/api/v2/zkevm/deposits',
@@ -370,6 +391,10 @@ R extends 'general:zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
 R extends 'general:zksync_l2_txn_batches_count' ? number :
 R extends 'general:zksync_l2_txn_batch' ? ZkSyncBatch :
 R extends 'general:zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
+R extends 'general:via_l2_txn_batches' ? ViaBatchesResponse :
+R extends 'general:via_l2_txn_batches_count' ? number :
+R extends 'general:via_l2_txn_batch' ? ViaBatch :
+R extends 'general:via_l2_txn_batch_txs' ? ViaBatchTxs :
 R extends 'general:scroll_l2_txn_batch_txs' ? ScrollL2TxnBatchTxs :
 R extends 'general:scroll_l2_txn_batch_blocks' ? ScrollL2TxnBatchBlocks :
 R extends 'general:scroll_l2_txn_batches' ? ScrollL2BatchesResponse :
