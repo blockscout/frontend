@@ -31,6 +31,8 @@ const TxExternalTxs: React.FC<Props> = ({ data }) => {
             hash={ txHash }
             href={ externalTxFeature.explorerUrlTemplate.replace('{hash}', txHash) }
             isExternal
+            // tooltip inside tooltip doesn't work well
+            noTooltip
           />
         )) }
       </Flex>
@@ -41,6 +43,7 @@ const TxExternalTxs: React.FC<Props> = ({ data }) => {
     <Tooltip
       content={ content }
       variant="popover"
+      interactive
       positioning={{ placement: 'bottom-end' }}
       openDelay={ 300 }
       contentProps={{ w: { base: '300px', lg: '460px' } }}
