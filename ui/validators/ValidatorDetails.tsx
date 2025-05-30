@@ -126,6 +126,7 @@ const ValidatorDetails = () => {
                     commissionRate: commissionRate,
                     validatorStake: validatorStake,
                     uptime: uptime,
+                    validatorRewards: validatorRewards,
                     blocksValidated: blocksValidated,
                     liveApr: liveApr,
                     delegatorRewards: delegatorRewards,

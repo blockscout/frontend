@@ -233,18 +233,17 @@ const InfoBox = ({
         {
             label: `Validator's Stake`,
             tipsInfo: 'Amount of tokens the validator itself has staked.',
-            value: <TokenAmount amount={ FloatToPercent(overViewInfo.validatorStake ||  0)} isLoading={ isDetailInfoLoading } />,
+            value: <TokenAmount amount={ (overViewInfo.validatorStake ||  0)} isLoading={ isDetailInfoLoading } />,
         },
         {
             label: `Validator's Rewards`,
             tipsInfo: 'Rewards earned by the validator from network participation.',
-            value: <TokenAmount amount={ FloatToPercent(overViewInfo.validatorRewards || 0 ) } isLoading={ isDetailInfoLoading } />,
+            value: <TokenAmount amount={ (overViewInfo.validatorRewards || 0 ) } isLoading={ isDetailInfoLoading } />,
         },
         {
             label: `Delegator's Rewards`,
             tipsInfo: 'Rewards distributed to users staking their tokens with this validator.',
-            value:<TokenAmount 
-            amount={ FloatToPercent(overViewInfo.delegatorRewards || 0 ) } 
+            value:<TokenAmount  amount={ (overViewInfo.delegatorRewards || 0 ) } 
             isLoading={ isDetailInfoLoading } /> ,
         },
         {

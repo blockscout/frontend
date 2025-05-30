@@ -2,6 +2,7 @@
 
 const FloatToPercent = (value: number | string): string => {
     const _n = Number(value);
+    
     if (value === 0) {
         return '0';
     }
