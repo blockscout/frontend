@@ -17,9 +17,11 @@ const getShortAddress = (address: string) => {
 
 
 const ValidatorInfo = ({
-    validatorName
+    validatorName,
+    record = {}
 }: {
     validatorName: string;
+    record?: any;
 }) => {
 
     return (
@@ -49,7 +51,7 @@ const ValidatorInfo = ({
                 textTransform="capitalize"
                 userSelect="none"
                 as ="span"
-            > { getShortAddress(validatorName) } </Text>
+            > { record.validatorName } </Text>
         </Flex>
     )
 }

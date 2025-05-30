@@ -15,6 +15,7 @@ const ValidatorItemBar = ({
     liveApr = "0",
     isFocused = false,
     validatorName = '',
+    validatorItem = {},
     validatorAvatar = null,
     onClick = () => {},
 }: {
@@ -22,9 +23,13 @@ const ValidatorItemBar = ({
     liveApr?: string | number;
     isFocused?: boolean;
     validatorName?: string;
+    validatorItem?: any;
     validatorAvatar?: string | null;
     onClick?: () => void;
 }) => {
+
+    const _currentItem  = validatorItem;
+
     return (
         <Box 
             width="100%" 
@@ -45,7 +50,7 @@ const ValidatorItemBar = ({
             >
                 {
                     (!!validatorName) ? (
-                        <ValidatorInfo  validatorName = {validatorName} />
+                        <ValidatorInfo  validatorName = {validatorName} record = {_currentItem}/>
                     ) : (
                         <Text
                             fontSize="14px"

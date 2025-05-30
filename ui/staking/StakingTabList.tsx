@@ -162,6 +162,7 @@ const StakingTabList = ({
                                     cursor="pointer"
                                     onClick={() => {
                                         setSelectedValidator({
+                                            ...validator,
                                             validatorAddress: validator.validatorAddress,
                                             liveApr: validator.liveApr,
                                         });
@@ -193,7 +194,7 @@ const StakingTabList = ({
                                                 fontFamily: 'HarmonyOS Sans',
                                             }}
                                         >
-                                            <ValidatorInfo  validatorName = {(validator.validatorAddress || '')} />
+                                            <ValidatorInfo  validatorName = {(validator.validatorAddress || '')} record={validator} />
                                         </span>
                                         <span 
                                             style={{
@@ -231,6 +232,7 @@ const StakingTabList = ({
                                     key={validator.validatorAddress} 
                                     onClick={() => {
                                         setSelectedValidator({
+                                            ...validator,
                                             validatorAddress: validator.validatorAddress,
                                             liveApr: validator.liveApr,
                                         })
@@ -264,7 +266,7 @@ const StakingTabList = ({
                                                 fontFamily: 'HarmonyOS Sans',
                                             }}
                                         >
-                                            <ValidatorInfo  validatorName = {(validator.validatorAddress || '')} />
+                                            <ValidatorInfo  validatorName = {(validator.validatorAddress || '')}  record={validator} />
                                         </span>
                                         <span
                                             style={{

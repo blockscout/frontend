@@ -64,6 +64,7 @@ const Selector = ({
                         showArrow={true}
                         liveApr={ (Number(selectedValidator.liveApr || 0) * 100).toFixed(2) + '%' }
                         isFocused={ isOpen }
+                        validatorItem={selectedValidator}
                         validatorName={ getShortAddress(selectedValidator.validatorAddress) }
                         validatorAvatar={null}
                         onClick={onToggle}

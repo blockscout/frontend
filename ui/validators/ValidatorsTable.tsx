@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Flex, Avatar, Tr, Th,  Td } from '@chakra-ui/react';
 import { Table } from 'antd';
+import { useRouter } from 'next/router';
 import { Box, useDisclosure } from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
 import LinkInternal from 'ui/shared/links/LinkInternal';
@@ -212,6 +213,8 @@ const TableApp = (props: {
     const { data: walletClient } = useWalletClient();
     const publicClient = usePublicClient();
 
+    const router = useRouter();
+
     const [ transactionHash, setTransactionHash ] = React.useState<string>('');
     const handleCloseModal = () => {
         setCurrentTxType('Withdraw');
@@ -225,7 +228,14 @@ const TableApp = (props: {
 
     const { open: openModal } = useAppKit();
 
-    const handleRowClick = (item: any) => { }
+    const handleRowClick = (item: any) => { 
+        console.log('Row clicked:', item);
+        const { validator } = item;
+        router.push({
+            pathname: '/validator-detail/[addr]',
+            query: { addr: validator}
+        });
+    }
 
     const statusOrder = {
         "Active": 1,
@@ -662,6 +672,12 @@ const TableApp = (props: {
                     className="node-staking-custom-table"
                     scroll={{ x: 'auto' }}
                     pagination={false}
+                    onRow={(record, rowIndex) => {
+                        return {
+                        onClick: (event) => {
+                            handleRowClick(record)
+                        }}
+                    }}
                 />
             </div>
             <Flex

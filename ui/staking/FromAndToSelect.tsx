@@ -48,6 +48,7 @@ const FromAndToSelect = ({
             <WithTextWrapper text="From Validator">
                 <ValidatorItemBar
                     showArrow={false} 
+                    validatorItem={FromItem}
                     liveApr={ (Number(FromItem?.liveApr || 0) * 100).toFixed(1)   + '%' }
                     validatorName = {FromItem?.validatorAddress || ''}
                     validatorAvatar={null}

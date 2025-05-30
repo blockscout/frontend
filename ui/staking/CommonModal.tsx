@@ -461,6 +461,7 @@ const CommonModal = ({
                                                 liveApr={ (Number(currentItem?.liveApr  || 0) * 100).toFixed(1) + '%' }
                                                 validatorName = {currentItem?.validatorAddress || ''}
                                                 validatorAvatar={null}
+                                                validatorItem ={ currentItem || {}}
                                                 onClick={() => {} }
                                             />
                                         )
