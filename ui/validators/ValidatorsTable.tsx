@@ -267,6 +267,7 @@ const TableApp = (props: {
 
     const handleStake = (address: string, record: any) => {
         setCurrentItem({
+            ...record,
             validatorAddress: record.validator,
             liveApr: record.liveApr,
         });

@@ -273,6 +273,7 @@ const TableApp = (props: {
 
     const handleStake = (address: string, record: any) => {
         setCurrentItem({
+            ...record,
             validatorAddress: record.validatorAddress,
             liveApr: record.liveAPR,
         });
@@ -287,6 +288,7 @@ const TableApp = (props: {
 
     const handleClaim = (address: string, record: any) => {
         setCurrentItem({
+            ...record,
             validatorAddress: record.validatorAddress,
             liveApr: record.liveAPR,
         });
@@ -300,6 +302,7 @@ const TableApp = (props: {
 
     const handleWithdraw = (address: string, record: any) => {
         setCurrentItem({
+            ...record,
             validatorAddress: record.validatorAddress,
             liveApr: record.liveAPR,
         });
@@ -317,6 +320,7 @@ const TableApp = (props: {
             liveApr: record.liveAPR,
         });
         setCurrentItem({
+            ...record,
             validatorAddress: record.validatorAddress,
             liveApr: record.liveAPR,
         });
@@ -814,7 +818,7 @@ const TableApp = (props: {
 
 
 const initial_nextKey = '0x00';
-const defaultLimit = 15;
+const defaultLimit = 20;
 
 
 const TableWrapper = ({

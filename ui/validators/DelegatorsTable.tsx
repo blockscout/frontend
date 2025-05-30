@@ -442,8 +442,7 @@ const TableApp = (props: {
 
 
 const initial_nextKey = '0x00';
-const defaultLimit = 15;
-
+const defaultLimit = 20;
 const TableWrapper = (props: {
     addr: string;
     totalCount: number;
