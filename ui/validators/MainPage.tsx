@@ -12,6 +12,9 @@ import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import Web3ModalProvider from 'ui/staking/Web3Provider';
 import { getFormatterFloat } from 'ui/staking/numberFormat';
 
+
+const DOC_LINK = 'https://drive.google.com/stake/validators?ddrp=1';
+
 type RequestType = {
   has_next: boolean;
   has_more: boolean;
@@ -243,9 +246,9 @@ const AllValidatorPage: NextPage = () => {
       const minutes = Math.floor((seconds % 3600) / 60);
 
       let result = '';
-      if (days > 0) result += `${days} d `;
-      if (hours > 0) result += `${hours} h `;
-      result += `${minutes} m`;
+      if (days > 0) result += `${days}d `;
+      if (hours > 0) result += `${hours}h `;
+      result += `${minutes}m`;
 
       return result.trim();
   }
@@ -282,7 +285,7 @@ const AllValidatorPage: NextPage = () => {
 
             <Button
                 onClick={() => {
-                    window.open('https://moca.network', '_blank');
+                    window.open(DOC_LINK, '_blank');
                 }}
                 px = "6px"
                 py = "2px"
@@ -323,7 +326,9 @@ const AllValidatorPage: NextPage = () => {
                 fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Total Staking</Text> }
                 tips={ `Total Amount Staked Across the Blockchain Network` }
             />
-            <InfoNumberWrapper  number = { totalStaked || '-' } />
+            <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">
+              { Math.round(Number(totalStaked || '0.00')).toLocaleString('en-US') }
+            </Text>
             </Box>
             <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="18px" padding="16px">
             <WithTipsText
@@ -343,11 +348,11 @@ const AllValidatorPage: NextPage = () => {
                 <InfoNumberWrapper  number = { totalEpoch.current || '-' } />
                 <Box width={"168px"} display="flex" alignItems="center" justifyContent="center" flexDirection="column">
                     <Flex alignItems="center" justifyContent="space-between" width="100%" userSelect="none">
-                        <Text fontSize="12px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
-                            { totalEpoch.progress || 0 } %
+                        <Text fontSize="12px" color="#FF57B7" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
+                            { totalEpoch.progress || 0 }%
                         </Text>
                         <Text fontSize="12px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
-                            { formatSeconds(Number(totalEpoch.remainingTime || 0 ))}
+                            New: { formatSeconds(Number(totalEpoch.remainingTime || 0 ))}
                         </Text>
                     </Flex>
                     <Progress

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Flex, TableContainer, Tr, Th,  Td } from '@chakra-ui/react';
+import { Flex, Avatar, Tr, Th,  Td } from '@chakra-ui/react';
 import { Table } from 'antd';
 import { Box, useDisclosure } from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
@@ -26,6 +26,23 @@ import FloatToPercent from 'ui/validators/FloatToPercent';
 import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import styles from 'ui/staking/spinner.module.css';
 
+const  ValidatorInfoBox = ({ record } : { record: any }) => {
+    return (
+        <Flex flexDirection="row" alignItems="center" gap="8px" width="100%">
+            <Box>
+                <Avatar
+                    name="MOCA"
+                    src="/static/moca-brand.svg"
+                    size='2xs'
+                    width="20px"
+                    height="20px"
+                    borderRadius="full"
+                />
+            </Box>
+            <span>{record.validatorName}</span>
+        </Flex>
+    );
+}
 
 type unsignedTx = {
     to: string;
@@ -48,10 +65,8 @@ type tableHeadType = {
     sortOrder?: string;
 }
 
-
-
-
 type sortOrderType = 'asc' | 'desc' | '';
+type ValidatorStatus = 'Active' | 'Inactive' | 'Jailed' | 'Unbonding' ; 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
 const icon_asc = (
@@ -212,11 +227,30 @@ const TableApp = (props: {
 
     const handleRowClick = (item: any) => { }
 
+    const statusOrder = {
+        "Active": 1,
+        "Jailed": 2,
+        "Unbonding": 3,
+        "Inactive": 4,
+    };
+
     const sortedData = React.useMemo(() => {
-        if (sortBy && sortOrder) {
-            return orderBy(data, [sortBy], [ !sortOrder ? false : sortOrder]);
+        const defaultSortFields = ['status', 'totalStake'];
+        const statusSort = (item: { status: string; }) => {
+            const status = item.status as ValidatorStatus;
+            return statusOrder[status]; // Default to 5 if status is not found
         }
-        return data;
+        const defaultSortOrder = [ statusSort , 'asc', ] as any[];
+        if (sortBy && sortOrder) {
+            return orderBy(data, 
+                [sortBy, defaultSortFields[0], defaultSortFields[1]],
+                [ (!sortOrder ? false : sortOrder), defaultSortOrder[0], defaultSortOrder[1] ]
+            );
+        }
+        return  orderBy(data,
+            [defaultSortFields[0], defaultSortFields[1]],
+            [defaultSortOrder[0], defaultSortOrder[1]]
+        );
     }, [data, sortBy, sortOrder]);
 
 
@@ -379,10 +413,15 @@ const TableApp = (props: {
                             fontSize: '12px',
                             fontStyle: 'normal',
                             fontWeight: 500,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             lineHeight: 'normal',
                             textTransform: 'capitalize',
                         }}
-                    > { getShortAddress(record.validator) } </span>
+                    >
+                        <ValidatorInfoBox record = { record } />
+                    </span>
                 </LinkInternal>
             )
         },
