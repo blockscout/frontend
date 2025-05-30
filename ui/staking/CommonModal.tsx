@@ -377,11 +377,6 @@ const CommonModal = ({
     }, [ currentItem, currentTxType , currentFromItem , currentToItem ]);
 
 
-    useEffect(() => {
-        console.log('currentFromItem changed:', currentFromItem);
-    }, [ currentFromItem ]);
-
-
     const handleCloseDialog = useCallback(() => {
         handleCloseModal();
         if ( transactionStage === 'success' ) {

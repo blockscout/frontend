@@ -533,6 +533,9 @@ const TableWrapper = ({
     
 
     const requestActivityList = React.useCallback(async() => {
+        if (!userAddr) {
+            return;
+        }
         try {
             setIsTableLoading(true);
             const key = currentKeyRef.current;
@@ -558,8 +561,6 @@ const TableWrapper = ({
             });
             setIsTableLoading(false);
             if(res && res.code === 200) {
-                console.log('requestActivityList res: ', res);
-                console.log('requestActivityList nextKey ', res.data.pagination.nextKey);
                 setTableData(res.data.activities || []);
                 setTotalCount(Number(res.data.pagination.total || "0"))
                 setNextKey( res.data.pagination.nextKey || null );

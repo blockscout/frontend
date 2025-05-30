@@ -194,64 +194,30 @@ const ObjectDetails: NextPage = () => {
 
     const requestMyStakingTableList = React.useCallback(async() => {
         if (!address) return;
-        const param = new URLSearchParams();
-        param.append('address', (address || '').toLowerCase());
-        try {
-          setLoading(true);
-          const res = await axios.get(url + '/api/me/staking/delegations' + '?' + param.toString(), {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            timeout: 10000,
-          }).then((response) => {
-            return response.data;
-          }).catch((error) => {
-            return null;
-          });
-          if(res && res.code === 200) {
-            console.log('res', res);
-          }
-          setLoading(false);
-        } catch (error: any) {
-          setLoading(false);
-        }
+        // const param = new URLSearchParams();
+        // param.append('address', (address || '').toLowerCase());
+        // try {
+        //   setLoading(true);
+        //   const res = await axios.get(url + '/api/me/staking/delegations' + '?' + param.toString(), {
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //     timeout: 10000,
+        //   }).then((response) => {
+        //     return response.data;
+        //   }).catch((error) => {
+        //     return null;
+        //   });
+        //   if(res && res.code === 200) {
+        //     // 
+        //   }
+        //   setLoading(false);
+        // } catch (error: any) {
+        //   setLoading(false);
+        // }
   }, [ url, address ]);
 
-  const requestMyActivityTableList = React.useCallback(async({
-    limit = 15,
-    offset = 0,
-    countTotal = false,
-    reverse = false,
-    _addr = address,
-  }) => {
-    if (!_addr) return;
-    try {
-      setLoading(true);
-      const paramStr = new URLSearchParams({
-        limit: limit.toString(),
-        offset: offset.toString(),
-        countTotal: countTotal.toString(),
-        reverse: reverse.toString(),
-        address: (_addr || '').toLowerCase(),
-      }).toString();
-      const res = await axios.get(url + '/api/me/staking/activity' + '?' + paramStr, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        timeout: 10000,
-      }).then((response) => {
-        return response.data;
-      }).catch((error) => {
-        return null;
-      });
-      if(res && res.code === 200) {
-        console.log('res', res);
-      }
-      setLoading(false);
-    } catch (error: any) {
-      setLoading(false);
-    }
-  }, [ url ]);
+
 
     const propsPage = React.useCallback((value: number) => {
       window.scrollTo({
@@ -279,18 +245,6 @@ const ObjectDetails: NextPage = () => {
       requestMyStakingTableList();
     }
   }, [ requestMyStakingTableList , url ]);
-
-    React.useEffect(() => {
-      if (url) {
-        requestMyActivityTableList({
-          limit: 10,
-          offset: 0,
-          countTotal: true,
-          reverse: false,
-          _addr: address,
-        });
-      }
-    }, [ requestMyActivityTableList , address , url ]);
 
 
     const { isOpen, onOpen, onClose } = useDisclosure();

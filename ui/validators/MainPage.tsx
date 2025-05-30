@@ -171,8 +171,6 @@ const AllValidatorPage: NextPage = () => {
           return null; 
       });
 
-      console.log('res', res);
-
       setIsOverviewStatsLoading(false);
       if(res && res.code === 200) {
         const { 
