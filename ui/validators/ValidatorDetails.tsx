@@ -71,6 +71,8 @@ const ValidatorDetails = () => {
     const addr = getQueryParamString(router.query.addr);
     const { serverUrl : url } = useStakeLoginContextValue();
 
+    const [ validatorName , setValidatorName ] = React.useState('');
+
     const [ isDetailInfoLoading, setIsDetailInfoLoading ] = React.useState(false);
     const [ isDelegatorsInfoLoading, setIsDelegatorsInfoLoading ] = React.useState(false);
 
@@ -113,8 +115,10 @@ const ValidatorDetails = () => {
                     blocksValidated,
                     liveApr,
                     validatorRewards,
+                    validatorName,
                     delegatorRewards
                 } = res.data;
+                setValidatorName(validatorName);
                 setOverViewInfo({
                     validator: validator,
                     status: status,
@@ -201,7 +205,7 @@ const ValidatorDetails = () => {
                                     textTransform="capitalize"
                                     userSelect="none"
                                     as ="span"
-                                > Validator </Text>
+                                > { validatorName } </Text>
                             </Flex>
                         </Text>
                         <Text
