@@ -2,8 +2,8 @@ import { useCopyToClipboard } from '@uidotdev/usehooks';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { SECOND } from 'toolkit/utils/consts';
 
+import { SECOND } from '../utils/consts';
 import { useDisclosure } from './useDisclosure';
 
 // NOTE: If you don't need the disclosure and the timeout features, please use the useCopyToClipboard hook directly

@@ -70,9 +70,13 @@ import { themeConfig } from '@blockscout/ui-toolkit';
 
 const customOverrides = {
   // Add your custom theme overrides here
-  colors: {
-    brand: {
-      primary: '#your-color',
+  theme: {
+    semanticTokens: {
+      colors: {
+        brand: {
+          primary: { value: '#5353D3' }
+        },
+      },
     },
   },
 };

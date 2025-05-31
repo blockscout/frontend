@@ -30,7 +30,7 @@ interface LinkPropsChakra extends ChakraLinkProps {
   disabled?: boolean;
 }
 
-interface LinkPropsNext extends Pick<NextLinkProps, 'shallow' | 'prefetch' | 'scroll'> {}
+interface LinkPropsNext extends Partial<Pick<NextLinkProps, 'shallow' | 'prefetch' | 'scroll'>> {}
 
 export interface LinkProps extends LinkPropsChakra, LinkPropsNext {}
 

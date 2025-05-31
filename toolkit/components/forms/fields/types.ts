@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { ControllerRenderProps, FieldValues, Path, RegisterOptions } from 'react-hook-form';
+import type { ControllerRenderProps, FieldPathValue, FieldValues, Path, RegisterOptions } from 'react-hook-form';
 
 import type { FieldProps } from '../../../chakra/field';
 import type { InputProps } from '../../../chakra/input';
@@ -16,6 +16,10 @@ export interface FormFieldPropsBase<
   onBlur?: () => void;
   onChange?: () => void;
   inputProps?: InputProps | TextareaProps;
+  controllerProps?: {
+    shouldUnregister?: boolean;
+    defaultValue?: FieldPathValue<FormFields, Name>;
+  };
   group?: Omit<InputGroupProps, 'children' | 'endElement'> & {
     endElement?: React.ReactNode | (({ field }: { field: ControllerRenderProps<FormFields, Name> }) => React.ReactNode);
   };
