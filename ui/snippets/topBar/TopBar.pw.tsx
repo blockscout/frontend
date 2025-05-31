@@ -32,12 +32,11 @@ test('with secondary coin price +@mobile', async({ render, mockApiResponse }) =>
   await expect(component).toHaveScreenshot();
 });
 
-test('with horizontal nav bar layout', async({ render, mockApiResponse, mockEnvs, mockConfigResponse, mockAssetResponse, page }) => {
+test('with network menu +@dark-mode', async({ render, mockApiResponse, mockEnvs, mockConfigResponse, mockAssetResponse, page }) => {
   const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
 
   await mockApiResponse('general:stats', statsMock.base);
   await mockEnvs([
-    [ 'NEXT_PUBLIC_NAVIGATION_LAYOUT', 'horizontal' ],
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
   ]);
   await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS);
@@ -45,6 +44,9 @@ test('with horizontal nav bar layout', async({ render, mockApiResponse, mockEnvs
 
   const component = await render(<TopBar/>);
   await component.getByLabel('Network menu').click();
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 500 } });
+
+  await page.getByRole('link', { name: 'POA' }).hover();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 500 } });
 });
 
