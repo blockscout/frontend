@@ -8,7 +8,7 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 interface Props {
   data: Pick<Address, 'name' | 'token' | 'is_contract'>;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 const AddressNameInfo = ({ data, isLoading }: Props) => {
