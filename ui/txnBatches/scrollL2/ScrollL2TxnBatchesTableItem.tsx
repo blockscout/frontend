@@ -13,7 +13,7 @@ import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ScrollL2TxnBatchStatus from 'ui/shared/statusTag/ScrollL2TxnBatchStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -54,7 +54,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         />
       </TableCell>
       <TableCell verticalAlign="middle">
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.commitment_transaction.timestamp }
           fallbackText="Undefined"
           isLoading={ isLoading }

@@ -8,7 +8,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   isPlaceholderData: boolean;
@@ -41,7 +41,7 @@ const AddressAccountHistoryListItem = (props: Props) => {
               Action
             </Text>
           </Flex>
-          <TimeAgoWithTooltip
+          <TimeWithTooltip
             timestamp={ props.tx.rawTransactionData.timestamp * 1000 }
             color="text.secondary"
             borderRadius="sm"

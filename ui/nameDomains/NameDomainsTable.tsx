@@ -4,6 +4,7 @@ import type * as bens from '@blockscout/bens-types';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import NameDomainsTableItem from './NameDomainsTableItem';
 import type { SortField, Sort } from './utils';
@@ -28,10 +29,14 @@ const NameDomainsTable = ({ data, isLoading, sort, onSortToggle }: Props) => {
             sortField="registration_date"
             sortValue={ sort }
             onSortToggle={ onSortToggle }
+            contentAfter={ <TimeFormatToggle/> }
           >
-            Registered on
+            Registered
           </TableColumnHeaderSortable>
-          <TableColumnHeader width="25%">Expiration date</TableColumnHeader>
+          <TableColumnHeader width="25%">
+            Expires
+            <TimeFormatToggle/>
+          </TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

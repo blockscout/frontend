@@ -13,7 +13,7 @@ import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 interface Props {
@@ -102,7 +102,7 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Verified</Skeleton>
         <Flex alignItems="center" columnGap={ 2 }>
           <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
-          <TimeAgoWithTooltip
+          <TimeWithTooltip
             timestamp={ data.verified_at }
             isLoading={ isLoading }
             color="text.secondary"

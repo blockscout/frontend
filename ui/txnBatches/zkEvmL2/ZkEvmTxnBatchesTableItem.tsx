@@ -11,7 +11,7 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -37,7 +37,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         <ZkEvmL2TxnBatchStatus status={ item.status } isLoading={ isLoading }/>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.timestamp }
           fallbackText="Undefined"
           isLoading={ isLoading }

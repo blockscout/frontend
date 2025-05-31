@@ -20,6 +20,7 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import AddressBlocksValidatedListItem from './blocksValidated/AddressBlocksValidatedListItem';
 import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksValidatedTableItem';
@@ -103,11 +104,14 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
   const content = query.data?.items ? (
     <>
       <Box hideBelow="lg">
-        <TableRoot style={{ tableLayout: 'auto' }}>
+        <TableRoot tableLayout="auto">
           <TableHeaderSticky top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
             <TableRow>
               <TableColumnHeader>Block</TableColumnHeader>
-              <TableColumnHeader>Age</TableColumnHeader>
+              <TableColumnHeader>
+                Timestamp
+                <TimeFormatToggle/>
+              </TableColumnHeader>
               <TableColumnHeader>Txn</TableColumnHeader>
               <TableColumnHeader>Gas used</TableColumnHeader>
               { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled &&

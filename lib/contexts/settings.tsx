@@ -1,5 +1,6 @@
 import React from 'react';
 
+import type { TimeFormat } from 'types/settings';
 import { ADDRESS_FORMATS, type AddressFormat } from 'types/views/address';
 
 import * as cookies from 'lib/cookies';
@@ -13,6 +14,8 @@ interface SettingsProviderProps {
 interface TSettingsContext {
   addressFormat: AddressFormat;
   toggleAddressFormat: () => void;
+  timeFormat: TimeFormat;
+  toggleTimeFormat: () => void;
 }
 
 export const SettingsContext = React.createContext<TSettingsContext | null>(null);
@@ -25,6 +28,10 @@ export function SettingsContextProvider({ children }: SettingsProviderProps) {
     initialAddressFormat && ADDRESS_FORMATS.includes(initialAddressFormat as AddressFormat) ? initialAddressFormat as AddressFormat : 'base16',
   );
 
+  const [ timeFormat, setTimeFormat ] = React.useState<TimeFormat>(
+    cookies.get(cookies.NAMES.TIME_FORMAT, appCookies) as TimeFormat || 'relative',
+  );
+
   const toggleAddressFormat = React.useCallback(() => {
     setAddressFormat(prev => {
       const nextValue = prev === 'base16' ? 'bech32' : 'base16';
@@ -33,12 +40,22 @@ export function SettingsContextProvider({ children }: SettingsProviderProps) {
     });
   }, []);
 
+  const toggleTimeFormat = React.useCallback(() => {
+    setTimeFormat(prev => {
+      const nextValue = prev === 'relative' ? 'absolute' : 'relative';
+      cookies.set(cookies.NAMES.TIME_FORMAT, nextValue);
+      return nextValue;
+    });
+  }, []);
+
   const value = React.useMemo(() => {
     return {
       addressFormat,
       toggleAddressFormat,
+      timeFormat,
+      toggleTimeFormat,
     };
-  }, [ addressFormat, toggleAddressFormat ]);
+  }, [ addressFormat, toggleAddressFormat, timeFormat, toggleTimeFormat ]);
 
   return (
     <SettingsContext.Provider value={ value }>

@@ -12,7 +12,7 @@ import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 import { ADVANCED_FILTER_TYPES } from './constants';
 
@@ -36,7 +36,7 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
     case 'method':
       return item.method ? <Badge loading={ isLoading } truncated>{ item.method }</Badge> : null;
     case 'age':
-      return <TimeAgoWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text.secondary" fontWeight={ 400 }/>;
+      return <TimeWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text.secondary" fontWeight={ 400 }/>;
     case 'from':
       return (
         <Flex w="100%">

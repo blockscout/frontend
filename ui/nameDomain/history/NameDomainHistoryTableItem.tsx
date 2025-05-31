@@ -10,7 +10,7 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { stripTrailingSlash } from 'toolkit/utils/url';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
   event: bens.DomainEvent;
@@ -41,7 +41,7 @@ const NameDomainHistoryTableItem = ({ isLoading, event, domain }: Props) => {
         />
       </TableCell>
       <TableCell pl={ 9 } verticalAlign="middle">
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ event.timestamp }
           isLoading={ isLoading }
           color="text.secondary"
