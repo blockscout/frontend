@@ -17,6 +17,7 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import TokenAdvancedFilterLink from 'ui/token/TokenAdvancedFilterLink';
 import TokenTransferList from 'ui/token/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/token/TokenTransfer/TokenTransferTable';
 
@@ -102,6 +103,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tabsHeight = TABS_
 
   const actionBar = isMobile && pagination.isVisible ? (
     <ActionBar mt={ -6 }>
+      <TokenAdvancedFilterLink token={ token }/>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   ) : null;
