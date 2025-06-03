@@ -5,6 +5,7 @@ import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
+import AddressEntityTacTon from 'ui/shared/entities/address/AddressEntityTacTon';
 
 import TacOperationLifecycleAccordion from './TacOperationLifecycleAccordion';
 import { sortStatusHistory } from './utils';
@@ -33,7 +34,10 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
             Sender
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            { data.sender }
+            <AddressEntityTacTon
+              address={{ hash: data.sender.address }}
+              chainType={ data.sender.blockchain }
+            />
           </DetailedInfo.ItemValue>
         </>
       ) }

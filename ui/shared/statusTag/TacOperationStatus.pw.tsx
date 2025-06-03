@@ -1,18 +1,17 @@
 import React from 'react';
 
-import type * as tac from '@blockscout/tac-operation-lifecycle-types';
+import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import { test, expect } from 'playwright/lib';
 
 import TacOperationStatus from './TacOperationStatus';
 
 const STATUSES: Array<tac.OperationType> = [
-  // TODO @tom2drum remove "as" once the type is fixed
-  'TON_TAC_TON' as tac.OperationType,
-  'TAC_TON' as tac.OperationType,
-  'TON_TAC' as tac.OperationType,
-  'ERROR' as tac.OperationType,
-  'PENDING' as tac.OperationType,
+  tac.OperationType.TON_TAC_TON,
+  tac.OperationType.TAC_TON,
+  tac.OperationType.TON_TAC,
+  tac.OperationType.ERROR,
+  tac.OperationType.PENDING,
 ];
 
 test.use({ viewport: { width: 100, height: 50 } });

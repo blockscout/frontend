@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type * as tac from '@blockscout/tac-operation-lifecycle-types';
+import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import { getTacOperationStatus } from 'lib/operations/tac';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -20,9 +20,10 @@ const TacOperationStatus = ({ status, isLoading, noTooltip }: Props) => {
     return null;
   }
 
-  // TODO @tom2drum remove "as unknown" once the type is fixed
-  switch (status as unknown) {
-    case 'ERROR':
+  switch (status) {
+    case tac.OperationType.ERROR:
+      return <StatusTag type="error" text={ text } isLoading={ isLoading }/>;
+    case tac.OperationType.ROLLBACK:
       return (
         <Tooltip
           // eslint-disable-next-line max-len
@@ -32,7 +33,7 @@ const TacOperationStatus = ({ status, isLoading, noTooltip }: Props) => {
           <StatusTag type="error" text={ text } isLoading={ isLoading }/>
         </Tooltip>
       );
-    case 'PENDING': {
+    case tac.OperationType.PENDING: {
       return <StatusTag type="pending" text={ text } isLoading={ isLoading }/>;
     }
     default: {

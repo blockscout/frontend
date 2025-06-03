@@ -2,6 +2,7 @@ import React from 'react';
 
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
+import AddressEntityTacTon from 'ui/shared/entities/address/AddressEntityTacTon';
 import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
@@ -38,7 +39,11 @@ const TacOperationsListItem = ({ item, isLoading }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Sender</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            { item.sender }
+            <AddressEntityTacTon
+              address={{ hash: item.sender.address }}
+              chainType={ item.sender.blockchain }
+              isLoading={ isLoading }
+            />
           </ListItemMobileGrid.Value>
         </>
       ) }

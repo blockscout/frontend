@@ -70,7 +70,7 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
         >
           {
             data.transactions.map((tx) => {
-              if (tx.type === tac.OperationRelatedTransaction_BlockchainType.TON) {
+              if (tx.type === tac.BlockchainType.TON) {
                 return <TxEntityTon key={ tx.hash } hash={ tx.hash } noCopy={ false }/>;
               }
 
@@ -89,6 +89,7 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
               alignItems="center"
               py="6px"
               whiteSpace="pre-wrap"
+              wordBreak="break-word"
             >
               { data.note }
             </GridItem>

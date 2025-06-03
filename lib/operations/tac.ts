@@ -1,20 +1,21 @@
-import type * as tac from '@blockscout/tac-operation-lifecycle-types';
+import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import { rightLineArrow } from 'toolkit/utils/htmlEntities';
 import { STATUS_LABELS } from 'ui/operation/tac/utils';
 
 export function getTacOperationStatus(type: tac.OperationType) {
-  // TODO @tom2drum remove "as unknown" once the type is fixed
-  switch (type as unknown) {
-    case 'TON_TAC_TON':
+  switch (type) {
+    case tac.OperationType.TON_TAC_TON:
       return `TON ${ rightLineArrow } TAC ${ rightLineArrow } TON`;
-    case 'TAC_TON':
+    case tac.OperationType.TAC_TON:
       return `TAC ${ rightLineArrow } TON`;
-    case 'TON_TAC':
+    case tac.OperationType.TON_TAC:
       return `TON ${ rightLineArrow } TAC`;
-    case 'ERROR':
+    case tac.OperationType.ERROR:
+      return 'Error';
+    case tac.OperationType.ROLLBACK:
       return 'Rollback';
-    case 'PENDING':
+    case tac.OperationType.PENDING:
       return 'Pending';
     default:
       return null;
