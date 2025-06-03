@@ -4,6 +4,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import TokenTransferTableItem from 'ui/tokenTransfers/TokenTransfersTableItem';
 
 interface Props {
@@ -18,7 +19,10 @@ const TokenTransferTable = ({ items, top, isLoading }: Props) => {
       <TableRoot minW="950px" tableLayout="auto">
         <TableHeaderSticky top={ top }>
           <TableRow>
-            <TableColumnHeader>Txn hash</TableColumnHeader>
+            <TableColumnHeader>
+              Txn hash
+              <TimeFormatToggle/>
+            </TableColumnHeader>
             <TableColumnHeader>Method</TableColumnHeader>
             <TableColumnHeader>Block</TableColumnHeader>
             <TableColumnHeader>From/To</TableColumnHeader>

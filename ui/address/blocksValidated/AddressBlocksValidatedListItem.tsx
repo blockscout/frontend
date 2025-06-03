@@ -11,7 +11,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = Block & {
   page: number;
@@ -30,7 +30,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
           noIcon
           fontWeight={ 700 }
         />
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ props.timestamp }
           enableIncrement={ props.page === 1 }
           isLoading={ props.isLoading }
