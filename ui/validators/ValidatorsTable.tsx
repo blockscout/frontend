@@ -214,6 +214,19 @@ const TableApp = (props: {
     const publicClient = usePublicClient();
 
     const router = useRouter();
+    const { address: userAddr } = useAccount();
+
+
+
+    const { data: balanceData } = useBalance({ address: userAddr});
+    const [ availableAmount, setAvailableAmount ] = React.useState<string>('0.00');
+
+    useEffect(() => {
+        if (balanceData && !!balanceData.value) {
+            const formattedBalanceStr = formatUnits(balanceData.value, 18);
+            setAvailableAmount(formattedBalanceStr);
+        }
+    }, [userAddr , balanceData]);
 
     const [ transactionHash, setTransactionHash ] = React.useState<string>('');
     const handleCloseModal = () => {
@@ -263,8 +276,13 @@ const TableApp = (props: {
         );
     }, [data, sortBy, sortOrder]);
 
-
-
+    const formattedBalanceStr = React.useMemo(() => {
+        if (balanceData && !!balanceData.value) {
+            return formatUnits(balanceData.value, 18);
+        }
+        return '0.00';
+    }, [userAddr , balanceData]);
+    
     const handleStake = (address: string, record: any) => {
         setCurrentItem({
             ...record,
@@ -274,6 +292,7 @@ const TableApp = (props: {
         setCurrentAddress(address);
         setModalTitle('Stake');
         setApr(record.liveApr);
+        setAvailableAmount(formattedBalanceStr);
         setCurrentTxType('Stake');
         onOpen();
     };  
@@ -304,18 +323,6 @@ const TableApp = (props: {
             return null; 
         });
     } , [url]);
-
-    const { address: userAddr } = useAccount();
-
-    const { data: balanceData } = useBalance({ address: userAddr});
-    const [ availableAmount, setAvailableAmount ] = React.useState<string>('0.00');
-
-    useEffect(() => {
-        if (balanceData && !!balanceData.value) {
-            const formattedBalanceStr = formatUnits(balanceData.value, 18);
-            setAvailableAmount(formattedBalanceStr);
-        }
-    }, [userAddr , balanceData]);
 
 
     const { isConnected: WalletConnected } = useAccount();
