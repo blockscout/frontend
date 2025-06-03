@@ -3,6 +3,7 @@ import React from 'react';
 import type * as bens from '@blockscout/bens-types';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import NameDomainHistoryTableItem from './NameDomainHistoryTableItem';
 import type { SortField, Sort } from './utils';
@@ -28,8 +29,9 @@ const NameDomainHistoryTable = ({ history, domain, isLoading, sort, onSortToggle
             sortField="timestamp"
             sortValue={ sort }
             onSortToggle={ onSortToggle }
+            contentAfter={ <TimeFormatToggle/> }
           >
-            Age
+            Timestamp
           </TableColumnHeaderSortable>
           <TableColumnHeader width="25%">From</TableColumnHeader>
           <TableColumnHeader width="25%">Method</TableColumnHeader>

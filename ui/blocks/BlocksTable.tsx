@@ -11,6 +11,7 @@ import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import BlocksTableItem from 'ui/blocks/BlocksTableItem';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 interface Props {
   data: Array<Block>;
@@ -44,10 +45,13 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
 
   return (
     <AddressHighlightProvider>
-      <TableRoot minWidth="1040px" fontWeight={ 500 }>
+      <TableRoot minWidth="1070px" fontWeight={ 500 }>
         <TableHeaderSticky top={ top }>
           <TableRow>
-            <TableColumnHeader width="150px">Block</TableColumnHeader>
+            <TableColumnHeader width="180px">
+              Block
+              <TimeFormatToggle/>
+            </TableColumnHeader>
             <TableColumnHeader width="120px">Size, bytes</TableColumnHeader>
             { !config.UI.views.block.hiddenFields?.miner && (
               <TableColumnHeader width={ `${ VALIDATOR_COL_WEIGHT / widthBase * 100 }%` } minW="160px">

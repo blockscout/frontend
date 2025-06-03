@@ -5,6 +5,7 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import InternalTxsTableItem from './InternalTxsTableItem';
 
@@ -20,7 +21,10 @@ const InternalTxsTable = ({ data, currentAddress, isLoading }: Props) => {
       <TableRoot minW="900px">
         <TableHeaderSticky top={ 68 }>
           <TableRow>
-            <TableColumnHeader width="180px">Parent txn hash</TableColumnHeader>
+            <TableColumnHeader width="280px">
+              Parent txn hash
+              <TimeFormatToggle/>
+            </TableColumnHeader>
             <TableColumnHeader width="15%">Type</TableColumnHeader>
             <TableColumnHeader width="15%">Block</TableColumnHeader>
             <TableColumnHeader width="50%">From/To</TableColumnHeader>
