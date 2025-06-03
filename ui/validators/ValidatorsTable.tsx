@@ -552,11 +552,13 @@ const TableApp = (props: {
             render: (record) => (
                 <StakeButton
                     text = "Stake"
-                    onClick = { () => {
+                    onClick = { (e: any) => {
                         if  (!WalletConnected) {
                             openModal();
                             return;
                         }
+                        e.stopPropagation();
+                        e.preventDefault();
                         handleStake(record.validator, record);
                         setCurrentAddress(record.validator);
                     }}
@@ -676,6 +678,7 @@ const TableApp = (props: {
                     onRow={(record, rowIndex) => {
                         return {
                         onClick: (event) => {
+                            event.stopPropagation();
                             handleRowClick(record)
                         }}
                     }}

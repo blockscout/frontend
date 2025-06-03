@@ -705,7 +705,7 @@ const TableApp = (props: {
     else if (isLoading) {
         return spinner;
     }
-    else if ( !!searchTerm && data.length === 0) {
+    else if ( !!searchTerm && sortedData.length === 0) {
         return (
             <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
                 <EmptyPlaceholder
@@ -714,7 +714,7 @@ const TableApp = (props: {
                 />
             </div>
         );
-    } else if ( data.length === 0) {
+    } else if ( sortedData.length === 0) {
         return (
             <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
                 <EmptyPlaceholder
