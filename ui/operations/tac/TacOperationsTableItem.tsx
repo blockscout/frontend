@@ -6,7 +6,7 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntityTacTon from 'ui/shared/entities/address/AddressEntityTacTon';
 import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 interface Props {
   item: tac.OperationBriefDetails;
   isLoading?: boolean;
@@ -22,7 +22,7 @@ const TacOperationsTableItem = ({ item, isLoading }: Props) => {
         />
       </TableCell>
       <TableCell verticalAlign="middle">
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.timestamp }
           isLoading={ isLoading }
           color="text.secondary"

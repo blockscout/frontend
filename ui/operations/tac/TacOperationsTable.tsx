@@ -3,6 +3,7 @@ import React from 'react';
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import TacOperationsTableItem from './TacOperationsTableItem';
 
@@ -17,7 +18,10 @@ const TacOperationsTable = ({ items, isLoading }: Props) => {
       <TableHeaderSticky top={ 68 }>
         <TableRow>
           <TableColumnHeader w="100%">Operation</TableColumnHeader>
-          <TableColumnHeader w="200px">Age</TableColumnHeader>
+          <TableColumnHeader w="200px">
+            Timestamp
+            <TimeFormatToggle/>
+          </TableColumnHeader>
           <TableColumnHeader w="200px">Status</TableColumnHeader>
           <TableColumnHeader w="250px">Sender</TableColumnHeader>
         </TableRow>

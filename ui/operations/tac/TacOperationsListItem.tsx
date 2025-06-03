@@ -6,7 +6,7 @@ import AddressEntityTacTon from 'ui/shared/entities/address/AddressEntityTacTon'
 import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = { item: tac.OperationBriefDetails; isLoading?: boolean };
 
@@ -24,7 +24,7 @@ const TacOperationsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.timestamp }
           isLoading={ isLoading }
         />
