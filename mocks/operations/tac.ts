@@ -4,7 +4,10 @@ export const tacOperation: tac.OperationDetails = {
   operation_id: '0x35f5d9c2bf07477ede48935c7130945faf17a3e5f69a7d20ce3725676513095c',
   type: tac.OperationType.TON_TAC_TON,
   timestamp: '2025-05-08T07:20:05.000Z',
-  sender: undefined,
+  sender: {
+    address: 'EQBnVg4x6uTCa8jlrh8YXyWpnJJ3oxxrdBQ2+Zw8yaoxnXTt',
+    blockchain: tac.BlockchainType.TON,
+  },
   status_history: [
     {
       type: tac.OperationStage_StageType.COLLECTED_IN_TON,

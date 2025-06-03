@@ -37,6 +37,7 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
             <AddressEntityTacTon
               address={{ hash: data.sender.address }}
               chainType={ data.sender.blockchain }
+              isLoading={ isLoading }
             />
           </DetailedInfo.ItemValue>
         </>

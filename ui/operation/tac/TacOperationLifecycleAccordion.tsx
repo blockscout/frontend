@@ -14,7 +14,7 @@ interface Props {
 
 const TacOperationLifecycleAccordion = ({ data, isLoading }: Props) => {
   return (
-    <AccordionRoot maxW="800px" display="flex" flexDirection="column" rowGap={ 6 }>
+    <AccordionRoot maxW="800px" display="flex" flexDirection="column" rowGap={ 6 } lazyMount>
       { data.map((item, index) => {
         const isLast = index === data.length - 1;
         return (

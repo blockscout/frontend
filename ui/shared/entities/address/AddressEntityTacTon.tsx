@@ -48,7 +48,16 @@ const AddressEntityTacTon = (props: Props) => {
   }
 
   return (
-    <AddressEntity.default { ...props } href={ href } isExternal={ props.chainType === tac.BlockchainType.TON }/>
+    <AddressEntity.default
+      { ...props }
+      href={ href }
+      isExternal={ props.chainType === tac.BlockchainType.TON }
+      icon={ props.chainType === tac.BlockchainType.TON ? {
+        shield: { name: 'brands/ton' },
+        hint: 'Address on TON',
+        hintPostfix: ' on TON',
+      } : undefined }
+    />
   );
 };
 

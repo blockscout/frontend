@@ -14,7 +14,7 @@ const STATUSES: Array<tac.OperationType> = [
   tac.OperationType.PENDING,
 ];
 
-test.use({ viewport: { width: 100, height: 50 } });
+test.use({ viewport: { width: 200, height: 50 } });
 
 STATUSES.forEach((status) => {
   test(`${ status }`, async({ render }) => {
