@@ -15,7 +15,7 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean };
+type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean };
 
 const InternalTxsTableItem = ({
   type,
@@ -30,6 +30,7 @@ const InternalTxsTableItem = ({
   timestamp,
   currentAddress,
   isLoading,
+  showBlockInfo = true,
 }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
   const toData = to ? to : createdContract;
@@ -64,15 +65,17 @@ const InternalTxsTableItem = ({
           <TxStatus status={ success ? 'ok' : 'error' } errorText={ error } isLoading={ isLoading }/>
         </Flex>
       </TableCell>
-      <TableCell verticalAlign="middle">
-        <BlockEntity
-          isLoading={ isLoading }
-          number={ blockNumber }
-          noIcon
-          textStyle="sm"
-          fontWeight={ 500 }
-        />
-      </TableCell>
+      { showBlockInfo && (
+        <TableCell verticalAlign="middle">
+          <BlockEntity
+            isLoading={ isLoading }
+            number={ blockNumber }
+            noIcon
+            textStyle="sm"
+            fontWeight={ 500 }
+          />
+        </TableCell>
+      ) }
       <TableCell verticalAlign="middle">
         <AddressFromTo
           from={ from }

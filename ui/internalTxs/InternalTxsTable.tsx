@@ -13,20 +13,22 @@ interface Props {
   data: Array<InternalTransaction>;
   currentAddress?: string;
   isLoading?: boolean;
+  top?: number;
+  showBlockInfo?: boolean;
 }
 
-const InternalTxsTable = ({ data, currentAddress, isLoading }: Props) => {
+const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo = true }: Props) => {
   return (
     <AddressHighlightProvider>
       <TableRoot minW="900px">
-        <TableHeaderSticky top={ 68 }>
+        <TableHeaderSticky top={ top ?? 68 }>
           <TableRow>
             <TableColumnHeader width="280px">
               Parent txn hash
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader width="15%">Type</TableColumnHeader>
-            <TableColumnHeader width="15%">Block</TableColumnHeader>
+            { showBlockInfo && <TableColumnHeader width="15%">Block</TableColumnHeader> }
             <TableColumnHeader width="50%">From/To</TableColumnHeader>
             <TableColumnHeader width="20%" isNumeric>
               Value { currencyUnits.ether }
@@ -40,6 +42,7 @@ const InternalTxsTable = ({ data, currentAddress, isLoading }: Props) => {
               { ...item }
               currentAddress={ currentAddress }
               isLoading={ isLoading }
+              showBlockInfo={ showBlockInfo }
             />
           )) }
         </TableBody>

@@ -16,7 +16,7 @@ import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean };
+type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean };
 
 const InternalTxsListItem = ({
   type,
@@ -31,6 +31,7 @@ const InternalTxsListItem = ({
   timestamp,
   currentAddress,
   isLoading,
+  showBlockInfo = true,
 }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
   const toData = to ? to : createdContract;
@@ -56,15 +57,17 @@ const InternalTxsListItem = ({
           fontSize="sm"
         />
       </Flex>
-      <HStack gap={ 1 }>
-        <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Block</Skeleton>
-        <BlockEntity
-          isLoading={ isLoading }
-          number={ blockNumber }
-          noIcon
-          textStyle="sm"
-        />
-      </HStack>
+      { showBlockInfo && (
+        <HStack gap={ 1 }>
+          <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Block</Skeleton>
+          <BlockEntity
+            isLoading={ isLoading }
+            number={ blockNumber }
+            noIcon
+            textStyle="sm"
+          />
+        </HStack>
+      ) }
       <AddressFromTo
         from={ from }
         to={ toData }
