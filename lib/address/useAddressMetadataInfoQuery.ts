@@ -2,6 +2,7 @@ import type { AddressMetadataInfoFormatted, AddressMetadataTagFormatted } from '
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 
 import parseMetaPayload from './parseMetaPayload';
 
@@ -9,14 +10,17 @@ export default function useAddressMetadataInfoQuery(addresses: Array<string>, is
 
   const resource = 'metadata:info';
 
+  const multichainContext = useMultichainContext();
+  const chainId = multichainContext?.subchain?.chainId || config.chain.id;
+
   return useApiQuery<typeof resource, unknown, AddressMetadataInfoFormatted>(resource, {
     queryParams: {
       addresses,
-      chainId: config.chain.id,
+      chainId,
       tagsLimit: '20',
     },
     queryOptions: {
-      enabled: isEnabled && addresses.length > 0 && config.features.addressMetadata.isEnabled,
+      enabled: isEnabled && addresses.length > 0 && config.features.addressMetadata.isEnabled && Boolean(chainId),
       select: (data) => {
         const addresses = Object.entries(data.addresses)
           .map(([ address, { tags, reputation } ]) => {

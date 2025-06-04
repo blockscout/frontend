@@ -61,6 +61,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/pools': '%network_name% DEX pools',
   '/pools/[hash]': '%network_name% pool details',
   '/interop-messages': '%network_name% interop messages',
+  '/subchain/[subchain-id]/accounts/label/[slug]': '%network_name% addresses search by label',
   '/subchain/[subchain-id]/address/[hash]': '%network_name% address details for %hash%',
   '/subchain/[subchain-id]/block/[height_or_hash]': '%network_name% block %height_or_hash% details',
   '/subchain/[subchain-id]/tx/[hash]': '%network_name% transaction %hash% details',

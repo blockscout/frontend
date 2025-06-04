@@ -62,6 +62,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/sprite">
     | DynamicRoute<"/stats/[id]", { "id": string }>
     | StaticRoute<"/stats">
+    | DynamicRoute<"/subchain/[subchain-id]/accounts/label/[slug]", { "subchain-id": string; "slug": string }>
     | DynamicRoute<"/subchain/[subchain-id]/address/[hash]", { "subchain-id": string; "hash": string }>
     | DynamicRoute<"/subchain/[subchain-id]/block/[height_or_hash]", { "subchain-id": string; "height_or_hash": string }>
     | DynamicRoute<"/subchain/[subchain-id]/tx/[hash]", { "subchain-id": string; "hash": string }>

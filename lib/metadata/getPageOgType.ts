@@ -61,6 +61,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/pools': 'Root page',
   '/pools/[hash]': 'Regular page',
   '/interop-messages': 'Root page',
+  '/subchain/[subchain-id]/accounts/label/[slug]': 'Root page',
   '/subchain/[subchain-id]/address/[hash]': 'Regular page',
   '/subchain/[subchain-id]/block/[height_or_hash]': 'Regular page',
   '/subchain/[subchain-id]/tx/[hash]': 'Regular page',
