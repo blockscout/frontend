@@ -50,7 +50,7 @@ const TokenAmount = ({
 
                 <span style={{ color: 'black' }}>
                     {' '}
-                    Moca
+                    MOCA
                 </span>
             </span>
         </Skeleton>

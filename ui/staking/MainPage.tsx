@@ -494,7 +494,7 @@ const ObjectDetails: NextPage = () => {
 
     const handleStakeMore = () => {
         setCurrentTxType('ChooseStake');
-        setModalTitle('Stake More');
+        setModalTitle('Stake');
         setCurrentAmount("0.00");
         setCurrentItem({});
         setAvailableAmount(formattedBalanceStr);

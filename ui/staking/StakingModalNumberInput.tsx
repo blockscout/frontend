@@ -267,14 +267,14 @@ const StakingModalNumberInput = ({
                 as ="span"
                 fontFamily="HarmonyOS Sans"
             >
-                 { prefix }<span  style={{ color: '#000' }}>
-                                <span>
-                                  {availableAmountNumber.toLocaleString('en-US', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  })} Moca
-                                </span>
-                            </span>
+                { prefix }&nbsp;<span  style={{ color: '#000' }}>
+                    <span>
+                      {availableAmountNumber.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })} MOCA
+                    </span>
+                </span>
             </Text>
       </Flex>
     </InputGroup>
