@@ -10,7 +10,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
  type Props = {
    item: AddressEpochRewardsItem;
@@ -27,7 +27,7 @@ const AddressEpochRewardsTableItem = ({ item, isLoading }: Props) => {
           <Skeleton loading={ isLoading }>
             <Text color="text.secondary" fontWeight={ 600 }>{ `Epoch # ${ item.epoch_number }` }</Text>
           </Skeleton>
-          <TimeAgoWithTooltip timestamp={ item.block_timestamp } isLoading={ isLoading } color="text.secondary" fontWeight={ 400 }/>
+          <TimeWithTooltip timestamp={ item.block_timestamp } isLoading={ isLoading } color="text.secondary" fontWeight={ 400 }/>
         </Flex>
       </TableCell>
       <TableCell verticalAlign="middle">

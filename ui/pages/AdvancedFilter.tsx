@@ -37,6 +37,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 const COLUMNS_CHECKED = {} as Record<ColumnsIds, boolean>;
 TABLE_COLUMNS.forEach(c => COLUMNS_CHECKED[c.id] = true);
@@ -151,7 +152,12 @@ const AdvancedFilter = () => {
                     wordBreak="break-word"
                     whiteSpace="normal"
                   >
-                    { Boolean(column.name) && <chakra.span mr={ 2 } lineHeight="24px">{ column.name }</chakra.span> }
+                    { Boolean(column.name) && (
+                      <chakra.span mr={ 2 } lineHeight="24px" verticalAlign="middle">
+                        { column.id === 'age' ? 'Timestamp' : column.name }
+                      </chakra.span>
+                    ) }
+                    { column.id === 'age' && <TimeFormatToggle ml={ 0 } mr={ 1 } verticalAlign="middle"/> }
                     <FilterByColumn
                       column={ column.id }
                       columnName={ column.name }

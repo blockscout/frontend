@@ -5,7 +5,6 @@ export const SUPPORTED_AD_BANNER_PROVIDERS = [
   'adbutler',
   'coinzilla',
   'hype',
-  //   'getit', // temporary disabled
   'none',
 ] as const;
 export type AdBannerProviders = ArrayElement<typeof SUPPORTED_AD_BANNER_PROVIDERS>;

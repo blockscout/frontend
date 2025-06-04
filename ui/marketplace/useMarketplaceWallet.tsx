@@ -10,7 +10,7 @@ import * as mixpanel from 'lib/mixpanel/index';
 type SendTransactionArgs = {
   chainId?: number;
   mode?: 'prepared';
-  to: `0x${ string }`;
+  to: `0x${ string }` | null;
 };
 
 export type SignTypedDataArgs<
@@ -45,7 +45,7 @@ export default function useMarketplaceWallet(appId: string) {
 
   const sendTransaction = useCallback(async(transaction: SendTransactionArgs) => {
     await switchNetwork();
-    const activityResponse = await trackTransaction(address ?? '', transaction.to);
+    const activityResponse = await trackTransaction(address ?? '', transaction.to ?? '');
     const tx = await sendTransactionAsync(transaction);
     if (activityResponse?.token) {
       await trackTransactionConfirm(tx, activityResponse.token);
