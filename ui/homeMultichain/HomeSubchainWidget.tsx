@@ -113,6 +113,7 @@ const HomeSubchainWidget = ({ data }: Props) => {
               isLoading={ blocksQuery.isPlaceholderData }
               color="text.secondary"
               flexShrink={ 0 }
+              timeFormat="relative"
             />
           </HStack>
         ) }
