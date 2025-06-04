@@ -237,6 +237,8 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     );
   })();
 
+  const showOutputResult = result && result.source === 'public_client' && !(result.data instanceof Error);
+
   return (
     <Box>
       <FormProvider { ...formApi }>
@@ -314,10 +316,10 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
       ) }
       { 'outputs' in data && data.outputs.length > 0 && (
         <ContractMethodOutput
-          data={ result && result.source === 'public_client' ? result.data : undefined }
+          data={ showOutputResult ? result.data : undefined }
           onSettle={ handleResultSettle }
           abiItem={ data }
-          mode={ result && result.source === 'public_client' ? 'result' : 'preview' }
+          mode={ showOutputResult ? 'result' : 'preview' }
         />
       ) }
     </Box>

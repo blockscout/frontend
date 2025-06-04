@@ -29,7 +29,8 @@ const ContractMethodOutput = ({ data, abiItem, onSettle, mode }: Props) => {
       flexDir="column"
       rowGap={ 2 }
       mt={ 3 }
-      p={ 4 }
+      px={ 3 }
+      py={ 2 }
       borderRadius="md"
       bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
       color={ mode === 'preview' ? 'gray.500' : undefined }
