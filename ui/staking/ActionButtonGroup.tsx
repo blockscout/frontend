@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useMemo , useEffect} from 'react';
-import { Box, Flex, Button , Grid, Text } from '@chakra-ui/react';
+import { Box, Flex, Button , Portal, Text } from '@chakra-ui/react';
 import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
 
@@ -19,6 +19,7 @@ const CustomMenuItem = (props: any) => {
                 }
                 onClick && onClick(e);
             }}
+            zIndex={ 1999 }   
             _hover={ disabled ? {} : _hover || { backgroundColor: '#FFCBEC', opacity: 0.9 }}
             cursor={ disabled ? 'not-allowed' : 'pointer'}
             opacity={ disabled ? 0.6 : 1}
@@ -154,6 +155,7 @@ const ActionButtonGroup = ({
             padding = { '0' }
             alignItems="center"
             justifyContent="center"
+            position="relative"
         >
             <Flex
                 width="100%"
@@ -188,7 +190,7 @@ const ActionButtonGroup = ({
                         disabled={ disableStake || isWalletNotConnected || isValidatorJailed }
                     />
                 }
-                <Menu placement="bottom-end" >
+                <Menu placement="bottom-end">
                     <div style={{ width: "72px" }} >
                         <MenuButton 
                             display="flex"
@@ -216,38 +218,39 @@ const ActionButtonGroup = ({
                             >More</Text>
                         </MenuButton>
                     </div>
-
-                    <MenuList width='110px' minWidth='110px' zIndex={ 1000 }
-                        fontSize="14px"
-                        fontWeight="500"
-                        lineHeight="22px"
-                        color ="#000"
-                        padding={ '4px' }
-                        fontFamily="HarmonyOS Sans"
-                    >
-                        <CustomMenuItem
-                            onClick={(e: any) => {
-                                e.stopPropagation();
-                                setCurrentAddress(validatorAddress);
-                                handleWithdraw(validatorAddress, currentRecord);
-                            }}
-                            borderRadius={"8px"}
-                            disabled={ isWalletNotConnected || _disableWithdrawAndMove  }
-                            _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
-                            _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
-                            >Withdraw</CustomMenuItem>
-                        <CustomMenuItem
-                            onClick={(e: any) => {
-                                e.stopPropagation();
-                                handleMoveStake(validatorAddress, currentRecord);
-                                setCurrentAddress(validatorAddress);
-                            }}
-                            borderRadius={"8px"}
-                            disabled={ isWalletNotConnected || _disableWithdrawAndMove ||  isValidatorJailed }
-                            _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
-                            _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
-                            >Move Stake</CustomMenuItem>
-                    </MenuList>
+                    <Portal>
+                        <MenuList width='110px' minWidth='110px' zIndex={ 1999 }
+                            fontSize="14px"
+                            fontWeight="500"
+                            lineHeight="22px"
+                            color ="#000"
+                            padding={ '4px' }
+                            fontFamily="HarmonyOS Sans"
+                        >
+                            <CustomMenuItem
+                                onClick={(e: any) => {
+                                    e.stopPropagation();
+                                    setCurrentAddress(validatorAddress);
+                                    handleWithdraw(validatorAddress, currentRecord);
+                                }}
+                                borderRadius={"8px"}
+                                disabled={ isWalletNotConnected || _disableWithdrawAndMove  }
+                                _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                                _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                                >Withdraw</CustomMenuItem>
+                            <CustomMenuItem
+                                onClick={(e: any) => {
+                                    e.stopPropagation();
+                                    handleMoveStake(validatorAddress, currentRecord);
+                                    setCurrentAddress(validatorAddress);
+                                }}
+                                borderRadius={"8px"}
+                                disabled={ isWalletNotConnected || _disableWithdrawAndMove ||  isValidatorJailed }
+                                _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                                _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                                >Move Stake</CustomMenuItem>
+                        </MenuList>
+                    </Portal>
                 </Menu>
             </Flex>
         </Flex>

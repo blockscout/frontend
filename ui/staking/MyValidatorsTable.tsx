@@ -759,7 +759,7 @@ const TableApp = (props: {
         <Flex
             justifyContent="justify-between"
             alignItems="center"
-            zIndex='200'
+            zIndex={ 1 }
             width="100%"
             marginTop={ '16px'}
         >
