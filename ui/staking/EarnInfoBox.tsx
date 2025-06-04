@@ -3,6 +3,16 @@ import { Flex, Text, Box } from '@chakra-ui/react';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import WithTipsText from 'ui/staking/WithTipsText';
 
+
+const EarningFormat = (value: number ) => {
+    if ( value === 0) {
+        return "0.00";
+    } else if ( value < 0.01 ) {
+        return "<0.01";
+    } else  {
+        return value.toFixed(2);
+    }
+}
 const LabelAndValue = (props: {
     label: string | number | React.ReactNode;
     value: string | number | React.ReactNode;
@@ -97,9 +107,9 @@ const EarnInfoBox = (props: {
                 gap="8px"
                 marginTop="12px"
             >
-                <LabelAndValue label="Yearly Earnings" value={ yearlyEarnings.toFixed(4) } />
-                <LabelAndValue label="Monthly Earnings" value={ monthlyEarnings.toFixed(4) } />
-                <LabelAndValue label="Daily Earnings" value={ dailyEarnings.toFixed(4) } />
+                <LabelAndValue label="Yearly Earnings" value={ EarningFormat(yearlyEarnings) } />
+                <LabelAndValue label="Monthly Earnings" value={  EarningFormat(monthlyEarnings) } />
+                <LabelAndValue label="Daily Earnings" value={  EarningFormat(dailyEarnings) } />
             </Flex>
         </Box>
     );

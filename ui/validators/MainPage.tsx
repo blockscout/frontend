@@ -241,12 +241,12 @@ const AllValidatorPage: NextPage = () => {
   const  formatSeconds = (seconds : number ) => {
       const days = Math.floor(seconds / (24 * 3600));
       const hours = Math.floor((seconds % (24 * 3600)) / 3600);
-      const minutes = Math.floor((seconds % 3600) / 60);
+      // const minutes = Math.floor((seconds % 3600) / 60);
 
       let result = '';
       if (days > 0) result += `${days}d `;
       if (hours > 0) result += `${hours}h `;
-      result += `${minutes}m`;
+      // result += `${minutes}m`;
 
       return result.trim();
   }

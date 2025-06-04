@@ -157,7 +157,21 @@ const ValidatorDetails = () => {
     return (
         <div>
             <Flex align="center" marginBottom="24px">
-                <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
+                <Box
+                    as ="span"
+                    _hover ={{ cursor: 'pointer' , backgroundColor: 'rgba(0, 0, 0, 0.07)' }}
+                    display="flex"
+                    alignItems="center"
+                    borderRadius={"4px"}
+                    paddingLeft={"2px"}
+                    justifyContent="center"
+                    width="auto"
+                    height="auto"
+                    marginRight="8px"
+                    onClick={ routerFallback() }
+                >
+                    <IconSvg cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
+                </Box>
                 <PageTitle marginBottom="0" title="Validator Detail" withTextAd/>
             </Flex>
             <Tooltip

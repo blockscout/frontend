@@ -252,7 +252,7 @@ const CommonModal = ({
 
     const handleCloseModal = () => {
         setCurrentAmount("0.00");
-        setInputStr("0.00");
+        setInputStr("");
         setAvailableAmount("0.00");
         setCurrentItem(null);
         onClose();

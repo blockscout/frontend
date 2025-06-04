@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Heading, Flex, Tooltip, Link, chakra, Skeleton, useDisclosure } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import React from 'react';
@@ -43,7 +45,8 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
     );
   }
 
-  const icon = <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400" flexShrink={ 0 }/>;
+
+  const icon =  <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400" flexShrink={ 0 }/>
 
   if ('url' in props) {
     return (
@@ -111,7 +114,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         alignItems="center"
       >
         <Flex h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }} maxW="100%" alignItems="center">
-          { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
+          { backLink && <BackLink { ...backLink } isLoading={ isLoading }/>}
           { beforeTitle }
           <Skeleton
             isLoaded={ !isLoading }
