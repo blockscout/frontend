@@ -33,6 +33,7 @@ const title = 'Rollup (L2) chain';
 
 const config: Feature<{
   type: RollupType;
+  stageIndex: string | undefined;
   homepage: { showLatestBlocks: boolean };
   outputRootsEnabled: boolean;
   interopEnabled: boolean;
@@ -50,6 +51,7 @@ const config: Feature<{
       title,
       isEnabled: true,
       type,
+      stageIndex: getEnvValue('NEXT_PUBLIC_ROLLUP_STAGE_INDEX'),
       L2WithdrawalUrl: type === 'optimistic' ? L2WithdrawalUrl : undefined,
       outputRootsEnabled: type === 'optimistic' && getEnvValue('NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED') === 'true',
       interopEnabled: type === 'optimistic' && getEnvValue('NEXT_PUBLIC_INTEROP_ENABLED') === 'true',

@@ -8,6 +8,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 
+import RollupStageBadge from '../RollupStageBadge';
 import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
@@ -63,6 +64,7 @@ const NavigationDesktop = () => {
       transitionTimingFunction="ease"
     >
       <TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
+      <RollupStageBadge position="absolute" ml={{ lg: isExpanded ? 3 : '10px', xl: isCollapsed ? '10px' : 3 }} top="34px"/>
       <Box
         as="header"
         display="flex"
