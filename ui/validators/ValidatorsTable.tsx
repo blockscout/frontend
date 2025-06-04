@@ -544,7 +544,6 @@ const TableApp = (props: {
         {
             label: 'Status',
             key: 'status',
-            tips: 'Percentage of time the node remains active and reliable',
             allowSort: false,
             render: (record) => (
                 <StatusButton

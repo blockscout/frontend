@@ -302,7 +302,7 @@ const CommonModal = ({
             case 'Claim':
                 return 'Claim';
             case 'ClaimAll':
-                return 'Claim All';
+                return 'Claim';
             case 'MoveStake':
                 return 'Move Stake';
             case 'Compound-Claim':

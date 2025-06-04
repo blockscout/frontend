@@ -475,7 +475,7 @@ const ObjectDetails: NextPage = () => {
     const handleClaimAll = React.useCallback(() => {
         setCurrentAddress("0x1234");
         setCurrentTxType('ClaimAll');
-        setModalTitle('Claim All');
+        setModalTitle('Claim Rewards');
         setCurrentAmount(String(claimableRewards));
         setAvailableAmount(String(claimableRewards));
         onOpen();

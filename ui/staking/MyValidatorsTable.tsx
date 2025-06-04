@@ -298,7 +298,7 @@ const TableApp = (props: {
         setCurrentAmount(record.claimable);
         setCurrentAddress(address); 
         setCurrentTxType('Claim');
-        setModalTitle('Claim');
+        setModalTitle('Claim Rewards');
         onOpen();
     };
 

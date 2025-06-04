@@ -116,7 +116,7 @@ const DatePickerFilter = ({
                         format="YYYY.MM.DD"
                         prefix= { icon_calendar }
                         suffixIcon={ null } 
-                        placeholder={['Start Date', 'End Date']}
+                        placeholder={['From Date', 'End Date']}
                         renderExtraFooter={() => (
                             <Flex 
                                 justifyContent='flex-end'

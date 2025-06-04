@@ -20,6 +20,12 @@ import TokenAmountFormat from 'ui/validators/TokenAmountFormat';
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
 
+
+const AvailableAmountFormat = (amount: string | number) => {
+    return Number(amount).toFixed(2);
+}
+
+
 const valueFormatter = ( priceStr : string | number ) => {
     return `($${priceStr})`
 }
@@ -392,7 +398,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_4}</IconContainer>}
                             label="Available Balance"
-                            amount= { Number(formattedBalanceStr || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
+                            amount= { AvailableAmountFormat(formattedBalanceStr || 0) }
                             value= { valueFormatter(valueCalculator(formattedBalanceStr, tokenPrice)) }
                             hide={isHideNumber}
                         />
