@@ -18,6 +18,7 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import GasPrice from 'ui/shared/gas/GasPrice';
+import IconSvg from 'ui/shared/IconSvg';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 interface Props {
@@ -68,11 +69,24 @@ const HomeSubchainWidget = ({ data }: Props) => {
       flexBasis="50%"
       textStyle="sm"
     >
-      <HStack gap={ 3 }>
+      <HStack justifyContent="space-between">
         <Image src={ data.icon } alt={ data.name } boxSize="30px" borderRadius="full"/>
-        <Heading level="3">{ data.name }</Heading>
+        <Link
+          href={ data.explorer.url }
+          target="_blank"
+          p={ 1 }
+          color="gray.500"
+          _hover={{
+            color: 'link.primary.hover',
+          }}
+          bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
+          borderRadius="base"
+        >
+          <IconSvg name="globe" boxSize={ 6 }/>
+        </Link>
       </HStack>
-      <VStack gap={ 2 } mt={ 5 } alignItems="flex-start">
+      <Heading mt={ 3 } level="3">{ data.name }</Heading>
+      <VStack gap={ 2 } mt={ 3 } alignItems="flex-start">
         <HStack gap={ 2 }>
           <Box color="text.secondary">Chain ID</Box>
           <Box>{ data.chainId }</Box>
