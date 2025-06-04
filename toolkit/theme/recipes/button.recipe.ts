@@ -6,6 +6,7 @@ export const recipe = defineRecipe({
     gap: 0,
     fontWeight: 600,
     overflow: 'hidden',
+    borderRadius: 'base',
     _disabled: {
       opacity: 'control.disabled',
     },

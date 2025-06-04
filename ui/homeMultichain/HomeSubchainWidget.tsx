@@ -19,7 +19,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import IconSvg from 'ui/shared/IconSvg';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
   data: SubchainConfig;
@@ -107,7 +107,7 @@ const HomeSubchainWidget = ({ data }: Props) => {
             >
               { blocksQuery.data[0].height }
             </Link>
-            <TimeAgoWithTooltip
+            <TimeWithTooltip
               timestamp={ blocksQuery.data[0].timestamp }
               enableIncrement={ !blocksQuery.isPlaceholderData }
               isLoading={ blocksQuery.isPlaceholderData }

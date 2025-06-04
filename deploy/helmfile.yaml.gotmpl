@@ -8,13 +8,12 @@ helmDefaults:
   recreatePods: false
 
 repositories:
-  # - name: blockscout-ci-cd
-  #   url: https://blockscout.github.io/blockscout-ci-cd
   - name: blockscout
     url: https://blockscout.github.io/helm-charts
   - name: bedag
     url: https://bedag.github.io/helm-charts
 
+---
 releases:
   # Deploy review L2
   - name: reg-secret

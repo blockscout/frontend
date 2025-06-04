@@ -29,19 +29,40 @@ type Props = {
   onClose?: () => void;
 };
 
+const DateInput = ({ value, onChange, placeholder, max }: { value: string; onChange: (value: string) => void; placeholder: string; max: string }) => {
+  const [ tempValue, setTempValue ] = React.useState(value ? dayjs(value).format('YYYY-MM-DD') : '');
+
+  const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setTempValue(event.target.value);
+    onChange(event.target.value);
+  }, [ onChange ]);
+
+  return (
+    <Input
+      value={ tempValue }
+      onChange={ handleChange }
+      placeholder={ placeholder }
+      type="date"
+      max={ max }
+      autoComplete="off"
+      size="sm"
+    />
+  );
+};
+
 const AgeFilter = ({ value = defaultValue, handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<AgeFromToValue>({
-    age: value.age,
-    from: value.age ? '' : value.from,
-    to: value.age ? '' : value.to,
+    age: value.age || '',
+    from: value.age ? '' : (value.from || ''),
+    to: value.age ? '' : (value.to || ''),
   });
 
-  const handleFromChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setCurrentValue(prev => ({ age: '', to: prev.to, from: event.target.value }));
+  const handleFromChange = React.useCallback((newValue: string) => {
+    setCurrentValue(prev => ({ age: '', to: prev.to, from: newValue }));
   }, []);
 
-  const handleToChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setCurrentValue(prev => ({ age: '', from: prev.from, to: event.target.value }));
+  const handleToChange = React.useCallback((newValue: string) => {
+    setCurrentValue(prev => ({ age: '', from: prev.from, to: newValue }));
   }, []);
 
   const onPresetChange = React.useCallback((age: AdvancedFilterAge) => {
@@ -64,9 +85,9 @@ const AgeFilter = ({ value = defaultValue, handleFilterChange, onClose }: Props)
     }
     const from = currentValue.age ?
       dayjs((dayjs().valueOf() - getDurationFromAge(currentValue.age))).toISOString() :
-      dayjs(currentValue.from).startOf('day').toISOString();
+      dayjs(currentValue.from || undefined).startOf('day').toISOString();
     handleFilterChange(FILTER_PARAM_FROM, from);
-    const to = currentValue.age ? dayjs().toISOString() : dayjs(currentValue.to).endOf('day').toISOString();
+    const to = currentValue.age ? dayjs().toISOString() : dayjs(currentValue.to || undefined).endOf('day').toISOString();
     handleFilterChange(FILTER_PARAM_TO, to);
     handleFilterChange(FILTER_PARAM_AGE, currentValue.age);
   }, [ handleFilterChange, currentValue ]);
@@ -75,7 +96,7 @@ const AgeFilter = ({ value = defaultValue, handleFilterChange, onClose }: Props)
     <TableColumnFilter
       title="Set last duration"
       isFilled={ Boolean(currentValue.from || currentValue.to || currentValue.age) }
-      isTouched={ value.age ? value.age !== currentValue.age : !isEqual(currentValue, value) }
+      isTouched={ currentValue.age ? value.age !== currentValue.age : Boolean(currentValue.from && currentValue.to && !isEqual(currentValue, value)) }
       onFilter={ onFilter }
       onReset={ onReset }
       hasReset
@@ -90,20 +111,18 @@ const AgeFilter = ({ value = defaultValue, handleFilterChange, onClose }: Props)
         </PopoverCloseTriggerWrapper>
       </Flex>
       <Flex mt={ 3 }>
-        <Input
-          value={ currentValue.age ? '' : dayjs(currentValue.from).format('YYYY-MM-DD') }
+        <DateInput
+          value={ currentValue.age ? '' : currentValue.from }
           onChange={ handleFromChange }
           placeholder="From"
-          type="date"
-          size="sm"
+          max={ dayjs().format('YYYY-MM-DD') }
         />
         <Text mx={ 3 }>{ ndash }</Text>
-        <Input
-          value={ currentValue.age ? '' : dayjs(currentValue.to).format('YYYY-MM-DD') }
+        <DateInput
+          value={ currentValue.age ? '' : currentValue.to }
           onChange={ handleToChange }
           placeholder="To"
-          type="date"
-          size="sm"
+          max={ dayjs().format('YYYY-MM-DD') }
         />
       </Flex>
     </TableColumnFilter>

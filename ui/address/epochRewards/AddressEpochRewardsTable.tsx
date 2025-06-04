@@ -3,6 +3,7 @@ import React from 'react';
 import type { AddressEpochRewardsItem } from 'types/api/address';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import AddressEpochRewardsTableItem from './AddressEpochRewardsTableItem';
 
@@ -17,7 +18,10 @@ const AddressEpochRewardsTable = ({ items, isLoading, top }: Props) => {
     <TableRoot minW="1000px" style={{ tableLayout: 'auto' }}>
       <TableHeaderSticky top={ top }>
         <TableRow>
-          <TableColumnHeader>Block</TableColumnHeader>
+          <TableColumnHeader>
+            Block
+            <TimeFormatToggle/>
+          </TableColumnHeader>
           <TableColumnHeader>Reward type</TableColumnHeader>
           <TableColumnHeader>Associated address</TableColumnHeader>
           <TableColumnHeader isNumeric>Value</TableColumnHeader>

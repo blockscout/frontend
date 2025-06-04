@@ -7,6 +7,7 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 import NavigationMobile from 'ui/snippets/navigation/mobile/NavigationMobile';
+import RollupStageBadge from 'ui/snippets/navigation/RollupStageBadge';
 import TestnetBadge from 'ui/snippets/navigation/TestnetBadge';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenuButton from 'ui/snippets/networkMenu/NetworkMenuButton';
@@ -50,6 +51,7 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
       <DrawerContent >
         <DrawerBody display="flex" flexDirection="column" overflowX="hidden" overflowY="auto">
           <TestnetBadge alignSelf="flex-start"/>
+          <RollupStageBadge alignSelf="flex-start"/>
           <Flex alignItems="center" justifyContent="space-between">
             <NetworkLogo onClick={ handleNetworkLogoClick }/>
             { config.UI.navigation.featuredNetworks ? (

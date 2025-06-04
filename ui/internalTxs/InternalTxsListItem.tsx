@@ -13,10 +13,10 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean };
+type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean };
 
 const InternalTxsListItem = ({
   type,
@@ -31,6 +31,7 @@ const InternalTxsListItem = ({
   timestamp,
   currentAddress,
   isLoading,
+  showBlockInfo = true,
 }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
   const toData = to ? to : createdContract;
@@ -48,7 +49,7 @@ const InternalTxsListItem = ({
           fontWeight={ 700 }
           truncation="constant_long"
         />
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ timestamp }
           isLoading={ isLoading }
           color="text.secondary"
@@ -56,15 +57,17 @@ const InternalTxsListItem = ({
           fontSize="sm"
         />
       </Flex>
-      <HStack gap={ 1 }>
-        <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Block</Skeleton>
-        <BlockEntity
-          isLoading={ isLoading }
-          number={ blockNumber }
-          noIcon
-          textStyle="sm"
-        />
-      </HStack>
+      { showBlockInfo && (
+        <HStack gap={ 1 }>
+          <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Block</Skeleton>
+          <BlockEntity
+            isLoading={ isLoading }
+            number={ blockNumber }
+            noIcon
+            textStyle="sm"
+          />
+        </HStack>
+      ) }
       <AddressFromTo
         from={ from }
         to={ toData }
