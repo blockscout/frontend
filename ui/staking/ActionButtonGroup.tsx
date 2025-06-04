@@ -8,7 +8,7 @@ import useAccount from 'lib/web3/useAccount';
 
 
 const CustomMenuItem = (props: any) => {
-    const { children, disabled, onClick , ...rest } = props;
+    const { children, onClick , disabled , _hover,  ...rest } = props;
     return (
         <MenuItem
             {...rest}
@@ -19,7 +19,8 @@ const CustomMenuItem = (props: any) => {
                 }
                 onClick && onClick(e);
             }}
-            cursor={disabled ? 'not-allowed' : 'pointer'}
+            _hover={ disabled ? {} : _hover || { backgroundColor: '#FFCBEC', opacity: 0.9 }}
+            cursor={ disabled ? 'not-allowed' : 'pointer'}
             opacity={ disabled ? 0.6 : 1}
         >
             {children}

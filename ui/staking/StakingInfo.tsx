@@ -87,7 +87,7 @@ const PlainButton = ({text, onClick, disabled = false} : {
             alignItems="center"
             justifyContent="center"
             borderRadius={9999}
-            _hover={{ backgroundColor: "#FFCBEC" , opacity: 0.9 }}
+            _hover={ disabled ?  {} :  { backgroundColor: "#FFCBEC" , opacity: 0.9 }}
             width={ '100px' }
             height={ '32px' }
             variant='solid'
@@ -112,6 +112,7 @@ const PlainButton2 = ({text, onClick, disabled = false} : {
     onClick?: () => void,
     disabled?: boolean
 }) => {
+
     return (
         <Button
             onClick={ () => { 
@@ -128,7 +129,7 @@ const PlainButton2 = ({text, onClick, disabled = false} : {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            _hover={{ backgroundColor: "#FFCBEC" , opacity: 0.9 }}
+            _hover={ disabled ?  {} :  { backgroundColor: "#FFCBEC" , opacity: 0.9 }}
             borderRadius={9999}
             backgroundColor = { disabled ? '#FEF1F9' : '#FEE5F4' }
             cursor={ disabled ? 'not-allowed' : 'pointer' }

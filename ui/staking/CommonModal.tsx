@@ -306,7 +306,7 @@ const CommonModal = ({
             case 'MoveStake':
                 return 'Move Stake';
             case 'Compound-Claim':
-                return 'Claim';
+                return 'Claim All';
             case 'Compound-Stake':
                 return 'Stake';
             default:

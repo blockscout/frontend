@@ -357,7 +357,14 @@ const AllValidatorPage: NextPage = () => {
                         colorScheme='pink'
                         opacity={0.8}
                         size='sm' 
+                          sx={{
+                            '& > div': {
+                              backgroundColor: '#FF57B7', // 自定义颜色
+                          },
+                        }}
                         value={ totalEpoch.progress || 0}
+                        borderRadius="4px"
+                        backgroundColor={ '#FDF1F9'}
                         width="100%" height="4px" marginTop="6px" />
                 </Box>
             </Flex>

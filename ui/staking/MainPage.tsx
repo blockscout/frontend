@@ -1,6 +1,6 @@
 /* eslint-disable */
 "use client";
-
+import { Flex , Text , Button} from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
 import { waitForTransactionReceipt } from '@wagmi/core'
 import BigNumber from 'bignumber.js';
@@ -18,6 +18,17 @@ import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';;
 import { useDisclosure } from '@chakra-ui/react';
 import TabTable from 'ui/staking/TabTable';
 import StakingInfo from 'ui/staking/StakingInfo';
+
+const DOC_LINK = 'https://drive.google.com/stake/validators?ddrp=1';
+
+
+const icon_link = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+    <path fillRule="evenodd" clipRule="evenodd" d="M2.55001 3.30001C2.30148 3.30001 2.10001 3.50148 2.10001 3.75001V8.85001C2.10001 9.09854 2.30148 9.30001 2.55001 9.30001H7.65001C7.89854 9.30001 8.10001 9.09854 8.10001 8.85001V6.45001C8.10001 6.20148 8.30148 6.00001 8.55001 6.00001C8.79854 6.00001 9.00001 6.20148 9.00001 6.45001V8.85001C9.00001 9.5956 8.3956 10.2 7.65001 10.2H2.55001C1.80443 10.2 1.20001 9.5956 1.20001 8.85001V3.75001C1.20001 3.00443 1.80443 2.40001 2.55001 2.40001H5.55001C5.79854 2.40001 6.00001 2.60148 6.00001 2.85001C6.00001 3.09854 5.79854 3.30001 5.55001 3.30001H2.55001Z" 
+    fill="#FF57B7"/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M3.71632 7.65192C3.88306 7.83622 4.16763 7.85044 4.35192 7.6837L9.90001 2.664V4.35001C9.90001 4.59854 10.1015 4.80001 10.35 4.80001C10.5985 4.80001 10.8 4.59854 10.8 4.35001V1.65001C10.8 1.40148 10.5985 1.20001 10.35 1.20001H7.65001C7.40148 1.20001 7.20001 1.40148 7.20001 1.65001C7.20001 1.89854 7.40148 2.10001 7.65001 2.10001H9.18192L3.7481 7.01632C3.56381 7.18306 3.54958 7.46763 3.71632 7.65192Z" fill="#FF57B7"/>
+  </svg>
+)
 
 
 type RequestType = {
@@ -500,6 +511,41 @@ const ObjectDetails: NextPage = () => {
 
   return (
     <PageNextJs pathname="/object">
+      <Flex 
+          display={{ base: 'flex', lg: 'flex' }}
+          userSelect="none"
+          justifyContent= {{ lg:  'flex-start' }}
+          alignItems="baseline" marginBottom="24px">
+          <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">MOCA Staking</Text>
+
+          <Button
+              onClick={() => {
+                  window.open(DOC_LINK, '_blank');
+              }}
+              px = "6px"
+              py = "2px"
+              width={ 'auto' }
+              height={ 'auto' }
+              marginLeft={"8px"}
+              variant="surface"
+              color="#FF57B7"
+              borderRadius={9999}
+              backgroundColor="#FEE5F4"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap="2px"
+              >
+              <Text 
+                  fontSize="12px"
+                  fontWeight="400"
+                  lineHeight="140%"
+                  color="#FF57B7"
+                  fontFamily="Inter"
+              >Staking Tutorial</Text>
+              {icon_link}
+          </Button>
+      </Flex>
       <StakingInfo
         stakedAmount={ stakedAmount }
         claimableRewards={ claimableRewards }
