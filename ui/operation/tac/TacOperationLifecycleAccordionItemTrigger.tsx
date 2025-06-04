@@ -3,11 +3,10 @@ import React from 'react';
 
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
+import { STATUS_LABELS } from 'lib/operations/tac';
 import { AccordionItemTrigger } from 'toolkit/chakra/accordion';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';
-
-import { STATUS_LABELS } from './utils';
 
 interface Props {
   status: tac.OperationStage_StageType;

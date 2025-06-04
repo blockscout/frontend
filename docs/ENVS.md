@@ -772,7 +772,7 @@ For blockchains that use the Celo platform. _Note_, that once the Celo mainnet b
 
 ### Ton Application Chain (TAC)
 
-For Ton Application Chains, this feature enables an additional view, such as a list of cross-chain operations and a detailed page for a specific cross-chain operation, as well as extra fields on the transaction page.
+For Ton Application Chains, this feature enables additional views, such as a list of cross-chain operations and a detailed page for a specific cross-chain operation, as well as extra fields on the transaction page.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |

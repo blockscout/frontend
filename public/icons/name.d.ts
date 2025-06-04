@@ -12,7 +12,6 @@
 	| "arrows/east-mini"
 	| "arrows/east"
 	| "arrows/north-east"
-	| "arrows/revert"
 	| "arrows/south-east"
 	| "arrows/up-down"
 	| "arrows/up-head"

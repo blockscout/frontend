@@ -13,10 +13,9 @@ export interface Props extends BadgeProps {
   type: 'ok' | 'error' | 'pending';
   text: string;
   errorText?: string | null;
-  isLoading?: boolean;
 }
 
-const StatusTag = ({ type, text, errorText, isLoading, className, ...rest }: Props) => {
+const StatusTag = ({ type, text, errorText, ...rest }: Props) => {
   let icon: IconName;
   let colorPalette: BadgeProps['colorPalette'];
 
@@ -41,7 +40,7 @@ const StatusTag = ({ type, text, errorText, isLoading, className, ...rest }: Pro
 
   return (
     <Tooltip content={ errorText } disabled={ !errorText }>
-      <Badge colorPalette={ colorPalette } loading={ isLoading } className={ className } startElement={ startElement } { ...rest }>
+      <Badge colorPalette={ colorPalette } startElement={ startElement } { ...rest }>
         { capitalizedText }
       </Badge>
     </Tooltip>

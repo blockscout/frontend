@@ -104,7 +104,6 @@ const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRig
   }
 
   const styles = getIconProps(variant);
-  const shieldElement = shield ? <IconShield { ...shield }/> : null;
 
   const iconElement = (
     <IconSvg
@@ -129,14 +128,14 @@ const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRig
     </Tooltip>
   ) : iconElement;
 
-  if (!shieldElement) {
+  if (!shield) {
     return iconElementWithHint;
   }
 
   return (
     <Box position="relative">
       { iconElementWithHint }
-      { shieldElement }
+      <IconShield { ...shield }/>
     </Box>
   );
 };
