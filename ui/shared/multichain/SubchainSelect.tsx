@@ -11,7 +11,7 @@ const collection = createListCollection<SelectOption>({
   items: multichainConfig.chains.map((chain) => ({
     value: chain.id,
     label: chain.name,
-    icon: <Image src={ chain.icon } alt={ chain.name } boxSize={ 5 }/>,
+    icon: <Image src={ chain.icon } alt={ chain.name } boxSize={ 5 } borderRadius="full"/>,
   })),
 });
 

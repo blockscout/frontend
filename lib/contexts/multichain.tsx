@@ -11,7 +11,7 @@ interface MultichainProviderProps {
   subchainId?: string;
 }
 
-interface TMultichainContext {
+export interface TMultichainContext {
   subchain: SubchainConfig;
 }
 
@@ -54,7 +54,7 @@ export function MultichainProvider({ children, subchainId: subchainIdProp }: Mul
   );
 }
 
-export function useMultichainContext(disabled?: boolean) {
+export function useMultichainContext(disabled: boolean = !multichainConfig) {
   const context = React.useContext(MultichainContext);
   if (context === undefined || disabled) {
     return null;

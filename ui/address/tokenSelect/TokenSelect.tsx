@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
@@ -27,10 +27,10 @@ const TokenSelect = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const queryClient = useQueryClient();
-  const { subchain } = useMultichainContext() || {};
+  const multichainContext = useMultichainContext();
 
   const addressHash = getQueryParamString(router.query.hash);
-  const addressResourceKey = getResourceKey('general:address', { pathParams: { hash: addressHash }, subchainId: subchain?.id });
+  const addressResourceKey = getResourceKey('general:address', { pathParams: { hash: addressHash }, subchainId: multichainContext?.subchain?.id });
 
   const addressQueryData = queryClient.getQueryData<Address>(addressResourceKey);
 
@@ -38,7 +38,7 @@ const TokenSelect = () => {
   const tokensResourceKey = getResourceKey('general:address_tokens', {
     pathParams: { hash: addressQueryData?.hash },
     queryParams: { type: 'ERC-20' },
-    subchainId: subchain?.id,
+    subchainId: multichainContext?.subchain?.id,
   });
   const tokensIsFetching = useIsFetching({ queryKey: tokensResourceKey });
 
@@ -69,7 +69,7 @@ const TokenSelect = () => {
       }
       <Tooltip content="Show all tokens">
         <Link
-          href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }) }
+          href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }, multichainContext) }
           asChild
           scroll={ false }
         >
