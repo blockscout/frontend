@@ -39,7 +39,6 @@ const WithTipsText = ({
                             color="rgba(0, 0, 0, 0.60)"
                             lineHeight="16px"
                             fontStyle="normal"
-                            textTransform="capitalize"
                             fontFamily="HarmonyOS Sans"
                             as="div"
                         >

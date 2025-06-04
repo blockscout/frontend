@@ -320,7 +320,6 @@ const AllValidatorPage: NextPage = () => {
                 lineHeight="16px"
                 fontStyle="normal"
                 as={'span'}
-                textTransform="capitalize"
                 fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Total Staking</Text> }
                 tips={ `Total Amount Staked Across the Blockchain Network` }
             />
