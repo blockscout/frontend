@@ -13,7 +13,7 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   item: TokenTransfer;
@@ -39,7 +39,7 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
           noIcon
           truncation="constant_long"
         />
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.timestamp }
           enableIncrement
           isLoading={ isLoading }

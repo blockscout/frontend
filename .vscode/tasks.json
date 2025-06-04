@@ -357,6 +357,7 @@
             "id": "dev_config_preset",
             "description": "Choose dev server config preset:",
             "options": [
+              "all",
               "main",
               "localhost",
               "arbitrum",
@@ -374,7 +375,6 @@
               "mekong",
               "neon_devnet",
               "optimism",
-              "optimism_celestia",
               "optimism_interop_0",
               "optimism_sepolia",
               "polygon",

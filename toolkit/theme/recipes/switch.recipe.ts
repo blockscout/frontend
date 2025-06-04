@@ -18,9 +18,7 @@ export const recipe = defineSlotRecipe({
     },
 
     label: {
-      lineHeight: '1',
       userSelect: 'none',
-      fontSize: 'sm',
       fontWeight: '400',
       _disabled: {
         opacity: '0.5',
@@ -112,12 +110,28 @@ export const recipe = defineSlotRecipe({
           '--switch-height': 'sizes.4',
           '--switch-indicator-font-size': 'fontSizes.sm',
         },
+        label: {
+          textStyle: 'sm',
+        },
       },
       md: {
         root: {
           '--switch-width': '34px',
           '--switch-height': 'sizes.5',
           '--switch-indicator-font-size': 'fontSizes.md',
+        },
+        label: {
+          textStyle: 'sm',
+        },
+      },
+      lg: {
+        root: {
+          '--switch-width': '50px',
+          '--switch-height': 'sizes.7',
+          '--switch-indicator-font-size': 'fontSizes.md',
+        },
+        label: {
+          textStyle: 'md',
         },
       },
     },

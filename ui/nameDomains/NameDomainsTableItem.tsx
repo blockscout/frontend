@@ -1,14 +1,12 @@
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
 import dayjs from 'lib/date/dayjs';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import NameDomainExpiryStatus from 'ui/nameDomain/NameDomainExpiryStatus';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = bens.Domain & {
   isLoading?: boolean;
@@ -32,20 +30,14 @@ const NameDomainsTableItem = ({
         { resolvedAddress && <AddressEntity address={ resolvedAddress } isLoading={ isLoading } fontWeight={ 500 }/> }
       </TableCell>
       <TableCell verticalAlign="middle" pl={ 9 }>
-        { registrationDate && (
-          <Skeleton loading={ isLoading }>
-            { dayjs(registrationDate).format('lll') }
-            <chakra.span color="text.secondary"> { dayjs(registrationDate).fromNow() }</chakra.span>
-          </Skeleton>
-        ) }
+        <TimeWithTooltip timestamp={ registrationDate } isLoading={ isLoading }/>
       </TableCell>
       <TableCell verticalAlign="middle">
-        { expiryDate && (
-          <Skeleton loading={ isLoading }>
-            <span>{ dayjs(expiryDate).format('lll') } </span>
-            <NameDomainExpiryStatus date={ expiryDate }/>
-          </Skeleton>
-        ) }
+        <TimeWithTooltip
+          timestamp={ expiryDate }
+          isLoading={ isLoading }
+          color={ expiryDate && dayjs(expiryDate).diff(dayjs(), 'day') < 30 ? 'red.600' : 'inherit' }
+        />
       </TableCell>
     </TableRow>
   );

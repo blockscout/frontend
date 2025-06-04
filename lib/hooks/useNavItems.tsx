@@ -71,7 +71,7 @@ export default function useNavItems(): ReturnType {
       isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]',
     } : null;
     const validators = config.features.validators.isEnabled ? {
-      text: 'Top validators',
+      text: 'Validators',
       nextRoute: { pathname: '/validators' as const },
       icon: 'validator',
       isActive: pathname === '/validators' || pathname === '/validators/[id]',

@@ -9,8 +9,7 @@ import {
   createToaster,
 } from '@chakra-ui/react';
 
-import { SECOND } from 'toolkit/utils/consts';
-
+import { SECOND } from '../utils/consts';
 import { CloseButton } from './close-button';
 
 export const toaster = createToaster({

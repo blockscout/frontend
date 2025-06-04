@@ -26,7 +26,6 @@ on:
             - mekong
             - neon_devnet
             - optimism
-            - optimism_celestia
             - optimism_sepolia
             - polygon
             - rari_testnet
