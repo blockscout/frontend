@@ -134,22 +134,28 @@ COPY --from=builder /app/deploy/tools/envs-validator/index.js ./envs-validator.j
 COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-reporter.js
 
 # Copy scripts
-## Entripoint
-COPY --chmod=755 ./deploy/scripts/entrypoint.sh .
+## Entrypoint
+COPY ./deploy/scripts/entrypoint.sh .
+RUN chmod 755 entrypoint.sh
 ## ENV validator and client script maker
-COPY --chmod=755 ./deploy/scripts/validate_envs.sh .
-COPY --chmod=755 ./deploy/scripts/make_envs_script.sh .
+COPY ./deploy/scripts/validate_envs.sh .
+RUN chmod 755 validate_envs.sh
+COPY ./deploy/scripts/make_envs_script.sh .
+RUN chmod 755 make_envs_script.sh
 ## Assets downloader
-COPY --chmod=755 ./deploy/scripts/download_assets.sh .
+COPY ./deploy/scripts/download_assets.sh .
+RUN chmod 755 download_assets.sh
 ## OG image generator
 COPY ./deploy/scripts/og_image_generator.js .
 ## Favicon generator
-COPY --chmod=755 ./deploy/scripts/favicon_generator.sh .
+COPY ./deploy/scripts/favicon_generator.sh .
+RUN chmod 755 favicon_generator.sh
 COPY --from=builder /app/deploy/tools/favicon-generator ./deploy/tools/favicon-generator
 RUN ["chmod", "-R", "777", "./deploy/tools/favicon-generator"]
 RUN ["chmod", "-R", "777", "./public"]
 ## Sitemap generator
-COPY --chmod=755 ./deploy/scripts/sitemap_generator.sh .
+COPY ./deploy/scripts/sitemap_generator.sh .
+RUN chmod 755 sitemap_generator.sh
 COPY --from=builder /app/deploy/tools/sitemap-generator ./deploy/tools/sitemap-generator
 
 # Copy ENVs files

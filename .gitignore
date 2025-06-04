@@ -37,9 +37,10 @@ grafana
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+.pnpm-debug.log*d
 
 # local env files
+.env
 .env*.local
 /configs/envs/.env.secrets
 /configs/envs/.samples
