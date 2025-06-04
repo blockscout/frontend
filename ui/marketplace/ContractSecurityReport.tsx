@@ -41,7 +41,7 @@ const ContractSecurityReport = ({ securityReport }: Props) => {
         score={ parseFloat(securityScore) }
         onClick={ handleClick }
       />
-      <PopoverContent>
+      <PopoverContent zIndex="modal2" w={{ base: 'calc(100vw - 48px)', lg: '328px' }} overflowY="auto">
         <PopoverBody>
           <Box mb={ 5 }>
             The security score was derived from evaluating the smart contracts of a protocol on the { config.chain.name } network  by { ' ' }
