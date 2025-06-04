@@ -3,6 +3,8 @@ import { Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-u
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import { Table } from 'antd';
 import axios from 'axios';
+import LinkInternal from 'ui/shared/links/LinkInternal';
+import { route } from 'nextjs-routes';
 import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import { debounce, orderBy } from 'lodash';
 import TableTokenAmount from 'ui/staking/TableTokenAmount';
@@ -86,40 +88,47 @@ const getShortAddress = (address: string) => {
 
 
 const ValidatorInfo = ({
-    validatorName
+    validatorName,
+    address = '',
 }: {
     validatorName: string;
+    address?: string;
 }) => {
 
     return (
-        <Flex
-            flexDirection="row"
-            justifyContent="flex-start"
-            alignItems="center"
-            width="auto"
+        <LinkInternal
+            href={ route({ pathname: '/address/[hash]', query: { hash: address } }) }
         >
-            <Avatar
-                name="MOCA"
-                src="/static/moca-brand.svg"
-                size='2xs'
-                width="16px"
-                height="16px"
-                borderRadius="full"
-                marginRight="4px"
-            />
-            <Text 
-                fontSize="12px"
-                fontWeight="500"
-                textAlign={"left"}
-                color="#A80C53"
-                fontStyle="normal"
-                fontFamily="HarmonyOS Sans"
-                lineHeight="normal"
-                textTransform="capitalize"
-                userSelect="none"
-                as ="span"
-            > { getShortAddress(validatorName) } </Text>
-        </Flex>
+            <Flex
+                flexDirection="row"
+                justifyContent="flex-start"
+                alignItems="center"
+                width="auto"
+            >
+                <Avatar
+                    name="MOCA"
+                    src="/static/moca-brand.svg"
+                    size='2xs'
+                    width="16px"
+                    height="16px"
+                    borderRadius="full"
+                    marginRight="4px"
+                />
+                <Text 
+                    fontSize="12px"
+                    fontWeight="500"
+                    textAlign={"left"}
+                    color="#A80C53"
+                    fontStyle="normal"
+                    fontFamily="HarmonyOS Sans"
+                    lineHeight="normal"
+                    textTransform="capitalize"
+                    userSelect="none"
+                    as ="span"
+                > { getShortAddress(validatorName) } </Text>
+            </Flex>
+        </LinkInternal>
+
     )
 }
 
@@ -129,8 +138,10 @@ const tableHead: tableHeadType[] = [
         key: 'delegatorAddress',
         width : '25%',
         render: (record: any) => (
+            console.log('record', record),
             <ValidatorInfo
                 validatorName={ getShortAddress(record.delegatorAddress) }
+                address={ record.delegatorAddress }
             />
         ),
     },
@@ -215,6 +226,8 @@ const CustomTableHeader = ({
         }
     };
 
+    const noop = () => {};
+
     return (
             <Flex
                 flexDirection="row"
@@ -223,6 +236,7 @@ const CustomTableHeader = ({
                 width="100%"
                 userSelect={'none'}
                 gap="2px" 
+                onClick={ allowSort ? handleSort : noop }
             >
                 <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' , fontWeight: 400 }}>
                     { children }
@@ -284,32 +298,6 @@ const TableApp = (props: {
         return data;
     }, [data, sortBy, sortOrder]);
         
-
-
-    const tableHeaders = (
-        <Tr>
-            {tableHead.map((item: tableHeadType, index: number) => (
-                <CustomTableHeader 
-                    key={index}
-                    width={ item.width }
-                    minWidth={ item.minWidth }
-                    allowSort={ item.allowSort }
-                    sortKey = { sortBy }
-                    sortOrder = { sortOrder }
-                    setSort = { setSortBy }
-                    setSortOrder = { setSortOrder }
-                    selfKey = { item.key }
-                >
-                    { ( item.tips ? ( 
-                        <WithTipsText 
-                            label={ item.label }
-                            tips={ item.tips }
-                        />
-                    ) : item.label ) }
-                </CustomTableHeader>
-            ))}
-        </Tr>
-    );
 
 
     const getColumnContent = (item: tableHeadType) => {

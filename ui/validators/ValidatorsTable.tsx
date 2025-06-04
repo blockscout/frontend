@@ -102,6 +102,7 @@ const getShortAddress = (address: string) => {
     return address;
 }
 
+const noop = () => {};
 
 const CustomTableHeader = ({
     selfKey,
@@ -147,8 +148,9 @@ const CustomTableHeader = ({
                 width="100%"
                 userSelect={'none'}
                 gap="2px" 
+                onClick={ allowSort ? handleSort : noop }
             >
-                <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' , fontWeight: 400 }}>
+                <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' , fontWeight: 400 }} >
                     { children }
                 </span>
                 { allowSort && (
@@ -160,7 +162,6 @@ const CustomTableHeader = ({
                         width="12px"
                         height="12px"
                         cursor="pointer"
-                        onClick={handleSort}
                     >
                         { (sortOrder === 'asc' && selfKey === sortKey) && icon_asc }
                         { (sortOrder === 'desc' && selfKey === sortKey) && icon_desc }

@@ -127,6 +127,8 @@ const CustomTableHeader = ({
         }
     };
 
+    const noop = () => {};
+
     return (
             <Flex
                 flexDirection="row"
@@ -135,6 +137,7 @@ const CustomTableHeader = ({
                 width="100%"
                 userSelect={'none'}
                 gap="2px" 
+                onClick={ allowSort ? handleSort : noop }
             >
                 <span style={{ 
                     color: 'rgba(0, 0, 0, 0.40)',
@@ -156,7 +159,6 @@ const CustomTableHeader = ({
                         width="12px"
                         height="12px"
                         cursor="pointer"
-                        onClick={handleSort}
                     >
                         { (sortOrder === 'asc' && selfKey === sortKey) && icon_asc }
                         { (sortOrder === 'desc' && selfKey === sortKey) && icon_desc }
@@ -340,31 +342,6 @@ const TableApp = (props: {
         },
     ];
 
-
-    const tableHeaders = (
-        <Tr>
-            {tableHead.map((item: tableHeadType, index: number) => (
-                <CustomTableHeader 
-                    key={index}
-                    width={ item.width }
-                    minWidth={ item.minWidth }
-                    allowSort={ item.allowSort }
-                    sortKey = { sortBy }
-                    sortOrder = { sortOrder }
-                    setSort = { setSortBy }
-                    setSortOrder = { setSortOrder }
-                    selfKey = { item.key }
-                >
-                    { ( item.tips ? ( 
-                        <WithTipsText 
-                            label={ item.label }
-                            tips={ item.tips }
-                        />
-                    ) : item.label ) }
-                </CustomTableHeader>
-            ))}
-        </Tr>
-    );
 
 
     const getColumnContent = (item: tableHeadType) => {
