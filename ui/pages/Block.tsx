@@ -153,7 +153,7 @@ const BlockPageContent = () => {
   }
 
   const title = (() => {
-    const subchainText = subchain ? ` on ${ subchain.name }` : '';
+    const subchainText = subchain ? ` on ${ subchain.config.chain.name }` : '';
 
     switch (blockQuery.data?.type) {
       case 'reorg':

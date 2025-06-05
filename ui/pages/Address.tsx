@@ -421,7 +421,7 @@ const AddressPageContent = () => {
     </Flex>
   );
 
-  const subchainText = subchain ? ` on ${ subchain.name }` : '';
+  const subchainText = subchain ? ` on ${ subchain.config.chain.name }` : '';
 
   return (
     <>

@@ -5,11 +5,11 @@ import multichainConfig from 'configs/multichain';
 export function multichain(): CspDev.DirectiveDescriptor {
   return {
     'connect-src': [
-      ...multichainConfig.chains
+      ...(multichainConfig?.chains || [])
         .map((chain) => {
           return [
-            ...Object.values(chain.apis).filter(Boolean).map((api) => api.endpoint),
-            chain.apis.general.socketEndpoint + '/websocket',
+            ...Object.values(chain.config.apis).filter(Boolean).map((api) => api.endpoint),
+            chain.config.apis.general.socketEndpoint,
           ];
         }).flat(),
     ],

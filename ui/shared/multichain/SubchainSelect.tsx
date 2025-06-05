@@ -8,11 +8,11 @@ import { Select } from 'toolkit/chakra/select';
 import type { SelectOption, SelectProps } from 'toolkit/chakra/select';
 
 const collection = createListCollection<SelectOption>({
-  items: multichainConfig.chains.map((chain) => ({
-    value: chain.id,
-    label: chain.name,
-    icon: <Image src={ chain.icon } alt={ chain.name } boxSize={ 5 } borderRadius="full"/>,
-  })),
+  items: multichainConfig?.chains.map((chain) => ({
+    value: chain.slug,
+    label: chain.config.chain.name || chain.slug,
+    icon: <Image src={ chain.config.UI.navigation.icon.default } alt={ chain.config.chain.name } boxSize={ 5 } borderRadius="full"/>,
+  })) || [],
 });
 
 interface Props extends Omit<SelectProps, 'collection' | 'placeholder'> {

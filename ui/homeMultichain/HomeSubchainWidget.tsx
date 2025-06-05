@@ -29,25 +29,25 @@ const HomeSubchainWidget = ({ data }: Props) => {
   const queryClient = useQueryClient();
 
   const blocksQuery = useApiQuery('general:homepage_blocks', {
-    subchainId: data.id,
+    subchainId: data.slug,
     queryOptions: {
       placeholderData: [ BLOCK ],
     },
   });
 
   const statsQuery = useApiQuery('general:stats', {
-    subchainId: data.id,
+    subchainId: data.slug,
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },
   });
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    const queryKey = getResourceKey('general:homepage_blocks', { subchainId: data.id });
+    const queryKey = getResourceKey('general:homepage_blocks', { subchainId: data.slug });
     queryClient.setQueryData(queryKey, () => {
       return [ payload.block ];
     });
-  }, [ queryClient, data.id ]);
+  }, [ queryClient, data.slug ]);
 
   const channel = useSocketChannel({
     topic: 'blocks:new_block',
@@ -70,9 +70,9 @@ const HomeSubchainWidget = ({ data }: Props) => {
       textStyle="sm"
     >
       <HStack justifyContent="space-between">
-        <Image src={ data.icon } alt={ data.name } boxSize="30px" borderRadius="full"/>
+        <Image src={ data.config.UI.navigation.icon.default } alt={ data.config.chain.name } boxSize="30px" borderRadius="full"/>
         <Link
-          href={ data.explorer.url }
+          href={ data.config.app.baseUrl }
           target="_blank"
           p={ 1 }
           color="gray.500"
@@ -85,12 +85,12 @@ const HomeSubchainWidget = ({ data }: Props) => {
           <IconSvg name="globe" boxSize={ 6 }/>
         </Link>
       </HStack>
-      <Heading mt={ 3 } level="3">{ data.name }</Heading>
+      <Heading mt={ 3 } level="3">{ data.config.chain.name }</Heading>
       <VStack gap={ 2 } mt={ 3 } alignItems="flex-start">
         <HStack gap={ 2 }>
           <Box color="text.secondary">Chain ID</Box>
-          <Box>{ data.chainId }</Box>
-          <CopyToClipboard text={ data.chainId.toString() } ml={ 0 }/>
+          <Box>{ data.config.chain.id }</Box>
+          <CopyToClipboard text={ String(data.config.chain.id) } ml={ 0 }/>
         </HStack>
         { blocksQuery.data?.[0] && (
           <HStack gap={ 2 }>
@@ -100,7 +100,7 @@ const HomeSubchainWidget = ({ data }: Props) => {
               href={ route({
                 pathname: '/subchain/[subchain-id]/block/[height_or_hash]',
                 query: {
-                  'subchain-id': data.id,
+                  'subchain-id': data.slug,
                   height_or_hash: blocksQuery.data[0].height.toString(),
                 },
               }) }
@@ -117,7 +117,7 @@ const HomeSubchainWidget = ({ data }: Props) => {
             />
           </HStack>
         ) }
-        { statsQuery.data && statsQuery.data.gas_prices && (
+        { statsQuery.data && statsQuery.data.gas_prices && data.config.features.gasTracker.isEnabled && (
           <HStack gap={ 2 }>
             <Box color="text.secondary">Gas price</Box>
             <Skeleton loading={ statsQuery.isPlaceholderData }>

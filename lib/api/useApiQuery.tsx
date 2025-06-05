@@ -36,10 +36,10 @@ export default function useApiQuery<R extends ResourceName, E = unknown, D = Res
 ) {
   const apiFetch = useApiFetch();
   const { subchain } = useMultichainContext() ||
-    { subchain: subchainId ? multichainConfig.chains.find((chain) => chain.id === subchainId) : undefined };
+    { subchain: subchainId ? multichainConfig?.chains.find((chain) => chain.slug === subchainId) : undefined };
 
   return useQuery<ResourcePayload<R>, ResourceError<E>, D>({
-    queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams, subchainId: subchain?.id }),
+    queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams, subchainId: subchain?.slug }),
     queryFn: async({ signal }) => {
       // all errors and error typing is handled by react-query
       // so error response will never go to the data

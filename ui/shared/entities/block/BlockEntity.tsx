@@ -13,7 +13,7 @@ type LinkProps = EntityBase.LinkBaseProps & Partial<Pick<EntityProps, 'hash' | '
 const Link = chakra((props: LinkProps) => {
   const heightOrHash = props.hash ?? String(props.number);
   const defaultHref = props.subchain ?
-    route({ pathname: '/subchain/[subchain-id]/block/[height_or_hash]', query: { height_or_hash: heightOrHash, 'subchain-id': props.subchain.id } }) :
+    route({ pathname: '/subchain/[subchain-id]/block/[height_or_hash]', query: { height_or_hash: heightOrHash, 'subchain-id': props.subchain.slug } }) :
     route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash } });
 
   return (

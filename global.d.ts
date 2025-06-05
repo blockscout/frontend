@@ -1,3 +1,4 @@
+import type { MultichainConfig } from 'types/multichain';
 import type { WalletProvider } from 'types/web3';
 
 type CPreferences = {
@@ -19,6 +20,7 @@ declare global {
     };
     abkw: string;
     __envs: Record<string, string>;
+    __multichainConfig: MultichainConfig;
   }
 
   namespace NodeJS {

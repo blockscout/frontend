@@ -80,7 +80,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   const [ hasPages, setHasPages ] = React.useState(page > 1);
   const [ subchainValue, setSubchainValue ] = React.useState<Array<string> | undefined>(
     multichainConfig ? (
-      [ getQueryParamString(router.query['subchain-id']) || multichainConfig.chains[0].id ]
+      [ getQueryParamString(router.query['subchain-id']) || multichainConfig.chains[0].slug ]
     ) : undefined,
   );
 

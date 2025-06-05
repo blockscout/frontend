@@ -55,7 +55,7 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
     const queryKey = getResourceKey('general:address_txs', {
       pathParams: { hash: currentAddress },
       queryParams: filterValue ? { filter: filterValue } : undefined,
-      subchainId: subchain?.id,
+      subchainId: subchain?.slug,
     });
 
     queryClient.setQueryData(
@@ -97,7 +97,7 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
           ].sort(sortTxsFromSocket(sort)),
         };
       });
-  }, [ currentAddress, filterValue, queryClient, sort, subchain?.id ]);
+  }, [ currentAddress, filterValue, queryClient, sort, subchain?.slug ]);
 
   const handleSocketClose = React.useCallback(() => {
     setAlertText('Connection is lost. Please refresh the page to load new transactions.');

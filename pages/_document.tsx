@@ -44,6 +44,12 @@ class MyDocument extends Document {
 
           { /* eslint-disable-next-line @next/next/no-sync-scripts */ }
           <script src="/assets/envs.js"/>
+          { config.features.multichain.isEnabled && (
+            <>
+              { /* eslint-disable-next-line @next/next/no-sync-scripts */ }
+              <script src="/assets/multichain/config.js"/>
+            </>
+          ) }
 
           { /* FAVICON */ }
           <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"/>

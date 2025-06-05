@@ -11,7 +11,8 @@ export default function useAddressMetadataInfoQuery(addresses: Array<string>, is
   const resource = 'metadata:info';
 
   const multichainContext = useMultichainContext();
-  const chainId = multichainContext?.subchain?.chainId || config.chain.id;
+  const feature = multichainContext?.subchain?.config.features.addressMetadata || config.features.addressMetadata;
+  const chainId = multichainContext?.subchain?.config.chain.id || config.chain.id;
 
   return useApiQuery<typeof resource, unknown, AddressMetadataInfoFormatted>(resource, {
     queryParams: {
@@ -20,7 +21,7 @@ export default function useAddressMetadataInfoQuery(addresses: Array<string>, is
       tagsLimit: '20',
     },
     queryOptions: {
-      enabled: isEnabled && addresses.length > 0 && config.features.addressMetadata.isEnabled && Boolean(chainId),
+      enabled: isEnabled && addresses.length > 0 && feature.isEnabled && Boolean(chainId),
       select: (data) => {
         const addresses = Object.entries(data.addresses)
           .map(([ address, { tags, reputation } ]) => {

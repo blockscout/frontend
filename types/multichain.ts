@@ -1,14 +1,8 @@
-import type { Apis } from 'configs/app/apis';
+import type config from 'configs/app';
 
 export interface SubchainConfig {
-  id: string;
-  name: string;
-  chainId: number;
-  explorer: {
-    url: string;
-  };
-  icon: string;
-  apis: Apis;
+  slug: string;
+  config: typeof config;
 }
 
 export interface MultichainConfig {

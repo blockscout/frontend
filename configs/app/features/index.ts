@@ -24,6 +24,7 @@ export { default as metasuites } from './metasuites';
 export { default as mixpanel } from './mixpanel';
 export { default as mudFramework } from './mudFramework';
 export { default as multichainButton } from './multichainButton';
+export { default as multichain } from './multichain';
 export { default as nameService } from './nameService';
 export { default as pools } from './pools';
 export { default as publicTagsSubmission } from './publicTagsSubmission';

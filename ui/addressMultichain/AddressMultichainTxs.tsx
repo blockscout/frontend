@@ -5,6 +5,7 @@ import React from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import multichainConfig from 'configs/multichain';
+import getSocketUrl from 'lib/api/getSocketUrl';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { SocketProvider } from 'lib/socket/context';
@@ -67,7 +68,7 @@ const AddressMultichainTxs = () => {
     </>
   ) : null;
 
-  const subchain = multichainConfig.chains.find(chain => chain.id === txsQueryLocal.query.subchainValue?.[0]);
+  const subchainData = multichainConfig?.chains.find(chain => chain.slug === txsQueryLocal.query.subchainValue?.[0]);
 
   const tabs: Array<TabItemRegular> = [
     {
@@ -79,7 +80,7 @@ const AddressMultichainTxs = () => {
       id: 'local_txs',
       title: 'Local',
       component: (
-        <SocketProvider url={ subchain?.apis.general.socketEndpoint }>
+        <SocketProvider url={ getSocketUrl(subchainData?.config) }>
           <MultichainProvider subchainId={ txsQueryLocal.query.subchainValue?.[0] }>
             <TxsWithAPISorting
               filter={ txsLocalFilter }

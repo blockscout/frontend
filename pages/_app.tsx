@@ -9,6 +9,7 @@ import type { NextPageWithLayout } from 'nextjs/types';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
+import getSocketUrl from 'lib/api/getSocketUrl';
 import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
@@ -72,7 +73,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     );
   })();
 
-  const socketUrl = !multichainConfig ? `${ config.apis.general.socketEndpoint }${ config.apis.general.basePath ?? '' }/socket/v2` : undefined;
+  const socketUrl = !multichainConfig ? getSocketUrl() : undefined;
 
   return (
     <ChakraProvider>

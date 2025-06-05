@@ -11,10 +11,7 @@ export default function getResourceParams(resourceFullName: ResourceName, subcha
 
   const apiConfig = (() => {
     if (subchain) {
-      switch (apiName) {
-        case 'general':
-          return subchain.apis.general;
-      }
+      return subchain.config.apis[apiName];
     }
 
     return config.apis[apiName];

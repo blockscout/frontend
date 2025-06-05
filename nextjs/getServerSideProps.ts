@@ -6,11 +6,12 @@ import type { RollupType } from 'types/client/rollup';
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
-const rollupFeature = config.features.rollup;
-const adBannerFeature = config.features.adsBanner;
 import isNeedProxy from 'lib/api/isNeedProxy';
 import * as cookies from 'lib/cookies';
 import type * as metadata from 'lib/metadata';
+
+const rollupFeature = config.features.rollup;
+const adBannerFeature = config.features.adsBanner;
 
 export interface Props<Pathname extends Route['pathname'] = never> {
   query: Route['query'];
@@ -257,6 +258,7 @@ export const accounts: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+// TODO @tom2drum construct multichain version of this
 export const accountsLabelSearch: GetServerSideProps<Props> = async(context) => {
   if (!config.features.addressMetadata.isEnabled || !context.query.tagType) {
     return {
@@ -383,6 +385,16 @@ export const mud: GetServerSideProps<Props> = async(context) => {
 export const interopMessages: GetServerSideProps<Props> = async(context) => {
   const rollupFeature = config.features.rollup;
   if (!rollupFeature.isEnabled || !rollupFeature.interopEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const multichain: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.multichain.isEnabled) {
     return {
       notFound: true,
     };

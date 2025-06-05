@@ -26,7 +26,7 @@ const getDisplayedAddress = (address: AddressProp, altHash?: string) => {
 
 const Link = chakra((props: LinkProps) => {
   const defaultHref = props.subchain ?
-    route({ pathname: '/subchain/[subchain-id]/address/[hash]', query: { ...props.query, hash: props.address.hash, 'subchain-id': props.subchain.id } }) :
+    route({ pathname: '/subchain/[subchain-id]/address/[hash]', query: { ...props.query, hash: props.address.hash, 'subchain-id': props.subchain.slug } }) :
     route({ pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } });
 
   return (
@@ -83,7 +83,7 @@ const Icon = (props: IconProps) => {
             color={ isVerified ? 'green.500' : undefined }
             borderRadius={ 0 }
           />
-          { props.subchain && <EntityBase.IconShield src={ props.subchain.icon } right="-1px"/> }
+          { props.subchain && <EntityBase.IconShield src={ props.subchain.config.UI.navigation.icon.default } right="-1px"/> }
         </Box>
       </Tooltip>
     );
@@ -103,7 +103,7 @@ const Icon = (props: IconProps) => {
           hash={ getDisplayedAddress(props.address) }
         />
         { isDelegatedAddress && <AddressIconDelegated isVerified={ Boolean(props.address.is_verified) }/> }
-        { props.subchain && <EntityBase.IconShield src={ props.subchain.icon }/> }
+        { props.subchain && <EntityBase.IconShield src={ props.subchain.config.UI.navigation.icon.default }/> }
       </Flex>
     </Tooltip>
   );

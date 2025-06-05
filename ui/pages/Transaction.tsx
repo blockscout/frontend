@@ -121,7 +121,7 @@ const TransactionPageContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ subchain ? `Transaction details on ${ subchain.name }` : 'Transaction details' }
+        title={ subchain ? `Transaction details on ${ subchain.config.chain.name }` : 'Transaction details' }
         backLink={ backLink }
         contentAfter={ tags }
         secondRow={ titleSecondRow }
