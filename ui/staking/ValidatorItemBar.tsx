@@ -91,7 +91,7 @@ const ValidatorItemBar = ({
                                 fontSize: '12px',
                                 fontWeight: 400,
                                 lineHeight: '20px',
-                                textTransform: 'capitalize',
+                                    
                                 // font-family: "HarmonyOS Sans";
                                 // font-size: 12px;
                                 // font-style: normal;

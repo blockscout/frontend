@@ -49,7 +49,6 @@ const ValidatorItem = ({
                             color: '#000',
                             lineHeight: 'normal',
                             fontStyle: 'normal',
-                            textTransform: 'capitalize',
                             fontFamily: 'HarmonyOS Sans',
                         }}
                     >
@@ -64,7 +63,7 @@ const ValidatorItem = ({
                             color: '#FF57B7',
                             lineHeight: 'normal',
                             fontStyle: 'normal',
-                            textTransform: 'capitalize',
+                                
                             fontFamily: 'HarmonyOS Sans',
                         }}
                     >
@@ -194,7 +193,6 @@ const StakingTabList = ({
                                         color: '#000',
                                         lineHeight: '20px',
                                         fontStyle: 'normal',
-                                        textTransform: 'capitalize',
                                         fontFamily: 'HarmonyOS Sans',
                                     }}
                                 >
@@ -209,7 +207,6 @@ const StakingTabList = ({
                                         color: '#000',
                                         lineHeight: '20px',
                                         fontStyle: 'normal',
-                                        textTransform: 'capitalize',
                                         fontFamily: 'HarmonyOS Sans',
                                     }}
                                 >
@@ -272,7 +269,7 @@ const StakingTabList = ({
                                             color: '#000',
                                             lineHeight: '20px',
                                             fontStyle: 'normal',
-                                            textTransform: 'capitalize',
+                                                
                                             fontFamily: 'HarmonyOS Sans',
                                         }}
                                     >
@@ -287,7 +284,6 @@ const StakingTabList = ({
                                             color: '#000',
                                             lineHeight: '20px',
                                             fontStyle: 'normal',
-                                            textTransform: 'capitalize',
                                             fontFamily: 'HarmonyOS Sans',
                                         }}
                                     >

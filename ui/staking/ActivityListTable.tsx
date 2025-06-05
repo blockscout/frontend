@@ -146,7 +146,7 @@ const CustomTableHeader = ({
                     fontStyle: 'normal',
                     fontWeight: 400,
                     lineHeight: 'normal',
-                    textTransform: 'capitalize',
+                        
                 }}>
                     { children }
                 </span>
@@ -238,7 +238,6 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
                     }}
                 >
                    { getShortAddress(record.txnHash || "") }
@@ -261,7 +260,6 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
                     }}
                 >
                     <TextWithIcon 
@@ -298,7 +296,7 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >{ getShortAddress(record.from || "") }</span>),
         },
@@ -317,7 +315,7 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >{ getShortAddress(record.to || "") }</span>),
         },
@@ -336,7 +334,6 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
                     }}
                 >{ dayjs.utc(record.date).format('DD MMM YYYY HH:mm [UTC]') }</span>),
         },
@@ -376,7 +373,7 @@ const TableApp = (props: {
                     fontStyle: 'normal',
                     fontWeight: 500,
                     lineHeight: 'normal',
-                    textTransform: 'capitalize',
+                        
                 }}  
             >
                 { content }

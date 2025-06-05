@@ -53,7 +53,7 @@ const TableTokenAmount = ({
             fontWeight: 500,
             lineHeight: 'normal',
             width: '100%',
-            textTransform: 'capitalize',
+                
             textAlign: 'center',
         }}
     >

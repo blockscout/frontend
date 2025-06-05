@@ -127,7 +127,7 @@ const InfoBoxItemLabel = ({
                     color: 'rgba(0, 0, 0, 0.4)',
                     lineHeight: 'normal',
                     fontStyle: 'normal',
-                    textTransform: 'capitalize',
+                        
                     fontFamily: 'HarmonyOS Sans',
                 }}>
                     { label }

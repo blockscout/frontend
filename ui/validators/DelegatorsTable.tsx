@@ -181,7 +181,7 @@ const tableHead: tableHeadType[] = [
                 fontStyle: 'normal',
                 fontWeight: 500,
                 lineHeight: 'normal',
-                textTransform: 'capitalize',
+                    
             }}>{ !!record.startDate ? dayjs.utc(record.startDate).format('DD MMM YYYY HH:mm [UTC]') : '-' }</span>
         ),
     },
@@ -331,7 +331,7 @@ const TableApp = (props: {
                     fontStyle: 'normal',
                     fontWeight: 500,
                     lineHeight: 'normal',
-                    textTransform: 'capitalize',
+                        
                 }}  
             >
                 { content }

@@ -439,7 +439,7 @@ const TableApp = (props: {
                             alignItems: 'center',
                             justifyContent: 'center',
                             lineHeight: 'normal',
-                            textTransform: 'capitalize',
+                                
                         }}
                     >
                         <ValidatorInfoBox record = { record } />
@@ -461,7 +461,7 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >
                     { FloatToPercent(record.votingPower) }
@@ -483,7 +483,7 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >
                     { FloatToPercent(record.commissionRate) }
@@ -504,7 +504,7 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >
                     { FloatToPercent(record.liveApr) }
@@ -537,7 +537,7 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >
                     { FloatToPercent(record.uptime) }
@@ -610,7 +610,7 @@ const TableApp = (props: {
                     fontStyle: 'normal',
                     fontWeight: 500,
                     lineHeight: 'normal',
-                    textTransform: 'capitalize',
+                        
                 }}  
             >
                 { content }

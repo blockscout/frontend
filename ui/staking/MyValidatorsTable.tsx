@@ -76,7 +76,7 @@ const TableTokenAmount = ({
             fontWeight: 500,
             lineHeight: 'normal',
             width: '100%',
-            textTransform: 'capitalize',
+                
             textAlign: 'center',
         }}
     >
@@ -583,7 +583,7 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >
                     { truncatePercentage(record.liveAPR) }
@@ -643,7 +643,7 @@ const TableApp = (props: {
                         fontWeight: 500,
                         lineHeight: 'normal',
                         textAlign: 'center',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >
                     { truncatePercentage(record.commission) }
@@ -719,7 +719,7 @@ const TableApp = (props: {
                     fontStyle: 'normal',
                     fontWeight: 500,
                     lineHeight: 'normal',
-                    textTransform: 'capitalize',
+                        
                 }}  
             >
                 { content }
