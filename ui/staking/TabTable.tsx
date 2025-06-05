@@ -48,15 +48,16 @@ const App = ({
                     position: 'relative',
                 }}
             >
-                <TabList borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} >
+                <TabList borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} padding={"0 24px "} >
                     <Tab>My Validators</Tab>
                     <Tab>Activity</Tab>
                 </TabList>
                 <Box 
                     top = {{ base: '-120%', lg: '-50%' }}
                     width = {{ base: '100%', lg: 'auto' }}
+                    transform = {{ base: 'translateX(12px) translateY(-10%)', lg: 'translateY(10%)' }}
                     justifyContent = {{ base: 'center', lg: 'flex-end' }}
-                    px = {{ base: '12px', lg: '0' }}
+                    px = {{ base: '20px', lg: '0' }}
                     
                     style={{ 
                         display: 'flex', 
@@ -83,6 +84,8 @@ const App = ({
                     ) : (
                         <Box 
                             width = {{ base: '100%', lg: '235px' , }}
+                            height = {{ base: 'auto', lg: 'auto' }}
+                            backgroundColor="transparent"
                         >
                             <DatePicker 
                                 value={ selectDateRange }

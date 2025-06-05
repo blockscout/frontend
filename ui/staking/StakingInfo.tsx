@@ -1,5 +1,4 @@
 /* eslint-disable */
-import useAccount from 'lib/web3/useAccount';
 import { Box, Grid, Flex, Button,  Text } from '@chakra-ui/react';
 import {
     Stat,
@@ -14,7 +13,7 @@ import { toBigInt , parseUnits} from 'ethers';
 import axios from 'axios';
 import { usePublicClient , useBalance , useAccount as useWagmiAccount } from 'wagmi';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
-import { token } from 'mocks/address/address';
+import useAccount from 'lib/web3/useAccount';
 import TokenAmountFormat from 'ui/validators/TokenAmountFormat';
 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
@@ -220,6 +219,18 @@ const NumberStats = ({
     hide: boolean;
     isWrapper?: boolean;
 }) => {
+
+    const { isConnected: isWalletConnnected } = useAccount();
+
+    const _amount = React.useMemo(() => {
+        return isWalletConnnected ? amount : '0.00';
+    }, [amount, isWalletConnnected]);
+
+    const  _value = React.useMemo(() => {
+        return isWalletConnnected ? value : '($0.00)';
+    }, [value, isWalletConnnected]);
+
+
     return (
         <Stat>
             <StatLabel>
@@ -233,7 +244,7 @@ const NumberStats = ({
             <Flex alignItems="baseline" justifyContent="flex-start" height={"32px"} marginTop="8px" >
                 <StatNumber>
                     <Text fontSize="22px" fontWeight="700" color="#000" lineHeight="32px" fontStyle="normal" textTransform="capitalize" fontFamily="HarmonyOS Sans">
-                        {hide ? '****' : amount}
+                        {hide ? '****' : _amount}
                     </Text>
                 </StatNumber>
                 
@@ -255,7 +266,7 @@ const NumberStats = ({
                                     MOCA
                                 </Text>
                                 <Text fontSize="12px" fontWeight="500" color="rgba(0, 0, 0, 0.20)" lineHeight="20px" fontStyle="normal" textTransform="capitalize" fontFamily="HarmonyOS Sans">
-                                    {hide ? '(****)' : value}
+                                    {hide ? '(****)' : _value}
                                 </Text>
                             </Flex>
                         </StatHelpText>
@@ -264,7 +275,7 @@ const NumberStats = ({
             </Flex>
             { isWrapper && (
                 <Text fontSize="12px" fontWeight="500" color="rgba(0, 0, 0, 0.20)" lineHeight="20px" fontStyle="normal" textTransform="capitalize" fontFamily="HarmonyOS Sans">
-                    {hide ? '****' : value}
+                    {hide ? '****' : _value}
                 </Text>
             )}
         </Stat>
@@ -386,7 +397,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Claimable Rewards"
-                            amount={ truncateTokenAmount(claimableRewards || 0) }
+                            amount={ truncateTokenAmount(claimableRewards || "0.00") }
                             value= { valueFormatter(valueCalculator(claimableRewards, tokenPrice)) }
                             isWrapper={true}
                             hide={isHideNumber}
@@ -419,7 +430,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_1}</IconContainer>}
                             label="Staked Amount"
-                            amount={ truncateTokenAmount(stakedAmount || 0) }
+                            amount={ truncateTokenAmount(stakedAmount || "0.00") }
                             value= { valueFormatter(valueCalculator(stakedAmount, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -429,7 +440,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_2}</IconContainer>}
                             label="Withdrawing Amount"
-                            amount={ truncateTokenAmount(withdrawingAmount || 0)  }
+                            amount={ truncateTokenAmount(withdrawingAmount || "0.00")  }
                             value= { valueFormatter(valueCalculator(withdrawingAmount, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -439,7 +450,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Total Rewards"
-                            amount={ truncateTokenAmount(totalRewards || 0) }
+                            amount={ truncateTokenAmount(totalRewards || "0.00") }
                             value= { valueFormatter(valueCalculator(totalRewards, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -448,7 +459,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_4}</IconContainer>}
                             label="Available Balance"
-                            amount= { truncateTokenAmount(formattedBalanceStr || 0) }
+                            amount= { truncateTokenAmount(formattedBalanceStr || "0.00") }
                             value= { valueFormatter(valueCalculator(formattedBalanceStr, tokenPrice)) }
                             hide={isHideNumber}
                         />

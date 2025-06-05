@@ -78,7 +78,7 @@ const DatePickerFilter = ({
 
 
     return (
-        <div className="date-picker-filter" style={{ width: '100%', height: 'auto', transform: 'translateY(-16px)'}}>
+        <div className="date-picker-filter" style={{ width: '100%', height: 'auto'}}>
             <ConfigProvider
                 theme={{
                 token: {
@@ -92,7 +92,7 @@ const DatePickerFilter = ({
                         e.stopPropagation();
                         setOpen(true);
                     }}
-                    style={{ width: '100%', height: 'auto', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '16px'}}>
+                    style={{ width: '100%', height: 'auto', display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
                     <DatePicker 
                         style={{ width: '100%', height: '42px', 
                             borderRadius: 9999, border: '1px solid rgba(0, 46, 51, 0.10)',

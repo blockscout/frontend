@@ -1,6 +1,6 @@
 /* eslint-disable */
 "use client";
-import { Flex , Text , Button} from '@chakra-ui/react';
+import { Flex , Text , Box , Button} from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
 import { waitForTransactionReceipt } from '@wagmi/core'
 import BigNumber from 'bignumber.js';
@@ -621,9 +621,20 @@ const ObjectDetails: NextPage = () => {
         isHideNumber = { isHideNumber }
         setIsHideNumber = { setIsHideNumber }
       />
-        <TabTable 
-            handleStake = {handleStakeMore}
-        />
+      <Box
+          style={{
+              width: '100%',
+              backgroundColor: 'transparent',
+              borderRadius: '12px',
+              
+              border: '1px solid rgba(0, 0, 0, 0.06)',
+          }}
+          padding = {{ base: "40px 0 12px 0", lg: "24px 0", }}
+      >
+          <TabTable 
+              handleStake = {handleStakeMore}
+          />
+      </Box>
     </PageNextJs>
   );
 };
