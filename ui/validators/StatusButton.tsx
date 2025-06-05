@@ -20,7 +20,7 @@ const StatusButton = ({ status, onClick }: { status: statusstring; onClick?: () 
         },
         "Inactive": {
             color: "rgba(0, 0, 0, 0.40)",
-            backgroundColor: " linear-gradient(0deg, rgba(0, 85, 99, 0.08) 0%, rgba(0, 85, 99, 0.08) 100%), #FFF)"
+            backgroundColor: "rgba(0, 85, 99, 0.08) "
         },
         "Jailed": {
             color: "#EE6969",

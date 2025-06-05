@@ -359,6 +359,20 @@ const StakingInfo = ({
     const { chain } = useWagmiAccount();
     const publicClient = usePublicClient();
 
+    const isClaimableEnough = React.useMemo(() => {
+        if (claimableRewards === null || claimableRewards === undefined) {
+            return false;
+        }
+        if (isNaN(Number(claimableRewards))) {
+            return false;
+        }
+        if (Number(claimableRewards) === 0  || Number(claimableRewards) < 0.0001) {
+            return false;
+        }
+        return true;
+    }, [claimableRewards]);
+
+
 
     return (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 2fr' }} 
@@ -381,12 +395,12 @@ const StakingInfo = ({
                             <PlainButton 
                                 text="Claim all"
                                 onClick={ handleClaimAll }
-                                disabled={ !WalletConnected || Number(claimableRewards) === 0 || Number(claimableRewards) < 0 }
+                                disabled={ !WalletConnected || !isClaimableEnough }
                             />
                             <PlainButton2 
                                 text="Compounding"
                                 onClick={ handleCompound }
-                                disabled={ !WalletConnected || Number(claimableRewards) === 0 || Number(claimableRewards) < 0 }
+                                disabled={ !WalletConnected || !isClaimableEnough }
                             />
                         </Flex>
                     </Flex>

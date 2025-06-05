@@ -170,7 +170,8 @@ const StakingTabList = ({
 
                 <TabPanels color="#000" borderRadius={"12px"}>
                     <TabPanel padding="0" >
-                        <Box
+                        {
+                        myValidatorsList.length > 0 && (<Box
                             width="100%"
                             borderTop="1px solid rgba(0, 46, 51, 0.10)"
                             borderBottom="1px solid rgba(0, 46, 51, 0.10)"
@@ -215,7 +216,9 @@ const StakingTabList = ({
                                     Live APR
                                 </span>
                             </Flex>
-                        </Box>
+                        </Box>)
+                        }
+
                         <Box
                             width="100%"
                             backgroundColor="#fff"
@@ -226,7 +229,7 @@ const StakingTabList = ({
                             { myValidatorsList.length === 0 && ( 
                                 isMyValidatorLoading ? spinner :
                                 <EmptyRecords text="You haven't stake in a bonded Validators" /> )}
-                            { myValidatorsList.map((validator) => (
+                                { myValidatorsList.map((validator) => (
                                 <ValidatorItem
                                     key={validator.validatorAddress}
                                     validator={validator}
@@ -245,52 +248,54 @@ const StakingTabList = ({
                         </Box>
                     </TabPanel>
                     <TabPanel padding="0" boxShadow="none">
-                        <Box
-                            width="100%"
-                            borderTop="1px solid rgba(0, 46, 51, 0.10)"
-                            borderBottom="1px solid rgba(0, 46, 51, 0.10)"
-                            marginTop={"12px"}
-                        >
-                            <Flex
-                                flexDirection="row"
-                                justifyContent="space-between"
-                                alignItems="center"
+                        {
+                            filteredOtherValidators.length > 0  && (<Box
                                 width="100%"
-                                px="16px"
-                                py="8px"
-                            > 
-                                <span 
-                                    style={{
-                                        height: 'auto',
-                                        width: 'auto',
-                                        fontSize: '12px',
-                                        fontWeight: '400',
-                                        color: '#000',
-                                        lineHeight: '20px',
-                                        fontStyle: 'normal',
-                                        textTransform: 'capitalize',
-                                        fontFamily: 'HarmonyOS Sans',
-                                    }}
-                                >
-                                    Other Validators
-                                </span>
-                                <span 
-                                    style={{
-                                        height: 'auto',
-                                        width: 'auto',
-                                        fontSize: '12px',
-                                        fontWeight: '400',
-                                        color: '#000',
-                                        lineHeight: '20px',
-                                        fontStyle: 'normal',
-                                        textTransform: 'capitalize',
-                                        fontFamily: 'HarmonyOS Sans',
-                                    }}
-                                >
-                                    Live APR
-                                </span>
-                            </Flex>
-                        </Box>
+                                borderTop="1px solid rgba(0, 46, 51, 0.10)"
+                                borderBottom="1px solid rgba(0, 46, 51, 0.10)"
+                                marginTop={"12px"}
+                            >
+                                <Flex
+                                    flexDirection="row"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    width="100%"
+                                    px="16px"
+                                    py="8px"
+                                > 
+                                    <span 
+                                        style={{
+                                            height: 'auto',
+                                            width: 'auto',
+                                            fontSize: '12px',
+                                            fontWeight: '400',
+                                            color: '#000',
+                                            lineHeight: '20px',
+                                            fontStyle: 'normal',
+                                            textTransform: 'capitalize',
+                                            fontFamily: 'HarmonyOS Sans',
+                                        }}
+                                    >
+                                        Other Validators
+                                    </span>
+                                    <span 
+                                        style={{
+                                            height: 'auto',
+                                            width: 'auto',
+                                            fontSize: '12px',
+                                            fontWeight: '400',
+                                            color: '#000',
+                                            lineHeight: '20px',
+                                            fontStyle: 'normal',
+                                            textTransform: 'capitalize',
+                                            fontFamily: 'HarmonyOS Sans',
+                                        }}
+                                    >
+                                        Live APR
+                                    </span>
+                                </Flex>
+                            </Box>)
+                        }
                         <Box
                             width="100%"
                             backgroundColor="#fff"
