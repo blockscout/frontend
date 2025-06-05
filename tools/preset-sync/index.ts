@@ -26,6 +26,7 @@ const PRESETS = {
   scroll_sepolia: 'https://scroll-sepolia.blockscout.com',
   shibarium: 'https://www.shibariumscan.io',
   stability_testnet: 'https://stability-testnet.blockscout.com',
+  tac_turin: 'https://tac-turin.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
   zilliqa_prototestnet: 'https://zilliqa-prototestnet.blockscout.com',

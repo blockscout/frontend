@@ -18,6 +18,10 @@ const styles = {
         bgColor: 'address.highlighted.bg',
         zIndex: -1,
       },
+      '& .entity__shield': {
+        borderColor: 'address.highlighted.bg',
+        bgColor: 'address.highlighted.bg',
+      },
     },
   },
   '.address-entity_no-copy': {

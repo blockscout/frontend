@@ -23,6 +23,7 @@ import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
+import * as OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
@@ -31,6 +32,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
+import TacOperationTag from 'ui/shared/TacOperationTag';
 
 import SearchResultEntityTag from './SearchResultEntityTag';
 
@@ -214,6 +216,28 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
         );
       }
 
+      case 'tac_operation': {
+        return (
+          <OperationEntity.Container>
+            <OperationEntity.Icon/>
+            <OperationEntity.Link
+              isLoading={ isLoading }
+              id={ data.tac_operation.operation_id }
+              onClick={ handleLinkClick }
+            >
+              <OperationEntity.Content
+                asProp="mark"
+                id={ data.tac_operation.operation_id }
+                textStyle="sm"
+                fontWeight={ 700 }
+                mr={ 2 }
+              />
+            </OperationEntity.Link>
+            <TacOperationTag type={ data.tac_operation.type }/>
+          </OperationEntity.Container>
+        );
+      }
+
       case 'blob': {
         return (
           <BlobEntity.Container>
@@ -323,6 +347,11 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'transaction': {
         return (
           <Text color="text.secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+        );
+      }
+      case 'tac_operation': {
+        return (
+          <Text color="text.secondary">{ dayjs(data.tac_operation.timestamp).format('llll') }</Text>
         );
       }
       case 'user_operation': {
