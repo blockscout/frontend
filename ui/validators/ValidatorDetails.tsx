@@ -14,6 +14,15 @@ import { Flex, Box, Tooltip } from '@chakra-ui/react';
 import { IconButton, useClipboard,} from '@chakra-ui/react';
 
 
+const getShortValidatorName = (name: string) => {
+    if (!name) return '';
+    const maxLength = 20; // 设置最大长度
+    if (name.length <= maxLength) {
+        return name;
+    }
+    return name.slice(0, maxLength) + '...';
+}
+
 const copyIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
         <rect x="5.05566" y="5.44446" width="7" height="7" rx="0.583333" stroke="#FF57B7" strokeWidth="1.12" strokeLinejoin="round"/>
@@ -220,7 +229,7 @@ const ValidatorDetails = () => {
                                     textTransform="capitalize"
                                     userSelect="none"
                                     as ="span"
-                                > { validatorName } </Text>
+                                > { getShortValidatorName(validatorName) } </Text>
                             </Flex>
                         </Text>
                         <Text

@@ -243,7 +243,6 @@ const TableApp = (props: {
     const { open: openModal } = useAppKit();
 
     const handleRowClick = (item: any) => { 
-        console.log('Row clicked:', item);
         const { validator } = item;
         router.push({
             pathname: '/validator-detail/[addr]',
@@ -276,6 +275,10 @@ const TableApp = (props: {
             [defaultSortOrder[0], defaultSortOrder[1]]
         );
     }, [data, sortBy, sortOrder]);
+
+    useEffect(() => {
+        console.log('Sorted Data:', sortedData);
+    }, [sortedData]);
 
     const formattedBalanceStr = React.useMemo(() => {
         if (balanceData && !!balanceData.value) {
@@ -642,6 +645,7 @@ const TableApp = (props: {
         <Box className={ styles.loader }></Box>
     </div> );
 
+
     if (isLoading) {
         return spinner;
     }
@@ -678,7 +682,7 @@ const TableApp = (props: {
             <div style={{ overflowX: 'auto', width: '100%' }}>
                 <Table
                     columns={AntDesignTableColumns}
-                    dataSource={sortedData}
+                    dataSource={ sortedData }
                     className="node-staking-custom-table"
                     scroll={{ x: 'auto' }}
                     pagination={false}

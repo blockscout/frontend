@@ -138,7 +138,6 @@ const tableHead: tableHeadType[] = [
         key: 'delegatorAddress',
         width : '25%',
         render: (record: any) => (
-            console.log('record', record),
             <ValidatorInfo
                 validatorName={ getShortAddress(record.delegatorAddress) }
                 address={ record.delegatorAddress }

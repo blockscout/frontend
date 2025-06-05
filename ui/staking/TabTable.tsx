@@ -12,8 +12,12 @@ import React from 'react';
 
 const App = ({
     handleStake,
+    requestMyStakingInfo ,
+    requestMyStakingTableList ,
 }: {
     handleStake: () => void;
+    requestMyStakingInfo: () => void;
+    requestMyStakingTableList: () => void;
 }) => {
     const [ searchTerm, setSearchTerm ] = React.useState<string>('');
     const [ isInitialLoading, setIsInitialLoading ] = React.useState<boolean>(false);
@@ -36,7 +40,12 @@ const App = ({
 
 
   return (
-        <Tabs color="#FF57B7" colorScheme="#FF57B7" marginTop={ { base: '24px', lg: '0' } }
+        <Tabs 
+            color="#FF57B7"
+            colorScheme="#FF57B7"
+            marginTop={ { base: '24px', lg: '0' } }
+            isLazy
+            lazyBehavior="unmount"
             index = { currentTabIndex }
             onChange = { (index: number) => {
                 setCurrentTabIndex(index);
@@ -105,6 +114,10 @@ const App = ({
                     <MyValidatorsTable 
                         searchTerm={ searchTerm }
                         handleStake={ handleStake }
+                        callback={ () => {
+                            requestMyStakingInfo();
+                            requestMyStakingTableList();
+                        }}
                     />
                 </TabPanel>
                 <TabPanel>

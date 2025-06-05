@@ -130,7 +130,7 @@ const PlainButton = ({text, onClick, disabled = false} : {
             borderRadius={9999}
             disabled={ disabled }
             _hover={ disabled ?  {} :  { backgroundColor: "#FFCBEC" , opacity: 0.9 }}
-            _active={ disabled ? { backgroundColor: "#FFCBEC" , } : { opacity: 0.8 }}
+            _active={ disabled ? {} : { backgroundColor: "#FFCBEC" , opacity: 0.8 }}
             width={ '100px' }
             height={ '32px' }
             variant='solid'

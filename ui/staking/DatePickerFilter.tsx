@@ -102,6 +102,7 @@ const DatePickerFilter = ({
                         className="stake-date-picker"
                         showNow={false}
                         value={value}
+                        allowEmpty={[true, true]}
                         disabled={isDisabled}
                         open={open}
                         separator = {

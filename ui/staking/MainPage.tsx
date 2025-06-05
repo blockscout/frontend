@@ -633,6 +633,8 @@ const ObjectDetails: NextPage = () => {
       >
           <TabTable 
               handleStake = {handleStakeMore}
+              requestMyStakingInfo = {requestMyStakingInfo}
+              requestMyStakingTableList = {requestMyStakingTableList}
           />
       </Box>
     </PageNextJs>

@@ -15,8 +15,14 @@ import FromAndToSelect from 'ui/staking/FromAndToSelect';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import React ,  { useMemo, useCallback, useEffect } from 'react';
 import axios from 'axios';
+import TokenAmountFormat from 'ui/validators/TokenAmountFormat';
 import styles from 'ui/staking/spinner.module.css';
 
+const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | number ) => {
+    const amount = typeof tokenAmount === 'string' ? Number(tokenAmount) : tokenAmount;
+    const price = typeof tokenPrice === 'string' ? Number(tokenPrice) : tokenPrice;
+    return TokenAmountFormat(amount * price);
+}
 
 const formatNumberWithCommas  = (input: string) => {
   if (!input) return "";
@@ -111,6 +117,8 @@ const CommonModal = ({
     const [ loading, setLoading ] = React.useState<boolean>(false);
     const [ isMyValidatorLoading, setIsMyValidatorLoading ] = React.useState<boolean>(false);
     const [ isAllValidatorLoading, setIsAllValidatorLoading ] = React.useState<boolean>(false);
+
+    const { tokenPrice } = useStakeLoginContextValue();
 
 
     const spinner = (
@@ -422,7 +430,7 @@ const CommonModal = ({
                                 <Box width="100%" height="auto">
                                     <ReadOnlyInput 
                                         amount = { currentAmount }
-                                        price = { currentAmount }
+                                        price = { valueCalculator(currentAmount, tokenPrice || 0) }
                                     />
                                 </Box>
                             ): (

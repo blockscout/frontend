@@ -179,14 +179,18 @@ const AllValidatorPage: NextPage = () => {
   const handleSearchChange = () => () => {};
 
   const filteredList = React.useMemo(() => {
-    const _ = searchValue.toLowerCase();
-    if (searchValue.trim()) {
-      return tableDataList.filter((item: any) => {
-        const searchString = searchValue.toLowerCase();
-        return (item.validator || "").toLowerCase().includes(_)
+    const trimedSearchValue = searchValue.trim().toLowerCase();
+    if (!trimedSearchValue) {
+      return tableDataList;
+    } else {
+      return tableDataList.filter((item) => {
+        const { validatorName, validator} = item;
+        return (
+          validatorName.toLowerCase().includes(trimedSearchValue) ||
+          validator.toLowerCase().includes(trimedSearchValue)
+        );
       });
     }
-    return tableDataList;
   }, [ tableDataList, searchValue ]);
 
 

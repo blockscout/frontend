@@ -1,6 +1,7 @@
 /* eslint-disable */
-import { Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
+import { Tbody, Thead , Flex, Avatar, Tr, Th,  Td, Box } from '@chakra-ui/react';
 import {  useDisclosure, } from '@chakra-ui/react';
+import ValidatorInfo from 'ui/staking/ValidatorInfo';
 import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import { debounce, orderBy } from 'lodash';
 import { Table } from 'antd';
@@ -17,10 +18,10 @@ import FloatToPercent from 'ui/validators/FloatToPercent';
 import isTxConfirmed from 'ui/staking/TransactionConfirmed';
 import { toBigInt , parseUnits} from 'ethers';
 import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
+import LinkInternal from 'ui/shared/links/LinkInternal';
+import { route } from 'nextjs-routes';
 import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
 import styles from 'ui/staking/spinner.module.css';
-
-
 
 
 const truncateTokenAmount = (num : number | string | null | undefined): string => {
@@ -82,6 +83,25 @@ const TableTokenAmount = ({
         <span>{ truncateTokenAmount(amount) }</span>
         <span style={{ color: '#000', marginLeft: '4px' }}>{ symbol }</span>
     </span>
+    );
+}
+
+
+const  ValidatorInfoBox = ({ record } : { record: any }) => {
+    return (
+        <Flex flexDirection="row" alignItems="center" gap="8px" width="100%">
+            <Box>
+                <Avatar
+                    name="MOCA"
+                    src="/static/moca-brand.svg"
+                    size='2xs'
+                    width="20px"
+                    height="20px"
+                    borderRadius="full"
+                />
+            </Box>
+            <span>{record.validatorName}</span>
+        </Flex>
     );
 }
 
@@ -528,19 +548,25 @@ const TableApp = (props: {
             minWidth: '190px',
             width: '250px',
             render: (record) => (
-                <span 
-                    style={{ 
-                        color: '#A80C53',
-                        fontFamily: "HarmonyOS Sans",
-                        fontSize: '12px',
-                        fontStyle: 'normal',
-                        fontWeight: 500,
-                        lineHeight: 'normal',
-                        textTransform: 'capitalize',
-                    }}
+                <LinkInternal
+                    href={ route({ pathname: '/validator-detail/[addr]', query: { addr: record.validatorAddress } }) }
                 >
-                   { getShortAddress(record.validatorAddress || "") }
-                </span>
+                    <span 
+                        style={{ 
+                            color: '#A80C53',
+                            fontFamily: "HarmonyOS Sans",
+                            fontSize: '12px',
+                            fontStyle: 'normal',
+                            fontWeight: 500,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            lineHeight: 'normal',
+                        }}
+                    >
+                        <ValidatorInfoBox record = { record } />
+                    </span>
+                </LinkInternal>
             )
         },
         {
@@ -863,33 +889,41 @@ const defaultLimit = 20;
 
 const TableWrapper = ({
     searchTerm,
-    handleStake
+    handleStake,
+    callback = () => { }
 }: {
     searchTerm: string;
     handleStake: () => void;
+    callback?: () => void;
 }) => {
 
     const { serverUrl : url , tokenPrice} = useStakeLoginContextValue();
 
     const { address: userAddr } = useAccount();
     const [ toNext, setToNext ] = React.useState<boolean>(true);
-    const [nextKey, setNextKey] = useState<string | null>(initial_nextKey);
-    const [currentPageKey, setCurrentPageKey] = useState<string | null>(initial_nextKey);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [tableData, setTableData] = useState<any[]>([]);
-    const [isTableLoading, setIsTableLoading] = useState(false);
-    const [totalCount, setTotalCount] = useState<number>(0);
-    const [keyStack, setKeyStack] = useState<(string | null)[]>([initial_nextKey]);
+    const [ nextKey, setNextKey] = useState<string | null>(initial_nextKey);
+    const [ currentPageKey, setCurrentPageKey] = useState<string | null>(initial_nextKey);
+    const [ currentPage, setCurrentPage] = useState<number>(1);
+    const [ tableData, setTableData] = useState<any[]>([]);
+    const [ isTableLoading, setIsTableLoading] = useState(false);
+    const [ totalCount, setTotalCount] = useState<number>(0);
+    const [ keyStack, setKeyStack] = useState<(string | null)[]>([initial_nextKey]);
     const currentKeyRef = useRef<string | null>(initial_nextKey);
 
+
     const filteredData = React.useMemo(() => {
-        if (searchTerm) {
+        const trimedSearchValue = searchTerm.trim().toLowerCase();
+        if (!trimedSearchValue) {
+            return tableData;
+        } else {
             return tableData.filter((item) => {
-                const lowerCaseSearchTerm = searchTerm.toLowerCase();
-                return item.validatorAddress.toLowerCase().includes(lowerCaseSearchTerm);
+            const { validatorName, validatorAddress} = item;
+            return (
+                validatorName.toLowerCase().includes(trimedSearchValue) ||
+                validatorAddress.toLowerCase().includes(trimedSearchValue)
+            );
             });
         }
-        return tableData;
     }, [ tableData, searchTerm ]);
     
 
@@ -993,7 +1027,7 @@ const TableWrapper = ({
                 isLoading={ isTableLoading }
                 totalCount={ totalCount }
                 fetcher = { () => {
-                    requestDelegatorsInfo();
+                    callback && callback();
                 } }
                 currentPage={ currentPage }
                 handleStake={ handleStake }

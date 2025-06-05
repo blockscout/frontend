@@ -2,6 +2,7 @@
 import React from 'react';
 import { Avatar, Flex, Text } from '@chakra-ui/react';
 
+
 const amountFormat = (amount: string) => {
     const v = Number(amount);
     if (isNaN(v)) {
@@ -12,6 +13,9 @@ const amountFormat = (amount: string) => {
         maximumFractionDigits: 8,
     });
 }
+
+
+
 
 const ReadOnlyInput = ({
     amount,
