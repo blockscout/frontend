@@ -43,7 +43,10 @@ function getPaginationParamsFromQuery(queryString: string | Array<string> | unde
 }
 
 function getNextPageParams<R extends PaginatedResources>(data: ResourcePayload<R> | undefined) {
-  if (!data || typeof data !== 'object' || data === null || !('next_page_params' in data)) {
+  if (!data || typeof data !== 'object' || data === null || Array.isArray(data)) {
+    return;
+  }
+  if (!('next_page_params' in data)) {
     return;
   }
 
