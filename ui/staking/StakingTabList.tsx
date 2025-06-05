@@ -19,6 +19,7 @@ const ValidatorItem = ({
     isDisabled?: boolean;
     onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }) => {
+    
     return (
         <Flex 
                 key={validator.validatorAddress} 
