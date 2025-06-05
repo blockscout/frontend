@@ -446,7 +446,7 @@ const TableApp = (props: {
         },
         {
             label: 'Voting Power',
-            tips: `Represents a node's influence in network decisions, proportional to its stake.` ,
+            tips: `The influence a validator has in network governance decisions, based on its stake.` ,
             key: 'votingPower',
             allowSort: true,
             render: (record) => (

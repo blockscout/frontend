@@ -357,7 +357,7 @@ const AllValidatorPage: NextPage = () => {
                 fontStyle="normal"
                 as={'span'}
                 fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Total Staking</Text> }
-                tips={ `Total Amount Staked Across the Blockchain Network` }
+                tips={ `Total tokens staked across all nodes and users on the blockchain network.` }
             />
             <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">
               {truncateTokenAmount(Number(totalStaked || '0.00'))}
@@ -372,10 +372,9 @@ const AllValidatorPage: NextPage = () => {
                 lineHeight="16px"
                 fontStyle="normal"
                 as={'span'}
-                textTransform="capitalize"
                 fontFamily="HarmonyOS Sans"
                 fontWeight="400" color="rgba(0, 0, 0, 0.4)">Epoch</Text> }
-                tips={ `A fixed period in PoS blockchains for validator selection, staking, and reward distribution.` }
+                tips={ `A fixed duration for selecting validators, assigning staking tasks, and distributing rewards.` }
             />
             <Flex alignItems="center" justifyContent="space-between">
                 <InfoNumberWrapper  number = { totalEpoch.current || '-' } />
@@ -413,9 +412,8 @@ const AllValidatorPage: NextPage = () => {
                 lineHeight="16px"
                 fontStyle="normal"
                 as={'span'}
-                textTransform="capitalize"
                 fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Validators</Text> }
-                tips={ `Node operator responsible for verifying transactions, securing the blockchain, and earning staking rewards.` }
+                tips={ `Total number of active validators responsible for verifying transactions and maintaining blockchain security.` }
             />
             <InfoNumberWrapper number = { totalValidators || '0' } />
             </Box>
@@ -428,9 +426,8 @@ const AllValidatorPage: NextPage = () => {
                 lineHeight="16px"
                 fontStyle="normal"
                 as={'span'}
-                textTransform="capitalize"
                 fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Delegators</Text> }
-                tips={ `Individual who stakes their tokens with a validator, earning rewards without running a node directly.` }
+                tips={ `Users who delegate their tokens to validators and receive rewards without running nodes themselves.` }
             />
             <InfoNumberWrapper number = { totalDelegators || '0' } />
             </Box>
