@@ -1,5 +1,4 @@
 import { chakra } from '@chakra-ui/react';
-import { pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -23,9 +22,9 @@ const TokenAdvancedFilterLink = ({ isLoading, token }: Props) => {
     return null;
   }
 
-  const queryParams = pickBy({
+  const queryParams = {
     token_contract_address_hashes_to_include: [ token.address_hash ],
-  }, (value) => value !== undefined);
+  };
 
   return (
     <Link
