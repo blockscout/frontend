@@ -20,6 +20,42 @@ import TokenAmountFormat from 'ui/validators/TokenAmountFormat';
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
 
+const truncateTokenAmount = (num : number | string | null | undefined): string => {
+    let _num = num;
+    if (typeof num === 'string') {
+      _num = Number(_num);
+    }
+    if (typeof _num !== 'number' || isNaN(_num)) return '-';
+
+    const truncated = Math.trunc(_num * 100) / 100;
+
+    if (truncated === 0 && _num > 0 && _num < 0.01) {
+      return '<0.01';
+    }
+
+    const hasDecimal = truncated % 1 !== 0;
+    return hasDecimal ? truncated.toFixed(2).replace(/\.?0+$/, '') : truncated.toString();
+}
+
+
+const truncatePercentage = ( _num: number | string | null | undefined): string => {
+  let num = _num;
+  if (typeof num === 'string') {
+      num = Number(num);
+  } else if (!num || isNaN(num)) {
+    return '-';
+  }
+  const rounded = +(num.toFixed(2)); // 四舍五入到两位
+
+  if (rounded === 0 && num > 0 && num < 0.01) {
+    return '<0.01%';
+  }
+
+  const hasDecimal = rounded % 1 !== 0;
+  return hasDecimal ? `${rounded}` + '%' : `${rounded}%`;
+}
+
+
 
 const AvailableAmountFormat = (amount: string | number) => {
     return Number(amount).toFixed(2);
@@ -336,7 +372,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Claimable Rewards"
-                            amount={ Number(claimableRewards || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 }) }
+                            amount={ truncateTokenAmount(claimableRewards || 0) }
                             value= { valueFormatter(valueCalculator(claimableRewards, tokenPrice)) }
                             isWrapper={true}
                             hide={isHideNumber}
@@ -369,7 +405,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_1}</IconContainer>}
                             label="Staked Amount"
-                            amount={ Number(stakedAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
+                            amount={ truncateTokenAmount(stakedAmount || 0) }
                             value= { valueFormatter(valueCalculator(stakedAmount, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -379,7 +415,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_2}</IconContainer>}
                             label="Withdrawing Amount"
-                            amount={ Number(withdrawingAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
+                            amount={ truncateTokenAmount(withdrawingAmount || 0)  }
                             value= { valueFormatter(valueCalculator(withdrawingAmount, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -389,7 +425,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Total Rewards"
-                            amount={ Number(totalRewards || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
+                            amount={ truncateTokenAmount(totalRewards || 0) }
                             value= { valueFormatter(valueCalculator(totalRewards, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -398,7 +434,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_4}</IconContainer>}
                             label="Available Balance"
-                            amount= { AvailableAmountFormat(formattedBalanceStr || 0) }
+                            amount= { truncateTokenAmount(formattedBalanceStr || 0) }
                             value= { valueFormatter(valueCalculator(formattedBalanceStr, tokenPrice)) }
                             hide={isHideNumber}
                         />
