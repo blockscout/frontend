@@ -3,58 +3,74 @@ import {
     Tabs, Tab, TabList, TabPanels, TabPanel, Box
 } from '@chakra-ui/react';
 import { Flex, Text } from '@chakra-ui/react';
-import React from 'react';
+import React ,  { useMemo } from 'react';
 import ValidatorInfo from 'ui/staking/ValidatorInfo';
 import EmptyRecords from 'ui/staking/EmptyRecords';
 import styles from 'ui/staking/spinner.module.css';
 
+const noop = () => {};
 
 const ValidatorItem = ({
-    validatorName,
-    ValidatorAddress,
-    apr,
+    validator,
     isDisabled = false,
     onClick,
-}: {
-
-    validatorName: string;
-    ValidatorAddress: string;
-    apr: number | string;
+}:  {
+    validator: any;
     isDisabled?: boolean;
     onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }) => {
     return (
-        <Flex
-            flexDirection="row"
-            justifyContent="space-between"
-            alignItems="center"
-            width="100%"
-            padding="16px"
-            cursor={isDisabled ? 'not-allowed' : 'pointer'}
-        >
-            <Text
-                fontSize="14px"
-                fontWeight="500"
-                color="#000"
-                lineHeight="normal"
-                fontStyle="normal"
-                textTransform="capitalize"
-                fontFamily="HarmonyOS Sans"
+        <Flex 
+                key={validator.validatorAddress} 
+                onClick={ isDisabled ? noop : onClick }
+                width="100%"
+                _hover={{
+                    backgroundColor: '#FEF1F9',
+                }}
+                cursor={ isDisabled ? 'not-allowed' : 'pointer'}
+                opacity={ isDisabled ? 0.5 : 1}
+                borderBottom="1px solid rgba(0, 46, 51, 0.10)"
             >
-                {validatorName || getShortAddress(ValidatorAddress)}
-            </Text>
-            <Text
-                fontSize="14px"
-                fontWeight="500"
-                color="#FF57B7"
-                lineHeight="normal"
-                fontStyle="normal"
-                textTransform="capitalize"
-                fontFamily="HarmonyOS Sans"
-            >
-                { (Number(apr) * 100).toFixed(1) }%
-            </Text>
-        </Flex>
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '16px',
+                    alignItems: 'center',
+                }}>
+                    <span 
+                        style={{
+                            height: 'auto',
+                            width: 'auto',
+                            fontSize: '14px',
+                            fontWeight: '500',
+                            color: '#000',
+                            lineHeight: 'normal',
+                            fontStyle: 'normal',
+                            textTransform: 'capitalize',
+                            fontFamily: 'HarmonyOS Sans',
+                        }}
+                    >
+                        <ValidatorInfo  validatorName = {(validator.validatorAddress || '')}  record={validator} />
+                    </span>
+                    <span
+                        style={{
+                            height: 'auto',
+                            width: 'auto',
+                            fontSize: '14px',
+                            fontWeight: '500',
+                            color: '#FF57B7',
+                            lineHeight: 'normal',
+                            fontStyle: 'normal',
+                            textTransform: 'capitalize',
+                            fontFamily: 'HarmonyOS Sans',
+                        }}
+                    >
+                        {  (Number(validator.liveApr  || 0) * 100).toFixed(1)  }%
+                    </span>
+                </div>
+            </Flex>
     );
 }
 
@@ -90,6 +106,12 @@ const StakingTabList = ({
             <span className ="modal-spinner"></span>
         </div>
     );
+
+    const filteredOtherValidators = useMemo(() => {
+        return allValidatorsList.filter(
+            (validator) => !myValidatorsList.some(myValidator => myValidator.validatorAddress === validator.validatorAddress)
+        );
+    }, [myValidatorsList, allValidatorsList]);
 
     return (
         <Box  borderRadius={"12px"}>
@@ -145,55 +167,54 @@ const StakingTabList = ({
                     </TabList>
                 </div>
 
-                <Box
-                    width="100%"
-                    borderTop="1px solid rgba(0, 46, 51, 0.10)"
-                    borderBottom="1px solid rgba(0, 46, 51, 0.10)"
-                    marginTop={"12px"}
-                >
-                    <Flex
-                        flexDirection="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        width="100%"
-                        px="16px"
-                        py="8px"
-                    > 
-                        <span 
-                            style={{
-                                height: 'auto',
-                                width: 'auto',
-                                fontSize: '12px',
-                                fontWeight: '400',
-                                color: '#000',
-                                lineHeight: '20px',
-                                fontStyle: 'normal',
-                                textTransform: 'capitalize',
-                                fontFamily: 'HarmonyOS Sans',
-                            }}
-                        >
-                            All Validators
-                        </span>
-                        <span 
-                            style={{
-                                height: 'auto',
-                                width: 'auto',
-                                fontSize: '12px',
-                                fontWeight: '400',
-                                color: '#000',
-                                lineHeight: '20px',
-                                fontStyle: 'normal',
-                                textTransform: 'capitalize',
-                                fontFamily: 'HarmonyOS Sans',
-                            }}
-                        >
-                            Live APR
-                        </span>
-                    </Flex>
-                </Box>
-
                 <TabPanels color="#000" borderRadius={"12px"}>
                     <TabPanel padding="0" >
+                        <Box
+                            width="100%"
+                            borderTop="1px solid rgba(0, 46, 51, 0.10)"
+                            borderBottom="1px solid rgba(0, 46, 51, 0.10)"
+                            marginTop={"12px"}
+                        >
+                            <Flex
+                                flexDirection="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                width="100%"
+                                px="16px"
+                                py="8px"
+                            > 
+                                <span 
+                                    style={{
+                                        height: 'auto',
+                                        width: 'auto',
+                                        fontSize: '12px',
+                                        fontWeight: '400',
+                                        color: '#000',
+                                        lineHeight: '20px',
+                                        fontStyle: 'normal',
+                                        textTransform: 'capitalize',
+                                        fontFamily: 'HarmonyOS Sans',
+                                    }}
+                                >
+                                    My Validators
+                                </span>
+                                <span 
+                                    style={{
+                                        height: 'auto',
+                                        width: 'auto',
+                                        fontSize: '12px',
+                                        fontWeight: '400',
+                                        color: '#000',
+                                        lineHeight: '20px',
+                                        fontStyle: 'normal',
+                                        textTransform: 'capitalize',
+                                        fontFamily: 'HarmonyOS Sans',
+                                    }}
+                                >
+                                    Live APR
+                                </span>
+                            </Flex>
+                        </Box>
                         <Box
                             width="100%"
                             backgroundColor="#fff"
@@ -207,11 +228,10 @@ const StakingTabList = ({
                             { myValidatorsList.map((validator) => (
                                 <ValidatorItem
                                     key={validator.validatorAddress}
-                                    validatorName={validator.validatorName || ''}
-                                    ValidatorAddress={validator.validatorAddress}
-                                    apr={validator.liveApr || 0}
-                                    isDisabled={!validator.isActive}
+                                    validator={validator}
+                                    isDisabled={ validator.status !== "Active" }
                                     onClick={() => {
+                                        console.log('Selected Validator:', validator);
                                         setSelectedValidator({
                                             ...validator,
                                             validatorAddress: validator.validatorAddress,
@@ -226,73 +246,75 @@ const StakingTabList = ({
                     <TabPanel padding="0" boxShadow="none">
                         <Box
                             width="100%"
+                            borderTop="1px solid rgba(0, 46, 51, 0.10)"
+                            borderBottom="1px solid rgba(0, 46, 51, 0.10)"
+                            marginTop={"12px"}
+                        >
+                            <Flex
+                                flexDirection="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                width="100%"
+                                px="16px"
+                                py="8px"
+                            > 
+                                <span 
+                                    style={{
+                                        height: 'auto',
+                                        width: 'auto',
+                                        fontSize: '12px',
+                                        fontWeight: '400',
+                                        color: '#000',
+                                        lineHeight: '20px',
+                                        fontStyle: 'normal',
+                                        textTransform: 'capitalize',
+                                        fontFamily: 'HarmonyOS Sans',
+                                    }}
+                                >
+                                    Other Validators
+                                </span>
+                                <span 
+                                    style={{
+                                        height: 'auto',
+                                        width: 'auto',
+                                        fontSize: '12px',
+                                        fontWeight: '400',
+                                        color: '#000',
+                                        lineHeight: '20px',
+                                        fontStyle: 'normal',
+                                        textTransform: 'capitalize',
+                                        fontFamily: 'HarmonyOS Sans',
+                                    }}
+                                >
+                                    Live APR
+                                </span>
+                            </Flex>
+                        </Box>
+                        <Box
+                            width="100%"
                             backgroundColor="#fff"
                             padding="0"
                             maxHeight="300px"
                             overflowY="auto"
                         >
-                            { allValidatorsList.length === 0 && (
+                            { filteredOtherValidators.length === 0 && (
                                 isAllValidatorLoading ? spinner :
                                  <EmptyRecords text="No validators" /> )}
-                            {allValidatorsList.map((validator) => (
-                                <Flex 
-                                    key={validator.validatorAddress} 
-                                    onClick={() => {
-                                        setSelectedValidator({
-                                            ...validator,
-                                            validatorAddress: validator.validatorAddress,
-                                            liveApr: validator.liveApr,
-                                        })
-                                        onClose();
-                                    }}
-                                    width="100%"
-                                    cursor="pointer"
-                                    _hover={{
-                                        backgroundColor: '#FEF1F9',
-                                    }}
-                                    borderBottom="1px solid rgba(0, 46, 51, 0.10)"
-                                >
-                                    <div style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                        padding: '16px',
-                                        alignItems: 'center',
-                                    }}>
-                                        <span 
-                                            style={{
-                                                height: 'auto',
-                                                width: 'auto',
-                                                fontSize: '14px',
-                                                fontWeight: '500',
-                                                color: '#000',
-                                                lineHeight: 'normal',
-                                                fontStyle: 'normal',
-                                                textTransform: 'capitalize',
-                                                fontFamily: 'HarmonyOS Sans',
-                                            }}
-                                        >
-                                            <ValidatorInfo  validatorName = {(validator.validatorAddress || '')}  record={validator} />
-                                        </span>
-                                        <span
-                                            style={{
-                                                height: 'auto',
-                                                width: 'auto',
-                                                fontSize: '14px',
-                                                fontWeight: '500',
-                                                color: '#FF57B7',
-                                                lineHeight: 'normal',
-                                                fontStyle: 'normal',
-                                                textTransform: 'capitalize',
-                                                fontFamily: 'HarmonyOS Sans',
-                                            }}
-                                        >
-                                            {  (Number(validator.liveApr  || 0) * 100).toFixed(1)  }%
-                                        </span>
-                                    </div>
-                                </Flex>
-                            ))}
+                                {filteredOtherValidators.map((validator) => (
+                                    <ValidatorItem
+                                        key={validator.validatorAddress} 
+                                        validator={validator}
+                                        isDisabled={ validator.status !== "Active" }
+                                        onClick={() => {
+                                            setSelectedValidator({
+                                                ...validator,
+                                                validatorAddress: validator.validatorAddress,
+                                                liveApr: validator.liveApr,
+                                            })
+                                            onClose();
+                                        }}
+                                    />
+                                ))}
                         </Box>
                     </TabPanel>
                 </TabPanels>
