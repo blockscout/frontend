@@ -133,7 +133,7 @@ const StakingModalNumberInput = ({
   };
 
   const prefix = useMemo(() => {
-    if (currentTxType === 'Stake') {
+    if (currentTxType === 'Stake' || currentTxType === 'ChooseStake') {
       return 'Balance:';
     }
     return 'Available:';

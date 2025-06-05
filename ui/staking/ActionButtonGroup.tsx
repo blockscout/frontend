@@ -129,12 +129,11 @@ const ActionButtonGroup = ({
             return true;
         } else if (isNaN(Number(currentRecord?.claimable))) {
             return true;
-        } else if (Number(currentRecord?.claimable) < 0.00000001 ) {
+        } else if (Number(currentRecord?.claimable) < 0.0001) {
             return true;
         }
         return false;
     }, [currentRecord]);
-
 
     const _disableWithdrawAndMove = useMemo(() => {
         if (!currentRecord || !currentRecord?.myStake) {
