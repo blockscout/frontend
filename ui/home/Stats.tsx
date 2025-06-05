@@ -62,6 +62,13 @@ const Stats = () => {
     },
   });
 
+  const viaLatestBatchQuery = useApiQuery('general:homepage_via_latest_batch', {
+    queryOptions: {
+      placeholderData: 12345,
+      enabled: rollupFeature.isEnabled && rollupFeature.type === 'via' && config.UI.homepage.stats.includes('latest_batch'),
+    },
+  });
+
   const arbitrumLatestBatchQuery = useApiQuery('general:homepage_arbitrum_latest_batch', {
     queryOptions: {
       placeholderData: 12345,
@@ -79,6 +86,8 @@ const Stats = () => {
         return zkEvmLatestBatchQuery;
       case 'zkSync':
         return zkSyncLatestBatchQuery;
+      case 'via':
+        return viaLatestBatchQuery;
       case 'arbitrum':
         return arbitrumLatestBatchQuery;
     }

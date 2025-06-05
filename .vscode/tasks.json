@@ -387,6 +387,7 @@
               "zkevm",
               "zilliqa_prototestnet",
               "zksync",
+              "via",
               "zora",
             ],
             "default": "main"

@@ -4,6 +4,7 @@ import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { VIA_L2_TX_BATCH_STATUSES } from 'types/api/viaL2';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
@@ -37,6 +38,7 @@ import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
+import ViaL2TxnBatchHashesInfo from 'ui/txnBatches/viaL2/ViaL2TxnBatchHashesInfo';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
 import BlockDetailsBaseFeeCelo from './details/BlockDetailsBaseFeeCelo';
@@ -289,8 +291,27 @@ const BlockDetails = ({ query }: Props) => {
           </DetailedInfo.ItemValue>
         </>
       ) }
+
+      { rollupFeature.isEnabled && rollupFeature.type === 'via' && data.via && !config.UI.views.block.hiddenFields?.batch && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Batch number"
+            isLoading={ isPlaceholderData }
+          >
+            Batch
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            { data.via.batch_number ?
+              <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.via.batch_number }/> :
+              <Skeleton loading={ isPlaceholderData }>Pending</Skeleton> }
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
+
       { !config.UI.views.block.hiddenFields?.L1_status && rollupFeature.isEnabled &&
-        ((rollupFeature.type === 'zkSync' && data.zksync) || (rollupFeature.type === 'arbitrum' && data.arbitrum)) &&
+        ((rollupFeature.type === 'zkSync' && data.zksync) ||
+          (rollupFeature.type === 'arbitrum' && data.arbitrum) ||
+          (rollupFeature.type === 'via' && data.via)) &&
       (
         <>
           <DetailedInfo.ItemLabel
@@ -302,6 +323,8 @@ const BlockDetails = ({ query }: Props) => {
           <DetailedInfo.ItemValue>
             { rollupFeature.type === 'zkSync' && data.zksync &&
               <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/> }
+            { rollupFeature.type === 'via' && data.via &&
+              <VerificationSteps steps={ VIA_L2_TX_BATCH_STATUSES } currentStep={ data.via.status } isLoading={ isPlaceholderData }/> }
             { rollupFeature.type === 'arbitrum' && data.arbitrum && (
               <VerificationSteps
                 steps={ arbitrum.verificationSteps }
@@ -544,6 +567,9 @@ const BlockDetails = ({ query }: Props) => {
 
         { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync &&
               <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isPlaceholderData }/> }
+
+        { rollupFeature.isEnabled && rollupFeature.type === 'via' && data.via &&
+              <ViaL2TxnBatchHashesInfo data={ data.via } isLoading={ isPlaceholderData }/> }
 
         { !isPlaceholderData && <BlockDetailsBlobInfo data={ data }/> }
 
