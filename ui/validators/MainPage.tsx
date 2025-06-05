@@ -315,7 +315,7 @@ const AllValidatorPage: NextPage = () => {
             userSelect="none"
             justifyContent= {{ lg:  'flex-start' }}
             alignItems="baseline" marginBottom="24px">
-            <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">All validators</Text>
+            <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">All Validators</Text>
 
             <Button
                 onClick={() => {

@@ -554,7 +554,7 @@ const ObjectDetails: NextPage = () => {
           userSelect="none"
           justifyContent= {{ lg:  'flex-start' }}
           alignItems="baseline" marginBottom="24px">
-          <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">My staking</Text>
+          <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">My Staking</Text>
           <Button
               onClick={() => {
                   window.open(DOC_LINK, '_blank');

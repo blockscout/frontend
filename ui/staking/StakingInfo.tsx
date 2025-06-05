@@ -128,7 +128,9 @@ const PlainButton = ({text, onClick, disabled = false} : {
             alignItems="center"
             justifyContent="center"
             borderRadius={9999}
+            disabled={ disabled }
             _hover={ disabled ?  {} :  { backgroundColor: "#FFCBEC" , opacity: 0.9 }}
+            _active={ disabled ? { backgroundColor: "#FFCBEC" , } : { opacity: 0.8 }}
             width={ '100px' }
             height={ '32px' }
             variant='solid'
@@ -168,10 +170,12 @@ const PlainButton2 = ({text, onClick, disabled = false} : {
             width={ '100px' }
             height={ '32px' }
             display="flex"
+            disabled={ disabled }
+            _active={ disabled ? { backgroundColor: "#FEF1F9" , } : { opacity: 0.8 }}
             alignItems="center"
             justifyContent="center"
             _hover={ disabled ?  {} :  { backgroundColor: "#FFCBEC" , opacity: 0.9 }}
-            borderRadius={9999}
+            borderRadius={ 9999 }
             backgroundColor = { disabled ? '#FEF1F9' : '#FEE5F4' }
             cursor={ disabled ? 'not-allowed' : 'pointer' }
         >

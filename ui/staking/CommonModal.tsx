@@ -384,6 +384,16 @@ const CommonModal = ({
         }
     }, [ transactionStage, callback ]);
 
+    const headsupText =  useMemo(() => {
+        if (currentTxType === 'MoveStake' || currentTxType === 'ChooseStake') {
+            return "If rewards are available, this action will claim all rewards from the current Validator and transfer them to your wallet.";
+        } else if (currentTxType === 'Stake') {
+            return "If rewards are available, this action will claim all rewards from the current Validator and transfer them to your wallet.";
+        } else if (currentTxType === 'Withdraw') {
+            return "It takes 1 days to receive MOCA after you withdraw. If rewards are available, this action will claim all rewards from the current Validator and transfer them to your wallet.";
+        }
+    } , [ currentTxType ]);
+
     return (
         <StakingModal 
             isOpen={ isOpen }
@@ -498,11 +508,11 @@ const CommonModal = ({
                                         }
 
                                         {
-                                            currentTxType === 'Withdraw' && (
+                                            (currentTxType === 'Withdraw' || currentTxType === 'Stake' || currentTxType === 'MoveStake') && (
                                                 <Box width="100%" height="auto">
                                                     <HeadsUpInfo
                                                         label="Heads Up"
-                                                        value="It takes 21 days to receive MOCA after you withdraw."
+                                                        value= { headsupText }
                                                     />
                                                 </Box>
                                             )

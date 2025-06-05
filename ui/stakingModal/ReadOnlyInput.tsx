@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-
-
+import { Avatar, Flex, Text } from '@chakra-ui/react';
 
 const amountFormat = (amount: string) => {
     const v = Number(amount);
@@ -60,7 +59,7 @@ const ReadOnlyInput = ({
                     lineHeight: '140%',
                     color: 'rgba(0, 0, 0, 0.30)',
                 }}>
-                    { price }
+                    ${ price }
                 </div>
                 <div style={{
                     position: 'absolute',
@@ -73,7 +72,27 @@ const ReadOnlyInput = ({
                     lineHeight: '140%',
                     color: '#000000',
                 }}>
-                    Moca
+                    <Flex flexDirection={'row'} width='auto' gap={"4px"} height='auto' alignItems='center' justifyContent={'flex-end'}>
+                        <Avatar
+                            name="MOCA"
+                            src="/static/moca-brand.svg"
+                            size='2xs'
+                            width="20px"
+                            height="20px"
+                            borderRadius="full"
+                        />
+                        <Text
+                            fontSize="14px"
+                            fontWeight="500"
+                            color="rgba(0, 0, 0, 0.60)"
+                            textAlign="center"
+                            fontStyle="normal"
+                            lineHeight="normal"
+                            fontFamily="HarmonyOS Sans"
+                        >
+                          Moca
+                        </Text>
+                    </Flex>
                 </div>
             </div>
         </div>

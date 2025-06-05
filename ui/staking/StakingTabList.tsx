@@ -169,7 +169,7 @@ const StakingTabList = ({
                 </div>
 
                 <TabPanels color="#000" borderRadius={"12px"}>
-                    <TabPanel padding="0" >
+                    <TabPanel padding="0" maxHeight="297px"  boxShadow="none">
                         {
                         myValidatorsList.length > 0 && (<Box
                             width="100%"
@@ -247,7 +247,7 @@ const StakingTabList = ({
                             ))}
                         </Box>
                     </TabPanel>
-                    <TabPanel padding="0" boxShadow="none">
+                    <TabPanel padding="0" maxHeight="297px"  boxShadow="none">
                         {
                             filteredOtherValidators.length > 0  && (<Box
                                 width="100%"
