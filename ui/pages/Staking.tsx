@@ -1,17 +1,17 @@
 import { Text, Box, VStack, HStack, Badge, Button, Divider, SimpleGrid, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 import router from 'next/router';
 import React, { useEffect, useCallback } from 'react';
-import { useAccount } from 'wagmi';
 
 import { useUserStakes } from 'lib/getUserStakes';
 import useToastModified from 'lib/hooks/useToast';
 import { useStakingMethods } from 'lib/useStakingMethods';
+import useAccount from 'lib/web3/useAccount';
 import ContentLoader from 'ui/shared/ContentLoader';
 
 // Component to display user stakes
 const UserStakesSection = () => {
-  const { address: userAddress } = useAccount();
-  const { data, totalStaked, totalRewards, loading, error, refetch } = useUserStakes(userAddress as string);
+  const { address } = useAccount();
+  const { data, totalStaked, totalRewards, loading, error, refetch } = useUserStakes(address as string);
 
   const {
     claimRewards,
@@ -100,7 +100,7 @@ const UserStakesSection = () => {
     router.push('/add-delegation');
   }, []);
 
-  if (!userAddress) {
+  if (!address) {
     return (
       <Box p={ 4 } bg="gray.50" borderRadius="md">
         <Text color="gray.600">Connect wallet to view your stakes</Text>
@@ -125,6 +125,30 @@ const UserStakesSection = () => {
 
   return (
     <VStack spacing={ 6 } align="stretch">
+      <HStack justify="space-between" align="center">
+        { data.length < 1 ? (
+          <HStack justify="flex-end" width="full">
+            <Button
+              variant="solid"
+              size="md"
+              bgColor="whiteAlpha.100"
+              width="150px"
+              _hover={{ bg: 'whiteAlpha.200' }}
+              onClick={ handleRefresh }>
+              Refresh
+            </Button>
+            <Button
+              variant="solid"
+              size="md"
+              bgColor="whiteAlpha.100"
+              width="150px"
+              _hover={{ bg: 'whiteAlpha.200' }}
+              onClick={ handleAddStake }>
+              Add stake
+            </Button>
+          </HStack>
+        ) : null };
+      </HStack>
       { /* Summary Stats */ }
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={ 6 }>
         <Stat>
