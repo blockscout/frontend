@@ -31,13 +31,11 @@ const  ValidatorInfoBox = ({ record } : { record: any }) => {
     return (
         <Flex flexDirection="row" alignItems="center" gap="8px" width="100%">
             <Box>
-                <Avatar
-                    name="MOCA"
+                <img
                     src="/static/moca-brand.svg"
-                    size='2xs'
                     width="20px"
                     height="20px"
-                    borderRadius="full"
+                    style={{ borderRadius: '50%' }}
                 />
             </Box>
             <span>{record.validatorName}</span>
@@ -276,9 +274,6 @@ const TableApp = (props: {
         );
     }, [data, sortBy, sortOrder]);
 
-    useEffect(() => {
-        console.log('Sorted Data:', sortedData);
-    }, [sortedData]);
 
     const formattedBalanceStr = React.useMemo(() => {
         if (balanceData && !!balanceData.value) {
@@ -519,7 +514,7 @@ const TableApp = (props: {
             render: (record) => (
                 <TableTokenAmount
                     amount = { record.totalStake }
-                    symbol = 'Moca'
+                    symbol = 'MOCA'
                 />
             )
         },

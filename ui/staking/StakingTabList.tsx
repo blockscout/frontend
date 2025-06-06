@@ -232,7 +232,6 @@ const StakingTabList = ({
                                     validator={validator}
                                     isDisabled={ validator.status !== "Active" }
                                     onClick={() => {
-                                        console.log('Selected Validator:', validator);
                                         setSelectedValidator({
                                             ...validator,
                                             validatorAddress: validator.validatorAddress,

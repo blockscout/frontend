@@ -59,7 +59,7 @@ const EarnInfoBox = (props: {
     const { apr , amount = "0.00" } = props;
     const yearlyEarnings = ( Number(apr) * Number(amount));
     const monthlyEarnings = ( yearlyEarnings / 12 );
-    const dailyEarnings = ( yearlyEarnings / 365 );
+    const dailyEarnings = ( yearlyEarnings / 360 );
     
 
     return (

@@ -17,6 +17,7 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import styles from 'ui/staking/spinner.module.css';
+import { AvatarGroup } from 'rsuite';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -105,14 +106,12 @@ const ValidatorInfo = ({
                 alignItems="center"
                 width="auto"
             >
-                <Avatar
-                    name="MOCA"
+                <img
                     src="/static/moca-brand.svg"
-                    size='2xs'
                     width="16px"
                     height="16px"
-                    borderRadius="full"
-                    marginRight="4px"
+                    style={{ borderRadius: '50%', marginRight: "4px" }}
+                    draggable={false}
                 />
                 <Text 
                     fontSize="12px"
@@ -152,7 +151,7 @@ const tableHead: tableHeadType[] = [
         render: (record) => (
             <TableTokenAmount
                 amount = { record.stakeAmount }
-                symbol = 'Moca'
+                symbol = 'MOCA'
             />
         )
     },
@@ -164,7 +163,7 @@ const tableHead: tableHeadType[] = [
         render: (record) => (
             <TableTokenAmount
                 amount = { record.totalEarned }
-                symbol = 'Moca'
+                symbol = 'MOCA'
             />
         )
     },

@@ -31,14 +31,12 @@ const ValidatorInfo = ({
             alignItems="center"
             width="auto"
         >
-            <Avatar
-                name="MOCA"
+            <img
                 src="/static/moca-brand.svg"
-                size='2xs'
+                style={{ borderRadius: '50%', marginRight: "4px" }}
+                draggable={false}
                 width="20px"
                 height="20px"
-                borderRadius="full"
-                marginRight="4px"
             />
             <Text 
                 fontSize="14px"

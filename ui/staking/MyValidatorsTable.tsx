@@ -49,7 +49,7 @@ const truncatePercentage = ( _num: number | string | null | undefined): string =
   } else if (!num || isNaN(num)) {
     return '-';
   }
-  const rounded = +(num.toFixed(2)); // 四舍五入到两位
+  const rounded = +((num * 100) .toFixed(2)); // 四舍五入到两位
 
   if (rounded === 0 && num > 0 && num < 0.01) {
     return '<0.01%';
@@ -63,7 +63,7 @@ const truncatePercentage = ( _num: number | string | null | undefined): string =
 
 const TableTokenAmount = ({ 
     amount,
-    symbol = 'Moca'
+    symbol = 'MOCA'
 }: { amount: number | string ; symbol: string }) => {
 
     return (
@@ -91,13 +91,11 @@ const  ValidatorInfoBox = ({ record } : { record: any }) => {
     return (
         <Flex flexDirection="row" alignItems="center" gap="8px" width="100%">
             <Box>
-                <Avatar
-                    name="MOCA"
+                <img
                     src="/static/moca-brand.svg"
-                    size='2xs'
                     width="20px"
                     height="20px"
-                    borderRadius="full"
+                    style={{ borderRadius: '50%' }}
                 />
             </Box>
             <span>{record.validatorName}</span>
@@ -583,7 +581,6 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                            
                     }}
                 >
                     { truncatePercentage(record.liveAPR) }
@@ -598,7 +595,7 @@ const TableApp = (props: {
             render: (record) => (
                 <TableTokenAmount
                     amount = { record.myStake }
-                    symbol = 'Moca'
+                    symbol = 'MOCA'
                 />
             )
         },
@@ -610,7 +607,7 @@ const TableApp = (props: {
             render: (record) => (
                 <TableTokenAmount
                     amount = { record.myRewards }
-                    symbol = 'Moca'
+                    symbol = 'MOCA'
                 />
             )
         },
@@ -622,7 +619,7 @@ const TableApp = (props: {
             render: (record) => (
                 <TableTokenAmount
                     amount = { record.claimable }
-                    symbol = 'Moca'
+                    symbol = 'MOCA'
                 />
             )
         },

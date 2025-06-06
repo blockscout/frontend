@@ -95,22 +95,6 @@ const truncateTokenAmount = (num : number | string | null | undefined): string =
 }
 
 
-const truncatePercentage = ( _num: number | string | null | undefined): string => {
-  let num = _num;
-  if (typeof num === 'string') {
-      num = Number(num);
-  } else if (!num || isNaN(num)) {
-    return '-';
-  }
-  const rounded = +(num.toFixed(2)); // 四舍五入到两位
-
-  if (rounded === 0 && num > 0 && num < 0.01) {
-    return '<0.01%';
-  }
-
-  const hasDecimal = rounded % 1 !== 0;
-  return hasDecimal ? `${rounded}` + '%' : `${rounded}%`;
-}
 
 
 const ObjectDetails: NextPage = () => {

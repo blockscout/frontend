@@ -77,13 +77,12 @@ const ReadOnlyInput = ({
                     color: '#000000',
                 }}>
                     <Flex flexDirection={'row'} width='auto' gap={"4px"} height='auto' alignItems='center' justifyContent={'flex-end'}>
-                        <Avatar
-                            name="MOCA"
+                        <img
+                            style={{ borderRadius: '50%' }}
                             src="/static/moca-brand.svg"
-                            size='2xs'
+                            draggable={false}
                             width="20px"
                             height="20px"
-                            borderRadius="full"
                         />
                         <Text
                             fontSize="14px"

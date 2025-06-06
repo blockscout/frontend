@@ -277,7 +277,7 @@ const TableApp = (props: {
             render: (record) => (
                 <TableTokenAmount
                     amount = { record.amount }
-                    symbol = 'Moca'
+                    symbol = 'MOCA'
                 />
             )
         },

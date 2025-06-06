@@ -120,6 +120,17 @@ const ActionButtonGroup = ({
         return currentRecord?.status === "Jailed";
     } , [currentRecord]);
 
+
+    const _disableStake = useMemo(() => {
+        if (!currentRecord || !currentRecord?.claimable) {
+            return true;
+        } else if (currentRecord?.status === "Unbonding" || currentRecord?.status === "Inactive") {
+            return true;
+        }
+        return false;
+    } , [currentRecord]);
+
+
     const isWalletNotConnected = useMemo(() => {
         return !WalletConnected;
     }, [WalletConnected]);
@@ -186,7 +197,7 @@ const ActionButtonGroup = ({
                                 // setAvailableAmount(currentRecord?.availableAmount || '0');
                             }
                         }}
-                        disabled={ disableStake || isWalletNotConnected || isValidatorJailed }
+                        disabled={ disableStake || isWalletNotConnected || isValidatorJailed || _disableStake}
                     />
                 }
                 <Menu placement="bottom-end">
