@@ -23,7 +23,7 @@ const AddressEntityTacTon = (props: Props) => {
   const href = (() => {
     switch (props.chainType) {
       case tac.BlockchainType.TON:
-        return tacFeature.explorerUrl + route({
+        return tacFeature.tonExplorerUrl + route({
           pathname: '/address/[hash]',
           query: {
             ...props.query,
