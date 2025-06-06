@@ -109,7 +109,7 @@ const Stats = () => {
       },
       {
         id: 'total_blocks' as const,
-        icon: 'block_slim' as const,
+        icon: 'moca_total_blocks' as const,
         label: 'Total blocks',
         value: Number(data.total_blocks).toLocaleString(),
         href: { pathname: '/blocks' as const },
@@ -117,14 +117,14 @@ const Stats = () => {
       },
       {
         id: 'average_block_time' as const,
-        icon: 'clock-light' as const,
+        icon: 'moca_block_time' as const,
         label: 'Average block time',
         value: `${ (data.average_block_time / 1000).toFixed(1) }s`,
         isLoading,
       },
       {
         id: 'total_txs' as const,
-        icon: 'transactions_slim' as const,
+        icon: 'moca_transaction' as const,
         label: 'Total transactions',
         value: Number(data.total_transactions).toLocaleString(),
         href: { pathname: '/txs' as const },
@@ -140,7 +140,7 @@ const Stats = () => {
       },
       {
         id: 'wallet_addresses' as const,
-        icon: 'wallet' as const,
+        icon: 'moca_wallet' as const,
         label: 'Wallet addresses',
         value: Number(data.total_addresses).toLocaleString(),
         isLoading,
