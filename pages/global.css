@@ -68,3 +68,36 @@
   content: '';
   display: none;
 }
+
+
+.main-page-hero-banner {
+  border-radius: 24px;
+  background: var(--Moca-Chain-Gradient, linear-gradient(90deg, #FFF7D2 0%, #FFCFED 46.46%, #BFD2FF 100%));
+}
+
+
+.main-page-hero-banner  .title-text {
+  color: var(--text-primary, #170811);
+  text-align: center;
+
+  /* D-heading-3 */
+  font-family: Outfit;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+
+.user-connect-wallet-button-desktop {
+  color: var(--text-on-colour, #FFF);
+  text-align: center;
+
+  /* button-1 */
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border-radius: 8px;
+  background: var(--button-primary, #EF6ABA) !important;
+}

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Box, Flex, Heading, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
@@ -47,21 +49,22 @@ const HeroBanner = () => {
   return (
     <Flex
       w="100%"
-      background={ background }
       border={ border }
       borderRadius="md"
       p={{ base: 4, lg: 8 }}
       columnGap={ 8 }
       alignItems="center"
+      className='main-page-hero-banner'
     >
       <Box flexGrow={ 1 }>
         <Flex mb={{ base: 2, lg: 3 }} justifyContent="space-between" alignItems="center" columnGap={ 2 }>
           <Heading
             as="h1"
-            fontSize={{ base: '18px', lg: '30px' }}
-            lineHeight={{ base: '24px', lg: '36px' }}
-            fontWeight={{ base: 500, lg: 700 }}
-            color={ textColor }
+            fontSize={{ base: '20px', lg: '32px' }}
+            lineHeight="normal"
+            fontWeight={{ base: 400, lg: 500 }}
+            className="title-text"
+            userSelect={ 'none' }
           >
             {
               config.meta.seo.enhancedDataEnabled ?

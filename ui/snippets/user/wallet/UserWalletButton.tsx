@@ -51,10 +51,7 @@ const UserWalletButton = ({ size, variant, onClick, isPending, isAutoConnectDisa
         onClick={ onClick }
         data-selected={ Boolean(address) }
         data-warning={ isAutoConnectDisabled }
-        fontSize="sm"
-        lineHeight={ 5 }
-        px={ address ? 2.5 : 4 }
-        fontWeight={ address ? 700 : 600 }
+        className="user-connect-wallet-button-desktop"
         isLoading={ isPending }
         loadingText={ isMobile ? undefined : 'Connecting' }
       >
