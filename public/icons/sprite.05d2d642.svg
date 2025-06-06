@@ -511,7 +511,7 @@
       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2m6-2c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10"/>
     </symbol>
     <symbol id="moca_total_blocks" fill="none" viewBox="0 0 18 20">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 19 8-4.5v-9L9 1 1 5.5v9zm0 0v-8.437m0 0-7.506-4.5M9 10.563l7.506-4.5"/>
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 19 8-4.5v-9L9 1 1 5.5v9zm0 0v-8.438m0 0-7.506-4.5M9 10.563l7.506-4.5"/>
     </symbol>
     <symbol id="moca_transaction" fill="none" viewBox="0 0 24 24">
       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 17H4m0 0 4-4m-4 4 4 4M4 7h16m0 0-4-4m4 4-4 4"/>
