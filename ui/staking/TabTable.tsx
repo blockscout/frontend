@@ -98,7 +98,7 @@ const App = ({
                         >
                             <DatePicker 
                                 value={ selectDateRange }
-                                isDisabled={ disableSelectDateRange }
+                                isDisabled={ false }
                                 setValue={ (v: any) => {
                                     console.log('date range', v);
                                     setSelectDateRange(v);

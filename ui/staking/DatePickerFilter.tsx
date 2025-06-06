@@ -57,7 +57,13 @@ const DatePickerFilter = ({
 
 
     const handleChange = (val: any) => {
-        setDates(val);
+        if(!val) {
+            // clear 
+            setValue([null, null]);
+            setShouldClose(true);
+        } else {
+            setDates(val);
+        }
         setOpen(false);
     };
 
