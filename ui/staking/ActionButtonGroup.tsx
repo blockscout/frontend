@@ -255,7 +255,7 @@ const ActionButtonGroup = ({
                                     setCurrentAddress(validatorAddress);
                                 }}
                                 borderRadius={"8px"}
-                                disabled={ isWalletNotConnected || _disableWithdrawAndMove ||  isValidatorJailed }
+                                disabled={ isWalletNotConnected || _disableWithdrawAndMove }
                                 _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                                 _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
                                 >Move Stake</CustomMenuItem>
