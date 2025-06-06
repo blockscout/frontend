@@ -34,7 +34,7 @@ const ValidatorItemBar = ({
         <Box 
             width="100%" 
             height="40px"
-            cursor={showArrow ? 'pointer' : 'default'}
+            cursor={ showArrow ? 'pointer' : 'default'}
             position="relative"
             border = { isFocused ? '1px solid #FF57B7' : '1px solid rgba(0, 46, 51, 0.10)' }
             borderRadius="9999px" display="flex" 
@@ -112,7 +112,7 @@ const ValidatorItemBar = ({
                                 display="flex"
                                 alignItems="center"
                                 justifyContent="center"
-                                transform={ isFocused ? 'rotate(0deg)' : 'rotate(-180deg)' }
+                                transform={ isFocused ? 'rotate(-180deg)' : 'rotate(0deg)' }
                                 transition="transform 0.3s ease-in-out"
                             >
                                 { expandIcon }
