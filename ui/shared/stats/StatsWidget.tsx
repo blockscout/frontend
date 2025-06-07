@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Box, Flex, Text, Skeleton, useColorModeValue, chakra } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
@@ -36,6 +37,16 @@ const Container = ({ href, children }: { href?: Route; children: React.JSX.Eleme
   return children;
 };
 
+
+const valueTextStyle = {
+  color: 'var(--text-secondary, #170811)',
+  fontFamily: 'Outfit',
+  fontSize: '1.125rem',
+  fontStyle: 'normal',
+  fontWeight: 400,
+  lineHeight: 'normal',
+}
+
 const StatsWidget = ({
   className,
   icon,
@@ -51,7 +62,7 @@ const StatsWidget = ({
   period,
   href,
 }: Props) => {
-  const bgColor = '#FEF1F9';
+  const bgColor = '#F4F4F4';
   const skeletonBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const hintColor = useColorModeValue('gray.600', 'gray.400');
 
@@ -89,7 +100,15 @@ const StatsWidget = ({
             lineHeight="16px"
             w="fit-content"
           >
-            <h2>{ label }</h2>
+            <h2 style = {{
+                color: 'var(--text-secondary, #6C636B)',
+                fontFamily: 'Outfit',
+                fontSize: '0.75rem',
+                fontStyle: 'normal',
+                fontWeight: 400,
+                lineHeight: 'normal',
+              }}
+            >{ label }</h2>
           </Skeleton>
           <Skeleton
             isLoaded={ !isLoading }
@@ -97,6 +116,7 @@ const StatsWidget = ({
             alignItems="baseline"
             fontWeight={ 500 }
             fontSize="lg"
+            style={ valueTextStyle }
             lineHeight={ 6 }
           >
             { valuePrefix && <chakra.span whiteSpace="pre">{ valuePrefix }</chakra.span> }
