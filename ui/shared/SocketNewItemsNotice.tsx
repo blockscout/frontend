@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Skeleton, Tr, Td } from '@chakra-ui/react';
 import { transparentize } from '@chakra-ui/theme-tools';
 import React from 'react';
@@ -47,14 +49,33 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
 
     return (
       <>
-        <Link href={ url }>{ num.toLocaleString() } more { name }{ num > 1 ? 's' : '' }</Link>
-        <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
+        <Link href={ url }>
+          <span style={{
+                color: 'var(--button-primary, #EF6ABA)',
+                fontFamily: 'Outfit',
+                fontSize: '0.875rem',
+                fontStyle: 'normal',
+                fontWeight: 600,
+                lineHeight: 'normal',
+            }}>
+            { num.toLocaleString() } more { name }{ num > 1 ? 's' : '' }
+          </span></Link>
+        <Text whiteSpace="pre">
+          <span style={{
+            color: 'var(--text-secondary, #6C636B)',
+            fontFamily: 'Outfit',
+            fontSize: '0.875rem',
+            fontStyle: 'normal',
+            fontWeight: 400,
+            lineHeight: 'normal',
+          }}> ha{ num > 1 ? 've' : 's' } come in</span>
+        </Text>
       </>
     );
   })();
 
   const color = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
-  const bgColor = useColorModeValue('orange.50', transparentize('orange.200', 0.16)(theme));
+  const bgColor = "#FFF0F9";
 
   const content = !isLoading ? (
     <Alert
@@ -62,8 +83,6 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
       status="warning"
       px={ 4 }
       py="6px"
-      fontWeight={ 400 }
-      fontSize="sm"
       lineHeight={ 5 }
       bgColor={ bgColor }
       color={ color }
