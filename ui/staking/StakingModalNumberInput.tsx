@@ -224,7 +224,7 @@ const StakingModalNumberInput = ({
                             lineHeight="normal"
                             fontFamily="HarmonyOS Sans"
                         >
-                          Moca
+                          MOCA
                         </Text>
                     </Flex>
                 </Flex>

@@ -132,6 +132,14 @@ const CommonModal = ({
 
     const [ inputStr , setInputStr ] = React.useState<string>(currentAmount);
 
+
+    useEffect(() => {
+        if (currentAmount && currentAmount === "0.00") {
+            setInputStr("");
+        }
+    }, [ currentAmount ]);
+
+    
     const handleSetApr = (value: string | number) => {
         setApr(value);
     }
@@ -426,7 +434,7 @@ const CommonModal = ({
                 <>
                     <div style={{ maxHeight: '590px', marginBottom: '80px', overflowY: 'auto' }}>
                         {
-                            (currentTxType === 'Claim' || currentTxType === 'ClaimAll' || currentTxType === 'Compound-Claim') ? (
+                            (currentTxType === 'Claim' || currentTxType === 'ClaimAll' || currentTxType === 'Compound-Claim' ||  currentTxType === 'Compound-Stake') ? ( 
                                 <Box width="100%" height="auto">
                                     <ReadOnlyInput 
                                         amount = { currentAmount }
@@ -516,7 +524,7 @@ const CommonModal = ({
                                         }
 
                                         {
-                                            ( currentTxType === 'Withdraw' || 
+                                            (   currentTxType === 'Withdraw' || 
                                                 currentTxType === 'Stake' || 
                                                 currentTxType === 'MoveStake' || 
                                                 currentTxType === 'ChooseStake'

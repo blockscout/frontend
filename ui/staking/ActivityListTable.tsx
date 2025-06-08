@@ -147,7 +147,6 @@ const CustomTableHeader = ({
                     fontStyle: 'normal',
                     fontWeight: 400,
                     lineHeight: 'normal',
-                    textDecoration: 'underline',
                 }}>
                     { children }
                 </span>
@@ -374,7 +373,6 @@ const TableApp = (props: {
                     fontStyle: 'normal',
                     fontWeight: 500,
                     lineHeight: 'normal',
-                        
                 }}  
                 className="node-staking-custom-table-header"
             >

@@ -20,9 +20,11 @@ const amountFormat = (amount: string) => {
 const ReadOnlyInput = ({
     amount,
     price,
+    children = null
 }: {
     amount: string;
     price: string;
+    children?: React.ReactNode | null;
 }) => {
 
     return (
@@ -53,7 +55,7 @@ const ReadOnlyInput = ({
                 </span>
                 <div style={{
                     display: 'flex',
-                    justifyContent: 'flex-start',
+                    justifyContent: 'space-between',
                     height: '20px',
                     marginTop: '8px',
                     fontFamily: "HarmonyOS Sans",
@@ -63,7 +65,8 @@ const ReadOnlyInput = ({
                     lineHeight: '140%',
                     color: 'rgba(0, 0, 0, 0.30)',
                 }}>
-                    ${ price }
+                    <span>${ price }</span>
+                    <span>{ children } </span>
                 </div>
                 <div style={{
                     position: 'absolute',
@@ -93,7 +96,7 @@ const ReadOnlyInput = ({
                             lineHeight="normal"
                             fontFamily="HarmonyOS Sans"
                         >
-                          Moca
+                          MOCA
                         </Text>
                     </Flex>
                 </div>

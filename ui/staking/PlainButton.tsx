@@ -58,6 +58,11 @@ const PlainButton = ({
             height={ height }
             variant='solid'
             padding = { '4px 20px' }
+            _active={ disabled ? {
+                backgroundColor: disabledBgColor,
+            } : {
+                opacity: 0.8,
+            }}
             backgroundColor = { disabled ? disabledBgColor : bgColor }
             cursor={ disabled ? 'not-allowed' : 'pointer' }
             borderRadius={9999}

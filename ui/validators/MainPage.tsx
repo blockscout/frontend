@@ -259,18 +259,18 @@ const AllValidatorPage: NextPage = () => {
   }, [ url, requestOverviewStats, requestTableList]);
 
 
-  const  formatSeconds = (seconds : number ) => {
+  const formatSeconds = (seconds : number ) => {
       const days = Math.floor(seconds / (24 * 3600));
       const hours = Math.floor((seconds % (24 * 3600)) / 3600);
       // const minutes = Math.floor((seconds % 3600) / 60);
 
       let result = '';
       if (days > 0) result += `${days}d `;
-      if (hours > 0) result += `New: ${hours}h `;
+      if (hours > 0) result += `${hours}h `;
       // result += `${minutes}m`;
 
-      
-      return result.trim();
+      const _res = (hours > 0 ) ? ("New: " + result) : result;
+      return _res.trim();
   }
 
     const jumpToPrevPage = useCallback(() => {
