@@ -176,10 +176,15 @@ const CustomTableHeader = ({
                 width="100%"
                 userSelect={'none'}
                 gap="2px" 
-                className='node-staking-custom-table-header'
                 onClick={ allowSort ? handleSort : noop }
             >
-                <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' }}>
+                <span 
+                    style={{ 
+                        color: 'rgba(0, 0, 0, 0.40)',
+                        fontSize: '12px'
+                    }} 
+                    className="node-staking-custom-table-header-text"
+                >
                     { children }
                 </span>
                 { allowSort && (
@@ -288,12 +293,14 @@ const TableApp = (props: {
     };
 
     const sortedData = React.useMemo(() => {
-        const defaultSortFields = ['status', 'totalStake'];
         const statusSort = (item: { status: string; }) => {
             const status = item.status as ValidatorStatus;
             return statusOrder[status]; // Default to 5 if status is not found
         }
-        const defaultSortOrder = [ statusSort , 'asc', ] as any[];
+
+        const defaultSortFields = [ statusSort, 'totalStake'];
+        const defaultSortOrder = [ 'asc'  , 'asc' ] as any[];
+        
         if (sortBy && sortOrder) {
             return orderBy(data, 
                 [sortBy, defaultSortFields[0], defaultSortFields[1]],
@@ -638,7 +645,7 @@ const TableApp = (props: {
                     lineHeight: 'normal',
                     
                 }}  
-                className="node-staking-custom-table-header"
+                className="node-staking-custom-table-header-text"
             >
                 { content }
             </span> 

@@ -23,126 +23,7 @@ import { route } from 'nextjs-routes';
 import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
 import styles from 'ui/staking/spinner.module.css';
 
-
-
-const mockValidatorData = [
-    {
-        validator: '0x1234567890abcdef1234567890abcdef12345678',
-        validatorName: 'Validator 1',
-        validatorAddress: '0x1234567890abcdef1234567890abcdef12345678',
-        liveAPR: 0.05,
-        myStake: 1000,
-        myRewards: 50,
-        claimable: 20,
-        commission: 0.1,
-        status: 'Active',
-    },
-    {
-        validator: '0xabcdef1234567890abcdef1234567890abcdef12',
-        validatorName: 'Validator 2',
-        validatorAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
-        liveAPR: 0.07,
-        myStake: 2000,
-        myRewards: 100,
-        claimable: 30,
-        commission: 0.05,
-        status: 'Inactive',
-    },
-    {
-        validator: '0x7890abcdef1234567890abcdef12345678901234',
-        validatorName: 'Validator 3',
-        validatorAddress: '0x7890abcdef1234567890abcdef12345678901234',
-        liveAPR: 0.06,
-        myStake: 1500,
-        myRewards: 75,
-        claimable: 25,
-        commission: 0.08,
-        status: 'Unbonding',
-    },
-    {
-        validator: '0x4567890abcdef1234567890abcdef1234567890',
-        validatorName: 'Validator 4',
-        validatorAddress: '0x4567890abcdef1234567890abcdef1234567890',
-        liveAPR: 0.04,
-        myStake: 800,
-        myRewards: 40,
-        claimable: 10,
-        commission: 0.12,
-        status: 'Active',
-    },
-
-    {
-        validator: '0xabcdef1234567890abcdef1234567890abcdef12',
-        validatorName: 'Validator 5',
-        validatorAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
-        liveAPR: 0.03,
-        myStake: 500,
-        myRewards: 20,
-        claimable: 5,
-        commission: 0.15,
-        status: 'Inactive',
-    },
-
-    {
-        validator: '0x7890abcdef1234567890abcdef12345678901234',
-        validatorName: 'Validator 6',
-        validatorAddress: '0x7890abcdef1234567890abcdef12345678901234',
-        liveAPR: 0.02,
-        myStake: 300,
-        myRewards: 10,
-        claimable: 2,
-        commission: 0.18,
-        status: 'Unbonding',
-    },
-
-    {
-        validator: '0x4567890abcdef1234567890abcdef1234567890',
-        validatorName: 'Validator 7',
-        validatorAddress: '0x4567890abcdef1234567890abcdef1234567890',
-        liveAPR: 0.01,
-        myStake: 100,
-        myRewards: 5,
-        claimable: 1,
-        commission: 0.2,
-        status: 'Active',
-    },
-
-    {
-        validator: '0x1234567890abcdef1234567890abcdef12345678',
-        validatorName: 'Validator 8',
-        validatorAddress: '0x1234567890abcdef1234567890abcdef12345678',
-        liveAPR: 0.05,
-        myStake: 1000,
-        myRewards: 50,
-        claimable: 20,
-        commission: 0.1,
-        status: 'Inactive',
-    },
-
-    {
-        validator: '0xabcdef1234567890abcdef1234567890abcdef12',
-        validatorName: 'Validator 9',
-        validatorAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
-        liveAPR: 0.07,
-        myStake: 2000,
-        myRewards: 100,
-        claimable: 30,
-        commission: 0.05,
-        status: 'Unbonding',
-    },
-
-    {
-        validator: '0x7890abcdef1234567890abcdef12345678901234',
-        validatorName: 'Validator 10',
-        validatorAddress: '0x7890abcdef1234567890abcdef12345678901234',
-        liveAPR: 0.06,
-        myStake: 1500,
-        myRewards: 75,
-        claimable: 25,
-        commission: 0.08,
-        status: 'Active',
-    },
-]
+type ValidatorStatus = 'Active' | 'Inactive' | 'Jailed' | 'Unbonding' ; 
 
 
 const truncateTokenAmount = (num : number | string | null | undefined): string => {
@@ -403,18 +284,39 @@ const TableApp = (props: {
         handleStake: handleStakeMore,
     } = props;
 
-    // const data = mockValidatorData; // props.data || mockValidatorData;
-
     const [sortBy, setSortBy] = React.useState<string>('');
     const [sortOrder, setSortOrder] = React.useState<sortOrderType>('');
 
     const handleRowClick = (item: any) => { }
 
+    const statusOrder = {
+        "Active": 1,
+        "Jailed": 2,
+        "Unbonding": 3,
+        "Inactive": 4,
+    };
+
     const sortedData = React.useMemo(() => {
-        if (sortBy && sortOrder) {
-            return orderBy(data, [sortBy], [ !sortOrder ? false : sortOrder]);
+
+
+        const statusSort = (item: { status: string; }) => {
+            const status = item.status as ValidatorStatus;
+            return statusOrder[status]; // Default to 5 if status is not found
         }
-        return data;
+
+        const defaultSortFields = [ statusSort, 'myStake'];
+        const defaultSortOrder = [ 'asc'  , 'asc' ] as any[];
+
+        if (sortBy && sortOrder) {
+            return orderBy(data, 
+                [ sortBy, defaultSortFields[0], defaultSortFields[1]],
+                [ (!sortOrder ? false : sortOrder), defaultSortOrder[0], defaultSortOrder[1] ]
+            );
+        }
+        return  orderBy(data,
+            [defaultSortFields[0], defaultSortFields[1]],
+            [defaultSortOrder[0], defaultSortOrder[1]]
+        );
     }, [data, sortBy, sortOrder]);
 
 
