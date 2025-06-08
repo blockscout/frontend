@@ -17,6 +17,33 @@ import useAccount from 'lib/web3/useAccount';
 import { useBalance, usePublicClient } from 'wagmi';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 
+const truncateTokenAmountWithComma = (num: number | string | null | undefined): string => {
+  if (num === null || num === undefined || num === '') return '-';
+
+  const _num = typeof num === 'number' ? num : Number(num);
+  if (isNaN(_num)) return '-';
+
+  if (_num === 0) return '0';
+
+  // 截断到两位小数（不是四舍五入）
+  const truncated = Math.trunc(_num * 100) / 100;
+
+  // 小于 0.01 但大于 0 的情况
+  if (truncated === 0 && _num > 0 && _num < 0.01) {
+    return '<0.01';
+  }
+
+  const [intPart, decPart = ''] = truncated.toString().split('.');
+
+  // 整数部分加逗号
+  const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  // 保留不超过 2 位的小数（已被截断），且去除末尾 0
+  const cleanedDec = decPart.slice(0, 2).replace(/0+$/, '');
+
+  return cleanedDec ? `${formattedInt}.${cleanedDec}` : formattedInt;
+};
+
 
 const valueFormatter = (price : string | number | null) => {
     if ( price === null || Number.isNaN(price)) {
@@ -268,10 +295,9 @@ const StakingModalNumberInput = ({
             >
                 { prefix }&nbsp;<span  style={{ color: '#000' }}>
                     <span>
-                      {availableAmountNumber.toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })} MOCA
+                      {
+                        truncateTokenAmountWithComma(formattedBalanceStr)
+                      } MOCA
                     </span>
                 </span>
             </Text>

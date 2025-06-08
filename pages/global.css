@@ -161,9 +161,10 @@
 .node-staking-custom-table-header span{
   text-decoration: none;
   color: rgba(0, 0, 0, 0.40);
+  cursor: pointer; /* 鼠标悬浮时显示手型 */
 }
 
-.node-staking-custom-table-header:hover {
+.node-staking-custom-table-header span:hover {
   text-decoration: underline; /* 鼠标悬浮时显示下划线 */
   text-decoration-color: rgba(0, 0, 0, 0.40); /* 设置下划线颜色 */
 }

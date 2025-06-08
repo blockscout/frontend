@@ -15,6 +15,8 @@ import { usePublicClient , useBalance , useAccount as useWagmiAccount } from 'wa
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import useAccount from 'lib/web3/useAccount';
 import TokenAmountFormat from 'ui/validators/TokenAmountFormat';
+import floatNumberFormatter from './FloatNumberFormatter';
+
 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
@@ -28,7 +30,7 @@ const truncateTokenAmount = (num : number | string | null | undefined): string =
 
     const truncated = Math.trunc(_num * 100) / 100;
 
-    if (truncated === 0 && _num > 0 && _num < 0.01) {
+    if (truncated === 0 && _num > 0 && _num < 0.0001) {
       return '<0.01';
     }
 
@@ -36,8 +38,32 @@ const truncateTokenAmount = (num : number | string | null | undefined): string =
     return hasDecimal ? truncated.toFixed(2).replace(/\.?0+$/, '') : truncated.toString();
 }
 
+const truncateTokenAmountWithComma = (num: number | string | null | undefined): string => {
+  if (num === null || num === undefined || num === '') return '-';
 
+  const _num = typeof num === 'number' ? num : Number(num);
+  if (isNaN(_num)) return '-';
 
+  if (_num === 0) return '0';
+
+  // 截断到两位小数（不是四舍五入）
+  const truncated = Math.trunc(_num * 100) / 100;
+
+  // 小于 0.01 但大于 0 的情况
+  if (truncated === 0 && _num > 0 && _num < 0.01) {
+    return '<0.01';
+  }
+
+  const [intPart, decPart = ''] = truncated.toString().split('.');
+
+  // 整数部分加逗号
+  const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  // 保留不超过 2 位的小数（已被截断），且去除末尾 0
+  const cleanedDec = decPart.slice(0, 2).replace(/0+$/, '');
+
+  return cleanedDec ? `${formattedInt}.${cleanedDec}` : formattedInt;
+};
 
 const AvailableAmountFormat = (amount: string | number) => {
     return Number(amount).toFixed(2);
@@ -51,7 +77,7 @@ const valueFormatter = ( priceStr : string | number ) => {
 const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | number ) => {
     const amount = typeof tokenAmount === 'string' ? Number(tokenAmount) : tokenAmount;
     const price = typeof tokenPrice === 'string' ? Number(tokenPrice) : tokenPrice;
-    return TokenAmountFormat(amount * price);
+    return truncateTokenAmountWithComma(amount * price);
 }
 
 
@@ -426,7 +452,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_1}</IconContainer>}
                             label="Staked Amount"
-                            amount={ truncateTokenAmount(stakedAmount || "0.00") }
+                            amount={ truncateTokenAmountWithComma(stakedAmount || "0.00") }
                             value= { valueFormatter(valueCalculator(stakedAmount, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -436,7 +462,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_2}</IconContainer>}
                             label="Withdrawing Amount"
-                            amount={ truncateTokenAmount(withdrawingAmount || "0.00")  }
+                            amount={ truncateTokenAmountWithComma(withdrawingAmount || "0.00")  }
                             value= { valueFormatter(valueCalculator(withdrawingAmount, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -446,7 +472,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Total Rewards"
-                            amount={ truncateTokenAmount(totalRewards || "0.00") }
+                            amount={ truncateTokenAmountWithComma(totalRewards || "0.00") }
                             value= { valueFormatter(valueCalculator(totalRewards, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -455,7 +481,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_4}</IconContainer>}
                             label="Available Balance"
-                            amount= { truncateTokenAmount(formattedBalanceStr || "0.00") }
+                            amount= { truncateTokenAmountWithComma(Number(formattedBalanceStr || "0.00").toFixed(2)) }
                             value= { valueFormatter(valueCalculator(formattedBalanceStr, tokenPrice)) }
                             hide={isHideNumber}
                         />

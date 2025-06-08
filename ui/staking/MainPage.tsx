@@ -1,5 +1,7 @@
 /* eslint-disable */
 "use client";
+
+
 import { Flex , Text , Box , Button} from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
 import { waitForTransactionReceipt } from '@wagmi/core'
@@ -86,7 +88,7 @@ const truncateTokenAmount = (num : number | string | null | undefined): string =
 
     const truncated = Math.trunc(_num * 100) / 100;
 
-    if (truncated === 0 && _num > 0 && _num < 0.01) {
+    if (truncated === 0 && _num > 0 && _num < 0.0001) {
       return '<0.01';
     }
 
@@ -310,6 +312,8 @@ const ObjectDetails: NextPage = () => {
     const [ transactionHash, setTransactionHash ] = React.useState<string>('');
     const [ extraDescription, setExtraDescription ] = React.useState<string | null>(null);
 
+    const [ compoundAmount, setCompoundAmount ] = React.useState<string>('0.00');
+
     const signAndSend = async ( amount :string, unsignedTx: unsignedTx | null | undefined ) => {
 
         if (!unsignedTx) throw new Error('Unsigned transaction null or undefined');
@@ -385,6 +389,7 @@ const ObjectDetails: NextPage = () => {
         if (txType === 'Compound-Claim') {
             try {
                 setIsTxLoading (true);
+                setCompoundAmount(amount);
                 // const res = await (await fetch(url + apiPath, {
                 //         method: 'post',
                 //         headers: {
@@ -419,8 +424,8 @@ const ObjectDetails: NextPage = () => {
                                     setCurrentTxType('Compound-Stake');
                                     setExtraDescription(null);
                                     setModalTitle('Compounding');
-                                    setCurrentAmount("0.00");
-                                    setAvailableAmount(formattedBalanceStr);
+                                    setCurrentAmount(compoundAmount);
+                                    setAvailableAmount(compoundAmount);
 
                                 } else {
                                     setIsTxLoading (false);
@@ -568,42 +573,42 @@ const ObjectDetails: NextPage = () => {
           </Button>
       </Flex>
       <StakingInfo
-        stakedAmount={ stakedAmount }
-        claimableRewards={ claimableRewards }
-        withdrawingAmount={ withdrawingAmount }
-        totalRewards={ totalRewards }
-        isOpen = { isOpen }
-        handleCloseModal = { handleCloseModal }
-        callback = { () => {
-          requestMyStakingInfo();
-          requestMyStakingTableList();
-        }}
-        modalTitle = { modalTitle}
-        extraDescription = { extraDescription }
-        transactionStage = { transactionStage }
-        currentTxType = { currentTxType }
-        availableAmount = { availableAmount }
-        setAvailableAmount = { setAvailableAmount }
-        onOpen = { onOpen }
-        isTxLoading = { isTxLoading }
-        currentAmount = { currentAmount }
-        setCurrentAmount = { setCurrentAmount }
-        handleSubmit = { handleSubmit }
-        currentAddress = { currentAddress }
-        setCurrentFromItem = { setCurrentFromItem }
-        setCurrentAddress = { setCurrentAddress }
-        currentFromItem = { currentFromItem }
-        currentFromAddress = { currentFromAddress }
-        setCurrentFromAddress = { setCurrentFromAddress }
-        currentItem = { currentItem }
-        setCurrentItem = { setCurrentItem }
-        handleClaimAll = { handleClaimAll }
-        handleCompound = { handleCompound }
-        handleStakeMore = { handleStakeMore }
-        setCurrentTxType = { setCurrentTxType }
-        transactionHash = { transactionHash }
-        isHideNumber = { isHideNumber }
-        setIsHideNumber = { setIsHideNumber }
+          stakedAmount={ stakedAmount }
+          claimableRewards={ claimableRewards }
+          withdrawingAmount={ withdrawingAmount }
+          totalRewards={ totalRewards }
+          isOpen = { isOpen }
+          handleCloseModal = { handleCloseModal }
+          callback = { () => {
+            requestMyStakingInfo();
+            requestMyStakingTableList();
+          }}
+          modalTitle = { modalTitle}
+          extraDescription = { extraDescription }
+          transactionStage = { transactionStage }
+          currentTxType = { currentTxType }
+          availableAmount = { availableAmount }
+          setAvailableAmount = { setAvailableAmount }
+          onOpen = { onOpen }
+          isTxLoading = { isTxLoading }
+          currentAmount = { currentAmount }
+          setCurrentAmount = { setCurrentAmount }
+          handleSubmit = { handleSubmit }
+          currentAddress = { currentAddress }
+          setCurrentFromItem = { setCurrentFromItem }
+          setCurrentAddress = { setCurrentAddress }
+          currentFromItem = { currentFromItem }
+          currentFromAddress = { currentFromAddress }
+          setCurrentFromAddress = { setCurrentFromAddress }
+          currentItem = { currentItem }
+          setCurrentItem = { setCurrentItem }
+          handleClaimAll = { handleClaimAll }
+          handleCompound = { handleCompound }
+          handleStakeMore = { handleStakeMore }
+          setCurrentTxType = { setCurrentTxType }
+          transactionHash = { transactionHash }
+          isHideNumber = { isHideNumber }
+          setIsHideNumber = { setIsHideNumber }
       />
       <Box
           style={{

@@ -24,6 +24,127 @@ import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } fro
 import styles from 'ui/staking/spinner.module.css';
 
 
+
+const mockValidatorData = [
+    {
+        validator: '0x1234567890abcdef1234567890abcdef12345678',
+        validatorName: 'Validator 1',
+        validatorAddress: '0x1234567890abcdef1234567890abcdef12345678',
+        liveAPR: 0.05,
+        myStake: 1000,
+        myRewards: 50,
+        claimable: 20,
+        commission: 0.1,
+        status: 'Active',
+    },
+    {
+        validator: '0xabcdef1234567890abcdef1234567890abcdef12',
+        validatorName: 'Validator 2',
+        validatorAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
+        liveAPR: 0.07,
+        myStake: 2000,
+        myRewards: 100,
+        claimable: 30,
+        commission: 0.05,
+        status: 'Inactive',
+    },
+    {
+        validator: '0x7890abcdef1234567890abcdef12345678901234',
+        validatorName: 'Validator 3',
+        validatorAddress: '0x7890abcdef1234567890abcdef12345678901234',
+        liveAPR: 0.06,
+        myStake: 1500,
+        myRewards: 75,
+        claimable: 25,
+        commission: 0.08,
+        status: 'Unbonding',
+    },
+    {
+        validator: '0x4567890abcdef1234567890abcdef1234567890',
+        validatorName: 'Validator 4',
+        validatorAddress: '0x4567890abcdef1234567890abcdef1234567890',
+        liveAPR: 0.04,
+        myStake: 800,
+        myRewards: 40,
+        claimable: 10,
+        commission: 0.12,
+        status: 'Active',
+    },
+
+    {
+        validator: '0xabcdef1234567890abcdef1234567890abcdef12',
+        validatorName: 'Validator 5',
+        validatorAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
+        liveAPR: 0.03,
+        myStake: 500,
+        myRewards: 20,
+        claimable: 5,
+        commission: 0.15,
+        status: 'Inactive',
+    },
+
+    {
+        validator: '0x7890abcdef1234567890abcdef12345678901234',
+        validatorName: 'Validator 6',
+        validatorAddress: '0x7890abcdef1234567890abcdef12345678901234',
+        liveAPR: 0.02,
+        myStake: 300,
+        myRewards: 10,
+        claimable: 2,
+        commission: 0.18,
+        status: 'Unbonding',
+    },
+
+    {
+        validator: '0x4567890abcdef1234567890abcdef1234567890',
+        validatorName: 'Validator 7',
+        validatorAddress: '0x4567890abcdef1234567890abcdef1234567890',
+        liveAPR: 0.01,
+        myStake: 100,
+        myRewards: 5,
+        claimable: 1,
+        commission: 0.2,
+        status: 'Active',
+    },
+
+    {
+        validator: '0x1234567890abcdef1234567890abcdef12345678',
+        validatorName: 'Validator 8',
+        validatorAddress: '0x1234567890abcdef1234567890abcdef12345678',
+        liveAPR: 0.05,
+        myStake: 1000,
+        myRewards: 50,
+        claimable: 20,
+        commission: 0.1,
+        status: 'Inactive',
+    },
+
+    {
+        validator: '0xabcdef1234567890abcdef1234567890abcdef12',
+        validatorName: 'Validator 9',
+        validatorAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
+        liveAPR: 0.07,
+        myStake: 2000,
+        myRewards: 100,
+        claimable: 30,
+        commission: 0.05,
+        status: 'Unbonding',
+    },
+
+    {
+        validator: '0x7890abcdef1234567890abcdef12345678901234',
+        validatorName: 'Validator 10',
+        validatorAddress: '0x7890abcdef1234567890abcdef12345678901234',
+        liveAPR: 0.06,
+        myStake: 1500,
+        myRewards: 75,
+        claimable: 25,
+        commission: 0.08,
+        status: 'Active',
+    },
+]
+
+
 const truncateTokenAmount = (num : number | string | null | undefined): string => {
     let _num = num;
     if (typeof num === 'string') {
@@ -33,7 +154,7 @@ const truncateTokenAmount = (num : number | string | null | undefined): string =
 
     const truncated = Math.trunc(_num * 100) / 100;
 
-    if (truncated === 0 && _num > 0 && _num < 0.01) {
+    if (truncated === 0 && _num > 0 && _num < 0.0001) {
       return '<0.01';
     }
 
@@ -51,7 +172,7 @@ const truncatePercentage = ( _num: number | string | null | undefined): string =
   }
   const rounded = +((num * 100) .toFixed(2)); // 四舍五入到两位
 
-  if (rounded === 0 && num > 0 && num < 0.01) {
+  if (rounded === 0 && num > 0 && num < 0.0001) {
     return '<0.01%';
   }
 
@@ -271,6 +392,8 @@ const TableApp = (props: {
         nextKey,
         handleStake: handleStakeMore,
     } = props;
+
+    // const data = mockValidatorData; // props.data || mockValidatorData;
 
     const [sortBy, setSortBy] = React.useState<string>('');
     const [sortOrder, setSortOrder] = React.useState<sortOrderType>('');

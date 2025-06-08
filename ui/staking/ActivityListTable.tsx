@@ -278,6 +278,7 @@ const TableApp = (props: {
                 <TableTokenAmount
                     amount = { record.amount }
                     symbol = 'MOCA'
+                    decimals = { 4 }
                 />
             )
         },
