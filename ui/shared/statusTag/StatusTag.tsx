@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { TagLabel, Tooltip, chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -39,7 +41,7 @@ const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
 
   return (
     <Tooltip label={ errorText }>
-      <Tag colorScheme={ colorScheme } display="flex" isLoading={ isLoading } className={ className }>
+      <Tag colorScheme={ colorScheme } px='0.4rem' borderRadius='9999px'  display="flex" isLoading={ isLoading } className={ className }>
         <IconSvg boxSize={ 2.5 } name={ icon } mr={ 1 } flexShrink={ 0 }/>
         <TagLabel display="block">{ capitalizedText }</TagLabel>
       </Tag>

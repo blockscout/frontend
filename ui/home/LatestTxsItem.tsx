@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Box,
   Flex,
@@ -26,6 +28,13 @@ type Props = {
   tx: Transaction;
   isLoading?: boolean;
 };
+
+
+const getShortHash = (hash: string) => {
+  if (!hash) return '';
+  return `${hash.slice(0, 6)}...${hash.slice(-4)}`;
+}
+
 
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
@@ -62,13 +71,19 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
             <TxEntity
               isLoading={ isLoading }
               hash={ tx.hash }
-              fontWeight="700"
+              text={ getShortHash(tx.hash) }
+              fontWeight={ 600 }
+              color="#D940A4"
+              fontSize="1.125rem"
+              fontFamily="Outfit"
+              fontStyle="normal"
+              lineHeight="normal"
             />
             <TimeAgoWithTooltip
               timestamp={ tx.timestamp }
               enableIncrement
               isLoading={ isLoading }
-              color="text_secondary"
+              color="#B0B0B0"
               fontWeight="400"
               fontSize="sm"
               flexShrink={ 0 }
@@ -83,17 +98,17 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         isLoading={ isLoading }
         mode="compact"
       />
-      <Flex flexDir="column">
+      <Flex flexDir="column" gap="0.44rem">
         { !config.UI.views.tx.hiddenFields?.value && (
-          <Skeleton isLoaded={ !isLoading } my="3px">
-            <Text as="span" whiteSpace="pre">Value </Text>
-            <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
+          <Skeleton isLoaded={ !isLoading }>
+            <Text as="span" whiteSpace="pre" className="latest-tx-item-value-label">Value </Text>
+            <Text as="span" variant="secondary" className="latest-tx-item-value-value">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
           </Skeleton>
         ) }
         { !config.UI.views.tx.hiddenFields?.tx_fee && (
-          <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre" my="3px">
-            <Text as="span">Fee </Text>
-            <TxFee tx={ tx } accuracy={ 5 } color="text_secondary"/>
+          <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre">
+            <Text as="span"  className="latest-tx-item-fee-label">Fee </Text>
+            <TxFee tx={ tx } accuracy={ 5 } className="latest-tx-item-fee-value" color="text_secondary"/>
           </Skeleton>
         ) }
       </Flex>

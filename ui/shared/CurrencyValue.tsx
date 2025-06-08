@@ -36,7 +36,7 @@ const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className
       <chakra.span display="inline-block">
         { valueResult }{ currency ? ` ${ currency }` : '' }
       </chakra.span>
-      { usdResult && withUsd && <chakra.span color="text_secondary" fontWeight={ 400 }>(${ usdResult })</chakra.span> }
+      { usdResult && withUsd && <chakra.span color="text_secondary" className="latest-tx-item-fee-value " fontWeight={ 400 }>(${ usdResult })</chakra.span> }
     </chakra.span>
   );
 };

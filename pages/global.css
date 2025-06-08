@@ -13,6 +13,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 .modal-spinner {
     width: 40px;
@@ -100,4 +107,53 @@
   line-height: normal;
   border-radius: 8px;
   background: var(--button-primary, #EF6ABA) !important;
+}
+
+.latest-tx-item-value-label {
+  color: var(--text-primary, #181818);
+
+  /* body-2 */
+  font-family: Outfit;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.latest-tx-item-value-value {
+  color: var(--text-secondary, #7D7D7D);
+
+  /* body-2 */
+  font-family: Outfit;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.latest-tx-item-fee-label {
+  color: var(--text-primary, #181818);
+
+  /* body-2 */
+  font-family: Outfit;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+
+.latest-tx-item-fee-value {
+  color: var(--text-secondary, #7D7D7D);
+
+  /* body-2 */
+  font-family: Outfit;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.latest-tx-item-hash {
+  color: var(--link, #D940A4) !important;
 }

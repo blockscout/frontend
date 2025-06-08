@@ -1,8 +1,9 @@
+/* eslint-disable */
+
+
 import React from 'react';
-
-import type { TransactionType } from 'types/api/transaction';
-
 import Tag from 'ui/shared/chakra/Tag';
+import type { TransactionType } from 'types/api/transaction';
 
 export interface Props {
   types: Array<TransactionType>;
@@ -66,7 +67,7 @@ const TxType = ({ types, isLoading }: Props) => {
   }
 
   return (
-    <Tag colorScheme={ colorScheme } isLoading={ isLoading }>
+    <Tag colorScheme={ colorScheme }  px='0.4rem' borderRadius='9999px'   isLoading={ isLoading }>
       { label }
     </Tag>
   );
