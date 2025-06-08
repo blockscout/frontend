@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -13,7 +15,30 @@ const TestnetBadge = ({ className }: Props) => {
     return null;
   }
 
-  return <IconSvg className={ className } name="testnet" h="15px" w="37px" color="red.400"/>;
+  return <span style={{
+      display: 'inline-flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      height: '1.375rem',
+      width: '3.56rem',
+      justifyContent: 'center',
+      borderRadius: '9999px',
+      backgroundColor: ' #FFF',
+  }}>
+      <span style={{
+          color: 'var(--decorative, #FF89D0)',
+          fontFamily: 'HarmonyOS Sans',
+          fontSize: '0.75rem',
+          fontStyle: 'normal',
+          fontWeight: 500,
+          lineHeight: 'normal',
+          display: 'flex',
+          alignItems: 'center',
+      }}
+    >
+        Testnet
+      </span>
+    </span>
 };
 
 export default React.memo(chakra(TestnetBadge));

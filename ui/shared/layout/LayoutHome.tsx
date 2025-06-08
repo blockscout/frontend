@@ -14,7 +14,7 @@ const LayoutHome = ({ children }: Props) => {
       { /* <Layout.TopRow/> */ }
       <Layout.NavBar/>
       <HeaderMobile hideSearchBar/>
-      <Layout.MainArea background="linear-gradient(108deg, #FFF 0%, #F4F2FF 50.26%, #F2EFFF 100.3%)">
+      <Layout.MainArea background="#f4f4f4">
         <Layout.SideBar/>
         <Layout.MainColumn
           paddingTop={{ base: 3, lg: 6 }}

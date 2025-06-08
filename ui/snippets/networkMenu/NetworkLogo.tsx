@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+
 import { Box, Image, useColorModeValue, Skeleton, chakra } from '@chakra-ui/react';
 import Images from 'next/image';
 import React from 'react';
@@ -35,7 +38,7 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
   }
 
   return (
-    <Images src={ isCollapsed ? mocaIcon : mocaLogo } alt="Moca Icon" style={{ width: '100%', height: '100%' }}/>
+    <Images src={ isCollapsed ? mocaIcon : mocaLogo } alt="Moca Icon" style={{ width: 'auto', height: '1.25rem' }}/>
     // <IconSvg
     //   name={ isSmall ? 'icon-moca-placeholder' : 'logo-moca-placeholder' }
     //   width="auto"
