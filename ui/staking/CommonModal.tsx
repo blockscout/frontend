@@ -516,7 +516,11 @@ const CommonModal = ({
                                         }
 
                                         {
-                                            (currentTxType === 'Withdraw' || currentTxType === 'Stake' || currentTxType === 'MoveStake') && (
+                                            ( currentTxType === 'Withdraw' || 
+                                                currentTxType === 'Stake' || 
+                                                currentTxType === 'MoveStake' || 
+                                                currentTxType === 'ChooseStake'
+                                            ) && (
                                                 <Box width="100%" height="auto">
                                                     <HeadsUpInfo
                                                         label="Heads Up"

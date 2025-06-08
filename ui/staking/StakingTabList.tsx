@@ -10,6 +10,7 @@ import styles from 'ui/staking/spinner.module.css';
 
 const noop = () => {};
 
+
 const ValidatorItem = ({
     validator,
     isDisabled = false,
@@ -168,7 +169,7 @@ const StakingTabList = ({
                 </div>
 
                 <TabPanels color="#000" borderRadius={"12px"}>
-                    <TabPanel padding="0" maxHeight="297px"  boxShadow="none">
+                    <TabPanel padding="0" maxHeight="300px" boxShadow="none">
                         {
                         myValidatorsList.length > 0 && (<Box
                             width="100%"
@@ -220,30 +221,32 @@ const StakingTabList = ({
                             width="100%"
                             backgroundColor="#fff"
                             padding="0"
-                            maxHeight="300px"
+                            maxHeight="260px"
                             overflowY="auto"
                         >
                             { myValidatorsList.length === 0 && ( 
                                 isMyValidatorLoading ? spinner :
-                                <EmptyRecords text="You haven't stake in a bonded Validators" /> )}
-                                { myValidatorsList.map((validator) => (
-                                <ValidatorItem
-                                    key={validator.validatorAddress}
-                                    validator={validator}
-                                    isDisabled={ validator.status !== "Active" }
-                                    onClick={() => {
-                                        setSelectedValidator({
-                                            ...validator,
-                                            validatorAddress: validator.validatorAddress,
-                                            liveApr: validator.liveApr,
-                                        });
-                                        onClose();
-                                    }}
-                                />
+                                <EmptyRecords text="You haven't stake in a bonded Validators" />
+                            )}
+
+                            { myValidatorsList.map((validator) => (
+                                    <ValidatorItem
+                                        key={validator.validatorAddress}
+                                        validator={validator}
+                                        isDisabled={ validator.status !== "Active" }
+                                        onClick={() => {
+                                            setSelectedValidator({
+                                                ...validator,
+                                                validatorAddress: validator.validatorAddress,
+                                                liveApr: validator.liveApr,
+                                            });
+                                            onClose();
+                                        }}
+                                    />
                             ))}
                         </Box>
                     </TabPanel>
-                    <TabPanel padding="0" maxHeight="297px"  boxShadow="none">
+                    <TabPanel padding="0"  maxHeight="300px"  boxShadow="none">
                         {
                             filteredOtherValidators.length > 0  && (<Box
                                 width="100%"
@@ -295,26 +298,26 @@ const StakingTabList = ({
                             width="100%"
                             backgroundColor="#fff"
                             padding="0"
-                            maxHeight="300px"
+                            maxHeight="260px"
                             overflowY="auto"
                         >
                             { filteredOtherValidators.length === 0 && (
                                 isAllValidatorLoading ? spinner :
                                  <EmptyRecords text="No validators" /> )}
-                                {filteredOtherValidators.map((validator) => (
-                                    <ValidatorItem
-                                        key={validator.validatorAddress} 
-                                        validator={validator}
-                                        isDisabled={ validator.status !== "Active" }
-                                        onClick={() => {
-                                            setSelectedValidator({
-                                                ...validator,
-                                                validatorAddress: validator.validatorAddress,
-                                                liveApr: validator.liveApr,
-                                            })
-                                            onClose();
-                                        }}
-                                    />
+                                { filteredOtherValidators.map((validator) => (
+                                        <ValidatorItem
+                                            key={validator.validatorAddress} 
+                                            validator={validator}
+                                            isDisabled={ validator.status !== "Active" }
+                                            onClick={() => {
+                                                setSelectedValidator({
+                                                    ...validator,
+                                                    validatorAddress: validator.validatorAddress,
+                                                    liveApr: validator.liveApr,
+                                                })
+                                                onClose();
+                                            }}
+                                        />
                                 ))}
                         </Box>
                     </TabPanel>

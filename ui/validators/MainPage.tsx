@@ -266,9 +266,10 @@ const AllValidatorPage: NextPage = () => {
 
       let result = '';
       if (days > 0) result += `${days}d `;
-      if (hours > 0) result += `${hours}h `;
+      if (hours > 0) result += `New: ${hours}h `;
       // result += `${minutes}m`;
 
+      
       return result.trim();
   }
 
@@ -369,7 +370,7 @@ const AllValidatorPage: NextPage = () => {
                             { totalEpoch.progress || 0 }%
                         </Text>
                         <Text fontSize="12px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
-                            New: { formatSeconds(Number(totalEpoch.remainingTime || 0 ))}
+                           { formatSeconds(Number(totalEpoch.remainingTime || 0 ))}
                         </Text>
                     </Flex>
                     <Progress

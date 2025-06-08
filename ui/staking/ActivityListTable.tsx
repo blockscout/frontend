@@ -137,6 +137,7 @@ const CustomTableHeader = ({
                 width="100%"
                 userSelect={'none'}
                 gap="2px" 
+                className='node-staking-custom-table-header'
                 onClick={ allowSort ? handleSort : noop }
             >
                 <span style={{ 
@@ -146,7 +147,7 @@ const CustomTableHeader = ({
                     fontStyle: 'normal',
                     fontWeight: 400,
                     lineHeight: 'normal',
-                        
+                    textDecoration: 'underline',
                 }}>
                     { children }
                 </span>
@@ -375,6 +376,7 @@ const TableApp = (props: {
                     lineHeight: 'normal',
                         
                 }}  
+                className="node-staking-custom-table-header"
             >
                 { content }
             </span> 

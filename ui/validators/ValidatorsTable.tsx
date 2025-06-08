@@ -35,7 +35,7 @@ const  ValidatorInfoBox = ({ record } : { record: any }) => {
                     src="/static/moca-brand.svg"
                     width="20px"
                     height="20px"
-                    style={{ borderRadius: '50%' }}
+                    style={{ borderRadius: '50%', flexShrink: 0}}
                 />
             </Box>
             <span>{record.validatorName}</span>
@@ -146,9 +146,10 @@ const CustomTableHeader = ({
                 width="100%"
                 userSelect={'none'}
                 gap="2px" 
+                className='node-staking-custom-table-header'
                 onClick={ allowSort ? handleSort : noop }
             >
-                <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' , fontWeight: 400 }} >
+                <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' }}>
                     { children }
                 </span>
                 { allowSort && (
@@ -434,7 +435,6 @@ const TableApp = (props: {
                             alignItems: 'center',
                             justifyContent: 'center',
                             lineHeight: 'normal',
-                                
                         }}
                     >
                         <ValidatorInfoBox record = { record } />
@@ -605,8 +605,9 @@ const TableApp = (props: {
                     fontStyle: 'normal',
                     fontWeight: 500,
                     lineHeight: 'normal',
-                        
+                    
                 }}  
+                className="node-staking-custom-table-header"
             >
                 { content }
             </span> 

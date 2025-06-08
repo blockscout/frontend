@@ -33,7 +33,7 @@ const ValidatorInfo = ({
         >
             <img
                 src="/static/moca-brand.svg"
-                style={{ borderRadius: '50%', marginRight: "4px" }}
+                style={{ borderRadius: '50%', marginRight: "4px" , flexShrink: 0}}
                 draggable={false}
                 width="20px"
                 height="20px"

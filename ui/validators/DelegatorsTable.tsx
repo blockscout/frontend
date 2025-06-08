@@ -110,7 +110,7 @@ const ValidatorInfo = ({
                     src="/static/moca-brand.svg"
                     width="16px"
                     height="16px"
-                    style={{ borderRadius: '50%', marginRight: "4px" }}
+                    style={{ borderRadius: '50%', marginRight: "4px" , flexShrink: 0}}
                     draggable={false}
                 />
                 <Text 
@@ -234,9 +234,10 @@ const CustomTableHeader = ({
                 width="100%"
                 userSelect={'none'}
                 gap="2px" 
+                className='node-staking-custom-table-header'
                 onClick={ allowSort ? handleSort : noop }
             >
-                <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' , fontWeight: 400 }}>
+                <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' , fontWeight: 400  }} >
                     { children }
                 </span>
                 { allowSort && (
@@ -332,6 +333,7 @@ const TableApp = (props: {
                     lineHeight: 'normal',
                         
                 }}  
+                className="node-staking-custom-table-header"
             >
                 { content }
             </span> 

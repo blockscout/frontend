@@ -209,7 +209,7 @@ const StakingModalNumberInput = ({
                     >MAX</Button>
                     <Flex flexDirection={'row'} width='auto' gap={"4px"} height='auto' alignItems='center' justifyContent={'flex-end'}>
                         <img
-                            style={{ borderRadius: '50%' }}
+                            style={{ borderRadius: '50%', flexShrink: 0}}
                             src="/static/moca-brand.svg"
                             width="20px"
                             draggable={false}

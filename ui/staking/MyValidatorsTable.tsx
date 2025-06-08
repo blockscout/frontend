@@ -89,15 +89,13 @@ const TableTokenAmount = ({
 
 const  ValidatorInfoBox = ({ record } : { record: any }) => {
     return (
-        <Flex flexDirection="row" alignItems="center" gap="8px" width="100%">
-            <Box>
-                <img
-                    src="/static/moca-brand.svg"
-                    width="20px"
-                    height="20px"
-                    style={{ borderRadius: '50%' }}
-                />
-            </Box>
+        <Flex flexDirection="row"  flexWrap="nowrap" alignItems="center" gap="8px" width="100%" justifyContent="flex-start">
+            <img
+                src="/static/moca-brand.svg"
+                width="20px"
+                height="20px"
+                style={{ borderRadius: '50%', flexShrink: 0}}
+            />
             <span>{record.validatorName}</span>
         </Flex>
     );
@@ -222,6 +220,7 @@ const CustomTableHeader = ({
                 width="100%"
                 userSelect={'none'}
                 gap="2px" 
+                className='node-staking-custom-table-header'
                 onClick={ allowSort ? handleSort : noop }
             >
                 <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' , fontWeight: 400 }}>
@@ -560,6 +559,7 @@ const TableApp = (props: {
                             alignItems: 'center',
                             justifyContent: 'center',
                             lineHeight: 'normal',
+                            flexShrink: 0,
                         }}
                     >
                         <ValidatorInfoBox record = { record } />
@@ -718,6 +718,7 @@ const TableApp = (props: {
                     lineHeight: 'normal',
                         
                 }}  
+                className="node-staking-custom-table-header"
             >
                 { content }
             </span> 

@@ -213,7 +213,7 @@ const ValidatorDetails = () => {
                                     src="/static/moca-brand.svg"
                                     width="32px"
                                     height="32px"
-                                    style={{ borderRadius: '50%', marginRight: "4px" }}
+                                    style={{ borderRadius: '50%', marginRight: "4px" , flexShrink: 0}}
                                 />
                                 <Text 
                                     fontSize="20px"
