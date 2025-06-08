@@ -13,24 +13,6 @@ import Web3ModalProvider from 'ui/staking/Web3Provider';
 import { getFormatterFloat } from 'ui/staking/numberFormat';
 
 
-const truncateTokenAmount = (num : number | string | null | undefined): string => {
-    let _num = num;
-    if (typeof num === 'string') {
-      _num = Number(_num);
-    }
-    if (typeof _num !== 'number' || isNaN(_num)) return '-';
-
-    const truncated = Math.trunc(_num * 100) / 100;
-
-    if (truncated === 0 && _num > 0 && _num < 0.0001) {
-      return '<0.01';
-    }
-
-    const hasDecimal = truncated % 1 !== 0;
-    return hasDecimal ? truncated.toFixed(2).replace(/\.?0+$/, '') : truncated.toString();
-}
-
-
 const truncateTokenAmountWithComma = (num: number | string | null | undefined): string => {
   if (num === null || num === undefined || num === '') return '-';
 

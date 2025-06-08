@@ -146,22 +146,32 @@ const mockValidatorData = [
 
 
 const truncateTokenAmount = (num : number | string | null | undefined): string => {
-    let _num = num;
-    if (typeof num === 'string') {
-      _num = Number(_num);
-    }
-    if (typeof _num !== 'number' || isNaN(_num)) return '-';
+        let _num = num;
+        if (typeof num === 'string') {
+            _num = Number(_num);
+        }
+        if (typeof _num !== 'number' || isNaN(_num)) return '-';
 
-    const truncated = Math.trunc(_num * 100) / 100;
+        if (_num === 0) {
+            return '0';
+        }
 
-    if (truncated === 0 && _num > 0 && _num < 0.0001) {
-      return '<0.01';
-    }
+        const truncated = Math.trunc(_num) / 100;
 
-    const hasDecimal = truncated % 1 !== 0;
-    return hasDecimal ? truncated.toFixed(2).replace(/\.?0+$/, '') : truncated.toString();
-}
+        if (truncated === 0 && _num > 0 && _num < 0.01) {
+            return '<0.01';
+        }
 
+        const hasDecimal = truncated % 1 !== 0;
+        const [intPart, decPart] = truncated.toFixed(2).split('.');
+
+        // 整数部分加千分位逗号
+        const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+        // 去除小数部分多余的 0 和 .
+        const cleanedDec = decPart.replace(/0+$/, '');
+        return cleanedDec ? `${formattedInt}.${cleanedDec}` : formattedInt;
+};
 
 const truncatePercentage = ( _num: number | string | null | undefined): string => {
   let num = _num;
