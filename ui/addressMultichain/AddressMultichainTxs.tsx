@@ -68,7 +68,7 @@ const AddressMultichainTxs = () => {
     </>
   ) : null;
 
-  const subchainData = multichainConfig?.chains.find(chain => chain.slug === txsQueryLocal.query.subchainValue?.[0]);
+  const subchainData = multichainConfig()?.chains.find(chain => chain.slug === txsQueryLocal.query.subchainValue?.[0]);
 
   const tabs: Array<TabItemRegular> = [
     {

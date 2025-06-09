@@ -1,9 +1,10 @@
 import type { MultichainConfig } from 'types/multichain';
 
 import config from 'configs/app';
+import * as multichainConfigNodejs from 'configs/multichain/config.nodejs';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
-const multichainConfig: MultichainConfig | undefined = (() => {
+const multichainConfig: () => MultichainConfig | undefined = () => {
   if (!config.features.multichain.isEnabled) {
     return;
   }
@@ -12,10 +13,7 @@ const multichainConfig: MultichainConfig | undefined = (() => {
     return window.__multichainConfig;
   }
 
-  try {
-    const config = require('../../public/assets/multichain/config.json');
-    return config;
-  } catch (error) {}
-})();
+  return multichainConfigNodejs.getValue();
+};
 
 export default multichainConfig;

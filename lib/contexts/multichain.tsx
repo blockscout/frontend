@@ -30,11 +30,16 @@ export function MultichainProvider({ children, subchainId: subchainIdProp }: Mul
   }, [ subchainIdProp ]);
 
   const subchain = React.useMemo(() => {
-    if (!subchainId) {
-      return multichainConfig?.chains[0];
+    const config = multichainConfig();
+    if (!config) {
+      return undefined;
     }
 
-    return multichainConfig?.chains.find((chain) => chain.slug === subchainId);
+    if (!subchainId) {
+      return config.chains[0];
+    }
+
+    return config.chains.find((chain) => chain.slug === subchainId);
   }, [ subchainId ]);
 
   const value = React.useMemo(() => {

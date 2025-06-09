@@ -36,7 +36,7 @@ export default function useApiQuery<R extends ResourceName, E = unknown, D = Res
 ) {
   const apiFetch = useApiFetch();
   const { subchain } = useMultichainContext() ||
-    { subchain: subchainId ? multichainConfig?.chains.find((chain) => chain.slug === subchainId) : undefined };
+    { subchain: subchainId ? multichainConfig()?.chains.find((chain) => chain.slug === subchainId) : undefined };
 
   return useQuery<ResourcePayload<R>, ResourceError<E>, D>({
     queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams, subchainId: subchain?.slug }),

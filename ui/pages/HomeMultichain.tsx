@@ -13,7 +13,7 @@ const HomeMultichain = () => {
     <Box as="main">
       <HeroBanner/>
       <HStack mt={ 3 } gap={ 6 }>
-        { multichainConfig?.chains.map(chain => {
+        { multichainConfig()?.chains.map(chain => {
           return (
             <MultichainProvider key={ chain.slug } subchainId={ chain.slug }>
               <SocketProvider url={ getSocketUrl(chain.config) }>

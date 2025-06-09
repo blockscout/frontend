@@ -8,7 +8,6 @@ import React from 'react';
 import type { NextPageWithLayout } from 'nextjs/types';
 
 import config from 'configs/app';
-import multichainConfig from 'configs/multichain';
 import getSocketUrl from 'lib/api/getSocketUrl';
 import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
@@ -73,7 +72,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     );
   })();
 
-  const socketUrl = !multichainConfig ? getSocketUrl() : undefined;
+  const socketUrl = !config.features.multichain.isEnabled ? getSocketUrl() : undefined;
 
   return (
     <ChakraProvider>

@@ -16,7 +16,7 @@ const pathname: Route['pathname'] = '/subchain/[subchain-id]/address/[hash]';
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   // TODO @tom2drum rename subchain-id to slug
   const subchainId = props.query?.['subchain-id'];
-  const subchainData = multichainConfig?.chains.find(chain => chain.slug === subchainId);
+  const subchainData = multichainConfig()?.chains.find(chain => chain.slug === subchainId);
 
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>

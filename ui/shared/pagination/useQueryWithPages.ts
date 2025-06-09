@@ -52,6 +52,15 @@ function getNextPageParams<R extends PaginatedResourceName>(data: ResourcePayloa
   return data.next_page_params;
 }
 
+function getSubchainValue(queryParam: string | Array<string> | undefined) {
+  const config = multichainConfig();
+  if (!config) {
+    return undefined;
+  }
+
+  return [ getQueryParamString(queryParam) || config.chains[0].slug ];
+}
+
 export type QueryWithPagesResult<Resource extends PaginatedResourceName> =
 UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
 {
@@ -79,9 +88,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   });
   const [ hasPages, setHasPages ] = React.useState(page > 1);
   const [ subchainValue, setSubchainValue ] = React.useState<Array<string> | undefined>(
-    multichainConfig ? (
-      [ getQueryParamString(router.query['subchain-id']) || multichainConfig.chains[0].slug ]
-    ) : undefined,
+    getSubchainValue(router.query['subchain-id']),
   );
 
   const isMounted = React.useRef(false);
