@@ -1,4 +1,4 @@
-import getPageType from './getPageType';
+import getPageType, { PAGE_TYPE_DICT } from './getPageType';
 import logEvent from './logEvent';
 import reset from './reset';
 import useInit from './useInit';
@@ -13,4 +13,5 @@ export {
   getPageType,
   userProfile,
   reset,
+  PAGE_TYPE_DICT,
 };
