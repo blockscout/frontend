@@ -35,7 +35,7 @@ const TxDetailsTacOperation = ({ tacOperations, isLoading, txHash }: Props) => {
       >
         { tacOperations.map((tacOperation) => {
           const tags = [
-            getTacOperationStage(tacOperation, txHash),
+            ...(getTacOperationStage(tacOperation, txHash) || []),
             getTacOperationStatus(tacOperation.type),
           ];
 
@@ -46,8 +46,8 @@ const TxDetailsTacOperation = ({ tacOperations, isLoading, txHash }: Props) => {
                 isLoading={ isLoading }
               />
               { tags.length > 0 && (
-                <HStack flexShrink={ 0 }>
-                  { tags.map((tag) => <Tag key={ tag } loading={ isLoading }>{ tag }</Tag>) }
+                <HStack flexShrink={ 0 } flexWrap="wrap">
+                  { tags.map((tag) => <Tag key={ tag } loading={ isLoading } flexShrink={ 0 }>{ tag }</Tag>) }
                 </HStack>
               ) }
             </HStack>
