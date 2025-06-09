@@ -1,5 +1,7 @@
-import { chakra } from '@chakra-ui/react';
+import { Spinner, chakra } from '@chakra-ui/react';
 import React from 'react';
+
+import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import { route } from 'nextjs-routes';
 
@@ -22,14 +24,40 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-const Icon = (props: EntityBase.IconBaseProps) => {
-  return (
-    <EntityBase.Icon
-      { ...props }
-      name={ props.name ?? 'operation_slim' }
-      borderRadius="none"
-    />
-  );
+type IconProps = EntityBase.IconBaseProps & Pick<EntityProps, 'type'>;
+
+const Icon = (props: IconProps) => {
+  switch (props.type) {
+    case tac.OperationType.PENDING: {
+      return <Spinner size="md" marginRight={ props.marginRight ?? '8px' }/>;
+    }
+    default: {
+      const color = (() => {
+        switch (props.type) {
+          case tac.OperationType.ERROR:
+          case tac.OperationType.ROLLBACK: {
+            return 'red.500';
+          }
+          case tac.OperationType.TAC_TON:
+          case tac.OperationType.TON_TAC_TON:
+          case tac.OperationType.TON_TAC: {
+            return 'green.500';
+          }
+          default:
+            return;
+        }
+      })();
+
+      return (
+        <EntityBase.Icon
+          { ...props }
+          color={ color }
+          name={ props.name ?? 'operation_slim' }
+          borderRadius="none"
+        />
+      );
+    }
+  }
 };
 
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'id'>;
@@ -58,6 +86,7 @@ const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
   id: string;
+  type: tac.OperationType | undefined;
 }
 
 const OperationEntity = (props: EntityProps) => {

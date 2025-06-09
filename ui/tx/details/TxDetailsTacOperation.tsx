@@ -43,6 +43,7 @@ const TxDetailsTacOperation = ({ tacOperations, isLoading, txHash }: Props) => {
             <HStack key={ tacOperation.operation_id } gap={ 3 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
               <OperationEntity
                 id={ tacOperation.operation_id }
+                type={ tacOperation.type }
                 isLoading={ isLoading }
               />
               { tags.length > 0 && (

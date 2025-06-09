@@ -219,7 +219,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'tac_operation': {
         return (
           <OperationEntity.Container>
-            <OperationEntity.Icon/>
+            <OperationEntity.Icon type={ data.tac_operation.type }/>
             <OperationEntity.Link
               isLoading={ isLoading }
               id={ data.tac_operation.operation_id }

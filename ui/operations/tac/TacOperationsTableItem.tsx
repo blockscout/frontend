@@ -16,9 +16,14 @@ const TacOperationsTableItem = ({ item, isLoading }: Props) => {
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
+        <TacOperationStatus status={ item.type } isLoading={ isLoading }/>
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <OperationEntity
           id={ item.operation_id }
+          type={ item.type }
           isLoading={ isLoading }
+          truncation="constant_long"
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -27,9 +32,6 @@ const TacOperationsTableItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
           color="text.secondary"
         />
-      </TableCell>
-      <TableCell verticalAlign="middle">
-        <TacOperationStatus status={ item.type } isLoading={ isLoading }/>
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>
         { item.sender ? (

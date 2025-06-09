@@ -66,7 +66,7 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
             Lifecycle
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <TacOperationLifecycleAccordion data={ statusHistory } isLoading={ isLoading }/>
+            <TacOperationLifecycleAccordion data={ statusHistory } isLoading={ isLoading } type={ data.type }/>
           </DetailedInfo.ItemValue>
         </>
       ) }
