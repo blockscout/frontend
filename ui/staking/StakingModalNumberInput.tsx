@@ -64,7 +64,7 @@ const StakingModalNumberInput = ({
 
 
   const { address: userAddr } = useAccount();
-  const { data: balanceData } = useBalance({ address: userAddr});
+  const { data: balanceData, refetch: refetchBalance } = useBalance({ address: userAddr});
   const { tokenPrice } = useStakeLoginContextValue();
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);

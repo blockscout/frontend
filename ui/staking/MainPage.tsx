@@ -232,7 +232,7 @@ const ObjectDetails: NextPage = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [ isHideNumber, setIsHideNumber ] = React.useState<boolean>(false);
 
-    const { data: balanceData } = useBalance({ address: userAddr});
+    const { data: balanceData, refetch: refetchBalance } = useBalance({ address: userAddr});
     const [ availableAmount, setAvailableAmount ] = React.useState<string>('0.00');
     const [ randomKey , setRandomKey ] = React.useState<number>(0);
 
@@ -358,13 +358,14 @@ const ObjectDetails: NextPage = () => {
                     if(res.data && res.data.unsignedTx) {
                         const { unsignedTx } = res.data;
                         signAndSend(amount , unsignedTx).then((txHash: string) => {
+
                             setTransactionHash(txHash);
                             setTransactionStage('comfirming');
                             isTxConfirmed(txHash).then((isConfirmed: boolean) => {
                                 if (isConfirmed) {
                                     setTransactionStage('edit');
                                     sendTxHashToServer(txHash, param);
-
+                                    refetchBalance();
                                     // back to stake 
                                     setCurrentAddress('');
                                     setCurrentItem({});
@@ -378,6 +379,7 @@ const ObjectDetails: NextPage = () => {
                                     setIsTxLoading (false);
                                     setTransactionStage('error');
                                 }
+                                refetchBalance();
                             }).catch((error: any) => {
                                 setTransactionStage('error');
                                 setIsTxLoading (false);
@@ -416,6 +418,7 @@ const ObjectDetails: NextPage = () => {
                         const { unsignedTx } = res.data;
                         signAndSend(amount , unsignedTx).then((txHash: string) => {
                             setTransactionHash(txHash);
+                            refetchBalance();
                             setTransactionStage('comfirming');
                             isTxConfirmed(txHash).then((isConfirmed: boolean) => {
                                 if (isConfirmed) {
@@ -425,6 +428,7 @@ const ObjectDetails: NextPage = () => {
                                     setIsTxLoading (false);
                                     setTransactionStage('error');
                                 }
+                                refetchBalance();
                             }).catch((error: any) => {
                                 setTransactionStage('error');
                                 setIsTxLoading (false);

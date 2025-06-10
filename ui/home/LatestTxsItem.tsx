@@ -78,6 +78,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               fontFamily="Outfit"
               fontStyle="normal"
               lineHeight="normal"
+              noIcon = { true}
             />
             <TimeAgoWithTooltip
               timestamp={ tx.timestamp }

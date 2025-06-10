@@ -16,7 +16,8 @@ import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import React ,  { useMemo, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import TokenAmountFormat from 'ui/validators/TokenAmountFormat';
-import styles from 'ui/staking/spinner.module.css';
+import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
+
 
 const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | number ) => {
     const amount = typeof tokenAmount === 'string' ? Number(tokenAmount) : tokenAmount;
@@ -117,7 +118,8 @@ const CommonModal = ({
     const [ loading, setLoading ] = React.useState<boolean>(false);
     const [ isMyValidatorLoading, setIsMyValidatorLoading ] = React.useState<boolean>(false);
     const [ isAllValidatorLoading, setIsAllValidatorLoading ] = React.useState<boolean>(false);
-
+    const { address: userAddr } = useAccount();
+    const { data: balanceData, refetch: refetchBalance } = useBalance({ address: userAddr});
     const { tokenPrice } = useStakeLoginContextValue();
 
 
@@ -131,6 +133,11 @@ const CommonModal = ({
     const [ apr , setApr ] = React.useState<string | number>("0.00");
 
     const [ inputStr , setInputStr ] = React.useState<string>(currentAmount);
+
+
+    useEffect(() => {
+        !!userAddr && refetchBalance();
+    }, []);
 
 
     useEffect(() => {
@@ -171,8 +178,6 @@ const CommonModal = ({
         return false;
     }, [ currentTxType ]);
     
-
-    const { address: userAddr } = useAccount();
 
     const sourceValidatorAddress = useMemo(() => {
         if (currentTxType === 'MoveStake' && currentFromItem && currentFromItem.validatorAddress) {
@@ -269,6 +274,7 @@ const CommonModal = ({
     const handleCloseModal = () => {
         setCurrentAmount("0.00");
         setInputStr("");
+        refetchBalance();
         setAvailableAmount("0.00");
         setCurrentItem(null);
         onClose();

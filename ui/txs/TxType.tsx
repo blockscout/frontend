@@ -94,7 +94,9 @@ const TxType = ({ types, isLoading }: Props) => {
   }
 
   return (
-    <Tag  px='0.5rem'  borderRadius='9999px'   isLoading={ isLoading } { ..._prop }>
+    <Tag  px='0.5rem'  borderRadius='9999px'   height={"1.437rem"}
+          isLoading={ isLoading } { ..._prop } margin={0} py={0} 
+          display="inline-flex" alignItems="center">
       <span style={ textStyle }>
         { label }
       </span>

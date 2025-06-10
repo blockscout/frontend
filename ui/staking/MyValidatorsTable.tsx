@@ -348,7 +348,7 @@ const TableApp = (props: {
 
     const { address: userAddr } = useAccount();
 
-    const { data: balanceData } = useBalance({ address: userAddr});
+    const { data: balanceData, refetch: refetchBalance } = useBalance({ address: userAddr});
     const [ availableAmount, setAvailableAmount ] = React.useState<string>('0.00');
 
     const formattedBalanceStr = React.useMemo(() => {
@@ -516,7 +516,7 @@ const TableApp = (props: {
                 if(res.data && res.data.unsignedTx) {
                     const { unsignedTx } = res.data;
                     signAndSend(amount , unsignedTx).then((txHash: string) => {
-                        console.log('txHash', txHash);
+                        refetchBalance();
                         setTransactionHash(txHash);
                         setTransactionStage('comfirming');
                         isTxConfirmed(txHash).then((isConfirmed: boolean) => {
@@ -527,6 +527,7 @@ const TableApp = (props: {
                                 setIsTxLoading (false);
                                 setTransactionStage('error');
                             }
+                            refetchBalance();
                         }).catch((error: any) => {
                             setTransactionStage('error');
                             setIsTxLoading (false);
