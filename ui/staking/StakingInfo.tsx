@@ -335,6 +335,7 @@ const StakingInfo = ({
 
     const { data: balanceData } = useBalance({ address: userAddr});
     const { tokenPrice} = useStakeLoginContextValue();
+    
     const formattedBalanceStr = React.useMemo(() => {
         if (balanceData && !!balanceData.value) {
             return formatUnits(balanceData.value, 18);
