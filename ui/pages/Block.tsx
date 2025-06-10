@@ -110,6 +110,7 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
+    // TODO @tom2drum remove epochs in block page
     blockQuery.data?.celo?.is_epoch_block ? {
       id: 'epoch_rewards',
       title: 'Epoch rewards',

@@ -200,7 +200,7 @@ const Stats = () => {
       },
       apiData?.celo && {
         id: 'current_epoch' as const,
-        icon: 'hourglass' as const,
+        icon: 'hourglass_slim' as const,
         label: 'Current epoch',
         value: `#${ apiData.celo.epoch_number }`,
         isLoading,
