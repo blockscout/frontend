@@ -94,6 +94,18 @@
   line-height: normal;
 }
 
+.lastest-tx-item-address a {
+
+  color: var(--link, #D940A4) !important;
+
+  /* body-2 */
+  font-family: Outfit;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 
 .user-connect-wallet-button-desktop {
   color: var(--text-on-colour, #FFF);

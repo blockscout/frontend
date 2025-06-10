@@ -332,19 +332,19 @@ const CommonModal = ({
 
 
     const isInputAmountValid = React.useMemo(() => {
-        if (!currentAmount) {
+        if (!inputStr) {
             return false;
         }
-        if (Number(currentAmount) < 0 || isNaN(Number(currentAmount)) || Number(currentAmount) === 0) {
+        if (isNaN(Number(inputStr)) || Number(inputStr) < 0 || Number(inputStr) === 0) {
             return false;
         }
         if (!currentTxType.includes('Claim') ) {
-            if (Number(currentAmount) > Number(availableAmount)) {
+            if (Number(inputStr) > Number(availableAmount)) {
                 return false;
             }
         }
         return true;
-    } , [ currentAmount, availableAmount, currentTxType ]);
+    } , [ inputStr, availableAmount, currentTxType ]);
 
 
     const isSelectedValidatorValid = React.useMemo(() => {

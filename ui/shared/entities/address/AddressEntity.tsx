@@ -144,6 +144,7 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   isSafeAddress?: boolean;
   noHighlight?: boolean;
   noAltHash?: boolean;
+  extraIcon?: React.ReactNode;
 }
 
 const AddressEntry = (props: EntityProps) => {
@@ -164,6 +165,7 @@ const AddressEntry = (props: EntityProps) => {
       zIndex={ 0 }
     >
       <Icon { ...partsProps.icon }/>
+      { props.extraIcon }
       <Link { ...partsProps.link }>
         <Content { ...partsProps.content } altHash={ altHash }/>
       </Link>

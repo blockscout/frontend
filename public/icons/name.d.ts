@@ -143,6 +143,7 @@
 	| "payment_link"
 	| "Pending"
 	| "plus"
+	| "prefix"
 	| "private_tags_slim"
 	| "privattags"
 	| "profile"
