@@ -44,8 +44,18 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
     }
 
     if (!num) {
-      return `scanning new ${ name }s...`;
+    return <span style={{
+            fontFamily: 'Outfit',
+            fontSize: '0.875rem',
+            fontStyle: 'normal',
+            fontWeight: 600,
+            lineHeight: 'normal',
+        }}>
+        {`scanning new ${ name }s...`}
+      </span>;  
     }
+
+              
 
     return (
       <>
