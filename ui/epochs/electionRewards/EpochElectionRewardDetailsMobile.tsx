@@ -19,16 +19,16 @@ interface Props {
   token: TokenInfo;
 }
 
-const BlockEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
+const CeloEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
   const rootRef = React.useRef<HTMLDivElement>(null);
 
   const router = useRouter();
-  const heightOrHash = getQueryParamString(router.query.height_or_hash);
+  const number = getQueryParamString(router.query.number);
 
   const { cutRef, query } = useLazyLoadedList({
     rootRef,
-    resourceName: 'general:block_election_rewards',
-    pathParams: { height_or_hash: heightOrHash, reward_type: formatRewardType(type) },
+    resourceName: 'general:epoch_celo_election_rewards',
+    pathParams: { number: number, reward_type: formatRewardType(type) },
     queryOptions: {
       refetchOnMount: false,
     },
@@ -80,4 +80,4 @@ const BlockEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
   );
 };
 
-export default React.memo(BlockEpochElectionRewardDetailsMobile);
+export default React.memo(CeloEpochElectionRewardDetailsMobile);

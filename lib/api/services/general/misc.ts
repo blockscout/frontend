@@ -8,7 +8,7 @@ import type { Blob } from 'types/api/blobs';
 import type { Block } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendVersionConfig, CeloConfig, CsvExportConfig } from 'types/api/configs';
-import type { CeloEpochDetails, CeloEpochListResponse } from 'types/api/epochs';
+import type { CeloEpochDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'types/api/epochs';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'types/api/noves';
 import type {
@@ -192,6 +192,12 @@ export const GENERAL_API_MISC_RESOURCES = {
     path: '/api/v2/celo/epochs/:number',
     pathParams: [ 'number' as const ],
   },
+  epoch_celo_election_rewards: {
+    path: '/api/v2/celo/epochs/:number/election-rewards/:reward_type',
+    pathParams: [ 'number' as const, 'reward_type' as const ],
+    filterFields: [],
+    paginated: true,
+  },
 
   // ADVANCED FILTER
   advanced_filter: {
@@ -286,6 +292,7 @@ R extends 'general:validators_zilliqa' ? ValidatorsZilliqaResponse :
 R extends 'general:validator_zilliqa' ? ValidatorZilliqa :
 R extends 'general:epochs_celo' ? CeloEpochListResponse :
 R extends 'general:epoch_celo' ? CeloEpochDetails :
+R extends 'general:epoch_celo_election_rewards' ? CeloEpochElectionRewardDetailsResponse :
 R extends 'general:user_ops' ? UserOpsResponse :
 R extends 'general:user_op' ? UserOp :
 R extends 'general:user_ops_account' ? UserOpsAccount :

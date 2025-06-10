@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { BlockEpoch, BlockEpochElectionReward } from 'types/api/block';
+import type { CeloEpochElectionReward, CeloEpochDetails } from 'types/api/epochs';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { IconButton } from 'toolkit/chakra/icon-button';
@@ -11,15 +11,15 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import IconSvg from 'ui/shared/IconSvg';
 
-import BlockEpochElectionRewardDetailsMobile from './BlockEpochElectionRewardDetailsMobile';
+import EpochElectionRewardDetailsMobile from './EpochElectionRewardDetailsMobile';
 
 interface Props {
-  data: BlockEpochElectionReward;
-  type: keyof BlockEpoch['aggregated_election_rewards'];
+  data: CeloEpochElectionReward;
+  type: keyof CeloEpochDetails['aggregated_election_rewards'];
   isLoading?: boolean;
 }
 
-const BlockEpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => {
+const EpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => {
   const section = useDisclosure();
 
   const { valueStr } = getCurrencyValue({
@@ -69,11 +69,11 @@ const BlockEpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => 
       </Flex>
       { section.open && (
         <Box mt={ 2 }>
-          <BlockEpochElectionRewardDetailsMobile type={ type } token={ data.token }/>
+          <EpochElectionRewardDetailsMobile type={ type } token={ data.token }/>
         </Box>
       ) }
     </Box>
   );
 };
 
-export default React.memo(BlockEpochElectionRewardsListItem);
+export default React.memo(EpochElectionRewardsListItem);

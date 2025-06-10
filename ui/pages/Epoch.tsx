@@ -64,13 +64,13 @@ const EpochPageContent = () => {
       case 'L1':
         return (
           <Tooltip content="Epoch finalized while Celo was still an L1 network">
-            <Tag>L1</Tag>
+            <Tag loading={ isLoading }>L1</Tag>
           </Tooltip>
         );
       case 'L2':
         return (
           <Tooltip content="Epoch finalized after Celo migrated to the OP‐stack, when it became an L2 rollup">
-            <Tag>L2</Tag>
+            <Tag loading={ isLoading }>L2</Tag>
           </Tooltip>
         );
     }

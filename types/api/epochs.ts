@@ -1,3 +1,4 @@
+import type { AddressParam } from './addressParams';
 import type { TokenInfo } from './token';
 import type { Erc20TotalPayload, TokenTransfer } from './tokenTransfer';
 
@@ -38,4 +39,24 @@ export type CeloEpochDetails = {
       total: Erc20TotalPayload | null;
     } | null;
   } | null;
+  aggregated_election_rewards: Record<CeloEpochRewardsType, CeloEpochElectionReward | null> | null;
 };
+
+export interface CeloEpochElectionReward {
+  count: number;
+  token: TokenInfo<'ERC-20'>;
+  total: string;
+}
+
+export type CeloEpochRewardsType = 'group' | 'validator' | 'delegated_payment' | 'voter';
+
+export interface CeloEpochElectionRewardDetails {
+  account: AddressParam;
+  amount: string;
+  associated_account: AddressParam;
+}
+
+export interface CeloEpochElectionRewardDetailsResponse {
+  items: Array<CeloEpochElectionRewardDetails>;
+  next_page_params: null;
+}
