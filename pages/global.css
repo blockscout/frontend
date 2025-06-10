@@ -79,7 +79,7 @@
 
 .main-page-hero-banner {
   border-radius: 24px;
-  background: var(--Moca-Chain-Gradient, linear-gradient(90deg, #FFF7D2 0%, #FFCFED 46.46%, #BFD2FF 100%));
+  background: var(--Moca-Chain-Gradient, linear-gradient(90deg, #FFF7D2 0%, #FFCFED 46.46%, #BFD2FF 100%)) !important;
 }
 
 
@@ -108,7 +108,7 @@
 
 
 .user-connect-wallet-button-desktop {
-  color: var(--text-on-colour, #FFF);
+  color: var(--text-on-colour, #FFF) !important;
   text-align: center;
 
   /* button-1 */
@@ -119,6 +119,17 @@
   line-height: normal;
   border-radius: 8px;
   background: var(--button-primary, #EF6ABA) !important;
+}
+
+.user-connect-wallet-button-desktop:hover {
+    background: var(--button-primary-hover, #FFA1D9);
+}
+
+.user-connect-wallet-button-desktop-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .latest-tx-item-value-label {

@@ -15,8 +15,8 @@ const EmptyRecords = ({
             width="100%"
             userSelect="none"
             height = "auto"
-            paddingTop="80px"
-            paddingBottom="80px"
+            paddingTop="70px"
+            paddingBottom="70px"
         >
             <div style={{
                     paddingTop: '6.6px',
