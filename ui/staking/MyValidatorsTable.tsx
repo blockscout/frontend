@@ -896,10 +896,12 @@ const defaultLimit = 20;
 const TableWrapper = ({
     searchTerm,
     handleStake,
+    randomKey = 0,
     callback = () => { }
 }: {
     searchTerm: string;
     handleStake: () => void;
+    randomKey?: number;
     callback?: () => void;
 }) => {
 
@@ -986,7 +988,7 @@ const TableWrapper = ({
             throw Error(error);
         }
     }
-  , [ url , userAddr,  queryParams.nextKey ]);
+  , [ url , userAddr, randomKey,  queryParams.nextKey ]);
 
     useEffect(() => {
         if (!userAddr) {
@@ -1034,6 +1036,7 @@ const TableWrapper = ({
                 totalCount={ totalCount }
                 fetcher = { () => {
                     callback && callback();
+                    requestDelegatorsInfo();
                 } }
                 currentPage={ currentPage }
                 handleStake={ handleStake }

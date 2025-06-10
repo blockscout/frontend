@@ -269,7 +269,7 @@ const StakingModalNumberInput = ({
                 { prefix }&nbsp;<span  style={{ color: '#000' }}>
                     <span>
                       {
-                        truncateTokenAmountWithComma(formattedBalanceStr)
+                        truncateTokenAmountWithComma(availableAmount)
                       } MOCA
                     </span>
                 </span>

@@ -205,32 +205,6 @@ const ObjectDetails: NextPage = () => {
   }, [ url , userAddr]);
 
 
-    const requestMyStakingTableList = React.useCallback(async() => {
-        if (!address) return;
-        // const param = new URLSearchParams();
-        // param.append('address', (address || '').toLowerCase());
-        // try {
-        //   setLoading(true);
-        //   const res = await axios.get(url + '/api/me/staking/delegations' + '?' + param.toString(), {
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     timeout: 10000,
-        //   }).then((response) => {
-        //     return response.data;
-        //   }).catch((error) => {
-        //     return null;
-        //   });
-        //   if(res && res.code === 200) {
-        //     // 
-        //   }
-        //   setLoading(false);
-        // } catch (error: any) {
-        //   setLoading(false);
-        // }
-  }, [ url, address ]);
-
-
 
     const propsPage = React.useCallback((value: number) => {
       window.scrollTo({
@@ -253,21 +227,16 @@ const ObjectDetails: NextPage = () => {
     }
   }, [ requestMyStakingInfo , url ]);
 
-  React.useEffect(() => {
-    if (url) {
-      requestMyStakingTableList();
-    }
-  }, [ requestMyStakingTableList , url ]);
 
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [ isHideNumber, setIsHideNumber ] = React.useState<boolean>(false);
 
-
-
     const { data: balanceData } = useBalance({ address: userAddr});
     const [ availableAmount, setAvailableAmount ] = React.useState<string>('0.00');
+    const [ randomKey , setRandomKey ] = React.useState<number>(0);
 
+    
     const formattedBalanceStr = React.useMemo(() => {
         if (balanceData && !!balanceData.value) {
             return formatUnits(balanceData.value, 18);
@@ -512,6 +481,9 @@ const ObjectDetails: NextPage = () => {
         setExtraDescription(null);
     }
     
+    const requestMyStakingTableList = () => {
+      setRandomKey(new Date().getTime());
+    }
 
 
   return (
@@ -601,7 +573,8 @@ const ObjectDetails: NextPage = () => {
           <TabTable 
               handleStake = {handleStakeMore}
               requestMyStakingInfo = {requestMyStakingInfo}
-              requestMyStakingTableList = {requestMyStakingTableList}
+              requestMyStakingTableList = {() => {}}
+              randomKey = {randomKey}
           />
       </Box>
     </PageNextJs>

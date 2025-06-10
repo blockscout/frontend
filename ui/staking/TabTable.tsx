@@ -12,10 +12,12 @@ import React from 'react';
 
 const App = ({
     handleStake,
+    randomKey,
     requestMyStakingInfo ,
     requestMyStakingTableList ,
 }: {
     handleStake: () => void;
+    randomKey: number;
     requestMyStakingInfo: () => void;
     requestMyStakingTableList: () => void;
 }) => {
@@ -114,6 +116,7 @@ const App = ({
                     <MyValidatorsTable 
                         searchTerm={ searchTerm }
                         handleStake={ handleStake }
+                        randomKey={ randomKey }
                         callback={ () => {
                             requestMyStakingInfo();
                             requestMyStakingTableList();
