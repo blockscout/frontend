@@ -1,8 +1,9 @@
 import type { Transaction } from 'types/api/transaction';
 
 import type { UserTags, AddressImplementation, AddressParam, AddressFilecoinParams } from './addressParams';
-import type { Block, EpochRewardsType } from './block';
+import type { Block } from './block';
 import type { SmartContractProxyType } from './contract';
+import type { CeloEpochRewardsType } from './epochs';
 import type { InternalTransaction } from './internalTransaction';
 import type { MudWorldSchema, MudWorldTable } from './mudWorlds';
 import type { NFTTokenType, TokenInfo, TokenInstance, TokenType } from './token';
@@ -262,12 +263,12 @@ export type AddressEpochRewardsResponse = {
     associated_account_address_hash: string;
     epoch_number: number;
     items_count: number;
-    type: EpochRewardsType;
+    type: CeloEpochRewardsType;
   } | null;
 };
 
 export type AddressEpochRewardsItem = {
-  type: EpochRewardsType;
+  type: CeloEpochRewardsType;
   token: TokenInfo;
   amount: string;
   block_timestamp: string;

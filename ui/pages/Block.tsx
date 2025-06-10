@@ -17,7 +17,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
 import BlockDetails from 'ui/block/BlockDetails';
-import BlockEpochRewards from 'ui/block/BlockEpochRewards';
 import BlockInternalTxs from 'ui/block/BlockInternalTxs';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import useBlockBlobTxsQuery from 'ui/block/useBlockBlobTxsQuery';
@@ -110,13 +109,7 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-    // TODO @tom2drum remove epochs in block page
-    blockQuery.data?.celo?.is_epoch_block ? {
-      id: 'epoch_rewards',
-      title: 'Epoch rewards',
-      component: <BlockEpochRewards heightOrHash={ heightOrHash }/>,
-    } : null,
-  ].filter(Boolean)), [ blockBlobTxsQuery, blockInternalTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination, heightOrHash ]);
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockInternalTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination ]);
 
   let pagination;
   if (tab === 'txs') {

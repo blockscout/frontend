@@ -2,7 +2,7 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { BlockEpoch } from 'types/api/block';
+import type { CeloEpochDetails } from 'types/api/epochs';
 import type { TokenInfo } from 'types/api/token';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
@@ -15,7 +15,7 @@ import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';
 import { formatRewardType } from './utils';
 
 interface Props {
-  type: keyof BlockEpoch['aggregated_election_rewards'];
+  type: keyof CeloEpochDetails['aggregated_election_rewards'];
   token: TokenInfo;
 }
 

@@ -21,7 +21,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) => {
+const EpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) => {
   const section = useDisclosure();
 
   const { valueStr } = getCurrencyValue({
@@ -87,4 +87,4 @@ const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) =>
   );
 };
 
-export default React.memo(BlockEpochElectionRewardsTableItem);
+export default React.memo(EpochElectionRewardsTableItem);
