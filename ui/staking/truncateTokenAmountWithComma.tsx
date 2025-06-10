@@ -1,5 +1,6 @@
 /* eslint-disable */
 import Decimal from 'decimal.js';
+
 const truncateTokenAmountWithComma = (value: number | string | null | undefined): string => {
   if (value === null || value === undefined || isNaN(Number(value))) {
     return '-';
