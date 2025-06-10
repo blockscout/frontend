@@ -19,7 +19,7 @@ const AddressEpochRewardsTable = ({ items, isLoading, top }: Props) => {
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader>
-            Block
+            Epoch
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader>Reward type</TableColumnHeader>
@@ -31,7 +31,7 @@ const AddressEpochRewardsTable = ({ items, isLoading, top }: Props) => {
         { items.map((item, index) => {
           return (
             <AddressEpochRewardsTableItem
-              key={ item.block_hash + item.type + item.account.hash + item.associated_account.hash + (isLoading ? String(index) : '') }
+              key={ item.epoch_number + item.type + item.account.hash + item.associated_account.hash + (isLoading ? String(index) : '') }
               item={ item }
               isLoading={ isLoading }
             />

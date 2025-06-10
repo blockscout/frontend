@@ -38,7 +38,7 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
         items_count: 50,
         type: 'voter',
         associated_account_address_hash: '1',
-        block_number: 10355938,
+        epoch_number: 10355938,
       } }),
     },
   });
@@ -59,7 +59,7 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
       <Box hideFrom="lg">
         { rewardsQuery.data.items.map((item, index) => (
           <AddressEpochRewardsListItem
-            key={ item.block_hash + item.type + item.account.hash + item.associated_account.hash + (rewardsQuery.isPlaceholderData ? String(index) : '') }
+            key={ item.epoch_number + item.type + item.account.hash + item.associated_account.hash + (rewardsQuery.isPlaceholderData ? String(index) : '') }
             item={ item }
             isLoading={ rewardsQuery.isPlaceholderData }
           />

@@ -260,7 +260,7 @@ export type AddressEpochRewardsResponse = {
   next_page_params: {
     amount: string;
     associated_account_address_hash: string;
-    block_number: number;
+    epoch_number: number;
     items_count: number;
     type: EpochRewardsType;
   } | null;
@@ -270,8 +270,6 @@ export type AddressEpochRewardsItem = {
   type: EpochRewardsType;
   token: TokenInfo;
   amount: string;
-  block_number: number;
-  block_hash: string;
   block_timestamp: string;
   account: AddressParam;
   epoch_number: number;
