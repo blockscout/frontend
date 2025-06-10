@@ -24,6 +24,12 @@ dayjs.extend(timezone);
 dayjs.extend(advancedFormat);
 
 
+
+const numberTypeFields = [
+    'stakeAmount',
+    'totalEarned',
+];
+
 type tableHeadType = {
     label: string | React.ReactNode;
     key: string;
@@ -289,10 +295,20 @@ const TableApp = (props: {
         console.log('Row clicked:', item);
     };
 
+    const orderFn = (item: any, key: string) => {
+        if (numberTypeFields.includes(key)) {
+            return Number(item[key]);
+        }
+        return item[key];
+    };
 
     const sortedData = React.useMemo(() => {
         if (sortBy && sortOrder) {
-            return orderBy(data, [sortBy], [ !sortOrder ? false : sortOrder]);
+            return orderBy(
+                data, 
+                [ (item: any) => orderFn(item, sortBy) ],
+                [ !sortOrder ? false : sortOrder]
+            );
         }
         return data;
     }, [data, sortBy, sortOrder]);

@@ -24,6 +24,17 @@ import truncateTokenAmountWithComma from 'ui/staking/truncateTokenAmountWithComm
 import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
 import styles from 'ui/staking/spinner.module.css';
 
+
+
+const numberTypeFields = [
+    'liveAPR',
+    'myStake',
+    'myRewards',
+    'claimable',
+    'commission',
+];
+
+
 type ValidatorStatus = 'Active' | 'Inactive' | 'Jailed' | 'Unbonding' ; 
 
 
@@ -269,6 +280,14 @@ const TableApp = (props: {
         "Inactive": 4,
     };
 
+    const orderFn = (item: any, key: string) => {
+        if (numberTypeFields.includes(key)) {
+            return Number(item[key]);
+        }
+        return item[key];
+    };
+
+
     const sortedData = React.useMemo(() => {
 
 
@@ -280,9 +299,11 @@ const TableApp = (props: {
         const defaultSortFields = [ statusSort, 'myStake'];
         const defaultSortOrder = [ 'asc'  , 'asc' ] as any[];
 
+
+
         if (sortBy && sortOrder) {
             return orderBy(data, 
-                [ sortBy, defaultSortFields[0], defaultSortFields[1]],
+                [ (item: any) => orderFn(item, sortBy), defaultSortFields[0], defaultSortFields[1]],
                 [ (!sortOrder ? false : sortOrder), defaultSortOrder[0], defaultSortOrder[1] ]
             );
         }

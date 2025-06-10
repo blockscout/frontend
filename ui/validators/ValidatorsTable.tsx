@@ -28,6 +28,16 @@ import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import styles from 'ui/staking/spinner.module.css';
 
 
+
+const numberTypeFields = [
+    'votingPower',
+    'commissionRate',
+    'liveApr',
+    'totalStake',
+    'uptime',
+];
+
+
 const  ValidatorInfoBox = ({ record } : { record: any }) => {
     return (
         <Flex flexDirection="row" alignItems="center" gap="8px" width="100%">
@@ -263,6 +273,14 @@ const TableApp = (props: {
         "Inactive": 4,
     };
 
+
+    const orderFn = (item: any, key: string) => {
+        if (numberTypeFields.includes(key)) {
+            return Number(item[key]);
+        }
+        return item[key];
+    };
+
     const sortedData = React.useMemo(() => {
         const statusSort = (item: { status: string; }) => {
             const status = item.status as ValidatorStatus;
@@ -271,10 +289,12 @@ const TableApp = (props: {
 
         const defaultSortFields = [ statusSort, 'totalStake'];
         const defaultSortOrder = [ 'asc'  , 'asc' ] as any[];
+
+        
         
         if (sortBy && sortOrder) {
             return orderBy(data, 
-                [sortBy, defaultSortFields[0], defaultSortFields[1]],
+                [(item: any) => orderFn(item, sortBy), defaultSortFields[0], defaultSortFields[1]],
                 [ (!sortOrder ? false : sortOrder), defaultSortOrder[0], defaultSortOrder[1] ]
             );
         }
