@@ -14,7 +14,6 @@ import axios from 'axios';
 import { usePublicClient , useBalance , useAccount as useWagmiAccount } from 'wagmi';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import useAccount from 'lib/web3/useAccount';
-import TokenAmountFormat from 'ui/validators/TokenAmountFormat';
 import floatNumberFormatter from './FloatNumberFormatter';
 import truncateTokenAmountWithComma from 'ui/staking/truncateTokenAmountWithComma';
 

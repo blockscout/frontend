@@ -15,14 +15,47 @@ import FromAndToSelect from 'ui/staking/FromAndToSelect';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import React ,  { useMemo, useCallback, useEffect } from 'react';
 import axios from 'axios';
-import TokenAmountFormat from 'ui/validators/TokenAmountFormat';
 import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
+
+
+const formatTokenAmountTruncated = (
+  num: number | string | null | undefined,
+  decimalPlaces: number = 2
+): string => {
+    
+  if (num === null || num === undefined || num === '') return '-';
+
+  const _num = typeof num === 'string' ? Number(num) : num;
+
+  if (isNaN(_num)) return '-';
+
+  if (_num === 0) return '0';
+
+  const factor = Math.pow(10, decimalPlaces);
+  const truncated = Math.trunc(_num * factor) / factor;
+  // 小于最小可展示值时（例如 0.01）
+  if (truncated === 0 && _num > 0 && _num < 1 / factor) {
+    return `<${(1 / factor).toFixed(decimalPlaces)}`;
+  }
+
+  const [intPart, decPart = ''] = truncated.toString().split('.');
+
+  // 整数部分加千分位逗号
+  const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  // 截取指定小数位数，去除末尾 0
+  const cleanedDec = decPart.slice(0, decimalPlaces).replace(/0+$/, '');
+
+  return cleanedDec ? `${formattedInt}.${cleanedDec}` : formattedInt;
+};
 
 
 const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | number ) => {
     const amount = typeof tokenAmount === 'string' ? Number(tokenAmount) : tokenAmount;
     const price = typeof tokenPrice === 'string' ? Number(tokenPrice) : tokenPrice;
-    return TokenAmountFormat(amount * price);
+    const _ = amount * price;
+    console.log('valueCalculator amount:', amount, 'price:', price, 'result:', _);
+    return formatTokenAmountTruncated( String(_), 4 );
 }
 
 
@@ -409,8 +442,8 @@ const CommonModal = ({
                             (currentTxType === 'Claim' || currentTxType === 'ClaimAll' || currentTxType === 'Compound-Claim' ||  currentTxType === 'Compound-Stake') ? ( 
                                 <Box width="100%" height="auto">
                                     <ReadOnlyInput 
-                                        amount = { currentAmount }
-                                        price = { valueCalculator(currentAmount, tokenPrice || 0) }
+                                        amount = { currentAmount}
+                                        priceStr = { valueCalculator( currentAmount , tokenPrice || 0) }
                                     />
                                 </Box>
                             ): (

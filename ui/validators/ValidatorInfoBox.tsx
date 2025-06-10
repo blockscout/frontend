@@ -10,7 +10,6 @@ import {
 import React from 'react';
 import FloatToPercent from 'ui/validators/FloatToPercent';
 import IconSvg from 'ui/shared/IconSvg';
-import TokenAmountFormat from './TokenAmountFormat';
 import percentageFormat from 'ui/validators/PercentageFormat';
 import formatPercentTruncated from 'ui/staking/formatPercentTruncated';
 import truncateTokenAmountWithComma from 'ui/staking/truncateTokenAmountWithComma';

@@ -38,13 +38,15 @@ const truncate_4_decimal_AmountWithComma = (value: number | string | null | unde
 
 const ReadOnlyInput = ({
     amount,
-    price,
+    priceStr,
     children = null
 }: {
     amount: string;
-    price: string;
+    priceStr: string;
     children?: React.ReactNode | null;
 }) => {
+
+    console.log('ReadOnlyInput amount:', amount, 'priceStr:', priceStr);
 
     return (
         <div 
@@ -84,7 +86,7 @@ const ReadOnlyInput = ({
                     lineHeight: '140%',
                     color: 'rgba(0, 0, 0, 0.30)',
                 }}>
-                    <span>${ truncate_4_decimal_AmountWithComma(price) }</span>
+                    <span>${ priceStr }</span>
                     <span>{ children } </span>
                 </div>
                 <div style={{
