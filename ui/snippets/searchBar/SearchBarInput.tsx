@@ -20,6 +20,16 @@ interface Props {
   value: string;
 }
 
+const placeHolderstyle = {
+  textAlign: 'left',
+  fontFamily: 'Outfit',
+  fontSize: '0.875rem',
+  fontStyle: 'normal',
+  fontWeight: 400,
+  lineHeight: 'normal',
+  color: '#B5B5B5',
+};
+
 const SearchBarInput = (
   { onChange, onSubmit, isHomepage, isSuggestOpen, onFocus, onBlur, onHide, onClear, value }: Props,
   ref: React.ForwardedRef<HTMLFormElement>,
@@ -150,7 +160,7 @@ const SearchBarInput = (
     >
       <InputGroup size={{ base: 'sm', lg: isHomepage ? 'sm_md' : 'sm' }} >
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
-          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color="#C15E97" fontSize="16px"/>
+          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color="#6C636B" fontSize="16px"/>
         </InputLeftElement>
         <Input
           pl={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
@@ -171,6 +181,7 @@ const SearchBarInput = (
           border={ isHomepage ? 'none' : '1px solid' }
           borderRadius="29px"
           height="42px"
+          _placeholder={ placeHolderstyle }
           // borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
           _focusWithin={{ _placeholder: { color: 'gray.300' } }}
           color={ useColorModeValue('black', 'white') }

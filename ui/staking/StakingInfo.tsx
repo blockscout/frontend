@@ -438,7 +438,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_4}</IconContainer>}
                             label="Available Balance"
-                            amount= { truncateTokenAmountWithComma(Number(formattedBalanceStr || "0.00").toFixed(2)) }
+                            amount= { truncateTokenAmountWithComma(Number(formattedBalanceStr || "0.00") ) }
                             value= { valueFormatter(valueCalculator(formattedBalanceStr, tokenPrice)) }
                             hide={isHideNumber}
                         />

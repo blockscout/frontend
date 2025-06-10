@@ -61,10 +61,10 @@ const HeroBanner = () => {
           <Heading
             as="h1"
             fontSize={{ base: '20px', lg: '32px' }}
-            lineHeight="normal"
             fontWeight={{ base: 400, lg: 500 }}
             className="title-text"
             userSelect={ 'none' }
+            fontFamily="Outfit"
           >
             {
               config.meta.seo.enhancedDataEnabled ?

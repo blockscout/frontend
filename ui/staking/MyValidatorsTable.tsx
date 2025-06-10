@@ -297,13 +297,13 @@ const TableApp = (props: {
         }
 
         const defaultSortFields = [ statusSort, 'myStake'];
-        const defaultSortOrder = [ 'asc'  , 'asc' ] as any[];
+        const defaultSortOrder = [ 'asc'  , 'desc' ] as any[];
 
 
 
         if (sortBy && sortOrder) {
             return orderBy(data, 
-                [ (item: any) => orderFn(item, sortBy), defaultSortFields[0], defaultSortFields[1]],
+                [ (item: any) => orderFn(item, sortBy), defaultSortFields[0],(item: any) => orderFn(item, 'myStake')],
                 [ (!sortOrder ? false : sortOrder), defaultSortOrder[0], defaultSortOrder[1] ]
             );
         }
