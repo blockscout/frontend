@@ -299,7 +299,7 @@ const TableApp = (props: {
             );
         }
         return  orderBy(data,
-            [defaultSortFields[0], defaultSortFields[1]],
+            [defaultSortFields[0],  (item: any) => orderFn(item, 'totalStake')],
             [defaultSortOrder[0], defaultSortOrder[1]]
         );
     }, [data, sortBy, sortOrder]);

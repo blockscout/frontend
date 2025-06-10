@@ -16,7 +16,7 @@ import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import React ,  { useMemo, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
-
+import Decimal from 'decimal.js';
 
 const formatTokenAmountTruncated = (
   num: number | string | null | undefined,
@@ -31,11 +31,12 @@ const formatTokenAmountTruncated = (
 
   if (_num === 0) return '0';
 
-  const factor = Math.pow(10, decimalPlaces);
-  const truncated = Math.trunc(_num * factor) / factor;
+    const factor = new Decimal(10).pow(decimalPlaces);
+    const sum = new Decimal(num).mul(factor).toNumber(); 
+    const truncated = new Decimal( Math.trunc(sum) ).div(factor).toNumber();
   // 小于最小可展示值时（例如 0.01）
-  if (truncated === 0 && _num > 0 && _num < 1 / factor) {
-    return `<${(1 / factor).toFixed(decimalPlaces)}`;
+  if (truncated === 0 && _num > 0 && _num < 1 / factor.toNumber()) {
+    return `<${(1 / factor.toNumber()).toFixed(decimalPlaces)}`;
   }
 
   const [intPart, decPart = ''] = truncated.toString().split('.');
@@ -270,14 +271,6 @@ const CommonModal = ({
     }
     , [ url ]);
 
-    const handleCloseModal = () => {
-        setCurrentAmount("0.00");
-        setInputStr("");
-        refetchBalance();
-        setAvailableAmount("0.00");
-        setCurrentItem(null);
-        onClose();
-    }
 
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -399,11 +392,20 @@ const CommonModal = ({
 
 
     const handleCloseDialog = useCallback(() => {
-        handleCloseModal();
         if ( transactionStage === 'success' ) {
             callback && callback();
         }
     }, [ transactionStage, callback ]);
+
+    const handleCloseModal = () => {
+        setCurrentAmount("0.00");
+        setInputStr("");
+        refetchBalance();
+        setAvailableAmount("0.00");
+        setCurrentItem(null);
+        onClose();
+        handleCloseDialog();
+    }
 
     const headsupText =  useMemo(() => {
         if (currentTxType === 'MoveStake' || currentTxType === 'ChooseStake') {
@@ -429,7 +431,7 @@ const CommonModal = ({
                     text='Transaction Success'
                     txhash = { txhash || '' }
                     onClose={ () => {
-                        handleCloseDialog();
+                        handleCloseModal();
                     }}
                 />
             )}
@@ -548,7 +550,7 @@ const CommonModal = ({
                         }
                     </div>
                     <ModalFooterBtnGroup
-                        onCancel={ handleCloseDialog }
+                        onCancel={ handleCloseModal }
                         onConfirm={ (e) => {
                             handleSubmit(e);
                         }}

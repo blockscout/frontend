@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import { Avatar, Flex, Text } from '@chakra-ui/react';
-
+import Decimal from 'decimal.js';
 
 const amountFormat = (amount: string) => {
     const v = Number(amount);
@@ -25,8 +25,10 @@ const truncate_4_decimal_AmountWithComma = (value: number | string | null | unde
   if (num === 0) return '0';
   if (num > 0 && num < 0.0001) return '<0.0001';
 
+  const sum = new Decimal(num).mul(10000).toNumber(); // 乘以10000以便截断到小数点后四位
   // 截断到小数点后四位
-  const truncated = Math.trunc(num * 10000) / 10000;
+  const truncated = new Decimal( Math.trunc(sum) ).div(10000).toNumber();
+  
   const [intPartStr, decPart = ''] = truncated.toString().split('.');
   // 拼接小数部分
   if (decPart === '') {

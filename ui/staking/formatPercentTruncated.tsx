@@ -1,4 +1,6 @@
 /* eslint-disable */
+import Decimal from 'decimal.js';
+
 const formatPercentTruncated = (
   _num: number | string | null | undefined,
   decimalPlaces: number = 2
@@ -7,13 +9,16 @@ const formatPercentTruncated = (
     return '-';
   }
 
-  const num = Number(_num) * 100; // 转换为百分比
+  const num = new Decimal(Number(_num) ).mul(100).toNumber(); // 乘以100以便截断到小数点后两位
   
   if (num === 0) return '0%';
   if (num > 0 && num < 0.01) return '<0.01%';
 
   // 截断到小数点后两位
-  const truncated = Math.trunc(num * 100) / 100;
+  const sum = new Decimal(num).mul(100).toNumber(); // 乘以10000以便截断到小数点后四位
+  // 截断到小数点后四位
+  const truncated = new Decimal( Math.trunc(sum) ).div(100).toNumber();
+  
   const [intPartStr, decPart = ''] = truncated.toString().split('.');
   const intWithComma = intPartStr;
 
@@ -26,4 +31,6 @@ const formatPercentTruncated = (
     return `${intWithComma}.${decPart.slice(0, 2)}%`;
   }
 };
+
+
 export default formatPercentTruncated;

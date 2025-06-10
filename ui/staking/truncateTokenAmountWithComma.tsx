@@ -1,5 +1,5 @@
 /* eslint-disable */
-
+import Decimal from 'decimal.js';
 const truncateTokenAmountWithComma = (value: number | string | null | undefined): string => {
   if (value === null || value === undefined || isNaN(Number(value))) {
     return '-';
@@ -10,8 +10,10 @@ const truncateTokenAmountWithComma = (value: number | string | null | undefined)
   if (num === 0) return '0';
   if (num > 0 && num < 0.01) return '<0.01';
 
-  // 截断到小数点后两位
-  const truncated = Math.trunc(num * 100) / 100;
+  const sum = new Decimal(num).mul(100).toNumber(); 
+  // 截断到小数点后四位
+  const truncated = new Decimal( Math.trunc(sum) ).div(100).toNumber();
+
   const [intPartStr, decPart = ''] = truncated.toString().split('.');
 
   // 整数部分加千分位逗号

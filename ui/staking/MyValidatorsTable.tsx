@@ -303,12 +303,12 @@ const TableApp = (props: {
 
         if (sortBy && sortOrder) {
             return orderBy(data, 
-                [ (item: any) => orderFn(item, sortBy), defaultSortFields[0],(item: any) => orderFn(item, 'myStake')],
+                [ (item: any) => orderFn(item, sortBy), defaultSortFields[0], (item: any) => orderFn(item, 'myStake')],
                 [ (!sortOrder ? false : sortOrder), defaultSortOrder[0], defaultSortOrder[1] ]
             );
         }
         return  orderBy(data,
-            [defaultSortFields[0], defaultSortFields[1]],
+            [defaultSortFields[0], (item: any) => orderFn(item, 'myStake')],
             [defaultSortOrder[0], defaultSortOrder[1]]
         );
     }, [data, sortBy, sortOrder]);
