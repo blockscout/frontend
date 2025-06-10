@@ -16,39 +16,10 @@ import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import useAccount from 'lib/web3/useAccount';
 import TokenAmountFormat from 'ui/validators/TokenAmountFormat';
 import floatNumberFormatter from './FloatNumberFormatter';
-
+import truncateTokenAmountWithComma from 'ui/staking/truncateTokenAmountWithComma';
 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
-
-
-
-const truncateTokenAmountWithComma = (num: number | string | null | undefined): string => {
-  if (num === null || num === undefined || num === '') return '-';
-
-  const _num = typeof num === 'number' ? num : Number(num);
-  if (isNaN(_num)) return '-';
-
-  if (_num === 0) return '0';
-
-  // 截断到两位小数（不是四舍五入）
-  const truncated = Math.trunc(_num * 100) / 100;
-
-  // 小于 0.01 但大于 0 的情况
-  if (truncated === 0 && _num > 0 && _num < 0.01) {
-    return '<0.01';
-  }
-
-  const [intPart, decPart = ''] = truncated.toString().split('.');
-
-  // 整数部分加逗号
-  const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-  // 保留不超过 2 位的小数（已被截断），且去除末尾 0
-  const cleanedDec = decPart.slice(0, 2).replace(/0+$/, '');
-
-  return cleanedDec ? `${formattedInt}.${cleanedDec}` : formattedInt;
-};
 
 const AvailableAmountFormat = (amount: string | number) => {
     return Number(amount).toFixed(2);

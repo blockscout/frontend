@@ -20,39 +20,12 @@ import { toBigInt , parseUnits} from 'ethers';
 import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import { route } from 'nextjs-routes';
+import truncateTokenAmountWithComma from 'ui/staking/truncateTokenAmountWithComma';
 import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
 import styles from 'ui/staking/spinner.module.css';
 
 type ValidatorStatus = 'Active' | 'Inactive' | 'Jailed' | 'Unbonding' ; 
 
-
-const truncateTokenAmount = (num : number | string | null | undefined): string => {
-        let _num = num;
-        if (typeof num === 'string') {
-            _num = Number(_num);
-        }
-        if (typeof _num !== 'number' || isNaN(_num)) return '-';
-
-        if (_num === 0) {
-            return '0';
-        }
-
-        const truncated = Math.trunc(_num) / 100;
-
-        if (truncated === 0 && _num > 0 && _num < 0.01) {
-            return '<0.01';
-        }
-
-        const hasDecimal = truncated % 1 !== 0;
-        const [intPart, decPart] = truncated.toFixed(2).split('.');
-
-        // 整数部分加千分位逗号
-        const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-        // 去除小数部分多余的 0 和 .
-        const cleanedDec = decPart.replace(/0+$/, '');
-        return cleanedDec ? `${formattedInt}.${cleanedDec}` : formattedInt;
-};
 
 const truncatePercentage = ( _num: number | string | null | undefined): string => {
   let num = _num;
@@ -92,7 +65,7 @@ const TableTokenAmount = ({
             textAlign: 'center',
         }}
     >
-        <span>{ truncateTokenAmount(amount) }</span>
+        <span>{ truncateTokenAmountWithComma(amount) }</span>
         <span style={{ color: '#000', marginLeft: '4px' }}>{ symbol }</span>
     </span>
     );

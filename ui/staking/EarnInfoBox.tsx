@@ -2,35 +2,7 @@
 import { Flex, Text, Box } from '@chakra-ui/react';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import WithTipsText from 'ui/staking/WithTipsText';
-
-
-const truncateTokenAmountWithComma = (num: number | string | null | undefined): string => {
-        let _num = num;
-        if (typeof num === 'string') {
-            _num = Number(_num);
-        }
-        if (typeof _num !== 'number' || isNaN(_num)) return '-';
-
-        if (_num === 0) {
-            return '0';
-        }
-
-        const truncated = Math.trunc(_num) / 100;
-
-        if (truncated === 0 && _num > 0 && _num < 0.01) {
-            return '<0.01';
-        }
-
-        const hasDecimal = truncated % 1 !== 0;
-        const [intPart, decPart] = truncated.toFixed(2).split('.');
-
-        // 整数部分加千分位逗号
-        const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-        // 去除小数部分多余的 0 和 .
-        const cleanedDec = decPart.replace(/0+$/, '');
-        return cleanedDec ? `${formattedInt}.${cleanedDec}` : formattedInt;
-};
+import truncateTokenAmountWithComma from 'ui/staking/truncateTokenAmountWithComma';
 
 
 const EarningFormat = (value: number ) => {

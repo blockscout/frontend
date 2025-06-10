@@ -52,7 +52,7 @@ export function StakeLoginContextProvider(props: any) {
     useEffect(() => {
 
         fetchTokenPrice(); // 初始化时先调一次
-        const interval = setInterval(fetchTokenPrice, 30 * 1000); // 每30秒轮询
+        const interval = setInterval(fetchTokenPrice, 60 * 1000); // 每30秒轮询
         return () => clearInterval(interval); // 清理定时器
         
     }, []);
