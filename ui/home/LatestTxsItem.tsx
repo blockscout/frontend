@@ -15,7 +15,7 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import { currencyUnits } from 'lib/units';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import AddressFromToCompact from 'ui/shared/address/AddressFromToCompact';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -92,11 +92,11 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           </Flex>
         </Box>
       </Flex>
-      <AddressFromTo
+      <AddressFromToCompact
         from={ tx.from }
         to={ dataTo }
+        noIcon = { true }
         isLoading={ isLoading }
-        mode="compact"
       />
       <Flex flexDir="column" gap="0.44rem">
         { !config.UI.views.tx.hiddenFields?.value && (

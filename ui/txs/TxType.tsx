@@ -63,12 +63,41 @@ const TxType = ({ types, isLoading }: Props) => {
     default:
       label = 'Transaction';
       colorScheme = 'purple';
+  }
 
+
+  let _prop = { };
+
+  if (colorScheme === 'blue') {
+    _prop = {
+      background: "var(--decorative-blue-5, #EEF8FB)",
+      border: " 1px solid var(--decorative-blue-5, #EEF8FB)",
+      color: 'var(--decorative-blue, #41AFB7)',
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      fontFamily: 'Outfit',
+      fontStyle: 'normal',
+      lineHeight: 'normal',
+    }
+  } else {
+    _prop = {
+      colorScheme : colorScheme,
+    }
+  }
+
+  const textStyle = {
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      fontFamily: 'Outfit',
+      fontStyle: 'normal',
+      lineHeight: 'normal',
   }
 
   return (
-    <Tag colorScheme={ colorScheme }  px='0.4rem' borderRadius='9999px'   isLoading={ isLoading }>
-      { label }
+    <Tag  px='0.5rem'  borderRadius='9999px'   isLoading={ isLoading } { ..._prop }>
+      <span style={ textStyle }>
+        { label }
+      </span>
     </Tag>
   );
 };

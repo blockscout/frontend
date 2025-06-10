@@ -39,11 +39,38 @@ const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
       break;
   }
 
+  let _prop = { };
+
+  if (colorScheme === 'red') {
+    _prop = {
+      background: "#FFEBEB",
+      color: "var(--status-error, #FF3392)",
+    }
+
+  } else if (colorScheme === 'green') {
+    _prop = {
+      background: " var(--decorative-green-5, #EBFFF2)",
+      color: "var(--status-success, #00E649)",
+    }
+  } else {
+    _prop = {
+      colorScheme : colorScheme,
+    }
+  }
+
+  const textStyle = {
+    fontSize: '0.75rem',
+    fontWeight: 400,
+    fontFamily: 'Outfit',
+    fontStyle: 'normal',
+    lineHeight: 'normal',
+  };
+
   return (
     <Tooltip label={ errorText }>
-      <Tag colorScheme={ colorScheme } px='0.4rem' borderRadius='9999px'  display="flex" isLoading={ isLoading } className={ className }>
+      <Tag px='0.5rem' height={"1.437rem"} borderRadius='9999px'  display="flex" isLoading={ isLoading } className={ className } { ..._prop } >
         <IconSvg boxSize={ 2.5 } name={ icon } mr={ 1 } flexShrink={ 0 }/>
-        <TagLabel display="block">{ capitalizedText }</TagLabel>
+        <TagLabel display="block" { ... textStyle } >{ capitalizedText }</TagLabel>
       </Tag>
     </Tooltip>
   );
