@@ -1,30 +1,29 @@
 /* eslint-disable */
 const formatPercentTruncated = (
-  num: number | string | null | undefined,
+  _num: number | string | null | undefined,
   decimalPlaces: number = 2
 ): string => {
-  if (num === null || num === undefined || num === '') return '-';
-
-  const _num = typeof num === 'number' ? num : Number(num);
-  if (isNaN(_num)) return '-';
-
-  if (_num === 0) return '0%';
-
-  const percentValue = _num * 100;
-  const factor = Math.pow(10, decimalPlaces);
-  const truncated = Math.trunc(percentValue * factor) / factor;
-
-  // 小于最小展示值（如 0.01%）
-  if (truncated === 0 && percentValue > 0 && percentValue < 1 / factor) {
-    return `<${(1 / factor).toFixed(decimalPlaces)}%`;
+  if (_num === null || _num === undefined || isNaN(Number(_num))) {
+    return '-';
   }
 
-  const [intPart, decPart = ''] = truncated.toString().split('.');
+  const num = Number(_num) * 100; // 转换为百分比
+  
+  if (num === 0) return '0%';
+  if (num > 0 && num < 0.01) return '<0.01%';
 
-  const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  const cleanedDec = decPart.slice(0, decimalPlaces).replace(/0+$/, '');
+  // 截断到小数点后两位
+  const truncated = Math.trunc(num * 100) / 100;
+  const [intPartStr, decPart = ''] = truncated.toString().split('.');
+  const intWithComma = intPartStr;
 
-  return cleanedDec ? `${formattedInt}.${cleanedDec}%` : `${formattedInt}%`;
+  // 拼接小数部分
+  if (decPart === '') {
+    return intWithComma + '%';
+  } else if (decPart.length === 1) {
+    return `${intWithComma}.${decPart}%`;
+  } else {
+    return `${intWithComma}.${decPart.slice(0, 2)}%`;
+  }
 };
-
 export default formatPercentTruncated;

@@ -25,36 +25,6 @@ const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | n
     return TokenAmountFormat(amount * price);
 }
 
-const formatNumberWithCommas  = (input: string) => {
-  if (!input) return "";
-
-  // 移除现有逗号
-  let value = input.replace(/,/g, '');
-
-  // 校验是否为合法数字格式（可为空、小数点结尾等）
-  if (!/^[-]?\d*\.?\d*$/.test(value)) return "";
-
-  // 拆分整数和小数部分
-  let [integerPart, decimalPart = ""] = value.split(".");
-
-  // 去除整数前的多余0（保留单独的0）
-  if (integerPart) {
-    const isNegative = integerPart.startsWith("-");
-    integerPart = integerPart.replace(/^-?0+(?=\d)/, isNegative ? "-" : "");
-  }
-
-  // 限制小数部分最多 4 位
-  decimalPart = decimalPart.slice(0, 4);
-
-  // 添加千位分隔符
-  const isNegative = integerPart.startsWith("-");
-  const absInt = isNegative ? integerPart.slice(1) : integerPart;
-  const formattedInt = absInt.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  const result = isNegative ? `-${formattedInt}` : formattedInt;
-  return decimalPart ? `${result}.${decimalPart}` : result;
-}
-
 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
@@ -137,14 +107,10 @@ const CommonModal = ({
 
     useEffect(() => {
         !!userAddr && refetchBalance();
-    }, []);
-
-
-    useEffect(() => {
-        if (currentAmount && currentAmount === "0.00") {
-            setInputStr("");
+        if(currentAmount === '0.00' || currentAmount === '') {
+            setInputStr('');
         }
-    }, [ currentAmount ]);
+    }, []);
 
     
     const handleSetApr = (value: string | number) => {
@@ -509,7 +475,7 @@ const CommonModal = ({
                                                 handleMaxClick = { () => {
                                                     const _t = Math.floor(Number(availableAmount || 0) * 100) / 100;
                                                     setCurrentAmount(_t.toString());
-                                                    setInputStr(formatNumberWithCommas(_t.toString()));
+                                                    setInputStr((_t.toString()));
                                                 }}
                                                 isOverAmount = { isOverAmount }
                                                 setValue = { setCurrentAmount }

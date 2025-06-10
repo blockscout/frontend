@@ -15,7 +15,26 @@ const amountFormat = (amount: string) => {
 }
 
 
+const truncate_4_decimal_AmountWithComma = (value: number | string | null | undefined): string => {
+  if (value === null || value === undefined || isNaN(Number(value))) {
+    return '-';
+  }
 
+  const num = Number(value);
+
+  if (num === 0) return '0';
+  if (num > 0 && num < 0.0001) return '<0.0001';
+
+  // 截断到小数点后四位
+  const truncated = Math.trunc(num * 10000) / 10000;
+  const [intPartStr, decPart = ''] = truncated.toString().split('.');
+  // 拼接小数部分
+  if (decPart === '') {
+    return intPartStr;
+  } else {
+    return `${intPartStr}.${decPart.slice(0, 4)}`;
+  }
+};
 
 const ReadOnlyInput = ({
     amount,
@@ -51,7 +70,7 @@ const ReadOnlyInput = ({
                         textAlign: 'left',
                     }}
                 >
-                    { amountFormat(amount) }
+                    { truncate_4_decimal_AmountWithComma(amount) }
                 </span>
                 <div style={{
                     display: 'flex',
@@ -65,7 +84,7 @@ const ReadOnlyInput = ({
                     lineHeight: '140%',
                     color: 'rgba(0, 0, 0, 0.30)',
                 }}>
-                    <span>${ price }</span>
+                    <span>${ truncate_4_decimal_AmountWithComma(price) }</span>
                     <span>{ children } </span>
                 </div>
                 <div style={{

@@ -387,11 +387,12 @@ const StakingInfo = ({
                                 onClick={ handleClaimAll }
                                 disabled={ !WalletConnected || !isClaimableEnough }
                             />
-                            <PlainButton2 
+                            {/* <PlainButton2 
                                 text="Compounding"
                                 onClick={ handleCompound }
                                 disabled={ !WalletConnected || !isClaimableEnough }
-                            />
+                            /> */}
+                            {/* 第一期暂时隐藏componding功能 */}
                         </Flex>
                     </Flex>
                     <Box position={'absolute'} top={0} right={0} zIndex={10}>

@@ -25,10 +25,7 @@ const valueFormatter = (price : string | number | null) => {
     if (price === 0) {
         return `$0.00`
     }
-    return `$${Number(price).toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-    })}`
+    return `$${ truncateTokenAmountWithComma(price) }`;
 }
 
 const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | number ) => {
@@ -109,7 +106,7 @@ const StakingModalNumberInput = ({
         e.target.lastValidValue = value; // 保存临时状态
         formattedValue = value; // 直接显示用户输入
     } else {
-        // 验证输入格式：整数部分任意长度，小数部分最多四位
+        // 验证输入格式：整数部分任意长度，小数部分最多2位
         if (!/^-?\d*\.?\d{0,2}$/.test(value)) {
             // 输入无效，回退到上一个有效值
             e.target.value = e.target.lastValidValue || '';
@@ -122,14 +119,12 @@ const StakingModalNumberInput = ({
         // 分离整数和小数部分
         let [integerPart, decimalPart = ''] = value.split('.');
 
-        // 添加逗号到整数部分
-        integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
         // 拼接整数和小数部分
         formattedValue = decimalPart ? `${integerPart}.${decimalPart}` : integerPart;
     }
       setInputStr(formattedValue);
-      setValue(amountStringFormatter(formattedValue));
+      const _  = amountStringFormatter(formattedValue);
+      (!Number.isNaN(Number(_)) && Number(_).toString() !== '0') && setValue(Number(_).toString());
   };
 
   const prefix = useMemo(() => {
