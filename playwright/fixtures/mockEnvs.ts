@@ -109,4 +109,8 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST', 'http://localhost:3100' ],
     [ 'NEXT_PUBLIC_TAC_TON_EXPLORER_URL', 'https://testnet.tonscan.org' ],
   ],
+  celo: [
+    [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK', '26369280' ],
+  ],
 };

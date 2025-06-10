@@ -1,6 +1,6 @@
 import { padStart } from 'es-toolkit/compat';
 
-import type { CeloEpochDetails, CeloEpochElectionRewardDetails, CeloEpochElectionRewardDetailsResponse } from 'types/api/epochs';
+import type { CeloEpochDetails, CeloEpochElectionRewardDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'types/api/epochs';
 
 import * as addressMock from '../address/address';
 import * as tokenMock from '../tokens/tokenInfo';
@@ -48,6 +48,52 @@ export const epoch1: CeloEpochDetails = {
       token: tokenMock.tokenInfoERC20a,
     },
   },
+};
+
+export const list: CeloEpochListResponse = {
+  items: [
+    {
+      timestamp: '2025-06-10T01:27:52.000000Z',
+      number: 1739,
+      end_block_number: 48563551,
+      start_block_number: 48477132,
+      distribution: {
+        carbon_offsetting_transfer: {
+          decimals: '18',
+          value: '1629660620900772288455',
+        },
+        community_transfer: {
+          decimals: '18',
+          value: '65186424836030891538',
+        },
+        transfers_total: {
+          decimals: '18',
+          value: '1694847045736803179993',
+        },
+      },
+    },
+    {
+      timestamp: '2025-06-09T01:27:32.000000Z',
+      number: 1738,
+      end_block_number: 18477131,
+      start_block_number: 18390714,
+      distribution: {
+        carbon_offsetting_transfer: {
+          decimals: '18',
+          value: '1723199576750509130678',
+        },
+        community_transfer: {
+          decimals: '18',
+          value: '68927983070020365227',
+        },
+        transfers_total: {
+          decimals: '18',
+          value: '1792127559820529495905',
+        },
+      },
+    },
+  ],
+  next_page_params: null,
 };
 
 function getRewardDetailsItem(index: number): CeloEpochElectionRewardDetails {
