@@ -38,9 +38,15 @@ const EpochDetails = ({ data, isLoading }: Props) => {
           Processing range
         </DetailedInfo.ItemLabel>
         <DetailedInfo.ItemValue>
-          <BlockEntity number={ data.start_processing_block_number } isLoading={ isLoading } noIcon/>
-          <chakra.span color="text.secondary" whiteSpace="pre"> - </chakra.span>
-          <BlockEntity number={ data.end_processing_block_number } isLoading={ isLoading } noIcon/>
+          { data.start_processing_block_number === data.end_processing_block_number ? (
+            <BlockEntity number={ data.start_processing_block_number } isLoading={ isLoading } noIcon/>
+          ) : (
+            <>
+              <BlockEntity number={ data.start_processing_block_number } isLoading={ isLoading } noIcon/>
+              <chakra.span color="text.secondary" whiteSpace="pre"> - </chakra.span>
+              <BlockEntity number={ data.end_processing_block_number } isLoading={ isLoading } noIcon/>
+            </>
+          ) }
         </DetailedInfo.ItemValue>
         { data.distribution?.community_transfer && (
           <>
