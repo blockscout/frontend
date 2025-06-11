@@ -580,6 +580,31 @@
       <path stroke="currentColor" stroke-linejoin="round" stroke-width="1.2" d="M10 15.833c.175 0 .337-.082.661-.247l2.608-1.325c1.154-.587 1.731-.88 1.731-1.345V7.083m-5 8.75c-.175 0-.337-.082-.661-.247L6.73 14.26C5.577 13.674 5 13.38 5 12.915V7.083m5 8.75V10m5-2.917c0-.464-.577-.757-1.731-1.344l-2.608-1.325c-.324-.165-.486-.247-.661-.247s-.337.082-.661.247L6.73 5.739C5.577 6.326 5 6.62 5 7.083m10 0c0 .465-.577.758-1.731 1.344l-2.608 1.325c-.324.165-.486.248-.661.248M5 7.083c0 .465.577.758 1.731 1.344l2.608 1.325c.324.165.486.248.661.248"/>
       <path stroke="currentColor" stroke-linejoin="round" stroke-opacity=".6" stroke-width="1.2" d="m10.992 17.98 3.911-1.893c1.731-.838 2.597-1.257 2.597-1.92V5.832c0-.663-.866-1.082-2.597-1.92L10.992 2.02c-.487-.236-.73-.353-.992-.353s-.505.117-.992.353L5.096 3.913C3.366 4.751 2.5 5.17 2.5 5.833v8.334c0 .663.865 1.082 2.596 1.92l3.912 1.893c.487.235.73.353.992.353s.505-.118.992-.353Z"/>
     </symbol>
+    <symbol id="navitems/icon_chart_new" fill="none" viewBox="0 0 20 20">
+      <rect width="15.07" height="12.986" x="2.465" y="3.507" stroke="currentColor" stroke-width="1.6" rx="1.284"/>
+      <rect width="1.6" height="5.209" x="5.6" y="8.958" fill="currentColor" rx=".8"/>
+      <rect width="1.6" height="8.335" x="9.2" y="5.833" fill="currentColor" rx=".8"/>
+      <rect width="1.6" height="6.78" x="12.8" y="7.388" fill="currentColor" rx=".8"/>
+    </symbol>
+    <symbol id="navitems/icon_credentials_new" fill="none" viewBox="0 0 20 20">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M10 10v8m0-8 6.979-3.765M10 10 3.014 6.28M17 13.294V6.706c0-.278 0-.417-.04-.541a.8.8 0 0 0-.166-.296c-.085-.096-.201-.163-.434-.299l-5.756-3.336c-.22-.128-.33-.192-.447-.217a.75.75 0 0 0-.314 0c-.116.025-.227.089-.447.217L3.64 5.57c-.233.136-.35.203-.434.3a.8.8 0 0 0-.167.295C3 6.289 3 6.428 3 6.705v6.59c0 .277 0 .416.04.54a.8.8 0 0 0 .166.296c.085.096.201.163.434.299l5.756 3.337c.22.127.33.191.447.216q.157.034.314 0c.117-.025.227-.089.447-.216l5.756-3.337c.233-.136.35-.203.434-.3a.8.8 0 0 0 .167-.295c.039-.124.039-.263.039-.54"/>
+    </symbol>
+    <symbol id="navitems/icon_explorer_new" fill="none" viewBox="0 0 20 20">
+      <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
+        <circle cx="10" cy="10" r="7.343"/>
+        <path d="M6.65 3.418c-1.642-.808-2.967-.993-3.596-.364-1.277 1.276.799 5.42 4.635 9.257s7.98 5.91 9.256 4.635c.581-.581.468-1.756-.19-3.226"/>
+      </g>
+    </symbol>
+    <symbol id="navitems/icon_faucet_new" fill="none" viewBox="0 0 20 20">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M10 2.05c-3.256 3.18-6.51 6.027-6.51 9.54s2.914 6.36 6.51 6.36 6.512-2.847 6.512-6.36S13.256 5.23 10 2.05"/>
+      <path fill="currentColor" d="M12.975 11.367h-5.95c-.552 0-1.012.454-.875.99a3.976 3.976 0 0 0 7.7 0c.138-.536-.323-.99-.875-.99"/>
+    </symbol>
+    <symbol id="navitems/icon_others" fill="none" viewBox="0 0 20 20">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M6.354 3.316H5.14A1.823 1.823 0 0 0 3.316 5.14v1.215m10.33-3.038h1.214c1.007 0 1.823.816 1.823 1.823v1.215m0 7.291v1.215a1.823 1.823 0 0 1-1.823 1.823h-1.215m-7.29 0H5.138a1.823 1.823 0 0 1-1.823-1.823v-1.215M12.43 10a2.43 2.43 0 1 1-4.86 0 2.43 2.43 0 0 1 4.86 0"/>
+    </symbol>
+    <symbol id="navitems/icon_storage_new" fill="none" viewBox="0 0 20 20">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M17.388 10c0-1.02-.827-1.847-1.847-1.847h-3.078a2.463 2.463 0 1 1-4.925 0H4.459c-1.02 0-1.846.827-1.846 1.847m14.775 0v4.925c0 1.02-.827 1.847-1.847 1.847H4.459a1.847 1.847 0 0 1-1.846-1.847V10m14.775 0V7.537M2.613 10V7.537m14.775 0c0-1.02-.827-1.846-1.847-1.846H4.459c-1.02 0-1.846.826-1.846 1.846m14.775 0V5.075c0-1.02-.827-1.847-1.847-1.847H4.459c-1.02 0-1.846.827-1.846 1.847v2.462"/>
+    </symbol>
     <symbol id="navitems/moca-staking" fill="none" viewBox="0 0 20 20">
       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M16.04 5.168c0 1.668-2.705 3.02-6.04 3.02s-6.04-1.352-6.04-3.02m12.08 0c0-1.667-2.705-3.02-6.04-3.02s-6.04 1.353-6.04 3.02m12.08 0v10.267c0 1.334-2.705 2.415-6.04 2.415s-6.04-1.081-6.04-2.415V5.168m12.08 5.436c0 1.334-2.705 2.415-6.04 2.415s-6.04-1.081-6.04-2.415"/>
     </symbol>
