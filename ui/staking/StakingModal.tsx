@@ -31,6 +31,7 @@ const StakingModal = ({
     return (
         <Modal isOpen={ isOpen } onClose={ onClose } closeOnOverlayClick={false} isCentered>
             <ModalOverlay bg='blackAlpha.300' />
+            {  isOpen && (
             <ModalContent height={'auto'} maxWidth={"600px"} px={'24px'} py={'24px'}>
                 <ModalHeader mb={"24px"}>
                     {
@@ -70,6 +71,7 @@ const StakingModal = ({
                 <ModalCloseButton zIndex={2000} width={'20px'} height={'20px'} top={'30px'} right={'24px'} />
                 { children }
             </ModalContent>
+            )}
         </Modal>
     )
 };

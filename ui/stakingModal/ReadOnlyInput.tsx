@@ -48,8 +48,6 @@ const ReadOnlyInput = ({
     children?: React.ReactNode | null;
 }) => {
 
-    console.log('ReadOnlyInput amount:', amount, 'priceStr:', priceStr);
-
     return (
         <div 
             style={{

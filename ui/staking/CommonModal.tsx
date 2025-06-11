@@ -18,6 +18,31 @@ import axios from 'axios';
 import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
 import Decimal from 'decimal.js';
 
+
+const SetInput = ({ value , setValue, currentAmount, refetchBalance, userAddr }: {
+    value: string;
+    setValue: (value: string) => void;
+    currentAmount: string;
+    refetchBalance: () => void;
+    userAddr?: string;
+}) => {
+
+
+    useEffect(() => {
+        if(currentAmount === '0.00' || currentAmount === '') {
+            setValue('');
+        } else {
+            setValue(currentAmount);
+        }
+        !!userAddr && refetchBalance();
+    }, []);
+
+
+    return (
+        <div style={{height: "0"}}></div>
+    )
+}
+
 const formatTokenAmountTruncated = (
   num: number | string | null | undefined,
   decimalPlaces: number = 2
@@ -55,7 +80,6 @@ const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | n
     const amount = typeof tokenAmount === 'string' ? Number(tokenAmount) : tokenAmount;
     const price = typeof tokenPrice === 'string' ? Number(tokenPrice) : tokenPrice;
     const _ = amount * price;
-    console.log('valueCalculator amount:', amount, 'price:', price, 'result:', _);
     return formatTokenAmountTruncated( String(_), 4 );
 }
 
@@ -138,13 +162,6 @@ const CommonModal = ({
 
     const [ inputStr , setInputStr ] = React.useState<string>(currentAmount);
 
-
-    useEffect(() => {
-        !!userAddr && refetchBalance();
-        if(currentAmount === '0.00' || currentAmount === '') {
-            setInputStr('');
-        }
-    }, []);
 
     
     const handleSetApr = (value: string | number) => {
@@ -435,7 +452,13 @@ const CommonModal = ({
                     }}
                 />
             )}
-
+            <SetInput 
+                value={ inputStr }
+                setValue={ setInputStr  }
+                currentAmount={ currentAmount }
+                refetchBalance={ refetchBalance }
+                userAddr={ userAddr }
+            />
             { transactionStage === 'comfirming' && ( spinner ) }
             { (transactionStage !== 'success' && transactionStage !== 'comfirming') && (
                 <>
