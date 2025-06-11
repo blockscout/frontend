@@ -51,11 +51,11 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
       if (isInputGroup) {
         const inputElement = React.cloneElement(
           React.Children.only<React.ReactElement<InputProps>>(child.props.children as React.ReactElement<InputProps>),
-          injectedProps as Partial<InputProps>,
+          injectedProps,
         );
 
         const groupInputElement = React.cloneElement(child,
-          {} as Partial<InputGroupProps>,
+          {},
           inputElement,
           labelElement,
         );
@@ -68,7 +68,7 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
         );
       }
 
-      const inputElement = React.cloneElement(child, injectedProps as Partial<InputProps>);
+      const inputElement = React.cloneElement(child, injectedProps);
 
       return (
         <ChakraField.Root pos="relative" w="full" ref={ ref } { ...rest }>
@@ -84,7 +84,7 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
       size: rest.size,
     };
     const child = React.Children.only<React.ReactElement<InputProps | InputGroupProps>>(children);
-    const clonedChild = React.cloneElement(child, injectedProps as Partial<InputProps | InputGroupProps>);
+    const clonedChild = React.cloneElement(child, injectedProps);
 
     return (
       <ChakraField.Root ref={ ref } { ...rest }>

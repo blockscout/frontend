@@ -73,7 +73,7 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
             // hide input value and placeholder for the first render
             value: inlinePaddings ? child.props.value : undefined,
             placeholder: inlinePaddings ? child.props.placeholder : undefined,
-          } as Partial<InputProps>);
+          });
         }) }
         { endElement && (
           <InputElement placement="end" ref={ endElementRef } px={ 0 } color="gray.500" { ...endElementProps }>
