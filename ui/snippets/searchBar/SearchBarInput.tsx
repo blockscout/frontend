@@ -173,7 +173,7 @@ const SearchBarInput = (
             '@media screen and (min-width: 1001px)': {
               borderRadius: '29px',
               height: '42px',
-              borderColor: '#C15E97 !important',
+              borderColor: '#D940A4 !important',
               paddingRight: '36px',
             },
           }}

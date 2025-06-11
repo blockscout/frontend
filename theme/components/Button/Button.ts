@@ -39,12 +39,12 @@ const variantOutline = defineStyle((props) => {
   const bg = 'transparent';
 
   // const color = isGrayTheme ? mode('blackAlpha.800', 'whiteAlpha.800')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
-  const color = '#C15E97';
+  const color = '#D940A4';
   // const borderColor = isGrayTheme ? mode('gray.200', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
-  const borderColor = '#C15E97';
+  const borderColor = '#D940A4';
 
   // const selectedBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
-  const selectedBg = '#C15E97';
+  const selectedBg = '#D940A4';
   // const selectedColor = mode('blue.600', 'gray.50')(props);
   const selectedColor = '#FFFFFF';
 

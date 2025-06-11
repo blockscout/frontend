@@ -13,7 +13,7 @@ import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 // const BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%,
 //  rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
 const BACKGROUND_DEFAULT = '#FEF1F9';
-const TEXT_COLOR_DEFAULT = '#C15E97';
+const TEXT_COLOR_DEFAULT = '#D940A4';
 const BORDER_DEFAULT = 'none';
 
 const HeroBanner = () => {

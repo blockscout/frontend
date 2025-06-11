@@ -131,20 +131,20 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
       };
     } else {
       return {
-        bg: '#C15E97',
+        bg: '#D940A4',
         height: '48px',
         border: '1px solid #ffa1da',
-        _hover: { background: '#C15E97' },
+        _hover: { background: '#D940A4' },
       };
     }
   }, [ props.verified ]);
 
   const requestBtnStyles = React.useCallback(() => {
     return {
-      border: '1px solid #C15E97',
-      bg: '#C15E97',
+      border: '1px solid #D940A4',
+      bg: '#D940A4',
       _hover: {
-        bg: '#C15E97',
+        bg: '#D940A4',
       },
       boxShadow: '0px 2px 4px 0px rgba(255, 255, 255, 0.25)',
     };
@@ -180,7 +180,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
       <Heading fontSize="24px" fontWeight="400" lineHeight="28px">
         <Highlight
           query="$MOCA"
-          styles={{ color: '#C15E97', fontWeight: '700' }}
+          styles={{ color: '#D940A4', fontWeight: '700' }}
         >
           To receive $MOCA on Moca Chain Testnet, please follow the steps below.
         </Highlight>
@@ -205,7 +205,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
         >
           <Box
             border="1px solid #ffa1da"
-            bg="#C15E97"
+            bg="#D940A4"
             borderRadius="50%"
             width="32px"
             height="32px"
@@ -255,7 +255,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
         >
           <Box
             border="1px solid #ffa1da"
-            bg="#C15E97"
+            bg="#D940A4"
             borderRadius="50%"
             width="32px"
             height="32px"
@@ -277,7 +277,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
               color="#000000"
               lineHeight="28px"
             >
-              <Highlight query="$MOCA" styles={{ color: '#C15E97' }}>
+              <Highlight query="$MOCA" styles={{ color: '#D940A4' }}>
                 Request $MOCA on Moca Chain
               </Highlight>
             </Heading>
