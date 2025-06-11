@@ -125,10 +125,11 @@ const SearchBarInput = (
         my="2px"
         mr={{ base: 1, lg: isHomepage ? 2 : 1 }}
         borderRadius="sm"
+        display="none"
         borderWidth="1px"
         borderColor="gray.400"
         color="gray.400"
-        display={{ base: 'none', lg: 'flex' }}
+        // display={{ base: 'none', lg: 'flex' }}
       >
         /
       </Center>

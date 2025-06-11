@@ -457,7 +457,8 @@ const TableApp = (props: {
         const _unsignedTx = {
             to: unsignedTx.to as `0x${string}`,
             data: unsignedTx.data as `0x${string}`,
-            value: currentTxType === 'Stake' ? parseUnits(amount, 18) : BigInt(0),
+            // value: currentTxType === 'Stake' ? parseUnits(amount, 18) : BigInt(0),
+            value:  BigInt(0),
             gas: BigInt(unsignedTx.gasLimit),
             gasPrice: parseUnits('20', 'gwei'),
         }
