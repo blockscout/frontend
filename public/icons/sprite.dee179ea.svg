@@ -587,7 +587,7 @@
       <rect width="1.6" height="6.78" x="12.8" y="7.388" fill="currentColor" rx=".8"/>
     </symbol>
     <symbol id="navitems/icon_credentials_new" fill="none" viewBox="0 0 20 20">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M10 10v8m0-8 6.979-3.765M10 10 3.014 6.28M17 13.294V6.706c0-.278 0-.417-.04-.541a.8.8 0 0 0-.166-.296c-.085-.096-.201-.163-.434-.299l-5.756-3.336c-.22-.128-.33-.192-.447-.217a.75.75 0 0 0-.314 0c-.116.025-.227.089-.447.217L3.64 5.57c-.233.136-.35.203-.434.3a.8.8 0 0 0-.167.295C3 6.289 3 6.428 3 6.705v6.59c0 .277 0 .416.04.54a.8.8 0 0 0 .166.296c.085.096.201.163.434.299l5.756 3.337c.22.127.33.191.447.216q.157.034.314 0c.117-.025.227-.089.447-.216l5.756-3.337c.233-.136.35-.203.434-.3a.8.8 0 0 0 .167-.295c.039-.124.039-.263.039-.54"/>
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M10 10v8m0-8 6.979-3.765M10 10 3.014 6.28M17 13.294V6.706c0-.278 0-.417-.04-.541a.8.8 0 0 0-.166-.296c-.085-.096-.201-.163-.434-.299l-5.756-3.336c-.22-.128-.33-.192-.447-.217a.75.75 0 0 0-.314 0c-.116.025-.227.089-.447.217L3.64 5.57c-.233.136-.35.203-.434.3a.8.8 0 0 0-.167.295C3 6.289 3 6.428 3 6.705v6.59c0 .277 0 .416.04.54a.8.8 0 0 0 .166.296c.085.096.201.163.434.299l5.756 3.337c.22.127.33.191.447.216q.157.034.314 0c.117-.025.227-.089.447-.216l5.756-3.337c.233-.136.35-.203.434-.3a.8.8 0 0 0 .167-.295c.039-.124.039-.263.039-.54Z"/>
     </symbol>
     <symbol id="navitems/icon_explorer_new" fill="none" viewBox="0 0 20 20">
       <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
@@ -596,7 +596,7 @@
       </g>
     </symbol>
     <symbol id="navitems/icon_faucet_new" fill="none" viewBox="0 0 20 20">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M10 2.05c-3.256 3.18-6.51 6.027-6.51 9.54s2.914 6.36 6.51 6.36 6.512-2.847 6.512-6.36S13.256 5.23 10 2.05"/>
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M10 2.05c-3.256 3.18-6.51 6.027-6.51 9.54s2.915 6.36 6.511 6.36 6.512-2.847 6.512-6.36-3.256-6.36-6.512-9.54Z"/>
       <path fill="currentColor" d="M12.975 11.367h-5.95c-.552 0-1.012.454-.875.99a3.976 3.976 0 0 0 7.7 0c.138-.536-.323-.99-.875-.99"/>
     </symbol>
     <symbol id="navitems/icon_others" fill="none" viewBox="0 0 20 20">

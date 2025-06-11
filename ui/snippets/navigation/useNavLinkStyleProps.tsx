@@ -17,7 +17,7 @@ export default function useNavLinkProps({ isExpanded, isCollapsed, isActive }: P
       display: 'flex',
       color: isActive ? '#EF6ABA' : 'rgba(0, 0, 0, 0.60)',
       bgColor: isActive ? 'rgba(255, 241, 249, 1)' : colors.bg.default,
-      _hover: { color: isActive ? '#EF6ABA' : '#D940A4' },
+      _hover: { color: isActive ? '#EF6ABA' : '#EF6ABA' },
       borderRadius: 'base',
       borderColor: '##FFCBEC !important',
       ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }),
