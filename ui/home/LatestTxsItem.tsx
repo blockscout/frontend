@@ -47,7 +47,7 @@ const txhashStyle = {
     fontFamily: 'Outfit',
     fontSize: '1.125rem',
     fontStyle: 'normal',
-    fontWeight: 600,
+    fontWeight: "600 !important",
     lineHeight: 'normal',
 };
 

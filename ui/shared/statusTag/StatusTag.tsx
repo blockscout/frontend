@@ -64,6 +64,7 @@ const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
     fontFamily: 'Outfit',
     fontStyle: 'normal',
     lineHeight: 'normal',
+    marginLeft: '0.25rem',
   };
 
   const icon_ok = (
@@ -86,7 +87,7 @@ const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
         { type === 'ok' && icon_ok }
         { type === 'error' && icon_error }
         { type === 'pending' && <IconSvg boxSize={ 2.5 } name={ icon } mr={ 1 } flexShrink={ 0 }/> }
-        <TagLabel display="block" { ... textStyle } >{ capitalizedText }</TagLabel>
+        <TagLabel display="block" { ... textStyle }  >{ capitalizedText }</TagLabel>
       </Tag>
     </Tooltip>
   );

@@ -60,7 +60,9 @@ const ChainIndicators = () => {
     },
   });
 
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
+  // const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
+
+  const bgColor = '#f4f4f4'; // Fallback color, replace with your desired color
 
   if (indicators.length === 0) {
     return null;
@@ -76,7 +78,7 @@ const ChainIndicators = () => {
     }
 
     return (
-      <span>
+      <span style={ textStyle }>
         { indicator?.value(statsQueryResult.data) }
       </span>
     );
@@ -116,12 +118,14 @@ const ChainIndicators = () => {
     >
       <Flex flexGrow={ 1 } flexDir="column">
         <Flex alignItems="center">
-          <Text  { ... titleStyle }>{ indicator?.title }</Text>
+          <span style = { titleStyle }>
+            { indicator?.title }
+          </span>
           { indicator?.hint && <Hint label={ indicator.hint } ml={ 1 }/> }
         </Flex>
         <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end" >
-          <Text { ...titleStyle} as="span"> { valueTitle }</Text>
-          <Text { ...titleStyle} as="span">{ valueDiff }</Text>
+          <Text { ...textStyle} as="span"> { valueTitle }</Text>
+          <Text { ...textStyle} as="span">{ valueDiff }</Text>
         </Flex>
         <ChainIndicatorChartContainer { ...queryResult }/>
       </Flex>

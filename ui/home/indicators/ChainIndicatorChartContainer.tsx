@@ -27,7 +27,7 @@ const ChainIndicatorChartContainer = ({ data, isError, isPending }: Props) => {
     }
 
     return (
-      <Box mx="-10px" my="-5px" h="calc(100% + 10px)" w="calc(100% + 20px)">
+      <Box mx="-10px" my="-5px" h="calc(100% + 10px)" w="calc(100% + 20px)" >
         <ChainIndicatorChart data={ data }/>
       </Box>
     );
