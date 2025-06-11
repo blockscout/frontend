@@ -11,6 +11,7 @@ import type { Transaction } from 'types/api/transaction';
 import type { NewZkEvmBatchSocketResponse } from 'types/api/zkEvmL2';
 
 export type SocketMessageParams = SocketMessage.NewBlock |
+SocketMessage.NewBlockMultichain |
 SocketMessage.BlocksIndexStatus |
 SocketMessage.InternalTxsIndexStatus |
 SocketMessage.TxStatusUpdate |
@@ -49,6 +50,7 @@ interface SocketMessageParamsGeneric<Event extends string | undefined, Payload e
 
 export namespace SocketMessage {
   export type NewBlock = SocketMessageParamsGeneric<'new_block', NewBlockSocketResponse>;
+  export type NewBlockMultichain = SocketMessageParamsGeneric<'new_blocks', Array<{ block_number: number; chain_id: number }>>;
   export type BlocksIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
   export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
   export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;

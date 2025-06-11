@@ -7,6 +7,7 @@ import { getEnvValue } from './utils';
 export interface ApiPropsBase {
   endpoint: string;
   basePath?: string;
+  socketEndpoint?: string;
 }
 
 export interface ApiPropsFull extends ApiPropsBase {
@@ -100,6 +101,25 @@ const rewardsApi = (() => {
   });
 })();
 
+const multichainApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_INTEROP_MULTICHAIN_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  try {
+    const url = new URL(apiHost);
+
+    return Object.freeze({
+      endpoint: apiHost,
+      socketEndpoint: `wss://${ url.host }`,
+    });
+  } catch (error) {
+    return;
+  }
+
+})();
+
 const statsApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_STATS_API_HOST');
   if (!apiHost) {
@@ -134,6 +154,7 @@ const apis: Apis = Object.freeze({
   bens: bensApi,
   contractInfo: contractInfoApi,
   metadata: metadataApi,
+  multichain: multichainApi,
   rewards: rewardsApi,
   stats: statsApi,
   visualize: visualizeApi,

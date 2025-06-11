@@ -92,6 +92,7 @@ const HomeSubchainWidget = ({ data }: Props) => {
           <Box>{ data.config.chain.id }</Box>
           <CopyToClipboard text={ String(data.config.chain.id) } ml={ 0 }/>
         </HStack>
+        { /* TODO @tom2drum move to a separate component as it re-renders too often */ }
         { blocksQuery.data?.[0] && (
           <HStack gap={ 2 }>
             <Box color="text.secondary">Latest block</Box>
