@@ -24,7 +24,7 @@ interface Props {
   data?: TokenInstance;
   token?: TokenInfo;
   isLoading?: boolean;
-  scrollRef?: React.RefObject<HTMLDivElement>;
+  scrollRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {

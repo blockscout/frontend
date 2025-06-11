@@ -79,7 +79,7 @@ const Chart = () => {
 
   const interval = intervalState || getIntervalByResolution(resolution);
 
-  const ref = React.useRef(null);
+  const ref = React.useRef<HTMLDivElement>(null);
 
   const isMobile = useIsMobile();
   const isInBrowser = isBrowser();

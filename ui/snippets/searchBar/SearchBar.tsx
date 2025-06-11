@@ -4,7 +4,6 @@ import { debounce } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
-import { Element } from 'react-scroll';
 
 import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
@@ -123,7 +122,9 @@ const SearchBar = ({ isHomepage }: Props) => {
 
     const resizeHandler = debounce(calculateMenuWidth, 200);
     const resizeObserver = new ResizeObserver(resizeHandler);
-    resizeObserver.observe(inputRef.current);
+    if (inputRef.current) {
+      resizeObserver.observe(inputRef.current);
+    }
 
     return function cleanup() {
       resizeObserver.unobserve(inputEl);
@@ -170,7 +171,6 @@ const SearchBar = ({ isHomepage }: Props) => {
               overflowY="auto"
               id={ SCROLL_CONTAINER_ID }
               ref={ scrollRef }
-              as={ Element }
               px={ 4 }
             >
               { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (

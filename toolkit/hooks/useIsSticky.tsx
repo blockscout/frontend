@@ -1,7 +1,7 @@
 import { throttle } from 'es-toolkit';
 import React from 'react';
 
-export function useIsSticky(ref: React.RefObject<HTMLDivElement>, offset = 0, isEnabled = true) {
+export function useIsSticky(ref: React.RefObject<HTMLElement | null>, offset = 0, isEnabled = true): boolean {
   const [ isSticky, setIsSticky ] = React.useState(false);
 
   const handleScroll = React.useCallback(() => {

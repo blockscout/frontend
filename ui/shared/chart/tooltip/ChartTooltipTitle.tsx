@@ -29,7 +29,7 @@ const ChartTooltipTitle = ({ resolution = Resolution.DAY }: { resolution?: Resol
 
 export default React.memo(ChartTooltipTitle);
 
-export function useRenderTitle(ref: React.RefObject<SVGGElement>) {
+export function useRenderTitle(ref: React.RefObject<SVGGElement | null>) {
   return React.useCallback((isVisible: boolean) => {
     d3.select(ref.current)
       .select('.ChartTooltip__title')

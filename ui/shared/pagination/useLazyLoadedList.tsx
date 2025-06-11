@@ -7,7 +7,7 @@ import type { Params as ApiInfiniteQueryParams } from 'lib/api/useApiInfiniteQue
 import useApiInfiniteQuery from 'lib/api/useApiInfiniteQuery';
 
 interface Params<Resource extends PaginatedResourceName> extends ApiInfiniteQueryParams<Resource> {
-  rootRef: React.RefObject<HTMLElement>;
+  rootRef: React.RefObject<HTMLElement | null>;
 }
 
 interface ReturnType<Resource extends PaginatedResourceName> {

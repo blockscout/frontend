@@ -21,8 +21,8 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
 
   const ref = React.useRef(null);
   const isActive = React.useRef(false);
-  const startX = React.useRef<number>();
-  const endX = React.useRef<number>();
+  const startX = React.useRef<number>(undefined);
+  const endX = React.useRef<number>(undefined);
 
   const getIndexByX = React.useCallback((x: number) => {
     const xDate = scale.invert(x);

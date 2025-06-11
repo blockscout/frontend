@@ -51,7 +51,7 @@ interface UseRenderRowsReturnType {
   width: number;
 }
 
-export function useRenderRows(ref: React.RefObject<SVGGElement>, { data, xScale, minWidth }: UseRenderRowsParams) {
+export function useRenderRows(ref: React.RefObject<SVGGElement | null>, { data, xScale, minWidth }: UseRenderRowsParams) {
   return React.useCallback((x: number, currentPoints: Array<CurrentPoint>): UseRenderRowsReturnType => {
 
     // update "transform" prop of all rows

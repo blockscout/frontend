@@ -9,7 +9,7 @@ const INCREMENT = 3;
 
 const ChartLineLoader = ({ className }: { className?: string }) => {
   const ref = React.useRef<SVGPathElement>(null);
-  const raf = React.useRef<number>();
+  const raf = React.useRef<number>(undefined);
   const offset = React.useRef(0);
 
   const [ lineBgColor ] = useToken('colors', useColorModeValue('gray.200', 'gray.500'));

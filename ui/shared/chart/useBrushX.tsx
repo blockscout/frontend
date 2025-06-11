@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function useBrushX({ limits, anchor, setRange }: Props) {
-  const brushRef = React.useRef<d3.BrushBehavior<unknown>>();
+  const brushRef = React.useRef<d3.BrushBehavior<unknown>>(undefined);
   const [ brushSelectionBg ] = useToken('colors', useColorModeValue('blackAlpha.400', 'whiteAlpha.500'));
 
   React.useEffect(() => {
