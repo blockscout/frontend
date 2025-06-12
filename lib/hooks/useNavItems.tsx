@@ -298,6 +298,12 @@ export default function useNavItems(): ReturnType {
         icon: 'apps',
         isActive: pathname.startsWith('/app'),
       } : null,
+      {
+        text: 'Multisender',
+        nextRoute: { pathname: '/multisender' as const },
+        icon: 'multisender',
+        isActive: pathname.startsWith('/multisender'),
+      },
       config.features.stats.isEnabled ? {
         text: 'Charts & stats',
         nextRoute: { pathname: '/stats' as const },

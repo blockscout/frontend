@@ -53,6 +53,9 @@ export function app(): CspDev.DirectiveDescriptor {
 
       // github api (used for Stylus contract verification)
       'api.github.com',
+
+      // multisender
+      'api.multisender.app',
     ].filter(Boolean),
 
     'script-src': [
