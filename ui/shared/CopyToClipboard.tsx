@@ -45,8 +45,6 @@ const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, 
     return <Skeleton boxSize={ size } className={ className } borderRadius="sm" flexShrink={ 0 } ml={ 2 } display="inline-block"/>;
   }
 
-  console.log('CopyToClipboard is deprecated, use CopyButton instead', colorScheme, variant, iconName);
-
   return (
     <Tooltip label={ copied ? 'Copied' : `Copy${ type === 'link' ? ' link ' : ' ' }to clipboard` } isOpen={ isOpen || copied }>
       <IconButton
