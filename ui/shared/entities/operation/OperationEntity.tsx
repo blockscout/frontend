@@ -32,26 +32,9 @@ const Icon = (props: IconProps) => {
       return <Spinner size="md" marginRight={ props.marginRight ?? '8px' }/>;
     }
     default: {
-      const color = (() => {
-        switch (props.type) {
-          case tac.OperationType.ERROR:
-          case tac.OperationType.ROLLBACK: {
-            return 'red.500';
-          }
-          case tac.OperationType.TAC_TON:
-          case tac.OperationType.TON_TAC_TON:
-          case tac.OperationType.TON_TAC: {
-            return 'green.500';
-          }
-          default:
-            return;
-        }
-      })();
-
       return (
         <EntityBase.Icon
           { ...props }
-          color={ color }
           name={ props.name ?? 'operation_slim' }
           borderRadius="none"
         />
