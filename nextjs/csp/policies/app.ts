@@ -55,7 +55,7 @@ export function app(): CspDev.DirectiveDescriptor {
       'api.github.com',
 
       // multisender
-      'api.multisender.app',
+      '*.multisender.app',
     ].filter(Boolean),
 
     'script-src': [
