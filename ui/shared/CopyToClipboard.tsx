@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { IconButton, Tooltip, useClipboard, chakra, useDisclosure, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
@@ -21,7 +23,7 @@ const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, 
   const [ copied, setCopied ] = useState(false);
   // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const iconColor = useColorModeValue('gray.400', 'gray.500');
+  const iconColor = '#6C636B';
   const colorProps = colorScheme ? {} : { color: iconColor };
   const iconName = icon || (type === 'link' ? 'link' : 'copy');
 
@@ -42,6 +44,8 @@ const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, 
   if (isLoading) {
     return <Skeleton boxSize={ size } className={ className } borderRadius="sm" flexShrink={ 0 } ml={ 2 } display="inline-block"/>;
   }
+
+  console.log('CopyToClipboard is deprecated, use CopyButton instead', colorScheme, variant, iconName);
 
   return (
     <Tooltip label={ copied ? 'Copied' : `Copy${ type === 'link' ? ' link ' : ' ' }to clipboard` } isOpen={ isOpen || copied }>

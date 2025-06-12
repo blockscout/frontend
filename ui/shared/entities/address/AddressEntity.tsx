@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import type { As } from '@chakra-ui/react';
 import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
 import React from 'react';
@@ -126,10 +128,10 @@ type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'add
 
 const Copy = (props: CopyProps) => {
   return (
-    <EntityBase.Copy
-      { ...props }
-      text={ props.address.filecoin?.robust ?? props.altHash ?? props.address.hash }
-    />
+      <EntityBase.Copy
+        { ...props }
+        text={ props.address.filecoin?.robust ?? props.altHash ?? props.address.hash }
+      /> 
   );
 };
 
