@@ -8,6 +8,8 @@ export const CELO_EPOCH_ITEM: CeloEpochListItem = {
   number: 1739,
   end_block_number: 48563551,
   start_block_number: 48477132,
+  type: 'L1',
+  is_finalized: true,
   distribution: {
     carbon_offsetting_transfer: TOKEN_TRANSFER_ERC_20_TOTAL,
     community_transfer: TOKEN_TRANSFER_ERC_20_TOTAL,
@@ -30,6 +32,8 @@ export const CELO_EPOCH: CeloEpochDetails = {
   end_processing_block_hash: BLOCK_HASH,
   end_processing_block_number: 48563552,
   end_block_number: 48563551,
+  type: 'L1',
+  is_finalized: true,
   distribution: {
     carbon_offsetting_transfer: TOKEN_TRANSFER_ERC_20,
     community_transfer: TOKEN_TRANSFER_ERC_20,

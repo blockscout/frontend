@@ -6,19 +6,32 @@ import { test, expect } from 'playwright/lib';
 
 import Epoch from './Epoch';
 
-const hooksConfig = {
-  router: {
-    query: { number: String(epochMock.epoch1.number) },
-  },
-};
-
 test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
+  const hooksConfig = {
+    router: {
+      query: { number: String(epochMock.epoch1.number) },
+    },
+  };
+
   await mockEnvs(ENVS_MAP.celo);
   await mockTextAd();
   await mockApiResponse('general:epoch_celo', epochMock.epoch1, { pathParams: { number: String(epochMock.epoch1.number) } });
-  await mockApiResponse('general:config_celo', {
-    l2_migration_block: epochMock.epoch1.end_block_number - 50,
-  });
+
+  const component = await render(<Epoch/>, { hooksConfig });
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('unfinalized epoch', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
+  const hooksConfig = {
+    router: {
+      query: { number: String(epochMock.epochUnfinalized.number) },
+    },
+  };
+
+  await mockEnvs(ENVS_MAP.celo);
+  await mockTextAd();
+  await mockApiResponse('general:epoch_celo', epochMock.epochUnfinalized, { pathParams: { number: String(epochMock.epochUnfinalized.number) } });
 
   const component = await render(<Epoch/>, { hooksConfig });
 

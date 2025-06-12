@@ -9,18 +9,16 @@ import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { getCeloBlockLayer } from 'ui/shared/celo/migration';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
   item: CeloEpochListItem;
-  l2MigrationBlock: number | undefined;
   isLoading?: boolean;
 }
 
-const EpochsListItem = ({ item, l2MigrationBlock, isLoading }: Props) => {
-  const layer = getCeloBlockLayer(item.end_block_number, l2MigrationBlock);
+const EpochsListItem = ({ item, isLoading }: Props) => {
   const communityReward = getCurrencyValue({
     value: item.distribution?.community_transfer?.value ?? '0',
     decimals: item.distribution?.community_transfer?.decimals,
@@ -50,9 +48,7 @@ const EpochsListItem = ({ item, l2MigrationBlock, isLoading }: Props) => {
           >
             { item.number }
           </Link>
-          { layer && (
-            <Skeleton loading={ isLoading } color="text.secondary" fontWeight={ 500 }><span>{ layer }</span></Skeleton>
-          ) }
+          <Skeleton loading={ isLoading } color="text.secondary" fontWeight={ 500 }><span>{ item.type }</span></Skeleton>
           <TimeWithTooltip
             timestamp={ item.timestamp }
             isLoading={ isLoading }
@@ -64,25 +60,45 @@ const EpochsListItem = ({ item, l2MigrationBlock, isLoading }: Props) => {
         </HStack>
       </ListItemMobileGrid.Value>
 
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value py="3px">
+        <CeloEpochStatus
+          isFinalized={ item.is_finalized }
+          loading={ isLoading }
+        />
+      </ListItemMobileGrid.Value>
+
       <ListItemMobileGrid.Label isLoading={ isLoading }>Block range</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading }>{ item.start_block_number } - { item.end_block_number }</Skeleton>
+        <Skeleton loading={ isLoading }>{ item.start_block_number } - { item.end_block_number || '' }</Skeleton>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Community fund</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading }>{ communityReward.valueStr } { config.chain.currency.symbol }</Skeleton>
-      </ListItemMobileGrid.Value>
+      { item.distribution?.community_transfer ? (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Community fund</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <Skeleton loading={ isLoading }>{ communityReward.valueStr } { config.chain.currency.symbol }</Skeleton>
+          </ListItemMobileGrid.Value>
+        </>
+      ) : null }
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Carbon offset fund</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading }>{ carbonOffsettingReward.valueStr } { config.chain.currency.symbol }</Skeleton>
-      </ListItemMobileGrid.Value>
+      { item.distribution?.carbon_offsetting_transfer ? (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Carbon offset fund</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <Skeleton loading={ isLoading }>{ carbonOffsettingReward.valueStr } { config.chain.currency.symbol }</Skeleton>
+          </ListItemMobileGrid.Value>
+        </>
+      ) : null }
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Total fund</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading }>{ totalReward.valueStr } { config.chain.currency.symbol }</Skeleton>
-      </ListItemMobileGrid.Value>
+      { item.distribution?.transfers_total ? (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Total fund</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <Skeleton loading={ isLoading }>{ totalReward.valueStr } { config.chain.currency.symbol }</Skeleton>
+          </ListItemMobileGrid.Value>
+        </>
+      ) : null }
 
     </ListItemMobileGrid.Container>
   );

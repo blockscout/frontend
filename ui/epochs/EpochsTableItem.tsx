@@ -9,18 +9,16 @@ import getCurrencyValue from 'lib/getCurrencyValue';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import { getCeloBlockLayer } from 'ui/shared/celo/migration';
+import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
   item: CeloEpochListItem;
-  l2MigrationBlock: number | undefined;
   isLoading?: boolean;
 };
 
-const EpochsTableItem = ({ item, l2MigrationBlock, isLoading }: Props) => {
+const EpochsTableItem = ({ item, isLoading }: Props) => {
 
-  const layer = getCeloBlockLayer(item.end_block_number, l2MigrationBlock);
   const communityReward = getCurrencyValue({
     value: item.distribution?.community_transfer?.value ?? '0',
     decimals: item.distribution?.community_transfer?.decimals,
@@ -48,9 +46,7 @@ const EpochsTableItem = ({ item, l2MigrationBlock, isLoading }: Props) => {
           >
             { item.number }
           </Link>
-          { layer && (
-            <Skeleton loading={ isLoading } color="text.secondary" fontWeight={ 500 }><span>{ layer }</span></Skeleton>
-          ) }
+          <Skeleton loading={ isLoading } color="text.secondary" fontWeight={ 500 }><span>{ item.type }</span></Skeleton>
           <TimeWithTooltip
             timestamp={ item.timestamp }
             isLoading={ isLoading }
@@ -61,23 +57,29 @@ const EpochsTableItem = ({ item, l2MigrationBlock, isLoading }: Props) => {
         </HStack>
       </TableCell>
       <TableCell verticalAlign="middle">
+        <CeloEpochStatus
+          isFinalized={ item.is_finalized }
+          loading={ isLoading }
+        />
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <Skeleton loading={ isLoading }>
-          { item.start_block_number } - { item.end_block_number }
+          { item.start_block_number } - { item.end_block_number || '' }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
         <Skeleton loading={ isLoading }>
-          { communityReward.valueStr }
+          { item.distribution?.community_transfer ? communityReward.valueStr : '-' }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
         <Skeleton loading={ isLoading }>
-          { carbonOffsettingReward.valueStr }
+          { item.distribution?.carbon_offsetting_transfer ? carbonOffsettingReward.valueStr : '-' }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
         <Skeleton loading={ isLoading }>
-          { totalReward.valueStr }
+          { item.distribution?.transfers_total ? totalReward.valueStr : '-' }
         </Skeleton>
       </TableCell>
     </TableRow>

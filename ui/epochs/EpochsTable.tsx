@@ -10,20 +10,20 @@ import EpochsTableItem from './EpochsTableItem';
 
 interface Props {
   items: Array<CeloEpochListItem>;
-  l2MigrationBlock: number | undefined;
   isLoading?: boolean;
   top: number;
 };
 
-const EpochsTable = ({ items, l2MigrationBlock, isLoading, top }: Props) => {
+const EpochsTable = ({ items, isLoading, top }: Props) => {
   return (
-    <TableRoot minW="1050px">
+    <TableRoot minW="1100px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader w="280px">
             Epoch
             <TimeFormatToggle/>
           </TableColumnHeader>
+          <TableColumnHeader w="200px">Status</TableColumnHeader>
           <TableColumnHeader w="25%">Block range</TableColumnHeader>
           <TableColumnHeader w="25%" isNumeric>Community fund { config.chain.currency.symbol }</TableColumnHeader>
           <TableColumnHeader w="25%" isNumeric>Carbon offset fund { config.chain.currency.symbol }</TableColumnHeader>
@@ -36,7 +36,6 @@ const EpochsTable = ({ items, l2MigrationBlock, isLoading, top }: Props) => {
             <EpochsTableItem
               key={ item.number + (isLoading ? String(index) : '') }
               item={ item }
-              l2MigrationBlock={ l2MigrationBlock }
               isLoading={ isLoading }
             />
           );

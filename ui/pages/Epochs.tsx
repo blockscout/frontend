@@ -1,7 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
 import { CELO_EPOCH_ITEM } from 'stubs/epoch';
 import { generateListStub } from 'stubs/utils';
 import EpochsListItem from 'ui/epochs/EpochsListItem';
@@ -24,21 +23,13 @@ const EpochsPageContent = () => {
     },
   });
 
-  const configQuery = useApiQuery('general:config_celo', {
-    queryOptions: {
-      placeholderData: {
-        l2_migration_block: 26384000,
-      },
-    },
-  });
-
   const actionBar = epochsQuery.pagination.isVisible ? (
     <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...epochsQuery.pagination }/>
     </ActionBar>
   ) : null;
 
-  const isLoading = epochsQuery.isPlaceholderData || configQuery.isPlaceholderData;
+  const isLoading = epochsQuery.isPlaceholderData;
 
   const content = (() => {
     if (epochsQuery.isError) {
@@ -50,7 +41,6 @@ const EpochsPageContent = () => {
         <Box hideBelow="lg">
           <EpochsTable
             items={ epochsQuery.data.items }
-            l2MigrationBlock={ configQuery.data?.l2_migration_block }
             top={ epochsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
             isLoading={ isLoading }
           />
@@ -60,7 +50,6 @@ const EpochsPageContent = () => {
             <EpochsListItem
               key={ item.number + (epochsQuery.isPlaceholderData ? String(index) : '') }
               item={ item }
-              l2MigrationBlock={ configQuery.data?.l2_migration_block }
               isLoading={ isLoading }
             />
           )) }

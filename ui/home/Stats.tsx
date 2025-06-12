@@ -203,6 +203,7 @@ const Stats = () => {
         icon: 'hourglass_slim' as const,
         label: 'Current epoch',
         value: `#${ apiData.celo.epoch_number }`,
+        href: { pathname: '/epochs/[number]' as const, query: { number: String(apiData.celo.epoch_number) } },
         isLoading,
       },
     ]
