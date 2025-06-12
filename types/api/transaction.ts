@@ -10,6 +10,7 @@ import type { ScrollL2BlockStatus } from './scrollL2';
 import type { TokenInfo } from './token';
 import type { TokenTransfer } from './tokenTransfer';
 import type { TxAction } from './txAction';
+import type { ViaBatchesItem } from './viaL2';
 import type { ZkSyncBatchesItem } from './zkSyncL2';
 
 export type TransactionRevertReason = {
@@ -90,6 +91,10 @@ export type Transaction = {
   zkevm_sequence_hash?: string;
   // zkSync FIELDS
   zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transactions_count' | 'timestamp'> & {
+    batch_number: number | null;
+  };
+  // via FIELDS
+  via?: Omit<ViaBatchesItem, 'number' | 'transactions_count' | 'timestamp'> & {
     batch_number: number | null;
   };
   // Zilliqa fields
