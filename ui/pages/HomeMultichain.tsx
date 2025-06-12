@@ -19,7 +19,7 @@ const HomeMultichain = () => {
       <HStack mt={ 3 } gap={ 6 }>
         { multichainConfig()?.chains.map(chain => {
           return (
-            <MultichainProvider key={ chain.slug } subchainId={ chain.slug }>
+            <MultichainProvider key={ chain.slug } subchainSlug={ chain.slug }>
               <SocketProvider url={ getSocketUrl(chain.config) }>
                 <HomeSubchainWidget data={ chain }/>
               </SocketProvider>

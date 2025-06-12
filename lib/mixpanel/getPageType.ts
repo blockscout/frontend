@@ -59,10 +59,10 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/pools': 'DEX pools',
   '/pools/[hash]': 'Pool details',
   '/interop-messages': 'Interop messages',
-  '/subchain/[subchain-id]/accounts/label/[slug]': 'Subchain addresses search by label',
-  '/subchain/[subchain-id]/address/[hash]': 'Subchain address details',
-  '/subchain/[subchain-id]/block/[height_or_hash]': 'Subchain block details',
-  '/subchain/[subchain-id]/tx/[hash]': 'Subchain transaction details',
+  '/subchain/[subchain-slug]/accounts/label/[slug]': 'Subchain addresses search by label',
+  '/subchain/[subchain-slug]/address/[hash]': 'Subchain address details',
+  '/subchain/[subchain-slug]/block/[height_or_hash]': 'Subchain block details',
+  '/subchain/[subchain-slug]/tx/[hash]': 'Subchain transaction details',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',

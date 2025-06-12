@@ -26,7 +26,7 @@ const getDisplayedAddress = (address: AddressProp, altHash?: string) => {
 
 const Link = chakra((props: LinkProps) => {
   const defaultHref = props.subchain ?
-    route({ pathname: '/subchain/[subchain-id]/address/[hash]', query: { ...props.query, hash: props.address.hash, 'subchain-id': props.subchain.slug } }) :
+    route({ pathname: '/subchain/[subchain-slug]/address/[hash]', query: { ...props.query, hash: props.address.hash, 'subchain-slug': props.subchain.slug } }) :
     route({ pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } });
 
   return (

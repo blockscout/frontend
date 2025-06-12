@@ -6,9 +6,11 @@ import type { SubchainConfig } from 'types/multichain';
 import multichainConfig from 'configs/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
+// TODO @tom2drum disable if feature flag is disabled
+
 interface MultichainProviderProps {
   children: React.ReactNode;
-  subchainId?: string;
+  subchainSlug?: string;
 }
 
 export interface TMultichainContext {
@@ -17,30 +19,30 @@ export interface TMultichainContext {
 
 export const MultichainContext = React.createContext<TMultichainContext | null>(null);
 
-export function MultichainProvider({ children, subchainId: subchainIdProp }: MultichainProviderProps) {
+export function MultichainProvider({ children, subchainSlug: subchainSlugProp }: MultichainProviderProps) {
   const router = useRouter();
-  const subchainIdQueryParam = router.pathname.includes('subchain-id') ? getQueryParamString(router.query['subchain-id']) : undefined;
+  const subchainSlugQueryParam = router.pathname.includes('subchain-slug') ? getQueryParamString(router.query['subchain-slug']) : undefined;
 
-  const [ subchainId, setSubchainId ] = React.useState<string | undefined>(subchainIdProp ?? subchainIdQueryParam);
+  const [ subchainSlug, setSubchainSlug ] = React.useState<string | undefined>(subchainSlugProp ?? subchainSlugQueryParam);
 
   React.useEffect(() => {
-    if (subchainIdProp) {
-      setSubchainId(subchainIdProp);
+    if (subchainSlugProp) {
+      setSubchainSlug(subchainSlugProp);
     }
-  }, [ subchainIdProp ]);
+  }, [ subchainSlugProp ]);
 
   const subchain = React.useMemo(() => {
     const config = multichainConfig();
     if (!config) {
-      return undefined;
+      return;
     }
 
-    if (!subchainId) {
-      return config.chains[0];
+    if (!subchainSlug) {
+      return;
     }
 
-    return config.chains.find((chain) => chain.slug === subchainId);
-  }, [ subchainId ]);
+    return config.chains.find((chain) => chain.slug === subchainSlug);
+  }, [ subchainSlug ]);
 
   const value = React.useMemo(() => {
     if (!subchain) {

@@ -7,13 +7,13 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import { MultichainProvider } from 'lib/contexts/multichain';
 
-const Block = dynamic(() => import('ui/pages/Block'), { ssr: false });
+const Transaction = dynamic(() => import('ui/pages/Transaction'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/subchain/[subchain-id]/block/[height_or_hash]" query={ props.query }>
+    <PageNextJs pathname="/subchain/[subchain-slug]/tx/[hash]" query={ props.query }>
       <MultichainProvider>
-        <Block/>
+        <Transaction/>
       </MultichainProvider>
     </PageNextJs>
   );

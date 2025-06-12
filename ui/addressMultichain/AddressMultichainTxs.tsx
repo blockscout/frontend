@@ -81,7 +81,7 @@ const AddressMultichainTxs = () => {
       title: 'Local',
       component: (
         <SocketProvider url={ getSocketUrl(subchainData?.config) }>
-          <MultichainProvider subchainId={ txsQueryLocal.query.subchainValue?.[0] }>
+          <MultichainProvider subchainSlug={ txsQueryLocal.query.subchainValue?.[0] }>
             <TxsWithAPISorting
               filter={ txsLocalFilter }
               filterValue={ txsQueryLocal.filterValue }

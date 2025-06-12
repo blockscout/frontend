@@ -29,21 +29,21 @@ const HomeSubchainWidget = ({ data }: Props) => {
   const queryClient = useQueryClient();
 
   const blocksQuery = useApiQuery('general:homepage_blocks', {
-    subchainId: data.slug,
+    subchainSlug: data.slug,
     queryOptions: {
       placeholderData: [ BLOCK ],
     },
   });
 
   const statsQuery = useApiQuery('general:stats', {
-    subchainId: data.slug,
+    subchainSlug: data.slug,
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },
   });
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    const queryKey = getResourceKey('general:homepage_blocks', { subchainId: data.slug });
+    const queryKey = getResourceKey('general:homepage_blocks', { subchainSlug: data.slug });
     queryClient.setQueryData(queryKey, () => {
       return [ payload.block ];
     });
@@ -99,9 +99,9 @@ const HomeSubchainWidget = ({ data }: Props) => {
             <Link
               loading={ blocksQuery.isPlaceholderData }
               href={ route({
-                pathname: '/subchain/[subchain-id]/block/[height_or_hash]',
+                pathname: '/subchain/[subchain-slug]/block/[height_or_hash]',
                 query: {
-                  'subchain-id': data.slug,
+                  'subchain-slug': data.slug,
                   height_or_hash: blocksQuery.data[0].height.toString(),
                 },
               }) }

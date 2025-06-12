@@ -55,7 +55,7 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
     const queryKey = getResourceKey('general:address_txs', {
       pathParams: { hash: currentAddress },
       queryParams: filterValue ? { filter: filterValue } : undefined,
-      subchainId: subchain?.slug,
+      subchainSlug: subchain?.slug,
     });
 
     queryClient.setQueryData(

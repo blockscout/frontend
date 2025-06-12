@@ -88,7 +88,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   });
   const [ hasPages, setHasPages ] = React.useState(page > 1);
   const [ subchainValue, setSubchainValue ] = React.useState<Array<string> | undefined>(
-    getSubchainValue(router.query['subchain-id']),
+    getSubchainValue(router.query['subchain-slug']),
   );
 
   const isMounted = React.useRef(false);
@@ -105,7 +105,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       staleTime: page === 1 ? 0 : Infinity,
       ...options,
     },
-    subchainId: subchainValue?.[0],
+    subchainSlug: subchainValue?.[0],
   });
   const { data } = queryResult;
   const nextPageParams = getNextPageParams(data);
@@ -156,7 +156,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     scrollToTop();
     const nextRouterQuery = omit(router.query, [ 'next_page_params', 'page' ]);
     if (subchainValue) {
-      nextRouterQuery['subchain-id'] = subchainValue[0];
+      nextRouterQuery['subchain-slug'] = subchainValue[0];
     }
     router.push({ pathname: router.pathname, query: nextRouterQuery }, undefined, { shallow: true }).then(() => {
       queryClient.removeQueries({ queryKey: [ resourceName ] });
@@ -230,7 +230,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     } else {
       const nextPageQuery = {
         ...router.query,
-        'subchain-id': value[0],
+        'subchain-slug': value[0],
       };
 
       setSubchainValue(value);

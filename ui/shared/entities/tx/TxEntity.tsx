@@ -12,7 +12,7 @@ type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
 
 const Link = chakra((props: LinkProps) => {
   const defaultHref = props.subchain ?
-    route({ pathname: '/subchain/[subchain-id]/tx/[hash]', query: { hash: props.hash, 'subchain-id': props.subchain.slug } }) :
+    route({ pathname: '/subchain/[subchain-slug]/tx/[hash]', query: { hash: props.hash, 'subchain-slug': props.subchain.slug } }) :
     route({ pathname: '/tx/[hash]', query: { hash: props.hash } });
 
   return (
