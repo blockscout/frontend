@@ -2,12 +2,10 @@ import React from 'react';
 
 import type { AddressEpochRewardsItem } from 'types/api/address';
 
-import { route } from 'nextjs-routes';
-
 import getCurrencyValue from 'lib/getCurrencyValue';
-import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import EpochEntity from 'ui/shared/entities/epoch/EpochEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
@@ -25,12 +23,7 @@ const AddressEpochRewardsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Epoch #</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Link
-          href={ route({ pathname: '/epochs/[number]', query: { number: String(item.epoch_number) } }) }
-          loading={ isLoading }
-        >
-          { item.epoch_number }
-        </Link>
+        <EpochEntity number={ String(item.epoch_number) } noIcon isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>

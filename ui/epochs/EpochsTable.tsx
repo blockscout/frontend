@@ -25,9 +25,9 @@ const EpochsTable = ({ items, isLoading, top }: Props) => {
           </TableColumnHeader>
           <TableColumnHeader w="200px">Status</TableColumnHeader>
           <TableColumnHeader w="25%">Block range</TableColumnHeader>
-          <TableColumnHeader w="25%" isNumeric>Community fund { config.chain.currency.symbol }</TableColumnHeader>
-          <TableColumnHeader w="25%" isNumeric>Carbon offset fund { config.chain.currency.symbol }</TableColumnHeader>
-          <TableColumnHeader w="25%" isNumeric>Total fund { config.chain.currency.symbol }</TableColumnHeader>
+          <TableColumnHeader w="25%" isNumeric>Community { config.chain.currency.symbol }</TableColumnHeader>
+          <TableColumnHeader w="25%" isNumeric>Carbon offset { config.chain.currency.symbol }</TableColumnHeader>
+          <TableColumnHeader w="25%" isNumeric>Total { config.chain.currency.symbol }</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

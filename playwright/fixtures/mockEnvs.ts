@@ -111,6 +111,5 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   celo: [
     [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
-    [ 'NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK', '26369280' ],
   ],
 };

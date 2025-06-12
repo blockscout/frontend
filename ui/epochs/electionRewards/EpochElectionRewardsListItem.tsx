@@ -12,6 +12,7 @@ import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import IconSvg from 'ui/shared/IconSvg';
 
 import EpochElectionRewardDetailsMobile from './EpochElectionRewardDetailsMobile';
+import { getRewardNumText } from './utils';
 
 interface Props {
   data: CeloEpochElectionReward;
@@ -55,7 +56,7 @@ const EpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => {
           </Skeleton>
         ) : <Box boxSize={ 6 }/> }
         <EpochRewardTypeTag type={ type } isLoading={ isLoading }/>
-        <Skeleton loading={ isLoading }>{ data.count }</Skeleton>
+        <Skeleton loading={ isLoading } ml="auto">{ getRewardNumText(type, data.count) }</Skeleton>
         <Flex columnGap={ 2 } alignItems="center" ml={{ base: 9, lg: 'auto' }} w={{ base: '100%', lg: 'fit-content' }} fontWeight={ 500 }>
           <Skeleton loading={ isLoading }>{ valueStr }</Skeleton>
           <TokenEntity

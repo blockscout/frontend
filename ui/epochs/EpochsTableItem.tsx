@@ -3,12 +3,10 @@ import React from 'react';
 
 import type { CeloEpochListItem } from 'types/api/epochs';
 
-import { route } from 'nextjs-routes';
-
 import getCurrencyValue from 'lib/getCurrencyValue';
-import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+import EpochEntity from 'ui/shared/entities/epoch/EpochEntity';
 import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
@@ -39,13 +37,7 @@ const EpochsTableItem = ({ item, isLoading }: Props) => {
     <TableRow>
       <TableCell verticalAlign="middle">
         <HStack gap={ 2 }>
-          <Link
-            href={ route({ pathname: '/epochs/[number]', query: { number: String(item.number) } }) }
-            fontWeight={ 700 }
-            loading={ isLoading }
-          >
-            { item.number }
-          </Link>
+          <EpochEntity number={ String(item.number) } noIcon fontWeight={ 700 } isLoading={ isLoading }/>
           <Skeleton loading={ isLoading } color="text.secondary" fontWeight={ 500 }><span>{ item.type }</span></Skeleton>
           <TimeWithTooltip
             timestamp={ item.timestamp }

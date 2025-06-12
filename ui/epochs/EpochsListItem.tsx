@@ -1,17 +1,15 @@
-import { HStack } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CeloEpochListItem } from 'types/api/epochs';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
+import EpochEntity from 'ui/shared/entities/epoch/EpochEntity';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
   item: CeloEpochListItem;
@@ -36,71 +34,40 @@ const EpochsListItem = ({ item, isLoading }: Props) => {
   });
 
   return (
-    <ListItemMobileGrid.Container>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Epoch</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <HStack gap={ 2 }>
-          <Link
-            href={ route({ pathname: '/epochs/[number]', query: { number: String(item.number) } }) }
-            fontWeight={ 700 }
-            loading={ isLoading }
-          >
-            { item.number }
-          </Link>
-          <Skeleton loading={ isLoading } color="text.secondary" fontWeight={ 500 }><span>{ item.type }</span></Skeleton>
-          <TimeWithTooltip
-            timestamp={ item.timestamp }
-            isLoading={ isLoading }
-            color="text.secondary"
-            display="inline-block"
-            fontWeight={ 400 }
-            timeFormat="relative"
-          />
+    <ListItemMobile rowGap={ 1 } py={ 3 } w="full" textStyle="sm" fontWeight={ 500 } alignItems="stretch">
+      <HStack minH="30px" gap={ 3 }>
+        <EpochEntity number={ String(item.number) }/>
+        <Skeleton loading={ isLoading } color="text.secondary" fontWeight={ 400 } ml="auto"><span>{ item.type }</span></Skeleton>
+        <CeloEpochStatus isFinalized={ item.is_finalized } loading={ isLoading }/>
+      </HStack>
+      { item.timestamp && (
+        <HStack minH="30px" gap={ 0 } color="text.secondary" fontWeight={ 400 }>
+          <DetailedInfoTimestamp timestamp={ item.timestamp } isLoading={ isLoading } noIcon gap={ 1 }/>
         </HStack>
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value py="3px">
-        <CeloEpochStatus
-          isFinalized={ item.is_finalized }
-          loading={ isLoading }
-        />
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Block range</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading }>{ item.start_block_number } - { item.end_block_number || '' }</Skeleton>
-      </ListItemMobileGrid.Value>
-
+      ) }
+      <HStack minH="30px">
+        <Box>Block range</Box>
+        <Skeleton loading={ isLoading } color="text.secondary">{ item.start_block_number } - { item.end_block_number || '' }</Skeleton>
+      </HStack>
       { item.distribution?.community_transfer ? (
-        <>
-          <ListItemMobileGrid.Label isLoading={ isLoading }>Community fund</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value>
-            <Skeleton loading={ isLoading }>{ communityReward.valueStr } { config.chain.currency.symbol }</Skeleton>
-          </ListItemMobileGrid.Value>
-        </>
+        <HStack minH="30px">
+          <Box>Community fund</Box>
+          <Skeleton loading={ isLoading } color="text.secondary">{ communityReward.valueStr } { config.chain.currency.symbol }</Skeleton>
+        </HStack>
       ) : null }
-
       { item.distribution?.carbon_offsetting_transfer ? (
-        <>
-          <ListItemMobileGrid.Label isLoading={ isLoading }>Carbon offset fund</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value>
-            <Skeleton loading={ isLoading }>{ carbonOffsettingReward.valueStr } { config.chain.currency.symbol }</Skeleton>
-          </ListItemMobileGrid.Value>
-        </>
+        <HStack minH="30px">
+          <Box>Carbon offset fund</Box>
+          <Skeleton loading={ isLoading } color="text.secondary">{ carbonOffsettingReward.valueStr } { config.chain.currency.symbol }</Skeleton>
+        </HStack>
       ) : null }
-
       { item.distribution?.transfers_total ? (
-        <>
-          <ListItemMobileGrid.Label isLoading={ isLoading }>Total fund</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value>
-            <Skeleton loading={ isLoading }>{ totalReward.valueStr } { config.chain.currency.symbol }</Skeleton>
-          </ListItemMobileGrid.Value>
-        </>
+        <HStack minH="30px">
+          <Box>Total fund</Box>
+          <Skeleton loading={ isLoading } color="text.secondary">{ totalReward.valueStr } { config.chain.currency.symbol }</Skeleton>
+        </HStack>
       ) : null }
-
-    </ListItemMobileGrid.Container>
+    </ListItemMobile>
   );
 };
 
