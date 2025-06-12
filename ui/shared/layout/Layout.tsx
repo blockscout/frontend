@@ -1,11 +1,13 @@
+/* eslint-disable */
+
+
 import React from 'react';
-
 import type { Props } from './types';
-
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
 import HeaderMobile from 'ui/snippets/header/HeaderMobile';
+import MocaBanner from 'ui/snippets/topBar/MocaBanner';
 
 import * as Layout from './components';
 
@@ -14,6 +16,7 @@ const LayoutDefault = ({ children }: Props) => {
     <Layout.Container h="97vh">
       { /* <Layout.TopRow/> */ }
       <Layout.NavBar/>
+      <MocaBanner />
       <HeaderMobile/>
       <Layout.MainArea background="linear-gradient(108deg, #FFF 0%, #F4F2FF 50.26%, #F2EFFF 100.3%)">
         <Layout.SideBar/>

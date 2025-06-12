@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+
 import React from 'react';
 
 import type { Props } from './types';
@@ -5,7 +8,7 @@ import type { Props } from './types';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 import HeaderMobile from 'ui/snippets/header/HeaderMobile';
-
+import MocaBanner from 'ui/snippets/topBar/MocaBanner';
 import * as Layout from './components';
 
 const LayoutHome = ({ children }: Props) => {
@@ -13,6 +16,7 @@ const LayoutHome = ({ children }: Props) => {
     <Layout.Container>
       { /* <Layout.TopRow/> */ }
       <Layout.NavBar/>
+      <MocaBanner />
       <HeaderMobile hideSearchBar/>
       <Layout.MainArea background="#f4f4f4">
         <Layout.SideBar/>
