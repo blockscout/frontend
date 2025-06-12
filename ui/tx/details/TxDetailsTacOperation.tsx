@@ -3,10 +3,11 @@ import React from 'react';
 
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
-import { getTacOperationStatus, getTacOperationStage } from 'lib/operations/tac';
+import { getTacOperationStage } from 'lib/operations/tac';
 import { Tag } from 'toolkit/chakra/tag';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
+import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 
 interface Props {
   tacOperations: Array<tac.OperationDetails>;
@@ -36,7 +37,6 @@ const TxDetailsTacOperation = ({ tacOperations, isLoading, txHash }: Props) => {
         { tacOperations.map((tacOperation) => {
           const tags = [
             ...(getTacOperationStage(tacOperation, txHash) || []),
-            getTacOperationStatus(tacOperation.type),
           ];
 
           return (
@@ -48,6 +48,7 @@ const TxDetailsTacOperation = ({ tacOperations, isLoading, txHash }: Props) => {
               />
               { tags.length > 0 && (
                 <HStack flexShrink={ 0 } flexWrap="wrap">
+                  <TacOperationStatus status={ tacOperation.type } isLoading={ isLoading }/>
                   { tags.map((tag) => <Tag key={ tag } loading={ isLoading } flexShrink={ 0 }>{ tag }</Tag>) }
                 </HStack>
               ) }
