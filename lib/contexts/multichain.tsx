@@ -6,8 +6,6 @@ import type { SubchainConfig } from 'types/multichain';
 import multichainConfig from 'configs/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
-// TODO @tom2drum disable if feature flag is disabled
-
 interface MultichainProviderProps {
   children: React.ReactNode;
   subchainSlug?: string;

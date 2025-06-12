@@ -14,6 +14,11 @@ if [ ! -f "$config_file" ]; then
     exit 1
 fi
 
+# remove previous assets
+rm -rf ./public/assets/configs
+rm -rf ./public/assets/multichain
+rm -rf ./public/assets/envs.js
+
 # download assets for the running instance
 dotenv \
   -e $config_file \

@@ -1,16 +1,9 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
 import type { SubchainConfig } from 'types/multichain';
 
-import { route } from 'nextjs-routes';
-
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
-import { BLOCK } from 'stubs/block';
+import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Heading } from 'toolkit/chakra/heading';
 import { Image } from 'toolkit/chakra/image';
@@ -19,44 +12,19 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import IconSvg from 'ui/shared/IconSvg';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+
+import HomeSubchainLatestBlock from './HomeSubchainLatestBlock';
 
 interface Props {
   data: SubchainConfig;
 }
 
 const HomeSubchainWidget = ({ data }: Props) => {
-  const queryClient = useQueryClient();
-
-  const blocksQuery = useApiQuery('general:homepage_blocks', {
-    subchainSlug: data.slug,
-    queryOptions: {
-      placeholderData: [ BLOCK ],
-    },
-  });
-
   const statsQuery = useApiQuery('general:stats', {
     subchainSlug: data.slug,
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },
-  });
-
-  const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    const queryKey = getResourceKey('general:homepage_blocks', { subchainSlug: data.slug });
-    queryClient.setQueryData(queryKey, () => {
-      return [ payload.block ];
-    });
-  }, [ queryClient, data.slug ]);
-
-  const channel = useSocketChannel({
-    topic: 'blocks:new_block',
-    isDisabled: blocksQuery.isPlaceholderData || blocksQuery.isError,
-  });
-  useSocketMessage({
-    channel,
-    event: 'new_block',
-    handler: handleNewBlockMessage,
   });
 
   return (
@@ -92,32 +60,7 @@ const HomeSubchainWidget = ({ data }: Props) => {
           <Box>{ data.config.chain.id }</Box>
           <CopyToClipboard text={ String(data.config.chain.id) } ml={ 0 }/>
         </HStack>
-        { /* TODO @tom2drum move to a separate component as it re-renders too often */ }
-        { blocksQuery.data?.[0] && (
-          <HStack gap={ 2 }>
-            <Box color="text.secondary">Latest block</Box>
-            <Link
-              loading={ blocksQuery.isPlaceholderData }
-              href={ route({
-                pathname: '/subchain/[subchain-slug]/block/[height_or_hash]',
-                query: {
-                  'subchain-slug': data.slug,
-                  height_or_hash: blocksQuery.data[0].height.toString(),
-                },
-              }) }
-            >
-              { blocksQuery.data[0].height }
-            </Link>
-            <TimeWithTooltip
-              timestamp={ blocksQuery.data[0].timestamp }
-              enableIncrement={ !blocksQuery.isPlaceholderData }
-              isLoading={ blocksQuery.isPlaceholderData }
-              color="text.secondary"
-              flexShrink={ 0 }
-              timeFormat="relative"
-            />
-          </HStack>
-        ) }
+        <HomeSubchainLatestBlock slug={ data.slug }/>
         { statsQuery.data && statsQuery.data.gas_prices && data.config.features.gasTracker.isEnabled && (
           <HStack gap={ 2 }>
             <Box color="text.secondary">Gas price</Box>

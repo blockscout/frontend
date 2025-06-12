@@ -6,7 +6,7 @@ import React from 'react';
 
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
-import { route } from 'nextjs/routes';
+import { route, routeParams } from 'nextjs/routes';
 
 import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
@@ -66,8 +66,8 @@ const BlockDetails = ({ query }: Props) => {
     const increment = direction === 'next' ? +1 : -1;
     const nextId = String(data.height + increment);
 
-    router.push({ pathname: '/block/[height_or_hash]', query: { height_or_hash: nextId } }, undefined);
-  }, [ data, router ]);
+    router.push(routeParams({ pathname: '/block/[height_or_hash]', query: { height_or_hash: nextId } }, multichainContext), undefined);
+  }, [ data, multichainContext, router ]);
 
   if (!data) {
     return null;
