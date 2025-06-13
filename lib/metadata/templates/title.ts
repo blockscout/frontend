@@ -1,9 +1,11 @@
+/* eslint-disable */
+
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
-  '/': '%network_name% blockchain explorer - View %network_name% stats',
+  '/': '%network_name% blockchain explorer',
   '/txs': '%network_name% transactions - %network_name% explorer',
   '/txs/kettle/[hash]': '%network_name% kettle %hash% transactions',
   '/tx/[hash]': '%network_name% transaction %hash%',
@@ -99,8 +101,10 @@ const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
 };
 
 export function make(pathname: Route['pathname'], isEnriched = false) {
-  const template = (isEnriched ? TEMPLATE_MAP_ENHANCED[pathname] : undefined) ?? TEMPLATE_MAP[pathname];
-  const postfix = config.meta.promoteBlockscoutInTitle;
+  // const template = (isEnriched ? TEMPLATE_MAP_ENHANCED[pathname] : undefined) ?? TEMPLATE_MAP[pathname];
+  const template = (isEnriched ? TEMPLATE_MAP_ENHANCED[pathname] : undefined) ||  TEMPLATE_MAP[pathname]
+  // const postfix = config.meta.promoteBlockscoutInTitle;
+  const postfix = '';
 
   return (template + postfix).trim();
 }
