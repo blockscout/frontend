@@ -33,9 +33,9 @@ const UserWalletButton = ({ size, variant, onClick, isPending, isAutoConnectDisa
   const content = (() => {
     if (!address) {
       return <span className="user-connect-wallet-button-desktop-content">
-        <span> { iconWallet } </span>
-        <span>Connect</span>
-      </span>
+                <span> { iconWallet } </span>
+                <span>Connect</span>
+              </span>
     }
 
     const text = domain || shortenString(address);
@@ -64,6 +64,14 @@ const UserWalletButton = ({ size, variant, onClick, isPending, isAutoConnectDisa
         data-selected={ Boolean(address) }
         data-warning={ isAutoConnectDisabled }
         className="user-connect-wallet-button-desktop"
+        bg ={'#EF6ABA'}
+        sx={{
+          '&[data-selected="true"]': {
+            backgroundColor: '#EF6ABA',
+            color: 'white',
+          }}
+        }
+        _hover={{ backgroundColor: '#FFA1D9', color: 'white' }}
         isLoading={ isPending }
         loadingText={ isMobile ? undefined : 'Connecting' }
       >

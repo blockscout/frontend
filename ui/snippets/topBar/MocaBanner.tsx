@@ -25,8 +25,9 @@ const btnStyle = {
     borderRadius: '9999px',
     lineHeight: 'normal',
     backgroundColor: '#000',
-    width: '4.562rem',
+    minWidth: '4.562rem',
     height: '1.625rem',
+    padding: '0  0.75rem',
 }
     
 
@@ -77,7 +78,7 @@ const MocaBanner: React.FC<BannerProps> = ({ storageKey = 'bannerDismissed' }) =
             height="40px"
             width="100%"
             style={boxStyle}
-            paddingX={'2rem'}
+            paddingX={{ base: '0.5rem', md: '2rem' }}
         >
             <Flex 
                 width="100%"

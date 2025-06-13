@@ -41,7 +41,7 @@ const numberTypeFields = [
 const  ValidatorInfoBox = ({ record } : { record: any }) => {
     return (
         <Flex flexDirection="row" alignItems="center" gap="8px" width="100%">
-            <Box>
+            <Box width="20px" flexShrink={0} height="20px" display="flex" justifyContent="center" alignItems="center">
                 <img
                     src="/static/moca-brand.svg"
                     width="20px"

@@ -4,6 +4,7 @@ import ValidatorInfoBox from 'ui/validators/ValidatorInfoBox';
 import ValidatorBox from 'ui/validators/ValidatorBox';
 import { useRouter } from 'next/router';
 import { Text } from '@chakra-ui/react';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
 import { Avatar } from '@chakra-ui/react';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -13,6 +14,14 @@ import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import { Flex, Box, Tooltip } from '@chakra-ui/react';
 import { IconButton, useClipboard,} from '@chakra-ui/react';
 
+const getShortAddress = (address: string) => {
+    if (!address) return '';
+    const maxLength = 8; // 设置最大长度
+    if (address.length <= maxLength) {
+        return address;
+    }
+    return address.slice(0, maxLength) + '...' + address.slice(-4);
+}
 
 const getShortValidatorName = (name: string) => {
     if (!name) return '';
@@ -79,6 +88,8 @@ const ValidatorDetails = () => {
     const router = useRouter();
     const addr = getQueryParamString(router.query.addr);
     const { serverUrl : url } = useStakeLoginContextValue();
+
+    const isMobile = useIsMobile();
 
     const [ validatorName , setValidatorName ] = React.useState('');
 
@@ -189,8 +200,10 @@ const ValidatorDetails = () => {
                 padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                     <Flex 
                         alignItems="center"
-                        justifyContent={{ base: 'flex-start', md: 'space-between' }}
-                        direction={{ base: 'column', md: 'row' }}
+                        justifyContent={'space-between'}
+                        direction="row"
+                        flexWrap="nowrap"
+                        width="100%"
                         marginBottom="20px"
                         marginTop="24px"
                     >
@@ -198,16 +211,18 @@ const ValidatorDetails = () => {
                             as="span"
                             alignItems="center"
                             justifyContent={{ base: 'flex-start', md: 'center' } }
-                            width={{ base: '100%', md: 'auto' }}
+                            width= "auto"
                             height="auto"
                         >
                             <Flex
                                 flexDirection="row"
-                                justifyContent= {{ base: 'flex-start', md: 'center' } }
+                                justifyContent= {'center' }
                                 alignItems="center"
-                                width= {{ base: '100%', md: 'auto' }}
+                                width= {'auto' }
                                 height="auto"
                                 gap="8px"
+                                as ="span"
+                                _hover={{ cursor: 'pointer' } }
                             >
                                 <img
                                     src="/static/moca-brand.svg"
@@ -239,7 +254,7 @@ const ValidatorDetails = () => {
                             as={'span'}
                             textTransform="capitalize"
                         >
-                            { addr}
+                            { isMobile ? getShortAddress(addr) : addr }
                             <Tooltip label= { copied ? 'Copied' : 'Copy' } placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                                 <IconButton
                                     aria-label="copy"

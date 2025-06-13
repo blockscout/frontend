@@ -179,7 +179,7 @@ body , * {
   font-weight: 600;
   line-height: normal;
   border-radius: 8px;
-  background: var(--button-primary, #EF6ABA) !important;
+  background: var(--button-primary, #EF6ABA);
 }
 
 .user-connect-wallet-button-desktop:hover {
