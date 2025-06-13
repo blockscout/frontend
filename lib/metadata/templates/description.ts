@@ -2,7 +2,7 @@
 import type { Route } from 'nextjs-routes';
 
 // equal og:description
-const DEFAULT_TEMPLATE = 'Open-source block explorer by Blockscout. Search transactions, verify smart contracts, analyze addresses, and track network activity. Complete blockchain data and APIs for the %network_title% network.';
+const DEFAULT_TEMPLATE = 'Moca Chain Explorer allows you to explore and search the Moca Chain for transactions, verifiable credentials, addresses, tokens, prices and other activities taking place on Moca Chain and its dStorage.';
 
 // FIXME all page descriptions will be updated later
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
