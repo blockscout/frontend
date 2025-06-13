@@ -6,6 +6,7 @@ import type { RollupType } from 'types/client/rollup';
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import multichainConfig from 'configs/multichain';
 import isNeedProxy from 'lib/api/isNeedProxy';
 import * as cookies from 'lib/cookies';
 import type * as metadata from 'lib/metadata';
@@ -258,7 +259,6 @@ export const accounts: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-// TODO @tom2drum construct multichain version of this
 export const accountsLabelSearch: GetServerSideProps<Props> = async(context) => {
   if (!config.features.addressMetadata.isEnabled || !context.query.tagType) {
     return {
@@ -411,6 +411,19 @@ export const multichain: GetServerSideProps<Props> = async(context) => {
   }
 
   return base(context);
+};
+
+export const multichainAccountsLabelSearch: GetServerSideProps<Props> = async(context) => {
+  const subchainSlug = context.params?.['subchain-slug'];
+  const subchain = multichainConfig()?.chains.find((chain) => chain.slug === subchainSlug);
+
+  if (!subchain?.config.features.addressMetadata.isEnabled || !context.query.tagType) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return multichain(context);
 };
 
 export const pools: GetServerSideProps<Props> = async(context) => {

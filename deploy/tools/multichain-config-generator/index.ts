@@ -43,6 +43,11 @@ async function computeChainConfig(url: string): Promise<unknown> {
 
 async function run() {
   try {
+    if (!process.env.NEXT_PUBLIC_INTEROP_MULTICHAIN_API_HOST) {
+      console.log('ℹ️  NEXT_PUBLIC_INTEROP_MULTICHAIN_API_HOST is not set, skipping multichain config generation\n');
+      return;
+    }
+
     console.log('🌀 Generating multichain config...');
     const configs = await Promise.all(EXPLORER_URLS.map(computeChainConfig));
 
@@ -64,9 +69,10 @@ async function run() {
     const outputPathJs = resolvePath(outputDir, 'config.js');
     writeFileSync(outputPathJs, `window.__multichainConfig = ${ JSON.stringify(config) };`);
 
-    console.log('👍 Done!');
+    console.log('👍 Done!\n');
   } catch (error) {
     console.error('🚨 Error generating multichain config:', error);
+    console.log('\n');
     process.exit(1);
   }
 }

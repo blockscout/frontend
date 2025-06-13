@@ -24,11 +24,12 @@ dotenv \
   -e $config_file \
   -- bash -c './deploy/scripts/download_assets.sh ./public/assets/configs'
 
-# generate multichain config
-# TODO @tom2drum run only for multichain
-dotenv \
-  -e $config_file \
-  -- bash -c 'cd deploy/tools/multichain-config-generator && yarn && yarn build && yarn generate'
+# generate multichain config (adjust condition accordingly)
+if [[ "$preset_name" == *"multichain"* ]]; then
+  dotenv \
+    -e $config_file \
+    -- bash -c 'cd deploy/tools/multichain-config-generator && yarn install --silent && yarn build && yarn generate'
+fi
 
 source ./deploy/scripts/build_sprite.sh
 echo ""
