@@ -19,12 +19,12 @@ const TacOperationsTable = ({ items, isLoading }: Props) => {
       <TableRoot minW="950px">
         <TableHeaderSticky top={ 68 }>
           <TableRow>
+            <TableColumnHeader w="200px">Status</TableColumnHeader>
             <TableColumnHeader w="100%">Operation</TableColumnHeader>
             <TableColumnHeader w="200px">
               Timestamp
               <TimeFormatToggle/>
             </TableColumnHeader>
-            <TableColumnHeader w="200px">Status</TableColumnHeader>
             <TableColumnHeader w="250px">Sender</TableColumnHeader>
           </TableRow>
         </TableHeaderSticky>

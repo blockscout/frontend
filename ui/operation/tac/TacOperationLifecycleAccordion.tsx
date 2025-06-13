@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type * as tac from '@blockscout/tac-operation-lifecycle-types';
+import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import { AccordionItem, AccordionRoot } from 'toolkit/chakra/accordion';
 
@@ -10,13 +10,16 @@ import TacOperationLifecycleAccordionItemTrigger from './TacOperationLifecycleAc
 interface Props {
   data: tac.OperationDetails['status_history'];
   isLoading?: boolean;
+  type: tac.OperationType;
 }
 
-const TacOperationLifecycleAccordion = ({ data, isLoading }: Props) => {
+const TacOperationLifecycleAccordion = ({ data, isLoading, type }: Props) => {
+  const isPending = type === tac.OperationType.PENDING && !isLoading;
+
   return (
     <AccordionRoot maxW="800px" display="flex" flexDirection="column" rowGap={ 6 } lazyMount>
       { data.map((item, index) => {
-        const isLast = index === data.length - 1;
+        const isLast = index === data.length - 1 && !isPending;
         return (
           <AccordionItem key={ index } value={ item.type } borderBottomWidth="0px">
             <TacOperationLifecycleAccordionItemTrigger
@@ -33,6 +36,17 @@ const TacOperationLifecycleAccordion = ({ data, isLoading }: Props) => {
           </AccordionItem>
         );
       }) }
+      { isPending && (
+        <AccordionItem value="pending" borderBottomWidth="0px">
+          <TacOperationLifecycleAccordionItemTrigger
+            status="pending"
+            isFirst={ false }
+            isLast={ true }
+            isLoading={ isLoading }
+            isSuccess={ false }
+          />
+        </AccordionItem>
+      ) }
     </AccordionRoot>
   );
 };

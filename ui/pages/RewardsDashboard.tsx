@@ -47,7 +47,7 @@ const RewardsDashboard = () => {
 
   return (
     <>
-      <Flex gap={ 3 } justifyContent="space-between">
+      <Flex gap={ 3 } justifyContent="space-between" mb={ 6 }>
         <PageTitle
           title="Dashboard"
           secondRow={ (
@@ -58,6 +58,7 @@ const RewardsDashboard = () => {
               to earn, spend, and learn more about the program.
             </span>
           ) }
+          mb={ 0 }
         />
         <AdBanner platform="mobile" w="fit-content" flexShrink={ 0 } borderRadius="md" overflow="hidden" display={{ base: 'none', lg: 'block ' }}/>
       </Flex>
