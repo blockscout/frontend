@@ -65,6 +65,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/subchain/[subchain-slug]/address/[hash]': '%network_name% address details for %hash%',
   '/subchain/[subchain-slug]/block/[height_or_hash]': '%network_name% block %height_or_hash% details',
   '/subchain/[subchain-slug]/tx/[hash]': '%network_name% transaction %hash% details',
+  '/operations': '%network_name% operations',
+  '/operation/[id]': '%network_name% operation %id%',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',

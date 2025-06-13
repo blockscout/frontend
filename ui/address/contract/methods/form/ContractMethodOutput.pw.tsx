@@ -3,8 +3,7 @@ import type { AbiFunction } from 'viem';
 
 import { test, expect } from 'playwright/lib';
 
-import ContractMethodResultPublicClient from './ContractMethodResultPublicClient';
-import { ErrorStory } from './ContractMethodResultPublicClient.pwstory';
+import ContractMethodOutput from './ContractMethodOutput';
 
 const abiItem: AbiFunction = {
   inputs: [],
@@ -136,7 +135,7 @@ const onSettle = () => {};
 
 test('preview mode', async({ render }) => {
   const component = await render(
-    <ContractMethodResultPublicClient
+    <ContractMethodOutput
       abiItem={ abiItem }
       data={ undefined }
       mode="preview"
@@ -148,7 +147,7 @@ test('preview mode', async({ render }) => {
 
 test('result mode', async({ render }) => {
   const component = await render(
-    <ContractMethodResultPublicClient
+    <ContractMethodOutput
       abiItem={ abiItem }
       data={ result }
       mode="result"
@@ -158,20 +157,9 @@ test('result mode', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('error', async({ render }) => {
-  const component = await render(
-    <ErrorStory
-      abiItem={ abiItem }
-      mode="result"
-      onSettle={ onSettle }
-    />,
-  );
-  await expect(component).toHaveScreenshot();
-});
-
 test('single output', async({ render }) => {
   const component = await render(
-    <ContractMethodResultPublicClient
+    <ContractMethodOutput
       abiItem={{ ...abiItem, outputs: abiItem.outputs.slice(3, 4) }}
       data={ result[3] }
       mode="result"

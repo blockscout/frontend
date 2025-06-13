@@ -63,6 +63,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/subchain/[subchain-slug]/address/[hash]': 'Subchain address details',
   '/subchain/[subchain-slug]/block/[height_or_hash]': 'Subchain block details',
   '/subchain/[subchain-slug]/tx/[hash]': 'Subchain transaction details',
+  '/operations': 'Operations',
+  '/operation/[id]': 'Operation details',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',

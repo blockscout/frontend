@@ -23,7 +23,7 @@ export interface Params<Resource extends PaginatedResourceName> {
   pathParams?: UseApiQueryParams<Resource>['pathParams'];
   filters?: PaginationFilters<Resource>;
   sorting?: PaginationSorting<Resource>;
-  scrollRef?: React.RefObject<HTMLDivElement>;
+  scrollRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 type NextPageParams = Record<string, unknown>;

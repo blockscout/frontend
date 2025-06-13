@@ -44,6 +44,12 @@ export default function useNavItems(): ReturnType {
       icon: 'transactions',
       isActive: pathname === '/txs' || pathname === '/tx/[hash]',
     };
+    const operations: NavItem | null = config.features.tac.isEnabled ? {
+      text: 'Operations',
+      nextRoute: { pathname: '/operations' as const },
+      icon: 'operation',
+      isActive: pathname === '/operations' || pathname === '/operation/[id]',
+    } : null;
     const internalTxs: NavItem | null = {
       text: 'Internal transactions',
       nextRoute: { pathname: '/internal-txs' as const },
@@ -186,6 +192,7 @@ export default function useNavItems(): ReturnType {
     } else {
       blockchainNavItems = [
         txs,
+        operations,
         internalTxs,
         userOps,
         blocks,

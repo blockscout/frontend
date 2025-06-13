@@ -39,18 +39,17 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Pick<EntityProps, 'address' | 'isSafeAddress'> & EntityBase.IconBaseProps & {
-  tooltipInteractive?: boolean;
-};
+type IconProps = Pick<EntityProps, 'address' | 'isSafeAddress'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
   if (props.noIcon) {
     return null;
   }
 
+  const marginRight = props.marginRight ?? (props.shield ? '18px' : '8px');
   const styles = {
     ...getIconProps(props.variant),
-    marginRight: props.marginRight ?? 2,
+    marginRight,
   };
 
   if (props.isLoading) {
@@ -72,36 +71,40 @@ const Icon = (props: IconProps) => {
     const isProxy = Boolean(props.address.implementations?.length);
     const isVerified = isProxy ? props.address.is_verified && props.address.implementations?.every(({ name }) => Boolean(name)) : props.address.is_verified;
     const contractIconName: EntityBase.IconBaseProps['name'] = props.address.is_verified ? 'contracts/verified' : 'contracts/regular';
-    const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract');
+    const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract') + props.hintPostfix;
 
     return (
-      <Tooltip content={ label.slice(0, 1).toUpperCase() + label.slice(1) } interactive={ props.tooltipInteractive }>
-        <Box position="relative">
-          <EntityBase.Icon
-            { ...props }
-            name={ isProxy ? 'contracts/proxy' : contractIconName }
-            color={ isVerified ? 'green.500' : undefined }
-            borderRadius={ 0 }
-          />
-          { props.subchain && <EntityBase.IconShield src={ props.subchain.config.UI.navigation.icon.default } right="-1px"/> }
-        </Box>
-      </Tooltip>
+      <EntityBase.Icon
+        { ...props }
+        name={ isProxy ? 'contracts/proxy' : contractIconName }
+        color={ isVerified ? 'green.500' : undefined }
+        borderRadius={ 0 }
+        hint={ label.slice(0, 1).toUpperCase() + label.slice(1) }
+      />
     );
   }
 
   const label = (() => {
     if (isDelegatedAddress) {
-      return props.address.is_verified ? 'EOA + verified code' : 'EOA + code';
+      return (props.address.is_verified ? 'EOA + verified code' : 'EOA + code') + props.hintPostfix;
     }
+
+    return props.hint;
   })();
 
   return (
-    <Tooltip content={ label } disabled={ !label } interactive={ props.tooltipInteractive }>
+    <Tooltip
+      content={ label }
+      disabled={ !label }
+      interactive={ props.tooltipInteractive }
+      positioning={ props.shield ? { offset: { mainAxis: 8 } } : undefined }
+    >
       <Flex marginRight={ styles.marginRight } position="relative">
         <AddressIdenticon
           size={ props.variant === 'heading' ? 30 : 20 }
           hash={ getDisplayedAddress(props.address) }
         />
+        { props.shield && <EntityBase.IconShield { ...props.shield }/> }
         { isDelegatedAddress && <AddressIconDelegated isVerified={ Boolean(props.address.is_verified) }/> }
         { props.subchain && <EntityBase.IconShield src={ props.subchain.config.UI.navigation.icon.default }/> }
       </Flex>

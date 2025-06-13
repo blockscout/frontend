@@ -63,6 +63,8 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Address profile API](ENVS.md#address-profile-api)
   - [Address XStar XHS score](ENVS.md#address-xstar-xhs-score)
   - [SUAVE chain](ENVS.md#suave-chain)
+  - [Celo chain](ENVS.md#celo-chain)
+  - [Ton Application Chain (TAC)](ENVS.md#ton-application-chain-tac)
   - [MetaSuites extension](ENVS.md#metasuites-extension)
   - [Validators list](ENVS.md#validators-list)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
@@ -770,6 +772,17 @@ For blockchains that use the Celo platform. _Note_, that once the Celo mainnet b
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CELO_ENABLED | `boolean` | Indicates that it is a Celo-based chain. | - | - | `true` | v1.37.0+ |
 | NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK | `number` | Indicates the block number when the Celo-type chain transitioned to L2. This is used to display links to the Epoch block page from a regular block page. | - | - | `26369280` | v1.37.0+ |
+
+&nbsp;
+
+### Ton Application Chain (TAC)
+
+For Ton Application Chains, this feature enables additional views, such as a list of cross-chain operations and a detailed page for a specific cross-chain operation, as well as extra fields on the transaction page.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST | `string` | URL for the TAC Operation Lifecycle service. | Required | - | `https://tac-operation-lifecycle.blockscout.com` | v2.1.0+ |
+| NEXT_PUBLIC_TAC_TON_EXPLORER_URL | `string` | URL of the Ton chain explorer. This is used to build links to transactions and addresses on the Ton chain. | Required | - | `https://tonscan.org` | v2.1.0+ |
 
 &nbsp;
 

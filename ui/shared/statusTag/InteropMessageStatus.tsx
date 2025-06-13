@@ -31,7 +31,7 @@ const InteropMessageStatus = ({ status, isLoading }: Props) => {
       break;
   }
 
-  return <StatusTag type={ type } text={ status } isLoading={ isLoading }/>;
+  return <StatusTag type={ type } text={ status } loading={ isLoading }/>;
 };
 
 export default InteropMessageStatus;

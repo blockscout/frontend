@@ -19,6 +19,7 @@ import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
+import ContractMethodOutput from './ContractMethodOutput';
 import ContractMethodResultPublicClient from './ContractMethodResultPublicClient';
 import ContractMethodResultWalletClient from './ContractMethodResultWalletClient';
 import { getFieldLabel, matchArray, transformFormDataToMethodArgs } from './utils';
@@ -236,6 +237,8 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     );
   })();
 
+  const showOutputResult = result && result.source === 'public_client' && !(result.data instanceof Error);
+
   return (
     <Box>
       <FormProvider { ...formApi }>
@@ -306,12 +309,17 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
           onSettle={ handleResultSettle }
         />
       ) }
-      { 'outputs' in data && data.outputs.length > 0 && (
+      { result && result.source === 'public_client' && result.data instanceof Error && (
         <ContractMethodResultPublicClient
-          data={ result && result.source === 'public_client' ? result.data : undefined }
+          data={ result.data }
+        />
+      ) }
+      { 'outputs' in data && data.outputs.length > 0 && (
+        <ContractMethodOutput
+          data={ showOutputResult ? result.data : undefined }
           onSettle={ handleResultSettle }
           abiItem={ data }
-          mode={ result && result.source === 'public_client' ? 'result' : 'preview' }
+          mode={ showOutputResult ? 'result' : 'preview' }
         />
       ) }
     </Box>

@@ -16,6 +16,12 @@ import type { RewardsApiResourceName, RewardsApiResourcePayload } from './servic
 import { REWARDS_API_RESOURCES } from './services/rewards';
 import type { StatsApiResourceName, StatsApiResourcePayload } from './services/stats';
 import { STATS_API_RESOURCES } from './services/stats';
+import { TAC_OPERATION_LIFECYCLE_API_RESOURCES } from './services/tac-operation-lifecycle';
+import type {
+  TacOperationLifecycleApiPaginationFilters,
+  TacOperationLifecycleApiResourceName,
+  TacOperationLifecycleApiResourcePayload,
+} from './services/tac-operation-lifecycle';
 import type { IsPaginated } from './services/utils';
 import { VISUALIZE_API_RESOURCES } from './services/visualize';
 import type { VisualizeApiResourceName, VisualizeApiResourcePayload } from './services/visualize';
@@ -29,6 +35,7 @@ export const RESOURCES = {
   multichain: MULTICHAIN_API_RESOURCES,
   rewards: REWARDS_API_RESOURCES,
   stats: STATS_API_RESOURCES,
+  tac: TAC_OPERATION_LIFECYCLE_API_RESOURCES,
   visualize: VISUALIZE_API_RESOURCES,
 } satisfies Record<ApiName, Record<string, ApiResource>>;
 
@@ -50,6 +57,7 @@ R extends MetadataApiResourceName ? MetadataApiResourcePayload<R> :
 R extends MultichainApiResourceName ? MultichainApiResourcePayload<R> :
 R extends RewardsApiResourceName ? RewardsApiResourcePayload<R> :
 R extends StatsApiResourceName ? StatsApiResourcePayload<R> :
+R extends TacOperationLifecycleApiResourceName ? TacOperationLifecycleApiResourcePayload<R> :
 R extends VisualizeApiResourceName ? VisualizeApiResourcePayload<R> :
 never;
 /* eslint-enable @stylistic/indent */
@@ -81,6 +89,7 @@ export type PaginationFilters<R extends ResourceName> =
 R extends BensApiResourceName ? BensApiPaginationFilters<R> :
 R extends GeneralApiResourceName ? GeneralApiPaginationFilters<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiPaginationFilters<R> :
+R extends TacOperationLifecycleApiResourceName ? TacOperationLifecycleApiPaginationFilters<R> :
 never;
 /* eslint-enable @stylistic/indent */
 

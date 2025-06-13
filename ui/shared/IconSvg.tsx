@@ -10,7 +10,7 @@ export const href = config.app.spriteHash ? `/icons/sprite.${ config.app.spriteH
 
 export { IconName };
 
-interface Props extends HTMLChakraProps<'div'> {
+export interface Props extends HTMLChakraProps<'div'> {
   name: IconName;
   isLoading?: boolean;
 }

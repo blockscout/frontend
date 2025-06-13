@@ -34,7 +34,7 @@ const TxStatus = ({ status, errorText, isLoading }: Props) => {
       break;
   }
 
-  return <StatusTag type={ type } text={ text } errorText={ errorText } isLoading={ isLoading }/>;
+  return <StatusTag type={ type } text={ text } errorText={ errorText } loading={ isLoading }/>;
 };
 
 export default TxStatus;
