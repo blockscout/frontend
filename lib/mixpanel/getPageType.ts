@@ -52,6 +52,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/name-domains/[name]': 'Domain details',
   '/validators': 'Validators list',
   '/validators/[id]': 'Validator details',
+  '/epochs': 'Epochs',
+  '/epochs/[number]': 'Epoch details',
   '/gas-tracker': 'Gas tracker',
   '/mud-worlds': 'MUD worlds',
   '/token-transfers': 'Token transfers',
