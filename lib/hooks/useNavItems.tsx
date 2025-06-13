@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -343,12 +345,13 @@ export default function useNavItems(): ReturnType {
         isActive: credentialsNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: credentialsNavItems,
       },
-      {
-        text: 'MOCA Staking',
-        icon: 'navitems/moca-staking',
-        isActive: mocaStakingNavItems.flat().some(item => isInternalItem(item) && item.isActive),
-        subItems: mocaStakingNavItems,
-      },
+      // {
+      //   text: 'MOCA Staking',
+      //   icon: 'navitems/moca-staking',
+      //   isActive: mocaStakingNavItems.flat().some(item => isInternalItem(item) && item.isActive),
+      //   subItems: mocaStakingNavItems,
+      // },
+      // 暂时隐藏
       {
         text: 'Faucet',
         icon: 'navitems/icon_faucet_new',
