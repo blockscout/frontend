@@ -17,9 +17,11 @@ const getShortAddress = (address: string) => {
 
 
 const ValidatorInfo = ({
-    validatorName
+    validatorName,
+    record = {}
 }: {
     validatorName: string;
+    record?: any;
 }) => {
 
     return (
@@ -29,14 +31,12 @@ const ValidatorInfo = ({
             alignItems="center"
             width="auto"
         >
-            <Avatar
-                name="MOCA"
+            <img
                 src="/static/moca-brand.svg"
-                size='2xs'
+                style={{ borderRadius: '50%', marginRight: "4px" , flexShrink: 0}}
+                draggable={false}
                 width="20px"
                 height="20px"
-                borderRadius="full"
-                marginRight="4px"
             />
             <Text 
                 fontSize="14px"
@@ -49,7 +49,7 @@ const ValidatorInfo = ({
                 textTransform="capitalize"
                 userSelect="none"
                 as ="span"
-            > { getShortAddress(validatorName) } </Text>
+            > { record.validatorName } </Text>
         </Flex>
     )
 }

@@ -47,6 +47,7 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
           lineHeight={ 7 }
           fontWeight={ 500 }
           mr="auto"
+          color="#D940A4"
         />
         { block.celo?.is_epoch_block && (
           <Tooltip label={ `Finalized epoch #${ block.celo.epoch_number }` }>
@@ -84,6 +85,7 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
               isLoading={ isLoading }
               noIcon
               noCopy
+              color="#D940A4"
               truncation="constant"
             />
           </>

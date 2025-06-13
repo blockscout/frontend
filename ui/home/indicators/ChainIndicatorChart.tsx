@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+
 // import { useToken } from '@chakra-ui/react';
 import React from 'react';
 
@@ -19,7 +22,7 @@ const CHART_MARGIN = { bottom: 5, left: 10, right: 10, top: 5 };
 const ChainIndicatorChart = ({ data }: Props) => {
   const overlayRef = React.useRef<SVGRectElement>(null);
   // const lineColor = useToken('colors', 'blue.500');
-  const lineColor = '#C15E97';
+  const lineColor = '#FF89D0';
 
   const axesConfig = React.useMemo(() => {
     return {
@@ -37,11 +40,12 @@ const ChainIndicatorChart = ({ data }: Props) => {
   return (
     <svg width="100%" height="100%" ref={ ref } cursor="pointer">
       <g transform={ `translate(${ chartMargin.left || 0 },${ chartMargin.top || 0 })` } opacity={ rect ? 1 : 0 }>
-        <ChartArea
+        {/* <ChartArea
           data={ data[0].items }
           xScale={ axes.x.scale }
           yScale={ axes.y.scale }
-        />
+          color={ lineColor }
+        /> */}
         <ChartLine
           data={ data[0].items }
           xScale={ axes.x.scale }

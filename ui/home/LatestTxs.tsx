@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
@@ -43,6 +45,7 @@ const LatestTransactions = () => {
             />
           ))) }
         </Box>
+
         <AddressHighlightProvider>
           <Box mb={ 3 } display={{ base: 'none', lg: 'block' }}>
             { data.slice(0, txsCount).map(((tx, index) => (
@@ -54,6 +57,8 @@ const LatestTransactions = () => {
             ))) }
           </Box>
         </AddressHighlightProvider>
+
+
         <Flex justifyContent="center">
           <LinkInternal fontSize="sm" href={ txsUrl }>View all transactions</LinkInternal>
         </Flex>

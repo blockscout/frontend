@@ -6,10 +6,88 @@
 .stake-date-picker  .ant-picker-input { text-align: center;}
 
 
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: url('/assets/fonts/HarmonyOS_Sans_Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+
+
+body , * {
+  font-family: 'Outfit', sans-serif;
+}
+
+
 .modal-spinner {
     width: 40px;
     height: 40px;
-    border: 2px solid #C15E97;
+    border: 2px solid #D940A4;
     border-bottom-color: #fff;
     border-radius: 50%;
     display: inline-block;
@@ -26,4 +104,163 @@
         transform: rotate(360deg);
     }
 } 
-  
+
+.node-staking-custom-table .ant-table-thead > tr > th {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-bottom: none !important;
+}
+
+.node-staking-custom-table .ant-table {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.node-staking-custom-table .ant-table-thead > tr > th {
+  border-right: none !important; /* 去掉右边框 */
+  border-bottom: none !important; /* 可选：去掉底部分割线 */
+}
+
+/* 额外：去除表格本身的边框和阴影 */
+.node-staking-custom-table .ant-table {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.node-staking-custom-table .ant-table-cell  {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.node-staking-custom-table th::before {
+  content: '';
+  display: none;
+}
+
+
+.main-page-hero-banner {
+  border-radius: 24px;
+  background: var(--Moca-Chain-Gradient, linear-gradient(90deg, #FFF7D2 0%, #FFCFED 46.46%, #BFD2FF 100%)) !important;
+}
+
+
+.main-page-hero-banner  .title-text {
+  color: var(--text-primary, #170811);
+  text-align: center;
+
+  /* D-heading-3 */
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.lastest-tx-item-address a {
+
+  color: var(--link, #D940A4) !important;
+
+  /* body-2 */
+  font-family: Outfit;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+
+.user-connect-wallet-button-desktop {
+  color: var(--text-on-colour, #FFF) !important;
+  text-align: center;
+
+  /* button-1 */
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border-radius: 8px;
+  background: var(--button-primary, #EF6ABA);
+}
+
+.user-connect-wallet-button-desktop:hover {
+    background: var(--button-primary-hover, #FFA1D9);
+}
+
+.user-connect-wallet-button-desktop-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.latest-tx-item-value-label {
+  color: var(--text-primary, #181818);
+
+  /* body-2 */
+  font-family: Outfit;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.latest-tx-item-value-value {
+  color: var(--text-secondary, #7D7D7D);
+
+  /* body-2 */
+  font-family: Outfit;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.latest-tx-item-fee-label {
+  color: var(--text-primary, #181818);
+
+  /* body-2 */
+  font-family: Outfit;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+
+.latest-tx-item-fee-value {
+  color: var(--text-secondary, #7D7D7D);
+
+  /* body-2 */
+  font-family: Outfit;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.latest-tx-item-hash {
+  color: var(--link, #D940A4) !important;
+}
+
+.node-staking-custom-table-header span{
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.40);
+  cursor: pointer; /* 鼠标悬浮时显示手型 */
+}
+
+
+span.node-staking-custom-table-header-text {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.40);
+  cursor: pointer; /* 鼠标悬浮时显示手型 */
+}
+
+.node-staking-custom-table-header span:hover {
+  text-decoration: underline; /* 鼠标悬浮时显示下划线 */
+  text-decoration-color: rgba(0, 0, 0, 0.40); /* 设置下划线颜色 */
+}
+
+span.node-staking-custom-table-header-text:hover {
+  text-decoration: underline; /* 鼠标悬浮时显示下划线 */
+  text-decoration-color: rgba(0, 0, 0, 0.40); /* 设置下划线颜色 */
+}

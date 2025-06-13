@@ -1,10 +1,13 @@
 /* eslint-disable */
-import { Table, Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
+import { Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
 import {  useDisclosure, } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
-import { debounce, orderBy } from 'lodash';
+import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
+import { Table } from 'antd';
+import { orderBy } from 'lodash';
 import useAccount from 'lib/web3/useAccount';
 import axios from 'axios';
+import { route } from 'nextjs-routes';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
 import WithTipsText from 'ui/validators/WithTipsText';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
@@ -12,7 +15,7 @@ import Pagination from 'ui/validators/Pagination';
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import advancedFormat from 'dayjs/plugin/advancedFormat';
+import advancedFormat from 'dayjs/plugin/advancedFormat'; 
 import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import { TextWithIcon } from 'ui/staking/ActivityListTableCell';
 import styles from 'ui/staking/spinner.module.css';
@@ -20,6 +23,10 @@ import styles from 'ui/staking/spinner.module.css';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(advancedFormat);
+
+const numberTypeFields = [
+    'amount',
+];
 
 type tableHeadType = {
     label: string | React.ReactNode;
@@ -124,22 +131,9 @@ const CustomTableHeader = ({
         }
     };
 
-    const w = width || 'auto';
-    const _w = width || '200px'; 
-    const _minWidth = minWidth || '180px';
+    const noop = () => {};
 
     return (
-        <Th
-            _first={{ p: "4px 10px 10px 10px" }}
-            color="rgba(0, 0, 0, 0.6)"
-            p="4px 10px 10px 10px"
-            bg="#FFFF"
-            borderBottom="1px"
-            borderColor="rgba(0, 0, 0, 0.1)"
-            width={{ base: _w , lg: w }}
-            minWidth={_minWidth}
-            flexShrink={ 0 }
-        >
             <Flex
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -147,8 +141,17 @@ const CustomTableHeader = ({
                 width="100%"
                 userSelect={'none'}
                 gap="2px" 
+                className='node-staking-custom-table-header'
+                onClick={ allowSort ? handleSort : noop }
             >
-                <span style={{ color: 'rgba(0, 0, 0, 0.40)' }}>
+                <span style={{ 
+                    color: 'rgba(0, 0, 0, 0.40)',
+                    fontFamily: "HarmonyOS Sans",
+                    fontSize: '12px',
+                    fontStyle: 'normal',
+                    fontWeight: 400,
+                    lineHeight: 'normal',
+                }}>
                     { children }
                 </span>
                 { allowSort && (
@@ -160,7 +163,6 @@ const CustomTableHeader = ({
                         width="12px"
                         height="12px"
                         cursor="pointer"
-                        onClick={handleSort}
                     >
                         { (sortOrder === 'asc' && selfKey === sortKey) && icon_asc }
                         { (sortOrder === 'desc' && selfKey === sortKey) && icon_desc }
@@ -168,7 +170,6 @@ const CustomTableHeader = ({
                     </Box>
                 )}
             </Flex>
-        </Th>
     );
 }
 
@@ -178,6 +179,13 @@ const TableApp = (props: {
     isLoading: boolean;
     totalCount: number;
     currentPage: number;
+    dateOrder: string | null;
+    sortBy: string;
+    sortOrder: sortOrderType;
+    setSortBy: (sortBy: string) => void;
+    setSortOrder: (sortOrder: sortOrderType) => void;
+    setDateOrder: (order: string | null) => void;
+    setToFirstpageRequest: () => void;
     onJumpPrevPage: () => void;
     onJumpNextPage: () => void;
     nextKey: string | null;
@@ -190,24 +198,32 @@ const TableApp = (props: {
         onJumpPrevPage,
         onJumpNextPage,
         totalCount,
+        dateOrder,
+        setDateOrder,
+        sortBy,
+        sortOrder,
+        setSortBy,
+        setSortOrder,
+        setToFirstpageRequest,
         nextKey
     } = props;
 
-    const [sortBy, setSortBy] = React.useState<string>('');
-    const [sortOrder, setSortOrder] = React.useState<sortOrderType>('');
-
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const [ isTxLoading, setIsTxLoading ] = React.useState<boolean>(false);
-    const [ currentTxType, setCurrentTxType ] = React.useState<txType>('Withdraw');
-    const [ modalTitle, setModalTitle ] = React.useState<string>('Withdraw');
-    const [ currentAddress, setCurrentAddress ] = React.useState<string>('');
-    const [ currentAmount, setCurrentAmount ] = React.useState<string>('');
-
     const handleRowClick = (item: any) => { }
+
+    const orderFn = (item: any, key: string) => {
+        if (numberTypeFields.includes(key)) {
+            return Number(item[key]);
+        }
+        return item[key];
+    };
 
     const sortedData = React.useMemo(() => {
         if (sortBy && sortOrder) {
-            return orderBy(data, [sortBy], [ !sortOrder ? false : sortOrder]);
+            return orderBy(
+                data, 
+                [ (item: any) => orderFn(item, sortBy) ],
+                [ !sortOrder ? false : sortOrder]
+            );
         }
         return data;
     }, [data, sortBy, sortOrder]);
@@ -218,6 +234,7 @@ const TableApp = (props: {
     const { serverUrl : url } = useStakeLoginContextValue();
 
 
+
     const tableHead: tableHeadType[] = [
         {
             label: 'Txn Hash',
@@ -225,6 +242,9 @@ const TableApp = (props: {
             minWidth: '190px',
             width: '17%',
             render: (record) => (
+            <LinkInternal
+                href={ route({ pathname: '/tx/[hash]', query: { hash: record.txnHash } }) }
+            >
                 <span 
                     style={{ 
                         color: '#A80C53',
@@ -233,11 +253,11 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
                     }}
                 >
                    { getShortAddress(record.txnHash || "") }
                 </span>
+            </LinkInternal>
             )
         },
         {
@@ -255,7 +275,6 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
                     }}
                 >
                     <TextWithIcon 
@@ -273,7 +292,8 @@ const TableApp = (props: {
             render: (record) => (
                 <TableTokenAmount
                     amount = { record.amount }
-                    symbol = 'Moca'
+                    symbol = 'MOCA'
+                    decimals = { 4 }
                 />
             )
         },
@@ -292,7 +312,7 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >{ getShortAddress(record.from || "") }</span>),
         },
@@ -311,7 +331,7 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >{ getShortAddress(record.to || "") }</span>),
         },
@@ -330,39 +350,75 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
                     }}
                 >{ dayjs.utc(record.date).format('DD MMM YYYY HH:mm [UTC]') }</span>),
         },
     ];
 
 
-    const tableHeaders = (
-        <Tr>
-            {tableHead.map((item: tableHeadType, index: number) => (
-                <CustomTableHeader 
-                    key={index}
+
+    const getColumnContent = (item: tableHeadType) => {
+        const content = (item.tips ? (
+                <WithTipsText 
+                    label={ item.label }
+                    tips={ item.tips }
+                />
+            ) : item.label);
+        if (item.allowSort === true) {
+            return (
+                <CustomTableHeader
+                    selfKey={ item.key }
                     width={ item.width }
-                    minWidth={ item.minWidth }
                     allowSort={ item.allowSort }
-                    sortKey = { sortBy }
-                    sortOrder = { sortOrder }
-                    setSort = { setSortBy }
-                    setSortOrder = { setSortOrder }
-                    selfKey = { item.key }
+                    sortKey={ sortBy }
+                    sortOrder={ sortOrder }
+                    setSort={ setSortBy }
+                    setSortOrder={ setSortOrder }
+                    minWidth={ item.minWidth }
                 >
-                    { ( item.tips ? ( 
-                        <WithTipsText 
-                            label={ item.label }
-                            tips={ item.tips }
-                        />
-                    ) : item.label ) }
+                    { content }
                 </CustomTableHeader>
-            ))}
-        </Tr>
-    );
+            );
+        }
+        return (
+            <span
+                style={{
+                    color: 'rgba(0, 0, 0, 0.40)',
+                    fontFamily: "HarmonyOS Sans",
+                    fontSize: '12px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    lineHeight: 'normal',
+                }}  
+                className="node-staking-custom-table-header"
+            >
+                { content }
+            </span> 
+        );
+    };
+        
+    const CustomHeaderToAntDesignTableColumns = (tableHead: tableHeadType[]) => {
+        return tableHead.map((item: tableHeadType) => ({
+            title: getColumnContent(item),
+            dataIndex: item.key,
+            key: item.key,
+            width: 'auto',
+            render: (value: any, record: any) => {
+                if (item.render) {
+                    return item.render(record);
+                }
+                return value;
+            },
+        }));
+    };
+
+    const AntDesignTableColumns = useMemo(() => {
+        return CustomHeaderToAntDesignTableColumns(tableHead);
+    }
+    , [tableHead, sortBy, sortOrder]);
 
     return (
+    <>
         <div style={{
                 width: '100%',
                 height: 'auto',
@@ -376,57 +432,53 @@ const TableApp = (props: {
                 borderRadius: '12px',
             }}
         >
-            <Table variant="simple">
-                <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
-                    { tableHeaders }
-                </Thead>
-                <Tbody>
-                    {sortedData.map((validator: any, index: number) => (
-                        <Tr key={index}
-                            borderBottom={'none'}
-                            _last={{ borderBottom: 'none' }} 
-                            _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
-                            onClick={() => handleRowClick(validator)}
-                        >
-                            { tableHead.map((item: tableHeadType, index: number) => (
-                                <Td
-                                    key={index}
-                                    p= { '12px 0' }
-                                    color="rgba(0, 0, 0, 0.6)"
-                                    borderBottom={'none'} _last={{ borderBottom: 'none' }} 
-                                    onClick={() => handleRowClick(validator)}
-                                >
-                                    {item.render ? item.render(validator) : validator[item.key]}
-                                </Td>
-                            ))}
-                        </Tr>
-                    ))}
-                </Tbody>
-            </Table>
-
-            <Flex
-                justifyContent="flex-end"
-                alignItems="center"
-                zIndex='200'
-                width="100%"
-                marginTop={ '16px'}
-            >
-                <Pagination 
-                    totalCount={ props.totalCount }
-                    currentPage={ currentPage }
-                    onJumpPrevPage={ onJumpPrevPage }
-                    onJumpNextPage={ onJumpNextPage }
-                    isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
-                    isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
+            <div style={{ overflowX: 'auto', width: '100%' }}>
+                <Table
+                    columns={AntDesignTableColumns}
+                    dataSource={sortedData}
+                    className="node-staking-custom-table"
+                    scroll={{ x: 'auto' }}
+                    pagination={false}
                 />
-            </Flex>
+            </div>
         </div>
+        <Flex
+            justifyContent="justify-between"
+            alignItems="center"
+            zIndex='200'
+            width="100%"
+            marginTop={ '16px'}
+        >
+            <span 
+                style={{ 
+                    color: 'rgba(0, 0, 0, 0.60)',
+                    fontFamily: "HarmonyOS Sans",
+                    fontSize: '12px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    visibility: 'hidden',
+                    lineHeight: 'normal',
+                    textWrap: 'nowrap',
+                }}
+            >
+                Total: { totalCount }
+            </span>
+            <Pagination 
+                totalCount={ props.totalCount }
+                currentPage={ currentPage }
+                onJumpPrevPage={ onJumpPrevPage }
+                onJumpNextPage={ onJumpNextPage }
+                isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
+                isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
+            />
+        </Flex>
+    </>
     );
 }
 
 
-const initial_nextKey = '0' ;
-const defaultLimit = 15;
+const initial_nextKey = '0x00' ;
+const defaultLimit = 20;
 
 
 const TableWrapper = ({
@@ -443,14 +495,22 @@ const TableWrapper = ({
 
     const { address: userAddr } = useAccount();
 
-
+    const [ sortBy, setSortBy] = React.useState<string>('');
+    const [ sortOrder, setSortOrder] = React.useState<sortOrderType>('');
 
     const [ toNext, setToNext ] = React.useState<boolean>(true);
-    const [ nextKey , setNextKey ] = React.useState<string>(initial_nextKey);
-    const [ currentPage, setCurrentPage ] = React.useState<number>(1);
-    const [ tableData, setTableData ] = React.useState<any[]>([]);
-    const [ isTableLoading, setIsTableLoading ] = React.useState(false);
-    const [ totalCount, setTotalCount ] = React.useState<number>(0);
+
+    const [nextKey, setNextKey] = useState<string | null>(initial_nextKey);
+    const [currentPageKey, setCurrentPageKey] = useState<string | null>(initial_nextKey);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [tableData, setTableData] = useState<any[]>([]);
+    const [isTableLoading, setIsTableLoading] = useState(false);
+    const [totalCount, setTotalCount] = useState<number>(0);
+    const [keyStack, setKeyStack] = useState<(string | null)[]>([initial_nextKey]);
+    const currentKeyRef = useRef<string | null>(initial_nextKey);
+
+    const [ dateOrder, setDateOrder ] = React.useState<string | null >(null);
+
 
     useEffect(() => {
         if ( tableData.length === 0 ) {
@@ -462,41 +522,22 @@ const TableWrapper = ({
     }, [ tableData, setDisableSelectDateRange ]);
     
 
-    const [ queryParams, setQueryParams ] = React.useState<{ 
-        status?: ValidatorQueryParams['status'];
-        nextKey?: string;
-        page?: ValidatorQueryParams['page'];
-        limit?: ValidatorQueryParams['limit'];
-        countTotal?: ValidatorQueryParams['countTotal'];
-        reverse?: ValidatorQueryParams['reverse'];
-      }>({
-        nextKey: '',
-        page: 1,
-    });
-    
-    const updateQueryParams = (newParams: Partial<ValidatorQueryParams>) => {
-        setQueryParams((prevParams) => ({
-          ...prevParams,
-          ...newParams,
-        }));
-    }
-
-
-
-
-    const requestActivityList = React.useCallback(async( _addr : string = '', _selectDateRange: any) => {
-        if (!_addr) {
+    const requestActivityList = React.useCallback(async() => {
+        if (!userAddr) {
             return;
         }
         try {
             setIsTableLoading(true);
+            const key = currentKeyRef.current;
             const param = new URLSearchParams();
             param.append('limit', defaultLimit.toString());
-            param.append('nextKey', queryParams.nextKey || initial_nextKey);
-            param.append('address', (_addr || '').toLowerCase());
-            if (_selectDateRange) {
-                _selectDateRange[0] && param.append('startDate', dayjsToDateString(_selectDateRange[0]));
-                _selectDateRange[1] && param.append('endDate', dayjsToDateString(_selectDateRange[1]));
+            param.append('nextKey', key || initial_nextKey);
+            param.append('address', (userAddr || '').toLowerCase());
+            param.append('countTotal', 'true');
+            param.append('reverse', dateOrder === 'asc' ? 'false' : 'true');
+            if (selectDateRange) {
+                selectDateRange[0] && param.append('startDate', dayjsToDateString(selectDateRange[0]));
+                selectDateRange[1] && param.append('endDate', dayjsToDateString(selectDateRange[1]));
             }
             const res = await axios.get(url + '/api/me/staking/activity' + '?' + param.toString(), { 
                 timeout: 10000,
@@ -512,8 +553,8 @@ const TableWrapper = ({
             if(res && res.code === 200) {
                 setTableData(res.data.activities || []);
                 setTotalCount(Number(res.data.pagination.total || "0"))
-                setNextKey(res.data.pagination.nextKey);
-                setCurrentPage( queryParams.page || 1 );
+                setNextKey( res.data.pagination.nextKey || null );
+                setCurrentPageKey(key ?? null);
             }
         }
         catch (error: any) {
@@ -521,14 +562,53 @@ const TableWrapper = ({
             throw Error(error);
         }
     }
-  , [ url , queryParams.nextKey ]);
+  , [ url , userAddr, dateOrder , selectDateRange ]);
 
     useEffect(() => {
-        if (!userAddr) {
-            return;
+        requestActivityList();
+    }, [ requestActivityList ]);
+
+    const jumpToPrevPage = useCallback(() => {
+        if (isTableLoading || currentPage <= 1) return;
+        const prevKey = keyStack[currentPage - 2] ?? null;
+        currentKeyRef.current = prevKey;
+
+        setCurrentPage((prev) => prev - 1);
+        requestActivityList();
+    }, [nextKey, isTableLoading, currentPage, requestActivityList]);
+
+    // 上一页
+    const jumpToNextPage = useCallback(() => {
+        if (isTableLoading || !nextKey) return;
+        const nextKeyToUse = nextKey;
+        currentKeyRef.current = nextKeyToUse;
+
+        setKeyStack((prev) => [...prev.slice(0, currentPage), nextKeyToUse]);
+        setCurrentPage((prev) => prev + 1);
+        requestActivityList();
+    }, [currentPage, keyStack, isTableLoading, requestActivityList]);
+
+    const setToFirstpageRequest = useCallback(() => {
+        if (isTableLoading || currentPage === 1) return;
+        const firstKey = initial_nextKey ?? null;
+        currentKeyRef.current = firstKey;
+        setCurrentPage(1);
+        setKeyStack([firstKey]); // 重置历史栈
+        requestActivityList();
+    }, [isTableLoading, currentPage, initial_nextKey, requestActivityList]);
+
+    useEffect(() => {
+        if (sortBy === 'date') {
+            setToFirstpageRequest();
+            if (!!sortOrder) {
+                setDateOrder(sortOrder);
+            } else {
+                setDateOrder(null);
+            }
+        } else {
+            setDateOrder(null);
         }
-        requestActivityList(userAddr, selectDateRange);
-    }, [ userAddr, selectDateRange , requestActivityList ]);
+    }, [sortBy, sortOrder]);
 
 
     const { isConnected: WalletConnected } = useAccount();
@@ -579,6 +659,8 @@ const TableWrapper = ({
     }
 
 
+  
+
     return (
         <Box
             width="100%"
@@ -593,14 +675,15 @@ const TableWrapper = ({
                 isLoading={ isTableLoading }
                 totalCount={ totalCount }
                 currentPage={ currentPage }
-                onJumpPrevPage={ () => {
-                    setToNext(false);
-                    updateQueryParams({ nextKey: nextKey, page: currentPage - 1 });
-                }}
-                onJumpNextPage={ () => {
-                    setToNext(true);
-                    updateQueryParams({ nextKey: nextKey , page: currentPage + 1 });
-                }}
+                dateOrder={ dateOrder }
+                sortBy={ sortBy }
+                sortOrder={ sortOrder }
+                setSortBy={ setSortBy }
+                setSortOrder={ setSortOrder }
+                setDateOrder={ setDateOrder }
+                setToFirstpageRequest={() => {}}
+                onJumpPrevPage={ jumpToPrevPage }
+                onJumpNextPage={ jumpToNextPage }
                 nextKey={ nextKey }
             />
         </Box>

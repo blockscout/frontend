@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { chakra, Box, Heading, Flex, Text, VStack, Skeleton } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
@@ -88,8 +90,8 @@ const LatestBlocks = () => {
             ))) }
           </AnimatePresence>
         </VStack>
-        <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
+        <Flex justifyContent="center"  fontSize="sm" fontWeight={ 500 }>
+          <LinkInternal fontSize="sm" color="#D940A4" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
         </Flex>
       </>
     );
@@ -97,13 +99,36 @@ const LatestBlocks = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm">Latest blocks</Heading>
+      <Heading as="h4" size="sm" style={{
+        color: 'var(--text-primary, #170811)',
+        fontFamily: 'Outfit',
+        fontSize: '1.125rem',
+        fontStyle: 'normal',
+        fontWeight: 600,
+        lineHeight: 'normal',
+        marginBottom: '0.31rem',
+      }}>Latest blocks</Heading>
       { statsQueryResult.data?.network_utilization_percentage !== undefined && (
         <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } mt={ 1 } display="inline-block">
-          <Text as="span" fontSize="sm">
+          <Text as="span" fontSize="sm" style = {{
+                color: 'var(--text-secondary, #6C636B)',
+                fontFamily: 'Outfit',
+                fontSize: '0.875rem',
+                fontStyle: 'normal',
+                fontWeight: 400,
+                lineHeight: 'normal',
+          }}>
             Network utilization:{ nbsp }
           </Text>
-          <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
+          <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }
+             style={{
+                color: 'var(--decorative, #FF89D0)',
+                fontFamily: 'Outfit',
+                fontSize: '0.875rem',
+                fontStyle: 'normal',
+                fontWeight: 600,
+                lineHeight: 'normal',
+            }}>
             { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
           </Text>
         </Skeleton>

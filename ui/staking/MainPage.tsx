@@ -1,6 +1,8 @@
 /* eslint-disable */
 "use client";
 
+
+import { Flex , Text , Box , Button} from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
 import { waitForTransactionReceipt } from '@wagmi/core'
 import BigNumber from 'bignumber.js';
@@ -18,6 +20,17 @@ import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';;
 import { useDisclosure } from '@chakra-ui/react';
 import TabTable from 'ui/staking/TabTable';
 import StakingInfo from 'ui/staking/StakingInfo';
+
+const DOC_LINK = 'https://drive.google.com/stake/validators?ddrp=1';
+
+
+const icon_link = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+    <path fillRule="evenodd" clipRule="evenodd" d="M2.55001 3.30001C2.30148 3.30001 2.10001 3.50148 2.10001 3.75001V8.85001C2.10001 9.09854 2.30148 9.30001 2.55001 9.30001H7.65001C7.89854 9.30001 8.10001 9.09854 8.10001 8.85001V6.45001C8.10001 6.20148 8.30148 6.00001 8.55001 6.00001C8.79854 6.00001 9.00001 6.20148 9.00001 6.45001V8.85001C9.00001 9.5956 8.3956 10.2 7.65001 10.2H2.55001C1.80443 10.2 1.20001 9.5956 1.20001 8.85001V3.75001C1.20001 3.00443 1.80443 2.40001 2.55001 2.40001H5.55001C5.79854 2.40001 6.00001 2.60148 6.00001 2.85001C6.00001 3.09854 5.79854 3.30001 5.55001 3.30001H2.55001Z" 
+    fill="#FF57B7"/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M3.71632 7.65192C3.88306 7.83622 4.16763 7.85044 4.35192 7.6837L9.90001 2.664V4.35001C9.90001 4.59854 10.1015 4.80001 10.35 4.80001C10.5985 4.80001 10.8 4.59854 10.8 4.35001V1.65001C10.8 1.40148 10.5985 1.20001 10.35 1.20001H7.65001C7.40148 1.20001 7.20001 1.40148 7.20001 1.65001C7.20001 1.89854 7.40148 2.10001 7.65001 2.10001H9.18192L3.7481 7.01632C3.56381 7.18306 3.54958 7.46763 3.71632 7.65192Z" fill="#FF57B7"/>
+  </svg>
+)
 
 
 type RequestType = {
@@ -37,8 +50,6 @@ type RequestType = {
     tx_value: string;
   }>;
 };
-
-
 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
@@ -63,6 +74,8 @@ type IssuanceTalbeListType = {
   'Value MOCA': string;
   'Fee MOCA': string;
 };
+
+
 
 const ObjectDetails: NextPage = () => {
   const [ queryParams, setQueryParams ] = React.useState<{ offset: number; searchTerm: string; page: number }>({
@@ -192,66 +205,6 @@ const ObjectDetails: NextPage = () => {
   }, [ url , userAddr]);
 
 
-    const requestMyStakingTableList = React.useCallback(async() => {
-        if (!address) return;
-        const param = new URLSearchParams();
-        param.append('address', (address || '').toLowerCase());
-        try {
-          setLoading(true);
-          const res = await axios.get(url + '/api/me/staking/delegations' + '?' + param.toString(), {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            timeout: 10000,
-          }).then((response) => {
-            return response.data;
-          }).catch((error) => {
-            return null;
-          });
-          if(res && res.code === 200) {
-            console.log('res', res);
-          }
-          setLoading(false);
-        } catch (error: any) {
-          setLoading(false);
-        }
-  }, [ url, address ]);
-
-  const requestMyActivityTableList = React.useCallback(async({
-    limit = 10,
-    offset = 0,
-    countTotal = false,
-    reverse = false,
-    _addr = address,
-  }) => {
-    if (!_addr) return;
-    try {
-      setLoading(true);
-      const paramStr = new URLSearchParams({
-        limit: limit.toString(),
-        offset: offset.toString(),
-        countTotal: countTotal.toString(),
-        reverse: reverse.toString(),
-        address: (_addr || '').toLowerCase(),
-      }).toString();
-      const res = await axios.get(url + '/api/me/staking/activity' + '?' + paramStr, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        timeout: 10000,
-      }).then((response) => {
-        return response.data;
-      }).catch((error) => {
-        return null;
-      });
-      if(res && res.code === 200) {
-        console.log('res', res);
-      }
-      setLoading(false);
-    } catch (error: any) {
-      setLoading(false);
-    }
-  }, [ url ]);
 
     const propsPage = React.useCallback((value: number) => {
       window.scrollTo({
@@ -274,33 +227,16 @@ const ObjectDetails: NextPage = () => {
     }
   }, [ requestMyStakingInfo , url ]);
 
-  React.useEffect(() => {
-    if (url) {
-      requestMyStakingTableList();
-    }
-  }, [ requestMyStakingTableList , url ]);
-
-    React.useEffect(() => {
-      if (url) {
-        requestMyActivityTableList({
-          limit: 10,
-          offset: 0,
-          countTotal: true,
-          reverse: false,
-          _addr: address,
-        });
-      }
-    }, [ requestMyActivityTableList , address , url ]);
 
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [ isHideNumber, setIsHideNumber ] = React.useState<boolean>(false);
 
-
-
-    const { data: balanceData } = useBalance({ address: userAddr});
+    const { data: balanceData, refetch: refetchBalance } = useBalance({ address: userAddr});
     const [ availableAmount, setAvailableAmount ] = React.useState<string>('0.00');
+    const [ randomKey , setRandomKey ] = React.useState<number>(0);
 
+    
     const formattedBalanceStr = React.useMemo(() => {
         if (balanceData && !!balanceData.value) {
             return formatUnits(balanceData.value, 18);
@@ -323,17 +259,17 @@ const ObjectDetails: NextPage = () => {
     const [ transactionHash, setTransactionHash ] = React.useState<string>('');
     const [ extraDescription, setExtraDescription ] = React.useState<string | null>(null);
 
+    const [ compoundAmount, setCompoundAmount ] = React.useState<string>('0.00');
+
     const signAndSend = async ( amount :string, unsignedTx: unsignedTx | null | undefined ) => {
 
         if (!unsignedTx) throw new Error('Unsigned transaction null or undefined');
-
-        if (!walletClient) throw new Error('Wallet client not found')
-        if (!publicClient) throw new Error('Public client not found')
-
+        
         const _unsignedTx = {
             to: unsignedTx.to as `0x${string}`,
             data: unsignedTx.data as `0x${string}`,
-            value: currentTxType === 'Stake' ? parseUnits(amount, 18) : BigInt(0),
+            // value: currentTxType === 'Stake' ? parseUnits(amount, 18) : BigInt(0),
+            value:  BigInt(0),
             gas: BigInt(unsignedTx.gasLimit),
             gasPrice: parseUnits('20', 'gwei'),
         }
@@ -401,6 +337,7 @@ const ObjectDetails: NextPage = () => {
         if (txType === 'Compound-Claim') {
             try {
                 setIsTxLoading (true);
+                setCompoundAmount(amount);
                 // const res = await (await fetch(url + apiPath, {
                 //         method: 'post',
                 //         headers: {
@@ -422,26 +359,28 @@ const ObjectDetails: NextPage = () => {
                     if(res.data && res.data.unsignedTx) {
                         const { unsignedTx } = res.data;
                         signAndSend(amount , unsignedTx).then((txHash: string) => {
+
                             setTransactionHash(txHash);
                             setTransactionStage('comfirming');
                             isTxConfirmed(txHash).then((isConfirmed: boolean) => {
                                 if (isConfirmed) {
                                     setTransactionStage('edit');
                                     sendTxHashToServer(txHash, param);
-
+                                    refetchBalance();
                                     // back to stake 
                                     setCurrentAddress('');
                                     setCurrentItem({});
                                     setCurrentTxType('Compound-Stake');
                                     setExtraDescription(null);
                                     setModalTitle('Compounding');
-                                    setCurrentAmount("0.00");
-                                    setAvailableAmount(formattedBalanceStr);
+                                    setCurrentAmount(compoundAmount);
+                                    setAvailableAmount(compoundAmount);
 
                                 } else {
                                     setIsTxLoading (false);
                                     setTransactionStage('error');
                                 }
+                                refetchBalance();
                             }).catch((error: any) => {
                                 setTransactionStage('error');
                                 setIsTxLoading (false);
@@ -480,6 +419,7 @@ const ObjectDetails: NextPage = () => {
                         const { unsignedTx } = res.data;
                         signAndSend(amount , unsignedTx).then((txHash: string) => {
                             setTransactionHash(txHash);
+                            refetchBalance();
                             setTransactionStage('comfirming');
                             isTxConfirmed(txHash).then((isConfirmed: boolean) => {
                                 if (isConfirmed) {
@@ -489,6 +429,7 @@ const ObjectDetails: NextPage = () => {
                                     setIsTxLoading (false);
                                     setTransactionStage('error');
                                 }
+                                refetchBalance();
                             }).catch((error: any) => {
                                 setTransactionStage('error');
                                 setIsTxLoading (false);
@@ -513,8 +454,8 @@ const ObjectDetails: NextPage = () => {
     const handleClaimAll = React.useCallback(() => {
         setCurrentAddress("0x1234");
         setCurrentTxType('ClaimAll');
-        setModalTitle('Claim All');
-        setCurrentAmount(Number(String(claimableRewards)).toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 }));
+        setModalTitle('Claim Rewards');
+        setCurrentAmount(String(claimableRewards));
         setAvailableAmount(String(claimableRewards));
         onOpen();
     }, [claimableRewards]);
@@ -524,15 +465,15 @@ const ObjectDetails: NextPage = () => {
         setCurrentTxType('Compound-Claim');
         setExtraDescription('Please claim your reward before proceeding.');
         setModalTitle('Compounding');
-        setCurrentAmount("0.00");
-        setAvailableAmount(String(claimableRewards ));
+        setCurrentAmount(String(claimableRewards));
+        setAvailableAmount(String(claimableRewards));
         onOpen();
     }, [claimableRewards]);
     // claim all/  compond ,   general claimable 
 
     const handleStakeMore = () => {
         setCurrentTxType('ChooseStake');
-        setModalTitle('Stake More');
+        setModalTitle('Stake');
         setCurrentAmount("0.00");
         setCurrentItem({});
         setAvailableAmount(formattedBalanceStr);
@@ -541,54 +482,106 @@ const ObjectDetails: NextPage = () => {
 
     const handleCloseModal = () => {
         onClose();
+        setTransactionStage('edit');
         setExtraDescription(null);
     }
     
+    const requestMyStakingTableList = () => {
+      setRandomKey(new Date().getTime());
+    }
 
 
   return (
     <PageNextJs pathname="/object">
+      <Flex 
+          display={{ base: 'flex', lg: 'flex' }}
+          userSelect="none"
+          justifyContent= {{ lg:  'flex-start' }}
+          alignItems="baseline" marginBottom="24px">
+          <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">My Staking</Text>
+          <Button
+              onClick={() => {
+                  window.open(DOC_LINK, '_blank');
+              }}
+              px = "6px"
+              py = "2px"
+              width={ 'auto' }
+              height={ 'auto' }
+              marginLeft={"8px"}
+              variant="surface"
+              color="#FF57B7"
+              borderRadius={9999}
+              backgroundColor="#FEE5F4"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap="2px"
+              >
+              <Text 
+                  fontSize="12px"
+                  fontWeight="400"
+                  lineHeight="140%"
+                  color="#FF57B7"
+                  fontFamily="Inter"
+              >Staking Tutorial</Text>
+              {icon_link}
+          </Button>
+      </Flex>
       <StakingInfo
-        stakedAmount={ stakedAmount }
-        claimableRewards={ claimableRewards }
-        withdrawingAmount={ withdrawingAmount }
-        totalRewards={ totalRewards }
-        isOpen = { isOpen }
-        handleCloseModal = { handleCloseModal }
-        callback = { () => {
-          requestMyStakingInfo();
-          requestMyStakingTableList();
-        }}
-        modalTitle = { modalTitle}
-        extraDescription = { extraDescription }
-        transactionStage = { transactionStage }
-        currentTxType = { currentTxType }
-        availableAmount = { availableAmount }
-        setAvailableAmount = { setAvailableAmount }
-        onOpen = { onOpen }
-        isTxLoading = { isTxLoading }
-        currentAmount = { currentAmount }
-        setCurrentAmount = { setCurrentAmount }
-        handleSubmit = { handleSubmit }
-        currentAddress = { currentAddress }
-        setCurrentFromItem = { setCurrentFromItem }
-        setCurrentAddress = { setCurrentAddress }
-        currentFromItem = { currentFromItem }
-        currentFromAddress = { currentFromAddress }
-        setCurrentFromAddress = { setCurrentFromAddress }
-        currentItem = { currentItem }
-        setCurrentItem = { setCurrentItem }
-        handleClaimAll = { handleClaimAll }
-        handleCompound = { handleCompound }
-        handleStakeMore = { handleStakeMore }
-        setCurrentTxType = { setCurrentTxType }
-        transactionHash = { transactionHash }
-        isHideNumber = { isHideNumber }
-        setIsHideNumber = { setIsHideNumber }
+          stakedAmount={ stakedAmount }
+          claimableRewards={ claimableRewards }
+          withdrawingAmount={ withdrawingAmount }
+          totalRewards={ totalRewards }
+          isOpen = { isOpen }
+          handleCloseModal = { handleCloseModal }
+          callback = { () => {
+            requestMyStakingInfo();
+            requestMyStakingTableList();
+          }}
+          modalTitle = { modalTitle}
+          extraDescription = { extraDescription }
+          transactionStage = { transactionStage }
+          currentTxType = { currentTxType }
+          availableAmount = { availableAmount }
+          setAvailableAmount = { setAvailableAmount }
+          onOpen = { onOpen }
+          isTxLoading = { isTxLoading }
+          currentAmount = { currentAmount }
+          setCurrentAmount = { setCurrentAmount }
+          handleSubmit = { handleSubmit }
+          currentAddress = { currentAddress }
+          setCurrentFromItem = { setCurrentFromItem }
+          setCurrentAddress = { setCurrentAddress }
+          currentFromItem = { currentFromItem }
+          currentFromAddress = { currentFromAddress }
+          setCurrentFromAddress = { setCurrentFromAddress }
+          currentItem = { currentItem }
+          setCurrentItem = { setCurrentItem }
+          handleClaimAll = { handleClaimAll }
+          handleCompound = { handleCompound }
+          handleStakeMore = { handleStakeMore }
+          setCurrentTxType = { setCurrentTxType }
+          transactionHash = { transactionHash }
+          isHideNumber = { isHideNumber }
+          setIsHideNumber = { setIsHideNumber }
       />
-        <TabTable 
-            handleStake = {handleStakeMore}
-        />
+      <Box
+          style={{
+              width: '100%',
+              backgroundColor: 'transparent',
+              borderRadius: '12px',
+              
+              border: '1px solid rgba(0, 0, 0, 0.06)',
+          }}
+          padding = {{ base: "40px 0 12px 0", lg: "24px 0", }}
+      >
+          <TabTable 
+              handleStake = {handleStakeMore}
+              requestMyStakingInfo = {requestMyStakingInfo}
+              requestMyStakingTableList = {() => {}}
+              randomKey = {randomKey}
+          />
+      </Box>
     </PageNextJs>
   );
 };

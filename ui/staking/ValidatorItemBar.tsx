@@ -15,6 +15,7 @@ const ValidatorItemBar = ({
     liveApr = "0",
     isFocused = false,
     validatorName = '',
+    validatorItem = {},
     validatorAvatar = null,
     onClick = () => {},
 }: {
@@ -22,14 +23,18 @@ const ValidatorItemBar = ({
     liveApr?: string | number;
     isFocused?: boolean;
     validatorName?: string;
+    validatorItem?: any;
     validatorAvatar?: string | null;
     onClick?: () => void;
 }) => {
+
+    const _currentItem  = validatorItem;
+
     return (
         <Box 
             width="100%" 
             height="40px"
-            cursor={showArrow ? 'pointer' : 'default'}
+            cursor={ showArrow ? 'pointer' : 'default'}
             position="relative"
             border = { isFocused ? '1px solid #FF57B7' : '1px solid rgba(0, 46, 51, 0.10)' }
             borderRadius="9999px" display="flex" 
@@ -45,7 +50,7 @@ const ValidatorItemBar = ({
             >
                 {
                     (!!validatorName) ? (
-                        <ValidatorInfo  validatorName = {validatorName} />
+                        <ValidatorInfo  validatorName = {validatorName} record = {_currentItem}/>
                     ) : (
                         <Text
                             fontSize="14px"
@@ -86,7 +91,7 @@ const ValidatorItemBar = ({
                                 fontSize: '12px',
                                 fontWeight: 400,
                                 lineHeight: '20px',
-                                textTransform: 'capitalize',
+                                    
                                 // font-family: "HarmonyOS Sans";
                                 // font-size: 12px;
                                 // font-style: normal;
@@ -107,7 +112,7 @@ const ValidatorItemBar = ({
                                 display="flex"
                                 alignItems="center"
                                 justifyContent="center"
-                                transform={ isFocused ? 'rotate(0deg)' : 'rotate(-180deg)' }
+                                transform={ isFocused ? 'rotate(-180deg)' : 'rotate(0deg)' }
                                 transition="transform 0.3s ease-in-out"
                             >
                                 { expandIcon }

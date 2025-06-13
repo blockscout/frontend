@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  color: #C15E97;
+  color: #D940A4;
   background-color: #FEF1F9;
   border: 1px solid #FFCBEC;
   margin: 0 4px;
@@ -68,7 +68,7 @@
   aspect-ratio: 1;
   border-radius: 50%;
   border: 7px solid rgba(0, 0, 0, 0.06);;
-  border-right-color: #C15E97;
+  border-right-color: #D940A4;
   animation: l2 1s infinite linear;
   top: 50%;
   left: 50%;

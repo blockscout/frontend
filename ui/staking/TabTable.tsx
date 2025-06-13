@@ -12,8 +12,14 @@ import React from 'react';
 
 const App = ({
     handleStake,
+    randomKey,
+    requestMyStakingInfo ,
+    requestMyStakingTableList ,
 }: {
     handleStake: () => void;
+    randomKey: number;
+    requestMyStakingInfo: () => void;
+    requestMyStakingTableList: () => void;
 }) => {
     const [ searchTerm, setSearchTerm ] = React.useState<string>('');
     const [ isInitialLoading, setIsInitialLoading ] = React.useState<boolean>(false);
@@ -36,7 +42,12 @@ const App = ({
 
 
   return (
-        <Tabs color="#FF57B7" colorScheme="#FF57B7" marginTop={ { base: '24px', lg: '0' } }
+        <Tabs 
+            color="#FF57B7"
+            colorScheme="#FF57B7"
+            marginTop={ { base: '24px', lg: '0' } }
+            isLazy
+            lazyBehavior="unmount"
             index = { currentTabIndex }
             onChange = { (index: number) => {
                 setCurrentTabIndex(index);
@@ -48,15 +59,16 @@ const App = ({
                     position: 'relative',
                 }}
             >
-                <TabList borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} >
+                <TabList borderBottom={'1px solid rgba(0, 0, 0, 0.06)'} padding={"0 24px "} >
                     <Tab>My Validators</Tab>
                     <Tab>Activity</Tab>
                 </TabList>
                 <Box 
                     top = {{ base: '-120%', lg: '-50%' }}
                     width = {{ base: '100%', lg: 'auto' }}
+                    transform = {{ base: 'translateX(12px) translateY(-10%)', lg: 'translateY(10%)' }}
                     justifyContent = {{ base: 'center', lg: 'flex-end' }}
-                    px = {{ base: '12px', lg: '0' }}
+                    px = {{ base: '20px', lg: '0' }}
                     
                     style={{ 
                         display: 'flex', 
@@ -83,10 +95,12 @@ const App = ({
                     ) : (
                         <Box 
                             width = {{ base: '100%', lg: '235px' , }}
+                            height = {{ base: 'auto', lg: 'auto' }}
+                            backgroundColor="transparent"
                         >
                             <DatePicker 
                                 value={ selectDateRange }
-                                isDisabled={ disableSelectDateRange }
+                                isDisabled={ false }
                                 setValue={ (v: any) => {
                                     console.log('date range', v);
                                     setSelectDateRange(v);
@@ -102,6 +116,11 @@ const App = ({
                     <MyValidatorsTable 
                         searchTerm={ searchTerm }
                         handleStake={ handleStake }
+                        randomKey={ randomKey }
+                        callback={ () => {
+                            requestMyStakingInfo();
+                            requestMyStakingTableList();
+                        }}
                     />
                 </TabPanel>
                 <TabPanel>

@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { useMemo , useEffect} from 'react';
-import { Box, Flex, Button , Grid, Text } from '@chakra-ui/react';
+import { Box, Flex, Button , Portal, Text } from '@chakra-ui/react';
 import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
 
 
 const CustomMenuItem = (props: any) => {
-    const { children, disabled, onClick , ...rest } = props;
+    const { children, onClick , disabled , _hover,  ...rest } = props;
     return (
         <MenuItem
             {...rest}
@@ -19,7 +19,9 @@ const CustomMenuItem = (props: any) => {
                 }
                 onClick && onClick(e);
             }}
-            cursor={disabled ? 'not-allowed' : 'pointer'}
+            zIndex={ 1999 }   
+            _hover={ disabled ? {} : _hover || { backgroundColor: '#FFCBEC', opacity: 0.9 }}
+            cursor={ disabled ? 'not-allowed' : 'pointer'}
             opacity={ disabled ? 0.6 : 1}
         >
             {children}
@@ -118,6 +120,17 @@ const ActionButtonGroup = ({
         return currentRecord?.status === "Jailed";
     } , [currentRecord]);
 
+
+    const _disableStake = useMemo(() => {
+        if (!currentRecord || !currentRecord?.claimable) {
+            return true;
+        } else if (currentRecord?.status === "Unbonding" || currentRecord?.status === "Inactive") {
+            return true;
+        }
+        return false;
+    } , [currentRecord]);
+
+
     const isWalletNotConnected = useMemo(() => {
         return !WalletConnected;
     }, [WalletConnected]);
@@ -127,12 +140,11 @@ const ActionButtonGroup = ({
             return true;
         } else if (isNaN(Number(currentRecord?.claimable))) {
             return true;
-        } else if (Number(currentRecord?.claimable) < 0.00000001 ) {
+        } else if (Number(currentRecord?.claimable) < 0.0001) {
             return true;
         }
         return false;
     }, [currentRecord]);
-
 
     const _disableWithdrawAndMove = useMemo(() => {
         if (!currentRecord || !currentRecord?.myStake) {
@@ -140,14 +152,6 @@ const ActionButtonGroup = ({
         } else if (isNaN(Number(currentRecord?.myStake))) {
             return true;
         } else if (Number(currentRecord?.myStake) < 0.00000001 ) {
-            return true;
-        }
-        return false;
-    }, [currentRecord]);
-
-    const neverStaked = useMemo(() => {
-        // 连接钱包后，没有质押时，Stake可用，其余禁用
-        if (Number(currentRecord?.myStake) === 0) {
             return true;
         }
         return false;
@@ -161,6 +165,7 @@ const ActionButtonGroup = ({
             padding = { '0' }
             alignItems="center"
             justifyContent="center"
+            position="relative"
         >
             <Flex
                 width="100%"
@@ -174,14 +179,12 @@ const ActionButtonGroup = ({
                     <PlainButton
                         text={ 'Claim' }
                         onClick={ () => {
-                            if (!disableClaim) {
-                                handleClaim(validatorAddress, currentRecord);
-                                // setAvailableAmount(currentRecord?.availableAmount || '0');
-                                setCurrentAddress(validatorAddress);
-                            }
+                            setCurrentAddress(validatorAddress);
+                            handleClaim(validatorAddress, currentRecord);
+                            // setAvailableAmount(currentRecord?.availableAmount || '0');
                             setCurrentAddress(validatorAddress);
                         }}
-                        disabled={ disableClaim || isWalletNotConnected || _disableClaim || neverStaked }
+                        disabled={ disableClaim || isWalletNotConnected || _disableClaim}
                     />
                 }
                 { showStake && 
@@ -194,10 +197,10 @@ const ActionButtonGroup = ({
                                 // setAvailableAmount(currentRecord?.availableAmount || '0');
                             }
                         }}
-                        disabled={ disableStake || isWalletNotConnected || isValidatorJailed }
+                        disabled={ disableStake || isWalletNotConnected || isValidatorJailed || _disableStake}
                     />
                 }
-                <Menu placement="bottom-end" >
+                <Menu placement="bottom-end">
                     <div style={{ width: "72px" }} >
                         <MenuButton 
                             display="flex"
@@ -225,38 +228,39 @@ const ActionButtonGroup = ({
                             >More</Text>
                         </MenuButton>
                     </div>
-
-                    <MenuList width='110px' minWidth='110px' zIndex={ 1000 }
-                        fontSize="14px"
-                        fontWeight="500"
-                        lineHeight="22px"
-                        color ="#000"
-                        padding={ '4px' }
-                        fontFamily="HarmonyOS Sans"
-                    >
-                        <CustomMenuItem
-                            onClick={(e: any) => {
-                                e.stopPropagation();
-                                setCurrentAddress(validatorAddress);
-                                handleWithdraw(validatorAddress, currentRecord);
-                            }}
-                            borderRadius={"8px"}
-                            disabled={ isWalletNotConnected || _disableWithdrawAndMove || neverStaked }
-                            _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
-                            _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
-                            >Withdraw</CustomMenuItem>
-                        <CustomMenuItem
-                            onClick={(e: any) => {
-                                e.stopPropagation();
-                                handleMoveStake(validatorAddress, currentRecord);
-                                setCurrentAddress(validatorAddress);
-                            }}
-                            borderRadius={"8px"}
-                            disabled={ isWalletNotConnected || _disableWithdrawAndMove || neverStaked }
-                            _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
-                            _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
-                            >Move Stake</CustomMenuItem>
-                    </MenuList>
+                    <Portal>
+                        <MenuList width='110px' minWidth='110px' zIndex={ 1999 }
+                            fontSize="14px"
+                            fontWeight="500"
+                            lineHeight="22px"
+                            color ="#000"
+                            padding={ '4px' }
+                            fontFamily="HarmonyOS Sans"
+                        >
+                            <CustomMenuItem
+                                onClick={(e: any) => {
+                                    e.stopPropagation();
+                                    setCurrentAddress(validatorAddress);
+                                    handleWithdraw(validatorAddress, currentRecord);
+                                }}
+                                borderRadius={"8px"}
+                                disabled={ isWalletNotConnected || _disableWithdrawAndMove  }
+                                _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                                _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                                >Withdraw</CustomMenuItem>
+                            <CustomMenuItem
+                                onClick={(e: any) => {
+                                    e.stopPropagation();
+                                    handleMoveStake(validatorAddress, currentRecord);
+                                    setCurrentAddress(validatorAddress);
+                                }}
+                                borderRadius={"8px"}
+                                disabled={ isWalletNotConnected || _disableWithdrawAndMove }
+                                _hover={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                                _active={{ backgroundColor: "#FEF1F9" , color: '#FF57B7' }}
+                                >Move Stake</CustomMenuItem>
+                        </MenuList>
+                    </Portal>
                 </Menu>
             </Flex>
         </Flex>

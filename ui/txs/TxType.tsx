@@ -1,8 +1,9 @@
+/* eslint-disable */
+
+
 import React from 'react';
-
-import type { TransactionType } from 'types/api/transaction';
-
 import Tag from 'ui/shared/chakra/Tag';
+import type { TransactionType } from 'types/api/transaction';
 
 export interface Props {
   types: Array<TransactionType>;
@@ -62,12 +63,43 @@ const TxType = ({ types, isLoading }: Props) => {
     default:
       label = 'Transaction';
       colorScheme = 'purple';
+  }
 
+
+  let _prop = { };
+
+  if (colorScheme === 'blue') {
+    _prop = {
+      background: "var(--decorative-blue-5, #EEF8FB)",
+      border: " 1px solid var(--decorative-blue-5, #EEF8FB)",
+      color: 'var(--decorative-blue, #41AFB7)',
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      fontFamily: 'Outfit',
+      fontStyle: 'normal',
+      lineHeight: 'normal',
+    }
+  } else {
+    _prop = {
+      colorScheme : colorScheme,
+    }
+  }
+
+  const textStyle = {
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      fontFamily: 'Outfit',
+      fontStyle: 'normal',
+      lineHeight: 'normal',
   }
 
   return (
-    <Tag colorScheme={ colorScheme } isLoading={ isLoading }>
-      { label }
+    <Tag  px='0.5rem'  borderRadius='9999px'   height={"1.437rem"}
+          isLoading={ isLoading } { ..._prop } margin={0} py={0} 
+          display="inline-flex" alignItems="center">
+      <span style={ textStyle }>
+        { label }
+      </span>
     </Tag>
   );
 };

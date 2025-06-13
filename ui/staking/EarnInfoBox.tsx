@@ -2,6 +2,18 @@
 import { Flex, Text, Box } from '@chakra-ui/react';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import WithTipsText from 'ui/staking/WithTipsText';
+import truncateTokenAmountWithComma from 'ui/staking/truncateTokenAmountWithComma';
+
+
+const EarningFormat = (value: number ) => {
+    if ( value === 0) {
+        return "0.00";
+    } else if ( value < 0.01 ) {
+        return "<0.01";
+    } else  {
+        return value.toFixed(2);
+    }
+}
 
 const LabelAndValue = (props: {
     label: string | number | React.ReactNode;
@@ -49,7 +61,7 @@ const EarnInfoBox = (props: {
     const { apr , amount = "0.00" } = props;
     const yearlyEarnings = ( Number(apr) * Number(amount));
     const monthlyEarnings = ( yearlyEarnings / 12 );
-    const dailyEarnings = ( yearlyEarnings / 365 );
+    const dailyEarnings = ( yearlyEarnings / 360 );
     
 
     return (
@@ -97,9 +109,9 @@ const EarnInfoBox = (props: {
                 gap="8px"
                 marginTop="12px"
             >
-                <LabelAndValue label="Yearly Earnings" value={ yearlyEarnings.toFixed(4) } />
-                <LabelAndValue label="Monthly Earnings" value={ monthlyEarnings.toFixed(4) } />
-                <LabelAndValue label="Daily Earnings" value={ dailyEarnings.toFixed(4) } />
+                <LabelAndValue label="Yearly Earnings" value={ truncateTokenAmountWithComma(yearlyEarnings) } />
+                <LabelAndValue label="Monthly Earnings" value={  truncateTokenAmountWithComma(monthlyEarnings) } />
+                <LabelAndValue label="Daily Earnings" value={  truncateTokenAmountWithComma(dailyEarnings) } />
             </Flex>
         </Box>
     );

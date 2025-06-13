@@ -23,8 +23,8 @@ const ChartArea = ({ id, xScale, yScale, color, data, noAnimation, ...props }: P
   const defaultGradient = {
     // startColor: useToken('colors', useColorModeValue('blue.100', 'blue.400')),
     // stopColor: useToken('colors', transparentize(useColorModeValue('blue.100', 'blue.400'), 0)(theme)),
-    startColor: useToken('colors', useColorModeValue('#C15E97', '#C15E97')),
-    stopColor: useToken('colors', transparentize(useColorModeValue('#C15E97', '#C15E97'), 0)(theme)),
+    startColor: useToken('colors', useColorModeValue('#D940A4', '#D940A4')),
+    stopColor: useToken('colors', transparentize(useColorModeValue('#D940A4', '#D940A4'), 0)(theme)),
   };
 
   React.useEffect(() => {

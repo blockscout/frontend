@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Box,
   Flex,
@@ -13,8 +15,8 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import { currencyUnits } from 'lib/units';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import AddressFromToCompact from 'ui/shared/address/AddressFromToCompact';
+import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
@@ -25,6 +27,37 @@ import TxType from 'ui/txs/TxType';
 type Props = {
   tx: Transaction;
   isLoading?: boolean;
+};
+
+
+const txIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width={18} height={20} viewBox="0 0 18 20" fill="none">
+      <path d="M9 19L17 14.5V5.5L9 1L1 5.5V14.5L9 19ZM9 19V10.5625M9 10.5625L1.49445 6.0625M9 10.5625L16.5056 6.0625" stroke="#B0B0B0" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+
+)
+
+const getShortHash = (hash: string) => {
+  if (!hash) return '';
+  return `${hash.slice(0, 6)}...${hash.slice(-4)}`;
+}
+
+const txhashStyle = {
+    color: '#D940A4',
+    fontFamily: 'Outfit',
+    fontSize: '1.125rem',
+    fontStyle: 'normal',
+    fontWeight: "600 !important",
+    lineHeight: 'normal',
+};
+
+const timeagoStyle = {
+  color: '#B0B0B0',
+  fontFamily: 'Outfit',
+  fontSize: '0.75rem',
+  fontStyle: 'normal',
+  fontWeight: 400,
+  lineHeight: 'normal',
 };
 
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
@@ -59,41 +92,68 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
             mt="7px"
             mb="3px"
           >
-            <TxEntity
+            {/* <TxEntity
               isLoading={ isLoading }
-              hash={ tx.hash }
-              fontWeight="700"
-            />
+              hash={  }
+              
+              fontWeight={ 600 }
+              color="#D940A4"
+              fontSize="1.125rem"
+              fontFamily="Outfit"
+              fontStyle="normal"
+              lineHeight="normal"
+              noIcon = { true}
+            /> */}
+            <TxEntity.Container>
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '1.5rem',
+                height: '1.5rem',
+                marginRight: '0.56rem',
+              }}>
+                { txIcon }
+              </span>
+              <TxEntity.Link
+                isLoading={ isLoading }
+                hash={ tx.hash}
+              >
+                <TxEntity.Content
+                  hash={ tx.hash}
+                  text={ getShortHash(tx.hash) }
+                  { ...txhashStyle }
+                />
+              </TxEntity.Link>
+            </TxEntity.Container>
             <TimeAgoWithTooltip
               timestamp={ tx.timestamp }
               enableIncrement
               isLoading={ isLoading }
-              color="text_secondary"
-              fontWeight="400"
-              fontSize="sm"
+              { ...timeagoStyle }
               flexShrink={ 0 }
               ml={ 2 }
             />
           </Flex>
         </Box>
       </Flex>
-      <AddressFromTo
+      <AddressFromToCompact
         from={ tx.from }
         to={ dataTo }
+        noIcon = { true }
         isLoading={ isLoading }
-        mode="compact"
       />
-      <Flex flexDir="column">
+      <Flex flexDir="column" gap="0.44rem">
         { !config.UI.views.tx.hiddenFields?.value && (
-          <Skeleton isLoaded={ !isLoading } my="3px">
-            <Text as="span" whiteSpace="pre">Value </Text>
-            <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
+          <Skeleton isLoaded={ !isLoading }>
+            <Text as="span" whiteSpace="pre" className="latest-tx-item-value-label">Value </Text>
+            <Text as="span" variant="secondary" className="latest-tx-item-value-value">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
           </Skeleton>
         ) }
         { !config.UI.views.tx.hiddenFields?.tx_fee && (
-          <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre" my="3px">
-            <Text as="span">Fee </Text>
-            <TxFee tx={ tx } accuracy={ 5 } color="text_secondary"/>
+          <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre">
+            <Text as="span"  className="latest-tx-item-fee-label">Fee </Text>
+            <TxFee tx={ tx } accuracy={ 5 } className="latest-tx-item-fee-value" color="text_secondary"/>
           </Skeleton>
         ) }
       </Flex>

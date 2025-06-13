@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
@@ -11,6 +13,26 @@ import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
 import ChainIndicatorItem from './ChainIndicatorItem';
 import useFetchChartData from './useFetchChartData';
 import INDICATORS from './utils/indicators';
+
+
+const titleStyle = {
+  fontFamily: 'Outfit',
+  fontSize: '1rem',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  lineHeight: 'normal',
+  color: 'var(--text-primary, #170811)',
+};
+
+const textStyle = {
+    fontFamily: 'Outfit',
+    fontSize: '2rem',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    lineHeight: 'normal',
+    color: 'var(--text-primary, #170811)',
+}
+
 
 const indicators = INDICATORS
   .filter(({ id }) => config.UI.homepage.charts.includes(id))
@@ -38,7 +60,9 @@ const ChainIndicators = () => {
     },
   });
 
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
+  // const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
+
+  const bgColor = '#f4f4f4'; // Fallback color, replace with your desired color
 
   if (indicators.length === 0) {
     return null;
@@ -54,9 +78,9 @@ const ChainIndicators = () => {
     }
 
     return (
-      <Text fontWeight={ 700 } fontSize="30px" lineHeight="36px">
+      <span style={ textStyle }>
         { indicator?.value(statsQueryResult.data) }
-      </Text>
+      </span>
     );
   })();
 
@@ -94,12 +118,14 @@ const ChainIndicators = () => {
     >
       <Flex flexGrow={ 1 } flexDir="column">
         <Flex alignItems="center">
-          <Text fontWeight={ 500 }>{ indicator?.title }</Text>
+          <span style = { titleStyle }>
+            { indicator?.title }
+          </span>
           { indicator?.hint && <Hint label={ indicator.hint } ml={ 1 }/> }
         </Flex>
-        <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end">
-          { valueTitle }
-          { valueDiff }
+        <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end" >
+          <Text { ...textStyle} as="span"> { valueTitle }</Text>
+          <Text { ...textStyle} as="span">{ valueDiff }</Text>
         </Flex>
         <ChainIndicatorChartContainer { ...queryResult }/>
       </Flex>

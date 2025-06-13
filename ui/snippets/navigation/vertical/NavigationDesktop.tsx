@@ -67,6 +67,7 @@ const NavigationDesktop = () => {
       py={ 12 }
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
+      bgColor="#f4f4f4"
       // onClick={ handleContainerClick }
     >
       <TestnetBadge position="absolute" w="49px" top="34px"/>

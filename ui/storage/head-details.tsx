@@ -190,7 +190,7 @@ const Page = (props: HeadProps) => {
                   p="12px 0"
                   fontWeight="500"
                   fontSize="12px"
-                  color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#C15E97' }
+                  color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#D940A4' }
                   textAlign="right"
                 >
                   {
@@ -201,12 +201,12 @@ const Page = (props: HeadProps) => {
                             { values.value }
                           </NextLink>
                           <IconSvg
-                            color={ (creatorFlag && key === 'Creator') || (ownerFlag && key === 'Owner') ? '#C15E97' : 'rgba(0, 0, 0, .4)' }
+                            color={ (creatorFlag && key === 'Creator') || (ownerFlag && key === 'Owner') ? '#D940A4' : 'rgba(0, 0, 0, .4)' }
                             cursor="pointer"
                             ml="4px"
                             onClick={ copyAddress(values.value, key) }
                             name="copyAddress"
-                            _hover={{ color: '#C15E97' }}
+                            _hover={{ color: '#D940A4' }}
                             w="14px"
                             h="14px">
                           </IconSvg>
@@ -292,7 +292,7 @@ const Page = (props: HeadProps) => {
                                               marginLeft="48px"
                                               w="14px"
                                               h="14px"
-                                              color="#C15E97"
+                                              color="#D940A4"
                                               name="copyAddress">
                                             </IconSvg>
                                           </Flex>
@@ -311,7 +311,7 @@ const Page = (props: HeadProps) => {
                                   <Box
                                     fontWeight="500"
                                     fontSize="12px"
-                                    color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#C15E97' }
+                                    color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#D940A4' }
                                     textAlign="right"
                                     justifyItems="right"
                                     display="flex"

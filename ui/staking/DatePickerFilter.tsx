@@ -57,7 +57,13 @@ const DatePickerFilter = ({
 
 
     const handleChange = (val: any) => {
-        setDates(val);
+        if(!val) {
+            // clear 
+            setValue([null, null]);
+            setShouldClose(true);
+        } else {
+            setDates(val);
+        }
         setOpen(false);
     };
 
@@ -78,7 +84,7 @@ const DatePickerFilter = ({
 
 
     return (
-        <div className="date-picker-filter" style={{ width: '100%', height: 'auto', transform: 'translateY(-16px)'}}>
+        <div className="date-picker-filter" style={{ width: '100%', height: 'auto'}}>
             <ConfigProvider
                 theme={{
                 token: {
@@ -92,7 +98,7 @@ const DatePickerFilter = ({
                         e.stopPropagation();
                         setOpen(true);
                     }}
-                    style={{ width: '100%', height: 'auto', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '16px'}}>
+                    style={{ width: '100%', height: 'auto', display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
                     <DatePicker 
                         style={{ width: '100%', height: '42px', 
                             borderRadius: 9999, border: '1px solid rgba(0, 46, 51, 0.10)',
@@ -102,6 +108,7 @@ const DatePickerFilter = ({
                         className="stake-date-picker"
                         showNow={false}
                         value={value}
+                        allowEmpty={[true, true]}
                         disabled={isDisabled}
                         open={open}
                         separator = {
@@ -116,7 +123,7 @@ const DatePickerFilter = ({
                         format="YYYY.MM.DD"
                         prefix= { icon_calendar }
                         suffixIcon={ null } 
-                        placeholder={['Start Date', 'End Date']}
+                        placeholder={['From Date', 'End Date']}
                         renderExtraFooter={() => (
                             <Flex 
                                 justifyContent='flex-end'

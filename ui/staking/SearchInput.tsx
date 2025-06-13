@@ -85,7 +85,7 @@ const FilterInput = (props: Props) => {
           fontStyle="normal"
           lineHeight="140%"
           fontFamily="HarmonyOS Sans"
-          _focusVisible={{ borderColor: '#C15E97 !important' }}
+          _focusVisible={{ borderColor: '#D940A4 !important' }}
           placeholder={ `Search for Validators` }
           _placeholder={{
             fontSize: '12px',
@@ -107,7 +107,7 @@ const FilterInput = (props: Props) => {
             cursor="pointer"
             onClick={ clearSearch }
           >
-            <IconSvg border="1px solid #FF57B7" borderRadius="50%" color="#C15E97" w="16px" h="16px" name="cross"/>
+            <IconSvg border="1px solid #FF57B7" borderRadius="50%" color="#D940A4" w="16px" h="16px" name="cross"/>
           </InputRightElement>
         )
       }

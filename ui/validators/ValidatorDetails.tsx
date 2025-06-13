@@ -4,6 +4,7 @@ import ValidatorInfoBox from 'ui/validators/ValidatorInfoBox';
 import ValidatorBox from 'ui/validators/ValidatorBox';
 import { useRouter } from 'next/router';
 import { Text } from '@chakra-ui/react';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
 import { Avatar } from '@chakra-ui/react';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -13,6 +14,23 @@ import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import { Flex, Box, Tooltip } from '@chakra-ui/react';
 import { IconButton, useClipboard,} from '@chakra-ui/react';
 
+const getShortAddress = (address: string) => {
+    if (!address) return '';
+    const maxLength = 8; // 设置最大长度
+    if (address.length <= maxLength) {
+        return address;
+    }
+    return address.slice(0, maxLength) + '...' + address.slice(-4);
+}
+
+const getShortValidatorName = (name: string) => {
+    if (!name) return '';
+    const maxLength = 20; // 设置最大长度
+    if (name.length <= maxLength) {
+        return name;
+    }
+    return name.slice(0, maxLength) + '...';
+}
 
 const copyIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -71,6 +89,10 @@ const ValidatorDetails = () => {
     const addr = getQueryParamString(router.query.addr);
     const { serverUrl : url } = useStakeLoginContextValue();
 
+    const isMobile = useIsMobile();
+
+    const [ validatorName , setValidatorName ] = React.useState('');
+
     const [ isDetailInfoLoading, setIsDetailInfoLoading ] = React.useState(false);
     const [ isDelegatorsInfoLoading, setIsDelegatorsInfoLoading ] = React.useState(false);
 
@@ -113,8 +135,10 @@ const ValidatorDetails = () => {
                     blocksValidated,
                     liveApr,
                     validatorRewards,
+                    validatorName,
                     delegatorRewards
                 } = res.data;
+                setValidatorName(validatorName);
                 setOverViewInfo({
                     validator: validator,
                     status: status,
@@ -122,6 +146,7 @@ const ValidatorDetails = () => {
                     commissionRate: commissionRate,
                     validatorStake: validatorStake,
                     uptime: uptime,
+                    validatorRewards: validatorRewards,
                     blocksValidated: blocksValidated,
                     liveApr: liveApr,
                     delegatorRewards: delegatorRewards,
@@ -152,7 +177,21 @@ const ValidatorDetails = () => {
     return (
         <div>
             <Flex align="center" marginBottom="24px">
-                <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
+                <Box
+                    as ="span"
+                    _hover ={{ cursor: 'pointer' , backgroundColor: 'rgba(0, 0, 0, 0.07)' }}
+                    display="flex"
+                    alignItems="center"
+                    borderRadius={"4px"}
+                    paddingLeft={"2px"}
+                    justifyContent="center"
+                    width="auto"
+                    height="auto"
+                    marginRight="8px"
+                    onClick={ routerFallback() }
+                >
+                    <IconSvg cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
+                </Box>
                 <PageTitle marginBottom="0" title="Validator Detail" withTextAd/>
             </Flex>
             <Tooltip
@@ -161,8 +200,10 @@ const ValidatorDetails = () => {
                 padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                     <Flex 
                         alignItems="center"
-                        justifyContent={{ base: 'flex-start', md: 'space-between' }}
-                        direction={{ base: 'column', md: 'row' }}
+                        justifyContent={'space-between'}
+                        direction="row"
+                        flexWrap="nowrap"
+                        width="100%"
                         marginBottom="20px"
                         marginTop="24px"
                     >
@@ -170,25 +211,24 @@ const ValidatorDetails = () => {
                             as="span"
                             alignItems="center"
                             justifyContent={{ base: 'flex-start', md: 'center' } }
-                            width={{ base: '100%', md: 'auto' }}
+                            width= "auto"
                             height="auto"
                         >
                             <Flex
                                 flexDirection="row"
-                                justifyContent= {{ base: 'flex-start', md: 'center' } }
+                                justifyContent= {'center' }
                                 alignItems="center"
-                                width= {{ base: '100%', md: 'auto' }}
+                                width= {'auto' }
                                 height="auto"
                                 gap="8px"
+                                as ="span"
+                                _hover={{ cursor: 'pointer' } }
                             >
-                                <Avatar
-                                    name="MOCA"
+                                <img
                                     src="/static/moca-brand.svg"
-                                    size='2xs'
                                     width="32px"
                                     height="32px"
-                                    borderRadius="full"
-                                    marginRight="4px"
+                                    style={{ borderRadius: '50%', marginRight: "4px" , flexShrink: 0}}
                                 />
                                 <Text 
                                     fontSize="20px"
@@ -201,7 +241,7 @@ const ValidatorDetails = () => {
                                     textTransform="capitalize"
                                     userSelect="none"
                                     as ="span"
-                                > Validator </Text>
+                                > { getShortValidatorName(validatorName) } </Text>
                             </Flex>
                         </Text>
                         <Text
@@ -214,7 +254,7 @@ const ValidatorDetails = () => {
                             as={'span'}
                             textTransform="capitalize"
                         >
-                            { addr}
+                            { isMobile ? getShortAddress(addr) : addr }
                             <Tooltip label= { copied ? 'Copied' : 'Copy' } placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                                 <IconButton
                                     aria-label="copy"

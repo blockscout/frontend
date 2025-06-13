@@ -327,19 +327,19 @@ export default function useNavItems(): ReturnType {
     const mainNavItems: ReturnType['mainNavItems'] = [
       {
         text: 'Explorer',
-        icon: 'navitems/globe-b',
+        icon: 'navitems/icon_explorer_new',
         isActive: blockchainNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: blockchainNavItems,
       },
       {
         text: 'Storage',
-        icon: 'navitems/storage',
+        icon: 'navitems/icon_storage_new',
         isActive: storageNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: storageNavItems,
       },
       {
         text: 'Credentials',
-        icon: 'navitems/credentials',
+        icon: 'navitems/icon_credentials_new',
         isActive: credentialsNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: credentialsNavItems,
       },
@@ -351,7 +351,7 @@ export default function useNavItems(): ReturnType {
       },
       {
         text: 'Faucet',
-        icon: 'navitems/faucet',
+        icon: 'navitems/icon_faucet_new',
         nextRoute: { pathname: '/faucet' as const },
         isActive: pathname.startsWith('/faucet'),
       },
@@ -373,7 +373,7 @@ export default function useNavItems(): ReturnType {
       config.features.stats.isEnabled ? {
         text: 'Charts & stats',
         nextRoute: { pathname: '/stats' as const },
-        icon: 'navitems/stats',
+        icon: 'navitems/icon_chart_new',
         isActive: pathname === '/stats',
         // icon: 'stats',
         // isActive: pathname.startsWith('/stats'),
@@ -386,7 +386,7 @@ export default function useNavItems(): ReturnType {
       // },
       {
         text: 'Other',
-        icon: 'navitems/gear',
+        icon: 'navitems/icon_others',
         isActive: otherNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: otherNavItems,
       },

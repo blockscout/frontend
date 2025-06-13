@@ -53,11 +53,16 @@ const PlainButton = ({
             display="flex"
             alignItems="center"
             justifyContent="center"
-            _hover={{ backgroundColor: disabledBgColor , opacity: 0.8 }}
+            _hover={{ opacity: 0.7 }}
             width={ width }
             height={ height }
             variant='solid'
             padding = { '4px 20px' }
+            _active={ disabled ? {
+                backgroundColor: disabledBgColor,
+            } : {
+                opacity: 0.8,
+            }}
             backgroundColor = { disabled ? disabledBgColor : bgColor }
             cursor={ disabled ? 'not-allowed' : 'pointer' }
             borderRadius={9999}

@@ -6,16 +6,16 @@ import { Button, Text } from '@chakra-ui/react';
 
 const PlainButton = ({ text, onClick, disabled = false} : {
     text: string,
-    onClick?: () => void,
+    onClick?: (event?: React.MouseEvent<HTMLButtonElement>) => void,
     disabled?: boolean
 }) => {
     return (
         <Button
-            onClick={ () => {
+            onClick={ (e) => {
                 if (disabled) {
                     return;
                 }
-                onClick && onClick();
+                onClick && onClick(e);
             }}
             py = "4px"
             display="flex"

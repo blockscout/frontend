@@ -47,7 +47,7 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
       >
         <DrawerOverlay/>
         <DrawerContent maxWidth="330px">
-          <DrawerBody p={ 6 } display="flex" flexDirection="column">
+          <DrawerBody p={ 6 } display="flex" flexDirection="column" background="#f4f4f4">
             <TestnetBadge alignSelf="flex-start"/>
             <Flex alignItems="center" justifyContent="space-between">
               <NetworkLogo onClick={ handleNetworkLogoClick }/>

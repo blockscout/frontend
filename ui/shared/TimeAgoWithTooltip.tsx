@@ -13,7 +13,7 @@ type Props = {
 };
 
 const TimeAgoWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncrement, className }: Props) => {
-  const timeAgo = useTimeAgoIncrement(timestamp || '', enableIncrement && !isLoading);
+  const timeAgo = (useTimeAgoIncrement(timestamp || '', enableIncrement && !isLoading) || '').replace('ago', '').trim();
   if (!timestamp && !fallbackText) {
     return null;
   }

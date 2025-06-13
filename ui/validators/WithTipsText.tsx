@@ -17,9 +17,9 @@ const WithTipsText = ({
     const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
 
     return (
-        <Box fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)">
+        <Box fontWeight="400" color="rgba(0, 0, 0, 0.4)">
             <Box display="flex" alignItems="center" justifyContent="flex-start" width="auto">
-                <span style={{ marginRight: '2px' }}>
+                <span style={{ marginRight: '2px', fontSize: '12px' }}>
                     { label }
                 </span>
                 <Tooltip 
@@ -39,7 +39,6 @@ const WithTipsText = ({
                             color="rgba(0, 0, 0, 0.60)"
                             lineHeight="16px"
                             fontStyle="normal"
-                            textTransform="capitalize"
                             fontFamily="HarmonyOS Sans"
                             as="div"
                         >

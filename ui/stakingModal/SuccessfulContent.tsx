@@ -102,7 +102,6 @@ const SuccessfulContent = ({
     const router = useRouter();
 
     const handleViewTransaction = () => {
-        console.log('handleViewTransaction', txhash);
         if (txhash) {
             router.push({ pathname: '/tx/[hash]', query: { hash: txhash } });
         }

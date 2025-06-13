@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
@@ -41,7 +43,7 @@ const ChartWidgetGraph = ({
   zoomRange,
 }: Props) => {
   const isMobile = useIsMobile();
-  const color = useToken('colors', '#C15E97');
+  const color = useToken('colors', '#D940A4');
   const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
 
   const overlayRef = React.useRef<SVGRectElement>(null);
@@ -97,14 +99,14 @@ const ChartWidgetGraph = ({
           noAnimation
         />
 
-        <ChartArea
+        {/* <ChartArea
           id={ chartId }
           data={ displayedData }
           color={ color }
           xScale={ axes.x.scale }
           yScale={ axes.y.scale }
           noAnimation={ noAnimation }
-        />
+        /> */}
 
         <ChartLine
           data={ displayedData }

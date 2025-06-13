@@ -44,9 +44,6 @@ const App  = ({
             justifyContent="center"
             alignItems="center"
             onClick={() => {
-                if (isPrevDisabled) {
-                    return;
-                }
                 onJumpPrevPage();
             }}
         >
@@ -82,9 +79,6 @@ const App  = ({
             opacity={ isNextDisabled ? 0.4 : 1}
             alignItems="center"
             onClick={() => {
-                if (isNextDisabled) {
-                    return;
-                }
                 onJumpNextPage();
             }}
         >

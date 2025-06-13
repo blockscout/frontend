@@ -37,6 +37,8 @@ const Selector = ({
     isOpen,
     onToggle,
     onClose,
+    isMyValidatorLoading = false,
+    isAllValidatorLoading = false,
 }: {
     myValidatorsList: any[];
     allValidatorsList: any[];
@@ -45,6 +47,8 @@ const Selector = ({
     isOpen: boolean;
     onToggle: () => void;
     onClose: () => void;
+    isMyValidatorLoading?: boolean;
+    isAllValidatorLoading?: boolean;
 }) => {
 
     return (
@@ -60,6 +64,7 @@ const Selector = ({
                         showArrow={true}
                         liveApr={ (Number(selectedValidator.liveApr || 0) * 100).toFixed(2) + '%' }
                         isFocused={ isOpen }
+                        validatorItem={selectedValidator}
                         validatorName={ getShortAddress(selectedValidator.validatorAddress) }
                         validatorAvatar={null}
                         onClick={onToggle}
@@ -81,6 +86,8 @@ const Selector = ({
                         myValidatorsList={myValidatorsList}
                         allValidatorsList={allValidatorsList}
                         onClose ={ onClose }
+                        isMyValidatorLoading={isMyValidatorLoading}
+                        isAllValidatorLoading={isAllValidatorLoading}
                         setSelectedValidator={ (validator: any) => {
                             setSelectedValidator(validator);
                         }}
@@ -101,6 +108,8 @@ const StakingValidatorSelect = ({
     onToggle,
     onClose,
     setApr,
+    isMyValidatorLoading,
+    isAllValidatorLoading,
 }: {
     myValidatorsList: any[];
     allValidatorsList: any[];
@@ -111,6 +120,8 @@ const StakingValidatorSelect = ({
     onToggle: () => void;
     onClose: () => void;
     setApr: (apr: number | string) => void;
+    isMyValidatorLoading?: boolean;
+    isAllValidatorLoading?: boolean;
 }) => {
 
 
@@ -120,6 +131,8 @@ const StakingValidatorSelect = ({
                 myValidatorsList={myValidatorsList}
                 allValidatorsList={allValidatorsList}
                 selectedValidator={selectedValidator}
+                isMyValidatorLoading = { isMyValidatorLoading }
+                isAllValidatorLoading = { isAllValidatorLoading }
                 setSelectedValidator={(validator: any) => {
                     setSelectedValidator(validator);
                     setApr(validator?.liveApr);

@@ -1,11 +1,14 @@
 /* eslint-disable */
-import { Table, Tbody, Thead , Flex, TableContainer, Tr, Th,  Td } from '@chakra-ui/react';
+import { Flex, Avatar, Tr, Th,  Td } from '@chakra-ui/react';
+import { Table } from 'antd';
+import { useRouter } from 'next/router';
 import { Box, useDisclosure } from '@chakra-ui/react';
 import useAccount from 'lib/web3/useAccount';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import { route } from 'nextjs-routes';
-import React, { useEffect } from 'react';
+import React, { useEffect , useMemo } from 'react';
 import { orderBy } from 'lodash';
+import { useAppKit, createAppKit } from '@reown/appkit/react';
 import EmptyPlaceholder from 'ui/staking/EmptyPlaceholder';
 import StatusButton from 'ui/validators/StatusButton';
 import WithTipsText from 'ui/validators/WithTipsText';
@@ -20,10 +23,36 @@ import { parseUnits} from 'ethers';
 import isTxConfirmed from 'ui/staking/TransactionConfirmed';
 import { formatUnits } from 'viem';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
-import FloatToPercent from 'ui/validators/FloatToPercent';
+import formatPercentTruncated from 'ui/staking/formatPercentTruncated';
 import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import styles from 'ui/staking/spinner.module.css';
 
+
+
+const numberTypeFields = [
+    'votingPower',
+    'commissionRate',
+    'liveApr',
+    'totalStake',
+    'uptime',
+];
+
+
+const  ValidatorInfoBox = ({ record } : { record: any }) => {
+    return (
+        <Flex flexDirection="row" alignItems="center" gap="8px" width="100%">
+            <Box width="20px" flexShrink={0} height="20px" display="flex" justifyContent="center" alignItems="center">
+                <img
+                    src="/static/moca-brand.svg"
+                    width="20px"
+                    height="20px"
+                    style={{ borderRadius: '50%', flexShrink: 0}}
+                />
+            </Box>
+            <span>{record.validatorName}</span>
+        </Flex>
+    );
+}
 
 type unsignedTx = {
     to: string;
@@ -46,10 +75,8 @@ type tableHeadType = {
     sortOrder?: string;
 }
 
-
-
-
 type sortOrderType = 'asc' | 'desc' | '';
+type ValidatorStatus = 'Active' | 'Inactive' | 'Jailed' | 'Unbonding' ; 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
 const icon_asc = (
@@ -84,6 +111,7 @@ const getShortAddress = (address: string) => {
     return address;
 }
 
+const noop = () => {};
 
 const CustomTableHeader = ({
     selfKey,
@@ -121,22 +149,7 @@ const CustomTableHeader = ({
         }
     };
 
-    const w = width || 'auto';
-    const _w = width || '200px'; 
-    const _minWidth = minWidth || '180px';
-
     return (
-        <Th
-            _first={{ p: "4px 10px 10px 10px" }}
-            color="rgba(0, 0, 0, 0.6)"
-            p="4px 10px 10px 10px"
-            bg="#FFFF"
-            borderBottom="1px"
-            borderColor="rgba(0, 0, 0, 0.1)"
-            width={{ base: _w , lg: w }}
-            minWidth={_minWidth}
-            flexShrink={ 0 }
-        >
             <Flex
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -144,8 +157,15 @@ const CustomTableHeader = ({
                 width="100%"
                 userSelect={'none'}
                 gap="2px" 
+                onClick={ allowSort ? handleSort : noop }
             >
-                <span style={{ color: 'rgba(0, 0, 0, 0.40)' }}>
+                <span 
+                    style={{ 
+                        color: 'rgba(0, 0, 0, 0.40)',
+                        fontSize: '12px'
+                    }} 
+                    className="node-staking-custom-table-header-text"
+                >
                     { children }
                 </span>
                 { allowSort && (
@@ -157,7 +177,6 @@ const CustomTableHeader = ({
                         width="12px"
                         height="12px"
                         cursor="pointer"
-                        onClick={handleSort}
                     >
                         { (sortOrder === 'asc' && selfKey === sortKey) && icon_asc }
                         { (sortOrder === 'desc' && selfKey === sortKey) && icon_desc }
@@ -165,7 +184,6 @@ const CustomTableHeader = ({
                     </Box>
                 )}
             </Flex>
-        </Th>
     );
 }
 
@@ -183,7 +201,7 @@ const TableApp = (props: {
 }) => {
 
     const {
-        data,
+        data , 
         isLoading,
         currentPage,
         searchTerm,
@@ -211,7 +229,23 @@ const TableApp = (props: {
     const { data: walletClient } = useWalletClient();
     const publicClient = usePublicClient();
 
+    const router = useRouter();
+    const { address: userAddr } = useAccount();
+
+
+
+    const { data: balanceData, refetch: refetchBalance } = useBalance({ address: userAddr});
+    const [ availableAmount, setAvailableAmount ] = React.useState<string>('0.00');
+
+    useEffect(() => {
+        if (balanceData && !!balanceData.value) {
+            const formattedBalanceStr = formatUnits(balanceData.value, 18);
+            setAvailableAmount(formattedBalanceStr);
+        }
+    }, [userAddr , balanceData]);
+
     const [ transactionHash, setTransactionHash ] = React.useState<string>('');
+    
     const handleCloseModal = () => {
         setCurrentTxType('Withdraw');
         setModalTitle('Withdraw');
@@ -222,25 +256,72 @@ const TableApp = (props: {
     }
 
 
-    const handleRowClick = (item: any) => { }
+    const { open: openModal } = useAppKit();
+
+    const handleRowClick = (item: any) => { 
+        const { validator } = item;
+        router.push({
+            pathname: '/validator-detail/[addr]',
+            query: { addr: validator}
+        });
+    }
+
+    const statusOrder = {
+        "Active": 1,
+        "Jailed": 2,
+        "Unbonding": 3,
+        "Inactive": 4,
+    };
+
+
+    const orderFn = (item: any, key: string) => {
+        if (numberTypeFields.includes(key)) {
+            return Number(item[key]);
+        }
+        return item[key];
+    };
 
     const sortedData = React.useMemo(() => {
-        if (sortBy && sortOrder) {
-            return orderBy(data, [sortBy], [ !sortOrder ? false : sortOrder]);
+        const statusSort = (item: { status: string; }) => {
+            const status = item.status as ValidatorStatus;
+            return statusOrder[status]; // Default to 5 if status is not found
         }
-        return data;
+
+        const defaultSortFields = [ statusSort, 'totalStake'];
+        const defaultSortOrder = [ 'asc'  , 'desc' ] as any[];
+
+        
+        
+        if (sortBy && sortOrder) {
+            return orderBy(data, 
+                [(item: any) => orderFn(item, sortBy), defaultSortFields[0], (item: any) => orderFn(item, 'totalStake')],
+                [ (!sortOrder ? false : sortOrder), defaultSortOrder[0], defaultSortOrder[1] ]
+            );
+        }
+        return  orderBy(data,
+            [defaultSortFields[0],  (item: any) => orderFn(item, 'totalStake')],
+            [defaultSortOrder[0], defaultSortOrder[1]]
+        );
     }, [data, sortBy, sortOrder]);
 
 
-
+    const formattedBalanceStr = React.useMemo(() => {
+        if (balanceData && !!balanceData.value) {
+            return formatUnits(balanceData.value, 18);
+        }
+        return '0.00';
+    }, [userAddr , balanceData]);
+    
     const handleStake = (address: string, record: any) => {
         setCurrentItem({
+            ...record,
             validatorAddress: record.validator,
             liveApr: record.liveApr,
         });
         setCurrentAddress(address);
         setModalTitle('Stake');
         setApr(record.liveApr);
+        setAvailableAmount(formattedBalanceStr);
         setCurrentTxType('Stake');
         onOpen();
     };  
@@ -261,7 +342,7 @@ const TableApp = (props: {
         //     body:  JSON.stringify(_newParam),
         // })).json() as  any;
         const res =  await axios.post(url + '/api/staking/broadcast', _newParam, {
-            timeout: 5000,
+            timeout: 10000,
             headers: {
             'Content-Type': 'application/json',
             },
@@ -272,17 +353,8 @@ const TableApp = (props: {
         });
     } , [url]);
 
-    const { address: userAddr } = useAccount();
 
-    const { data: balanceData } = useBalance({ address: userAddr});
-    const [ availableAmount, setAvailableAmount ] = React.useState<string>('0.00');
-
-    useEffect(() => {
-        if (balanceData && !!balanceData.value) {
-            const formattedBalanceStr = formatUnits(balanceData.value, 18);
-            setAvailableAmount(formattedBalanceStr);
-        }
-    }, [userAddr , balanceData]);
+    const { isConnected: WalletConnected } = useAccount();
 
     const { sendTransactionAsync } = useSendTransaction();
     
@@ -290,13 +362,11 @@ const TableApp = (props: {
 
         if (!unsignedTx) throw new Error('Unsigned transaction null or undefined');
 
-        if (!walletClient) throw new Error('Wallet client not found')
-        if (!publicClient) throw new Error('Public client not found')
-
         const _unsignedTx = {
             to: unsignedTx.to as `0x${string}`,
             data: unsignedTx.data as `0x${string}`,
-            value: currentTxType === 'Stake' ? parseUnits(amount, 18) : BigInt(0),
+            // value: currentTxType === 'Stake' ? parseUnits(amount, 18) : BigInt(0),
+            value:  BigInt(0),
             gas: BigInt(unsignedTx.gasLimit),
             gasPrice: parseUnits('20', 'gwei'),
         }
@@ -332,7 +402,7 @@ const TableApp = (props: {
             //     })).json() as  any;
 
             const res =  await axios.post(url + apiPath, param, {
-                timeout: 5000,
+                timeout: 10000,
                 headers: {
                 'Content-Type': 'application/json',
                 },
@@ -346,6 +416,7 @@ const TableApp = (props: {
                     const { unsignedTx } = res.data;
                     signAndSend(amount , unsignedTx).then((txHash: string) => {
                         setTransactionHash(txHash);
+                        refetchBalance();
                         setTransactionStage('comfirming');
                         isTxConfirmed(txHash).then((isConfirmed: boolean) => {
                             if (isConfirmed) {
@@ -355,6 +426,7 @@ const TableApp = (props: {
                                 setIsTxLoading (false);
                                 setTransactionStage('error');
                             }
+                            refetchBalance();
                         }).catch((error: any) => {
                             setTransactionStage('error');
                             setIsTxLoading (false);
@@ -391,16 +463,20 @@ const TableApp = (props: {
                             fontSize: '12px',
                             fontStyle: 'normal',
                             fontWeight: 500,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             lineHeight: 'normal',
-                            textTransform: 'capitalize',
                         }}
-                    > { getShortAddress(record.validator) } </span>
+                    >
+                        <ValidatorInfoBox record = { record } />
+                    </span>
                 </LinkInternal>
             )
         },
         {
             label: 'Voting Power',
-            tips: `Represents a node's influence in network decisions, proportional to its stake.` ,
+            tips: `The influence a validator has in network governance decisions, based on its stake.` ,
             key: 'votingPower',
             allowSort: true,
             render: (record) => (
@@ -412,10 +488,10 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >
-                    { FloatToPercent(record.votingPower) }
+                    { formatPercentTruncated(record.votingPower) }
                 </span>
             )
         },
@@ -434,10 +510,10 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >
-                    { FloatToPercent(record.commissionRate) }
+                    { formatPercentTruncated(record.commissionRate) }
                 </span>
             )
         },
@@ -455,10 +531,10 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >
-                    { FloatToPercent(record.liveApr) }
+                    { formatPercentTruncated(record.liveApr) }
                 </span>
             )
         },
@@ -470,7 +546,7 @@ const TableApp = (props: {
             render: (record) => (
                 <TableTokenAmount
                     amount = { record.totalStake }
-                    symbol = 'Moca'
+                    symbol = 'MOCA'
                 />
             )
         },
@@ -478,7 +554,7 @@ const TableApp = (props: {
             label: 'Uptime',
             key: 'uptime',
             tips: 'The reliability and availability of a validator node, shown as an uptime percentage.',
-            allowSort: false,
+            allowSort: true,
             render: (record) => (
                 <span 
                     style={{ 
@@ -488,17 +564,16 @@ const TableApp = (props: {
                         fontStyle: 'normal',
                         fontWeight: 500,
                         lineHeight: 'normal',
-                        textTransform: 'capitalize',
+                            
                     }}
                 >
-                    { FloatToPercent(record.uptime) }
+                    { formatPercentTruncated(record.uptime) }
                 </span>
             )
         },
         {
             label: 'Status',
             key: 'status',
-            tips: 'Percentage of time the node remains active and reliable',
             allowSort: false,
             render: (record) => (
                 <StatusButton
@@ -514,63 +589,92 @@ const TableApp = (props: {
             render: (record) => (
                 <StakeButton
                     text = "Stake"
-                    onClick = { () => {
+                    onClick = { (e: any) => {
+                        if  (!WalletConnected) {
+                            openModal();
+                            return;
+                        }
+                        e.stopPropagation();
+                        e.preventDefault();
                         handleStake(record.validator, record);
                         setCurrentAddress(record.validator);
                     }}
-                    disabled = { false }
+                    disabled = { record.status !== 'Active' }
                 />
             )
         }
     ];
 
-    
-
-    const tableHeaders = (
-        <Tr>
-            {tableHead.map((item: tableHeadType, index: number) => (
-                <CustomTableHeader 
-                    key={index}
+    const getColumnContent = (item: tableHeadType) => {
+        const content = (item.tips ? (
+                <WithTipsText 
+                    label={ item.label }
+                    tips={ item.tips }
+                />
+            ) : item.label);
+        if (item.allowSort === true) {
+            return (
+                <CustomTableHeader
+                    selfKey={ item.key }
                     width={ item.width }
-                    minWidth={ item.minWidth }
                     allowSort={ item.allowSort }
-                    sortKey = { sortBy }
-                    sortOrder = { sortOrder }
-                    setSort = { setSortBy }
-                    setSortOrder = { setSortOrder }
-                    selfKey = { item.key }
+                    sortKey={ sortBy }
+                    sortOrder={ sortOrder }
+                    setSort={ setSortBy }
+                    setSortOrder={ setSortOrder }
+                    minWidth={ item.minWidth }
                 >
-                    { ( item.tips ? ( 
-                        <WithTipsText 
-                            label={ item.label }
-                            tips={ item.tips }
-                        />
-                    ) : item.label ) }
+                    { content }
                 </CustomTableHeader>
-            ))}
-        </Tr>
-    );
+            );
+        }
+        return (
+            <span
+                style={{
+                    color: 'rgba(0, 0, 0, 0.40)',
+                    fontFamily: "HarmonyOS Sans",
+                    fontSize: '12px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    lineHeight: 'normal',
+                    
+                }}  
+                className="node-staking-custom-table-header-text"
+            >
+                { content }
+            </span> 
+        );
+    };
+    
+    const CustomHeaderToAntDesignTableColumns = (tableHead: tableHeadType[]) => {
+        return tableHead.map((item: tableHeadType) => ({
+            title: getColumnContent(item),
+            dataIndex: item.key,
+            key: item.key,
+            width: 'auto',
+            render: (value: any, record: any) => {
+                if (item.render) {
+                    return item.render(record);
+                }
+                return value;
+            },
+        }));
+    };
+
+    const AntDesignTableColumns = useMemo(() => {
+        return CustomHeaderToAntDesignTableColumns(tableHead);
+    }
+    , [tableHead, sortBy, sortOrder]);
 
 
-    const { isConnected: WalletConnected } = useAccount();
 
     const spinner = ( <div style={{ width: '100%', height: 'auto', display: 'flex', minHeight: '200px',
             justifyContent: 'center', alignItems: 'center', marginTop: '56px', position: 'relative'}}>
         <Box className={ styles.loader }></Box>
     </div> );
 
-    if (!WalletConnected) {
-        return (
-            <div style={{ width: '100%', height: 'auto', paddingTop: '56px', position: 'relative'}}>
-                <EmptyPlaceholder
-                    tipsTextArray={ ['Your Stake information will appear here'] }
-                    showButton={ "connect" }
-                    buttonText={ 'Connect Wallet' }
-                />
-            </div>
-        );
-    }
-    else if (isLoading) {
+
+    if (isLoading) {
         return spinner;
     }
     else if ( !!searchTerm && data.length === 0) {
@@ -587,6 +691,7 @@ const TableApp = (props: {
 
 
     return (
+    <>
         <div style={{
                 width: '100%',
                 height: 'auto',
@@ -602,33 +707,52 @@ const TableApp = (props: {
                 padding: '24px'
             }}
         >
-            <Table variant="simple">
-                <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
-                    { tableHeaders }
-                </Thead>
-                <Tbody>
-                    {sortedData.map((validator: any, index: number) => (
-                        <Tr key={index}
-                            borderBottom={'none'}
-                            _last={{ borderBottom: 'none' }} 
-                            _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
-                            onClick={() => handleRowClick(validator)}
-                        >
-                            { tableHead.map((item: tableHeadType, index: number) => (
-                                <Td
-                                    key={index}
-                                    p="14px 10px 10px 10px"
-                                    color="rgba(0, 0, 0, 0.6)"
-                                    borderBottom={'none'} _last={{ borderBottom: 'none' }} 
-                                    onClick={() => handleRowClick(validator)}
-                                >
-                                    {item.render ? item.render(validator) : validator[item.key]}
-                                </Td>
-                            ))}
-                        </Tr>
-                    ))}
-                </Tbody>
-            </Table>
+            <div style={{ overflowX: 'auto', width: '100%' }}>
+                <Table
+                    columns={AntDesignTableColumns}
+                    dataSource={ sortedData }
+                    className="node-staking-custom-table"
+                    scroll={{ x: 'auto' }}
+                    pagination={false}
+                    onRow={(record, rowIndex) => {
+                        return {
+                        onClick: (event) => {
+                            event.stopPropagation();
+                            handleRowClick(record)
+                        }}
+                    }}
+                />
+            </div>
+            <Flex
+                justifyContent="justify-between"
+                alignItems="center"
+                zIndex='200'
+                width="100%"
+                marginTop={ '16px'}
+            >
+                <span 
+                    style={{ 
+                        color: 'rgba(0, 0, 0, 0.60)',
+                        fontFamily: "HarmonyOS Sans",
+                        fontSize: '12px',
+                        fontStyle: 'normal',
+                        fontWeight: 500,
+                        visibility: 'hidden',
+                        lineHeight: 'normal',
+                        textWrap: 'nowrap',
+                    }}
+                >
+                    Total: { totalCount }
+                </span>
+                <Pagination 
+                    totalCount={ props.totalCount }
+                    currentPage={ currentPage }
+                    onJumpPrevPage={ onJumpPrevPage }
+                    onJumpNextPage={ onJumpNextPage }
+                    isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
+                    isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
+                />
+            </Flex>
             <CommonModal 
                 isOpen = { isOpen }
                 onClose = { handleCloseModal }
@@ -654,23 +778,8 @@ const TableApp = (props: {
                 setCurrentFromAddress = { setCurrentFromAddress }
                 setCurrentItem = { setCurrentItem }
             />
-            <Flex
-                justifyContent="flex-end"
-                alignItems="center"
-                zIndex='200'
-                width="100%"
-                marginTop={ '16px'}
-            >
-                <Pagination 
-                    totalCount={ props.totalCount }
-                    currentPage={ currentPage }
-                    onJumpPrevPage={ onJumpPrevPage }
-                    onJumpNextPage={ onJumpNextPage }
-                    isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
-                    isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
-                />
-            </Flex>
         </div>
+    </>
     );
 }
 

@@ -13,39 +13,74 @@ import StakingValidatorSelect from 'ui/staking/StakingValidatorSelect';
 import WithTextWrapper from 'ui/staking/WithTextWrapper';
 import FromAndToSelect from 'ui/staking/FromAndToSelect';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
-import React ,  { useCallback, useEffect } from 'react';
+import React ,  { useMemo, useCallback, useEffect } from 'react';
 import axios from 'axios';
-import styles from 'ui/staking/spinner.module.css';
+import {  useSendTransaction, useWalletClient, useBalance, usePublicClient } from 'wagmi';
+import Decimal from 'decimal.js';
 
 
-const formatNumberWithCommas  = (input: string) => {
-  if (!input) return "";
+const SetInput = ({ value , setValue, currentAmount, refetchBalance, userAddr }: {
+    value: string;
+    setValue: (value: string) => void;
+    currentAmount: string;
+    refetchBalance: () => void;
+    userAddr?: string;
+}) => {
 
-  // 移除现有逗号
-  let value = input.replace(/,/g, '');
 
-  // 校验是否为合法数字格式（可为空、小数点结尾等）
-  if (!/^[-]?\d*\.?\d*$/.test(value)) return "";
+    useEffect(() => {
+        if(currentAmount === '0.00' || currentAmount === '') {
+            setValue('');
+        } else {
+            setValue(currentAmount);
+        }
+        !!userAddr && refetchBalance();
+    }, []);
 
-  // 拆分整数和小数部分
-  let [integerPart, decimalPart = ""] = value.split(".");
 
-  // 去除整数前的多余0（保留单独的0）
-  if (integerPart) {
-    const isNegative = integerPart.startsWith("-");
-    integerPart = integerPart.replace(/^-?0+(?=\d)/, isNegative ? "-" : "");
+    return (
+        <div style={{height: "0"}}></div>
+    )
+}
+
+const formatTokenAmountTruncated = (
+  num: number | string | null | undefined,
+  decimalPlaces: number = 2
+): string => {
+    
+  if (num === null || num === undefined || num === '') return '-';
+
+  const _num = typeof num === 'string' ? Number(num) : num;
+
+  if (isNaN(_num)) return '-';
+
+  if (_num === 0) return '0';
+
+    const factor = new Decimal(10).pow(decimalPlaces);
+    const sum = new Decimal(num).mul(factor).toNumber(); 
+    const truncated = new Decimal( Math.trunc(sum) ).div(factor).toNumber();
+  // 小于最小可展示值时（例如 0.01）
+  if (truncated === 0 && _num > 0 && _num < 1 / factor.toNumber()) {
+    return `<${(1 / factor.toNumber()).toFixed(decimalPlaces)}`;
   }
 
-  // 限制小数部分最多 4 位
-  decimalPart = decimalPart.slice(0, 4);
+  const [intPart, decPart = ''] = truncated.toString().split('.');
 
-  // 添加千位分隔符
-  const isNegative = integerPart.startsWith("-");
-  const absInt = isNegative ? integerPart.slice(1) : integerPart;
-  const formattedInt = absInt.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // 整数部分加千分位逗号
+  const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-  const result = isNegative ? `-${formattedInt}` : formattedInt;
-  return decimalPart ? `${result}.${decimalPart}` : result;
+  // 截取指定小数位数，去除末尾 0
+  const cleanedDec = decPart.slice(0, decimalPlaces).replace(/0+$/, '');
+
+  return cleanedDec ? `${formattedInt}.${cleanedDec}` : formattedInt;
+};
+
+
+const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | number ) => {
+    const amount = typeof tokenAmount === 'string' ? Number(tokenAmount) : tokenAmount;
+    const price = typeof tokenPrice === 'string' ? Number(tokenPrice) : tokenPrice;
+    const _ = amount * price;
+    return formatTokenAmountTruncated( String(_), 4 );
 }
 
 
@@ -83,7 +118,7 @@ const CommonModal = ({
     isSubmitting: boolean;
     onClose: () => void;
     title: string;
-    onSubmit: (targetAddress: string, txType: string, amount: string, target?: string) => void;
+    onSubmit: (targetAddress: string, txType: string, amount: string, source?: string) => void;
     onOpen: () => void;
     currentAmount: string;
     transactionStage: string;
@@ -109,6 +144,12 @@ const CommonModal = ({
 }) => {
 
     const [ loading, setLoading ] = React.useState<boolean>(false);
+    const [ isMyValidatorLoading, setIsMyValidatorLoading ] = React.useState<boolean>(false);
+    const [ isAllValidatorLoading, setIsAllValidatorLoading ] = React.useState<boolean>(false);
+    const { address: userAddr } = useAccount();
+    const { data: balanceData, refetch: refetchBalance } = useBalance({ address: userAddr});
+    const { tokenPrice } = useStakeLoginContextValue();
+
 
     const spinner = (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '180px',
@@ -121,6 +162,8 @@ const CommonModal = ({
 
     const [ inputStr , setInputStr ] = React.useState<string>(currentAmount);
 
+
+    
     const handleSetApr = (value: string | number) => {
         setApr(value);
     }
@@ -153,13 +196,20 @@ const CommonModal = ({
     }, [ currentTxType ]);
     
 
-    const { address: userAddr } = useAccount();
+    const sourceValidatorAddress = useMemo(() => {
+        if (currentTxType === 'MoveStake' && currentFromItem && currentFromItem.validatorAddress) {
+            return currentFromItem.validatorAddress;
+        }
+        return null;
+    }
+    , [ currentTxType, currentFromItem ]);
 
     const requestMyValidatorsList = React.useCallback(async() => {
         if ( !userAddr) {
             return;
         }
         try {
+            setIsMyValidatorLoading(true);
             setLoading(true);
             const param = new URLSearchParams();
             param.append('limit', '100');
@@ -170,11 +220,14 @@ const CommonModal = ({
                 },
                 timeout: 10000,
             }).then((response) => {
+                setIsMyValidatorLoading(false);
                 return response.data;
             }).catch((error) => {
+                setIsMyValidatorLoading(false);
                 return null;
             });
             setLoading(false);
+            setIsMyValidatorLoading(false);
             if(res && res.code === 200) {
                 const _temp = (res.data.validators || []).map((item: any) => {
                     return {
@@ -183,17 +236,19 @@ const CommonModal = ({
                         liveApr: item.liveAPR,
                     }
                 });
+                setIsMyValidatorLoading(false);
                 setMyValidatorsList(_temp);
             }
             setLoading(false);
         } catch (error: any) {
             setLoading(false);
+            setIsMyValidatorLoading(false);
         }
     }, [ url , userAddr]);
 
     const requestAlValidatorsList = React.useCallback(async() => {
         try {
-            setLoading(true);
+            setIsAllValidatorLoading(true);
             const param = new URLSearchParams();
             param.append('limit', '100');
             // const res = await (await fetch(url + '/api/network/validators/list' + '?' + param.toString(), {
@@ -207,8 +262,10 @@ const CommonModal = ({
                 },
                 timeout: 10000,
             }).then((response) => {
+                setIsAllValidatorLoading(false);
                 return response.data;
             }).catch((error) => {
+                setIsAllValidatorLoading(false);
                 return null;
             });
             if(res && res.code === 200) {
@@ -219,21 +276,18 @@ const CommonModal = ({
                         validatorAddress: item.validator,
                     }
                 });
+                setIsAllValidatorLoading(false);
                 setAllValidatorsList(_temp);
             }
         }
         catch (error: any) {
             setLoading(false);
-        throw Error(error);
+            setIsAllValidatorLoading(false);
+            throw Error(error);
         }
     }
     , [ url ]);
 
-    const handleCloseModal = () => {
-        setCurrentAmount("0");
-        setInputStr("0.00");
-        onClose();
-    }
 
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -252,7 +306,10 @@ const CommonModal = ({
         } else if (currentTxType === 'Claim' || currentTxType === 'ClaimAll' || currentTxType === 'Compound-Claim') {
             onSubmit(currentAddress, currentTxType, "0");
         } else if (currentTxType === 'MoveStake') { 
-            onSubmit(currentAddress, currentTxType, currentAmount);
+            if (!sourceValidatorAddress) {
+                return;
+            }
+            onSubmit(currentAddress, currentTxType, currentAmount, sourceValidatorAddress);
         }
     };
 
@@ -276,11 +333,11 @@ const CommonModal = ({
             case 'Claim':
                 return 'Claim';
             case 'ClaimAll':
-                return 'Claim All';
+                return 'Claim';
             case 'MoveStake':
                 return 'Move Stake';
             case 'Compound-Claim':
-                return 'Claim';
+                return 'Claim All';
             case 'Compound-Stake':
                 return 'Stake';
             default:
@@ -318,25 +375,20 @@ const CommonModal = ({
 
 
     const isInputAmountValid = React.useMemo(() => {
-        if (!currentAmount) {
+        if (!inputStr) {
+            return false;
+        }
+        if (isNaN(Number(inputStr)) || Number(inputStr) < 0 || Number(inputStr) === 0) {
             return false;
         }
         if (!currentTxType.includes('Claim') ) {
-            if (Number(currentAmount) > Number(availableAmount)) {
+            if (Number(inputStr) > Number(availableAmount)) {
                 return false;
             }
         }
-        if (Number(currentAmount) <= 0) {
-            return false;
-        }
         return true;
-    } , [ currentAmount, availableAmount, currentTxType ]);
+    } , [ inputStr, availableAmount, currentTxType ]);
 
-
-    useEffect(() => {
-        console.log('currentToItem', currentToItem);
-        console.log('currentFromItem', currentFromItem);
-    }, [ currentToItem, currentFromItem ]);
 
     const isSelectedValidatorValid = React.useMemo(() => {
         if (currentTxType === 'ChooseStake' || currentTxType === 'MoveStake' || currentTxType === 'Compound-Stake') {
@@ -345,7 +397,7 @@ const CommonModal = ({
                 return false;
             }
             if(currentTxType === 'MoveStake' && (
-                currentToItem.validatorAddress === currentFromItem.validatorAddress ||
+                currentToItem.validatorAddress === sourceValidatorAddress ||
                 !currentToItem.validatorAddress)
             ) {
                 return false;
@@ -357,11 +409,30 @@ const CommonModal = ({
 
 
     const handleCloseDialog = useCallback(() => {
-        handleCloseModal();
         if ( transactionStage === 'success' ) {
             callback && callback();
         }
     }, [ transactionStage, callback ]);
+
+    const handleCloseModal = () => {
+        setCurrentAmount("0.00");
+        setInputStr("");
+        refetchBalance();
+        setAvailableAmount("0.00");
+        setCurrentItem(null);
+        onClose();
+        handleCloseDialog();
+    }
+
+    const headsupText =  useMemo(() => {
+        if (currentTxType === 'MoveStake' || currentTxType === 'ChooseStake') {
+            return "If rewards are available, this action will claim all rewards from the current Validator and transfer them to your wallet.";
+        } else if (currentTxType === 'Stake') {
+            return "If rewards are available, this action will claim all rewards from the current Validator and transfer them to your wallet.";
+        } else if (currentTxType === 'Withdraw') {
+            return "It takes 1 days to receive MOCA after you withdraw. If rewards are available, this action will claim all rewards from the current Validator and transfer them to your wallet.";
+        }
+    } , [ currentTxType ]);
 
     return (
         <StakingModal 
@@ -377,21 +448,27 @@ const CommonModal = ({
                     text='Transaction Success'
                     txhash = { txhash || '' }
                     onClose={ () => {
-                        handleCloseDialog();
+                        handleCloseModal();
                     }}
                 />
             )}
-
+            <SetInput 
+                value={ inputStr }
+                setValue={ setInputStr  }
+                currentAmount={ currentAmount }
+                refetchBalance={ refetchBalance }
+                userAddr={ userAddr }
+            />
             { transactionStage === 'comfirming' && ( spinner ) }
             { (transactionStage !== 'success' && transactionStage !== 'comfirming') && (
                 <>
                     <div style={{ maxHeight: '590px', marginBottom: '80px', overflowY: 'auto' }}>
                         {
-                            (currentTxType === 'Claim' || currentTxType === 'ClaimAll' || currentTxType === 'Compound-Claim') ? (
+                            (currentTxType === 'Claim' || currentTxType === 'ClaimAll' || currentTxType === 'Compound-Claim' ||  currentTxType === 'Compound-Stake') ? ( 
                                 <Box width="100%" height="auto">
                                     <ReadOnlyInput 
-                                        amount = { currentAmount }
-                                        price = { currentAmount }
+                                        amount = { currentAmount}
+                                        priceStr = { valueCalculator( currentAmount , tokenPrice || 0) }
                                     />
                                 </Box>
                             ): (
@@ -402,6 +479,8 @@ const CommonModal = ({
                                                     <FromAndToSelect
                                                         FromItem = { currentItem }
                                                         currentToItem = { currentToItem }
+                                                        isMyValidatorLoading = { isMyValidatorLoading }
+                                                        isAllValidatorLoading = { isAllValidatorLoading }
                                                         setCurrentToItem = { setCurrentToItem }
                                                         setApr = { handleSetApr }
                                                         setCurrentFromAddress = { setCurrentFromAddress }
@@ -415,6 +494,8 @@ const CommonModal = ({
                                                         <StakingValidatorSelect 
                                                             isOpen={ isPopOverOpen }
                                                             onToggle={ handlePopOverToggle }
+                                                            isMyValidatorLoading = { isMyValidatorLoading }
+                                                            isAllValidatorLoading = { isAllValidatorLoading }
                                                             onClose={ handlePopOverClose }
                                                             setApr = { handleSetApr }
                                                             setCurrentAddress = { setCurrentAddress }
@@ -431,6 +512,7 @@ const CommonModal = ({
                                                 liveApr={ (Number(currentItem?.liveApr  || 0) * 100).toFixed(1) + '%' }
                                                 validatorName = {currentItem?.validatorAddress || ''}
                                                 validatorAvatar={null}
+                                                validatorItem ={ currentItem || {}}
                                                 onClick={() => {} }
                                             />
                                         )
@@ -447,9 +529,11 @@ const CommonModal = ({
                                         <Box width="100%" height="auto">
                                             <StakingModalNumberInput 
                                                 value = { currentAmount }
+                                                currentTxType = { currentTxType }
                                                 handleMaxClick = { () => {
-                                                    setCurrentAmount(availableAmount);
-                                                    setInputStr(formatNumberWithCommas(availableAmount));
+                                                    const _t = Math.floor(Number(availableAmount || 0) * 100) / 100;
+                                                    setCurrentAmount(_t.toString());
+                                                    setInputStr((_t.toString()));
                                                 }}
                                                 isOverAmount = { isOverAmount }
                                                 setValue = { setCurrentAmount }
@@ -470,11 +554,15 @@ const CommonModal = ({
                                         }
 
                                         {
-                                            currentTxType === 'Withdraw' && (
+                                            (   currentTxType === 'Withdraw' || 
+                                                currentTxType === 'Stake' || 
+                                                currentTxType === 'MoveStake' || 
+                                                currentTxType === 'ChooseStake'
+                                            ) && (
                                                 <Box width="100%" height="auto">
                                                     <HeadsUpInfo
                                                         label="Heads Up"
-                                                        value="It takes 1 days to receive MOCA after you withdraw."
+                                                        value= { headsupText }
                                                     />
                                                 </Box>
                                             )
@@ -485,14 +573,14 @@ const CommonModal = ({
                         }
                     </div>
                     <ModalFooterBtnGroup
-                        onCancel={ handleCloseDialog }
+                        onCancel={ handleCloseModal }
                         onConfirm={ (e) => {
                             handleSubmit(e);
                         }}
                         cancelText="Cancel"
                         confirmText= { ConfirmBtnText }
                         isSubmitting={ isSubmitting }
-                        isDisabled={ !(isInputAmountValid && isSelectedValidatorValid) || loading }
+                        isDisabled={ !(isInputAmountValid && isSelectedValidatorValid) }
                     />
                 </>
                 )

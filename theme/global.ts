@@ -16,7 +16,7 @@ const global = (props: StyleFunctionProps) => ({
   mark: {
     // bgColor: mode('green.100', 'green.800')(props),
     bgColor: 'transparent',
-    color: '#C15E97',
+    color: '#D940A4',
   },
   'svg *::selection': {
     color: 'none',

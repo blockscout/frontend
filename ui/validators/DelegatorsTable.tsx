@@ -1,8 +1,11 @@
 /* eslint-disable */
-import { Table, Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
+import { Tbody, Thead , Flex, TableContainer, Tr, Th,  Td, Box } from '@chakra-ui/react';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
+import { Table } from 'antd';
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import LinkInternal from 'ui/shared/links/LinkInternal';
+import { route } from 'nextjs-routes';
+import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import { debounce, orderBy } from 'lodash';
 import TableTokenAmount from 'ui/staking/TableTokenAmount';
 import WithTipsText from 'ui/validators/WithTipsText';
@@ -14,11 +17,18 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import styles from 'ui/staking/spinner.module.css';
+import { AvatarGroup } from 'rsuite';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(advancedFormat);
 
+
+
+const numberTypeFields = [
+    'stakeAmount',
+    'totalEarned',
+];
 
 type tableHeadType = {
     label: string | React.ReactNode;
@@ -85,40 +95,45 @@ const getShortAddress = (address: string) => {
 
 
 const ValidatorInfo = ({
-    validatorName
+    validatorName,
+    address = '',
 }: {
     validatorName: string;
+    address?: string;
 }) => {
 
     return (
-        <Flex
-            flexDirection="row"
-            justifyContent="flex-start"
-            alignItems="center"
-            width="auto"
+        <LinkInternal
+            href={ route({ pathname: '/address/[hash]', query: { hash: address } }) }
         >
-            <Avatar
-                name="MOCA"
-                src="/static/moca-brand.svg"
-                size='2xs'
-                width="16px"
-                height="16px"
-                borderRadius="full"
-                marginRight="4px"
-            />
-            <Text 
-                fontSize="12px"
-                fontWeight="500"
-                textAlign={"left"}
-                color="#A80C53"
-                fontStyle="normal"
-                fontFamily="HarmonyOS Sans"
-                lineHeight="normal"
-                textTransform="capitalize"
-                userSelect="none"
-                as ="span"
-            > { getShortAddress(validatorName) } </Text>
-        </Flex>
+            <Flex
+                flexDirection="row"
+                justifyContent="flex-start"
+                alignItems="center"
+                width="auto"
+            >
+                <img
+                    src="/static/moca-brand.svg"
+                    width="16px"
+                    height="16px"
+                    style={{ borderRadius: '50%', marginRight: "4px" , flexShrink: 0}}
+                    draggable={false}
+                />
+                <Text 
+                    fontSize="12px"
+                    fontWeight="500"
+                    textAlign={"left"}
+                    color="#A80C53"
+                    fontStyle="normal"
+                    fontFamily="HarmonyOS Sans"
+                    lineHeight="normal"
+                    textTransform="capitalize"
+                    userSelect="none"
+                    as ="span"
+                > { getShortAddress(validatorName) } </Text>
+            </Flex>
+        </LinkInternal>
+
     )
 }
 
@@ -130,6 +145,7 @@ const tableHead: tableHeadType[] = [
         render: (record: any) => (
             <ValidatorInfo
                 validatorName={ getShortAddress(record.delegatorAddress) }
+                address={ record.delegatorAddress }
             />
         ),
     },
@@ -141,7 +157,7 @@ const tableHead: tableHeadType[] = [
         render: (record) => (
             <TableTokenAmount
                 amount = { record.stakeAmount }
-                symbol = 'Moca'
+                symbol = 'MOCA'
             />
         )
     },
@@ -153,7 +169,7 @@ const tableHead: tableHeadType[] = [
         render: (record) => (
             <TableTokenAmount
                 amount = { record.totalEarned }
-                symbol = 'Moca'
+                symbol = 'MOCA'
             />
         )
     },
@@ -170,7 +186,7 @@ const tableHead: tableHeadType[] = [
                 fontStyle: 'normal',
                 fontWeight: 500,
                 lineHeight: 'normal',
-                textTransform: 'capitalize',
+                    
             }}>{ !!record.startDate ? dayjs.utc(record.startDate).format('DD MMM YYYY HH:mm [UTC]') : '-' }</span>
         ),
     },
@@ -214,22 +230,9 @@ const CustomTableHeader = ({
         }
     };
 
-    const w = width || 'auto';
-    const _w = width || '200px'; 
-    const _minWidth = minWidth || '180px';
+    const noop = () => {};
 
     return (
-        <Th
-            _first={{ p: "4px 10px 10px 10px" }}
-            color="rgba(0, 0, 0, 0.6)"
-            p="4px 10px 10px 10px"
-            bg="#FFFF"
-            borderBottom="1px"
-            borderColor="rgba(0, 0, 0, 0.1)"
-            width={{ base: _w , lg: w }}
-            minWidth={_minWidth}
-            flexShrink={ 0 }
-        >
             <Flex
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -237,8 +240,10 @@ const CustomTableHeader = ({
                 width="100%"
                 userSelect={'none'}
                 gap="2px" 
+                className='node-staking-custom-table-header'
+                onClick={ allowSort ? handleSort : noop }
             >
-                <span style={{ color: 'rgba(0, 0, 0, 0.40)' }}>
+                <span style={{ color: 'rgba(0, 0, 0, 0.40)', fontSize: '12px' , fontWeight: 400  }} >
                     { children }
                 </span>
                 { allowSort && (
@@ -258,7 +263,6 @@ const CustomTableHeader = ({
                     </Box>
                 )}
             </Flex>
-        </Th>
     );
 }
 
@@ -291,42 +295,89 @@ const TableApp = (props: {
         console.log('Row clicked:', item);
     };
 
+    const orderFn = (item: any, key: string) => {
+        if (numberTypeFields.includes(key)) {
+            return Number(item[key]);
+        }
+        return item[key];
+    };
 
     const sortedData = React.useMemo(() => {
         if (sortBy && sortOrder) {
-            return orderBy(data, [sortBy], [ !sortOrder ? false : sortOrder]);
+            return orderBy(
+                data, 
+                [ (item: any) => orderFn(item, sortBy) ],
+                [ !sortOrder ? false : sortOrder]
+            );
         }
         return data;
     }, [data, sortBy, sortOrder]);
         
 
 
-    const tableHeaders = (
-        <Tr>
-            {tableHead.map((item: tableHeadType, index: number) => (
-                <CustomTableHeader 
-                    key={index}
+    const getColumnContent = (item: tableHeadType) => {
+        const content = (item.tips ? (
+                <WithTipsText 
+                    label={ item.label }
+                    tips={ item.tips }
+                />
+            ) : item.label);
+        if (item.allowSort === true) {
+            return (
+                <CustomTableHeader
+                    selfKey={ item.key }
                     width={ item.width }
-                    minWidth={ item.minWidth }
                     allowSort={ item.allowSort }
-                    sortKey = { sortBy }
-                    sortOrder = { sortOrder }
-                    setSort = { setSortBy }
-                    setSortOrder = { setSortOrder }
-                    selfKey = { item.key }
+                    sortKey={ sortBy }
+                    sortOrder={ sortOrder }
+                    setSort={ setSortBy }
+                    setSortOrder={ setSortOrder }
+                    minWidth={ item.minWidth }
                 >
-                    { ( item.tips ? ( 
-                        <WithTipsText 
-                            label={ item.label }
-                            tips={ item.tips }
-                        />
-                    ) : item.label ) }
+                    { content }
                 </CustomTableHeader>
-            ))}
-        </Tr>
-    );
+            );
+        }
+        return (
+            <span
+                style={{
+                    color: 'rgba(0, 0, 0, 0.40)',
+                    fontFamily: "HarmonyOS Sans",
+                    fontSize: '12px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    lineHeight: 'normal',
+                        
+                }}  
+                className="node-staking-custom-table-header"
+            >
+                { content }
+            </span> 
+        );
+    };
+        
+    const CustomHeaderToAntDesignTableColumns = (tableHead: tableHeadType[]) => {
+        return tableHead.map((item: tableHeadType) => ({
+            title: getColumnContent(item),
+            dataIndex: item.key,
+            key: item.key,
+            width: 'auto',
+            render: (value: any, record: any) => {
+                if (item.render) {
+                    return item.render(record);
+                }
+                return value;
+            },
+        }));
+    };
+
+    const AntDesignTableColumns = useMemo(() => {
+        return CustomHeaderToAntDesignTableColumns(tableHead);
+    }
+    , [tableHead, sortBy, sortOrder]);
 
     return (
+    <>
         <div style={{
                 width: '100%',
                 height: 'auto',
@@ -347,59 +398,55 @@ const TableApp = (props: {
                     <Box className={ styles.loader }></Box>
                 </div>
                 ) : (
-                <Table variant="simple">
-                    <Thead bg ="white" position="sticky" top={ 0 } zIndex={ 1 }>
-                        { tableHeaders }
-                    </Thead>
-                    <Tbody>
-                        {sortedData.map((validator: any, index: number) => (
-                            <Tr key={index}
-                                borderBottom={'none'}
-                                _last={{ borderBottom: 'none' }} 
-                                _hover={{ bg: 'rgba(0, 0, 0, 0.02)' }}
-                                onClick={() => handleRowClick(validator)}
-                            >
-                                { tableHead.map((item: tableHeadType, index: number) => (
-                                    <Td
-                                        key={index}
-                                        p="14px 10px 10px 10px"
-                                        color="rgba(0, 0, 0, 0.6)"
-                                        borderBottom={'none'} _last={{ borderBottom: 'none' }} 
-                                        onClick={() => handleRowClick(validator)}
-                                    >
-                                        {item.render ? item.render(validator) : validator[item.key]}
-                                    </Td>
-                                ))}
-                            </Tr>
-                        ))}
-                    </Tbody>
-                </Table>
+                <div style={{ overflowX: 'auto', width: '100%' }}>
+                    <Table
+                        columns={AntDesignTableColumns}
+                        dataSource={sortedData}
+                        className="node-staking-custom-table"
+                        scroll={{ x: 'auto' }}
+                        pagination={false}
+                    />
+                </div>
             )}
             {/* page, onNextPageClick, onPrevPageClick, resetPage, hasPages, hasNextPage, className, canGoBackwards, isLoading, isVisible  */}
-            <Flex
-                justifyContent="flex-end"
-                alignItems="center"
-                zIndex='200'
-                width="100%"
-                marginTop={ '16px'}
-            >
-                <Pagination 
-                    totalCount={ props.totalCount }
-                    currentPage={ currentPage }
-                    onJumpPrevPage={ onJumpPrevPage }
-                    onJumpNextPage={ onJumpNextPage }
-                    isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
-                    isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
-                />
-            </Flex>
         </div>
+        <Flex
+            justifyContent="justify-between"
+            alignItems="center"
+            zIndex='200'
+            width="100%"
+            marginTop={ '16px'}
+        >
+            <span 
+                style={{ 
+                    color: 'rgba(0, 0, 0, 0.60)',
+                    fontFamily: "HarmonyOS Sans",
+                    fontSize: '12px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    visibility: 'hidden',
+                    lineHeight: 'normal',
+                    textWrap: 'nowrap',
+                }}
+            >
+                Total: { totalCount }
+            </span>
+            <Pagination 
+                totalCount={ props.totalCount }
+                currentPage={ currentPage }
+                onJumpPrevPage={ onJumpPrevPage }
+                onJumpNextPage={ onJumpNextPage }
+                isNextDisabled = { isLoading || !nextKey  || nextKey === 'null' }
+                isPrevDisabled = { currentPage === 1 || currentPage === 0  || isLoading }
+            />
+        </Flex>
+    </>
     );
 }
 
 
 const initial_nextKey = '0x00';
-const defaultLimit = 15;
-
+const defaultLimit = 20;
 const TableWrapper = (props: {
     addr: string;
     totalCount: number;
@@ -410,10 +457,13 @@ const TableWrapper = (props: {
     const { serverUrl : url } = useStakeLoginContextValue();
 
     const [ toNext, setToNext ] = React.useState<boolean>(true);
-    const [ nextKey , setNextKey ] = React.useState<string>(initial_nextKey);
-    const [ currentPage, setCurrentPage ] = React.useState<number>(1);
-    const [ tableData, setTableData ] = React.useState<any[]>([]);
-    const [ isTableLoading, setIsTableLoading ] = React.useState(false);
+    const [nextKey, setNextKey] = useState<string | null>(initial_nextKey);
+    const [currentPageKey, setCurrentPageKey] = useState<string | null>(initial_nextKey);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [tableData, setTableData] = useState<any[]>([]);
+    const [isTableLoading, setIsTableLoading] = useState(false);
+    const [keyStack, setKeyStack] = useState<(string | null)[]>([initial_nextKey]);
+    const currentKeyRef = useRef<string | null>(initial_nextKey);
 
     const [ queryParams, setQueryParams ] = React.useState<{ 
         status?: ValidatorQueryParams['status'];
@@ -434,15 +484,19 @@ const TableWrapper = (props: {
         }));
     }
 
-    const requestDelegatorsInfo = React.useCallback(async( _addr : string) => {
+    const requestDelegatorsInfo = React.useCallback(async() => {
+        if  (!addr) {
+            return;
+        }
         try {
             setIsTableLoading(true);
+            const key = currentKeyRef.current;
             const param = new URLSearchParams();
+            param.append('nextKey', key || initial_nextKey);
             param.append('limit', defaultLimit.toString());
-            param.append('nextKey', queryParams.nextKey || initial_nextKey);
             // const res = await (await fetch(url + '/api/network/validators/delegations/' + _addr + '?' + param.toString(),
             //     { method: 'get' })).json() as any
-            const res = await axios.get(url + '/api/network/validators/delegations/' + _addr + '?' + param.toString(), { 
+            const res = await axios.get(url + '/api/network/validators/delegations/' + addr + '?' + param.toString(), { 
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -456,8 +510,8 @@ const TableWrapper = (props: {
             if(res && res.code === 200) {
                 setTableData(res.data.delegators || []);
                 setTotalCount(Number(res.data.pagination.total || "0"))
-                setNextKey(res.data.pagination.nextKey);
-                setCurrentPage( queryParams.page || 1 );
+                setNextKey( res.data.pagination.nextKey || null );
+                setCurrentPageKey(key ?? null);
             }
         }
         catch (error: any) {
@@ -467,10 +521,28 @@ const TableWrapper = (props: {
     }, [ url , addr, queryParams.nextKey ]);
 
     useEffect(() => {
-        if (addr) {
-            requestDelegatorsInfo(addr);
-        }
-    }, [ addr, requestDelegatorsInfo ]);
+        requestDelegatorsInfo();
+    }, [ requestDelegatorsInfo ]);
+
+    const jumpToPrevPage = useCallback(() => {
+        if (isTableLoading || currentPage <= 1) return;
+        const prevKey = keyStack[currentPage - 2] ?? null;
+        currentKeyRef.current = prevKey;
+
+        setCurrentPage((prev) => prev - 1);
+        requestDelegatorsInfo();
+    }, [nextKey, isTableLoading, currentPage, requestDelegatorsInfo]);
+
+    // 上一页
+    const jumpToNextPage = useCallback(() => {
+        if (isTableLoading || !nextKey) return;
+        const nextKeyToUse = nextKey;
+        currentKeyRef.current = nextKeyToUse;
+
+        setKeyStack((prev) => [...prev.slice(0, currentPage), nextKeyToUse]);
+        setCurrentPage((prev) => prev + 1);
+        requestDelegatorsInfo();
+    }, [currentPage, keyStack, isTableLoading, requestDelegatorsInfo]);
 
     return (
         <Box
@@ -487,14 +559,8 @@ const TableWrapper = (props: {
                 isLoading={ isTableLoading }
                 totalCount={ totalCount }
                 currentPage={ currentPage }
-                onJumpPrevPage={ () => {
-                    setToNext(false);
-                    updateQueryParams({ nextKey: nextKey, page: currentPage - 1 });
-                }}
-                onJumpNextPage={ () => {
-                    setToNext(true);
-                    updateQueryParams({ nextKey: nextKey , page: currentPage + 1 });
-                }}
+                onJumpPrevPage={ jumpToPrevPage }
+                onJumpNextPage={ jumpToNextPage }
                 nextKey={ nextKey }
             />
         </Box>

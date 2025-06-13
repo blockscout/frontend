@@ -4,13 +4,16 @@
 import { Box, Flex, Button , Progress , Grid, Text } from '@chakra-ui/react';
 import axios from 'axios';
 import type { NextPage } from 'next';
-import React from 'react';
+import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import ValidatorsTable from 'ui/validators/ValidatorsTable';
 import WithTipsText from 'ui/validators/WithTipsText';
 import TableFilter from 'ui/validators/TableFilter';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
 import Web3ModalProvider from 'ui/staking/Web3Provider';
 import { getFormatterFloat } from 'ui/staking/numberFormat';
+import truncateTokenAmountWithComma from 'ui/staking/truncateTokenAmountWithComma';
+
+const DOC_LINK = 'https://drive.google.com/stake/validators?ddrp=1';
 
 type RequestType = {
   has_next: boolean;
@@ -84,6 +87,7 @@ const InfoNumberWrapper = ({
 
 
 const defaultLimit = 100;
+const initial_nextKey = '0x00'; // 默认的 nextKey 值
 
 const AllValidatorPage: NextPage = () => {
 
@@ -112,10 +116,6 @@ const AllValidatorPage: NextPage = () => {
 
   const [ isActiveOnly, setIsActiveOnly ] = React.useState<boolean>(false);
   const [ searchValue, setSearchValue ] = React.useState<string>('');
-  const [ totalCount, setTotalCount ] = React.useState<number>(0);
-
-
-
   // const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
   const { serverUrl : url } = useStakeLoginContextValue();
   const [ totalIssued, setTotalIssued ] = React.useState<number>(0);
@@ -129,23 +129,32 @@ const AllValidatorPage: NextPage = () => {
   const [ totalStaked, setTotalStaked ] = React.useState<any>(0);
   const [ totalEpoch, setTotalEpoch ] = React.useState<any>({});
   
-  const [ nextKey , setNextKey ] = React.useState<string>('0x00');
-  const [ currentPage, setCurrentPage ] = React.useState<number>(1);
+  const [nextKey, setNextKey] = useState<string | null>(initial_nextKey);
+  const [currentPageKey, setCurrentPageKey] = useState<string | null>(initial_nextKey);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [tableData, setTableData] = useState<any[]>([]);
+  const [isTableLoading, setIsTableLoading] = useState(false);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [keyStack, setKeyStack] = useState<(string | null)[]>([initial_nextKey]);
+  const currentKeyRef = useRef<string | null>(initial_nextKey);
 
   const [ tableDataList, setTableDataList ] = React.useState<Array<any>>([]);
-  const [ isTableLoading, setIsTableLoading ] = React.useState<boolean>(false);
 
   const handleSearchChange = () => () => {};
 
   const filteredList = React.useMemo(() => {
-    const _ = searchValue.toLowerCase();
-    if (searchValue.trim()) {
-      return tableDataList.filter((item: any) => {
-        const searchString = searchValue.toLowerCase();
-        return (item.validator || "").toLowerCase().includes(_)
+    const trimedSearchValue = searchValue.trim().toLowerCase();
+    if (!trimedSearchValue) {
+      return tableDataList;
+    } else {
+      return tableDataList.filter((item) => {
+        const { validatorName, validator} = item;
+        return (
+          validatorName.toLowerCase().includes(trimedSearchValue) ||
+          validator.toLowerCase().includes(trimedSearchValue)
+        );
       });
     }
-    return tableDataList;
   }, [ tableDataList, searchValue ]);
 
 
@@ -153,10 +162,9 @@ const AllValidatorPage: NextPage = () => {
   const requestOverviewStats = React.useCallback(async() => {
     try {
       setIsOverviewStatsLoading(true);
-      // const res = await (await fetch(url + '/api/network/overview-stats', { method: 'get' })).json() as any
       const res = await axios.get(url + '/api/network/overview-stats', {
         method: 'get',
-        timeout: 5000,
+        timeout: 10000,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -165,8 +173,6 @@ const AllValidatorPage: NextPage = () => {
       }).catch((error) => {
           return null; 
       });
-
-      console.log('res', res);
 
       setIsOverviewStatsLoading(false);
       if(res && res.code === 200) {
@@ -192,16 +198,17 @@ const AllValidatorPage: NextPage = () => {
   const requestTableList = React.useCallback(async() => {
     try {
       setIsTableLoading(true);
+      const key = currentKeyRef.current;
       const param = new URLSearchParams();
+      param.append('nextKey', key || initial_nextKey);
       param.append('limit', defaultLimit.toString());
-      param.append('nextKey', queryParams.nextKey || '0x00');
       if (isActiveOnly) {
         param.append('status', 'active');
       }
       // const res = await (await fetch(url + `/api/network/validators/list?${param.toString()}`, { method: 'get' })).json() as any;
       const res = await axios.get(url + `/api/network/validators/list?${param.toString()}`, {
         method: 'get',
-        timeout: 5000,
+        timeout: 10000,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -212,10 +219,11 @@ const AllValidatorPage: NextPage = () => {
       });
       setIsTableLoading(false);
       if(res && res.code === 200) {
-        setTableDataList(res.data.validators);
-        setTotalCount(Number(res.data.pagination.total || "0"))
+        setTableDataList(res.data.validators || []);
         setNextKey(res.data.pagination.nextKey);
-        setCurrentPage( queryParams.page || 1 );
+        setTotalCount(Number(res.data.pagination.total || "0"))
+        setNextKey( res.data.pagination.nextKey || null );
+        setCurrentPageKey(key ?? null);
       }
     }
     catch (error: any) {
@@ -233,18 +241,39 @@ const AllValidatorPage: NextPage = () => {
   }, [ url, requestOverviewStats, requestTableList]);
 
 
-  const  formatSeconds = (seconds : number ) => {
+  const formatSeconds = (seconds : number ) => {
       const days = Math.floor(seconds / (24 * 3600));
       const hours = Math.floor((seconds % (24 * 3600)) / 3600);
-      const minutes = Math.floor((seconds % 3600) / 60);
+      // const minutes = Math.floor((seconds % 3600) / 60);
 
       let result = '';
-      if (days > 0) result += `${days} d `;
-      if (hours > 0) result += `${hours} h `;
-      result += `${minutes} m`;
+      if (days > 0) result += `${days}d `;
+      if (hours > 0) result += `${hours}h `;
+      // result += `${minutes}m`;
 
-      return result.trim();
+      const _res = (hours > 0 ) ? ("New: " + result) : result;
+      return _res.trim();
   }
+
+    const jumpToPrevPage = useCallback(() => {
+        if (isTableLoading || currentPage <= 1) return;
+        const prevKey = keyStack[currentPage - 2] ?? null;
+        currentKeyRef.current = prevKey;
+
+        setCurrentPage((prev) => prev - 1);
+        requestTableList();
+    }, [nextKey, isTableLoading, currentPage, requestTableList]);
+
+    // 上一页
+    const jumpToNextPage = useCallback(() => {
+        if (isTableLoading || !nextKey) return;
+        const nextKeyToUse = nextKey;
+        currentKeyRef.current = nextKeyToUse;
+
+        setKeyStack((prev) => [...prev.slice(0, currentPage), nextKeyToUse]);
+        setCurrentPage((prev) => prev + 1);
+        requestTableList();
+    }, [currentPage, keyStack, isTableLoading, requestTableList]);
 
   return (
     <>
@@ -254,11 +283,11 @@ const AllValidatorPage: NextPage = () => {
             userSelect="none"
             justifyContent= {{ lg:  'flex-start' }}
             alignItems="baseline" marginBottom="24px">
-            <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">MOCA Staking</Text>
+            <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">All Validators</Text>
 
             <Button
                 onClick={() => {
-                    window.open('https://moca.network', '_blank');
+                    window.open(DOC_LINK, '_blank');
                 }}
                 px = "6px"
                 py = "2px"
@@ -295,11 +324,12 @@ const AllValidatorPage: NextPage = () => {
                 lineHeight="16px"
                 fontStyle="normal"
                 as={'span'}
-                textTransform="capitalize"
                 fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Total Staking</Text> }
-                tips={ `Total Amount Staked Across the Blockchain Network` }
+                tips={ `Total tokens staked across all nodes and users on the blockchain network.` }
             />
-            <InfoNumberWrapper  number = { totalStaked || '-' } />
+            <Text fontSize="24px" fontWeight="600" lineHeight="32px" color="#000">
+              {truncateTokenAmountWithComma(Number(totalStaked || '0.00'))}
+            </Text>
             </Box>
             <Box border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="18px" padding="16px">
             <WithTipsText
@@ -310,26 +340,33 @@ const AllValidatorPage: NextPage = () => {
                 lineHeight="16px"
                 fontStyle="normal"
                 as={'span'}
-                textTransform="capitalize"
-                fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Epoch</Text> }
-                tips={ `A fixed period in PoS blockchains for validator selection, staking, and reward distribution.` }
+                fontFamily="HarmonyOS Sans"
+                fontWeight="400" color="rgba(0, 0, 0, 0.4)">Epoch</Text> }
+                tips={ `A fixed duration for selecting validators, assigning staking tasks, and distributing rewards.` }
             />
             <Flex alignItems="center" justifyContent="space-between">
                 <InfoNumberWrapper  number = { totalEpoch.current || '-' } />
                 <Box width={"168px"} display="flex" alignItems="center" justifyContent="center" flexDirection="column">
                     <Flex alignItems="center" justifyContent="space-between" width="100%" userSelect="none">
-                        <Text fontSize="12px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
-                            { totalEpoch.progress || 0 } %
+                        <Text fontSize="12px" color="#FF57B7" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
+                            { totalEpoch.progress || 0 }%
                         </Text>
                         <Text fontSize="12px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" lineHeight="16px" fontFamily="HarmonyOS Sans">
-                            { formatSeconds(Number(totalEpoch.remainingTime || 0 ))}
+                           { formatSeconds(Number(totalEpoch.remainingTime || 0 ))}
                         </Text>
                     </Flex>
                     <Progress
                         colorScheme='pink'
                         opacity={0.8}
                         size='sm' 
+                          sx={{
+                            '& > div': {
+                              backgroundColor: '#FF57B7', // 自定义颜色
+                          },
+                        }}
                         value={ totalEpoch.progress || 0}
+                        borderRadius="4px"
+                        backgroundColor={ '#FDF1F9'}
                         width="100%" height="4px" marginTop="6px" />
                 </Box>
             </Flex>
@@ -343,9 +380,8 @@ const AllValidatorPage: NextPage = () => {
                 lineHeight="16px"
                 fontStyle="normal"
                 as={'span'}
-                textTransform="capitalize"
                 fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Validators</Text> }
-                tips={ `Node operator responsible for verifying transactions, securing the blockchain, and earning staking rewards.` }
+                tips={ `Total number of active validators responsible for verifying transactions and maintaining blockchain security.` }
             />
             <InfoNumberWrapper number = { totalValidators || '0' } />
             </Box>
@@ -358,9 +394,8 @@ const AllValidatorPage: NextPage = () => {
                 lineHeight="16px"
                 fontStyle="normal"
                 as={'span'}
-                textTransform="capitalize"
                 fontFamily="HarmonyOS Sans" fontWeight="400" color="rgba(0, 0, 0, 0.4)">Delegators</Text> }
-                tips={ `Individual who stakes their tokens with a validator, earning rewards without running a node directly.` }
+                tips={ `Users who delegate their tokens to validators and receive rewards without running nodes themselves.` }
             />
             <InfoNumberWrapper number = { totalDelegators || '0' } />
             </Box>
@@ -382,19 +417,16 @@ const AllValidatorPage: NextPage = () => {
             <ValidatorsTable 
                 data={ filteredList }
                 nextKey={ nextKey }
-                fetcher ={ requestTableList }
+                fetcher ={ () => {
+                  requestTableList();
+                  requestOverviewStats();
+                }}
                 searchTerm={ searchValue }
                 isLoading={ isTableLoading }
                 totalCount={ totalCount }
                 currentPage={ currentPage }
-                onJumpPrevPage={ () => {
-                    setToNext(false);
-                    updateQueryParams({ nextKey: nextKey, page: currentPage - 1 });
-                }}
-                onJumpNextPage={ () => {
-                    setToNext(true);
-                    updateQueryParams({ nextKey: nextKey , page: currentPage + 1 });
-                }}
+                onJumpPrevPage={ jumpToPrevPage }
+                onJumpNextPage={ jumpToNextPage }
             />
         </Web3ModalProvider>
     </>

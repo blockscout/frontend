@@ -1,5 +1,4 @@
 /* eslint-disable */
-import useAccount from 'lib/web3/useAccount';
 import { Box, Grid, Flex, Button,  Text } from '@chakra-ui/react';
 import {
     Stat,
@@ -14,20 +13,26 @@ import { toBigInt , parseUnits} from 'ethers';
 import axios from 'axios';
 import { usePublicClient , useBalance , useAccount as useWagmiAccount } from 'wagmi';
 import { useStakeLoginContextValue } from 'lib/contexts/stakeLogin';
-import { token } from 'mocks/address/address';
-
+import useAccount from 'lib/web3/useAccount';
+import floatNumberFormatter from './FloatNumberFormatter';
+import truncateTokenAmountWithComma from 'ui/staking/truncateTokenAmountWithComma';
 
 type txType = 'Withdraw' | 'Claim' | 'Stake' | 'MoveStake' | 'ClaimAll' | 'ChooseStake' | 'Compound-Claim' | 'Compound-Stake'
 
 
-const valueFormatter = ( priceStr : string ) => {
+const AvailableAmountFormat = (amount: string | number) => {
+    return Number(amount).toFixed(2);
+}
+
+
+const valueFormatter = ( priceStr : string | number ) => {
     return `($${priceStr})`
 }
 
 const valueCalculator = ( tokenAmount : string | number, tokenPrice : string | number ) => {
-    const amount = Number(tokenAmount || 0);
-    const price = Number(tokenPrice || 0);
-    return (amount * price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const amount = typeof tokenAmount === 'string' ? Number(tokenAmount) : tokenAmount;
+    const price = typeof tokenPrice === 'string' ? Number(tokenPrice) : tokenPrice;
+    return truncateTokenAmountWithComma(amount * price);
 }
 
 
@@ -67,6 +72,13 @@ const icon_eye = (
     </svg>
 );
 
+const icon_eye_off = (
+    <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 16 16" fill="none">
+    <path fillRule="evenodd" clipRule="evenodd" d="M2.62426 1.77583C2.38995 1.54152 2.01005 1.54152 1.77574 1.77583C1.54142 2.01015 1.54142 2.39005 1.77574 2.62436L13.3757 14.2244C13.61 14.4587 13.9899 14.4587 14.2243 14.2244C14.4586 13.99 14.4586 13.6101 14.2243 13.3758L12.8281 11.9797C14.0051 11.0876 14.9276 9.87728 15.4675 8.47684C15.5852 8.17159 15.5853 7.83311 15.4678 7.5278C14.3136 4.5285 11.4048 2.4001 7.99887 2.4001C6.62566 2.4001 5.33325 2.74609 4.20408 3.35565L2.62426 1.77583ZM6.20155 5.35312L7.07494 6.22651C7.35161 6.08188 7.66633 6.0001 8.00015 6.0001C9.10472 6.0001 10.0001 6.89553 10.0001 8.0001C10.0001 8.33392 9.91836 8.64863 9.77374 8.92531L10.6473 9.79885C10.9963 9.28625 11.2003 8.667 11.2003 8.0001C11.2003 6.23279 9.76761 4.8001 8.0003 4.8001C7.3334 4.8001 6.71415 5.00411 6.20155 5.35312Z" fill="black" fillOpacity="0.2" />
+    <path d="M8.59871 11.1442L10.6169 13.1624C9.79699 13.446 8.91664 13.6001 8.0003 13.6001C4.59438 13.6001 1.68558 11.4717 0.531404 8.4724C0.413913 8.16708 0.414015 7.82861 0.531688 7.52336C0.924827 6.50355 1.52086 5.58456 2.27033 4.81585L4.85616 7.40168C4.81948 7.59554 4.8003 7.79558 4.8003 8.0001C4.8003 9.76741 6.23299 11.2001 8.0003 11.2001C8.20482 11.2001 8.40486 11.1809 8.59871 11.1442Z" fill="black" fillOpacity="0.2" />
+    </svg>
+);  
+
 
 const no_op = () => {};
 
@@ -87,7 +99,9 @@ const PlainButton = ({text, onClick, disabled = false} : {
             alignItems="center"
             justifyContent="center"
             borderRadius={9999}
-            _hover={{ backgroundColor: "#FFCBEC" , opacity: 0.9 }}
+            disabled={ disabled }
+            _hover={ disabled ?  {} :  { backgroundColor: "#FFCBEC" , opacity: 0.9 }}
+            _active={ disabled ? {} : { backgroundColor: "#FFCBEC" , opacity: 0.8 }}
             width={ '100px' }
             height={ '32px' }
             variant='solid'
@@ -112,6 +126,7 @@ const PlainButton2 = ({text, onClick, disabled = false} : {
     onClick?: () => void,
     disabled?: boolean
 }) => {
+
     return (
         <Button
             onClick={ () => { 
@@ -126,10 +141,12 @@ const PlainButton2 = ({text, onClick, disabled = false} : {
             width={ '100px' }
             height={ '32px' }
             display="flex"
+            disabled={ disabled }
+            _active={ disabled ? { backgroundColor: "#FEF1F9" , } : { opacity: 0.8 }}
             alignItems="center"
             justifyContent="center"
-            _hover={{ backgroundColor: "#FFCBEC" , opacity: 0.9 }}
-            borderRadius={9999}
+            _hover={ disabled ?  {} :  { backgroundColor: "#FFCBEC" , opacity: 0.9 }}
+            borderRadius={ 9999 }
             backgroundColor = { disabled ? '#FEF1F9' : '#FEE5F4' }
             cursor={ disabled ? 'not-allowed' : 'pointer' }
         >
@@ -169,6 +186,7 @@ const NumberStats = ({
     value,
     hide,
     isWrapper = false,
+    hideText = '******'
 }: {
     icon: React.ReactNode;
     label: string;
@@ -176,7 +194,20 @@ const NumberStats = ({
     value: string | number;
     hide: boolean;
     isWrapper?: boolean;
+    hideText?: string;
 }) => {
+
+    const { isConnected: isWalletConnnected } = useAccount();
+
+    const _amount = React.useMemo(() => {
+        return isWalletConnnected ? amount : '0.00';
+    }, [amount, isWalletConnnected]);
+
+    const  _value = React.useMemo(() => {
+        return isWalletConnnected ? value : '($0.00)';
+    }, [value, isWalletConnnected]);
+
+
     return (
         <Stat>
             <StatLabel>
@@ -190,7 +221,7 @@ const NumberStats = ({
             <Flex alignItems="baseline" justifyContent="flex-start" height={"32px"} marginTop="8px" >
                 <StatNumber>
                     <Text fontSize="22px" fontWeight="700" color="#000" lineHeight="32px" fontStyle="normal" textTransform="capitalize" fontFamily="HarmonyOS Sans">
-                        {hide ? '****' : amount}
+                        {hide ?  hideText : _amount}
                     </Text>
                 </StatNumber>
                 
@@ -212,7 +243,7 @@ const NumberStats = ({
                                     MOCA
                                 </Text>
                                 <Text fontSize="12px" fontWeight="500" color="rgba(0, 0, 0, 0.20)" lineHeight="20px" fontStyle="normal" textTransform="capitalize" fontFamily="HarmonyOS Sans">
-                                    {hide ? '(****)' : value}
+                                    {hide ? '(******)' : _value}
                                 </Text>
                             </Flex>
                         </StatHelpText>
@@ -221,7 +252,7 @@ const NumberStats = ({
             </Flex>
             { isWrapper && (
                 <Text fontSize="12px" fontWeight="500" color="rgba(0, 0, 0, 0.20)" lineHeight="20px" fontStyle="normal" textTransform="capitalize" fontFamily="HarmonyOS Sans">
-                    {hide ? '****' : value}
+                    {hide ? hideText  : _value}
                 </Text>
             )}
         </Stat>
@@ -229,10 +260,10 @@ const NumberStats = ({
 }
 
 const StakingInfo = ({
-    stakedAmount = 0,
-    claimableRewards = 0,
-    withdrawingAmount = 0,
-    totalRewards = 0,
+    stakedAmount = "0.00",
+    claimableRewards = "0.00",
+    withdrawingAmount = "0.00",
+    totalRewards = "0.00",
     handleCloseModal,
     isOpen,
     handleClaimAll,
@@ -301,8 +332,9 @@ const StakingInfo = ({
 
     const { address: userAddr } = useAccount();
 
-    const { data: balanceData } = useBalance({ address: userAddr});
+    const { data: balanceData, refetch: refetchBalance } = useBalance({ address: userAddr});
     const { tokenPrice} = useStakeLoginContextValue();
+    
     const formattedBalanceStr = React.useMemo(() => {
         if (balanceData && !!balanceData.value) {
             return formatUnits(balanceData.value, 18);
@@ -315,6 +347,20 @@ const StakingInfo = ({
 
     const { chain } = useWagmiAccount();
     const publicClient = usePublicClient();
+
+    const isClaimableEnough = React.useMemo(() => {
+        if (claimableRewards === null || claimableRewards === undefined) {
+            return false;
+        }
+        if (isNaN(Number(claimableRewards))) {
+            return false;
+        }
+        if (Number(claimableRewards) === 0  || Number(claimableRewards) < 0.0001) {
+            return false;
+        }
+        return true;
+    }, [claimableRewards]);
+
 
 
     return (
@@ -329,7 +375,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Claimable Rewards"
-                            amount={ Number(claimableRewards || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
+                            amount={ truncateTokenAmountWithComma(claimableRewards || "0.00") }
                             value= { valueFormatter(valueCalculator(claimableRewards, tokenPrice)) }
                             isWrapper={true}
                             hide={isHideNumber}
@@ -338,19 +384,20 @@ const StakingInfo = ({
                             <PlainButton 
                                 text="Claim all"
                                 onClick={ handleClaimAll }
-                                disabled={ !WalletConnected || Number(claimableRewards) === 0 || Number(claimableRewards) < 0 }
+                                disabled={ !WalletConnected || !isClaimableEnough }
                             />
-                            <PlainButton2 
+                            {/* <PlainButton2 
                                 text="Compounding"
                                 onClick={ handleCompound }
-                                disabled={ !WalletConnected || Number(claimableRewards) === 0 || Number(claimableRewards) < 0 }
-                            />
+                                disabled={ !WalletConnected || !isClaimableEnough }
+                            /> */}
+                            {/* 第一期暂时隐藏componding功能 */}
                         </Flex>
                     </Flex>
                     <Box position={'absolute'} top={0} right={0} zIndex={10}>
                         <button onClick={ () => setIsHideNumber(!isHideNumber) }
                         >
-                            { isHideNumber ? icon_eye : icon_eye }
+                            { isHideNumber ? icon_eye_off : icon_eye }
                         </button>
                     </Box>
                 </Box>
@@ -362,7 +409,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_1}</IconContainer>}
                             label="Staked Amount"
-                            amount={ Number(stakedAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
+                            amount={ truncateTokenAmountWithComma(stakedAmount || "0.00") }
                             value= { valueFormatter(valueCalculator(stakedAmount, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -372,7 +419,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_2}</IconContainer>}
                             label="Withdrawing Amount"
-                            amount={ Number(withdrawingAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
+                            amount={ truncateTokenAmountWithComma(withdrawingAmount || "0.00")  }
                             value= { valueFormatter(valueCalculator(withdrawingAmount, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -382,7 +429,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_3}</IconContainer>}
                             label="Total Rewards"
-                            amount={ Number(totalRewards || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
+                            amount={ truncateTokenAmountWithComma(totalRewards || "0.00") }
                             value= { valueFormatter(valueCalculator(totalRewards, tokenPrice)) }
                             hide={isHideNumber}
                         />
@@ -391,7 +438,7 @@ const StakingInfo = ({
                         <NumberStats
                             icon={<IconContainer>{icon_4}</IconContainer>}
                             label="Available Balance"
-                            amount= { Number(formattedBalanceStr || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
+                            amount= { truncateTokenAmountWithComma(Number(formattedBalanceStr || "0.00") ) }
                             value= { valueFormatter(valueCalculator(formattedBalanceStr, tokenPrice)) }
                             hide={isHideNumber}
                         />
