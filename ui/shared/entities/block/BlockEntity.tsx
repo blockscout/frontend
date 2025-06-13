@@ -1,7 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
 import * as EntityBase from 'ui/shared/entities/base/components';
@@ -12,9 +12,10 @@ type LinkProps = EntityBase.LinkBaseProps & Partial<Pick<EntityProps, 'hash' | '
 
 const Link = chakra((props: LinkProps) => {
   const heightOrHash = props.hash ?? String(props.number);
-  const defaultHref = props.subchain ?
-    route({ pathname: '/subchain/[subchain-slug]/block/[height_or_hash]', query: { height_or_hash: heightOrHash, 'subchain-slug': props.subchain.slug } }) :
-    route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash } });
+  const defaultHref = route(
+    { pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash } },
+    props.subchain ? { subchain: props.subchain } : undefined,
+  );
 
   return (
     <EntityBase.Link

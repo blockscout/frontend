@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import { toBech32Address } from 'lib/address/bech32';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
@@ -25,9 +25,10 @@ const getDisplayedAddress = (address: AddressProp, altHash?: string) => {
 };
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = props.subchain ?
-    route({ pathname: '/subchain/[subchain-slug]/address/[hash]', query: { ...props.query, hash: props.address.hash, 'subchain-slug': props.subchain.slug } }) :
-    route({ pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } });
+  const defaultHref = route(
+    { pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } },
+    props.subchain ? { subchain: props.subchain } : undefined,
+  );
 
   return (
     <EntityBase.Link
@@ -46,7 +47,10 @@ const Icon = (props: IconProps) => {
     return null;
   }
 
-  const marginRight = props.marginRight ?? (props.shield ? '18px' : '8px');
+  const shield = props.shield ?? (props.subchain ? { src: props.subchain.config.UI.navigation.icon.default } : undefined);
+  const hintPostfix = props.hintPostfix ?? (props.subchain ? ` on ${ props.subchain.config.chain.name } (Chain ID: ${ props.subchain.config.chain.id })` : '');
+
+  const marginRight = props.marginRight ?? (shield ? '18px' : '8px');
   const styles = {
     ...getIconProps(props.variant),
     marginRight,
@@ -63,6 +67,7 @@ const Icon = (props: IconProps) => {
       return (
         <EntityBase.Icon
           { ...props }
+          shield={ shield }
           name="brands/safe"
         />
       );
@@ -71,11 +76,12 @@ const Icon = (props: IconProps) => {
     const isProxy = Boolean(props.address.implementations?.length);
     const isVerified = isProxy ? props.address.is_verified && props.address.implementations?.every(({ name }) => Boolean(name)) : props.address.is_verified;
     const contractIconName: EntityBase.IconBaseProps['name'] = props.address.is_verified ? 'contracts/verified' : 'contracts/regular';
-    const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract') + props.hintPostfix;
+    const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract') + hintPostfix;
 
     return (
       <EntityBase.Icon
         { ...props }
+        shield={ shield }
         name={ isProxy ? 'contracts/proxy' : contractIconName }
         color={ isVerified ? 'green.500' : undefined }
         borderRadius={ 0 }
@@ -86,7 +92,11 @@ const Icon = (props: IconProps) => {
 
   const label = (() => {
     if (isDelegatedAddress) {
-      return (props.address.is_verified ? 'EOA + verified code' : 'EOA + code') + props.hintPostfix;
+      return (props.address.is_verified ? 'EOA + verified code' : 'EOA + code') + hintPostfix;
+    }
+
+    if (props.subchain) {
+      return 'Address' + hintPostfix;
     }
 
     return props.hint;
@@ -97,16 +107,15 @@ const Icon = (props: IconProps) => {
       content={ label }
       disabled={ !label }
       interactive={ props.tooltipInteractive }
-      positioning={ props.shield ? { offset: { mainAxis: 8 } } : undefined }
+      positioning={ shield ? { offset: { mainAxis: 8 } } : undefined }
     >
       <Flex marginRight={ styles.marginRight } position="relative">
         <AddressIdenticon
           size={ props.variant === 'heading' ? 30 : 20 }
           hash={ getDisplayedAddress(props.address) }
         />
-        { props.shield && <EntityBase.IconShield { ...props.shield }/> }
+        { shield && <EntityBase.IconShield { ...shield }/> }
         { isDelegatedAddress && <AddressIconDelegated isVerified={ Boolean(props.address.is_verified) }/> }
-        { props.subchain && <EntityBase.IconShield src={ props.subchain.config.UI.navigation.icon.default }/> }
       </Flex>
     </Tooltip>
   );
