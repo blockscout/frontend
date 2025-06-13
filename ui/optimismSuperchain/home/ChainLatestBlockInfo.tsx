@@ -17,7 +17,7 @@ interface Props {
   slug: string;
 }
 
-const HomeSubchainLatestBlock = ({ slug }: Props) => {
+const ChainLatestBlockInfo = ({ slug }: Props) => {
   const queryClient = useQueryClient();
 
   const blocksQuery = useApiQuery('general:homepage_blocks', {
@@ -75,4 +75,4 @@ const HomeSubchainLatestBlock = ({ slug }: Props) => {
   );
 };
 
-export default React.memo(HomeSubchainLatestBlock);
+export default React.memo(ChainLatestBlockInfo);

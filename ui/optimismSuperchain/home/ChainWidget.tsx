@@ -13,13 +13,13 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import IconSvg from 'ui/shared/IconSvg';
 
-import HomeSubchainLatestBlock from './HomeSubchainLatestBlock';
+import ChainLatestBlockInfo from './ChainLatestBlockInfo';
 
 interface Props {
   data: SubchainConfig;
 }
 
-const HomeSubchainWidget = ({ data }: Props) => {
+const ChainWidget = ({ data }: Props) => {
   const statsQuery = useApiQuery('general:stats', {
     subchainSlug: data.slug,
     queryOptions: {
@@ -60,7 +60,7 @@ const HomeSubchainWidget = ({ data }: Props) => {
           <Box>{ data.config.chain.id }</Box>
           <CopyToClipboard text={ String(data.config.chain.id) } ml={ 0 }/>
         </HStack>
-        <HomeSubchainLatestBlock slug={ data.slug }/>
+        <ChainLatestBlockInfo slug={ data.slug }/>
         { statsQuery.data && statsQuery.data.gas_prices && data.config.features.gasTracker.isEnabled && (
           <HStack gap={ 2 }>
             <Box color="text.secondary">Gas price</Box>
@@ -74,4 +74,4 @@ const HomeSubchainWidget = ({ data }: Props) => {
   );
 };
 
-export default React.memo(HomeSubchainWidget);
+export default React.memo(ChainWidget);

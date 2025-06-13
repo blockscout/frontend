@@ -7,12 +7,14 @@ import getSocketUrl from 'lib/api/getSocketUrl';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import { SocketProvider } from 'lib/socket/context';
 import HeroBanner from 'ui/home/HeroBanner';
-import HomeMultichainSocketTest from 'ui/homeMultichain/HomeMultichainSocketTest';
-import HomeSubchainWidget from 'ui/homeMultichain/HomeSubchainWidget';
+
+import ChainWidget from './ChainWidget';
+import LatestTxs from './LatestTxs';
+import SocketTest from './SocketTest';
 
 const socketUrl = config.apis.multichain?.socketEndpoint ? `${ config.apis.multichain.socketEndpoint }/socket` : undefined;
 
-const HomeMultichain = () => {
+const HomeOpSuperchain = () => {
   return (
     <Box as="main">
       <HeroBanner/>
@@ -21,17 +23,18 @@ const HomeMultichain = () => {
           return (
             <MultichainProvider key={ chain.slug } subchainSlug={ chain.slug }>
               <SocketProvider url={ getSocketUrl(chain.config) }>
-                <HomeSubchainWidget data={ chain }/>
+                <ChainWidget data={ chain }/>
               </SocketProvider>
             </MultichainProvider>
           );
         }) }
       </HStack>
       <SocketProvider url={ socketUrl }>
-        <HomeMultichainSocketTest/>
+        <SocketTest/>
       </SocketProvider>
+      <LatestTxs/>
     </Box>
   );
 };
 
-export default React.memo(HomeMultichain);
+export default React.memo(HomeOpSuperchain);

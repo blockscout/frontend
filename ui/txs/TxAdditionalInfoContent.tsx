@@ -4,9 +4,10 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import { currencyUnits } from 'lib/units';
 import { Link } from 'toolkit/chakra/link';
@@ -16,6 +17,8 @@ import TxFee from 'ui/shared/tx/TxFee';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
+  const multichainContext = useMultichainContext();
+
   const sectionProps = {
     borderBottom: '1px solid',
     borderColor: 'border.divider',
@@ -116,7 +119,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           </Box>
         </Box>
       ) }
-      <Link href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }) }>More details</Link>
+      <Link href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }, multichainContext) }>More details</Link>
     </>
   );
 };

@@ -8,7 +8,7 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import { Heading } from 'toolkit/chakra/heading';
 
 // TODO @tom2drum remove this component after testing
-const HomeMultichainSocketTest = () => {
+const SocketTest = () => {
   const [ blocks, setBlocks ] = React.useState<Array<{ block_number: number; chain_id: number }>>([ ]);
 
   const handleNewBlockMessage: SocketMessage.NewBlockMultichain['handler'] = React.useCallback((payload) => {
@@ -51,4 +51,4 @@ const HomeMultichainSocketTest = () => {
   );
 };
 
-export default React.memo(HomeMultichainSocketTest);
+export default React.memo(SocketTest);
