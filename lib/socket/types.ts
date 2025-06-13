@@ -1,5 +1,6 @@
 import type { Channel } from 'phoenix';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'types/api/address';
 import type { NewArbitrumBatchSocketResponse } from 'types/api/arbitrumL2';
 import type { NewBlockSocketResponse } from 'types/api/block';
@@ -17,6 +18,7 @@ SocketMessage.InternalTxsIndexStatus |
 SocketMessage.TxStatusUpdate |
 SocketMessage.TxRawTrace |
 SocketMessage.NewTx |
+SocketMessage.NewInteropMessage |
 SocketMessage.NewPendingTx |
 SocketMessage.NewOptimisticDeposits |
 SocketMessage.NewArbitrumDeposits |
@@ -56,6 +58,7 @@ export namespace SocketMessage {
   export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;
   export type TxRawTrace = SocketMessageParamsGeneric<'raw_trace', RawTracesResponse>;
   export type NewTx = SocketMessageParamsGeneric<'transaction', { transaction: number }>;
+  export type NewInteropMessage = SocketMessageParamsGeneric<'new_messages', Array<multichain.InteropMessage>>;
   export type NewPendingTx = SocketMessageParamsGeneric<'pending_transaction', { pending_transaction: number }>;
   export type NewOptimisticDeposits = SocketMessageParamsGeneric<'new_optimism_deposits', { deposits: number }>;
   export type NewArbitrumDeposits = SocketMessageParamsGeneric<'new_messages_to_rollup_amount', { new_messages_to_rollup_amount: number }>;

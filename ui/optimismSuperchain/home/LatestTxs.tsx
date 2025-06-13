@@ -5,10 +5,10 @@ import React from 'react';
 import multichainConfig from 'configs/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Heading } from 'toolkit/chakra/heading';
-import { Link } from 'toolkit/chakra/link';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import SubchainSelect from 'ui/shared/multichain/SubchainSelect';
 
+import LatestTxsCrossChain from './LatestTxsCrossChain';
 import LatestTxsLocal from './LatestTxsLocal';
 
 const LatestTxs = () => {
@@ -33,7 +33,7 @@ const LatestTxs = () => {
     {
       id: 'cross_chain_txs',
       title: 'Cross-chain',
-      component: <div>Coming soon 🔜</div>,
+      component: <LatestTxsCrossChain/>,
     },
     {
       id: 'local_txs',
@@ -42,19 +42,14 @@ const LatestTxs = () => {
     },
   ];
 
-  const rightSlot = (
-    <>
-      { tab === 'local_txs' && (
-        <SubchainSelect
-          loading={ false }
-          value={ subchainValue }
-          onValueChange={ handleSubchainValueChange }
-          w="fit-content"
-        />
-      ) }
-      <Link textStyle="sm">View all</Link>
-    </>
-  );
+  const rightSlot = tab === 'local_txs' ? (
+    <SubchainSelect
+      loading={ false }
+      value={ subchainValue }
+      onValueChange={ handleSubchainValueChange }
+      w="fit-content"
+    />
+  ) : null;
 
   return (
     <Box as="section" mt={ 8 }>
@@ -62,13 +57,6 @@ const LatestTxs = () => {
       <RoutedTabs
         tabs={ tabs }
         rightSlot={ rightSlot }
-        rightSlotProps={{
-          display: 'flex',
-          justifyContent: tab === 'local_txs' ? 'space-between' : 'flex-end',
-          ml: 8,
-          alignItems: 'center',
-          widthAllocation: 'available',
-        }}
       />
     </Box>
   );

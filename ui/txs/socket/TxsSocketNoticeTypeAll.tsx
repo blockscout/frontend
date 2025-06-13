@@ -23,7 +23,15 @@ const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
     return null;
   }
 
-  const url = multichainContext && type === 'txs_home' ? route({ pathname: '/txs' }, multichainContext) : undefined;
+  const url = (() => {
+    if (type === 'txs_home_cross_chain') {
+      return route({ pathname: '/txs' });
+    }
+
+    if (type === 'txs_home' && multichainContext) {
+      return route({ pathname: '/txs' }, multichainContext);
+    }
+  })();
 
   if (place === 'table') {
     return (

@@ -197,7 +197,9 @@ const AddressEntity = (props: EntityProps) => {
   const highlightContext = useAddressHighlightContext(props.noHighlight);
   const settingsContext = useSettingsContext();
   const multichainContext = useMultichainContext();
+
   const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
+  const subchain = props.subchain ?? multichainContext?.subchain;
 
   // inside highlight context all tooltips should be interactive
   // because non-interactive ones will not pass 'onMouseLeave' event to the parent component
@@ -215,8 +217,8 @@ const AddressEntity = (props: EntityProps) => {
       position="relative"
       zIndex={ 0 }
     >
-      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) } subchain={ multichainContext?.subchain }/>
-      { props.noLink ? content : <Link { ...partsProps.link } subchain={ multichainContext?.subchain }>{ content }</Link> }
+      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) } subchain={ subchain }/>
+      { props.noLink ? content : <Link { ...partsProps.link } subchain={ subchain }>{ content }</Link> }
       <Copy { ...partsProps.copy } altHash={ altHash } tooltipInteractive={ Boolean(highlightContext) }/>
     </Container>
   );
