@@ -86,6 +86,10 @@ const AdaptiveTabsList = (props: Props) => {
   const activeTabIndex = tabsList.findIndex((tab) => getTabValue(tab) === activeTab) ?? 0;
   useScrollToActiveTab({ activeTabIndex, listRef, tabsRefs, isMobile, isLoading });
 
+  if (tabs.length === 1 && !leftSlot && !rightSlot) {
+    return null;
+  }
+
   const isReady = !isLoading && tabsCut !== undefined;
 
   return (
@@ -133,7 +137,7 @@ const AdaptiveTabsList = (props: Props) => {
         </Box>
       )
       }
-      { tabsList.map((tab, index) => {
+      { tabs.length > 1 && tabsList.map((tab, index) => {
         const value = getTabValue(tab);
         const ref = tabsRefs[index];
 
