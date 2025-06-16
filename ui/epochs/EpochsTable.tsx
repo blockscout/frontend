@@ -23,7 +23,7 @@ const EpochsTable = ({ items, isLoading, top }: Props) => {
             Epoch
             <TimeFormatToggle/>
           </TableColumnHeader>
-          <TableColumnHeader w="200px">Status</TableColumnHeader>
+          <TableColumnHeader w="120px">Status</TableColumnHeader>
           <TableColumnHeader w="25%">Block range</TableColumnHeader>
           <TableColumnHeader w="25%" isNumeric>Community { config.chain.currency.symbol }</TableColumnHeader>
           <TableColumnHeader w="25%" isNumeric>Carbon offset { config.chain.currency.symbol }</TableColumnHeader>
