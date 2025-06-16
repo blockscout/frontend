@@ -67,7 +67,7 @@ const EpochPageContent = () => {
   })();
 
   const titleSecondRow = (() => {
-    if (!epochQuery.data?.start_block_number) {
+    if (!epochQuery.data || epochQuery.data?.start_block_number === null) {
       return null;
     }
 
