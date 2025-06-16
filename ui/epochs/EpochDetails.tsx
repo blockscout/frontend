@@ -63,7 +63,7 @@ const EpochDetails = ({ data, isLoading }: Props) => {
           />
         </DetailedInfo.ItemValue>
         <DetailedInfo.ItemLabel
-          hint="Date & time at which epoch was finalized."
+          hint="Timestamp of the block where the epoch processing completed"
           isLoading={ isLoading }
         >
           Timestamp
