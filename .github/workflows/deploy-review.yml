@@ -26,8 +26,8 @@ on:
             - mekong
             - neon_devnet
             - optimism
-            - optimism_multichain
             - optimism_sepolia
+            - optimism_superchain
             - polygon
             - rari_testnet
             - rootstock

@@ -21,4 +21,4 @@ const Page: NextPage<Props> = (props: Props) => {
 
 export default Page;
 
-export { multichain as getServerSideProps } from 'nextjs/getServerSideProps';
+export { opSuperchain as getServerSideProps } from 'nextjs/getServerSideProps';

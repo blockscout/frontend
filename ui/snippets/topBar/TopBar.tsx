@@ -23,7 +23,7 @@ const TopBar = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        { !config.features.multichain.isEnabled ? <TopBarStats/> : <div/> }
+        { !config.features.opSuperchain.isEnabled ? <TopBarStats/> : <div/> }
         <Flex alignItems="center">
           { config.features.deFiDropdown.isEnabled && (
             <>

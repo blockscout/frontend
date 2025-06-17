@@ -7,7 +7,7 @@ let cspPolicy: string | undefined = undefined;
 
 export async function get() {
   if (!cspPolicy) {
-    appConfig.features.multichain.isEnabled && await multichainConfig.load();
+    appConfig.features.opSuperchain.isEnabled && await multichainConfig.load();
     cspPolicy = generateCspPolicy();
   }
 

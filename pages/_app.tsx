@@ -73,7 +73,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     );
   })();
 
-  const socketUrl = !config.features.multichain.isEnabled ? getSocketUrl() : undefined;
+  const socketUrl = !config.features.opSuperchain.isEnabled ? getSocketUrl() : undefined;
 
   return (
     <ChakraProvider>

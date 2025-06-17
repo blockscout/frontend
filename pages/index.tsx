@@ -12,7 +12,7 @@ import LayoutHome from 'ui/shared/layout/LayoutHome';
 const Page: NextPageWithLayout = () => {
   return (
     <PageNextJs pathname="/">
-      { config.features.multichain.isEnabled ? <HomeOpSuperchain/> : <Home/> }
+      { config.features.opSuperchain.isEnabled ? <HomeOpSuperchain/> : <Home/> }
     </PageNextJs>
   );
 };

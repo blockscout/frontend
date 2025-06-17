@@ -8,12 +8,13 @@ import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
-import AddressMultichainTxs, { ADDRESS_MULTICHAIN_TXS_TAB_IDS } from 'ui/addressMultichain/AddressMultichainTxs';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-const AddressMultichain = () => {
+import AddressOpSuperchainTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './AddressOpSuperchainTxs';
+
+const AddressOpSuperchain = () => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
@@ -38,8 +39,8 @@ const AddressMultichain = () => {
       {
         id: 'txs',
         title: 'Transactions',
-        component: <AddressMultichainTxs/>,
-        subTabs: ADDRESS_MULTICHAIN_TXS_TAB_IDS,
+        component: <AddressOpSuperchainTxs/>,
+        subTabs: ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS,
       },
     ];
   }, []);
@@ -75,4 +76,4 @@ const AddressMultichain = () => {
   );
 };
 
-export default React.memo(AddressMultichain);
+export default React.memo(AddressOpSuperchain);

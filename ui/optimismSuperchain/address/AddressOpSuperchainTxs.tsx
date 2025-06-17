@@ -17,7 +17,7 @@ import SubchainSelect from 'ui/shared/multichain/SubchainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
-export const ADDRESS_MULTICHAIN_TXS_TAB_IDS = [ 'cross_chain_txs', 'local_txs' ];
+export const ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS = [ 'cross_chain_txs', 'local_txs' ];
 const TAB_LIST_PROPS = {
   marginBottom: 0,
   pt: 6,
@@ -26,7 +26,7 @@ const TAB_LIST_PROPS = {
 };
 const ACTION_BAR_HEIGHT_DESKTOP = 68;
 
-const AddressMultichainTxs = () => {
+const AddressOpSuperchainTxs = () => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
@@ -112,4 +112,4 @@ const AddressMultichainTxs = () => {
   );
 };
 
-export default React.memo(AddressMultichainTxs);
+export default React.memo(AddressOpSuperchainTxs);

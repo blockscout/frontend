@@ -5,7 +5,7 @@ import * as multichainConfigNodejs from 'configs/multichain/config.nodejs';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 const multichainConfig: () => MultichainConfig | undefined = () => {
-  if (!config.features.multichain.isEnabled) {
+  if (!config.features.opSuperchain.isEnabled) {
     return;
   }
 

@@ -403,8 +403,8 @@ export const interopMessages: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const multichain: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.multichain.isEnabled) {
+export const opSuperchain: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.opSuperchain.isEnabled) {
     return {
       notFound: true,
     };
@@ -413,7 +413,7 @@ export const multichain: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const multichainAccountsLabelSearch: GetServerSideProps<Props> = async(context) => {
+export const opSuperchainAccountsLabelSearch: GetServerSideProps<Props> = async(context) => {
   const subchainSlug = context.params?.['subchain-slug'];
   const subchain = multichainConfig()?.chains.find((chain) => chain.slug === subchainSlug);
 
@@ -423,7 +423,7 @@ export const multichainAccountsLabelSearch: GetServerSideProps<Props> = async(co
     };
   }
 
-  return multichain(context);
+  return opSuperchain(context);
 };
 
 export const pools: GetServerSideProps<Props> = async(context) => {

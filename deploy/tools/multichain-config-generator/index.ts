@@ -43,8 +43,8 @@ async function computeChainConfig(url: string): Promise<unknown> {
 
 async function run() {
   try {
-    if (!process.env.NEXT_PUBLIC_INTEROP_MULTICHAIN_API_HOST) {
-      console.log('ℹ️  NEXT_PUBLIC_INTEROP_MULTICHAIN_API_HOST is not set, skipping multichain config generation\n');
+    if (!process.env.NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST) {
+      console.log('ℹ️  NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST is not set, skipping multichain config generation\n');
       return;
     }
 

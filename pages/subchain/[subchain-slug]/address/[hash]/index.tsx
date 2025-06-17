@@ -30,4 +30,4 @@ const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) =
 
 export default Page;
 
-export { multichain as getServerSideProps } from 'nextjs/getServerSideProps';
+export { opSuperchain as getServerSideProps } from 'nextjs/getServerSideProps';

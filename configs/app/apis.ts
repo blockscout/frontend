@@ -102,7 +102,7 @@ const rewardsApi = (() => {
 })();
 
 const multichainApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_INTEROP_MULTICHAIN_API_HOST');
+  const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST');
   if (!apiHost) {
     return;
   }

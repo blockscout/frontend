@@ -20,4 +20,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { multichainAccountsLabelSearch as getServerSideProps } from 'nextjs/getServerSideProps';
+export { opSuperchainAccountsLabelSearch as getServerSideProps } from 'nextjs/getServerSideProps';
