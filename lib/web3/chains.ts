@@ -4,10 +4,6 @@ import appConfig from 'configs/app';
 import multichainConfig from 'configs/multichain';
 
 const getChainInfo = (config: typeof appConfig = appConfig) => {
-  if (!config.chain.id) {
-    return;
-  }
-
   return {
     id: Number(config.chain.id),
     name: config.chain.name ?? '',
