@@ -6,16 +6,22 @@ import { route } from 'nextjs-routes';
 
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
+import Puzzle15 from 'ui/games/Puzzle15';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppErrorTitle from '../AppErrorTitle';
-
 const AppErrorTxNotFound = () => {
   const snippet = {
     borderColor: { _light: 'blackAlpha.300', _dark: 'whiteAlpha.300' },
     iconBg: { _light: 'blackAlpha.800', _dark: 'whiteAlpha.800' },
     iconColor: { _light: 'white', _dark: 'black' },
   };
+
+  const [ isPuzzleOpen, setIsPuzzleOpen ] = React.useState(false);
+
+  const showPuzzle = React.useCallback(() => {
+    setIsPuzzleOpen(true);
+  }, []);
 
   return (
     <>
@@ -54,7 +60,11 @@ const AppErrorTxNotFound = () => {
           <chakra.span fontWeight={ 600 }>sender/exchange/wallet/transaction provider</chakra.span>
           <span> for additional information.</span>
         </List.Item>
+        <List.Item>
+          <span>If you don’t want to look for a txn and just want to have fun, <Link onClick={ showPuzzle }>solve the puzzle</Link>, and be rewarded with a secret prize.</span>
+        </List.Item>
       </List.Root>
+      { isPuzzleOpen && <Puzzle15/> }
       <Link href={ route({ pathname: '/' }) } asChild>
         <Button
           mt={ 8 }
