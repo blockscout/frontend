@@ -10,7 +10,7 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShorten from 'ui/shared/HashStringShorten';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -27,7 +27,7 @@ const OptimisticL2OutputRootsTableItem = ({ item, isLoading }: Props) => {
         <Skeleton loading={ isLoading } display="inline-block">{ item.l2_output_index }</Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.l1_timestamp }
           isLoading={ isLoading }
           display="inline-block"

@@ -41,7 +41,7 @@ const ArbitrumL2MessageStatus = ({ status, isLoading }: Props) => {
       break;
   }
 
-  return <StatusTag type={ type } text={ text } isLoading={ isLoading }/>;
+  return <StatusTag type={ type } text={ text } loading={ isLoading }/>;
 };
 
 export default ArbitrumL2MessageStatus;

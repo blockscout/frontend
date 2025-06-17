@@ -74,7 +74,7 @@ export const TruncatedTextTooltip = React.memo(({ children, label, placement, in
       onClick: handleClick,
       onMouseEnter: onOpen,
       onMouseLeave: onClose,
-    },
+    } as React.HTMLAttributes<HTMLElement>,
   );
 
   if (isTruncated) {

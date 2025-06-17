@@ -8,7 +8,7 @@ import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
 import InteropMessageStatus from 'ui/shared/statusTag/InteropMessageStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 import InteropMessageAdditionalInfo from './InteropMessageAdditionalInfo';
 import InteropMessageDestinationTx from './InteropMessageDestinationTx';
@@ -31,7 +31,7 @@ const InteropMessagesTableItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </TableCell>
       <TableCell>
-        <TimeAgoWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text.secondary"/>
+        <TimeWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text.secondary"/>
       </TableCell>
       <TableCell>
         <InteropMessageStatus status={ item.status } isLoading={ isLoading }/>

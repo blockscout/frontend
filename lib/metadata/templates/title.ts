@@ -61,6 +61,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/pools': '%network_name% DEX pools',
   '/pools/[hash]': '%network_name% pool details',
   '/interop-messages': '%network_name% interop messages',
+  '/operations': '%network_name% operations',
+  '/operation/[id]': '%network_name% operation %id%',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',
@@ -77,8 +79,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
-  '/token/[hash]': '%network_name% %symbol% token details',
-  '/token/[hash]/instance/[id]': '%network_name% token instance for %symbol%',
+  '/token/[hash]': '%network_name% %symbol_or_name% token details',
+  '/token/[hash]/instance/[id]': '%network_name% token instance for %symbol_or_name%',
   '/apps/[id]': '%network_name% - %app_name%',
   '/address/[hash]': '%network_name% address details for %domain_name%',
   '/stats/[id]': '%title% chart on %network_name%',

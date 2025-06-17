@@ -1,6 +1,7 @@
 import type { SystemConfig } from '@chakra-ui/react';
 
 import addressEntity from './globals/address-entity';
+import entity from './globals/entity';
 import recaptcha from './globals/recaptcha';
 import scrollbar from './globals/scrollbar';
 
@@ -51,6 +52,7 @@ const globalCss: SystemConfig['globalCss'] = {
   },
   ...recaptcha,
   ...scrollbar,
+  ...entity,
   ...addressEntity,
 };
 
