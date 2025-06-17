@@ -5,8 +5,6 @@ import { getEnvValue } from '../utils';
 
 const isEnabled = getEnvValue('NEXT_PUBLIC_OP_SUPERCHAIN_ENABLED') === 'true';
 
-// TODO @tom2drum composition for gSSP
-// TODO @tom2drum connect wallet button
 const title = 'OP Superchain interop explorer';
 
 const config: Feature<{ }> = (() => {

@@ -8,14 +8,19 @@ export function multichain(): CspDev.DirectiveDescriptor {
     return {};
   }
 
-  const endpoints = value.chains.map((chain) => {
+  const apiEndpoints = value.chains.map((chain) => {
     return [
       ...Object.values(chain.config.apis).filter(Boolean).map((api) => api.endpoint),
       ...Object.values(chain.config.apis).filter(Boolean).map((api) => api.socketEndpoint),
     ].filter(Boolean);
   }).flat();
 
+  const rpcEndpoints = value.chains.map(({ config }) => config.chain.rpcUrls).flat();
+
   return {
-    'connect-src': endpoints,
+    'connect-src': [
+      ...apiEndpoints,
+      ...rpcEndpoints,
+    ],
   };
 }
