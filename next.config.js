@@ -27,6 +27,11 @@ const moduleExports = {
     );
     config.resolve.fallback = { fs: false, net: false, tls: false };
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
+    config.ignoreWarnings = [
+      { module: /node_modules\/@chakra-ui/ },
+      { message: /.*defaultProps.*/ },
+      { message: /.*Support for defaultProps.*/ },
+    ];
 
     return config;
   },
