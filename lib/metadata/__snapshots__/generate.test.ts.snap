@@ -32,7 +32,7 @@ exports[`generates correct metadata for: static route 1`] = `
   "description": "Moca Chain Explorer allows you to explore and search the Moca Chain for transactions, verifiable credentials, addresses, tokens, prices and other activities taking place on Moca Chain and its dStorage.",
   "opengraph": {
     "description": "",
-    "imageUrl": "http://localhost:3000/static/og_placeholder2.png",
+    "imageUrl": "http://localhost:3000/static/og_placeholder_3.png",
     "title": "Blockscout transactions - Blockscout explorer | Blockscout",
   },
   "title": "Blockscout transactions - Blockscout explorer | Blockscout",

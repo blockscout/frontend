@@ -23,7 +23,7 @@ const TestnetBadge = ({ className }: Props) => {
     if (!_t) {
         return 'testnet';
     } else {
-        return _t;
+        return _t || 'testnet';
     }
   }, [config.chain]);
  
