@@ -48,7 +48,7 @@ const Icon = (props: IconProps) => {
   }
 
   const shield = props.shield ?? (props.chain ? { src: props.chain.config.UI.navigation.icon.default } : undefined);
-  const hintPostfix = props.hintPostfix ?? (props.chain ? ` on ${ props.chain.config.chain.name } (Chain ID: ${ props.chain.config.chain.id })` : '');
+  const hintPostfix: string = props.hintPostfix ?? (props.chain ? ` on ${ props.chain.config.chain.name } (Chain ID: ${ props.chain.config.chain.id })` : '');
 
   const marginRight = props.marginRight ?? (shield ? '18px' : '8px');
   const styles = {

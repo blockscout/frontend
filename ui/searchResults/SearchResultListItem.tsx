@@ -32,7 +32,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
-import TacOperationTag from 'ui/shared/TacOperationTag';
+import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 
 import SearchResultEntityTag from './SearchResultEntityTag';
 
@@ -219,7 +219,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'tac_operation': {
         return (
           <OperationEntity.Container>
-            <OperationEntity.Icon/>
+            <OperationEntity.Icon type={ data.tac_operation.type }/>
             <OperationEntity.Link
               isLoading={ isLoading }
               id={ data.tac_operation.operation_id }
@@ -233,7 +233,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
                 mr={ 2 }
               />
             </OperationEntity.Link>
-            <TacOperationTag type={ data.tac_operation.type }/>
+            <TacOperationStatus status={ data.tac_operation.type }/>
           </OperationEntity.Container>
         );
       }
