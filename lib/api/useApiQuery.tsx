@@ -14,37 +14,37 @@ export interface Params<R extends ResourceName, E = unknown, D = ResourcePayload
   fetchParams?: Pick<FetchParams, 'body' | 'method' | 'headers'>;
   queryOptions?: Partial<Omit<UseQueryOptions<ResourcePayload<R>, ResourceError<E>, D>, 'queryFn'>>;
   logError?: boolean;
-  subchainSlug?: string;
+  chainSlug?: string;
 }
 
 export interface GetResourceKeyParams<R extends ResourceName, E = unknown, D = ResourcePayload<R>>
   extends Pick<Params<R, E, D>, 'pathParams' | 'queryParams'> {
-  subchainSlug?: string;
+  chainSlug?: string;
 }
 
-export function getResourceKey<R extends ResourceName>(resource: R, { pathParams, queryParams, subchainSlug }: GetResourceKeyParams<R> = {}) {
+export function getResourceKey<R extends ResourceName>(resource: R, { pathParams, queryParams, chainSlug }: GetResourceKeyParams<R> = {}) {
   if (pathParams || queryParams) {
-    return [ resource, subchainSlug, { ...pathParams, ...queryParams } ].filter(Boolean);
+    return [ resource, chainSlug, { ...pathParams, ...queryParams } ].filter(Boolean);
   }
 
-  return [ resource, subchainSlug ].filter(Boolean);
+  return [ resource, chainSlug ].filter(Boolean);
 }
 
 export default function useApiQuery<R extends ResourceName, E = unknown, D = ResourcePayload<R>>(
   resource: R,
-  { queryOptions, pathParams, queryParams, fetchParams, logError, subchainSlug }: Params<R, E, D> = {},
+  { queryOptions, pathParams, queryParams, fetchParams, logError, chainSlug }: Params<R, E, D> = {},
 ) {
   const apiFetch = useApiFetch();
-  const { subchain } = useMultichainContext() ||
-    { subchain: subchainSlug ? multichainConfig()?.chains.find((chain) => chain.slug === subchainSlug) : undefined };
+  const { chain } = useMultichainContext() ||
+    { chain: chainSlug ? multichainConfig()?.chains.find((chain) => chain.slug === chainSlug) : undefined };
 
   return useQuery<ResourcePayload<R>, ResourceError<E>, D>({
-    queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams, subchainSlug: subchain?.slug }),
+    queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams, chainSlug: chain?.slug }),
     queryFn: async({ signal }) => {
       // all errors and error typing is handled by react-query
       // so error response will never go to the data
       // that's why we are safe here to do type conversion "as Promise<ResourcePayload<R>>"
-      return apiFetch(resource, { pathParams, queryParams, subchain, logError, fetchParams: { ...fetchParams, signal } }) as Promise<ResourcePayload<R>>;
+      return apiFetch(resource, { pathParams, queryParams, chain, logError, fetchParams: { ...fetchParams, signal } }) as Promise<ResourcePayload<R>>;
     },
     ...queryOptions,
   });

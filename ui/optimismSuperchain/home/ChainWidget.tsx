@@ -1,7 +1,7 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SubchainConfig } from 'types/multichain';
+import type { ChainConfig } from 'types/multichain';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/stats';
@@ -16,12 +16,12 @@ import IconSvg from 'ui/shared/IconSvg';
 import ChainLatestBlockInfo from './ChainLatestBlockInfo';
 
 interface Props {
-  data: SubchainConfig;
+  data: ChainConfig;
 }
 
 const ChainWidget = ({ data }: Props) => {
   const statsQuery = useApiQuery('general:stats', {
-    subchainSlug: data.slug,
+    chainSlug: data.slug,
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },

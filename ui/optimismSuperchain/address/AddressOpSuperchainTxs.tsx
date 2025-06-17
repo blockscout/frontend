@@ -13,7 +13,7 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 // import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressTxsFilter from 'ui/address/AddressTxsFilter';
 import useAddressTxsQuery from 'ui/address/useAddressTxsQuery';
-import SubchainSelect from 'ui/shared/multichain/SubchainSelect';
+import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
@@ -50,10 +50,10 @@ const AddressOpSuperchainTxs = () => {
     <>
       <HStack gap={ 2 }>
         { txsLocalFilter }
-        <SubchainSelect
+        <ChainSelect
           loading={ txsQueryLocal.query.pagination.isLoading }
-          value={ txsQueryLocal.query.subchainValue }
-          onValueChange={ txsQueryLocal.query.onSubchainValueChange }
+          value={ txsQueryLocal.query.chainValue }
+          onValueChange={ txsQueryLocal.query.onChainValueChange }
         />
       </HStack>
       <HStack gap={ 6 }>
@@ -68,7 +68,7 @@ const AddressOpSuperchainTxs = () => {
     </>
   ) : null;
 
-  const subchainData = multichainConfig()?.chains.find(chain => chain.slug === txsQueryLocal.query.subchainValue?.[0]);
+  const chainData = multichainConfig()?.chains.find(chain => chain.slug === txsQueryLocal.query.chainValue?.[0]);
 
   const tabs: Array<TabItemRegular> = [
     {
@@ -80,8 +80,8 @@ const AddressOpSuperchainTxs = () => {
       id: 'local_txs',
       title: 'Local',
       component: (
-        <SocketProvider url={ getSocketUrl(subchainData?.config) }>
-          <MultichainProvider subchainSlug={ txsQueryLocal.query.subchainValue?.[0] }>
+        <SocketProvider url={ getSocketUrl(chainData?.config) }>
+          <MultichainProvider chainSlug={ txsQueryLocal.query.chainValue?.[0] }>
             <TxsWithAPISorting
               filter={ txsLocalFilter }
               filterValue={ txsQueryLocal.filterValue }

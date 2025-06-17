@@ -13,7 +13,7 @@ type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
 const Link = chakra((props: LinkProps) => {
   const defaultHref = route(
     { pathname: '/tx/[hash]', query: { hash: props.hash } },
-    props.subchain ? { subchain: props.subchain } : undefined,
+    props.chain ? { chain: props.chain } : undefined,
   );
 
   return (
@@ -31,10 +31,10 @@ const Icon = (props: EntityBase.IconBaseProps) => {
     <EntityBase.Icon
       { ...props }
       name={ props.name ?? 'transactions_slim' }
-      shield={ props.shield ?? (props.subchain ? {
-        src: props.subchain.config.UI.navigation.icon.default,
+      shield={ props.shield ?? (props.chain ? {
+        src: props.chain.config.UI.navigation.icon.default,
       } : undefined) }
-      hint={ props.subchain ? `Transaction on ${ props.subchain.config.chain.name } (Chain ID: ${ props.subchain.config.chain.id })` : undefined }
+      hint={ props.chain ? `Transaction on ${ props.chain.config.chain.name } (Chain ID: ${ props.chain.config.chain.id })` : undefined }
     />
   );
 };
@@ -74,13 +74,13 @@ const TxEntity = (props: EntityProps) => {
   const multichainContext = useMultichainContext();
   const partsProps = distributeEntityProps(props);
 
-  const subchain = props.subchain ?? multichainContext?.subchain;
+  const chain = props.chain ?? multichainContext?.chain;
   const content = <Content { ...partsProps.content }/>;
 
   return (
     <Container { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link } subchain={ subchain }>{ content }</Link> }
+      { props.noLink ? content : <Link { ...partsProps.link } chain={ chain }>{ content }</Link> }
       <Copy { ...partsProps.copy }/>
     </Container>
   );

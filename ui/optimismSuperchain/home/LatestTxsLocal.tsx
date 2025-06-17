@@ -24,23 +24,23 @@ const PAGINATION_PARAMS: PaginationParams = {
 };
 
 interface Props {
-  subchainSlug: string;
+  chainSlug: string;
 }
 
-const LatestTxsLocal = ({ subchainSlug }: Props) => {
+const LatestTxsLocal = ({ chainSlug }: Props) => {
   const query = useApiQuery('general:homepage_txs', {
-    subchainSlug,
+    chainSlug,
     queryOptions: {
       placeholderData: Array(5).fill(TX),
       select: (data) => data.slice(0, 5),
     },
   });
 
-  const subchainData = multichainConfig()?.chains.find(chain => chain.slug === subchainSlug);
+  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
 
   return (
-    <MultichainProvider subchainSlug={ subchainSlug }>
-      <SocketProvider url={ getSocketUrl(subchainData?.config) }>
+    <MultichainProvider chainSlug={ chainSlug }>
+      <SocketProvider url={ getSocketUrl(chainData?.config) }>
         <TxsContent
           items={ query.data || [] }
           isPlaceholderData={ query.isPlaceholderData }

@@ -9,8 +9,8 @@ export const route = (route: Route, multichainContext?: TMultichainContext | nul
 
 export const routeParams = (route: Route, multichainContext?: TMultichainContext | null): Route => {
   if (multichainContext) {
-    const pathname = '/subchain/[subchain-slug]' + route.pathname;
-    return { ...route, pathname, query: { ...route.query, 'subchain-slug': multichainContext.subchain.slug } } as Route;
+    const pathname = '/chain/[chain-slug]' + route.pathname;
+    return { ...route, pathname, query: { ...route.query, 'chain-slug': multichainContext.chain.slug } } as Route;
   }
   return route;
 };

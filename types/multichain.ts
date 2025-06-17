@@ -1,10 +1,10 @@
 import type config from 'configs/app';
 
-export interface SubchainConfig {
+export interface ChainConfig {
   slug: string;
   config: typeof config;
 }
 
 export interface MultichainConfig {
-  chains: Array<SubchainConfig>;
+  chains: Array<ChainConfig>;
 }

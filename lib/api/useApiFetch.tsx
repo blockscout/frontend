@@ -3,7 +3,7 @@ import { omit, pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { CsrfData } from 'types/client/account';
-import type { SubchainConfig } from 'types/multichain';
+import type { ChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import isBodyAllowed from 'lib/api/isBodyAllowed';
@@ -22,7 +22,7 @@ export interface Params<R extends ResourceName> {
   queryParams?: Record<string, string | Array<string> | number | boolean | undefined | null>;
   fetchParams?: Pick<FetchParams, 'body' | 'method' | 'signal' | 'headers'>;
   logError?: boolean;
-  subchain?: SubchainConfig;
+  chain?: ChainConfig;
 }
 
 export default function useApiFetch() {
@@ -33,15 +33,15 @@ export default function useApiFetch() {
 
   return React.useCallback(<R extends ResourceName, SuccessType = unknown, ErrorType = unknown>(
     resourceName: R,
-    { pathParams, queryParams, fetchParams, logError, subchain }: Params<R> = {},
+    { pathParams, queryParams, fetchParams, logError, chain }: Params<R> = {},
   ) => {
     const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
 
-    const { api, apiName, resource } = getResourceParams(resourceName, subchain);
-    const url = buildUrl(resourceName, pathParams, queryParams, undefined, subchain);
+    const { api, apiName, resource } = getResourceParams(resourceName, chain);
+    const url = buildUrl(resourceName, pathParams, queryParams, undefined, chain);
     const withBody = isBodyAllowed(fetchParams?.method);
     const headers = pickBy({
-      'x-endpoint': api.endpoint && (subchain || apiName !== 'general') && isNeedProxy() ? api.endpoint : undefined,
+      'x-endpoint': api.endpoint && apiName !== 'general' && isNeedProxy() ? api.endpoint : undefined,
       Authorization: [ 'admin', 'contractInfo' ].includes(apiName) ? apiToken : undefined,
       'x-csrf-token': withBody && csrfToken ? csrfToken : undefined,
       ...resource.headers,

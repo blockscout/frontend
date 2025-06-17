@@ -21,14 +21,14 @@ const ChainLatestBlockInfo = ({ slug }: Props) => {
   const queryClient = useQueryClient();
 
   const blocksQuery = useApiQuery('general:homepage_blocks', {
-    subchainSlug: slug,
+    chainSlug: slug,
     queryOptions: {
       placeholderData: [ BLOCK ],
     },
   });
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    const queryKey = getResourceKey('general:homepage_blocks', { subchainSlug: slug });
+    const queryKey = getResourceKey('general:homepage_blocks', { chainSlug: slug });
     queryClient.setQueryData(queryKey, () => {
       return [ payload.block ];
     });
@@ -54,9 +54,9 @@ const ChainLatestBlockInfo = ({ slug }: Props) => {
       <Link
         loading={ blocksQuery.isPlaceholderData }
         href={ route({
-          pathname: '/subchain/[subchain-slug]/block/[height_or_hash]',
+          pathname: '/chain/[chain-slug]/block/[height_or_hash]',
           query: {
-            'subchain-slug': slug,
+            'chain-slug': slug,
             height_or_hash: blocksQuery.data[0].height.toString(),
           },
         }) }

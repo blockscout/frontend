@@ -11,15 +11,15 @@ import { MultichainProvider } from 'lib/contexts/multichain';
 import { SocketProvider } from 'lib/socket/context';
 import Address from 'ui/pages/Address';
 
-const pathname: Route['pathname'] = '/subchain/[subchain-slug]/address/[hash]';
+const pathname: Route['pathname'] = '/chain/[chain-slug]/address/[hash]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
-  const subchainSlug = props.query?.['subchain-slug'];
-  const subchainData = multichainConfig()?.chains.find(chain => chain.slug === subchainSlug);
+  const chainSlug = props.query?.['chain-slug'];
+  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
 
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      <SocketProvider url={ getSocketUrl(subchainData?.config) }>
+      <SocketProvider url={ getSocketUrl(chainData?.config) }>
         <MultichainProvider>
           <Address/>
         </MultichainProvider>

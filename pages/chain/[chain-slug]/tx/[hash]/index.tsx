@@ -11,7 +11,7 @@ const Transaction = dynamic(() => import('ui/pages/Transaction'), { ssr: false }
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/subchain/[subchain-slug]/tx/[hash]" query={ props.query }>
+    <PageNextJs pathname="/chain/[chain-slug]/tx/[hash]" query={ props.query }>
       <MultichainProvider>
         <Transaction/>
       </MultichainProvider>

@@ -162,8 +162,8 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
     pagination: emptyPagination,
     onFilterChange: () => {},
     onSortingChange: () => {},
-    subchainValue: undefined,
-    onSubchainValueChange: () => {},
+    chainValue: undefined,
+    onChainValueChange: () => {},
   };
 
   const query = isRpcQuery ? rpcQueryWithPages : apiQuery;

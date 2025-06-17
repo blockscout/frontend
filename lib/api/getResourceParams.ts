@@ -1,17 +1,17 @@
 import type { ApiName, ApiResource } from './types';
-import type { SubchainConfig } from 'types/multichain';
+import type { ChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 
 import type { ResourceName } from './resources';
 import { RESOURCES } from './resources';
 
-export default function getResourceParams(resourceFullName: ResourceName, subchain?: SubchainConfig) {
+export default function getResourceParams(resourceFullName: ResourceName, chain?: ChainConfig) {
   const [ apiName, resourceName ] = resourceFullName.split(':') as [ ApiName, string ];
 
   const apiConfig = (() => {
-    if (subchain) {
-      return subchain.config.apis[apiName];
+    if (chain) {
+      return chain.config.apis[apiName];
     }
 
     return config.apis[apiName];

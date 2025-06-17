@@ -11,7 +11,7 @@ const Block = dynamic(() => import('ui/pages/Block'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/subchain/[subchain-slug]/block/[height_or_hash]" query={ props.query }>
+    <PageNextJs pathname="/chain/[chain-slug]/block/[height_or_hash]" query={ props.query }>
       <MultichainProvider>
         <Block/>
       </MultichainProvider>

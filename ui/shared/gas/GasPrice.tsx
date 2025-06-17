@@ -23,7 +23,7 @@ interface Props {
 
 const GasPrice = ({ data, prefix, className, unitMode = 'primary' }: Props) => {
   const multichainContext = useMultichainContext();
-  const feature = multichainContext?.subchain?.config.features.gasTracker || config.features.gasTracker;
+  const feature = multichainContext?.chain?.config.features.gasTracker || config.features.gasTracker;
 
   if (!data || !feature.isEnabled) {
     return null;

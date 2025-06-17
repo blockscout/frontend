@@ -30,7 +30,7 @@ const TokenSelect = () => {
   const multichainContext = useMultichainContext();
 
   const addressHash = getQueryParamString(router.query.hash);
-  const addressResourceKey = getResourceKey('general:address', { pathParams: { hash: addressHash }, subchainSlug: multichainContext?.subchain?.slug });
+  const addressResourceKey = getResourceKey('general:address', { pathParams: { hash: addressHash }, chainSlug: multichainContext?.chain?.slug });
 
   const addressQueryData = queryClient.getQueryData<Address>(addressResourceKey);
 
@@ -38,7 +38,7 @@ const TokenSelect = () => {
   const tokensResourceKey = getResourceKey('general:address_tokens', {
     pathParams: { hash: addressQueryData?.hash },
     queryParams: { type: 'ERC-20' },
-    subchainSlug: multichainContext?.subchain?.slug,
+    chainSlug: multichainContext?.chain?.slug,
   });
   const tokensIsFetching = useIsFetching({ queryKey: tokensResourceKey });
 

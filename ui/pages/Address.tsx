@@ -67,7 +67,7 @@ const xScoreFeature = config.features.xStarScore;
 const AddressPageContent = () => {
   const router = useRouter();
   const appProps = useAppContext();
-  const { subchain } = useMultichainContext() || {};
+  const { chain } = useMultichainContext() || {};
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -421,13 +421,13 @@ const AddressPageContent = () => {
     </Flex>
   );
 
-  const subchainText = subchain ? ` on ${ subchain.config.chain.name }` : '';
+  const chainText = chain ? ` on ${ chain.config.chain.name }` : '';
 
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details${ subchainText }` }
+        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details${ chainText }` }
         backLink={ backLink }
         contentAfter={ titleContentAfter }
         secondRow={ titleSecondRow }

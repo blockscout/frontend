@@ -19,18 +19,18 @@ interface Props extends Omit<SelectProps, 'collection' | 'placeholder'> {
   loading?: boolean;
 }
 
-const SubchainSelect = ({ loading, ...props }: Props) => {
+const ChainSelect = ({ loading, ...props }: Props) => {
   const isInitialLoading = useIsInitialLoading(loading);
 
   return (
     <Select
       collection={ collection }
       defaultValue={ [ collection.items[0].value ] }
-      placeholder="Select subchain"
+      placeholder="Select chain"
       loading={ isInitialLoading }
       { ...props }
     />
   );
 };
 
-export default React.memo(SubchainSelect);
+export default React.memo(ChainSelect);

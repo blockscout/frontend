@@ -27,7 +27,7 @@ const getDisplayedAddress = (address: AddressProp, altHash?: string) => {
 const Link = chakra((props: LinkProps) => {
   const defaultHref = route(
     { pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } },
-    props.subchain ? { subchain: props.subchain } : undefined,
+    props.chain ? { chain: props.chain } : undefined,
   );
 
   return (
@@ -47,8 +47,8 @@ const Icon = (props: IconProps) => {
     return null;
   }
 
-  const shield = props.shield ?? (props.subchain ? { src: props.subchain.config.UI.navigation.icon.default } : undefined);
-  const hintPostfix = props.hintPostfix ?? (props.subchain ? ` on ${ props.subchain.config.chain.name } (Chain ID: ${ props.subchain.config.chain.id })` : '');
+  const shield = props.shield ?? (props.chain ? { src: props.chain.config.UI.navigation.icon.default } : undefined);
+  const hintPostfix = props.hintPostfix ?? (props.chain ? ` on ${ props.chain.config.chain.name } (Chain ID: ${ props.chain.config.chain.id })` : '');
 
   const marginRight = props.marginRight ?? (shield ? '18px' : '8px');
   const styles = {
@@ -95,7 +95,7 @@ const Icon = (props: IconProps) => {
       return (props.address.is_verified ? 'EOA + verified code' : 'EOA + code') + hintPostfix;
     }
 
-    if (props.subchain) {
+    if (props.chain) {
       return 'Address' + hintPostfix;
     }
 
@@ -199,7 +199,7 @@ const AddressEntity = (props: EntityProps) => {
   const multichainContext = useMultichainContext();
 
   const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
-  const subchain = props.subchain ?? multichainContext?.subchain;
+  const chain = props.chain ?? multichainContext?.chain;
 
   // inside highlight context all tooltips should be interactive
   // because non-interactive ones will not pass 'onMouseLeave' event to the parent component
@@ -217,8 +217,8 @@ const AddressEntity = (props: EntityProps) => {
       position="relative"
       zIndex={ 0 }
     >
-      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) } subchain={ subchain }/>
-      { props.noLink ? content : <Link { ...partsProps.link } subchain={ subchain }>{ content }</Link> }
+      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) } chain={ chain }/>
+      { props.noLink ? content : <Link { ...partsProps.link } chain={ chain }>{ content }</Link> }
       <Copy { ...partsProps.copy } altHash={ altHash } tooltipInteractive={ Boolean(highlightContext) }/>
     </Container>
   );

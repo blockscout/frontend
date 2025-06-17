@@ -48,7 +48,7 @@ const BlockPageContent = () => {
   const appProps = useAppContext();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
   const tab = getQueryParamString(router.query.tab);
-  const { subchain } = useMultichainContext() || {};
+  const { chain } = useMultichainContext() || {};
 
   const blockQuery = useBlockQuery({ heightOrHash });
   const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
@@ -153,17 +153,17 @@ const BlockPageContent = () => {
   }
 
   const title = (() => {
-    const subchainText = subchain ? ` on ${ subchain.config.chain.name }` : '';
+    const chainText = chain ? ` on ${ chain.config.chain.name }` : '';
 
     switch (blockQuery.data?.type) {
       case 'reorg':
-        return `Reorged block #${ blockQuery.data?.height }${ subchainText }`;
+        return `Reorged block #${ blockQuery.data?.height }${ chainText }`;
 
       case 'uncle':
-        return `Uncle block #${ blockQuery.data?.height }${ subchainText }`;
+        return `Uncle block #${ blockQuery.data?.height }${ chainText }`;
 
       default:
-        return `Block #${ blockQuery.data?.height }${ subchainText }`;
+        return `Block #${ blockQuery.data?.height }${ chainText }`;
     }
   })();
 

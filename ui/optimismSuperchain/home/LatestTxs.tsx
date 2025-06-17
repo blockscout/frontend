@@ -6,7 +6,7 @@ import multichainConfig from 'configs/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Heading } from 'toolkit/chakra/heading';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import SubchainSelect from 'ui/shared/multichain/SubchainSelect';
+import ChainSelect from 'ui/shared/multichain/ChainSelect';
 
 import LatestTxsCrossChain from './LatestTxsCrossChain';
 import LatestTxsLocal from './LatestTxsLocal';
@@ -15,16 +15,16 @@ const LatestTxs = () => {
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
 
-  const [ subchainValue, setSubchainValue ] = React.useState<Array<string> | undefined>(
-    [ getQueryParamString(router.query['subchain-slug']) ?? multichainConfig()?.chains[0]?.slug ].filter(Boolean),
+  const [ chainValue, setChainValue ] = React.useState<Array<string> | undefined>(
+    [ getQueryParamString(router.query['chain-slug']) ?? multichainConfig()?.chains[0]?.slug ].filter(Boolean),
   );
 
-  const handleSubchainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    setSubchainValue(value);
+  const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setChainValue(value);
     router.push({
       query: {
         ...router.query,
-        'subchain-slug': value[0],
+        'chain-slug': value[0],
       },
     }, undefined, { shallow: true });
   }, [ router ]);
@@ -38,15 +38,15 @@ const LatestTxs = () => {
     {
       id: 'local_txs',
       title: 'Local',
-      component: subchainValue ? <LatestTxsLocal key={ subchainValue[0] } subchainSlug={ subchainValue[0] }/> : null,
+      component: chainValue ? <LatestTxsLocal key={ chainValue[0] } chainSlug={ chainValue[0] }/> : null,
     },
   ];
 
   const rightSlot = tab === 'local_txs' ? (
-    <SubchainSelect
+    <ChainSelect
       loading={ false }
-      value={ subchainValue }
-      onValueChange={ handleSubchainValueChange }
+      value={ chainValue }
+      onValueChange={ handleChainValueChange }
       w="fit-content"
     />
   ) : null;

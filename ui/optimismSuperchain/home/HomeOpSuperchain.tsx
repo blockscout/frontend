@@ -17,7 +17,7 @@ const HomeOpSuperchain = () => {
       <HStack mt={ 3 } gap={ 6 }>
         { multichainConfig()?.chains.map(chain => {
           return (
-            <MultichainProvider key={ chain.slug } subchainSlug={ chain.slug }>
+            <MultichainProvider key={ chain.slug } chainSlug={ chain.slug }>
               <SocketProvider url={ getSocketUrl(chain.config) }>
                 <ChainWidget data={ chain }/>
               </SocketProvider>

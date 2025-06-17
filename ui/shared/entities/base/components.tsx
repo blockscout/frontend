@@ -2,7 +2,7 @@ import { Box, chakra, Flex } from '@chakra-ui/react';
 import type { IconProps } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SubchainConfig } from 'types/multichain';
+import type { ChainConfig } from 'types/multichain';
 
 import type { ImageProps } from 'toolkit/chakra/image';
 import { Image } from 'toolkit/chakra/image';
@@ -39,7 +39,7 @@ export interface EntityBaseProps {
   truncation?: Truncation;
   variant?: 'content' | 'heading' | 'subheading';
   linkVariant?: LinkProps['variant'];
-  subchain?: SubchainConfig;
+  chain?: ChainConfig;
 }
 
 export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
@@ -61,7 +61,7 @@ const Container = chakra(({ className, children, ...props }: ContainerBaseProps)
   );
 });
 
-export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query' | 'subchain'> {
+export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query' | 'chain'> {
   children: React.ReactNode;
   variant?: LinkProps['variant'];
 }
@@ -100,7 +100,7 @@ interface EntityIconProps extends Pick<IconProps, 'color' | 'borderRadius' | 'ma
   tooltipInteractive?: boolean;
 }
 
-export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant' | 'subchain'>, EntityIconProps {}
+export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant' | 'chain'>, EntityIconProps {}
 
 const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRight, boxSize, shield, hint, tooltipInteractive }: IconBaseProps) => {
   if (noIcon || !name) {

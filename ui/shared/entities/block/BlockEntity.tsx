@@ -14,7 +14,7 @@ const Link = chakra((props: LinkProps) => {
   const heightOrHash = props.hash ?? String(props.number);
   const defaultHref = route(
     { pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash } },
-    props.subchain ? { subchain: props.subchain } : undefined,
+    props.chain ? { chain: props.chain } : undefined,
   );
 
   return (
@@ -64,7 +64,7 @@ const BlockEntity = (props: EntityProps) => {
   return (
     <Container { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link } subchain={ multichainContext?.subchain }>{ content }</Link> }
+      { props.noLink ? content : <Link { ...partsProps.link } chain={ multichainContext?.chain }>{ content }</Link> }
     </Container>
   );
 };

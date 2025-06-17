@@ -414,10 +414,10 @@ export const opSuperchain: GetServerSideProps<Props> = async(context) => {
 };
 
 export const opSuperchainAccountsLabelSearch: GetServerSideProps<Props> = async(context) => {
-  const subchainSlug = context.params?.['subchain-slug'];
-  const subchain = multichainConfig()?.chains.find((chain) => chain.slug === subchainSlug);
+  const chainSlug = context.params?.['chain-slug'];
+  const chain = multichainConfig()?.chains.find((chain) => chain.slug === chainSlug);
 
-  if (!subchain?.config.features.addressMetadata.isEnabled || !context.query.tagType) {
+  if (!chain?.config.features.addressMetadata.isEnabled || !context.query.tagType) {
     return {
       notFound: true,
     };

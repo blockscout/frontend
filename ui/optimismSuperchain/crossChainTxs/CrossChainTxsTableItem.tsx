@@ -62,7 +62,7 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation }: Props) => {
             hash={ item.init_transaction_hash }
             isLoading={ isLoading }
             truncation="constant"
-            subchain={ sourceChain }
+            chain={ sourceChain }
           />
         ) :
           <Spinner size="md"/>
@@ -74,7 +74,7 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation }: Props) => {
             hash={ item.relay_transaction_hash }
             isLoading={ isLoading }
             truncation="constant"
-            subchain={ targetChain }
+            chain={ targetChain }
           />
         ) :
           <Spinner size="md"/>
@@ -85,7 +85,7 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation }: Props) => {
           <AddressEntity
             address={{ hash: item.sender_address_hash }}
             isLoading={ isLoading }
-            subchain={ sourceChain }
+            chain={ sourceChain }
           />
         ) : '-' }
       </TableCell>
@@ -97,7 +97,7 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation }: Props) => {
           <AddressEntity
             address={{ hash: item.target_address_hash }}
             isLoading={ isLoading }
-            subchain={ targetChain }
+            chain={ targetChain }
           />
         ) : '-' }
       </TableCell>

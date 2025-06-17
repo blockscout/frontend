@@ -28,7 +28,7 @@ type Props = {
 
 const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const multichainContext = useMultichainContext();
-  const feature = multichainContext?.subchain?.config.features.txInterpretation || config.features.txInterpretation;
+  const feature = multichainContext?.chain?.config.features.txInterpretation || config.features.txInterpretation;
 
   const hasInterpretationFeature = feature.isEnabled;
   const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';

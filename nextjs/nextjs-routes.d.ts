@@ -38,6 +38,10 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/block/countdown/[height]", { "height": string }>
     | StaticRoute<"/block/countdown">
     | StaticRoute<"/blocks">
+    | DynamicRoute<"/chain/[chain-slug]/accounts/label/[slug]", { "chain-slug": string; "slug": string }>
+    | DynamicRoute<"/chain/[chain-slug]/address/[hash]", { "chain-slug": string; "hash": string }>
+    | DynamicRoute<"/chain/[chain-slug]/block/[height_or_hash]", { "chain-slug": string; "height_or_hash": string }>
+    | DynamicRoute<"/chain/[chain-slug]/tx/[hash]", { "chain-slug": string; "hash": string }>
     | StaticRoute<"/chakra">
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
@@ -64,10 +68,6 @@ declare module "nextjs-routes" {
     | StaticRoute<"/sprite">
     | DynamicRoute<"/stats/[id]", { "id": string }>
     | StaticRoute<"/stats">
-    | DynamicRoute<"/subchain/[subchain-slug]/accounts/label/[slug]", { "subchain-slug": string; "slug": string }>
-    | DynamicRoute<"/subchain/[subchain-slug]/address/[hash]", { "subchain-slug": string; "hash": string }>
-    | DynamicRoute<"/subchain/[subchain-slug]/block/[height_or_hash]", { "subchain-slug": string; "height_or_hash": string }>
-    | DynamicRoute<"/subchain/[subchain-slug]/tx/[hash]", { "subchain-slug": string; "hash": string }>
     | DynamicRoute<"/token/[hash]", { "hash": string }>
     | DynamicRoute<"/token/[hash]/instance/[id]", { "hash": string; "id": string }>
     | StaticRoute<"/token-transfers">

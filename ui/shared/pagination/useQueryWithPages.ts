@@ -52,7 +52,7 @@ function getNextPageParams<R extends PaginatedResourceName>(data: ResourcePayloa
   return data.next_page_params;
 }
 
-function getSubchainValue(queryParam: string | Array<string> | undefined) {
+function getChainValue(queryParam: string | Array<string> | undefined) {
   const config = multichainConfig();
   if (!config) {
     return undefined;
@@ -67,8 +67,8 @@ UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
   onFilterChange: <R extends PaginatedResourceName = Resource>(filters: PaginationFilters<R>) => void;
   onSortingChange: (sorting?: PaginationSorting<Resource>) => void;
   pagination: PaginationParams;
-  subchainValue: Array<string> | undefined;
-  onSubchainValueChange: ({ value }: { value: Array<string> }) => void;
+  chainValue: Array<string> | undefined;
+  onChainValueChange: ({ value }: { value: Array<string> }) => void;
 };
 
 export default function useQueryWithPages<Resource extends PaginatedResourceName>({
@@ -87,8 +87,8 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     [page]: getPaginationParamsFromQuery(router.query.next_page_params),
   });
   const [ hasPages, setHasPages ] = React.useState(page > 1);
-  const [ subchainValue, setSubchainValue ] = React.useState<Array<string> | undefined>(
-    getSubchainValue(router.query['subchain-slug']),
+  const [ chainValue, setChainValue ] = React.useState<Array<string> | undefined>(
+    getChainValue(router.query['chain-slug']),
   );
 
   const isMounted = React.useRef(false);
@@ -105,7 +105,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       staleTime: page === 1 ? 0 : Infinity,
       ...options,
     },
-    subchainSlug: subchainValue?.[0],
+    chainSlug: chainValue?.[0],
   });
   const { data } = queryResult;
   const nextPageParams = getNextPageParams(data);
@@ -150,19 +150,19 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
   }, [ router, page, pageParams, scrollToTop, queryClient, resourceName ]);
 
-  const resetPage = useCallback(({ subchainValue }: { subchainValue?: Array<string> } = {}) => {
+  const resetPage = useCallback(({ chainValue }: { chainValue?: Array<string> } = {}) => {
     queryClient.removeQueries({ queryKey: [ resourceName ] });
 
     scrollToTop();
     const nextRouterQuery = omit(router.query, [ 'next_page_params', 'page' ]);
-    if (subchainValue) {
-      nextRouterQuery['subchain-slug'] = subchainValue[0];
+    if (chainValue) {
+      nextRouterQuery['chain-slug'] = chainValue[0];
     }
     router.push({ pathname: router.pathname, query: nextRouterQuery }, undefined, { shallow: true }).then(() => {
       queryClient.removeQueries({ queryKey: [ resourceName ] });
       setPage(1);
       setPageParams(INITIAL_PAGE_PARAMS);
-      subchainValue && setSubchainValue(subchainValue);
+      chainValue && setChainValue(chainValue);
       window.setTimeout(() => {
         // FIXME after router is updated we still have inactive queries for previously visited page (e.g third), where we came from
         // so have to remove it but with some delay :)
@@ -224,16 +224,16 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     });
   }, [ router, scrollToTop ]);
 
-  const onSubchainValueChange = useCallback(({ value }: { value: Array<string> }) => {
+  const onChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
     if (page !== 1) {
-      resetPage({ subchainValue: value });
+      resetPage({ chainValue: value });
     } else {
       const nextPageQuery = {
         ...router.query,
-        'subchain-slug': value[0],
+        'chain-slug': value[0],
       };
 
-      setSubchainValue(value);
+      setChainValue(value);
       router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
     }
   }, [ page, resetPage, router ]);
@@ -279,5 +279,5 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     setHasPages(pageFromQuery > 1);
   }, [ router.query ]);
 
-  return { ...queryResult, pagination, onFilterChange, onSortingChange, subchainValue, onSubchainValueChange };
+  return { ...queryResult, pagination, onFilterChange, onSortingChange, chainValue, onChainValueChange };
 }

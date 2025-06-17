@@ -48,14 +48,14 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
   const filterValue = getQueryParamString(router.query.filter);
   const page = getQueryParamString(router.query.page);
   const sort = getSortValueFromQuery<TransactionsSortingValue>(router.query, SORT_OPTIONS) || 'default';
-  const { subchain } = useMultichainContext() || {};
+  const { chain } = useMultichainContext() || {};
 
   const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = React.useCallback((payload) => {
     setAlertText('');
     const queryKey = getResourceKey('general:address_txs', {
       pathParams: { hash: currentAddress },
       queryParams: filterValue ? { filter: filterValue } : undefined,
-      subchainSlug: subchain?.slug,
+      chainSlug: chain?.slug,
     });
 
     queryClient.setQueryData(
@@ -97,7 +97,7 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
           ].sort(sortTxsFromSocket(sort)),
         };
       });
-  }, [ currentAddress, filterValue, queryClient, sort, subchain?.slug ]);
+  }, [ currentAddress, filterValue, queryClient, sort, chain?.slug ]);
 
   const handleSocketClose = React.useCallback(() => {
     setAlertText('Connection is lost. Please refresh the page to load new transactions.');
