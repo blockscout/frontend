@@ -33,7 +33,7 @@ export default function useProvider() {
         // this will initialize the provider and set it as window.ethereum
         initializeProvider({
           connectionStream: metamaskStream as never,
-          shouldShimWeb3: true,
+          shouldShimWeb3: false, //  true option tells MetaMask to create the deprecated window.web3 shim.
         });
       } else {
         return;
