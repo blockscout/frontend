@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import { chakra } from '@chakra-ui/react';
-import React from 'react';
+import React , { useMemo } from 'react';
 
 import config from 'configs/app';
 import IconSvg from 'ui/shared/IconSvg';
@@ -11,6 +11,23 @@ interface Props {
 }
 
 const TestnetBadge = ({ className }: Props) => {
+
+  const text = useMemo(() => {
+
+    const _t = (config.chain.rpcUrl || "")
+      .replace('https://', '')
+      .replace('http://', '')
+      .split('.')[0]
+      .replace("-rpc", "");
+
+    if (!_t) {
+        return 'testnet';
+    } else {
+        return _t;
+    }
+  }, [config.chain]);
+ 
+
   if (!config.chain.isTestnet) {
     return null;
   }
@@ -33,10 +50,11 @@ const TestnetBadge = ({ className }: Props) => {
           fontWeight: 500,
           lineHeight: 'normal',
           display: 'flex',
+          textTransform: 'capitalize',
           alignItems: 'center',
       }}
     >
-        Testnet
+        { text }
       </span>
     </span>
 };
