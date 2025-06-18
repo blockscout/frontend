@@ -1,4 +1,4 @@
-import { createListCollection } from '@chakra-ui/react';
+import { HStack, createListCollection } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
@@ -31,7 +31,14 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes }: Props) => {
     const items = tagTypes?.map((type) => ({
       value: type.type,
       label: capitalize(type.type),
-      icon: getItemIcon(type),
+      renderLabel: () => {
+        return (
+          <HStack gap={ 1 }>
+            { getItemIcon(type) }
+            <span>{ capitalize(type.type) }</span>
+          </HStack>
+        );
+      },
     })) ?? [];
 
     return createListCollection<SelectOption>({ items });
