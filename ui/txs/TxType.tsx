@@ -63,7 +63,10 @@ const TxType = ({ types, isLoading }: Props) => {
     default:
       label = 'Transaction';
       colorPalette = 'purple';
+  }
 
+  if (!label) {
+    return null;
   }
 
   return (

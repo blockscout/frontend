@@ -2,8 +2,10 @@ import { Spinner, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
+import type { TransactionType } from 'types/api/transaction';
 
 import multichainConfig from 'configs/multichain';
+import getCurrencyValue from 'lib/getCurrencyValue';
 import { Badge } from 'toolkit/chakra/badge';
 import { Link } from 'toolkit/chakra/link';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
@@ -13,6 +15,7 @@ import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import TxType from 'ui/txs/TxType';
 
 interface Props {
   item: multichain.InteropMessage;
@@ -32,6 +35,11 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation }: Props) => {
     return config?.chains.find((chain) => chain.config.chain.id === item.relay_chain_id);
   }, [ item ]);
 
+  const value = getCurrencyValue({
+    value: item.transfer?.total?.value ?? '0',
+    decimals: '18',
+  });
+
   return (
     <TableRow animation={ animation }>
       <TableCell pl={ 4 }>
@@ -49,12 +57,12 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation }: Props) => {
       </TableCell>
       <TableCell>
         <VStack alignItems="start">
-          <Badge colorPalette="orange" loading={ isLoading }>TBD</Badge>
+          <TxType types={ [ item.message_type as TransactionType ] } isLoading={ isLoading }/>
           <CrossChainTxStatusTag status={ item.status } loading={ isLoading }/>
         </VStack>
       </TableCell>
       <TableCell>
-        <Badge colorPalette="gray" loading={ isLoading } truncated>TBD</Badge>
+        <Badge colorPalette="gray" loading={ isLoading } truncated>{ item.method }</Badge>
       </TableCell>
       <TableCell>
         { item.init_transaction_hash ? (
@@ -81,9 +89,9 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation }: Props) => {
         }
       </TableCell>
       <TableCell>
-        { item.sender_address_hash ? (
+        { item.sender ? (
           <AddressEntity
-            address={{ hash: item.sender_address_hash }}
+            address={{ hash: item.sender.hash }}
             isLoading={ isLoading }
             chain={ sourceChain }
           />
@@ -93,16 +101,16 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation }: Props) => {
         <AddressFromToIcon isLoading={ isLoading } type="unspecified"/>
       </TableCell>
       <TableCell>
-        { item.target_address_hash ? (
+        { item.target ? (
           <AddressEntity
-            address={{ hash: item.target_address_hash }}
+            address={{ hash: item.target.hash }}
             isLoading={ isLoading }
             chain={ targetChain }
           />
         ) : '-' }
       </TableCell>
       <TableCell>
-        TBD
+        { value.valueStr }
       </TableCell>
     </TableRow>
   );

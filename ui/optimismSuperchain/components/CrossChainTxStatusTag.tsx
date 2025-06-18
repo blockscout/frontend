@@ -13,11 +13,11 @@ const CrossChainTxStatusTag = ({ status: statusProp, ...rest }: Props) => {
 
   const { status, text } = (() => {
     switch (statusProp) {
-      case multichain.InteropMessage_Status.STATUS_SUCCESS:
+      case multichain.InteropMessage_Status.SUCCESS:
         return { status: 'ok' as const, text: 'Relayed' };
-      case multichain.InteropMessage_Status.STATUS_FAILED:
+      case multichain.InteropMessage_Status.FAILED:
         return { status: 'error' as const, text: 'Failed' };
-      case multichain.InteropMessage_Status.STATUS_PENDING:
+      case multichain.InteropMessage_Status.PENDING:
         return { status: 'pending' as const, text: 'Sent' };
       default:
         return { status: undefined, text: undefined };

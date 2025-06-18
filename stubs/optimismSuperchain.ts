@@ -4,8 +4,12 @@ import { ADDRESS_HASH } from './addressParams';
 import { TX_HASH } from './tx';
 
 export const INTEROP_MESSAGE: multichain.InteropMessage = {
-  sender_address_hash: ADDRESS_HASH,
-  target_address_hash: ADDRESS_HASH,
+  sender: {
+    hash: ADDRESS_HASH,
+  },
+  target: {
+    hash: ADDRESS_HASH,
+  },
   nonce: 4261,
   init_chain_id: '420120000',
   init_transaction_hash: TX_HASH,
@@ -13,6 +17,7 @@ export const INTEROP_MESSAGE: multichain.InteropMessage = {
   relay_chain_id: '420120001',
   relay_transaction_hash: TX_HASH,
   payload: '0x4f0edcc90000000000000000000000004',
-  failed: undefined,
-  status: multichain.InteropMessage_Status.STATUS_PENDING,
+  message_type: 'coin_transfer',
+  method: 'sendERC20',
+  status: multichain.InteropMessage_Status.PENDING,
 };
