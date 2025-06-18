@@ -66,7 +66,7 @@ export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onCl
   variant?: LinkProps['variant'];
 }
 
-const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, variant, ...rest }: LinkBaseProps) => {
+const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, variant }: LinkBaseProps) => {
   const styles = {
     display: 'inline-flex',
     alignItems: 'center',
@@ -85,7 +85,6 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, v
       external={ isExternal }
       onClick={ onClick }
       variant={ variant }
-      { ...rest }
     >
       { children }
     </LinkToolkit>
