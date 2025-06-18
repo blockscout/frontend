@@ -129,6 +129,8 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     pagination: emptyPagination,
     onFilterChange: () => {},
     onSortingChange: () => {},
+    chainValue: undefined,
+    onChainValueChange: () => {},
   };
 
   const query = isRpcQuery ? rpcQueryWithPages : apiQuery;

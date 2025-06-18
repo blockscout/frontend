@@ -1,5 +1,6 @@
 import type { Channel } from 'phoenix';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'types/api/address';
 import type { NewArbitrumBatchSocketResponse } from 'types/api/arbitrumL2';
 import type { NewBlockSocketResponse } from 'types/api/block';
@@ -11,11 +12,13 @@ import type { Transaction } from 'types/api/transaction';
 import type { NewZkEvmBatchSocketResponse } from 'types/api/zkEvmL2';
 
 export type SocketMessageParams = SocketMessage.NewBlock |
+SocketMessage.NewBlockMultichain |
 SocketMessage.BlocksIndexStatus |
 SocketMessage.InternalTxsIndexStatus |
 SocketMessage.TxStatusUpdate |
 SocketMessage.TxRawTrace |
 SocketMessage.NewTx |
+SocketMessage.NewInteropMessage |
 SocketMessage.NewPendingTx |
 SocketMessage.NewOptimisticDeposits |
 SocketMessage.NewArbitrumDeposits |
@@ -49,11 +52,13 @@ interface SocketMessageParamsGeneric<Event extends string | undefined, Payload e
 
 export namespace SocketMessage {
   export type NewBlock = SocketMessageParamsGeneric<'new_block', NewBlockSocketResponse>;
+  export type NewBlockMultichain = SocketMessageParamsGeneric<'new_blocks', Array<{ block_number: number; chain_id: number }>>;
   export type BlocksIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
   export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
   export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;
   export type TxRawTrace = SocketMessageParamsGeneric<'raw_trace', RawTracesResponse>;
   export type NewTx = SocketMessageParamsGeneric<'transaction', { transaction: number }>;
+  export type NewInteropMessage = SocketMessageParamsGeneric<'new_messages', Array<multichain.InteropMessage>>;
   export type NewPendingTx = SocketMessageParamsGeneric<'pending_transaction', { pending_transaction: number }>;
   export type NewOptimisticDeposits = SocketMessageParamsGeneric<'new_optimism_deposits', { deposits: number }>;
   export type NewArbitrumDeposits = SocketMessageParamsGeneric<'new_messages_to_rollup_amount', { new_messages_to_rollup_amount: number }>;

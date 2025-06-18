@@ -15,6 +15,7 @@ function generateCspPolicy() {
     descriptors.marketplace(),
     descriptors.mixpanel(),
     descriptors.monaco(),
+    descriptors.multichain(),
     descriptors.rollbar(),
     descriptors.safe(),
     descriptors.usernameApi(),

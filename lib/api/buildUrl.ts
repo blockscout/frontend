@@ -1,5 +1,7 @@
 import { compile } from 'path-to-regexp';
 
+import type { ChainConfig } from 'types/multichain';
+
 import config from 'configs/app';
 
 import getResourceParams from './getResourceParams';
@@ -11,8 +13,9 @@ export default function buildUrl<R extends ResourceName>(
   pathParams?: ResourcePathParams<R>,
   queryParams?: Record<string, string | Array<string> | number | boolean | null | undefined>,
   noProxy?: boolean,
+  chain?: ChainConfig,
 ): string {
-  const { api, resource } = getResourceParams(resourceFullName);
+  const { api, resource } = getResourceParams(resourceFullName, chain);
   const baseUrl = !noProxy && isNeedProxy() ? config.app.baseUrl : api.endpoint;
   const basePath = api.basePath ?? '';
   const path = !noProxy && isNeedProxy() ? '/node-api/proxy' + basePath + resource.path : basePath + resource.path;

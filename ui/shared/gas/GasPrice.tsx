@@ -5,10 +5,9 @@ import type { GasPriceInfo } from 'types/api/stats';
 import type { GasUnit } from 'types/client/gasTracker';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 
 import formatGasValue from './formatGasValue';
-
-const feature = config.features.gasTracker;
 
 const UNITS_TO_API_FIELD_MAP: Record<GasUnit, 'price' | 'fiat_price'> = {
   gwei: 'price',
@@ -23,6 +22,9 @@ interface Props {
 }
 
 const GasPrice = ({ data, prefix, className, unitMode = 'primary' }: Props) => {
+  const multichainContext = useMultichainContext();
+  const feature = multichainContext?.chain?.config.features.gasTracker || config.features.gasTracker;
+
   if (!data || !feature.isEnabled) {
     return null;
   }

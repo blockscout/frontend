@@ -5,6 +5,7 @@ import type { AddressParam } from 'types/api/addressParams';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import { Link } from 'toolkit/chakra/link';
@@ -25,9 +26,10 @@ type Props = {
   txQuery: TxQuery;
 };
 
-const feature = config.features.txInterpretation;
-
 const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
+  const multichainContext = useMultichainContext();
+  const feature = multichainContext?.chain?.config.features.txInterpretation || config.features.txInterpretation;
+
   const hasInterpretationFeature = feature.isEnabled;
   const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';
 

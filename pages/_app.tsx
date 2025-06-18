@@ -8,6 +8,7 @@ import React from 'react';
 import type { NextPageWithLayout } from 'nextjs/types';
 
 import config from 'configs/app';
+import getSocketUrl from 'lib/api/getSocketUrl';
 import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
@@ -72,6 +73,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     );
   })();
 
+  const socketUrl = !config.features.opSuperchain.isEnabled ? getSocketUrl() : undefined;
+
   return (
     <ChakraProvider>
       <RollbarProvider config={ rollbarConfig }>
@@ -84,7 +87,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
               <QueryClientProvider client={ queryClient }>
                 <GrowthBookProvider growthbook={ growthBook }>
                   <ScrollDirectionProvider>
-                    <SocketProvider url={ `${ config.apis.general.socketEndpoint }${ config.apis.general.basePath ?? '' }/socket/v2` }>
+                    <SocketProvider url={ socketUrl }>
                       <RewardsContextProvider>
                         <MarketplaceContextProvider>
                           <SettingsContextProvider>

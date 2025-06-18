@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Link, LinkExternalIcon } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -19,8 +20,9 @@ interface Props extends HTMLChakraProps<'span'> {
 }
 
 const EntityTag = ({ data, isLoading, noLink, ...rest }: Props) => {
+  const multichainContext = useMultichainContext();
 
-  const linkParams = !noLink ? getTagLinkParams(data) : undefined;
+  const linkParams = !noLink ? getTagLinkParams(data, multichainContext) : undefined;
   const hasLink = Boolean(linkParams);
   const iconColor = data.meta?.textColor ?? 'gray.400';
 

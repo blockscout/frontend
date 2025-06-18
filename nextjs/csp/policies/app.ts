@@ -41,7 +41,7 @@ export function app(): CspDev.DirectiveDescriptor {
 
       // APIs
       ...Object.values(config.apis).filter(Boolean).map((api) => api.endpoint),
-      config.apis.general.socketEndpoint,
+      ...Object.values(config.apis).filter(Boolean).map((api) => api.socketEndpoint),
 
       // chain RPC server
       ...config.chain.rpcUrls,

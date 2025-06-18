@@ -22,6 +22,7 @@ const TxsSocketNotice = ({ type, place, isLoading }: Props) => {
 
   switch (type) {
     case 'txs_home':
+    case 'txs_home_cross_chain':
     case 'txs_validated':
     case 'txs_pending': {
       return <TxsSocketNoticeTypeAll type={ type } place={ place } isLoading={ isLoading }/>;

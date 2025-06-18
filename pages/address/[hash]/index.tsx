@@ -10,6 +10,7 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import AddressOpSuperchain from 'ui/optimismSuperchain/address/AddressOpSuperchain';
 import Address from 'ui/pages/Address';
 
 const pathname: Route['pathname'] = '/address/[hash]';
@@ -17,7 +18,7 @@ const pathname: Route['pathname'] = '/address/[hash]';
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      <Address/>
+      { config.features.opSuperchain.isEnabled ? <AddressOpSuperchain/> : <Address/> }
     </PageNextJs>
   );
 };
@@ -27,7 +28,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
   const baseResponse = await gSSP.base<typeof pathname>(ctx);
 
-  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse) {
+  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse && !config.features.opSuperchain.isEnabled) {
     const botInfo = detectBotRequest(ctx.req);
 
     if (botInfo?.type === 'social_preview') {

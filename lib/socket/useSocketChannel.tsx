@@ -3,8 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useSocket } from './context';
 
-const CHANNEL_REGISTRY: Record<string, { channel: Channel; subscribers: number }> = {};
-
 interface Params {
   topic: string | undefined;
   params?: object;
@@ -15,7 +13,7 @@ interface Params {
 }
 
 export default function useSocketChannel({ topic, params, isDisabled, onJoin, onSocketClose, onSocketError }: Params) {
-  const socket = useSocket();
+  const { socket, channelRegistry } = useSocket() || {};
   const [ channel, setChannel ] = useState<Channel>();
   const onCloseRef = useRef<string>(undefined);
   const onErrorRef = useRef<string>(undefined);
@@ -47,18 +45,18 @@ export default function useSocketChannel({ topic, params, isDisabled, onJoin, on
   }, [ channel, isDisabled ]);
 
   useEffect(() => {
-    if (socket === null || isDisabled || !topic) {
+    if (!socket || isDisabled || !topic || !channelRegistry) {
       return;
     }
 
     let ch: Channel;
-    if (CHANNEL_REGISTRY[topic]) {
-      ch = CHANNEL_REGISTRY[topic].channel;
-      CHANNEL_REGISTRY[topic].subscribers++;
+    if (channelRegistry.current[topic]) {
+      ch = channelRegistry.current[topic].channel;
+      channelRegistry.current[topic].subscribers++;
       onJoinRef.current?.(ch, '');
     } else {
       ch = socket.channel(topic);
-      CHANNEL_REGISTRY[topic] = { channel: ch, subscribers: 1 };
+      channelRegistry.current[topic] = { channel: ch, subscribers: 1 };
       ch.join()
         .receive('ok', (message) => onJoinRef.current?.(ch, message))
         .receive('error', () => {
@@ -68,18 +66,20 @@ export default function useSocketChannel({ topic, params, isDisabled, onJoin, on
 
     setChannel(ch);
 
+    const currentRegistry = channelRegistry.current;
+
     return () => {
-      if (CHANNEL_REGISTRY[topic]) {
-        CHANNEL_REGISTRY[topic].subscribers > 0 && CHANNEL_REGISTRY[topic].subscribers--;
-        if (CHANNEL_REGISTRY[topic].subscribers === 0) {
+      if (currentRegistry[topic]) {
+        currentRegistry[topic].subscribers > 0 && currentRegistry[topic].subscribers--;
+        if (currentRegistry[topic].subscribers === 0) {
           ch.leave();
-          delete CHANNEL_REGISTRY[topic];
+          delete currentRegistry[topic];
         }
       }
 
       setChannel(undefined);
     };
-  }, [ socket, topic, params, isDisabled, onSocketError ]);
+  }, [ socket, topic, params, isDisabled, onSocketError, channelRegistry ]);
 
   return channel;
 }
