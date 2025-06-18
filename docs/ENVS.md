@@ -74,6 +74,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Save on gas with GasHawk](ENVS.md#save-on-gas-with-gashawk)
   - [Rewards service API](ENVS.md#rewards-service-api)
   - [DEX pools](ENVS.md#dex-pools)
+  - [Address widgets](ENVS.md#address-widgets)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -896,6 +897,26 @@ This feature enables Blockscout Merits program. It requires that the [My account
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_DEX_POOLS_ENABLED | `boolean` | Set to true to enable the feature | Required | - | `true` | v1.37.0+ |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` | v1.0.x+ |
+
+&nbsp;
+
+### Address widgets
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_ADDRESS_WIDGETS | `Array<string>` | Array of widget names to be displayed | - | - | `['widget-1', 'widget-2']` | v2.2.0+ |
+| NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains mapping of widget names to their configuration. See [below](#address-widget-configuration-properties) list of available properties for a widget. | - | - | `https://example.com/address_widgets_config.json` | v2.2.0+ |
+
+#### Address widget configuration properties
+
+| Property | Type | Description | Compulsoriness | Example value |
+| --- | --- | --- | --- | --- |
+| name | `string` | Displayed name of the widget | Required | - | `'Widget'` |
+| url | `string` | Link URL for widget card. Can contain `:address` variable | Required | - | `'https://example.com/widget/:address'` |
+| icon | `string` | Widget icon URL | Required | - | `'https://example.com/icon.svg'` |
+| title | `string` | Title of displayed data | Required | - | `'Multichain balance'` |
+| hint | `string` | Hint for displayed data | - | - | `'Widget hint'` |
+| value | `string` | Name of the field in the API response that contains the value to be displayed | Required | - | `'result.balance'` |
 
 &nbsp;
 

@@ -28,6 +28,7 @@ import FilecoinActorTag from './filecoin/FilecoinActorTag';
 import TokenSelect from './tokenSelect/TokenSelect';
 import useAddressCountersQuery from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
+import AddressWidgets from './widgets/AddressWidgets';
 
 interface Props {
   addressQuery: AddressQuery;
@@ -303,6 +304,17 @@ const AddressDetails = ({ addressQuery }: Props) => {
         ) }
 
         <DetailedInfoSponsoredItem isLoading={ addressQuery.isPlaceholderData }/>
+
+        { config.features.addressWidgets.isEnabled && (
+          <>
+            <DetailedInfo.ItemLabel hint="Widgets">
+              Widgets
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue pl={ 0 }>
+              <AddressWidgets address={ addressHash }/>
+            </DetailedInfo.ItemValue>
+          </>
+        ) }
       </DetailedInfo.Container>
     </>
   );

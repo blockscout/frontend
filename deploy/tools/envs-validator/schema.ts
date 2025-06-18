@@ -20,6 +20,7 @@ import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
+import type { AddressWidget } from '../../../types/client/addressWidget';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation';
 import type { NavItemExternal, NavigationLinkId, NavigationLayout } from '../../../types/client/navigation';
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
@@ -71,12 +72,12 @@ const urlTest: yup.TestConfig = {
   exclusive: true,
 };
 
-const getYupValidationErrorMessage = (error: unknown) => 
-  typeof error === 'object' && 
-  error !== null && 
-  'errors' in error && 
-  Array.isArray(error.errors) ? 
-    error.errors.join(', ') : 
+const getYupValidationErrorMessage = (error: unknown) =>
+  typeof error === 'object' &&
+  error !== null &&
+  'errors' in error &&
+  Array.isArray(error.errors) ?
+    error.errors.join(', ') :
     '';
 
 const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
@@ -1057,6 +1058,39 @@ const schema = yup
         });
 
         return isUndefined || valueSchema.isValidSync(data);
+      }),
+    NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL, it should have name, url, icon, title, value', (data) => {
+        const isUndefined = data === undefined;
+        const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+        const valueSchema = yup.lazy((objValue) => {
+          let schema = yup.object();
+          Object.keys(objValue).forEach((key) => {
+            schema = schema.shape({
+              [key]: yup.object<AddressWidget>().shape({
+                name: yup.string().required(),
+                url: yup.string().required(),
+                icon: yup.string().required(),
+                title: yup.string().required(),
+                hint: yup.string().optional(),
+                value: yup.string().required(),
+              }),
+            });
+          });
+          return schema;
+        });
+        return isUndefined || valueSchema.isValidSync(parsedData);
+      }),
+    NEXT_PUBLIC_ADDRESS_WIDGETS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string())
+      .when('NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL', {
+        is: (value: string) => value,
+        then: (schema) => schema,
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ADDRESS_WIDGETS cannot not be used if NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL is not provided'),
       }),
 
     // 6. External services envs
