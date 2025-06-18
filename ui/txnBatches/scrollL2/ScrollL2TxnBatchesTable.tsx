@@ -3,6 +3,7 @@ import React from 'react';
 import type { ScrollL2TxnBatch } from 'types/api/scrollL2';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ScrollL2TxnBatchesTableItem from './ScrollL2TxnBatchesTableItem';
 
@@ -22,7 +23,10 @@ const ScrollL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader>Status</TableColumnHeader>
           <TableColumnHeader>Committed block</TableColumnHeader>
           <TableColumnHeader>Committed txn hash</TableColumnHeader>
-          <TableColumnHeader>Age</TableColumnHeader>
+          <TableColumnHeader>
+            Timestamp
+            <TimeFormatToggle/>
+          </TableColumnHeader>
           <TableColumnHeader>Finalized block</TableColumnHeader>
           <TableColumnHeader>Finalized txn hash</TableColumnHeader>
           <TableColumnHeader isNumeric>Blocks</TableColumnHeader>

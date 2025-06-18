@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import * as tokenMock from 'mocks/tokens/tokenInfo';
+import { stableHover } from 'playwright/helpers/stableHover';
 import { test, expect } from 'playwright/lib';
 
 import TokenEntity from './TokenEntity';
@@ -46,10 +47,10 @@ test('with logo, long name and symbol', async({ page, render }) => {
     />,
   );
 
-  await page.getByText(/this/i).hover();
+  await stableHover(page.getByText(/this/i));
   await expect(page).toHaveScreenshot();
 
-  await page.getByText(/duc/i).hover();
+  await stableHover(page.getByText(/duc/i));
   await expect(page).toHaveScreenshot();
 });
 

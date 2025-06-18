@@ -32,8 +32,8 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
-      from: dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
-      to: dayjs().format('YYYY-MM-DD'),
+      from: dayjs().subtract(1, 'day').format('YYYY-MM-DDTHH:mm'),
+      to: dayjs().format('YYYY-MM-DDTHH:mm'),
     },
   });
   const { handleSubmit, formState } = formApi;
@@ -49,8 +49,8 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
 
       const url = buildUrl(resource, { hash } as never, {
         address_id: hash,
-        from_period: exportType !== 'holders' ? data.from : null,
-        to_period: exportType !== 'holders' ? data.to : null,
+        from_period: exportType !== 'holders' ? dayjs(data.from).toISOString() : null,
+        to_period: exportType !== 'holders' ? dayjs(data.to).toISOString() : null,
         filter_type: filterType,
         filter_value: filterValue,
         recaptcha_response: token,

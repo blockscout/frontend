@@ -11,6 +11,7 @@ import SearchBarSuggestBlock from './SearchBarSuggestBlock';
 import SearchBarSuggestDomain from './SearchBarSuggestDomain';
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 import SearchBarSuggestLabel from './SearchBarSuggestLabel';
+import SearchBarSuggestTacOperation from './SearchBarSuggestTacOperation';
 import SearchBarSuggestToken from './SearchBarSuggestToken';
 import SearchBarSuggestTx from './SearchBarSuggestTx';
 import SearchBarSuggestUserOp from './SearchBarSuggestUserOp';
@@ -55,6 +56,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
       }
       case 'ens_domain': {
         return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
+      }
+      case 'tac_operation': {
+        return route({ pathname: '/operation/[id]', query: { id: data.tac_operation.operation_id } });
       }
     }
   })();
@@ -107,6 +111,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
       }
       case 'ens_domain': {
         return <SearchBarSuggestDomain data={ data } searchTerm={ searchTerm } isMobile={ isMobile } addressFormat={ addressFormat }/>;
+      }
+      case 'tac_operation': {
+        return <SearchBarSuggestTacOperation data={ data } searchTerm={ searchTerm } isMobile={ isMobile } addressFormat={ addressFormat }/>;
       }
     }
   })();

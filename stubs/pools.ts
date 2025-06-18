@@ -1,5 +1,6 @@
 export const POOL = {
-  contract_address: '0x6a1041865b76d1dc33da0257582591227c57832c',
+  pool_id: '0x6a1041865b76d1dc33da0257582591227c57832c',
+  is_contract: true,
   chain_id: '1',
   base_token_address: '0xf63e309818e4ea13782678ce6c31c1234fa61809',
   base_token_symbol: 'JANET',

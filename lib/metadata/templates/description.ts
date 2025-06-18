@@ -64,6 +64,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/pools': DEFAULT_TEMPLATE,
   '/pools/[hash]': DEFAULT_TEMPLATE,
   '/interop-messages': DEFAULT_TEMPLATE,
+  '/operations': DEFAULT_TEMPLATE,
+  '/operation/[id]': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,
