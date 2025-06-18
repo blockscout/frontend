@@ -6,13 +6,13 @@ import type { FormFields, FormFieldTag } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { IconButton } from 'toolkit/chakra/icon-button';
+import AddButton from 'toolkit/components/buttons/AddButton';
+import RemoveButton from 'toolkit/components/buttons/RemoveButton';
 import { FormFieldColor } from 'toolkit/components/forms/fields/FormFieldColor';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 import { colorValidator } from 'toolkit/components/forms/validators/color';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
-import IconSvg from 'ui/shared/IconSvg';
 
 import PublicTagsSubmitFieldTagType from './PublicTagsSubmitFieldTagType';
 
@@ -98,28 +98,18 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
           h={{ base: 'auto', lg: '60px' }}
         >
           { onAddClick && (
-            <IconButton
-              aria-label="add"
+            <AddButton
               data-index={ index }
-              variant="outline"
-              size="md"
               onClick={ handleAddClick }
               disabled={ isDisabled }
-            >
-              <IconSvg name="plus"/>
-            </IconButton>
+            />
           ) }
           { onRemoveClick && (
-            <IconButton
-              aria-label="delete"
+            <RemoveButton
               data-index={ index }
-              variant="outline"
-              size="md"
               onClick={ handleRemoveClick }
               disabled={ isDisabled }
-            >
-              <IconSvg name="minus"/>
-            </IconButton>
+            />
           ) }
         </Flex>
         { !isMobile && (

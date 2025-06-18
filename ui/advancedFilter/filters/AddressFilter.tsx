@@ -5,13 +5,12 @@ import React from 'react';
 
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 
-import { IconButton } from 'toolkit/chakra/icon-button';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import { Select } from 'toolkit/chakra/select';
+import AddButton from 'toolkit/components/buttons/AddButton';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
-import IconSvg from 'ui/shared/IconSvg';
 
 const FILTER_PARAM_TO_INCLUDE = 'to_address_hashes_to_include';
 const FILTER_PARAM_FROM_INCLUDE = 'from_address_hashes_to_include';
@@ -76,15 +75,10 @@ const AddressFilterInput = ({ address, mode, onModeChange, onChange, onClear, is
         <Input value={ address } onChange={ onChange } placeholder="Smart contract / Address (0x...)*" size="sm" autoComplete="off"/>
       </InputGroup>
       { isLast && (
-        <IconButton
-          aria-label="add"
-          variant="outline"
-          size="md"
+        <AddButton
           ml={ 2 }
           onClick={ onAddFieldClick }
-        >
-          <IconSvg name="plus"/>
-        </IconButton>
+        />
       ) }
     </Flex>
   );

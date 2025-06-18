@@ -4,9 +4,9 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import { IconButton } from 'toolkit/chakra/icon-button';
+import AddButton from 'toolkit/components/buttons/AddButton';
+import RemoveButton from 'toolkit/components/buttons/RemoveButton';
 import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
-import IconSvg from 'ui/shared/IconSvg';
 
 const LIMIT = 20;
 
@@ -47,28 +47,18 @@ const PublicTagsSubmitFieldAddresses = () => {
             </GridItem>
             <GridItem display="flex" alignItems="center" columnGap={ 5 } justifyContent={{ base: 'flex-end', lg: 'flex-start' }}>
               { fields.length < LIMIT && index === fields.length - 1 && (
-                <IconButton
-                  aria-label="add"
+                <AddButton
                   data-index={ index }
-                  variant="outline"
-                  size="md"
                   onClick={ handleAddFieldClick }
                   disabled={ isDisabled }
-                >
-                  <IconSvg name="plus"/>
-                </IconButton>
+                />
               ) }
               { fields.length > 1 && (
-                <IconButton
-                  aria-label="delete"
+                <RemoveButton
                   data-index={ index }
-                  variant="outline"
-                  size="md"
                   onClick={ handleRemoveFieldClick }
                   disabled={ isDisabled }
-                >
-                  <IconSvg name="minus"/>
-                </IconButton>
+                />
               ) }
             </GridItem>
           </React.Fragment>
