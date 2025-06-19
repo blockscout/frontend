@@ -93,7 +93,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
       <GridItem py={{ lg: '10px' }}>
         <Flex
           alignItems="center"
-          columnGap={ 5 }
+          columnGap={ 3 }
           justifyContent={{ base: 'flex-end', lg: 'flex-start' }}
           h={{ base: 'auto', lg: '60px' }}
         >

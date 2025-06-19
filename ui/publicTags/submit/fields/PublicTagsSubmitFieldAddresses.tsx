@@ -45,7 +45,7 @@ const PublicTagsSubmitFieldAddresses = () => {
                 placeholder="Smart contract / Address (0x...)"
               />
             </GridItem>
-            <GridItem display="flex" alignItems="center" columnGap={ 5 } justifyContent={{ base: 'flex-end', lg: 'flex-start' }}>
+            <GridItem display="flex" alignItems="center" columnGap={ 3 } justifyContent={{ base: 'flex-end', lg: 'flex-start' }}>
               { fields.length < LIMIT && index === fields.length - 1 && (
                 <AddButton
                   data-index={ index }
