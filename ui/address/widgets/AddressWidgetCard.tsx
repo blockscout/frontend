@@ -1,4 +1,4 @@
-import { Flex, Text, Box } from '@chakra-ui/react';
+import { Flex, Text, Box, chakra } from '@chakra-ui/react';
 
 import type { AddressWidget } from 'types/client/addressWidget';
 
@@ -44,23 +44,23 @@ const AddressWidgetCard = ({ name, config, address, isConfigLoading }: Props) =>
     <>
       <LinkOverlay href={ config.url.replace(':address', address) } external/>
       { data ? (
-        <Flex>
-          <Text
-            textStyle="heading.xl"
-            color={ integer === '0' && !decimal ? 'text.secondary' : 'text.primary' }
-          >
-            { integer }{ decimal ? '.' : '' }
-          </Text>
+        <Text
+          textStyle="heading.xl"
+          color={ integer === '0' && !decimal ? 'text.secondary' : 'text.primary' }
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          overflow="hidden"
+        >
+          { integer }
           { decimal && (
-            <Text
-              as="span"
-              textStyle="heading.xl"
-              color="text.secondary"
-            >
-              { decimal }
-            </Text>
+            <>
+              .
+              <chakra.span color="text.secondary">
+                { decimal }
+              </chakra.span>
+            </>
           ) }
-        </Flex>
+        </Text>
       ) : (
         <Text textStyle="heading.xl" color="gray.500" opacity={ 0.2 }>--</Text>
       ) }

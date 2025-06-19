@@ -9,7 +9,7 @@ const getNestedValue = (obj: Record<string, any>, path: string) => { // eslint-d
 const formatValue = (value: unknown): string => {
   const num = Number(value);
   if (!isNaN(num)) {
-    return num.toString();
+    return Number(num.toFixed(2)).toLocaleString('en-US');
   }
   return String(value);
 };
