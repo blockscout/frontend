@@ -38,9 +38,15 @@ const moduleExports = {
   redirects,
   headers,
   output: 'standalone',
-  productionBrowserSourceMaps: true,
+
+  // Off sourcemaps if Safari error occurs
+  productionBrowserSourceMaps: false,
   serverExternalPackages: ["@opentelemetry/sdk-node", "@opentelemetry/auto-instrumentations-node"],
+  
+  // Support old browsers (Safari iOS)
   experimental: {
+    legacyBrowsers: true,
+    browsersListForSwc: true,
     staleTimes: {
       dynamic: 30,
       'static': 180,
