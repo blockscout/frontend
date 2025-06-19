@@ -1,7 +1,7 @@
 {
   "widget-1": {
     "name": "Widget 1",
-    "url": "https://example.com/widget-1/:address",
+    "url": "https://example.com/widget-1/{{address}}",
     "icon": "https://example.com/icon.svg",
     "title": "Widget 1",
     "hint": "Widget 1 hint",
@@ -9,16 +9,20 @@
   },
   "widget-2": {
     "name": "Widget 2",
-    "url": "https://example.com/widget-2/:address",
+    "url": "https://example.com/widget-2/{{address}}",
     "icon": "https://example.com/icon.svg",
     "title": "Widget 2",
     "value": "value"
   },
   "widget-3": {
     "name": "Widget 3",
-    "url": "https://example.com/widget-3/:address",
+    "url": "https://example.com/widget-3/{{address}}?chainId={{chainId}}",
     "icon": "https://example.com/icon.svg",
     "title": "Widget 3",
-    "value": "result.length"
+    "value": "result.length",
+    "chainIds": {
+      "1": "eth",
+      "10": "op"
+    }
   }
 }

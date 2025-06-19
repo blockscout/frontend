@@ -1103,6 +1103,7 @@ const schema = yup
                 title: yup.string().required(),
                 hint: yup.string().optional(),
                 value: yup.string().required(),
+                chainIds: yup.object<Record<string, string>>().optional(),
               }),
             });
           });

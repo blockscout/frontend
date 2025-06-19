@@ -2,6 +2,7 @@ import { Flex, Text, Box, chakra } from '@chakra-ui/react';
 
 import type { AddressWidget } from 'types/client/addressWidget';
 
+import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -18,6 +19,12 @@ type Props = {
   isConfigLoading: boolean;
 };
 
+const chainId = config.chain.id || '';
+
+function formatUrl(tpl: string, ctx: Record<string, string>) {
+  return tpl.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => ctx[key] ?? '');
+}
+
 const AddressWidgetCard = ({ name, config, address, isConfigLoading }: Props) => {
   const { data, isLoading: isDataLoading } = useWidgetData(name, config?.value, address, isConfigLoading);
 
@@ -26,6 +33,12 @@ const AddressWidgetCard = ({ name, config, address, isConfigLoading }: Props) =>
   if (!config) {
     return null;
   }
+
+  const url = formatUrl(config.url, {
+    address,
+    addressLowercase: address.toLowerCase(),
+    chainId: config.chainIds?.[chainId] ?? chainId,
+  });
 
   const [ integer, decimal ] = data?.split('.') || [];
 
@@ -43,7 +56,7 @@ const AddressWidgetCard = ({ name, config, address, isConfigLoading }: Props) =>
     </>
   ) : (
     <>
-      <LinkOverlay href={ config.url.replace(':address', address) } external/>
+      <LinkOverlay href={ url } external/>
       { data ? (
         <Text
           textStyle="heading.xl"

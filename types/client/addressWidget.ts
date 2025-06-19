@@ -5,4 +5,5 @@ export type AddressWidget = {
   title: string;
   hint?: string;
   value: string;
+  chainIds?: Record<string, string>;
 };

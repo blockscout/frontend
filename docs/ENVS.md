@@ -930,11 +930,12 @@ This feature enables Blockscout Merits program. It requires that the [My account
 | Property | Type | Description | Compulsoriness | Example value |
 | --- | --- | --- | --- | --- |
 | name | `string` | Displayed name of the widget | Required | - | `'Widget'` |
-| url | `string` | Link URL for widget card. Can contain `:address` variable | Required | - | `'https://example.com/widget/:address'` |
+| url | `string` | Link URL for widget card. Can contain `{{address}}`, `{{addressLowercase}}` and `{{chainId}}` variables | Required | - | `'https://example.com/widget/{{address}}?chainId={{chainId}}'` |
 | icon | `string` | Widget icon URL | Required | - | `'https://example.com/icon.svg'` |
 | title | `string` | Title of displayed data | Required | - | `'Multichain balance'` |
 | hint | `string` | Hint for displayed data | - | - | `'Widget hint'` |
 | value | `string` | Name of the field in the API response that contains the value to be displayed | Required | - | `'result.balance'` |
+| chainIds | `Record<string, string>` | Mapping of chain IDs to custom values that will be used in `url` template | - | - | `{'1': 'eth', '10': 'op'}` |
 
 &nbsp;
 
