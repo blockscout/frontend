@@ -6,6 +6,7 @@ import { Image } from 'toolkit/chakra/image';
 import { LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
+import { ndash } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
 import useWidgetData from './useWidgetData';
@@ -62,7 +63,7 @@ const AddressWidgetCard = ({ name, config, address, isConfigLoading }: Props) =>
           ) }
         </Text>
       ) : (
-        <Text textStyle="heading.xl" color="gray.500" opacity={ 0.2 }>--</Text>
+        <Text textStyle="heading.xl" color="gray.500" opacity={ 0.2 }>{ ndash }</Text>
       ) }
       <Flex alignItems="center" gap={ 1 } mt={ 1 }>
         <Text textStyle="sm">{ config.title }</Text>
@@ -109,7 +110,7 @@ const AddressWidgetCard = ({ name, config, address, isConfigLoading }: Props) =>
         borderRadius="md"
         border="1px solid"
         borderColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } : 'transparent' }
-        _groupHover={{ borderColor: isLoading ? 'default' : 'blue.400' }}
+        _groupHover={{ borderColor: isLoading ? 'default' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' } }}
         cursor={ isLoading ? 'default' : 'pointer' }
       >
         { content }

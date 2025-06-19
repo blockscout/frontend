@@ -28,8 +28,14 @@ const AddressWidgets = ({ address }: { address: string }) => {
   return (
     <Grid
       gap={ 3 }
-      templateColumns="repeat(auto-fit, minmax(240px, 1fr))"
+      templateColumns={{
+        base: 'repeat(auto-fit, minmax(240px, 1fr))',
+        '2xl': 'repeat(auto-fit, minmax(280px, 1fr))',
+      }}
       w="full"
+      maxW={{
+        sm: widgets.length < 4 ? `${ (360 * widgets.length) + (12 * (widgets.length - 1)) }px` : 'full',
+      }}
     >
       { widgets.map((name) => (
         <AddressWidgetCard
