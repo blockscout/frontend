@@ -123,7 +123,12 @@ const AddressWidgetCard = ({ name, config, address, isConfigLoading }: Props) =>
         borderRadius="md"
         border="1px solid"
         borderColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } : 'transparent' }
-        _groupHover={{ borderColor: isLoading ? 'default' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' } }}
+        _groupHover={{
+          borderColor: isLoading ? 'default' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' },
+          scale: 1.02,
+        }}
+        transition="all 0.2s ease-in-out"
+        scale={ 1 }
         cursor={ isLoading ? 'default' : 'pointer' }
       >
         { content }
