@@ -1,8 +1,10 @@
 import { Flex, Text, Box, chakra } from '@chakra-ui/react';
+import { useCallback } from 'react';
 
 import type { AddressWidget } from 'types/client/addressWidget';
 
 import config from 'configs/app';
+import * as mixpanel from 'lib/mixpanel/index';
 import { Image } from 'toolkit/chakra/image';
 import { LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -30,6 +32,10 @@ const AddressWidgetCard = ({ name, config, address, isConfigLoading }: Props) =>
 
   const isLoading = isConfigLoading || isDataLoading;
 
+  const handleClick = useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.ADDRESS_WIDGET, { Name: name });
+  }, [ name ]);
+
   if (!config) {
     return null;
   }
@@ -56,7 +62,7 @@ const AddressWidgetCard = ({ name, config, address, isConfigLoading }: Props) =>
     </>
   ) : (
     <>
-      <LinkOverlay href={ url } external/>
+      <LinkOverlay href={ url } external onClick={ handleClick }/>
       { data ? (
         <Text
           textStyle="heading.xl"
