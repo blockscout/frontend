@@ -23,6 +23,7 @@ import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressContract from 'ui/address/AddressContract';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
+import AddressWidgets from 'ui/address/AddressWidgets';
 import useContractTabs from 'ui/address/contract/useContractTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -36,6 +37,8 @@ import TokenInventory from 'ui/token/TokenInventory';
 import TokenPageTitle from 'ui/token/TokenPageTitle';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 import useTokenQuery from 'ui/token/useTokenQuery';
+
+const addressWidgetsFeature = config.features.addressWidgets;
 
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
@@ -195,6 +198,12 @@ const TokenPageContent = () => {
       },
       component: <AddressContract tabs={ contractTabs.tabs } isLoading={ contractTabs.isLoading } shouldRender={ !isLoading }/>,
       subTabs: CONTRACT_TAB_IDS,
+    } : undefined,
+    addressWidgetsFeature.isEnabled ? {
+      id: 'widgets',
+      title: 'Widgets',
+      count: addressWidgetsFeature.widgets.length,
+      component: <AddressWidgets shouldRender={ !isLoading } showAll/>,
     } : undefined,
   ].filter(Boolean);
 

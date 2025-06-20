@@ -18,6 +18,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
+import AddressWidgets from './AddressWidgets';
 import AddressAlternativeFormat from './details/AddressAlternativeFormat';
 import AddressBalance from './details/AddressBalance';
 import AddressImplementations from './details/AddressImplementations';
@@ -28,7 +29,6 @@ import FilecoinActorTag from './filecoin/FilecoinActorTag';
 import TokenSelect from './tokenSelect/TokenSelect';
 import useAddressCountersQuery from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
-import AddressWidgets from './widgets/AddressWidgets';
 
 interface Props {
   addressQuery: AddressQuery;
@@ -312,7 +312,7 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
               Widgets
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue pl={{ base: 0, sm: 7, lg: 0 }}>
-              <AddressWidgets address={ addressHash }/>
+              <AddressWidgets/>
             </DetailedInfo.ItemValue>
           </>
         ) }

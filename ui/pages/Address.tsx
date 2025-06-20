@@ -33,6 +33,7 @@ import AddressTokens from 'ui/address/AddressTokens';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
+import AddressWidgets from 'ui/address/AddressWidgets';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import useContractTabs from 'ui/address/contract/useContractTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
@@ -62,6 +63,7 @@ const PREDEFINED_TAG_PRIORITY = 100;
 const txInterpretation = config.features.txInterpretation;
 const addressProfileAPIFeature = config.features.addressProfileAPI;
 const xScoreFeature = config.features.xStarScore;
+const addressWidgetsFeature = config.features.addressWidgets;
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -263,6 +265,12 @@ const AddressPageContent = () => {
           component: <AddressLogs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
+      addressWidgetsFeature.isEnabled ? {
+        id: 'widgets',
+        title: 'Widgets',
+        count: addressWidgetsFeature.widgets.length,
+        component: <AddressWidgets shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled } showAll/>,
+      } : undefined,
     ].filter(Boolean);
   }, [
     addressQuery,
