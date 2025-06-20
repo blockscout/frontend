@@ -82,9 +82,7 @@ const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, addressTyp
         <Link
           href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'widgets' } }) }
           textStyle="sm"
-          lineHeight="20px"
-          borderRadius="none"
-          borderBottom="1px dashed"
+          ml={ 0.5 }
         >
           View all
         </Link>
