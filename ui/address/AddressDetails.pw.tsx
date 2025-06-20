@@ -3,6 +3,7 @@ import React from 'react';
 import * as addressMock from 'mocks/address/address';
 import * as countersMock from 'mocks/address/counters';
 import * as tokensMock from 'mocks/address/tokens';
+import * as widgetsMock from 'mocks/address/widgets';
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
@@ -49,6 +50,28 @@ test.describe('mobile', () => {
     await mockApiResponse('general:address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
 
     const component = await render(<AddressDetails addressQuery={{ data: addressMock.filecoin } as AddressQuery}/>, { hooksConfig });
+
+    await expect(component).toHaveScreenshot({
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
+    });
+  });
+
+  test('with widgets', async({ render, mockApiResponse, mockEnvs, mockConfigResponse, mockAssetResponse, page }) => {
+    await mockEnvs([
+      [ 'NEXT_PUBLIC_ADDRESS_WIDGETS', JSON.stringify(widgetsMock.widgets) ],
+      [ 'NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL', 'http://localhost:4000/address-widgets-config.json' ],
+    ]);
+    await mockConfigResponse('NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL', 'http://localhost:4000/address-widgets-config.json', widgetsMock.config);
+
+    await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('general:address_counters', countersMock.forContract, { pathParams: { hash: ADDRESS_HASH } });
+    await Promise.all(widgetsMock.widgets.map((widget, i) =>
+      mockApiResponse('general:address_widget', { value: i * 3947 }, { pathParams: { name: widget }, queryParams: { address: ADDRESS_HASH } }),
+    ));
+    await mockAssetResponse('http://localhost:3000/widget-logo.png', './playwright/mocks/image_s.jpg');
+
+    const component = await render(<AddressDetails addressQuery={{ data: addressMock.contract } as AddressQuery}/>, { hooksConfig });
 
     await expect(component).toHaveScreenshot({
       mask: [ page.locator(pwConfig.adsBannerSelector) ],
@@ -109,6 +132,28 @@ test('filecoin', async({ render, mockApiResponse, page }) => {
   await mockApiResponse('general:address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
 
   const component = await render(<AddressDetails addressQuery={{ data: addressMock.filecoin } as AddressQuery}/>, { hooksConfig });
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
+});
+
+test('with widgets', async({ render, mockApiResponse, mockEnvs, mockConfigResponse, mockAssetResponse, page }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_ADDRESS_WIDGETS', JSON.stringify(widgetsMock.widgets) ],
+    [ 'NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL', 'http://localhost:4000/address-widgets-config.json' ],
+  ]);
+  await mockConfigResponse('NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL', 'http://localhost:4000/address-widgets-config.json', widgetsMock.config);
+
+  await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('general:address_counters', countersMock.forContract, { pathParams: { hash: ADDRESS_HASH } });
+  await Promise.all(widgetsMock.widgets.map((widget, i) =>
+    mockApiResponse('general:address_widget', { value: i * 3947 }, { pathParams: { name: widget }, queryParams: { address: ADDRESS_HASH } }),
+  ));
+  await mockAssetResponse('http://localhost:3000/widget-logo.png', './playwright/mocks/image_s.jpg');
+
+  const component = await render(<AddressDetails addressQuery={{ data: addressMock.contract } as AddressQuery}/>, { hooksConfig });
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
