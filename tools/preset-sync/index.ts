@@ -18,7 +18,6 @@ const PRESETS = {
   mekong: 'https://mekong.blockscout.com',
   neon_devnet: 'https://neon-devnet.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
-  optimism_celestia: 'https://opcelestia-raspberry.gelatoscout.com',
   optimism_interop_0: 'https://optimism-interop-alpha-0.blockscout.com',
   optimism_sepolia: 'https://optimism-sepolia.blockscout.com',
   polygon: 'https://polygon.blockscout.com',
@@ -27,6 +26,7 @@ const PRESETS = {
   scroll_sepolia: 'https://scroll-sepolia.blockscout.com',
   shibarium: 'https://www.shibariumscan.io',
   stability_testnet: 'https://stability-testnet.blockscout.com',
+  tac_turin: 'https://tac-turin.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
   zilliqa_prototestnet: 'https://zilliqa-prototestnet.blockscout.com',
@@ -116,20 +116,36 @@ async function updatePresetFile(presetId: keyof typeof PRESETS) {
 }
 
 async function run() {
-  console.log(`🌀 Syncing preset configuration file...`);
-
   const args = parseScriptArgs();
   if (!args.name) {
     console.log('🚨 No "--name" argument is provided. Exiting...');
     return;
   }
 
-  const presetId = args.name as keyof typeof PRESETS;
+  const name = args.name;
+
+  if (name === 'all') {
+    console.log(`🌀 Syncing all presets configuration files...`);
+
+    for (const presetId in PRESETS) {
+      await updatePresetFile(presetId as keyof typeof PRESETS);
+      console.log(`  - [v] "${ presetId }" is ready`);
+    }
+
+    console.log(`✅ Done!`);
+
+    return;
+  }
+
+  const presetId = name as keyof typeof PRESETS;
+
   const instanceUrl = PRESETS[presetId];
   if (!instanceUrl) {
     console.log(`🚨 No preset with name "${ presetId }" found. Exiting...`);
     return;
   }
+
+  console.log(`🌀 Syncing preset configuration file...`);
 
   await updatePresetFile(presetId);
 

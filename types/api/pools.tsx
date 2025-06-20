@@ -7,7 +7,8 @@ export type PoolsResponse = {
 };
 
 export type Pool = {
-  contract_address: string;
+  pool_id: string;
+  is_contract: boolean;
   chain_id: string;
   base_token_address: string;
   base_token_symbol: string;

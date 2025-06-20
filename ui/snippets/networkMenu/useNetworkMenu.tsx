@@ -7,6 +7,7 @@ import { NETWORK_GROUPS } from 'types/networks';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useFetch from 'lib/hooks/useFetch';
+import * as mixpanel from 'lib/mixpanel/index';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 export default function useNetworkMenu() {
@@ -20,14 +21,21 @@ export default function useNetworkMenu() {
     staleTime: Infinity,
   });
 
+  const handleOpenChange = React.useCallback((details: { open: boolean }) => {
+    if (details.open) {
+      mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Network menu', Source: 'Header' });
+    }
+    onOpenChange(details);
+  }, [ onOpenChange ]);
+
   return React.useMemo(() => ({
     open,
     onClose,
     onOpen,
     onToggle,
-    onOpenChange,
+    onOpenChange: handleOpenChange,
     isPending,
     data,
     availableTabs: NETWORK_GROUPS.filter((tab) => data?.some(({ group }) => group === tab)),
-  }), [ open, onClose, onOpen, onToggle, onOpenChange, data, isPending ]);
+  }), [ open, onClose, onOpen, onToggle, handleOpenChange, data, isPending ]);
 }

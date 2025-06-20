@@ -3,6 +3,7 @@ import type { Reward } from 'types/api/reward';
 import type { Transaction } from 'types/api/transaction';
 
 import type { ArbitrumBatchStatus, ArbitrumL2TxData } from './arbitrumL2';
+import type { InternalTransaction } from './internalTransaction';
 import type { OptimisticL2BatchDataContainer, OptimisticL2BlobTypeEip4844, OptimisticL2BlobTypeCelestia } from './optimisticL2';
 import type { TokenInfo } from './token';
 import type { TokenTransfer } from './tokenTransfer';
@@ -21,6 +22,7 @@ export interface Block {
   height: number;
   timestamp: string;
   transactions_count: number;
+  internal_transactions_count: number;
   miner: AddressParam;
   size: number;
   hash: string;
@@ -122,6 +124,14 @@ export interface BlockTransactionsResponse {
     block_number: number;
     items_count: number;
     index: number;
+  } | null;
+}
+
+export interface BlockInternalTransactionsResponse {
+  items: Array<InternalTransaction>;
+  next_page_params: {
+    block_index: number;
+    items_count: number;
   } | null;
 }
 

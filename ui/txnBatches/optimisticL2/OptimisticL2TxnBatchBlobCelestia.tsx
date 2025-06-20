@@ -29,7 +29,7 @@ const OptimisticL2TxnBatchBlobCelestia = ({ blobs, isLoading }: Props) => {
                 <CopyToClipboard text={ blob.commitment }/>
               </Flex>
             </GridItem>
-            <CeleniumLink commitment={ blob.commitment } namespace={ blob.namespace } height={ blob.height }/>
+            <CeleniumLink commitment={ blob.commitment } namespace={ blob.namespace } height={ blob.height } fallback={ <GridItem/> }/>
             <GridItem fontWeight={ 600 }>Height</GridItem>
             <GridItem colSpan={ 2 }>
               { blob.height }

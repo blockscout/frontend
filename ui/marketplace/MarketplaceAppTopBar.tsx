@@ -8,6 +8,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import * as mixpanel from 'lib/mixpanel/index';
 import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { makePrettyLink } from 'toolkit/utils/url';
@@ -46,6 +47,10 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
   const showContractList = React.useCallback((id: string, type: ContractListTypes) => setContractListType(type), []);
   const hideContractList = React.useCallback(() => setContractListType(undefined), []);
 
+  const handleBackToClick = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Back to', Source: mixpanel.PAGE_TYPE_DICT['/apps/[id]'] });
+  }, []);
+
   return (
     <>
       <Flex alignItems="center" mb={{ base: 3, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
@@ -54,6 +59,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
           href={ goBackUrl }
           hint="Back to dApps list"
           loading={ isLoading }
+          onClick={ handleBackToClick }
         />
         <Link
           external
