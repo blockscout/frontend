@@ -6,5 +6,6 @@ export const WIDGET_CONFIG: AddressWidget = {
   icon: 'icon',
   title: 'title',
   hint: 'hint',
+  pages: [ 'eoa' ],
   value: 'value',
 };
