@@ -20,7 +20,7 @@ import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
-import type { AddressWidget } from '../../../types/client/addressWidget';
+import { AddressWidget, ADDRESS_WIDGET_PAGES } from '../../../types/client/addressWidget';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation';
 import type { NavItemExternal, NavigationLinkId, NavigationLayout } from '../../../types/client/navigation';
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
@@ -1103,6 +1103,7 @@ const schema = yup
                 title: yup.string().required(),
                 hint: yup.string().optional(),
                 value: yup.string().required(),
+                pages: yup.array().of(yup.string().oneOf(ADDRESS_WIDGET_PAGES)).required(),
                 chainIds: yup.object<Record<string, string>>().optional(),
               }),
             });

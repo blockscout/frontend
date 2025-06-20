@@ -1,3 +1,5 @@
+export const ADDRESS_WIDGET_PAGES = [ 'eoa', 'contract', 'token' ] as const;
+
 export type AddressWidget = {
   name: string;
   url: string;
@@ -5,5 +7,6 @@ export type AddressWidget = {
   title: string;
   hint?: string;
   value: string;
+  pages: Array<typeof ADDRESS_WIDGET_PAGES[number]>;
   chainIds?: Record<string, string>;
 };

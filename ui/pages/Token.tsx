@@ -26,6 +26,7 @@ import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressWidgets from 'ui/address/AddressWidgets';
 import useContractTabs from 'ui/address/contract/useContractTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
+import useWidgets from 'ui/address/widgets/useWidgets';
 import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -37,8 +38,6 @@ import TokenInventory from 'ui/token/TokenInventory';
 import TokenPageTitle from 'ui/token/TokenPageTitle';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 import useTokenQuery from 'ui/token/useTokenQuery';
-
-const addressWidgetsFeature = config.features.addressWidgets;
 
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
@@ -163,7 +162,9 @@ const TokenPageContent = () => {
     },
   });
 
-  const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData;
+  const widgets = useWidgets('token', isQueryEnabled);
+
+  const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData || widgets.configQuery.isPlaceholderData;
   const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
 
   const tabs: Array<TabItemRegular> = [
@@ -199,11 +200,11 @@ const TokenPageContent = () => {
       component: <AddressContract tabs={ contractTabs.tabs } isLoading={ contractTabs.isLoading } shouldRender={ !isLoading }/>,
       subTabs: CONTRACT_TAB_IDS,
     } : undefined,
-    addressWidgetsFeature.isEnabled ? {
+    widgets.isEnabled ? {
       id: 'widgets',
       title: 'Widgets',
-      count: addressWidgetsFeature.widgets.length,
-      component: <AddressWidgets shouldRender={ !isLoading } showAll/>,
+      count: widgets.widgets.length,
+      component: <AddressWidgets shouldRender={ !isLoading } addressType="token" showAll/>,
     } : undefined,
   ].filter(Boolean);
 

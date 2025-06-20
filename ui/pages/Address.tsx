@@ -45,6 +45,7 @@ import SolidityscanReport from 'ui/address/SolidityscanReport';
 import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import useCheckAddressFormat from 'ui/address/utils/useCheckAddressFormat';
 import useCheckDomainNameParam from 'ui/address/utils/useCheckDomainNameParam';
+import useWidgets from 'ui/address/widgets/useWidgets';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -63,7 +64,6 @@ const PREDEFINED_TAG_PRIORITY = 100;
 const txInterpretation = config.features.txInterpretation;
 const addressProfileAPIFeature = config.features.addressProfileAPI;
 const xScoreFeature = config.features.xStarScore;
-const addressWidgetsFeature = config.features.addressWidgets;
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -121,10 +121,13 @@ const AddressPageContent = () => {
     addressEnsDomainsQuery.data?.items.find((domain) => domain.name === addressQuery.data?.ens_domain_name) :
     undefined;
 
+  const widgets = useWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa', areQueriesEnabled);
+
   const isLoading = addressQuery.isPlaceholderData;
   const isTabsLoading =
     isLoading ||
     addressTabsCountersQuery.isPlaceholderData ||
+    widgets.configQuery.isPlaceholderData ||
     (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
     (config.features.mudFramework.isEnabled && mudTablesCountQuery.isPlaceholderData);
 
@@ -265,11 +268,18 @@ const AddressPageContent = () => {
           component: <AddressLogs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
-      addressWidgetsFeature.isEnabled ? {
+      widgets.isEnabled ? {
         id: 'widgets',
         title: 'Widgets',
-        count: addressWidgetsFeature.widgets.length,
-        component: <AddressWidgets shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled } showAll/>,
+        count: widgets.widgets.length,
+        component: (
+          <AddressWidgets
+            shouldRender={ !isTabsLoading }
+            isQueryEnabled={ areQueriesEnabled }
+            addressType={ addressQuery.data?.is_contract ? 'contract' : 'eoa' }
+            showAll
+          />
+        ),
       } : undefined,
     ].filter(Boolean);
   }, [
@@ -280,6 +290,7 @@ const AddressPageContent = () => {
     isTabsLoading,
     areQueriesEnabled,
     mudTablesCountQuery.data,
+    widgets,
   ]);
 
   const usernameApiTag = userPropfileApiQuery.data?.user_profile?.username;

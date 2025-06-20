@@ -1,5 +1,4 @@
 import { Grid, Flex } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
@@ -7,42 +6,30 @@ import type { AddressWidget } from 'types/client/addressWidget';
 
 import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
 import useClientRect from 'lib/hooks/useClientRect';
-import useApiFetch from 'lib/hooks/useFetch';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { WIDGET_CONFIG } from 'stubs/addressWidgets';
 import { Link } from 'toolkit/chakra/link';
 
 import AddressWidgetCard from './widgets/AddressWidgetCard';
-
-const feature = config.features.addressWidgets;
-const widgets = (feature.isEnabled && feature.widgets) || [];
-const configUrl = (feature.isEnabled && feature.configUrl) || '';
+import useWidgets from './widgets/useWidgets';
 
 type Props = {
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
+  addressType: AddressWidget['pages'][number];
   showAll?: boolean;
 };
 
-const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, showAll }: Props) => {
+const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, addressType, showAll }: Props) => {
   const router = useRouter();
-  const apiFetch = useApiFetch();
   const isMounted = useIsMounted();
   const [ rect, gridRef ] = useClientRect<HTMLDivElement>();
 
   const addressHash = getQueryParamString(router.query.hash);
 
-  const { data, isPlaceholderData } = useQuery<unknown, ResourceError<unknown>, Record<string, AddressWidget>>({
-    queryKey: [ 'address-widgets' ],
-    queryFn: async() => apiFetch(configUrl, undefined, { resource: 'address-widgets' }),
-    placeholderData: { widget: WIDGET_CONFIG },
-    staleTime: Infinity,
-    enabled: Boolean(configUrl) && isQueryEnabled,
-  });
+  const { widgets, configQuery } = useWidgets(addressType, isQueryEnabled);
 
   const minWidgetWidth = 238;
   const maxWidgetWidth = 360;
@@ -60,7 +47,7 @@ const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, showAll }:
 
   const displayedWidgets = useMemo(() => {
     return showAll ? widgets : widgets.slice(0, Math.max(4, columnsPerRow * 2));
-  }, [ showAll, columnsPerRow ]);
+  }, [ widgets, showAll, columnsPerRow ]);
 
   const shouldShowViewAllLink = !showAll && widgets.length > displayedWidgets.length;
 
@@ -76,16 +63,18 @@ const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, showAll }:
         templateColumns={ `repeat(${ columnsPerRow || 'auto-fit' }, 1fr)` }
         w="full"
         maxW={{
-          sm: widgets.length < 4 ? `${ (maxWidgetWidth * widgets.length) + (gapWidth * (widgets.length - 1)) }px` : 'full',
+          sm: widgets.length < 4 ?
+            `${ (maxWidgetWidth * widgets.length) + (gapWidth * (widgets.length - 1)) }px` :
+            'full',
         }}
       >
         { displayedWidgets.map((name) => (
           <AddressWidgetCard
             key={ name }
             name={ name }
-            config={ isPlaceholderData ? WIDGET_CONFIG : data?.[name] }
+            config={ configQuery.isPlaceholderData ? WIDGET_CONFIG : configQuery.data?.[name] }
             address={ addressHash }
-            isConfigLoading={ isPlaceholderData }
+            isConfigLoading={ configQuery.isPlaceholderData }
           />
         )) }
       </Grid>

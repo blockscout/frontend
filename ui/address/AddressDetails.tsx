@@ -312,7 +312,7 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
               Widgets
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue pl={{ base: 0, sm: 7, lg: 0 }}>
-              <AddressWidgets/>
+              <AddressWidgets addressType={ data.is_contract ? 'contract' : 'eoa' }/>
             </DetailedInfo.ItemValue>
           </>
         ) }

@@ -5,14 +5,16 @@
     "icon": "https://example.com/icon.svg",
     "title": "Widget 1",
     "hint": "Widget 1 hint",
-    "value": "result.value"
+    "value": "result.value",
+    "pages": [ "eoa", "contract", "token" ]
   },
   "widget-2": {
     "name": "Widget 2",
     "url": "https://example.com/widget-2/{{address}}",
     "icon": "https://example.com/icon.svg",
     "title": "Widget 2",
-    "value": "value"
+    "value": "value",
+    "pages": [ "eoa" ]
   },
   "widget-3": {
     "name": "Widget 3",
@@ -20,6 +22,7 @@
     "icon": "https://example.com/icon.svg",
     "title": "Widget 3",
     "value": "result.length",
+    "pages": [ "token" ],
     "chainIds": {
       "1": "eth",
       "10": "op"
