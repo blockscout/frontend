@@ -22,7 +22,7 @@ export default function useWidgetData(name: string, valuePath: string | undefine
       select: (response) => {
         try {
           const result = getNestedValue(response, valuePath || '');
-          if (!result) throw Error;
+          if (result === undefined || result === null) throw Error;
           return formatValue(result);
         } catch {
           return undefined;
