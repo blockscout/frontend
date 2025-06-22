@@ -77,10 +77,16 @@ export interface ClusterByNameQueryParams {
   name: string;
 }
 
+export enum ClustersOrderBy {
+  RANK_ASC = 'rank-asc',
+  CREATED_AT_DESC = 'createdAt-desc',
+  NAME_ASC = 'name-asc',
+}
+
 export interface ClustersLeaderboardQueryParams {
   offset?: number;
   limit?: number;
-  orderBy?: string;
+  orderBy?: ClustersOrderBy | string;
   query?: string | null;
   isExact?: boolean;
 }
@@ -88,6 +94,6 @@ export interface ClustersLeaderboardQueryParams {
 export interface ClustersDirectoryQueryParams {
   offset?: number;
   limit?: number;
-  orderBy?: string;
+  orderBy?: ClustersOrderBy | string;
   query?: string | null;
 }
