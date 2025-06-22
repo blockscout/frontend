@@ -100,6 +100,17 @@ const rewardsApi = (() => {
   });
 })();
 
+const clustersApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_CLUSTERS_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  return Object.freeze({
+    endpoint: apiHost,
+  });
+})();
+
 const statsApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_STATS_API_HOST');
   if (!apiHost) {
@@ -143,6 +154,7 @@ const apis: Apis = Object.freeze({
   general: generalApi,
   admin: adminApi,
   bens: bensApi,
+  clusters: clustersApi,
   contractInfo: contractInfoApi,
   metadata: metadataApi,
   rewards: rewardsApi,
