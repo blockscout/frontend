@@ -12,7 +12,7 @@ interface Props {
 
 const NavLinkIcon = ({ item, className }: Props) => {
   if ('icon' in item && item.icon) {
-    return <IconSvg className={ className } name={ item.icon } boxSize="30px" flexShrink={ 0 }/>;
+    return <IconSvg className={ className } name={ item.icon } boxSize="30px" flexShrink={ 0 } fill="currentColor"/>;
   }
   if ('iconComponent' in item && item.iconComponent) {
     const IconComponent = item.iconComponent;

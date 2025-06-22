@@ -38,6 +38,7 @@
 	| "clock-light"
 	| "clock"
 	| "close"
+	| "clusters"
 	| "coins/bitcoin"
 	| "collection"
 	| "columns"
