@@ -7,7 +7,7 @@ interface Props {
   children: React.ReactElement;
 }
 
-const TokenInfoIconPreview = ({ url, isInvalid, children }: Props) => {
+const PublicTagsSubmitFieldTagIconPreview = ({ url, isInvalid, children }: Props) => {
   const borderColorActive = isInvalid ? 'error' : 'input.border.filled';
 
   return (
@@ -17,10 +17,11 @@ const TokenInfoIconPreview = ({ url, isInvalid, children }: Props) => {
       borderWidth="2px"
       borderColor={ url ? borderColorActive : 'input.border' }
       borderRadius="base"
+      backgroundColor="global.body.bg"
     >
       { children }
     </Center>
   );
 };
 
-export default React.memo(TokenInfoIconPreview);
+export default React.memo(PublicTagsSubmitFieldTagIconPreview);
