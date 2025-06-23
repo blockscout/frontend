@@ -164,7 +164,7 @@ const TokenPageContent = () => {
 
   const widgets = useWidgets('token', isQueryEnabled);
 
-  const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData || widgets.configQuery.isPlaceholderData;
+  const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData || (widgets.isEnabled && widgets.configQuery.isPlaceholderData);
   const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
 
   const tabs: Array<TabItemRegular> = [

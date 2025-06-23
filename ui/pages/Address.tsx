@@ -127,7 +127,7 @@ const AddressPageContent = () => {
   const isTabsLoading =
     isLoading ||
     addressTabsCountersQuery.isPlaceholderData ||
-    widgets.configQuery.isPlaceholderData ||
+    (widgets.isEnabled && widgets.configQuery.isPlaceholderData) ||
     (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
     (config.features.mudFramework.isEnabled && mudTablesCountQuery.isPlaceholderData);
 
