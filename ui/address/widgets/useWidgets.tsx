@@ -12,7 +12,9 @@ export default function useWidgets(addressType: AddressWidget['pages'][number], 
 
   return {
     isEnabled: feature.isEnabled,
-    widgets: widgets.filter((widget) => configQuery.data?.[widget]?.pages.includes(addressType)),
+    widgets: configQuery.isPlaceholderData ?
+      widgets :
+      widgets.filter((widget) => configQuery.data?.[widget]?.pages.includes(addressType)),
     configQuery,
   };
 }

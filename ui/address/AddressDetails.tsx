@@ -29,6 +29,7 @@ import FilecoinActorTag from './filecoin/FilecoinActorTag';
 import TokenSelect from './tokenSelect/TokenSelect';
 import useAddressCountersQuery from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
+import useWidgets from './widgets/useWidgets';
 
 interface Props {
   addressQuery: AddressQuery;
@@ -44,6 +45,8 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
     hash: addressHash,
     addressQuery,
   });
+
+  const widgets = useWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa');
 
   const error404Data = React.useMemo(() => ({
     hash: addressHash || '',
@@ -306,9 +309,9 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
 
         <DetailedInfoSponsoredItem isLoading={ isLoading }/>
 
-        { config.features.addressWidgets.isEnabled && (
+        { widgets.isEnabled && (
           <>
-            <DetailedInfo.ItemLabel hint="Widgets">
+            <DetailedInfo.ItemLabel hint="Widgets" isLoading={ widgets.configQuery.isPlaceholderData }>
               Widgets
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue pl={{ base: 0, sm: 7, lg: 0 }}>
