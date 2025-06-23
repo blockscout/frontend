@@ -63,6 +63,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/interop-messages': 'Root page',
   '/operations': 'Root page',
   '/operation/[id]': 'Regular page',
+  '/multisender': 'Root page',
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',

@@ -63,6 +63,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/interop-messages': '%network_name% interop messages',
   '/operations': '%network_name% operations',
   '/operation/[id]': '%network_name% operation %id%',
+  '/multisender': '%network_name% multisender',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',

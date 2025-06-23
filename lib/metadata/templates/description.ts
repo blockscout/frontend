@@ -66,6 +66,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/interop-messages': DEFAULT_TEMPLATE,
   '/operations': DEFAULT_TEMPLATE,
   '/operation/[id]': DEFAULT_TEMPLATE,
+  '/multisender': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,

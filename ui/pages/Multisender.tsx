@@ -3,7 +3,6 @@ import { MultisenderWidget } from '@multisender.app/multisender-react-widget';
 import { sepolia } from '@reown/appkit/networks';
 
 import config from 'configs/app';
-import wagmiConfig from 'lib/web3/wagmiConfig';
 
 const feature = config.features.blockchainInteraction;
 
@@ -28,14 +27,7 @@ const Multisender = () => {
 
   return (
     <Box w="full" bgColor="oklch(0.228 0.109 269.568)" borderRadius="xl">
-      <MultisenderWidget
-        config={ widgetConfig }
-        modalParams={{
-          networks: wagmiConfig.adapter?.wagmiChains,
-          projectId: wagmiConfig.adapter?.projectId,
-          adapters: [ wagmiConfig.adapter ],
-        }}
-      />
+      <MultisenderWidget config={ widgetConfig }/>
     </Box>
   );
 };

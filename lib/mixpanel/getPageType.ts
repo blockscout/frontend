@@ -61,6 +61,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/interop-messages': 'Interop messages',
   '/operations': 'Operations',
   '/operation/[id]': 'Operation details',
+  '/multisender': 'Multisender',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',
