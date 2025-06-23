@@ -8,6 +8,7 @@ import { route } from 'nextjs-routes';
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
 import SearchBarSuggestBlob from './SearchBarSuggestBlob';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';
+import SearchBarSuggestCluster from './SearchBarSuggestCluster';
 import SearchBarSuggestDomain from './SearchBarSuggestDomain';
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 import SearchBarSuggestLabel from './SearchBarSuggestLabel';
@@ -25,7 +26,6 @@ interface Props {
 }
 
 const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressFormat }: Props) => {
-
   const url = (() => {
     switch (data.type) {
       case 'token': {
@@ -55,6 +55,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
         return route({ pathname: '/blobs/[hash]', query: { hash: data.blob_hash } });
       }
       case 'ens_domain': {
+        return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
+      }
+      case 'cluster': {
         return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
       }
       case 'tac_operation': {
@@ -111,6 +114,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
       }
       case 'ens_domain': {
         return <SearchBarSuggestDomain data={ data } searchTerm={ searchTerm } isMobile={ isMobile } addressFormat={ addressFormat }/>;
+      }
+      case 'cluster': {
+        return <SearchBarSuggestCluster data={ data } searchTerm={ searchTerm } isMobile={ isMobile } addressFormat={ addressFormat }/>;
       }
       case 'tac_operation': {
         return <SearchBarSuggestTacOperation data={ data } searchTerm={ searchTerm } isMobile={ isMobile } addressFormat={ addressFormat }/>;
