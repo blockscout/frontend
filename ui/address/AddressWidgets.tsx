@@ -49,7 +49,7 @@ const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, addressTyp
     return showAll ? widgets : widgets.slice(0, Math.max(4, columnsPerRow * 2));
   }, [ widgets, showAll, columnsPerRow ]);
 
-  const shouldShowViewAllLink = !showAll && widgets.length > displayedWidgets.length;
+  const shouldShowViewAllLink = !showAll && !configQuery.isPlaceholderData && widgets.length > displayedWidgets.length;
 
   if (!isMounted || !shouldRender) {
     return null;
