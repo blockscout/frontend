@@ -20,7 +20,7 @@ import SearchBarBackdrop from './SearchBarBackdrop';
 import SearchBarInput from './SearchBarInput';
 import SearchBarRecentKeywords from './SearchBarRecentKeywords';
 import SearchBarSuggest from './SearchBarSuggest/SearchBarSuggest';
-import useQuickSearchQuery from './useQuickSearchQuery';
+import useSearchWithClusters from './useSearchWithClusters';
 
 type Props = {
   isHomepage?: boolean;
@@ -39,7 +39,7 @@ const SearchBar = ({ isHomepage }: Props) => {
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query } = useQuickSearchQuery();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query } = useSearchWithClusters();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
