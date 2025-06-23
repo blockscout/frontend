@@ -44,7 +44,7 @@ const TacOperation = () => {
   ) : null;
 
   const titleSecondRow = (
-    <OperationEntity id={ id } noLink variant="subheading"/>
+    <OperationEntity id={ id } noLink variant="subheading" type={ query.data?.type }/>
   );
 
   return (
