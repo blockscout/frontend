@@ -93,6 +93,11 @@ const IconButtonShowcase = () => {
               <IconSvg name="star_outline"/>
             </IconButton>
           </Sample>
+          <Sample label="size: 2xs_alt">
+            <IconButton size="2xs_alt" variant="icon_secondary" outline="1px dashed lightpink">
+              <IconSvg name="plus"/>
+            </IconButton>
+          </Sample>
           <Sample label="size: md">
             <IconButton size="md" variant="icon_secondary" outline="1px dashed lightpink">
               <IconSvg name="star_outline"/>

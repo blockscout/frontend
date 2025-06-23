@@ -38,7 +38,7 @@ const ContractDetailsAlerts = ({ data, isLoading, addressData, channel }: Props)
   });
 
   return (
-    <Flex flexDir="column" rowGap={ 2 } mb={ 6 } _empty={{ display: 'none' }}>
+    <Flex flexDir="column" rowGap={ 1 } mb={ 6 } _empty={{ display: 'none' }}>
       { data?.is_blueprint && (
         <Box>
           <span>This is an </span>
