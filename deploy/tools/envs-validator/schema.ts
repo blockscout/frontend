@@ -626,8 +626,8 @@ const contractCodeIdeSchema: yup.ObjectSchema<ContractCodeIde> = yup
 const nftMarketplaceSchema: yup.ObjectSchema<NftMarketplaceItem> = yup
   .object({
     name: yup.string().required(),
-    collection_url: yup.string().test(urlTest).required(),
-    instance_url: yup.string().test(urlTest).required(),
+    collection_url: yup.string().test(urlTest),
+    instance_url: yup.string().test(urlTest),
     logo_url: yup.string().test(urlTest).required(),
   });
 
