@@ -79,6 +79,18 @@ export const STATS_CHARTS_SECTION: stats.LineChartSection = {
   ],
 };
 
+export const STATS_CHARTS_SECTION_GAS: stats.LineChartSection = {
+  id: 'gas',
+  title: 'Gas',
+  charts: [ {
+    id: 'averageGasPrice',
+    title: 'Average gas price',
+    description: 'Average gas price',
+    units: 'ETH',
+    resolutions: [ 'DAY', 'MONTH' ],
+  } ],
+};
+
 export const STATS_CHARTS = {
   sections: [ STATS_CHARTS_SECTION ],
 };

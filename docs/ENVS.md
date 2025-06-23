@@ -383,7 +383,7 @@ This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_GAS_T
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_GAS_TRACKER_ENABLED | `boolean` | Set to true to enable "Gas tracker" in the app | Required | `true` | `false` | v1.25.0+ |
-| NEXT_PUBLIC_GAS_TRACKER_UNITS | Array<`usd` \| `gwei`> | Array of units for displaying gas prices on the Gas Tracker page, in the stats snippet on the Home page, and in the top bar. The first value in the array will take priority over the second one in all mentioned views. If only one value is provided, gas prices will be displayed only in that unit. | - | `[ 'usd', 'gwei' ]` | `[ 'gwei' ]` | v1.25.0+ |
+| NEXT_PUBLIC_GAS_TRACKER_UNITS | Array<`usd` \| `gwei`> | Array of units for displaying gas prices on the Gas Tracker page, in the stats snippet on the Home page, and in the top bar. The first value in the array will take priority over the second one in all mentioned views. If only one value is provided, gas prices will be displayed only in that unit. | - | For testnets: `[ 'gwei' ]`, for mainnets: `[ 'usd', 'gwei' ]` | `[ 'gwei' ]` | v1.25.0+ |
 
 &nbsp;
 
