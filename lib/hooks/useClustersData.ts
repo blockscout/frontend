@@ -1,5 +1,6 @@
 import React from 'react';
 
+import type { ClustersByAddressObject } from 'types/api/clusters';
 import { ClustersOrderBy } from 'types/api/clusters';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -88,6 +89,21 @@ export function useClustersData(debouncedSearchTerm: string, viewMode: string, o
     },
   });
 
+  const clusterDetailsQuery = useApiQuery('clusters:get_cluster_by_id', {
+    queryParams: {
+      input: JSON.stringify({
+        id: (addressQuery.data?.result?.data?.[0] as ClustersByAddressObject & { clusterId?: string })?.clusterId || '',
+      }),
+    },
+    queryOptions: {
+      enabled: (
+        showDirectoryView &&
+        inputType === 'address' &&
+        Boolean((addressQuery.data?.result?.data?.[0] as ClustersByAddressObject & { clusterId?: string })?.clusterId)
+      ),
+    },
+  });
+
   const currentQuery = React.useMemo(() => {
     if (!showDirectoryView) return leaderboardQuery;
     if (inputType === 'address') return addressQuery;
@@ -98,7 +114,9 @@ export function useClustersData(debouncedSearchTerm: string, viewMode: string, o
 
   return {
     data,
+    clusterDetails: clusterDetailsQuery.data,
     isError,
     isLoading,
+    isClusterDetailsLoading: clusterDetailsQuery.isLoading,
   };
 }

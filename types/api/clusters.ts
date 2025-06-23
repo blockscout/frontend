@@ -32,6 +32,26 @@ export interface ClusterByNameResponse {
   };
 }
 
+export interface ClusterByIdQueryParams {
+  id: string;
+}
+
+export interface ClusterByIdResponse {
+  result: {
+    data: {
+      id: string;
+      createdBy: string;
+      createdAt: string;
+      wallets: Array<{
+        address: string;
+        name: string;
+        chainIds: Array<string>;
+      }>;
+      isTestnet: boolean;
+    };
+  };
+}
+
 export interface ClustersLeaderboardObject {
   name: string;
   clusterId: string;
