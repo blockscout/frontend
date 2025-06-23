@@ -45,7 +45,8 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       return;
     }
     const topLimit = container.getBoundingClientRect().y + (tabsRef.current?.clientHeight || 0) + 24;
-    if (categoriesRefs.current[categoriesRefs.current.length - 1].getBoundingClientRect().y <= topLimit) {
+
+    if (categoriesRefs.current[categoriesRefs.current.length - 1]?.getBoundingClientRect().y <= topLimit) {
       const lastCategory = categoriesRefs.current[categoriesRefs.current.length - 1];
       const lastCategoryId = lastCategory.getAttribute('data-id');
       if (lastCategoryId) {
@@ -54,7 +55,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       return;
     }
     for (let i = 0; i < categoriesRefs.current.length - 1; i++) {
-      if (categoriesRefs.current[i].getBoundingClientRect().y <= topLimit && categoriesRefs.current[i + 1].getBoundingClientRect().y > topLimit) {
+      if (categoriesRefs.current[i]?.getBoundingClientRect().y <= topLimit && categoriesRefs.current[i + 1]?.getBoundingClientRect().y > topLimit) {
         const currentCategory = categoriesRefs.current[i];
         const currentCategoryId = currentCategory.getAttribute('data-id');
         if (currentCategoryId) {
