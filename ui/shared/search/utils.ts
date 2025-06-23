@@ -3,7 +3,18 @@ import type { SearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
 
-export type ApiCategory = 'token' | 'nft' | 'address' | 'public_tag' | 'transaction' | 'block' | 'user_operation' | 'blob' | 'domain' | 'tac_operation';
+export type ApiCategory =
+  | 'token'
+  | 'nft'
+  | 'address'
+  | 'public_tag'
+  | 'transaction'
+  | 'block'
+  | 'user_operation'
+  | 'blob'
+  | 'domain'
+  | 'cluster'
+  | 'tac_operation';
 export type Category = ApiCategory | 'app';
 
 export type ItemsCategoriesMap =
@@ -38,9 +49,14 @@ if (config.features.nameService.isEnabled) {
   searchCategories.unshift({ id: 'domain', title: 'Names' });
 }
 
+if (config.features.clusters.isEnabled) {
+  searchCategories.unshift({ id: 'cluster', title: 'Cluster Name' });
+}
+
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {
   app: { itemTitle: 'DApp', itemTitleShort: 'App' },
   domain: { itemTitle: 'Name', itemTitleShort: 'Name' },
+  cluster: { itemTitle: 'Cluster', itemTitleShort: 'Cluster' },
   token: { itemTitle: 'Token', itemTitleShort: 'Token' },
   nft: { itemTitle: 'NFT', itemTitleShort: 'NFT' },
   address: { itemTitle: 'Address', itemTitleShort: 'Address' },
@@ -85,6 +101,9 @@ export function getItemCategory(item: SearchResultItem | SearchResultAppItem): C
     }
     case 'ens_domain': {
       return 'domain';
+    }
+    case 'cluster': {
+      return 'cluster';
     }
     case 'tac_operation': {
       return 'tac_operation';
