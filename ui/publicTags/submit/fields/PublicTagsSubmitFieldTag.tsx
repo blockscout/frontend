@@ -14,6 +14,7 @@ import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 import { colorValidator } from 'toolkit/components/forms/validators/color';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 
+import PublicTagsSubmitFieldTagIcon from './PublicTagsSubmitFieldTagIcon';
 import PublicTagsSubmitFieldTagType from './PublicTagsSubmitFieldTagType';
 
 const CIRCLE_BG_COLOR_DEFAULT = {
@@ -80,6 +81,9 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
             sampleDefaultBgColor={ CIRCLE_BG_COLOR_DEFAULT.textColor }
           />
           <GridItem colSpan={{ base: 1, lg: 4 }}>
+            <PublicTagsSubmitFieldTagIcon index={ index }/>
+          </GridItem>
+          <GridItem colSpan={{ base: 1, lg: 4 }}>
             <FormFieldText<FormFields>
               name={ `tags.${ index }.tooltipDescription` }
               placeholder="Label description (max 80 characters)"
@@ -118,6 +122,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
               name: field.name || 'Tag name',
               tagType: field.type[0],
               meta: {
+                tagIcon: errors?.iconUrl ? undefined : field.iconUrl,
                 tagUrl: field.url,
                 bgColor: field.bgColor && colorValidator(field.bgColor) === true ? field.bgColor : undefined,
                 textColor: field.textColor && colorValidator(field.textColor) === true ? field.textColor : undefined,
