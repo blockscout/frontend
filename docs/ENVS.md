@@ -84,6 +84,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_APP_INSTANCE | `string` | Name of app instance. Used for app monitoring purposes. If not provided, it will be constructed from `NEXT_PUBLIC_APP_HOST` | - | - | `wonderful_kepler` | v1.0.x+ |
 | NEXT_PUBLIC_USE_NEXT_JS_PROXY | `boolean` | Tells the app to proxy all APIs request through the NextJS app. **We strongly advise not to use it in the production environment**, since it can lead to performance issues of the NodeJS server | - | `false` | `true` | v1.8.0+ |
 | NEXT_PUBLIC_CUSTOM_GRAPHQL_SERVER_BASE_URL | `http \| https` | Graph QL Server Base URL | - | `https` | `http` | v1.0.x+ |
+| NEXT_PUBLIC_SFC_ADDRESS | `string` | SFC (Staking/Validator Contract) address used for validator and staking features | Required | - | `0xfc00face00000000000000000000000000000000` | v1.0.x+ |
 
 &nbsp;
 
