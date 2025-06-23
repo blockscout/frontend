@@ -34,7 +34,7 @@ const ContractMethodFieldAccordion = ({ label, level, children, onAddClick, onRe
             { label }
           </Box>
           { onRemoveClick && index !== undefined && <ContractMethodArrayButton index={ index } onClick={ onRemoveClick } type="remove"/> }
-          { onAddClick && index !== undefined && <ContractMethodArrayButton index={ index } onClick={ onAddClick } type="add" ml={ 2 }/> }
+          { onAddClick && index !== undefined && <ContractMethodArrayButton index={ index } onClick={ onAddClick } type="add" ml={ 1 }/> }
         </AccordionItemTrigger>
         <AccordionItemContent display="flex" flexDir="column" rowGap={ 1 } pl="18px" pr="6px">
           { children }
