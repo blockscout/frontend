@@ -13,9 +13,10 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 interface Props {
   item: ClustersDirectoryObject;
   isLoading?: boolean;
+  isClusterDetailsLoading?: boolean;
 }
 
-const ClustersDirectoryListItem = ({ item, isLoading }: Props) => {
+const ClustersDirectoryListItem = ({ item, isLoading, isClusterDetailsLoading }: Props) => {
   return (
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>
@@ -56,8 +57,8 @@ const ClustersDirectoryListItem = ({ item, isLoading }: Props) => {
         Active Chains
       </ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading }>
-          { item.chainIds?.length || 0 } { (item.chainIds?.length || 0) === 1 ? 'chain' : 'chains' }
+        <Skeleton loading={ isLoading || isClusterDetailsLoading }>
+          { (item.chainIds?.length || 1) } { (item.chainIds?.length || 1) === 1 ? 'chain' : 'chains' }
         </Skeleton>
       </ListItemMobileGrid.Value>
     </ListItemMobileGrid.Container>

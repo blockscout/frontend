@@ -41,7 +41,7 @@ const Clusters = () => {
     return ClustersOrderBy.CREATED_AT_DESC;
   }, [ viewMode, debouncedSearchTerm ]);
 
-  const { data, isError, isLoading } = useClustersData(debouncedSearchTerm, viewMode, orderBy, page);
+  const { data, clusterDetails, isError, isLoading, isClusterDetailsLoading } = useClustersData(debouncedSearchTerm, viewMode, orderBy, page);
 
   const showDirectoryView = viewMode === 'directory' || Boolean(debouncedSearchTerm);
 
@@ -59,6 +59,11 @@ const Clusters = () => {
     if (inputType === 'address') {
       const addressData = data?.result?.data as Array<ClustersByAddressObject>;
       if (addressData && Array.isArray(addressData)) {
+        const clusterDetailsData = clusterDetails?.result?.data;
+        const allChainIds = clusterDetailsData?.wallets?.flatMap(
+          (wallet: { chainIds: Array<string> }) => wallet.chainIds,
+        ) || [];
+        const uniqueChainIds = [ ...new Set(allChainIds) ] as Array<string>;
         return addressData.map((item) => ({
           name: item.name,
           isTestnet: item.isTestnet,
@@ -67,7 +72,7 @@ const Clusters = () => {
           totalWeiAmount: item.totalWeiAmount,
           updatedAt: item.updatedAt,
           updatedBy: item.updatedBy,
-          chainIds: (item as ClustersByAddressObject & { chainIds?: Array<string> }).chainIds || [],
+          chainIds: uniqueChainIds,
         }));
       }
     } else {
@@ -78,7 +83,7 @@ const Clusters = () => {
     }
 
     return [];
-  }, [ data, showDirectoryView, inputType ]);
+  }, [ data, clusterDetails, showDirectoryView, inputType ]);
 
   const limit = 50;
 
@@ -136,6 +141,7 @@ const Clusters = () => {
               key={ `${ item.name }-${ index }${ isLoading ? '-loading' : '' }` }
               item={ item }
               isLoading={ isLoading }
+              isClusterDetailsLoading={ isClusterDetailsLoading && inputType === 'address' }
             />
           ))
         ) : (
@@ -153,6 +159,7 @@ const Clusters = () => {
           <ClustersDirectoryTable
             data={ directoryData }
             isLoading={ isLoading }
+            isClusterDetailsLoading={ isClusterDetailsLoading && inputType === 'address' }
             top={ 80 }
           />
         ) : (

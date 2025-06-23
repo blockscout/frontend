@@ -10,9 +10,10 @@ interface Props {
   data: Array<ClustersDirectoryObject>;
   isLoading?: boolean;
   top?: number;
+  isClusterDetailsLoading?: boolean;
 }
 
-const ClustersDirectoryTable = ({ data, isLoading, top }: Props) => {
+const ClustersDirectoryTable = ({ data, isLoading, top, isClusterDetailsLoading }: Props) => {
   return (
     <TableRoot>
       <TableHeaderSticky top={ top }>
@@ -29,6 +30,7 @@ const ClustersDirectoryTable = ({ data, isLoading, top }: Props) => {
             key={ `${ item.name }-${ index }${ isLoading ? '-loading' : '' }` }
             item={ item }
             isLoading={ isLoading }
+            isClusterDetailsLoading={ isClusterDetailsLoading }
           />
         )) }
       </TableBody>

@@ -13,9 +13,10 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 interface Props {
   item: ClustersDirectoryObject;
   isLoading?: boolean;
+  isClusterDetailsLoading?: boolean;
 }
 
-const ClustersDirectoryTableItem = ({ item, isLoading }: Props) => {
+const ClustersDirectoryTableItem = ({ item, isLoading, isClusterDetailsLoading }: Props) => {
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
@@ -41,8 +42,8 @@ const ClustersDirectoryTableItem = ({ item, isLoading }: Props) => {
         />
       </TableCell>
       <TableCell verticalAlign="middle">
-        <Skeleton loading={ isLoading }>
-          { item.chainIds?.length || 0 } { (item.chainIds?.length || 0) === 1 ? 'chain' : 'chains' }
+        <Skeleton loading={ isLoading || isClusterDetailsLoading }>
+          { (item.chainIds?.length || 1) } { (item.chainIds?.length || 1) === 1 ? 'chain' : 'chains' }
         </Skeleton>
       </TableCell>
     </TableRow>
