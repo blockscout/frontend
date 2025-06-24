@@ -18,7 +18,7 @@ type Props = {
   name: string;
   config: AddressWidget | undefined;
   address: string;
-  isConfigLoading: boolean;
+  isLoading: boolean;
 };
 
 const chainId = config.chain.id || '';
@@ -27,10 +27,10 @@ function formatUrl(tpl: string, ctx: Record<string, string>) {
   return tpl.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => ctx[key] ?? '');
 }
 
-const AddressWidgetCard = ({ name, config, address, isConfigLoading }: Props) => {
-  const { data, isLoading: isDataLoading } = useWidgetData(name, config?.value, address, isConfigLoading);
+const AddressWidgetCard = ({ name, config, address, ...props }: Props) => {
+  const { data, isLoading: isDataLoading } = useWidgetData(name, config?.value, address, props.isLoading);
 
-  const isLoading = isConfigLoading || isDataLoading;
+  const isLoading = props.isLoading || isDataLoading;
 
   const handleClick = useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.ADDRESS_WIDGET, { Name: name });

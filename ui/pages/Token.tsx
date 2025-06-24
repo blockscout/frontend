@@ -162,7 +162,7 @@ const TokenPageContent = () => {
     },
   });
 
-  const widgets = useWidgets('token', isQueryEnabled);
+  const widgets = useWidgets('token', false, isQueryEnabled);
 
   const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData || (widgets.isEnabled && widgets.configQuery.isPlaceholderData);
   const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
@@ -200,7 +200,7 @@ const TokenPageContent = () => {
       component: <AddressContract tabs={ contractTabs.tabs } isLoading={ contractTabs.isLoading } shouldRender={ !isLoading }/>,
       subTabs: CONTRACT_TAB_IDS,
     } : undefined,
-    widgets.isEnabled ? {
+    (widgets.isEnabled && widgets.widgets.length > 0) ? {
       id: 'widgets',
       title: 'Widgets',
       count: widgets.widgets.length,

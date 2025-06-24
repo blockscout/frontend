@@ -20,16 +20,17 @@ type Props = {
   isQueryEnabled?: boolean;
   addressType: AddressWidget['pages'][number];
   showAll?: boolean;
+  isLoading?: boolean;
 };
 
-const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, addressType, showAll }: Props) => {
+const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, addressType, isLoading = false, showAll }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
   const [ rect, gridRef ] = useClientRect<HTMLDivElement>();
 
   const addressHash = getQueryParamString(router.query.hash);
 
-  const { widgets, configQuery } = useWidgets(addressType, isQueryEnabled);
+  const { widgets, configQuery } = useWidgets(addressType, isLoading, isQueryEnabled);
 
   const minWidgetWidth = 238;
   const maxWidgetWidth = 360;
@@ -49,7 +50,7 @@ const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, addressTyp
     return showAll ? widgets : widgets.slice(0, Math.max(4, columnsPerRow * 2));
   }, [ widgets, showAll, columnsPerRow ]);
 
-  const shouldShowViewAllLink = !showAll && !configQuery.isPlaceholderData && widgets.length > displayedWidgets.length;
+  const shouldShowViewAllLink = !showAll && !isLoading && !configQuery.isPlaceholderData && widgets.length > displayedWidgets.length;
 
   if (!isMounted || !shouldRender) {
     return null;
@@ -74,7 +75,7 @@ const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, addressTyp
             name={ name }
             config={ configQuery.isPlaceholderData ? WIDGET_CONFIG : configQuery.data?.[name] }
             address={ addressHash }
-            isConfigLoading={ configQuery.isPlaceholderData }
+            isLoading={ configQuery.isPlaceholderData || isLoading }
           />
         )) }
       </Grid>

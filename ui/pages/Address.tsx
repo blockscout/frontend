@@ -121,7 +121,7 @@ const AddressPageContent = () => {
     addressEnsDomainsQuery.data?.items.find((domain) => domain.name === addressQuery.data?.ens_domain_name) :
     undefined;
 
-  const widgets = useWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa', areQueriesEnabled);
+  const widgets = useWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa', addressQuery.isPlaceholderData, areQueriesEnabled);
 
   const isLoading = addressQuery.isPlaceholderData;
   const isTabsLoading =
@@ -268,15 +268,16 @@ const AddressPageContent = () => {
           component: <AddressLogs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
-      widgets.isEnabled ? {
+      (widgets.isEnabled && widgets.widgets.length > 0) ? {
         id: 'widgets',
         title: 'Widgets',
         count: widgets.widgets.length,
         component: (
           <AddressWidgets
+            addressType={ addressQuery.data?.is_contract ? 'contract' : 'eoa' }
+            isLoading={ addressQuery.isPlaceholderData }
             shouldRender={ !isTabsLoading }
             isQueryEnabled={ areQueriesEnabled }
-            addressType={ addressQuery.data?.is_contract ? 'contract' : 'eoa' }
             showAll
           />
         ),

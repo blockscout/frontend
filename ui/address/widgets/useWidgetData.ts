@@ -14,7 +14,7 @@ const formatValue = (value: unknown): string => {
   return String(value);
 };
 
-export default function useWidgetData(name: string, valuePath: string | undefined, address: string, isConfigLoading: boolean) {
+export default function useWidgetData(name: string, valuePath: string | undefined, address: string, isLoading: boolean) {
   const query = useApiQuery<typeof RESOURCE_NAME, unknown, string | undefined>(RESOURCE_NAME, {
     pathParams: { name },
     queryParams: { address },
@@ -28,7 +28,7 @@ export default function useWidgetData(name: string, valuePath: string | undefine
           return undefined;
         }
       },
-      enabled: !isConfigLoading && Boolean(valuePath),
+      enabled: !isLoading && Boolean(valuePath),
     },
   });
 

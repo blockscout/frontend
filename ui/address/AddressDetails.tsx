@@ -46,7 +46,7 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
     addressQuery,
   });
 
-  const widgets = useWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa');
+  const widgets = useWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa', addressQuery.isPlaceholderData);
 
   const error404Data = React.useMemo(() => ({
     hash: addressHash || '',
@@ -309,13 +309,16 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
 
         <DetailedInfoSponsoredItem isLoading={ isLoading }/>
 
-        { widgets.isEnabled && (
+        { (widgets.isEnabled && widgets.widgets.length > 0) && (
           <>
             <DetailedInfo.ItemLabel hint="Widgets" isLoading={ widgets.configQuery.isPlaceholderData }>
               Widgets
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue pl={{ base: 0, sm: 7, lg: 0 }}>
-              <AddressWidgets addressType={ data.is_contract ? 'contract' : 'eoa' }/>
+              <AddressWidgets
+                addressType={ data.is_contract ? 'contract' : 'eoa' }
+                isLoading={ addressQuery.isPlaceholderData }
+              />
             </DetailedInfo.ItemValue>
           </>
         ) }
