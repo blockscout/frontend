@@ -11,13 +11,14 @@ import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import useIsMobile from '../../lib/hooks/useIsMobile';
-import HomeChainSelector from '../shared/HomeChainSelector';
+import { InlineChainSelector } from '../shared/HomeChainSelector';
 
 export const BACKGROUND_DEFAULT =
   'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
 
 const HeroBanner = () => {
   const isMobile = useIsMobile();
+
   return (
     <Flex
       w="100%"
@@ -50,7 +51,7 @@ const HeroBanner = () => {
                 marginLeft="var(--kda-explorer-hero-banner-title-margin-gap)"
               >@</Span>
             </Span>
-            <HomeChainSelector/>
+            <InlineChainSelector/>
           </Heading>
           { config.UI.navigation.layout === 'vertical' && (
             <Box display={{ base: 'none', lg: 'flex' }} gap={ 2 }>

@@ -41,11 +41,11 @@ const moduleExports = {
   productionBrowserSourceMaps: true,
   compress: false,
   allowedDevOrigins: [
-    'chain-20.evm.kadena.local',
-    'chain-21.evm.kadena.local',
-    'chain-22.evm.kadena.local',
-    'chain-23.evm.kadena.local',
-    'chain-24.evm.kadena.local',
+    'chain-20.evm.kadena.internal',
+    'chain-21.evm.kadena.internal',
+    'chain-22.evm.kadena.internal',
+    'chain-23.evm.kadena.internal',
+    'chain-24.evm.kadena.internal',
   ],
   experimental: {
     staleTimes: {

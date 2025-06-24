@@ -7,7 +7,7 @@ import { capitalize } from 'es-toolkit';
 import React from 'react';
 import type { FormEventHandler } from 'react';
 
-import { Select, CompactSelect } from '../../toolkit/chakra/select';
+import { Select, CompactSelect, InlineSelect } from '../../toolkit/chakra/select';
 import type { SelectOption, SelectProps } from '../../toolkit/chakra/select';
 import useNetworkMenu from '../snippets/networkMenu/useNetworkMenu';
 
@@ -173,6 +173,26 @@ export const CompactChainSelector = (props: CompactSelectProps) => {
         </option>
       )) }
     </CompactSelect>
+  );
+};
+
+export const InlineChainSelector = () => {
+  const { chains, activeChain, handleChainChange } = useHomeChainSelector();
+
+  return chains && (
+    <InlineSelect
+      width="var(--kda-explorer-hero-banner-column-width)"
+      onChange={ handleChainChange }
+      variant="outline"
+      placeholder={ activeChain ? activeChain.label : 'Select Chain' }
+      defaultValue={ activeChain?.value ? [ activeChain.value ] : undefined }
+      collection={ chains }>
+      { chains?.items.map((chain) => (
+        <option value={ chain.value } key={ chain.value }>
+          { chain.label }
+        </option>
+      )) }
+    </InlineSelect>
   );
 };
 

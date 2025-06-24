@@ -12,7 +12,12 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     button: {
       outline: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.600}' } },
+          DEFAULT: {
+            value: {
+              _light: lightTheme.kda.foundation.color.text.base['@init'],
+              _dark: darkTheme.kda.foundation.color.text.base['@init'],
+            },
+          },
         },
       },
       subtle: {
@@ -117,11 +122,26 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     link: {
       primary: {
-        DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
-        hover: { value: { _light: '{colors.blue.400}' } },
+        DEFAULT: {
+          value: {
+            _light: lightTheme.kda.foundation.color.link.base.default,
+            _dark: darkTheme.kda.foundation.color.link.base.default,
+          },
+        },
+        hover: {
+          value: {
+            _light: lightTheme.kda.foundation.color.link.base['@hover'],
+            _dark: darkTheme.kda.foundation.color.link.base['@hover'],
+          },
+        },
       },
       secondary: {
-        DEFAULT: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
+        DEFAULT: {
+          value: {
+            _light: lightTheme.kda.foundation.color.text.brand.secondary.default,
+            _dark: darkTheme.kda.foundation.color.text.brand.secondary.default,
+          },
+        },
       },
       underlaid: {
         bg: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },
