@@ -72,6 +72,18 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
         },
       },
+      pagination: {
+        fg: {
+          DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.gray.50}' } },
+          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
+        },
+        bg: {
+          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
+        },
+        border: {
+          DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.whiteAlpha.100}' } },
+        },
+      },
       hero: {
         bg: {
           DEFAULT: {
@@ -274,7 +286,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
         hover: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.500}' } },
         focus: { value: '{colors.blue.400}' },
-        filled: { value: { _light: '{colors.gray.300}', _dark: '{colors.gray.600}' } },
+        filled: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
         readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
         error: { value: '{colors.red.500}' },
       },

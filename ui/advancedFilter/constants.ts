@@ -30,7 +30,7 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
   {
     id: 'age',
     name: 'Age',
-    width: '80px',
+    width: '190px',
   },
   {
     id: 'from',

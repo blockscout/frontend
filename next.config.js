@@ -47,6 +47,7 @@ const moduleExports = {
     'chain-23.evm.kadena.internal',
     'chain-24.evm.kadena.internal',
   ],
+  serverExternalPackages: ["@opentelemetry/sdk-node", "@opentelemetry/auto-instrumentations-node"],
   experimental: {
     staleTimes: {
       dynamic: 30,

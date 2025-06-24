@@ -1,4 +1,3 @@
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
@@ -10,15 +9,13 @@ import IconSvg from 'ui/shared/IconSvg';
 
 export type StatusTagType = 'ok' | 'error' | 'pending';
 
-export interface Props {
+export interface Props extends BadgeProps {
   type: 'ok' | 'error' | 'pending';
   text: string;
   errorText?: string | null;
-  isLoading?: boolean;
-  className?: string;
 }
 
-const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
+const StatusTag = ({ type, text, errorText, ...rest }: Props) => {
   let icon: IconName;
   let colorPalette: BadgeProps['colorPalette'];
 
@@ -43,11 +40,11 @@ const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
 
   return (
     <Tooltip content={ errorText } disabled={ !errorText }>
-      <Badge colorPalette={ colorPalette } loading={ isLoading } className={ className } startElement={ startElement }>
+      <Badge colorPalette={ colorPalette } startElement={ startElement } { ...rest }>
         { capitalizedText }
       </Badge>
     </Tooltip>
   );
 };
 
-export default chakra(StatusTag);
+export default StatusTag;

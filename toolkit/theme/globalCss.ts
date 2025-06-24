@@ -1,7 +1,7 @@
 import type { SystemConfig } from '@chakra-ui/react';
 
 import addressEntity from './globals/address-entity';
-import networkMenu from './globals/network-menu';
+import entity from './globals/entity';
 import recaptcha from './globals/recaptcha';
 import scrollbar from './globals/scrollbar';
 
@@ -52,8 +52,8 @@ const globalCss: SystemConfig['globalCss'] = {
   },
   ...recaptcha,
   ...scrollbar,
+  ...entity,
   ...addressEntity,
-  ...networkMenu,
 };
 
 export default globalCss;

@@ -10,7 +10,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   l1BlockNumber: number;
@@ -59,8 +59,9 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
         <>
           <Flex justifyContent="space-between" alignItems="center" mb={ 1 }>
             { l1BlockLink }
-            <TimeAgoWithTooltip
+            <TimeWithTooltip
               timestamp={ timestamp }
+              timeFormat="relative"
               isLoading={ isLoading }
               color="text.secondary"
             />
@@ -86,8 +87,9 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
           L1 txn
         </Skeleton>
         { l1TxLink }
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ timestamp }
+          timeFormat="relative"
           isLoading={ isLoading }
           color="text.secondary"
           w="fit-content"

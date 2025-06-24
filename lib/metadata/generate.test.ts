@@ -33,7 +33,7 @@ const TEST_CASES = [
       pathname: '/token/[hash]',
       query: { hash: '0x12345' },
     },
-    apiData: { symbol: 'USDT' },
+    apiData: { symbol_or_name: 'USDT' },
   } as TestCase<'/token/[hash]'>,
 ];
 

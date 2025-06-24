@@ -7,11 +7,13 @@ import * as Layout from './components';
 const LayoutSearchResults = ({ children }: Props) => {
 
   return (
-    <Layout.Container>
-      <Layout.TopRow/>
-      <Layout.NavBar/>
-      { children }
-    </Layout.Container>
+    <Layout.Root content={ children }>
+      <Layout.Container>
+        <Layout.TopRow/>
+        <Layout.NavBar/>
+        { children }
+      </Layout.Container>
+    </Layout.Root>
   );
 };
 

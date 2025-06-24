@@ -8,16 +8,14 @@ interface Props {
 }
 
 const TokenInfoIconPreview = ({ url, isInvalid, children }: Props) => {
-  const borderColor = { _light: 'gray.100', _dark: 'gray.700' };
-  const borderColorFilled = { _light: 'gray.300', _dark: 'gray.600' };
-  const borderColorActive = isInvalid ? 'error' : borderColorFilled;
+  const borderColorActive = isInvalid ? 'error' : 'input.border.filled';
 
   return (
     <Center
       boxSize="60px"
       flexShrink={ 0 }
       borderWidth="2px"
-      borderColor={ url ? borderColorActive : borderColor }
+      borderColor={ url ? borderColorActive : 'input.border' }
       borderRadius="base"
     >
       { children }

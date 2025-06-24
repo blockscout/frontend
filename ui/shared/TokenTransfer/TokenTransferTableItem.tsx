@@ -12,10 +12,9 @@ import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
-
-import TimeAgoWithTooltip from '../TimeAgoWithTooltip';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
@@ -91,7 +90,7 @@ const TokenTransferTableItem = ({
             mt="7px"
             truncation="constant_long"
           />
-          <TimeAgoWithTooltip
+          <TimeWithTooltip
             timestamp={ timestamp }
             enableIncrement={ enableTimeIncrement }
             isLoading={ isLoading }

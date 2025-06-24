@@ -10,7 +10,7 @@ import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -41,7 +41,7 @@ const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
         />
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.l1_block_timestamp }
           isLoading={ isLoading }
           color="text.secondary"
