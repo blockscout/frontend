@@ -10,6 +10,7 @@ import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import { useAddressClusters } from 'lib/hooks/useAddressClusters';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
@@ -34,6 +35,7 @@ import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
+import AddressClusters from 'ui/address/clusters/AddressClusters';
 import useContractTabs from 'ui/address/contract/useContractTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
@@ -118,6 +120,8 @@ const AddressPageContent = () => {
   const addressMainDomain = !addressQuery.isPlaceholderData ?
     addressEnsDomainsQuery.data?.items.find((domain) => domain.name === addressQuery.data?.ens_domain_name) :
     undefined;
+
+  const addressClustersQuery = useAddressClusters(hash, areQueriesEnabled);
 
   const isLoading = addressQuery.isPlaceholderData;
   const isTabsLoading =
@@ -415,6 +419,8 @@ const AddressPageContent = () => {
         <SolidityscanReport hash={ hash }/> }
       { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
         <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
+      { !isLoading && addressClustersQuery.data && config.features.clusters.isEnabled &&
+        <AddressClusters query={ addressClustersQuery } addressHash={ hash }/> }
       <NetworkExplorers type="address" pathParam={ hash }/>
     </Flex>
   );
