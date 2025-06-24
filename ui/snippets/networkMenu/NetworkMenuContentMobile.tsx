@@ -2,8 +2,9 @@ import { Box, VStack, Flex, createListCollection } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
-import type { NetworkGroup, FeaturedNetwork } from 'types/networks';
+import type { NetworkGroup, FeaturedChain } from 'types/networks';
 
+import config from 'configs/app';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -11,11 +12,11 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import NetworkMenuLink from './NetworkMenuLink';
 interface Props {
   tabs: Array<NetworkGroup>;
-  items?: Array<FeaturedNetwork>;
+  items?: Array<FeaturedChain>;
 }
 
 const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
-  const [ defaultTab ] = tabs ?? [ 'Mainnets' ];
+  const [ defaultTab ] = tabs ?? [ config.UI.navigation.baseNetwork ];
   const selectedNetwork = items?.find(({ isActive }) => isActive);
   const [ selectedTab, setSelectedTab ] = React.useState<NetworkGroup>(defaultTab);
 

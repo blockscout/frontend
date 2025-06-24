@@ -164,18 +164,53 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       },
       navigation: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.gray.600}', _dark: '{colors.gray.400}' } },
-          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
-          hover: { value: { _light: '{colors.link.primary.hover}' } },
-          active: { value: { _light: '{colors.link.primary.hover}' } },
+          DEFAULT: {
+            value: {
+              _light: lightTheme.kda.explorer.navigation.surface.text.default,
+              _dark: darkTheme.kda.explorer.navigation.surface.text.default,
+            },
+          },
+          selected: {
+            value: {
+              _light: lightTheme.kda.explorer.navigation.surface.text['@selected'],
+              _dark: darkTheme.kda.explorer.navigation.surface.text['@selected'],
+            },
+          },
+          hover: {
+            value: {
+              _light: lightTheme.kda.foundation.color.link.base['@hover'],
+              _dark: darkTheme.kda.foundation.color.link.base['@hover'],
+            },
+          },
+          active: {
+            value: {
+              _light: lightTheme.kda.foundation.color.link.base['@focus'],
+              _dark: darkTheme.kda.foundation.color.link.base['@focus'],
+            },
+          },
         },
         bg: {
-          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
-          group: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
+          selected: {
+            value: {
+              _light: lightTheme.kda.explorer.navigation.background['@active'],
+              _dark: darkTheme.kda.explorer.navigation.background['@active'],
+            },
+          },
+          group: {
+            value: {
+              _light: lightTheme.kda.explorer.navigation.background['@active'],
+              _dark: darkTheme.kda.explorer.navigation.background['@active'],
+            },
+          },
         },
       },
       menu: {
-        DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+        DEFAULT: {
+          value: {
+            _light: lightTheme.kda.explorer.navigation.background['@active'],
+            _dark: darkTheme.kda.explorer.navigation.background['@active'],
+          },
+        },
       },
     },
     tooltip: {
@@ -250,10 +285,20 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     alert: {
       fg: {
-        DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+        DEFAULT: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.surface.text.default,
+            _dark: darkTheme.kda.explorer.toast.surface.text.default,
+          },
+        },
       },
       bg: {
-        info: { value: { _light: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.100}' } },
+        info: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.info,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.info,
+          },
+        },
         warning: { value: { _light: '{colors.orange.100}', _dark: '{colors.orange.800/60}' } },
         warning_table: { value: { _light: '{colors.orange.50}', _dark: '{colors.orange.800/60}' } },
         success: { value: { _light: '{colors.green.100}', _dark: '{colors.green.900}' } },
@@ -265,12 +310,42 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         DEFAULT: { value: '{colors.alert.fg}' },
       },
       bg: {
-        DEFAULT: { value: '{colors.alert.bg.info}' },
-        info: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.900}' } },
-        warning: { value: '{colors.alert.bg.warning}' },
-        success: { value: '{colors.alert.bg.success}' },
-        error: { value: '{colors.alert.bg.error}' },
-        loading: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.900}' } },
+        DEFAULT: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.info,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.info,
+          },
+        },
+        info: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.info,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.info,
+          },
+        },
+        warning: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.warning,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.warning,
+          },
+        },
+        success: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.positive,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.positive,
+          },
+        },
+        error: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.negative,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.negative,
+          },
+        },
+        loading: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.loading.default,
+            _dark: darkTheme.kda.explorer.toast.loading.default,
+          },
+        },
       },
     },
     input: {
@@ -285,10 +360,20 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       border: {
         DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
         hover: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.500}' } },
-        focus: { value: '{colors.blue.400}' },
+        focus: {
+          value: {
+            _light: lightTheme.kda.explorer.input.border.color['@focus'],
+            _dark: darkTheme.kda.explorer.input.border.color['@focus'],
+          },
+        },
         filled: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
         readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
-        error: { value: '{colors.red.500}' },
+        error: {
+          value: {
+            _light: lightTheme.kda.explorer.input.border.color.semantic.negative,
+            _dark: darkTheme.kda.explorer.input.border.color.semantic.negative,
+          },
+        },
       },
       placeholder: {
         DEFAULT: { value: '{colors.gray.500}' },

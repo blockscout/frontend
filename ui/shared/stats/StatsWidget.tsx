@@ -10,6 +10,8 @@ import { Hint } from 'toolkit/components/Hint/Hint';
 import IconSvg, { type IconName } from 'ui/shared/IconSvg';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
+import { KDATokens } from '../../../toolkit/theme/theme';
+
 export type Props = {
   className?: string;
   label: string;
@@ -58,7 +60,13 @@ const StatsWidget = ({
       <Flex
         className={ className }
         alignItems="center"
-        bgColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } : { _light: 'gray.50', _dark: 'whiteAlpha.100' } }
+        bgColor={ isLoading ? {
+          _light: 'blackAlpha.50',
+          _dark: 'whiteAlpha.50',
+        } : {
+          _light: KDATokens.light.kda.explorer.widget.stats.background.default,
+          _dark: KDATokens.dark.kda.explorer.widget.stats.background.default,
+        } }
         p={ 3 }
         borderRadius="base"
         justifyContent="space-between"
@@ -74,13 +82,14 @@ const StatsWidget = ({
             isLoading={ isLoading }
             borderRadius="base"
             display={{ base: 'none', lg: 'block' }}
+            color="var(--kda-explorer-widget-stats-surface-icon-color)"
             flexShrink={ 0 }
           />
         ) }
         <Box w={{ base: '100%', lg: icon ? 'calc(100% - 48px)' : '100%' }}>
           <Skeleton
             loading={ isLoading }
-            color="text.secondary"
+            color="var(--kda-explorer-widget-stats-surface-text-subtle)"
             textStyle="xs"
             w="fit-content"
           >
@@ -92,28 +101,29 @@ const StatsWidget = ({
             alignItems="baseline"
             fontWeight={ 500 }
             textStyle="heading.md"
+            color="var(--kda-explorer-widget-stats-surface-text)"
           >
             { valuePrefix && <chakra.span whiteSpace="pre">{ valuePrefix }</chakra.span> }
             { typeof value === 'string' ? (
-              <TruncatedValue isLoading={ isLoading } value={ value }/>
+              <TruncatedValue color="var(--kda-explorer-widget-stats-surface-text)" isLoading={ isLoading } value={ value }/>
             ) : (
               value
             ) }
             { valuePostfix && <chakra.span whiteSpace="pre">{ valuePostfix }</chakra.span> }
             { diff && Number(diff) > 0 && (
               <>
-                <Text ml={ 2 } mr={ 1 } color="green.500">
+                <Text ml={ 2 } mr={ 1 } color="var(--kda-explorer-widget-stats-surface-text)">
                   +{ diffFormatted || Number(diff).toLocaleString() }
                 </Text>
-                <Text color="text.secondary" textStyle="sm">({ diffPeriod })</Text>
+                <Text color="var(--kda-explorer-widget-stats-surface-text-subtle)" textStyle="sm">({ diffPeriod })</Text>
               </>
             ) }
-            { period && <Text color="text.secondary" textStyle="xs" fontWeight={ 400 } ml={ 1 }>({ period })</Text> }
+            { period && <Text color="var(--kda-explorer-widget-stats-surface-text-subtle)" textStyle="xs" fontWeight={ 400 } ml={ 1 }>({ period })</Text> }
           </Skeleton>
         </Box>
         { typeof hint === 'string' ? (
           <Skeleton loading={ isLoading } alignSelf="center" borderRadius="base">
-            <Hint label={ hint } boxSize={ 6 } color={{ _light: 'gray.600', _dark: 'gray.400' }}/>
+            <Hint label={ hint } boxSize={ 6 } color="var(--kda-explorer-widget-stats-surface-text-subtle)"/>
           </Skeleton>
         ) : hint }
       </Flex>

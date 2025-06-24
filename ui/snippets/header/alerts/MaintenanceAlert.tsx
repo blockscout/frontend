@@ -10,7 +10,7 @@ const MaintenanceAlert = () => {
   }
 
   return (
-    <Alert status="info" showIcon>
+    <Alert status="warning" showIcon>
       <Box
         dangerouslySetInnerHTML={{ __html: config.UI.maintenanceAlert.message }}
         css={{

@@ -7,7 +7,7 @@ import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 import NavigationMobile from 'ui/snippets/navigation/mobile/NavigationMobile';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
-import useNetworkMenu from 'ui/snippets/networkMenu/useNetworkMenu';
+import { useNetworkMenu } from 'ui/snippets/networkMenu/useNetworkMenu';
 
 interface Props {
   isMarketplaceAppPage?: boolean;

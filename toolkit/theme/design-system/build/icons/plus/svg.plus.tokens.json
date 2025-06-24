@@ -5,7 +5,7 @@
         "$type": "icon",
         "$name": "plus",
         "$description": "",
-        "$value": "<svg height=\"24px\" width=\"24px\" viewBox=\"0 0 16 16\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M8 .5a.937.937 0 0 1 .938.938v5.625h5.624a.937.937 0 0 1 0 1.875H8.939v5.624a.937.937 0 0 1-1.876 0V8.939H1.438a.937.937 0 1 1 0-1.876h5.625V1.438A.937.937 0 0 1 8 .5Z\" fill=\"currentColor\"/> </svg>",
+        "$value": "<svg height=\"24px\" width=\"24px\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"> <g clip-path=\"url(#a)\"> <path fill=\"currentColor\" d=\"M7.857 9.052a1 1 0 0 0 1-1V3.195a1 1 0 0 1 1-1h.286a1 1 0 0 1 1 1v4.857a1 1 0 0 0 1 1H17a1 1 0 0 1 1 1v.286a1 1 0 0 1-1 1h-4.857a1 1 0 0 0-1 1v4.857a1 1 0 0 1-1 1h-.286a1 1 0 0 1-1-1v-4.857a1 1 0 0 0-1-1H3a1 1 0 0 1-1-1v-.286a1 1 0 0 1 1-1h4.857Z\"/> </g> <defs> <clipPath id=\"a\"> <path fill=\"currentColor\" d=\"M0 0h20v20H0z\"/> </clipPath> </defs> </svg>",
         "$dimensions": {
           "width": 24,
           "height": 24

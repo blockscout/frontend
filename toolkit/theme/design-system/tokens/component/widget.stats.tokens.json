@@ -1,0 +1,53 @@
+{
+  "kda": {
+    "explorer": {
+      "widget": {
+        "stats": {
+          "background": {
+            "default": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.primary.n0}",
+              "$extensions": {
+                "mode": {
+                  "dark": "{kda.foundation.color.neutral.n0@alpha40}"
+                }
+              }
+            },
+            "@hover": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.primary.n0}"
+            },
+            "@focus": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.primary.n0}"
+            },
+            "@visited": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.primary.n0}"
+            }
+          },
+          "surface": {
+            "text": {
+              "subtle": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.text.subtle.default}"
+              },
+              "default": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.text.brand.primary.default}"
+              }
+            },
+            "icon": {
+              "color": {
+                "default": {
+                  "$type": "color",
+                  "$value": "{kda.foundation.color.icon.brand.primary.@active}"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

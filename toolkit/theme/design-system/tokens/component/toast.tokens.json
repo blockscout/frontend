@@ -1,0 +1,46 @@
+{
+  "kda": {
+    "explorer": {
+      "toast": {
+        "surface": {
+          "text": {
+            "default": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.text.semantic.info.default}"
+            }
+          }
+        },
+        "background": {
+          "default": {
+            "$type": "color",
+            "$value": "{kda.foundation.color.brand.primary.n0}"
+          },
+          "semantic": {
+            "positive": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.semantic.positive.n0}"
+            },
+            "negative": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.semantic.negative.n0}"
+            },
+            "warning": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.semantic.warning.n0}"
+            },
+            "info": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.semantic.info.n0}"
+            }
+          }
+        },
+        "loading": {
+          "default": {
+            "$type": "color",
+            "$value": "{kda.foundation.color.semantic.info.n90}"
+          }
+        }
+      }
+    }
+  }
+}

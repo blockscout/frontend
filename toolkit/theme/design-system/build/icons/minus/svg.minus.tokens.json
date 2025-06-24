@@ -5,9 +5,9 @@
         "$type": "icon",
         "$name": "minus",
         "$description": "",
-        "$value": "<svg height=\"24px\" width=\"192px\" viewBox=\"0 0 16 2\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M.5 1a.937.937 0 0 1 .938-.938h13.124a.938.938 0 0 1 0 1.875H1.438A.937.937 0 0 1 .5 1Z\" fill=\"currentColor\"/> </svg>",
+        "$value": "<svg height=\"24px\" width=\"24px\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"> <g clip-path=\"url(#a)\"> <path fill=\"currentColor\" d=\"M8.857 9H17a1 1 0 0 1 1 1v.286a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1h5.857Z\"/> </g> <defs> <clipPath id=\"a\"> <path fill=\"currentColor\" d=\"M0 0h20v20H0z\"/> </clipPath> </defs> </svg>",
         "$dimensions": {
-          "width": 192,
+          "width": 24,
           "height": 24
         }
       }

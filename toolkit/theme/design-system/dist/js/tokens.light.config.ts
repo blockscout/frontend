@@ -10,6 +10,13 @@ import type { KDADesignSystemLightTokens } from './tokens.light.config.type.ts';
 type CSSVars = Record<string, string | number>;
 
 export const cssVars: CSSVars = {
+  'kda-explorer-alert-surface-text': '#0b1d2e',
+  'kda-explorer-alert-background': '#e9f8ef',
+  'kda-explorer-alert-background-semantic-positive': '#e9fce3',
+  'kda-explorer-alert-background-semantic-negative': '#fff5f5',
+  'kda-explorer-alert-background-semantic-warning': '#fbf8dd',
+  'kda-explorer-alert-background-semantic-info': '#f0f8ff',
+  'kda-explorer-alert-loading': '#194268',
   'kda-explorer-button-background-color': '#20624c',
   'kda-explorer-button-surface-color': '#fff',
   'kda-explorer-hero-banner-title-font-size': '1.5rem',
@@ -34,7 +41,26 @@ export const cssVars: CSSVars = {
   'kda-explorer-hero-banner-button-@active-background': '#2e8f6f',
   'kda-explorer-hero-banner-button-@active-surface': '#e4e5e5',
   'kda-explorer-input-dimensions-radius-base': '0px',
+  'kda-explorer-input-border-color-semantic-negative': '#ea3829',
+  'kda-explorer-input-border-color-@focus': '#356f5a',
+  'kda-explorer-navigation-background-@active': '#e9f8ef',
+  'kda-explorer-navigation-surface-text': '#1f4f3c',
+  'kda-explorer-navigation-surface-text-@selected': '#061a10',
+  'kda-explorer-toast-surface-text': '#0b1d2e',
+  'kda-explorer-toast-background': '#e9f8ef',
+  'kda-explorer-toast-background-semantic-positive': '#e9fce3',
+  'kda-explorer-toast-background-semantic-negative': '#fff5f5',
+  'kda-explorer-toast-background-semantic-warning': '#fbf8dd',
+  'kda-explorer-toast-background-semantic-info': '#f0f8ff',
+  'kda-explorer-toast-loading': '#194268',
   'kda-explorer-top-bar-font-size': '0.75rem',
+  'kda-explorer-widget-stats-background': '#e9f8ef',
+  'kda-explorer-widget-stats-background-@hover': '#e9f8ef',
+  'kda-explorer-widget-stats-background-@focus': '#e9f8ef',
+  'kda-explorer-widget-stats-background-@visited': '#e9f8ef',
+  'kda-explorer-widget-stats-surface-text-subtle': '#000c',
+  'kda-explorer-widget-stats-surface-text': '#1f4f3c',
+  'kda-explorer-widget-stats-surface-icon-color': '#4a9079',
   'kda-border-width-hairline': '1px',
   'kda-border-width-normal': '2px',
   'kda-border-width-thick': '4px',
@@ -995,6 +1021,25 @@ export const cssVars: CSSVars = {
 export default {
   kda: {
     explorer: {
+      alert: {
+        surface: {
+          text: {
+            'default': '#0b1d2e',
+          },
+        },
+        background: {
+          'default': '#e9f8ef',
+          semantic: {
+            positive: '#e9fce3',
+            negative: '#fff5f5',
+            warning: '#fbf8dd',
+            info: '#f0f8ff',
+          },
+        },
+        loading: {
+          'default': '#194268',
+        },
+      },
       button: {
         background: {
           color: {
@@ -1058,11 +1103,70 @@ export default {
             base: '0px',
           },
         },
+        border: {
+          color: {
+            semantic: {
+              negative: '#ea3829',
+            },
+            '@focus': '#356f5a',
+          },
+        },
+      },
+      navigation: {
+        background: {
+          '@active': '#e9f8ef',
+        },
+        surface: {
+          text: {
+            'default': '#1f4f3c',
+            '@selected': '#061a10',
+          },
+        },
+      },
+      toast: {
+        surface: {
+          text: {
+            'default': '#0b1d2e',
+          },
+        },
+        background: {
+          'default': '#e9f8ef',
+          semantic: {
+            positive: '#e9fce3',
+            negative: '#fff5f5',
+            warning: '#fbf8dd',
+            info: '#f0f8ff',
+          },
+        },
+        loading: {
+          'default': '#194268',
+        },
       },
       top: {
         bar: {
           font: {
             size: '0.75rem',
+          },
+        },
+      },
+      widget: {
+        stats: {
+          background: {
+            'default': '#e9f8ef',
+            '@hover': '#e9f8ef',
+            '@focus': '#e9f8ef',
+            '@visited': '#e9f8ef',
+          },
+          surface: {
+            text: {
+              subtle: '#000c',
+              'default': '#1f4f3c',
+            },
+            icon: {
+              color: {
+                'default': '#4a9079',
+              },
+            },
           },
         },
       },

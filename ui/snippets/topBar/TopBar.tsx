@@ -3,6 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import DeFiDropdown from './DeFiDropdown';
 import Settings from './settings/Settings';
@@ -21,10 +22,28 @@ const TopBar = () => {
       >
         <TopBarChainStatus/>
         <Flex alignItems="center">
+          { config.features.blockchainInteraction.isEnabled && (
+            <>
+              <UserWalletDesktop buttonSize="sm" buttonVariant="hero"/>
+              <Separator
+                borderColor="var(--kda-color-background-brand-secondary)"
+                mr={ 3 }
+                ml={{ base: 2, sm: 3 }}
+                height={ 4 }
+                orientation="vertical"
+              />
+            </>
+          ) }
           { config.features.deFiDropdown.isEnabled && (
             <>
               <DeFiDropdown/>
-              <Separator mr={ 3 } ml={{ base: 2, sm: 3 }} height={ 4 } orientation="vertical"/>
+              <Separator
+                borderColor="var(--kda-color-background-brand-secondary)"
+                mr={ 3 }
+                ml={{ base: 2, sm: 3 }}
+                height={ 4 }
+                orientation="vertical"
+              />
             </>
           ) }
           <Settings/>

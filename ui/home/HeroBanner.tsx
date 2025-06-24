@@ -8,7 +8,6 @@ import RewardsButton from 'ui/rewards/RewardsButton';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
-import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import useIsMobile from '../../lib/hooks/useIsMobile';
 import { InlineChainSelector } from '../shared/HomeChainSelector';
@@ -56,10 +55,7 @@ const HeroBanner = () => {
           { config.UI.navigation.layout === 'vertical' && (
             <Box display={{ base: 'none', lg: 'flex' }} gap={ 2 }>
               { config.features.rewards.isEnabled && <RewardsButton variant="hero"/> }
-              {
-                (config.features.account.isEnabled && <UserProfileDesktop buttonVariant="hero"/>) ||
-                (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonVariant="hero"/>)
-              }
+              { config.features.account.isEnabled && <UserProfileDesktop buttonVariant="hero"/> }
             </Box>
           ) }
         </Flex>

@@ -7,9 +7,13 @@ import { capitalize } from 'es-toolkit';
 import React from 'react';
 import type { FormEventHandler } from 'react';
 
+import type { FeaturedNetwork } from '../../types/networks';
+
+import config from 'configs/app';
+
 import { Select, CompactSelect, InlineSelect } from '../../toolkit/chakra/select';
 import type { SelectOption, SelectProps } from '../../toolkit/chakra/select';
-import useNetworkMenu from '../snippets/networkMenu/useNetworkMenu';
+import { useNetworkMenu, useChainMenu } from '../snippets/networkMenu/useNetworkMenu';
 
 export type CompactSelectProps = {
   intent?: SelectProps['intent'];
@@ -19,12 +23,21 @@ export const useHomeChainSelector = () => {
   const currentUrl = window.location.href;
   const [ activeNetwork, setActiveNetwork ] = React.useState<{ label: string; value: string } | null>(null);
   const [ activeChain, setActiveChain ] = React.useState<{ label: string; value: string } | null>(null);
-  const menu = useNetworkMenu();
+  const networkMenu = useNetworkMenu();
+  const chainMenu = useChainMenu();
   const [ networks, setNetworks ] = React.useState<ListCollection<SelectOption<string>> | null>(null);
   const [ chains, setChains ] = React.useState<ListCollection<SelectOption<string>> | null>(null);
+  const [ filteredNetwork, setFilteredNetwork ] = React.useState<FeaturedNetwork['id'] | null>(null);
   const [ isLoading, setIsLoading ] = React.useState(true);
 
-  const handleNetworkChange = React.useCallback<FormEventHandler<HTMLDivElement>>(() => {}, []);
+  const handleNetworkChange = React.useCallback<FormEventHandler<HTMLDivElement>>((e) => {
+    const target = e.target as HTMLInputElement;
+    const selectedOption = networkMenu.data?.find((option) => option.id === target.value);
+
+    if (selectedOption) {
+      setActiveNetwork({ label: capitalize(selectedOption.title), value: selectedOption.id });
+    }
+  }, [ networkMenu.data ]);
 
   const handleChainChange = React.useCallback<FormEventHandler<HTMLDivElement>>((e) => {
     if (chains?.getValues().length === 0) return;
@@ -38,13 +51,13 @@ export const useHomeChainSelector = () => {
   }, [ chains ]);
 
   React.useEffect(() => {
-    const networkItems = menu.data ?? [];
-    const networks = Object.values(
+    const networkItems = networkMenu.data ?? [];
+    const _networks = Object.values(
       networkItems.reduce((acc, network) => ({
         ...acc,
-        [network.group]: {
-          label: capitalize(network.group),
-          value: network.url,
+        [network.id]: {
+          label: capitalize(network.title),
+          value: network.id,
         },
       }), {} as Record<string, { label: string; value: string }>),
     ).map((network) => ({
@@ -52,52 +65,83 @@ export const useHomeChainSelector = () => {
       value: network.value,
     }));
 
-    if (networkItems && networkItems.length > 0 && !activeChain) {
-      const activeChain = networkItems.find((chain) => chain.isActive);
-      const [ firstChain ] = networkItems;
-      const matchingChain = networkItems.find((chain) => chain.url === currentUrl);
+    if (networkItems && networkItems.length > 0 && !activeNetwork) {
+      let currentNetwork = networkItems.find((network) => currentUrl.includes(network.id));
 
-      const activeNetwork = networks.find((network) => network.value === activeChain?.url);
-      const [ firstNetwork ] = networks;
-      const matchingNetwork = networks.find((network) => network.value === currentUrl);
-
-      if (activeNetwork) {
-        setActiveNetwork({ label: activeNetwork.label, value: activeNetwork.value });
-      } else if (matchingNetwork) {
-        setActiveNetwork({ label: matchingNetwork.label, value: matchingNetwork.value });
-      } else if (firstNetwork) {
-        setActiveNetwork({ label: firstNetwork.label, value: firstNetwork.value });
+      if (!currentNetwork) {
+        const availableNetworks = networkItems.filter((network) => network.isActive);
+        currentNetwork = networkItems.find((network) => network.id === config.UI.navigation.baseNetwork) ?? availableNetworks[0];
       }
 
-      if (currentUrl && matchingChain) {
-        setActiveChain({ label: matchingChain.title, value: matchingChain.url });
-      } else if (activeChain) {
-        setActiveChain({ label: activeChain.title, value: activeChain.url });
-      } else if (firstChain) {
-        setActiveChain({ label: firstChain.title, value: firstChain.url });
-      }
-
+      setActiveNetwork({ label: capitalize(currentNetwork.title), value: currentNetwork.id });
       setNetworks(createListCollection({
-        items: networks.map((option) => ({
+        items: _networks,
+      }));
+      setIsLoading(false);
+    }
+  }, [ currentUrl, activeNetwork, networkMenu, setIsLoading ]);
+
+  React.useEffect(() => {
+    const chainItems = chainMenu.data ?? [];
+
+    if (chainItems && chainItems.length > 0 && !activeChain && activeNetwork) {
+      const _chains = chainItems.filter((chain) => chain.group === activeNetwork?.value).map((chain) => ({
+        label: capitalize(chain.title),
+        value: chain.url,
+      }));
+
+      let currentChain = _chains.find((chain) => chain.value === currentUrl);
+
+      if (!currentChain) {
+        const availableChains = _chains.filter((chain) => chain);
+        currentChain = _chains.find((chain) => chain.value.includes(`chain-${ config.UI.navigation.baseChain }`)) ?? availableChains[0];
+      }
+
+      if (currentChain && !currentUrl.startsWith(currentChain.value)) {
+        window.location.href = currentChain.value;
+        return;
+      }
+
+      setActiveChain({ label: capitalize(currentChain.label), value: currentChain.value });
+      setChains(createListCollection({
+        items: _chains.map((option) => ({
           value: option.value,
           label: option.label,
         })),
       }));
-      setChains(createListCollection({
-        items: networkItems.map((option) => ({
-          value: option.url,
-          label: capitalize(option.title),
-        })),
-      }));
       setIsLoading(false);
+      setFilteredNetwork(activeNetwork.value);
     }
-  }, [ currentUrl, setActiveChain, activeChain, setChains, menu, setIsLoading ]);
+  }, [ currentUrl, activeNetwork, activeChain, networkMenu, setIsLoading, chainMenu.data ]);
 
   React.useEffect(() => {
     if (!chains) {
-      menu.onOpenChange({ open: true });
+      networkMenu.onOpenChange({ open: true });
     }
-  }, [ chains, menu ]);
+  }, [ chains, networkMenu ]);
+
+  React.useEffect(() => {
+    if (activeNetwork && !chains) {
+      chainMenu.onOpenChange({ open: true });
+    }
+  }, [ chains, chainMenu, activeNetwork ]);
+
+  React.useEffect(() => {
+    if (chainMenu?.data && activeNetwork && activeChain && filteredNetwork !== activeNetwork.value) {
+      const chainItems = chainMenu.data ?? [];
+      const chains = chainItems.filter((chain) => chain.group === activeNetwork.value).map((chain) => ({
+        label: capitalize(chain.title),
+        value: chain.url,
+      }));
+      setChains(createListCollection({
+        items: chains.map((option) => ({
+          value: option.value,
+          label: option.label,
+        })),
+      }));
+      setActiveChain(null);
+    }
+  }, [ activeChain, chainMenu, activeNetwork, filteredNetwork, setChains ]);
 
   return {
     isLoading,

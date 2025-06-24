@@ -8,6 +8,25 @@
 export type KDADesignSystemLightTokens = {
   kda: {
     explorer: {
+      alert: {
+        surface: {
+          text: {
+            'default': string;
+          };
+        };
+        background: {
+          'default': string;
+          semantic: {
+            positive: string;
+            negative: string;
+            warning: string;
+            info: string;
+          };
+        };
+        loading: {
+          'default': string;
+        };
+      };
       button: {
         background: {
           color: {
@@ -71,11 +90,70 @@ export type KDADesignSystemLightTokens = {
             base: string;
           };
         };
+        border: {
+          color: {
+            semantic: {
+              negative: string;
+            };
+            '@focus': string;
+          };
+        };
+      };
+      navigation: {
+        background: {
+          '@active': string;
+        };
+        surface: {
+          text: {
+            'default': string;
+            '@selected': string;
+          };
+        };
+      };
+      toast: {
+        surface: {
+          text: {
+            'default': string;
+          };
+        };
+        background: {
+          'default': string;
+          semantic: {
+            positive: string;
+            negative: string;
+            warning: string;
+            info: string;
+          };
+        };
+        loading: {
+          'default': string;
+        };
       };
       top: {
         bar: {
           font: {
             size: string;
+          };
+        };
+      };
+      widget: {
+        stats: {
+          background: {
+            'default': string;
+            '@hover': string;
+            '@focus': string;
+            '@visited': string;
+          };
+          surface: {
+            text: {
+              subtle: string;
+              'default': string;
+            };
+            icon: {
+              color: {
+                'default': string;
+              };
+            };
           };
         };
       };

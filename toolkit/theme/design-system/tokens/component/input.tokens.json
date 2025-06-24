@@ -16,6 +16,25 @@
               }
             }
           }
+        },
+        "border": {
+          "color": {
+            "semantic": {
+              "negative": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.border.semantic.negative.default}"
+              }
+            },
+            "@focus": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.primary.n70}",
+              "$extensions": {
+                "mode": {
+                  "dark": "{kda.foundation.color.brand.primary.n50}"
+                }
+              }
+            }
+          }
         }
       }
     }

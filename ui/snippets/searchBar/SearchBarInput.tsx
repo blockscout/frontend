@@ -160,6 +160,7 @@ const SearchBarInput = (
           value={ value }
           onChange={ handleChange }
           onFocus={ onFocus }
+          borderRadius="var(--kda-explorer-input-dimensions-radius-base)"
           border={ isHomepage ? 'none' : '2px solid' }
           borderColor={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' }}
           color={{ _light: 'black', _dark: 'white' }}

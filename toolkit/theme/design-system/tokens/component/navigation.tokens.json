@@ -1,0 +1,41 @@
+{
+  "kda": {
+    "explorer": {
+      "navigation": {
+        "background": {
+          "@active": {
+            "$type": "color",
+            "$value": "{kda.foundation.color.brand.primary.n0}",
+            "$extensions": {
+              "mode": {
+                "dark": "{kda.foundation.color.brand.primary.n20}"
+              }
+            }
+          }
+        },
+        "surface": {
+          "text": {
+            "default": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.text.brand.primary.default}",
+              "$extensions": {
+                "mode": {
+                  "dark": "{kda.foundation.color.brand.primary.n99}"
+                }
+              }
+            },
+            "@selected": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.primary.n100}",
+              "$extensions": {
+                "mode": {
+                  "dark": "{kda.foundation.color.brand.primary.n100}"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
