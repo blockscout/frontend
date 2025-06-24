@@ -16,20 +16,10 @@ const SearchBarSuggestCluster = ({ data, searchTerm, addressFormat }: ItemsProps
   const isClickable = isEvmAddress(data.address_hash);
 
   const clusterNameWithSlash = data.cluster_info.name + '/';
-
   const clusterNameFromSearch = searchTerm.replace(/\/$/, '');
-
-  const handleClick = React.useCallback((e: React.MouseEvent) => {
-    if (!isClickable) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  }, [ isClickable ]);
 
   const containerProps = {
     opacity: isClickable ? 1 : 0.6,
-    pointerEvents: isClickable ? 'auto' : 'none' as const,
-    onClick: handleClick,
   };
 
   const icon = <ClusterIcon clusterName={ data.cluster_info.name }/>;

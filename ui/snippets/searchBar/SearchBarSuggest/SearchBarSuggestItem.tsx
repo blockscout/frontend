@@ -5,6 +5,8 @@ import type { AddressFormat } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
 
+import { isEvmAddress } from 'lib/clusters/detectInputType';
+
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
 import SearchBarSuggestBlob from './SearchBarSuggestBlob';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';
@@ -26,6 +28,8 @@ interface Props {
 }
 
 const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressFormat }: Props) => {
+  const isClusterClickable = data.type === 'cluster' ? isEvmAddress(data.address_hash) : true;
+
   const url = (() => {
     switch (data.type) {
       case 'token': {
@@ -123,6 +127,10 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
       }
     }
   })();
+
+  if (data.type === 'cluster' && !isClusterClickable) {
+    return content;
+  }
 
   return (
     <SearchBarSuggestItemLink onClick={ onClick } href={ url }>
