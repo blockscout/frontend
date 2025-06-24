@@ -1,7 +1,7 @@
 import { Flex, Text, Box, chakra } from '@chakra-ui/react';
 import { useCallback } from 'react';
 
-import type { AddressWidget } from 'types/client/addressWidget';
+import type { Address3rdPartyWidget } from 'types/views/address';
 
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -16,7 +16,7 @@ import useWidgetData from './useWidgetData';
 
 type Props = {
   name: string;
-  config: AddressWidget | undefined;
+  config: Address3rdPartyWidget | undefined;
   address: string;
   isLoading: boolean;
 };

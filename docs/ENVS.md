@@ -76,7 +76,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Save on gas with GasHawk](#save-on-gas-with-gashawk)
   - [Rewards service API](#rewards-service-api)
   - [DEX pools](#dex-pools)
-  - [Address widgets](#address-widgets)
+  - [Address 3rd party widgets](#address-3rd-party-widgets)
 - [3rd party services configuration](#external-services-configuration)
 
 &nbsp;
@@ -918,14 +918,16 @@ This feature enables Blockscout Merits program. It requires that the [My account
 
 &nbsp;
 
-### Address widgets
+### Address 3rd party widgets
+
+This feature allows to display widgets on the address page with data from 3rd party services.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_ADDRESS_WIDGETS | `Array<string>` | Array of widget names to be displayed | - | - | `['widget-1', 'widget-2']` | v2.2.0+ |
-| NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains mapping of widget names to their configuration. See [below](#address-widget-configuration-properties) list of available properties for a widget. | - | - | `https://example.com/address_widgets_config.json` | v2.2.0+ |
+| NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS | `Array<string>` | Array of widget ids to be displayed | - | - | `['widget-1', 'widget-2']` | v2.2.0+ |
+| NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains mapping of widget names to their configuration. See [below](#address-3rd-party-widget-configuration-properties) list of available properties for a widget. | - | - | `https://example.com/address_3rd_party_widgets_config.json` | v2.2.0+ |
 
-#### Address widget configuration properties
+#### Address 3rd party widget configuration properties
 
 | Property | Type | Description | Compulsoriness | Example value |
 | --- | --- | --- | --- | --- |

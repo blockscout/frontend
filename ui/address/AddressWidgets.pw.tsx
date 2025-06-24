@@ -16,13 +16,17 @@ const hooksConfig = {
 
 test('base view +@dark-mode', async({ render, mockApiResponse, mockEnvs, mockConfigResponse, mockAssetResponse, page }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_ADDRESS_WIDGETS', JSON.stringify(widgetsMock.widgets) ],
-    [ 'NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL', 'http://localhost:4000/address-widgets-config.json' ],
+    [ 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS', JSON.stringify(widgetsMock.widgets) ],
+    [ 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL', 'http://localhost:4000/address-3rd-party-widgets-config.json' ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL', 'http://localhost:4000/address-widgets-config.json', widgetsMock.config);
+  await mockConfigResponse(
+    'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL',
+    'http://localhost:4000/address-3rd-party-widgets-config.json',
+    widgetsMock.config,
+  );
 
   await Promise.all(widgetsMock.widgets.map((widget, i) =>
-    mockApiResponse('general:address_widget', { value: i * 3947 }, { pathParams: { name: widget }, queryParams: { address: ADDRESS_HASH } }),
+    mockApiResponse('general:address_3rd_party_info', { value: i * 3947 }, { pathParams: { name: widget }, queryParams: { address: ADDRESS_HASH } }),
   ));
   await mockAssetResponse('http://localhost:3000/widget-logo.png', './playwright/mocks/image_s.jpg');
 
@@ -41,13 +45,17 @@ test.describe('mobile', () => {
 
   test('base view', async({ render, mockApiResponse, mockEnvs, mockConfigResponse, mockAssetResponse, page }) => {
     await mockEnvs([
-      [ 'NEXT_PUBLIC_ADDRESS_WIDGETS', JSON.stringify(widgetsMock.widgets) ],
-      [ 'NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL', 'http://localhost:4000/address-widgets-config.json' ],
+      [ 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS', JSON.stringify(widgetsMock.widgets) ],
+      [ 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL', 'http://localhost:4000/address-3rd-party-widgets-config.json' ],
     ]);
-    await mockConfigResponse('NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL', 'http://localhost:4000/address-widgets-config.json', widgetsMock.config);
+    await mockConfigResponse(
+      'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL',
+      'http://localhost:4000/address-3rd-party-widgets-config.json',
+      widgetsMock.config,
+    );
 
     await Promise.all(widgetsMock.widgets.map((widget, i) =>
-      mockApiResponse('general:address_widget', { value: i * 3947 }, { pathParams: { name: widget }, queryParams: { address: ADDRESS_HASH } }),
+      mockApiResponse('general:address_3rd_party_info', { value: i * 3947 }, { pathParams: { name: widget }, queryParams: { address: ADDRESS_HASH } }),
     ));
     await mockAssetResponse('http://localhost:3000/widget-logo.png', './playwright/mocks/image_s.jpg');
 

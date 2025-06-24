@@ -20,7 +20,6 @@ import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
-import { AddressWidget, ADDRESS_WIDGET_PAGES } from '../../../types/client/addressWidget';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation';
 import type { NavItemExternal, NavigationLinkId, NavigationLayout } from '../../../types/client/navigation';
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
@@ -36,8 +35,8 @@ import type { ChainIndicatorId, HeroBannerButtonState, HeroBannerConfig, HomeSta
 import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
 import { COLOR_THEME_IDS } from '../../../types/settings';
 import type { FontFamily } from '../../../types/ui';
-import type { AddressFormat, AddressViewId } from '../../../types/views/address';
-import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address';
+import type { AddressFormat, AddressViewId, Address3rdPartyWidget } from '../../../types/views/address';
+import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES, ADDRESS_3RD_PARTY_WIDGET_PAGES } from '../../../types/views/address';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
 import type { BlockFieldId } from '../../../types/views/block';
 import type { NftMarketplaceItem } from '../../../types/views/nft';
@@ -1087,23 +1086,23 @@ const schema = yup
 
         return isUndefined || valueSchema.isValidSync(data);
       }),
-    NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL: yup
+    NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: yup
       .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL, it should have name, url, icon, title, value', (data) => {
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL, it should have name, url, icon, title, value', (data) => {
         const isUndefined = data === undefined;
         const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
         const valueSchema = yup.lazy((objValue) => {
           let schema = yup.object();
           Object.keys(objValue).forEach((key) => {
             schema = schema.shape({
-              [key]: yup.object<AddressWidget>().shape({
+              [key]: yup.object<Address3rdPartyWidget>().shape({
                 name: yup.string().required(),
                 url: yup.string().required(),
                 icon: yup.string().required(),
                 title: yup.string().required(),
                 hint: yup.string().optional(),
                 value: yup.string().required(),
-                pages: yup.array().of(yup.string().oneOf(ADDRESS_WIDGET_PAGES)).required(),
+                pages: yup.array().of(yup.string().oneOf(ADDRESS_3RD_PARTY_WIDGET_PAGES)).required(),
                 chainIds: yup.object<Record<string, string>>().optional(),
               }),
             });
@@ -1112,15 +1111,15 @@ const schema = yup
         });
         return isUndefined || valueSchema.isValidSync(parsedData);
       }),
-    NEXT_PUBLIC_ADDRESS_WIDGETS: yup
+      NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS: yup
       .array()
       .transform(replaceQuotes)
       .json()
       .of(yup.string())
-      .when('NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL', {
+      .when('NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL', {
         is: (value: string) => value,
         then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ADDRESS_WIDGETS cannot not be used if NEXT_PUBLIC_ADDRESS_WIDGETS_CONFIG_URL is not provided'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS cannot not be used if NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL is not provided'),
       }),
 
     // 6. External services envs

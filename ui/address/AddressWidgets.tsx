@@ -2,7 +2,7 @@ import { Grid, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
-import type { AddressWidget } from 'types/client/addressWidget';
+import type { Address3rdPartyWidget } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
 
@@ -18,7 +18,7 @@ import useWidgets from './widgets/useWidgets';
 type Props = {
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
-  addressType: AddressWidget['pages'][number];
+  addressType: Address3rdPartyWidget['pages'][number];
   showAll?: boolean;
   isLoading?: boolean;
 };

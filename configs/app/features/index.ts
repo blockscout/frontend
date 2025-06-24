@@ -2,7 +2,7 @@ export { default as advancedFilter } from './advancedFilter';
 export { default as account } from './account';
 export { default as addressVerification } from './addressVerification';
 export { default as addressMetadata } from './addressMetadata';
-export { default as addressWidgets } from './addressWidgets';
+export { default as address3rdPartyWidgets } from './address3rdPartyWidgets';
 export { default as adsBanner } from './adsBanner';
 export { default as adsText } from './adsText';
 export { default as beaconChain } from './beaconChain';
