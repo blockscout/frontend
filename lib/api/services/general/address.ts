@@ -128,7 +128,7 @@ export const GENERAL_API_ADDRESS_RESOURCES = {
   address_3rd_party_info: {
     path: '/api/v2/proxy/3dparty/:name',
     pathParams: [ 'name' as const ],
-    filterFields: [ 'address' as const ],
+    filterFields: [ 'address' as const, 'chain_id' as const ],
   },
 } satisfies Record<string, ApiResource>;
 
