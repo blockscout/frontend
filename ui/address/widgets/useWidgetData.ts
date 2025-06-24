@@ -1,10 +1,8 @@
+import { get } from 'es-toolkit/compat';
+
 import useApiQuery from 'lib/api/useApiQuery';
 
-const RESOURCE_NAME = 'general:address_widget';
-
-const getNestedValue = (obj: Record<string, any>, path: string) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-  return path.split('.').reduce((acc, part) => acc?.[part], obj);
-};
+const RESOURCE_NAME = 'general:address_3rd_party_info';
 
 const formatValue = (value: unknown): string => {
   const num = Number(value);
@@ -21,7 +19,7 @@ export default function useWidgetData(name: string, valuePath: string | undefine
     queryOptions: {
       select: (response) => {
         try {
-          const result = getNestedValue(response, valuePath || '');
+          const result = get(response, valuePath || '');
           if (result === undefined || result === null) throw Error;
           return formatValue(result);
         } catch {

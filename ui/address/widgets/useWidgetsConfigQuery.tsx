@@ -14,7 +14,7 @@ export default function useWidgetsConfigQuery(isQueryEnabled = true) {
   const apiFetch = useApiFetch();
 
   return useQuery<unknown, ResourceError<unknown>, Record<string, AddressWidget>>({
-    queryKey: [ 'address-widgets' ],
+    queryKey: [ 'address-widgets-config' ],
     queryFn: async() => apiFetch(configUrl, undefined, { resource: 'address-widgets' }),
     placeholderData: { widget: WIDGET_CONFIG },
     staleTime: Infinity,
