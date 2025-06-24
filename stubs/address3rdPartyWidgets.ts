@@ -1,6 +1,6 @@
-import type { AddressWidget } from 'types/client/addressWidget';
+import type { Address3rdPartyWidget } from 'types/views/address';
 
-export const WIDGET_CONFIG: AddressWidget = {
+export const WIDGET_CONFIG: Address3rdPartyWidget = {
   name: 'name',
   url: 'url',
   icon: 'icon',

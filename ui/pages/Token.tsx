@@ -21,12 +21,12 @@ import * as tokenStubs from 'stubs/token';
 import { getTokenHoldersStub } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import Address3rdPartyWidgets from 'ui/address/Address3rdPartyWidgets';
+import useAddress3rdPartyWidgets from 'ui/address/address3rdPartyWidgets/useAddress3rdPartyWidgets';
 import AddressContract from 'ui/address/AddressContract';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
-import AddressWidgets from 'ui/address/AddressWidgets';
 import useContractTabs from 'ui/address/contract/useContractTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
-import useWidgets from 'ui/address/widgets/useWidgets';
 import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -162,9 +162,13 @@ const TokenPageContent = () => {
     },
   });
 
-  const widgets = useWidgets('token', false, isQueryEnabled);
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets('token', false, isQueryEnabled);
 
-  const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData || (widgets.isEnabled && widgets.configQuery.isPlaceholderData);
+  const isLoading =
+    tokenQuery.isPlaceholderData ||
+    addressQuery.isPlaceholderData ||
+    (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData);
+
   const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
 
   const tabs: Array<TabItemRegular> = [
@@ -200,11 +204,11 @@ const TokenPageContent = () => {
       component: <AddressContract tabs={ contractTabs.tabs } isLoading={ contractTabs.isLoading } shouldRender={ !isLoading }/>,
       subTabs: CONTRACT_TAB_IDS,
     } : undefined,
-    (widgets.isEnabled && widgets.widgets.length > 0) ? {
+    (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.widgets.length > 0) ? {
       id: 'widgets',
       title: 'Widgets',
-      count: widgets.widgets.length,
-      component: <AddressWidgets shouldRender={ !isLoading } addressType="token" showAll/>,
+      count: address3rdPartyWidgets.widgets.length,
+      component: <Address3rdPartyWidgets shouldRender={ !isLoading } addressType="token" showAll/>,
     } : undefined,
   ].filter(Boolean);
 

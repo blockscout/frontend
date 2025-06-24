@@ -27,7 +27,7 @@ function formatUrl(tpl: string, ctx: Record<string, string>) {
   return tpl.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => ctx[key] ?? '');
 }
 
-const AddressWidgetCard = ({ name, config, address, ...props }: Props) => {
+const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) => {
   const { data, isLoading: isDataLoading } = useWidgetData(name, config?.value, address, props.isLoading);
 
   const isLoading = props.isLoading || isDataLoading;
@@ -143,4 +143,4 @@ const AddressWidgetCard = ({ name, config, address, ...props }: Props) => {
   );
 };
 
-export default AddressWidgetCard;
+export default Address3rdPartyWidgetCard;

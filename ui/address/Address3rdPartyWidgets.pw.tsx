@@ -5,7 +5,7 @@ import * as widgetsMock from 'mocks/address/widgets';
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
-import AddressWidgets from './AddressWidgets';
+import Address3rdPartyWidgets from './Address3rdPartyWidgets';
 
 const ADDRESS_HASH = addressMock.hash;
 const hooksConfig = {
@@ -30,7 +30,7 @@ test('base view +@dark-mode', async({ render, mockApiResponse, mockEnvs, mockCon
   ));
   await mockAssetResponse('http://localhost:3000/widget-logo.png', './playwright/mocks/image_s.jpg');
 
-  const component = await render(<AddressWidgets showAll addressType="contract"/>, { hooksConfig });
+  const component = await render(<Address3rdPartyWidgets showAll addressType="contract"/>, { hooksConfig });
 
   await page.hover('.chakra-linkbox');
 
@@ -59,7 +59,7 @@ test.describe('mobile', () => {
     ));
     await mockAssetResponse('http://localhost:3000/widget-logo.png', './playwright/mocks/image_s.jpg');
 
-    const component = await render(<AddressWidgets showAll addressType="contract"/>, { hooksConfig });
+    const component = await render(<Address3rdPartyWidgets showAll addressType="contract"/>, { hooksConfig });
 
     await expect(component).toHaveScreenshot({
       mask: [ page.locator(pwConfig.adsBannerSelector) ],

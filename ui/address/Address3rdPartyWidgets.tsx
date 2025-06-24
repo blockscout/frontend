@@ -9,11 +9,11 @@ import { route } from 'nextjs-routes';
 import useClientRect from 'lib/hooks/useClientRect';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { WIDGET_CONFIG } from 'stubs/addressWidgets';
+import { WIDGET_CONFIG } from 'stubs/address3rdPartyWidgets';
 import { Link } from 'toolkit/chakra/link';
 
-import AddressWidgetCard from './widgets/AddressWidgetCard';
-import useWidgets from './widgets/useWidgets';
+import Address3rdPartyWidgetCard from './address3rdPartyWidgets/Address3rdPartyWidgetCard';
+import useAddress3rdPartyWidgets from './address3rdPartyWidgets/useAddress3rdPartyWidgets';
 
 type Props = {
   shouldRender?: boolean;
@@ -23,14 +23,14 @@ type Props = {
   isLoading?: boolean;
 };
 
-const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, addressType, isLoading = false, showAll }: Props) => {
+const Address3rdPartyWidgets = ({ shouldRender = true, isQueryEnabled = true, addressType, isLoading = false, showAll }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
   const [ rect, gridRef ] = useClientRect<HTMLDivElement>();
 
   const addressHash = getQueryParamString(router.query.hash);
 
-  const { widgets, configQuery } = useWidgets(addressType, isLoading, isQueryEnabled);
+  const { widgets, configQuery } = useAddress3rdPartyWidgets(addressType, isLoading, isQueryEnabled);
 
   const minWidgetWidth = 238;
   const maxWidgetWidth = 360;
@@ -70,7 +70,7 @@ const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, addressTyp
         }}
       >
         { displayedWidgets.map((name) => (
-          <AddressWidgetCard
+          <Address3rdPartyWidgetCard
             key={ name }
             name={ name }
             config={ configQuery.isPlaceholderData ? WIDGET_CONFIG : configQuery.data?.[name] }
@@ -92,4 +92,4 @@ const AddressWidgets = ({ shouldRender = true, isQueryEnabled = true, addressTyp
   );
 };
 
-export default AddressWidgets;
+export default Address3rdPartyWidgets;

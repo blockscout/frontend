@@ -18,7 +18,8 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
-import AddressWidgets from './AddressWidgets';
+import Address3rdPartyWidgets from './Address3rdPartyWidgets';
+import useAddress3rdPartyWidgets from './address3rdPartyWidgets/useAddress3rdPartyWidgets';
 import AddressAlternativeFormat from './details/AddressAlternativeFormat';
 import AddressBalance from './details/AddressBalance';
 import AddressImplementations from './details/AddressImplementations';
@@ -29,7 +30,6 @@ import FilecoinActorTag from './filecoin/FilecoinActorTag';
 import TokenSelect from './tokenSelect/TokenSelect';
 import useAddressCountersQuery from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
-import useWidgets from './widgets/useWidgets';
 
 interface Props {
   addressQuery: AddressQuery;
@@ -46,7 +46,7 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
     addressQuery,
   });
 
-  const widgets = useWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa', addressQuery.isPlaceholderData);
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa', addressQuery.isPlaceholderData);
 
   const error404Data = React.useMemo(() => ({
     hash: addressHash || '',
@@ -309,13 +309,13 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
 
         <DetailedInfoSponsoredItem isLoading={ isLoading }/>
 
-        { (widgets.isEnabled && widgets.widgets.length > 0) && (
+        { (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.widgets.length > 0) && (
           <>
-            <DetailedInfo.ItemLabel hint="Widgets" isLoading={ widgets.configQuery.isPlaceholderData }>
+            <DetailedInfo.ItemLabel hint="Widgets" isLoading={ address3rdPartyWidgets.configQuery.isPlaceholderData }>
               Widgets
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue pl={{ base: 0, sm: 7, lg: 0 }}>
-              <AddressWidgets
+              <Address3rdPartyWidgets
                 addressType={ data.is_contract ? 'contract' : 'eoa' }
                 isLoading={ addressQuery.isPlaceholderData }
               />

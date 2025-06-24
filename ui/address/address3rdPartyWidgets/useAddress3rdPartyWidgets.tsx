@@ -7,7 +7,7 @@ import useWidgetsConfigQuery from './useWidgetsConfigQuery';
 const feature = config.features.address3rdPartyWidgets;
 const widgets = (feature.isEnabled && feature.widgets) || [];
 
-export default function useWidgets(addressType: Address3rdPartyWidget['pages'][number], isLoading = false, isQueryEnabled = true) {
+export default function useAddress3rdPartyWidgets(addressType: Address3rdPartyWidget['pages'][number], isLoading = false, isQueryEnabled = true) {
   const configQuery = useWidgetsConfigQuery(isQueryEnabled);
 
   return {

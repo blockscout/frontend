@@ -20,6 +20,8 @@ import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import Address3rdPartyWidgets from 'ui/address/Address3rdPartyWidgets';
+import useAddress3rdPartyWidgets from 'ui/address/address3rdPartyWidgets/useAddress3rdPartyWidgets';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -33,7 +35,6 @@ import AddressTokens from 'ui/address/AddressTokens';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
-import AddressWidgets from 'ui/address/AddressWidgets';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import useContractTabs from 'ui/address/contract/useContractTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
@@ -45,7 +46,6 @@ import SolidityscanReport from 'ui/address/SolidityscanReport';
 import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import useCheckAddressFormat from 'ui/address/utils/useCheckAddressFormat';
 import useCheckDomainNameParam from 'ui/address/utils/useCheckDomainNameParam';
-import useWidgets from 'ui/address/widgets/useWidgets';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -121,13 +121,17 @@ const AddressPageContent = () => {
     addressEnsDomainsQuery.data?.items.find((domain) => domain.name === addressQuery.data?.ens_domain_name) :
     undefined;
 
-  const widgets = useWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa', addressQuery.isPlaceholderData, areQueriesEnabled);
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets(
+    addressQuery.data?.is_contract ? 'contract' : 'eoa',
+    addressQuery.isPlaceholderData,
+    areQueriesEnabled,
+  );
 
   const isLoading = addressQuery.isPlaceholderData;
   const isTabsLoading =
     isLoading ||
     addressTabsCountersQuery.isPlaceholderData ||
-    (widgets.isEnabled && widgets.configQuery.isPlaceholderData) ||
+    (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData) ||
     (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
     (config.features.mudFramework.isEnabled && mudTablesCountQuery.isPlaceholderData);
 
@@ -268,12 +272,12 @@ const AddressPageContent = () => {
           component: <AddressLogs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
-      (widgets.isEnabled && widgets.widgets.length > 0) ? {
+      (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.widgets.length > 0) ? {
         id: 'widgets',
         title: 'Widgets',
-        count: widgets.widgets.length,
+        count: address3rdPartyWidgets.widgets.length,
         component: (
-          <AddressWidgets
+          <Address3rdPartyWidgets
             addressType={ addressQuery.data?.is_contract ? 'contract' : 'eoa' }
             isLoading={ addressQuery.isPlaceholderData }
             shouldRender={ !isTabsLoading }
@@ -291,7 +295,7 @@ const AddressPageContent = () => {
     isTabsLoading,
     areQueriesEnabled,
     mudTablesCountQuery.data,
-    widgets,
+    address3rdPartyWidgets,
   ]);
 
   const usernameApiTag = userPropfileApiQuery.data?.user_profile?.username;
