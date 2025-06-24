@@ -3,6 +3,12 @@ import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
+import {
+  shouldShowClearButton,
+  shouldDisableViewToggle,
+  getSearchPlaceholder,
+  shouldShowActionBar,
+} from 'lib/clusters/actionBarUtils';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import { Button } from 'toolkit/chakra/button';
 import { Input } from 'toolkit/chakra/input';
@@ -82,6 +88,12 @@ const ClustersActionBar = ({
     onViewModeChange('directory');
   }, [ onViewModeChange ]);
 
+  const clearButtonVisible = shouldShowClearButton(searchValue);
+  const viewToggleDisabled = shouldDisableViewToggle(isInitialLoading);
+  const placeholder = getSearchPlaceholder();
+  const showActionBarOnMobile = shouldShowActionBar(pagination.isVisible, false);
+  const showActionBarOnDesktop = shouldShowActionBar(pagination.isVisible, true);
+
   const searchInput = (
     <Skeleton
       w={{ base: '100%', lg: '360px' }}
@@ -92,7 +104,7 @@ const ClustersActionBar = ({
       <InputGroup
         startElement={ <Icon boxSize={ 5 }><IconSvg name="search"/></Icon> }
         startElementProps={{ px: 2 }}
-        endElement={ <ClearButton onClick={ handleClear } visible={ searchValue.length > 0 }/> }
+        endElement={ <ClearButton onClick={ handleClear } visible={ clearButtonVisible }/> }
         endElementProps={{ w: '32px' }}
       >
         <Input
@@ -100,7 +112,7 @@ const ClustersActionBar = ({
           size="sm"
           value={ searchValue }
           onChange={ handleSearchChange }
-          placeholder="Search clusters by name or EVM address"
+          placeholder={ placeholder }
           borderWidth="2px"
           textOverflow="ellipsis"
           whiteSpace="nowrap"
@@ -114,14 +126,14 @@ const ClustersActionBar = ({
       <SegmentedButton
         isSelected={ viewMode === 'leaderboard' }
         onClick={ handleLeaderboardClick }
-        isDisabled={ isInitialLoading }
+        isDisabled={ viewToggleDisabled }
       >
         Leaderboard
       </SegmentedButton>
       <SegmentedButton
         isSelected={ viewMode === 'directory' }
         onClick={ handleDirectoryClick }
-        isDisabled={ isInitialLoading }
+        isDisabled={ viewToggleDisabled }
       >
         Directory
       </SegmentedButton>
@@ -136,7 +148,7 @@ const ClustersActionBar = ({
       </HStack>
       <ActionBar
         mt={ -6 }
-        display={{ base: pagination.isVisible ? 'flex' : 'none', lg: 'flex' }}
+        display={{ base: showActionBarOnMobile ? 'flex' : 'none', lg: showActionBarOnDesktop ? 'flex' : 'none' }}
       >
         <HStack gap={ 3 } hideBelow="lg">
           { viewToggle }
