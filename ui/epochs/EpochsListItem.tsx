@@ -1,4 +1,4 @@
-import { Box, HStack } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CeloEpochListItem } from 'types/api/epochs';
@@ -36,7 +36,7 @@ const EpochsListItem = ({ item, isLoading }: Props) => {
   return (
     <ListItemMobile rowGap={ 1 } py={ 3 } w="full" textStyle="sm" fontWeight={ 500 } alignItems="stretch">
       <HStack minH="30px" gap={ 3 }>
-        <EpochEntity number={ String(item.number) }/>
+        <EpochEntity number={ String(item.number) } isLoading={ isLoading }/>
         <Skeleton loading={ isLoading } color="text.secondary" fontWeight={ 400 } ml="auto"><span>{ item.type }</span></Skeleton>
         <CeloEpochStatus isFinalized={ item.is_finalized } loading={ isLoading }/>
       </HStack>
@@ -46,25 +46,33 @@ const EpochsListItem = ({ item, isLoading }: Props) => {
         </HStack>
       ) }
       <HStack minH="30px">
-        <Box>Block range</Box>
-        <Skeleton loading={ isLoading } color="text.secondary">{ item.start_block_number } - { item.end_block_number || '' }</Skeleton>
+        <Skeleton loading={ isLoading }>Block range</Skeleton>
+        <Skeleton loading={ isLoading } color="text.secondary">
+          <span>{ item.start_block_number } - { item.end_block_number || '' }</span>
+        </Skeleton>
       </HStack>
       { item.distribution?.community_transfer ? (
         <HStack minH="30px">
-          <Box>Community fund</Box>
-          <Skeleton loading={ isLoading } color="text.secondary">{ communityReward.valueStr } { config.chain.currency.symbol }</Skeleton>
+          <Skeleton loading={ isLoading }>Community</Skeleton>
+          <Skeleton loading={ isLoading } color="text.secondary">
+            <span>{ communityReward.valueStr } { config.chain.currency.symbol }</span>
+          </Skeleton>
         </HStack>
       ) : null }
       { item.distribution?.carbon_offsetting_transfer ? (
         <HStack minH="30px">
-          <Box>Carbon offset fund</Box>
-          <Skeleton loading={ isLoading } color="text.secondary">{ carbonOffsettingReward.valueStr } { config.chain.currency.symbol }</Skeleton>
+          <Skeleton loading={ isLoading }>Carbon offset</Skeleton>
+          <Skeleton loading={ isLoading } color="text.secondary">
+            <span>{ carbonOffsettingReward.valueStr } { config.chain.currency.symbol }</span>
+          </Skeleton>
         </HStack>
       ) : null }
       { item.distribution?.transfers_total ? (
         <HStack minH="30px">
-          <Box>Total fund</Box>
-          <Skeleton loading={ isLoading } color="text.secondary">{ totalReward.valueStr } { config.chain.currency.symbol }</Skeleton>
+          <Skeleton loading={ isLoading }>Total</Skeleton>
+          <Skeleton loading={ isLoading } color="text.secondary">
+            <span>{ totalReward.valueStr } { config.chain.currency.symbol }</span>
+          </Skeleton>
         </HStack>
       ) : null }
     </ListItemMobile>
