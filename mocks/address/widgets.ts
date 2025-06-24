@@ -1,4 +1,4 @@
-import type { AddressWidget } from 'types/client/addressWidget';
+import type { Address3rdPartyWidget } from 'types/views/address';
 
 export const widgets = [
   'widget-1',
@@ -10,14 +10,16 @@ export const widgets = [
   'widget-7',
 ] as const;
 
-export const config: Record<string, AddressWidget> = {
+export const values = [ 0, 2534783, 75.34, undefined, 1553.5, 100, 0.99 ];
+
+export const config: Record<string, Address3rdPartyWidget> = {
   'widget-1': {
     name: 'Widget 1',
     url: 'https://www.example.com',
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'Value',
-    value: 'value',
+    valuePath: 'value',
   },
   'widget-2': {
     name: 'Widget 2',
@@ -25,7 +27,7 @@ export const config: Record<string, AddressWidget> = {
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'Another value',
-    value: 'value',
+    valuePath: 'value',
   },
   'widget-3': {
     name: 'Widget 3',
@@ -33,7 +35,7 @@ export const config: Record<string, AddressWidget> = {
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'One more value',
-    value: 'value',
+    valuePath: 'value',
   },
   'widget-4': {
     name: 'Widget 4',
@@ -41,7 +43,7 @@ export const config: Record<string, AddressWidget> = {
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'Empty value',
-    value: 'another_value',
+    valuePath: 'another_value',
   },
   'widget-5': {
     name: 'Widget 5',
@@ -49,7 +51,7 @@ export const config: Record<string, AddressWidget> = {
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'Pretty big value',
-    value: 'value',
+    valuePath: 'value',
   },
   'widget-6': {
     name: 'Widget 6',
@@ -57,7 +59,7 @@ export const config: Record<string, AddressWidget> = {
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'Almost the biggest value',
-    value: 'value',
+    valuePath: 'value',
   },
   'widget-7': {
     name: 'Widget 7',
@@ -65,6 +67,6 @@ export const config: Record<string, AddressWidget> = {
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'The biggest value',
-    value: 'value',
+    valuePath: 'value',
   },
 };
