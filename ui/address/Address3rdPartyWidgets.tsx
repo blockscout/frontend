@@ -9,7 +9,6 @@ import { route } from 'nextjs-routes';
 import useClientRect from 'lib/hooks/useClientRect';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { WIDGET_CONFIG } from 'stubs/address3rdPartyWidgets';
 import { Link } from 'toolkit/chakra/link';
 
 import Address3rdPartyWidgetCard from './address3rdPartyWidgets/Address3rdPartyWidgetCard';
@@ -30,7 +29,7 @@ const Address3rdPartyWidgets = ({ shouldRender = true, isQueryEnabled = true, ad
 
   const addressHash = getQueryParamString(router.query.hash);
 
-  const { widgets, configQuery } = useAddress3rdPartyWidgets(addressType, isLoading, isQueryEnabled);
+  const { items: widgets, configQuery } = useAddress3rdPartyWidgets(addressType, isLoading, isQueryEnabled);
 
   const minWidgetWidth = 238;
   const maxWidgetWidth = 360;
@@ -73,7 +72,7 @@ const Address3rdPartyWidgets = ({ shouldRender = true, isQueryEnabled = true, ad
           <Address3rdPartyWidgetCard
             key={ name }
             name={ name }
-            config={ configQuery.isPlaceholderData ? WIDGET_CONFIG : configQuery.data?.[name] }
+            config={ configQuery.data?.[name] }
             address={ addressHash }
             isLoading={ configQuery.isPlaceholderData || isLoading }
           />

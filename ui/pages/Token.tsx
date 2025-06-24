@@ -204,10 +204,10 @@ const TokenPageContent = () => {
       component: <AddressContract tabs={ contractTabs.tabs } isLoading={ contractTabs.isLoading } shouldRender={ !isLoading }/>,
       subTabs: CONTRACT_TAB_IDS,
     } : undefined,
-    (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.widgets.length > 0) ? {
+    (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) ? {
       id: 'widgets',
       title: 'Widgets',
-      count: address3rdPartyWidgets.widgets.length,
+      count: address3rdPartyWidgets.items.length,
       component: <Address3rdPartyWidgets shouldRender={ !isLoading } addressType="token" showAll/>,
     } : undefined,
   ].filter(Boolean);

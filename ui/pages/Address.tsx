@@ -272,10 +272,10 @@ const AddressPageContent = () => {
           component: <AddressLogs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
-      (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.widgets.length > 0) ? {
+      (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) ? {
         id: 'widgets',
         title: 'Widgets',
-        count: address3rdPartyWidgets.widgets.length,
+        count: address3rdPartyWidgets.items.length,
         component: (
           <Address3rdPartyWidgets
             addressType={ addressQuery.data?.is_contract ? 'contract' : 'eoa' }

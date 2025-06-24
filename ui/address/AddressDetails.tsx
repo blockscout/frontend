@@ -309,7 +309,7 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
 
         <DetailedInfoSponsoredItem isLoading={ isLoading }/>
 
-        { (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.widgets.length > 0) && (
+        { (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) && (
           <>
             <DetailedInfo.ItemLabel hint="Widgets" isLoading={ address3rdPartyWidgets.configQuery.isPlaceholderData }>
               Widgets
