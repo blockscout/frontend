@@ -125,6 +125,28 @@ export const GENERAL_API_ADDRESS_RESOURCES = {
     path: '/api/v2/proxy/3dparty/xname/addresses/:hash',
     pathParams: [ 'hash' as const ],
   },
+
+  // CSV EXPORTS
+  address_csv_export_txs: {
+    path: '/api/v2/addresses/:hash/transactions/csv',
+    pathParams: [ 'hash' as const ],
+  },
+  address_csv_export_internal_txs: {
+    path: '/api/v2/addresses/:hash/internal-transactions/csv',
+    pathParams: [ 'hash' as const ],
+  },
+  address_csv_export_token_transfers: {
+    path: '/api/v2/addresses/:hash/token-transfers/csv',
+    pathParams: [ 'hash' as const ],
+  },
+  address_csv_export_logs: {
+    path: '/api/v2/addresses/:hash/logs/csv',
+    pathParams: [ 'hash' as const ],
+  },
+  address_csv_export_celo_election_rewards: {
+    path: '/api/v2/addresses/:hash/celo/election-rewards/csv',
+    pathParams: [ 'hash' as const ],
+  },
 } satisfies Record<string, ApiResource>;
 
 export type GeneralApiAddressResourceName = `general:${ keyof typeof GENERAL_API_ADDRESS_RESOURCES }`;
