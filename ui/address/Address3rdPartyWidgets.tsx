@@ -22,6 +22,12 @@ type Props = {
   isLoading?: boolean;
 };
 
+const MIN_WIDGET_WIDTH = 238;
+const MAX_WIDGET_WIDTH = 360;
+const GAP_WIDTH = 12;
+const MAX_ROWS = 2;
+const MIN_WIDGETS_COUNT = 4;
+
 const Address3rdPartyWidgets = ({ shouldRender = true, isQueryEnabled = true, addressType, isLoading = false, showAll }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
@@ -31,22 +37,17 @@ const Address3rdPartyWidgets = ({ shouldRender = true, isQueryEnabled = true, ad
 
   const { items: widgets, configQuery } = useAddress3rdPartyWidgets(addressType, isLoading, isQueryEnabled);
 
-  const minWidgetWidth = 238;
-  const maxWidgetWidth = 360;
-  const gapWidth = 12;
-
   const columnsPerRow = useMemo(() => {
     if (!rect?.width) return 0;
 
-    const maxColumns = 4;
-    const possibleColumns = Math.floor((rect.width + gapWidth) / (minWidgetWidth + gapWidth));
-    const possibleColumnsMax = Math.ceil((rect.width + gapWidth) / (maxWidgetWidth + gapWidth));
+    const maxColumns = rect?.width > 1400 ? 5 : 4;
+    const possibleColumns = Math.floor((rect.width + GAP_WIDTH) / (MIN_WIDGET_WIDTH + GAP_WIDTH));
 
-    return Math.min(Math.max(1, possibleColumns), Math.max(maxColumns, possibleColumnsMax));
+    return Math.min(Math.max(1, possibleColumns), maxColumns);
   }, [ rect?.width ]);
 
   const displayedWidgets = useMemo(() => {
-    return showAll ? widgets : widgets.slice(0, Math.max(4, columnsPerRow * 2));
+    return showAll ? widgets : widgets.slice(0, Math.max(MIN_WIDGETS_COUNT, columnsPerRow * MAX_ROWS));
   }, [ widgets, showAll, columnsPerRow ]);
 
   const shouldShowViewAllLink = !showAll && !isLoading && !configQuery.isPlaceholderData && widgets.length > displayedWidgets.length;
@@ -60,13 +61,12 @@ const Address3rdPartyWidgets = ({ shouldRender = true, isQueryEnabled = true, ad
       <Grid
         ref={ gridRef }
         gap={ 3 }
-        templateColumns={ `repeat(${ columnsPerRow || 'auto-fit' }, 1fr)` }
+        templateColumns={
+          widgets.length < columnsPerRow ?
+            `repeat(${ widgets.length }, minmax(${ MIN_WIDGET_WIDTH }px, ${ MAX_WIDGET_WIDTH }px))` :
+            `repeat(${ columnsPerRow }, 1fr)`
+        }
         w="full"
-        maxW={{
-          sm: widgets.length < 4 ?
-            `${ (maxWidgetWidth * widgets.length) + (gapWidth * (widgets.length - 1)) }px` :
-            'full',
-        }}
       >
         { displayedWidgets.map((name) => (
           <Address3rdPartyWidgetCard
