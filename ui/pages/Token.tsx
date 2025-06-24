@@ -13,6 +13,7 @@ import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
@@ -57,6 +58,7 @@ const TokenPageContent = () => {
   const tab = getQueryParamString(router.query.tab);
   const ownerFilter = getQueryParamString(router.query.holder_address_hash) || undefined;
 
+  useEtherscanRedirects();
   const queryClient = useQueryClient();
 
   const tokenQuery = useTokenQuery(hashString);
