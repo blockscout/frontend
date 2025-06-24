@@ -37,6 +37,7 @@ async function validateEnvs(appEnvs: Record<string, string>) {
     // replace ENVs with external JSON files content
     const envsWithJsonConfig = [
       'NEXT_PUBLIC_FEATURED_NETWORKS',
+      'NEXT_PUBLIC_FEATURED_CHAINS',
       'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL',
       'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL',
       'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL',
