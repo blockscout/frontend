@@ -1,0 +1,85 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "accent": {
+          "$description": "Accent colors",
+          "blue": {
+            "$type": "color",
+            "$value": "{kda.foundation.color.palette.blue.n50}"
+          },
+          "celery": {
+            "$type": "color",
+            "$value": "{kda.foundation.color.palette.celery.n50}"
+          },
+          "green": {
+            "$type": "color",
+            "$value": "{kda.foundation.color.palette.green.n50}"
+          },
+          "magenta": {
+            "$type": "color",
+            "$value": "{kda.foundation.color.palette.magenta.n50}"
+          },
+          "orange": {
+            "$type": "color",
+            "$value": "{kda.foundation.color.palette.orange.n50}"
+          },
+          "red": {
+            "$type": "color",
+            "$value": "{kda.foundation.color.palette.red.n50}"
+          },
+          "yellow": {
+            "$type": "color",
+            "$value": "{kda.foundation.color.palette.yellow.n50}"
+          },
+          "brand": {
+            "primary": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.primary.n50}"
+            },
+            "secondary": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.secondary.n50}"
+            },
+            "tertiary": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.tertiary.n50}"
+            },
+            "tint": {
+              "primary": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.palette.aqua.n20}"
+              },
+              "secondary": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.palette.magenta.n50}"
+              },
+              "tertiary": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.palette.orange.n50}"
+              }
+            }
+          },
+          "semantic": {
+            "info": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.semantic.info.n50}"
+            },
+            "warning": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.semantic.warning.n50}"
+            },
+            "positive": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.semantic.positive.n50}"
+            },
+            "negative": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.semantic.negative.n50}"
+            }
+          }
+        }
+      }
+    }
+  }
+}

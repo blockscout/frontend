@@ -2,19 +2,15 @@ import { Flex, Separator, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
 import DeFiDropdown from './DeFiDropdown';
-import NetworkMenu from './NetworkMenu';
 import Settings from './settings/Settings';
-import TopBarStats from './TopBarStats';
+import TopBarChainStatus from './TopBarChainStatus';
 
 const TopBar = () => {
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
-
   return (
-    <Box bgColor={ bgColor }>
+    <Box background="var(--kda-color-background-semantic-info-subtlest)">
       <Flex
         py={ 2 }
         px={{ base: 3, lg: 6 }}
@@ -23,7 +19,7 @@ const TopBar = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <TopBarStats/>
+        <TopBarChainStatus/>
         <Flex alignItems="center">
           { config.features.deFiDropdown.isEnabled && (
             <>
@@ -32,12 +28,6 @@ const TopBar = () => {
             </>
           ) }
           <Settings/>
-          { config.UI.navigation.layout === 'horizontal' && Boolean(config.UI.navigation.featuredNetworks) && (
-            <Box display={{ base: 'none', lg: 'flex' }} alignItems="center">
-              <Separator mx={ 3 } height={ 4 } orientation="vertical"/>
-              <NetworkMenu/>
-            </Box>
-          ) }
         </Flex>
       </Flex>
     </Box>

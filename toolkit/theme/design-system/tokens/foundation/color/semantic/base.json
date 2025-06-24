@@ -1,0 +1,11 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "semantic": {
+          "$description": "Colors to communicate purpose. They help users to convey messages."
+        }
+      }
+    }
+  }
+}

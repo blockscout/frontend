@@ -1,0 +1,52 @@
+{
+  "kda": {
+    "foundation": {
+      "zIndex": {
+        "deepdive": {
+          "$type": "number",
+          "$value": -99999
+        },
+        "default": {
+          "$type": "number",
+          "$value": 1
+        },
+        "dialog": {
+          "$type": "number",
+          "$value": 6000
+        },
+        "surface": {
+          "$type": "number",
+          "$value": 4
+        },
+        "dropdown": {
+          "$type": "number",
+          "$value": 7000
+        },
+        "modal": {
+          "$type": "number",
+          "$value": 9000
+        },
+        "overlay": {
+          "$type": "number",
+          "$value": 8000
+        },
+        "popup": {
+          "$type": "number",
+          "$value": 5000
+        },
+        "spinner": {
+          "$type": "number",
+          "$value": 9050
+        },
+        "sticky": {
+          "$type": "number",
+          "$value": 100
+        },
+        "toast": {
+          "$type": "number",
+          "$value": 10000
+        }
+      }
+    }
+  }
+}

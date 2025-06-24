@@ -1,0 +1,28 @@
+{
+  "kda": {
+    "foundation": {
+      "effect": {
+        "defaultBlur": {
+          "$type": "composition",
+          "$title": "Default layer blur",
+          "$description": "This is the default layer blur description",
+          "$value": {
+            "radius": "{kda.foundation.size.n2}"
+          }
+        },
+        "blur": [
+          {
+            "$name": "layerBlur",
+            "$type": "composition",
+            "$title": "Layer Blur",
+            "$description": "This is the layer blur description",
+            "$value": {
+              "radius": "{kda.foundation.size.n3}",
+              "visible": true
+            }
+          }
+        ]
+      }
+    }
+  }
+}

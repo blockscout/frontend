@@ -1,0 +1,55 @@
+{
+  "kda": {
+    "foundation": {
+      "border": {
+        "width": {
+          "hairline": {
+            "$type": "dimension",
+            "$value": "1px"
+          },
+          "normal": {
+            "$type": "dimension",
+            "$value": "2px"
+          },
+          "thick": {
+            "$type": "dimension",
+            "$value": "4px"
+          }
+        },
+        "hairline": {
+          "$type": "composition",
+          "$value": {
+            "width": "{kda.foundation.border.width.hairline}",
+            "style": "solid",
+            "color": "{kda.foundation.color.border.base.default}"
+          },
+          "$extensions": {
+            "sort": ["width", "style", "color"]
+          }
+        },
+        "normal": {
+          "$type": "composition",
+          "$value": {
+            "width": "{kda.foundation.border.width.normal}",
+            "style": "solid",
+            "color": "{kda.foundation.color.border.base.bold}"
+          },
+          "$extensions": {
+            "sort": ["width", "style", "color"]
+          }
+        },
+        "thick": {
+          "$type": "composition",
+          "$value": {
+            "width": "{kda.foundation.border.width.thick}",
+            "style": "solid",
+            "color": "{kda.foundation.color.border.base.bold}"
+          },
+          "$extensions": {
+            "sort": ["width", "style", "color"]
+          }
+        }
+      }
+    }
+  }
+}

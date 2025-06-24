@@ -22,6 +22,8 @@ export interface SelectControlProps extends ChakraSelect.ControlProps {
   noIndicator?: boolean;
   triggerProps?: ChakraSelect.TriggerProps;
   loading?: boolean;
+  isCompact?: boolean;
+  intent?: SelectProps['intent'];
 }
 
 export const SelectControl = React.forwardRef<
@@ -29,17 +31,41 @@ export const SelectControl = React.forwardRef<
   SelectControlProps
 >(function SelectControl(props, ref) {
   // NOTE: here defaultValue means the "default" option of the select, not its initial value
-  const { children, noIndicator, triggerProps, loading, defaultValue, ...rest } = props;
+  const { children, noIndicator, triggerProps, loading, defaultValue, isCompact, intent, ...rest } = props;
 
   const context = useSelectContext();
   const isDefaultValue = Array.isArray(defaultValue) ? context.value.every((item) => defaultValue.includes(item)) : context.value === defaultValue;
 
+  let background = 'transparent';
+  let surface = 'inherit';
+
+  if (intent) {
+    if (intent === 'negative') {
+      background = 'var(--kda-color-background-semantic-negative-subtlest)';
+      surface = 'var(--kda-color-link-semantic-negative)';
+    } else if (intent === 'warning') {
+      background = 'var(--kda-color-background-semantic-warning-subtlest)';
+      surface = 'var(--kda-color-link-semantic-warning)';
+    } else if (intent === 'positive') {
+      background = 'var(--kda-color-background-semantic-positive-subtlest)';
+      surface = 'var(--kda-color-link-semantic-positive)';
+    }
+  }
+
   return (
     <Skeleton loading={ loading } asChild>
       <ChakraSelect.Control { ...rest }>
-        <ChakraSelect.Trigger ref={ ref } className="group peer" { ...triggerProps } data-default-value={ isDefaultValue }>{ children }</ChakraSelect.Trigger>
+        <ChakraSelect.Trigger
+          ref={ ref }
+          className="group peer"
+          data-default-value={ isDefaultValue }
+          { ...(isCompact ? { paddingRight: 1, background, color: surface, border: 'none' } : {}) }
+          { ...triggerProps }
+        >
+          { children }
+        </ChakraSelect.Trigger>
         { (!noIndicator) && (
-          <ChakraSelect.IndicatorGroup>
+          <ChakraSelect.IndicatorGroup { ...(isCompact ? { paddingRight: 1 } : {}) }>
             { !noIndicator && (
               <ChakraSelect.Indicator
                 transform="rotate(-90deg)"
@@ -234,6 +260,7 @@ export interface SelectProps extends SelectRootProps {
   portalled?: boolean;
   loading?: boolean;
   errorText?: string;
+  intent?: 'info' | 'positive' | 'warning' | 'negative';
   contentProps?: SelectContentProps;
 }
 
@@ -247,6 +274,38 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
     >
       <SelectControl loading={ loading }>
         <SelectValueText
+          placeholder={ placeholder }
+          size={ props.size }
+          required={ props.required }
+          invalid={ props.invalid }
+          errorText={ errorText }
+        />
+      </SelectControl>
+      <SelectContent portalled={ portalled } { ...contentProps }>
+        { collection.items.map((item: SelectOption) => (
+          <SelectItem item={ item } key={ item.value }>
+            { item.label }
+          </SelectItem>
+        )) }
+      </SelectContent>
+    </SelectRoot>
+  );
+});
+
+export const CompactSelect = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
+  const { collection, placeholder, portalled = true, loading, errorText, contentProps, intent, ...rest } = props;
+  return (
+    <SelectRoot
+      ref={ ref }
+      collection={ collection }
+      paddingRight={ 1 }
+      { ...rest }
+    >
+      <SelectControl loading={ loading } intent={ intent } isCompact>
+        <SelectValueText
+          paddingLeft={ 2 }
+          paddingRight={ 3 }
+          marginRight={ 2 }
           placeholder={ placeholder }
           size={ props.size }
           required={ props.required }

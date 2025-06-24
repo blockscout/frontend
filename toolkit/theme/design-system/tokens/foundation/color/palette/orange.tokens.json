@@ -1,0 +1,148 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "palette": {
+          "orange": {
+            "$description": "Kadena Orange Color Palette",
+            "n0": {
+              "$type": "color",
+              "$value": "#FFF7EB",
+              "$extensions": {
+                "mode": {
+                  "dark": "#290E01"
+                }
+              }
+            },
+            "n1": {
+              "$type": "color",
+              "$value": "#FFECCC",
+              "$extensions": {
+                "mode": {
+                  "dark": "#491901"
+                }
+              }
+            },
+            "n5": {
+              "$type": "color",
+              "$value": "#FFDFAD",
+              "$extensions": {
+                "mode": {
+                  "dark": "#612300"
+                }
+              }
+            },
+            "n10": {
+              "$type": "color",
+              "$value": "#FDD291",
+              "$extensions": {
+                "mode": {
+                  "dark": "#7A2F00"
+                }
+              }
+            },
+            "n20": {
+              "$type": "color",
+              "$value": "#FFBB63",
+              "$extensions": {
+                "mode": {
+                  "dark": "#953D00"
+                }
+              }
+            },
+            "n30": {
+              "$type": "color",
+              "$value": "#F5A655",
+              "$extensions": {
+                "mode": {
+                  "dark": "#B14C00"
+                }
+              }
+            },
+            "n40": {
+              "$type": "color",
+              "$value": "#EC9046",
+              "$extensions": {
+                "mode": {
+                  "dark": "#CB5D00"
+                }
+              }
+            },
+            "n50": {
+              "$type": "color",
+              "$value": "#E27B38",
+              "$extensions": {
+                "mode": {
+                  "dark": "#E27B38"
+                }
+              }
+            },
+            "n60": {
+              "$type": "color",
+              "$value": "#CB5D00",
+              "$extensions": {
+                "mode": {
+                  "dark": "#EC9046"
+                }
+              }
+            },
+            "n70": {
+              "$type": "color",
+              "$value": "#B14C00",
+              "$extensions": {
+                "mode": {
+                  "dark": "#F5A655"
+                }
+              }
+            },
+            "n80": {
+              "$type": "color",
+              "$value": "#953D00",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FFBB63"
+                }
+              }
+            },
+            "n90": {
+              "$type": "color",
+              "$value": "#7A2F00",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FDD291"
+                }
+              }
+            },
+            "n95": {
+              "$type": "color",
+              "$value": "#612300",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FFDFAD"
+                }
+              }
+            },
+            "n99": {
+              "$type": "color",
+              "$value": "#491901",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FFECCC"
+                }
+              }
+            },
+            "n100": {
+              "$type": "color",
+              "$value": "#290E01",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FFF7EB"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

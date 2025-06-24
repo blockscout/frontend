@@ -1,0 +1,77 @@
+{
+  "kda": {
+    "foundation": {
+      "typography": {
+        "weight": {
+          "primaryFont": {
+            "light": {
+              "$value": 300,
+              "$extensions": {
+                "weightTag": "Light"
+              },
+              "$type": "fontWeight"
+            },
+            "regular": {
+              "$value": 400,
+              "$extensions": {
+                "weightTag": "Regular"
+              },
+              "$type": "fontWeight"
+            },
+            "medium": {
+              "$value": 500,
+              "$extensions": {
+                "weightTag": "Medium"
+              },
+              "$type": "fontWeight"
+            },
+            "semiBold": {
+              "$value": 600,
+              "$extensions": {
+                "weightTag": "SemiBold"
+              },
+              "$type": "fontWeight"
+            },
+            "bold": {
+              "$value": 700,
+              "$extensions": {
+                "weightTag": "Bold"
+              },
+              "$type": "fontWeight"
+            }
+          },
+          "monospaceFont": {
+            "regular": {
+              "$value": 400,
+              "$extensions": {
+                "weightTag": "Regular"
+              },
+              "$type": "fontWeight"
+            },
+            "medium": {
+              "$value": 500,
+              "$extensions": {
+                "weightTag": "Medium"
+              },
+              "$type": "fontWeight"
+            },
+            "semiBold": {
+              "$value": 600,
+              "$extensions": {
+                "weightTag": "SemiBold"
+              },
+              "$type": "fontWeight"
+            },
+            "bold": {
+              "$value": 700,
+              "$extensions": {
+                "weightTag": "Bold"
+              },
+              "$type": "fontWeight"
+            }
+          }
+        }
+      }
+    }
+  }
+}

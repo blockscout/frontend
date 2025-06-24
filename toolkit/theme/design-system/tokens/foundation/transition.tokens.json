@@ -1,0 +1,34 @@
+{
+  "kda": {
+    "foundation": {
+      "transition": {
+        "delay": {
+          "none": {
+            "$value": "0ms",
+            "$type": "duration"
+          }
+        },
+        "duration": {
+          "base": {
+            "$value": "400ms",
+            "$type": "duration"
+          },
+          "d200": {
+            "$value": "200ms",
+            "$type": "duration"
+          }
+        },
+        "animation": {
+          "easeOutSine": {
+            "$type": "transition",
+            "$value": "{kda.foundation.transition.duration.d200} cubic-bezier(0.61, 1, 0.88, 1)"
+          },
+          "easeOutCubic": {
+            "$type": "transition",
+            "$value": "{kda.foundation.transition.duration.d200} cubic-bezier(0.33, 1, 0.68, 1)"
+          }
+        }
+      }
+    }
+  }
+}

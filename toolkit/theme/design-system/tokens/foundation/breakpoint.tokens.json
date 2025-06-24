@@ -1,0 +1,33 @@
+{
+  "kda": {
+    "foundation": {
+      "breakpoint": {
+        "$description": "Breakpoint sizes for viewports",
+        "xs": {
+          "$type": "dimension",
+          "$value": "0rem"
+        },
+        "sm": {
+          "$type": "dimension",
+          "$value": "40rem"
+        },
+        "md": {
+          "$type": "dimension",
+          "$value": "48rem"
+        },
+        "lg": {
+          "$type": "dimension",
+          "$value": "64rem"
+        },
+        "xl": {
+          "$type": "dimension",
+          "$value": "80rem"
+        },
+        "xxl": {
+          "$type": "dimension",
+          "$value": "96rem"
+        }
+      }
+    }
+  }
+}

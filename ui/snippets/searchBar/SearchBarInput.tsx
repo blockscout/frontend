@@ -116,7 +116,7 @@ const SearchBarInput = (
         <Center
           boxSize="20px"
           mr={ 2 }
-          borderRadius="sm"
+          borderRadius="var(--kda-explorer-input-dimensions-radius-base)"
           borderWidth="1px"
           borderColor="gray.500"
           color="gray.500"
@@ -135,7 +135,7 @@ const SearchBarInput = (
       onBlur={ onBlur }
       w="100%"
       backgroundColor={{ _light: 'white', _dark: 'black' }}
-      borderRadius={{ base: isHomepage ? 'base' : 'none', lg: 'base' }}
+      borderRadius="var(--kda-explorer-input-dimensions-radius-base)"
       position={{ base: isHomepage ? 'static' : 'absolute', lg: 'relative' }}
       top={{ base: isHomepage ? 0 : 55, lg: 0 }}
       left="0"

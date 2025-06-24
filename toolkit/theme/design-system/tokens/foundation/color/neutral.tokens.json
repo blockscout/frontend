@@ -1,0 +1,285 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "neutral": {
+          "$description": "Neutral Gray colors",
+          "n0": {
+            "$type": "color",
+            "$value": "#FFFFFF",
+            "$extensions": {
+              "mode": {
+                "dark": "#000000"
+              },
+              "generators": [
+                {
+                  "type": "alpha",
+                  "value": {
+                    "@alpha0": 0,
+                    "@alpha10": 10,
+                    "@alpha20": 20,
+                    "@alpha40": 40,
+                    "@alpha70": 70,
+                    "@alpha80": 80,
+                    "@alpha90": 90,
+                    "@alpha95": 95
+                  }
+                }
+              ]
+            }
+          },
+          "n1": {
+            "$type": "color",
+            "$value": "#F5F5F5",
+            "$extensions": {
+              "mode": {
+                "dark": "#020E1B"
+              },
+              "generators": [
+                {
+                  "type": "alpha",
+                  "value": {
+                    "@alpha0": 0,
+                    "@alpha1": 1,
+                    "@alpha3": 3,
+                    "@alpha4": 4,
+                    "@alpha5": 5,
+                    "@alpha6": 6,
+                    "@alpha10": 10,
+                    "@alpha20": 20,
+                    "@alpha30": 30,
+                    "@alpha40": 40,
+                    "@alpha50": 50,
+                    "@alpha80": 80,
+                    "@alpha90": 90
+                  }
+                }
+              ]
+            }
+          },
+          "n5": {
+            "$type": "color",
+            "$value": "#E4E5E5",
+            "$extensions": {
+              "mode": {
+                "dark": "#131E2B"
+              },
+              "generators": [
+                {
+                  "type": "alpha",
+                  "value": {
+                    "@alpha80": 80,
+                    "@alpha95": 95
+                  }
+                }
+              ]
+            }
+          },
+          "n10": {
+            "$type": "color",
+            "$value": "#D2D4D6",
+            "$extensions": {
+              "mode": {
+                "dark": "#252F3A"
+              },
+              "generators": [
+                {
+                  "type": "alpha",
+                  "value": {
+                    "@alpha80": 80
+                  }
+                }
+              ]
+            }
+          },
+          "n15": {
+            "$type": "color",
+            "$value": "#C1C4C6",
+            "$extensions": {
+              "mode": {
+                "dark": "#36404A"
+              }
+            }
+          },
+          "n20": {
+            "$type": "color",
+            "$value": "#B0B3B7",
+            "$extensions": {
+              "mode": {
+                "dark": "#475059"
+              },
+              "generators": [
+                {
+                  "type": "alpha",
+                  "value": {
+                    "@alpha80": 80
+                  }
+                }
+              ]
+            }
+          },
+          "n30": {
+            "$type": "color",
+            "$value": "#9EA3A7",
+            "$extensions": {
+              "mode": {
+                "dark": "#596069"
+              }
+            }
+          },
+          "n40": {
+            "$type": "color",
+            "$value": "#8D9298",
+            "$extensions": {
+              "mode": {
+                "dark": "#6A7178"
+              }
+            }
+          },
+          "n50": {
+            "$type": "color",
+            "$value": "#7C8288",
+            "$extensions": {
+              "mode": {
+                "dark": "#7C8288"
+              }
+            }
+          },
+          "n60": {
+            "$type": "color",
+            "$value": "#6A7178",
+            "$extensions": {
+              "mode": {
+                "dark": "#8D9298"
+              }
+            }
+          },
+          "n70": {
+            "$type": "color",
+            "$value": "#596069",
+            "$extensions": {
+              "mode": {
+                "dark": "#9EA3A7"
+              }
+            }
+          },
+          "n80": {
+            "$type": "color",
+            "$value": "#475059",
+            "$extensions": {
+              "mode": {
+                "dark": "#B0B3B7"
+              },
+              "generators": [
+                {
+                  "type": "alpha",
+                  "value": {
+                    "@alpha80": 80
+                  }
+                }
+              ]
+            }
+          },
+          "n85": {
+            "$type": "color",
+            "$value": "#36404A",
+            "$extensions": {
+              "mode": {
+                "dark": "#C1C4C6"
+              }
+            }
+          },
+          "n90": {
+            "$type": "color",
+            "$value": "#252F3A",
+            "$extensions": {
+              "mode": {
+                "dark": "#D2D4D6"
+              },
+              "generators": [
+                {
+                  "type": "alpha",
+                  "value": {
+                    "@alpha20": 20,
+                    "@alpha25": 25
+                  }
+                }
+              ]
+            }
+          },
+          "n95": {
+            "$type": "color",
+            "$value": "#131E2B",
+            "$extensions": {
+              "mode": {
+                "dark": "#E4E5E5"
+              },
+              "generators": [
+                {
+                  "type": "alpha",
+                  "value": {
+                    "@alpha80": 80,
+                    "@alpha95": 95
+                  }
+                }
+              ]
+            }
+          },
+          "n99": {
+            "$type": "color",
+            "$value": "#020E1B",
+            "$extensions": {
+              "mode": {
+                "dark": "#F5F5F5"
+              },
+              "generators": [
+                {
+                  "type": "alpha",
+                  "value": {
+                    "@alpha0": 0,
+                    "@alpha1": 1,
+                    "@alpha3": 3,
+                    "@alpha4": 4,
+                    "@alpha5": 5,
+                    "@alpha6": 6,
+                    "@alpha10": 10,
+                    "@alpha20": 20,
+                    "@alpha30": 30,
+                    "@alpha40": 40,
+                    "@alpha50": 50,
+                    "@alpha80": 80,
+                    "@alpha90": 90
+                  }
+                }
+              ]
+            }
+          },
+          "n100": {
+            "$type": "color",
+            "$value": "#000000",
+            "$extensions": {
+              "mode": {
+                "dark": "#FFFFFF"
+              },
+              "generators": [
+                {
+                  "type": "alpha",
+                  "value": {
+                    "@alpha0": 0,
+                    "@alpha10": 10,
+                    "@alpha20": 20,
+                    "@alpha40": 40,
+                    "@alpha70": 70,
+                    "@alpha80": 80,
+                    "@alpha90": 90,
+                    "@alpha95": 95
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

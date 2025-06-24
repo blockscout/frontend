@@ -15,14 +15,14 @@ type Props = {
 };
 
 const TimeAgoWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncrement, className }: Props) => {
-  const timeAgo = useTimeAgoIncrement(timestamp || '', enableIncrement && !isLoading);
-  if (!timestamp && !fallbackText) {
+  const timeAgo = useTimeAgoIncrement(timestamp ?? '', enableIncrement && !isLoading);
+  if (!timestamp || !fallbackText) {
     return null;
   }
 
-  const content = timestamp ?
+  const content = timestamp && timeAgo ?
     <Tooltip content={ dayjs(timestamp).format('llll') }><span>{ timeAgo }</span></Tooltip> :
-    <span>{ fallbackText }</span>;
+    fallbackText && <span>{ fallbackText }</span>;
 
   return (
     <Skeleton loading={ isLoading } className={ className }>

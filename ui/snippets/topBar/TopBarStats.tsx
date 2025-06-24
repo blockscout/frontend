@@ -17,7 +17,7 @@ import GetGasButton from './GetGasButton';
 const TopBarStats = () => {
   const isMobile = useIsMobile();
 
-  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('general:stats', {
+  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt, isLoading } = useApiQuery('general:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
       refetchOnMount: false,
@@ -55,21 +55,12 @@ const TopBarStats = () => {
       fontSize="xs"
       fontWeight={ 500 }
     >
-      { data?.coin_price && (
-        <Flex columnGap={ 1 }>
-          <Skeleton loading={ isPlaceholderData }>
-            <chakra.span color="text.secondary">{ config.chain.currency.symbol } </chakra.span>
-            <span>${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
-          </Skeleton>
-          { data.coin_price_change_percentage && (
-            <Skeleton loading={ isPlaceholderData }>
-              <chakra.span color={ Number(data.coin_price_change_percentage) >= 0 ? 'green.500' : 'red.500' }>
-                { Number(data.coin_price_change_percentage).toFixed(2) }%
-              </chakra.span>
-            </Skeleton>
-          ) }
-        </Flex>
-      ) }
+      <Flex columnGap={ 1 }>
+        <Skeleton loading={ isLoading }>
+          <chakra.span color="text.secondary">{ config.chain.name } </chakra.span>
+        </Skeleton>
+        <TextSeparator color="transparent"/>
+      </Flex>
       { !isMobile && data?.secondary_coin_price && config.chain.secondaryCoin.symbol && (
         <Flex columnGap={ 1 } ml={ data?.coin_price ? 3 : 0 }>
           <Skeleton loading={ isPlaceholderData }>
@@ -79,7 +70,7 @@ const TopBarStats = () => {
         </Flex>
       ) }
       { data?.coin_price && config.features.gasTracker.isEnabled && <TextSeparator color="border.divider"/> }
-      { data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled && (
+      { data?.gas_prices?.average && config.features.gasTracker.isEnabled ? (
         <>
           <Skeleton loading={ isPlaceholderData } display="inline-flex" whiteSpace="pre-wrap">
             <chakra.span color="text.secondary">Gas </chakra.span>
@@ -91,7 +82,7 @@ const TopBarStats = () => {
           </Skeleton>
           { !isPlaceholderData && <GetGasButton/> }
         </>
-      ) }
+      ) : null }
     </Flex>
   );
 };

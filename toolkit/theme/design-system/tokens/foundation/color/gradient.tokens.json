@@ -1,0 +1,43 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "gradient": {
+          "base": {
+            "subtle": {
+              "$type": "composition",
+              "$value": {
+                "prefix": "linear-gradient(",
+                "data": {
+                  "$type": "composition",
+                  "value": {
+                    "angle": "90deg",
+                    "color1": {
+                      "$type": "color",
+                      "value": "{kda.foundation.color.background.base.default}"
+                    },
+                    "color2": {
+                      "$type": "color",
+                      "value": "{kda.foundation.color.neutral.n1@alpha0}"
+                    }
+                  },
+                  "$extensions": {
+                    "delimiter": {
+                      "character": ", "
+                    }
+                  }
+                },
+                "suffix": ")"
+              },
+              "$extensions": {
+                "delimiter": {
+                  "character": " "
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

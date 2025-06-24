@@ -1,0 +1,187 @@
+{
+  "kda": {
+    "foundation": {
+      "screen": {
+        "resolutions": {
+          "$description": "Screen resolutions based on BrowserStack",
+          "width": {
+            "mobile": {
+              "apple": {
+                "iphone_se": {
+                  "$type": "dimension",
+                  "$value": 320
+                },
+                "iphone_8": {
+                  "$type": "dimension",
+                  "$value": 375
+                },
+                "iphone_11": {
+                  "$type": "dimension",
+                  "$value": 375
+                },
+                "iphone_11_pro": {
+                  "$type": "dimension",
+                  "$value": 414
+                }
+              },
+              "samsung": {
+                "galaxy_s9": {
+                  "$type": "dimension",
+                  "$value": 360
+                }
+              }
+            },
+            "tablet": {
+              "apple": {
+                "ipad_mini": {
+                  "$type": "dimension",
+                  "$value": 768
+                },
+                "ipad": {
+                  "$type": "dimension",
+                  "$value": 810
+                },
+                "ipad_pro": {
+                  "$type": "dimension",
+                  "$value": 1024
+                }
+              }
+            },
+            "laptop": {
+              "macBook_air": {
+                "$type": "dimension",
+                "$value": 1440
+              },
+              "macBook_pro_13": {
+                "$type": "dimension",
+                "$value": 1280
+              },
+              "macBook_pro_16": {
+                "$type": "dimension",
+                "$value": 3072
+              }
+            },
+            "desktop": {
+              "small": {
+                "$type": "dimension",
+                "$value": 1024
+              },
+              "widescreen": {
+                "$type": "dimension",
+                "$value": 1280
+              },
+              "hd": {
+                "$type": "dimension",
+                "$value": 1366
+              },
+              "full_hd": {
+                "$type": "dimension",
+                "$value": 1920
+              },
+              "2k": {
+                "$type": "dimension",
+                "$value": 2560
+              },
+              "ultra_wide": {
+                "$type": "dimension",
+                "$value": 3440
+              },
+              "4k": {
+                "$type": "dimension",
+                "$value": 3840
+              }
+            }
+          },
+          "height": {
+            "mobile": {
+              "apple": {
+                "iphone_se": {
+                  "$type": "dimension",
+                  "$value": 568
+                },
+                "iphone_8": {
+                  "$type": "dimension",
+                  "$value": 667
+                },
+                "iphone_11": {
+                  "$type": "dimension",
+                  "$value": 812
+                },
+                "iphone_11_pro": {
+                  "$type": "dimension",
+                  "$value": 896
+                }
+              },
+              "samsung": {
+                "galaxy_s9": {
+                  "$type": "dimension",
+                  "$value": 740
+                }
+              }
+            },
+            "tablet": {
+              "apple": {
+                "ipad_mini": {
+                  "$type": "dimension",
+                  "$value": 1024
+                },
+                "ipad": {
+                  "$type": "dimension",
+                  "$value": 1080
+                },
+                "ipad_pro": {
+                  "$type": "dimension",
+                  "$value": 1366
+                }
+              }
+            },
+            "laptop": {
+              "macBook_air": {
+                "$type": "dimension",
+                "$value": 900
+              },
+              "macBook_pro_13": {
+                "$type": "dimension",
+                "$value": 800
+              },
+              "macBook_pro_16": {
+                "$type": "dimension",
+                "$value": 1920
+              }
+            },
+            "desktop": {
+              "small": {
+                "$type": "dimension",
+                "$value": 768
+              },
+              "widescreen": {
+                "$type": "dimension",
+                "$value": 800
+              },
+              "hd": {
+                "$type": "dimension",
+                "$value": 768
+              },
+              "full_hd": {
+                "$type": "dimension",
+                "$value": 1080
+              },
+              "2k": {
+                "$type": "dimension",
+                "$value": 1440
+              },
+              "ultra_wide": {
+                "$type": "dimension",
+                "$value": 1440
+              },
+              "4k": {
+                "$type": "dimension",
+                "$value": 2160
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

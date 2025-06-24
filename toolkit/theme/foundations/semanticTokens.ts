@@ -1,8 +1,11 @@
 import type { ThemingConfig } from '@chakra-ui/react';
 
-import config from 'configs/app';
+import KDA from './kda';
 
-const heroBannerButton = config.UI.homepage.heroBanner?.button;
+const {
+  dark: darkTheme,
+  light: lightTheme,
+} = KDA;
 
 const semanticTokens: ThemingConfig['semanticTokens'] = {
   colors: {
@@ -68,40 +71,40 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         bg: {
           DEFAULT: {
             value: {
-              _light: heroBannerButton?._default?.background?.[0] || '{colors.blue.600}',
-              _dark: heroBannerButton?._default?.background?.[1] || heroBannerButton?._default?.background?.[0] || '{colors.blue.600}',
+              _light: lightTheme.kda.explorer.hero.banner.button.default.background,
+              _dark: darkTheme.kda.explorer.hero.banner.button.default.background,
             },
           },
           hover: {
             value: {
-              _light: heroBannerButton?._hover?.background?.[0] || '{colors.blue.400}',
-              _dark: heroBannerButton?._hover?.background?.[1] || heroBannerButton?._hover?.background?.[0] || '{colors.blue.400}',
+              _light: lightTheme.kda.explorer.hero.banner.button[ '@hover' ].background,
+              _dark: darkTheme.kda.explorer.hero.banner.button[ '@hover' ].background,
             },
           },
           selected: {
             value: {
-              _light: heroBannerButton?._selected?.background?.[0] || '{colors.blue.50}',
-              _dark: heroBannerButton?._selected?.background?.[1] || heroBannerButton?._selected?.background?.[0] || '{colors.blue.50}',
+              _light: lightTheme.kda.explorer.hero.banner.button[ '@active' ].background,
+              _dark: darkTheme.kda.explorer.hero.banner.button[ '@active' ].background,
             },
           },
         },
         fg: {
           DEFAULT: {
             value: {
-              _light: heroBannerButton?._default?.text_color?.[0] || '{colors.white}',
-              _dark: heroBannerButton?._default?.text_color?.[1] || heroBannerButton?._default?.text_color?.[0] || '{colors.white}',
+              _light: lightTheme.kda.explorer.hero.banner.button.default.surface,
+              _dark: darkTheme.kda.explorer.hero.banner.button.default.surface,
             },
           },
           hover: {
             value: {
-              _light: heroBannerButton?._hover?.text_color?.[0] || '{colors.white}',
-              _dark: heroBannerButton?._hover?.text_color?.[1] || heroBannerButton?._hover?.text_color?.[0] || '{colors.white}',
+              _light: lightTheme.kda.explorer.hero.banner.button[ '@hover' ].surface,
+              _dark: darkTheme.kda.explorer.hero.banner.button[ '@hover' ].surface,
             },
           },
           selected: {
             value: {
-              _light: heroBannerButton?._selected?.text_color?.[0] || '{colors.blackAlpha.800}',
-              _dark: heroBannerButton?._selected?.text_color?.[1] || heroBannerButton?._selected?.text_color?.[0] || '{colors.blackAlpha.800}',
+              _light: lightTheme.kda.explorer.hero.banner.button[ '@active' ].surface,
+              _dark: darkTheme.kda.explorer.hero.banner.button[ '@active' ].surface,
             },
           },
         },

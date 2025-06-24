@@ -1,0 +1,16 @@
+{
+  "kda": {
+    "icons": {
+      "minus": {
+        "$type": "icon",
+        "$name": "minus",
+        "$description": "",
+        "$value": "<svg height=\"24px\" width=\"192px\" viewBox=\"0 0 16 2\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M.5 1a.937.937 0 0 1 .938-.938h13.124a.938.938 0 0 1 0 1.875H1.438A.937.937 0 0 1 .5 1Z\" fill=\"currentColor\"/> </svg>",
+        "$dimensions": {
+          "width": 192,
+          "height": 24
+        }
+      }
+    }
+  }
+}

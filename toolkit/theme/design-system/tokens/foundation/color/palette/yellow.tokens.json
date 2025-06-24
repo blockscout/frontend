@@ -1,0 +1,166 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "palette": {
+          "yellow": {
+            "$description": "Yellow colors",
+            "n0": {
+              "$type": "color",
+              "$value": "#FBF8DD",
+              "$extensions": {
+                "mode": {
+                  "dark": "#1A1100"
+                }
+              }
+            },
+            "n1": {
+              "$type": "color",
+              "$value": "#FBF198",
+              "$extensions": {
+                "mode": {
+                  "dark": "#362500"
+                }
+              }
+            },
+            "n5": {
+              "$type": "color",
+              "$value": "#F8E750",
+              "$extensions": {
+                "mode": {
+                  "dark": "#483300"
+                }
+              }
+            },
+            "n10": {
+              "$type": "color",
+              "$value": "#F8D904",
+              "$extensions": {
+                "mode": {
+                  "dark": "#5B4300"
+                }
+              }
+            },
+            "n20": {
+              "$type": "color",
+              "$value": "#E8C600",
+              "$extensions": {
+                "mode": {
+                  "dark": "#705300"
+                },
+                "generators": [
+                  {
+                    "type": "alpha",
+                    "value": {
+                      "@alpha20": 20,
+                      "@alpha80": 80
+                    }
+                  }
+                ]
+              }
+            },
+            "n30": {
+              "$type": "color",
+              "$value": "#D7B300",
+              "$extensions": {
+                "mode": {
+                  "dark": "#856600"
+                }
+              }
+            },
+            "n40": {
+              "$type": "color",
+              "$value": "#C49F00",
+              "$extensions": {
+                "mode": {
+                  "dark": "#9B7800"
+                }
+              }
+            },
+            "n50": {
+              "$type": "color",
+              "$value": "#B08C00",
+              "$extensions": {
+                "mode": {
+                  "dark": "#B08C00"
+                }
+              }
+            },
+            "n60": {
+              "$type": "color",
+              "$value": "#9B7800",
+              "$extensions": {
+                "mode": {
+                  "dark": "#C49F00"
+                }
+              }
+            },
+            "n70": {
+              "$type": "color",
+              "$value": "#856600",
+              "$extensions": {
+                "mode": {
+                  "dark": "#D7B300"
+                }
+              }
+            },
+            "n80": {
+              "$type": "color",
+              "$value": "#705300",
+              "$extensions": {
+                "mode": {
+                  "dark": "#E8C600"
+                },
+                "generators": [
+                  {
+                    "type": "alpha",
+                    "value": {
+                      "@alpha20": 20,
+                      "@alpha80": 80
+                    }
+                  }
+                ]
+              }
+            },
+            "n90": {
+              "$type": "color",
+              "$value": "#5B4300",
+              "$extensions": {
+                "mode": {
+                  "dark": "#F8D904"
+                }
+              }
+            },
+            "n95": {
+              "$type": "color",
+              "$value": "#483300",
+              "$extensions": {
+                "mode": {
+                  "dark": "#F8E750"
+                }
+              }
+            },
+            "n99": {
+              "$type": "color",
+              "$value": "#362500",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FBF198"
+                }
+              }
+            },
+            "n100": {
+              "$type": "color",
+              "$value": "#1A1100",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FBF8DD"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

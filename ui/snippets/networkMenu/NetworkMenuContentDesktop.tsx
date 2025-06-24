@@ -16,7 +16,7 @@ interface Props {
 
 const NetworkMenuPopup = ({ items, tabs }: Props) => {
   const [ defaultTab ] = tabs ?? [ 'Mainnets' ];
-  const selectedNetwork = items?.find(({ isActive }) => isActive);
+  const selectedNetwork = items?.find(({ isActive }) => isActive) ?? items?.find(({ url }) => url === window.location.href) ?? items?.[0];
   const selectedTab = tabs.find((tab) => selectedNetwork?.group === tab) ?? defaultTab;
 
   const [ value, setValue ] = React.useState<NetworkGroup>(selectedTab);

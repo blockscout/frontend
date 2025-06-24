@@ -14,6 +14,9 @@ const isPw = getEnvValue('NEXT_PUBLIC_APP_INSTANCE') === 'pw';
 const spriteHash = getEnvValue('NEXT_PUBLIC_ICON_SPRITE_HASH');
 
 const app = Object.freeze({
+  name: getEnvValue('NEXT_PUBLIC_APP_NAME') || 'Chainweb EVM Explorer',
+  shortName: getEnvValue('NEXT_PUBLIC_APP_SHORT_NAME') || 'EVM Explorer',
+  version: getEnvValue('NEXT_PUBLIC_APP_VERSION') || '0.0.1',
   isDev,
   isPw,
   protocol: appSchema,

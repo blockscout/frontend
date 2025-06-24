@@ -1,0 +1,18 @@
+{
+  "kda": {
+    "foundation": {
+      "layout": {
+        "content": {
+          "minWidth": {
+            "$type": "dimension",
+            "$value": "33.75rem"
+          },
+          "maxWidth": {
+            "$type": "dimension",
+            "$value": "42.5rem"
+          }
+        }
+      }
+    }
+  }
+}

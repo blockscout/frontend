@@ -1,0 +1,23 @@
+{
+  "kda": {
+    "explorer": {
+      "input": {
+        "dimensions": {
+          "radius": {
+            "base": {
+              "$value": "{kda.foundation.radius.no}",
+              "$type": "dimension",
+              "$extensions": {
+                "breakpoint": {
+                  "(min-width: {kda.foundation.breakpoint.lg})": {
+                    "value": "{kda.foundation.radius.xs}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

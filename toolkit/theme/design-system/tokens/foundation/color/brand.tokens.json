@@ -1,0 +1,55 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "brand": {
+          "key": {
+            "primary": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.primary.n50}"
+            },
+            "secondary": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.secondary.n99}",
+              "$extensions": {
+                "mode": {
+                  "dark": "{kda.foundation.color.brand.secondary.n1}"
+                }
+              }
+            },
+            "tertiary": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.brand.tertiary.n50}"
+            },
+            "accent": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.magenta.n50}"
+            },
+            "neutralwarm": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.neutralwarm.n1}"
+            },
+            "white": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.neutral.n1}",
+              "$extensions": {
+                "mode": {
+                  "dark": "{kda.foundation.color.neutral.n99}"
+                }
+              }
+            },
+            "black": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.neutral.n99}",
+              "$extensions": {
+                "mode": {
+                  "dark": "{kda.foundation.color.neutral.n1}"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

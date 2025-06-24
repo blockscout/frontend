@@ -1,0 +1,164 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "palette": {
+          "aqua": {
+            "$description": "Kadena Digital Green Color Palette Aqua",
+            "n0": {
+              "$type": "color",
+              "$value": "#F0FFFA",
+              "$extensions": {
+                "mode": {
+                  "dark": "#0A1F18"
+                }
+              }
+            },
+            "n1": {
+              "$type": "color",
+              "$value": "#C9FFED",
+              "$extensions": {
+                "mode": {
+                  "dark": "#113529"
+                }
+              }
+            },
+            "n5": {
+              "$type": "color",
+              "$value": "#A1FFE0",
+              "$extensions": {
+                "mode": {
+                  "dark": "#184C3B"
+                }
+              }
+            },
+            "n10": {
+              "$type": "color",
+              "$value": "#7AFFD3",
+              "$extensions": {
+                "mode": {
+                  "dark": "#20624C"
+                }
+              }
+            },
+            "n20": {
+              "$type": "color",
+              "$value": "#52FFC6",
+              "$extensions": {
+                "mode": {
+                  "dark": "#27795E"
+                },
+                "generators": [
+                  {
+                    "type": "alpha",
+                    "value": {
+                      "@alpha80": 80
+                    }
+                  }
+                ]
+              }
+            },
+            "n30": {
+              "$type": "color",
+              "$value": "#4BE9B5",
+              "$extensions": {
+                "mode": {
+                  "dark": "#2E8F6F"
+                }
+              }
+            },
+            "n40": {
+              "$type": "color",
+              "$value": "#44D2A3",
+              "$extensions": {
+                "mode": {
+                  "dark": "#35A580"
+                }
+              }
+            },
+            "n50": {
+              "$type": "color",
+              "$value": "#3CBC92",
+              "$extensions": {
+                "mode": {
+                  "dark": "#3CBC92"
+                }
+              }
+            },
+            "n60": {
+              "$type": "color",
+              "$value": "#35A580",
+              "$extensions": {
+                "mode": {
+                  "dark": "#44D2A3"
+                }
+              }
+            },
+            "n70": {
+              "$type": "color",
+              "$value": "#2E8F6F",
+              "$extensions": {
+                "mode": {
+                  "dark": "#4BE9B5"
+                }
+              }
+            },
+            "n80": {
+              "$type": "color",
+              "$value": "#27795E",
+              "$extensions": {
+                "mode": {
+                  "dark": "#52FFC6"
+                },
+                "generators": [
+                  {
+                    "type": "alpha",
+                    "value": {
+                      "@alpha80": 80
+                    }
+                  }
+                ]
+              }
+            },
+            "n90": {
+              "$type": "color",
+              "$value": "#20624C",
+              "$extensions": {
+                "mode": {
+                  "dark": "#7AFFD3"
+                }
+              }
+            },
+            "n95": {
+              "$type": "color",
+              "$value": "#184C3B",
+              "$extensions": {
+                "mode": {
+                  "dark": "#A1FFE0"
+                }
+              }
+            },
+            "n99": {
+              "$type": "color",
+              "$value": "#113529",
+              "$extensions": {
+                "mode": {
+                  "dark": "#C9FFED"
+                }
+              }
+            },
+            "n100": {
+              "$type": "color",
+              "$value": "#0A1F18",
+              "$extensions": {
+                "mode": {
+                  "dark": "#F0FFFA"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "kda": {
+    "foundation": {
+      "typography": {
+        "family": {
+          "primaryFont": {
+            "$value": "Inter",
+            "$type": "fontFamily"
+          },
+          "monospaceFont": {
+            "$value": "Kode Mono",
+            "$type": "fontFamily"
+          }
+        }
+      }
+    }
+  }
+}

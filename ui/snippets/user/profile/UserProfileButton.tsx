@@ -88,6 +88,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ..
           px={{ base: 2.5, lg: 3 }}
           fontWeight={ dataExists ? 700 : 600 }
           loading={ isButtonLoading }
+          borderRadius="var(--kda-explorer-hero-banner-button-dimensions-radius)"
           { ...rest }
         >
           { content }

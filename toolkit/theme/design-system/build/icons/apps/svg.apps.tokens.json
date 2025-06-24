@@ -1,0 +1,16 @@
+{
+  "kda": {
+    "icons": {
+      "apps": {
+        "$type": "icon",
+        "$name": "apps",
+        "$description": "",
+        "$value": "<svg height=\"24px\" width=\"24px\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 30 30\"> <path d=\"M13 15.943H6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1Zm-1 7H7v-5h5v5Zm12-18h-7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1Zm-1 7h-5v-5h5v5Zm1 4h-7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1Zm-1 7h-5v-5h5v5Zm-10-18H6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1Zm-1 7H7v-5h5v5Z\"/> </svg>",
+        "$dimensions": {
+          "width": 24,
+          "height": 24
+        }
+      }
+    }
+  }
+}
