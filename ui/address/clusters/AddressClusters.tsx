@@ -7,6 +7,14 @@ import type { ClustersByAddressResponse } from 'types/api/clusters';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
+import {
+  filterOwnedClusters,
+  getTotalRecordsDisplay,
+  getClusterLabel,
+  getClustersToShow,
+  getGridRows,
+  hasMoreClusters,
+} from 'lib/clusters/clustersUtils';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
@@ -25,8 +33,8 @@ interface ClustersGridProps {
 }
 
 const ClustersGrid = ({ data }: ClustersGridProps) => {
-  const itemsToShow = data.slice(0, 10);
-  const numberOfRows = Math.min(itemsToShow.length, 5);
+  const itemsToShow = getClustersToShow(data, 10);
+  const numberOfRows = getGridRows(itemsToShow.length, 5);
 
   return (
     <Grid templateRows={ `repeat(${ numberOfRows }, auto)` } autoFlow="column" gap={ 4 } mt={ 2 }>
@@ -54,15 +62,15 @@ const AddressClusters = ({ query, addressHash }: Props) => {
     return null;
   }
 
-  const ownedClusters = data.result.data.filter((cluster) =>
-    cluster.owner && cluster.owner.toLowerCase() === addressHash.toLowerCase(),
-  );
+  const ownedClusters = filterOwnedClusters(data.result.data, addressHash);
 
   if (ownedClusters.length === 0) {
     return null;
   }
 
-  const totalRecords = ownedClusters.length > 40 ? '40+' : ownedClusters.length;
+  const totalRecords = getTotalRecordsDisplay(ownedClusters.length);
+  const clusterLabel = getClusterLabel(ownedClusters.length);
+  const showMoreLink = hasMoreClusters(ownedClusters.length, 10);
 
   return (
     <PopoverRoot>
@@ -79,7 +87,7 @@ const AddressClusters = ({ query, addressHash }: Props) => {
               role="group"
             >
               <IconSvg name="clusters" boxSize={ 5 } fill="currentColor"/>
-              <chakra.span hideBelow="xl">{ totalRecords } Cluster{ ownedClusters.length > 1 ? 's' : '' }</chakra.span>
+              <chakra.span hideBelow="xl">{ totalRecords } { clusterLabel }</chakra.span>
               <chakra.span hideFrom="xl">{ totalRecords }</chakra.span>
             </Button>
           </PopoverTrigger>
@@ -91,7 +99,7 @@ const AddressClusters = ({ query, addressHash }: Props) => {
             <chakra.span color="text.secondary" textStyle="xs">Attached to this address</chakra.span>
             <ClustersGrid data={ ownedClusters }/>
           </div>
-          { ownedClusters.length > 10 && (
+          { showMoreLink && (
             <Link
               href={ route({ pathname: '/clusters', query: { q: addressHash } }) }
             >
