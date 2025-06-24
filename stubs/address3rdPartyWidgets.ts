@@ -7,5 +7,5 @@ export const WIDGET_CONFIG: Address3rdPartyWidget = {
   title: 'title',
   hint: 'hint',
   pages: [ 'eoa' ],
-  value: 'value',
+  valuePath: 'valuePath',
 };

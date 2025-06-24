@@ -1101,7 +1101,7 @@ const schema = yup
                 icon: yup.string().required(),
                 title: yup.string().required(),
                 hint: yup.string().optional(),
-                value: yup.string().required(),
+                valuePath: yup.string().required(),
                 pages: yup.array().of(yup.string().oneOf(ADDRESS_3RD_PARTY_WIDGET_PAGES)).required(),
                 chainIds: yup.object<Record<string, string>>().optional(),
               }),

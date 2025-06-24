@@ -24,11 +24,11 @@ type Props = {
 const chainId = config.chain.id || '';
 
 function formatUrl(tpl: string, ctx: Record<string, string>) {
-  return tpl.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => ctx[key] ?? '');
+  return tpl.replace(/\{\s*(\w+)\s*\}/g, (_, key) => ctx[key] ?? '');
 }
 
 const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) => {
-  const { data, isLoading: isDataLoading } = useWidgetData(name, config?.value, address, props.isLoading);
+  const { data, isLoading: isDataLoading } = useWidgetData(name, config?.valuePath, address, props.isLoading);
 
   const isLoading = props.isLoading || isDataLoading;
 
