@@ -5,11 +5,16 @@ import useApiQuery from 'lib/api/useApiQuery';
 
 const RESOURCE_NAME = 'general:address_3rd_party_info';
 
-const formatValue = (value: unknown): string => {
+const formatValue = (value: unknown): string | undefined => {
+  if (typeof value !== 'number' && typeof value !== 'string') {
+    return undefined;
+  }
+
   const num = Number(value);
   if (!isNaN(num)) {
-    return Number(num.toFixed(2)).toLocaleString('en-US');
+    return num.toLocaleString();
   }
+
   return String(value);
 };
 
@@ -20,9 +25,8 @@ export default function useWidgetData(name: string, valuePath: string | undefine
     queryOptions: {
       select: (response) => {
         try {
-          const result = get(response, valuePath || '');
-          if (result === undefined || result === null) throw Error;
-          return formatValue(result);
+          const value = get(response, valuePath || '');
+          return formatValue(value);
         } catch {
           return undefined;
         }
