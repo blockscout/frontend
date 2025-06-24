@@ -1,0 +1,88 @@
+{
+  "kda": {
+    "icons": {
+      "arrows": {
+        "arrow_drop_down": {
+          "$type": "icon",
+          "$name": "arrow_drop_down",
+          "$description": "",
+          "$value": "<svg height=\"24px\" width=\"24px\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"> <path d=\"m7 10 5 5 5-5z\"/> </svg>",
+          "$dimensions": {
+            "width": 24,
+            "height": 24
+          }
+        },
+        "down-right": {
+          "$type": "icon",
+          "$name": "down-right",
+          "$description": "",
+          "$value": "<svg height=\"24px\" width=\"24px\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M8.038 13.692h6.675l-4.147 4.148.832.832 5.568-5.568-5.568-5.568-.832.832 4.147 4.148H8.038A3.832 3.832 0 0 1 4.21 8.687V1.329H3.033v7.36a5.01 5.01 0 0 0 5.005 5.004Z\" fill=\"currentColor\"/> </svg>",
+          "$dimensions": {
+            "width": 24,
+            "height": 24
+          }
+        },
+        "east-mini": {
+          "$type": "icon",
+          "$name": "east-mini",
+          "$description": "",
+          "$value": "<svg height=\"24px\" width=\"24px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M11.535 11.293a1 1 0 0 0 0 1.414l3.536 3.536a1 1 0 1 1-1.414 1.414l-4.95-4.95a1 1 0 0 1 0-1.414l4.95-4.95a1 1 0 1 1 1.414 1.414l-3.536 3.536Z\" fill=\"currentColor\"/> </svg>",
+          "$dimensions": {
+            "width": 24,
+            "height": 24
+          }
+        },
+        "east": {
+          "$type": "icon",
+          "$name": "east",
+          "$description": "",
+          "$value": "<svg height=\"24px\" width=\"24px\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M13.758 11c.89 0 1.337-1.077.707-1.707l-2.95-2.95a1 1 0 1 1 1.414-1.414l6.364 6.364a1 1 0 0 1 0 1.414l-6.364 6.364a1 1 0 1 1-1.414-1.414l2.95-2.95c.63-.63.184-1.707-.707-1.707H5a1 1 0 1 1 0-2h8.758Z\" fill=\"currentColor\"/> </svg>",
+          "$dimensions": {
+            "width": 24,
+            "height": 24
+          }
+        },
+        "north-east": {
+          "$type": "icon",
+          "$name": "north-east",
+          "$description": "",
+          "$value": "<svg height=\"24px\" width=\"24px\" viewBox=\"0 0 16 16\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"m11.003 6.276-5.267 5.267a.667.667 0 0 1-.943-.943l5.266-5.267H5.67A.667.667 0 1 1 5.67 4h6.667v6.667a.667.667 0 0 1-1.333 0V6.276Z\" fill=\"currentColor\"/> </svg>",
+          "$dimensions": {
+            "width": 24,
+            "height": 24
+          }
+        },
+        "south-east": {
+          "$type": "icon",
+          "$name": "south-east",
+          "$description": "",
+          "$value": "<svg height=\"24px\" width=\"24px\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 30 30\"> <path fill=\"currentColor\" d=\"M18.233 20.005 8.18 9.953a1 1 0 0 1 0-1.414l.353-.353a1 1 0 0 1 1.414 0L20 18.236V9.755a1 1 0 0 1 1-1h.5a1 1 0 0 1 1 1v12.75H9.75a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1h8.483Z\"/> </svg>",
+          "$dimensions": {
+            "width": 24,
+            "height": 24
+          }
+        },
+        "up-down": {
+          "$type": "icon",
+          "$name": "up-down",
+          "$description": "",
+          "$value": "<svg height=\"24px\" width=\"24px\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M2.774 13.088a.936.936 0 0 0 0 1.325l2.814 2.812a.935.935 0 0 0 1.324 0l2.813-2.812A.935.935 0 1 0 8.4 13.088l-1.213 1.21v-9.95a.954.954 0 0 0-.938-.937.954.954 0 0 0-.937.938v9.95L4.1 13.088a.937.937 0 0 0-1.327 0Zm10.039 2.538a.937.937 0 1 0 1.875 0V5.702l1.213 1.21a.935.935 0 1 0 1.324-1.324l-2.812-2.813a.936.936 0 0 0-1.325 0l-2.812 2.813A.935.935 0 1 0 11.6 6.912l1.213-1.21v9.924Z\" fill=\"currentColor\"/> </svg>",
+          "$dimensions": {
+            "width": 24,
+            "height": 24
+          }
+        },
+        "up-head": {
+          "$type": "icon",
+          "$name": "up-head",
+          "$description": "",
+          "$value": "<svg height=\"24px\" width=\"24px\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"> <path fill=\"currentColor\" d=\"M10.56 5.27A.72.72 0 0 0 10 5a.72.72 0 0 0-.56.27l-6.3 8.585a.729.729 0 0 0-.066.75A.699.699 0 0 0 3.7 15h12.6a.699.699 0 0 0 .626-.396.728.728 0 0 0-.066-.749l-6.3-8.585Z\"/> </svg>",
+          "$dimensions": {
+            "width": 24,
+            "height": 24
+          }
+        }
+      }
+    }
+  }
+}

@@ -67,6 +67,8 @@ export default tseslint.config(
     'public/',
     '.git/',
     'next.config.js',
+    './toolkit/theme/design-system/dist',
+    './toolkit/theme/design-system/build',
   ] },
 
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },

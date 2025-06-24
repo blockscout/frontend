@@ -1,0 +1,72 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "brand": {
+          "tertiary": {
+            "n0": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n0}"
+            },
+            "n1": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n1}"
+            },
+            "n5": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n5}"
+            },
+            "n10": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n10}"
+            },
+            "n20": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n20}"
+            },
+            "n30": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n30}"
+            },
+            "n40": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n40}"
+            },
+            "n50": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n50}"
+            },
+            "n60": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n60}"
+            },
+            "n70": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n70}"
+            },
+            "n80": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n80}"
+            },
+            "n90": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n90}"
+            },
+            "n95": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n95}"
+            },
+            "n99": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n99}"
+            },
+            "n100": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.orange.n100}"
+            }
+          }
+        }
+      }
+    }
+  }
+}

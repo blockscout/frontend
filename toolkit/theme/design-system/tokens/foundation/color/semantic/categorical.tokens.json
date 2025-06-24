@@ -1,0 +1,187 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "categorical": {
+          "$description": "Colors intended for data visualisations. Adhere to the specified numerical order.",
+          "category1": {
+            "default": {
+              "$type": "color",
+              "$description": "Visualisation Color 1",
+              "$value": "#2898BD",
+              "$extensions": {
+                "mode": {
+                  "dark": "#2898BD"
+                }
+              }
+            },
+            "@hover": {
+              "$type": "color",
+              "$description": "Visualisation Color 1 Hover State",
+              "$value": "#227D9B",
+              "$extensions": {
+                "mode": {
+                  "dark": "#42B2D7"
+                }
+              }
+            }
+          },
+          "category2": {
+            "default": {
+              "$type": "color",
+              "$description": "Visualisation Color 2",
+              "$value": "#5E4DB2",
+              "$extensions": {
+                "mode": {
+                  "dark": "#B8ACF6"
+                }
+              }
+            },
+            "@hover": {
+              "$type": "color",
+              "$description": "Visualisation Color 2 Hover State",
+              "$value": "#352C63",
+              "$extensions": {
+                "mode": {
+                  "dark": "#DFD8FD"
+                }
+              }
+            }
+          },
+          "category3": {
+            "default": {
+              "$type": "color",
+              "$description": "Visualisation Color 3",
+              "$value": "#E56910",
+              "$extensions": {
+                "mode": {
+                  "dark": "#E56910"
+                }
+              }
+            },
+            "@hover": {
+              "$type": "color",
+              "$description": "Visualisation Color 3 Hover State",
+              "$value": "#C25100",
+              "$extensions": {
+                "mode": {
+                  "dark": "#F38A3F"
+                }
+              }
+            }
+          },
+          "category4": {
+            "default": {
+              "$type": "color",
+              "$description": "Visualisation Color 4",
+              "$value": "#943D73",
+              "$extensions": {
+                "mode": {
+                  "dark": "#F797D2"
+                }
+              }
+            },
+            "@hover": {
+              "$type": "color",
+              "$description": "Visualisation Color 4 Hover State",
+              "$value": "#50253F",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FDD0EC"
+                }
+              }
+            }
+          },
+          "category5": {
+            "default": {
+              "$type": "color",
+              "$description": "Visualisation Color 5",
+              "$value": "#09326C",
+              "$extensions": {
+                "mode": {
+                  "dark": "#CCE0FF"
+                }
+              }
+            },
+            "@hover": {
+              "$type": "color",
+              "$description": "Visualisation Color 5 Hover State",
+              "$value": "#1C2B41",
+              "$extensions": {
+                "mode": {
+                  "dark": "#E9F2FF"
+                }
+              }
+            }
+          },
+          "category6": {
+            "default": {
+              "$type": "color",
+              "$description": "Visualisation Color 6",
+              "$value": "#8F7EE7",
+              "$extensions": {
+                "mode": {
+                  "dark": "#8270DB"
+                }
+              }
+            },
+            "@hover": {
+              "$type": "color",
+              "$description": "Visualisation Color 6 Hover State",
+              "$value": "#8270DB",
+              "$extensions": {
+                "mode": {
+                  "dark": "#8F7EE7"
+                }
+              }
+            }
+          },
+          "category7": {
+            "default": {
+              "$type": "color",
+              "$description": "Visualisation Color 7",
+              "$value": "#50253F",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FDD0EC"
+                }
+              }
+            },
+            "@hover": {
+              "$type": "color",
+              "$description": "Visualisation Color 7 Hover State",
+              "$value": "#3D2232",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FFECF8"
+                }
+              }
+            }
+          },
+          "category8": {
+            "default": {
+              "$type": "color",
+              "$description": "Visualisation Color 8",
+              "$value": "#A54800",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FEC195"
+                }
+              }
+            },
+            "@hover": {
+              "$type": "color",
+              "$description": "Visualisation Color 8 Hover State",
+              "$value": "#702E00",
+              "$extensions": {
+                "mode": {
+                  "dark": "#FEDEC8"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

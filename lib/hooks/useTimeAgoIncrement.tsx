@@ -1,7 +1,10 @@
+import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs, { relativeTimeConfig } from 'lib/date/dayjs';
 import { DAY, HOUR, MINUTE, SECOND } from 'toolkit/utils/consts';
+
+dayjs.extend(relativeTime, relativeTimeConfig);
 
 function getUnits(diff: number) {
   if (diff < MINUTE) {
@@ -41,8 +44,10 @@ function getUpdateParams(ts: string | number) {
   };
 }
 
-export default function useTimeAgoIncrement(ts: string | number | null, isEnabled?: boolean) {
-  const [ value, setValue ] = React.useState(ts ? dayjs(ts).fromNow() : null);
+export default function useTimeAgoIncrement(ts: string | number | null = 0, isEnabled?: boolean) {
+  const date = ts ? dayjs(ts ?? 0) : null;
+
+  const [ value, setValue ] = React.useState(date ? date.toString() : '');
 
   React.useEffect(() => {
     if (ts !== null) {

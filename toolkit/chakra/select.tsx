@@ -23,6 +23,8 @@ export interface SelectControlProps extends ChakraSelect.ControlProps {
   noIndicator?: boolean;
   triggerProps?: ChakraSelect.TriggerProps;
   loading?: boolean;
+  intent?: SelectProps['intent'];
+  type?: SelectProps['type'];
 }
 
 export const SelectControl = React.forwardRef<
@@ -30,24 +32,65 @@ export const SelectControl = React.forwardRef<
   SelectControlProps
 >(function SelectControl(props, ref) {
   // NOTE: here defaultValue means the "default" option of the select, not its initial value
-  const { children, noIndicator, triggerProps, loading, defaultValue, ...rest } = props;
+  const { children, noIndicator, triggerProps, loading, defaultValue, type, intent, ...rest } = props;
 
   const context = useSelectContext();
   const isDefaultValue = Array.isArray(defaultValue) ? context.value.every((item) => defaultValue.includes(item)) : context.value === defaultValue;
 
+  let background = 'transparent';
+  let surface = 'inherit';
+
+  if (intent) {
+    if (intent === 'negative') {
+      background = 'var(--kda-color-background-semantic-negative-subtlest)';
+      surface = 'var(--kda-color-link-semantic-negative)';
+    } else if (intent === 'warning') {
+      background = 'var(--kda-color-background-semantic-warning-subtlest)';
+      surface = 'var(--kda-color-link-semantic-warning)';
+    } else if (intent === 'positive') {
+      background = 'var(--kda-color-background-semantic-positive-subtlest)';
+      surface = 'var(--kda-color-link-semantic-positive)';
+    }
+  }
+
   return (
     <Skeleton loading={ loading } asChild>
       <ChakraSelect.Control { ...rest }>
-        <ChakraSelect.Trigger ref={ ref } className="group peer" { ...triggerProps } data-default-value={ isDefaultValue }>{ children }</ChakraSelect.Trigger>
+        <ChakraSelect.Trigger
+          ref={ ref }
+          className="group peer"
+          data-default-value={ isDefaultValue }
+          { ...(type === 'compact' ? { paddingRight: 1, background, color: surface, border: 'none' } : {}) }
+          { ...(type === 'inline' ?
+            {
+              fontSize: 'inherit',
+              fontWeight: 'inherit',
+              background: 'transparent',
+              border: 'none',
+              height: 'auto',
+              color: 'inherit',
+            } :
+            {}) }
+          { ...triggerProps }
+        >
+          { children }
+        </ChakraSelect.Trigger>
         { (!noIndicator) && (
-          <ChakraSelect.IndicatorGroup>
+          <ChakraSelect.IndicatorGroup
+            color="inherit"
+            { ...(type === 'compact' ? { paddingRight: 1 } : {}) }
+            { ...(type === 'inline' ? { aspectRatio: '1/1', padding: 0 } : {}) }
+          >
             { !noIndicator && (
               <ChakraSelect.Indicator
+                transition="transform 0.2s ease-in-out"
                 transform="rotate(-90deg)"
                 _open={{ transform: 'rotate(90deg)' }}
                 flexShrink={ 0 }
+                color="inherit"
+                { ...(type === 'inline' ? { width: '100%', height: '100%' } : {}) }
               >
-                <Icon boxSize={ 5 }><ArrowIcon/></Icon>
+                <Icon boxSize={ 5 } color="inherit" { ...(type === 'inline' ? { width: '100%', height: '100%' } : {}) }><ArrowIcon/></Icon>
               </ChakraSelect.Indicator>
             ) }
           </ChakraSelect.IndicatorGroup>
@@ -118,13 +161,14 @@ interface SelectValueTextProps extends Omit<ChakraSelect.ValueTextProps, 'childr
   required?: boolean;
   invalid?: boolean;
   errorText?: string;
+  type?: SelectProps['type'];
 }
 
 export const SelectValueText = React.forwardRef<
   HTMLSpanElement,
   SelectValueTextProps
 >(function SelectValueText(props, ref) {
-  const { children, size, required, invalid, errorText, ...rest } = props;
+  const { children, size, required, invalid, errorText, type, ...rest } = props;
   const context = useSelectContext();
 
   const content = (() => {
@@ -154,12 +198,17 @@ export const SelectValueText = React.forwardRef<
       return (
         <>
           { label }
-          <Flex display="inline-flex" alignItems="center" flexWrap="nowrap" gap={ 1 }>
+          <Flex
+            display="inline-flex"
+            alignItems="center"
+            flexWrap="nowrap"
+            gap={ 1 }>
             { item.icon }
             <span style={{
               WebkitLineClamp: 1,
               WebkitBoxOrient: 'vertical',
               display: '-webkit-box',
+              ...((type === 'inline') ? { fontSize: 'inherit', textDecoration: 'underline' } : {}),
             }}>
               { item.renderLabel ? item.renderLabel() : context.collection.stringifyItem(item) }
             </span>
@@ -235,18 +284,20 @@ export interface SelectProps extends SelectRootProps {
   portalled?: boolean;
   loading?: boolean;
   errorText?: string;
+  intent?: 'info' | 'positive' | 'warning' | 'negative';
   contentProps?: SelectContentProps;
+  type?: 'default' | 'inline' | 'compact';
 }
 
 export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
-  const { collection, placeholder, portalled = true, loading, errorText, contentProps, ...rest } = props;
+  const { collection, placeholder, portalled = true, loading, errorText, contentProps, type, ...rest } = props;
   return (
     <SelectRoot
       ref={ ref }
       collection={ collection }
       { ...rest }
     >
-      <SelectControl loading={ loading }>
+      <SelectControl loading={ loading } type={ type }>
         <SelectValueText
           placeholder={ placeholder }
           size={ props.size }
@@ -259,6 +310,75 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
         { collection.items.map((item: SelectOption) => (
           <SelectItem item={ item } key={ item.value }>
             { item.renderLabel ? item.renderLabel() : item.label }
+          </SelectItem>
+        )) }
+      </SelectContent>
+    </SelectRoot>
+  );
+});
+
+export const CompactSelect = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
+  const { collection, placeholder, portalled = true, loading, errorText, contentProps, intent, ...rest } = props;
+  return (
+    <SelectRoot
+      ref={ ref }
+      collection={ collection }
+      paddingRight={ 1 }
+      { ...rest }
+    >
+      <SelectControl loading={ loading } intent={ intent } type="compact">
+        <SelectValueText
+          paddingLeft={ 2 }
+          paddingRight={ 3 }
+          marginRight={ 2 }
+          placeholder={ placeholder }
+          size={ props.size }
+          required={ props.required }
+          invalid={ props.invalid }
+          errorText={ errorText }
+        />
+      </SelectControl>
+      <SelectContent portalled={ portalled } { ...contentProps }>
+        { collection.items.map((item: SelectOption) => (
+          <SelectItem item={ item } key={ item.value }>
+            { item.label }
+          </SelectItem>
+        )) }
+      </SelectContent>
+    </SelectRoot>
+  );
+});
+
+export const InlineSelect = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
+  const { collection, placeholder, portalled = true, loading, errorText, contentProps, intent, ...rest } = props;
+  return (
+    <SelectRoot
+      ref={ ref }
+      collection={ collection }
+      paddingRight={ 1 }
+      { ...rest }
+    >
+      <SelectControl loading={ loading } type="inline">
+        <SelectValueText
+          display="inline"
+          paddingLeft={ 0 }
+          paddingRight={ 3 }
+          marginRight={ 0 }
+          height="unset"
+          overflow="visible"
+          color="inherit"
+          placeholder={ placeholder }
+          size={ props.size }
+          required={ props.required }
+          invalid={ props.invalid }
+          errorText={ errorText }
+          type="inline"
+        />
+      </SelectControl>
+      <SelectContent portalled={ portalled } { ...contentProps }>
+        { collection.items.map((item: SelectOption) => (
+          <SelectItem item={ item } key={ item.value }>
+            { item.label }
           </SelectItem>
         )) }
       </SelectContent>

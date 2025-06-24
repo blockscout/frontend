@@ -1,0 +1,72 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "brand": {
+          "primary": {
+            "n0": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n0}"
+            },
+            "n1": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n1}"
+            },
+            "n5": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n5}"
+            },
+            "n10": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n10}"
+            },
+            "n20": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n20}"
+            },
+            "n30": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n30}"
+            },
+            "n40": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n40}"
+            },
+            "n50": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n50}"
+            },
+            "n60": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n60}"
+            },
+            "n70": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n70}"
+            },
+            "n80": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n80}"
+            },
+            "n90": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n90}"
+            },
+            "n95": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n95}"
+            },
+            "n99": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n99}"
+            },
+            "n100": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.green.n100}"
+            }
+          }
+        }
+      }
+    }
+  }
+}

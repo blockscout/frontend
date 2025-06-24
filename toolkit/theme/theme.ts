@@ -12,6 +12,8 @@ import zIndex from './foundations/zIndex';
 import globalCss from './globalCss';
 import { recipes, slotRecipes } from './recipes';
 
+export { default as KDATokens } from './foundations/kda';
+
 export const customConfig = defineConfig({
   globalCss,
   theme: {

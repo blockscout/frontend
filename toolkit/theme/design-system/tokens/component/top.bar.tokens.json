@@ -1,0 +1,23 @@
+{
+  "kda": {
+    "explorer": {
+      "top": {
+        "bar": {
+          "font": {
+            "size": {
+              "$type": "dimension",
+              "$value": "{kda.foundation.typography.fontSize.xs}",
+              "$extensions": {
+                "breakpoint": {
+                  "(min-width: {kda.foundation.breakpoint.lg})": {
+                    "value": "{kda.foundation.typography.fontSize.xs}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

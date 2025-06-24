@@ -1,15 +1,23 @@
 import type { ThemingConfig } from '@chakra-ui/react';
 
-import config from 'configs/app';
+import KDA from './kda';
 
-const heroBannerButton = config.UI.homepage.heroBanner?.button;
+const {
+  dark: darkTheme,
+  light: lightTheme,
+} = KDA;
 
 const semanticTokens: ThemingConfig['semanticTokens'] = {
   colors: {
     button: {
       outline: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.600}' } },
+          DEFAULT: {
+            value: {
+              _light: lightTheme.kda.foundation.color.text.base['@init'],
+              _dark: darkTheme.kda.foundation.color.text.base['@init'],
+            },
+          },
         },
       },
       subtle: {
@@ -80,40 +88,40 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         bg: {
           DEFAULT: {
             value: {
-              _light: heroBannerButton?._default?.background?.[0] || '{colors.blue.600}',
-              _dark: heroBannerButton?._default?.background?.[1] || heroBannerButton?._default?.background?.[0] || '{colors.blue.600}',
+              _light: lightTheme.kda.explorer.hero.banner.button.default.background,
+              _dark: darkTheme.kda.explorer.hero.banner.button.default.background,
             },
           },
           hover: {
             value: {
-              _light: heroBannerButton?._hover?.background?.[0] || '{colors.blue.400}',
-              _dark: heroBannerButton?._hover?.background?.[1] || heroBannerButton?._hover?.background?.[0] || '{colors.blue.400}',
+              _light: lightTheme.kda.explorer.hero.banner.button[ '@hover' ].background,
+              _dark: darkTheme.kda.explorer.hero.banner.button[ '@hover' ].background,
             },
           },
           selected: {
             value: {
-              _light: heroBannerButton?._selected?.background?.[0] || '{colors.blue.50}',
-              _dark: heroBannerButton?._selected?.background?.[1] || heroBannerButton?._selected?.background?.[0] || '{colors.blue.50}',
+              _light: lightTheme.kda.explorer.hero.banner.button[ '@active' ].background,
+              _dark: darkTheme.kda.explorer.hero.banner.button[ '@active' ].background,
             },
           },
         },
         fg: {
           DEFAULT: {
             value: {
-              _light: heroBannerButton?._default?.text_color?.[0] || '{colors.white}',
-              _dark: heroBannerButton?._default?.text_color?.[1] || heroBannerButton?._default?.text_color?.[0] || '{colors.white}',
+              _light: lightTheme.kda.explorer.hero.banner.button.default.surface,
+              _dark: darkTheme.kda.explorer.hero.banner.button.default.surface,
             },
           },
           hover: {
             value: {
-              _light: heroBannerButton?._hover?.text_color?.[0] || '{colors.white}',
-              _dark: heroBannerButton?._hover?.text_color?.[1] || heroBannerButton?._hover?.text_color?.[0] || '{colors.white}',
+              _light: lightTheme.kda.explorer.hero.banner.button[ '@hover' ].surface,
+              _dark: darkTheme.kda.explorer.hero.banner.button[ '@hover' ].surface,
             },
           },
           selected: {
             value: {
-              _light: heroBannerButton?._selected?.text_color?.[0] || '{colors.blackAlpha.800}',
-              _dark: heroBannerButton?._selected?.text_color?.[1] || heroBannerButton?._selected?.text_color?.[0] || '{colors.blackAlpha.800}',
+              _light: lightTheme.kda.explorer.hero.banner.button[ '@active' ].surface,
+              _dark: darkTheme.kda.explorer.hero.banner.button[ '@active' ].surface,
             },
           },
         },
@@ -126,11 +134,26 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     link: {
       primary: {
-        DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
-        hover: { value: { _light: '{colors.blue.400}' } },
+        DEFAULT: {
+          value: {
+            _light: lightTheme.kda.foundation.color.link.base.default,
+            _dark: darkTheme.kda.foundation.color.link.base.default,
+          },
+        },
+        hover: {
+          value: {
+            _light: lightTheme.kda.foundation.color.link.base['@hover'],
+            _dark: darkTheme.kda.foundation.color.link.base['@hover'],
+          },
+        },
       },
       secondary: {
-        DEFAULT: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
+        DEFAULT: {
+          value: {
+            _light: lightTheme.kda.foundation.color.text.brand.secondary.default,
+            _dark: darkTheme.kda.foundation.color.text.brand.secondary.default,
+          },
+        },
       },
       underlaid: {
         bg: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },
@@ -141,18 +164,53 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       },
       navigation: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.gray.600}', _dark: '{colors.gray.400}' } },
-          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
-          hover: { value: { _light: '{colors.link.primary.hover}' } },
-          active: { value: { _light: '{colors.link.primary.hover}' } },
+          DEFAULT: {
+            value: {
+              _light: lightTheme.kda.explorer.navigation.surface.text.default,
+              _dark: darkTheme.kda.explorer.navigation.surface.text.default,
+            },
+          },
+          selected: {
+            value: {
+              _light: lightTheme.kda.explorer.navigation.surface.text['@selected'],
+              _dark: darkTheme.kda.explorer.navigation.surface.text['@selected'],
+            },
+          },
+          hover: {
+            value: {
+              _light: lightTheme.kda.foundation.color.link.base['@hover'],
+              _dark: darkTheme.kda.foundation.color.link.base['@hover'],
+            },
+          },
+          active: {
+            value: {
+              _light: lightTheme.kda.foundation.color.link.base['@focus'],
+              _dark: darkTheme.kda.foundation.color.link.base['@focus'],
+            },
+          },
         },
         bg: {
-          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
-          group: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
+          selected: {
+            value: {
+              _light: lightTheme.kda.explorer.navigation.background['@active'],
+              _dark: darkTheme.kda.explorer.navigation.background['@active'],
+            },
+          },
+          group: {
+            value: {
+              _light: lightTheme.kda.explorer.navigation.background['@active'],
+              _dark: darkTheme.kda.explorer.navigation.background['@active'],
+            },
+          },
         },
       },
       menu: {
-        DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+        DEFAULT: {
+          value: {
+            _light: lightTheme.kda.explorer.navigation.background['@active'],
+            _dark: darkTheme.kda.explorer.navigation.background['@active'],
+          },
+        },
       },
     },
     tooltip: {
@@ -227,10 +285,20 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     alert: {
       fg: {
-        DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+        DEFAULT: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.surface.text.default,
+            _dark: darkTheme.kda.explorer.toast.surface.text.default,
+          },
+        },
       },
       bg: {
-        info: { value: { _light: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.100}' } },
+        info: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.info,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.info,
+          },
+        },
         warning: { value: { _light: '{colors.orange.100}', _dark: '{colors.orange.800/60}' } },
         warning_table: { value: { _light: '{colors.orange.50}', _dark: '{colors.orange.800/60}' } },
         success: { value: { _light: '{colors.green.100}', _dark: '{colors.green.900}' } },
@@ -242,12 +310,42 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         DEFAULT: { value: '{colors.alert.fg}' },
       },
       bg: {
-        DEFAULT: { value: '{colors.alert.bg.info}' },
-        info: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.900}' } },
-        warning: { value: '{colors.alert.bg.warning}' },
-        success: { value: '{colors.alert.bg.success}' },
-        error: { value: '{colors.alert.bg.error}' },
-        loading: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.900}' } },
+        DEFAULT: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.info,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.info,
+          },
+        },
+        info: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.info,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.info,
+          },
+        },
+        warning: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.warning,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.warning,
+          },
+        },
+        success: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.positive,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.positive,
+          },
+        },
+        error: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.background.semantic.negative,
+            _dark: darkTheme.kda.explorer.toast.background.semantic.negative,
+          },
+        },
+        loading: {
+          value: {
+            _light: lightTheme.kda.explorer.toast.loading.default,
+            _dark: darkTheme.kda.explorer.toast.loading.default,
+          },
+        },
       },
     },
     input: {
@@ -262,10 +360,20 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       border: {
         DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
         hover: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.500}' } },
-        focus: { value: '{colors.blue.400}' },
+        focus: {
+          value: {
+            _light: lightTheme.kda.explorer.input.border.color['@focus'],
+            _dark: darkTheme.kda.explorer.input.border.color['@focus'],
+          },
+        },
         filled: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
         readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
-        error: { value: '{colors.red.500}' },
+        error: {
+          value: {
+            _light: lightTheme.kda.explorer.input.border.color.semantic.negative,
+            _dark: darkTheme.kda.explorer.input.border.color.semantic.negative,
+          },
+        },
       },
       placeholder: {
         DEFAULT: { value: '{colors.gray.500}' },

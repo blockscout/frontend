@@ -5,7 +5,6 @@ import config from 'configs/app';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
-import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 type Props = {
   renderSearchBar?: () => React.ReactNode;
@@ -27,12 +26,11 @@ const HeaderDesktop = ({ renderSearchBar }: Props) => {
       <Box width="100%">
         { searchBar }
       </Box>
-      { config.UI.navigation.layout === 'vertical' && (
+      { config.UI.navigation.layout === 'vertical' && (config.features.rewards.isEnabled || config.features.account.isEnabled) && (
         <Box display="flex" gap={ 2 } flexShrink={ 0 }>
           { config.features.rewards.isEnabled && <RewardsButton/> }
           {
-            (config.features.account.isEnabled && <UserProfileDesktop/>) ||
-            (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop/>)
+            (config.features.account.isEnabled && <UserProfileDesktop/>)
           }
         </Box>
       ) }

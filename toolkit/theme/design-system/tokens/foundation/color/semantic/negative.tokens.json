@@ -1,0 +1,88 @@
+{
+  "kda": {
+    "foundation": {
+      "color": {
+        "semantic": {
+          "negative": {
+            "n0": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n0}"
+            },
+            "n1": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n1}"
+            },
+            "n5": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n5}"
+            },
+            "n10": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n10}"
+            },
+            "n20": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n20}"
+            },
+            "n20@alpha20": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n20@alpha20}"
+            },
+            "n20@alpha80": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n20@alpha80}"
+            },
+            "n30": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n30}"
+            },
+            "n40": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n40}"
+            },
+            "n50": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n50}"
+            },
+            "n60": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n60}"
+            },
+            "n70": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n70}"
+            },
+            "n80": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n80}"
+            },
+            "n80@alpha20": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n80@alpha20}"
+            },
+            "n80@alpha80": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n80@alpha80}"
+            },
+            "n90": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n90}"
+            },
+            "n95": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n95}"
+            },
+            "n99": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n99}"
+            },
+            "n100": {
+              "$type": "color",
+              "$value": "{kda.foundation.color.palette.red.n100}"
+            }
+          }
+        }
+      }
+    }
+  }
+}

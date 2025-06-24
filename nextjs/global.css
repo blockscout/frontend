@@ -1,6 +1,9 @@
+@import url('../toolkit/theme/design-system/dist/kda-design-system.tokens.css');
+
 @font-face {
   font-family: 'InterFallback';
   src: url('/static/fonts/Inter-fallback.woff2') format('woff2');
   unicode-range: U+2192; /* Only the right arrow */
   font-display: swap;
 }
+

@@ -27,6 +27,7 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
 
     const varName = nextTheme.colorMode === 'light' ? '--chakra-colors-white' : '--chakra-colors-black';
     window.document.documentElement.style.setProperty(varName, hex);
+    window.document.documentElement.dataset.theme = nextTheme.colorMode;
 
     cookies.set(cookies.NAMES.COLOR_MODE_HEX, hex);
     cookies.set(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);

@@ -2,19 +2,16 @@ import { Flex, Separator, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import DeFiDropdown from './DeFiDropdown';
-import NetworkMenu from './NetworkMenu';
 import Settings from './settings/Settings';
-import TopBarStats from './TopBarStats';
+import TopBarChainStatus from './TopBarChainStatus';
 
 const TopBar = () => {
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
-
   return (
-    <Box bgColor={ bgColor }>
+    <Box background="var(--kda-color-background-semantic-info-subtlest)">
       <Flex
         py={ 2 }
         px={{ base: 3, lg: 6 }}
@@ -23,21 +20,33 @@ const TopBar = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <TopBarStats/>
+        <TopBarChainStatus/>
         <Flex alignItems="center">
+          { config.features.blockchainInteraction.isEnabled && (
+            <>
+              <UserWalletDesktop buttonSize="sm" buttonVariant="hero"/>
+              <Separator
+                borderColor="var(--kda-color-background-brand-secondary)"
+                mr={ 3 }
+                ml={{ base: 2, sm: 3 }}
+                height={ 4 }
+                orientation="vertical"
+              />
+            </>
+          ) }
           { config.features.deFiDropdown.isEnabled && (
             <>
               <DeFiDropdown/>
-              <Separator mr={ 3 } ml={{ base: 2, sm: 3 }} height={ 4 } orientation="vertical"/>
+              <Separator
+                borderColor="var(--kda-color-background-brand-secondary)"
+                mr={ 3 }
+                ml={{ base: 2, sm: 3 }}
+                height={ 4 }
+                orientation="vertical"
+              />
             </>
           ) }
           <Settings/>
-          { Boolean(config.UI.navigation.featuredNetworks) && (
-            <Box display={{ base: 'none', lg: 'flex' }} alignItems="center">
-              <Separator mx={ 3 } height={ 4 } orientation="vertical"/>
-              <NetworkMenu/>
-            </Box>
-          ) }
         </Flex>
       </Flex>
     </Box>

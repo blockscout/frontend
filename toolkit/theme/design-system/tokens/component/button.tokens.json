@@ -1,0 +1,29 @@
+{
+  "kda": {
+    "explorer": {
+      "button": {
+        "background": {
+          "color": {
+            "default": {
+              "$value": "{kda.foundation.color.background.accent.primary.inverse.default}",
+              "$type": "color",
+              "$extensions": {
+                "mode": {
+                  "dark": "{kda.foundation.color.background.accent.primary.inverse.default}"
+                }
+              }
+            }
+          }
+        },
+        "surface": {
+          "color": {
+            "default": {
+              "$value": "{kda.foundation.color.text.base.inverse.@init}",
+              "$type": "color"
+            }
+          }
+        }
+      }
+    }
+  }
+}

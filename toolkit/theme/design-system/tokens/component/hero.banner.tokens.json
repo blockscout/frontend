@@ -1,0 +1,208 @@
+{
+  "kda": {
+    "explorer": {
+      "hero": {
+        "banner": {
+          "title": {
+            "font": {
+              "size": {
+                "$type": "dimension",
+                "$value": "{kda.foundation.typography.fontSize.xl}",
+                "$extensions": {
+                  "breakpoint": {
+                    "(min-width: {kda.foundation.breakpoint.lg})": {
+                      "value": "{kda.foundation.typography.fontSize.2xl}"
+                    }
+                  }
+                }
+              },
+              "weight": {
+                "$type": "fontWeight",
+                "$value": "{kda.foundation.typography.weight.primaryFont.medium}",
+                "$extensions": {
+                  "breakpoint": {
+                    "(min-width: {kda.foundation.breakpoint.lg})": {
+                      "value": "{kda.foundation.typography.weight.primaryFont.semiBold}"
+                    }
+                  }
+                }
+              },
+              "lineHeight": {
+                "$type": "fontWeight",
+                "$value": "{kda.foundation.typography.lineHeight.xl}",
+                "$extensions": {
+                  "breakpoint": {
+                    "(min-width: {kda.foundation.breakpoint.lg})": {
+                      "value": "{kda.foundation.typography.lineHeight.2xl}"
+                    }
+                  }
+                }
+              },
+              "color": {
+                "name": {
+                  "$type": "color",
+                  "$value": "{kda.foundation.color.neutral.n0}",
+                  "$extensions": {
+                    "mode": {
+                      "dark": "{kda.foundation.color.neutral.n100}"
+                    }
+                  }
+                },
+                "prefix": {
+                  "$type": "color",
+                  "$value": "{kda.foundation.color.neutral.n0@alpha40}",
+                  "$extensions": {
+                    "mode": {
+                      "dark": "{kda.foundation.color.neutral.n100@alpha40}"
+                    }
+                  }
+                },
+                "selector": {
+                  "$type": "color",
+                  "$value": "{kda.foundation.color.neutral.n0}",
+                  "$extensions": {
+                    "mode": {
+                      "dark": "{kda.foundation.color.neutral.n100}"
+                    }
+                  }
+                }
+              }
+            },
+            "margin": {
+              "gap": {
+                "$type": "dimension",
+                "$value": "{kda.foundation.spacing.n4}",
+                "$extensions": {
+                  "breakpoint": {
+                    "(min-width: {kda.foundation.breakpoint.lg})": {
+                      "value": "{kda.foundation.spacing.n2}"
+                    }
+                  }
+                }
+              },
+              "bottom": {
+                "$type": "dimension",
+                "$value": "{kda.foundation.spacing.n4}",
+                "$extensions": {
+                  "breakpoint": {
+                    "(min-width: {kda.foundation.breakpoint.lg})": {
+                      "value": "{kda.foundation.spacing.n6}"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "border": {
+            "$type": "composition",
+            "$value": {
+              "width": {
+                "$type": "dimension",
+                "value": "{kda.foundation.border.width.hairline}"
+              },
+              "style": {
+                "$type": "string",
+                "value": "solid"
+              },
+              "color": {
+                "$type": "color",
+                "value": "{kda.foundation.color.accent.green}"
+              }
+            }
+          },
+          "radius": {
+            "$type": "dimension",
+            "$value": "{kda.foundation.radius.xs}",
+            "$extensions": {
+              "breakpoint": {
+                "(min-width: {kda.foundation.breakpoint.lg})": {
+                  "value": "{kda.foundation.radius.lg}"
+                }
+              }
+            }
+          },
+          "background": {
+            "$type": "color",
+            "$value": "{kda.foundation.color.accent.green}"
+          },
+          "padding": {
+            "$type": "dimension",
+            "$value": "{kda.foundation.spacing.n4}",
+            "$extensions": {
+              "breakpoint": {
+                "(min-width: {kda.foundation.breakpoint.lg})": {
+                  "value": {
+                    "$type": "dimension",
+                    "$value": "{kda.foundation.spacing.n8}"
+                  }
+                }
+              }
+            }
+          },
+          "column": {
+            "width": {
+              "$type": "string",
+              "$value": "100%",
+              "$extensions": {
+                "breakpoint": {
+                  "(min-width: {kda.foundation.breakpoint.lg})": {
+                    "value": "auto"
+                  }
+                }
+              }
+            },
+            "gap": {
+              "$type": "dimension",
+              "$value": "{kda.foundation.spacing.n8}"
+            }
+          },
+          "button": {
+            "dimensions": {
+              "radius": {
+                "$type": "dimension",
+                "$value": "{kda.foundation.radius.no}",
+                "$extensions": {
+                  "breakpoint": {
+                    "(min-width: {kda.foundation.breakpoint.lg})": {
+                      "value": "{kda.foundation.radius.xs}"
+                    }
+                  }
+                }
+              }
+            },
+            "default": {
+              "background": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.background.accent.primary.inverse.default}"
+              },
+              "surface": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.text.base.inverse.@init}"
+              }
+            },
+            "@hover": {
+              "background": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.background.accent.primary.inverse.@active}"
+              },
+              "surface": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.text.base.inverse.@active}"
+              }
+            },
+            "@active": {
+              "background": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.background.accent.primary.inverse.@hover}"
+              },
+              "surface": {
+                "$type": "color",
+                "$value": "{kda.foundation.color.text.base.inverse.@hover}"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -2,8 +2,9 @@ import { Box, VStack, Flex, createListCollection } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
-import type { NetworkGroup, FeaturedNetwork } from 'types/networks';
+import type { NetworkGroup, FeaturedChain } from 'types/networks';
 
+import config from 'configs/app';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -11,18 +12,19 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import NetworkMenuLink from './NetworkMenuLink';
 interface Props {
   tabs: Array<NetworkGroup>;
-  items?: Array<FeaturedNetwork>;
+  items?: Array<FeaturedChain>;
 }
 
 const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
+  const [ defaultTab ] = tabs ?? [ config.UI.navigation.baseNetwork ];
   const selectedNetwork = items?.find(({ isActive }) => isActive);
-  const [ selectedTab, setSelectedTab ] = React.useState<NetworkGroup>('Mainnets');
+  const [ selectedTab, setSelectedTab ] = React.useState<NetworkGroup>(defaultTab);
 
   React.useEffect(() => {
     if (items) {
-      setSelectedTab(tabs.find((tab) => selectedNetwork?.group === tab) || 'Mainnets');
+      setSelectedTab(tabs.find((tab) => selectedNetwork?.group === tab) ?? defaultTab);
     }
-  }, [ items, selectedNetwork?.group, tabs ]);
+  }, [ defaultTab, items, selectedNetwork?.group, tabs ]);
 
   const handleSelectChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setSelectedTab(value[0] as NetworkGroup);
@@ -61,7 +63,8 @@ const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
           contentProps={{ zIndex: 'modal' }}
         />
       ) }
-      <VStack as="ul" gap={ 2 } alignItems="stretch">
+      { selectedTab ? <h6 className="network-title">"{ selectedTab }" Chains</h6> : null }
+      <VStack as="ul" gap={ 2 } alignItems="stretch" className="network-menu">
         { items
           .filter(({ group }) => group === selectedTab)
           .map((network) => (
