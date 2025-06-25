@@ -89,7 +89,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/kadena-community/blockscout-frontend
+            ghcr.io/kadena-io/blockscout-frontend
           tags: |
             type=ref,event=branch
             type=sha,format=long
