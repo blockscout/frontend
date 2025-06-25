@@ -45,15 +45,16 @@ const Address3rdPartyWidgets = ({ shouldRender = true, isQueryEnabled = true, ad
     <Flex w="full" direction="column" alignItems="flex-start" gap={ 3 }>
       <Grid
         gap={ 3 }
-        templateColumns={
-          widgets.length < 4 ?
-            `repeat(${ widgets.length }, minmax(238px, 360px))` :
-            {
-              base: 'repeat(auto-fit, minmax(238px, 1fr))',
-              xl: 'repeat(auto-fit, minmax(248px, 1fr))',
-            }
-        }
+        templateColumns={{
+          base: 'repeat(auto-fit, minmax(238px, 1fr))',
+          xl: 'repeat(auto-fit, minmax(248px, 1fr))',
+        }}
         w="full"
+        maxW={
+          widgets.length < 4 ?
+            `${ (widgets.length * (360 + 12)) - 12 }px` : // 360px - max widget width, 12px - gap
+            undefined
+        }
       >
         { displayedWidgets.map((name) => (
           <Address3rdPartyWidgetCard
