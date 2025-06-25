@@ -1,4 +1,4 @@
-import { HStack, VStack, Icon } from '@chakra-ui/react';
+import { HStack, VStack, Icon, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
@@ -144,7 +144,9 @@ const ClustersActionBar = ({
     <>
       <VStack gap={ 3 } mb={ 6 } hideFrom="lg" align="stretch">
         { searchInput }
-        { viewToggle }
+        <Box alignSelf="center">
+          { viewToggle }
+        </Box>
       </VStack>
       <ActionBar
         mt={ -6 }
