@@ -550,7 +550,7 @@ const featuredNetworkSchema: yup.ObjectSchema<FeaturedNetwork> = yup
     icon: yup.string().test(urlTest),
     isActive: yup.boolean(),
     invertIconInDarkMode: yup.boolean(),
-  });
+  }) as any;
 
 const featuredChainsSchema: yup.ObjectSchema<FeaturedChain> = yup
   .object()
