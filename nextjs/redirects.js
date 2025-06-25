@@ -268,10 +268,6 @@ const OLD_UI_URLS = [
 
 const ETHERSCAN_URLS = [
   {
-    source: '/txsInternal',
-    destination: '/internal-txs',
-  },
-  {
     source: '/txsAA',
     destination: '/ops',
   },
@@ -288,6 +284,10 @@ const ETHERSCAN_URLS = [
       { type: 'query', key: 'block' },
     ],
     destination: '/block/:block?tab=internal_txs',
+  },
+  {
+    source: '/txsInternal',
+    destination: '/internal-txs',
   },
   {
     source: '/blocks_forked',
