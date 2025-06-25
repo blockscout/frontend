@@ -8,9 +8,11 @@ export const widgets = [
   'widget-5',
   'widget-6',
   'widget-7',
+  'widget-8',
+  'widget-9',
 ] as const;
 
-export const values = [ 0, 2534783, 75.34, undefined, 1553.5, 100, 0.99 ];
+export const values = [ 0, 2534783, 75.34, undefined, 1553.5, 100, 0.99, 333, undefined ];
 
 export const config: Record<string, Address3rdPartyWidget> = {
   'widget-1': {
@@ -50,7 +52,7 @@ export const config: Record<string, Address3rdPartyWidget> = {
     url: 'https://www.example.com',
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
-    title: 'Pretty big value',
+    title: 'Test value',
     valuePath: 'value',
   },
   'widget-6': {
@@ -58,7 +60,7 @@ export const config: Record<string, Address3rdPartyWidget> = {
     url: 'https://www.example.com',
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
-    title: 'Almost the biggest value',
+    title: 'Another test value',
     valuePath: 'value',
   },
   'widget-7': {
@@ -66,7 +68,23 @@ export const config: Record<string, Address3rdPartyWidget> = {
     url: 'https://www.example.com',
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
-    title: 'The biggest value',
+    title: 'One more test value',
+    valuePath: 'value',
+  },
+  'widget-8': {
+    name: 'Widget 8',
+    url: 'https://www.example.com',
+    pages: [ 'eoa', 'contract', 'token' ],
+    icon: 'http://localhost:3000/widget-logo.png',
+    title: 'Final test value',
+    valuePath: 'value',
+  },
+  'widget-9': {
+    name: 'Widget 9',
+    url: 'https://www.example.com',
+    pages: [ 'eoa', 'contract', 'token' ],
+    icon: 'http://localhost:3000/widget-logo.png',
+    title: 'Another empty value',
     valuePath: 'value',
   },
 };
