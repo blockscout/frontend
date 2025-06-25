@@ -53,7 +53,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/blockscout/frontend
+          images: ghcr.io/kadena-io/blockscout-frontend
           flavor: |
             latest=false
           tags: |
@@ -71,28 +71,31 @@ jobs:
           echo "ref_type: $REF_TYPE"
           echo "ref_name: $REF_NAME"
 
-      - name: Setup repo
-        uses: blockscout/actions/.github/actions/setup-multiarch-buildx@no-metadata
-        id: setup
-        with:
-          docker-image: ghcr.io/blockscout/frontend
-          docker-username: ${{ github.actor }}
-          docker-password: ${{ secrets.GITHUB_TOKEN }}
-          docker-remote-multi-platform: true
-          docker-arm-host: ${{ secrets.ARM_RUNNER_HOSTNAME }}
-          docker-arm-host-key: ${{ secrets.ARM_RUNNER_KEY }}
+      - name: Log in GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build and push
-        uses: docker/build-push-action@v5
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker Meta for blockscout-frontend
+        id: meta-blockscout-frontend
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/kadena-community/blockscout-frontend
+          tags: |
+            type=ref,event=branch
+            type=sha,format=long
+
+      - name: Build and Push blockscout-frontend image
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
-          push: true
-          cache-from: type=gha
-          tags: ${{ steps.meta.outputs.tags }}
-          platforms: ${{ inputs.platforms }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
-            GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
-            ${{ inputs.build_args }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-blockscout-frontend.outputs.tags }}
+          labels: ${{ steps.meta-blockscout-frontend.outputs.labels }}
