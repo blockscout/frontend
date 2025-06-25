@@ -51,7 +51,7 @@ const Address3rdPartyWidgets = ({ shouldRender = true, isQueryEnabled = true, ad
         }}
         w="full"
         maxW={
-          widgets.length < 4 ?
+          widgets.length < 5 ?
             `${ (widgets.length * (360 + 12)) - 12 }px` : // 360px - max widget width, 12px - gap
             undefined
         }
