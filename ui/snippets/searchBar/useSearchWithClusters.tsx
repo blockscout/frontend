@@ -8,15 +8,17 @@ import useDebounce from 'lib/hooks/useDebounce';
 
 import useQuickSearchQuery from './useQuickSearchQuery';
 
-const CLUSTER_SEARCH_PATTERN = /^(.+)\/$/;
-
 function isClusterSearch(term: string): boolean {
-  return CLUSTER_SEARCH_PATTERN.test(term.trim()) && config.features.clusters.isEnabled;
+  const trimmed = term.trim();
+  const hasTrailingSlash = trimmed.endsWith('/');
+  const looksLikeCluster = trimmed.includes('/') || hasTrailingSlash;
+
+  return looksLikeCluster && config.features.clusters.isEnabled;
 }
 
 function extractClusterName(term: string): string {
-  const match = term.match(CLUSTER_SEARCH_PATTERN);
-  return match ? match[1] : term;
+  const trimmed = term.trim();
+  return trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed;
 }
 
 function transformClusterToSearchResult(cluster: {

@@ -5,7 +5,6 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useQuickSearchQuery from './useQuickSearchQuery';
 import useSearchWithClusters from './useSearchWithClusters';
 
-// Type definitions for mocks
 type MockQuickSearchQuery = ReturnType<typeof useQuickSearchQuery>;
 type MockApiQuery = ReturnType<typeof useApiQuery>;
 
@@ -74,7 +73,26 @@ describe('useSearchWithClusters', () => {
       });
     });
 
-    it('should not detect cluster search without trailing slash', () => {
+    it('should detect cluster search with slash in middle (no trailing slash)', () => {
+      mockUseQuickSearchQuery.mockReturnValue({
+        searchTerm: 'campnetwork/lol',
+        debouncedSearchTerm: 'campnetwork/lol',
+        handleSearchTermChange: jest.fn(),
+        query: { data: [], isError: false, isLoading: false },
+        redirectCheckQuery: { data: null, isError: false, isLoading: false },
+      } as unknown as MockQuickSearchQuery);
+
+      renderHook(() => useSearchWithClusters());
+
+      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
+        queryParams: {
+          input: JSON.stringify({ name: 'campnetwork/lol' }),
+        },
+        queryOptions: { enabled: true },
+      });
+    });
+
+    it('should not detect cluster search without any slash', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'test-cluster',
         debouncedSearchTerm: 'test-cluster',
@@ -93,7 +111,7 @@ describe('useSearchWithClusters', () => {
       });
     });
 
-    it('should handle cluster search with whitespace', () => {
+    it('should handle cluster search with whitespace and trailing slash', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: '  my-cluster/  ',
         debouncedSearchTerm: '  my-cluster/  ',
@@ -106,7 +124,7 @@ describe('useSearchWithClusters', () => {
 
       expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
         queryParams: {
-          input: JSON.stringify({ name: '  my-cluster/  ' }),
+          input: JSON.stringify({ name: 'my-cluster' }),
         },
         queryOptions: { enabled: true },
       });
@@ -137,6 +155,9 @@ describe('useSearchWithClusters', () => {
         { input: 'cluster-name/', expected: 'cluster-name' },
         { input: 'my_cluster_123/', expected: 'my_cluster_123' },
         { input: 'ClusterWithCaps/', expected: 'ClusterWithCaps' },
+        { input: 'campnetwork/lol', expected: 'campnetwork/lol' },
+        { input: 'path/to/cluster/', expected: 'path/to/cluster' },
+        { input: '  spaced/cluster/  ', expected: 'spaced/cluster' },
       ];
 
       testCases.forEach(({ input, expected }) => {
@@ -158,6 +179,63 @@ describe('useSearchWithClusters', () => {
         });
 
         jest.clearAllMocks();
+      });
+    });
+
+    it('should detect cluster search with multiple slashes', () => {
+      mockUseQuickSearchQuery.mockReturnValue({
+        searchTerm: 'org/team/project',
+        debouncedSearchTerm: 'org/team/project',
+        handleSearchTermChange: jest.fn(),
+        query: { data: [], isError: false, isLoading: false },
+        redirectCheckQuery: { data: null, isError: false, isLoading: false },
+      } as unknown as MockQuickSearchQuery);
+
+      renderHook(() => useSearchWithClusters());
+
+      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
+        queryParams: {
+          input: JSON.stringify({ name: 'org/team/project' }),
+        },
+        queryOptions: { enabled: true },
+      });
+    });
+
+    it('should handle the reported issue: campnetwork/lol with and without trailing slash', () => {
+      mockUseQuickSearchQuery.mockReturnValue({
+        searchTerm: 'campnetwork/lol/',
+        debouncedSearchTerm: 'campnetwork/lol/',
+        handleSearchTermChange: jest.fn(),
+        query: { data: [], isError: false, isLoading: false },
+        redirectCheckQuery: { data: null, isError: false, isLoading: false },
+      } as unknown as MockQuickSearchQuery);
+
+      renderHook(() => useSearchWithClusters());
+
+      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
+        queryParams: {
+          input: JSON.stringify({ name: 'campnetwork/lol' }),
+        },
+        queryOptions: { enabled: true },
+      });
+
+      jest.clearAllMocks();
+
+      mockUseQuickSearchQuery.mockReturnValue({
+        searchTerm: 'campnetwork/lol',
+        debouncedSearchTerm: 'campnetwork/lol',
+        handleSearchTermChange: jest.fn(),
+        query: { data: [], isError: false, isLoading: false },
+        redirectCheckQuery: { data: null, isError: false, isLoading: false },
+      } as unknown as MockQuickSearchQuery);
+
+      renderHook(() => useSearchWithClusters());
+
+      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
+        queryParams: {
+          input: JSON.stringify({ name: 'campnetwork/lol' }),
+        },
+        queryOptions: { enabled: true },
       });
     });
   });
