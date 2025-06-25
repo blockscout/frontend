@@ -18,7 +18,7 @@
     "baseUrl": ".",
     "types": ["node", "jest"],
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.node.ts", "**/*.tsx", "**/*.pw.tsx", "decs.d.ts", "global.d.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.node.ts", "**/*.tsx", "decs.d.ts", "global.d.ts"],
   "exclude": [
     "node_modules",
     "node_modules_linux",
@@ -26,6 +26,7 @@
     "./deploy/tools/favicon-generator",
     "./toolkit/package",
     "./toolkit/theme/design-system/build",
-    "./toolkit/theme/design-system/dist"
+    "./toolkit/theme/design-system/dist",
+    "**/*.pw.tsx"
   ],
 }
