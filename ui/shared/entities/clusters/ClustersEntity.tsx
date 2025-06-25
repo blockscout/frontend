@@ -68,8 +68,7 @@ const Icon = (props: IconProps) => {
       borderRadius="6px"
       mr={ 2 }
       flexShrink={ 0 }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      src={ `${ (config.features.clusters as any).cdnUrl }/profile-image/${ props.clusterName }` }
+      src={ `${ (config.features.clusters as { cdnUrl?: string })?.cdnUrl || '' }/profile-image/${ props.clusterName }` }
       alt={ `${ props.clusterName } profile` }
       fallback={ fallbackElement }
     />
