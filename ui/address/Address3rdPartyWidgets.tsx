@@ -6,7 +6,6 @@ import type { Address3rdPartyWidget } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
 
-import useClientRect from 'lib/hooks/useClientRect';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Link } from 'toolkit/chakra/link';
@@ -22,33 +21,19 @@ type Props = {
   isLoading?: boolean;
 };
 
-const MIN_WIDGET_WIDTH = 238;
-const MAX_WIDGET_WIDTH = 360;
-const GAP_WIDTH = 12;
-const MAX_ROWS = 2;
-const MIN_WIDGETS_COUNT = 4;
+const NUMBER_OF_WIDGETS_TO_DISPLAY = 8;
 
 const Address3rdPartyWidgets = ({ shouldRender = true, isQueryEnabled = true, addressType, isLoading = false, showAll }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
-  const [ rect, gridRef ] = useClientRect<HTMLDivElement>();
 
   const addressHash = getQueryParamString(router.query.hash);
 
   const { items: widgets, configQuery } = useAddress3rdPartyWidgets(addressType, isLoading, isQueryEnabled);
 
-  const columnsPerRow = useMemo(() => {
-    if (!rect?.width) return 0;
-
-    const maxColumns = rect?.width > 1400 ? 5 : 4;
-    const possibleColumns = Math.floor((rect.width + GAP_WIDTH) / (MIN_WIDGET_WIDTH + GAP_WIDTH));
-
-    return Math.min(Math.max(1, possibleColumns), maxColumns);
-  }, [ rect?.width ]);
-
   const displayedWidgets = useMemo(() => {
-    return showAll ? widgets : widgets.slice(0, Math.max(MIN_WIDGETS_COUNT, columnsPerRow * MAX_ROWS));
-  }, [ widgets, showAll, columnsPerRow ]);
+    return showAll ? widgets : widgets.slice(0, NUMBER_OF_WIDGETS_TO_DISPLAY);
+  }, [ widgets, showAll ]);
 
   const shouldShowViewAllLink = !showAll && !isLoading && !configQuery.isPlaceholderData && widgets.length > displayedWidgets.length;
 
@@ -59,12 +44,14 @@ const Address3rdPartyWidgets = ({ shouldRender = true, isQueryEnabled = true, ad
   return (
     <Flex w="full" direction="column" alignItems="flex-start" gap={ 3 }>
       <Grid
-        ref={ gridRef }
         gap={ 3 }
         templateColumns={
-          widgets.length < columnsPerRow ?
-            `repeat(${ widgets.length }, minmax(${ MIN_WIDGET_WIDTH }px, ${ MAX_WIDGET_WIDTH }px))` :
-            `repeat(${ columnsPerRow }, 1fr)`
+          widgets.length < 4 ?
+            `repeat(${ widgets.length }, minmax(238px, 360px))` :
+            {
+              base: 'repeat(auto-fit, minmax(238px, 1fr))',
+              xl: 'repeat(auto-fit, minmax(248px, 1fr))',
+            }
         }
         w="full"
       >
