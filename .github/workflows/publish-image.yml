@@ -20,6 +20,7 @@ on:
         default: |
           linux/amd64
           linux/arm64/v8
+
   workflow_call:
     inputs:
       tags:
@@ -44,6 +45,8 @@ jobs:
   run:
     name: Run
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
