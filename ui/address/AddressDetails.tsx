@@ -311,8 +311,11 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
 
         { (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) && (
           <>
-            <DetailedInfo.ItemLabel hint="Widgets" isLoading={ address3rdPartyWidgets.configQuery.isPlaceholderData }>
-              Widgets
+            <DetailedInfo.ItemLabel
+              hint="Metrics provided by third party partners"
+              isLoading={ address3rdPartyWidgets.configQuery.isPlaceholderData }
+            >
+              Metrics
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue pl={{ base: 0, sm: 7, lg: 0 }}>
               <Address3rdPartyWidgets
