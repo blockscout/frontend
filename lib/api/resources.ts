@@ -87,7 +87,7 @@ export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>;
 /* eslint-disable @stylistic/indent */
 export type PaginationFilters<R extends ResourceName> =
 R extends BensApiResourceName ? BensApiPaginationFilters<R> :
-R extends ClustersApiResourceName ? ClustersApiPaginationFilters<R> :
+R extends ClustersApiResourceName ? ClustersApiPaginationFilters :
 R extends GeneralApiResourceName ? GeneralApiPaginationFilters<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiPaginationFilters<R> :
 R extends TacOperationLifecycleApiResourceName ? TacOperationLifecycleApiPaginationFilters<R> :
@@ -99,7 +99,7 @@ export const SORTING_FIELDS = [ 'sort', 'order' ];
 /* eslint-disable @stylistic/indent */
 export type PaginationSorting<R extends ResourceName> =
 R extends BensApiResourceName ? BensApiPaginationSorting<R> :
-R extends ClustersApiResourceName ? ClustersApiPaginationSorting<R> :
+R extends ClustersApiResourceName ? ClustersApiPaginationSorting :
 R extends GeneralApiResourceName ? GeneralApiPaginationSorting<R> :
 never;
 /* eslint-enable @stylistic/indent */
