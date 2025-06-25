@@ -4,7 +4,7 @@ import { ADDRESS_HASH } from './addressParams';
 
 export const TAC_OPERATION: tac.OperationBriefDetails = {
   operation_id: '0x4d3d36b7fcab0a2f93f24bf313ebfe9cc0b2c7157d2aef7e7f7d5835528428c6',
-  type: tac.OperationType.PENDING,
+  type: tac.OperationType.TAC_TON,
   timestamp: '2025-05-05T12:32:22.000Z',
   sender: {
     address: '0x4d3d36b7fcab0a2f93f24bf313ebfe9cc0b2c7157d2aef7e7f7d5835528428c6',
@@ -14,7 +14,7 @@ export const TAC_OPERATION: tac.OperationBriefDetails = {
 
 export const TAC_OPERATION_DETAILS: tac.OperationDetails = {
   operation_id: '0x6e7cdeea3f39e7664597a44ddb33ce47ba061cbee2992e2c7b0e3f9294ff8b30',
-  type: tac.OperationType.PENDING,
+  type: tac.OperationType.TAC_TON,
   timestamp: '2025-05-05T12:32:22.000Z',
   sender: {
     address: ADDRESS_HASH,

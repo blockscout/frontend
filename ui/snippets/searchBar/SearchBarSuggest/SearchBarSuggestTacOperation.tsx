@@ -7,16 +7,16 @@ import type { SearchResultTacOperation } from 'types/api/search';
 import dayjs from 'lib/date/dayjs';
 import * as OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import TacOperationTag from 'ui/shared/TacOperationTag';
+import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 
 const SearchBarSuggestTacOperation = ({ data, isMobile }: ItemsProps<SearchResultTacOperation>) => {
-  const icon = <OperationEntity.Icon/>;
+  const icon = <OperationEntity.Icon type={ data.tac_operation.type }/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 } mr={ 2 }>
       <HashStringShortenDynamic hash={ data.tac_operation.operation_id } noTooltip/>
     </chakra.mark>
   );
-  const status = <TacOperationTag type={ data.tac_operation.type }/>;
+  const status = <TacOperationStatus status={ data.tac_operation.type }/>;
   const date = dayjs(data.tac_operation.timestamp).format('llll');
 
   if (isMobile) {

@@ -3,7 +3,7 @@ import React from 'react';
 interface Props {
   activeTabIndex: number;
   tabsRefs: Array<React.RefObject<HTMLButtonElement>>;
-  listRef: React.RefObject<HTMLDivElement>;
+  listRef: React.RefObject<HTMLDivElement | null>;
   isMobile?: boolean;
   isLoading?: boolean;
 }

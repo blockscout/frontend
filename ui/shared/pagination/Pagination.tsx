@@ -1,5 +1,5 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
-import { Center, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from './types';
@@ -28,7 +28,7 @@ const Pagination = (props: Props) => {
     >
       <Skeleton loading={ showSkeleton } mr={ 3 }>
         <Button
-          variant="outline"
+          variant="pagination"
           size="sm"
           onClick={ resetPage }
           disabled={ page === 1 || isLoading }
@@ -38,7 +38,7 @@ const Pagination = (props: Props) => {
       </Skeleton>
       <IconButton
         aria-label="Prev page"
-        variant="outline"
+        variant="pagination"
         boxSize={ 8 }
         onClick={ onPrevPageClick }
         disabled={ !canGoBackwards || isLoading || page === 1 }
@@ -46,26 +46,21 @@ const Pagination = (props: Props) => {
       >
         <IconSvg name="arrows/east-mini" boxSize={ 5 }/>
       </IconButton>
-      <Skeleton loading={ showSkeleton } mx={ 2 } >
-        <Center
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          h={ 8 }
-          minW={ 8 }
-          px={ 2 }
-          fontWeight="semibold"
-          bgColor={{ _light: 'blue.50', _dark: 'whiteAlpha.100' }}
-          color={{ _light: 'blue.700', _dark: 'gray.50' }}
-          borderRadius="base"
-          textStyle="sm"
-        >
-          { page }
-        </Center>
-      </Skeleton>
+      <Button
+        variant="pagination"
+        size="sm"
+        selected={ !showSkeleton }
+        pointerEvents="none"
+        loadingSkeleton={ showSkeleton }
+        mx={ 2 }
+        minW={ 8 }
+        px={ 2 }
+      >
+        { page }
+      </Button>
       <IconButton
         aria-label="Next page"
-        variant="outline"
+        variant="pagination"
         boxSize={ 8 }
         onClick={ onNextPageClick }
         disabled={ !hasNextPage || isLoading }

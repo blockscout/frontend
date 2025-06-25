@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function useClientRect<E extends Element>(): [ DOMRect | null, LegacyRef<E> | undefined ] {
   const [ rect, setRect ] = React.useState<DOMRect | null>(null);
-  const nodeRef = React.useRef<E>();
+  const nodeRef = React.useRef<E>(null);
 
   const ref = React.useCallback((node: E) => {
     if (node !== null) {
