@@ -63,7 +63,7 @@ export const useHomeChainSelector = () => {
     }));
 
     if (networkItems && networkItems.length > 0 && !activeNetwork) {
-      const currentNetwork = networkItems.find((network) => currentUrl === network.url) ?? networkItems[0];
+      const currentNetwork = networkItems.find((network) => currentUrl.startsWith(network.url)) ?? networkItems[0];
       setActiveNetwork({ label: capitalize(currentNetwork.title), value: currentNetwork.group });
       setNetworks(createListCollection({
         items: _networks,
@@ -81,7 +81,7 @@ export const useHomeChainSelector = () => {
         value: chain.url,
       }));
 
-      let currentChain = _chains.find((chain) => chain.value === currentUrl);
+      let currentChain = _chains.find((chain) => currentUrl.startsWith(chain.value));
 
       if (!currentChain) {
         const availableChains = _chains.filter((chain) => chain);
