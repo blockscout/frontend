@@ -2,6 +2,20 @@
   "kda": {
     "explorer": {
       "navigation": {
+        "dimensions": {
+          "select": {
+            "option": {
+              "radius": {
+                "$type": "dimension",
+                "$value": "{kda.foundation.radius.lg}"
+              },
+              "padding": {
+                "$type": "dimension",
+                "$value": "6px"
+              }
+            }
+          }
+        },
         "background": {
           "@active": {
             "$type": "color",

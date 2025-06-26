@@ -43,6 +43,8 @@ export const cssVars: CSSVars = {
   'kda-explorer-input-dimensions-radius-base': '0px',
   'kda-explorer-input-border-color-semantic-negative': '#ea3829',
   'kda-explorer-input-border-color-@focus': '#356f5a',
+  'kda-explorer-navigation-dimensions-select-option-radius': '8px',
+  'kda-explorer-navigation-dimensions-select-option-padding': '6px',
   'kda-explorer-navigation-background-@active': '#e9f8ef',
   'kda-explorer-navigation-surface-text': '#1f4f3c',
   'kda-explorer-navigation-surface-text-@selected': '#061a10',
@@ -1113,6 +1115,14 @@ export default {
         },
       },
       navigation: {
+        dimensions: {
+          select: {
+            option: {
+              radius: '8px',
+              padding: '6px',
+            },
+          },
+        },
         background: {
           '@active': '#e9f8ef',
         },

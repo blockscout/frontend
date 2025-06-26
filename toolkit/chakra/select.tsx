@@ -27,6 +27,21 @@ export interface SelectControlProps extends ChakraSelect.ControlProps {
   type?: SelectProps['type'];
 }
 
+export enum OptionPositions {
+  FIRST_ITEM = 'first-item',
+  LAST_ITEM = 'last-item',
+  MID_ITEM = 'mid-item',
+  SINGLE_ITEM = 'single-item',
+};
+
+const getNthItem = (index: number, size: number): OptionPositions => {
+  if (size === 1) return OptionPositions.SINGLE_ITEM;
+  if (index === 0) return OptionPositions.FIRST_ITEM;
+  if (index === size - 1) return OptionPositions.LAST_ITEM;
+
+  return OptionPositions.MID_ITEM;
+};
+
 export const SelectControl = React.forwardRef<
   HTMLButtonElement,
   SelectControlProps
@@ -307,8 +322,8 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
         />
       </SelectControl>
       <SelectContent portalled={ portalled } { ...contentProps }>
-        { collection.items.map((item: SelectOption) => (
-          <SelectItem item={ item } key={ item.value }>
+        { collection.items.map((item: SelectOption, index) => (
+          <SelectItem data-position={ getNthItem(index, collection.items.length) } item={ item } key={ item.value }>
             { item.renderLabel ? item.renderLabel() : item.label }
           </SelectItem>
         )) }
@@ -339,8 +354,8 @@ export const CompactSelect = React.forwardRef<HTMLDivElement, SelectProps>((prop
         />
       </SelectControl>
       <SelectContent portalled={ portalled } { ...contentProps }>
-        { collection.items.map((item: SelectOption) => (
-          <SelectItem item={ item } key={ item.value }>
+        { collection.items.map((item: SelectOption, index) => (
+          <SelectItem data-position={ getNthItem(index, collection.items.length) } item={ item } key={ item.value }>
             { item.label }
           </SelectItem>
         )) }
@@ -375,9 +390,9 @@ export const InlineSelect = React.forwardRef<HTMLDivElement, SelectProps>((props
           type="inline"
         />
       </SelectControl>
-      <SelectContent portalled={ portalled } { ...contentProps }>
-        { collection.items.map((item: SelectOption) => (
-          <SelectItem item={ item } key={ item.value }>
+      <SelectContent padding="var(--kda-explorer-navigation-dimensions-select-option-padding)" portalled={ portalled } { ...contentProps }>
+        { collection.items.map((item: SelectOption, index) => (
+          <SelectItem data-position={ getNthItem(index, collection.items.length) } item={ item } key={ item.value }>
             { item.label }
           </SelectItem>
         )) }
@@ -442,8 +457,8 @@ export const SelectAsync = React.forwardRef<HTMLDivElement, SelectAsyncProps>((p
           />
           { extraControls }
         </Box>
-        { collection.items.map((item) => (
-          <SelectItem item={ item } key={ item.value }>
+        { collection.items.map((item, index) => (
+          <SelectItem data-position={ getNthItem(index, collection.items.length) } item={ item } key={ item.value }>
             { item.renderLabel ? item.renderLabel() : item.label }
           </SelectItem>
         )) }

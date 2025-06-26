@@ -32,7 +32,7 @@ import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
 import { CHAIN_INDICATOR_IDS, HOME_STATS_WIDGET_IDS } from '../../../types/homepage';
 import type { ChainIndicatorId, HeroBannerButtonState, HeroBannerConfig, HomeStatsWidgetId } from '../../../types/homepage';
-import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS, FeaturedChain } from '../../../types/networks';
+import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
 import { COLOR_THEME_IDS } from '../../../types/settings';
 import type { FontFamily } from '../../../types/ui';
 import type { AddressFormat, AddressViewId } from '../../../types/views/address';
@@ -552,17 +552,6 @@ const featuredNetworkSchema: yup.ObjectSchema<FeaturedNetwork> = yup
     invertIconInDarkMode: yup.boolean(),
   }) as any;
 
-const featuredChainsSchema: yup.ObjectSchema<FeaturedChain> = yup
-  .object()
-  .shape({
-    title: yup.string().required(),
-    url: yup.string().test(urlTest).required(),
-    group: yup.string().oneOf(NETWORK_GROUPS).required(),
-    icon: yup.string().test(urlTest),
-    isActive: yup.boolean(),
-    invertIconInDarkMode: yup.boolean(),
-  });
-
 const navItemExternalSchema: yup.ObjectSchema<NavItemExternal> = yup
   .object({
     text: yup.string().required(),
@@ -826,10 +815,6 @@ const schema = yup
       .array()
       .json()
       .of(featuredNetworkSchema),
-    NEXT_PUBLIC_FEATURED_CHAINS: yup
-      .array()
-      .json()
-      .of(featuredChainsSchema),
     NEXT_PUBLIC_OTHER_LINKS: yup
       .array()
       .transform(replaceQuotes)

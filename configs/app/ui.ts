@@ -68,7 +68,6 @@ const UI = Object.freeze({
     baseNetwork: getEnvValue('NEXT_PUBLIC_FEATURED_BASE_NETWORK') || 'mainnet',
     baseChain: getEnvValue('CHAINWEB_CHAIN_ID') || 20,
     featuredNetworks: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS') ?? '/assets/configs/networks.json',
-    featuredChains: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_CHAINS') ?? '/assets/configs/chains.json',
     layout: (getEnvValue('NEXT_PUBLIC_NAVIGATION_LAYOUT') || 'vertical') as NavigationLayout,
   },
   footer: {

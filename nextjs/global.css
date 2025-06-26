@@ -7,3 +7,12 @@
   font-display: swap;
 }
 
+[data-position="first-item"] {
+  border-top-left-radius: var(--kda-explorer-navigation-dimensions-select-option-radius);
+  border-top-right-radius: var(--kda-explorer-navigation-dimensions-select-option-radius);
+}
+
+[data-position="last-item"] {
+  border-bottom-left-radius: var(--kda-explorer-navigation-dimensions-select-option-radius);
+  border-bottom-right-radius: var(--kda-explorer-navigation-dimensions-select-option-radius);
+}

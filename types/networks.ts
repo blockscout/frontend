@@ -1,22 +1,16 @@
 import type { ArrayElement } from 'types/utils';
 
-export const NETWORK_GROUPS = [ 'Mainnets', 'Testnets', 'Other' ] as const;
+export const NETWORK_GROUPS = [
+  'Mainnets', 'Testnets', 'Other',
+  'mainnet', 'testnet', 'devnet',
+] as const;
 export type NetworkGroup = ArrayElement<typeof NETWORK_GROUPS>;
 
 export interface FeaturedNetwork {
   title: string;
   url: string;
-  id: string;
-  icon?: string;
-  isActive?: boolean;
-}
-
-export interface FeaturedChain {
-  title: string;
-  url: string;
   group: NetworkGroup;
   icon?: string;
-  isActive?: boolean;
   invertIconInDarkMode?: boolean;
 }
 

@@ -4,10 +4,10 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkMenuContentDesktop from 'ui/snippets/networkMenu/NetworkMenuContentDesktop';
-import { useChainMenu } from 'ui/snippets/networkMenu/useNetworkMenu';
+import { useNetworkMenu } from 'ui/snippets/networkMenu/useNetworkMenu';
 
 const NetworkMenu = () => {
-  const menu = useChainMenu();
+  const menu = useNetworkMenu();
 
   return (
     <PopoverRoot

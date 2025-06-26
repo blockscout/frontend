@@ -276,6 +276,14 @@
         }
       },
       "navigation": {
+        "dimensions": {
+          "select": {
+            "option": {
+              "radius": "8px",
+              "padding": "6px"
+            }
+          }
+        },
         "background": {
           "@active": "#E9F8EF"
         },

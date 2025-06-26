@@ -100,6 +100,14 @@ export type KDADesignSystemLightTokens = {
         };
       };
       navigation: {
+        dimensions: {
+          select: {
+            option: {
+              radius: string;
+              padding: string;
+            };
+          };
+        };
         background: {
           '@active': string;
         };
