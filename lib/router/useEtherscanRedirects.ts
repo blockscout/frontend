@@ -73,6 +73,12 @@ export default function useEtherscanRedirects() {
                 query: { hash, tab: 'tokens_nfts' },
               });
               break;
+            case '#aatx':
+              router.replace({
+                pathname: '/address/[hash]',
+                query: { hash, tab: 'user_ops' },
+              });
+              break;
             case '#code':
               router.replace({
                 pathname: '/address/[hash]',
