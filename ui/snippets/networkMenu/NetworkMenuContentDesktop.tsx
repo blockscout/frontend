@@ -1,8 +1,9 @@
 import { VStack, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { FeaturedChain, NetworkGroup } from 'types/networks';
+import type { FeaturedNetwork, NetworkGroup } from 'types/networks';
 
+import config from 'configs/app';
 import { PopoverBody, PopoverContent } from 'toolkit/chakra/popover';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
@@ -11,12 +12,12 @@ import NetworkMenuLink from './NetworkMenuLink';
 
 interface Props {
   tabs: Array<NetworkGroup>;
-  items?: Array<FeaturedChain>;
+  items?: Array<FeaturedNetwork>;
 }
 
 const NetworkMenuPopup = ({ items, tabs }: Props) => {
-  const [ defaultTab ] = tabs ?? [ 'Mainnets' ];
-  const selectedNetwork = items?.find(({ isActive }) => isActive) ?? items?.find(({ url }) => url === window.location.href) ?? items?.[0];
+  const [ defaultTab ] = tabs ?? [ config.UI.navigation.baseNetwork as NetworkGroup ];
+  const selectedNetwork = items?.find(({ url }) => url === window.location.href) ?? items?.[0];
   const selectedTab = tabs.find((tab) => selectedNetwork?.group === tab) ?? defaultTab;
 
   const [ value, setValue ] = React.useState<NetworkGroup>(selectedTab);

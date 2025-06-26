@@ -1,7 +1,7 @@
-import type { FeaturedChain } from 'types/networks';
+import type { FeaturedNetwork } from 'types/networks';
 
-export const FEATURED_CHAINS: Array<FeaturedChain> = [
-  { title: 'Gnosis Chain', url: 'https://blockscout.com/xdai/mainnet', group: 'Mainnets', isActive: true },
+export const FEATURED_NETWORKS: Array<FeaturedNetwork> = [
+  { title: 'Gnosis Chain', url: 'https://blockscout.com/xdai/mainnet', group: 'Mainnets' },
   { title: 'Arbitrum on xDai', url: 'https://blockscout.com/xdai/aox', group: 'Mainnets' },
   { title: 'Ethereum', url: 'https://blockscout.com/eth/mainnet', group: 'Mainnets' },
   { title: 'Ethereum Classic', url: 'https://blockscout.com/etx/mainnet', group: 'Mainnets', icon: 'https://localhost:3000/my-logo.png' },
