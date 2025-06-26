@@ -65,9 +65,7 @@ const UI = Object.freeze({
     hiddenLinks,
     highlightedRoutes,
     otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue('NEXT_PUBLIC_OTHER_LINKS')) || [],
-    baseNetwork: getEnvValue('NEXT_PUBLIC_FEATURED_BASE_NETWORK') || 'mainnet',
-    baseChain: getEnvValue('CHAINWEB_CHAIN_ID') || 20,
-    featuredNetworks: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS') ?? '/assets/configs/networks.json',
+    featuredNetworks: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS') ?? '/assets/configs/featured_networks.json',
     layout: (getEnvValue('NEXT_PUBLIC_NAVIGATION_LAYOUT') || 'vertical') as NavigationLayout,
   },
   footer: {

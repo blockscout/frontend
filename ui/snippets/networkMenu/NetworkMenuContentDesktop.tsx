@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { FeaturedNetwork, NetworkGroup } from 'types/networks';
 
-import config from 'configs/app';
 import { PopoverBody, PopoverContent } from 'toolkit/chakra/popover';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
@@ -16,7 +15,7 @@ interface Props {
 }
 
 const NetworkMenuPopup = ({ items, tabs }: Props) => {
-  const [ defaultTab ] = tabs ?? [ config.UI.navigation.baseNetwork as NetworkGroup ];
+  const [ defaultTab ] = tabs ?? [ ];
   const selectedNetwork = items?.find(({ url }) => url === window.location.href) ?? items?.[0];
   const selectedTab = tabs.find((tab) => selectedNetwork?.group === tab) ?? defaultTab;
 

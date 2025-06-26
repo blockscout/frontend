@@ -9,8 +9,6 @@ import type { FormEventHandler } from 'react';
 
 import type { FeaturedNetwork } from '../../types/networks';
 
-import config from 'configs/app';
-
 import { Select, CompactSelect, InlineSelect } from '../../toolkit/chakra/select';
 import type { SelectOption, SelectProps } from '../../toolkit/chakra/select';
 import { useNetworkMenu } from '../snippets/networkMenu/useNetworkMenu';
@@ -65,10 +63,7 @@ export const useHomeChainSelector = () => {
     }));
 
     if (networkItems && networkItems.length > 0 && !activeNetwork) {
-      let currentNetwork = networkItems.find((network) => currentUrl.includes(network.group));
-
-      currentNetwork ??= networkItems.find((network) => network.group === config.UI.navigation.baseNetwork) ?? networkItems[0];
-
+      const currentNetwork = networkItems.find((network) => currentUrl === network.url) ?? networkItems[0];
       setActiveNetwork({ label: capitalize(currentNetwork.title), value: currentNetwork.group });
       setNetworks(createListCollection({
         items: _networks,
@@ -90,7 +85,7 @@ export const useHomeChainSelector = () => {
 
       if (!currentChain) {
         const availableChains = _chains.filter((chain) => chain);
-        currentChain = _chains.find((chain) => chain.value.includes(`chain-${ config.UI.navigation.baseChain }`)) ?? availableChains[0];
+        currentChain = availableChains[0];
       }
 
       if (currentChain && !currentUrl.startsWith(currentChain.value)) {
