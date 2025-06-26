@@ -11,13 +11,13 @@ import IconSvg from 'ui/shared/IconSvg';
 type Props = {
   icon?: IconName;
   iconSize?: string;
-  iconUrl?: [ string, string ];
+  iconUrl?: Array<string>;
   text: string;
   url: string;
   isLoading?: boolean;
 };
 
-const FooterLinkItemIconExternal = ({ iconUrl, text }: { iconUrl: [ string, string ]; text: string }) => {
+const FooterLinkItemIconExternal = ({ iconUrl, text }: { iconUrl: Array<string>; text: string }) => {
   const [ lightIconUrl, darkIconUrl ] = iconUrl;
 
   const imageSrc = useColorModeValue(lightIconUrl, darkIconUrl || lightIconUrl);

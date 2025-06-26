@@ -1,7 +1,7 @@
 export type CustomLink = {
   text: string;
   url: string;
-  iconUrl?: [ string, string ];
+  iconUrl?: Array<string>;
 };
 
 export type CustomLinksGroup = {
