@@ -10,7 +10,7 @@ import { STATS_COUNTER } from './stats';
 export const CONTRACT_CODE_UNVERIFIED = {
   creation_bytecode: '0x60806040526e',
   deployed_bytecode: '0x608060405233',
-  is_self_destructed: false,
+  creation_status: 'success',
 } as SmartContract;
 
 export const CONTRACT_CODE_VERIFIED = {
