@@ -12,7 +12,7 @@ import { nbsp } from 'toolkit/utils/htmlEntities';
 export const relativeTimeConfig = {
   thresholds: [
     { l: 's', r: 1 },
-    { l: 'ss', r: 59, d: 'secondasdfasdf' },
+    { l: 'ss', r: 59, d: 'second' },
     { l: 'm', r: 1 },
     { l: 'mm', r: 59, d: 'minute' },
     { l: 'h', r: 1 },
@@ -42,7 +42,7 @@ dayjs.updateLocale('en', {
   },
   relativeTime: {
     s: '1s',
-    ss: '%d seconds',
+    ss: '%ds',
     future: 'in %s',
     past: '%s ago',
     m: '1m',

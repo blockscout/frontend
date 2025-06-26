@@ -32,7 +32,7 @@ import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
 import { CHAIN_INDICATOR_IDS, HOME_STATS_WIDGET_IDS } from '../../../types/homepage';
 import type { ChainIndicatorId, HeroBannerButtonState, HeroBannerConfig, HomeStatsWidgetId } from '../../../types/homepage';
-import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
+import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork } from '../../../types/networks';
 import { COLOR_THEME_IDS } from '../../../types/settings';
 import type { FontFamily } from '../../../types/ui';
 import type { AddressFormat, AddressViewId } from '../../../types/views/address';
@@ -546,7 +546,7 @@ const featuredNetworkSchema: yup.ObjectSchema<FeaturedNetwork> = yup
   .shape({
     title: yup.string().required(),
     url: yup.string().test(urlTest).required(),
-    group: yup.string().oneOf(NETWORK_GROUPS).required(),
+    group: yup.string().required(),
     icon: yup.string().test(urlTest),
     isActive: yup.boolean(),
     invertIconInDarkMode: yup.boolean(),
