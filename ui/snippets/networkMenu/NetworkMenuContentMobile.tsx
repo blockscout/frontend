@@ -4,7 +4,6 @@ import React from 'react';
 
 import type { NetworkGroup, FeaturedNetwork } from 'types/networks';
 
-import config from 'configs/app';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -16,7 +15,7 @@ interface Props {
 }
 
 const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
-  const [ defaultTab ] = tabs ?? [ config.UI.navigation.baseNetwork ];
+  const [ defaultTab ] = tabs ?? [ ];
   const selectedNetwork = items?.find(({ url }) => url === window.location.href) ?? items?.[0];
   const [ selectedTab, setSelectedTab ] = React.useState<NetworkGroup>(defaultTab);
 

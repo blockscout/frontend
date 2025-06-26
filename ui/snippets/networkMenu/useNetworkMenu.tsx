@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import type { FeaturedNetwork } from 'types/networks';
-import { NETWORK_GROUPS } from 'types/networks';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
@@ -28,6 +27,10 @@ export function useNetworkMenu() {
     onOpenChange(details);
   }, [ onOpenChange ]);
 
+  const networkGroups = React.useMemo(
+    () => data?.map(({ group }) => group).filter((group, index, self) => self.indexOf(group) === index) || []
+    , [ data ]);
+
   return React.useMemo(() => ({
     open,
     onClose,
@@ -36,6 +39,6 @@ export function useNetworkMenu() {
     onOpenChange: handleOpenChange,
     isPending,
     data,
-    availableTabs: NETWORK_GROUPS.filter((tab) => data?.some(({ group }) => group === tab)),
-  }), [ open, onClose, onOpen, onToggle, handleOpenChange, data, isPending ]);
+    availableTabs: networkGroups,
+  }), [ open, onClose, onOpen, onToggle, handleOpenChange, data, isPending, networkGroups ]);
 }
