@@ -227,6 +227,12 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
             fontWeight="700"
             fontSize="24px"
             color="#000000"
+            sx={{
+              '@media screen and (max-width: 999px)': {
+                flexWrap: 'wrap',
+                fontSize: '18px',
+              } }
+            }
           >
             <Text>Authorize</Text>
             <IconSvg
@@ -279,20 +285,26 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
             sx={{
               '@media screen and (max-width: 999px)': {
                 flexWrap: 'wrap',
+                fontSize: '18px',
               } }
             }
           >
             <Heading
               fontWeight="700"
-              fontSize="24px"
               color="#000000"
               lineHeight="28px"
+              fontSize="24px"
+              sx={{
+                '@media screen and (max-width: 999px)': {
+                  fontSize: '18px',
+                } }
+              }
             >
               <Highlight query="$MOCA" styles={{ color: '#D940A4' }}>
                 Request $MOCA on Moca Chain
               </Highlight>
             </Heading>
-            <Image src={ mocaIcon } alt="Moca Icon" style={{ width: '25px', height: '25px', margin: '0 4px' }}/>
+            <Image src={ mocaIcon } alt="Moca Icon" style={{ width: '25px', margin: '0 4px' }}/>
             <Text fontWeight="700" color="#000000">
               Testnet
             </Text>
@@ -314,6 +326,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
                   fontSize="14px"
                   placeholder="Enter address"
                   padding="12px 8px"
+                  marginBottom="12px"
                   { ...register('address', {
                     onChange: () => {
                       reset();
