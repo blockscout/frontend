@@ -194,7 +194,13 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
       >
         Tokens will be automatically transferred to your address.
       </Text>
-      <Flex>
+      <Flex
+        sx={{
+          '@media screen and (max-width: 999px)': {
+            flexWrap: 'wrap',
+          } }
+        }
+      >
         <Box
           width="580px"
           minH="280px"
@@ -270,6 +276,11 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
             alignItems="center"
             fontWeight="700"
             fontSize="24px"
+            sx={{
+              '@media screen and (max-width: 999px)': {
+                flexWrap: 'wrap',
+              } }
+            }
           >
             <Heading
               fontWeight="700"
@@ -288,7 +299,13 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
           </Flex>
           <form noValidate autoComplete="off" onSubmit={ handleSubmit(onSubmit) }>
             <FormControl>
-              <Flex>
+              <Flex
+                sx={{
+                  '@media screen and (max-width: 999px)': {
+                    flexWrap: 'wrap',
+                  } }
+                }
+              >
                 <Input
                   width="300px"
                   height="48px"
