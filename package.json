@@ -80,6 +80,7 @@
     "dayjs": "^1.11.5",
     "dom-to-image": "^2.6.0",
     "es-toolkit": "1.31.0",
+    "evm": "^0.2.0",
     "focus-visible": "^5.2.0",
     "framer-motion": "^6.5.1",
     "getit-sdk": "^1.0.4",
@@ -116,6 +117,7 @@
     "use-font-face-observer": "^1.2.1",
     "valibot": "0.38.0",
     "viem": "2.21.54",
+    "wabt": "^1.0.37",
     "wagmi": "2.14.0",
     "xss": "^1.0.14"
   },

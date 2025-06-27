@@ -1,5 +1,7 @@
-import { Alert, Flex } from '@chakra-ui/react';
-import React from 'react';
+import { Alert, Button, Flex } from '@chakra-ui/react';
+import { EVM } from 'evm';
+import React, { useEffect, useState } from 'react';
+import wabtInit from 'wabt';
 
 import type { SmartContract } from 'types/api/contract';
 
@@ -24,7 +26,50 @@ interface Props {
   sourceAddress: string;
 }
 
+const useOpcodes = ({ bytecode }: { bytecode: string | undefined | null }) => {
+  const [ opcodes, setOpcodes ] = useState<string>('');
+
+  useEffect(() => {
+    async function disassemble() {
+      try {
+        if (bytecode) return;
+        if (bytecode!.trim().replace(/^0x/, '').toLowerCase().startsWith('0061736d')) {
+          const wabt = await wabtInit();
+
+          const buffer = Uint8Array.from(
+            (bytecode as string)
+              .replace(/^0x/, '')
+              .match(/.{1,2}/g)!
+              .map((b) => parseInt(b, 16)),
+          );
+
+          const mod = wabt.readWasm(buffer, { readDebugNames: true });
+          mod.applyNames();
+          const watText = mod.toText({ foldExprs: false });
+          mod.destroy();
+
+          setOpcodes(watText);
+          return;
+        }
+        const evm = new EVM(bytecode!.startsWith('0x') ? bytecode as string : '0x' + bytecode);
+        setOpcodes(evm.getOpcodes().join('\n'));
+      } catch (err) {
+        setOpcodes('-');
+      }
+    }
+
+    disassemble();
+  }, [ bytecode ]);
+
+  return {
+    opcodes,
+  };
+
+};
+
 export default function useContractDetailsTabs({ data, isLoading, addressHash, sourceAddress }: Props): Array<Tab> {
+  const [ showOpCode, setShowOpCode ] = useState(false);
+  const { opcodes } = useOpcodes({ bytecode: data?.deployed_bytecode });
 
   const canBeVerified = !data?.is_self_destructed && !data?.is_verified && data?.proxy_type !== 'eip7702';
 
@@ -35,6 +80,22 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         addressHash={ addressHash }
         isPartiallyVerified={ Boolean(data?.is_partially_verified) }
       />
+    );
+    const toggleButton = () => setShowOpCode(!showOpCode);
+
+    const switchToOpCodeButton = (
+      <Button
+        size="sm"
+        mr={ 3 }
+        mb={ 2 }
+        ml="auto"
+        flexShrink={ 0 }
+        as="a"
+        // eslint-disable-next-line react/jsx-no-bind
+        onClick={ toggleButton }
+      >
+        { showOpCode ? 'Show ByteCode' : 'Show OpCode' }
+      </Button>
     );
 
     return [
@@ -105,8 +166,9 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
             ) }
             { data?.deployed_bytecode && (
               <RawDataSnippet
-                data={ data.deployed_bytecode }
-                title="Deployed ByteCode"
+                data={ showOpCode ? opcodes : data.deployed_bytecode }
+                title={ showOpCode ? 'Deployed OpCode' : 'Deployed ByteCode' }
+                beforeSlot={ switchToOpCodeButton }
                 rightSlot={ !data?.creation_bytecode && canBeVerified ? verificationButton : null }
                 textareaMaxHeight="300px"
                 isLoading={ isLoading }
@@ -116,5 +178,5 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         ),
       } : undefined,
     ].filter(Boolean);
-  }, [ isLoading, addressHash, data, sourceAddress, canBeVerified ]);
+  }, [ isLoading, addressHash, data, sourceAddress, canBeVerified, showOpCode, opcodes ]);
 }
