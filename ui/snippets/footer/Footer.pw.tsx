@@ -9,7 +9,7 @@ import Footer from './Footer';
 const FOOTER_LINKS_URL = 'https://localhost:3000/footer-links.json';
 
 test.describe('with custom links, max cols', () => {
-  test.beforeEach(async({ render, mockApiResponse, mockConfigResponse, injectMetaMaskProvider, mockEnvs }) => {
+  test.beforeEach(async({ render, mockApiResponse, mockConfigResponse, injectMetaMaskProvider, mockEnvs, mockAssetResponse }) => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL ],
     ]);
@@ -21,6 +21,8 @@ test.describe('with custom links, max cols', () => {
       indexed_internal_transactions_ratio: '0.1',
       indexed_blocks_ratio: '0.1',
     });
+    await mockAssetResponse(FOOTER_LINKS[3].links[0].iconUrl?.[0]!, './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(FOOTER_LINKS[3].links[0].iconUrl?.[1]!, './playwright/mocks/image_svg.svg');
 
     await render(<Footer/>);
   });
