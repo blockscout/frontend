@@ -76,7 +76,7 @@ export default function useContractDetailsTabs({ data, isLoading, addressData, s
 
       (data?.creation_bytecode || data?.deployed_bytecode) ? {
         id: 'contract_bytecode' as const,
-        title: 'ByteCode',
+        title: 'Bytecode',
         component: <ContractDetailsByteCode data={ data } isLoading={ isLoading } addressData={ addressData }/>,
       } : undefined,
     ].filter(Boolean);

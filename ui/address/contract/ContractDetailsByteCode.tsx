@@ -29,9 +29,9 @@ const ContractDetailsByteCode = ({ data, isLoading, addressData }: Props) => {
   const creationStatusText = (() => {
     switch (data.creation_status) {
       case 'selfdestructed':
-        return 'This contract self-destructed upon deployment, so there\'s no runtime bytecode to verify. Below is the raw creation bytecode.';
+        return 'This contract self-destructed after deployment and there is no runtime bytecode. Below is the raw creation bytecode.';
       case 'failed':
-        return 'This contract creation transaction failed, so there\'s no runtime bytecode to verify. Below is the raw creation bytecode.';
+        return 'Contract creation failed and there is no runtime bytecode. Below is the raw creation bytecode.';
       default:
         return null;
     }
@@ -56,7 +56,7 @@ const ContractDetailsByteCode = ({ data, isLoading, addressData }: Props) => {
       { data?.deployed_bytecode && (
         <RawDataSnippet
           data={ data.deployed_bytecode }
-          title="Deployed ByteCode"
+          title="Deployed bytecode"
           rightSlot={ !data?.creation_bytecode && canBeVerified ? verificationButton : null }
           textareaMaxHeight="300px"
           isLoading={ isLoading }
