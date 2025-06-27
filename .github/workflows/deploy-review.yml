@@ -38,6 +38,7 @@ on:
             - zkevm
             - zilliqa_prototestnet
             - zksync
+            - via
             - zora
 
 jobs:

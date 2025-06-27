@@ -221,6 +221,20 @@ test('verification of zkSync contract', async({ render, mockEnvs }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('verification of viaa contract', async({ render, mockEnvs }) => {
+  const viaFormConfig: SmartContractVerificationConfig = {
+    ...formConfig,
+    verification_options: [ 'standard-input' ],
+    zk_compiler_versions: [ 'v1.4.1', 'v1.4.0', 'v1.3.23', 'v1.3.22' ],
+    zk_optimization_modes: [ '0', '1', '2', '3', 's', 'z' ],
+  };
+
+  await mockEnvs(ENVS_MAP.viaRollup);
+  const component = await render(<ContractVerificationForm config={ viaFormConfig } hash={ hash }/>, { hooksConfig });
+
+  await expect(component).toHaveScreenshot();
+});
+
 test('verification of stylus rust contract', async({ render, page }) => {
   const stylusRustFormConfig: SmartContractVerificationConfig = {
     ...formConfig,

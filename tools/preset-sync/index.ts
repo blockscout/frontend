@@ -30,6 +30,7 @@ const PRESETS = {
   tac_turin: 'https://tac-turin.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
+  via: 'https://via.blockscout.com',
   zilliqa_prototestnet: 'https://zilliqa-prototestnet.blockscout.com',
   zora: 'https://explorer.zora.energy',
   // main === staging
