@@ -48,7 +48,7 @@ const Icon = (props: IconProps) => {
       justifyContent="center"
       width={ styles.boxSize }
       height={ styles.boxSize }
-      backgroundColor="#EF4444"
+      backgroundColor="#de6061"
       borderRadius="6px"
       mr={ 2 }
       flexShrink={ 0 }
@@ -57,6 +57,7 @@ const Icon = (props: IconProps) => {
         name="clusters"
         boxSize={ 6 }
         color="white"
+        style={{ filter: 'brightness(0) invert(1)' }}
       />
     </Box>
   );
@@ -82,11 +83,11 @@ const Icon = (props: IconProps) => {
           alignItems="center"
           justifyContent="center"
           boxSize={ 5 }
-          backgroundColor="#EF4444"
+          backgroundColor="#de6061"
           borderRadius="4px"
           mr={ 2 }
         >
-          <IconSvg name="clusters" boxSize={ 3 } color="white"/>
+          <IconSvg name="clusters" boxSize={ 4 } color="white" style={{ filter: 'brightness(0) invert(1)' }}/>
         </Box>
         <div>
           <span>Clusters</span>
