@@ -115,7 +115,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   const actionBar = isMobile ? (
     <ActionBar mt={ -6 }>
       <Link href={ route({ pathname: '/block/countdown' }) }>
-        <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
+        <IconSvg name="hourglass_slim" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
       </Link>
       <Pagination ml="auto" { ...query.pagination }/>

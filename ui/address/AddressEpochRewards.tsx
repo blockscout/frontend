@@ -12,7 +12,7 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-import AddressCsvExportLink from './AddressCsvExportLink';
+// import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressEpochRewardsListItem from './epochRewards/AddressEpochRewardsListItem';
 
 type Props = {
@@ -38,7 +38,7 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
         items_count: 50,
         type: 'voter',
         associated_account_address_hash: '1',
-        block_number: 10355938,
+        epoch_number: 10355938,
       } }),
     },
   });
@@ -59,7 +59,7 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
       <Box hideFrom="lg">
         { rewardsQuery.data.items.map((item, index) => (
           <AddressEpochRewardsListItem
-            key={ item.block_hash + item.type + item.account.hash + item.associated_account.hash + (rewardsQuery.isPlaceholderData ? String(index) : '') }
+            key={ item.epoch_number + item.type + item.account.hash + item.associated_account.hash + (rewardsQuery.isPlaceholderData ? String(index) : '') }
             item={ item }
             isLoading={ rewardsQuery.isPlaceholderData }
           />
@@ -70,13 +70,17 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
 
   const actionBar = rewardsQuery.pagination.isVisible ? (
     <ActionBar mt={ -6 }>
-      <AddressCsvExportLink
+      { /* <AddressCsvExportLink
         address={ hash }
         isLoading={ rewardsQuery.pagination.isLoading }
         params={{ type: 'epoch-rewards' }}
         ml={{ lg: 'auto' }}
+      /> */ }
+      <Pagination
+        ml="auto"
+        // ml={{ base: 0, lg: 8 }}
+        { ...rewardsQuery.pagination }
       />
-      <Pagination ml={{ base: 0, lg: 8 }} { ...rewardsQuery.pagination }/>
     </ActionBar>
   ) : null;
 

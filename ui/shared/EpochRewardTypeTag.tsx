@@ -1,17 +1,17 @@
 import React from 'react';
 
-import type { EpochRewardsType } from 'types/api/block';
+import type { CeloEpochRewardsType } from 'types/api/epochs';
 
 import type { BadgeProps } from 'toolkit/chakra/badge';
 import { Badge } from 'toolkit/chakra/badge';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 
 type Props = {
-  type: EpochRewardsType;
+  type: CeloEpochRewardsType;
   isLoading?: boolean;
 };
 
-const TYPE_TAGS: Record<EpochRewardsType, { text: string; label: string; color: BadgeProps['colorPalette'] }> = {
+const TYPE_TAGS: Record<CeloEpochRewardsType, { text: string; label: string; color: BadgeProps['colorPalette'] }> = {
   group: {
     text: 'Validator group rewards',
     // eslint-disable-next-line max-len

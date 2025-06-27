@@ -7,5 +7,7 @@ export default function shortenString(string: string | null, charNumber: number 
     return string;
   }
 
-  return string.slice(0, charNumber - 4) + '...' + string.slice(-4);
+  const tailLength = charNumber < 8 ? 2 : 4;
+
+  return string.slice(0, charNumber - tailLength) + '...' + string.slice(-tailLength);
 }

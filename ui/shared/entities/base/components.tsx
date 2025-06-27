@@ -35,6 +35,7 @@ export interface EntityBaseProps {
   tailLength?: number;
   target?: React.HTMLAttributeAnchorTarget;
   truncation?: Truncation;
+  truncationMaxSymbols?: number;
   variant?: 'content' | 'heading' | 'subheading';
   linkVariant?: LinkProps['variant'];
 }
@@ -167,7 +168,9 @@ const IconShield = (props: IconShieldProps) => {
   return <IconSvg className="entity__shield" { ...styles } { ...svgProps }/>;
 };
 
-export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'noTooltip' | 'variant'> {
+export interface ContentBaseProps extends Pick<
+  EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'noTooltip' | 'variant' | 'truncationMaxSymbols'
+> {
   asProp?: React.ElementType;
   text: string;
   tooltipInteractive?: boolean;
@@ -179,6 +182,7 @@ const Content = chakra(({
   asProp,
   text,
   truncation = 'dynamic',
+  truncationMaxSymbols,
   tailLength,
   variant,
   noTooltip,
@@ -208,6 +212,7 @@ const Content = chakra(({
             type="long"
             noTooltip={ noTooltip }
             tooltipInteractive={ tooltipInteractive }
+            maxSymbols={ truncationMaxSymbols }
           />
         );
       case 'constant':
@@ -217,6 +222,7 @@ const Content = chakra(({
             as={ asProp }
             noTooltip={ noTooltip }
             tooltipInteractive={ tooltipInteractive }
+            maxSymbols={ truncationMaxSymbols }
           />
         );
       case 'dynamic':
