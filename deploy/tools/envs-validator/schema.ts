@@ -953,6 +953,8 @@ const schema = yup
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_METADATA_SERVICE_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_CLUSTERS_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_CLUSTERS_CDN_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
       .mixed()

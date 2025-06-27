@@ -660,6 +660,17 @@ This feature allows name tags and other public tags for addresses.
 
 &nbsp;
 
+### Clusters Universal Name Service
+
+This feature integrates Clusters.xyz universal naming service, enabling users to look up and track cross-chain identities through human-readable names like "vitalik/" or "uniswap/". Unlike traditional domain services that work on single chains, clusters span multiple blockchains - one cluster name can represent addresses on Ethereum, Base, Optimism, and other networks. This integration adds cluster lookup pages (/clusters/[name]), a clusters directory (/clusters), search functionality in the main search bar, and displays cluster profile information and images throughout the explorer.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_CLUSTERS_API_HOST | `string` | Clusters.xyz API endpoint for fetching cluster data, directory listings, and cross-chain address mappings | Required | - | `https://example.com/clusters-api` | v2.2.0+ |
+| NEXT_PUBLIC_CLUSTERS_CDN_URL | `string` | CDN base URL for serving cluster profile images and avatars displayed in search results and cluster pages | - | `https://cdn.clusters.xyz` | `https://your-cdn.example.com` | v2.2.0+ |
+
+&nbsp;
+
 ### Public tag submission
 
 This feature allows you to submit an application with a public address tag.

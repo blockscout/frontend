@@ -23,6 +23,8 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/token/[hash]/instance/[id]': 'Regular page',
   '/apps': 'Root page',
   '/apps/[id]': 'Regular page',
+  '/clusters': 'Root page',
+  '/clusters/[name]': 'Regular page',
   '/stats': 'Root page',
   '/stats/[id]': 'Regular page',
   '/api-docs': 'Regular page',
