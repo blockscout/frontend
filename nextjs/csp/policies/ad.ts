@@ -37,7 +37,7 @@ export function ad(): CspDev.DirectiveDescriptor {
       'https://testnet-storage.mocachain.org/v1/graphql',
       'https://devzk-credential.bitkinetic.com',
       'https://testzk-credential.bitkinetic.com',
-      'https://credential.api.sandbox.air3.com/unifiedgobackend',
+      'https://credential.api.sandbox.air3.com',
     ],
     'frame-src': [
       // coinzilla
