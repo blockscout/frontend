@@ -7,6 +7,7 @@ export const verified: SmartContract = {
   compiler_version: 'v0.5.16+commit.9c3226ce',
   constructor_args: 'constructor_args',
   creation_bytecode: 'creation_bytecode',
+  creation_status: 'success',
   deployed_bytecode: 'deployed_bytecode',
   compiler_settings: {
     evmVersion: 'london',
@@ -33,7 +34,6 @@ export const verified: SmartContract = {
   ],
   language: 'solidity',
   license_type: 'gnu_gpl_v3',
-  is_self_destructed: false,
   is_verified_via_eth_bytecode_db: null,
   is_changed_bytecode: null,
   is_verified_via_sourcify: null,
@@ -88,7 +88,7 @@ export const withProxyAddress: SmartContract = {
 
 export const selfDestructed: SmartContract = {
   ...verified,
-  is_self_destructed: true,
+  creation_status: 'selfdestructed',
 };
 
 export const withChangedByteCode: SmartContract = {
@@ -122,7 +122,7 @@ export const nonVerified: SmartContract = {
   is_blueprint: false,
   creation_bytecode: 'creation_bytecode',
   deployed_bytecode: 'deployed_bytecode',
-  is_self_destructed: false,
+  creation_status: 'success',
   abi: null,
   compiler_version: null,
   evm_version: null,
