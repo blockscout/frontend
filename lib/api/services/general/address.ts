@@ -125,6 +125,11 @@ export const GENERAL_API_ADDRESS_RESOURCES = {
     path: '/api/v2/proxy/3dparty/xname/addresses/:hash',
     pathParams: [ 'hash' as const ],
   },
+  address_3rd_party_info: {
+    path: '/api/v2/proxy/3dparty/:name',
+    pathParams: [ 'name' as const ],
+    filterFields: [ 'address' as const, 'chain_id' as const ],
+  },
 } satisfies Record<string, ApiResource>;
 
 export type GeneralApiAddressResourceName = `general:${ keyof typeof GENERAL_API_ADDRESS_RESOURCES }`;
@@ -149,6 +154,7 @@ R extends 'general:address_collections' ? AddressCollectionsResponse :
 R extends 'general:address_withdrawals' ? AddressWithdrawalsResponse :
 R extends 'general:address_epoch_rewards' ? AddressEpochRewardsResponse :
 R extends 'general:address_xstar_score' ? AddressXStarResponse :
+R extends 'general:address_3rd_party_info' ? unknown :
 never;
 /* eslint-enable @stylistic/indent */
 

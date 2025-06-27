@@ -18,6 +18,8 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
+import Address3rdPartyWidgets from './Address3rdPartyWidgets';
+import useAddress3rdPartyWidgets from './address3rdPartyWidgets/useAddress3rdPartyWidgets';
 import AddressAlternativeFormat from './details/AddressAlternativeFormat';
 import AddressBalance from './details/AddressBalance';
 import AddressImplementations from './details/AddressImplementations';
@@ -43,6 +45,8 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
     hash: addressHash,
     addressQuery,
   });
+
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa', addressQuery.isPlaceholderData);
 
   const error404Data = React.useMemo(() => ({
     hash: addressHash || '',
@@ -304,6 +308,23 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
         ) }
 
         <DetailedInfoSponsoredItem isLoading={ isLoading }/>
+
+        { (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) && (
+          <>
+            <DetailedInfo.ItemLabel
+              hint="Metrics provided by third party partners"
+              isLoading={ address3rdPartyWidgets.configQuery.isPlaceholderData }
+            >
+              Widgets
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue pl={{ base: 0, sm: 7, lg: 0 }}>
+              <Address3rdPartyWidgets
+                addressType={ data.is_contract ? 'contract' : 'eoa' }
+                isLoading={ addressQuery.isPlaceholderData }
+              />
+            </DetailedInfo.ItemValue>
+          </>
+        ) }
       </DetailedInfo.Container>
     </>
   );
