@@ -2,7 +2,7 @@ import { Box, Grid, GridItem, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { BlockEpoch } from 'types/api/block';
+import type { CeloEpochDetails } from 'types/api/epochs';
 import type { TokenInfo } from 'types/api/token';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
@@ -14,20 +14,20 @@ import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';
 import { formatRewardType, getRewardDetailsTableTitles } from './utils';
 
 interface Props {
-  type: keyof BlockEpoch['aggregated_election_rewards'];
+  type: keyof CeloEpochDetails['aggregated_election_rewards'];
   token: TokenInfo;
 }
 
-const BlockEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
+const CeloEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
   const rootRef = React.useRef<HTMLDivElement>(null);
 
   const router = useRouter();
-  const heightOrHash = getQueryParamString(router.query.height_or_hash);
+  const number = getQueryParamString(router.query.number);
 
   const { cutRef, query } = useLazyLoadedList({
     rootRef,
-    resourceName: 'general:block_election_rewards',
-    pathParams: { height_or_hash: heightOrHash, reward_type: formatRewardType(type) },
+    resourceName: 'general:epoch_celo_election_rewards',
+    pathParams: { number: number, reward_type: formatRewardType(type) },
     queryOptions: {
       refetchOnMount: false,
     },
@@ -97,4 +97,4 @@ const BlockEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
   );
 };
 
-export default React.memo(BlockEpochElectionRewardDetailsDesktop);
+export default React.memo(CeloEpochElectionRewardDetailsDesktop);

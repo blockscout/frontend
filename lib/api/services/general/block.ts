@@ -6,8 +6,6 @@ import type {
   BlockFilters,
   BlockWithdrawalsResponse,
   BlockCountdownResponse,
-  BlockEpoch,
-  BlockEpochElectionRewardDetailsResponse,
   BlockInternalTransactionsResponse,
 } from 'types/api/block';
 import type { TTxsWithBlobsFilters } from 'types/api/txsFilters';
@@ -39,17 +37,6 @@ export const GENERAL_API_BLOCK_RESOURCES = {
     filterFields: [],
     paginated: true,
   },
-  block_epoch: {
-    path: '/api/v2/blocks/:height_or_hash/epoch',
-    pathParams: [ 'height_or_hash' as const ],
-    filterFields: [],
-  },
-  block_election_rewards: {
-    path: '/api/v2/blocks/:height_or_hash/election-rewards/:reward_type',
-    pathParams: [ 'height_or_hash' as const, 'reward_type' as const ],
-    filterFields: [],
-    paginated: true,
-  },
 } satisfies Record<string, ApiResource>;
 
 export type GeneralApiBlockResourceName = `general:${ keyof typeof GENERAL_API_BLOCK_RESOURCES }`;
@@ -62,8 +49,6 @@ R extends 'general:block_countdown' ? BlockCountdownResponse :
 R extends 'general:block_txs' ? BlockTransactionsResponse :
 R extends 'general:block_internal_txs' ? BlockInternalTransactionsResponse :
 R extends 'general:block_withdrawals' ? BlockWithdrawalsResponse :
-R extends 'general:block_epoch' ? BlockEpoch :
-R extends 'general:block_election_rewards' ? BlockEpochElectionRewardDetailsResponse :
 never;
 /* eslint-enable @stylistic/indent */
 

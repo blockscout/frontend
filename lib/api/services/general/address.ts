@@ -116,7 +116,7 @@ export const GENERAL_API_ADDRESS_RESOURCES = {
     paginated: true,
   },
   address_epoch_rewards: {
-    path: '/api/v2/addresses/:hash/election-rewards',
+    path: '/api/v2/addresses/:hash/celo/election-rewards',
     pathParams: [ 'hash' as const ],
     filterFields: [],
     paginated: true,
