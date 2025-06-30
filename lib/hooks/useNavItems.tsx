@@ -118,12 +118,12 @@ export default function useNavItems(): ReturnType {
       icon: 'MUD_menu',
       isActive: pathname === '/mud-worlds',
     } : null;
-    const clustersLookup: NavItem | null = {
+    const clustersLookup: NavItem | null = config.features.clusters.isEnabled ? {
       text: 'Clusters lookup',
       nextRoute: { pathname: '/clusters' as const },
       icon: 'clusters',
       isActive: pathname === '/clusters' || pathname === '/clusters/[name]',
-    };
+    } : null;
 
     const rollupFeature = config.features.rollup;
 
