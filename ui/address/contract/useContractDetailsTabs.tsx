@@ -32,12 +32,16 @@ const useOpcodes = ({ bytecode }: { bytecode: string | undefined | null }) => {
   useEffect(() => {
     async function disassemble() {
       try {
-        if (bytecode) return;
-        if (bytecode!.trim().replace(/^0x/, '').toLowerCase().startsWith('0061736d')) {
+        if (!bytecode) return;
+        let processedBytecode = bytecode;
+        if (bytecode.startsWith('0xef4400')) {
+          processedBytecode = '0x' + bytecode.slice(70);
+        }
+        if (processedBytecode.replace(/^0x/, '').toLowerCase().startsWith('0061736d')) {
           const wabt = await wabtInit();
 
           const buffer = Uint8Array.from(
-            (bytecode as string)
+            processedBytecode
               .replace(/^0x/, '')
               .match(/.{1,2}/g)!
               .map((b) => parseInt(b, 16)),
@@ -51,8 +55,11 @@ const useOpcodes = ({ bytecode }: { bytecode: string | undefined | null }) => {
           setOpcodes(watText);
           return;
         }
-        const evm = new EVM(bytecode!.startsWith('0x') ? bytecode as string : '0x' + bytecode);
-        setOpcodes(evm.getOpcodes().join('\n'));
+        const evm = new EVM(processedBytecode.startsWith('0x') ? processedBytecode : '0x' + processedBytecode);
+        setOpcodes(evm.getOpcodes().map(op => {
+          const push = op.pushData ? ` 0x${ op.pushData.toString('hex') }` : '';
+          return `${ op.name } ${ push }`;
+        }).join('\n'));
       } catch (err) {
         setOpcodes('-');
       }
