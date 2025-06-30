@@ -657,6 +657,25 @@ const bridgedTokensSchema = yup
       }),
   });
 
+const addressMetadataSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_METADATA_SERVICE_API_HOST: yup
+      .string()
+      .test(urlTest),
+    NEXT_PUBLIC_METADATA_ADDRESS_TAGS_UPDATE_ENABLED: yup
+      .boolean()
+      .when('NEXT_PUBLIC_METADATA_SERVICE_API_HOST', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_METADATA_ADDRESS_TAGS_UPDATE_ENABLED cannot not be used if NEXT_PUBLIC_METADATA_SERVICE_API_HOST is not defined',
+          value => value === undefined,
+        ),
+      }),
+  });
+
 const deFiDropdownItemSchema: yup.ObjectSchema<DeFiDropdownItem> = yup
   .object({
     text: yup.string().required(),
@@ -943,7 +962,6 @@ const schema = yup
     NEXT_PUBLIC_VISUALIZE_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
-    NEXT_PUBLIC_METADATA_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
       .mixed()
@@ -1098,6 +1116,7 @@ const schema = yup
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
   .concat(sentrySchema)
-  .concat(tacSchema);
+  .concat(tacSchema)
+  .concat(addressMetadataSchema);
 
 export default schema;
