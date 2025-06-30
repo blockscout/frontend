@@ -231,7 +231,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       body.set('constructor_args', _data.constructor_args);
       addFilesToFormData(body, _data.sources, 'files');
 
-      // zkSync fields
+      // zkSync and Via fields
       'zk_compiler' in _data && _data.zk_compiler && body.set('zk_compiler_version', _data.zk_compiler?.[0]);
 
       return body;

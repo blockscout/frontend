@@ -17,6 +17,8 @@ const Batches = dynamic(() => {
       return import('ui/pages/ZkEvmL2TxnBatches');
     case 'zkSync':
       return import('ui/pages/ZkSyncL2TxnBatches');
+    case 'via':
+      return import('ui/pages/ViaL2TxnBatches');
     case 'optimistic':
       return import('ui/pages/OptimisticL2TxnBatches');
     case 'arbitrum':
