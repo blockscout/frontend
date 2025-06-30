@@ -15,8 +15,9 @@ const SearchBarSuggestCluster = ({ data, searchTerm, addressFormat }: ItemsProps
   const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
   const isClickable = isEvmAddress(data.address_hash);
 
-  const clusterNameWithSlash = data.cluster_info.name + '/';
-  const clusterNameFromSearch = searchTerm.replace(/\/$/, '');
+  const shouldShowTrailingSlash = searchTerm.trim().endsWith('/');
+  const displayName = shouldShowTrailingSlash ? data.cluster_info.name + '/' : data.cluster_info.name;
+  const searchTermForHighlight = searchTerm.replace(/\/$/, '');
 
   const containerProps = {
     opacity: isClickable ? 1 : 0.6,
@@ -31,7 +32,7 @@ const SearchBarSuggestCluster = ({ data, searchTerm, addressFormat }: ItemsProps
       whiteSpace="nowrap"
       textOverflow="ellipsis"
     >
-      <span dangerouslySetInnerHTML={{ __html: highlightText(clusterNameWithSlash, clusterNameFromSearch) }}/>
+      <span dangerouslySetInnerHTML={{ __html: highlightText(displayName, searchTermForHighlight) }}/>
     </Text>
   );
 

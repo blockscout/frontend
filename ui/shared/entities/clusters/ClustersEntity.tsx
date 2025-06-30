@@ -136,10 +136,13 @@ const Icon = (props: IconProps) => {
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'clusterName'>;
 
 const Content = chakra((props: ContentProps) => {
+  const shouldShowTrailingSlash = !props.clusterName.includes('/');
+  const displayName = shouldShowTrailingSlash ? `${ props.clusterName }/` : props.clusterName;
+
   return (
     <EntityBase.Content
       { ...props }
-      text={ `${ props.clusterName }/` }
+      text={ displayName }
       truncation="tail"
     />
   );
