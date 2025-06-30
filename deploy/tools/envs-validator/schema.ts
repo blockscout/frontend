@@ -580,6 +580,7 @@ const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
   .object({
     text: yup.string().required(),
     url: yup.string().test(urlTest).required(),
+    iconUrl: yup.array().of(yup.string().required().test(urlTest)),
   });
 
 const footerLinkGroupSchema: yup.ObjectSchema<CustomLinksGroup> = yup
