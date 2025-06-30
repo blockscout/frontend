@@ -17,7 +17,11 @@
       "links": [
         {
           "text": "Develop",
-          "url": "https://example.com"
+          "url": "https://example.com",
+          "iconUrl": [
+            "https://example.com/mocks/image_s.jpg",
+            "https://example.com/mocks/image_svg.svg"
+          ]
         },
         {
           "text": "Grants",
