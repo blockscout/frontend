@@ -9,7 +9,7 @@ const ChartTooltipLine = () => {
 
 export default React.memo(ChartTooltipLine);
 
-export function useRenderLine(ref: React.RefObject<SVGGElement>, chartHeight: number | undefined) {
+export function useRenderLine(ref: React.RefObject<SVGGElement | null>, chartHeight: number | undefined) {
   return React.useCallback((x: number) => {
     d3.select(ref.current)
       .select('.ChartTooltip__line')

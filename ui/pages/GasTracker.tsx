@@ -91,7 +91,7 @@ const GasTracker = () => {
       <Heading level="2" mt={ 8 } mb={ 4 }>{ `Track ${ config.chain.name } gas fees` }</Heading>
       { snippets }
       { config.features.stats.isEnabled && (
-        <Box mt={ 12 }>
+        <Box mt={ 12 } _empty={{ display: 'none' }}>
           <GasTrackerChart/>
         </Box>
       ) }

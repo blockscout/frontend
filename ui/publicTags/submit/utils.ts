@@ -25,6 +25,7 @@ export function convertFormDataToRequestsBody(data: FormFields): Array<SubmitReq
           bgColor: tag.bgColor,
           textColor: tag.textColor,
           tagUrl: tag.url,
+          tagIcon: tag.iconUrl,
           tooltipDescription: tag.tooltipDescription,
         }, Boolean),
       });
@@ -39,6 +40,7 @@ export function convertTagApiFieldsToFormFields(tag: Pick<SubmitRequestBody, 'na
     name: tag.name,
     type: [ tag.tagType ],
     url: tag.meta.tagUrl,
+    iconUrl: tag.meta.tagIcon,
     bgColor: tag.meta.bgColor,
     textColor: tag.meta.textColor,
     tooltipDescription: tag.meta.tooltipDescription,

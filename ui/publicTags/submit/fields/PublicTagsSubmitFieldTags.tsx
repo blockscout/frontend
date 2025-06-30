@@ -26,6 +26,7 @@ const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
       name: '',
       type: [ 'name' ],
       url: undefined,
+      iconUrl: undefined,
       bgColor: undefined,
       textColor: undefined,
       tooltipDescription: undefined,

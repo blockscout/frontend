@@ -24,6 +24,26 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
     return null;
   }
 
+  const items = config.UI.views.nft.marketplaces
+    .map((item) => {
+      const hrefTemplate = id ? item.instance_url : item.collection_url;
+      if (!hrefTemplate) {
+        return null;
+      }
+      const href = hrefTemplate.replace('{id}', id || '').replace('{hash}', hash || '');
+
+      return {
+        href,
+        logo_url: item.logo_url,
+        name: item.name,
+      };
+    })
+    .filter(Boolean);
+
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
     <>
       <DetailedInfo.ItemLabel
@@ -36,14 +56,10 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
         py={ appActionData ? '1px' : '6px' }
       >
         <Skeleton loading={ isLoading } display="flex" columnGap={ 3 } flexWrap="wrap" alignItems="center">
-          { config.UI.views.nft.marketplaces.map((item) => {
-
-            const hrefTemplate = id ? item.instance_url : item.collection_url;
-            const href = hrefTemplate.replace('{id}', id || '').replace('{hash}', hash || '');
-
+          { items.map((item) => {
             return (
               <Tooltip content={ `View on ${ item.name }` } key={ item.name }>
-                <Link href={ href } target="_blank">
+                <Link href={ item.href } target="_blank">
                   <Image
                     src={ item.logo_url }
                     alt={ `${ item.name } marketplace logo` }

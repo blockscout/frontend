@@ -65,7 +65,9 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
 
     const resizeHandler = debounce(calculateMenuWidth, 200);
     const resizeObserver = new ResizeObserver(resizeHandler);
-    resizeObserver.observe(inputRef.current);
+    if (inputRef.current) {
+      resizeObserver.observe(inputRef.current);
+    }
 
     return function cleanup() {
       resizeObserver.unobserve(inputEl);

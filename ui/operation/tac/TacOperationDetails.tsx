@@ -7,6 +7,7 @@ import { sortStatusHistory } from 'lib/operations/tac';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntityTacTon from 'ui/shared/entities/address/AddressEntityTacTon';
+import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 
 import TacOperationLifecycleAccordion from './TacOperationLifecycleAccordion';
 
@@ -43,6 +44,16 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
         </>
       ) }
 
+      <DetailedInfo.ItemLabel
+        hint="The status of the operation"
+        isLoading={ isLoading }
+      >
+        Status
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <TacOperationStatus status={ data.type } isLoading={ isLoading }/>
+      </DetailedInfo.ItemValue>
+
       { data.timestamp && (
         <>
           <DetailedInfo.ItemLabel
@@ -66,7 +77,7 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
             Lifecycle
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <TacOperationLifecycleAccordion data={ statusHistory } isLoading={ isLoading }/>
+            <TacOperationLifecycleAccordion data={ statusHistory } isLoading={ isLoading } type={ data.type }/>
           </DetailedInfo.ItemValue>
         </>
       ) }

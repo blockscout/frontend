@@ -32,7 +32,7 @@ interface Props {
 }
 
 const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDisabled, isOptional: isOptionalProp, level }: Props) => {
-  const ref = React.useRef<HTMLInputElement>();
+  const ref = React.useRef<HTMLInputElement>(null);
 
   const [ intPower, setIntPower ] = React.useState<number>(18);
 

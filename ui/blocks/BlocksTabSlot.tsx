@@ -37,7 +37,7 @@ const BlocksTabSlot = ({ pagination }: Props) => {
         </Box>
       ) }
       <Link href={ route({ pathname: '/block/countdown' }) }>
-        <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
+        <IconSvg name="hourglass_slim" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
       </Link>
       <Pagination my={ 1 } { ...pagination }/>

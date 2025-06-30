@@ -118,11 +118,19 @@ export default function useNavItems(): ReturnType {
       icon: 'MUD_menu',
       isActive: pathname === '/mud-worlds',
     } : null;
+
     const clustersLookup: NavItem | null = config.features.clusters.isEnabled ? {
       text: 'Clusters lookup',
       nextRoute: { pathname: '/clusters' as const },
       icon: 'clusters',
       isActive: pathname === '/clusters' || pathname === '/clusters/[name]',
+    } : null;
+
+    const epochs = config.features.celo.isEnabled ? {
+      text: 'Epochs',
+      nextRoute: { pathname: '/epochs' as const },
+      icon: 'hourglass',
+      isActive: pathname.startsWith('/epochs'),
     } : null;
 
     const rollupFeature = config.features.rollup;
@@ -205,6 +213,7 @@ export default function useNavItems(): ReturnType {
         internalTxs,
         userOps,
         blocks,
+        epochs,
         topAccounts,
         validators,
         verifiedContracts,

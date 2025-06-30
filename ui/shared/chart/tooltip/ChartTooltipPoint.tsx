@@ -43,7 +43,7 @@ interface RenderPointsReturnType {
   currentPoints: Array<CurrentPoint>;
 }
 
-export function useRenderPoints(ref: React.RefObject<SVGGElement>, params: UseRenderPointsParams) {
+export function useRenderPoints(ref: React.RefObject<SVGGElement | null>, params: UseRenderPointsParams) {
   return React.useCallback((x: number): RenderPointsReturnType => {
     const xDate = params.xScale.invert(x);
     const bisectDate = d3.bisector<TimeChartItem, unknown>((d) => d.date).left;

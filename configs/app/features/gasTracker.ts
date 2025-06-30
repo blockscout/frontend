@@ -2,6 +2,7 @@ import type { Feature } from './types';
 import { GAS_UNITS } from 'types/client/gasTracker';
 import type { GasUnit } from 'types/client/gasTracker';
 
+import chainConfig from '../chain';
 import { getEnvValue, parseEnvJson } from '../utils';
 
 const isDisabled = getEnvValue('NEXT_PUBLIC_GAS_TRACKER_ENABLED') === 'false';
@@ -9,6 +10,9 @@ const isDisabled = getEnvValue('NEXT_PUBLIC_GAS_TRACKER_ENABLED') === 'false';
 const units = ((): Array<GasUnit> => {
   const envValue = getEnvValue('NEXT_PUBLIC_GAS_TRACKER_UNITS');
   if (!envValue) {
+    if (chainConfig.isTestnet) {
+      return [ 'gwei' ];
+    }
     return [ 'usd', 'gwei' ];
   }
 

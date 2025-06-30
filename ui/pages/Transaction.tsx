@@ -9,6 +9,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
 import { publicClient } from 'lib/web3/client';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -39,6 +40,9 @@ const TransactionPageContent = () => {
   const appProps = useAppContext();
 
   const hash = getQueryParamString(router.query.hash);
+
+  useEtherscanRedirects();
+
   const txQuery = useTxQuery();
 
   const tacOperationQuery = useApiQuery('tac:operation_by_tx_hash', {

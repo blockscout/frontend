@@ -22,7 +22,7 @@ interface UseRenderContentParams {
   transitionDuration: number | null;
 }
 
-export function useRenderContent(ref: React.RefObject<SVGGElement>, { chart, transitionDuration }: UseRenderContentParams) {
+export function useRenderContent(ref: React.RefObject<SVGGElement | null>, { chart, transitionDuration }: UseRenderContentParams) {
   return React.useCallback((x: number, y: number) => {
     const tooltipContent = d3.select(ref.current).select('.ChartTooltip__content');
 

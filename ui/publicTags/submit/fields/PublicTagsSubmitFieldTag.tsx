@@ -6,14 +6,15 @@ import type { FormFields, FormFieldTag } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { IconButton } from 'toolkit/chakra/icon-button';
+import AddButton from 'toolkit/components/buttons/AddButton';
+import RemoveButton from 'toolkit/components/buttons/RemoveButton';
 import { FormFieldColor } from 'toolkit/components/forms/fields/FormFieldColor';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 import { colorValidator } from 'toolkit/components/forms/validators/color';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
-import IconSvg from 'ui/shared/IconSvg';
 
+import PublicTagsSubmitFieldTagIcon from './PublicTagsSubmitFieldTagIcon';
 import PublicTagsSubmitFieldTagType from './PublicTagsSubmitFieldTagType';
 
 const CIRCLE_BG_COLOR_DEFAULT = {
@@ -80,6 +81,9 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
             sampleDefaultBgColor={ CIRCLE_BG_COLOR_DEFAULT.textColor }
           />
           <GridItem colSpan={{ base: 1, lg: 4 }}>
+            <PublicTagsSubmitFieldTagIcon index={ index }/>
+          </GridItem>
+          <GridItem colSpan={{ base: 1, lg: 4 }}>
             <FormFieldText<FormFields>
               name={ `tags.${ index }.tooltipDescription` }
               placeholder="Label description (max 80 characters)"
@@ -93,33 +97,23 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
       <GridItem py={{ lg: '10px' }}>
         <Flex
           alignItems="center"
-          columnGap={ 5 }
+          columnGap={ 3 }
           justifyContent={{ base: 'flex-end', lg: 'flex-start' }}
           h={{ base: 'auto', lg: '60px' }}
         >
           { onAddClick && (
-            <IconButton
-              aria-label="add"
+            <AddButton
               data-index={ index }
-              variant="outline"
-              size="md"
               onClick={ handleAddClick }
               disabled={ isDisabled }
-            >
-              <IconSvg name="plus"/>
-            </IconButton>
+            />
           ) }
           { onRemoveClick && (
-            <IconButton
-              aria-label="delete"
+            <RemoveButton
               data-index={ index }
-              variant="outline"
-              size="md"
               onClick={ handleRemoveClick }
               disabled={ isDisabled }
-            >
-              <IconSvg name="minus"/>
-            </IconButton>
+            />
           ) }
         </Flex>
         { !isMobile && (
@@ -128,6 +122,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
               name: field.name || 'Tag name',
               tagType: field.type[0],
               meta: {
+                tagIcon: errors?.iconUrl ? undefined : field.iconUrl,
                 tagUrl: field.url,
                 bgColor: field.bgColor && colorValidator(field.bgColor) === true ? field.bgColor : undefined,
                 textColor: field.textColor && colorValidator(field.textColor) === true ? field.textColor : undefined,

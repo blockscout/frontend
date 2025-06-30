@@ -35,6 +35,7 @@ export const FormFieldImagePreview = chakra(React.memo(({
 
   return (
     <Image
+      key={ src }
       className={ className }
       src={ src }
       alt="Image preview"

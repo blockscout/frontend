@@ -32,6 +32,10 @@ type Props = {
 const DateInput = ({ value, onChange, placeholder, max }: { value: string; onChange: (value: string) => void; placeholder: string; max: string }) => {
   const [ tempValue, setTempValue ] = React.useState(value ? dayjs(value).format('YYYY-MM-DD') : '');
 
+  React.useEffect(() => {
+    setTempValue(value ? dayjs(value).format('YYYY-MM-DD') : '');
+  }, [ value ]);
+
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setTempValue(event.target.value);
     onChange(event.target.value);
@@ -96,7 +100,7 @@ const AgeFilter = ({ value = defaultValue, handleFilterChange, onClose }: Props)
     <TableColumnFilter
       title="Set last duration"
       isFilled={ Boolean(currentValue.from || currentValue.to || currentValue.age) }
-      isTouched={ currentValue.age ? value.age !== currentValue.age : Boolean(currentValue.from && currentValue.to && !isEqual(currentValue, value)) }
+      isTouched={ currentValue.age ? value.age !== currentValue.age : !isEqual(currentValue, value) }
       onFilter={ onFilter }
       onReset={ onReset }
       hasReset

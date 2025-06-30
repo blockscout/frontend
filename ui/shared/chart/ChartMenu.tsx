@@ -22,7 +22,7 @@ export type Props = {
   description?: string;
   units?: string;
   isLoading: boolean;
-  chartRef: React.RefObject<HTMLDivElement>;
+  chartRef: React.RefObject<HTMLDivElement | null>;
   chartUrl?: string;
   resolution?: Resolution;
   zoomRange?: [ Date, Date ];

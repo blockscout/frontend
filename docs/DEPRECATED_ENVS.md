@@ -12,3 +12,4 @@
 | NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL | `string` | Network governance token symbol | - | - | `GNO` | v1.12.0 | v1.29.0 | Replaced by NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL |
 | NEXT_PUBLIC_SWAP_BUTTON_URL | `string` | Application ID in the marketplace or website URL | - | - | `uniswap` | v1.24.0 | v1.31.0 | Replaced by NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` | Set to false if average block time is useless for the network | - | `true` | `false` | v1.0.x+ | v1.35.0 | Replaced by NEXT_PUBLIC_HOMEPAGE_STATS |
+| NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK | `number` | Indicates the block number when the Celo-type chain transitioned to L2. This is used to display links to the Epoch block page from a regular block page. | - | - | `26369280` | v1.37.0+ | v2.2.0 | Removed; configuration done on the API side |

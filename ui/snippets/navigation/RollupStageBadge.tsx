@@ -2,9 +2,9 @@ import type { HTMLChakraProps } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 const feature = config.features.rollup;
 
@@ -27,11 +27,10 @@ const RollupStageBadge = (props: HTMLChakraProps<'div'>) => {
 
       return (
         <Tooltip content={ tooltipContent } interactive>
-          <IconSvg
-            name={ feature.stageIndex === '1' ? 'rollup/stage-1' : 'rollup/stage-2' }
+          <Image
+            src={ feature.stageIndex === '1' ? '/static/labels/stage-1.svg' : '/static/labels/stage-2.svg' }
             h="14px"
             w="42px"
-            color={ feature.stageIndex === '1' ? 'yellow.500' : 'green.400' }
             { ...props }
           />
         </Tooltip>

@@ -22,11 +22,11 @@ export function getTacOperationStatus(type: tac.OperationType) {
 }
 
 export function getTacOperationStage(data: tac.OperationDetails, txHash: string) {
-  const currentStep = data.status_history.find((step) => step.transactions.some((tx) => tx.hash.toLowerCase() === txHash.toLowerCase()));
-  if (!currentStep) {
-    return null;
+  const currentStep = data.status_history.filter((step) => step.transactions.some((tx) => tx.hash.toLowerCase() === txHash.toLowerCase()));
+  if (currentStep.length === 0) {
+    return;
   }
-  return STATUS_LABELS[currentStep.type];
+  return currentStep.map((step) => STATUS_LABELS[step.type]);
 }
 
 export const STATUS_SEQUENCE: Array<tac.OperationStage_StageType> = [

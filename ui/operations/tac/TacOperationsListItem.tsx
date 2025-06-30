@@ -18,6 +18,7 @@ const TacOperationsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Value>
         <OperationEntity
           id={ item.operation_id }
+          type={ item.type }
           isLoading={ isLoading }
         />
       </ListItemMobileGrid.Value>

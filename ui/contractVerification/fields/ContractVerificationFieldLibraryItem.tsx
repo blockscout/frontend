@@ -3,10 +3,10 @@ import React from 'react';
 
 import type { FormFields } from '../types';
 
-import { IconButton } from 'toolkit/chakra/icon-button';
+import AddButton from 'toolkit/components/buttons/AddButton';
+import RemoveButton from 'toolkit/components/buttons/RemoveButton';
 import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
@@ -42,26 +42,16 @@ const ContractVerificationFieldLibraryItem = ({ index, fieldsLength, onAddFieldC
           <Text color="text.secondary" fontSize="sm">Contract library { index + 1 }</Text>
           <Flex columnGap={ 5 }>
             { fieldsLength > 1 && (
-              <IconButton
-                aria-label="delete"
-                variant="outline"
-                size="md"
+              <RemoveButton
                 onClick={ handleRemoveButtonClick }
                 disabled={ isDisabled }
-              >
-                <IconSvg name="minus"/>
-              </IconButton>
+              />
             ) }
             { fieldsLength < LIMIT && (
-              <IconButton
-                aria-label="add"
-                variant="outline"
-                size="md"
+              <AddButton
                 onClick={ handleAddButtonClick }
                 disabled={ isDisabled }
-              >
-                <IconSvg name="plus"/>
-              </IconButton>
+              />
             ) }
           </Flex>
         </Flex>
