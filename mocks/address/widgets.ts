@@ -21,6 +21,7 @@ export const config: Record<string, Address3rdPartyWidget> = {
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'Value',
+    hint: 'Hint',
     valuePath: 'value',
   },
   'widget-2': {
@@ -37,6 +38,7 @@ export const config: Record<string, Address3rdPartyWidget> = {
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'One more value',
+    hint: 'Hint',
     valuePath: 'value',
   },
   'widget-4': {
@@ -53,6 +55,7 @@ export const config: Record<string, Address3rdPartyWidget> = {
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'Test value',
+    hint: 'Hint',
     valuePath: 'value',
   },
   'widget-6': {
@@ -69,6 +72,7 @@ export const config: Record<string, Address3rdPartyWidget> = {
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'One more test value',
+    hint: 'Hint',
     valuePath: 'value',
   },
   'widget-8': {
@@ -85,6 +89,7 @@ export const config: Record<string, Address3rdPartyWidget> = {
     pages: [ 'eoa', 'contract', 'token' ],
     icon: 'http://localhost:3000/widget-logo.png',
     title: 'Another empty value',
+    hint: 'Hint',
     valuePath: 'value',
   },
 };
