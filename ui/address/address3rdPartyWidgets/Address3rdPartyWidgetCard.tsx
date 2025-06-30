@@ -1,4 +1,4 @@
-import { Flex, Text, Box, chakra } from '@chakra-ui/react';
+import { Flex, Text, chakra, Separator } from '@chakra-ui/react';
 import { useCallback } from 'react';
 
 import type { Address3rdPartyWidget } from 'types/views/address';
@@ -48,13 +48,11 @@ const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) =
 
   const [ integer, decimal ] = data?.split('.') || [];
 
-  const separator = <Box h="1px" w="full" mt={ 3 } mb={ 2 } bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}/>;
-
   const content = isLoading ? (
     <>
       <Skeleton loading w="88px" h="40px" mb={ 1 }/>
       <Skeleton loading w="178px" h="20px"/>
-      { separator }
+      <Separator mt={ 3 } mb={ 2 } borderColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}/>
       <Flex alignItems="center" gap={ 2 }>
         <Skeleton loading w="20px" h="20px"/>
         <Skeleton loading w="80px" h="20px"/>
@@ -93,7 +91,7 @@ const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) =
           />
         ) }
       </Flex>
-      { separator }
+      <Separator mt={ 3 } mb={ 2 } borderColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}/>
       <Flex alignItems="center" gap={ 2 }>
         <Image src={ config.icon } alt={ config.name } boxSize={ 5 }/>
         <Flex
