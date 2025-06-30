@@ -11,6 +11,9 @@ export const METADATA_API_RESOURCES = {
   public_tag_types: {
     path: '/api/v1/public-tag-types',
   },
+  address_submit: {
+    path: '/api/v1/addresses\\:submit',
+  },
 } satisfies Record<string, ApiResource>;
 
 export type MetadataApiResourceName = `metadata:${ keyof typeof METADATA_API_RESOURCES }`;

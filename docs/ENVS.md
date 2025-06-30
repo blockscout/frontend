@@ -657,6 +657,7 @@ This feature allows name tags and other public tags for addresses.
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_METADATA_SERVICE_API_HOST | `string` | Metadata Service API endpoint url | Required | - | `https://metadata.services.blockscout.com` | v1.30.0+ |
+| NEXT_PUBLIC_METADATA_ADDRESS_TAGS_UPDATE_ENABLED | `boolean` | Enables requests to the Metadata Service to schedule an update for address tags after the user visits the address page in the app. | - | `true` | `false` | v2.2.0+ |
 
 &nbsp;
 
