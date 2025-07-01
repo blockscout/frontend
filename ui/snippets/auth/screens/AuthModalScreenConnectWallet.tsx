@@ -35,7 +35,7 @@ const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth, source, logi
     onError: handleSignInError,
     source,
     isAuth,
-    executeRecaptchaAsync: recaptcha.executeAsync,
+    fetchProtectedResource: recaptcha.fetchProtectedResource,
     loginToRewards,
   });
 
