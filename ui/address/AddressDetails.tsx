@@ -27,23 +27,19 @@ import AddressNetWorth from './details/AddressNetWorth';
 import AddressSaveOnGas from './details/AddressSaveOnGas';
 import FilecoinActorTag from './filecoin/FilecoinActorTag';
 import TokenSelect from './tokenSelect/TokenSelect';
-import useAddressCountersQuery from './utils/useAddressCountersQuery';
+import type { AddressCountersQuery } from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
 
 interface Props {
   addressQuery: AddressQuery;
+  countersQuery: AddressCountersQuery;
   isLoading?: boolean;
 }
 
-const AddressDetails = ({ addressQuery, isLoading }: Props) => {
+const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
   const router = useRouter();
 
   const addressHash = getQueryParamString(router.query.hash);
-
-  const countersQuery = useAddressCountersQuery({
-    hash: addressHash,
-    addressQuery,
-  });
 
   const error404Data = React.useMemo(() => ({
     hash: addressHash || '',

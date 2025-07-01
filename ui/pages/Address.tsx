@@ -8,12 +8,14 @@ import type { EntityTag } from 'ui/shared/EntityTags/types';
 import config from 'configs/app';
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
+import useAddressMetadataInitUpdate from 'lib/address/useAddressMetadataInitUpdate';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
@@ -41,6 +43,7 @@ import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
+import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
 import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import useCheckAddressFormat from 'ui/address/utils/useCheckAddressFormat';
 import useCheckDomainNameParam from 'ui/address/utils/useCheckDomainNameParam';
@@ -71,6 +74,9 @@ const AddressPageContent = () => {
 
   const checkDomainName = useCheckDomainNameParam(hash);
   const checkAddressFormat = useCheckAddressFormat(hash);
+
+  useEtherscanRedirects();
+
   const areQueriesEnabled = !checkDomainName && !checkAddressFormat;
   const addressQuery = useAddressQuery({ hash, isEnabled: areQueriesEnabled });
 
@@ -80,6 +86,11 @@ const AddressPageContent = () => {
       enabled: areQueriesEnabled && Boolean(hash),
       placeholderData: ADDRESS_TABS_COUNTERS,
     },
+  });
+
+  const countersQuery = useAddressCountersQuery({
+    hash,
+    addressQuery,
   });
 
   const userOpsAccountQuery = useApiQuery('general:user_ops_account', {
@@ -140,6 +151,12 @@ const AddressPageContent = () => {
     handler: handleFetchedBytecodeMessage,
   });
 
+  useAddressMetadataInitUpdate({
+    address: hash,
+    counters: countersQuery.data,
+    isEnabled: !countersQuery.isPlaceholderData && !countersQuery.isDegradedData,
+  });
+
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
 
   const xStarQuery = useFetchXStarScore({ hash });
@@ -155,7 +172,7 @@ const AddressPageContent = () => {
       {
         id: 'index',
         title: 'Details',
-        component: <AddressDetails addressQuery={ addressQuery } isLoading={ isTabsLoading }/>,
+        component: <AddressDetails addressQuery={ addressQuery } countersQuery={ countersQuery } isLoading={ isTabsLoading }/>,
       },
       addressQuery.data?.is_contract ? {
         id: 'contract',
@@ -266,6 +283,7 @@ const AddressPageContent = () => {
     ].filter(Boolean);
   }, [
     addressQuery,
+    countersQuery,
     contractTabs,
     addressTabsCountersQuery.data,
     userOpsAccountQuery.data,
