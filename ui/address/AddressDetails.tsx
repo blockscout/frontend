@@ -17,6 +17,7 @@ import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponso
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import ContractCreationStatus from 'ui/shared/statusTag/ContractCreationStatus';
 
 import AddressAlternativeFormat from './details/AddressAlternativeFormat';
 import AddressBalance from './details/AddressBalance';
@@ -148,6 +149,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
               />
               <Text whiteSpace="pre"> at txn </Text>
               <TxEntity hash={ data.creation_transaction_hash } truncation="constant" noIcon noCopy={ false }/>
+              { data.creation_status && <ContractCreationStatus status={ data.creation_status } ml={{ base: 0, lg: 2 }}/> }
             </DetailedInfo.ItemValue>
           </>
         ) }
