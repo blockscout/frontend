@@ -27,9 +27,6 @@ const config: JestConfigWithTsJest = {
   setupFiles: [
     '<rootDir>/jest/setup.ts',
   ],
-  setupFilesAfterEnv: [
-    '<rootDir>/jest/setupAfterEnv.ts',
-  ],
   testEnvironment: 'jsdom',
   transform: {
     // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
