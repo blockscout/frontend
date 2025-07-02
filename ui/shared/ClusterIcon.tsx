@@ -3,6 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
+import colors from 'toolkit/theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface ClusterIconProps {
@@ -27,7 +28,7 @@ const ClusterIcon = ({
       justifyContent="center"
       width={ size }
       height={ size }
-      backgroundColor="#de6061"
+      backgroundColor={ colors.clusters.value }
       borderRadius={ borderRadius }
       mr={ mr }
       flexShrink={ flexShrink }
