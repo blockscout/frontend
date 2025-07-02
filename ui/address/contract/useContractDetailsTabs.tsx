@@ -1,7 +1,7 @@
 import { Alert, Button, Flex } from '@chakra-ui/react';
 import { EVM } from 'evm';
 import React, { useEffect, useState } from 'react';
-import wabtInit from 'wabt';
+// import wabtInit from 'wabt';
 
 import type { SmartContract } from 'types/api/contract';
 
@@ -12,6 +12,8 @@ import ContractDetailsConstructorArgs from './ContractDetailsConstructorArgs';
 import ContractDetailsVerificationButton from './ContractDetailsVerificationButton';
 import ContractSourceCode from './ContractSourceCode';
 import type { CONTRACT_DETAILS_TAB_IDS } from './utils';
+import wabtInit from './utils/libwabt';
+
 
 interface Tab {
   id: typeof CONTRACT_DETAILS_TAB_IDS[number];
