@@ -56,6 +56,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Verified tokens info](#verified-tokens-info)
   - [Name service integration](#name-service-integration)
   - [Metadata service integration](#metadata-service-integration)
+  - [Clusters Universal Name Service](#clusters-universal-name-service)
   - [Public tag submission](#public-tag-submission)
   - [Data availability](#data-availability)
   - [Bridged tokens](#bridged-tokens)
