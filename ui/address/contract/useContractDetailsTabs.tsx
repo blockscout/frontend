@@ -1,7 +1,5 @@
 import { Alert, Button, Flex } from '@chakra-ui/react';
-import { EVM } from 'evm';
 import React, { useEffect, useState } from 'react';
-// import wabtInit from 'wabt';
 
 import type { SmartContract } from 'types/api/contract';
 
@@ -13,7 +11,6 @@ import ContractDetailsVerificationButton from './ContractDetailsVerificationButt
 import ContractSourceCode from './ContractSourceCode';
 import type { CONTRACT_DETAILS_TAB_IDS } from './utils';
 import wabtInit from './utils/libwabt';
-
 
 interface Tab {
   id: typeof CONTRACT_DETAILS_TAB_IDS[number];
@@ -57,11 +54,6 @@ const useOpcodes = ({ bytecode }: { bytecode: string | undefined | null }) => {
           setOpcodes(watText);
           return;
         }
-        const evm = new EVM(processedBytecode.startsWith('0x') ? processedBytecode : '0x' + processedBytecode);
-        setOpcodes(evm.getOpcodes().map(op => {
-          const push = op.pushData ? ` 0x${ op.pushData.toString('hex') }` : '';
-          return `${ op.name } ${ push }`;
-        }).join('\n'));
       } catch (err) {
         setOpcodes('-');
       }
