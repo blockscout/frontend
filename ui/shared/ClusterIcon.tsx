@@ -1,33 +1,34 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import { getFeaturePayload } from 'configs/app/features/types';
+
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
+import type { ImageProps } from 'toolkit/chakra/image';
 import colors from 'toolkit/theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
-interface ClusterIconProps {
+interface ClusterIconProps extends Omit<ImageProps, 'src' | 'alt'> {
   clusterName: string;
-  size?: number;
-  borderRadius?: string;
-  mr?: number;
-  flexShrink?: number;
 }
 
 const ClusterIcon = ({
   clusterName,
-  size = 5,
-  borderRadius = '6px',
+  boxSize = 5,
+  borderRadius = 'base',
   mr = 2,
   flexShrink = 0,
+  ...imageProps
 }: ClusterIconProps) => {
+  const clustersFeature = getFeaturePayload(config.features.clusters);
+
   const fallbackElement = (
     <Box
       display="inline-flex"
       alignItems="center"
       justifyContent="center"
-      width={ size }
-      height={ size }
+      boxSize={ boxSize }
       backgroundColor={ colors.clusters.value }
       borderRadius={ borderRadius }
       mr={ mr }
@@ -41,21 +42,21 @@ const ClusterIcon = ({
     </Box>
   );
 
-  if (!config.features.clusters?.isEnabled) {
+  if (!clustersFeature) {
     return fallbackElement;
   }
 
   return (
     <Image
-      width={ size }
-      height={ size }
+      boxSize={ boxSize }
       borderRadius={ borderRadius }
       mr={ mr }
       flexShrink={ flexShrink }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      src={ `${ (config.features.clusters as any).cdnUrl }/profile-image/${ clusterName }` }
+
+      src={ `${ clustersFeature.cdnUrl }/profile-image/${ clusterName }` }
       alt={ `${ clusterName } profile` }
       fallback={ fallbackElement }
+      { ...imageProps }
     />
   );
 };
