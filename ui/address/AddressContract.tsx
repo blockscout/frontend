@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -32,9 +33,14 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab }: Props) =
   const router = useRouter();
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
-  const enableQuery = React.useCallback(() => {
+  const handleChannelJoin = React.useCallback(() => {
+    console.log('__>__ Joined socket topic:', `addresses:${ addressData?.hash?.toLowerCase() }`);
     setIsQueryEnabled(true);
-  }, []);
+  }, [ addressData?.hash ]);
+  const handleChannelError = React.useCallback(() => {
+    console.log('__>__ Failed to join socket topic:', `addresses:${ addressData?.hash?.toLowerCase() }`);
+    setIsQueryEnabled(true);
+  }, [ addressData?.hash ]);
 
   const tab = getQueryParamString(router.query.tab);
   const isSocketEnabled = Boolean(addressData?.hash) && addressData?.is_contract && !isLoading && CONTRACT_TAB_IDS.concat('contract' as never).includes(tab);
@@ -42,8 +48,8 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab }: Props) =
   const channel = useSocketChannel({
     topic: `addresses:${ addressData?.hash?.toLowerCase() }`,
     isDisabled: !isSocketEnabled,
-    onJoin: enableQuery,
-    onSocketError: enableQuery,
+    onJoin: handleChannelJoin,
+    onSocketError: handleChannelError,
   });
 
   const contractTabs = useContractTabs({
@@ -54,10 +60,12 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab }: Props) =
   });
 
   const handleLookupStartedMessage: SocketMessage.EthBytecodeDbLookupStarted['handler'] = React.useCallback(() => {
+    console.log('__>__ Received message from socket:', 'eth_bytecode_db_lookup_started');
     setAutoVerificationStatus('pending');
   }, []);
 
   const handleContractWasVerifiedMessage: SocketMessage.SmartContractWasVerified['handler'] = React.useCallback(async() => {
+    console.log('__>__ Received message from socket:', 'smart_contract_was_verified');
     setAutoVerificationStatus('success');
     await queryClient.refetchQueries({
       queryKey: getResourceKey('general:address', { pathParams: { hash: addressData?.hash } }),
@@ -69,6 +77,7 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab }: Props) =
   }, [ addressData?.hash, queryClient ]);
 
   const handleContractWasNotVerifiedMessage: SocketMessage.SmartContractWasNotVerified['handler'] = React.useCallback(async() => {
+    console.log('__>__ Received message from socket:', 'smart_contract_was_not_verified');
     setAutoVerificationStatus('failed');
     await delay(10 * SECOND);
     setAutoVerificationStatus(null);

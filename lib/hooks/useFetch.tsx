@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 
 import isBodyAllowed from 'lib/api/isBodyAllowed';
@@ -46,9 +47,13 @@ export default function useFetch() {
       },
     };
 
+    console.log('__>__ Making request to:', path);
+
     return fetch(path, reqParams).then(response => {
 
       const isJson = response.headers.get('content-type')?.includes('application/json');
+
+      console.log('__>__ Get response from:', path);
 
       if (!response.ok) {
         const error = {
