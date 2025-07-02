@@ -26,7 +26,7 @@ export default function sortTxs(sorting: TransactionsSortingValue | undefined) {
 }
 
 export function sortTxsFromSocket(sorting: TransactionsSortingValue | undefined) {
-  if (sorting) {
+  if (sorting && sorting !== 'default') {
     return sortTxs(sorting);
   }
 

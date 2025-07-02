@@ -13,6 +13,7 @@ import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
@@ -28,6 +29,7 @@ import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import TokenAdvancedFilterLink from 'ui/token/TokenAdvancedFilterLink';
 import TokenDetails from 'ui/token/TokenDetails';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenInventory from 'ui/token/TokenInventory';
@@ -55,6 +57,7 @@ const TokenPageContent = () => {
   const tab = getQueryParamString(router.query.tab);
   const ownerFilter = getQueryParamString(router.query.holder_address_hash) || undefined;
 
+  useEtherscanRedirects();
   const queryClient = useQueryClient();
 
   const tokenQuery = useTokenQuery(hashString);
@@ -230,6 +233,9 @@ const TokenPageContent = () => {
 
     return (
       <>
+        { (tab === 'token_transfers' || tab === '') && (
+          <TokenAdvancedFilterLink token={ tokenQuery.data }/>
+        ) }
         { tab === 'holders' && (
           <AddressCsvExportLink
             address={ hashString }
@@ -240,7 +246,7 @@ const TokenPageContent = () => {
         { pagination?.isVisible && <Pagination { ...pagination }/> }
       </>
     );
-  }, [ hashString, isMobile, pagination, tab ]);
+  }, [ hashString, isMobile, pagination, tab, tokenQuery.data ]);
 
   return (
     <>

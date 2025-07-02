@@ -17,9 +17,10 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
 import BlockDetails from 'ui/block/BlockDetails';
-import BlockEpochRewards from 'ui/block/BlockEpochRewards';
+import BlockInternalTxs from 'ui/block/BlockInternalTxs';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import useBlockBlobTxsQuery from 'ui/block/useBlockBlobTxsQuery';
+import useBlockInternalTxsQuery from 'ui/block/useBlockInternalTxsQuery';
 import useBlockQuery from 'ui/block/useBlockQuery';
 import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
 import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
@@ -50,10 +51,12 @@ const BlockPageContent = () => {
   const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
   const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
   const blockBlobTxsQuery = useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab });
+  const blockInternalTxsQuery = useBlockInternalTxsQuery({ heightOrHash, blockQuery, tab });
 
   const hasPagination = !isMobile && (
     (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
-    (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible)
+    (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible) ||
+    (tab === 'internal_txs' && blockInternalTxsQuery.pagination.isVisible)
   );
 
   const tabs: Array<TabItemRegular> = React.useMemo(() => ([
@@ -77,6 +80,16 @@ const BlockPageContent = () => {
         </>
       ),
     },
+    blockQuery.data?.internal_transactions_count ? {
+      id: 'internal_txs',
+      title: 'Internal txns',
+      component: (
+        <>
+          { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={ 6 }/> }
+          <BlockInternalTxs query={ blockInternalTxsQuery } top={ hasPagination ? TABS_HEIGHT : 0 }/>
+        </>
+      ),
+    } : null,
     config.features.dataAvailability.isEnabled && blockQuery.data?.blob_transaction_count ?
       {
         id: 'blob_txs',
@@ -96,18 +109,15 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-    blockQuery.data?.celo?.is_epoch_block ? {
-      id: 'epoch_rewards',
-      title: 'Epoch rewards',
-      component: <BlockEpochRewards heightOrHash={ heightOrHash }/>,
-    } : null,
-  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination, heightOrHash ]);
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockInternalTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination ]);
 
   let pagination;
   if (tab === 'txs') {
     pagination = blockTxsQuery.pagination;
   } else if (tab === 'withdrawals') {
     pagination = blockWithdrawalsQuery.pagination;
+  } else if (tab === 'internal_txs') {
+    pagination = blockInternalTxsQuery.pagination;
   }
 
   const backLink = React.useMemo(() => {

@@ -43,6 +43,8 @@ declare module "nextjs-routes" {
     | StaticRoute<"/csv-export">
     | StaticRoute<"/deposits">
     | StaticRoute<"/dispute-games">
+    | DynamicRoute<"/epochs/[number]", { "number": string }>
+    | StaticRoute<"/epochs">
     | StaticRoute<"/gas-tracker">
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
@@ -53,6 +55,8 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/name-domains/[name]", { "name": string }>
     | StaticRoute<"/name-domains">
     | DynamicRoute<"/op/[hash]", { "hash": string }>
+    | DynamicRoute<"/operation/[id]", { "id": string }>
+    | StaticRoute<"/operations">
     | StaticRoute<"/ops">
     | StaticRoute<"/output-roots">
     | DynamicRoute<"/pools/[hash]", { "hash": string }>

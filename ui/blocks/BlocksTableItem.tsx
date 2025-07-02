@@ -17,7 +17,7 @@ import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 import { getBaseFeeValue } from './utils';
@@ -41,8 +41,8 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
     <TableRow animation={ animation }>
       <TableCell >
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
-          { data.celo?.is_epoch_block && (
-            <Tooltip content={ `Finalized epoch #${ data.celo.epoch_number }` }>
+          { data.celo?.l1_era_finalized_epoch_number && (
+            <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` }>
               <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
             </Tooltip>
           ) }
@@ -58,7 +58,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
             </span>
           </Tooltip>
         </Flex>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ data.timestamp }
           enableIncrement={ enableTimeIncrement }
           isLoading={ isLoading }

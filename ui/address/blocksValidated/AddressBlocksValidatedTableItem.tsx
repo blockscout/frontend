@@ -10,7 +10,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = Block & {
   page: number;
@@ -32,7 +32,7 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
         />
       </TableCell>
       <TableCell>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ props.timestamp }
           enableIncrement={ props.page === 1 }
           isLoading={ props.isLoading }

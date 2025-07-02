@@ -11,6 +11,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import AddressCoinBalanceListItem from './AddressCoinBalanceListItem';
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
@@ -31,7 +32,10 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
             <TableRow>
               <TableColumnHeader width="20%">Block</TableColumnHeader>
               <TableColumnHeader width="20%">Txn</TableColumnHeader>
-              <TableColumnHeader width="20%">Age</TableColumnHeader>
+              <TableColumnHeader width="20%">
+                Timestamp
+                <TimeFormatToggle/>
+              </TableColumnHeader>
               <TableColumnHeader width="20%" isNumeric pr={ 1 }>Balance { currencyUnits.ether }</TableColumnHeader>
               <TableColumnHeader width="20%" isNumeric>Delta</TableColumnHeader>
             </TableRow>

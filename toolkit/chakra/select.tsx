@@ -13,10 +13,11 @@ import { CloseButton } from './close-button';
 import { Skeleton } from './skeleton';
 
 export interface SelectOption<Value extends string = string> {
-  value: Value;
   label: string;
+  renderLabel?: () => React.ReactNode;
+  value: Value;
   icon?: React.ReactNode;
-}
+};
 
 export interface SelectControlProps extends ChakraSelect.ControlProps {
   noIndicator?: boolean;
@@ -160,7 +161,7 @@ export const SelectValueText = React.forwardRef<
               WebkitBoxOrient: 'vertical',
               display: '-webkit-box',
             }}>
-              { context.collection.stringifyItem(item) }
+              { item.renderLabel ? item.renderLabel() : context.collection.stringifyItem(item) }
             </span>
           </Flex>
         </>
@@ -257,7 +258,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
       <SelectContent portalled={ portalled } { ...contentProps }>
         { collection.items.map((item: SelectOption) => (
           <SelectItem item={ item } key={ item.value }>
-            { item.label }
+            { item.renderLabel ? item.renderLabel() : item.label }
           </SelectItem>
         )) }
       </SelectContent>
@@ -323,7 +324,7 @@ export const SelectAsync = React.forwardRef<HTMLDivElement, SelectAsyncProps>((p
         </Box>
         { collection.items.map((item) => (
           <SelectItem item={ item } key={ item.value }>
-            { item.label }
+            { item.renderLabel ? item.renderLabel() : item.label }
           </SelectItem>
         )) }
       </SelectContent>

@@ -108,6 +108,9 @@ const SearchResultsPageContent = () => {
       if (!config.features.nameService.isEnabled && item.type === 'ens_domain') {
         return false;
       }
+      if (!config.features.tac.isEnabled && item.type === 'tac_operation') {
+        return false;
+      }
       return true;
     });
 

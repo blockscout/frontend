@@ -37,10 +37,11 @@ export interface TableColumnHeaderSortableProps<F extends string> extends TableC
   onSortToggle: (sortField: F) => void;
   disabled?: boolean;
   indicatorPosition?: 'left' | 'right';
+  contentAfter?: React.ReactNode;
 }
 
 export const TableColumnHeaderSortable = <F extends string>(props: TableColumnHeaderSortableProps<F>) => {
-  const { sortField, sortValue, onSortToggle, children, disabled, indicatorPosition = 'left', ...rest } = props;
+  const { sortField, sortValue, onSortToggle, children, disabled, indicatorPosition = 'left', contentAfter, ...rest } = props;
 
   const handleSortToggle = React.useCallback(() => {
     onSortToggle(sortField);
@@ -64,6 +65,7 @@ export const TableColumnHeaderSortable = <F extends string>(props: TableColumnHe
         ) }
         { children }
       </Link>
+      { contentAfter }
     </TableColumnHeader>
   );
 };

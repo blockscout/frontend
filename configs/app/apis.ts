@@ -4,12 +4,12 @@ import { stripTrailingSlash } from 'toolkit/utils/url';
 
 import { getEnvValue } from './utils';
 
-interface ApiPropsBase {
+export interface ApiPropsBase {
   endpoint: string;
   basePath?: string;
 }
 
-interface ApiPropsFull extends ApiPropsBase {
+export interface ApiPropsFull extends ApiPropsBase {
   host: string;
   protocol: string;
   port?: string;
@@ -112,6 +112,17 @@ const statsApi = (() => {
   });
 })();
 
+const tacApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  return Object.freeze({
+    endpoint: apiHost,
+  });
+})();
+
 const visualizeApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_VISUALIZE_API_HOST');
   if (!apiHost) {
@@ -136,6 +147,7 @@ const apis: Apis = Object.freeze({
   metadata: metadataApi,
   rewards: rewardsApi,
   stats: statsApi,
+  tac: tacApi,
   visualize: visualizeApi,
 });
 

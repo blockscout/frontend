@@ -11,7 +11,7 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   block: Block;
@@ -38,14 +38,15 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
           fontWeight={ 500 }
           mr="auto"
         />
-        { block.celo?.is_epoch_block && (
-          <Tooltip content={ `Finalized epoch #${ block.celo.epoch_number }` }>
+        { block.celo?.l1_era_finalized_epoch_number && (
+          <Tooltip content={ `Finalized epoch #${ block.celo.l1_era_finalized_epoch_number }` }>
             <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" ml={ 2 } isLoading={ isLoading } flexShrink={ 0 }/>
           </Tooltip>
         ) }
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ block.timestamp }
           enableIncrement={ !isLoading }
+          timeFormat="relative"
           isLoading={ isLoading }
           color="text.secondary"
           display="inline-block"

@@ -1,5 +1,6 @@
 import './fonts.css';
 import './index.css';
+import '../nextjs/global.css';
 import { beforeMount } from '@playwright/experimental-ct-react/hooks';
 import MockDate from 'mockdate';
 import * as router from 'next/router';

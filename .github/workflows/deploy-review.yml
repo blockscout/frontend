@@ -26,7 +26,6 @@ on:
             - mekong
             - neon_devnet
             - optimism
-            - optimism_celestia
             - optimism_sepolia
             - polygon
             - rari_testnet
@@ -34,6 +33,8 @@ on:
             - shibarium
             - scroll_sepolia
             - stability
+            - tac
+            - tac_turin
             - zkevm
             - zilliqa_prototestnet
             - zksync

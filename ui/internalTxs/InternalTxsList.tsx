@@ -9,9 +9,10 @@ type Props = {
   data: Array<InternalTransaction>;
   currentAddress?: string;
   isLoading?: boolean;
+  showBlockInfo?: boolean;
 };
 
-const InternalTxsList = ({ data, currentAddress, isLoading }: Props) => {
+const InternalTxsList = ({ data, currentAddress, isLoading, showBlockInfo = true }: Props) => {
   return (
     <Box>
       { data.map((item, index) => (
@@ -20,6 +21,7 @@ const InternalTxsList = ({ data, currentAddress, isLoading }: Props) => {
           { ...item }
           currentAddress={ currentAddress }
           isLoading={ isLoading }
+          showBlockInfo={ showBlockInfo }
         />
       )) }
     </Box>

@@ -8,7 +8,7 @@ import type {
   TokenType,
 } from 'types/api/token';
 import type { TokenInstanceTransferPagination, TokenInstanceTransferResponse } from 'types/api/tokens';
-import type { TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'types/api/tokenTransfer';
+import type { Erc20TotalPayload, TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
 import { TX_HASH } from './tx';
@@ -89,6 +89,11 @@ export const getTokenInstanceHoldersStub = (type?: TokenType, pagination: TokenH
   }
 };
 
+export const TOKEN_TRANSFER_ERC_20_TOTAL: Erc20TotalPayload = {
+  decimals: '18',
+  value: '9851351626684503',
+};
+
 export const TOKEN_TRANSFER_ERC_20: TokenTransfer = {
   block_hash: BLOCK_HASH,
   block_number: '123456',
@@ -98,10 +103,7 @@ export const TOKEN_TRANSFER_ERC_20: TokenTransfer = {
   timestamp: '2022-06-24T10:22:11.000000Z',
   to: ADDRESS_PARAMS,
   token: TOKEN_INFO_ERC_20,
-  total: {
-    decimals: '18',
-    value: '9851351626684503',
-  },
+  total: TOKEN_TRANSFER_ERC_20_TOTAL,
   transaction_hash: TX_HASH,
   type: 'token_minting',
 };
