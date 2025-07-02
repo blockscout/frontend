@@ -1,6 +1,8 @@
 import { Box, chakra, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import { getFeaturePayload } from 'configs/app/features/types';
+
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
@@ -71,7 +73,7 @@ const Icon = (props: IconProps) => {
       borderRadius="base"
       mr={ 2 }
       flexShrink={ 0 }
-      src={ `${ (config.features.clusters as { cdnUrl?: string })?.cdnUrl || '' }/profile-image/${ props.clusterName }` }
+      src={ `${ getFeaturePayload(config.features.clusters)?.cdnUrl || '' }/profile-image/${ props.clusterName }` }
       alt={ `${ props.clusterName } profile` }
       fallback={ fallbackElement }
     />
