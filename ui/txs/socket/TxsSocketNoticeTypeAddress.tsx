@@ -12,7 +12,7 @@ interface Props {
 }
 
 const TxsSocketNoticeTypeAddress = ({ place, isLoading }: Props) => {
-  const { num, alertText } = useTxsSocketTypeAddress({ isLoading });
+  const { num, showErrorAlert } = useTxsSocketTypeAddress({ isLoading });
 
   if (num === undefined) {
     return null;
@@ -21,7 +21,7 @@ const TxsSocketNoticeTypeAddress = ({ place, isLoading }: Props) => {
   if (place === 'table') {
     return (
       <SocketNewItemsNotice.Desktop
-        alert={ alertText }
+        showErrorAlert={ showErrorAlert }
         num={ num }
         isLoading={ isLoading }
       />
@@ -32,7 +32,7 @@ const TxsSocketNoticeTypeAddress = ({ place, isLoading }: Props) => {
     return (
       <SocketNewItemsNotice.Mobile
         num={ num }
-        alert={ alertText }
+        showErrorAlert={ showErrorAlert }
         isLoading={ isLoading }
       />
     );
