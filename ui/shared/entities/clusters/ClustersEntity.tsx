@@ -8,6 +8,7 @@ import { Image } from 'toolkit/chakra/image';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import colors from 'toolkit/theme/foundations/colors';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -38,7 +39,7 @@ const Icon = (props: IconProps) => {
   const styles = getIconProps(props.variant);
 
   if (props.isLoading) {
-    return <Skeleton loading boxSize={ styles.boxSize } borderRadius="6px" mr={ 2 }/>;
+    return <Skeleton loading boxSize={ styles.boxSize } borderRadius="base" mr={ 2 }/>;
   }
 
   const fallbackElement = (
@@ -48,14 +49,15 @@ const Icon = (props: IconProps) => {
       justifyContent="center"
       width={ styles.boxSize }
       height={ styles.boxSize }
-      backgroundColor="#de6061"
-      borderRadius="6px"
+      backgroundColor={ colors.clusters.value }
+      borderRadius="base"
       mr={ 2 }
       flexShrink={ 0 }
     >
       <IconSvg
         name="clusters"
-        boxSize={ 6 }
+        width="100%"
+        height="100%"
         color="white"
         style={{ filter: 'brightness(0) invert(1)' }}
       />
@@ -66,7 +68,7 @@ const Icon = (props: IconProps) => {
     <Image
       width={ styles.boxSize }
       height={ styles.boxSize }
-      borderRadius="6px"
+      borderRadius="base"
       mr={ 2 }
       flexShrink={ 0 }
       src={ `${ (config.features.clusters as { cdnUrl?: string })?.cdnUrl || '' }/profile-image/${ props.clusterName }` }
@@ -83,8 +85,8 @@ const Icon = (props: IconProps) => {
           alignItems="center"
           justifyContent="center"
           boxSize={ 5 }
-          backgroundColor="#de6061"
-          borderRadius="4px"
+          backgroundColor={ colors.clusters.value }
+          borderRadius="sm"
           mr={ 2 }
         >
           <IconSvg name="clusters" boxSize={ 4 } color="white" style={{ filter: 'brightness(0) invert(1)' }}/>
@@ -118,7 +120,7 @@ const Icon = (props: IconProps) => {
         placement: 'bottom-start',
       }}
       contentProps={{
-        maxW: { base: '100vw', lg: '440px' },
+        maxW: { base: 'calc(100vw - 8px)', lg: '440px' },
         minW: '250px',
         w: 'fit-content',
         display: 'flex',
