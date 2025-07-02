@@ -1,4 +1,4 @@
-import { Flex, Grid, chakra } from '@chakra-ui/react';
+import { Grid, chakra } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -39,9 +39,7 @@ const ClustersGrid = ({ data }: ClustersGridProps) => {
   return (
     <Grid templateRows={ `repeat(${ numberOfRows }, auto)` } autoFlow="column" gap={ 4 } mt={ 2 }>
       { itemsToShow.map((cluster) => (
-        <Flex key={ cluster.name } alignItems="center">
-          <ClustersEntity clusterName={ cluster.name } fontWeight={ 600 } noCopy/>
-        </Flex>
+        <ClustersEntity key={ cluster.name } clusterName={ cluster.name } fontWeight={ 600 } noCopy/>
       )) }
     </Grid>
   );
