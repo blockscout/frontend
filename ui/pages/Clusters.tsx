@@ -32,7 +32,7 @@ const Clusters = () => {
   const { updateQuery } = useQueryParams();
 
   const { searchTerm, debouncedSearchTerm } = useClusterSearch();
-  const viewMode = (getQueryParamString(router.query.view) as ViewMode) || 'leaderboard';
+  const viewMode = (getQueryParamString(router.query.view) as ViewMode) || 'directory';
   const page = parseInt(getQueryParamString(router.query.page) || '1', 10);
 
   const inputType = React.useMemo(() => {
@@ -71,7 +71,7 @@ const Clusters = () => {
 
   const handleViewModeChange = useCallback((newViewMode: ViewMode) => {
     updateQuery({
-      view: newViewMode === 'leaderboard' ? undefined : newViewMode,
+      view: newViewMode === 'directory' ? undefined : newViewMode,
       page: undefined,
     });
   }, [ updateQuery ]);

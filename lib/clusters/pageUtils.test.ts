@@ -309,8 +309,8 @@ describe('pageUtils', () => {
   });
 
   describe('getDefaultViewMode', () => {
-    it('should return leaderboard as default', () => {
-      expect(getDefaultViewMode()).toBe('leaderboard');
+    it('should return directory as default', () => {
+      expect(getDefaultViewMode()).toBe('directory');
     });
   });
 

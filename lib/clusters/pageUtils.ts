@@ -149,7 +149,7 @@ export function isValidViewMode(value: string): value is ViewMode {
 }
 
 export function getDefaultViewMode(): ViewMode {
-  return 'leaderboard';
+  return 'directory';
 }
 
 export function getCurrentDataLength(

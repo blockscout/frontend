@@ -124,18 +124,18 @@ const ClustersActionBar = ({
   const viewToggle = (
     <HStack gap={ 0 } borderRadius="md" overflow="hidden" border="2px solid" borderColor="button.segmented.border">
       <SegmentedButton
-        isSelected={ viewMode === 'leaderboard' }
-        onClick={ handleLeaderboardClick }
-        isDisabled={ viewToggleDisabled }
-      >
-        Leaderboard
-      </SegmentedButton>
-      <SegmentedButton
         isSelected={ viewMode === 'directory' }
         onClick={ handleDirectoryClick }
         isDisabled={ viewToggleDisabled }
       >
         Directory
+      </SegmentedButton>
+      <SegmentedButton
+        isSelected={ viewMode === 'leaderboard' }
+        onClick={ handleLeaderboardClick }
+        isDisabled={ viewToggleDisabled }
+      >
+        Leaderboard
       </SegmentedButton>
     </HStack>
   );
