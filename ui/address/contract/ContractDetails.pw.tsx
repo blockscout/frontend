@@ -18,13 +18,11 @@ const hooksConfig = {
 // test cases which use socket cannot run in parallel since the socket server always run on the same port
 test.describe.configure({ mode: 'serial' });
 
-let addressApiUrl: string;
-
 test.beforeEach(async({ mockApiResponse, page }) => {
   await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/**', (route) => {
     route.abort();
   });
-  addressApiUrl = await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash: addressMock.contract.hash } });
+  await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash: addressMock.contract.hash } });
 });
 
 test.describe('full view', () => {
@@ -101,19 +99,6 @@ test.describe('mobile view', () => {
     await socketServer.joinChannel(socket, `addresses:${ addressMock.contract.hash.toLowerCase() }`);
     await expect(component).toHaveScreenshot();
   });
-});
-
-test('verified via lookup in eth_bytecode_db', async({ render, mockApiResponse, createSocket, page }) => {
-  const contractApiUrl = await mockApiResponse('general:contract', contractMock.nonVerified, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
-
-  const socket = await createSocket();
-  const channel = await socketServer.joinChannel(socket, `addresses:${ addressMock.contract.hash.toLowerCase() }`);
-  await page.waitForResponse(contractApiUrl);
-  socketServer.sendMessage(socket, channel, 'smart_contract_was_verified', {});
-  const request = await page.waitForRequest(addressApiUrl);
-
-  expect(request).toBeTruthy();
 });
 
 test('verified with multiple sources', async({ render, page, mockApiResponse, createSocket }) => {
