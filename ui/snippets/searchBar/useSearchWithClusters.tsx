@@ -4,7 +4,6 @@ import type { SearchResultCluster } from 'types/api/search';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import useDebounce from 'lib/hooks/useDebounce';
 
 import useQuickSearchQuery from './useQuickSearchQuery';
 
@@ -49,9 +48,8 @@ function transformClusterToSearchResult(cluster: {
 
 export default function useSearchWithClusters() {
   const quickSearch = useQuickSearchQuery();
-  const debouncedSearchTerm = useDebounce(quickSearch.searchTerm, 300);
-  const isClusterQuery = isClusterSearch(debouncedSearchTerm);
-  const clusterName = isClusterQuery ? extractClusterName(debouncedSearchTerm) : '';
+  const isClusterQuery = isClusterSearch(quickSearch.debouncedSearchTerm);
+  const clusterName = isClusterQuery ? extractClusterName(quickSearch.debouncedSearchTerm) : '';
 
   const clusterQuery = useApiQuery('clusters:get_cluster_by_name', {
     queryParams: {
