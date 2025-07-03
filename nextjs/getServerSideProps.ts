@@ -247,6 +247,16 @@ export const nameService: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const clusters: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.clusters.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const accounts: GetServerSideProps<Props> = async(context) => {
   if (config.UI.views.address.hiddenViews?.top_accounts) {
     return {

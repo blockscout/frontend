@@ -1,4 +1,4 @@
-export const ADDRESS_REGEXP = /^0x[a-fA-F\d]{40}$/;
+import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 
 export const ADDRESS_LENGTH = 42;
 

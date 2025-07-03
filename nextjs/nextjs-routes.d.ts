@@ -39,6 +39,8 @@ declare module "nextjs-routes" {
     | StaticRoute<"/block/countdown">
     | StaticRoute<"/blocks">
     | StaticRoute<"/chakra">
+    | DynamicRoute<"/clusters/[name]", { "name": string }>
+    | StaticRoute<"/clusters">
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
     | StaticRoute<"/deposits">

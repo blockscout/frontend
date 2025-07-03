@@ -15,6 +15,9 @@ const config: JestConfigWithTsJest = {
   ],
   moduleNameMapper: {
     '^jest/(.*)': '<rootDir>/jest/$1',
+    '^nextjs-routes$': '<rootDir>/jest/mocks/nextjs-routes.js',
+    '\\.svg$': '<rootDir>/jest/mocks/svg.js',
+    '^@uidotdev/usehooks$': '<rootDir>/jest/mocks/usehooks.js',
   },
   modulePathIgnorePatterns: [
     'node_modules_linux',
