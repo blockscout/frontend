@@ -14,7 +14,7 @@ test.beforeEach(async({ mockEnvs }) => {
   ]);
 });
 
-test('default view +@dark-mode +@mobile', async({ render, mockApiResponse, page }) => {
+test('default view +@dark-mode', async({ render, mockApiResponse, page }) => {
   await mockApiResponse('general:stats', statsMock.base);
   const component = await render(<TopBar/>);
 
@@ -26,18 +26,27 @@ test('default view +@dark-mode +@mobile', async({ render, mockApiResponse, page 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 400 } });
 });
 
+test('default view +@mobile -@default', async({ render, mockApiResponse, page }) => {
+  await mockApiResponse('general:stats', statsMock.base);
+  const component = await render(<TopBar/>);
+
+  await component.getByLabel('User settings').click();
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 400 } });
+});
+
 test('with secondary coin price +@mobile', async({ render, mockApiResponse }) => {
   await mockApiResponse('general:stats', statsMock.withSecondaryCoin);
   const component = await render(<TopBar/>);
   await expect(component).toHaveScreenshot();
 });
 
-test('with network menu +@dark-mode', async({ render, mockApiResponse, mockEnvs, mockConfigResponse, mockAssetResponse, page }) => {
+test('with network menu +@dark-mode +@mobile', async({ render, mockApiResponse, mockEnvs, mockConfigResponse, mockAssetResponse, page }) => {
   const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
 
   await mockApiResponse('general:stats', statsMock.base);
   await mockEnvs([
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
+    [ 'NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK', 'https://example.com' ],
   ]);
   await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS);
   await mockAssetResponse('https://localhost:3000/my-logo.png', './playwright/mocks/image_s.jpg');
