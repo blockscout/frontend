@@ -57,6 +57,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/name-domains/[name]': DEFAULT_TEMPLATE,
   '/validators': DEFAULT_TEMPLATE,
   '/validators/[id]': DEFAULT_TEMPLATE,
+  '/epochs': DEFAULT_TEMPLATE,
+  '/epochs/[number]': DEFAULT_TEMPLATE,
   '/gas-tracker': 'Explore real-time %network_title% gas fees with Blockscout\'s advanced gas fee tracker. Get accurate %network_gwei% estimates and track transaction costs live.',
   '/mud-worlds': DEFAULT_TEMPLATE,
   '/token-transfers': DEFAULT_TEMPLATE,

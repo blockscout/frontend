@@ -17,6 +17,7 @@ import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponso
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import ContractCreationStatus from 'ui/shared/statusTag/ContractCreationStatus';
 
 import Address3rdPartyWidgets from './Address3rdPartyWidgets';
 import useAddress3rdPartyWidgets from './address3rdPartyWidgets/useAddress3rdPartyWidgets';
@@ -28,23 +29,19 @@ import AddressNetWorth from './details/AddressNetWorth';
 import AddressSaveOnGas from './details/AddressSaveOnGas';
 import FilecoinActorTag from './filecoin/FilecoinActorTag';
 import TokenSelect from './tokenSelect/TokenSelect';
-import useAddressCountersQuery from './utils/useAddressCountersQuery';
+import type { AddressCountersQuery } from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
 
 interface Props {
   addressQuery: AddressQuery;
+  countersQuery: AddressCountersQuery;
   isLoading?: boolean;
 }
 
-const AddressDetails = ({ addressQuery, isLoading }: Props) => {
+const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
   const router = useRouter();
 
   const addressHash = getQueryParamString(router.query.hash);
-
-  const countersQuery = useAddressCountersQuery({
-    hash: addressHash,
-    addressQuery,
-  });
 
   const address3rdPartyWidgets = useAddress3rdPartyWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa', addressQuery.isPlaceholderData);
 
@@ -156,6 +153,7 @@ const AddressDetails = ({ addressQuery, isLoading }: Props) => {
               />
               <Text whiteSpace="pre"> at txn </Text>
               <TxEntity hash={ data.creation_transaction_hash } truncation="constant" noIcon noCopy={ false }/>
+              { data.creation_status && <ContractCreationStatus status={ data.creation_status } ml={{ base: 0, lg: 2 }}/> }
             </DetailedInfo.ItemValue>
           </>
         ) }

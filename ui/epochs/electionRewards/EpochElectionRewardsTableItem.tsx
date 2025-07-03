@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { BlockEpoch, BlockEpochElectionReward } from 'types/api/block';
+import type { CeloEpochDetails, CeloEpochElectionReward } from 'types/api/epochs';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { IconButton } from 'toolkit/chakra/icon-button';
@@ -12,16 +12,16 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import IconSvg from 'ui/shared/IconSvg';
 
-import BlockEpochElectionRewardDetailsDesktop from './BlockEpochElectionRewardDetailsDesktop';
+import EpochElectionRewardDetailsDesktop from './EpochElectionRewardDetailsDesktop';
 import { getRewardNumText } from './utils';
 
 interface Props {
-  data: BlockEpochElectionReward;
-  type: keyof BlockEpoch['aggregated_election_rewards'];
+  data: CeloEpochElectionReward;
+  type: keyof CeloEpochDetails['aggregated_election_rewards'];
   isLoading?: boolean;
 }
 
-const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) => {
+const EpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) => {
   const section = useDisclosure();
 
   const { valueStr } = getCurrencyValue({
@@ -79,7 +79,7 @@ const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) =>
         <TableRow>
           <TableCell/>
           <TableCell colSpan={ 3 } pr={ 0 } pt={ 0 }>
-            <BlockEpochElectionRewardDetailsDesktop type={ type } token={ data.token }/>
+            <EpochElectionRewardDetailsDesktop type={ type } token={ data.token }/>
           </TableCell>
         </TableRow>
       ) }
@@ -87,4 +87,4 @@ const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) =>
   );
 };
 
-export default React.memo(BlockEpochElectionRewardsTableItem);
+export default React.memo(EpochElectionRewardsTableItem);

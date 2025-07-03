@@ -193,7 +193,7 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | title | `string` | Title of link group | Required | - | `Company` |
-| links | `Array<{'text':string;'url':string;}>` | list of links | Required | - | `[{'text':'Homepage','url':'https://www.blockscout.com'}]` |
+| links | `Array<{'text':string;'url':string;'iconUrl'?:[string,string]}>` | An array contains a list of links in the column. Each link can optionally have an `icon_url` property, which should include an array of two external image URLs for light and dark themes, respectively. If only one URL is provided, it will be used for both color schemes. We expect the icons to be square, with a minimum size of 40px by 40px or in SVG format. | Required | - | `[{'text':'Homepage','url':'https://www.blockscout.com'}]` |
 
 &nbsp;
 
@@ -306,8 +306,8 @@ Settings for meta tags, OG tags and SEO
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | name | `string` | Displayed name of the marketplace | Required | - | `OpenSea` |
-| collection_url | `string` | URL template for NFT collection | Required | - | `https://opensea.io/assets/ethereum/{hash}` |
-| instance_url | `string` | URL template for NFT instance | Required | - | `https://opensea.io/assets/ethereum/{hash}/{id}` |
+| collection_url | `string` | URL template for NFT collection | - | - | `https://opensea.io/assets/ethereum/{hash}` |
+| instance_url | `string` | URL template for NFT instance | - | - | `https://opensea.io/assets/ethereum/{hash}/{id}` |
 | logo_url | `string` | URL of marketplace logo | Required | - | `https://opensea.io/static/images/logos/opensea-logo.svg` |
 
 *Note* URL templates should contain placeholders of NFT hash (`{hash}`) and NFT id (`{id}`). This placeholders will be substituted with particular values for every collection or instance.
@@ -384,7 +384,7 @@ This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_GAS_T
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_GAS_TRACKER_ENABLED | `boolean` | Set to true to enable "Gas tracker" in the app | Required | `true` | `false` | v1.25.0+ |
-| NEXT_PUBLIC_GAS_TRACKER_UNITS | Array<`usd` \| `gwei`> | Array of units for displaying gas prices on the Gas Tracker page, in the stats snippet on the Home page, and in the top bar. The first value in the array will take priority over the second one in all mentioned views. If only one value is provided, gas prices will be displayed only in that unit. | - | `[ 'usd', 'gwei' ]` | `[ 'gwei' ]` | v1.25.0+ |
+| NEXT_PUBLIC_GAS_TRACKER_UNITS | Array<`usd` \| `gwei`> | Array of units for displaying gas prices on the Gas Tracker page, in the stats snippet on the Home page, and in the top bar. The first value in the array will take priority over the second one in all mentioned views. If only one value is provided, gas prices will be displayed only in that unit. | - | For testnets: `[ 'gwei' ]`, for mainnets: `[ 'usd', 'gwei' ]` | `[ 'gwei' ]` | v1.25.0+ |
 
 &nbsp;
 
@@ -658,6 +658,7 @@ This feature allows name tags and other public tags for addresses.
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_METADATA_SERVICE_API_HOST | `string` | Metadata Service API endpoint url | Required | - | `https://metadata.services.blockscout.com` | v1.30.0+ |
+| NEXT_PUBLIC_METADATA_ADDRESS_TAGS_UPDATE_ENABLED | `boolean` | Enables requests to the Metadata Service to schedule an update for address tags after the user visits the address page in the app. | - | `true` | `false` | v2.2.0+ |
 
 &nbsp;
 
@@ -772,7 +773,6 @@ For blockchains that use the Celo platform. _Note_, that once the Celo mainnet b
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CELO_ENABLED | `boolean` | Indicates that it is a Celo-based chain. | - | - | `true` | v1.37.0+ |
-| NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK | `number` | Indicates the block number when the Celo-type chain transitioned to L2. This is used to display links to the Epoch block page from a regular block page. | - | - | `26369280` | v1.37.0+ |
 
 &nbsp;
 

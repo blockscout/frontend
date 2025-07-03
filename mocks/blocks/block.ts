@@ -168,7 +168,7 @@ export const celo: Block = {
       recipient: addressMock.contract,
     },
     epoch_number: 1486,
-    is_epoch_block: true,
+    l1_era_finalized_epoch_number: 1485,
   },
 };
 

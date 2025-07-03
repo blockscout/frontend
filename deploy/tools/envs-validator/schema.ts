@@ -448,16 +448,6 @@ const celoSchema = yup
   .object()
   .shape({
     NEXT_PUBLIC_CELO_ENABLED: yup.boolean(),
-    NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK: yup
-      .string()
-      .when('NEXT_PUBLIC_CELO_ENABLED', {
-        is: (value: boolean) => value,
-        then: (schema) => schema.min(0).optional(),
-        otherwise: (schema) => schema.max(
-          -1,
-          'NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK cannot not be used if NEXT_PUBLIC_CELO_ENABLED is not set to "true"',
-        ),
-      }),
   });
 
 const adButlerConfigSchema = yup
@@ -590,6 +580,7 @@ const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
   .object({
     text: yup.string().required(),
     url: yup.string().test(urlTest).required(),
+    iconUrl: yup.array().of(yup.string().required().test(urlTest)),
   });
 
 const footerLinkGroupSchema: yup.ObjectSchema<CustomLinksGroup> = yup
@@ -626,8 +617,8 @@ const contractCodeIdeSchema: yup.ObjectSchema<ContractCodeIde> = yup
 const nftMarketplaceSchema: yup.ObjectSchema<NftMarketplaceItem> = yup
   .object({
     name: yup.string().required(),
-    collection_url: yup.string().test(urlTest).required(),
-    instance_url: yup.string().test(urlTest).required(),
+    collection_url: yup.string().test(urlTest),
+    instance_url: yup.string().test(urlTest),
     logo_url: yup.string().test(urlTest).required(),
   });
 
@@ -663,6 +654,25 @@ const bridgedTokensSchema = yup
         is: (value: Array<unknown>) => value && value.length > 0,
         then: (schema) => schema.required(),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES cannot not be used without NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS'),
+      }),
+  });
+
+const addressMetadataSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_METADATA_SERVICE_API_HOST: yup
+      .string()
+      .test(urlTest),
+    NEXT_PUBLIC_METADATA_ADDRESS_TAGS_UPDATE_ENABLED: yup
+      .boolean()
+      .when('NEXT_PUBLIC_METADATA_SERVICE_API_HOST', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_METADATA_ADDRESS_TAGS_UPDATE_ENABLED cannot not be used if NEXT_PUBLIC_METADATA_SERVICE_API_HOST is not defined',
+          value => value === undefined,
+        ),
       }),
   });
 
@@ -992,7 +1002,6 @@ const schema = yup
     NEXT_PUBLIC_VISUALIZE_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
-    NEXT_PUBLIC_METADATA_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
       .mixed()
@@ -1148,6 +1157,7 @@ const schema = yup
   .concat(bridgedTokensSchema)
   .concat(sentrySchema)
   .concat(tacSchema)
-  .concat(address3rdPartyWidgetsConfigSchema);
+  .concat(address3rdPartyWidgetsConfigSchema)
+  .concat(addressMetadataSchema);
 
 export default schema;
