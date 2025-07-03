@@ -9,7 +9,6 @@ import { isEvmAddress } from 'lib/clusters/detectInputType';
 import highlightText from 'lib/highlightText';
 import ClusterIcon from 'ui/shared/ClusterIcon';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
 
 const SearchBarSuggestCluster = ({ data, searchTerm, addressFormat }: ItemsProps<SearchResultCluster>) => {
   const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
@@ -46,15 +45,11 @@ const SearchBarSuggestCluster = ({ data, searchTerm, addressFormat }: ItemsProps
     </Text>
   );
 
-  const isContractVerified = data.is_smart_contract_verified && (
-    <IconSvg name="status/success" boxSize="14px" color="green.500" flexShrink={ 0 }/>
-  );
-
   return (
     <Box { ...containerProps }>
       <Grid
         alignItems="center"
-        gridTemplateColumns={{ base: '1fr', md: '228px minmax(auto, max-content) auto' }}
+        gridTemplateColumns={{ base: '1fr', md: '228px 1fr' }}
         gap={ 2 }
       >
         <Flex alignItems="center">
@@ -68,9 +63,7 @@ const SearchBarSuggestCluster = ({ data, searchTerm, addressFormat }: ItemsProps
           mt={{ base: 0, md: 0 }}
         >
           { address }
-          { isContractVerified }
         </Flex>
-        <Box display={{ base: 'none', md: 'block' }}/>
       </Grid>
     </Box>
   );
