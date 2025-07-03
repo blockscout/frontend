@@ -28,8 +28,6 @@ interface Props {
 }
 
 const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressFormat }: Props) => {
-  const isClusterClickable = data.type === 'cluster' ? isEvmAddress(data.address_hash) : true;
-
   const url = (() => {
     switch (data.type) {
       case 'token': {
@@ -128,7 +126,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
     }
   })();
 
-  if (data.type === 'cluster' && !isClusterClickable) {
+  const hasLink = data.type === 'cluster' ? isEvmAddress(data.address_hash) : true;
+
+  if (!hasLink) {
     return content;
   }
 
