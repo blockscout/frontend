@@ -47,7 +47,7 @@ const defaultMarketplaceContext = {
   setIsAutoConnectDisabled: () => {},
 };
 
-const wagmiConfig = createConfig({
+const wagmiConfig = currentChain ? createConfig({
   chains: [ currentChain ],
   connectors: [
     mock({
@@ -59,7 +59,7 @@ const wagmiConfig = createConfig({
   transports: {
     [currentChain.id]: http(),
   },
-});
+}) : undefined;
 
 const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketplaceContext = defaultMarketplaceContext }: Props) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
@@ -79,7 +79,7 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketp
             <MarketplaceContext.Provider value={ marketplaceContext }>
               <SettingsContextProvider>
                 <GrowthBookProvider>
-                  <WagmiProvider config={ wagmiConfig }>
+                  <WagmiProvider config={ wagmiConfig! }>
                     <RewardsContextProvider>
                       { children }
                     </RewardsContextProvider>

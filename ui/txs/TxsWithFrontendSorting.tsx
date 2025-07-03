@@ -48,7 +48,7 @@ const TxsWithFrontendSorting = ({
       isError={ isError }
       setSorting={ setSortByValue }
       sort={ sorting }
-      query={ query }
+      pagination={ query.pagination }
     />
   );
 };

@@ -45,6 +45,12 @@ WORKDIR /sitemap-generator
 COPY ./deploy/tools/sitemap-generator/package.json ./deploy/tools/sitemap-generator/yarn.lock ./
 RUN yarn --frozen-lockfile --network-timeout 100000
 
+### MULTICHAIN CONFIG GENERATOR
+# Install dependencies
+WORKDIR /multichain-config-generator
+COPY ./deploy/tools/multichain-config-generator/package.json ./deploy/tools/multichain-config-generator/yarn.lock ./
+RUN yarn --frozen-lockfile --network-timeout 100000
+
 
 # *****************************
 # ****** STAGE 2: Build *******
@@ -106,6 +112,11 @@ COPY --from=deps /favicon-generator/node_modules ./deploy/tools/favicon-generato
 # Copy dependencies and source code
 COPY --from=deps /sitemap-generator/node_modules ./deploy/tools/sitemap-generator/node_modules
 
+### MULTICHAIN CONFIG GENERATOR
+# Copy dependencies and source code, then build 
+COPY --from=deps /multichain-config-generator/node_modules ./deploy/tools/multichain-config-generator/node_modules
+RUN cd ./deploy/tools/multichain-config-generator && yarn build
+
 
 # *****************************
 # ******* STAGE 3: Run ********
@@ -130,8 +141,11 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
+
+# Copy tools
 COPY --from=builder /app/deploy/tools/envs-validator/index.js ./envs-validator.js
 COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-reporter.js
+COPY --from=builder /app/deploy/tools/multichain-config-generator/dist ./deploy/tools/multichain-config-generator/dist
 
 # Copy scripts
 ## Entripoint

@@ -4,12 +4,12 @@ import React from 'react';
 import type { TxsSocketType } from './socket/types';
 import type { AddressFromToFilter } from 'types/api/address';
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
+import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
 import useDescribeTxs from './noves/useDescribeTxs';
@@ -25,10 +25,7 @@ const SORT_SEQUENCE: Record<TransactionsSortingField, Array<TransactionsSortingV
 
 type Props = {
 
-  query: QueryWithPagesResult<'general:txs_validated' | 'general:txs_pending'> |
-    QueryWithPagesResult<'general:txs_watchlist'> |
-    QueryWithPagesResult<'general:block_txs'> |
-    QueryWithPagesResult<'general:zkevm_l2_txn_batch_txs'>;
+  pagination: PaginationParams;
   showBlockInfo?: boolean;
   socketType?: TxsSocketType;
   currentAddress?: string;
@@ -44,7 +41,7 @@ type Props = {
 };
 
 const TxsContent = ({
-  query,
+  pagination,
   filter,
   filterValue,
   showBlockInfo = true,
@@ -65,7 +62,7 @@ const TxsContent = ({
     setSorting(value);
   }, [ sort, setSorting ]);
 
-  const itemsWithTranslation = useDescribeTxs(items, currentAddress, query.isPlaceholderData);
+  const itemsWithTranslation = useDescribeTxs(items, currentAddress, isPlaceholderData);
 
   const content = itemsWithTranslation ? (
     <>
@@ -86,7 +83,7 @@ const TxsContent = ({
           onSortToggle={ onSortToggle }
           showBlockInfo={ showBlockInfo }
           socketType={ socketType }
-          top={ top || (query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
+          top={ top || (pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
           currentAddress={ currentAddress }
           enableTimeIncrement={ enableTimeIncrement }
           isLoading={ isPlaceholderData }
@@ -100,14 +97,14 @@ const TxsContent = ({
       mt={ -6 }
       sorting={ sort }
       setSorting={ setSorting }
-      paginationProps={ query.pagination }
-      showPagination={ query.pagination.isVisible }
+      paginationProps={ pagination }
+      showPagination={ pagination.isVisible }
       filterComponent={ filter }
       linkSlot={ currentAddress ? (
         <AddressCsvExportLink
           address={ currentAddress }
           params={{ type: 'transactions', filterType: 'address', filterValue }}
-          isLoading={ query.pagination.isLoading }
+          isLoading={ pagination.isLoading }
         />
       ) : null
       }

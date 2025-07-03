@@ -66,6 +66,10 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/pools': DEFAULT_TEMPLATE,
   '/pools/[hash]': DEFAULT_TEMPLATE,
   '/interop-messages': DEFAULT_TEMPLATE,
+  '/chain/[chain-slug]/accounts/label/[slug]': DEFAULT_TEMPLATE,
+  '/chain/[chain-slug]/address/[hash]': DEFAULT_TEMPLATE,
+  '/chain/[chain-slug]/block/[height_or_hash]': DEFAULT_TEMPLATE,
+  '/chain/[chain-slug]/tx/[hash]': DEFAULT_TEMPLATE,
   '/operations': DEFAULT_TEMPLATE,
   '/operation/[id]': DEFAULT_TEMPLATE,
 
