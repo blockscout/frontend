@@ -23,6 +23,7 @@ import ClustersDirectoryListItem from 'ui/clusters/ClustersDirectoryListItem';
 import ClustersDirectoryTable from 'ui/clusters/ClustersDirectoryTable';
 import ClustersLeaderboardListItem from 'ui/clusters/ClustersLeaderboardListItem';
 import ClustersLeaderboardTable from 'ui/clusters/ClustersLeaderboardTable';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -110,13 +111,13 @@ const Clusters = () => {
             data={ directoryData }
             isLoading={ isLoading }
             isClusterDetailsLoading={ isClusterDetailsLoading && inputType === 'address' }
-            top={ 80 }
+            top={ ACTION_BAR_HEIGHT_DESKTOP }
           />
         ) : (
           <ClustersLeaderboardTable
             data={ leaderboardData }
             isLoading={ isLoading }
-            top={ 80 }
+            top={ ACTION_BAR_HEIGHT_DESKTOP }
           />
         ) }
       </Box>
