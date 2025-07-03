@@ -39,7 +39,13 @@ const testWidgetsFn = (isMobile: boolean) => async({ render, mockConfigResponse,
   ));
   await mockAssetResponse(widgetsMock.config[widgetsMock.widgets[0]].icon, './playwright/mocks/image_s.jpg');
 
-  const component = await render(<AddressDetails addressQuery={{ data: addressMock.contract } as AddressQuery}/>, { hooksConfig });
+  const component = await render(
+    <AddressDetails
+      addressQuery={{ data: addressMock.contract } as AddressQuery}
+      countersQuery={{ data: countersMock.forContract } as AddressCountersQuery}
+    />,
+    { hooksConfig },
+  );
 
   if (!isMobile) {
     await page.getByText(widgetsMock.config[widgetsMock.widgets[0]].name).hover({ force: true }); // eslint-disable-line playwright/no-force-option
