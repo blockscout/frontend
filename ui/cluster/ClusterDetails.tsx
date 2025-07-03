@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { ClusterByNameResponse } from 'types/api/clusters';
 
-import { isEvmAddress } from 'lib/clusters/detectInputType';
+import { isEvmAddress } from 'lib/address/isEvmAddress';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AppError from 'ui/shared/AppError/AppError';

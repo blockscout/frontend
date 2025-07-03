@@ -15,8 +15,3 @@ export function detectInputType(input: string): InputType {
 
   return 'cluster_name';
 }
-
-export function isEvmAddress(address: string): boolean {
-  if (!address) return false;
-  return ADDRESS_REGEXP.test(address.trim());
-}

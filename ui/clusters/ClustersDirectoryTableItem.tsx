@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { ClustersDirectoryObject } from 'types/api/clusters';
 
-import { isEvmAddress } from 'lib/clusters/detectInputType';
+import { isEvmAddress } from 'lib/address/isEvmAddress';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

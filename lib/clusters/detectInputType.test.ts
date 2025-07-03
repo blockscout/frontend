@@ -1,4 +1,6 @@
-import { detectInputType, isEvmAddress } from './detectInputType';
+import { isEvmAddress } from 'lib/address/isEvmAddress';
+
+import { detectInputType } from './detectInputType';
 
 describe('detectInputType', () => {
   it('should detect EVM address format', () => {
