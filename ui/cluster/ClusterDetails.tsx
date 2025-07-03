@@ -5,6 +5,7 @@ import type { ClusterByNameResponse } from 'types/api/clusters';
 import { isEvmAddress } from 'lib/clusters/detectInputType';
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import AppError from 'ui/shared/AppError/AppError';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ClustersEntity from 'ui/shared/entities/clusters/ClustersEntity';
@@ -17,12 +18,13 @@ interface Props {
 
 const ClusterDetails = ({ clusterData, clusterName, isLoading }: Props) => {
   if (!clusterData && !isLoading) {
-    return <div>Cluster not found</div>;
+    const error = new Error('Cluster not found');
+    error.cause = { status: 404 };
+    return <AppError error={ error }/>;
   }
 
   const ownerIsEvm = clusterData?.owner ? isEvmAddress(clusterData.owner) : false;
   const addressType = ownerIsEvm ? 'EVM' : 'NON-EVM';
-
   const backingEth = clusterData?.backingWei ? (parseFloat(clusterData.backingWei) / 1e18).toFixed(4) : '0';
 
   return (
