@@ -4,7 +4,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { STATS_CHARTS } from 'stubs/stats';
+import { STATS_CHARTS_SECTION_GAS } from 'stubs/stats';
 import { Link } from 'toolkit/chakra/link';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -16,13 +16,17 @@ const GasTrackerChart = () => {
   const [ isChartLoadingError, setChartLoadingError ] = React.useState(false);
   const { data, isPlaceholderData, isError } = useApiQuery('stats:lines', {
     queryOptions: {
-      placeholderData: STATS_CHARTS,
+      placeholderData: {
+        sections: [ STATS_CHARTS_SECTION_GAS ],
+      },
     },
   });
 
   const handleLoadingError = React.useCallback(() => {
     setChartLoadingError(true);
   }, []);
+
+  const chart = data?.sections.map((section) => section.charts.find((chart) => chart.id === GAS_PRICE_CHART_ID)).filter(Boolean)?.[0];
 
   const content = (() => {
     if (isPlaceholderData) {
@@ -33,10 +37,8 @@ const GasTrackerChart = () => {
       return <DataFetchAlert/>;
     }
 
-    const chart = data?.sections.map((section) => section.charts.find((chart) => chart.id === GAS_PRICE_CHART_ID)).filter(Boolean)?.[0];
-
     if (!chart) {
-      return <DataFetchAlert/>;
+      return null;
     }
 
     return (
@@ -52,6 +54,10 @@ const GasTrackerChart = () => {
       />
     );
   })();
+
+  if (!chart) {
+    return null;
+  }
 
   return (
     <Box>

@@ -3,6 +3,8 @@ import type { Abi, AbiType } from 'abitype';
 export type SmartContractMethodArgType = AbiType;
 export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';
 
+export type SmartContractCreationStatus = 'success' | 'failed' | 'selfdestructed';
+
 export type SmartContractLicenseType =
 'none' |
 'unlicense' |
@@ -39,7 +41,7 @@ export type SmartContractProxyType =
 export interface SmartContract {
   deployed_bytecode: string | null;
   creation_bytecode: string | null;
-  is_self_destructed: boolean;
+  creation_status: SmartContractCreationStatus | null;
   abi: Abi | null;
   compiler_version: string | null;
   evm_version: string | null;

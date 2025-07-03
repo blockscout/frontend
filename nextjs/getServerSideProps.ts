@@ -392,6 +392,16 @@ export const tac: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const celo: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.celo.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const interopMessages: GetServerSideProps<Props> = async(context) => {
   const rollupFeature = config.features.rollup;
   if (!rollupFeature.isEnabled || !rollupFeature.interopEnabled) {

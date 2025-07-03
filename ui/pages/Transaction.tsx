@@ -10,6 +10,7 @@ import { useAppContext } from 'lib/contexts/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
 import { publicClient } from 'lib/web3/client';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -41,6 +42,9 @@ const TransactionPageContent = () => {
   const { chain } = useMultichainContext() || {};
 
   const hash = getQueryParamString(router.query.hash);
+
+  useEtherscanRedirects();
+
   const txQuery = useTxQuery();
 
   const tacOperationQuery = useApiQuery('tac:operation_by_tx_hash', {

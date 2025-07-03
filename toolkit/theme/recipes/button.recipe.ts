@@ -253,6 +253,28 @@ export const recipe = defineRecipe({
           color: 'link.primary.hover',
         },
       },
+      pagination: {
+        borderWidth: '2px',
+        borderStyle: 'solid',
+        bg: 'transparent',
+        color: 'button.pagination.fg',
+        borderColor: 'button.pagination.border',
+        _hover: {
+          bg: 'transparent',
+          color: 'link.primary.hover',
+          borderColor: 'link.primary.hover',
+        },
+        _selected: {
+          bg: 'button.pagination.bg.selected',
+          color: 'button.pagination.fg.selected',
+          borderColor: 'transparent',
+          _hover: {
+            bg: 'button.pagination.bg.selected',
+            color: 'button.pagination.fg.selected',
+            borderColor: 'transparent',
+          },
+        },
+      },
     },
     size: {
       '2xs': {
