@@ -4,6 +4,7 @@ import { throttle } from 'es-toolkit';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
+import config from 'configs/app';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Input } from 'toolkit/chakra/input';
@@ -101,6 +102,15 @@ const SearchBarInput = (
 
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
 
+  const getPlaceholder = () => {
+    if (isMobile) {
+      return 'Search by address / ... ';
+    }
+
+    const clusterText = config.features.clusters.isEnabled ? ' / cluster ' : '';
+    return `Search by address / txn hash / block / token${ clusterText }/... `;
+  };
+
   const startElement = (
     <IconSvg
       name="search"
@@ -156,7 +166,7 @@ const SearchBarInput = (
       >
         <Input
           size="md"
-          placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token / cluster /... ' }
+          placeholder={ getPlaceholder() }
           value={ value }
           onChange={ handleChange }
           onFocus={ onFocus }
