@@ -1,6 +1,6 @@
-export type InputType = 'address' | 'cluster_name';
+import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 
-const EVM_ADDRESS_PATTERN = /^0x[a-fA-F0-9]{40}$/;
+export type InputType = 'address' | 'cluster_name';
 
 export function detectInputType(input: string): InputType {
   if (!input || input.trim().length === 0) {
@@ -9,7 +9,7 @@ export function detectInputType(input: string): InputType {
 
   const trimmedInput = input.trim();
 
-  if (EVM_ADDRESS_PATTERN.test(trimmedInput)) {
+  if (ADDRESS_REGEXP.test(trimmedInput)) {
     return 'address';
   }
 
@@ -18,5 +18,5 @@ export function detectInputType(input: string): InputType {
 
 export function isEvmAddress(address: string): boolean {
   if (!address) return false;
-  return EVM_ADDRESS_PATTERN.test(address.trim());
+  return ADDRESS_REGEXP.test(address.trim());
 }
