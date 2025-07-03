@@ -3,7 +3,7 @@ import React from 'react';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import IconSvg from 'ui/shared/IconSvg';
-import NetworkMenuContentDesktop from 'ui/snippets/networkMenu/NetworkMenuContentDesktop';
+import NetworkMenuContent from 'ui/snippets/networkMenu/NetworkMenuContent';
 import useNetworkMenu from 'ui/snippets/networkMenu/useNetworkMenu';
 
 const NetworkMenu = () => {
@@ -28,7 +28,7 @@ const NetworkMenu = () => {
           <IconSvg name="networks" boxSize="full"/>
         </IconButton>
       </PopoverTrigger>
-      <NetworkMenuContentDesktop items={ menu.data } tabs={ menu.availableTabs }/>
+      <NetworkMenuContent items={ menu.data } tabs={ menu.availableTabs }/>
     </PopoverRoot>
   );
 };
