@@ -1,5 +1,6 @@
 import { Alert, Button, Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import wabtInit from 'wabt';
 
 import type { SmartContract } from 'types/api/contract';
 
@@ -10,7 +11,7 @@ import ContractDetailsConstructorArgs from './ContractDetailsConstructorArgs';
 import ContractDetailsVerificationButton from './ContractDetailsVerificationButton';
 import ContractSourceCode from './ContractSourceCode';
 import type { CONTRACT_DETAILS_TAB_IDS } from './utils';
-import wabtInit from './utils/libwabt';
+// import wabtInit from './utils/libwabt';
 
 interface Tab {
   id: typeof CONTRACT_DETAILS_TAB_IDS[number];
@@ -25,36 +26,42 @@ interface Props {
   sourceAddress: string;
 }
 
-const useOpcodes = ({ bytecode }: { bytecode: string | undefined | null }) => {
+const BYTECODE_PREFIX = '0x';
+
+// function extractEvmBytecode(dataHex: string) {
+//   const hex = dataHex.startsWith(BYTECODE_PREFIX) ? dataHex.slice(2) : dataHex;
+//   const offset = (3 + 32) * 2;
+//   return hex.slice(offset);
+// }
+
+function hexToUint8Array(hex: string): Uint8Array {
+  if (hex.startsWith(BYTECODE_PREFIX)) hex = hex.slice(2);
+  return new Uint8Array(hex.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16)));
+}
+
+// 0x0061736d
+
+const useOpcodesOrWat = ({ bytecode }: { bytecode: string | undefined | null }) => {
   const [ opcodes, setOpcodes ] = useState<string>('');
 
   useEffect(() => {
     async function disassemble() {
       try {
         if (!bytecode) return;
-        let processedBytecode = bytecode;
-        if (bytecode.startsWith('0xef4400')) {
-          processedBytecode = '0x' + bytecode.slice(70);
-        }
-        if (processedBytecode.replace(/^0x/, '').toLowerCase().startsWith('0061736d')) {
-          const wabt = await wabtInit();
 
-          const buffer = Uint8Array.from(
-            processedBytecode
-              .replace(/^0x/, '')
-              .match(/.{1,2}/g)!
-              .map((b) => parseInt(b, 16)),
-          );
+        const wabt = await wabtInit();
+        const buffer = hexToUint8Array(bytecode);
 
-          const mod = wabt.readWasm(buffer, { readDebugNames: true });
-          mod.applyNames();
-          const watText = mod.toText({ foldExprs: false });
-          mod.destroy();
+        const mod = wabt.readWasm(buffer, { readDebugNames: true });
+        mod.applyNames();
+        const watText = mod.toText({ foldExprs: false });
+        mod.destroy();
 
-          setOpcodes(watText);
-          return;
-        }
+        setOpcodes(watText);
+        return;
       } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log('Error disassembling bytecode:', err);
         setOpcodes('-');
       }
     }
@@ -70,7 +77,8 @@ const useOpcodes = ({ bytecode }: { bytecode: string | undefined | null }) => {
 
 export default function useContractDetailsTabs({ data, isLoading, addressHash, sourceAddress }: Props): Array<Tab> {
   const [ showOpCode, setShowOpCode ] = useState(false);
-  const { opcodes } = useOpcodes({ bytecode: data?.deployed_bytecode });
+
+  const { opcodes } = useOpcodesOrWat({ bytecode: data?.creation_bytecode });
 
   const canBeVerified = !data?.is_self_destructed && !data?.is_verified && data?.proxy_type !== 'eip7702';
 
@@ -95,7 +103,7 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         // eslint-disable-next-line react/jsx-no-bind
         onClick={ toggleButton }
       >
-        { showOpCode ? 'Show ByteCode' : 'Show OpCode' }
+        { showOpCode ? 'Show ByteCode' : 'Show Wat' }
       </Button>
     );
 
