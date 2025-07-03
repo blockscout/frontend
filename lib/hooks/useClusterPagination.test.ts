@@ -1,13 +1,13 @@
 import { renderHook, act } from 'jest/lib';
-import { useQueryParams } from 'lib/hooks/useQueryParams';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { useQueryParams } from 'lib/router/useQueryParams';
 
 import { useClusterPagination } from './useClusterPagination';
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }));
-jest.mock('lib/hooks/useQueryParams');
+jest.mock('lib/router/useQueryParams');
 jest.mock('lib/router/getQueryParamString');
 
 const { useRouter } = require('next/router');

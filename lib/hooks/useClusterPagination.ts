@@ -3,8 +3,8 @@ import { useCallback, useMemo } from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
-import { useQueryParams } from 'lib/hooks/useQueryParams';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { useQueryParams } from 'lib/router/useQueryParams';
 
 export function useClusterPagination(hasNextPage: boolean, isLoading: boolean) {
   const router = useRouter();
