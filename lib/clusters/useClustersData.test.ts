@@ -1,7 +1,5 @@
 import { renderHook } from '@testing-library/react';
 
-import { ClustersOrderBy } from 'types/api/clusters';
-
 import useApiQuery from 'lib/api/useApiQuery';
 
 import { useClustersData } from './useClustersData';
@@ -31,7 +29,7 @@ describe('useClustersData', () => {
 
   describe('input type detection logic', () => {
     it('should default to cluster_name when no search term provided', () => {
-      renderHook(() => useClustersData('', 'leaderboard', ClustersOrderBy.RANK_ASC, 1));
+      renderHook(() => useClustersData('', 'leaderboard', 1));
 
       expect(mockDetectInputType).not.toHaveBeenCalled();
     });
@@ -39,7 +37,7 @@ describe('useClustersData', () => {
     it('should call detectInputType when search term exists', () => {
       mockDetectInputType.mockReturnValue('address');
 
-      renderHook(() => useClustersData('0x123...', 'directory', ClustersOrderBy.NAME_ASC, 1));
+      renderHook(() => useClustersData('0x123...', 'directory', 1));
 
       expect(mockDetectInputType).toHaveBeenCalledWith('0x123...');
     });
@@ -48,7 +46,7 @@ describe('useClustersData', () => {
       mockDetectInputType.mockReturnValue('cluster_name');
 
       const { rerender } = renderHook(
-        ({ searchTerm }) => useClustersData(searchTerm, 'directory', ClustersOrderBy.NAME_ASC, 1),
+        ({ searchTerm }) => useClustersData(searchTerm, 'directory', 1),
         { initialProps: { searchTerm: 'example.cluster' } },
       );
 
@@ -60,7 +58,7 @@ describe('useClustersData', () => {
 
   describe('view mode determination', () => {
     it('should show directory view when viewMode is directory', () => {
-      renderHook(() => useClustersData('', 'directory', ClustersOrderBy.NAME_ASC, 1));
+      renderHook(() => useClustersData('', 'directory', 1));
 
       expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_directory', expect.any(Object));
     });
@@ -68,13 +66,13 @@ describe('useClustersData', () => {
     it('should show directory view when search term exists regardless of viewMode', () => {
       mockDetectInputType.mockReturnValue('cluster_name');
 
-      renderHook(() => useClustersData('search', 'leaderboard', ClustersOrderBy.RANK_ASC, 1));
+      renderHook(() => useClustersData('search', 'leaderboard', 1));
 
       expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_directory', expect.any(Object));
     });
 
     it('should show leaderboard view when no search term and viewMode is leaderboard', () => {
-      renderHook(() => useClustersData('', 'leaderboard', ClustersOrderBy.RANK_ASC, 1));
+      renderHook(() => useClustersData('', 'leaderboard', 1));
 
       expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_leaderboard', expect.any(Object));
     });
@@ -82,7 +80,7 @@ describe('useClustersData', () => {
 
   describe('API query configuration', () => {
     it('should configure leaderboard query with correct pagination', () => {
-      renderHook(() => useClustersData('', 'leaderboard', ClustersOrderBy.RANK_ASC, 3));
+      renderHook(() => useClustersData('', 'leaderboard', 3));
 
       const leaderboardCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_leaderboard',
@@ -97,7 +95,7 @@ describe('useClustersData', () => {
     it('should configure directory query with search term', () => {
       mockDetectInputType.mockReturnValue('cluster_name');
 
-      renderHook(() => useClustersData('example', 'directory', ClustersOrderBy.NAME_ASC, 2));
+      renderHook(() => useClustersData('example', 'directory', 2));
 
       const directoryCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_directory',
@@ -111,7 +109,7 @@ describe('useClustersData', () => {
     it('should configure address query when input type is address', () => {
       mockDetectInputType.mockReturnValue('address');
 
-      renderHook(() => useClustersData('0x123...', 'directory', ClustersOrderBy.NAME_ASC, 1));
+      renderHook(() => useClustersData('0x123...', 'directory', 1));
 
       const addressCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_clusters_by_address',
@@ -145,7 +143,7 @@ describe('useClustersData', () => {
         } as unknown as MockQueryResult;
       });
 
-      renderHook(() => useClustersData('0x123...', 'directory', ClustersOrderBy.NAME_ASC, 1));
+      renderHook(() => useClustersData('0x123...', 'directory', 1));
 
       const clusterDetailsCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_cluster_by_id',
@@ -160,7 +158,7 @@ describe('useClustersData', () => {
     it('should use NAME_ASC ordering when search term exists', () => {
       mockDetectInputType.mockReturnValue('cluster_name');
 
-      renderHook(() => useClustersData('search', 'directory', ClustersOrderBy.CREATED_AT_DESC, 1));
+      renderHook(() => useClustersData('search', 'directory', 1));
 
       const directoryCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_directory',
@@ -170,7 +168,7 @@ describe('useClustersData', () => {
     });
 
     it('should use CREATED_AT_DESC ordering when no search term', () => {
-      renderHook(() => useClustersData('', 'directory', ClustersOrderBy.NAME_ASC, 1));
+      renderHook(() => useClustersData('', 'directory', 1));
 
       const directoryCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_directory',
@@ -181,7 +179,7 @@ describe('useClustersData', () => {
 
     it('should memoize directory order by logic', () => {
       const { rerender } = renderHook(
-        ({ searchTerm }) => useClustersData(searchTerm, 'directory', ClustersOrderBy.NAME_ASC, 1),
+        ({ searchTerm }) => useClustersData(searchTerm, 'directory', 1),
         { initialProps: { searchTerm: 'search' } },
       );
 
@@ -216,7 +214,7 @@ describe('useClustersData', () => {
       });
 
       const { result } = renderHook(() =>
-        useClustersData('', 'leaderboard', ClustersOrderBy.RANK_ASC, 1),
+        useClustersData('', 'leaderboard', 1),
       );
 
       expect(result.current.data).toBe(mockLeaderboardData);
@@ -244,7 +242,7 @@ describe('useClustersData', () => {
       });
 
       const { result } = renderHook(() =>
-        useClustersData('0x123...', 'directory', ClustersOrderBy.NAME_ASC, 1),
+        useClustersData('0x123...', 'directory', 1),
       );
 
       expect(result.current.data).toBe(mockAddressData);
@@ -272,7 +270,7 @@ describe('useClustersData', () => {
       });
 
       const { result } = renderHook(() =>
-        useClustersData('example', 'directory', ClustersOrderBy.NAME_ASC, 1),
+        useClustersData('example', 'directory', 1),
       );
 
       expect(result.current.data).toBe(mockDirectoryData);
@@ -310,7 +308,7 @@ describe('useClustersData', () => {
       });
 
       const { result } = renderHook(() =>
-        useClustersData('', 'leaderboard', ClustersOrderBy.RANK_ASC, 1),
+        useClustersData('', 'leaderboard', 1),
       );
 
       expect(result.current).toEqual({
@@ -331,7 +329,7 @@ describe('useClustersData', () => {
       } as unknown as MockQueryResult);
 
       const { result } = renderHook(() =>
-        useClustersData('', 'leaderboard', ClustersOrderBy.RANK_ASC, 1),
+        useClustersData('', 'leaderboard', 1),
       );
 
       expect(result.current.isError).toBe(true);
@@ -346,7 +344,7 @@ describe('useClustersData', () => {
       } as unknown as MockQueryResult);
 
       const { result } = renderHook(() =>
-        useClustersData('', 'leaderboard', ClustersOrderBy.RANK_ASC, 1),
+        useClustersData('', 'leaderboard', 1),
       );
 
       expect(result.current.isLoading).toBe(true);
@@ -355,7 +353,7 @@ describe('useClustersData', () => {
 
   describe('pagination calculations', () => {
     it('should calculate correct offset for page 1', () => {
-      renderHook(() => useClustersData('', 'leaderboard', ClustersOrderBy.RANK_ASC, 1));
+      renderHook(() => useClustersData('', 'leaderboard', 1));
 
       const leaderboardCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_leaderboard',
@@ -365,7 +363,7 @@ describe('useClustersData', () => {
     });
 
     it('should calculate correct offset for page 5', () => {
-      renderHook(() => useClustersData('', 'leaderboard', ClustersOrderBy.RANK_ASC, 5));
+      renderHook(() => useClustersData('', 'leaderboard', 5));
 
       const leaderboardCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_leaderboard',
@@ -375,7 +373,7 @@ describe('useClustersData', () => {
     });
 
     it('should consistently use 50 items per page', () => {
-      renderHook(() => useClustersData('', 'leaderboard', ClustersOrderBy.RANK_ASC, 1));
+      renderHook(() => useClustersData('', 'leaderboard', 1));
 
       const leaderboardCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_leaderboard',
@@ -387,7 +385,7 @@ describe('useClustersData', () => {
 
   describe('query enabling/disabling logic', () => {
     it('should disable leaderboard query when in directory view', () => {
-      renderHook(() => useClustersData('search', 'directory', ClustersOrderBy.NAME_ASC, 1));
+      renderHook(() => useClustersData('search', 'directory', 1));
 
       const leaderboardCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_leaderboard',
@@ -399,7 +397,7 @@ describe('useClustersData', () => {
     it('should disable directory query when input type is address', () => {
       mockDetectInputType.mockReturnValue('address');
 
-      renderHook(() => useClustersData('0x123...', 'directory', ClustersOrderBy.NAME_ASC, 1));
+      renderHook(() => useClustersData('0x123...', 'directory', 1));
 
       const directoryCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_directory',
@@ -411,7 +409,7 @@ describe('useClustersData', () => {
     it('should disable address query when input type is not address', () => {
       mockDetectInputType.mockReturnValue('cluster_name');
 
-      renderHook(() => useClustersData('example', 'directory', ClustersOrderBy.NAME_ASC, 1));
+      renderHook(() => useClustersData('example', 'directory', 1));
 
       const addressCall = mockUseApiQuery.mock.calls.find(call =>
         call[0] === 'clusters:get_clusters_by_address',

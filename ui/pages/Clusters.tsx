@@ -12,9 +12,9 @@ import {
   getCurrentDataLength,
 } from 'lib/clusters/pageUtils';
 import type { ViewMode } from 'lib/clusters/pageUtils';
-import { useClusterPagination } from 'lib/hooks/useClusterPagination';
-import { useClustersData } from 'lib/hooks/useClustersData';
-import { useClusterSearch } from 'lib/hooks/useClusterSearch';
+import { useClusterPagination } from 'lib/clusters/useClusterPagination';
+import { useClustersData } from 'lib/clusters/useClustersData';
+import { useClusterSearch } from 'lib/clusters/useClusterSearch';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useQueryParams } from 'lib/router/useQueryParams';
 import { apos } from 'toolkit/utils/htmlEntities';
