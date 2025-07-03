@@ -67,13 +67,20 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
       _hover={{
         bgColor: { _light: 'white', _dark: 'black' },
         color: isSelected ? { _light: 'gray.500', _dark: 'gray.400' } : 'link.primary.hover',
+        opacity: 1,
         zIndex: 1,
       }}
+      opacity={ isSelected ? 1 : 0.6 }
     >
       { icon }
       <Box display={{ base: 'none', lg: 'block' }}>
         <span>{ title }</span>
-        <Flex alignItems="center" color="text">
+        <Flex
+          alignItems="center"
+          color="var(--kda-explorer-widget-stats-surface-text)"
+          fontFamily="var(--kda-typography-family-monospace-font)"
+          fontWeight="bold"
+        >
           { valueContent }
           { valueDiffContent }
         </Flex>

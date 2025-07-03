@@ -58,6 +58,7 @@ const RawDataSnippet = ({
         whiteSpace="pre-wrap"
         overflowX="hidden"
         overflowY="auto"
+        fontFamily="var(--kda-typography-family-monospace-font)"
         loading={ isLoading }
         { ...contentProps }
       >

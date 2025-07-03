@@ -24,6 +24,7 @@ const TruncatedValue = ({ className, isLoading, value, tooltipPlacement, tooltip
         overflow="hidden"
         textOverflow="ellipsis"
         height="fit-content"
+        // fontFamily="var(--kda-typography-family-monospace-font)"
       >
         <span>{ value }</span>
       </Skeleton>

@@ -32,7 +32,7 @@ const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className
   const { valueStr: valueResult, usd: usdResult } = getCurrencyValue({ value, accuracy, accuracyUsd, exchangeRate, decimals });
 
   return (
-    <chakra.span className={ className } display="inline-flex" rowGap={ 3 } columnGap={ 1 }>
+    <chakra.span className={ className } display="inline-flex" rowGap={ 3 } columnGap={ 1 } fontFamily="var(--kda-typography-family-monospace-font)">
       <chakra.span display="inline-block">
         { valueResult }{ currency ? ` ${ currency }` : '' }
       </chakra.span>

@@ -91,7 +91,7 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', noTooltip, tailLen
     };
   }, [ calculateString ]);
 
-  const content = <chakra.span ref={ elementRef } as={ as }>{ displayedString }</chakra.span>;
+  const content = <chakra.span ref={ elementRef } as={ as } fontFamily="var(--kda-typography-family-monospace-font)">{ displayedString }</chakra.span>;
   const isTruncated = hash.length !== displayedString.length;
 
   if (isTruncated && !noTooltip) {

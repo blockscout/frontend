@@ -234,11 +234,11 @@
               "value": "#4A9079"
             }
           },
-          "radius": "2px",
+          "radius": "8px",
           "background": "#4A9079",
           "padding": "1rem",
           "column": {
-            "width": "100%",
+            "width": "auto",
             "gap": "2rem"
           },
           "button": {

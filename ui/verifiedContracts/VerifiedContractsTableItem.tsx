@@ -65,10 +65,11 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
           isLoading={ isLoading }
           my={ 1 }
           maxW="100%"
+          fontFamily="var(--kda-typography-family-monospace-font)"
         />
       </TableCell>
       <TableCell isNumeric>
-        <Skeleton loading={ isLoading } display="inline-block" my={ 1 }>
+        <Skeleton loading={ isLoading } display="inline-block" my={ 1 } fontFamily="var(--kda-typography-family-monospace-font)">
           { data.transactions_count ? data.transactions_count.toLocaleString() : '0' }
         </Skeleton>
       </TableCell>

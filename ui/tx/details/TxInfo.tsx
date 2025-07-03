@@ -695,9 +695,9 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
         Gas usage & limit by txn
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton loading={ isLoading }>{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
+        <Skeleton loading={ isLoading } fontFamily="var(--kda-typography-family-monospace-font)">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
         <TextSeparator/>
-        <Skeleton loading={ isLoading }>{ BigNumber(data.gas_limit).toFormat() }</Skeleton>
+        <Skeleton loading={ isLoading } fontFamily="var(--kda-typography-family-monospace-font)">{ BigNumber(data.gas_limit).toFormat() }</Skeleton>
         <Utilization ml={ 4 } value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
 
@@ -710,7 +710,12 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             Gas used for L1
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ isLoading }>{ BigNumber(data.arbitrum.gas_used_for_l1 || 0).toFormat() }</Skeleton>
+            <Skeleton
+              loading={ isLoading }
+              fontFamily="var(--kda-typography-family-monospace-font)"
+            >
+              { BigNumber(data.arbitrum.gas_used_for_l1 || 0).toFormat() }
+            </Skeleton>
             <TextSeparator/>
             <Utilization
               ml={ 4 }
@@ -726,7 +731,12 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             Gas used for L2
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ isLoading }>{ BigNumber(data.arbitrum.gas_used_for_l2 || 0).toFormat() }</Skeleton>
+            <Skeleton
+              loading={ isLoading }
+              fontFamily="var(--kda-typography-family-monospace-font)"
+            >
+              { BigNumber(data.arbitrum.gas_used_for_l2 || 0).toFormat() }
+            </Skeleton>
             <TextSeparator/>
             <Utilization
               ml={ 4 }
@@ -746,7 +756,12 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             L1 Gas used
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ isLoading }>{ BigNumber(data.scroll?.l1_gas_used || 0).toFormat() }</Skeleton>
+            <Skeleton
+              loading={ isLoading }
+              fontFamily="var(--kda-typography-family-monospace-font)"
+            >
+              { BigNumber(data.scroll?.l1_gas_used || 0).toFormat() }
+            </Skeleton>
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -768,21 +783,45 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             { data.base_fee_per_gas && (
               <Skeleton loading={ isLoading }>
                 <Text as="span" fontWeight="500">Base: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                <Text
+                  fontWeight="600"
+                  as="span"
+                  fontFamily="var(--kda-typography-family-monospace-font)"
+                >
+                  { BigNumber(data.base_fee_per_gas)
+                    .dividedBy(WEI_IN_GWEI)
+                    .toFixed() }
+                </Text>
                 { (data.max_fee_per_gas || data.max_priority_fee_per_gas) && <TextSeparator/> }
               </Skeleton>
             ) }
             { data.max_fee_per_gas && (
               <Skeleton loading={ isLoading }>
                 <Text as="span" fontWeight="500">Max: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                <Text
+                  fontWeight="600"
+                  as="span"
+                  fontFamily="var(--kda-typography-family-monospace-font)"
+                >
+                  { BigNumber(data.max_fee_per_gas)
+                    .dividedBy(WEI_IN_GWEI)
+                    .toFixed() }
+                </Text>
                 { data.max_priority_fee_per_gas && <TextSeparator/> }
               </Skeleton>
             ) }
             { data.max_priority_fee_per_gas && (
               <Skeleton loading={ isLoading }>
                 <Text as="span" fontWeight="500">Max priority: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                <Text
+                  fontWeight="600"
+                  as="span"
+                  fontFamily="var(--kda-typography-family-monospace-font)"
+                >
+                  { BigNumber(data.max_priority_fee_per_gas)
+                    .dividedBy(WEI_IN_GWEI)
+                    .toFixed() }
+                </Text>
               </Skeleton>
             ) }
           </DetailedInfo.ItemValue>
@@ -802,7 +841,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                 L1 gas used by txn
               </DetailedInfo.ItemLabel>
               <DetailedInfo.ItemValue>
-                <Text>{ BigNumber(data.l1_gas_used).toFormat() }</Text>
+                <Text fontFamily="var(--kda-typography-family-monospace-font)">{ BigNumber(data.l1_gas_used).toFormat() }</Text>
               </DetailedInfo.ItemValue>
             </>
           ) }
@@ -816,8 +855,22 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                 L1 gas price
               </DetailedInfo.ItemLabel>
               <DetailedInfo.ItemValue>
-                <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
-                <Text color="text.secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
+                <Text
+                  mr={ 1 }
+                  fontFamily="var(--kda-typography-family-monospace-font)"
+                >
+                  { BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }
+                </Text>
+                <Text
+                  color="text.secondary"
+                  fontFamily="var(--kda-typography-family-monospace-font)"
+                >
+                  (
+                  { BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() }
+                  { ' ' }
+                  { currencyUnits.gwei }
+                  )
+                </Text>
               </DetailedInfo.ItemValue>
             </>
           ) }
@@ -892,7 +945,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                 >
                   Blob gas usage
                 </DetailedInfo.ItemLabel>
-                <DetailedInfo.ItemValue>
+                <DetailedInfo.ItemValue fontFamily="var(--kda-typography-family-monospace-font)">
                   { BigNumber(data.blob_gas_used).toFormat() }
                 </DetailedInfo.ItemValue>
               </>
@@ -907,13 +960,30 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                 </DetailedInfo.ItemLabel>
                 <DetailedInfo.ItemValue>
                   { data.blob_gas_price && (
-                    <Text fontWeight="600" as="span">{ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                    <Text
+                      fontWeight="600"
+                      as="span"
+                      fontFamily="var(--kda-typography-family-monospace-font)"
+                    >
+                      { BigNumber(data.blob_gas_price)
+                        .dividedBy(WEI_IN_GWEI)
+                        .toFixed() }
+                    </Text>
                   ) }
                   { (data.max_fee_per_blob_gas && data.blob_gas_price) && <TextSeparator/> }
                   { data.max_fee_per_blob_gas && (
                     <>
                       <Text as="span" fontWeight="500" whiteSpace="pre">Max: </Text>
-                      <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_blob_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                      <Text
+                        fontWeight="600"
+                        as="span"
+                        fontFamily="var(--kda-typography-family-monospace-font)"
+                      >
+                        { BigNumber(data.max_fee_per_blob_gas)
+                          .dividedBy(WEI_IN_GWEI)
+                          .toFixed()
+                        }
+                      </Text>
                     </>
                   ) }
                 </DetailedInfo.ItemValue>

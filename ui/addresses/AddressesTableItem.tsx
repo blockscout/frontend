@@ -49,19 +49,19 @@ const AddressesTableItem = ({
           )) : null }
         </Flex>
       </TableCell>
-      <TableCell isNumeric>
+      <TableCell isNumeric fontFamily="var(--kda-typography-family-monospace-font)">
         <Skeleton loading={ isLoading } display="inline-block" maxW="100%">
           <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] + (addressBalanceChunks[1] ? '.' : '') }</Text>
           <Text lineHeight="24px" color="text.secondary" as="span">{ addressBalanceChunks[1] }</Text>
         </Skeleton>
       </TableCell>
       { hasPercentage && (
-        <TableCell isNumeric>
+        <TableCell isNumeric fontFamily="var(--kda-typography-family-monospace-font)">
           <Text lineHeight="24px">{ addressBalance.div(totalSupply).multipliedBy(100).dp(8).toFormat() + '%' }</Text>
         </TableCell>
       ) }
       <TableCell isNumeric>
-        <Skeleton loading={ isLoading } display="inline-block" lineHeight="24px">
+        <Skeleton loading={ isLoading } display="inline-block" lineHeight="24px" fontFamily="var(--kda-typography-family-monospace-font)">
           { Number(item.transactions_count).toLocaleString() }
         </Skeleton>
       </TableCell>

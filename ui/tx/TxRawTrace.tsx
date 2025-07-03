@@ -68,7 +68,7 @@ const TxRawTrace = ({ txQuery }: Props) => {
 
   const text = JSON.stringify(dataToDisplay, undefined, 4);
 
-  return <RawDataSnippet data={ text } isLoading={ isPlaceholderData }/>;
+  return <RawDataSnippet data={ text } isLoading={ isPlaceholderData } fontFamily="var(--kda-typography-family-monospace-font)"/>;
 };
 
 export default TxRawTrace;

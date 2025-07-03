@@ -112,14 +112,7 @@
           },
           "radius": {
             "$type": "dimension",
-            "$value": "{kda.foundation.radius.xs}",
-            "$extensions": {
-              "breakpoint": {
-                "(min-width: {kda.foundation.breakpoint.lg})": {
-                  "value": "{kda.foundation.radius.lg}"
-                }
-              }
-            }
+            "$value": "{kda.foundation.radius.lg}"
           },
           "background": {
             "$type": "color",
@@ -142,7 +135,7 @@
           "column": {
             "width": {
               "$type": "string",
-              "$value": "100%",
+              "$value": "auto",
               "$extensions": {
                 "breakpoint": {
                   "(min-width: {kda.foundation.breakpoint.lg})": {

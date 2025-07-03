@@ -54,6 +54,7 @@ const RawInputData = ({ hex, rightSlot: rightSlotProp, defaultDataType = 'Hex', 
       isLoading={ isLoading }
       textareaMaxHeight="220px"
       textareaMinHeight={ minHeight || '160px' }
+      fontFamily="var(--kda-typography-family-monospace-font)"
       w="100%"
     />
   );

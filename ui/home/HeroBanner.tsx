@@ -38,8 +38,8 @@ const HeroBanner = () => {
             fontWeight="var(--kda-explorer-hero-banner-title-font-weight)"
             color="var(--kda-explorer-hero-banner-title-font-color-name)"
             display="flex"
-            flexDirection={{ base: 'column', lg: 'row' }}
             gap="var(--kda-explorer-hero-banner-title-margin-gap)"
+            alignItems="center"
             width="var(--kda-explorer-hero-banner-column-width)"
           >
             <Span as="span" whiteSpace={{ base: 'normal', lg: 'nowrap' }}>

@@ -127,7 +127,7 @@ const Content = chakra((props: ContentProps) => {
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
         <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
-        <Box whiteSpace="pre-wrap" wordBreak="break-word">
+        <Box whiteSpace="pre-wrap" wordBreak="break-word" fontFamily="var(--kda-typography-family-monospace-font)">
           { displayedAddress }
         </Box>
       </VStack>
@@ -151,6 +151,7 @@ const Content = chakra((props: ContentProps) => {
     <EntityBase.Content
       { ...props }
       text={ displayedAddress }
+      fontFamily="var(--kda-typography-family-monospace-font)"
     />
   );
 });

@@ -77,7 +77,7 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
       <TableCell isNumeric verticalAlign="top">
         { (item.token && valueStr) ? (
           <Flex gap={ 2 } overflow="hidden" justifyContent="flex-end">
-            <Skeleton loading={ isLoading } wordBreak="break-all">
+            <Skeleton loading={ isLoading } wordBreak="break-all" fontFamily="var(--kda-typography-family-monospace-font)">
               { valueStr }
             </Skeleton>
             <TokenEntity

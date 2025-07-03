@@ -83,7 +83,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
           >
             Transaction fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
+          <DetailedInfo.ItemValue fontFamily="var(--kda-typography-family-monospace-font)">
             <TxFee tx={ data } withUsd/>
           </DetailedInfo.ItemValue>
         </>
@@ -98,7 +98,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
           >
             Gas limit
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
+          <DetailedInfo.ItemValue fontFamily="var(--kda-typography-family-monospace-font)">
             { BigNumber(data.gas_limit).toFormat() }
           </DetailedInfo.ItemValue>
         </>
@@ -113,7 +113,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
       >
         Raw input
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
+      <DetailedInfo.ItemValue fontFamily="var(--kda-typography-family-monospace-font)">
         <RawInputData hex={ data.raw_input }/>
       </DetailedInfo.ItemValue>
 
@@ -124,7 +124,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
           >
             Decoded input data
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
+          <DetailedInfo.ItemValue fontFamily="var(--kda-typography-family-monospace-font)">
             <LogDecodedInputData data={ data.decoded_input }/>
           </DetailedInfo.ItemValue>
         </>

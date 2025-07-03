@@ -35,7 +35,16 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
       <Skeleton whiteSpace="pre-wrap" wordBreak="break-word" loading={ isLoading } display="flex" flexWrap="wrap" className={ className }>
         <span>{ valueStr } </span>
         <TokenEntity token={ token } noCopy onlySymbol w="auto" ml={ 1 }/>
-        { usd && withUsd && <chakra.span color="text.secondary"> (${ usd })</chakra.span> }
+        {
+          usd &&
+          withUsd && (
+            <chakra.span
+              color="text.secondary"
+              fontFamily="var(--kda-typography-family-monospace-font)"
+            >
+              (${ usd })
+            </chakra.span>
+          ) }
       </Skeleton>
     );
   }
@@ -54,7 +63,14 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
       <Skeleton whiteSpace="pre" loading={ isLoading } display="flex" className={ className }>
         <span>{ valueStr } </span>
         { valueStr !== '0' && <TokenEntity token={ token } noCopy onlySymbol w="auto" ml={ 1 }/> }
-        { usd && withUsd && <chakra.span color="text.secondary"> (${ usd })</chakra.span> }
+        { usd && withUsd && (
+          <chakra.span
+            color="text.secondary"
+            fontFamily="var(--kda-typography-family-monospace-font)"
+          >
+            (${ usd })
+          </chakra.span>
+        ) }
       </Skeleton>
     );
   }
@@ -71,6 +87,7 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
       flexWrap="wrap"
       className={ className }
       isLoading={ isLoading }
+      fontFamily="var(--kda-typography-family-monospace-font)"
     />
   );
 };

@@ -32,10 +32,10 @@ const TxStateTableItem = ({ data, isLoading }: Props) => {
           w="100%"
         />
       </TableCell>
-      <TableCell isNumeric><Box py="7px">{ before }</Box></TableCell>
-      <TableCell isNumeric><Box py="7px">{ after }</Box></TableCell>
-      <TableCell isNumeric><Box py="7px">{ change }</Box></TableCell>
-      <TableCell>{ tokenId }</TableCell>
+      <TableCell isNumeric fontFamily="var(--kda-typography-family-monospace-font)"><Box py="7px">{ before }</Box></TableCell>
+      <TableCell isNumeric fontFamily="var(--kda-typography-family-monospace-font)"><Box py="7px">{ after }</Box></TableCell>
+      <TableCell isNumeric fontFamily="var(--kda-typography-family-monospace-font)"><Box py="7px">{ change }</Box></TableCell>
+      <TableCell fontFamily="var(--kda-typography-family-monospace-font)">{ tokenId }</TableCell>
     </TableRow>
   );
 };

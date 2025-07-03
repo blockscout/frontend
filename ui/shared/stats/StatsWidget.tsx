@@ -99,9 +99,10 @@ const StatsWidget = ({
             loading={ isLoading }
             display="flex"
             alignItems="baseline"
-            fontWeight={ 500 }
             textStyle="heading.md"
             color="var(--kda-explorer-widget-stats-surface-text)"
+            fontFamily="var(--kda-typography-family-monospace-font)"
+            fontWeight={ 600 }
           >
             { valuePrefix && <chakra.span whiteSpace="pre">{ valuePrefix }</chakra.span> }
             { typeof value === 'string' ? (

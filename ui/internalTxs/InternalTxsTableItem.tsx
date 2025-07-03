@@ -91,6 +91,7 @@ const InternalTxsTableItem = ({
           minW={ 6 }
           maxW="100%"
           verticalAlign="middle"
+          fontFamily="var(--kda-typography-family-monospace-font)"
         />
       </TableCell>
     </TableRow>

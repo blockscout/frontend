@@ -36,6 +36,7 @@ const BlockGasUsed = ({ className, gasUsed, gasLimit, gasTarget, isLoading }: Pr
           value={ BigNumber(gasUsed).dividedBy(BigNumber(gasLimit)).toNumber() }
           isLoading={ isLoading }
           className={ className }
+          fontFamily="var(--kda-typography-family-monospace-font)"
         />
       </Tooltip>
       { gasTarget && (

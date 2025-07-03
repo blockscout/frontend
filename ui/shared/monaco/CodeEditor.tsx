@@ -32,6 +32,7 @@ const EDITOR_OPTIONS: EditorProps['options'] = {
     alwaysConsumeMouseWheel: true,
   },
   dragAndDrop: false,
+  fontFamily: 'var(--kda-typography-family-monospace-font)',
 };
 
 const TABS_HEIGHT = 35;
@@ -210,6 +211,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
       left: 0,
       width: `${ editorWidth }px`,
       height: '100%',
+      fontFamily: 'var(--kda-typography-family-monospace-font)',
     },
     '& .monaco-editor': {
       'border-bottom-left-radius': borderRadius,

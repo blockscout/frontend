@@ -40,12 +40,12 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
         />
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
-        <Skeleton loading={ isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block" fontFamily="var(--kda-typography-family-monospace-font)">
           { BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
         </Skeleton>
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
-        <Skeleton loading={ isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block" fontFamily="var(--kda-typography-family-monospace-font)">
           { BigNumber(gasLimit).toFormat() }
         </Skeleton>
       </TableCell>

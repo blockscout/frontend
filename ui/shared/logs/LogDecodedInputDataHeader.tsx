@@ -40,7 +40,7 @@ const LogDecodedInputDataHeader = ({ methodId, methodCall, isLoading, rightSlot 
     >
       <Flex columnGap={ 2 } w="100%">
         <Item label="Method id" isLoading={ isLoading }>
-          <Badge loading={ isLoading }>{ methodId }</Badge>
+          <Badge loading={ isLoading } fontFamily="var(--kda-typography-family-monospace-font)">{ methodId }</Badge>
         </Item>
         { rightSlot }
       </Flex>

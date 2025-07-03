@@ -111,7 +111,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
             Price
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
+            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block" fontFamily="var(--kda-typography-family-monospace-font)">
               <span>{ `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` }</span>
             </Skeleton>
           </DetailedInfo.ItemValue>
@@ -127,7 +127,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
             Market cap
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
+            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block" fontFamily="var(--kda-typography-family-monospace-font)">
               <span>{ `$${ BigNumber(marketCap).toFormat() }` }</span>
             </Skeleton>
           </DetailedInfo.ItemValue>
@@ -144,6 +144,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         alignSelf="center"
         wordBreak="break-word"
         whiteSpace="pre-wrap"
+        fontFamily="var(--kda-typography-family-monospace-font)"
       >
         <Skeleton loading={ tokenQuery.isPlaceholderData } w="100%" display="flex">
           <TruncatedValue value={ totalSupplyValue || '0' } maxW="80%" flexShrink={ 0 }/>
@@ -159,7 +160,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         Holders
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton loading={ tokenCountersQuery.isPlaceholderData }>
+        <Skeleton loading={ tokenCountersQuery.isPlaceholderData } fontFamily="var(--kda-typography-family-monospace-font)">
           { countersItem('token_holders_count') }
         </Skeleton>
       </DetailedInfo.ItemValue>
@@ -171,7 +172,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         Transfers
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton loading={ tokenCountersQuery.isPlaceholderData }>
+        <Skeleton loading={ tokenCountersQuery.isPlaceholderData } fontFamily="var(--kda-typography-family-monospace-font)">
           { countersItem('transfers_count') }
         </Skeleton>
       </DetailedInfo.ItemValue>
@@ -185,7 +186,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
             Decimals
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ tokenQuery.isPlaceholderData } minW={ 6 }>
+            <Skeleton loading={ tokenQuery.isPlaceholderData } minW={ 6 } fontFamily="var(--kda-typography-family-monospace-font)">
               { decimals }
             </Skeleton>
           </DetailedInfo.ItemValue>

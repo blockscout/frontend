@@ -32,28 +32,28 @@ const TxStateListItem = ({ data, isLoading }: Props) => {
       { before && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Before</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value>{ before }</ListItemMobileGrid.Value>
+          <ListItemMobileGrid.Value fontFamily="var(--kda-typography-family-monospace-font)">{ before }</ListItemMobileGrid.Value>
         </>
       ) }
 
       { after && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>After</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value>{ after }</ListItemMobileGrid.Value>
+          <ListItemMobileGrid.Value fontFamily="var(--kda-typography-family-monospace-font)">{ after }</ListItemMobileGrid.Value>
         </>
       ) }
 
       { change && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Change</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value>{ change }</ListItemMobileGrid.Value>
+          <ListItemMobileGrid.Value fontFamily="var(--kda-typography-family-monospace-font)">{ change }</ListItemMobileGrid.Value>
         </>
       ) }
 
       { tokenId && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Token ID</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value py="0">{ tokenId }</ListItemMobileGrid.Value>
+          <ListItemMobileGrid.Value py="0" fontFamily="var(--kda-typography-family-monospace-font)">{ tokenId }</ListItemMobileGrid.Value>
         </>
       ) }
 

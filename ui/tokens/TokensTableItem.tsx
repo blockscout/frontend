@@ -124,6 +124,7 @@ const TokensTableItem = ({
           textStyle="sm"
           fontWeight={ 500 }
           display="inline-block"
+          fontFamily="var(--kda-typography-family-monospace-font)"
         >
           { Number(holdersCount).toLocaleString() }
         </Skeleton>

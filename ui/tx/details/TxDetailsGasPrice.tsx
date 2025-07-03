@@ -1,3 +1,4 @@
+import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -25,7 +26,7 @@ const TxDetailsGasPrice = ({ gasPrice, gasToken, isLoading }: Props) => {
     if (gasToken) {
       return (
         <Skeleton loading={ isLoading } display="flex">
-          <span>{ BigNumber(gasPrice).dividedBy(WEI).toFixed() }</span>
+          <chakra.span fontFamily="var(--kda-typography-family-monospace-font)">{ BigNumber(gasPrice).dividedBy(WEI).toFixed() }</chakra.span>
           <TokenEntity token={ gasToken } noCopy onlySymbol w="auto" ml={ 1 }/>
         </Skeleton>
       );
@@ -33,11 +34,13 @@ const TxDetailsGasPrice = ({ gasPrice, gasToken, isLoading }: Props) => {
 
     return (
       <>
-        <Skeleton loading={ isLoading } mr={ 1 }>
+        <Skeleton loading={ isLoading } mr={ 1 } fontFamily="var(--kda-typography-family-monospace-font)">
           { BigNumber(gasPrice).dividedBy(WEI).toFixed() } { currencyUnits.ether }
         </Skeleton>
         <Skeleton loading={ isLoading } color="text.secondary">
-          <span>({ BigNumber(gasPrice).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</span>
+          <chakra.span fontFamily="var(--kda-typography-family-monospace-font)">
+            ( { BigNumber(gasPrice).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei } )
+          </chakra.span>
         </Skeleton>
       </>
     );

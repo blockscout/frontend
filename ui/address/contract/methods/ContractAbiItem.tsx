@@ -104,6 +104,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
               flexShrink={ 0 }
               endElement={ <CopyToClipboard text={ data.method_id } as="div"/> }
               gap={ 0 }
+              fontFamily="var(--kda-typography-family-monospace-font)"
             >
               { data.method_id }
             </Badge>

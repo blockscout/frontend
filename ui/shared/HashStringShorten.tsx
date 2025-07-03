@@ -15,10 +15,10 @@ interface Props {
 const HashStringShorten = ({ hash, noTooltip, as = 'span', type, tooltipInteractive }: Props) => {
   const charNumber = type === 'long' ? 16 : 8;
   if (hash.length <= charNumber) {
-    return <chakra.span as={ as }>{ hash }</chakra.span>;
+    return <chakra.span fontFamily="var(--kda-typography-family-monospace-font)" as={ as }>{ hash }</chakra.span>;
   }
 
-  const content = <chakra.span as={ as }>{ shortenString(hash, charNumber) }</chakra.span>;
+  const content = <chakra.span fontFamily="var(--kda-typography-family-monospace-font)" as={ as }>{ shortenString(hash, charNumber) }</chakra.span>;
 
   if (noTooltip) {
     return content;

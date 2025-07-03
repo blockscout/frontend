@@ -11,6 +11,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
+import { KDATokens } from '../../../toolkit/theme/theme';
 import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
 import ChainIndicatorItem from './ChainIndicatorItem';
 import useChartDataQuery from './useChartDataQuery';
@@ -118,7 +119,10 @@ const ChainIndicators = () => {
       px={{ base: 3, lg: 4 }}
       py={ 3 }
       borderRadius="base"
-      bgColor={{ _light: 'gray.50', _dark: 'whiteAlpha.100' }}
+      bgColor={{
+        _light: KDATokens.light.kda.explorer.widget.stats.background.default,
+        _dark: KDATokens.dark.kda.explorer.widget.stats.background.default,
+      }}
       columnGap={{ base: 3, lg: 4 }}
       rowGap={ 0 }
       flexBasis="50%"
@@ -130,7 +134,14 @@ const ChainIndicators = () => {
           <Text fontWeight={ 500 }>{ title }</Text>
           { hint && <Hint label={ hint }/> }
         </Skeleton>
-        <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end">
+        <Flex
+          mb={{ base: 0, lg: 2 }}
+          mt={ 1 }
+          alignItems="end"
+          fontFamily="var(--kda-typography-family-monospace-font)"
+          color="var(--kda-explorer-widget-stats-surface-text)"
+          fontWeight="bold"
+        >
           { valueTitle }
           { valueDiff }
         </Flex>

@@ -25,7 +25,7 @@ const Utilization = ({ value, colorScheme = 'green', isLoading, ...rest }: Props
           <Box bg={ color } w={ valueString } h="100%"/>
         </Box>
       </Skeleton>
-      <Skeleton loading={ isLoading } color={ color } fontWeight="bold">
+      <Skeleton loading={ isLoading } color={ color } fontFamily="var(--kda-typography-family-monospace-font)" fontWeight="bold">
         <span>
           { valueString }
         </span>

@@ -68,7 +68,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
         />
       </TableCell>
       <TableCell >
-        <Skeleton loading={ isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block" fontFamily="var(--kda-typography-family-monospace-font)">
           { data.size.toLocaleString() }
         </Skeleton>
       </TableCell>
@@ -82,7 +82,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
           />
         </TableCell>
       ) }
-      <TableCell isNumeric >
+      <TableCell isNumeric fontFamily="var(--kda-typography-family-monospace-font)">
         { data.transactions_count > 0 ? (
           <Skeleton loading={ isLoading } display="inline-block">
             <Link href={ route({
@@ -95,7 +95,13 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
         ) : data.transactions_count }
       </TableCell>
       <TableCell >
-        <Skeleton loading={ isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
+        <Skeleton
+          loading={ isLoading }
+          display="inline-block"
+          fontFamily="var(--kda-typography-family-monospace-font)"
+        >
+          { BigNumber(data.gas_used || 0).toFormat() }
+        </Skeleton>
         <Flex mt={ 2 }>
           <BlockGasUsed
             gasUsed={ data.gas_used || undefined }
@@ -107,7 +113,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
       </TableCell>
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <TableCell >
-          <Skeleton loading={ isLoading } display="inline-block">
+          <Skeleton loading={ isLoading } display="inline-block" fontFamily="var(--kda-typography-family-monospace-font)">
             { totalReward.toFixed(8) }
           </Skeleton>
         </TableCell>
@@ -116,7 +122,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
         <TableCell >
           <Flex alignItems="center" columnGap={ 2 }>
             <IconSvg name="flame" boxSize={ 5 } color={{ _light: 'gray.500', _dark: 'inherit' }} isLoading={ isLoading }/>
-            <Skeleton loading={ isLoading } display="inline-block">
+            <Skeleton loading={ isLoading } display="inline-block" fontFamily="var(--kda-typography-family-monospace-font)">
               { burntFees.dividedBy(WEI).toFixed(8) }
             </Skeleton>
           </Flex>
@@ -127,7 +133,13 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
       ) }
       { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && Boolean(baseFeeValue) && (
         <TableCell isNumeric>
-          <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre-wrap" wordBreak="break-word">
+          <Skeleton
+            loading={ isLoading }
+            display="inline-block"
+            whiteSpace="pre-wrap"
+            wordBreak="break-word"
+            fontFamily="var(--kda-typography-family-monospace-font)"
+          >
             { baseFeeValue }
           </Skeleton>
         </TableCell>
