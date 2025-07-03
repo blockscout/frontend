@@ -69,7 +69,11 @@ describe('useSearchWithClusters', () => {
         queryParams: {
           input: JSON.stringify({ name: 'test-cluster' }),
         },
-        queryOptions: { enabled: true },
+        queryOptions: {
+          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'test-cluster' ],
+          enabled: true,
+          select: expect.any(Function),
+        },
       });
     });
 
@@ -88,7 +92,11 @@ describe('useSearchWithClusters', () => {
         queryParams: {
           input: JSON.stringify({ name: 'campnetwork/lol' }),
         },
-        queryOptions: { enabled: true },
+        queryOptions: {
+          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'campnetwork/lol' ],
+          enabled: true,
+          select: expect.any(Function),
+        },
       });
     });
 
@@ -107,7 +115,11 @@ describe('useSearchWithClusters', () => {
         queryParams: {
           input: JSON.stringify({ name: '' }),
         },
-        queryOptions: { enabled: false },
+        queryOptions: {
+          queryKey: [ 'clusters:get_cluster_by_name', 'search', '' ],
+          enabled: false,
+          select: expect.any(Function),
+        },
       });
     });
 
@@ -126,7 +138,11 @@ describe('useSearchWithClusters', () => {
         queryParams: {
           input: JSON.stringify({ name: 'my-cluster' }),
         },
-        queryOptions: { enabled: true },
+        queryOptions: {
+          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'my-cluster' ],
+          enabled: true,
+          select: expect.any(Function),
+        },
       });
     });
 
@@ -145,7 +161,11 @@ describe('useSearchWithClusters', () => {
         queryParams: {
           input: JSON.stringify({ name: 'test-cluster-123' }),
         },
-        queryOptions: { enabled: true },
+        queryOptions: {
+          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'test-cluster-123' ],
+          enabled: true,
+          select: expect.any(Function),
+        },
       });
     });
 
@@ -175,7 +195,11 @@ describe('useSearchWithClusters', () => {
           queryParams: {
             input: JSON.stringify({ name: expected }),
           },
-          queryOptions: { enabled: true },
+          queryOptions: {
+            queryKey: [ 'clusters:get_cluster_by_name', 'search', expected ],
+            enabled: true,
+            select: expect.any(Function),
+          },
         });
 
         jest.clearAllMocks();
@@ -197,7 +221,11 @@ describe('useSearchWithClusters', () => {
         queryParams: {
           input: JSON.stringify({ name: 'org/team/project' }),
         },
-        queryOptions: { enabled: true },
+        queryOptions: {
+          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'org/team/project' ],
+          enabled: true,
+          select: expect.any(Function),
+        },
       });
     });
 
@@ -216,7 +244,11 @@ describe('useSearchWithClusters', () => {
         queryParams: {
           input: JSON.stringify({ name: 'campnetwork/lol' }),
         },
-        queryOptions: { enabled: true },
+        queryOptions: {
+          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'campnetwork/lol' ],
+          enabled: true,
+          select: expect.any(Function),
+        },
       });
 
       jest.clearAllMocks();
@@ -235,7 +267,11 @@ describe('useSearchWithClusters', () => {
         queryParams: {
           input: JSON.stringify({ name: 'campnetwork/lol' }),
         },
-        queryOptions: { enabled: true },
+        queryOptions: {
+          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'campnetwork/lol' ],
+          enabled: true,
+          select: expect.any(Function),
+        },
       });
     });
   });
@@ -250,29 +286,7 @@ describe('useSearchWithClusters', () => {
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
 
-      const mockClusterData = {
-        name: 'test-cluster',
-        clusterId: 'cluster-123',
-        owner: '0x1234567890123456789012345678901234567890',
-        createdAt: '2024-01-01T00:00:00Z',
-        expiresAt: '2025-01-01T00:00:00Z',
-        backingWei: '1000000000000000000',
-        isTestnet: false,
-      };
-
-      mockUseApiQuery.mockReturnValue({
-        data: {
-          result: {
-            data: mockClusterData,
-          },
-        },
-        isError: false,
-        isLoading: false,
-      } as unknown as MockApiQuery);
-
-      const { result } = renderHook(() => useSearchWithClusters());
-
-      expect(result.current.query.data).toEqual([
+      const transformedData = [
         {
           type: 'cluster',
           name: 'test-cluster',
@@ -288,7 +302,17 @@ describe('useSearchWithClusters', () => {
             is_testnet: false,
           },
         },
-      ]);
+      ];
+
+      mockUseApiQuery.mockReturnValue({
+        data: transformedData,
+        isError: false,
+        isLoading: false,
+      } as unknown as MockApiQuery);
+
+      const { result } = renderHook(() => useSearchWithClusters());
+
+      expect(result.current.query.data).toEqual(transformedData);
     });
 
     it('should handle cluster data without optional fields', () => {
@@ -300,24 +324,7 @@ describe('useSearchWithClusters', () => {
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
 
-      const mockClusterData = {
-        name: 'simple-cluster',
-        owner: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef',
-      };
-
-      mockUseApiQuery.mockReturnValue({
-        data: {
-          result: {
-            data: mockClusterData,
-          },
-        },
-        isError: false,
-        isLoading: false,
-      } as unknown as MockApiQuery);
-
-      const { result } = renderHook(() => useSearchWithClusters());
-
-      expect(result.current.query.data).toEqual([
+      const transformedData = [
         {
           type: 'cluster',
           name: 'simple-cluster',
@@ -333,7 +340,17 @@ describe('useSearchWithClusters', () => {
             is_testnet: undefined,
           },
         },
-      ]);
+      ];
+
+      mockUseApiQuery.mockReturnValue({
+        data: transformedData,
+        isError: false,
+        isLoading: false,
+      } as unknown as MockApiQuery);
+
+      const { result } = renderHook(() => useSearchWithClusters());
+
+      expect(result.current.query.data).toEqual(transformedData);
     });
 
     it('should use clusterId as fallback when present', () => {
@@ -345,17 +362,26 @@ describe('useSearchWithClusters', () => {
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
 
-      const mockClusterData = {
-        name: 'test',
-        owner: '0x123',
-      };
-
-      mockUseApiQuery.mockReturnValue({
-        data: {
-          result: {
-            data: mockClusterData,
+      const transformedData = [
+        {
+          type: 'cluster',
+          name: 'test',
+          address_hash: '0x123',
+          is_smart_contract_verified: false,
+          cluster_info: {
+            cluster_id: 'test',
+            name: 'test',
+            owner: '0x123',
+            created_at: undefined,
+            expires_at: undefined,
+            total_wei_amount: undefined,
+            is_testnet: undefined,
           },
         },
+      ];
+
+      mockUseApiQuery.mockReturnValue({
+        data: transformedData,
         isError: false,
         isLoading: false,
       } as unknown as MockApiQuery);
@@ -378,7 +404,7 @@ describe('useSearchWithClusters', () => {
       } as unknown as MockQuickSearchQuery);
 
       mockUseApiQuery.mockReturnValue({
-        data: null,
+        data: [],
         isError: true,
         isLoading: false,
       } as unknown as MockApiQuery);
@@ -399,11 +425,7 @@ describe('useSearchWithClusters', () => {
       } as unknown as MockQuickSearchQuery);
 
       mockUseApiQuery.mockReturnValue({
-        data: {
-          result: {
-            data: null,
-          },
-        },
+        data: [],
         isError: false,
         isLoading: false,
       } as unknown as MockApiQuery);
@@ -498,7 +520,11 @@ describe('useSearchWithClusters', () => {
         queryParams: {
           input: JSON.stringify({ name: '' }),
         },
-        queryOptions: { enabled: false },
+        queryOptions: {
+          queryKey: [ 'clusters:get_cluster_by_name', 'search', '' ],
+          enabled: false,
+          select: expect.any(Function),
+        },
       });
     });
 
@@ -517,7 +543,11 @@ describe('useSearchWithClusters', () => {
         queryParams: {
           input: JSON.stringify({ name: '' }),
         },
-        queryOptions: { enabled: false },
+        queryOptions: {
+          queryKey: [ 'clusters:get_cluster_by_name', 'search', '' ],
+          enabled: false,
+          select: expect.any(Function),
+        },
       });
     });
 
@@ -549,7 +579,7 @@ describe('useSearchWithClusters', () => {
       } as unknown as MockQuickSearchQuery);
 
       mockUseApiQuery.mockReturnValue({
-        data: null,
+        data: [],
         isError: false,
         isLoading: true,
       } as unknown as MockApiQuery);
@@ -563,8 +593,8 @@ describe('useSearchWithClusters', () => {
   describe('debouncing integration', () => {
     it('should use debounced search term for cluster detection', () => {
       mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'final-cluster/',
-        debouncedSearchTerm: 'something-else',
+        searchTerm: 'original-term/',
+        debouncedSearchTerm: 'final-cluster/',
         handleSearchTermChange: jest.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
@@ -576,7 +606,11 @@ describe('useSearchWithClusters', () => {
         queryParams: {
           input: JSON.stringify({ name: 'final-cluster' }),
         },
-        queryOptions: { enabled: true },
+        queryOptions: {
+          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'final-cluster' ],
+          enabled: true,
+          select: expect.any(Function),
+        },
       });
     });
 

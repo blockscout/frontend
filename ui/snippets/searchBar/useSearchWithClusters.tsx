@@ -12,7 +12,7 @@ function isClusterSearch(term: string): boolean {
   const hasTrailingSlash = trimmed.endsWith('/');
   const looksLikeCluster = trimmed.includes('/') || hasTrailingSlash;
 
-  return looksLikeCluster && config.features.clusters.isEnabled;
+  return looksLikeCluster;
 }
 
 function extractClusterName(term: string): string {
@@ -52,12 +52,15 @@ export default function useSearchWithClusters() {
   const clusterName = isClusterQuery ? extractClusterName(quickSearch.debouncedSearchTerm) : '';
 
   const clusterQuery = useApiQuery('clusters:get_cluster_by_name', {
-    queryParams: {
-      input: JSON.stringify({
-        name: clusterName,
-      }),
+    queryParams: { input: JSON.stringify({ name: clusterName }) },
+    queryOptions: {
+      queryKey: [ 'clusters:get_cluster_by_name', 'search', clusterName ],
+      enabled: config.features.clusters.isEnabled && isClusterQuery && clusterName.length > 0,
+      select: (data) => {
+        if (!data?.result?.data) return [];
+        return [ transformClusterToSearchResult(data.result.data, data.result.data.owner) ];
+      },
     },
-    queryOptions: { enabled: isClusterQuery && clusterName.length > 0 },
   });
 
   const combinedQuery = React.useMemo(() => {
@@ -65,24 +68,14 @@ export default function useSearchWithClusters() {
       return quickSearch.query;
     }
 
-    if (clusterQuery.isError || !clusterQuery.data?.result?.data) {
-      return {
-        ...clusterQuery,
-        data: [],
-        isError: false,
-      } as typeof quickSearch.query;
-    }
-
-    const clusterData = clusterQuery.data.result.data;
-    const transformedResults = [ transformClusterToSearchResult(clusterData, clusterData.owner) ];
-
     return {
       ...clusterQuery,
-      data: transformedResults,
+      data: clusterQuery.data || [],
+      isError: false,
     } as typeof quickSearch.query;
   }, [ isClusterQuery, quickSearch, clusterQuery ]);
 
-  return React.useMemo(() => ({
+  const result = React.useMemo(() => ({
     searchTerm: quickSearch.searchTerm,
     debouncedSearchTerm: quickSearch.debouncedSearchTerm,
     handleSearchTermChange: quickSearch.handleSearchTermChange,
@@ -92,4 +85,10 @@ export default function useSearchWithClusters() {
     quickSearch,
     combinedQuery,
   ]);
+
+  if (!config.features.clusters.isEnabled) {
+    return quickSearch;
+  }
+
+  return result;
 }
