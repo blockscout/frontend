@@ -18,7 +18,7 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
-import { ADDRESS_REGEXP } from 'toolkit/components/forms/validators/address';
+import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
