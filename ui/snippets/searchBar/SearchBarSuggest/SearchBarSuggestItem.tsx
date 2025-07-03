@@ -5,7 +5,7 @@ import type { AddressFormat } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
 
-import { isEvmAddress } from 'lib/clusters/detectInputType';
+import { isEvmAddress } from 'lib/address/isEvmAddress';
 
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
 import SearchBarSuggestBlob from './SearchBarSuggestBlob';

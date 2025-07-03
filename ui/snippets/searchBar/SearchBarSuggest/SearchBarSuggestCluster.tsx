@@ -5,7 +5,7 @@ import type { ItemsProps } from './types';
 import type { SearchResultCluster } from 'types/api/search';
 
 import { toBech32Address } from 'lib/address/bech32';
-import { isEvmAddress } from 'lib/clusters/detectInputType';
+import { isEvmAddress } from 'lib/address/isEvmAddress';
 import highlightText from 'lib/highlightText';
 import ClusterIcon from 'ui/shared/ClusterIcon';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
