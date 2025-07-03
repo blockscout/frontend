@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ClustersDirectoryObject } from 'types/api/clusters';
@@ -23,13 +22,13 @@ const ClustersDirectoryTableItem = ({ item, isLoading, isClusterDetailsLoading }
         <ClustersEntity clusterName={ item.name } isLoading={ isLoading } fontWeight={ 600 }/>
       </TableCell>
       <TableCell verticalAlign="middle">
-        { item.owner && isEvmAddress(item.owner) && (
-          <AddressEntity address={{ hash: item.owner }} isLoading={ isLoading } fontWeight={ 500 }/>
-        ) }
-        { item.owner && !isEvmAddress(item.owner) && (
-          <Box display="inline-flex" alignItems="center" minWidth={ 0 }>
-            <AddressEntity address={{ hash: item.owner }} isLoading={ isLoading } fontWeight={ 500 } noLink={ true }/>
-          </Box>
+        { item.owner && (
+          <AddressEntity
+            address={{ hash: item.owner }}
+            isLoading={ isLoading }
+            fontWeight={ 500 }
+            noLink={ !isEvmAddress(item.owner) }
+          />
         ) }
         { !item.owner && <Skeleton loading={ isLoading }>—</Skeleton> }
       </TableCell>
