@@ -3,10 +3,12 @@ import React from 'react';
 import type { ClusterByNameResponse } from 'types/api/clusters';
 
 import { isEvmAddress } from 'lib/clusters/detectInputType';
-import dayjs from 'lib/date/dayjs';
+import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AppError from 'ui/shared/AppError/AppError';
+import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ClustersEntity from 'ui/shared/entities/clusters/ClustersEntity';
 
@@ -25,7 +27,6 @@ const ClusterDetails = ({ clusterData, clusterName, isLoading }: Props) => {
 
   const ownerIsEvm = clusterData?.owner ? isEvmAddress(clusterData.owner) : false;
   const addressType = ownerIsEvm ? 'EVM' : 'NON-EVM';
-  const backingEth = clusterData?.backingWei ? (parseFloat(clusterData.backingWei) / 1e18).toFixed(4) : '0';
 
   return (
     <DetailedInfo.Container>
@@ -78,9 +79,11 @@ const ClusterDetails = ({ clusterData, clusterName, isLoading }: Props) => {
         Backing
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton loading={ isLoading }>
-          { backingEth } ETH
-        </Skeleton>
+        <CurrencyValue
+          value={ clusterData?.backingWei || '0' }
+          currency={ currencyUnits.ether }
+          isLoading={ isLoading }
+        />
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
@@ -90,9 +93,14 @@ const ClusterDetails = ({ clusterData, clusterName, isLoading }: Props) => {
         Created
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton loading={ isLoading }>
-          { clusterData?.createdAt ? dayjs(clusterData.createdAt).format('llll') : 'N/A' }
-        </Skeleton>
+        { clusterData?.createdAt ? (
+          <DetailedInfoTimestamp
+            timestamp={ clusterData.createdAt }
+            isLoading={ isLoading }
+          />
+        ) : (
+          <Skeleton loading={ isLoading }>N/A</Skeleton>
+        ) }
       </DetailedInfo.ItemValue>
     </DetailedInfo.Container>
   );
