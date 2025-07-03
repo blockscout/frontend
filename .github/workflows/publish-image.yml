@@ -33,6 +33,8 @@ on:
                 default: linux/amd64
     push:
         branches: [ devel ]
+        tags:
+            - '*'
     pull_request:
         branches: [ devel ]
 
