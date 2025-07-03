@@ -3,6 +3,7 @@ import React from 'react';
 import type { ClustersDirectoryObject } from 'types/api/clusters';
 
 import { TableBody, TableHeaderSticky, TableRow, TableColumnHeader, TableRoot } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ClustersDirectoryTableItem from './ClustersDirectoryTableItem';
 
@@ -20,7 +21,10 @@ const ClustersDirectoryTable = ({ data, isLoading, top, isClusterDetailsLoading 
         <TableRow>
           <TableColumnHeader width="20%">Cluster Name</TableColumnHeader>
           <TableColumnHeader width="30%">Address</TableColumnHeader>
-          <TableColumnHeader width="10%">Joined</TableColumnHeader>
+          <TableColumnHeader width="10%">
+            Joined
+            <TimeFormatToggle/>
+          </TableColumnHeader>
           <TableColumnHeader width="10%">Active Chains</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>

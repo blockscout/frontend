@@ -37,7 +37,6 @@ const ClustersDirectoryTableItem = ({ item, isLoading, isClusterDetailsLoading }
         <TimeWithTooltip
           timestamp={ item.createdAt }
           isLoading={ isLoading }
-          timeFormat="relative"
           enableIncrement={ true }
         />
       </TableCell>
