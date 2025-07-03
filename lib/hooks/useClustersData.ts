@@ -7,8 +7,8 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { detectInputType } from 'lib/clusters/detectInputType';
 import { CLUSTER_ITEM } from 'stubs/clusters';
 
-export function useClustersData(debouncedSearchTerm: string, viewMode: string, orderBy: ClustersOrderBy, page: number) {
-  const itemsPerPage = 50;
+export function useClustersData(debouncedSearchTerm: string, viewMode: string, page: number) {
+  const ITEMS_PER_PAGE = 50;
 
   const inputType = React.useMemo(() => {
     if (!debouncedSearchTerm) return 'cluster_name';
@@ -20,8 +20,8 @@ export function useClustersData(debouncedSearchTerm: string, viewMode: string, o
   const leaderboardQuery = useApiQuery('clusters:get_leaderboard', {
     queryParams: {
       input: JSON.stringify({
-        offset: (page - 1) * itemsPerPage,
-        limit: itemsPerPage,
+        offset: (page - 1) * ITEMS_PER_PAGE,
+        limit: ITEMS_PER_PAGE,
         orderBy: ClustersOrderBy.RANK_ASC,
       }),
     },
@@ -31,7 +31,7 @@ export function useClustersData(debouncedSearchTerm: string, viewMode: string, o
         if (previousData) return previousData;
         return {
           result: {
-            data: Array(itemsPerPage).fill(CLUSTER_ITEM),
+            data: Array(ITEMS_PER_PAGE).fill(CLUSTER_ITEM),
           },
         };
       },
@@ -48,8 +48,8 @@ export function useClustersData(debouncedSearchTerm: string, viewMode: string, o
   const directoryQuery = useApiQuery('clusters:get_directory', {
     queryParams: {
       input: JSON.stringify({
-        offset: (page - 1) * itemsPerPage,
-        limit: itemsPerPage,
+        offset: (page - 1) * ITEMS_PER_PAGE,
+        limit: ITEMS_PER_PAGE,
         orderBy: getDirectoryOrderBy,
         query: debouncedSearchTerm || '',
       }),
@@ -62,7 +62,7 @@ export function useClustersData(debouncedSearchTerm: string, viewMode: string, o
           result: {
             data: {
               total: 1000,
-              items: Array(itemsPerPage).fill(CLUSTER_ITEM),
+              items: Array(ITEMS_PER_PAGE).fill(CLUSTER_ITEM),
             },
           },
         };
@@ -82,7 +82,7 @@ export function useClustersData(debouncedSearchTerm: string, viewMode: string, o
         if (previousData) return previousData;
         return {
           result: {
-            data: Array(itemsPerPage).fill(CLUSTER_ITEM),
+            data: Array(ITEMS_PER_PAGE).fill(CLUSTER_ITEM),
           },
         };
       },
@@ -92,7 +92,7 @@ export function useClustersData(debouncedSearchTerm: string, viewMode: string, o
   const clusterDetailsQuery = useApiQuery('clusters:get_cluster_by_id', {
     queryParams: {
       input: JSON.stringify({
-        id: (addressQuery.data?.result?.data?.[0] as ClustersByAddressObject & { clusterId?: string })?.clusterId || '',
+        id: addressQuery.data?.result?.data?.[0]?.clusterId || '',
       }),
     },
     queryOptions: {
@@ -104,13 +104,11 @@ export function useClustersData(debouncedSearchTerm: string, viewMode: string, o
     },
   });
 
-  const currentQuery = React.useMemo(() => {
+  const { data, isError, isPlaceholderData: isLoading } = (() => {
     if (!showDirectoryView) return leaderboardQuery;
     if (inputType === 'address') return addressQuery;
     return directoryQuery;
-  }, [ showDirectoryView, inputType, leaderboardQuery, addressQuery, directoryQuery ]);
-
-  const { data, isError, isPlaceholderData: isLoading } = currentQuery;
+  })();
 
   return {
     data,
