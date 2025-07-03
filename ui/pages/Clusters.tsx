@@ -4,7 +4,6 @@ import React, { useCallback } from 'react';
 
 import { detectInputType } from 'lib/clusters/detectInputType';
 import {
-  getViewModeOrderBy,
   shouldShowDirectoryView,
   transformLeaderboardData,
   transformFullDirectoryData,
@@ -40,9 +39,7 @@ const Clusters = () => {
     return detectInputType(debouncedSearchTerm);
   }, [ debouncedSearchTerm ]);
 
-  const orderBy = getViewModeOrderBy(viewMode, Boolean(debouncedSearchTerm));
-
-  const { data, clusterDetails, isError, isLoading, isClusterDetailsLoading } = useClustersData(debouncedSearchTerm, viewMode, orderBy, page);
+  const { data, clusterDetails, isError, isLoading, isClusterDetailsLoading } = useClustersData(debouncedSearchTerm, viewMode, page);
 
   const showDirectoryView = shouldShowDirectoryView(viewMode, Boolean(debouncedSearchTerm));
 
