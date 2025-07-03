@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ClusterDetails from 'ui/cluster/ClusterDetails';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -20,8 +19,6 @@ const Cluster = () => {
   });
 
   const clusterData = clusterQuery.data?.result?.data;
-
-  throwOnResourceLoadError(clusterQuery);
 
   const isLoading = clusterQuery.isLoading;
 
