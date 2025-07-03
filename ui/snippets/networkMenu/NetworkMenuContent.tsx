@@ -3,6 +3,8 @@ import React from 'react';
 
 import type { FeaturedNetwork, NetworkGroup } from 'types/networks';
 
+import config from 'configs/app';
+import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent } from 'toolkit/chakra/popover';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
@@ -14,7 +16,7 @@ interface Props {
   items?: Array<FeaturedNetwork>;
 }
 
-const NetworkMenuPopup = ({ items, tabs }: Props) => {
+const NetworkMenuContent = ({ items, tabs }: Props) => {
   const selectedNetwork = items?.find(({ isActive }) => isActive);
   const defaultTab = tabs.find((tab) => selectedNetwork?.group === tab);
 
@@ -50,14 +52,16 @@ const NetworkMenuPopup = ({ items, tabs }: Props) => {
     </>
   ) : (
     <TabsRoot
-      variant="secondary"
+      variant="segmented"
+      width="full"
+      fitted
       size="sm"
       lazyMount
       value={ value }
       onValueChange={ handleTabChange }
     >
       { tabs.length > 1 && (
-        <TabsList columnGap={ 2 } mb={ 4 }>
+        <TabsList mb={ 2 } width="full">
           { tabs.map((tab) => (
             <TabsTrigger
               key={ tab }
@@ -72,15 +76,29 @@ const NetworkMenuPopup = ({ items, tabs }: Props) => {
       <Box>
         { tabs.map((tab) => (
           <TabsContent key={ tab } value={ tab } p={ 0 }>
-            <VStack as="ul" gap={ 1 } alignItems="stretch" maxH="516px" overflowY="scroll">
+            <VStack as="ul" gap={ 1 } alignItems="stretch" overflowY="scroll" maxH="516px">
               { items
                 .filter((network) => network.group === tab)
-                .map((network) => (
+                // ACTIVE NETWORK IS SET FOR TESTING PURPOSES ONLY!!!
+                .map((network, index) => (
                   <NetworkMenuLink
                     key={ network.title }
+                    isActive={ index === 0 }
                     { ...network }
                   />
                 )) }
+              { config.UI.featuredNetworks.allLink && (
+                <Link
+                  href={ config.UI.featuredNetworks.allLink }
+                  external
+                  noIcon
+                  variant="secondary"
+                  my={ 2 }
+                  px={ 2 }
+                >
+                  View all chains
+                </Link>
+              ) }
             </VStack>
           </TabsContent>
         )) }
@@ -89,7 +107,7 @@ const NetworkMenuPopup = ({ items, tabs }: Props) => {
   );
 
   return (
-    <PopoverContent w="330px">
+    <PopoverContent w="290px" maxH="unset">
       <PopoverBody>
         { content }
       </PopoverBody>
@@ -97,4 +115,4 @@ const NetworkMenuPopup = ({ items, tabs }: Props) => {
   );
 };
 
-export default React.memo(NetworkMenuPopup);
+export default React.memo(NetworkMenuContent);
