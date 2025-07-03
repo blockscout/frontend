@@ -7,8 +7,14 @@ const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
 
 const EXPLORER_URLS = [
-  'https://optimism-interop-alpha-0.blockscout.com',
-  'https://optimism-interop-alpha-1.blockscout.com',
+  'https://optimism.blockscout.com',
+  'https://base.blockscout.com',
+  'https://arbitrum.blockscout.com',
+  'https://unichain.blockscout.com',
+  'https://explorer.redstone.xyz',
+  'https://matchscan.io'
+  // 'https://optimism-interop-alpha-0.blockscout.com',
+  // 'https://optimism-interop-alpha-1.blockscout.com',
 ];
 
 function getSlug(url: string) {

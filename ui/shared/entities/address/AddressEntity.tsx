@@ -9,6 +9,7 @@ import { toBech32Address } from 'lib/address/bech32';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { useSettingsContext } from 'lib/contexts/settings';
+import getIconUrl from 'lib/multichain/getIconUrl';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
@@ -47,7 +48,7 @@ const Icon = (props: IconProps) => {
     return null;
   }
 
-  const shield = props.shield ?? (props.chain ? { src: props.chain.config.UI.navigation.icon.default } : undefined);
+  const shield = props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined);
   const hintPostfix: string = props.hintPostfix ?? (props.chain ? ` on ${ props.chain.config.chain.name } (Chain ID: ${ props.chain.config.chain.id })` : '');
 
   const marginRight = props.marginRight ?? (shield ? '18px' : '8px');

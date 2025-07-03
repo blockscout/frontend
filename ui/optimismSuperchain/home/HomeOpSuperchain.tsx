@@ -14,7 +14,8 @@ const HomeOpSuperchain = () => {
   return (
     <Box as="main">
       <HeroBanner/>
-      <HStack mt={ 3 } gap={ 6 }>
+      <LatestTxs/>
+      <HStack mt={ 3 } gap={ 3 } flexWrap="wrap" alignItems="stretch">
         { multichainConfig()?.chains.map(chain => {
           return (
             <MultichainProvider key={ chain.slug } chainSlug={ chain.slug }>
@@ -25,7 +26,6 @@ const HomeOpSuperchain = () => {
           );
         }) }
       </HStack>
-      <LatestTxs/>
     </Box>
   );
 };

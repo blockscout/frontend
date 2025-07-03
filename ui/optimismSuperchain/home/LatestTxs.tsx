@@ -16,7 +16,7 @@ const LatestTxs = () => {
   const tab = getQueryParamString(router.query.tab);
 
   const [ chainValue, setChainValue ] = React.useState<Array<string> | undefined>(
-    [ getQueryParamString(router.query['chain-slug']) ?? multichainConfig()?.chains[0]?.slug ].filter(Boolean),
+    [ getQueryParamString(router.query['chain-slug']) || multichainConfig()?.chains[0]?.slug ].filter(Boolean),
   );
 
   const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {

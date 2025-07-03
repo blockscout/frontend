@@ -4,6 +4,7 @@ import React from 'react';
 import { route } from 'nextjs/routes';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
+import getIconUrl from 'lib/multichain/getIconUrl';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { distributeEntityProps } from '../base/utils';
@@ -32,7 +33,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
       { ...props }
       name={ props.name ?? 'transactions_slim' }
       shield={ props.shield ?? (props.chain ? {
-        src: props.chain.config.UI.navigation.icon.default,
+        src: getIconUrl(props.chain),
       } : undefined) }
       hint={ props.chain ? `Transaction on ${ props.chain.config.chain.name } (Chain ID: ${ props.chain.config.chain.id })` : undefined }
     />
