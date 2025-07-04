@@ -1,22 +1,16 @@
-import { HStack, VStack, Icon, Box } from '@chakra-ui/react';
+import { Flex, VStack, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import {
-  shouldShowClearButton,
-  shouldDisableViewToggle,
   getSearchPlaceholder,
   shouldShowActionBar,
 } from 'lib/clusters/actionBarUtils';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
-import { Button } from 'toolkit/chakra/button';
-import { Input } from 'toolkit/chakra/input';
-import { InputGroup } from 'toolkit/chakra/input-group';
-import { Skeleton } from 'toolkit/chakra/skeleton';
-import { ClearButton } from 'toolkit/components/buttons/ClearButton';
+import { Button, ButtonGroupRadio } from 'toolkit/chakra/button';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
-import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 
 type ViewMode = 'leaderboard' | 'directory';
@@ -30,27 +24,6 @@ interface Props {
   isLoading: boolean;
 }
 
-interface SegmentedButtonProps {
-  children: React.ReactNode;
-  isSelected: boolean;
-  onClick: () => void;
-  isDisabled: boolean;
-}
-
-const SegmentedButton = ({ children, isSelected, onClick, isDisabled }: SegmentedButtonProps) => (
-  <Button
-    size="sm"
-    variant="segmented"
-    onClick={ onClick }
-    selected={ isSelected }
-    disabled={ isDisabled }
-    cursor={ isSelected ? 'default' : 'pointer' }
-    _hover={ isSelected ? { cursor: 'default' } : { color: 'link.primary.hover', cursor: 'pointer' } }
-  >
-    { children }
-  </Button>
-);
-
 const ClustersActionBar = ({
   searchTerm,
   onSearchChange,
@@ -61,101 +34,53 @@ const ClustersActionBar = ({
 }: Props) => {
   const isInitialLoading = useIsInitialLoading(isLoading);
 
-  const [ searchValue, setSearchValue ] = React.useState(searchTerm || '');
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  React.useEffect(() => {
-    setSearchValue(searchTerm || '');
-  }, [ searchTerm ]);
-
-  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchValue(value);
-    onSearchChange(value);
-  }, [ onSearchChange ]);
-
-  const handleClear = React.useCallback(() => {
-    setSearchValue('');
-    onSearchChange('');
-    inputRef?.current?.focus();
-  }, [ onSearchChange ]);
-
-  const handleLeaderboardClick = React.useCallback(() => {
-    onViewModeChange('leaderboard');
+  const handleViewModeChange = React.useCallback((value: string) => {
+    onViewModeChange(value as ViewMode);
   }, [ onViewModeChange ]);
 
-  const handleDirectoryClick = React.useCallback(() => {
-    onViewModeChange('directory');
-  }, [ onViewModeChange ]);
-
-  const clearButtonVisible = shouldShowClearButton(searchValue);
-  const viewToggleDisabled = shouldDisableViewToggle(isInitialLoading);
   const placeholder = getSearchPlaceholder();
   const showActionBarOnMobile = shouldShowActionBar(pagination.isVisible, false);
   const showActionBarOnDesktop = shouldShowActionBar(pagination.isVisible, true);
 
-  const searchInput = (
-    <Skeleton
-      w={{ base: '100%', lg: '360px' }}
-      minW={{ base: 'auto', lg: '250px' }}
-      borderRadius="base"
-      loading={ isInitialLoading }
-    >
-      <InputGroup
-        startElement={ <Icon boxSize={ 5 }><IconSvg name="search"/></Icon> }
-        startElementProps={{ px: 2 }}
-        endElement={ <ClearButton onClick={ handleClear } visible={ clearButtonVisible }/> }
-        endElementProps={{ w: '32px' }}
+  const filters = (
+    <Flex columnGap={ 3 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }}>
+      <ButtonGroupRadio
+        defaultValue={ viewMode }
+        onChange={ handleViewModeChange }
+        w={{ lg: 'fit-content' }}
+        loading={ isInitialLoading }
       >
-        <Input
-          ref={ inputRef }
-          size="sm"
-          value={ searchValue }
-          onChange={ handleSearchChange }
-          placeholder={ placeholder }
-          borderWidth="2px"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap"
-        />
-      </InputGroup>
-    </Skeleton>
-  );
-
-  const viewToggle = (
-    <HStack gap={ 0 } borderRadius="md" overflow="hidden" border="2px solid" borderColor="button.segmented.border">
-      <SegmentedButton
-        isSelected={ viewMode === 'directory' }
-        onClick={ handleDirectoryClick }
-        isDisabled={ viewToggleDisabled }
-      >
-        Directory
-      </SegmentedButton>
-      <SegmentedButton
-        isSelected={ viewMode === 'leaderboard' }
-        onClick={ handleLeaderboardClick }
-        isDisabled={ viewToggleDisabled }
-      >
-        Leaderboard
-      </SegmentedButton>
-    </HStack>
+        <Button value="directory" size="sm" px={ 3 }>
+          Directory
+        </Button>
+        <Button value="leaderboard" size="sm" px={ 3 }>
+          Leaderboard
+        </Button>
+      </ButtonGroupRadio>
+      <FilterInput
+        initialValue={ searchTerm }
+        onChange={ onSearchChange }
+        placeholder={ placeholder }
+        w={{ base: '100%', lg: '360px' }}
+        minW={{ base: 'auto', lg: '250px' }}
+        size="sm"
+        loading={ isInitialLoading }
+      />
+    </Flex>
   );
 
   return (
     <>
       <VStack gap={ 3 } mb={ 6 } hideFrom="lg" align="stretch">
-        { searchInput }
-        <Box alignSelf="center">
-          { viewToggle }
-        </Box>
+        { filters }
       </VStack>
       <ActionBar
         mt={ -6 }
         display={{ base: showActionBarOnMobile ? 'flex' : 'none', lg: showActionBarOnDesktop ? 'flex' : 'none' }}
       >
-        <HStack gap={ 3 } hideBelow="lg">
-          { viewToggle }
-          { searchInput }
-        </HStack>
+        <Box hideBelow="lg">
+          { filters }
+        </Box>
         <Pagination { ...pagination } ml="auto"/>
       </ActionBar>
     </>
