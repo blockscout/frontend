@@ -17,8 +17,8 @@ const EXPLORER_URLS = [
   // 'https://optimism-interop-alpha-1.blockscout.com',
 ];
 
-function getSlug(url: string) {
-  return new URL(url).hostname.replace('.blockscout.com', '').replace('.k8s-dev', '');
+function getSlug(chainName: string) {
+  return chainName.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
 }
 
 async function computeChainConfig(url: string): Promise<unknown> {
@@ -59,8 +59,9 @@ async function run() {
 
     const config = {
       chains: configs.map((config, index) => {
+        const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ index + 1 }`;
         return {
-          slug: getSlug(EXPLORER_URLS[index]),
+          slug: getSlug(chainName),
           config,
         };
       }),

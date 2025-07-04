@@ -30,6 +30,7 @@ const LatestTxsCrossChain = () => {
           isLoading={ isPlaceholderData }
           items={ data.items }
           socketType="txs_home_cross_chain"
+          stickyHeader={ false }
         />
       </Box>
     </>

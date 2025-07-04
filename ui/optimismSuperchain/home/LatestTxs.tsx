@@ -42,6 +42,8 @@ const LatestTxs = () => {
     },
   ];
 
+  const leftSlot = <Heading level="3">Latest transactions</Heading>;
+
   const rightSlot = tab === 'local_txs' ? (
     <ChainSelect
       loading={ false }
@@ -52,10 +54,11 @@ const LatestTxs = () => {
   ) : null;
 
   return (
-    <Box as="section" mt={ 8 }>
-      <Heading level="3" mb={ 6 }>Latest transactions</Heading>
+    <Box as="section" my={ 8 }>
       <RoutedTabs
         tabs={ tabs }
+        leftSlot={ leftSlot }
+        leftSlotProps={{ mr: 6 }}
         rightSlot={ rightSlot }
       />
     </Box>

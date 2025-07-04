@@ -4,7 +4,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TxsSocketType } from 'ui/txs/socket/types';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import { TableBody, TableColumnHeader, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import TxsSocketNotice from 'ui/txs/socket/TxsSocketNotice';
 
@@ -14,14 +14,16 @@ interface Props {
   items: Array<multichain.InteropMessage>;
   isLoading: boolean;
   socketType?: TxsSocketType;
+  stickyHeader?: boolean;
 }
 
-const CrossChainTxsTable = ({ items, isLoading, socketType }: Props) => {
+const CrossChainTxsTable = ({ items, isLoading, socketType, stickyHeader = true }: Props) => {
+  const TableHeaderComponent = stickyHeader ? TableHeaderSticky : TableHeader;
 
   return (
     <AddressHighlightProvider>
       <TableRoot minW="1150px">
-        <TableHeaderSticky top={ 68 }>
+        <TableHeaderComponent top={ stickyHeader ? 68 : undefined }>
           <TableRow>
             <TableColumnHeader width="52px"/>
             <TableColumnHeader w="180px">
@@ -37,7 +39,7 @@ const CrossChainTxsTable = ({ items, isLoading, socketType }: Props) => {
             <TableColumnHeader w="25%">Target</TableColumnHeader>
             <TableColumnHeader w="130px">Value</TableColumnHeader>
           </TableRow>
-        </TableHeaderSticky>
+        </TableHeaderComponent>
         <TableBody>
           { socketType && <TxsSocketNotice type={ socketType } place="table" isLoading={ isLoading }/> }
           { items.map((item, index) => (

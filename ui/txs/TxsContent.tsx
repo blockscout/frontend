@@ -24,7 +24,6 @@ const SORT_SEQUENCE: Record<TransactionsSortingField, Array<TransactionsSortingV
 };
 
 type Props = {
-
   pagination: PaginationParams;
   showBlockInfo?: boolean;
   socketType?: TxsSocketType;
@@ -38,6 +37,7 @@ type Props = {
   isError: boolean;
   setSorting: (value: TransactionsSortingValue) => void;
   sort: TransactionsSortingValue;
+  stickyHeader?: boolean;
 };
 
 const TxsContent = ({
@@ -54,6 +54,7 @@ const TxsContent = ({
   isError,
   setSorting,
   sort,
+  stickyHeader = true,
 }: Props) => {
   const isMobile = useIsMobile();
 
@@ -87,6 +88,7 @@ const TxsContent = ({
           currentAddress={ currentAddress }
           enableTimeIncrement={ enableTimeIncrement }
           isLoading={ isPlaceholderData }
+          stickyHeader={ stickyHeader }
         />
       </Box>
     </>
