@@ -17,7 +17,7 @@ interface Props {
 
 const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
   const multichainContext = useMultichainContext();
-  const { num, alertText } = useNewTxsSocketTypeAll({ type, isLoading });
+  const { num, showErrorAlert } = useNewTxsSocketTypeAll({ type, isLoading });
 
   if (num === undefined) {
     return null;
@@ -36,7 +36,7 @@ const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
   if (place === 'table') {
     return (
       <SocketNewItemsNotice.Desktop
-        alert={ alertText }
+        showErrorAlert={ showErrorAlert }
         num={ num }
         isLoading={ isLoading }
         url={ url }
@@ -48,7 +48,7 @@ const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
     return (
       <SocketNewItemsNotice.Mobile
         num={ num }
-        alert={ alertText }
+        showErrorAlert={ showErrorAlert }
         isLoading={ isLoading }
         url={ url }
       />

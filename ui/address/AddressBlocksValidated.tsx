@@ -33,7 +33,7 @@ interface Props {
 }
 
 const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
-  const [ socketAlert, setSocketAlert ] = React.useState('');
+  const [ showSocketAlert, setShowSocketAlert ] = React.useState(false);
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
   const queryClient = useQueryClient();
@@ -60,11 +60,11 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
   });
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new blocks. Please refresh the page to load new blocks.');
+    setShowSocketAlert(true);
   }, []);
 
   const handleNewSocketMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    setSocketAlert('');
+    setShowSocketAlert(false);
 
     queryClient.setQueryData(
       getResourceKey('general:address_blocks_validated', { pathParams: { hash: addressHash } }),
@@ -121,7 +121,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
           <TableBody>
             <SocketNewItemsNotice.Desktop
               num={ newItemsCount }
-              alert={ socketAlert }
+              showErrorAlert={ showSocketAlert }
               type="block"
               isLoading={ query.isPlaceholderData }
             />
@@ -140,7 +140,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
         { query.pagination.page === 1 && (
           <SocketNewItemsNotice.Mobile
             num={ newItemsCount }
-            alert={ socketAlert }
+            showErrorAlert={ showSocketAlert }
             type="block"
             isLoading={ query.isPlaceholderData }
           />
