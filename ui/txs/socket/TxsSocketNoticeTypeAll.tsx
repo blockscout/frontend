@@ -2,6 +2,9 @@ import React from 'react';
 
 import type { TxsSocketNoticePlace, TxsSocketType } from './types';
 
+import { route } from 'nextjs/routes';
+
+import { useMultichainContext } from 'lib/contexts/multichain';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import useNewTxsSocketTypeAll from './useTxsSocketTypeAll';
@@ -13,11 +16,22 @@ interface Props {
 }
 
 const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
+  const multichainContext = useMultichainContext();
   const { num, alertText } = useNewTxsSocketTypeAll({ type, isLoading });
 
   if (num === undefined) {
     return null;
   }
+
+  const url = (() => {
+    if (type === 'txs_home_cross_chain') {
+      return route({ pathname: '/txs' });
+    }
+
+    if (type === 'txs_home' && multichainContext) {
+      return route({ pathname: '/txs' }, multichainContext);
+    }
+  })();
 
   if (place === 'table') {
     return (
@@ -25,6 +39,7 @@ const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
         alert={ alertText }
         num={ num }
         isLoading={ isLoading }
+        url={ url }
       />
     );
   }
@@ -35,6 +50,7 @@ const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
         num={ num }
         alert={ alertText }
         isLoading={ isLoading }
+        url={ url }
       />
     );
   }

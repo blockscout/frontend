@@ -63,6 +63,10 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/pools': 'Root page',
   '/pools/[hash]': 'Regular page',
   '/interop-messages': 'Root page',
+  '/chain/[chain-slug]/accounts/label/[slug]': 'Root page',
+  '/chain/[chain-slug]/address/[hash]': 'Regular page',
+  '/chain/[chain-slug]/block/[height_or_hash]': 'Regular page',
+  '/chain/[chain-slug]/tx/[hash]': 'Regular page',
   '/operations': 'Root page',
   '/operation/[id]': 'Regular page',
 

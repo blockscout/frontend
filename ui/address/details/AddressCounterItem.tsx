@@ -4,9 +4,10 @@ import React from 'react';
 
 import type { AddressCounters } from 'types/api/address';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import type { ResourceError } from 'lib/api/resources';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
@@ -25,6 +26,7 @@ const PROP_TO_TAB = {
 };
 
 const AddressCounterItem = ({ prop, query, address, isAddressQueryLoading, isDegradedData }: Props) => {
+  const multichainContext = useMultichainContext();
 
   const handleClick = React.useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -56,7 +58,7 @@ const AddressCounterItem = ({ prop, query, address, isAddressQueryLoading, isDeg
 
       return (
         <Link
-          href={ route({ pathname: '/address/[hash]', query: { hash: address, tab: PROP_TO_TAB[prop] } }) }
+          href={ route({ pathname: '/address/[hash]', query: { hash: address, tab: PROP_TO_TAB[prop] } }, multichainContext) }
           scroll={ false }
           onClick={ handleClick }
         >
