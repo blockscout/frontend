@@ -46,19 +46,21 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
     },
   });
 
+  const authFetchFactory = React.useCallback((email: string) => (recaptchaToken?: string) => {
+    return apiFetch('general:auth_send_otp', {
+      fetchParams: {
+        method: 'POST',
+        body: { email, recaptcha_response: recaptchaToken },
+        headers: {
+          ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
+        },
+      },
+    });
+  }, [ apiFetch ]);
+
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(formData) => {
     try {
-      const token = await recaptcha.executeAsync();
-
-      await apiFetch('general:auth_send_otp', {
-        fetchParams: {
-          method: 'POST',
-          body: {
-            email: formData.email,
-            recaptcha_response: token,
-          },
-        },
-      });
+      await recaptcha.fetchProtectedResource(authFetchFactory(formData.email));
       mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
         Source: 'Profile',
         Status: 'OTP sent',
@@ -72,7 +74,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
         description: apiError?.message || getErrorMessage(error) || 'Something went wrong',
       });
     }
-  }, [ apiFetch, authModal, recaptcha ]);
+  }, [ authFetchFactory, authModal, recaptcha ]);
 
   const hasDirtyFields = Object.keys(formApi.formState.dirtyFields).length > 0;
 

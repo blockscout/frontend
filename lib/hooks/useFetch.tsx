@@ -54,6 +54,9 @@ export default function useFetch() {
         const error = {
           status: response.status,
           statusText: response.statusText,
+          rateLimits: {
+            bypassOptions: response.headers.get('bypass-429-option'),
+          },
         };
 
         if (meta?.logError && rollbar) {
@@ -67,18 +70,16 @@ export default function useFetch() {
         if (!isJson) {
           return response.text().then(
             (textError) => Promise.reject({
+              ...error,
               payload: textError,
-              status: response.status,
-              statusText: response.statusText,
             }),
           );
         }
 
         return response.json().then(
           (jsonError) => Promise.reject({
+            ...error,
             payload: jsonError as Error,
-            status: response.status,
-            statusText: response.statusText,
           }),
           () => {
             return Promise.reject(error);
