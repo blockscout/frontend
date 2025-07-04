@@ -23,6 +23,8 @@ import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import Address3rdPartyWidgets from 'ui/address/Address3rdPartyWidgets';
+import useAddress3rdPartyWidgets from 'ui/address/address3rdPartyWidgets/useAddress3rdPartyWidgets';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -132,10 +134,17 @@ const AddressPageContent = () => {
     addressEnsDomainsQuery.data?.items.find((domain) => domain.name === addressQuery.data?.ens_domain_name) :
     undefined;
 
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets(
+    addressQuery.data?.is_contract ? 'contract' : 'eoa',
+    addressQuery.isPlaceholderData,
+    areQueriesEnabled,
+  );
+
   const isLoading = addressQuery.isPlaceholderData;
   const isTabsLoading =
     isLoading ||
     addressTabsCountersQuery.isPlaceholderData ||
+    (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData) ||
     (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
     (config.features.mudFramework.isEnabled && mudTablesCountQuery.isPlaceholderData);
 
@@ -282,6 +291,20 @@ const AddressPageContent = () => {
           component: <AddressLogs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
+      (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) ? {
+        id: 'widgets',
+        title: 'Widgets',
+        count: address3rdPartyWidgets.items.length,
+        component: (
+          <Address3rdPartyWidgets
+            addressType={ addressQuery.data?.is_contract ? 'contract' : 'eoa' }
+            isLoading={ addressQuery.isPlaceholderData }
+            shouldRender={ !isTabsLoading }
+            isQueryEnabled={ areQueriesEnabled }
+            showAll
+          />
+        ),
+      } : undefined,
     ].filter(Boolean);
   }, [
     addressQuery,
@@ -292,6 +315,7 @@ const AddressPageContent = () => {
     isTabsLoading,
     areQueriesEnabled,
     mudTablesCountQuery.data,
+    address3rdPartyWidgets,
   ]);
 
   const usernameApiTag = userPropfileApiQuery.data?.user_profile?.username;

@@ -37,6 +37,10 @@ jobs:
               if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: yarn --frozen-lockfile
 
+            - name: Generate Chakra types
+              if: steps.cache-node-modules.outputs.cache-hit == 'true'
+              run: yarn chakra:typegen
+
             - name: Make production build with source maps
               run: yarn build
               env:

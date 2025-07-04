@@ -35,8 +35,8 @@ import type { ChainIndicatorId, HeroBannerButtonState, HeroBannerConfig, HomeSta
 import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
 import { COLOR_THEME_IDS } from '../../../types/settings';
 import type { FontFamily } from '../../../types/ui';
-import type { AddressFormat, AddressViewId } from '../../../types/views/address';
-import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address';
+import type { AddressFormat, AddressViewId, Address3rdPartyWidget } from '../../../types/views/address';
+import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES, ADDRESS_3RD_PARTY_WIDGET_PAGES } from '../../../types/views/address';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
 import type { BlockFieldId } from '../../../types/views/block';
 import type { NftMarketplaceItem } from '../../../types/views/nft';
@@ -71,12 +71,12 @@ const urlTest: yup.TestConfig = {
   exclusive: true,
 };
 
-const getYupValidationErrorMessage = (error: unknown) => 
-  typeof error === 'object' && 
-  error !== null && 
-  'errors' in error && 
-  Array.isArray(error.errors) ? 
-    error.errors.join(', ') : 
+const getYupValidationErrorMessage = (error: unknown) =>
+  typeof error === 'object' &&
+  error !== null &&
+  'errors' in error &&
+  Array.isArray(error.errors) ?
+    error.errors.join(', ') :
     '';
 
 const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
@@ -700,6 +700,46 @@ const externalTxsConfigSchema: yup.ObjectSchema<TxExternalTxsConfig> = yup.objec
   explorer_url_template: yup.string().required(),
 });
 
+const address3rdPartyWidgetsConfigSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL, it should have name, url, icon, title, value', (data) => {
+        const isUndefined = data === undefined;
+        const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+        const valueSchema = yup.lazy((objValue) => {
+          let schema = yup.object();
+          Object.keys(objValue).forEach((key) => {
+            schema = schema.shape({
+              [key]: yup.object<Address3rdPartyWidget>().shape({
+                name: yup.string().required(),
+                url: yup.string().required(),
+                icon: yup.string().required(),
+                title: yup.string().required(),
+                hint: yup.string().optional(),
+                valuePath: yup.string().required(),
+                pages: yup.array().of(yup.string().oneOf(ADDRESS_3RD_PARTY_WIDGET_PAGES)).required(),
+                chainIds: yup.object<Record<string, string>>().optional(),
+              }),
+            });
+          });
+          return schema;
+        });
+        return isUndefined || valueSchema.isValidSync(parsedData);
+      }),
+    NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string())
+      .when('NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL', {
+        is: (value: string) => value,
+        then: (schema) => schema,
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS cannot not be used if NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL is not provided'),
+      }),
+  });
+
 const schema = yup
   .object()
   .noUnknown(true, (params) => {
@@ -1117,6 +1157,7 @@ const schema = yup
   .concat(bridgedTokensSchema)
   .concat(sentrySchema)
   .concat(tacSchema)
+  .concat(address3rdPartyWidgetsConfigSchema)
   .concat(addressMetadataSchema);
 
 export default schema;
