@@ -79,11 +79,9 @@ const NetworkMenuContent = ({ items, tabs }: Props) => {
             <VStack as="ul" gap={ 1 } alignItems="stretch" overflowY="scroll" maxH="516px">
               { items
                 .filter((network) => network.group === tab)
-                // ACTIVE NETWORK IS SET FOR TESTING PURPOSES ONLY!!!
-                .map((network, index) => (
+                .map((network) => (
                   <NetworkMenuLink
                     key={ network.title }
-                    isActive={ index === 0 }
                     { ...network }
                   />
                 )) }
