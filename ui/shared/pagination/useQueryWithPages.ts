@@ -9,12 +9,12 @@ import type { PaginationParams } from './types';
 
 import type { Route } from 'nextjs-routes';
 
-import multichainConfig from 'configs/multichain';
 import getResourceParams from 'lib/api/getResourceParams';
 import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'lib/api/resources';
 import { SORTING_FIELDS } from 'lib/api/resources';
 import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
 import useApiQuery from 'lib/api/useApiQuery';
+import getChainValueFromQuery from 'lib/multichain/getChainValueFromQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 export interface Params<Resource extends PaginatedResourceName> {
@@ -52,15 +52,6 @@ function getNextPageParams<R extends PaginatedResourceName>(data: ResourcePayloa
   return data.next_page_params;
 }
 
-function getChainValue(queryParam: string | Array<string> | undefined) {
-  const config = multichainConfig();
-  if (!config) {
-    return undefined;
-  }
-
-  return [ getQueryParamString(queryParam) || config.chains[0].slug ];
-}
-
 export type QueryWithPagesResult<Resource extends PaginatedResourceName> =
 UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
 {
@@ -88,7 +79,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   });
   const [ hasPages, setHasPages ] = React.useState(page > 1);
   const [ chainValue, setChainValue ] = React.useState<Array<string> | undefined>(
-    getChainValue(router.query['chain-slug']),
+    [ getChainValueFromQuery(router.query) ].filter(Boolean),
   );
 
   const isMounted = React.useRef(false);

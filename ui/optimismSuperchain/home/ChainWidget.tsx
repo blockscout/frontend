@@ -35,10 +35,11 @@ const ChainWidget = ({ data }: Props) => {
 
   return (
     <Box
-      bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
+      // as the designer said, for the light theme "there is no gray color that suits well, so we use a custom one"
+      bgColor={{ _light: 'rgba(246, 246, 248, 0.5)', _dark: 'whiteAlpha.50' }}
       borderRadius="xl"
       border="1px solid"
-      borderColor={{ _light: 'gray.200', _dark: 'gray.600' }}
+      borderColor={{ _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' }}
       p={ 4 }
       flexBasis={{ base: '100%', lg: 'calc((100% - 3 * 12px) / 3)' }}
       textStyle="sm"
@@ -50,11 +51,11 @@ const ChainWidget = ({ data }: Props) => {
             <Link
               onClick={ handleAddToWalletClick }
               p={ 1.5 }
-              color="gray.500"
+              color="button.icon_secondary.fg"
               _hover={{
                 color: 'link.primary.hover',
               }}
-              bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
+              bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}
               borderRadius="base"
             >
               <IconSvg name="wallet" boxSize={ 5 }/>
@@ -64,11 +65,11 @@ const ChainWidget = ({ data }: Props) => {
             <Link
               href={ data.config.app.baseUrl }
               target="_blank"
-              color="gray.500"
+              color="button.icon_secondary.fg"
               _hover={{
                 color: 'link.primary.hover',
               }}
-              bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
+              bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}
               borderRadius="base"
             >
               <IconSvg name="globe" boxSize={ 8 }/>

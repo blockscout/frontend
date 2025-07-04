@@ -12,9 +12,9 @@ import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-import AddressOpSuperchainTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './AddressOpSuperchainTxs';
+import OpSuperchainAddressTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './OpSuperchainAddressTxs';
 
-const AddressOpSuperchain = () => {
+const OpSuperchainAddress = () => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
@@ -39,7 +39,7 @@ const AddressOpSuperchain = () => {
       {
         id: 'txs',
         title: 'Transactions',
-        component: <AddressOpSuperchainTxs/>,
+        component: <OpSuperchainAddressTxs/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS,
       },
     ];
@@ -76,4 +76,4 @@ const AddressOpSuperchain = () => {
   );
 };
 
-export default React.memo(AddressOpSuperchain);
+export default React.memo(OpSuperchainAddress);

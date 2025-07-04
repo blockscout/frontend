@@ -3,10 +3,11 @@ import React from 'react';
 
 import multichainConfig from 'configs/multichain';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getIconUrl from 'lib/multichain/getIconUrl';
 import { Image } from 'toolkit/chakra/image';
 import { Select } from 'toolkit/chakra/select';
-import type { SelectOption, SelectProps } from 'toolkit/chakra/select';
+import type { SelectOption, SelectProps, ViewMode } from 'toolkit/chakra/select';
 
 const collection = createListCollection<SelectOption>({
   items: multichainConfig()?.chains.map((chain) => ({
@@ -18,10 +19,12 @@ const collection = createListCollection<SelectOption>({
 
 interface Props extends Omit<SelectProps, 'collection' | 'placeholder'> {
   loading?: boolean;
+  mode?: ViewMode;
 }
 
-const ChainSelect = ({ loading, ...props }: Props) => {
+const ChainSelect = ({ loading, mode, ...props }: Props) => {
   const isInitialLoading = useIsInitialLoading(loading);
+  const isMobile = useIsMobile();
 
   return (
     <Select
@@ -29,6 +32,7 @@ const ChainSelect = ({ loading, ...props }: Props) => {
       defaultValue={ [ collection.items[0].value ] }
       placeholder="Select chain"
       loading={ isInitialLoading }
+      mode={ isMobile && !mode ? 'compact' : mode }
       { ...props }
     />
   );

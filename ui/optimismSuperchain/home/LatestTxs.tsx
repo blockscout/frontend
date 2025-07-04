@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import multichainConfig from 'configs/multichain';
+import getChainValueFromQuery from 'lib/multichain/getChainValueFromQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Heading } from 'toolkit/chakra/heading';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -16,7 +16,7 @@ const LatestTxs = () => {
   const tab = getQueryParamString(router.query.tab);
 
   const [ chainValue, setChainValue ] = React.useState<Array<string> | undefined>(
-    [ getQueryParamString(router.query['chain-slug']) || multichainConfig()?.chains[0]?.slug ].filter(Boolean),
+    [ getChainValueFromQuery(router.query) ].filter(Boolean),
   );
 
   const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
