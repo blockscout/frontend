@@ -211,7 +211,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
         },
         border: {
-          DEFAULT: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
+          DEFAULT: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
         },
       },
     },

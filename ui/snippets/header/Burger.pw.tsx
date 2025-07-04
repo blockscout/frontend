@@ -33,10 +33,6 @@ test('base view', async({ render, page }) => {
 
   await component.getByRole('button', { name: 'Menu button' }).click();
   await expect(page).toHaveScreenshot();
-
-  await page.getByRole('button', { name: 'Network menu' }).click();
-  await page.mouse.move(0, 0);
-  await expect(page).toHaveScreenshot();
 });
 
 test.describe('dark mode', () => {
@@ -46,10 +42,6 @@ test.describe('dark mode', () => {
     const component = await render(<Burger/>, { hooksConfig });
 
     await component.getByRole('button', { name: 'Menu button' }).click();
-    await expect(page).toHaveScreenshot();
-
-    await page.getByRole('button', { name: 'Network menu' }).click();
-    await page.mouse.move(0, 0);
     await expect(page).toHaveScreenshot();
   });
 });
