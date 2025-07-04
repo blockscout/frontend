@@ -14,6 +14,7 @@ import type { PaginatedResourceName, PaginationFilters, PaginationSorting, Resou
 import { SORTING_FIELDS } from 'lib/api/resources';
 import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import getChainValueFromQuery from 'lib/multichain/getChainValueFromQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
@@ -24,6 +25,7 @@ export interface Params<Resource extends PaginatedResourceName> {
   filters?: PaginationFilters<Resource>;
   sorting?: PaginationSorting<Resource>;
   scrollRef?: React.RefObject<HTMLDivElement | null>;
+  isMultichain?: boolean;
 }
 
 type NextPageParams = Record<string, unknown>;
@@ -69,9 +71,11 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   options,
   pathParams,
   scrollRef,
+  isMultichain,
 }: Params<Resource>): QueryWithPagesResult<Resource> {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const multichainContext = useMultichainContext();
 
   const [ page, setPage ] = React.useState<number>(getPageFromQuery(router.query));
   const [ pageParams, setPageParams ] = React.useState<Record<number, NextPageParams>>({
@@ -79,7 +83,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   });
   const [ hasPages, setHasPages ] = React.useState(page > 1);
   const [ chainValue, setChainValue ] = React.useState<Array<string> | undefined>(
-    [ getChainValueFromQuery(router.query) ].filter(Boolean),
+    isMultichain || multichainContext?.chain ? [ getChainValueFromQuery(router.query) ].filter(Boolean) : undefined,
   );
 
   const isMounted = React.useRef(false);
@@ -261,6 +265,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   React.useEffect(() => {
     const pageFromQuery = getPageFromQuery(router.query);
     const nextPageParamsFromQuery = getPaginationParamsFromQuery(router.query.next_page_params);
+    const chainValueFromQuery = getChainValueFromQuery(router.query);
 
     setPage(pageFromQuery);
     setPageParams(prev => ({
@@ -268,6 +273,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       [pageFromQuery]: nextPageParamsFromQuery,
     }));
     setHasPages(pageFromQuery > 1);
+    setChainValue(chainValueFromQuery ? [ chainValueFromQuery ] : undefined);
   }, [ router.query ]);
 
   return { ...queryResult, pagination, onFilterChange, onSortingChange, chainValue, onChainValueChange };

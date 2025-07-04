@@ -18,9 +18,10 @@ const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null,
 interface Props {
   addressHash: string;
   enabled: boolean;
+  isMultichain?: boolean;
 }
 
-export default function useAddressTxsQuery({ addressHash, enabled }: Props) {
+export default function useAddressTxsQuery({ addressHash, enabled, isMultichain }: Props) {
   const router = useRouter();
 
   const [ sort, setSort ] = React.useState<TransactionsSortingValue>(getSortValueFromQuery<TransactionsSortingValue>(router.query, SORT_OPTIONS) || 'default');
@@ -41,6 +42,7 @@ export default function useAddressTxsQuery({ addressHash, enabled }: Props) {
         items_count: 50,
       } }),
     },
+    isMultichain,
   });
 
   const onFilterChange = React.useCallback((val: string | Array<string>) => {

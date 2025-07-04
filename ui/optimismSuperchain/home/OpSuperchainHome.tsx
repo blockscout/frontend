@@ -10,7 +10,7 @@ import HeroBanner from 'ui/home/HeroBanner';
 import ChainWidget from './ChainWidget';
 import LatestTxs from './LatestTxs';
 
-const HomeOpSuperchain = () => {
+const OpSuperchainHome = () => {
   return (
     <Box as="main">
       <HeroBanner/>
@@ -30,4 +30,4 @@ const HomeOpSuperchain = () => {
   );
 };
 
-export default React.memo(HomeOpSuperchain);
+export default React.memo(OpSuperchainHome);

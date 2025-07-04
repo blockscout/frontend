@@ -35,6 +35,7 @@ const AddressOpSuperchainTxs = () => {
   const txsQueryLocal = useAddressTxsQuery({
     addressHash: hash,
     enabled: tab === 'local_txs',
+    isMultichain: true,
   });
 
   const txsLocalFilter = tab === 'local_txs' ? (

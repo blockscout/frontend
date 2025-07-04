@@ -26,8 +26,6 @@ const OpSuperchainTxs = () => {
   const tab = getQueryParamString(router.query.tab);
   const isLocalTxs = tab === 'local_txs' || OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS.includes(tab);
 
-  const isLoading = false;
-
   const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setChainValue(value);
     router.push({
@@ -81,11 +79,9 @@ const OpSuperchainTxs = () => {
       <PageTitle
         withTextAd
         title="Transactions"
-        isLoading={ isLoading }
       />
       <RoutedTabs
         tabs={ tabs }
-        isLoading={ isLoading }
         listProps={ isLocalTxs ? { mb: 0 } : undefined }
         rightSlot={ rightSlot }
         rightSlotProps={ rightSlot ? TABS_RIGHT_SLOT_PROPS : undefined }

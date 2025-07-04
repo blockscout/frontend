@@ -5,9 +5,10 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { BlockType, BlocksResponse } from 'types/api/block';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -24,7 +25,7 @@ import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 const OVERLOAD_COUNT = 75;
 const TABS_HEIGHT = 88;
 
-interface Props {
+export interface Props {
   type?: BlockType;
   query: QueryWithPagesResult<'general:blocks'> | QueryWithPagesResult<'general:optimistic_l2_txn_batch_blocks'>;
   enableSocket?: boolean;
@@ -34,12 +35,17 @@ interface Props {
 const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
+  const multichainContext = useMultichainContext();
+
   const [ socketAlert, setSocketAlert ] = React.useState('');
 
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    const queryKey = getResourceKey('general:blocks', { queryParams: { type } });
+    const queryKey = getResourceKey('general:blocks', {
+      queryParams: { type },
+      chainSlug: multichainContext?.chain?.slug,
+    });
 
     queryClient.setQueryData(queryKey, (prevData: BlocksResponse | undefined) => {
       const shouldAddToList = !type || type === payload.block.type;
@@ -63,7 +69,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
       const newItems = [ payload.block, ...prevData.items ].sort((b1, b2) => b2.height - b1.height);
       return { ...prevData, items: newItems };
     });
-  }, [ queryClient, type ]);
+  }, [ multichainContext?.chain?.slug, queryClient, type ]);
 
   const handleSocketClose = React.useCallback(() => {
     setSocketAlert('Connection is lost. Please refresh the page to load new blocks.');
@@ -114,7 +120,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
 
   const actionBar = isMobile ? (
     <ActionBar mt={ -6 }>
-      <Link href={ route({ pathname: '/block/countdown' }) }>
+      <Link href={ route({ pathname: '/block/countdown' }, multichainContext) }>
         <IconSvg name="hourglass_slim" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
       </Link>

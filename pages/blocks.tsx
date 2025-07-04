@@ -4,7 +4,15 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const Blocks = dynamic(() => import('ui/pages/Blocks'), { ssr: false });
+import config from 'configs/app';
+
+const Blocks = dynamic(() => {
+  if (config.features.opSuperchain.isEnabled) {
+    return import('ui/optimismSuperchain/blocks/OpSuperchainBlocks');
+  }
+
+  return import('ui/pages/Blocks');
+}, { ssr: false });
 
 const Page: NextPage = () => {
   return (
