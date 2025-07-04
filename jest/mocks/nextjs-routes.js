@@ -1,11 +1,18 @@
 module.exports = {
   route: jest.fn((opts) => {
-    if (opts?.pathname?.includes('[hash]')) {
-      return `/address/${ opts.query?.hash || 'test-hash' }`;
+    const pathname = opts?.pathname;
+    const query = opts?.query || {};
+
+    if (pathname === '/address/[hash]') {
+      return `/address/${ query.hash || 'test-hash' }`;
     }
-    if (opts?.pathname?.includes('[name]')) {
-      return `/clusters/${ opts.query?.name || 'test-cluster' }`;
+    if (pathname === '/tx/[hash]') {
+      return `/tx/${ query.hash || 'test-hash' }`;
     }
-    return opts?.pathname || '/';
+    if (pathname === '/clusters/[name]') {
+      return `/clusters/${ query.name || 'test-cluster' }`;
+    }
+
+    return pathname || '/';
   }),
 };
