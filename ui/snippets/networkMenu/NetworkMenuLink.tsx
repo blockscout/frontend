@@ -55,38 +55,22 @@ const NetworkMenuLink = ({ title, icon, isActive: isActiveProp, isMobile, url, i
         pointerEvents={ isActive ? 'none' : 'initial' }
         borderRadius="base"
         _hover={{ color: isActive ? 'text.primary' : 'link.primary.hover' }}
-        css={{
-          '&:hover .external-arrow': {
-            display: 'inline-flex',
-          },
-        }}
       >
         { iconEl }
         <Text
           marginLeft={ 2 }
           color="inherit"
-          fontSize={ isMobile ? 'sm' : 'md' }
+          fontSize="sm"
           lineHeight={ isMobile ? '20px' : '24px' }
         >
           { title }
         </Text>
-        { isActive ? (
+        { isActive && (
           <IconSvg
             name="check"
             boxSize="20px"
             marginLeft="auto"
           />
-        ) : (
-          <Box
-            className="external-arrow"
-            display="none"
-            marginLeft="auto"
-          >
-            <IconSvg
-              name="arrows/north-east"
-              boxSize="20px"
-            />
-          </Box>
         ) }
       </chakra.a>
     </Box>

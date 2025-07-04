@@ -95,6 +95,7 @@ const NetworkMenuContent = ({ items, tabs }: Props) => {
                   variant="secondary"
                   my={ 2 }
                   px={ 2 }
+                  fontSize="xs"
                 >
                   View all chains
                 </Link>
