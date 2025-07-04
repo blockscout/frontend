@@ -22,6 +22,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
 - [UI configuration](#ui-configuration)
   - [Homepage](#homepage)
   - [Navigation](#navigation)
+  - [Featured networks](#featured-networks)
   - [Footer](#footer)
   - [Favicon](#favicon)
   - [Meta](#meta)
