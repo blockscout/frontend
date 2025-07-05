@@ -1,4 +1,8 @@
 const scrollbar = {
+  'body *': {
+    scrollbarWidth: 'thin',
+    scrollbarColor: 'transparent transparent',
+  },
   'body *::-webkit-scrollbar': {
     width: '20px',
   },
@@ -6,7 +10,7 @@ const scrollbar = {
     backgroundColor: 'transparent',
   },
   'body *::-webkit-scrollbar-thumb': {
-    backgroundColor: '{colors.global.scrollbar.thumb}',
+    backgroundColor: 'transparent', // Invisible by default
     borderRadius: '20px',
     border: `8px solid rgba(0,0,0,0)`,
     backgroundClip: 'content-box',
@@ -23,9 +27,12 @@ const scrollbar = {
     backgroundImage: 'url(/static/resizer_light.png)',
     backgroundSize: '20px',
   },
-  'body *': {
-    scrollbarWidth: 'thin',
-    scrollbarColor: `{colors.global.scrollbar.thumb} transparent`,
+  // Show scrollbar on hover
+  'body *:hover': {
+    scrollbarColor: '{colors.global.scrollbar.thumb} transparent',
+  },
+  'body *:hover::-webkit-scrollbar-thumb': {
+    backgroundColor: '{colors.global.scrollbar.thumb}',
   },
 };
 
