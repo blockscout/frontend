@@ -73,7 +73,7 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
 
   const currentAddress = getQueryParamString(router.query.hash);
 
-  const [ socketAlert, setSocketAlert ] = React.useState('');
+  const [ showSocketAlert, setShowSocketAlert ] = React.useState(false);
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
   const [ filters, setFilters ] = React.useState<Filters>(
@@ -109,7 +109,7 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
   }, [ filters, onFilterChange ]);
 
   const handleNewSocketMessage: SocketMessage.AddressTokenTransfer['handler'] = (payload) => {
-    setSocketAlert('');
+    setShowSocketAlert(false);
 
     const newItems: Array<TokenTransfer> = [];
     let newCount = 0;
@@ -152,11 +152,11 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
   };
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please refresh the page to load new token transfers.');
+    setShowSocketAlert(true);
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new token transfers. Please refresh the page.');
+    setShowSocketAlert(true);
   }, []);
 
   const channel = useSocketChannel({
@@ -189,7 +189,7 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
           top={ isActionBarHidden ? 0 : ACTION_BAR_HEIGHT_DESKTOP }
           enableTimeIncrement
           showSocketInfo={ pagination.page === 1 }
-          socketInfoAlert={ socketAlert }
+          showSocketErrorAlert={ showSocketAlert }
           socketInfoNum={ newItemsCount }
           isLoading={ isPlaceholderData }
         />
@@ -198,7 +198,7 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
         { pagination.page === 1 && (
           <SocketNewItemsNotice.Mobile
             num={ newItemsCount }
-            alert={ socketAlert }
+            showErrorAlert={ showSocketAlert }
             type="token_transfer"
             isLoading={ isPlaceholderData }
           />

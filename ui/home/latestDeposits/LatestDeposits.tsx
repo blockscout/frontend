@@ -28,7 +28,7 @@ type Props = {
   isLoading?: boolean;
   items: Array<DepositsItem>;
   socketItemsNum: number;
-  socketAlert?: string;
+  showSocketErrorAlert?: boolean;
 };
 
 type ItemProps = {
@@ -151,11 +151,18 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
   );
 };
 
-const LatestDeposits = ({ isLoading, items, socketAlert, socketItemsNum }: Props) => {
+const LatestDeposits = ({ isLoading, items, showSocketErrorAlert, socketItemsNum }: Props) => {
   const depositsUrl = route({ pathname: '/deposits' });
   return (
     <>
-      <SocketNewItemsNotice borderBottomRadius={ 0 } url={ depositsUrl } num={ socketItemsNum } alert={ socketAlert } type="deposit" isLoading={ isLoading }/>
+      <SocketNewItemsNotice
+        borderBottomRadius={ 0 }
+        url={ depositsUrl }
+        num={ socketItemsNum }
+        showErrorAlert={ showSocketErrorAlert }
+        type="deposit"
+        isLoading={ isLoading }
+      />
       <Box mb={{ base: 3, lg: 4 }}>
         { items.map(((item, index) => (
           <LatestDepositsItem

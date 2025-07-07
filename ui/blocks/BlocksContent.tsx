@@ -37,7 +37,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   const isMobile = useIsMobile();
   const multichainContext = useMultichainContext();
 
-  const [ socketAlert, setSocketAlert ] = React.useState('');
+  const [ showSocketAlert, setShowSocketAlert ] = React.useState(false);
 
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
@@ -72,11 +72,11 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   }, [ multichainContext?.chain?.slug, queryClient, type ]);
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please refresh the page to load new blocks.');
+    setShowSocketAlert(true);
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new blocks. Please refresh the page to load new blocks.');
+    setShowSocketAlert(true);
   }, []);
 
   const channel = useSocketChannel({
@@ -97,7 +97,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
         { query.pagination.page === 1 && enableSocket && (
           <SocketNewItemsNotice.Mobile
             num={ newItemsCount }
-            alert={ socketAlert }
+            showErrorAlert={ showSocketAlert }
             type="block"
             isLoading={ query.isPlaceholderData }
           />
@@ -112,7 +112,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
           isLoading={ query.isPlaceholderData }
           showSocketInfo={ query.pagination.page === 1 && enableSocket }
           socketInfoNum={ newItemsCount }
-          socketInfoAlert={ socketAlert }
+          showSocketErrorAlert={ showSocketAlert }
         />
       </Box>
     </>

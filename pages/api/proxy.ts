@@ -21,14 +21,24 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
   );
 
   // proxy some headers from API
-  const requestId = apiRes.headers.get('x-request-id');
-  requestId && nextRes.setHeader('x-request-id', requestId);
+  const HEADERS_TO_PROXY = [
+    'x-request-id',
+    'content-type',
+    'bypass-429-option',
+    'x-ratelimit-limit',
+    'x-ratelimit-remaining',
+    'x-ratelimit-reset',
+  ];
+
+  HEADERS_TO_PROXY.forEach((header) => {
+    const value = apiRes.headers.get(header);
+    value && nextRes.setHeader(header, value);
+  });
 
   const setCookie = apiRes.headers.raw()['set-cookie'];
   setCookie?.forEach((value) => {
     nextRes.appendHeader('set-cookie', value);
   });
-  nextRes.setHeader('content-type', apiRes.headers.get('content-type') || '');
 
   nextRes.status(apiRes.status).send(apiRes.body);
 };

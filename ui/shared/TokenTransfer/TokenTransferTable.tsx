@@ -15,7 +15,7 @@ interface Props {
   top: number;
   enableTimeIncrement?: boolean;
   showSocketInfo?: boolean;
-  socketInfoAlert?: string;
+  showSocketErrorAlert?: boolean;
   socketInfoNum?: number;
   isLoading?: boolean;
 }
@@ -27,7 +27,7 @@ const TokenTransferTable = ({
   top,
   enableTimeIncrement,
   showSocketInfo,
-  socketInfoAlert,
+  showSocketErrorAlert,
   socketInfoNum,
   isLoading,
 }: Props) => {
@@ -53,7 +53,7 @@ const TokenTransferTable = ({
         <TableBody>
           { showSocketInfo && (
             <SocketNewItemsNotice.Desktop
-              alert={ socketInfoAlert }
+              showErrorAlert={ showSocketErrorAlert }
               num={ socketInfoNum }
               type="token_transfer"
               isLoading={ isLoading }

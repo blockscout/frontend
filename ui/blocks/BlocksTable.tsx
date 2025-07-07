@@ -19,7 +19,7 @@ interface Props {
   top: number;
   page: number;
   socketInfoNum?: number;
-  socketInfoAlert?: string;
+  showSocketErrorAlert?: boolean;
   showSocketInfo?: boolean;
 }
 
@@ -30,7 +30,7 @@ const FEES_COL_WEIGHT = 22;
 
 const isRollup = config.features.rollup.isEnabled;
 
-const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, socketInfoAlert }: Props) => {
+const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, showSocketErrorAlert }: Props) => {
   const initialList = useInitialList({
     data: data ?? [],
     idFn: (item) => item.height,
@@ -71,7 +71,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
         <TableBody>
           { showSocketInfo && (
             <SocketNewItemsNotice.Desktop
-              alert={ socketInfoAlert }
+              showErrorAlert={ showSocketErrorAlert }
               num={ socketInfoNum }
               type="block"
               isLoading={ isLoading }
