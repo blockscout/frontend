@@ -36,7 +36,6 @@ const LatestTxs = () => {
       loading={ false }
       value={ chainSelect.value }
       onValueChange={ chainSelect.onValueChange }
-      w="fit-content"
     />
   ) : null;
 

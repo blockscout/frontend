@@ -15,6 +15,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import OpSuperchainAddressCoinBalance from './OpSuperchainAddressCoinBalance';
 import OpSuperchainAddressInternalTxs from './OpSuperchainAddressInternalTxs';
 import OpSuperchainAddressLogs from './OpSuperchainAddressLogs';
+import OpSuperchainAddressTokenTransfers, { ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS } from './OpSuperchainAddressTokenTransfers';
 import OpSuperchainAddressTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './OpSuperchainAddressTxs';
 
 const OpSuperchainAddress = () => {
@@ -44,6 +45,12 @@ const OpSuperchainAddress = () => {
         title: 'Transactions',
         component: <OpSuperchainAddressTxs/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS,
+      },
+      {
+        id: 'token_transfers',
+        title: 'Token transfers',
+        component: <OpSuperchainAddressTokenTransfers/>,
+        subTabs: ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS,
       },
       {
         id: 'internal_txs',
