@@ -12,6 +12,7 @@ import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+import OpSuperchainAddressCoinBalance from './OpSuperchainAddressCoinBalance';
 import OpSuperchainAddressInternalTxs from './OpSuperchainAddressInternalTxs';
 import OpSuperchainAddressTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './OpSuperchainAddressTxs';
 
@@ -47,6 +48,11 @@ const OpSuperchainAddress = () => {
         id: 'internal_txs',
         title: 'Internal txns',
         component: <OpSuperchainAddressInternalTxs/>,
+      },
+      {
+        id: 'coin_balance_history',
+        title: 'Coin balance history',
+        component: <OpSuperchainAddressCoinBalance/>,
       },
     ];
   }, []);

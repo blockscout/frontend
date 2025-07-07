@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import getChainValueFromQuery from 'lib/multichain/getChainValueFromQuery';
+import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Heading } from 'toolkit/chakra/heading';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -14,20 +14,7 @@ import LatestTxsLocal from './LatestTxsLocal';
 const LatestTxs = () => {
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
-
-  const [ chainValue, setChainValue ] = React.useState<Array<string> | undefined>(
-    [ getChainValueFromQuery(router.query) ].filter(Boolean),
-  );
-
-  const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    setChainValue(value);
-    router.push({
-      query: {
-        ...router.query,
-        'chain-slug': value[0],
-      },
-    }, undefined, { shallow: true });
-  }, [ router ]);
+  const chainSelect = useRoutedChainSelect();
 
   const tabs = [
     {
@@ -38,7 +25,7 @@ const LatestTxs = () => {
     {
       id: 'local_txs',
       title: 'Local',
-      component: chainValue ? <LatestTxsLocal key={ chainValue[0] } chainSlug={ chainValue[0] }/> : null,
+      component: chainSelect.value ? <LatestTxsLocal key={ chainSelect.value[0] } chainSlug={ chainSelect.value[0] }/> : null,
     },
   ];
 
@@ -47,8 +34,8 @@ const LatestTxs = () => {
   const rightSlot = tab === 'local_txs' ? (
     <ChainSelect
       loading={ false }
-      value={ chainValue }
-      onValueChange={ handleChainValueChange }
+      value={ chainSelect.value }
+      onValueChange={ chainSelect.onValueChange }
       w="fit-content"
     />
   ) : null;

@@ -41,7 +41,6 @@ const OpSuperchainAddressInternalTxs = () => {
         value={ query.chainValue }
         onValueChange={ query.onChainValueChange }
         ml={ 2 }
-        w="fit-content"
       />
       <AddressCsvExportLink
         address={ hash }

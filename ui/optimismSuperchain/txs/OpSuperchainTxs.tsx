@@ -4,7 +4,7 @@ import React from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { MultichainProvider } from 'lib/contexts/multichain';
-import getChainValueFromQuery from 'lib/multichain/getChainValueFromQuery';
+import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ChainSelect from 'ui/shared/multichain/ChainSelect';
@@ -15,32 +15,22 @@ import OpSuperchainTxsLocal, { OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS } from './OpSuper
 const TABS_RIGHT_SLOT_PROPS = {
   ml: { base: 'auto', lg: 6 },
 };
+const QUERY_PRESERVED_PARAMS = [ 'tab' ];
 
 const OpSuperchainTxs = () => {
   const router = useRouter();
-
-  const [ chainValue, setChainValue ] = React.useState<Array<string> | undefined>(
-    [ getChainValueFromQuery(router.query) ].filter(Boolean),
-  );
+  const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS });
 
   const tab = getQueryParamString(router.query.tab);
   const isLocalTxs = tab === 'local_txs' || OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS.includes(tab);
 
-  const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    setChainValue(value);
-    router.push({
-      pathname: router.pathname,
-      query: { tab: router.query.tab, 'chain-slug': value[0] },
-    });
-  }, [ router ]);
-
   React.useEffect(() => {
-    if (isLocalTxs && chainValue) {
+    if (isLocalTxs && chainSelect.value) {
       const queryParam = getQueryParamString(router.query['chain-slug']);
-      if (queryParam !== chainValue[0]) {
+      if (queryParam !== chainSelect.value[0]) {
         router.push({
           pathname: router.pathname,
-          query: { tab: router.query.tab, 'chain-slug': chainValue[0] },
+          query: { tab: router.query.tab, 'chain-slug': chainSelect.value[0] },
         });
       }
     }
@@ -58,19 +48,19 @@ const OpSuperchainTxs = () => {
         id: 'local_txs',
         title: 'Local',
         component: (
-          <MultichainProvider chainSlug={ chainValue?.[0] }>
+          <MultichainProvider chainSlug={ chainSelect.value?.[0] }>
             <OpSuperchainTxsLocal/>
           </MultichainProvider>
         ),
         subTabs: OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS,
       },
     ];
-  }, [ chainValue ]);
+  }, [ chainSelect.value ]);
 
   const rightSlot = isLocalTxs && (
     <ChainSelect
-      value={ chainValue }
-      onValueChange={ handleChainValueChange }
+      value={ chainSelect.value }
+      onValueChange={ chainSelect.onValueChange }
     />
   );
 
