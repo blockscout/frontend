@@ -1,41 +1,31 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMounted from 'lib/hooks/useIsMounted';
+import { MultichainProvider } from 'lib/contexts/multichain';
 import { apos } from 'toolkit/utils/htmlEntities';
+import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
+import AddressTxsFilter from 'ui/address/AddressTxsFilter';
+import useAddressInternalTxsQuery from 'ui/address/useAddressInternalTxsQuery';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
+import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 
-import AddressCsvExportLink from './AddressCsvExportLink';
-import AddressTxsFilter from './AddressTxsFilter';
-import useAddressInternalTxsQuery from './useAddressInternalTxsQuery';
-
-type Props = {
-  shouldRender?: boolean;
-  isQueryEnabled?: boolean;
-};
-const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
-  const isMounted = useIsMounted();
-
-  const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({ enabled: isQueryEnabled });
+const OpSuperchainAddressInternalTxs = () => {
+  const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({ enabled: true });
   const { data, isPlaceholderData, isError, pagination } = query;
 
-  if (!isMounted || !shouldRender) {
-    return null;
-  }
-
   const content = data?.items ? (
-    <>
+    <MultichainProvider chainSlug={ query.chainValue?.[0] }>
       <Box hideFrom="lg">
         <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
       </Box>
       <Box hideBelow="lg">
         <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
       </Box>
-    </>
+    </MultichainProvider>
   ) : null ;
 
   const actionBar = (
@@ -45,6 +35,13 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
         onFilterChange={ onFilterChange }
         hasActiveFilter={ Boolean(filterValue) }
         isLoading={ pagination.isLoading }
+      />
+      <ChainSelect
+        loading={ pagination.isLoading }
+        value={ query.chainValue }
+        onValueChange={ query.onChainValueChange }
+        ml={ 2 }
+        w="fit-content"
       />
       <AddressCsvExportLink
         address={ hash }
@@ -60,8 +57,7 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
     <DataListDisplay
       isError={ isError }
       itemsNum={ data?.items.length }
-      filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: Boolean(filterValue) }}
-      emptyText="There are no internal transactions for this address."
+      filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: true }}
       actionBar={ actionBar }
     >
       { content }
@@ -69,4 +65,4 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
   );
 };
 
-export default AddressInternalTxs;
+export default React.memo(OpSuperchainAddressInternalTxs);
