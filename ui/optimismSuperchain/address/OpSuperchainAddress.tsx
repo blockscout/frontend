@@ -14,6 +14,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 import OpSuperchainAddressCoinBalance from './OpSuperchainAddressCoinBalance';
 import OpSuperchainAddressInternalTxs from './OpSuperchainAddressInternalTxs';
+import OpSuperchainAddressLogs from './OpSuperchainAddressLogs';
 import OpSuperchainAddressTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './OpSuperchainAddressTxs';
 
 const OpSuperchainAddress = () => {
@@ -53,6 +54,11 @@ const OpSuperchainAddress = () => {
         id: 'coin_balance_history',
         title: 'Coin balance history',
         component: <OpSuperchainAddressCoinBalance/>,
+      },
+      {
+        id: 'logs',
+        title: 'Logs',
+        component: <OpSuperchainAddressLogs/>,
       },
     ];
   }, []);

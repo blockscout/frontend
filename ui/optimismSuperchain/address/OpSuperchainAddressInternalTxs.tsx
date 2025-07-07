@@ -56,7 +56,9 @@ const OpSuperchainAddressInternalTxs = () => {
     <DataListDisplay
       isError={ isError }
       itemsNum={ data?.items.length }
-      filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: true }}
+      filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: Boolean(filterValue) }}
+      emptyText="There are no internal transactions for this address."
+      showActionBarIfEmpty
       actionBar={ actionBar }
     >
       { content }
