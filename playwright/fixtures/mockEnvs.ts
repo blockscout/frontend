@@ -112,4 +112,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   celo: [
     [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
   ],
+  clusters: [
+    [ 'NEXT_PUBLIC_CLUSTERS_API_HOST', 'https://api.clusters.xyz' ],
+  ],
 };
