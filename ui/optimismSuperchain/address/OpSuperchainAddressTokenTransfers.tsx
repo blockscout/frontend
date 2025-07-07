@@ -17,7 +17,7 @@ import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 
 import TokenTransfersLocal from './tokenTransfers/TokenTransfersLocal';
 
-export const ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS = [ 'cross_chain_token_transfers' as const, 'local_token_transfers' as const ];
+export const ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS = [ 'token_transfers_cross_chain' as const, 'token_transfers_local' as const ];
 const TABS_RIGHT_SLOT_PROPS = {
   display: 'flex',
   justifyContent: { base: 'flex-end', lg: 'space-between' },
@@ -34,11 +34,11 @@ const OpSuperchainAddressTokenTransfers = () => {
 
   const queryLocal = useAddressTokenTransfersQuery({
     currentAddress: hash,
-    enabled: tab === 'local_token_transfers',
+    enabled: tab === 'token_transfers_local',
     isMultichain: true,
   });
 
-  const filterLocal = tab === 'local_token_transfers' && !isMobile ? (
+  const filterLocal = tab === 'token_transfers_local' && !isMobile ? (
     <TokenTransferFilter
       defaultTypeFilters={ queryLocal.filters.type }
       onTypeFilterChange={ queryLocal.onTypeFilterChange }
@@ -50,7 +50,7 @@ const OpSuperchainAddressTokenTransfers = () => {
     />
   ) : null;
 
-  const rightSlot = tab === 'local_token_transfers' ? (
+  const rightSlot = tab === 'token_transfers_local' ? (
     <HStack gap={ 2 }>
       { filterLocal }
       <ChainSelect
@@ -65,12 +65,12 @@ const OpSuperchainAddressTokenTransfers = () => {
 
   const tabs: Array<TabItemRegular> = [
     {
-      id: 'cross_chain_token_transfers',
+      id: 'token_transfers_cross_chain',
       title: 'Cross-chain',
       component: <div>Coming soon 🔜</div>,
     },
     {
-      id: 'local_token_transfers',
+      id: 'token_transfers_local',
       title: 'Local',
       component: (
         <MultichainProvider chainSlug={ queryLocal.query.chainValue?.[0] }>

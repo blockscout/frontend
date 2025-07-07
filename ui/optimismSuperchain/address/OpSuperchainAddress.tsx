@@ -13,6 +13,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import OpSuperchainAddressCoinBalance from './OpSuperchainAddressCoinBalance';
+import OpSuperchainAddressDetails from './OpSuperchainAddressDetails';
 import OpSuperchainAddressInternalTxs from './OpSuperchainAddressInternalTxs';
 import OpSuperchainAddressLogs from './OpSuperchainAddressLogs';
 import OpSuperchainAddressTokenTransfers, { ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS } from './OpSuperchainAddressTokenTransfers';
@@ -38,7 +39,7 @@ const OpSuperchainAddress = () => {
       {
         id: 'index',
         title: 'Details',
-        component: <div>Coming soon 🔜</div>,
+        component: <OpSuperchainAddressDetails addressHash={ checkSummedHash }/>,
       },
       {
         id: 'txs',
@@ -68,7 +69,7 @@ const OpSuperchainAddress = () => {
         component: <OpSuperchainAddressLogs/>,
       },
     ];
-  }, []);
+  }, [ checkSummedHash ]);
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>

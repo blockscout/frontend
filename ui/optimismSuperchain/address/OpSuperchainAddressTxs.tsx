@@ -17,7 +17,7 @@ import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
-export const ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS = [ 'cross_chain_txs', 'local_txs' ];
+export const ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS = [ 'txs_cross_chain' as const, 'txs_local' as const ];
 const TAB_LIST_PROPS = {
   marginBottom: 0,
   pt: 6,
@@ -30,15 +30,15 @@ const AddressOpSuperchainTxs = () => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
-  const tab = getQueryParamString(router.query.tab);
+  const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS[number] | undefined;
 
   const txsQueryLocal = useAddressTxsQuery({
     addressHash: hash,
-    enabled: tab === 'local_txs',
+    enabled: tab === 'txs_local',
     isMultichain: true,
   });
 
-  const txsLocalFilter = tab === 'local_txs' ? (
+  const txsLocalFilter = tab === 'txs_local' ? (
     <AddressTxsFilter
       initialValue={ txsQueryLocal.filterValue }
       onFilterChange={ txsQueryLocal.onFilterChange }
@@ -47,7 +47,7 @@ const AddressOpSuperchainTxs = () => {
     />
   ) : null;
 
-  const rightSlot = tab === 'local_txs' ? (
+  const rightSlot = tab === 'txs_local' ? (
     <>
       <HStack gap={ 2 }>
         { txsLocalFilter }
@@ -73,12 +73,12 @@ const AddressOpSuperchainTxs = () => {
 
   const tabs: Array<TabItemRegular> = [
     {
-      id: 'cross_chain_txs',
+      id: 'txs_cross_chain',
       title: 'Cross-chain',
       component: <div>Coming soon 🔜</div>,
     },
     {
-      id: 'local_txs',
+      id: 'txs_local',
       title: 'Local',
       component: (
         <SocketProvider url={ getSocketUrl(chainData?.config) }>
