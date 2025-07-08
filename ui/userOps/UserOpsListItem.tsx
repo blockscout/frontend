@@ -3,6 +3,7 @@ import React from 'react';
 import type { UserOpsItem } from 'types/api/userOps';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -20,6 +21,9 @@ type Props = {
 };
 
 const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
+  const multichainContext = useMultichainContext();
+  const chainConfig = (multichainContext?.chain.config || config);
+
   return (
     <ListItemMobileGrid.Container gridTemplateColumns="100px auto">
 
@@ -80,11 +84,11 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+      { !chainConfig.UI.views.tx.hiddenFields?.tx_fee && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Fee</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 } currency={ config.chain.currency.symbol }/>
+            <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 } currency={ chainConfig.chain.currency.symbol }/>
           </ListItemMobileGrid.Value>
         </>
       ) }

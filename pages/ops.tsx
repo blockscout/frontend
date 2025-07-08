@@ -4,7 +4,15 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const UserOps = dynamic(() => import('ui/pages/UserOps'), { ssr: false });
+import config from 'configs/app';
+
+const UserOps = dynamic(() => {
+  if (config.features.opSuperchain.isEnabled) {
+    return import('ui/optimismSuperchain/userOps/OpSuperchainUserOps');
+  }
+
+  return import('ui/pages/UserOps');
+}, { ssr: false });
 
 const Page: NextPage = () => {
   return (

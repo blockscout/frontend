@@ -3,6 +3,7 @@ import React from 'react';
 import type { UserOpsItem } from 'types/api/userOps';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
@@ -17,6 +18,9 @@ import UserOpsTableItem from './UserOpsTableItem';
  };
 
 const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
+  const multichainContext = useMultichainContext();
+  const chainConfig = (multichainContext?.chain.config || config);
+
   return (
     <TableRoot minW="1000px">
       <TableHeaderSticky top={ top }>
@@ -30,7 +34,8 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
           { showSender && <TableColumnHeader w="160px">Sender</TableColumnHeader> }
           { showTx && <TableColumnHeader w="160px">Tx hash</TableColumnHeader> }
           <TableColumnHeader w="40%">Block</TableColumnHeader>
-          { !config.UI.views.tx.hiddenFields?.tx_fee && <TableColumnHeader w="120px" isNumeric>{ `Fee ${ config.chain.currency.symbol }` }</TableColumnHeader> }
+          { !chainConfig.UI.views.tx.hiddenFields?.tx_fee &&
+          <TableColumnHeader w="120px" isNumeric>{ `Fee ${ chainConfig.chain.currency.symbol }` }</TableColumnHeader> }
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

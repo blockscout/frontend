@@ -8,6 +8,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -26,6 +27,7 @@ const UserOp = () => {
   const router = useRouter();
   const appProps = useAppContext();
   const hash = getQueryParamString(router.query.hash);
+  const multichainContext = useMultichainContext();
 
   const userOpQuery = useApiQuery('general:user_op', {
     pathParams: { hash },
@@ -97,12 +99,13 @@ const UserOp = () => {
   throwOnResourceLoadError(userOpQuery);
 
   const titleSecondRow = <UserOpSubHeading hash={ hash }/>;
+  const chainText = multichainContext?.chain ? ` on ${ multichainContext.chain.config.chain.name }` : '';
 
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title="User operation details"
+        title={ `User operation details${ chainText }` }
         backLink={ backLink }
         secondRow={ titleSecondRow }
       />
