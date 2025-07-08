@@ -7,12 +7,14 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import OpSuperchainAddressCoinBalance from './OpSuperchainAddressCoinBalance';
+import OpSuperchainAddressContract from './OpSuperchainAddressContract';
 import OpSuperchainAddressDetails from './OpSuperchainAddressDetails';
 import OpSuperchainAddressInternalTxs from './OpSuperchainAddressInternalTxs';
 import OpSuperchainAddressLogs from './OpSuperchainAddressLogs';
@@ -40,6 +42,12 @@ const OpSuperchainAddress = () => {
         id: 'index',
         title: 'Details',
         component: <OpSuperchainAddressDetails addressHash={ checkSummedHash }/>,
+      },
+      {
+        id: 'contract',
+        title: 'Contract',
+        component: <OpSuperchainAddressContract addressHash={ checkSummedHash }/>,
+        subTabs: CONTRACT_TAB_IDS,
       },
       {
         id: 'txs',

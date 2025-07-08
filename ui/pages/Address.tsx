@@ -172,11 +172,11 @@ const AddressPageContent = () => {
 
   const xStarQuery = useFetchXStarScore({ hash });
 
-  const contractTabs = useContractTabs(
-    addressQuery.data,
-    config.features.mudFramework.isEnabled ? (mudTablesCountQuery.isPlaceholderData || addressQuery.isPlaceholderData) : addressQuery.isPlaceholderData,
-    Boolean(config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0),
-  );
+  const contractTabs = useContractTabs({
+    data: addressQuery.data,
+    isPlaceholderData: addressQuery.isPlaceholderData,
+    hasMudTab: Boolean(config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0),
+  });
 
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [

@@ -171,7 +171,10 @@ const TokenPageContent = () => {
     addressQuery.isPlaceholderData ||
     (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData);
 
-  const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
+  const contractTabs = useContractTabs({
+    data: addressQuery.data,
+    isPlaceholderData: addressQuery.isPlaceholderData,
+  });
 
   const tabs: Array<TabItemRegular> = [
     hasInventoryTab ? {

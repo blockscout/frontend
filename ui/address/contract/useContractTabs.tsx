@@ -25,13 +25,21 @@ interface ContractTab {
   subTabs?: Array<string>;
 }
 
+interface Props {
+  data: Address | undefined;
+  isPlaceholderData: boolean;
+  hasMudTab?: boolean;
+  chainSlug?: string;
+}
+
 interface ReturnType {
   tabs: Array<ContractTab>;
   isLoading: boolean;
 }
 
-export default function useContractTabs(data: Address | undefined, isPlaceholderData: boolean, hasMudTab: boolean = false): ReturnType {
-  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
+export default function useContractTabs({ data, isPlaceholderData, hasMudTab, chainSlug }: Props): ReturnType {
+  // TODO @tom2drum return back to false
+  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(true);
 
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
@@ -49,6 +57,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
       refetchOnMount: false,
       placeholderData: data?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
+    chainSlug,
   });
 
   const mudSystemsQuery = useApiQuery('general:mud_systems', {
@@ -58,6 +67,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
       refetchOnMount: false,
       placeholderData: stubs.MUD_SYSTEMS,
     },
+    chainSlug,
   });
 
   const channel = useSocketChannel({
