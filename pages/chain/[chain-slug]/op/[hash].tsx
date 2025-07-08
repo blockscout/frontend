@@ -11,7 +11,7 @@ const UserOp = dynamic(() => import('ui/pages/UserOp'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/op/[hash]" query={ props.query }>
+    <PageNextJs pathname="/chain/[chain-slug]/op/[hash]" query={ props.query }>
       <MultichainProvider>
         <UserOp/>
       </MultichainProvider>

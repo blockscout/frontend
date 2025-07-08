@@ -2,6 +2,7 @@ import React from 'react';
 import ReCaptcha from 'react-google-recaptcha';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 
@@ -14,6 +15,9 @@ const ReCaptchaInvisible = ({ onInitError, hideWarning = false }: Props, ref: Re
   const [ attempt, setAttempt ] = React.useState(0);
   const [ isError, setIsError ] = React.useState(false);
   const [ , setIsVisible ] = React.useState(false);
+
+  const multichainContext = useMultichainContext();
+  const chainConfig = multichainContext?.chain.config || config;
 
   const handleChange = React.useCallback(() => {
     setAttempt(attempt + 1);
@@ -36,7 +40,7 @@ const ReCaptchaInvisible = ({ onInitError, hideWarning = false }: Props, ref: Re
     }
   }, [ ]);
 
-  if (!config.services.reCaptchaV2.siteKey) {
+  if (!chainConfig.services.reCaptchaV2.siteKey) {
     return null;
   }
 
@@ -45,7 +49,7 @@ const ReCaptchaInvisible = ({ onInitError, hideWarning = false }: Props, ref: Re
       <ReCaptcha
         ref={ ref }
         key={ attempt }
-        sitekey={ config.services.reCaptchaV2.siteKey }
+        sitekey={ chainConfig.services.reCaptchaV2.siteKey }
         size="invisible"
         onChange={ handleChange }
         onErrored={ handleError }

@@ -66,6 +66,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/chain/[chain-slug]/accounts/label/[slug]': 'Root page',
   '/chain/[chain-slug]/address/[hash]': 'Regular page',
   '/chain/[chain-slug]/block/[height_or_hash]': 'Regular page',
+  '/chain/[chain-slug]/csv-export': 'Regular page',
   '/chain/[chain-slug]/op/[hash]': 'Regular page',
   '/chain/[chain-slug]/tx/[hash]': 'Regular page',
   '/operations': 'Root page',

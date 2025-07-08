@@ -3,9 +3,10 @@ import React from 'react';
 
 import type { CsvExportParams } from 'types/client/address';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Link } from 'toolkit/chakra/link';
@@ -22,8 +23,11 @@ interface Props {
 const AddressCsvExportLink = ({ className, address, params, isLoading }: Props) => {
   const isMobile = useIsMobile();
   const isInitialLoading = useIsInitialLoading(isLoading);
+  const multichainContext = useMultichainContext();
 
-  if (!config.features.csvExport.isEnabled) {
+  const chainConfig = multichainContext?.chain.config || config;
+
+  if (!chainConfig.features.csvExport.isEnabled) {
     return null;
   }
 
@@ -32,7 +36,7 @@ const AddressCsvExportLink = ({ className, address, params, isLoading }: Props) 
       <Link
         className={ className }
         whiteSpace="nowrap"
-        href={ route({ pathname: '/csv-export', query: { ...params, address } }) }
+        href={ route({ pathname: '/csv-export', query: { ...params, address } }, multichainContext) }
         flexShrink={ 0 }
         loading={ isInitialLoading }
         minW={ 8 }

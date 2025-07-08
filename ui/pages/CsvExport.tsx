@@ -8,6 +8,7 @@ import type { CsvExportParams } from 'types/client/address';
 import type { ResourceName } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -72,6 +73,7 @@ const CsvExport = () => {
   const router = useRouter();
   const appProps = useAppContext();
   const isMobile = useIsMobile();
+  const multichainContext = useMultichainContext();
 
   const addressHash = router.query.address?.toString() || '';
   const exportTypeParam = router.query.type?.toString() || '';
@@ -158,6 +160,8 @@ const CsvExport = () => {
       return null;
     }
 
+    const chainText = multichainContext?.chain ? ` on ${ multichainContext.chain.config.chain.name }` : undefined;
+
     const limit = (configQuery.data?.limit || 10_000).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' });
 
     if (exportTypeParam === 'holders' && tokenQuery.data) {
@@ -172,6 +176,7 @@ const CsvExport = () => {
             noCopy
             noSymbol
           />
+          { chainText && <span>{ chainText }</span> }
           <span> to CSV file. </span>
           <span>Exports are limited to the top { limit } holders by amount held.</span>
         </Flex>
@@ -191,8 +196,9 @@ const CsvExport = () => {
           noCopy
         />
         <span>{ nbsp }</span>
-        { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue }) </span> }
-        <span>to CSV file. </span>
+        { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue })</span> }
+        { chainText && <span>{ chainText }</span> }
+        <span> to CSV file. </span>
         <span>Exports are limited to the last { limit } { exportType.text }.</span>
       </Flex>
     );
