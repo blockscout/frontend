@@ -4,11 +4,9 @@ import React from 'react';
 import type { ChainConfig } from 'types/multichain';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import getIconUrl from 'lib/multichain/getIconUrl';
 import useAddChainClick from 'lib/web3/useAddChainClick';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Heading } from 'toolkit/chakra/heading';
-import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -17,6 +15,7 @@ import GasPrice from 'ui/shared/gas/GasPrice';
 import IconSvg from 'ui/shared/IconSvg';
 import RollupStageBadge from 'ui/snippets/navigation/RollupStageBadge';
 
+import ChainIcon from '../components/ChainIcon';
 import ChainLatestBlockInfo from './ChainLatestBlockInfo';
 
 interface Props {
@@ -45,7 +44,7 @@ const ChainWidget = ({ data }: Props) => {
       textStyle="sm"
     >
       <HStack justifyContent="space-between">
-        <Image src={ getIconUrl(data) } alt={ data.config.chain.name } boxSize="30px" borderRadius="full"/>
+        <ChainIcon data={ data } boxSize="30px"/>
         <HStack gap={ 2 }>
           <Tooltip content="Add to wallet">
             <Link

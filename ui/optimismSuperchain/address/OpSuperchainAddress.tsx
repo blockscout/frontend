@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,6 +9,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
+import ClusterChainsPopover from 'ui/optimismSuperchain/components/ClusterChainsPopover';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -94,6 +95,8 @@ const OpSuperchainAddress = () => {
         noLink
       />
       <AddressQrCode hash={ checkSummedHash } isLoading={ isLoading }/>
+      <Box ml="auto"/>
+      <ClusterChainsPopover addressHash={ checkSummedHash }/>
     </Flex>
   );
 

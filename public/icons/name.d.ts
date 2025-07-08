@@ -124,6 +124,7 @@
 	| "operation"
 	| "output_roots"
 	| "payment_link"
+	| "pie_chart"
 	| "plus"
 	| "private_tags_slim"
 	| "privattags"

@@ -3,11 +3,11 @@ import React from 'react';
 import { route } from 'nextjs/routes';
 
 import multichainConfig from 'configs/multichain';
-import getIconUrl from 'lib/multichain/getIconUrl';
-import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TextSeparator from 'ui/shared/TextSeparator';
+
+import ChainIcon from '../components/ChainIcon';
 
 interface Props {
   addressHash: string;
@@ -23,18 +23,20 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
           <DetailedInfo.ItemLabel
             hint="Chains"
           >
-            Chains
+            Chain{ chains.length > 1 ? 's' : '' }
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue columnGap={ 3 }>
             { chains.map((chain) => (
               <Link
                 key={ chain.slug }
+                href={ chain.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: addressHash } }) }
+                external
                 display="flex"
                 alignItems="center"
-                gap={ 2 }
-                href={ route({ pathname: '/chain/[chain-slug]/address/[hash]', query: { hash: addressHash, 'chain-slug': chain.slug } }) }
+                color="text.primary"
+                _hover={{ color: 'link.primary.hover' }}
               >
-                <Image src={ getIconUrl(chain) } boxSize={ 5 } borderRadius="full"/>
+                <ChainIcon data={ chain } mr={ 2 }/>
                 { chain.config.chain.name }
               </Link>
             )) }
