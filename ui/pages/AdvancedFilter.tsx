@@ -14,6 +14,7 @@ import { ADVANCED_FILTER_TYPES, ADVANCED_FILTER_AGES } from 'types/api/advancedF
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
@@ -44,6 +45,7 @@ TABLE_COLUMNS.forEach(c => COLUMNS_CHECKED[c.id] = true);
 
 const AdvancedFilter = () => {
   const router = useRouter();
+  const multichainContext = useMultichainContext();
 
   const [ filters, setFilters ] = React.useState<AdvancedFilterParams>(() => {
     const age = getFilterValueFromQuery(ADVANCED_FILTER_AGES, router.query.age);
@@ -233,6 +235,11 @@ const AdvancedFilter = () => {
         ) }
       </Flex>
       <HStack gap={ 2 } flexWrap="wrap" mb={ 6 }>
+        { multichainContext?.chain && (
+          <Tag variant="filter" label="Chain">
+            { multichainContext.chain.config.chain.name }
+          </Tag>
+        ) }
         { filterTags.map(t => (
           <Tag key={ t.name } variant="filter" onClose={ onClearFilter(t.key) } closable label={ t.name }>
             { t.value }

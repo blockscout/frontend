@@ -65,6 +65,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/interop-messages': '%network_name% interop messages',
   '/chain/[chain-slug]/accounts/label/[slug]': '%network_name% addresses search by label',
   '/chain/[chain-slug]/address/[hash]': '%network_name% address details for %hash%',
+  '/chain/[chain-slug]/advanced-filter': '%network_name% advanced filter',
   '/chain/[chain-slug]/block/[height_or_hash]': '%network_name% block %height_or_hash% details',
   '/chain/[chain-slug]/csv-export': '%network_name% export data to CSV',
   '/chain/[chain-slug]/op/[hash]': '%network_name% user operation %hash% details',

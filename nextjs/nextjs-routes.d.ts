@@ -40,6 +40,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/blocks">
     | DynamicRoute<"/chain/[chain-slug]/accounts/label/[slug]", { "chain-slug": string; "slug": string }>
     | DynamicRoute<"/chain/[chain-slug]/address/[hash]", { "chain-slug": string; "hash": string }>
+    | DynamicRoute<"/chain/[chain-slug]/advanced-filter", { "chain-slug": string }>
     | DynamicRoute<"/chain/[chain-slug]/block/[height_or_hash]", { "chain-slug": string; "height_or_hash": string }>
     | DynamicRoute<"/chain/[chain-slug]/csv-export", { "chain-slug": string }>
     | DynamicRoute<"/chain/[chain-slug]/op/[hash]", { "chain-slug": string; "hash": string }>

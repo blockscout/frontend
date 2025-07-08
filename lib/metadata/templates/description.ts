@@ -68,6 +68,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/interop-messages': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/accounts/label/[slug]': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/address/[hash]': DEFAULT_TEMPLATE,
+  '/chain/[chain-slug]/advanced-filter': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/block/[height_or_hash]': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/csv-export': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/op/[hash]': DEFAULT_TEMPLATE,

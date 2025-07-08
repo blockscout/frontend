@@ -63,6 +63,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/interop-messages': 'Interop messages',
   '/chain/[chain-slug]/accounts/label/[slug]': 'Chain addresses search by label',
   '/chain/[chain-slug]/address/[hash]': 'Chain address details',
+  '/chain/[chain-slug]/advanced-filter': 'Chain advanced filter',
   '/chain/[chain-slug]/block/[height_or_hash]': 'Chain block details',
   '/chain/[chain-slug]/csv-export': 'Chain export data to CSV',
   '/chain/[chain-slug]/op/[hash]': 'Chain user operation details',
