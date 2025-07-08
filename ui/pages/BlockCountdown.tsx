@@ -2,9 +2,10 @@ import { Box, Center, Flex, Grid } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
@@ -28,6 +29,7 @@ type Props = {
 };
 
 const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
+  const multichainContext = useMultichainContext();
   const router = useRouter();
   const height = getQueryParamString(router.query.height);
 
@@ -43,13 +45,13 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
     if (!data?.result?.EstimateTimeInSec) {
       return;
     }
-    const fileBlob = createIcsFileBlob({ blockHeight: height, date: dayjs().add(Number(data.result.EstimateTimeInSec), 's') });
+    const fileBlob = createIcsFileBlob({ blockHeight: height, date: dayjs().add(Number(data.result.EstimateTimeInSec), 's'), multichainContext });
     downloadBlob(fileBlob, `Block #${ height } creation event.ics`);
-  }, [ data?.result?.EstimateTimeInSec, height ]);
+  }, [ data?.result?.EstimateTimeInSec, height, multichainContext ]);
 
   const handleTimerFinish = React.useCallback(() => {
-    window.location.assign(route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: height } }));
-  }, [ height ]);
+    window.location.assign(route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: height } }, multichainContext));
+  }, [ height, multichainContext ]);
 
   React.useEffect(() => {
     if (!isError && !isPending && !data.result) {
@@ -65,6 +67,8 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
     return <Center h="100%"><ContentLoader/></Center>;
   }
 
+  const chainText = multichainContext?.chain ? ` on ${ multichainContext.chain.config.chain.name }` : '';
+
   return (
     <Center h="100%" alignItems={{ base: 'flex-start', lg: 'center' }}>
       <Flex flexDir="column" w="fit-content" maxW={{ base: '100%', lg: '700px', xl: '1000px' }}>
@@ -73,7 +77,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
             <Heading
               level="1"
             >
-              <TruncatedValue value={ `Block #${ height }` } w="100%"/>
+              <TruncatedValue value={ `Block${ chainText } #${ height }` } w="100%"/>
             </Heading>
             <Box mt={ 2 } color="text.secondary">
               <Box fontWeight={ 600 }>Estimated target date</Box>
@@ -86,7 +90,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
                 textStyle="sm"
                 px={ 2 }
                 display="inline-flex"
-                href={ createGoogleCalendarLink({ blockHeight: height, timeFromNow: Number(data.result.EstimateTimeInSec) }) }
+                href={ createGoogleCalendarLink({ blockHeight: height, timeFromNow: Number(data.result.EstimateTimeInSec), multichainContext }) }
               >
                 <Image src="/static/google_calendar.svg" alt="Google calendar logo" boxSize={ 5 } mr={ 2 }/>
                 <span>Google</span>

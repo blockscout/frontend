@@ -2,12 +2,16 @@ import { chakra, Box, Center } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { routeParams } from 'nextjs/routes';
+
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { Heading } from 'toolkit/chakra/heading';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 
 const BlockCountdownIndex = () => {
   const router = useRouter();
+  const multichainContext = useMultichainContext();
 
   const handleFormSubmit = React.useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -15,9 +19,12 @@ const BlockCountdownIndex = () => {
     const formData = new FormData(event.target as HTMLFormElement);
     const searchTerm = formData.get('search_term');
     if (typeof searchTerm === 'string' && searchTerm) {
-      router.push({ pathname: '/block/countdown/[height]', query: { height: searchTerm } }, undefined, { shallow: true });
+      const url = routeParams({ pathname: '/block/countdown/[height]', query: { height: searchTerm } }, multichainContext);
+      router.push(url, undefined, { shallow: true });
     }
-  }, [ router ]);
+  }, [ router, multichainContext ]);
+
+  const chainText = multichainContext?.chain ? ` on ${ multichainContext.chain.config.chain.name }` : '';
 
   return (
     <Center h="100%" justifyContent={{ base: 'flex-start', lg: 'center' }} flexDir="column" textAlign="center" pt={{ base: 8, lg: 0 }}>
@@ -31,7 +38,7 @@ const BlockCountdownIndex = () => {
         level="1"
         mt={{ base: 3, lg: 6 }}
       >
-        Block countdown
+        Block countdown{ chainText }
       </Heading>
       <Box mt={ 2 }>
         The estimated time for a block to be created and added to the blockchain.

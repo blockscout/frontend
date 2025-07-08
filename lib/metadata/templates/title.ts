@@ -63,15 +63,19 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/pools': '%network_name% DEX pools',
   '/pools/[hash]': '%network_name% pool details',
   '/interop-messages': '%network_name% interop messages',
+  '/operations': '%network_name% operations',
+  '/operation/[id]': '%network_name% operation %id%',
+
+  // multichain routes
   '/chain/[chain-slug]/accounts/label/[slug]': '%network_name% addresses search by label',
   '/chain/[chain-slug]/address/[hash]': '%network_name% address details for %hash%',
   '/chain/[chain-slug]/advanced-filter': '%network_name% advanced filter',
   '/chain/[chain-slug]/block/[height_or_hash]': '%network_name% block %height_or_hash% details',
+  '/chain/[chain-slug]/block/countdown': '%network_name% block countdown index',
+  '/chain/[chain-slug]/block/countdown/[height]': '%network_name% block %height% countdown',
   '/chain/[chain-slug]/csv-export': '%network_name% export data to CSV',
   '/chain/[chain-slug]/op/[hash]': '%network_name% user operation %hash% details',
   '/chain/[chain-slug]/tx/[hash]': '%network_name% transaction %hash% details',
-  '/operations': '%network_name% operations',
-  '/operation/[id]': '%network_name% operation %id%',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',
