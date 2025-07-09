@@ -59,6 +59,9 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon-180x180.png"/>
           <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-chrome-192x192.png"/>
           <link rel="preload" as="image" href={ svgSprite.href }/>
+
+          { /* Prevent auto zoom in inputs on mobile */ }
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
         </Head>
         <body>
           <Main/>
