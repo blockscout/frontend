@@ -15,6 +15,7 @@ const OPTIONS = [
   { value: 'vyper', label: 'Vyper' },
   { value: 'yul', label: 'Yul' },
   { value: 'scilla', label: 'Scilla' },
+  { value: 'geas', label: 'Geas' },
 ].filter(({ value }) => value === 'all' || config.UI.views.address.languageFilters.includes(value)) as Array<{ value: OptionValue; label: string }>;
 
 const collection = createListCollection<SelectOption>({
