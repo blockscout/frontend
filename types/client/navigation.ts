@@ -37,3 +37,23 @@ export const NAVIGATION_LINK_IDS = [ 'rpc_api', 'eth_rpc_api' ] as const;
 export type NavigationLinkId = ArrayElement<typeof NAVIGATION_LINK_IDS>;
 
 export type NavigationLayout = 'vertical' | 'horizontal';
+
+export type NavigationPromoBannerConfig = {
+  img_url: string;
+  text: string;
+  bg_color: {
+    light: string;
+    dark: string;
+  };
+  text_color: {
+    light: string;
+    dark: string;
+  };
+  link_url: string;
+} | {
+  img_url: {
+    small: string;
+    large: string;
+  };
+  link_url: string;
+};
