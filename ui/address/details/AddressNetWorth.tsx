@@ -49,7 +49,7 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
 
     multichainItems = (
       <>
-        <TextSeparator mx={ 0 } color="gray.500"/>
+        <TextSeparator mx={ 0 }/>
         <Flex alignItems="center" gap={ 2 }>
           <Text>Multichain</Text>
           { providers.map((item) => (

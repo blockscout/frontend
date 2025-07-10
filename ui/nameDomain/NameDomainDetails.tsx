@@ -69,13 +69,13 @@ const NameDomainDetails = ({ query }: Props) => {
                   <Skeleton loading={ isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="24px">
                     { dayjs(query.data.expiry_date).fromNow() }
                   </Skeleton>
-                  <TextSeparator color="gray.500"/>
+                  <TextSeparator/>
                 </>
               ) }
               <Skeleton loading={ isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="24px">
                 { dayjs(query.data.expiry_date).format('llll') }
               </Skeleton>
-              <TextSeparator color="gray.500"/>
+              <TextSeparator/>
               <Skeleton loading={ isLoading } color="text.secondary" display="inline">
                 <NameDomainExpiryStatus date={ query.data?.expiry_date }/>
               </Skeleton>
