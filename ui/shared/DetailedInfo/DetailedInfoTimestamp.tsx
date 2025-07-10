@@ -13,6 +13,7 @@ type Props = {
   gap?: number;
 };
 
+// TODO @tom2drum add truncation on mobile
 const DetailedInfoTimestamp = ({ timestamp, isLoading, noIcon, gap }: Props) => {
   return (
     <>

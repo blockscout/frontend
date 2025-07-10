@@ -389,7 +389,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Timestamp
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
+          <DetailedInfo.ItemValue allowWrap>
             <DetailedInfoTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
             { data.confirmation_duration && (
               <>
@@ -642,8 +642,13 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Transaction fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <TxFee tx={ data } isLoading={ isLoading } withUsd/>
+          <DetailedInfo.ItemValue allowWrap>
+            <TxFee
+              tx={ data }
+              isLoading={ isLoading }
+              withUsd
+              rowGap={ 0 }
+            />
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -764,7 +769,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             { `Gas fees (${ currencyUnits.gwei })` }
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
+          <DetailedInfo.ItemValue allowWrap>
             { data.base_fee_per_gas && (
               <Skeleton loading={ isLoading }>
                 <Text as="span" fontWeight="500">Base: </Text>
@@ -927,6 +932,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
 
         <DetailedInfo.ItemLabel
           hint="Binary data included with the transaction. See logs tab for additional info"
+          mb={{ base: 1, lg: 0 }}
         >
           Raw input
         </DetailedInfo.ItemLabel>
@@ -941,7 +947,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             >
               Decoded input data
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
+            <DetailedInfo.ItemValue flexWrap="wrap" mt={{ base: '5px', lg: '4px' }}>
               <LogDecodedInputData data={ data.decoded_input }/>
             </DetailedInfo.ItemValue>
           </>

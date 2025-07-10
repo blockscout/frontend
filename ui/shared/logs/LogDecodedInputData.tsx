@@ -12,6 +12,7 @@ interface Props {
   rightSlot?: React.ReactNode;
 }
 
+// TODO @tom2drum revise styles
 const LogDecodedInputData = ({ data, isLoading, rightSlot }: Props) => {
   const isMobile = useIsMobile();
   return (
