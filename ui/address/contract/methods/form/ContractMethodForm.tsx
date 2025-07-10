@@ -2,7 +2,7 @@ import { Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
-import { encodeFunctionData, type AbiFunction } from 'viem';
+import { encodeAbiParameters, encodeFunctionData, type AbiFunction } from 'viem';
 
 import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '../types';
 
@@ -63,22 +63,33 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     }
   }, [ calldataButtonTooltip ]);
 
-  const methodType = isReadMethod(data) ? 'read' : 'write';
+  // according to @k1rill-fedoseev, fallback method can act as a read method when it has 'view' state mutability
+  // but viem doesn't aware of this and thinks that fallback method state mutability can only be 'payable' or 'nonpayable'
+  // so we have to coerce the stateMutability here to a string
+  const methodType = isReadMethod(data) || (data.type === 'fallback' && (data.stateMutability as string) === 'view') ? 'read' : 'write';
 
   const onFormSubmit: SubmitHandler<ContractMethodFormFields> = React.useCallback(async(formData) => {
     const args = transformFormDataToMethodArgs(formData);
 
     if (callStrategyRef.current === 'copy_calldata') {
-      if (!('name' in data) || !data.name) {
+      if (!('inputs' in data)) {
+        return;
+      }
+
+      // since we have added additional input for native coin value
+      // we need to slice it off
+      const argsToPass = args.slice(0, data.inputs.length);
+
+      if (!data.name) {
+        const encodedData = encodeAbiParameters(data.inputs, argsToPass);
+        await navigator.clipboard.writeText(encodedData);
         return;
       }
 
       const callData = encodeFunctionData({
         abi: [ data ],
         functionName: data.name,
-        // since we have added additional input for native coin value
-        // we need to slice it off
-        args: args.slice(0, data.inputs.length),
+        args: argsToPass,
       });
       await navigator.clipboard.writeText(callData);
       return;
