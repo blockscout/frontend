@@ -96,7 +96,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
       alignItems="flex-start"
       flexWrap="wrap"
       columnGap={ 2 }
-      rowGap={ 3 }
+      rowGap={ 0 }
       flexDir="row"
       w="100%"
       fontWeight={ 500 }

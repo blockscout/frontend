@@ -20,6 +20,7 @@ interface Props {
   accuracyUsd?: number;
 }
 
+// TODO @tom2drum check for stability and celo
 const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency = true, withUsd }: Props) => {
 
   if ('celo' in tx && tx.celo?.gas_token) {
