@@ -166,6 +166,7 @@ _Note_ Here, all values are arrays of up to two strings. The first string repres
 | NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS | `Array<LinkId>` | List of external links hidden in the navigation. Supported ids are `eth_rpc_api`, `rpc_api` | - | - | `['eth_rpc_api']` | v1.16.0+ |
 | NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES | `Array<string>` | List of menu item routes that should have a lightning label | - | - | `['/accounts']` | v1.31.0+ |
 | NEXT_PUBLIC_NAVIGATION_LAYOUT | `vertical \| horizontal` | Navigation menu layout type | - | `vertical` | `horizontal` | v1.32.0+ |
+| NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG | `{'img_url': string, 'text': string, 'bg_color': {'light': string, 'dark': string}, 'text_color': {'light': string, 'dark': string}, 'link_url': string} \| {'img_url': {'small': string, 'large': string}, 'link_url': string}` | Configuration of promo banner in the navigation menu | - | - | `{'img_url': 'https://example.com/promo.svg', 'text': 'Promo text', 'bg_color': {'light': 'rgb(250, 245, 255)', 'dark': 'rgb(68, 51, 122)'}, 'text_color': {'light': 'rgb(107, 70, 193)', 'dark': 'rgb(233, 216, 253)'}, 'link_url': 'https://example.com'}` | v2.3.0+ |
 
 #### Featured network configuration properties
 
