@@ -21,7 +21,7 @@ const DetailedInfoTimestamp = ({ timestamp, isLoading, noIcon, gap }: Props) => 
       <Skeleton loading={ isLoading }>
         { dayjs(timestamp).fromNow() }
       </Skeleton>
-      <TextSeparator color="gray.500" mx={ gap ?? 3 }/>
+      <TextSeparator mx={ gap ?? 3 }/>
       <Skeleton loading={ isLoading } whiteSpace="normal">
         { dayjs(timestamp).format('llll') }
       </Skeleton>

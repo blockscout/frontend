@@ -171,14 +171,14 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           <CopyToClipboard text={ data.hash } isLoading={ isLoading }/>
           { config.features.metasuites.isEnabled && (
             <>
-              <TextSeparator color="gray.500" flexShrink={ 0 } display="none" id="meta-suites__tx-explorer-separator"/>
+              <TextSeparator flexShrink={ 0 } display="none" id="meta-suites__tx-explorer-separator"/>
               <Box display="none" flexShrink={ 0 } id="meta-suites__tx-explorer-link"/>
             </>
           ) }
         </Flex>
         { config.features.externalTxs.isEnabled && externalTxsQuery.data && externalTxsQuery.data.length > 0 && (
           <Skeleton loading={ isLoading || externalTxsQuery.isPlaceholderData } display={{ base: 'block', lg: 'inline-flex' }} alignItems="center">
-            { !isMobile && <TextSeparator color="gray.500" flexShrink={ 0 }/> }
+            { !isMobile && <TextSeparator flexShrink={ 0 }/> }
             <TxExternalTxs data={ externalTxsQuery.data }/>
           </Skeleton>
         ) }
@@ -315,7 +315,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           ) }
         { Boolean(data.confirmations) && (
           <>
-            <TextSeparator color="gray.500"/>
+            <TextSeparator/>
             <Skeleton loading={ isLoading } color="text.secondary">
               <span>{ data.confirmations } Block confirmations</span>
             </Skeleton>
@@ -323,7 +323,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
         ) }
         { data.scroll?.l2_block_status && (
           <>
-            <TextSeparator color="gray.500"/>
+            <TextSeparator/>
             <VerificationSteps steps={ SCROLL_L2_BLOCK_STATUSES } currentStep={ data.scroll.l2_block_status } isLoading={ isLoading }/>
           </>
         ) }
@@ -393,7 +393,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             <DetailedInfoTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
             { data.confirmation_duration && (
               <>
-                <TextSeparator color="gray.500"/>
+                <TextSeparator/>
                 <Skeleton loading={ isLoading } color="text.secondary">
                   <span>{ getConfirmationDuration(data.confirmation_duration) }</span>
                 </Skeleton>
