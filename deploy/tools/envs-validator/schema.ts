@@ -466,6 +466,20 @@ const apiDocsScheme = yup
     .matches(regexp.HEX_REGEXP),
   });
 
+const userOpsSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
+    NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST: yup
+      .string()
+      .test(urlTest)
+      .when('NEXT_PUBLIC_HAS_USER_OPS', {
+        is: (value: boolean) => value,
+        then: (schema) => schema,
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST can only be used if NEXT_PUBLIC_HAS_USER_OPS is set to \'true\''),
+      }),
+  });
+
 const adButlerConfigSchema = yup
   .object<AdButlerConfig>()
   .transform(replaceQuotes)
@@ -1028,7 +1042,6 @@ const schema = yup
     NEXT_PUBLIC_SEO_ENHANCED_DATA_ENABLED: yup.boolean(),
     NEXT_PUBLIC_SAFE_TX_SERVICE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
-    NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
     NEXT_PUBLIC_METASUITES_ENABLED: yup.boolean(),
     NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: yup
       .array()
@@ -1154,6 +1167,7 @@ const schema = yup
   .concat(apiDocsScheme)
   .concat(tacSchema)
   .concat(address3rdPartyWidgetsConfigSchema)
-  .concat(addressMetadataSchema);
+  .concat(addressMetadataSchema)
+  .concat(userOpsSchema);
 
 export default schema;

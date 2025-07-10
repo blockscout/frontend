@@ -459,6 +459,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_HAS_USER_OPS | `boolean` | Set to true to show user operations related data and pages | - | - | `true` | v1.23.0+ |
+| NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST | `boolean` | The user operations indexer API host; pass to show API documentation for the service | - | - | `true` | v2.3.0+ |
 
 &nbsp;
 
