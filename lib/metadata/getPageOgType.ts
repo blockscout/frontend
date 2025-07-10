@@ -53,6 +53,8 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/name-domains/[name]': 'Regular page',
   '/validators': 'Root page',
   '/validators/[id]': 'Regular page',
+  '/epochs': 'Root page',
+  '/epochs/[number]': 'Regular page',
   '/gas-tracker': 'Root page',
   '/mud-worlds': 'Root page',
   '/token-transfers': 'Root page',
@@ -60,6 +62,12 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/pools': 'Root page',
   '/pools/[hash]': 'Regular page',
   '/interop-messages': 'Root page',
+  '/chain/[chain-slug]/accounts/label/[slug]': 'Root page',
+  '/chain/[chain-slug]/address/[hash]': 'Regular page',
+  '/chain/[chain-slug]/block/[height_or_hash]': 'Regular page',
+  '/chain/[chain-slug]/tx/[hash]': 'Regular page',
+  '/operations': 'Root page',
+  '/operation/[id]': 'Regular page',
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',

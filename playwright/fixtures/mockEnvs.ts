@@ -21,12 +21,14 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
     [ 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL', 'https://localhost:3102' ],
     [ 'NEXT_PUBLIC_FAULT_PROOF_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL', 'https://mocha.celenium.io/blob' ],
   ],
   arbitrumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'arbitrum' ],
     [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
     [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME', 'DuckChain' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE', '0x1234' ],
+    [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL', 'https://mocha.celenium.io/blob' ],
   ],
   shibariumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'shibarium' ],
@@ -102,5 +104,12 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
     [ 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL', 'https://localhost:3102' ],
     [ 'NEXT_PUBLIC_INTEROP_ENABLED', 'true' ],
+  ],
+  tac: [
+    [ 'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST', 'http://localhost:3100' ],
+    [ 'NEXT_PUBLIC_TAC_TON_EXPLORER_URL', 'https://testnet.tonviewer.com' ],
+  ],
+  celo: [
+    [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
   ],
 };

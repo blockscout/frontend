@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as domainMock from 'mocks/ens/domain';
+import { stableHover } from 'playwright/helpers/stableHover';
 import { test, expect } from 'playwright/lib';
 
 import EnsEntity from './EnsEntity';
@@ -43,7 +44,7 @@ test('with long name', async({ render }) => {
     />,
   );
 
-  await component.getByText(name.slice(0, 4)).hover();
+  await stableHover(component.getByText(name.slice(0, 4)));
 
   await expect(component).toHaveScreenshot();
 });

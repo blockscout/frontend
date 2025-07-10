@@ -4,12 +4,13 @@ import { stripTrailingSlash } from 'toolkit/utils/url';
 
 import { getEnvValue } from './utils';
 
-interface ApiPropsBase {
+export interface ApiPropsBase {
   endpoint: string;
   basePath?: string;
+  socketEndpoint?: string;
 }
 
-interface ApiPropsFull extends ApiPropsBase {
+export interface ApiPropsFull extends ApiPropsBase {
   host: string;
   protocol: string;
   port?: string;
@@ -100,6 +101,25 @@ const rewardsApi = (() => {
   });
 })();
 
+const multichainApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  try {
+    const url = new URL(apiHost);
+
+    return Object.freeze({
+      endpoint: apiHost,
+      socketEndpoint: `wss://${ url.host }`,
+    });
+  } catch (error) {
+    return;
+  }
+
+})();
+
 const statsApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_STATS_API_HOST');
   if (!apiHost) {
@@ -109,6 +129,17 @@ const statsApi = (() => {
   return Object.freeze({
     endpoint: apiHost,
     basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_STATS_API_BASE_PATH') || ''),
+  });
+})();
+
+const tacApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  return Object.freeze({
+    endpoint: apiHost,
   });
 })();
 
@@ -124,7 +155,7 @@ const visualizeApi = (() => {
   });
 })();
 
-type Apis = {
+export type Apis = {
   general: ApiPropsFull;
 } & Partial<Record<Exclude<ApiName, 'general'>, ApiPropsBase>>;
 
@@ -134,8 +165,10 @@ const apis: Apis = Object.freeze({
   bens: bensApi,
   contractInfo: contractInfoApi,
   metadata: metadataApi,
+  multichain: multichainApi,
   rewards: rewardsApi,
   stats: statsApi,
+  tac: tacApi,
   visualize: visualizeApi,
 });
 

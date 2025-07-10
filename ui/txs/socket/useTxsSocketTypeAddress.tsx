@@ -8,6 +8,7 @@ import type { Transaction, TransactionsSortingValue } from 'types/api/transactio
 
 import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -37,7 +38,7 @@ interface Params {
 }
 
 export default function useTxsSocketTypeAddress({ isLoading }: Params) {
-  const [ alertText, setAlertText ] = React.useState('');
+  const [ showErrorAlert, setShowErrorAlert ] = React.useState(false);
   const [ num, setNum ] = React.useState(0);
 
   const router = useRouter();
@@ -47,12 +48,18 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
   const filterValue = getQueryParamString(router.query.filter);
   const page = getQueryParamString(router.query.page);
   const sort = getSortValueFromQuery<TransactionsSortingValue>(router.query, SORT_OPTIONS) || 'default';
+  const { chain } = useMultichainContext() || {};
 
   const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = React.useCallback((payload) => {
-    setAlertText('');
+    const queryKey = getResourceKey('general:address_txs', {
+      pathParams: { hash: currentAddress },
+      queryParams: filterValue ? { filter: filterValue } : undefined,
+      chainSlug: chain?.slug,
+    });
+    setShowErrorAlert(false);
 
     queryClient.setQueryData(
-      getResourceKey('general:address_txs', { pathParams: { hash: currentAddress }, queryParams: filterValue ? { filter: filterValue } : undefined }),
+      queryKey,
       (prevData: AddressTransactionsResponse | undefined) => {
         if (!prevData) {
           return;
@@ -90,14 +97,14 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
           ].sort(sortTxsFromSocket(sort)),
         };
       });
-  }, [ currentAddress, filterValue, queryClient, sort ]);
+  }, [ currentAddress, filterValue, queryClient, sort, chain?.slug ]);
 
   const handleSocketClose = React.useCallback(() => {
-    setAlertText('Connection is lost. Please refresh the page to load new transactions.');
+    setShowErrorAlert(true);
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setAlertText('An error has occurred while fetching new transactions. Please refresh the page.');
+    setShowErrorAlert(true);
   }, []);
 
   const isDisabled = Boolean((page && page !== '1') || isLoading);
@@ -125,5 +132,5 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
     return { };
   }
 
-  return { num, alertText };
+  return { num, showErrorAlert };
 }

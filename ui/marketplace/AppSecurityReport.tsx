@@ -87,7 +87,7 @@ const AppSecurityReport = ({
         wrapperProps={ triggerWrapperProps }
         { ...buttonProps }
       />
-      <PopoverContent w={{ base: 'calc(100vw - 48px)', lg: '328px' }} mx={{ base: 3, lg: 0 }} { ...popoverContentProps }>
+      <PopoverContent w={{ base: 'calc(100vw - 48px)', lg: '328px' }} mx={{ base: 3, lg: 0 }} overflowY="auto" { ...popoverContentProps }>
         <PopoverBody px="26px" py="20px" textStyle="sm">
           <Text fontWeight="500" textStyle="xs" mb={ 2 } color="text.secondary">Smart contracts info</Text>
           <Flex alignItems="center" justifyContent="space-between" py={ 1.5 }>

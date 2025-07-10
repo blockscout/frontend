@@ -20,7 +20,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 import { getBaseFeeValue } from './utils';
@@ -51,13 +51,13 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
             noIcon
             fontWeight={ 600 }
           />
-          { data.celo?.is_epoch_block && (
-            <Tooltip content={ `Finalized epoch #${ data.celo.epoch_number }` } disabled={ isLoading }>
+          { data.celo?.l1_era_finalized_epoch_number && (
+            <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` } disabled={ isLoading }>
               <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
             </Tooltip>
           ) }
         </Flex>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ data.timestamp }
           enableIncrement={ enableTimeIncrement }
           isLoading={ isLoading }

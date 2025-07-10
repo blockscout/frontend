@@ -2,6 +2,9 @@ import React from 'react';
 
 import type { TxsSocketNoticePlace, TxsSocketType } from './types';
 
+import { route } from 'nextjs/routes';
+
+import { useMultichainContext } from 'lib/contexts/multichain';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import useNewTxsSocketTypeAll from './useTxsSocketTypeAll';
@@ -13,18 +16,30 @@ interface Props {
 }
 
 const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
-  const { num, alertText } = useNewTxsSocketTypeAll({ type, isLoading });
+  const multichainContext = useMultichainContext();
+  const { num, showErrorAlert } = useNewTxsSocketTypeAll({ type, isLoading });
 
   if (num === undefined) {
     return null;
   }
 
+  const url = (() => {
+    if (type === 'txs_home_cross_chain') {
+      return route({ pathname: '/txs' });
+    }
+
+    if (type === 'txs_home' && multichainContext) {
+      return route({ pathname: '/txs' }, multichainContext);
+    }
+  })();
+
   if (place === 'table') {
     return (
       <SocketNewItemsNotice.Desktop
-        alert={ alertText }
+        showErrorAlert={ showErrorAlert }
         num={ num }
         isLoading={ isLoading }
+        url={ url }
       />
     );
   }
@@ -33,8 +48,9 @@ const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
     return (
       <SocketNewItemsNotice.Mobile
         num={ num }
-        alert={ alertText }
+        showErrorAlert={ showErrorAlert }
         isLoading={ isLoading }
+        url={ url }
       />
     );
   }

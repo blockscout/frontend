@@ -4,6 +4,7 @@ import type { UserOpsItem } from 'types/api/userOps';
 
 import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import UserOpsTableItem from './UserOpsTableItem';
 
@@ -21,7 +22,10 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader w="60%">User op hash</TableColumnHeader>
-          <TableColumnHeader w="110px">Age</TableColumnHeader>
+          <TableColumnHeader w="180px">
+            Timestamp
+            <TimeFormatToggle/>
+          </TableColumnHeader>
           <TableColumnHeader w="140px">Status</TableColumnHeader>
           { showSender && <TableColumnHeader w="160px">Sender</TableColumnHeader> }
           { showTx && <TableColumnHeader w="160px">Tx hash</TableColumnHeader> }

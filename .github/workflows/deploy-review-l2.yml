@@ -24,8 +24,8 @@ on:
             - immutable
             - neon_devnet
             - optimism
-            - optimism_celestia
             - optimism_sepolia
+            - optimism_superchain
             - polygon
             - rootstock
             - scroll_sepolia

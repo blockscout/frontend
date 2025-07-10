@@ -9,16 +9,18 @@ type Props = {
   // should be string, will be fixed on the back-end
   timestamp: string | number;
   isLoading?: boolean;
+  noIcon?: boolean;
+  gap?: number;
 };
 
-const DetailedInfoTimestamp = ({ timestamp, isLoading }: Props) => {
+const DetailedInfoTimestamp = ({ timestamp, isLoading, noIcon, gap }: Props) => {
   return (
     <>
-      <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
-      <Skeleton loading={ isLoading } ml={ 2 }>
+      { !noIcon && <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isLoading } mr={ 2 }/> }
+      <Skeleton loading={ isLoading }>
         { dayjs(timestamp).fromNow() }
       </Skeleton>
-      <TextSeparator color="gray.500"/>
+      <TextSeparator color="gray.500" mx={ gap ?? 3 }/>
       <Skeleton loading={ isLoading } whiteSpace="normal">
         { dayjs(timestamp).format('llll') }
       </Skeleton>

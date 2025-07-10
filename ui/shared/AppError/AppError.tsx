@@ -7,6 +7,7 @@ import config from 'configs/app';
 import getErrorCause from 'lib/errors/getErrorCause';
 import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
+import getErrorProp from 'lib/errors/getErrorProp';
 import getResourceErrorPayload from 'lib/errors/getResourceErrorPayload';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
@@ -57,7 +58,7 @@ const AppError = ({ error, className }: Props) => {
             undefined;
     const statusCode = getErrorCauseStatusCode(error) || getErrorObjStatusCode(error);
 
-    const isInvalidTxHash = cause && 'resource' in cause && cause.resource === 'tx' && statusCode === 404;
+    const isInvalidTxHash = cause && 'resource' in cause && cause.resource === 'general:tx' && statusCode === 404;
     const isBlockConsensus = messageInPayload?.includes('Block lost consensus');
 
     if (isInvalidTxHash) {
@@ -77,7 +78,9 @@ const AppError = ({ error, className }: Props) => {
 
     switch (statusCode) {
       case 429: {
-        return <AppErrorTooManyRequests/>;
+        const rateLimits = getErrorProp(error, 'rateLimits');
+        const bypassOptions = typeof rateLimits === 'object' && rateLimits && 'bypassOptions' in rateLimits ? rateLimits.bypassOptions : undefined;
+        return <AppErrorTooManyRequests bypassOptions={ typeof bypassOptions === 'string' ? bypassOptions : undefined }/>;
       }
 
       default: {

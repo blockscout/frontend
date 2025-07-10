@@ -15,6 +15,8 @@ import type { Props as StatsWidgetProps } from 'ui/shared/stats/StatsWidget';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const rollupFeature = config.features.rollup;
+const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';
+const isArbitrumRollup = rollupFeature.isEnabled && rollupFeature.type === 'arbitrum';
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
 
 const Stats = () => {
@@ -150,11 +152,19 @@ const Stats = () => {
         href: { pathname: '/txs' as const },
         isLoading,
       },
-      statsData?.total_operational_transactions?.value && {
+      (isArbitrumRollup && statsData?.total_operational_transactions?.value) && {
         id: 'total_operational_txs' as const,
         icon: 'transactions_slim' as const,
         label: statsData?.total_operational_transactions?.title || 'Total operational transactions',
         value: Number(statsData?.total_operational_transactions?.value).toLocaleString(),
+        href: { pathname: '/txs' as const },
+        isLoading,
+      },
+      (isOptimisticRollup && statsData?.op_stack_total_operational_transactions?.value) && {
+        id: 'total_operational_txs' as const,
+        icon: 'transactions_slim' as const,
+        label: statsData?.op_stack_total_operational_transactions?.title || 'Total operational transactions',
+        value: Number(statsData?.op_stack_total_operational_transactions?.value).toLocaleString(),
         href: { pathname: '/txs' as const },
         isLoading,
       },
@@ -190,9 +200,10 @@ const Stats = () => {
       },
       apiData?.celo && {
         id: 'current_epoch' as const,
-        icon: 'hourglass' as const,
+        icon: 'hourglass_slim' as const,
         label: 'Current epoch',
         value: `#${ apiData.celo.epoch_number }`,
+        href: { pathname: '/epochs/[number]' as const, query: { number: String(apiData.celo.epoch_number) } },
         isLoading,
       },
     ]

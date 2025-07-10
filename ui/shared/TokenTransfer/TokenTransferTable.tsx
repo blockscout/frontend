@@ -5,6 +5,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import TokenTransferTableItem from 'ui/shared/TokenTransfer/TokenTransferTableItem';
 
 interface Props {
@@ -14,7 +15,7 @@ interface Props {
   top: number;
   enableTimeIncrement?: boolean;
   showSocketInfo?: boolean;
-  socketInfoAlert?: string;
+  showSocketErrorAlert?: boolean;
   socketInfoNum?: number;
   isLoading?: boolean;
 }
@@ -26,7 +27,7 @@ const TokenTransferTable = ({
   top,
   enableTimeIncrement,
   showSocketInfo,
-  socketInfoAlert,
+  showSocketErrorAlert,
   socketInfoNum,
   isLoading,
 }: Props) => {
@@ -39,7 +40,12 @@ const TokenTransferTable = ({
             { showTxInfo && <TableColumnHeader width="44px"></TableColumnHeader> }
             <TableColumnHeader width="230px">Token</TableColumnHeader>
             <TableColumnHeader width="160px">Token ID</TableColumnHeader>
-            { showTxInfo && <TableColumnHeader width="200px">Txn hash</TableColumnHeader> }
+            { showTxInfo && (
+              <TableColumnHeader width="200px">
+                Txn hash
+                <TimeFormatToggle/>
+              </TableColumnHeader>
+            ) }
             <TableColumnHeader width="60%">From/To</TableColumnHeader>
             <TableColumnHeader width="40%" isNumeric>Value</TableColumnHeader>
           </TableRow>
@@ -47,7 +53,7 @@ const TokenTransferTable = ({
         <TableBody>
           { showSocketInfo && (
             <SocketNewItemsNotice.Desktop
-              alert={ socketInfoAlert }
+              showErrorAlert={ showSocketErrorAlert }
               num={ socketInfoNum }
               type="token_transfer"
               isLoading={ isLoading }

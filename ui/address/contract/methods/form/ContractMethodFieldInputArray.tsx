@@ -140,7 +140,7 @@ const ContractMethodFieldInputArray = ({
           const itemData = transformDataForArrayItem(data, index);
 
           return (
-            <Flex key={ registeredIndex } alignItems="flex-start" columnGap={ 3 }>
+            <Flex key={ registeredIndex } alignItems="flex-start" columnGap={ 2 }>
               <ContractMethodFieldInput
                 data={ itemData }
                 hideLabel

@@ -31,6 +31,7 @@ const Footer = () => {
   const { data: backendVersionData } = useApiQuery('general:config_backend_version', {
     queryOptions: {
       staleTime: Infinity,
+      enabled: !config.features.opSuperchain.isEnabled,
     },
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);

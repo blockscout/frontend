@@ -3,9 +3,9 @@ import type { Reward } from 'types/api/reward';
 import type { Transaction } from 'types/api/transaction';
 
 import type { ArbitrumBatchStatus, ArbitrumL2TxData } from './arbitrumL2';
+import type { InternalTransaction } from './internalTransaction';
 import type { OptimisticL2BatchDataContainer, OptimisticL2BlobTypeEip4844, OptimisticL2BlobTypeCelestia } from './optimisticL2';
 import type { TokenInfo } from './token';
-import type { TokenTransfer } from './tokenTransfer';
 import type { ZkSyncBatchesItem } from './zkSyncL2';
 
 export type BlockType = 'block' | 'reorg' | 'uncle';
@@ -21,6 +21,7 @@ export interface Block {
   height: number;
   timestamp: string;
   transactions_count: number;
+  internal_transactions_count: number;
   miner: AddressParam;
   size: number;
   hash: string;
@@ -64,7 +65,7 @@ export interface Block {
   // CELO FIELDS
   celo?: {
     epoch_number: number;
-    is_epoch_block: boolean;
+    l1_era_finalized_epoch_number: number | null;
     base_fee?: BlockBaseFeeCelo;
   };
   // ZILLIQA FIELDS
@@ -125,6 +126,14 @@ export interface BlockTransactionsResponse {
   } | null;
 }
 
+export interface BlockInternalTransactionsResponse {
+  items: Array<InternalTransaction>;
+  next_page_params: {
+    block_index: number;
+    items_count: number;
+  } | null;
+}
+
 export interface NewBlockSocketResponse {
   average_block_time: string;
   block: Block;
@@ -156,33 +165,4 @@ export interface BlockCountdownResponse {
     EstimateTimeInSec: string;
     RemainingBlock: string;
   } | null;
-}
-
-export interface BlockEpochElectionReward {
-  count: number;
-  token: TokenInfo<'ERC-20'>;
-  total: string;
-}
-
-export type EpochRewardsType = 'group' | 'validator' | 'delegated_payment' | 'voter';
-
-export interface BlockEpoch {
-  number: number;
-  distribution: {
-    carbon_offsetting_transfer: TokenTransfer | null;
-    community_transfer: TokenTransfer | null;
-    reserve_bolster_transfer: TokenTransfer | null;
-  } | null;
-  aggregated_election_rewards: Record<EpochRewardsType, BlockEpochElectionReward | null> | null;
-}
-
-export interface BlockEpochElectionRewardDetails {
-  account: AddressParam;
-  amount: string;
-  associated_account: AddressParam;
-}
-
-export interface BlockEpochElectionRewardDetailsResponse {
-  items: Array<BlockEpochElectionRewardDetails>;
-  next_page_params: null;
 }

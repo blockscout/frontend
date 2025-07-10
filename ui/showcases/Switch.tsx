@@ -21,6 +21,11 @@ const SwitchShowcase = () => {
               Show duck
             </Switch>
           </Sample>
+          <Sample label="size: lg">
+            <Switch size="lg">
+              Show duck
+            </Switch>
+          </Sample>
         </SamplesStack>
       </Section>
     </Container>

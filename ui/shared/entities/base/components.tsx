@@ -1,15 +1,20 @@
-import { chakra, Flex } from '@chakra-ui/react';
+import { Box, chakra, Flex } from '@chakra-ui/react';
 import type { IconProps } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ChainConfig } from 'types/multichain';
+
+import type { ImageProps } from 'toolkit/chakra/image';
+import { Image } from 'toolkit/chakra/image';
 import type { LinkProps } from 'toolkit/chakra/link';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import type { IconName } from 'ui/shared/IconSvg';
+import type { IconName, Props as IconSvgProps } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
@@ -32,8 +37,10 @@ export interface EntityBaseProps {
   tailLength?: number;
   target?: React.HTMLAttributeAnchorTarget;
   truncation?: Truncation;
+  truncationMaxSymbols?: number;
   variant?: 'content' | 'heading' | 'subheading';
   linkVariant?: LinkProps['variant'];
+  chain?: ChainConfig;
 }
 
 export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
@@ -55,7 +62,7 @@ const Container = chakra(({ className, children, ...props }: ContainerBaseProps)
   );
 });
 
-export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query'> {
+export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query' | 'chain'> {
   children: React.ReactNode;
   variant?: LinkProps['variant'];
 }
@@ -87,32 +94,87 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, v
 
 interface EntityIconProps extends Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> {
   name?: IconName;
+  shield?: IconShieldProps;
+  hint?: string;
+  hintPostfix?: string;
+  tooltipInteractive?: boolean;
 }
 
-export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant'>, EntityIconProps {}
+export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant' | 'chain'>, EntityIconProps {}
 
-const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRight, boxSize }: IconBaseProps) => {
+const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRight, boxSize, shield, hint, tooltipInteractive }: IconBaseProps) => {
   if (noIcon || !name) {
     return null;
   }
 
   const styles = getIconProps(variant);
-  return (
+
+  const iconElement = (
     <IconSvg
       name={ name }
       boxSize={ boxSize ?? styles.boxSize }
       isLoading={ isLoading }
       borderRadius={ borderRadius ?? 'base' }
       display="block"
-      mr={ marginRight ?? 2 }
+      mr={ marginRight ?? (shield ? '18px' : '8px') }
       color={ color ?? { _light: 'gray.500', _dark: 'gray.400' } }
       minW={ 0 }
       flexShrink={ 0 }
     />
   );
+  const iconElementWithHint = hint ? (
+    <Tooltip
+      content={ hint }
+      interactive={ tooltipInteractive }
+      positioning={ shield ? { offset: { mainAxis: 8 } } : undefined }
+    >
+      { iconElement }
+    </Tooltip>
+  ) : iconElement;
+
+  if (!shield) {
+    return iconElementWithHint;
+  }
+
+  return (
+    <Box position="relative">
+      { iconElementWithHint }
+      <IconShield isLoading={ isLoading } { ...shield }/>
+    </Box>
+  );
 };
 
-export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'noTooltip' | 'variant'> {
+type IconShieldProps = (ImageProps | IconSvgProps) & { isLoading?: boolean };
+
+const IconShield = (props: IconShieldProps) => {
+
+  const styles = {
+    position: 'absolute',
+    top: '6px',
+    left: '12px',
+    boxSize: '18px',
+    borderRadius: 'full',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    // The colors can be changed on hover, if address is highlighted
+    // Because the highlighted styles are described as CSS classes, we must do the same for the shield border color.
+    // borderColor: 'global.body.bg',
+    // backgroundColor: 'global.body.bg',
+    className: 'entity__shield',
+  };
+
+  if ('src' in props) {
+    return props.isLoading ? <Skeleton loading { ...styles }/> : <Image { ...styles } { ...props }/>;
+  }
+
+  const svgProps = props as IconSvgProps;
+
+  return <IconSvg { ...styles } { ...svgProps }/>;
+};
+
+export interface ContentBaseProps extends Pick<
+  EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'noTooltip' | 'variant' | 'truncationMaxSymbols'
+> {
   asProp?: React.ElementType;
   text: string;
   tooltipInteractive?: boolean;
@@ -124,6 +186,7 @@ const Content = chakra(({
   asProp,
   text,
   truncation = 'dynamic',
+  truncationMaxSymbols,
   tailLength,
   variant,
   noTooltip,
@@ -153,6 +216,7 @@ const Content = chakra(({
             type="long"
             noTooltip={ noTooltip }
             tooltipInteractive={ tooltipInteractive }
+            maxSymbols={ truncationMaxSymbols }
           />
         );
       case 'constant':
@@ -162,6 +226,7 @@ const Content = chakra(({
             as={ asProp }
             noTooltip={ noTooltip }
             tooltipInteractive={ tooltipInteractive }
+            maxSymbols={ truncationMaxSymbols }
           />
         );
       case 'dynamic':
@@ -210,6 +275,7 @@ export {
   Container,
   Link,
   Icon,
+  IconShield,
   Copy,
   Content,
 };

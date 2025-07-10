@@ -70,6 +70,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
           position="relative"
           color={ item.isActive ? 'link.navigation.fg.selected' : 'link.navigation.fg' }
           bgColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }
+          cursor="pointer"
         >
           <HStack gap={ 0 } overflow="hidden">
             <NavLinkIcon item={ item }/>

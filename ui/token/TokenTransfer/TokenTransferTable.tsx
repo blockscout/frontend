@@ -7,6 +7,7 @@ import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 import TokenTransferTableItem from 'ui/token/TokenTransfer/TokenTransferTableItem';
 
@@ -14,7 +15,7 @@ interface Props {
   data: Array<TokenTransfer>;
   top: number;
   showSocketInfo: boolean;
-  socketInfoAlert?: string;
+  showSocketErrorAlert?: boolean;
   socketInfoNum?: number;
   tokenId?: string;
   isLoading?: boolean;
@@ -22,7 +23,7 @@ interface Props {
   instance?: TokenInstance;
 }
 
-const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socketInfoNum, tokenId, isLoading, token, instance }: Props) => {
+const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, socketInfoNum, tokenId, isLoading, token, instance }: Props) => {
 
   const tokenType = token.type;
 
@@ -31,7 +32,10 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
       <TableRoot minW="950px">
         <TableHeaderSticky top={ top }>
           <TableRow>
-            <TableColumnHeader width="280px">Txn hash</TableColumnHeader>
+            <TableColumnHeader width="280px">
+              Txn hash
+              <TimeFormatToggle/>
+            </TableColumnHeader>
             <TableColumnHeader width="200px">Method</TableColumnHeader>
             <TableColumnHeader width={{ lg: '224px', xl: '380px' }}>From/To</TableColumnHeader>
             { (NFT_TOKEN_TYPE_IDS.includes(tokenType)) &&
@@ -47,7 +51,7 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
         <TableBody>
           { showSocketInfo && (
             <SocketNewItemsNotice.Desktop
-              alert={ socketInfoAlert }
+              showErrorAlert={ showSocketErrorAlert }
               num={ socketInfoNum }
               type="token_transfer"
               isLoading={ isLoading }

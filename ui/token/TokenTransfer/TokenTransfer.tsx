@@ -17,6 +17,7 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import TokenAdvancedFilterLink from 'ui/token/TokenAdvancedFilterLink';
 import TokenTransferList from 'ui/token/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/token/TokenTransfer/TokenTransferTable';
 
@@ -39,18 +40,18 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tabsHeight = TABS_
   const { data: token, isPlaceholderData: isTokenPlaceholderData, isError: isTokenError } = tokenQuery;
 
   const [ newItemsCount, setNewItemsCount ] = useGradualIncrement(0);
-  const [ socketAlert, setSocketAlert ] = React.useState('');
+  const [ showSocketErrorAlert, setShowSocketErrorAlert ] = React.useState(false);
 
   const handleNewTransfersMessage: SocketMessage.TokenTransfers['handler'] = (payload) => {
     setNewItemsCount(payload.token_transfer);
   };
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please refresh the page to load new token transfers.');
+    setShowSocketErrorAlert(true);
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new token transfers. Please refresh the page.');
+    setShowSocketErrorAlert(true);
   }, []);
 
   const channel = useSocketChannel({
@@ -78,7 +79,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tabsHeight = TABS_
           data={ data?.items }
           top={ tabsHeight }
           showSocketInfo={ pagination.page === 1 }
-          socketInfoAlert={ socketAlert }
+          showSocketErrorAlert={ showSocketErrorAlert }
           socketInfoNum={ newItemsCount }
           tokenId={ tokenId }
           token={ token }
@@ -90,7 +91,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tabsHeight = TABS_
         { pagination.page === 1 && (
           <SocketNewItemsNotice.Mobile
             num={ newItemsCount }
-            alert={ socketAlert }
+            showErrorAlert={ showSocketErrorAlert }
             type="token_transfer"
             isLoading={ isLoading }
           />
@@ -102,6 +103,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tabsHeight = TABS_
 
   const actionBar = isMobile && pagination.isVisible ? (
     <ActionBar mt={ -6 }>
+      <TokenAdvancedFilterLink token={ token }/>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   ) : null;

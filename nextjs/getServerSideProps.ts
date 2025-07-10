@@ -6,11 +6,13 @@ import type { RollupType } from 'types/client/rollup';
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
-const rollupFeature = config.features.rollup;
-const adBannerFeature = config.features.adsBanner;
+import multichainConfig from 'configs/multichain';
 import isNeedProxy from 'lib/api/isNeedProxy';
 import * as cookies from 'lib/cookies';
 import type * as metadata from 'lib/metadata';
+
+const rollupFeature = config.features.rollup;
+const adBannerFeature = config.features.adsBanner;
 
 export interface Props<Pathname extends Route['pathname'] = never> {
   query: Route['query'];
@@ -370,6 +372,26 @@ export const mud: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const tac: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.tac.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const celo: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.celo.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const interopMessages: GetServerSideProps<Props> = async(context) => {
   const rollupFeature = config.features.rollup;
   if (!rollupFeature.isEnabled || !rollupFeature.interopEnabled) {
@@ -379,6 +401,29 @@ export const interopMessages: GetServerSideProps<Props> = async(context) => {
   }
 
   return base(context);
+};
+
+export const opSuperchain: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.opSuperchain.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const opSuperchainAccountsLabelSearch: GetServerSideProps<Props> = async(context) => {
+  const chainSlug = context.params?.['chain-slug'];
+  const chain = multichainConfig()?.chains.find((chain) => chain.slug === chainSlug);
+
+  if (!chain?.config.features.addressMetadata.isEnabled || !context.query.tagType) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return opSuperchain(context);
 };
 
 export const pools: GetServerSideProps<Props> = async(context) => {

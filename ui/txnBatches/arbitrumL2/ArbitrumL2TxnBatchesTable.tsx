@@ -3,6 +3,7 @@ import React from 'react';
 import type { ArbitrumL2TxnBatchesItem } from 'types/api/arbitrumL2';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ArbitrumL2TxnBatchesTableItem from './ArbitrumL2TxnBatchesTableItem';
 
@@ -22,7 +23,10 @@ const ArbitrumL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader>L1 block</TableColumnHeader>
           <TableColumnHeader>Block count</TableColumnHeader>
           <TableColumnHeader>L1 transaction</TableColumnHeader>
-          <TableColumnHeader>Age</TableColumnHeader>
+          <TableColumnHeader>
+            Timestamp
+            <TimeFormatToggle/>
+          </TableColumnHeader>
           <TableColumnHeader>Txn count</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>

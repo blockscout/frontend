@@ -10,6 +10,9 @@ import { thinsp } from 'toolkit/utils/htmlEntities';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
+const rollupFeature = config.features.rollup;
+const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';
+const isArbitrumRollup = rollupFeature.isEnabled && rollupFeature.type === 'arbitrum';
 
 const TxsStats = () => {
   const txsStatsQuery = useApiQuery('stats:pages_transactions', {
@@ -39,7 +42,8 @@ const TxsStats = () => {
   const isLoading = isStatsFeatureEnabled ? txsStatsQuery.isPlaceholderData : txsStatsApiQuery.isPlaceholderData;
 
   const txCount24h = isStatsFeatureEnabled ? txsStatsQuery.data?.transactions_24h?.value : txsStatsApiQuery.data?.transactions_count_24h;
-  const operationalTxns24h = isStatsFeatureEnabled ? txsStatsQuery.data?.operational_transactions_24h?.value : null;
+  const operationalTxns24hArbitrum = isArbitrumRollup && isStatsFeatureEnabled ? txsStatsQuery.data?.operational_transactions_24h?.value : null;
+  const operationalTxns24hOptimistic = isOptimisticRollup && isStatsFeatureEnabled ? txsStatsQuery.data?.op_stack_operational_transactions_24h?.value : null;
 
   const pendingTxns = isStatsFeatureEnabled ? txsStatsQuery.data?.pending_transactions_30m?.value : txsStatsApiQuery.data?.pending_transactions_count;
 
@@ -60,7 +64,8 @@ const TxsStats = () => {
 
   const itemsCount = [
     txCount24h,
-    operationalTxns24h,
+    operationalTxns24hArbitrum,
+    operationalTxns24hOptimistic,
     pendingTxns,
     txFeeSum24h,
     txFeeAvg,
@@ -85,12 +90,22 @@ const TxsStats = () => {
           href={ config.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'newTxns' } } : undefined }
         />
       ) }
-      { operationalTxns24h && (
+      { operationalTxns24hArbitrum && (
         <StatsWidget
           label={ txsStatsQuery.data?.operational_transactions_24h?.title ?
             getLabelFromTitle(txsStatsQuery.data?.operational_transactions_24h?.title) :
             'Daily op txns' }
-          value={ Number(operationalTxns24h).toLocaleString() }
+          value={ Number(operationalTxns24hArbitrum).toLocaleString() }
+          period="24h"
+          isLoading={ isLoading }
+        />
+      ) }
+      { operationalTxns24hOptimistic && (
+        <StatsWidget
+          label={ txsStatsQuery.data?.op_stack_operational_transactions_24h?.title ?
+            getLabelFromTitle(txsStatsQuery.data?.op_stack_operational_transactions_24h?.title) :
+            'Daily op txns' }
+          value={ Number(operationalTxns24hOptimistic).toLocaleString() }
           period="24h"
           isLoading={ isLoading }
         />

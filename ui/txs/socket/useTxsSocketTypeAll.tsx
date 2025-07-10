@@ -14,6 +14,9 @@ function getSocketParams(type: TxsSocketType, page: string) {
     case 'txs_home': {
       return { topic: 'transactions:new_transaction' as const, event: 'transaction' as const };
     }
+    case 'txs_home_cross_chain': {
+      return { topic: 'interop_messages:new_messages' as const, event: 'new_messages' as const };
+    }
     case 'txs_validated': {
       return !page || page === '1' ? { topic: 'transactions:new_transaction' as const, event: 'transaction' as const } : {};
     }
@@ -42,7 +45,7 @@ export default function useNewTxsSocketTypeAll({ type, isLoading }: Params) {
   const page = getQueryParamString(router.query.page);
 
   const [ num, setNum ] = useGradualIncrement(0);
-  const [ alertText, setAlertText ] = React.useState('');
+  const [ showErrorAlert, setShowErrorAlert ] = React.useState(false);
 
   const { topic, event } = getSocketParams(type, page);
 
@@ -56,11 +59,11 @@ export default function useNewTxsSocketTypeAll({ type, isLoading }: Params) {
   }, [ setNum ]);
 
   const handleSocketClose = React.useCallback(() => {
-    setAlertText('Connection is lost. Please reload the page.');
+    setShowErrorAlert(true);
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setAlertText('An error has occurred while fetching new transactions. Please reload the page.');
+    setShowErrorAlert(true);
   }, []);
 
   const channel = useSocketChannel({
@@ -80,5 +83,5 @@ export default function useNewTxsSocketTypeAll({ type, isLoading }: Params) {
     return { };
   }
 
-  return { num, alertText };
+  return { num, showErrorAlert };
 }

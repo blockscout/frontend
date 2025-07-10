@@ -15,7 +15,7 @@ import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type DepositsItem = {
   l1BlockNumber: number | null;
@@ -28,7 +28,7 @@ type Props = {
   isLoading?: boolean;
   items: Array<DepositsItem>;
   socketItemsNum: number;
-  socketAlert?: string;
+  showSocketErrorAlert?: boolean;
 };
 
 type ItemProps = {
@@ -89,8 +89,9 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
           <Flex justifyContent="space-between" alignItems="center" mb={ 1 }>
             { l1BlockLink }
             { item.timestamp ? (
-              <TimeAgoWithTooltip
+              <TimeWithTooltip
                 timestamp={ item.timestamp }
+                timeFormat="relative"
                 isLoading={ isLoading }
                 color="text.secondary"
               />
@@ -118,8 +119,9 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
         </Skeleton>
         { l1TxLink }
         { item.timestamp ? (
-          <TimeAgoWithTooltip
+          <TimeWithTooltip
             timestamp={ item.timestamp }
+            timeFormat="relative"
             isLoading={ isLoading }
             color="text.secondary"
             w="fit-content"
@@ -149,11 +151,18 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
   );
 };
 
-const LatestDeposits = ({ isLoading, items, socketAlert, socketItemsNum }: Props) => {
+const LatestDeposits = ({ isLoading, items, showSocketErrorAlert, socketItemsNum }: Props) => {
   const depositsUrl = route({ pathname: '/deposits' });
   return (
     <>
-      <SocketNewItemsNotice borderBottomRadius={ 0 } url={ depositsUrl } num={ socketItemsNum } alert={ socketAlert } type="deposit" isLoading={ isLoading }/>
+      <SocketNewItemsNotice
+        borderBottomRadius={ 0 }
+        url={ depositsUrl }
+        num={ socketItemsNum }
+        showErrorAlert={ showSocketErrorAlert }
+        type="deposit"
+        isLoading={ isLoading }
+      />
       <Box mb={{ base: 3, lg: 4 }}>
         { items.map(((item, index) => (
           <LatestDepositsItem
