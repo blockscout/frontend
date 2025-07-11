@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -51,7 +50,13 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
     ];
   }, [ addressData ]);
 
-  const [ selectedItem, setSelectedItem ] = React.useState(sourceItems.find((item) => item.address_hash === sourceAddress) || sourceItems[0]);
+  const [ selectedItem, setSelectedItem ] = React.useState<AddressImplementation | undefined>(undefined);
+
+  React.useEffect(() => {
+    if (!mainContractQuery.isPlaceholderData) {
+      setSelectedItem(sourceItems.find((item) => item.address_hash === sourceAddress) || sourceItems[0]);
+    }
+  }, [ mainContractQuery.isPlaceholderData, sourceAddress, sourceItems ]);
 
   const contractQuery = useApiQuery('general:contract', {
     pathParams: { hash: selectedItem?.address_hash },
@@ -63,7 +68,7 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
   });
   const { data, isPlaceholderData, isError } = contractQuery;
 
-  const tabs = useContractDetailsTabs({ data, isLoading: isPlaceholderData, addressData, sourceAddress: selectedItem.address_hash });
+  const tabs = useContractDetailsTabs({ data, isLoading: isPlaceholderData, addressData, sourceAddress: selectedItem?.address_hash });
 
   const handleContractWasVerifiedMessage: SocketMessage.SmartContractWasVerified['handler'] = React.useCallback(() => {
     queryClient.refetchQueries({
@@ -84,7 +89,7 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
     return <DataFetchAlert/>;
   }
 
-  const addressSelector = sourceItems.length > 1 ? (
+  const addressSelector = sourceItems.length > 1 && selectedItem ? (
     <ContractSourceAddressSelector
       isLoading={ mainContractQuery.isPlaceholderData }
       label="Source code"
@@ -110,22 +115,15 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
           addressHash={ addressData.hash }
         />
       ) }
-      { tabs.length > 1 ? (
-        <RoutedTabs
-          tabs={ tabs }
-          isLoading={ isPlaceholderData }
-          variant="segmented"
-          size="sm"
-          leftSlot={ addressSelector }
-          listProps={ TAB_LIST_PROPS }
-          leftSlotProps={ LEFT_SLOT_PROPS }
-        />
-      ) : (
-        <>
-          { addressSelector && <Box mb={ 6 }>{ addressSelector }</Box> }
-          <div>{ tabs[0].component }</div>
-        </>
-      ) }
+      <RoutedTabs
+        tabs={ tabs }
+        isLoading={ isPlaceholderData }
+        variant="segmented"
+        size="sm"
+        leftSlot={ addressSelector }
+        listProps={ TAB_LIST_PROPS }
+        leftSlotProps={ LEFT_SLOT_PROPS }
+      />
     </>
   );
 };

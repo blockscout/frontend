@@ -45,12 +45,39 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
       ) }
 
       <DetailedInfo.ItemLabel
+        hint="The name found in the source code of the Contract"
+      >
+        Contract name
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'contract' } }) }>View by chain</Link>
+      </DetailedInfo.ItemValue>
+
+      <DetailedInfo.ItemLabel
+        hint="Transaction and address of creation"
+      >
+        Creator
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'contract' } }) }>View by chain</Link>
+      </DetailedInfo.ItemValue>
+
+      <DetailedInfo.ItemLabel
+        hint="Implementations of the proxy contract"
+      >
+        Implementations
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'contract' } }) }>View by chain</Link>
+      </DetailedInfo.ItemValue>
+
+      <DetailedInfo.ItemLabel
         hint="Number of transactions related to this address"
       >
         Transactions
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue whiteSpace="pre-wrap">
-        Cross-chain 🐈🐈🐈
+        Cross-chain <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'txs_cross_chain' } }) }>TBD</Link>
         <TextSeparator color="border.divider"/>
         Local <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'txs_local' } }) }>view by chain</Link>
       </DetailedInfo.ItemValue>
@@ -61,7 +88,7 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
         Transfers
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue whiteSpace="pre-wrap">
-        Cross-chain 🦆🦆🦆
+        Cross-chain <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'token_transfers_cross_chain' } }) }>TBD</Link>
         <TextSeparator color="border.divider"/>
         Local <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'token_transfers_local' } }) }>view by chain</Link>
       </DetailedInfo.ItemValue>

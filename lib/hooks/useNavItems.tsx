@@ -263,7 +263,11 @@ export default function useNavItems(): ReturnType {
     ].filter(Boolean);
 
     const otherNavItems: Array<NavItem> | Array<Array<NavItem>> = [
-      {
+      config.features.opSuperchain.isEnabled ? {
+        text: 'Verify contract',
+        // TODO @tom2drum adjust URL to Vera
+        url: 'https://vera.blockscout.com',
+      } : {
         text: 'Verify contract',
         nextRoute: { pathname: '/contract-verification' as const },
         isActive: pathname.startsWith('/contract-verification'),

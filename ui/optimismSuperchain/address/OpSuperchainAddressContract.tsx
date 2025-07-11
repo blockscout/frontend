@@ -34,6 +34,7 @@ const OpSuperchainAddressContract = ({ addressHash }: Props) => {
     data: addressQuery.data,
     isPlaceholderData: addressQuery.isPlaceholderData,
     hasMudTab: false,
+    chainSlug: chainSelect.value?.[0],
   });
 
   const leftSlot = (
