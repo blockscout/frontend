@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { disputeGames as getServerSideProps } from 'nextjs/getServerSideProps';
+export { disputeGames as getServerSideProps } from 'nextjs/getServerSideProps/main';

@@ -15,4 +15,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { advancedFilter as getServerSideProps } from 'nextjs/getServerSideProps';
+export { advancedFilter as getServerSideProps } from 'nextjs/getServerSideProps/main';

@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
-import type { Props } from 'nextjs/getServerSideProps';
+import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import multichainConfig from 'configs/multichain';
@@ -30,4 +30,4 @@ const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) =
 
 export default Page;
 
-export { opSuperchain as getServerSideProps } from 'nextjs/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps/multichain';

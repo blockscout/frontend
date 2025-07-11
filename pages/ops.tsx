@@ -24,4 +24,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { userOps as getServerSideProps } from 'nextjs/getServerSideProps';
+export { userOps as getServerSideProps } from 'nextjs/getServerSideProps/main';

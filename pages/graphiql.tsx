@@ -27,4 +27,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { graphIQl as getServerSideProps } from 'nextjs/getServerSideProps';
+export { graphIQl as getServerSideProps } from 'nextjs/getServerSideProps/main';

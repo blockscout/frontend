@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { mud as getServerSideProps } from 'nextjs/getServerSideProps';
+export { mud as getServerSideProps } from 'nextjs/getServerSideProps/main';
