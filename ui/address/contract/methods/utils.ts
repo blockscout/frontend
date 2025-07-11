@@ -16,8 +16,14 @@ export const isMethod = (method: Abi[number]): method is SmartContractMethod =>
   (method.type === 'function' || method.type === 'fallback' || method.type === 'receive');
 
 export const isReadMethod = (method: Abi[number]): method is SmartContractMethodRead =>
-  method.type === 'function' && (
-    method.constant || method.stateMutability === 'view' || method.stateMutability === 'pure'
+  (
+    method.type === 'function' &&
+    (method.constant || method.stateMutability === 'view' || method.stateMutability === 'pure')
+  ) || (
+    // according to @k1rill-fedoseev, fallback method can act as a read method when it has 'view' state mutability
+    // but viem doesn't aware of this and thinks that fallback method state mutability can only be 'payable' or 'nonpayable'
+    // so we have to coerce the stateMutability here to a string
+    method.type === 'fallback' && (method.stateMutability as string) === 'view'
   );
 
 export const isWriteMethod = (method: Abi[number]): method is SmartContractMethodWrite =>

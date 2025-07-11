@@ -1,5 +1,5 @@
 import React from 'react';
-import { encodeAbiParameters, getAddress } from 'viem';
+import { getAddress } from 'viem';
 import { usePublicClient } from 'wagmi';
 
 import type { FormSubmitResult, MethodCallStrategy, SmartContractMethod } from './types';
@@ -33,19 +33,21 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
     }
 
     const address = getAddress(addressHash);
+
+    // for payable methods we add additional input for native coin value
     const inputs = 'inputs' in item ? item.inputs : [];
-    // for write payable methods we add additional input for native coin value
-    // so in simulate mode we need to strip it off
     const _args = args.slice(0, inputs.length);
     const value = getNativeCoinValue(args[inputs.length]);
 
     if (item.type === 'fallback') {
-      const encodedData = encodeAbiParameters(inputs, _args);
+      // if the fallback method acts as a read method, it can only have one input of type bytes
+      // so we pass the input value as data without encoding it
+      const data = typeof _args[0] === 'string' && _args[0].startsWith('0x') ? _args[0] as `0x${ string }` : undefined;
       const result = await publicClient.call({
         account,
         to: address,
         value,
-        data: encodedData,
+        ...(data ? { data } : {}),
       });
 
       return {

@@ -2,7 +2,7 @@ import { Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
-import { encodeAbiParameters, encodeFunctionData, type AbiFunction } from 'viem';
+import { encodeFunctionData, type AbiFunction } from 'viem';
 
 import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '../types';
 
@@ -63,10 +63,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     }
   }, [ calldataButtonTooltip ]);
 
-  // according to @k1rill-fedoseev, fallback method can act as a read method when it has 'view' state mutability
-  // but viem doesn't aware of this and thinks that fallback method state mutability can only be 'payable' or 'nonpayable'
-  // so we have to coerce the stateMutability here to a string
-  const methodType = isReadMethod(data) || (data.type === 'fallback' && (data.stateMutability as string) === 'view') ? 'read' : 'write';
+  const methodType = isReadMethod(data) ? 'read' : 'write';
 
   const onFormSubmit: SubmitHandler<ContractMethodFormFields> = React.useCallback(async(formData) => {
     const args = transformFormDataToMethodArgs(formData);
@@ -81,8 +78,11 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
       const argsToPass = args.slice(0, data.inputs.length);
 
       if (!data.name) {
-        const encodedData = encodeAbiParameters(data.inputs, argsToPass);
-        await navigator.clipboard.writeText(encodedData);
+        // this condition means that the fallback method acts as a read method with inputs
+        const data = typeof argsToPass[0] === 'string' && argsToPass[0].startsWith('0x') ? argsToPass[0] as `0x${ string }` : undefined;
+        if (data) {
+          await navigator.clipboard.writeText(data);
+        }
         return;
       }
 
