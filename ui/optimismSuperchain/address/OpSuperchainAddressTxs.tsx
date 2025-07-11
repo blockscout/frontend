@@ -7,15 +7,20 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import multichainConfig from 'configs/multichain';
 import getSocketUrl from 'lib/api/getSocketUrl';
 import { MultichainProvider } from 'lib/contexts/multichain';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { SocketProvider } from 'lib/socket/context';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-// import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
+import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressTxsFilter from 'ui/address/AddressTxsFilter';
 import useAddressTxsQuery from 'ui/address/useAddressTxsQuery';
+import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
+
+import ListCounterText from '../components/ListCounterText';
 
 export const ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS = [ 'txs_cross_chain' as const, 'txs_local' as const ];
 const TAB_LIST_PROPS = {
@@ -24,10 +29,16 @@ const TAB_LIST_PROPS = {
   pb: 3,
   marginTop: -6,
 };
-const ACTION_BAR_HEIGHT_DESKTOP = 68;
+const TABS_RIGHT_SLOT_PROPS = {
+  display: 'flex',
+  justifyContent: { base: 'flex-end', lg: 'space-between' },
+  ml: { base: 0, lg: 8 },
+  widthAllocation: 'available' as const,
+};
 
 const AddressOpSuperchainTxs = () => {
   const router = useRouter();
+  const isMobile = useIsMobile();
 
   const hash = getQueryParamString(router.query.hash);
   const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS[number] | undefined;
@@ -36,6 +47,16 @@ const AddressOpSuperchainTxs = () => {
     addressHash: hash,
     enabled: tab === 'txs_local',
     isMultichain: true,
+  });
+
+  const chainSlug = txsQueryLocal.query.chainValue?.[0];
+  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
+
+  const countersQueryLocal = useAddressCountersQuery({
+    hash,
+    isLoading: txsQueryLocal.query.isPlaceholderData,
+    isEnabled: tab === 'txs_local',
+    chainSlug,
   });
 
   const txsLocalFilter = tab === 'txs_local' ? (
@@ -47,29 +68,55 @@ const AddressOpSuperchainTxs = () => {
     />
   ) : null;
 
-  const rightSlot = tab === 'txs_local' ? (
-    <>
-      <HStack gap={ 2 }>
-        { txsLocalFilter }
-        <ChainSelect
-          loading={ txsQueryLocal.query.pagination.isLoading }
-          value={ txsQueryLocal.query.chainValue }
-          onValueChange={ txsQueryLocal.query.onChainValueChange }
+  const countersText = (() => {
+    if (tab === 'txs_local') {
+      return (
+        <ListCounterText
+          key={ chainSlug }
+          value={ countersQueryLocal.data?.transactions_count }
+          isLoading={ countersQueryLocal.isPlaceholderData || txsQueryLocal.query.isPlaceholderData }
+          type="transaction"
         />
-      </HStack>
-      <HStack gap={ 6 }>
-        { /* <AddressCsvExportLink
-          address={ hash }
-          params={{ type: 'transactions', filterType: 'address', filterValue: txsQueryLocal.filterValue }}
-          ml="auto"
-          isLoading={ txsQueryLocal.query.pagination.isLoading }
-        /> */ }
-        <Pagination { ...txsQueryLocal.query.pagination } ml={ 8 }/>
-      </HStack>
-    </>
-  ) : null;
+      );
+    }
 
-  const chainData = multichainConfig()?.chains.find(chain => chain.slug === txsQueryLocal.query.chainValue?.[0]);
+    return null;
+  })();
+
+  const chainSelect = (
+    <ChainSelect
+      loading={ txsQueryLocal.query.pagination.isLoading }
+      value={ txsQueryLocal.query.chainValue }
+      onValueChange={ txsQueryLocal.query.onChainValueChange }
+    />
+  );
+
+  const rightSlot = (() => {
+    if (tab === 'txs_local') {
+      if (isMobile) {
+        return chainSelect;
+      }
+
+      return (
+        <>
+          <HStack gap={ 2 }>
+            { txsLocalFilter }
+            { chainSelect }
+            { countersText }
+          </HStack>
+          <HStack gap={ 6 }>
+            <AddressCsvExportLink
+              address={ hash }
+              params={{ type: 'transactions', filterType: 'address', filterValue: txsQueryLocal.filterValue }}
+              isLoading={ txsQueryLocal.query.pagination.isLoading }
+              chainConfig={ chainData?.config }
+            />
+            <Pagination { ...txsQueryLocal.query.pagination }/>
+          </HStack>
+        </>
+      );
+    }
+  })();
 
   const tabs: Array<TabItemRegular> = [
     {
@@ -83,6 +130,7 @@ const AddressOpSuperchainTxs = () => {
       component: (
         <SocketProvider url={ getSocketUrl(chainData?.config) }>
           <MultichainProvider chainSlug={ txsQueryLocal.query.chainValue?.[0] }>
+            { isMobile && countersText }
             <TxsWithAPISorting
               filter={ txsLocalFilter }
               filterValue={ txsQueryLocal.filterValue }
@@ -106,9 +154,9 @@ const AddressOpSuperchainTxs = () => {
       size="sm"
       tabs={ tabs }
       rightSlot={ rightSlot }
-      rightSlotProps={{ display: 'flex', justifyContent: 'space-between', ml: 8, widthAllocation: 'available' }}
-      listProps={ TAB_LIST_PROPS }
-      stickyEnabled
+      rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
+      listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+      stickyEnabled={ !isMobile }
     />
   );
 };

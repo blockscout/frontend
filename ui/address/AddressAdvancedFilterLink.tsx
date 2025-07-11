@@ -45,6 +45,7 @@ const AddressAdvancedFilterLink = ({ isLoading, address, typeFilter, directionFi
       loading={ isInitialLoading }
       minW={ 8 }
       justifyContent="center"
+      textStyle="sm"
     >
       <IconSvg name="filter" boxSize={ 6 }/>
       <chakra.span ml={ 1 } hideBelow="lg">Advanced filter</chakra.span>

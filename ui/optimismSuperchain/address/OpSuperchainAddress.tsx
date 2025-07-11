@@ -93,6 +93,9 @@ const OpSuperchainAddress = () => {
         isLoading={ isLoading }
         variant="subheading"
         noLink
+        icon={{
+          shield: { name: 'pie_chart', isLoading },
+        }}
       />
       <AddressQrCode hash={ checkSummedHash } isLoading={ isLoading }/>
       <Box ml="auto"/>

@@ -33,6 +33,7 @@ const ChainSelect = ({ loading, mode, ...props }: Props) => {
       loading={ isInitialLoading }
       mode={ isMobile && !mode ? 'compact' : mode }
       w="fit-content"
+      flexShrink={ 0 }
       { ...props }
     />
   );

@@ -3,16 +3,13 @@ import React from 'react';
 
 import type { TokenType } from 'types/api/token';
 
-import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { ADDRESS_COUNTERS } from 'stubs/address';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { apos } from 'toolkit/utils/htmlEntities';
 import AddressAdvancedFilterLink from 'ui/address/AddressAdvancedFilterLink';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import type { Filters } from 'ui/address/useAddressTokenTransfersQuery';
 import useAddressTokenTransfersSocket from 'ui/address/useAddressTokenTransfersSocket';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
@@ -33,16 +30,6 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
   const { isError, isPlaceholderData, data, pagination } = query;
   const isMobile = useIsMobile();
 
-  const countersQuery = useApiQuery('general:address_counters', {
-    pathParams: {
-      hash: addressHash,
-    },
-    queryOptions: {
-      enabled: !isPlaceholderData,
-      placeholderData: ADDRESS_COUNTERS,
-    },
-  });
-
   const { showSocketAlert, newItemsCount } = useAddressTokenTransfersSocket({
     filters,
     addressHash,
@@ -51,7 +38,6 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
   });
 
   const numActiveFilters = (filters.type?.length || 0) + (filters.filter ? 1 : 0);
-  const isActionBarHidden = !numActiveFilters && !data?.items.length && !addressHash;
 
   const content = data?.items ? (
     <>
@@ -60,7 +46,7 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
           data={ data?.items }
           baseAddress={ addressHash }
           showTxInfo
-          top={ isActionBarHidden ? 0 : 56 }
+          top={ ACTION_BAR_HEIGHT_DESKTOP }
           enableTimeIncrement
           showSocketInfo={ pagination.page === 1 }
           showSocketErrorAlert={ showSocketAlert }
@@ -88,47 +74,33 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
     </>
   ) : null;
 
-  const totalText = (
-    <Skeleton loading={ countersQuery.isPlaceholderData }>
-      A total of { Number(countersQuery.data?.token_transfers_count ?? 0).toLocaleString() } transfers found
-    </Skeleton>
-  );
-
-  const filter = isMobile ? (
-    <TokenTransferFilter
-      defaultTypeFilters={ filters.type }
-      onTypeFilterChange={ onTypeFilterChange }
-      appliedFiltersNum={ filters.type.length }
-      withAddressFilter
-      onAddressFilterChange={ onAddressFilterChange }
-      defaultAddressFilter={ filters.filter }
-      isLoading={ query.isPlaceholderData }
-    />
+  const actionBar = isMobile ? (
+    <ActionBar>
+      <HStack gap={ 2 }>
+        <TokenTransferFilter
+          defaultTypeFilters={ filters.type }
+          onTypeFilterChange={ onTypeFilterChange }
+          appliedFiltersNum={ filters.type.length }
+          withAddressFilter
+          onAddressFilterChange={ onAddressFilterChange }
+          defaultAddressFilter={ filters.filter }
+          isLoading={ query.isPlaceholderData }
+        />
+        <AddressAdvancedFilterLink
+          isLoading={ isPlaceholderData }
+          address={ addressHash }
+          typeFilter={ filters.type }
+          directionFilter={ filters.filter }
+        />
+        <AddressCsvExportLink
+          address={ addressHash }
+          params={{ type: 'token-transfers', filterType: 'address', filterValue: filters.filter }}
+          isLoading={ isPlaceholderData }
+        />
+      </HStack>
+      <Pagination ml="auto" { ...pagination }/>
+    </ActionBar>
   ) : null;
-
-  const actionBar = (
-    <>
-      { isMobile ? totalText : null }
-      <ActionBar mt={{ base: 0, lg: -3 }} pt={{ base: 6, lg: 3 }} alignItems="center">
-        { !isMobile ? totalText : null }
-        <HStack gap={{ base: 2, lg: 6 }} ml={{ base: 0, lg: 'auto' }}>
-          { filter }
-          <AddressAdvancedFilterLink
-            isLoading={ isPlaceholderData }
-            address={ addressHash }
-            typeFilter={ filters.type }
-            directionFilter={ filters.filter }
-          />
-          <AddressCsvExportLink
-            address={ addressHash }
-            params={{ type: 'token-transfers', filterType: 'address', filterValue: filters.filter }}
-            isLoading={ isPlaceholderData }
-          />
-        </HStack>
-        <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
-      </ActionBar>
-    </>
-  );
 
   return (
     <DataListDisplay

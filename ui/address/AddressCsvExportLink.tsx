@@ -18,14 +18,15 @@ interface Props {
   params: CsvExportParams;
   className?: string;
   isLoading?: boolean;
+  chainConfig?: typeof config;
 }
 
-const AddressCsvExportLink = ({ className, address, params, isLoading }: Props) => {
+const AddressCsvExportLink = ({ className, address, params, isLoading, chainConfig: chainConfigProp }: Props) => {
   const isMobile = useIsMobile();
   const isInitialLoading = useIsInitialLoading(isLoading);
   const multichainContext = useMultichainContext();
 
-  const chainConfig = multichainContext?.chain.config || config;
+  const chainConfig = chainConfigProp || multichainContext?.chain.config || config;
 
   if (!chainConfig.features.csvExport.isEnabled) {
     return null;
@@ -41,6 +42,7 @@ const AddressCsvExportLink = ({ className, address, params, isLoading }: Props) 
         loading={ isInitialLoading }
         minW={ 8 }
         justifyContent="center"
+        textStyle="sm"
       >
         <IconSvg name="files/csv" boxSize={ 6 }/>
         <chakra.span ml={ 1 } hideBelow="lg">Download CSV</chakra.span>

@@ -94,7 +94,8 @@ const AddressPageContent = () => {
 
   const countersQuery = useAddressCountersQuery({
     hash,
-    addressQuery,
+    isLoading: addressQuery.isPlaceholderData,
+    isDegradedData: addressQuery.isDegradedData,
   });
 
   const userOpsAccountQuery = useApiQuery('general:user_ops_account', {

@@ -7,7 +7,6 @@ import { route } from 'nextjs/routes';
 
 import { toBech32Address } from 'lib/address/bech32';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { useSettingsContext } from 'lib/contexts/settings';
 import getIconUrl from 'lib/multichain/getIconUrl';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -197,10 +196,8 @@ const AddressEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
   const highlightContext = useAddressHighlightContext(props.noHighlight);
   const settingsContext = useSettingsContext();
-  const multichainContext = useMultichainContext();
 
   const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
-  const chain = props.chain ?? multichainContext?.chain;
 
   // inside highlight context all tooltips should be interactive
   // because non-interactive ones will not pass 'onMouseLeave' event to the parent component
@@ -218,8 +215,8 @@ const AddressEntity = (props: EntityProps) => {
       position="relative"
       zIndex={ 0 }
     >
-      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) } chain={ chain }/>
-      { props.noLink ? content : <Link { ...partsProps.link } chain={ chain }>{ content }</Link> }
+      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) }/>
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
       <Copy { ...partsProps.copy } altHash={ altHash } tooltipInteractive={ Boolean(highlightContext) }/>
     </Container>
   );
