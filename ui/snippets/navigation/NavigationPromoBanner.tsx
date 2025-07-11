@@ -1,14 +1,18 @@
 import { HStack, Text, Flex, Box, useBreakpointValue } from '@chakra-ui/react';
-import { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { keccak256, stringToBytes } from 'viem';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import IconSvg from 'ui/shared/IconSvg';
 
 import useNavLinkStyleProps from './useNavLinkStyleProps';
 
+const PROMO_BANNER_CLOSED_HASH_KEY = 'nav-promo-banner-closed-hash';
 const promoBanner = config.UI.navigation.promoBanner;
 
 type Props = {
@@ -20,6 +24,17 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
   const navLinkStyleProps = useNavLinkStyleProps({ isCollapsed, isExpanded: isCollapsed === false });
   const isMobile = useIsMobile();
   const isXLScreen = useBreakpointValue({ base: false, xl: true });
+  const themeBgColor = useColorModeValue('white', 'black');
+
+  const [ promoBannerClosedHash, setPromoBannerClosedHash ] = useState(window.localStorage.getItem(PROMO_BANNER_CLOSED_HASH_KEY) || '');
+  const promoBannerHash = keccak256(stringToBytes(JSON.stringify(promoBanner)));
+  const isShown = promoBannerHash !== promoBannerClosedHash;
+
+  const handleClose = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    localStorage.setItem(PROMO_BANNER_CLOSED_HASH_KEY, promoBannerHash);
+    setPromoBannerClosedHash(promoBannerHash);
+  }, [ promoBannerHash ]);
 
   const getContent = useCallback((isHorizontalNavigation?: boolean, isCollapsed?: boolean) => {
     if (!promoBanner) {
@@ -64,13 +79,12 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
       <Box
         position="relative"
         minH={ isHorizontalNavigation ? 'auto' : '60px' }
-        minW={ isHorizontalNavigation ? 'auto' : '60px' }
       >
         <Image
           src={ promoBanner.img_url.small }
           alt="Promo banner small"
           boxSize={ isHorizontalNavigation ? '32px' : '60px' }
-          borderRadius={ isHorizontalNavigation ? '4px' : 'base' }
+          borderRadius={ isHorizontalNavigation ? 'sm' : 'base' }
           position={ isHorizontalNavigation ? undefined : 'absolute' }
           top="calc(50% - 30px)"
           left="calc(50% - 30px)"
@@ -105,7 +119,7 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
     return getContent(false, false);
   }, [ getContent, isMobile, isHorizontalNavigation, isCollapsed, isXLScreen ]);
 
-  if (!promoBanner) {
+  if (!promoBanner || !isShown) {
     return null;
   }
 
@@ -117,12 +131,14 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
         noIcon
         _hover={{ opacity: 0.8 }}
         mt="auto"
+        minW={ isHorizontalNavigation ? 'auto' : '60px' }
         position={ isHorizontalNavigation ? undefined : 'sticky' }
         bottom={{ base: 0, lg: 6 }}
         pointerEvents="auto"
         py={ 0 }
         w="full"
         overflow="hidden"
+        className="navigation-promo-banner"
       >
         <Tooltip
           content={ tooltipContent }
@@ -138,7 +154,26 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
           interactive
           variant="navigation"
         >
-          { content }
+          <Box w="full" position="relative">
+            { content }
+            <IconSvg
+              onClick={ handleClose }
+              name="close"
+              boxSize={ 3 }
+              color={{ _light: 'gray.300', _dark: 'gray.600' }}
+              bgColor={ themeBgColor }
+              borderBottomLeftRadius="sm"
+              position="absolute"
+              top="0"
+              right="0"
+              display="none"
+              css={{
+                '.navigation-promo-banner:hover &': {
+                  display: 'block',
+                },
+              }}
+            />
+          </Box>
         </Tooltip>
       </Link>
     </Flex>
