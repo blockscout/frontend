@@ -15,6 +15,8 @@ export const defGeas: monaco.languages.IMonarchLanguage = {
     'address',
     'include',
     'assemble',
+    'pragma',
+    'define',
     'push',
     ...Array.from({ length: 32 }, (_, i) => `push${ i }`),
   ],
@@ -114,7 +116,7 @@ export const defGeas: monaco.languages.IMonarchLanguage = {
   ],
 
   calls: /@\.\w+/,
-  macros: /#?(include|assemble|push|abs|selector|keccak256|address)/,
+  macros: /#?(include|assemble|push|abs|selector|keccak256|address|pragma|define)/,
 
   // we include these common regular expressions
   symbols: /[=><!~?:&|+\-*/^%]+/,
