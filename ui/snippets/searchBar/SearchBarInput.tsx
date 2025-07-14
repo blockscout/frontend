@@ -1,11 +1,9 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
 import { chakra, Center } from '@chakra-ui/react';
-import { throttle } from 'es-toolkit';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
 import config from 'configs/app';
-import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Input } from 'toolkit/chakra/input';
@@ -19,57 +17,39 @@ interface Props extends Omit<HTMLChakraProps<'form'>, 'onChange'> {
   onFocus?: () => void;
   onHide?: () => void;
   onClear: () => void;
-  isHomepage?: boolean;
+  onFormClick?: (event: React.MouseEvent<HTMLFormElement>) => void;
+  isHeroBanner?: boolean;
   isSuggestOpen?: boolean;
-  value: string;
+  value?: string;
+  readOnly?: boolean;
 }
 
 const SearchBarInput = (
-  { onChange, onSubmit, isHomepage, isSuggestOpen, onFocus, onBlur, onHide, onClear, value, ...rest }: Props,
+  { onChange, onSubmit, isHeroBanner, isSuggestOpen, onFocus, onBlur, onHide, onClear, onFormClick, value, readOnly, ...rest }: Props,
   ref: React.ForwardedRef<HTMLFormElement>,
 ) => {
   const innerRef = React.useRef<HTMLFormElement>(null);
   React.useImperativeHandle(ref, () => innerRef.current as HTMLFormElement, []);
-  const [ isSticky, setIsSticky ] = React.useState(false);
-  const scrollDirection = useScrollDirection();
   const isMobile = useIsMobile();
 
-  const borderWidthHomepage = useColorModeValue(
+  const borderWidthHeroBanner = useColorModeValue(
     config.UI.homepage.heroBanner?.search?.border_width?.[0] ?? '0px',
     config.UI.homepage.heroBanner?.search?.border_width?.[1] ?? '0px',
   );
 
-  const handleScroll = React.useCallback(() => {
-    const TOP_BAR_HEIGHT = 36;
-    if (!isHomepage) {
-      if (window.scrollY >= TOP_BAR_HEIGHT) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    }
-    const clientRect = isMobile && innerRef?.current?.getBoundingClientRect();
-    if (clientRect && clientRect.y < TOP_BAR_HEIGHT) {
-      onHide?.();
-    }
-  }, [ isMobile, onHide, isHomepage ]);
-
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value);
-  }, [ onChange ]);
+    if (!readOnly) {
+      onChange(event.target.value);
+    }
+  }, [ onChange, readOnly ]);
 
-  React.useEffect(() => {
-    if (!isMobile) {
+  const handleFocus = React.useCallback((event: FocusEvent<HTMLInputElement>) => {
+    if (readOnly) {
+      event.target.blur();
       return;
     }
-    const throttledHandleScroll = throttle(handleScroll, 300);
-
-    window.addEventListener('scroll', throttledHandleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', throttledHandleScroll);
-    };
-  }, [ isMobile, handleScroll ]);
+    onFocus?.();
+  }, [ onFocus, readOnly ]);
 
   const handleKeyPress = React.useCallback((event: KeyboardEvent) => {
     if (isMobile) {
@@ -106,13 +86,7 @@ const SearchBarInput = (
     };
   }, [ handleKeyPress ]);
 
-  const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
-
   const getPlaceholder = () => {
-    if (isMobile) {
-      return 'Search by address / ... ';
-    }
-
     const clusterText = config.features.clusters.isEnabled ? ' / cluster ' : '';
     return `Search by address / txn hash / block / token${ clusterText }/... `;
   };
@@ -127,7 +101,7 @@ const SearchBarInput = (
 
   const endElement = (
     <>
-      <ClearButton onClick={ onClear } visible={ value.length > 0 } mx={ 2 }/>
+      <ClearButton onClick={ onClear } visible={ Boolean(value?.length) } mx={ 2 }/>
       { !isMobile && (
         <Center
           boxSize="20px"
@@ -149,21 +123,11 @@ const SearchBarInput = (
       noValidate
       onSubmit={ onSubmit }
       onBlur={ onBlur }
+      onClick={ onFormClick }
       w="100%"
       backgroundColor={{ _light: 'white', _dark: 'black' }}
-      borderRadius={{ base: isHomepage ? 'base' : 'none', lg: 'base' }}
-      position={{ base: isHomepage ? 'static' : 'absolute', lg: 'relative' }}
-      top={{ base: isHomepage ? 0 : 55, lg: 0 }}
-      left="0"
-      zIndex={{ base: isHomepage ? 'auto' : '0', lg: isSuggestOpen ? 'modal' : 'auto' }}
-      paddingX={{ base: isHomepage ? 0 : 3, lg: 0 }}
-      paddingTop={{ base: isHomepage ? 0 : 1, lg: 0 }}
-      paddingBottom={{ base: isHomepage ? 0 : 2, lg: 0 }}
-      boxShadow={ scrollDirection !== 'down' && isSticky ? 'md' : 'none' }
-      transform={{ base: isHomepage ? 'none' : transformMobile, lg: 'none' }}
-      transitionProperty="transform,box-shadow,background-color,color,border-color"
-      transitionDuration="normal"
-      transitionTimingFunction="ease"
+      borderRadius="base"
+      zIndex={{ base: 'auto', lg: isSuggestOpen ? 'modal' : 'auto' }}
       { ...rest }
     >
       <InputGroup
@@ -175,8 +139,8 @@ const SearchBarInput = (
           placeholder={ getPlaceholder() }
           value={ value }
           onChange={ handleChange }
-          onFocus={ onFocus }
-          borderWidth={ isHomepage ? borderWidthHomepage : '2px' }
+          onFocus={ handleFocus }
+          borderWidth={ isHeroBanner ? borderWidthHeroBanner : '2px' }
           borderStyle="solid"
           borderColor={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' }}
           color={{ _light: 'black', _dark: 'white' }}

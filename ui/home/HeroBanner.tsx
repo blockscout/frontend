@@ -7,6 +7,7 @@ import config from 'configs/app';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
+import SearchBarMobile from 'ui/snippets/searchBar/SearchBarMobile';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
@@ -80,7 +81,12 @@ const HeroBanner = () => {
             </Box>
           ) }
         </Flex>
-        <SearchBar isHomepage/>
+        <Box display={{ base: 'flex', lg: 'none' }}>
+          <SearchBarMobile isHeroBanner/>
+        </Box>
+        <Box display={{ base: 'none', lg: 'flex' }}>
+          <SearchBar isHomepage/>
+        </Box>
       </Box>
       <AdBanner platform="mobile" w="fit-content" flexShrink={ 0 } borderRadius="md" overflow="hidden" display={{ base: 'none', lg: 'block ' }}/>
     </Flex>

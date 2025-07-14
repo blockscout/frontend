@@ -1,6 +1,6 @@
 import { Box, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { throttle } from 'es-toolkit';
+import { debounce } from 'es-toolkit';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
@@ -12,7 +12,7 @@ import type { ResourceError } from 'lib/api/resources';
 import { useSettingsContext } from 'lib/contexts/settings';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import type { ExternalSearchItem as ExternalSearchItemType } from 'lib/search/externalSearch';
-import { TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
+import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import * as regexp from 'toolkit/utils/regexp';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -75,13 +75,13 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
 
   React.useEffect(() => {
     const container = document.getElementById(containerId);
-    const throttledHandleScroll = throttle(handleScroll, 300);
+    const debouncedHandleScroll = debounce(handleScroll, 300);
     if (container) {
-      container.addEventListener('scroll', throttledHandleScroll);
+      container.addEventListener('scroll', debouncedHandleScroll);
     }
     return () => {
       if (container) {
-        container.removeEventListener('scroll', throttledHandleScroll);
+        container.removeEventListener('scroll', debouncedHandleScroll);
       }
     };
   }, [ containerId, handleScroll ]);
@@ -141,6 +141,15 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
     });
   }, [ containerId ]);
 
+  const categoryTabs = React.useMemo(() => {
+    return searchCategories.filter(cat => itemsGroups[cat.id]).map(cat => ({
+      id: cat.id,
+      value: cat.id,
+      title: cat.title,
+      component: null,
+    }));
+  }, [ itemsGroups ]);
+
   const content = (() => {
     if (query.isPending || marketplaceApps.isPlaceholderData || (config.features.zetachain.isEnabled && zetaChainCCTXQuery.isPending)) {
       return <ContentLoader text="We are searching, please wait... " fontSize="sm"/>;
@@ -163,24 +172,24 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
     return (
       <>
         { resultCategories.length > 1 && (
-          <Box position="sticky" top="0" width="100%" background={{ _light: 'white', _dark: 'gray.900' }} py={ 5 } my={ -5 } ref={ tabsRef } zIndex={ 1 }>
-            <TabsRoot
+          <Box
+            position="sticky"
+            top="0"
+            width="100%"
+            background={{ _light: 'white', _dark: 'gray.900' }}
+            py={ 5 }
+            my={ -5 }
+            ref={ tabsRef }
+            zIndex={ 1 }
+            overflowX="hidden"
+          >
+            <AdaptiveTabs
+              tabs={ categoryTabs }
+              onValueChange={ handleTabsValueChange }
+              defaultValue={ currentTab }
               variant="secondary"
               size="sm"
-              value={ currentTab }
-              onValueChange={ handleTabsValueChange }
-            >
-              <TabsList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
-                { resultCategories.map((cat) => (
-                  <TabsTrigger
-                    key={ cat.id }
-                    value={ cat.id }
-                  >
-                    { cat.title }
-                  </TabsTrigger>
-                )) }
-              </TabsList>
-            </TabsRoot>
+            />
           </Box>
         ) }
         { resultCategories.map((cat, index) => {
@@ -190,8 +199,8 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
                 textStyle="sm"
                 fontWeight={ 600 }
                 color="text.secondary"
-                mt={ 6 }
-                mb={ 3 }
+                mt={{ base: 6, lg: 0 }}
+                mb={{ base: 2, lg: 3 }}
                 ref={ (el: HTMLParagraphElement) => {
                   categoriesRefs.current[index] = el;
                 } }

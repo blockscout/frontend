@@ -22,12 +22,12 @@ import SearchBarSuggest from './SearchBarSuggest/SearchBarSuggest';
 import useSearchWithClusters from './useSearchWithClusters';
 
 type Props = {
-  isHomepage?: boolean;
+  isHeroBanner?: boolean;
 };
 
 const SCROLL_CONTAINER_ID = 'search_bar_popover_content';
 
-const SearchBar = ({ isHomepage }: Props) => {
+const SearchBar = ({ isHeroBanner }: Props) => {
   const inputRef = React.useRef<HTMLFormElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
@@ -102,7 +102,7 @@ const SearchBar = ({ isHomepage }: Props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ onClose ]);
 
-  const menuPaddingX = isMobile && !isHomepage ? 24 : 0;
+  const menuPaddingX = isMobile && !isHeroBanner ? 24 : 0;
   const calculateMenuWidth = React.useCallback(() => {
     menuWidth.current = (inputRef.current?.getBoundingClientRect().width || 0) - menuPaddingX;
   }, [ menuPaddingX ]);
@@ -142,7 +142,7 @@ const SearchBar = ({ isHomepage }: Props) => {
         open={ open && (searchTerm.trim().length > 0 || recentSearchKeywords.length > 0) }
         autoFocus={ false }
         onOpenChange={ handleOpenChange }
-        positioning={{ offset: isMobile && !isHomepage ? { mainAxis: 0, crossAxis: 12 } : { mainAxis: 8, crossAxis: 0 } }}
+        positioning={{ offset: isMobile && !isHeroBanner ? { mainAxis: 0, crossAxis: 12 } : { mainAxis: 8, crossAxis: 0 } }}
         lazyMount
         closeOnInteractOutside={ false }
       >
@@ -155,7 +155,7 @@ const SearchBar = ({ isHomepage }: Props) => {
             onHide={ handelHide }
             onBlur={ handleBlur }
             onClear={ handleClear }
-            isHomepage={ isHomepage }
+            isHeroBanner={ isHeroBanner }
             value={ searchTerm }
             isSuggestOpen={ open }
           />
