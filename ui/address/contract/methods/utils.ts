@@ -1,5 +1,4 @@
-import type { Abi, AbiFallback, AbiReceive } from 'abitype';
-import type { AbiFunction } from 'viem';
+import type { Abi } from 'abitype';
 import { toFunctionSelector } from 'viem';
 
 import type { MethodType, SmartContractMethod, SmartContractMethodRead, SmartContractMethodWrite } from './types';
@@ -12,19 +11,22 @@ export const getNativeCoinValue = (value: unknown) => {
   return BigInt(value);
 };
 
-export const isMethod = (method: Abi[number]): method is SmartContractMethod =>
+export const isMethod = (method: Abi[number]) =>
   (method.type === 'function' || method.type === 'fallback' || method.type === 'receive');
 
-export const isReadMethod = (method: Abi[number]): method is SmartContractMethodRead =>
-  method.type === 'function' && (
-    method.constant || method.stateMutability === 'view' || method.stateMutability === 'pure'
+export const isReadMethod = (method: SmartContractMethod): method is SmartContractMethodRead =>
+  (
+    method.type === 'function' &&
+    (method.constant || method.stateMutability === 'view' || method.stateMutability === 'pure')
+  ) || (
+    method.type === 'fallback' && method.stateMutability === 'view'
   );
 
-export const isWriteMethod = (method: Abi[number]): method is SmartContractMethodWrite =>
+export const isWriteMethod = (method: SmartContractMethod): method is SmartContractMethodWrite =>
   (method.type === 'function' || method.type === 'fallback' || method.type === 'receive') &&
     !isReadMethod(method);
 
-export const enrichWithMethodId = (method: AbiFunction | AbiFallback | AbiReceive): SmartContractMethod => {
+export const enrichWithMethodId = (method: SmartContractMethod): SmartContractMethod => {
   if (method.type !== 'function') {
     return method;
   }
@@ -42,7 +44,19 @@ export const enrichWithMethodId = (method: AbiFunction | AbiFallback | AbiReceiv
   }
 };
 
-const getNameForSorting = (method: SmartContractMethod | AbiFallback | AbiReceive) => {
+export const addInputsToFallback = (method: SmartContractMethod): SmartContractMethod => {
+  if (method.type === 'fallback') {
+    return {
+      ...method,
+      inputs: [ { internalType: 'bytes', name: 'input', type: 'bytes' } ],
+      outputs: [ { internalType: 'bytes', name: 'output', type: 'bytes' } ],
+    };
+  }
+
+  return method;
+};
+
+const getNameForSorting = (method: SmartContractMethod) => {
   if ('name' in method) {
     return method.name;
   }
@@ -51,9 +65,12 @@ const getNameForSorting = (method: SmartContractMethod | AbiFallback | AbiReceiv
 };
 
 export const formatAbi = (abi: Abi) => {
-  return abi
-    .filter(isMethod)
+
+  const methods = abi.filter(isMethod) as Array<SmartContractMethod>;
+
+  return methods
     .map(enrichWithMethodId)
+    .map(addInputsToFallback)
     .sort((a, b) => {
       const aName = getNameForSorting(a);
       const bName = getNameForSorting(b);

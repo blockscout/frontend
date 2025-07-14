@@ -31,6 +31,8 @@ function getEditorData(contractInfo: SmartContract | undefined) {
         return 'scilla';
       case 'stylus_rust':
         return 'rs';
+      case 'geas':
+        return 'eas';
       default:
         return 'sol';
     }
