@@ -6,7 +6,6 @@ import { getFeaturePayload } from 'configs/app/features/types';
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import type { ImageProps } from 'toolkit/chakra/image';
-import colors from 'toolkit/theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface ClusterIconProps extends Omit<ImageProps, 'src' | 'alt'> {
@@ -29,7 +28,7 @@ const ClusterIcon = ({
       alignItems="center"
       justifyContent="center"
       boxSize={ boxSize }
-      backgroundColor={ colors.clusters.value }
+      backgroundColor="clusters"
       borderRadius={ borderRadius }
       mr={ mr }
       flexShrink={ flexShrink }

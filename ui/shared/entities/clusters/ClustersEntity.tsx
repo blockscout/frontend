@@ -87,7 +87,7 @@ const Icon = (props: IconProps) => {
           alignItems="center"
           justifyContent="center"
           boxSize={ 5 }
-          backgroundColor={ colors.clusters.value }
+          backgroundColor="clusters"
           borderRadius="sm"
           mr={ 2 }
         >
