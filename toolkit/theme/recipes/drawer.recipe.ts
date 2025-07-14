@@ -150,6 +150,7 @@ export const recipe = defineSlotRecipe({
           maxW: '100%',
           _open: { animationName: 'slide-from-bottom-full, fade-in' },
           _closed: { animationName: 'slide-to-bottom-full, fade-out' },
+          borderTopRadius: 'base',
         },
       },
     },
