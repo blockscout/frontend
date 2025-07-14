@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
+import type { EntityTag } from 'ui/shared/EntityTags/types';
 
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -12,6 +13,7 @@ import AddressQrCode from 'ui/address/details/AddressQrCode';
 import ClusterChainsPopover from 'ui/optimismSuperchain/components/ClusterChainsPopover';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import OpSuperchainAddressCoinBalance from './OpSuperchainAddressCoinBalance';
@@ -21,6 +23,8 @@ import OpSuperchainAddressInternalTxs from './OpSuperchainAddressInternalTxs';
 import OpSuperchainAddressLogs from './OpSuperchainAddressLogs';
 import OpSuperchainAddressTokenTransfers, { ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS } from './OpSuperchainAddressTokenTransfers';
 import OpSuperchainAddressTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './OpSuperchainAddressTxs';
+
+const PREDEFINED_TAG_PRIORITY = 100;
 
 const OpSuperchainAddress = () => {
   const router = useRouter();
@@ -103,6 +107,19 @@ const OpSuperchainAddress = () => {
     </Flex>
   );
 
+  const tags: Array<EntityTag> = React.useMemo(() => {
+    return [
+      { slug: 'eoa', name: 'EOA', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY },
+    ];
+  }, []);
+
+  const titleContentAfter = (
+    <EntityTags
+      tags={ tags }
+      isLoading={ isLoading }
+    />
+  );
+
   return (
     <>
       <TextAd mb={ 6 }/>
@@ -110,6 +127,7 @@ const OpSuperchainAddress = () => {
         title="Address details"
         isLoading={ isLoading }
         secondRow={ titleSecondRow }
+        contentAfter={ titleContentAfter }
       />
       <RoutedTabs tabs={ tabs } isLoading={ isLoading }/>
     </>

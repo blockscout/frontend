@@ -5,6 +5,7 @@ import { route } from 'nextjs/routes';
 import multichainConfig from 'configs/multichain';
 import { Link } from 'toolkit/chakra/link';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 import ChainIcon from '../components/ChainIcon';
@@ -16,12 +17,15 @@ interface Props {
 const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
   const chains = multichainConfig()?.chains;
 
+  const isLoading = false;
+
   return (
     <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} >
       { chains && chains.length > 0 && (
         <>
           <DetailedInfo.ItemLabel
             hint="Chains"
+            isLoading={ isLoading }
           >
             Chain{ chains.length > 1 ? 's' : '' }
           </DetailedInfo.ItemLabel>
@@ -46,6 +50,7 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
 
       <DetailedInfo.ItemLabel
         hint="The name found in the source code of the Contract"
+        isLoading={ isLoading }
       >
         Contract name
       </DetailedInfo.ItemLabel>
@@ -55,6 +60,7 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
 
       <DetailedInfo.ItemLabel
         hint="Transaction and address of creation"
+        isLoading={ isLoading }
       >
         Creator
       </DetailedInfo.ItemLabel>
@@ -64,6 +70,7 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
 
       <DetailedInfo.ItemLabel
         hint="Implementations of the proxy contract"
+        isLoading={ isLoading }
       >
         Implementations
       </DetailedInfo.ItemLabel>
@@ -72,7 +79,28 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
+        hint="ETH balance"
+        isLoading={ isLoading }
+      >
+        ETH balance
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        Coming soon 🔜
+      </DetailedInfo.ItemValue>
+
+      <DetailedInfo.ItemLabel
+        hint="All tokens in the account and total value"
+        isLoading={ isLoading }
+      >
+        Tokens
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        Coming soon 🔜
+      </DetailedInfo.ItemValue>
+
+      <DetailedInfo.ItemLabel
         hint="Number of transactions related to this address"
+        isLoading={ isLoading }
       >
         Transactions
       </DetailedInfo.ItemLabel>
@@ -84,6 +112,7 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
 
       <DetailedInfo.ItemLabel
         hint="Number of transfers to/from this address"
+        isLoading={ isLoading }
       >
         Transfers
       </DetailedInfo.ItemLabel>
@@ -92,6 +121,18 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
         <TextSeparator color="border.divider"/>
         Local <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'token_transfers_local' } }) }>view by chain</Link>
       </DetailedInfo.ItemValue>
+
+      <DetailedInfo.ItemLabel
+        hint="Block number in which the address was updated"
+        isLoading={ isLoading }
+      >
+        Last balance update
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        Coming soon 🔜
+      </DetailedInfo.ItemValue>
+
+      <DetailedInfoSponsoredItem isLoading={ isLoading }/>
 
     </DetailedInfo.Container>
   );
