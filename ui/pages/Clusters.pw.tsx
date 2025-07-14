@@ -14,7 +14,10 @@ test.beforeEach(async({ mockEnvs, mockTextAd }) => {
 });
 
 test.describe('Clusters Directory Page', () => {
-  test('clusters directory with data @mobile', async({ render, page }) => {
+  test('clusters directory with data @mobile', async({ render, page, mockAssetResponse }) => {
+    await mockAssetResponse('https://cdn.clusters.xyz/profile-image/campnetwork/lol', './playwright/mocks/image_s.jpg');
+    await mockAssetResponse('https://cdn.clusters.xyz/profile-image/duck/quack', './playwright/mocks/image_s.jpg');
+    await mockAssetResponse('https://cdn.clusters.xyz/profile-image/test/cluster', './playwright/mocks/image_s.jpg');
     await page.route('**/v1/trpc/names.search*', (route) => {
       route.fulfill({
         status: 200,

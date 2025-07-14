@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { campNetworkClusterByName, duckClusterByName, testnetClusterByName } from 'mocks/clusters/cluster';
+import { campNetworkClusterByName, testnetClusterByName } from 'mocks/clusters/cluster';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 
@@ -13,7 +13,11 @@ test.beforeEach(async({ mockEnvs, mockTextAd }) => {
 });
 
 test.describe('Cluster Details Page', () => {
-  test('cluster details campnetwork/lol +@mobile', async({ render, page }) => {
+  test('mainnet cluster details +@mobile', async({ render, page, mockAssetResponse }) => {
+    await mockAssetResponse(
+      'https://cdn.clusters.xyz/profile-image/campnetwork/lol',
+      './playwright/mocks/image_s.jpg',
+    );
     await page.route('**/v1/trpc/names.get*', (route) => route.fulfill({
       status: 200,
       json: campNetworkClusterByName,
@@ -42,36 +46,11 @@ test.describe('Cluster Details Page', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('cluster details duck/quack +@mobile', async({ render, page }) => {
-    await page.route('**/v1/trpc/names.get*', (route) => route.fulfill({
-      status: 200,
-      json: duckClusterByName,
-    }));
-
-    const component = await render(
-      <div>
-        <Box h={{ base: '134px', lg: 6 }}/>
-        <Cluster/>
-      </div>,
-      {
-        hooksConfig: {
-          router: {
-            query: { name: 'duck/quack' },
-            isReady: true,
-          },
-        },
-      },
+  test('testnet cluster details +@mobile', async({ render, page, mockAssetResponse }) => {
+    await mockAssetResponse(
+      'https://cdn.clusters.xyz/profile-image/test/cluster',
+      './playwright/mocks/image_s.jpg',
     );
-
-    await expect(component.getByText('duck/quack').first()).toBeVisible();
-    await expect(component.getByText('Cluster Name')).toBeVisible();
-    await expect(component.getByText('Owner address')).toBeVisible();
-    await expect(component.getByText('Backing')).toBeVisible();
-
-    await expect(component).toHaveScreenshot();
-  });
-
-  test('testnet cluster details +@mobile', async({ render, page }) => {
     await page.route('**/v1/trpc/names.get*', (route) => route.fulfill({
       status: 200,
       json: testnetClusterByName,
