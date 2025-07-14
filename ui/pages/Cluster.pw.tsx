@@ -13,15 +13,16 @@ test.beforeEach(async({ mockEnvs, mockTextAd }) => {
 });
 
 test.describe('Cluster Details Page', () => {
-  test('mainnet cluster details +@mobile', async({ render, page, mockAssetResponse }) => {
+  test('mainnet cluster details +@mobile', async({ render, mockApiResponse, mockAssetResponse }) => {
     await mockAssetResponse(
       'https://cdn.clusters.xyz/profile-image/campnetwork/lol',
       './playwright/mocks/image_s.jpg',
     );
-    await page.route('**/v1/trpc/names.get*', (route) => route.fulfill({
-      status: 200,
-      json: campNetworkClusterByName,
-    }));
+    await mockApiResponse('clusters:get_cluster_by_name', campNetworkClusterByName, {
+      queryParams: {
+        input: JSON.stringify({ name: 'campnetwork/lol' }),
+      },
+    });
 
     const component = await render(
       <div>
@@ -46,15 +47,16 @@ test.describe('Cluster Details Page', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('testnet cluster details +@mobile', async({ render, page, mockAssetResponse }) => {
+  test('testnet cluster details +@mobile', async({ render, mockApiResponse, mockAssetResponse }) => {
     await mockAssetResponse(
       'https://cdn.clusters.xyz/profile-image/test/cluster',
       './playwright/mocks/image_s.jpg',
     );
-    await page.route('**/v1/trpc/names.get*', (route) => route.fulfill({
-      status: 200,
-      json: testnetClusterByName,
-    }));
+    await mockApiResponse('clusters:get_cluster_by_name', testnetClusterByName, {
+      queryParams: {
+        input: JSON.stringify({ name: 'test/cluster' }),
+      },
+    });
 
     const component = await render(
       <div>
