@@ -48,7 +48,10 @@ function transformClusterToSearchResult(cluster: {
 
 export default function useSearchWithClusters() {
   const quickSearch = useQuickSearchQuery();
-  const isClusterQuery = isClusterSearch(quickSearch.debouncedSearchTerm);
+
+  const isClusterQuery = config.features.clusters.isEnabled ?
+    isClusterSearch(quickSearch.debouncedSearchTerm) : false;
+
   const clusterName = isClusterQuery ? extractClusterName(quickSearch.debouncedSearchTerm) : '';
 
   const clusterQuery = useApiQuery('clusters:get_cluster_by_name', {
@@ -64,7 +67,7 @@ export default function useSearchWithClusters() {
   });
 
   const combinedQuery = React.useMemo(() => {
-    if (!isClusterQuery) {
+    if (!config.features.clusters.isEnabled || !isClusterQuery) {
       return quickSearch.query;
     }
 
@@ -86,9 +89,5 @@ export default function useSearchWithClusters() {
     combinedQuery,
   ]);
 
-  if (!config.features.clusters.isEnabled) {
-    return quickSearch;
-  }
-
-  return result;
+  return config.features.clusters.isEnabled ? result : quickSearch;
 }
