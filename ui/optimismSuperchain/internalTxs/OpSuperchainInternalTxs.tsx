@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { apos } from 'toolkit/utils/htmlEntities';
@@ -9,14 +10,14 @@ import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import useInternalTxsQuery from 'ui/internalTxs/useInternalTxsQuery';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
+import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 
-const InternalTxs = () => {
-
+const OpSuperchainInternalTxs = () => {
   const isMobile = useIsMobile();
 
-  const { query, searchTerm, onSearchTermChange } = useInternalTxsQuery();
+  const { query, searchTerm, onSearchTermChange } = useInternalTxsQuery({ isMultichain: true });
   const { isError, isPlaceholderData, data, pagination } = query;
 
   const filterInput = (
@@ -29,31 +30,38 @@ const InternalTxs = () => {
     />
   );
 
+  const chainSelect = (
+    <ChainSelect
+      value={ query.chainValue }
+      onValueChange={ query.onChainValueChange }
+      ml={{ base: 0, lg: 2 }}
+    />
+  );
+
   const actionBar = (
     <>
-      <Box mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
-        { filterInput }
-      </Box>
-      { (!isMobile || pagination.isVisible) && (
-        <ActionBar mt={ -6 }>
-          <Box display={{ base: 'none', lg: 'flex' }}>
-            { filterInput }
-          </Box>
-          <Pagination ml="auto" { ...pagination }/>
-        </ActionBar>
+      { isMobile && (
+        <Box mb={ 6 }>
+          { filterInput }
+        </Box>
       ) }
+      <ActionBar mt={ -6 } justifyContent="flex-start">
+        { !isMobile && filterInput }
+        { chainSelect }
+        <Pagination ml="auto" { ...pagination }/>
+      </ActionBar>
     </>
   );
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData }/>
-      </Box>
+    <MultichainProvider chainSlug={ query.chainValue?.[0] }>
       <Box hideBelow="lg">
         <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData }/>
       </Box>
-    </>
+      <Box hideFrom="lg">
+        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData }/>
+      </Box>
+    </MultichainProvider>
   ) : null;
 
   return (
@@ -71,6 +79,8 @@ const InternalTxs = () => {
           hasActiveFilters: Boolean(searchTerm),
         }}
         actionBar={ actionBar }
+        showActionBarIfError
+        showActionBarIfEmpty
       >
         { content }
       </DataListDisplay>
@@ -78,4 +88,4 @@ const InternalTxs = () => {
   );
 };
 
-export default InternalTxs;
+export default React.memo(OpSuperchainInternalTxs);

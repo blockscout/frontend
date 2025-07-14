@@ -4,7 +4,15 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const InternalTxs = dynamic(() => import('ui/pages/InternalTxs'), { ssr: false });
+import config from 'configs/app';
+
+const InternalTxs = dynamic(() => {
+  if (config.features.opSuperchain.isEnabled) {
+    return import('ui/optimismSuperchain/internalTxs/OpSuperchainInternalTxs');
+  }
+
+  return import('ui/pages/InternalTxs');
+}, { ssr: false });
 
 const Page: NextPage = () => {
   return (
