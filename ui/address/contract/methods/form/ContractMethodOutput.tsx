@@ -2,13 +2,13 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { AbiFunction } from 'viem';
 
-import type { ResultViewMode } from '../types';
+import type { AbiFallback, ResultViewMode } from '../types';
 
 import ResultItem from './resultPublicClient/Item';
 
 export interface Props {
   data: unknown;
-  abiItem: AbiFunction;
+  abiItem: AbiFunction | AbiFallback;
   onSettle: () => void;
   mode: ResultViewMode;
 }
