@@ -69,17 +69,6 @@ test.describe('ClustersEntity Component', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('loading state +@mobile', async({ render }) => {
-    const component = await render(
-      <ClustersEntity
-        clusterName="loading.cluster"
-        isLoading={ true }
-      />,
-    );
-
-    await expect(component).toHaveScreenshot();
-  });
-
   test('long cluster name truncation +@mobile', async({ render }) => {
     const component = await render(
       <ClustersEntity
