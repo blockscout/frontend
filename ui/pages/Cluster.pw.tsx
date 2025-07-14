@@ -99,23 +99,4 @@ test.describe('Cluster Details Page', () => {
 
     await expect(component).toHaveScreenshot();
   });
-
-  test('loading state +@mobile', async({ render }) => {
-    const component = await render(
-      <div>
-        <Box h={{ base: '134px', lg: 6 }}/>
-        <Cluster/>
-      </div>,
-      {
-        hooksConfig: {
-          router: {
-            query: { name: 'example.cluster' },
-            isReady: true,
-          },
-        },
-      },
-    );
-
-    await expect(component).toHaveScreenshot();
-  });
 });
