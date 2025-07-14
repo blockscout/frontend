@@ -24,7 +24,7 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxsStats from 'ui/txs/TxsStats';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
-export const OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS = [ 'local_txs_validated', 'local_txs_pending', 'local_txs_blob' ];
+export const OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS = [ 'txs_local_validated', 'txs_local_pending', 'txs_local_blob' ];
 const TAB_LIST_PROPS = {
   marginBottom: 0,
   pt: 6,
@@ -44,7 +44,7 @@ const OpSuperchainTxsLocal = () => {
     resourceName: 'general:txs_validated',
     filters: { filter: 'validated' },
     options: {
-      enabled: tab === 'local_txs_validated' || tab === 'local_txs',
+      enabled: tab === 'txs_local_validated' || tab === 'txs_local',
       placeholderData: generateListStub<'general:txs_validated'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
@@ -58,7 +58,7 @@ const OpSuperchainTxsLocal = () => {
     resourceName: 'general:txs_pending',
     filters: { filter: 'pending' },
     options: {
-      enabled: tab === 'local_txs_pending',
+      enabled: tab === 'txs_local_pending',
       placeholderData: generateListStub<'general:txs_pending'>(TX, 50, { next_page_params: {
         inserted_at: '2024-02-05T07:04:47.749818Z',
         hash: '0x00',
@@ -71,7 +71,7 @@ const OpSuperchainTxsLocal = () => {
     resourceName: 'general:txs_with_blobs',
     filters: { type: 'blob_transaction' },
     options: {
-      enabled: chainConfig?.features.dataAvailability.isEnabled && tab === 'local_txs_blob',
+      enabled: chainConfig?.features.dataAvailability.isEnabled && tab === 'txs_local_blob',
       placeholderData: generateListStub<'general:txs_with_blobs'>(TX, 50, { next_page_params: {
         block_number: 10602877,
         index: 8,
@@ -84,7 +84,7 @@ const OpSuperchainTxsLocal = () => {
 
   const tabs: Array<TabItemRegular> = [
     {
-      id: 'local_txs_validated',
+      id: 'txs_local_validated',
       title: verifiedTitle,
       component:
         <TxsWithFrontendSorting
@@ -93,7 +93,7 @@ const OpSuperchainTxsLocal = () => {
           top={ ACTION_BAR_HEIGHT_DESKTOP }
         /> },
     {
-      id: 'local_txs_pending',
+      id: 'txs_local_pending',
       title: 'Pending',
       component: (
         <TxsWithFrontendSorting
@@ -105,7 +105,7 @@ const OpSuperchainTxsLocal = () => {
       ),
     },
     chainConfig?.features.dataAvailability.isEnabled && {
-      id: 'local_txs_blob',
+      id: 'txs_local_blob',
       title: 'Blob txns',
       component: (
         <TxsWithFrontendSorting
@@ -118,8 +118,8 @@ const OpSuperchainTxsLocal = () => {
 
   const currentQuery = (() => {
     switch (tab) {
-      case 'local_txs_pending': return txsPendingQuery;
-      case 'local_txs_blob': return txsWithBlobsQuery;
+      case 'txs_local_pending': return txsPendingQuery;
+      case 'txs_local_blob': return txsWithBlobsQuery;
       default: return txsValidatedQuery;
     }
   })();

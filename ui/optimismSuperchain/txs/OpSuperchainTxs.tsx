@@ -22,7 +22,7 @@ const OpSuperchainTxs = () => {
   const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS });
 
   const tab = getQueryParamString(router.query.tab);
-  const isLocalTxs = tab === 'local_txs' || OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS.includes(tab);
+  const isLocalTxs = tab === 'txs_local' || OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS.includes(tab);
 
   React.useEffect(() => {
     if (isLocalTxs && chainSelect.value) {
@@ -45,7 +45,7 @@ const OpSuperchainTxs = () => {
         component: <div>Coming soon 🔜</div>,
       },
       {
-        id: 'local_txs',
+        id: 'txs_local',
         title: 'Local',
         component: (
           <MultichainProvider chainSlug={ chainSelect.value?.[0] }>

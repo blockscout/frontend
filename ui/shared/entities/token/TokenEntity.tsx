@@ -3,8 +3,9 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
@@ -16,7 +17,10 @@ import { distributeEntityProps, getIconProps } from '../base/utils';
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'token'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/token/[hash]', query: { ...props.query, hash: props.token.address_hash } });
+  const defaultHref = route(
+    { pathname: '/token/[hash]', query: { ...props.query, hash: props.token.address_hash } },
+    props.chain ? { chain: props.chain } : undefined,
+  );
 
   return (
     <EntityBase.Link
@@ -131,13 +135,16 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 }
 
 const TokenEntity = (props: EntityProps) => {
+  const multichainContext = useMultichainContext();
   const partsProps = distributeEntityProps(props);
+
+  const chain = props.chain ?? multichainContext?.chain;
   const content = <Content { ...partsProps.content }/>;
 
   return (
     <Container w="100%" { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
+      { props.noLink ? content : <Link { ...partsProps.link } chain={ chain }>{ content }</Link> }
       <Symbol { ...partsProps.symbol }/>
       <Copy { ...partsProps.copy }/>
     </Container>

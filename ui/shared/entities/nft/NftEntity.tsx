@@ -3,8 +3,9 @@ import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import NftMedia from 'ui/shared/nft/NftMedia';
 
@@ -61,7 +62,10 @@ const Icon = (props: IconProps) => {
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash' | 'id'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: props.hash, id: props.id } });
+  const defaultHref = route(
+    { pathname: '/token/[hash]/instance/[id]', query: { hash: props.hash, id: props.id } },
+    props.chain ? { chain: props.chain } : undefined,
+  );
 
   return (
     <EntityBase.Link
@@ -92,14 +96,16 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 }
 
 const NftEntity = (props: EntityProps) => {
+  const multichainContext = useMultichainContext();
   const partsProps = distributeEntityProps(props);
 
+  const chain = props.chain ?? multichainContext?.chain;
   const content = <Content { ...partsProps.content }/>;
 
   return (
     <Container w="100%" { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
+      { props.noLink ? content : <Link { ...partsProps.link } chain={ chain }>{ content }</Link> }
     </Container>
   );
 };

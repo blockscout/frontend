@@ -39,13 +39,14 @@ declare module "nextjs-routes" {
     | StaticRoute<"/block/countdown">
     | StaticRoute<"/blocks">
     | DynamicRoute<"/chain/[chain-slug]/accounts/label/[slug]", { "chain-slug": string; "slug": string }>
-    | DynamicRoute<"/chain/[chain-slug]/address/[hash]", { "chain-slug": string; "hash": string }>
     | DynamicRoute<"/chain/[chain-slug]/advanced-filter", { "chain-slug": string }>
     | DynamicRoute<"/chain/[chain-slug]/block/[height_or_hash]", { "chain-slug": string; "height_or_hash": string }>
     | DynamicRoute<"/chain/[chain-slug]/block/countdown/[height]", { "chain-slug": string; "height": string }>
     | DynamicRoute<"/chain/[chain-slug]/block/countdown", { "chain-slug": string }>
     | DynamicRoute<"/chain/[chain-slug]/csv-export", { "chain-slug": string }>
     | DynamicRoute<"/chain/[chain-slug]/op/[hash]", { "chain-slug": string; "hash": string }>
+    | DynamicRoute<"/chain/[chain-slug]/token/[hash]", { "chain-slug": string; "hash": string }>
+    | DynamicRoute<"/chain/[chain-slug]/token/[hash]/instance/[id]", { "chain-slug": string; "hash": string; "id": string }>
     | DynamicRoute<"/chain/[chain-slug]/tx/[hash]", { "chain-slug": string; "hash": string }>
     | StaticRoute<"/chakra">
     | StaticRoute<"/contract-verification">

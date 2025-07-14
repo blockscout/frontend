@@ -23,7 +23,7 @@ const LatestTxs = () => {
       component: <LatestTxsCrossChain/>,
     },
     {
-      id: 'local_txs',
+      id: 'txs_local',
       title: 'Local',
       component: chainSelect.value ? <LatestTxsLocal key={ chainSelect.value[0] } chainSlug={ chainSelect.value[0] }/> : null,
     },
@@ -31,7 +31,7 @@ const LatestTxs = () => {
 
   const leftSlot = <Heading level="3">Latest transactions</Heading>;
 
-  const rightSlot = tab === 'local_txs' ? (
+  const rightSlot = tab === 'txs_local' ? (
     <ChainSelect
       loading={ false }
       value={ chainSelect.value }

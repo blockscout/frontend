@@ -71,13 +71,14 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
 
   // multichain routes
   '/chain/[chain-slug]/accounts/label/[slug]': DEFAULT_TEMPLATE,
-  '/chain/[chain-slug]/address/[hash]': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/advanced-filter': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/block/[height_or_hash]': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/block/countdown': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/block/countdown/[height]': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/csv-export': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/op/[hash]': DEFAULT_TEMPLATE,
+  '/chain/[chain-slug]/token/[hash]': DEFAULT_TEMPLATE,
+  '/chain/[chain-slug]/token/[hash]/instance/[id]': DEFAULT_TEMPLATE,
   '/chain/[chain-slug]/tx/[hash]': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy

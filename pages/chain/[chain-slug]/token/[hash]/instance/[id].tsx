@@ -9,9 +9,9 @@ import multichainConfig from 'configs/multichain';
 import getSocketUrl from 'lib/api/getSocketUrl';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import { SocketProvider } from 'lib/socket/context';
-import Address from 'ui/pages/Address';
+import TokenInstance from 'ui/pages/TokenInstance';
 
-const pathname: Route['pathname'] = '/chain/[chain-slug]/address/[hash]';
+const pathname: Route['pathname'] = '/token/[hash]/instance/[id]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   const chainSlug = props.query?.['chain-slug'];
@@ -21,7 +21,7 @@ const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) =
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
       <SocketProvider url={ getSocketUrl(chainData?.config) }>
         <MultichainProvider>
-          <Address/>
+          <TokenInstance/>
         </MultichainProvider>
       </SocketProvider>
     </PageNextJs>

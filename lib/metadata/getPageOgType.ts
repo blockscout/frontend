@@ -68,13 +68,14 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
 
   // multichain routes
   '/chain/[chain-slug]/accounts/label/[slug]': 'Root page',
-  '/chain/[chain-slug]/address/[hash]': 'Regular page',
   '/chain/[chain-slug]/advanced-filter': 'Regular page',
   '/chain/[chain-slug]/block/[height_or_hash]': 'Regular page',
   '/chain/[chain-slug]/block/countdown': 'Regular page',
   '/chain/[chain-slug]/block/countdown/[height]': 'Regular page',
   '/chain/[chain-slug]/csv-export': 'Regular page',
   '/chain/[chain-slug]/op/[hash]': 'Regular page',
+  '/chain/[chain-slug]/token/[hash]': 'Regular page',
+  '/chain/[chain-slug]/token/[hash]/instance/[id]': 'Regular page',
   '/chain/[chain-slug]/tx/[hash]': 'Regular page',
 
   // service routes, added only to make typescript happy
