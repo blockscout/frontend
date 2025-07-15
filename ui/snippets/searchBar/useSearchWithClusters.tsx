@@ -1,9 +1,12 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import type { SearchResultCluster } from 'types/api/search';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import type { ResourcePayload, ResourceError } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
+import { getResourceKey } from 'lib/api/useApiQuery';
 
 import useQuickSearchQuery from './useQuickSearchQuery';
 
@@ -54,15 +57,28 @@ export default function useSearchWithClusters() {
 
   const clusterName = isClusterQuery ? extractClusterName(quickSearch.debouncedSearchTerm) : '';
 
-  const clusterQuery = useApiQuery('clusters:get_cluster_by_name', {
-    queryParams: { input: JSON.stringify({ name: clusterName }) },
-    queryOptions: {
-      queryKey: [ 'clusters:get_cluster_by_name', 'search', clusterName ],
-      enabled: config.features.clusters.isEnabled && isClusterQuery && clusterName.length > 0,
-      select: (data) => {
-        if (!data?.result?.data) return [];
-        return [ transformClusterToSearchResult(data.result.data, data.result.data.owner) ];
-      },
+  const RESOURCE_NAME = 'clusters:get_cluster_by_name';
+  type ClusterQueryResult = ResourcePayload<typeof RESOURCE_NAME>;
+
+  const apiFetch = useApiFetch();
+
+  const clusterQuery = useQuery<ClusterQueryResult | null, ResourceError<unknown>, Array<SearchResultCluster>>({
+    queryKey: getResourceKey(RESOURCE_NAME, { queryParams: { input: clusterName } }),
+    queryFn: async({ signal }) => {
+      try {
+        const result = await apiFetch(RESOURCE_NAME, {
+          queryParams: { input: JSON.stringify({ name: clusterName }) },
+          fetchParams: { signal },
+        }) as ClusterQueryResult;
+        return result;
+      } catch (error) {
+        return null;
+      }
+    },
+    enabled: config.features.clusters.isEnabled && isClusterQuery && clusterName.length > 0,
+    select: (data) => {
+      if (!data?.result?.data) return [];
+      return [ transformClusterToSearchResult(data.result.data, data.result.data.owner) ];
     },
   });
 
@@ -71,11 +87,7 @@ export default function useSearchWithClusters() {
       return quickSearch.query;
     }
 
-    return {
-      ...clusterQuery,
-      data: clusterQuery.data || [],
-      isError: false,
-    } as typeof quickSearch.query;
+    return clusterQuery;
   }, [ isClusterQuery, quickSearch, clusterQuery ]);
 
   const result = React.useMemo(() => ({
