@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { LOG } from 'stubs/log';
@@ -31,6 +32,8 @@ const OpSuperchainAddressLogs = () => {
     isMultichain: true,
   });
 
+  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainValue?.[0]);
+
   const actionBar = (
     <ActionBar mt={ -6 } showShadow>
       <ChainSelect
@@ -53,6 +56,7 @@ const OpSuperchainAddressLogs = () => {
       { ...item }
       type="address"
       isLoading={ isPlaceholderData }
+      chainData={ chainData }
     />
   )) : null;
 

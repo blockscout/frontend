@@ -32,9 +32,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
     <EntityBase.Icon
       { ...props }
       name={ props.name ?? 'transactions_slim' }
-      shield={ props.shield ?? (props.chain ? {
-        src: getIconUrl(props.chain),
-      } : undefined) }
+      shield={ props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined) }
       hint={ props.chain ? `Transaction on ${ props.chain.config.chain.name } (Chain ID: ${ props.chain.config.chain.id })` : undefined }
     />
   );
@@ -73,15 +71,14 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 
 const TxEntity = (props: EntityProps) => {
   const multichainContext = useMultichainContext();
-  const partsProps = distributeEntityProps(props);
+  const partsProps = distributeEntityProps(props, multichainContext);
 
-  const chain = props.chain ?? multichainContext?.chain;
   const content = <Content { ...partsProps.content }/>;
 
   return (
     <Container { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link } chain={ chain }>{ content }</Link> }
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
       <Copy { ...partsProps.copy }/>
     </Container>
   );

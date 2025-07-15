@@ -4,6 +4,7 @@ import React from 'react';
 import { route } from 'nextjs/routes';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
+import getIconUrl from 'lib/multichain/getIconUrl';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { distributeEntityProps } from '../base/utils';
@@ -31,6 +32,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
     <EntityBase.Icon
       { ...props }
       name={ props.name ?? 'user_op_slim' }
+      shield={ props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined) }
     />
   );
 };
@@ -67,15 +69,14 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 
 const UserOpEntity = (props: EntityProps) => {
   const multichainContext = useMultichainContext();
-  const partsProps = distributeEntityProps(props);
+  const partsProps = distributeEntityProps(props, multichainContext);
 
-  const chain = props.chain ?? multichainContext?.chain;
   const content = <Content { ...partsProps.content }/>;
 
   return (
     <Container { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link } chain={ chain }>{ content }</Link> }
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
       <Copy { ...partsProps.copy }/>
     </Container>
   );

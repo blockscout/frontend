@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import { USER_OPS_ITEM } from 'stubs/userOps';
 import { generateListStub } from 'stubs/utils';
@@ -26,6 +27,8 @@ const OpSuperchainUserOps = () => {
     isMultichain: true,
   });
 
+  const chainConfig = multichainConfig()?.chains.find(chain => chain.slug === query.chainValue?.[0]);
+
   const content = query.data?.items ? (
     <MultichainProvider chainSlug={ query.chainValue?.[0] }>
       <Box hideBelow="lg">
@@ -45,6 +48,7 @@ const OpSuperchainUserOps = () => {
             isLoading={ query.isPlaceholderData }
             showTx
             showSender
+            chainData={ chainConfig }
           />
         )) }
       </Box>

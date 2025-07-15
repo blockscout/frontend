@@ -10,6 +10,7 @@ import { route } from 'nextjs/routes';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { Link } from 'toolkit/chakra/link';
@@ -91,6 +92,8 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
     handler: handleNewBlockMessage,
   });
 
+  const chainData = getChainDataForList(multichainContext);
+
   const content = query.data?.items ? (
     <>
       <Box hideFrom="lg">
@@ -102,7 +105,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
             isLoading={ query.isPlaceholderData }
           />
         ) }
-        <BlocksList data={ query.data.items } isLoading={ query.isPlaceholderData } page={ query.pagination.page }/>
+        <BlocksList data={ query.data.items } isLoading={ query.isPlaceholderData } page={ query.pagination.page } chainData={ chainData }/>
       </Box>
       <Box hideBelow="lg">
         <BlocksTable
@@ -113,6 +116,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
           showSocketInfo={ query.pagination.page === 1 && enableSocket }
           socketInfoNum={ newItemsCount }
           showSocketErrorAlert={ showSocketAlert }
+          chainData={ chainData }
         />
       </Box>
     </>

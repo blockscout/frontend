@@ -113,12 +113,13 @@ const OpSuperchainAddressTokenTransfers = () => {
               address={ hash }
               typeFilter={ transfersQueryLocal.filters.type }
               directionFilter={ transfersQueryLocal.filters.filter }
+              chainData={ chainData }
             />
             <AddressCsvExportLink
               address={ hash }
               params={{ type: 'token-transfers', filterType: 'address', filterValue: transfersQueryLocal.filters.filter }}
               isLoading={ transfersQueryLocal.query.pagination.isLoading }
-              chainConfig={ chainData?.config }
+              chainData={ chainData }
             />
             <Pagination { ...transfersQueryLocal.query.pagination }/>
           </HStack>

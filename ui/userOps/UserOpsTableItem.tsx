@@ -1,9 +1,11 @@
 import React from 'react';
 
 import type { UserOpsItem } from 'types/api/userOps';
+import type { ChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -17,11 +19,17 @@ import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
    isLoading?: boolean;
    showTx: boolean;
    showSender: boolean;
+   chainData?: ChainConfig;
  };
 
-const UserOpsTableItem = ({ item, isLoading, showTx, showSender }: Props) => {
+const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Props) => {
   return (
     <TableRow>
+      { chainData && (
+        <TableCell verticalAlign="middle">
+          <ChainIcon data={ chainData } isLoading={ isLoading }/>
+        </TableCell>
+      ) }
       <TableCell verticalAlign="middle">
         <UserOpEntity hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 } truncation="constant_long"/>
       </TableCell>

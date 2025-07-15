@@ -2,6 +2,7 @@ import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
+import type { ChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
@@ -21,6 +22,7 @@ interface Props {
   socketInfoNum?: number;
   showSocketErrorAlert?: boolean;
   showSocketInfo?: boolean;
+  chainData?: ChainConfig;
 }
 
 const VALIDATOR_COL_WEIGHT = 23;
@@ -30,7 +32,7 @@ const FEES_COL_WEIGHT = 22;
 
 const isRollup = config.features.rollup.isEnabled;
 
-const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, showSocketErrorAlert }: Props) => {
+const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, showSocketErrorAlert, chainData }: Props) => {
   const initialList = useInitialList({
     data: data ?? [],
     idFn: (item) => item.height,
@@ -48,6 +50,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
       <TableRoot minWidth="1070px" fontWeight={ 500 }>
         <TableHeaderSticky top={ top }>
           <TableRow>
+            { chainData && <TableColumnHeader width="38px"/> }
             <TableColumnHeader width="180px">
               Block
               <TimeFormatToggle/>
@@ -84,6 +87,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
               enableTimeIncrement={ page === 1 && !isLoading }
               isLoading={ isLoading }
               animation={ initialList.getAnimationProp(item) }
+              chainData={ chainData }
             />
           )) }
         </TableBody>

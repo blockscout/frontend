@@ -4,6 +4,7 @@ import type { UserOpsItem } from 'types/api/userOps';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
+import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
@@ -19,12 +20,14 @@ import UserOpsTableItem from './UserOpsTableItem';
 
 const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
   const multichainContext = useMultichainContext();
+  const chainData = getChainDataForList(multichainContext);
   const chainConfig = (multichainContext?.chain.config || config);
 
   return (
     <TableRoot minW="1000px">
       <TableHeaderSticky top={ top }>
         <TableRow>
+          { chainData && <TableColumnHeader width="38px"></TableColumnHeader> }
           <TableColumnHeader w="60%">User op hash</TableColumnHeader>
           <TableColumnHeader w="180px">
             Timestamp
@@ -47,6 +50,7 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
               isLoading={ isLoading }
               showSender={ showSender }
               showTx={ showTx }
+              chainData={ chainData }
             />
           );
         }) }

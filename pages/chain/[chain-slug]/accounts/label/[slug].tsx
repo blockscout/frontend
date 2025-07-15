@@ -11,7 +11,7 @@ const AccountsLabelSearch = dynamic(() => import('ui/pages/AccountsLabelSearch')
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/chain/[chain-slug]/accounts/label/[slug]">
-      <MultichainProvider>
+      <MultichainProvider level="page">
         <AccountsLabelSearch/>
       </MultichainProvider>
     </PageNextJs>

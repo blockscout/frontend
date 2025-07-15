@@ -136,15 +136,14 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 
 const TokenEntity = (props: EntityProps) => {
   const multichainContext = useMultichainContext();
-  const partsProps = distributeEntityProps(props);
+  const partsProps = distributeEntityProps(props, multichainContext);
 
-  const chain = props.chain ?? multichainContext?.chain;
   const content = <Content { ...partsProps.content }/>;
 
   return (
     <Container w="100%" { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link } chain={ chain }>{ content }</Link> }
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
       <Symbol { ...partsProps.symbol }/>
       <Copy { ...partsProps.copy }/>
     </Container>

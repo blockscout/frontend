@@ -109,7 +109,7 @@ const AddressOpSuperchainTxs = () => {
               address={ hash }
               params={{ type: 'transactions', filterType: 'address', filterValue: txsQueryLocal.filterValue }}
               isLoading={ txsQueryLocal.query.pagination.isLoading }
-              chainConfig={ chainData?.config }
+              chainData={ chainData }
             />
             <Pagination { ...txsQueryLocal.query.pagination }/>
           </HStack>

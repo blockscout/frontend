@@ -1,6 +1,7 @@
 import React from 'react';
 
 import type { UserOpsItem } from 'types/api/userOps';
+import type { ChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
@@ -18,9 +19,10 @@ type Props = {
   isLoading?: boolean;
   showTx: boolean;
   showSender: boolean;
+  chainData?: ChainConfig;
 };
 
-const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
+const UserOpsListItem = ({ item, isLoading, showTx, showSender, chainData }: Props) => {
   const multichainContext = useMultichainContext();
   const chainConfig = (multichainContext?.chain.config || config);
 
@@ -29,7 +31,7 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>User op hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <UserOpEntity hash={ item.hash } isLoading={ isLoading } fontWeight="700" noIcon truncation="constant_long"/>
+        <UserOpEntity hash={ item.hash } isLoading={ isLoading } fontWeight="700" noIcon={ !chainData } truncation="constant_long" chain={ chainData }/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>

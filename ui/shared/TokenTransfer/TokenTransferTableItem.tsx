@@ -2,12 +2,14 @@ import { Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { ChainConfig } from 'types/multichain';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -21,6 +23,7 @@ type Props = TokenTransfer & {
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
+  chainData?: ChainConfig;
 };
 
 const TokenTransferTableItem = ({
@@ -35,6 +38,7 @@ const TokenTransferTableItem = ({
   timestamp,
   enableTimeIncrement,
   isLoading,
+  chainData,
 }: Props) => {
   const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
@@ -51,6 +55,11 @@ const TokenTransferTableItem = ({
           <Box my="3px">
             <TxAdditionalInfo hash={ txHash } isLoading={ isLoading }/>
           </Box>
+        </TableCell>
+      ) }
+      { chainData && (
+        <TableCell>
+          <ChainIcon data={ chainData } isLoading={ isLoading } my={ 1 }/>
         </TableCell>
       ) }
       <TableCell>

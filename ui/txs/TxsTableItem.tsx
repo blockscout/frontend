@@ -2,10 +2,12 @@ import { VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
+import type { ChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -26,9 +28,10 @@ type Props = {
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
   animation?: string;
+  chainData?: ChainConfig;
 };
 
-const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading, animation }: Props) => {
+const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading, animation, chainData }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   return (
@@ -36,6 +39,11 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       <TableCell pl={ 4 }>
         <TxAdditionalInfo tx={ tx } isLoading={ isLoading }/>
       </TableCell>
+      { chainData && (
+        <TableCell>
+          <ChainIcon data={ chainData } isLoading={ isLoading } my="2px"/>
+        </TableCell>
+      ) }
       <TableCell pr={ 4 }>
         <VStack alignItems="start" lineHeight="24px">
           <TxEntity

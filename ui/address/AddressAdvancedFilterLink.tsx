@@ -5,6 +5,7 @@ import React from 'react';
 import type { AddressFromToFilter } from 'types/api/address';
 import { ADVANCED_FILTER_TYPES } from 'types/api/advancedFilter';
 import type { TokenType } from 'types/api/token';
+import type { ChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
@@ -19,13 +20,14 @@ interface Props {
   address: string;
   typeFilter: Array<TokenType>;
   directionFilter: AddressFromToFilter;
+  chainData?: ChainConfig;
 }
 
-const AddressAdvancedFilterLink = ({ isLoading, address, typeFilter, directionFilter }: Props) => {
+const AddressAdvancedFilterLink = ({ isLoading, address, typeFilter, directionFilter, chainData }: Props) => {
   const isInitialLoading = useIsInitialLoading(isLoading);
   const multichainContext = useMultichainContext();
 
-  const chainConfig = multichainContext?.chain.config || config;
+  const chainConfig = chainData?.config || multichainContext?.chain.config || config;
 
   if (!chainConfig.features.advancedFilter.isEnabled) {
     return null;
@@ -37,10 +39,12 @@ const AddressAdvancedFilterLink = ({ isLoading, address, typeFilter, directionFi
     transaction_types: typeFilter.length > 0 ? typeFilter : ADVANCED_FILTER_TYPES.filter((type) => type !== 'coin_transfer'),
   }, (value) => value !== undefined);
 
+  const linkContext = (chainData ? { chain: chainData } : undefined) ?? multichainContext;
+
   return (
     <Link
       whiteSpace="nowrap"
-      href={ route({ pathname: '/advanced-filter', query: queryParams }, multichainContext) }
+      href={ route({ pathname: '/advanced-filter', query: queryParams }, linkContext) }
       flexShrink={ 0 }
       loading={ isInitialLoading }
       minW={ 8 }

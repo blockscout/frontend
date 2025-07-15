@@ -5,8 +5,10 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
+import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
@@ -45,6 +47,8 @@ const TxsTable = ({
     idFn: (item) => item.hash,
     enabled: !isLoading,
   });
+  const multichainContext = useMultichainContext();
+  const chainData = getChainDataForList(multichainContext);
 
   const feeCurrency = config.UI.views.tx.hiddenFields?.fee_currency || config.chain.hasMultipleGasCurrencies ?
     '' :
@@ -58,6 +62,7 @@ const TxsTable = ({
         <TableHeaderComponent top={ stickyHeader ? top : undefined }>
           <TableRow>
             <TableColumnHeader width="54px"></TableColumnHeader>
+            { chainData && <TableColumnHeader width="38px"></TableColumnHeader> }
             <TableColumnHeader width="180px">
               Txn hash
               <TimeFormatToggle/>
@@ -111,6 +116,7 @@ const TxsTable = ({
               enableTimeIncrement={ enableTimeIncrement }
               isLoading={ isLoading }
               animation={ initialList.getAnimationProp(item) }
+              chainData={ chainData }
             />
           )) }
         </TableBody>
