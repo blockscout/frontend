@@ -1,4 +1,4 @@
-import type { BrowserContext } from '@playwright/test';
+import type { BrowserContext, Locator } from '@playwright/test';
 import React from 'react';
 
 import * as rewardsBalanceMock from 'mocks/rewards/balance';
@@ -63,3 +63,37 @@ test('with groped items', async({ render, mockEnvs, page }) => {
   await expect(page.getByText('Blocks')).toBeVisible();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 450 } });
 });
+
+const promoBannerTest = (type: 'text' | 'image') => {
+  test.describe(`with promo banner (${ type })`, () => {
+    let component: Locator;
+
+    test.beforeEach(async({ render, mockEnvs, mockAssetResponse, mockApiResponse }) => {
+      await mockEnvs([
+        ...ENVS_MAP.userOps,
+        ...ENVS_MAP.nameService,
+        ...ENVS_MAP.rewardsService,
+        ...(type === 'text' ? ENVS_MAP.navigationPromoBannerText : ENVS_MAP.navigationPromoBannerImage),
+      ]);
+      await mockApiResponse('general:user_info', profileMock.withEmailAndWallet);
+      await mockApiResponse('rewards:user_balances', rewardsBalanceMock.base);
+      await mockAssetResponse('http://localhost:3000/image.svg', './playwright/mocks/image_svg.svg');
+      await mockAssetResponse('http://localhost:3000/image_s.jpg', './playwright/mocks/image_s.jpg');
+      await mockAssetResponse('http://localhost:3000/image_md.jpg', './playwright/mocks/image_md.jpg');
+
+      component = await render(<NavigationDesktop/>);
+    });
+
+    test(`${ type === 'text' ? '+@dark-mode' : '' }`, async() => { // eslint-disable-line playwright/no-conditional-in-test
+      await expect(component).toHaveScreenshot();
+    });
+
+    test('with tooltip', async({ page }) => {
+      await page.locator('.navigation-promo-banner').hover();
+      await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 450 } });
+    });
+  });
+};
+
+promoBannerTest('text');
+promoBannerTest('image');
