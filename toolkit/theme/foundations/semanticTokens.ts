@@ -268,13 +268,13 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         error: { value: '{colors.red.500}' },
       },
       placeholder: {
-        DEFAULT: { value: '{colors.gray.500}' },
+        DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
         error: { value: '{colors.red.500}' },
       },
     },
     field: {
       placeholder: {
-        DEFAULT: { value: '{colors.gray.500}' },
+        DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
         disabled: { value: '{colors.gray.500/20}' },
         error: { value: '{colors.red.500}' },
       },
@@ -305,12 +305,12 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       },
       indicator: {
         fg: {
-          DEFAULT: { value: '{colors.gray.500}' },
+          DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
         },
       },
       placeholder: {
         fg: {
-          DEFAULT: { value: '{colors.gray.500}' },
+          DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
           error: { value: '{colors.red.500}' },
         },
       },

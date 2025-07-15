@@ -345,7 +345,7 @@ const ETHERSCAN_URLS = [
 const DEPRECATED_ROUTES = [
   {
     source: '/graphiql',
-    destination: '/graphql?tab=graphql_api',
+    destination: '/api-docs?tab=graphql_api',
     permanent: false,
   },
 ];

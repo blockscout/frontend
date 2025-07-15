@@ -14,6 +14,7 @@ export const recipe = defineRecipe({
     color: 'input.fg',
     '--focus-color': 'colors.border.error',
     '--error-color': 'colors.border.error',
+    fontWeight: 'medium',
     _invalid: {
       focusRingColor: 'var(--error-color)',
       borderColor: 'var(--error-color)',

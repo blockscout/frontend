@@ -89,7 +89,7 @@
     "es-toolkit": "1.31.0",
     "focus-visible": "^5.2.0",
     "gradient-avatar": "git+https://github.com/blockscout/gradient-avatar.git",
-    "graphiql": "^2.2.0",
+    "graphiql": "^4.1.2",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.11.3",
     "js-cookie": "^3.0.1",
