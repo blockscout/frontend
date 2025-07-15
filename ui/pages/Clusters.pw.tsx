@@ -4,7 +4,7 @@ import React from 'react';
 import { clustersDirectoryMock } from 'mocks/clusters/directory';
 import { clustersLeaderboardMock } from 'mocks/clusters/leaderboard';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
-import { test, expect, devices } from 'playwright/lib';
+import { test, expect } from 'playwright/lib';
 
 import Clusters from './Clusters';
 
@@ -15,9 +15,7 @@ test.beforeEach(async({ mockEnvs, mockTextAd }) => {
 
 test.describe('Clusters Directory Page', () => {
   test.describe('mobile', () => {
-    test.use({ viewport: devices['iPhone 13 Pro'].viewport });
-
-    test('clusters directory with data @mobile', async({ render, mockApiResponse, mockAssetResponse }) => {
+    test('clusters directory with data +@mobile', async({ render, mockApiResponse, mockAssetResponse }) => {
       await mockAssetResponse('https://cdn.clusters.xyz/profile-image/campnetwork/lol', './playwright/mocks/image_s.jpg');
       await mockAssetResponse('https://cdn.clusters.xyz/profile-image/duck/quack', './playwright/mocks/image_s.jpg');
       await mockAssetResponse('https://cdn.clusters.xyz/profile-image/test/cluster', './playwright/mocks/image_s.jpg');
@@ -46,11 +44,18 @@ test.describe('Clusters Directory Page', () => {
           <Box h={{ base: '134px', lg: 6 }}/>
           <Clusters/>
         </div>,
+        {
+          hooksConfig: {
+            router: {
+              isReady: true,
+            },
+          },
+        },
       );
 
-      await expect(component.getByText('campnetwork/lol').first()).toBeVisible();
-      await expect(component.getByText('duck/quack').first()).toBeVisible();
-      await expect(component.getByText('test/cluster').first()).toBeVisible();
+      await expect(component.getByRole('link', { name: 'campnetwork/lol' })).toBeVisible({ timeout: 10000 });
+      await expect(component.getByRole('link', { name: 'duck/quack' })).toBeVisible({ timeout: 10000 });
+      await expect(component.getByRole('link', { name: 'test/cluster' })).toBeVisible({ timeout: 10000 });
 
       await expect(component).toHaveScreenshot();
     });
