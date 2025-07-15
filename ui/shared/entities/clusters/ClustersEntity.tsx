@@ -10,7 +10,6 @@ import { Image } from 'toolkit/chakra/image';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import colors from 'toolkit/theme/foundations/colors';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -51,7 +50,7 @@ const Icon = (props: IconProps) => {
       justifyContent="center"
       width={ styles.boxSize }
       height={ styles.boxSize }
-      backgroundColor={ colors.clusters.value }
+      backgroundColor="clusters"
       borderRadius="base"
       mr={ 2 }
       flexShrink={ 0 }
