@@ -83,6 +83,21 @@ export default function useContractTabs({ data, isPlaceholderData, hasMudTab, ch
   }, [ data?.hash, data?.implementations ]);
 
   return React.useMemo(() => {
+
+    // TODO @tom2drum remove this condition once the API will return is_contract flag
+    if (!isPlaceholderData && !data?.is_contract) {
+      return {
+        tabs: [
+          {
+            id: 'contract_code' as const,
+            title: 'Code',
+            component: <div>Not a contract</div>,
+          },
+        ],
+        isLoading: false,
+      };
+    }
+
     return {
       tabs: [
         data && {
@@ -124,6 +139,7 @@ export default function useContractTabs({ data, isPlaceholderData, hasMudTab, ch
     };
   }, [
     data,
+    isPlaceholderData,
     contractQuery,
     channel,
     verifiedImplementations,

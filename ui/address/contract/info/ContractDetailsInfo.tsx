@@ -1,14 +1,19 @@
-import { Flex, Grid } from '@chakra-ui/react';
+import { Flex, Grid, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import type { Address } from 'types/api/address';
 import type { SmartContract } from 'types/api/contract';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import { getGitHubOwnerAndRepo } from 'ui/contractVerification/utils';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import ContractCreationStatus from 'ui/shared/statusTag/ContractCreationStatus';
 
 import ContractSecurityAudits from '../audits/ContractSecurityAudits';
 import ContractDetailsInfoItem from './ContractDetailsInfoItem';
@@ -18,10 +23,12 @@ const rollupFeature = config.features.rollup;
 interface Props {
   data: SmartContract;
   isLoading: boolean;
-  addressHash: string;
+  addressData: Address;
 }
 
-const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
+const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
+  const multichainContext = useMultichainContext();
+
   const contractNameWithCertifiedIcon = data ? (
     <Flex alignItems="center">
       { data.name }
@@ -73,6 +80,23 @@ const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
           isLoading={ isLoading }
         >
           { contractNameWithCertifiedIcon }
+        </ContractDetailsInfoItem>
+      ) }
+      { multichainContext && multichainContext.level !== 'page' && addressData.creator_address_hash && addressData.creation_transaction_hash && (
+        <ContractDetailsInfoItem
+          label="Creator"
+          isLoading={ isLoading }
+        >
+          <Flex alignItems="center" flexWrap="wrap">
+            <AddressEntity
+              address={{ hash: addressData.creator_address_hash }}
+              truncation="constant"
+              noIcon
+            />
+            <Text whiteSpace="pre" color="text.secondary"> at txn </Text>
+            <TxEntity hash={ addressData.creation_transaction_hash } truncation="constant" noIcon noCopy={ false }/>
+            { addressData.creation_status && <ContractCreationStatus status={ addressData.creation_status } ml={{ base: 0, lg: 2 }}/> }
+          </Flex>
         </ContractDetailsInfoItem>
       ) }
       { data.compiler_version && (
@@ -164,7 +188,7 @@ const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
           label="Security audit"
           isLoading={ isLoading }
         >
-          <ContractSecurityAudits addressHash={ addressHash }/>
+          <ContractSecurityAudits addressHash={ addressData.hash }/>
         </ContractDetailsInfoItem>
       ) }
     </Grid>

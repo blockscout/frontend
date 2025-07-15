@@ -112,7 +112,7 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
         <ContractDetailsInfo
           data={ mainContractQuery.data }
           isLoading={ mainContractQuery.isPlaceholderData }
-          addressHash={ addressData.hash }
+          addressData={ addressData }
         />
       ) }
       <RoutedTabs
