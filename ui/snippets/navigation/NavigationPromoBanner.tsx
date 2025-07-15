@@ -143,7 +143,10 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
         <Tooltip
           content={ tooltipContent }
           showArrow={ false }
-          positioning={ isHorizontalNavigation ? undefined : { placement: 'right-end', offset: { crossAxis: 0, mainAxis: 5 } } }
+          positioning={{
+            placement: isHorizontalNavigation ? 'bottom' : 'right-end',
+            offset: { crossAxis: 0, mainAxis: isHorizontalNavigation ? 8 : 5 },
+          }}
           contentProps={{
             p: 0,
             borderRadius: 'base',
