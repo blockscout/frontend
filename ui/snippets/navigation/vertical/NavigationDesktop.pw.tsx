@@ -256,3 +256,44 @@ test.describe('with highlighted routes', () => {
     });
   });
 });
+
+const promoBannerTest = (type: 'text' | 'image') => {
+  test.describe(`with promo banner (${ type })`, () => {
+    let component: Locator;
+
+    test.beforeEach(async({ render, mockEnvs, mockAssetResponse }) => {
+      await mockEnvs(type === 'text' ? ENVS_MAP.navigationPromoBannerText : ENVS_MAP.navigationPromoBannerImage);
+      await mockAssetResponse('http://localhost:3000/image.svg', './playwright/mocks/image_svg.svg');
+      await mockAssetResponse('http://localhost:3000/image_s.jpg', './playwright/mocks/image_s.jpg');
+      await mockAssetResponse('http://localhost:3000/image_md.jpg', './playwright/mocks/image_md.jpg');
+
+      component = await render(
+        <Flex w="100%" minH="100vh" alignItems="stretch">
+          <NavigationDesktop/>
+          <Box bgColor="lightpink" w="100%"/>
+        </Flex>,
+        { hooksConfig },
+      );
+    });
+
+    test(`${ type === 'text' ? '+@dark-mode' : '' }`, async() => { // eslint-disable-line playwright/no-conditional-in-test
+      await expect(component).toHaveScreenshot();
+    });
+
+    test('with tooltip', async({ page }) => {
+      await page.locator('.navigation-promo-banner').hover();
+      await expect(component).toHaveScreenshot();
+    });
+
+    test.describe('xl screen', () => {
+      test.use({ viewport: pwConfig.viewport.xl });
+
+      test(`${ type === 'text' ? '+@dark-mode' : '' }`, async() => { // eslint-disable-line playwright/no-conditional-in-test
+        await expect(component).toHaveScreenshot();
+      });
+    });
+  });
+};
+
+promoBannerTest('text');
+promoBannerTest('image');
