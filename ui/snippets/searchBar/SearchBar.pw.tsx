@@ -47,7 +47,7 @@ test('search by name homepage +@dark-mode', async({ render, page, mockApiRespons
     searchMock.token2,
     searchMock.contract1,
   ], { queryParams: { q: 'o' } });
-  await render(<SearchBar isHomepage/>);
+  await render(<SearchBar isHeroBanner/>);
   await page.getByPlaceholder(/search/i).fill('o');
   await page.waitForResponse(apiUrl);
 
