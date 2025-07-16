@@ -7,6 +7,7 @@ import React from 'react';
 import config from 'configs/app';
 // import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import { Link } from 'toolkit/chakra/link';
 import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
@@ -19,6 +20,8 @@ type Props = {
 };
 
 const UserOpSubHeading = ({ hash }: Props) => {
+  const multichainContext = useMultichainContext();
+
   const hasInterpretationFeature = config.features.txInterpretation.isEnabled;
 
   const txInterpretationQuery = useApiQuery('general:user_op_interpretation', {
@@ -43,6 +46,7 @@ const UserOpSubHeading = ({ hash }: Props) => {
           isLoading={ txInterpretationQuery.isPlaceholderData }
           fontSize="lg"
           mr={ hasViewAllInterpretationsLink ? 3 : 0 }
+          chainData={ multichainContext?.chain }
         />
         { hasViewAllInterpretationsLink &&
           <Link href={ `#${ TX_ACTIONS_BLOCK_ID }` }>View all</Link> }
@@ -75,7 +79,7 @@ const UserOpSubHeading = ({ hash }: Props) => {
     //     />
     //   );
   } else {
-    return <UserOpEntity hash={ hash } noLink noCopy={ false } variant="subheading"/>;
+    return <UserOpEntity hash={ hash } noLink noCopy={ false } variant="subheading" chain={ multichainContext?.chain }/>;
   }
 };
 

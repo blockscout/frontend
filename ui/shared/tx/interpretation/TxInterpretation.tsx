@@ -1,4 +1,4 @@
-import { chakra } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,12 +8,14 @@ import type {
   TxInterpretationVariable,
   TxInterpretationVariableString,
 } from 'types/api/txInterpretation';
+import type { ChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import * as mixpanel from 'lib/mixpanel/index';
+import getChainTooltipText from 'lib/multichain/getChainTooltipText';
 import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
@@ -21,6 +23,7 @@ import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -41,6 +44,7 @@ type Props = {
   addressDataMap?: Record<string, AddressParam>;
   className?: string;
   isNoves?: boolean;
+  chainData?: ChainConfig;
 };
 
 type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>;
@@ -176,7 +180,7 @@ const TxInterpretationElementByType = (
   }
 };
 
-const TxInterpretation = ({ summary, isLoading, addressDataMap, className, isNoves }: Props) => {
+const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chainData, isNoves }: Props) => {
   const novesLogoUrl = useColorModeValue('/static/noves-logo.svg', '/static/noves-logo-dark.svg');
   if (!summary) {
     return null;
@@ -194,10 +198,28 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, isNov
   const variablesNames = extractVariables(intermediateResult);
   const chunks = getStringChunks(intermediateResult);
 
+  const tooltipContent = 'Transaction summary' + (chainData ? `\n${ getChainTooltipText(chainData) }` : '');
+
   return (
     <Skeleton loading={ isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
-      <Tooltip content="Transaction summary">
-        <IconSvg name="lightning" boxSize={ 5 } color="text.secondary" mr={ 1 } verticalAlign="text-top"/>
+      <Tooltip content={ tooltipContent } contentProps={{ whiteSpace: 'pre-wrap' }}>
+        <Box display="inline-flex" position="relative" mr={ chainData ? '14px' : 1 } verticalAlign="text-top">
+          <IconSvg name="lightning" boxSize={ 5 } color="text.secondary"/>
+          { chainData && (
+            <ChainIcon
+              data={ chainData }
+              boxSize="18px"
+              position="absolute"
+              top="6px"
+              left="12px"
+              borderRadius="full"
+              borderWidth="1px"
+              borderStyle="solid"
+              borderColor="global.body.bg"
+              backgroundColor="global.body.bg"
+            />
+          ) }
+        </Box>
       </Tooltip>
       { chunks.map((chunk, index) => {
         let content = null;

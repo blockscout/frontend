@@ -14,6 +14,7 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'toolkit/utils/htmlEntities';
 import CsvExportForm from 'ui/csvExport/CsvExportForm';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import ContentLoader from 'ui/shared/ContentLoader';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -160,7 +161,13 @@ const CsvExport = () => {
       return null;
     }
 
-    const chainText = multichainContext?.chain ? ` on ${ multichainContext.chain.config.chain.name }` : undefined;
+    const chainInfo = multichainContext?.chain ? (
+      <Flex display="inline-flex" alignItems="center" columnGap={ 2 }>
+        <span>on</span>
+        <ChainIcon data={ multichainContext.chain }/>
+        <span>{ multichainContext.chain.config.chain.name }</span>
+      </Flex>
+    ) : null;
 
     const limit = (configQuery.data?.limit || 10_000).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' });
 
@@ -176,7 +183,7 @@ const CsvExport = () => {
             noCopy
             noSymbol
           />
-          { chainText && <span>{ chainText }</span> }
+          { chainInfo }
           <span> to CSV file. </span>
           <span>Exports are limited to the top { limit } holders by amount held.</span>
         </Flex>
@@ -197,7 +204,7 @@ const CsvExport = () => {
         />
         <span>{ nbsp }</span>
         { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue })</span> }
-        { chainText && <span>{ chainText }</span> }
+        { chainInfo }
         <span> to CSV file. </span>
         <span>Exports are limited to the last { limit } { exportType.text }.</span>
       </Flex>

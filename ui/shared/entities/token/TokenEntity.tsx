@@ -1,4 +1,4 @@
-import { chakra } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -6,8 +6,11 @@ import type { TokenInfo } from 'types/api/token';
 import { route } from 'nextjs/routes';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
+import getChainTooltipText from 'lib/multichain/getChainTooltipText';
+import getIconUrl from 'lib/multichain/getIconUrl';
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
@@ -40,7 +43,7 @@ const Icon = (props: IconProps) => {
   }
 
   const styles = {
-    marginRight: props.marginRight ?? 2,
+    marginRight: props.marginRight ?? (props.chain ? '18px' : 2),
     boxSize: props.boxSize ?? getIconProps(props.variant).boxSize,
     borderRadius: props.token.type === 'ERC-20' ? 'full' : 'base',
     flexShrink: 0,
@@ -48,6 +51,21 @@ const Icon = (props: IconProps) => {
 
   if (props.isLoading) {
     return <Skeleton { ...styles } loading className={ props.className }/>;
+  }
+
+  if (props.chain) {
+    return (
+      <Tooltip content={ getChainTooltipText(props.chain, 'Token on ') }>
+        <Box { ...styles } className={ props.className } display="inline-flex" alignItems="center" position="relative">
+          <Image
+            src={ props.token.icon_url ?? undefined }
+            alt={ `${ props.token.name || 'token' } logo` }
+            fallback={ <TokenLogoPlaceholder { ...styles }/> }
+          />
+          <EntityBase.IconShield src={ getIconUrl(props.chain) }/>
+        </Box>
+      </Tooltip>
+    );
   }
 
   return (

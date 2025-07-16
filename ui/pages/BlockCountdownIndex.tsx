@@ -7,6 +7,7 @@ import { routeParams } from 'nextjs/routes';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { Heading } from 'toolkit/chakra/heading';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 
 const BlockCountdownIndex = () => {
@@ -24,21 +25,31 @@ const BlockCountdownIndex = () => {
     }
   }, [ router, multichainContext ]);
 
-  const chainText = multichainContext?.chain ? ` on ${ multichainContext.chain.config.chain.name }` : '';
-
   return (
     <Center h="100%" justifyContent={{ base: 'flex-start', lg: 'center' }} flexDir="column" textAlign="center" pt={{ base: 8, lg: 0 }}>
-      <IconSvg
-        name="block_countdown"
-        color={{ _light: 'gray.300', _dark: 'gray.600' }}
-        w={{ base: '160px', lg: '240px' }}
-        h={{ base: '123px', lg: '184px' }}
-      />
+      <Box position="relative">
+        <IconSvg
+          name="block_countdown"
+          color={{ _light: 'gray.300', _dark: 'gray.600' }}
+          w={{ base: '160px', lg: '240px' }}
+          h={{ base: '123px', lg: '184px' }}
+        />
+        { multichainContext?.chain && (
+          <ChainIcon
+            data={ multichainContext.chain }
+            position="absolute"
+            bottom={{ base: '15px', lg: '22px' }}
+            left={{ base: '105px', lg: '150px' }}
+            boxSize={{ lg: '60px' }}
+            bgColor="global.body.bg"
+          />
+        ) }
+      </Box>
       <Heading
         level="1"
         mt={{ base: 3, lg: 6 }}
       >
-        Block countdown{ chainText }
+        Block countdown
       </Heading>
       <Box mt={ 2 }>
         The estimated time for a block to be created and added to the blockchain.

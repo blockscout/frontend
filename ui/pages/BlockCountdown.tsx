@@ -17,6 +17,7 @@ import { Link } from 'toolkit/chakra/link';
 import BlockCountdownTimer from 'ui/blockCountdown/BlockCountdownTimer';
 import createGoogleCalendarLink from 'ui/blockCountdown/createGoogleCalendarLink';
 import createIcsFileBlob from 'ui/blockCountdown/createIcsFileBlob';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import ContentLoader from 'ui/shared/ContentLoader';
 import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
@@ -67,8 +68,6 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
     return <Center h="100%"><ContentLoader/></Center>;
   }
 
-  const chainText = multichainContext?.chain ? ` on ${ multichainContext.chain.config.chain.name }` : '';
-
   return (
     <Center h="100%" alignItems={{ base: 'flex-start', lg: 'center' }}>
       <Flex flexDir="column" w="fit-content" maxW={{ base: '100%', lg: '700px', xl: '1000px' }}>
@@ -77,7 +76,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
             <Heading
               level="1"
             >
-              <TruncatedValue value={ `Block${ chainText } #${ height }` } w="100%"/>
+              <TruncatedValue value={ `Block #${ height }` } w="100%"/>
             </Heading>
             <Box mt={ 2 } color="text.secondary">
               <Box fontWeight={ 600 }>Estimated target date</Box>
@@ -111,13 +110,25 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
               </Button>
             </Flex>
           </Box>
-          <IconSvg
-            name="block_slim"
-            w={{ base: '65px', lg: '125px' }}
-            h={{ base: '75px', lg: '140px' }}
-            color={{ _light: 'gray.300', _dark: 'gray.600' }}
-            flexShrink={ 0 }
-          />
+          <Box position="relative">
+            <IconSvg
+              name="block_slim"
+              w={{ base: '65px', lg: '125px' }}
+              h={{ base: '75px', lg: '140px' }}
+              color={{ _light: 'gray.300', _dark: 'gray.600' }}
+              flexShrink={ 0 }
+            />
+            { multichainContext?.chain && (
+              <ChainIcon
+                data={ multichainContext.chain }
+                position="absolute"
+                bottom={{ base: '5px', lg: '6px' }}
+                right={{ base: '45px', lg: '86px' }}
+                boxSize={{ lg: '60px' }}
+                bgColor="global.body.bg"
+              />
+            ) }
+          </Box>
         </Flex>
         { data.result.EstimateTimeInSec && (
           <BlockCountdownTimer

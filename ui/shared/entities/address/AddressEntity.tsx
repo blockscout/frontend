@@ -25,10 +25,7 @@ const getDisplayedAddress = (address: AddressProp, altHash?: string) => {
 };
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route(
-    { pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } },
-    props.chain ? { chain: props.chain } : undefined,
-  );
+  const defaultHref = route({ pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } });
 
   return (
     <EntityBase.Link
