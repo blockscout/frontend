@@ -1,4 +1,4 @@
-import { Box, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -8,14 +8,12 @@ import { route } from 'nextjs/routes';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getChainTooltipText from 'lib/multichain/getChainTooltipText';
 import getIconUrl from 'lib/multichain/getIconUrl';
-import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { Tooltip } from 'toolkit/chakra/tooltip';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
-import { distributeEntityProps, getIconProps } from '../base/utils';
+import { distributeEntityProps } from '../base/utils';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'token'>;
 
@@ -44,37 +42,19 @@ const Icon = (props: IconProps) => {
 
   const styles = {
     marginRight: props.marginRight ?? (props.chain ? '18px' : 2),
-    boxSize: props.boxSize ?? getIconProps(props.variant).boxSize,
     borderRadius: props.token.type === 'ERC-20' ? 'full' : 'base',
-    flexShrink: 0,
   };
 
-  if (props.isLoading) {
-    return <Skeleton { ...styles } loading className={ props.className }/>;
-  }
-
-  if (props.chain) {
-    return (
-      <Tooltip content={ getChainTooltipText(props.chain, 'Token on ') }>
-        <Box { ...styles } className={ props.className } display="inline-flex" alignItems="center" position="relative">
-          <Image
-            src={ props.token.icon_url ?? undefined }
-            alt={ `${ props.token.name || 'token' } logo` }
-            fallback={ <TokenLogoPlaceholder { ...styles }/> }
-          />
-          <EntityBase.IconShield src={ getIconUrl(props.chain) }/>
-        </Box>
-      </Tooltip>
-    );
-  }
-
   return (
-    <Image
+    <EntityBase.Icon
       { ...styles }
       className={ props.className }
       src={ props.token.icon_url ?? undefined }
       alt={ `${ props.token.name || 'token' } logo` }
-      fallback={ <TokenLogoPlaceholder { ...styles }/> }
+      fallback={ <TokenLogoPlaceholder/> }
+      shield={ props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined) }
+      hint={ props.chain ? getChainTooltipText(props.chain, 'Token on ') : undefined }
+      { ...props }
     />
   );
 };

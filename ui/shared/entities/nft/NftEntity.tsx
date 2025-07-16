@@ -30,7 +30,7 @@ const Icon = (props: IconProps) => {
       <EntityBase.Icon
         { ...props }
         variant={ props.variant ?? 'heading' }
-        name={ props.name ?? 'nft_shield' }
+        name={ 'name' in props ? props.name : 'nft_shield' }
         marginRight={ 0 }
       />
     );
@@ -54,7 +54,7 @@ const Icon = (props: IconProps) => {
     <EntityBase.Icon
       { ...props }
       variant="heading"
-      name={ props.name ?? 'nft_shield' }
+      name={ 'name' in props ? props.name : 'nft_shield' }
     />
   );
 };

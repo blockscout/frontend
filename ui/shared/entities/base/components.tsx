@@ -14,7 +14,7 @@ import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import type { IconName, Props as IconSvgProps } from 'ui/shared/IconSvg';
+import type { Props as IconSvgProps } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
@@ -92,36 +92,53 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, v
   );
 });
 
-interface EntityIconProps extends Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> {
-  name?: IconName;
+type EntityIconProps = (ImageProps | IconSvgProps) & Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> & {
   shield?: IconShieldProps;
   hint?: string;
   hintPostfix?: string;
   tooltipInteractive?: boolean;
-}
+};
 
-export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant' | 'chain'>, EntityIconProps {}
+export type IconBaseProps = Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant' | 'chain'> & EntityIconProps;
 
-const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRight, boxSize, shield, hint, tooltipInteractive }: IconBaseProps) => {
-  if (noIcon || !name) {
+const Icon = (props: IconBaseProps) => {
+  const { isLoading, noIcon, variant, color, borderRadius, marginRight, boxSize, shield, hint, tooltipInteractive, ...rest } = props;
+
+  if (noIcon) {
     return null;
   }
 
-  const styles = getIconProps(variant);
+  const styles = getIconProps(variant, Boolean(shield));
 
-  const iconElement = (
-    <IconSvg
-      name={ name }
-      boxSize={ boxSize ?? styles.boxSize }
-      isLoading={ isLoading }
-      borderRadius={ borderRadius ?? 'base' }
-      display="block"
-      mr={ marginRight ?? (shield ? '18px' : '8px') }
-      color={ color ?? { _light: 'gray.500', _dark: 'gray.400' } }
-      minW={ 0 }
-      flexShrink={ 0 }
-    />
-  );
+  const iconElement = (() => {
+    const commonProps = {
+      ...styles,
+      boxSize: boxSize ?? styles.boxSize,
+      borderRadius: borderRadius ?? 'base',
+      flexShrink: 0,
+      minW: 0,
+    };
+
+    if (isLoading) {
+      return <Skeleton loading { ...commonProps }/>;
+    }
+
+    if ('src' in props) {
+      return <Image { ...commonProps } { ...rest }/>;
+    }
+
+    const svgProps = rest as IconSvgProps;
+
+    return (
+      <IconSvg
+        display="block"
+        color={ color ?? { _light: 'gray.500', _dark: 'gray.400' } }
+        { ...commonProps }
+        { ...svgProps }
+      />
+    );
+  })();
+
   const iconElementWithHint = hint ? (
     <Tooltip
       content={ hint }
@@ -137,7 +154,7 @@ const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRig
   }
 
   return (
-    <Box position="relative">
+    <Box position="relative" display="inline-flex" alignItems="center">
       { iconElementWithHint }
       <IconShield isLoading={ isLoading } { ...shield }/>
     </Box>

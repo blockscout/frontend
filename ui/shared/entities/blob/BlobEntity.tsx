@@ -26,7 +26,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      name={ props.name ?? 'blob' }
+      name={ 'name' in props ? props.name : 'blob' }
       borderRadius={ props.isLoading ? 'sm' : 'none' }
     />
   );

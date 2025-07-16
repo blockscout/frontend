@@ -63,9 +63,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           hash={ tx.hash }
           truncation="constant_long"
           fontWeight="700"
-          icon={{
-            name: tx.transaction_types.includes('blob_transaction') ? 'blob' : undefined,
-          }}
+          icon={ tx.transaction_types.includes('blob_transaction') ? { name: 'blob' } : {} }
           chain={ chainData }
         />
         <TimeWithTooltip

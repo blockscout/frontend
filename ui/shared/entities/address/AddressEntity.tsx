@@ -12,6 +12,7 @@ import getIconUrl from 'lib/multichain/getIconUrl';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
+import type { IconName } from 'ui/shared/IconSvg';
 
 import { distributeEntityProps, getContentProps, getIconProps } from '../base/utils';
 import AddressEntityContentProxy from './AddressEntityContentProxy';
@@ -47,11 +48,7 @@ const Icon = (props: IconProps) => {
   const shield = props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined);
   const hintPostfix: string = props.hintPostfix ?? (props.chain ? ` on ${ props.chain.config.chain.name } (Chain ID: ${ props.chain.config.chain.id })` : '');
 
-  const marginRight = props.marginRight ?? (shield ? '18px' : '8px');
-  const styles = {
-    ...getIconProps(props.variant),
-    marginRight,
-  };
+  const styles = getIconProps(props.variant, Boolean(shield));
 
   if (props.isLoading) {
     return <Skeleton { ...styles } loading borderRadius="full" flexShrink={ 0 }/>;
@@ -72,7 +69,7 @@ const Icon = (props: IconProps) => {
 
     const isProxy = Boolean(props.address.implementations?.length);
     const isVerified = isProxy ? props.address.is_verified && props.address.implementations?.every(({ name }) => Boolean(name)) : props.address.is_verified;
-    const contractIconName: EntityBase.IconBaseProps['name'] = props.address.is_verified ? 'contracts/verified' : 'contracts/regular';
+    const contractIconName: IconName = props.address.is_verified ? 'contracts/verified' : 'contracts/regular';
     const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract') + hintPostfix;
 
     return (

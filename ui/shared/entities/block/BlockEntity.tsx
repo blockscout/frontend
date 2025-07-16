@@ -32,7 +32,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      name={ props.name ?? 'block_slim' }
+      name={ 'name' in props ? props.name : 'block_slim' }
       shield={ props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined) }
     />
   );
