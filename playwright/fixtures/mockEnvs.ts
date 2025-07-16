@@ -53,6 +53,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   userOps: [
     [ 'NEXT_PUBLIC_HAS_USER_OPS', 'true' ],
+    [ 'NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST', 'http://localhost:3110' ],
   ],
   hasContractAuditReports: [
     [ 'NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS', 'true' ],
