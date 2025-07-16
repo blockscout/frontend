@@ -85,7 +85,7 @@ const HeroBanner = () => {
           <SearchBarMobile isHeroBanner/>
         </Box>
         <Box display={{ base: 'none', lg: 'flex' }}>
-          <SearchBar isHomepage/>
+          <SearchBar isHeroBanner/>
         </Box>
       </Box>
       <AdBanner platform="mobile" w="fit-content" flexShrink={ 0 } borderRadius="md" overflow="hidden" display={{ base: 'none', lg: 'block ' }}/>

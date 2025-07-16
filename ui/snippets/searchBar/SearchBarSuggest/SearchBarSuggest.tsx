@@ -176,12 +176,12 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
             position="sticky"
             top="0"
             width="100%"
-            background={{ _light: 'white', _dark: 'gray.900' }}
             py={ 5 }
             my={ -5 }
             ref={ tabsRef }
             zIndex={ 1 }
             overflowX="hidden"
+            background={{ _light: 'white', _dark: 'gray.900' }}
           >
             <AdaptiveTabs
               tabs={ categoryTabs }
@@ -189,6 +189,11 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
               defaultValue={ currentTab }
               variant="secondary"
               size="sm"
+              mb={ 0 }
+              listProps={{
+                mb: 0,
+                background: { _light: 'white', _dark: 'gray.900' },
+              }}
             />
           </Box>
         ) }
@@ -199,7 +204,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
                 textStyle="sm"
                 fontWeight={ 600 }
                 color="text.secondary"
-                mt={{ base: 6, lg: 0 }}
+                mt={ 6 }
                 mb={{ base: 2, lg: 3 }}
                 ref={ (el: HTMLParagraphElement) => {
                   categoriesRefs.current[index] = el;
