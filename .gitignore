@@ -41,6 +41,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 /configs/envs/.env.secrets
 /configs/envs/.samples
 
