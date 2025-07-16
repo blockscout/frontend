@@ -21,6 +21,7 @@ import OpSuperchainAddressContract from './OpSuperchainAddressContract';
 import OpSuperchainAddressDetails from './OpSuperchainAddressDetails';
 import OpSuperchainAddressInternalTxs from './OpSuperchainAddressInternalTxs';
 import OpSuperchainAddressLogs from './OpSuperchainAddressLogs';
+import OpSuperchainAddressTokens, { ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS } from './OpSuperchainAddressTokens';
 import OpSuperchainAddressTokenTransfers, { ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS } from './OpSuperchainAddressTokenTransfers';
 import OpSuperchainAddressTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './OpSuperchainAddressTxs';
 
@@ -65,6 +66,12 @@ const OpSuperchainAddress = () => {
         title: 'Token transfers',
         component: <OpSuperchainAddressTokenTransfers/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS,
+      },
+      {
+        id: 'tokens',
+        title: 'Tokens',
+        component: <OpSuperchainAddressTokens/>,
+        subTabs: ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS,
       },
       {
         id: 'internal_txs',

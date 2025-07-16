@@ -59,26 +59,6 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
-        hint="Transaction and address of creation"
-        isLoading={ isLoading }
-      >
-        Creator
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'contract' } }) }>View by chain</Link>
-      </DetailedInfo.ItemValue>
-
-      <DetailedInfo.ItemLabel
-        hint="Implementations of the proxy contract"
-        isLoading={ isLoading }
-      >
-        Implementations
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'contract' } }) }>View by chain</Link>
-      </DetailedInfo.ItemValue>
-
-      <DetailedInfo.ItemLabel
         hint="ETH balance"
         isLoading={ isLoading }
       >
