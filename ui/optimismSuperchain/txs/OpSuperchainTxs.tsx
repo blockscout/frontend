@@ -10,6 +10,7 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+import OpSuperchainTxsCrossChain from './OpSuperchainTxsCrossChain';
 import OpSuperchainTxsLocal, { OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS } from './OpSuperchainTxsLocal';
 
 const TABS_RIGHT_SLOT_PROPS = {
@@ -42,7 +43,7 @@ const OpSuperchainTxs = () => {
       {
         id: 'index',
         title: 'Cross-chain',
-        component: <div>Coming soon 🔜</div>,
+        component: <OpSuperchainTxsCrossChain/>,
       },
       {
         id: 'txs_local',

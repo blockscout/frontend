@@ -10,6 +10,7 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import OpSuperchainToken from 'ui/optimismSuperchain/token/OpSuperchainToken';
 import Token from 'ui/pages/Token';
 
 const pathname: Route['pathname'] = '/token/[hash]';
@@ -17,7 +18,7 @@ const pathname: Route['pathname'] = '/token/[hash]';
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      <Token/>
+      { config.features.opSuperchain.isEnabled ? <OpSuperchainToken/> : <Token/> }
     </PageNextJs>
   );
 };
@@ -27,7 +28,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
   const baseResponse = await gSSP.base<typeof pathname>(ctx);
 
-  if ('props' in baseResponse) {
+  if ('props' in baseResponse && !config.features.opSuperchain.isEnabled) {
     if (
       config.meta.seo.enhancedDataEnabled ||
       (config.meta.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview')

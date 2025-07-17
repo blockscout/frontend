@@ -3,6 +3,7 @@ import React from 'react';
 import { route } from 'nextjs/routes';
 
 import multichainConfig from 'configs/multichain';
+import getCurrencySymbol from 'lib/multichain/getCurrencySymbol';
 import { Link } from 'toolkit/chakra/link';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
@@ -18,6 +19,7 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
   const chains = multichainConfig()?.chains;
 
   const isLoading = false;
+  const currencySymbol = getCurrencySymbol();
 
   return (
     <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} >
@@ -59,10 +61,10 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
-        hint="ETH balance"
+        hint={ `${ currencySymbol } balance` }
         isLoading={ isLoading }
       >
-        ETH balance
+        { currencySymbol } balance
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         Coming soon 🔜

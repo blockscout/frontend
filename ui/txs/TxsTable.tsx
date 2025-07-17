@@ -58,7 +58,7 @@ const TxsTable = ({
 
   return (
     <AddressHighlightProvider>
-      <TableRoot minWidth="950px">
+      <TableRoot minWidth="1000px">
         <TableHeaderComponent top={ stickyHeader ? top : undefined }>
           <TableRow>
             <TableColumnHeader width="54px"></TableColumnHeader>

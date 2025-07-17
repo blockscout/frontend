@@ -9,11 +9,13 @@ import HeroBanner from 'ui/home/HeroBanner';
 
 import ChainWidget from './ChainWidget';
 import LatestTxs from './LatestTxs';
+import Stats from './Stats';
 
 const OpSuperchainHome = () => {
   return (
     <Box as="main">
       <HeroBanner/>
+      <Stats/>
       <LatestTxs/>
       <HStack mt={ 3 } gap={ 3 } flexWrap="wrap" alignItems="stretch">
         { multichainConfig()?.chains.map(chain => {

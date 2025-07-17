@@ -4,6 +4,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TxsSocketType } from 'ui/txs/socket/types';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import getCurrencySymbol from 'lib/multichain/getCurrencySymbol';
 import { TableBody, TableColumnHeader, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import TxsSocketNotice from 'ui/txs/socket/TxsSocketNotice';
@@ -15,29 +16,29 @@ interface Props {
   isLoading: boolean;
   socketType?: TxsSocketType;
   stickyHeader?: boolean;
+  top?: number;
 }
 
-const CrossChainTxsTable = ({ items, isLoading, socketType, stickyHeader = true }: Props) => {
+const CrossChainTxsTable = ({ items, isLoading, socketType, stickyHeader = true, top }: Props) => {
   const TableHeaderComponent = stickyHeader ? TableHeaderSticky : TableHeader;
+
+  const currencySymbol = getCurrencySymbol();
 
   return (
     <AddressHighlightProvider>
-      <TableRoot minW="1150px">
-        <TableHeaderComponent top={ stickyHeader ? 68 : undefined }>
+      <TableRoot minW="1150px" tableLayout="auto">
+        <TableHeaderComponent top={ stickyHeader ? top : undefined }>
           <TableRow>
-            <TableColumnHeader width="52px"/>
-            <TableColumnHeader w="180px">
+            <TableColumnHeader>
               Message
               <TimeFormatToggle/>
             </TableColumnHeader>
-            <TableColumnHeader w="130px">Type</TableColumnHeader>
-            <TableColumnHeader w="130px">Method</TableColumnHeader>
-            <TableColumnHeader w="25%">Source tx</TableColumnHeader>
-            <TableColumnHeader w="25%">Destination tx</TableColumnHeader>
-            <TableColumnHeader w="25%">Sender</TableColumnHeader>
-            <TableColumnHeader w="32px"/>
-            <TableColumnHeader w="25%">Target</TableColumnHeader>
-            <TableColumnHeader w="130px">Value</TableColumnHeader>
+            <TableColumnHeader>Type</TableColumnHeader>
+            <TableColumnHeader>Method</TableColumnHeader>
+            <TableColumnHeader>Source tx</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap">Destination tx</TableColumnHeader>
+            <TableColumnHeader>Sender / Target</TableColumnHeader>
+            <TableColumnHeader isNumeric>Value</TableColumnHeader>
           </TableRow>
         </TableHeaderComponent>
         <TableBody>
@@ -47,6 +48,7 @@ const CrossChainTxsTable = ({ items, isLoading, socketType, stickyHeader = true 
               key={ String(item.nonce) + (isLoading ? index : '') }
               item={ item }
               isLoading={ isLoading }
+              currencySymbol={ currencySymbol }
             />
           )) }
         </TableBody>

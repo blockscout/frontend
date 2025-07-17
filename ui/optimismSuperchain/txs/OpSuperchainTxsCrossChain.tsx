@@ -1,25 +1,21 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { SocketProvider } from 'lib/socket/context';
 import { INTEROP_MESSAGE } from 'stubs/optimismSuperchain';
 import { generateListStub } from 'stubs/utils';
-import { Link } from 'toolkit/chakra/link';
-import CrossChainTxsTable from 'ui/optimismSuperchain/crossChainTxs/CrossChainTxsTable';
 import DataListDisplay from 'ui/shared/DataListDisplay';
+
+import CrossChainTxsTable from '../crossChainTxs/CrossChainTxsTable';
 
 const socketUrl = config.apis.multichain?.socketEndpoint ? `${ config.apis.multichain.socketEndpoint }/socket` : undefined;
 
-const LatestTxsCrossChain = () => {
-
+const OpSuperchainTxsCrossChain = () => {
   const { data, isError, isPlaceholderData } = useApiQuery('multichain:interop_messages', {
     queryOptions: {
       placeholderData: generateListStub<'multichain:interop_messages'>(INTEROP_MESSAGE, 5, { next_page_params: undefined }),
-      select: (data) => ({ ...data, items: data.items.slice(0, 5) }),
     },
   });
 
@@ -33,7 +29,7 @@ const LatestTxsCrossChain = () => {
           isLoading={ isPlaceholderData }
           items={ data.items }
           socketType="txs_home_cross_chain"
-          stickyHeader={ false }
+          top={ 0 }
         />
       </Box>
     </>
@@ -48,17 +44,8 @@ const LatestTxsCrossChain = () => {
       >
         { content }
       </DataListDisplay>
-      <Link
-        href={ route({ pathname: '/txs' }) }
-        w="full"
-        justifyContent="center"
-        textStyle="sm"
-        mt={ 3 }
-      >
-        View all transactions
-      </Link>
     </SocketProvider>
   );
 };
 
-export default React.memo(LatestTxsCrossChain);
+export default React.memo(OpSuperchainTxsCrossChain);

@@ -3,7 +3,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 export const MULTICHAIN_API_RESOURCES = {
   interop_messages: {
-    path: '/api/v1/interop/messages',
+    path: '/messages',
     paginated: true,
   },
 } satisfies Record<string, ApiResource>;
