@@ -14,50 +14,48 @@ test.beforeEach(async({ mockEnvs, mockTextAd }) => {
 });
 
 test.describe('Clusters Directory Page', () => {
-  test.describe('mobile', () => {
-    test('clusters directory with data +@mobile', async({ render, mockApiResponse, mockAssetResponse }) => {
-      await mockAssetResponse('https://cdn.clusters.xyz/profile-image/campnetwork/lol', './playwright/mocks/image_s.jpg');
-      await mockAssetResponse('https://cdn.clusters.xyz/profile-image/duck/quack', './playwright/mocks/image_s.jpg');
-      await mockAssetResponse('https://cdn.clusters.xyz/profile-image/test/cluster', './playwright/mocks/image_s.jpg');
-      await mockApiResponse('clusters:get_directory', clustersDirectoryMock, {
-        queryParams: {
-          input: JSON.stringify({
-            offset: 0,
-            limit: 50,
-            orderBy: 'createdAt-desc',
-            query: '',
-          }),
-        },
-      });
-      await mockApiResponse('clusters:get_leaderboard', clustersLeaderboardMock, {
-        queryParams: {
-          input: JSON.stringify({
-            offset: 0,
-            limit: 50,
-            orderBy: 'rank-asc',
-          }),
-        },
-      });
+  test('clusters directory with data +@mobile', async({ render, mockApiResponse, mockAssetResponse }) => {
+    await mockAssetResponse('https://cdn.clusters.xyz/profile-image/campnetwork/lol', './playwright/mocks/image_s.jpg');
+    await mockAssetResponse('https://cdn.clusters.xyz/profile-image/duck/quack', './playwright/mocks/image_s.jpg');
+    await mockAssetResponse('https://cdn.clusters.xyz/profile-image/test/cluster', './playwright/mocks/image_s.jpg');
+    await mockApiResponse('clusters:get_directory', clustersDirectoryMock, {
+      queryParams: {
+        input: JSON.stringify({
+          offset: 0,
+          limit: 50,
+          orderBy: 'createdAt-desc',
+          query: '',
+        }),
+      },
+    });
+    await mockApiResponse('clusters:get_leaderboard', clustersLeaderboardMock, {
+      queryParams: {
+        input: JSON.stringify({
+          offset: 0,
+          limit: 50,
+          orderBy: 'rank-asc',
+        }),
+      },
+    });
 
-      const component = await render(
-        <div>
-          <Box h={{ base: '134px', lg: 6 }}/>
-          <Clusters/>
-        </div>,
-        {
-          hooksConfig: {
-            router: {
-              isReady: true,
-            },
+    const component = await render(
+      <div>
+        <Box h={{ base: '134px', lg: 6 }}/>
+        <Clusters/>
+      </div>,
+      {
+        hooksConfig: {
+          router: {
+            isReady: true,
           },
         },
-      );
+      },
+    );
 
-      await expect(component.getByRole('link', { name: 'campnetwork/lol' })).toBeVisible({ timeout: 10000 });
-      await expect(component.getByRole('link', { name: 'duck/quack' })).toBeVisible({ timeout: 10000 });
-      await expect(component.getByRole('link', { name: 'test/cluster' })).toBeVisible({ timeout: 10000 });
+    await expect(component.getByRole('link', { name: 'campnetwork/lol' })).toBeVisible({ timeout: 10000 });
+    await expect(component.getByRole('link', { name: 'duck/quack' })).toBeVisible({ timeout: 10000 });
+    await expect(component.getByRole('link', { name: 'test/cluster' })).toBeVisible({ timeout: 10000 });
 
-      await expect(component).toHaveScreenshot();
-    });
+    await expect(component).toHaveScreenshot();
   });
 });
