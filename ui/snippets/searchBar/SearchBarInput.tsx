@@ -127,7 +127,8 @@ const SearchBarInput = (
       w="100%"
       backgroundColor={{ _light: 'white', _dark: 'black' }}
       borderRadius="base"
-      zIndex={{ base: 'auto', lg: isSuggestOpen ? 'modal' : 'auto' }}
+      position="relative"
+      zIndex={ isSuggestOpen ? 'modal' : 'auto' }
       { ...rest }
     >
       <InputGroup
