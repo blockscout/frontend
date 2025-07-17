@@ -35,6 +35,7 @@ export default function useWidgetData(name: string, valuePath: string | undefine
         }
       },
       enabled: !isLoading && Boolean(valuePath),
+      refetchOnMount: false,
     },
   });
 
