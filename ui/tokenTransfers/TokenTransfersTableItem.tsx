@@ -80,7 +80,7 @@ const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
             isLoading={ isLoading }
             maxW="140px"
           />
-        ) : '-' }
+        ) : <Skeleton loading={ isLoading }>-</Skeleton> }
       </TableCell>
       <TableCell isNumeric verticalAlign="top">
         { (item.token && valueStr) ? (
@@ -98,7 +98,7 @@ const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
               maxW="100px"
             />
           </Flex>
-        ) : '-'
+        ) : <Skeleton loading={ isLoading }>-</Skeleton>
         }
       </TableCell>
     </TableRow>
