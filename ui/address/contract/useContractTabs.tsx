@@ -30,6 +30,7 @@ interface Props {
   isPlaceholderData: boolean;
   hasMudTab?: boolean;
   chainSlug?: string;
+  isQueryEnabled?: boolean;
 }
 
 interface ReturnType {
@@ -37,9 +38,8 @@ interface ReturnType {
   isLoading: boolean;
 }
 
-export default function useContractTabs({ data, isPlaceholderData, hasMudTab, chainSlug }: Props): ReturnType {
-  // TODO @tom2drum return back to false
-  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(true);
+export default function useContractTabs({ data, isPlaceholderData, hasMudTab, chainSlug, isQueryEnabled: isQueryEnabledProp = false }: Props): ReturnType {
+  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(isQueryEnabledProp);
 
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);

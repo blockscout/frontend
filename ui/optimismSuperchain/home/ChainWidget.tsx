@@ -60,7 +60,7 @@ const ChainWidget = ({ data }: Props) => {
               <IconSvg name="wallet" boxSize={ 5 }/>
             </Link>
           </Tooltip>
-          <Tooltip content="View on explorer">
+          <Tooltip content="Open explorer">
             <Link
               href={ data.config.app.baseUrl }
               target="_blank"

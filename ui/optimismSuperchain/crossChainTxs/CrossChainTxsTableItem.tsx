@@ -22,9 +22,10 @@ interface Props {
   isLoading: boolean;
   animation?: string;
   currencySymbol?: string;
+  currentAddress?: string;
 }
 
-const CrossChainTxsTableItem = ({ item, isLoading, animation, currencySymbol }: Props) => {
+const CrossChainTxsTableItem = ({ item, isLoading, animation, currencySymbol, currentAddress }: Props) => {
 
   const sourceChain = React.useMemo(() => {
     const config = multichainConfig();
@@ -94,9 +95,9 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation, currencySymbol }: 
         <AddressFromTo
           from={{ hash: item.sender?.hash ?? 'N/A' }}
           to={{ hash: item.target?.hash ?? 'N/A' }}
+          current={ currentAddress }
           isLoading={ isLoading }
           truncation="constant"
-          chain={ sourceChain }
           my="5px"
         />
       </TableCell>
@@ -125,6 +126,7 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation, currencySymbol }: 
               noCopy
               onlySymbol
               justifyContent="flex-end"
+              w="fit-content"
             />
           ) : <span> { currencySymbol ?? '' }</span> }
         </Skeleton>

@@ -2,8 +2,6 @@ import type { ConditionalValue } from '@chakra-ui/react';
 import { Flex, Grid, chakra, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainConfig } from 'types/multichain';
-
 import type { EntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
@@ -24,10 +22,9 @@ interface Props {
   tokenSymbol?: string;
   truncation?: EntityProps['truncation'];
   noIcon?: boolean;
-  chain?: ChainConfig;
 }
 
-const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', tokenSymbol = '', noIcon, chain }: Props) => {
+const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', tokenSymbol = '', noIcon }: Props) => {
   const mode = useBreakpointValue(
     {
       base: (typeof modeProp === 'object' && 'base' in modeProp ? modeProp.base : modeProp),
@@ -57,7 +54,6 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             noIcon={ noIcon }
             tokenHash={ tokenHash }
             tokenSymbol={ tokenSymbol }
-            chain={ chain }
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
@@ -72,7 +68,6 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             noIcon={ noIcon }
             tokenHash={ tokenHash }
             tokenSymbol={ tokenSymbol }
-            chain={ chain }
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
@@ -95,7 +90,6 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         noIcon={ noIcon }
         tokenHash={ tokenHash }
         tokenSymbol={ tokenSymbol }
-        chain={ chain }
         truncation="constant"
         mr={ isOutgoing ? 4 : 2 }
       />
@@ -112,7 +106,6 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           noIcon={ noIcon }
           tokenHash={ tokenHash }
           tokenSymbol={ tokenSymbol }
-          chain={ chain }
           truncation="constant"
           ml={ 3 }
         />

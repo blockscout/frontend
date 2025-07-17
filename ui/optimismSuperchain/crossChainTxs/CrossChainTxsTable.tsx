@@ -17,9 +17,10 @@ interface Props {
   socketType?: TxsSocketType;
   stickyHeader?: boolean;
   top?: number;
+  currentAddress?: string;
 }
 
-const CrossChainTxsTable = ({ items, isLoading, socketType, stickyHeader = true, top }: Props) => {
+const CrossChainTxsTable = ({ items, isLoading, socketType, stickyHeader = true, top, currentAddress }: Props) => {
   const TableHeaderComponent = stickyHeader ? TableHeaderSticky : TableHeader;
 
   const currencySymbol = getCurrencySymbol();
@@ -49,6 +50,7 @@ const CrossChainTxsTable = ({ items, isLoading, socketType, stickyHeader = true,
               item={ item }
               isLoading={ isLoading }
               currencySymbol={ currencySymbol }
+              currentAddress={ currentAddress }
             />
           )) }
         </TableBody>

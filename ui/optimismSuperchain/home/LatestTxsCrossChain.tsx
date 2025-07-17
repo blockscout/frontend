@@ -1,18 +1,13 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import { SocketProvider } from 'lib/socket/context';
 import { INTEROP_MESSAGE } from 'stubs/optimismSuperchain';
 import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
-import CrossChainTxsTable from 'ui/optimismSuperchain/crossChainTxs/CrossChainTxsTable';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
-const socketUrl = config.apis.multichain?.socketEndpoint ? `${ config.apis.multichain.socketEndpoint }/socket` : undefined;
+import CrossChainTxs from '../crossChainTxs/CrossChainTxs';
 
 const LatestTxsCrossChain = () => {
 
@@ -23,31 +18,14 @@ const LatestTxsCrossChain = () => {
     },
   });
 
-  const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        Coming soon 🔜
-      </Box>
-      <Box hideBelow="lg">
-        <CrossChainTxsTable
-          isLoading={ isPlaceholderData }
-          items={ data.items }
-          socketType="txs_home_cross_chain"
-          stickyHeader={ false }
-        />
-      </Box>
-    </>
-  ) : null;
-
   return (
-    <SocketProvider url={ socketUrl }>
-      <DataListDisplay
-        itemsNum={ data?.items?.length }
+    <>
+      <CrossChainTxs
+        items={ data?.items }
+        isLoading={ isPlaceholderData }
         isError={ isError }
-        emptyText="There are no cross-chain transactions."
-      >
-        { content }
-      </DataListDisplay>
+        socketType="txs_home_cross_chain"
+      />
       <Link
         href={ route({ pathname: '/txs' }) }
         w="full"
@@ -57,7 +35,7 @@ const LatestTxsCrossChain = () => {
       >
         View all transactions
       </Link>
-    </SocketProvider>
+    </>
   );
 };
 

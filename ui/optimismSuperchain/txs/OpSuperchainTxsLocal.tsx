@@ -156,7 +156,7 @@ const OpSuperchainTxsLocal = () => {
 
   return (
     <Box>
-      <TxsStats mt={ 3 } mb={ 0 }/>
+      <TxsStats mb={ 0 }/>
       <SocketProvider url={ getSocketUrl(chainConfig) }>
         <RoutedTabs
           tabs={ tabs }

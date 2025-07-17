@@ -6,10 +6,13 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import multichainConfig from 'configs/multichain';
 import getSocketUrl from 'lib/api/getSocketUrl';
+import useApiQuery from 'lib/api/useApiQuery';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { SocketProvider } from 'lib/socket/context';
+import { INTEROP_MESSAGE } from 'stubs/optimismSuperchain';
+import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressTxsFilter from 'ui/address/AddressTxsFilter';
@@ -18,9 +21,11 @@ import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
 import ListCounterText from '../components/ListCounterText';
+import CrossChainTxs from '../crossChainTxs/CrossChainTxs';
 
 export const ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS = [ 'txs_cross_chain' as const, 'txs_local' as const ];
 const TAB_LIST_PROPS = {
@@ -36,30 +41,49 @@ const TABS_RIGHT_SLOT_PROPS = {
   widthAllocation: 'available' as const,
 };
 
-const AddressOpSuperchainTxs = () => {
+const OpSuperchainAddressTxs = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
 
   const hash = getQueryParamString(router.query.hash);
-  const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS[number] | undefined;
+  const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS[number] | 'txs' | undefined;
+  const isLocalTab = tab === 'txs_local';
+
+  const txsQueryCrossChain = useQueryWithPages({
+    resourceName: 'multichain:interop_messages',
+    filters: {
+      address: hash,
+    },
+    options: {
+      placeholderData: generateListStub<'multichain:interop_messages'>(INTEROP_MESSAGE, 50, { next_page_params: undefined }),
+      enabled: !isLocalTab,
+    },
+  });
 
   const txsQueryLocal = useAddressTxsQuery({
     addressHash: hash,
-    enabled: tab === 'txs_local',
+    enabled: isLocalTab,
     isMultichain: true,
   });
 
   const chainSlug = txsQueryLocal.query.chainValue?.[0];
   const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
 
+  const countersQueryCrossChain = useApiQuery('multichain:interop_messages_count', {
+    queryOptions: {
+      placeholderData: { count: 420 },
+      enabled: !isLocalTab,
+    },
+  });
+
   const countersQueryLocal = useAddressCountersQuery({
     hash,
     isLoading: txsQueryLocal.query.isPlaceholderData,
-    isEnabled: tab === 'txs_local',
+    isEnabled: isLocalTab,
     chainSlug,
   });
 
-  const txsLocalFilter = tab === 'txs_local' ? (
+  const txsLocalFilter = isLocalTab ? (
     <AddressTxsFilter
       initialValue={ txsQueryLocal.filterValue }
       onFilterChange={ txsQueryLocal.onFilterChange }
@@ -69,7 +93,7 @@ const AddressOpSuperchainTxs = () => {
   ) : null;
 
   const countersText = (() => {
-    if (tab === 'txs_local') {
+    if (isLocalTab) {
       return (
         <ListCounterText
           key={ chainSlug }
@@ -80,7 +104,13 @@ const AddressOpSuperchainTxs = () => {
       );
     }
 
-    return null;
+    return (
+      <ListCounterText
+        value={ countersQueryCrossChain.data?.count?.toString() }
+        isLoading={ countersQueryCrossChain.isPlaceholderData }
+        type="transaction"
+      />
+    );
   })();
 
   const chainSelect = (
@@ -92,7 +122,7 @@ const AddressOpSuperchainTxs = () => {
   );
 
   const rightSlot = (() => {
-    if (tab === 'txs_local') {
+    if (isLocalTab) {
       if (isMobile) {
         return chainSelect;
       }
@@ -116,13 +146,32 @@ const AddressOpSuperchainTxs = () => {
         </>
       );
     }
+
+    if (isMobile) {
+      return null;
+    }
+
+    return (
+      <HStack gap={ 2 } w="100%">
+        { countersText }
+        <Pagination { ...txsQueryCrossChain.pagination } ml="auto"/>
+      </HStack>
+    );
   })();
 
   const tabs: Array<TabItemRegular> = [
     {
       id: 'txs_cross_chain',
       title: 'Cross-chain',
-      component: <div>Coming soon 🔜</div>,
+      component: (
+        <CrossChainTxs
+          items={ txsQueryCrossChain.data?.items }
+          isLoading={ txsQueryCrossChain.isPlaceholderData }
+          isError={ txsQueryCrossChain.isError }
+          tableHeaderTop={ ACTION_BAR_HEIGHT_DESKTOP }
+          currentAddress={ hash }
+        />
+      ),
     },
     {
       id: 'txs_local',
@@ -161,4 +210,4 @@ const AddressOpSuperchainTxs = () => {
   );
 };
 
-export default React.memo(AddressOpSuperchainTxs);
+export default React.memo(OpSuperchainAddressTxs);

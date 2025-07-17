@@ -73,7 +73,6 @@ const OpSuperchainTxs = () => {
       />
       <RoutedTabs
         tabs={ tabs }
-        listProps={ isLocalTxs ? { mb: 0 } : undefined }
         rightSlot={ rightSlot }
         rightSlotProps={ rightSlot ? TABS_RIGHT_SLOT_PROPS : undefined }
       />

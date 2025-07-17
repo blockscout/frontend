@@ -77,13 +77,15 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   const router = useRouter();
   const multichainContext = useMultichainContext();
 
+  const hasChainValue = Boolean(isMultichain ?? multichainContext?.chain);
+
   const [ page, setPage ] = React.useState<number>(getPageFromQuery(router.query));
   const [ pageParams, setPageParams ] = React.useState<Record<number, NextPageParams>>({
     [page]: getPaginationParamsFromQuery(router.query.next_page_params),
   });
   const [ hasPages, setHasPages ] = React.useState(page > 1);
   const [ chainValue, setChainValue ] = React.useState<Array<string> | undefined>(
-    isMultichain || multichainContext?.chain ? [ getChainValueFromQuery(router.query) ].filter(Boolean) : undefined,
+    hasChainValue ? [ getChainValueFromQuery(router.query) ].filter(Boolean) : undefined,
   );
 
   const isMounted = React.useRef(false);
@@ -273,8 +275,8 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       [pageFromQuery]: nextPageParamsFromQuery,
     }));
     setHasPages(pageFromQuery > 1);
-    setChainValue(chainValueFromQuery ? [ chainValueFromQuery ] : undefined);
-  }, [ router.query ]);
+    setChainValue(hasChainValue && chainValueFromQuery ? [ chainValueFromQuery ] : undefined);
+  }, [ router.query, hasChainValue ]);
 
   return { ...queryResult, pagination, onFilterChange, onSortingChange, chainValue, onChainValueChange };
 }
