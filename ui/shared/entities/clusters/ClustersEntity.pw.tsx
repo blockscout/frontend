@@ -5,8 +5,10 @@ import { test, expect } from 'playwright/lib';
 
 import ClustersEntity from './ClustersEntity';
 
+test.use({ viewport: { width: 300, height: 200 } });
+
 test.describe('basic display', () => {
-  test('basic cluster entity +@mobile', async({ render, mockAssetResponse }) => {
+  test('basic cluster entity', async({ render, mockAssetResponse }) => {
     await mockAssetResponse('https://cdn.clusters.xyz/profile-image/example.cluster', './playwright/mocks/image_s.jpg');
     const component = await render(
       <ClustersEntity
@@ -18,7 +20,7 @@ test.describe('basic display', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('cluster with subdomain +@mobile', async({ render, mockAssetResponse }) => {
+  test('cluster with subdomain', async({ render, mockAssetResponse }) => {
     await mockAssetResponse('https://cdn.clusters.xyz/profile-image/test/subdomain', './playwright/mocks/image_s.jpg');
     const component = await render(
       <ClustersEntity
@@ -32,7 +34,7 @@ test.describe('basic display', () => {
 });
 
 test.describe('variants', () => {
-  test('heading variant +@mobile', async({ render, mockAssetResponse }) => {
+  test('heading variant', async({ render, mockAssetResponse }) => {
     await mockAssetResponse('https://cdn.clusters.xyz/profile-image/example.cluster', './playwright/mocks/image_s.jpg');
     const component = await render(
       <ClustersEntity
@@ -44,7 +46,7 @@ test.describe('variants', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('subheading variant +@mobile', async({ render, mockAssetResponse }) => {
+  test('subheading variant', async({ render, mockAssetResponse }) => {
     await mockAssetResponse('https://cdn.clusters.xyz/profile-image/example.cluster', './playwright/mocks/image_s.jpg');
     const component = await render(
       <ClustersEntity
@@ -58,7 +60,7 @@ test.describe('variants', () => {
 });
 
 test.describe('customization', () => {
-  test('no link +@mobile', async({ render, mockAssetResponse }) => {
+  test('no link', async({ render, mockAssetResponse }) => {
     await mockAssetResponse('https://cdn.clusters.xyz/profile-image/example.cluster', './playwright/mocks/image_s.jpg');
     const component = await render(
       <ClustersEntity
@@ -71,7 +73,7 @@ test.describe('customization', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('no icon +@mobile', async({ render }) => {
+  test('no icon', async({ render }) => {
     const component = await render(
       <ClustersEntity
         clusterName="example.cluster"
@@ -84,7 +86,7 @@ test.describe('customization', () => {
   });
 });
 
-test('long cluster name truncation +@mobile', async({ render, mockAssetResponse }) => {
+test('long cluster name truncation', async({ render, mockAssetResponse }) => {
   await mockAssetResponse(
     'https://cdn.clusters.xyz/profile-image/this-is-a-very-long-cluster-name-that-should-test-truncation/subdomain', './playwright/mocks/image_s.jpg',
   );
@@ -99,7 +101,7 @@ test('long cluster name truncation +@mobile', async({ render, mockAssetResponse 
   await expect(component).toHaveScreenshot();
 });
 
-test('hover interaction +@mobile', async({ render, mockAssetResponse }) => {
+test('hover interaction', async({ render, mockAssetResponse }) => {
   await mockAssetResponse('https://cdn.clusters.xyz/profile-image/example.cluster', './playwright/mocks/image_s.jpg');
   const component = await render(
     <ClustersEntity
