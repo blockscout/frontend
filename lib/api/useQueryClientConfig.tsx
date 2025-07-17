@@ -33,6 +33,7 @@ export default function useQueryClientConfig() {
           const EXTERNAL_API_RESOURCES: Array<ResourceName | 'safe_transaction_api' | 'gas_hawk_saving_potential'> = [
             'general:contract_solidity_scan_report',
             'general:address_xstar_score',
+            'general:address_3rd_party_info',
             'general:noves_transaction',
             'general:noves_address_history',
             'general:noves_describe_txs',
