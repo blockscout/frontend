@@ -44,15 +44,7 @@ export const marketplace: Guard = (chainConfig: typeof config) => async() => {
 };
 
 export const apiDocs: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.restApiDocs.isEnabled) {
-    return {
-      notFound: true,
-    };
-  }
-};
-
-export const graphIQl: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.graphqlApiDocs.isEnabled) {
+  if (!chainConfig.features.apiDocs.isEnabled) {
     return {
       notFound: true,
     };

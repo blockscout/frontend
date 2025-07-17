@@ -20,8 +20,9 @@ import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
-import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation';
-import type { NavItemExternal, NavigationLinkId, NavigationLayout } from '../../../types/client/navigation';
+import type { ApiDocsTabId } from '../../../types/views/apiDocs';
+import { API_DOCS_TABS } from '../../../types/views/apiDocs';
+import type { NavItemExternal, NavigationLayout } from '../../../types/client/navigation';
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
 import type { BridgedTokenChain, TokenBridge } from '../../../types/client/token';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from '../../../types/client/txInterpretation';
@@ -450,6 +451,35 @@ const celoSchema = yup
     NEXT_PUBLIC_CELO_ENABLED: yup.boolean(),
   });
 
+const apiDocsScheme = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_API_DOCS_TABS: yup.array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<ApiDocsTabId>().oneOf(API_DOCS_TABS)),
+    NEXT_PUBLIC_API_SPEC_URL: yup
+      .string()
+      .test(urlTest),
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
+    .string()
+    .matches(regexp.HEX_REGEXP),
+  });
+
+const userOpsSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
+    NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST: yup
+      .string()
+      .test(urlTest)
+      .when('NEXT_PUBLIC_HAS_USER_OPS', {
+        is: (value: boolean) => value,
+        then: (schema) => schema,
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST can only be used if NEXT_PUBLIC_HAS_USER_OPS is set to \'true\''),
+      }),
+  });
+
 const adButlerConfigSchema = yup
   .object<AdButlerConfig>()
   .transform(replaceQuotes)
@@ -870,11 +900,6 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(navItemExternalSchema),
-    NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .of(yup.string<NavigationLinkId>().oneOf(NAVIGATION_LINK_IDS)),
     NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES: yup
       .array()
       .transform(replaceQuotes)
@@ -988,14 +1013,6 @@ const schema = yup
     NEXT_PUBLIC_MAX_CONTENT_WIDTH_ENABLED: yup.boolean(),
 
     // 5. Features configuration
-    NEXT_PUBLIC_API_SPEC_URL: yup
-      .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_API_SPEC_URL, it should be either URL-string or "none" string literal', (data) => {
-        const isNoneSchema = yup.string().oneOf([ 'none' ]);
-        const isUrlStringSchema = yup.string().test(urlTest);
-
-        return isNoneSchema.isValidSync(data) || isUrlStringSchema.isValidSync(data);
-      }),
     NEXT_PUBLIC_STATS_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_STATS_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().test(urlTest),
@@ -1003,14 +1020,6 @@ const schema = yup
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup.string().test(urlTest),
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
-      .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_GRAPHIQL_TRANSACTION, it should be either Hex-string or "none" string literal', (data) => {
-        const isNoneSchema = yup.string().oneOf([ 'none' ]);
-        const isHashStringSchema = yup.string().matches(regexp.HEX_REGEXP);
-
-        return isNoneSchema.isValidSync(data) || isHashStringSchema.isValidSync(data);
-      }),
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
       .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_WEB3_WALLETS, it should be either array or "none" string literal', (data) => {
@@ -1033,7 +1042,6 @@ const schema = yup
     NEXT_PUBLIC_SEO_ENHANCED_DATA_ENABLED: yup.boolean(),
     NEXT_PUBLIC_SAFE_TX_SERVICE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
-    NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
     NEXT_PUBLIC_METASUITES_ENABLED: yup.boolean(),
     NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: yup
       .array()
@@ -1156,8 +1164,10 @@ const schema = yup
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
   .concat(sentrySchema)
+  .concat(apiDocsScheme)
   .concat(tacSchema)
   .concat(address3rdPartyWidgetsConfigSchema)
-  .concat(addressMetadataSchema);
+  .concat(addressMetadataSchema)
+  .concat(userOpsSchema);
 
 export default schema;

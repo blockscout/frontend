@@ -8,6 +8,8 @@ import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 import type * as metadata from 'lib/metadata';
 
+import detectBotRequest from '../utils/detectBotRequest';
+
 const adBannerFeature = config.features.adsBanner;
 
 export interface Props<Pathname extends Route['pathname'] = never> {
@@ -43,8 +45,9 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   }
 
   const isTrackingDisabled = process.env.DISABLE_TRACKING === 'true';
+  const isBot = Boolean(detectBotRequest(req));
 
-  if (!isTrackingDisabled) {
+  if (!isTrackingDisabled && !isBot) {
     // log pageview
     const hostname = req.headers.host;
     const timestamp = new Date().toISOString();

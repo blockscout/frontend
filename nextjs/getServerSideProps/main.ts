@@ -8,7 +8,6 @@ export const verifiedAddresses = factory([ guards.account, guards.verifiedAddres
 export const userOps = factory([ guards.userOps ]);
 export const marketplace = factory([ guards.marketplace ]);
 export const apiDocs = factory([ guards.apiDocs ]);
-export const graphIQl = factory([ guards.graphIQl ]);
 export const csvExport = factory([ guards.csvExport ]);
 export const stats = factory([ guards.stats ]);
 export const suave = factory([ guards.suave ]);

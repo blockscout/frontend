@@ -1,5 +1,5 @@
 import type { ContractCodeIde } from 'types/client/contract';
-import { NAVIGATION_LINK_IDS, type NavItemExternal, type NavigationLinkId, type NavigationLayout } from 'types/client/navigation';
+import { type NavItemExternal, type NavigationLayout } from 'types/client/navigation';
 import { HOME_STATS_WIDGET_IDS, type ChainIndicatorId, type HeroBannerConfig, type HomeStatsWidgetId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
 import type { ColorThemeId } from 'types/settings';
@@ -10,21 +10,6 @@ import { COLOR_THEMES, type ColorTheme } from 'lib/settings/colorTheme';
 import * as features from './features';
 import * as views from './ui/views';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from './utils';
-
-const hiddenLinks = (() => {
-  const parsedValue = parseEnvJson<Array<NavigationLinkId>>(getEnvValue('NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS')) || [];
-
-  if (!Array.isArray(parsedValue)) {
-    return undefined;
-  }
-
-  const result = NAVIGATION_LINK_IDS.reduce((result, item) => {
-    result[item] = parsedValue.includes(item);
-    return result;
-  }, {} as Record<NavigationLinkId, boolean>);
-
-  return result;
-})();
 
 const homePageStats: Array<HomeStatsWidgetId> = (() => {
   const parsedValue = parseEnvJson<Array<HomeStatsWidgetId>>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_STATS'));
@@ -43,7 +28,7 @@ const homePageStats: Array<HomeStatsWidgetId> = (() => {
 })();
 
 const highlightedRoutes = (() => {
-  const parsedValue = parseEnvJson<Array<NavigationLinkId>>(getEnvValue('NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES'));
+  const parsedValue = parseEnvJson<Array<string>>(getEnvValue('NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES'));
   return Array.isArray(parsedValue) ? parsedValue : [];
 })();
 
@@ -62,7 +47,6 @@ const UI = Object.freeze({
       'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON'),
       dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON_DARK'),
     },
-    hiddenLinks,
     highlightedRoutes,
     otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue('NEXT_PUBLIC_OTHER_LINKS')) || [],
     featuredNetworks: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS'),

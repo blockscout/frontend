@@ -144,6 +144,17 @@ const tacApi = (() => {
   });
 })();
 
+const userOpsApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  return Object.freeze({
+    endpoint: apiHost,
+  });
+})();
+
 const visualizeApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_VISUALIZE_API_HOST');
   if (!apiHost) {
@@ -170,6 +181,7 @@ const apis: Apis = Object.freeze({
   rewards: rewardsApi,
   stats: statsApi,
   tac: tacApi,
+  userOps: userOpsApi,
   visualize: visualizeApi,
 });
 
