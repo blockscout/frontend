@@ -88,7 +88,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
   return (
     <>
       { addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={ isLoading } mb={ 6 }/> }
-      <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} >
+      <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }} >
         <AddressAlternativeFormat isLoading={ isLoading } addressHash={ addressHash }/>
 
         { data.filecoin?.id && (
@@ -187,7 +187,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
             >
               Net worth
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue alignSelf="center" py={ 0 }>
+            <DetailedInfo.ItemValue allowWrap>
               <AddressNetWorth addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ isLoading }/>
             </DetailedInfo.ItemValue>
           </>
@@ -244,7 +244,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
             >
               Gas used
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
+            <DetailedInfo.ItemValue allowWrap>
               { addressQuery.data ? (
                 <AddressCounterItem
                   prop="gas_usage_count"
@@ -315,7 +315,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
             >
               Widgets
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue pl={{ base: 0, sm: 7, lg: 0 }}>
+            <DetailedInfo.ItemValue>
               <Address3rdPartyWidgets
                 addressType={ data.is_contract ? 'contract' : 'eoa' }
                 isLoading={ addressQuery.isPlaceholderData }

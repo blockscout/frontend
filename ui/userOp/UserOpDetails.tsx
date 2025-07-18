@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text } from '@chakra-ui/react';
+import { GridItem, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -51,11 +51,8 @@ const UserOpDetails = ({ query }: Props) => {
   }
 
   return (
-    <Grid
-      columnGap={ 8 }
-      rowGap={{ base: 3, lg: 3 }}
+    <DetailedInfo.Container
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 220px) minmax(0, 1fr)' }}
-      overflow="hidden"
     >
       <DetailedInfo.ItemLabel
         hint="Unique character string assigned to every User operation"
@@ -377,7 +374,7 @@ const UserOpDetails = ({ query }: Props) => {
 
         <UserOpDecodedCallData data={ data }/>
       </CollapsibleDetails>
-    </Grid>
+    </DetailedInfo.Container>
   );
 };
 

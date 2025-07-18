@@ -1,4 +1,4 @@
-import { Grid, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -35,7 +35,7 @@ const NameDomainDetails = ({ query }: Props) => {
   return (
     <>
       <NameDomainDetailsAlert data={ query.data }/>
-      <Grid columnGap={ 8 } rowGap={ 3 } templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
+      <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
         { query.data?.registration_date && (
           <>
             <DetailedInfo.ItemLabel
@@ -242,7 +242,7 @@ const NameDomainDetails = ({ query }: Props) => {
             </DetailedInfo.ItemValue>
           </>
         ) }
-      </Grid>
+      </DetailedInfo.Container>
     </>
   );
 };

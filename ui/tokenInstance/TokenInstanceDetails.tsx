@@ -1,4 +1,4 @@
-import { Flex, Grid } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo, TokenInstance } from 'types/api/token';
@@ -45,12 +45,9 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
   return (
     <>
       <Flex alignItems="flex-start" flexDir={{ base: 'column-reverse', lg: 'row' }} columnGap={ 6 } rowGap={ 6 }>
-        <Grid
+        <DetailedInfo.Container
           flexGrow={ 1 }
-          columnGap={ 8 }
-          rowGap={{ base: 1, lg: 3 }}
-          templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
-          overflow="hidden"
+          templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(500px, 1fr)' }}
         >
           { data.is_unique && data.owner && (
             <>
@@ -108,7 +105,7 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
               </DetailedInfo.ItemValue>
             </>
           ) }
-        </Grid>
+        </DetailedInfo.Container>
         <NftMedia
           data={ data }
           isLoading={ isLoading }
@@ -119,17 +116,14 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
           alignSelf={{ base: 'center', lg: 'flex-start' }}
         />
       </Flex>
-      <Grid
+      <DetailedInfo.Container
         mt={ 5 }
-        columnGap={ 8 }
-        rowGap={{ base: 1, lg: 3 }}
-        templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
-        overflow="hidden"
+        templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(500px, 1fr)' }}
       >
         <TokenInstanceMetadataInfo data={ data } isLoading={ isLoading }/>
         <DetailedInfo.ItemDivider/>
         <DetailedInfoSponsoredItem isLoading={ isLoading }/>
-      </Grid>
+      </DetailedInfo.Container>
     </>
   );
 };

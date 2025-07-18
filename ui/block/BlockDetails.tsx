@@ -380,7 +380,7 @@ const BlockDetails = ({ query }: Props) => {
           >
             Block reward
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue columnGap={ 1 }>
+          <DetailedInfo.ItemValue columnGap={ 1 } allowWrap>
             <Skeleton loading={ isPlaceholderData }>
               { totalReward.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </Skeleton>
