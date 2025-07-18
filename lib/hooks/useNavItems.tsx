@@ -212,7 +212,6 @@ export default function useNavItems(): ReturnType {
         userOps,
         blocks,
         epochs,
-        epochs,
         topAccounts,
         validators,
         verifiedContracts,
