@@ -772,22 +772,22 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           <DetailedInfo.ItemValue allowWrap>
             { data.base_fee_per_gas && (
               <Skeleton loading={ isLoading }>
-                <Text as="span" fontWeight="500">Base: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                <span>Base: </span>
+                <span>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</span>
                 { (data.max_fee_per_gas || data.max_priority_fee_per_gas) && <TextSeparator/> }
               </Skeleton>
             ) }
             { data.max_fee_per_gas && (
               <Skeleton loading={ isLoading }>
-                <Text as="span" fontWeight="500">Max: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                <span>Max: </span>
+                <span>{ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</span>
                 { data.max_priority_fee_per_gas && <TextSeparator/> }
               </Skeleton>
             ) }
             { data.max_priority_fee_per_gas && (
               <Skeleton loading={ isLoading }>
-                <Text as="span" fontWeight="500">Max priority: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                <span>Max priority: </span>
+                <span>{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</span>
               </Skeleton>
             ) }
           </DetailedInfo.ItemValue>

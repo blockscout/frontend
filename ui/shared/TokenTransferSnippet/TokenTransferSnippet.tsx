@@ -99,14 +99,12 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
       rowGap={ 0 }
       flexDir="row"
       w="100%"
-      fontWeight={ 500 }
     >
       <AddressFromTo
         from={ data.from }
         to={ data.to }
         truncation="constant"
         noIcon={ noAddressIcons }
-        fontWeight="500"
         isLoading={ isLoading }
       />
       { content }
