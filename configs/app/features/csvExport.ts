@@ -16,7 +16,7 @@ const config: Feature<{ reCaptcha: { siteKey: string } }> = (() => {
   }
   return Object.freeze({
     title,
-    isEnabled: false,
+    isEnabled: true,
   });
 })();
 
