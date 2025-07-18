@@ -22,6 +22,7 @@ import type {
   TacOperationLifecycleApiResourceName,
   TacOperationLifecycleApiResourcePayload,
 } from './services/tac-operation-lifecycle';
+import { USER_OPS_API_RESOURCES } from './services/userOps';
 import type { IsPaginated } from './services/utils';
 import { VISUALIZE_API_RESOURCES } from './services/visualize';
 import type { VisualizeApiResourceName, VisualizeApiResourcePayload } from './services/visualize';
@@ -36,6 +37,7 @@ export const RESOURCES = {
   rewards: REWARDS_API_RESOURCES,
   stats: STATS_API_RESOURCES,
   tac: TAC_OPERATION_LIFECYCLE_API_RESOURCES,
+  userOps: USER_OPS_API_RESOURCES,
   visualize: VISUALIZE_API_RESOURCES,
 } satisfies Record<ApiName, Record<string, ApiResource>>;
 

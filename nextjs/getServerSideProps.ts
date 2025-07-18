@@ -11,6 +11,8 @@ import isNeedProxy from 'lib/api/isNeedProxy';
 import * as cookies from 'lib/cookies';
 import type * as metadata from 'lib/metadata';
 
+import detectBotRequest from './utils/detectBotRequest';
+
 const rollupFeature = config.features.rollup;
 const adBannerFeature = config.features.adsBanner;
 
@@ -47,8 +49,9 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   }
 
   const isTrackingDisabled = process.env.DISABLE_TRACKING === 'true';
+  const isBot = Boolean(detectBotRequest(req));
 
-  if (!isTrackingDisabled) {
+  if (!isTrackingDisabled && !isBot) {
     // log pageview
     const hostname = req.headers.host;
     const timestamp = new Date().toISOString();
@@ -190,17 +193,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
 };
 
 export const apiDocs: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.restApiDocs.isEnabled) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return base(context);
-};
-
-export const graphIQl: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.graphqlApiDocs.isEnabled) {
+  if (!config.features.apiDocs.isEnabled) {
     return {
       notFound: true,
     };

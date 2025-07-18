@@ -59,7 +59,7 @@ module.exports = {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/auth/*', '/login', '/chakra', '/sprite', '/account/*'],
+        disallow: ['/auth/*', '/login', '/chakra', '/sprite', '/account/*', '/csv-export'],
       },
     ],
   },
@@ -71,6 +71,7 @@ module.exports = {
     '/login',
     '/sprite',
     '/chakra',
+    '/csv-export',
   ],
   transform: async(config, path) => {
     switch (path) {
