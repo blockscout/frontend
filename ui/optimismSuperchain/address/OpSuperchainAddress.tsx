@@ -16,7 +16,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-import OpSuperchainAddressCoinBalance from './OpSuperchainAddressCoinBalance';
+import OpSuperchainAddressCoinBalanceHistory from './OpSuperchainAddressCoinBalanceHistory';
 import OpSuperchainAddressContract from './OpSuperchainAddressContract';
 import OpSuperchainAddressDetails from './OpSuperchainAddressDetails';
 import OpSuperchainAddressInternalTxs from './OpSuperchainAddressInternalTxs';
@@ -81,7 +81,7 @@ const OpSuperchainAddress = () => {
       {
         id: 'coin_balance_history',
         title: 'Coin balance history',
-        component: <OpSuperchainAddressCoinBalance/>,
+        component: <OpSuperchainAddressCoinBalanceHistory/>,
       },
       {
         id: 'logs',

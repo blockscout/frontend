@@ -10,7 +10,7 @@ import ChainSelect from 'ui/shared/multichain/ChainSelect';
 
 const QUERY_PRESERVED_PARAMS = [ 'tab', 'hash' ];
 
-const OpSuperchainAddressCoinBalance = () => {
+const OpSuperchainAddressCoinBalanceHistory = () => {
   const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS });
   const chainConfig = multichainConfig()?.chains.find(({ slug }) => slug === chainSelect.value?.[0]);
 
@@ -30,4 +30,4 @@ const OpSuperchainAddressCoinBalance = () => {
   );
 };
 
-export default React.memo(OpSuperchainAddressCoinBalance);
+export default React.memo(OpSuperchainAddressCoinBalanceHistory);
