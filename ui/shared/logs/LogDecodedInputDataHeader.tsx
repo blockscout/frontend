@@ -45,7 +45,7 @@ const LogDecodedInputDataHeader = ({ methodId, methodCall, isLoading, rightSlot 
         { rightSlot }
       </Flex>
       <Item label="Call" isLoading={ isLoading }>
-        <Skeleton loading={ isLoading } whiteSpace="pre-wrap" flexGrow={ 1 }>{ methodCall }</Skeleton>
+        <Skeleton loading={ isLoading } whiteSpace="pre-wrap" wordBreak="break-all" flexGrow={ 1 }>{ methodCall }</Skeleton>
       </Item>
     </VStack>
   );

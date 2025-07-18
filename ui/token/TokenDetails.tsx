@@ -1,4 +1,4 @@
-import { Box, Grid } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
@@ -97,10 +97,8 @@ const TokenDetails = ({ tokenQuery }: Props) => {
   }
 
   return (
-    <Grid
-      columnGap={ 8 }
-      rowGap={{ base: 1, lg: 3 }}
-      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
+    <DetailedInfo.Container
+      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, 1fr)' }}
     >
       { exchangeRate && (
         <>
@@ -217,7 +215,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       ) }
 
       <DetailedInfoSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
-    </Grid>
+    </DetailedInfo.Container>
   );
 };
 

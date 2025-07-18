@@ -44,6 +44,8 @@ const UserOpDecodedCallData = ({ data }: Props) => {
       <DetailedInfo.ItemValue
         flexDir={{ base: 'column', lg: 'row' }}
         alignItems={{ base: 'flex-start', lg: 'center' }}
+        flexWrap="wrap"
+        mt={{ base: '5px', lg: '4px' }}
       >
         <LogDecodedInputData data={ callData } rightSlot={ toggler }/>
       </DetailedInfo.ItemValue>
