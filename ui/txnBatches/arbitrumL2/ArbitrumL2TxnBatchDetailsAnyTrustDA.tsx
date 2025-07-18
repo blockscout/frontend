@@ -28,14 +28,16 @@ const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
         hint="The hash of the data blob stored by the AnyTrust committee"
       >
         Data hash
-      </DetailedInfo.ItemLabel><DetailedInfo.ItemValue>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue whiteSpace="pre-wrap" wordBreak="break-all" alignItems={{ base: 'flex-start', lg: 'center' }}>
         { data.data_hash }
         <CopyToClipboard text={ data.data_hash } ml={ 2 }/>
-      </DetailedInfo.ItemValue><DetailedInfo.ItemLabel
+      </DetailedInfo.ItemValue>
+      <DetailedInfo.ItemLabel
         hint="Expiration timeout for the data blob"
       >
         Timeout
-      </DetailedInfo.ItemLabel><DetailedInfo.ItemValue>
+      </DetailedInfo.ItemLabel><DetailedInfo.ItemValue allowWrap>
         { dayjs(data.timeout) < dayjs() ?
           <DetailsTimestamp timestamp={ data.timeout }/> :
           (

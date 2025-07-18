@@ -29,7 +29,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
       >
         Transaction hash
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue flexWrap="nowrap">
+      <DetailedInfo.ItemValue>
         <TxEntity hash={ data.hash } noIcon noLink noCopy={ false }/>
       </DetailedInfo.ItemValue>
 

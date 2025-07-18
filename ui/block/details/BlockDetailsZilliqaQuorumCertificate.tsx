@@ -47,12 +47,13 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
           textStyle="sm"
           gridTemplateColumns="min-content 1fr"
           columnGap={ 5 }
+          mt={{ base: 2, lg: 1.5 }}
         >
           <GridItem fontWeight={ 600 }>View</GridItem>
           <GridItem>{ data.view }</GridItem>
           <DetailedInfo.ItemDivider my={{ base: 2, lg: 2 }} colSpan={ 2 }/>
           <GridItem fontWeight={ 600 }>Signature</GridItem>
-          <GridItem whiteSpace="pre-wrap" wordBreak="break-word" display="flex" alignItems="flex-start" columnGap={ 5 }>
+          <GridItem whiteSpace="pre-wrap" wordBreak="break-word" display="flex" alignItems="flex-start">
             { data.signature }
             <CopyToClipboard text={ data.signature }/>
           </GridItem>

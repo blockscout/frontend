@@ -1,4 +1,4 @@
-import { Grid, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -55,11 +55,8 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
   }
 
   return (
-    <Grid
-      columnGap={ 8 }
-      rowGap={{ base: 3, lg: 3 }}
+    <DetailedInfo.Container
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
-      overflow="hidden"
     >
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
@@ -184,7 +181,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         </Skeleton>
         <CopyToClipboard text={ data.state_root } isLoading={ isPlaceholderData }/>
       </DetailedInfo.ItemValue>
-    </Grid>
+    </DetailedInfo.Container>
   );
 };
 
