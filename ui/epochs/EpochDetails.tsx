@@ -49,7 +49,7 @@ const EpochDetails = ({ data, isLoading }: Props) => {
 
   return (
     <>
-      <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
+      <DetailedInfo.Container>
         <DetailedInfo.ItemLabel
           hint="Current status of the epoch"
           isLoading={ isLoading }

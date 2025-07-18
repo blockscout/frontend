@@ -88,7 +88,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
   return (
     <>
       { addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={ isLoading } mb={ 6 }/> }
-      <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }} >
+      <DetailedInfo.Container>
         <AddressAlternativeFormat isLoading={ isLoading } addressHash={ addressHash }/>
 
         { data.filecoin?.id && (

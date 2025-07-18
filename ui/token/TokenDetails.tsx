@@ -97,9 +97,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
   }
 
   return (
-    <DetailedInfo.Container
-      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, 1fr)' }}
-    >
+    <DetailedInfo.Container>
       { exchangeRate && (
         <>
           <DetailedInfo.ItemLabel
