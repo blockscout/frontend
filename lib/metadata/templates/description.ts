@@ -31,7 +31,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/stats': DEFAULT_TEMPLATE,
   '/stats/[id]': DEFAULT_TEMPLATE,
   '/api-docs': DEFAULT_TEMPLATE,
-  '/graphiql': DEFAULT_TEMPLATE,
   '/search-results': DEFAULT_TEMPLATE,
   '/auth/profile': DEFAULT_TEMPLATE,
   '/account/merits': DEFAULT_TEMPLATE,
@@ -68,6 +67,10 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/pools': DEFAULT_TEMPLATE,
   '/pools/[hash]': DEFAULT_TEMPLATE,
   '/interop-messages': DEFAULT_TEMPLATE,
+  '/chain/[chain-slug]/accounts/label/[slug]': DEFAULT_TEMPLATE,
+  '/chain/[chain-slug]/address/[hash]': DEFAULT_TEMPLATE,
+  '/chain/[chain-slug]/block/[height_or_hash]': DEFAULT_TEMPLATE,
+  '/chain/[chain-slug]/tx/[hash]': DEFAULT_TEMPLATE,
   '/operations': DEFAULT_TEMPLATE,
   '/operation/[id]': DEFAULT_TEMPLATE,
 

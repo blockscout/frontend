@@ -68,17 +68,23 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
       });
   }, [ apiFetch, email, onSuccess, isAuth, formApi ]);
 
+  const resendCodeFetchFactory = React.useCallback((recaptchaToken?: string) => {
+    return apiFetch('general:auth_send_otp', {
+      fetchParams: {
+        method: 'POST',
+        body: { email, recaptcha_response: recaptchaToken },
+        headers: {
+          ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
+        },
+      },
+    });
+  }, [ apiFetch, email ]);
+
   const handleResendCodeClick = React.useCallback(async() => {
     try {
       formApi.clearErrors('code');
       setIsCodeSending(true);
-      const token = await recaptcha.executeAsync();
-      await apiFetch('general:auth_send_otp', {
-        fetchParams: {
-          method: 'POST',
-          body: { email, recaptcha_response: token },
-        },
-      });
+      await recaptcha.fetchProtectedResource(resendCodeFetchFactory);
 
       toaster.success({
         title: 'Success',
@@ -94,7 +100,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
     } finally {
       setIsCodeSending(false);
     }
-  }, [ apiFetch, email, formApi, recaptcha ]);
+  }, [ formApi, recaptcha, resendCodeFetchFactory ]);
 
   return (
     <FormProvider { ...formApi }>

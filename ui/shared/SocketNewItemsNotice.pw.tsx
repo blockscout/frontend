@@ -17,7 +17,7 @@ test('2 new items in validated txs list +@dark-mode', async({ render }) => {
 });
 
 test('connection loss', async({ render }) => {
-  const component = await render(<SocketNewItemsNotice url="/" alert="Connection is lost. Please reload the page."/>, { hooksConfig });
+  const component = await render(<SocketNewItemsNotice url="/" showErrorAlert/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });
 

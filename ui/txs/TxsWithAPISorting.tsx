@@ -55,7 +55,7 @@ const TxsWithAPISorting = ({
       isError={ query.isError }
       setSorting={ handleSortChange }
       sort={ sorting }
-      query={ query }
+      pagination={ query.pagination }
     />
   );
 };

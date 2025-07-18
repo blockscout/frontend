@@ -5,6 +5,7 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 
+import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -14,7 +15,11 @@ import IconSvg from 'ui/shared/IconSvg';
 
 const IntTxsIndexingStatus = () => {
 
-  const { data, isError, isPending } = useApiQuery('general:homepage_indexing_status');
+  const { data, isError, isPending } = useApiQuery('general:homepage_indexing_status', {
+    queryOptions: {
+      enabled: !config.UI.indexingAlert.intTxs.isHidden,
+    },
+  });
 
   const bgColor = { base: 'blackAlpha.100', _dark: 'whiteAlpha.100' };
 

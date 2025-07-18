@@ -246,12 +246,6 @@ export const GENERAL_API_MISC_RESOURCES = {
     path: '/api/v2/config/celo',
   },
 
-  // CSV EXPORT
-  csv_export_token_holders: {
-    path: '/api/v2/tokens/:hash/holders/csv',
-    pathParams: [ 'hash' as const ],
-  },
-
   // OTHER
   api_v2_key: {
     path: '/api/v2/key',

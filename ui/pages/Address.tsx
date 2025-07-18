@@ -12,6 +12,7 @@ import useAddressMetadataInitUpdate from 'lib/address/useAddressMetadataInitUpda
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAddressClusters } from 'lib/clusters/useAddressClusters';
 import { useAppContext } from 'lib/contexts/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
@@ -23,6 +24,8 @@ import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import Address3rdPartyWidgets from 'ui/address/Address3rdPartyWidgets';
+import useAddress3rdPartyWidgets from 'ui/address/address3rdPartyWidgets/useAddress3rdPartyWidgets';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -71,6 +74,7 @@ const xScoreFeature = config.features.xStarScore;
 const AddressPageContent = () => {
   const router = useRouter();
   const appProps = useAppContext();
+  const { chain } = useMultichainContext() || {};
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -134,10 +138,17 @@ const AddressPageContent = () => {
 
   const addressClustersQuery = useAddressClusters(hash, areQueriesEnabled);
 
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets(
+    addressQuery.data?.is_contract ? 'contract' : 'eoa',
+    addressQuery.isPlaceholderData,
+    areQueriesEnabled,
+  );
+
   const isLoading = addressQuery.isPlaceholderData;
   const isTabsLoading =
     isLoading ||
     addressTabsCountersQuery.isPlaceholderData ||
+    (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData) ||
     (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
     (config.features.mudFramework.isEnabled && mudTablesCountQuery.isPlaceholderData);
 
@@ -284,6 +295,20 @@ const AddressPageContent = () => {
           component: <AddressLogs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
+      (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) ? {
+        id: 'widgets',
+        title: 'Widgets',
+        count: address3rdPartyWidgets.items.length,
+        component: (
+          <Address3rdPartyWidgets
+            addressType={ addressQuery.data?.is_contract ? 'contract' : 'eoa' }
+            isLoading={ addressQuery.isPlaceholderData }
+            shouldRender={ !isTabsLoading }
+            isQueryEnabled={ areQueriesEnabled }
+            showAll
+          />
+        ),
+      } : undefined,
     ].filter(Boolean);
   }, [
     addressQuery,
@@ -294,6 +319,7 @@ const AddressPageContent = () => {
     isTabsLoading,
     areQueriesEnabled,
     mudTablesCountQuery.data,
+    address3rdPartyWidgets,
   ]);
 
   const usernameApiTag = userPropfileApiQuery.data?.user_profile?.username;
@@ -443,11 +469,13 @@ const AddressPageContent = () => {
     </Flex>
   );
 
+  const chainText = chain ? ` on ${ chain.config.chain.name }` : '';
+
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details` }
+        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details${ chainText }` }
         backLink={ backLink }
         contentAfter={ titleContentAfter }
         secondRow={ titleSecondRow }

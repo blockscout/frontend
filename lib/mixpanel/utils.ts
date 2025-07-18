@@ -24,6 +24,7 @@ export enum EventTypes {
   BUTTON_CLICK = 'Button click',
   PROMO_BANNER = 'Promo banner',
   APP_FEEDBACK = 'App feedback',
+  ADDRESS_WIDGET = 'Address widget',
 }
 
 /* eslint-disable  @stylistic/indent */
@@ -168,6 +169,9 @@ Type extends EventTypes.APP_FEEDBACK ? {
   Source: 'Discovery' | 'App modal' | 'App page';
   AppId: string;
   Score: number;
+} :
+Type extends EventTypes.ADDRESS_WIDGET ? {
+  Name: string;
 } :
 undefined;
 /* eslint-enable  @stylistic/indent */

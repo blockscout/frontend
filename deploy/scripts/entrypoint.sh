@@ -64,6 +64,9 @@ node --no-warnings ./og_image_generator.js
 # Create envs.js file with run-time environment variables for the client app
 ./make_envs_script.sh
 
+# Generate multichain config
+node ./deploy/tools/multichain-config-generator/dist/index.js
+
 # Generate sitemap.xml and robots.txt files
 ./sitemap_generator.sh
 

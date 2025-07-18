@@ -6,10 +6,11 @@ import React from 'react';
 
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
-import { route } from 'nextjs-routes';
+import { route, routeParams } from 'nextjs/routes';
 
 import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
@@ -53,6 +54,7 @@ const rollupFeature = config.features.rollup;
 const BlockDetails = ({ query }: Props) => {
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
+  const multichainContext = useMultichainContext();
 
   const { data, isPlaceholderData } = query;
 
@@ -64,8 +66,8 @@ const BlockDetails = ({ query }: Props) => {
     const increment = direction === 'next' ? +1 : -1;
     const nextId = String(data.height + increment);
 
-    router.push({ pathname: '/block/[height_or_hash]', query: { height_or_hash: nextId } }, undefined);
-  }, [ data, router ]);
+    router.push(routeParams({ pathname: '/block/[height_or_hash]', query: { height_or_hash: nextId } }, multichainContext), undefined);
+  }, [ data, multichainContext, router ]);
 
   if (!data) {
     return null;
@@ -113,7 +115,7 @@ const BlockDetails = ({ query }: Props) => {
 
   const txsNum = (() => {
     const blockTxsNum = (
-      <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }) }>
+      <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }, multichainContext) }>
         { data.transactions_count } txn{ data.transactions_count === 1 ? '' : 's' }
       </Link>
     );
@@ -121,7 +123,7 @@ const BlockDetails = ({ query }: Props) => {
     const blockBlobTxsNum = (config.features.dataAvailability.isEnabled && data.blob_transaction_count) ? (
       <>
         <span> including </span>
-        <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'blob_txs' } }) }>
+        <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'blob_txs' } }, multichainContext) }>
           { data.blob_transaction_count } blob txn{ data.blob_transaction_count === 1 ? '' : 's' }
         </Link>
       </>
@@ -266,7 +268,7 @@ const BlockDetails = ({ query }: Props) => {
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <Skeleton loading={ isPlaceholderData }>
-              <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'withdrawals' } }) }>
+              <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'withdrawals' } }, multichainContext) }>
                 { data.withdrawals_count } withdrawal{ data.withdrawals_count === 1 ? '' : 's' }
               </Link>
             </Skeleton>
@@ -666,7 +668,7 @@ const BlockDetails = ({ query }: Props) => {
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue flexWrap="nowrap">
               <Link
-                href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height - 1) } }) }
+                href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height - 1) } }, multichainContext) }
                 overflow="hidden"
                 whiteSpace="nowrap"
               >

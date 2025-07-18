@@ -81,7 +81,6 @@
 	| "gear"
 	| "globe-b"
 	| "globe"
-	| "graphQL"
 	| "heart_filled"
 	| "heart_outline"
 	| "hourglass_slim"

@@ -9,7 +9,7 @@ import 'graphiql/graphiql.css';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
-const feature = config.features.graphqlApiDocs;
+const feature = config.features.apiDocs;
 
 const graphQLStyle = {
   '.graphiql-container': {
@@ -35,13 +35,13 @@ const GraphQL = () => {
     }
   }, [ colorMode, graphqlTheme ]);
 
-  if (!feature.isEnabled) {
+  if (!feature.isEnabled || !feature.graphqlDefaultTxnHash) {
     return null;
   }
 
   const initialQuery = `{
     transaction(
-      hash: "${ feature.defaultTxHash }"
+      hash: "${ feature.graphqlDefaultTxnHash }"
     ) {
       hash
       blockNumber

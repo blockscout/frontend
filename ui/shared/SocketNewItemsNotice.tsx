@@ -15,19 +15,19 @@ interface Props {
   children?: (props: InjectedProps) => React.JSX.Element;
   className?: string;
   url?: string;
-  alert?: string;
+  showErrorAlert?: boolean;
   num?: number;
   isLoading?: boolean;
 }
 
-const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, type = 'transaction', isLoading }: Props) => {
+const SocketNewItemsNotice = chakra(({ children, className, url, num, showErrorAlert, type = 'transaction', isLoading }: Props) => {
   const handleLinkClick = React.useCallback(() => {
     window.location.reload();
   }, []);
 
   const alertContent = (() => {
-    if (alert) {
-      return alert;
+    if (showErrorAlert) {
+      return 'Live updates temporarily delayed';
     }
 
     let name;

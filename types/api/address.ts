@@ -2,7 +2,7 @@ import type { Transaction } from 'types/api/transaction';
 
 import type { UserTags, AddressImplementation, AddressParam, AddressFilecoinParams } from './addressParams';
 import type { Block } from './block';
-import type { SmartContractProxyType } from './contract';
+import type { SmartContractCreationStatus, SmartContractProxyType } from './contract';
 import type { CeloEpochRewardsType } from './epochs';
 import type { InternalTransaction } from './internalTransaction';
 import type { MudWorldSchema, MudWorldTable } from './mudWorlds';
@@ -15,6 +15,7 @@ export interface Address extends UserTags {
   creator_address_hash: string | null;
   creator_filecoin_robust_address?: string | null;
   creation_transaction_hash: string | null;
+  creation_status: SmartContractCreationStatus | null;
   exchange_rate: string | null;
   ens_domain_name: string | null;
   filecoin?: AddressFilecoinParams;
