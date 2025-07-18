@@ -14,9 +14,7 @@ type Props = {
 
 const PoolInfo = ({ data, isPlaceholderData }: Props) => {
   return (
-    <DetailedInfo.Container
-      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}
-    >
+    <DetailedInfo.Container>
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
         hint="The base token in a liquidity pool pair"

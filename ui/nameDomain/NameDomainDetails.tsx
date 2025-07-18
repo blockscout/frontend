@@ -35,7 +35,7 @@ const NameDomainDetails = ({ query }: Props) => {
   return (
     <>
       <NameDomainDetailsAlert data={ query.data }/>
-      <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
+      <DetailedInfo.Container>
         { query.data?.registration_date && (
           <>
             <DetailedInfo.ItemLabel

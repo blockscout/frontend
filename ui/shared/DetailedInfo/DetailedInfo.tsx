@@ -13,8 +13,7 @@ export const Container = (props: GridProps) => {
     <Grid
       columnGap={ 8 }
       rowGap={{ base: 0, lg: 3 }}
-      // TODO @tom2drum common templateColumns for all components
-      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}
+      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}
       textStyle={{ base: 'sm', lg: 'md' }}
       { ...props }
     />

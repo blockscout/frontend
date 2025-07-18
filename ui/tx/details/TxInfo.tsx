@@ -136,7 +136,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
   const hasInterop = rollupFeature.isEnabled && rollupFeature.interopEnabled && data.op_interop;
 
   return (
-    <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
+    <DetailedInfo.Container>
 
       { config.features.metasuites.isEnabled && (
         <>
