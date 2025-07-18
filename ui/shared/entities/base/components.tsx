@@ -154,7 +154,7 @@ const Icon = (props: IconBaseProps) => {
   }
 
   return (
-    <Box position="relative" display="inline-flex" alignItems="center">
+    <Box position="relative" display="inline-flex" alignItems="center" flexShrink={ 0 }>
       { iconElementWithHint }
       <IconShield isLoading={ isLoading } { ...shield }/>
     </Box>
