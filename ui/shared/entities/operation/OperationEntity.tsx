@@ -85,7 +85,7 @@ const OperationEntity = (props: EntityProps) => {
   );
 };
 
-export default React.memo(OperationEntity);
+export default React.memo(chakra(OperationEntity));
 
 export {
   Container,

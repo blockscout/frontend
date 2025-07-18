@@ -689,7 +689,7 @@ const BlockDetails = ({ query }: Props) => {
           </>
         ) }
 
-        { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
+        { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && data.arbitrum.send_count && (
           <>
             <DetailedInfo.ItemLabel
               hint="The cumulative number of L2 to L1 transactions as of this block"

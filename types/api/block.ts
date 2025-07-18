@@ -78,7 +78,7 @@ type ArbitrumBlockData = {
   confirmation_transaction: ArbitrumL2TxData;
   delayed_messages: number;
   l1_block_number: number;
-  send_count: number;
+  send_count: number | null;
   send_root: string;
   status: ArbitrumBatchStatus;
 };

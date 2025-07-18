@@ -304,7 +304,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       >
         Block
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
+      <DetailedInfo.ItemValue allowWrap={ Boolean(data.scroll?.l2_block_status) }>
         { data.block_number === null ?
           <Text>Pending</Text> : (
             <BlockEntity
@@ -822,7 +822,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               >
                 L1 gas price
               </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue>
+              <DetailedInfo.ItemValue allowWrap>
                 <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
                 <Text color="text.secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
               </DetailedInfo.ItemValue>
@@ -838,12 +838,13 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               >
                 L1 fee
               </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue>
+              <DetailedInfo.ItemValue allowWrap>
                 <CurrencyValue
                   value={ data.l1_fee }
                   currency={ currencyUnits.ether }
                   exchangeRate={ data.exchange_rate }
                   flexWrap="wrap"
+                  rowGap={ 0 }
                 />
               </DetailedInfo.ItemValue>
             </>

@@ -1,4 +1,4 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { GridItem } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -61,11 +61,8 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
   const blocksCount = data.end_block_number - data.start_block_number + 1;
 
   return (
-    <Grid
-      columnGap={ 8 }
-      rowGap={{ base: 3, lg: 3 }}
+    <DetailedInfo.Container
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
-      overflow="hidden"
     >
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
@@ -207,7 +204,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
           ) }
         </CollapsibleDetails>
       ) }
-    </Grid>
+    </DetailedInfo.Container>
   );
 };
 
