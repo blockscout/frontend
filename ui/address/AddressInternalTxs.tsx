@@ -1,66 +1,27 @@
 import { Box } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { AddressFromToFilter } from 'types/api/address';
-import { AddressFromToFilterValues } from 'types/api/address';
-
-import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useIsMounted from 'lib/hooks/useIsMounted';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import { INTERNAL_TX } from 'stubs/internalTx';
-import { generateListStub } from 'stubs/utils';
 import { apos } from 'toolkit/utils/htmlEntities';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTxsFilter from './AddressTxsFilter';
-
-const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
+import useAddressInternalTxsQuery from './useAddressInternalTxsQuery';
 
 type Props = {
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
 };
 const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
-  const router = useRouter();
   const isMounted = useIsMounted();
 
-  const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
-
-  const hash = getQueryParamString(router.query.hash);
-
-  const { data, isPlaceholderData, isError, pagination, onFilterChange } = useQueryWithPages({
-    resourceName: 'general:address_internal_txs',
-    pathParams: { hash },
-    filters: { filter: filterValue },
-    options: {
-      enabled: isQueryEnabled,
-      placeholderData: generateListStub<'general:address_internal_txs'>(
-        INTERNAL_TX,
-        50,
-        {
-          next_page_params: {
-            block_number: 8987561,
-            index: 2,
-            items_count: 50,
-            transaction_index: 67,
-          },
-        },
-      ),
-    },
-  });
-
-  const handleFilterChange = React.useCallback((val: string | Array<string>) => {
-    const newVal = getFilterValue(val);
-    setFilterValue(newVal);
-    onFilterChange({ filter: newVal });
-  }, [ onFilterChange ]);
+  const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({ enabled: isQueryEnabled });
+  const { data, isPlaceholderData, isError, pagination } = query;
 
   if (!isMounted || !shouldRender) {
     return null;
@@ -81,7 +42,7 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
     <ActionBar mt={ -6 } justifyContent="left">
       <AddressTxsFilter
         initialValue={ filterValue }
-        onFilterChange={ handleFilterChange }
+        onFilterChange={ onFilterChange }
         hasActiveFilter={ Boolean(filterValue) }
         isLoading={ pagination.isLoading }
       />

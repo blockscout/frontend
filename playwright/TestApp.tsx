@@ -5,7 +5,7 @@ import { http } from 'viem';
 import { WagmiProvider, createConfig } from 'wagmi';
 import { mock } from 'wagmi/connectors';
 
-import type { Props as PageProps } from 'nextjs/getServerSideProps';
+import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';

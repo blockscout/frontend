@@ -11,6 +11,7 @@ import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
@@ -37,6 +38,7 @@ interface Props {
 }
 
 const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
+  const multichainContext = useMultichainContext();
   const appProps = useAppContext();
   const addressHash = !tokenQuery.isPlaceholderData ? (tokenQuery.data?.address_hash || '') : '';
 
@@ -125,6 +127,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
           address={{ ...addressQuery.data, name: '' }}
           isLoading={ isLoading }
           variant="subheading"
+          chain={ multichainContext?.chain }
         />
       ) }
       { !isLoading && tokenQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }

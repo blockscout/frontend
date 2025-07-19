@@ -4,6 +4,7 @@ import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
+import type { ChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
@@ -30,11 +31,12 @@ interface Props {
   isLoading?: boolean;
   enableTimeIncrement?: boolean;
   animation?: string;
+  chainData?: ChainConfig;
 }
 
 const isRollup = config.features.rollup.isEnabled;
 
-const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Props) => {
+const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chainData }: Props) => {
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.transaction_fees || 0);
@@ -48,8 +50,8 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
             isLoading={ isLoading }
             number={ data.height }
             hash={ data.type !== 'block' ? data.hash : undefined }
-            noIcon
             fontWeight={ 600 }
+            chain={ chainData }
           />
           { data.celo?.l1_era_finalized_epoch_number && (
             <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` } disabled={ isLoading }>

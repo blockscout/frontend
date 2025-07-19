@@ -25,18 +25,27 @@ interface ContractTab {
   subTabs?: Array<string>;
 }
 
+interface Props {
+  data: Address | undefined;
+  isPlaceholderData: boolean;
+  hasMudTab?: boolean;
+  chainSlug?: string;
+  isQueryEnabled?: boolean;
+}
+
 interface ReturnType {
   tabs: Array<ContractTab>;
   isLoading: boolean;
 }
 
-export default function useContractTabs(data: Address | undefined, isPlaceholderData: boolean, hasMudTab: boolean = false): ReturnType {
-  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
+export default function useContractTabs({ data, isPlaceholderData, hasMudTab, chainSlug, isQueryEnabled: isQueryEnabledProp = false }: Props): ReturnType {
+  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(isQueryEnabledProp);
 
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
 
-  const isEnabled = Boolean(data?.hash) && data?.is_contract && !isPlaceholderData && CONTRACT_TAB_IDS.concat('contract' as never).includes(tab);
+  const isContract = !isPlaceholderData && data?.is_contract;
+  const isEnabled = Boolean(data?.hash) && isContract && CONTRACT_TAB_IDS.concat('contract' as never).includes(tab);
 
   const enableQuery = React.useCallback(() => {
     setIsQueryEnabled(true);
@@ -49,6 +58,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
       refetchOnMount: false,
       placeholderData: data?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
+    chainSlug,
   });
 
   const mudSystemsQuery = useApiQuery('general:mud_systems', {
@@ -58,6 +68,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
       refetchOnMount: false,
       placeholderData: stubs.MUD_SYSTEMS,
     },
+    chainSlug,
   });
 
   const channel = useSocketChannel({
@@ -72,6 +83,21 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
   }, [ data?.hash, data?.implementations ]);
 
   return React.useMemo(() => {
+
+    // TODO @tom2drum remove this condition once the API will return is_contract flag
+    if (!isPlaceholderData && !data?.is_contract) {
+      return {
+        tabs: [
+          {
+            id: 'contract_code' as const,
+            title: 'Code',
+            component: <div>Not a contract</div>,
+          },
+        ],
+        isLoading: false,
+      };
+    }
+
     return {
       tabs: [
         data && {
@@ -113,6 +139,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     };
   }, [
     data,
+    isPlaceholderData,
     contractQuery,
     channel,
     verifiedImplementations,

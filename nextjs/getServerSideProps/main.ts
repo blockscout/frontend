@@ -1,0 +1,40 @@
+import * as guards from './guards';
+import { factory } from './utils';
+
+export const base = factory([ ]);
+export const block = factory([ guards.notOpSuperchain ]);
+export const account = factory([ guards.account ]);
+export const verifiedAddresses = factory([ guards.account, guards.verifiedAddresses ]);
+export const userOps = factory([ guards.userOps ]);
+export const marketplace = factory([ guards.marketplace ]);
+export const apiDocs = factory([ guards.apiDocs ]);
+export const csvExport = factory([ guards.csvExport ]);
+export const stats = factory([ guards.stats ]);
+export const suave = factory([ guards.suave ]);
+export const nameService = factory([ guards.nameService ]);
+export const accounts = factory([ guards.accounts ]);
+export const accountsLabelSearch = factory([ guards.accountsLabelSearch ]);
+export const validators = factory([ guards.validators ]);
+export const validatorDetails = factory([ guards.validatorDetails ]);
+export const gasTracker = factory([ guards.gasTracker ]);
+export const advancedFilter = factory([ guards.advancedFilter ]);
+export const dataAvailability = factory([ guards.dataAvailability ]);
+export const login = factory([ guards.login ]);
+export const dev = factory([ guards.dev ]);
+export const publicTagsSubmit = factory([ guards.publicTagsSubmit ]);
+export const pools = factory([ guards.pools ]);
+
+// ROLLUPS
+export const rollup = factory([ guards.rollup ]);
+export const deposits = factory([ guards.deposits ]);
+export const withdrawals = factory([ guards.withdrawals ]);
+export const batch = factory([ guards.batch ]);
+export const batchCelestia = factory([ guards.batchCelestia ]);
+export const txnWithdrawals = factory([ guards.txnWithdrawals ]);
+export const outputRoots = factory([ guards.outputRoots ]);
+export const disputeGames = factory([ guards.disputeGames ]);
+export const mud = factory([ guards.mud ]);
+export const tac = factory([ guards.tac ]);
+export const celo = factory([ guards.celo ]);
+export const interopMessages = factory([ guards.interopMessages ]);
+export const opSuperchain = factory([ guards.opSuperchain ]);

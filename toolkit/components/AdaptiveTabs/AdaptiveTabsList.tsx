@@ -133,7 +133,7 @@ const AdaptiveTabsList = (props: Props) => {
         </Box>
       )
       }
-      { tabsList.map((tab, index) => {
+      { tabs.length > 1 && tabsList.map((tab, index) => {
         const value = getTabValue(tab);
         const ref = tabsRefs[index];
 

@@ -17,6 +17,8 @@ const CrossChainTxStatusTag = ({ status: statusProp, ...rest }: Props) => {
         return { status: 'ok' as const, text: 'Relayed' };
       case multichain.InteropMessage_Status.FAILED:
         return { status: 'error' as const, text: 'Failed' };
+      case multichain.InteropMessage_Status.EXPIRED:
+        return { status: 'error' as const, text: 'Expired' };
       case multichain.InteropMessage_Status.PENDING:
         return { status: 'pending' as const, text: 'Sent' };
       default:

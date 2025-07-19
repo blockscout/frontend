@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { accountsLabelSearch as getServerSideProps } from 'nextjs/getServerSideProps';
+export { accountsLabelSearch as getServerSideProps } from 'nextjs/getServerSideProps/main';

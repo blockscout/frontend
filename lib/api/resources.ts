@@ -10,7 +10,7 @@ import { GENERAL_API_RESOURCES } from './services/general';
 import type { GeneralApiResourceName, GeneralApiResourcePayload, GeneralApiPaginationFilters, GeneralApiPaginationSorting } from './services/general';
 import type { MetadataApiResourceName, MetadataApiResourcePayload } from './services/metadata';
 import { METADATA_API_RESOURCES } from './services/metadata';
-import type { MultichainApiResourceName, MultichainApiResourcePayload } from './services/multichain';
+import type { MultichainApiPaginationFilters, MultichainApiResourceName, MultichainApiResourcePayload } from './services/multichain';
 import { MULTICHAIN_API_RESOURCES } from './services/multichain';
 import type { RewardsApiResourceName, RewardsApiResourcePayload } from './services/rewards';
 import { REWARDS_API_RESOURCES } from './services/rewards';
@@ -91,6 +91,7 @@ export type PaginationFilters<R extends ResourceName> =
 R extends BensApiResourceName ? BensApiPaginationFilters<R> :
 R extends GeneralApiResourceName ? GeneralApiPaginationFilters<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiPaginationFilters<R> :
+R extends MultichainApiResourceName ? MultichainApiPaginationFilters<R> :
 R extends TacOperationLifecycleApiResourceName ? TacOperationLifecycleApiPaginationFilters<R> :
 never;
 /* eslint-enable @stylistic/indent */

@@ -5,10 +5,12 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
+import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import { currencyUnits } from 'lib/units';
-import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import TxsSocketNotice from './socket/TxsSocketNotice';
@@ -24,6 +26,7 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
+  stickyHeader?: boolean;
 };
 
 const TxsTable = ({
@@ -36,6 +39,7 @@ const TxsTable = ({
   currentAddress,
   enableTimeIncrement,
   isLoading,
+  stickyHeader = true,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
   const initialList = useInitialList({
@@ -43,17 +47,22 @@ const TxsTable = ({
     idFn: (item) => item.hash,
     enabled: !isLoading,
   });
+  const multichainContext = useMultichainContext();
+  const chainData = getChainDataForList(multichainContext);
 
   const feeCurrency = config.UI.views.tx.hiddenFields?.fee_currency || config.chain.hasMultipleGasCurrencies ?
     '' :
     ' ' + currencyUnits.ether;
 
+  const TableHeaderComponent = stickyHeader ? TableHeaderSticky : TableHeader;
+
   return (
     <AddressHighlightProvider>
-      <TableRoot minWidth="950px">
-        <TableHeaderSticky top={ top }>
+      <TableRoot minWidth="1000px">
+        <TableHeaderComponent top={ stickyHeader ? top : undefined }>
           <TableRow>
             <TableColumnHeader width="54px"></TableColumnHeader>
+            { chainData && <TableColumnHeader width="38px"></TableColumnHeader> }
             <TableColumnHeader width="180px">
               Txn hash
               <TimeFormatToggle/>
@@ -95,7 +104,7 @@ const TxsTable = ({
               </TableColumnHeaderSortable>
             ) }
           </TableRow>
-        </TableHeaderSticky>
+        </TableHeaderComponent>
         <TableBody>
           { socketType && <TxsSocketNotice type={ socketType } place="table" isLoading={ isLoading }/> }
           { txs.slice(0, renderedItemsNum).map((item, index) => (
@@ -107,6 +116,7 @@ const TxsTable = ({
               enableTimeIncrement={ enableTimeIncrement }
               isLoading={ isLoading }
               animation={ initialList.getAnimationProp(item) }
+              chainData={ chainData }
             />
           )) }
         </TableBody>

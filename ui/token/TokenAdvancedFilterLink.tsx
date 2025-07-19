@@ -3,9 +3,10 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import { Link } from 'toolkit/chakra/link';
 import IconSvg from 'ui/shared/IconSvg';
@@ -17,6 +18,7 @@ interface Props {
 
 const TokenAdvancedFilterLink = ({ isLoading, token }: Props) => {
   const isInitialLoading = useIsInitialLoading(isLoading);
+  const multichainContext = useMultichainContext();
 
   if (!token || !config.features.advancedFilter.isEnabled) {
     return null;
@@ -29,7 +31,7 @@ const TokenAdvancedFilterLink = ({ isLoading, token }: Props) => {
   return (
     <Link
       whiteSpace="nowrap"
-      href={ route({ pathname: '/advanced-filter', query: queryParams }) }
+      href={ route({ pathname: '/advanced-filter', query: queryParams }, multichainContext) }
       flexShrink={ 0 }
       loading={ isInitialLoading }
       minW={ 8 }

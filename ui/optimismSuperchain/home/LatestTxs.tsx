@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import multichainConfig from 'configs/multichain';
+import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Heading } from 'toolkit/chakra/heading';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -14,20 +14,7 @@ import LatestTxsLocal from './LatestTxsLocal';
 const LatestTxs = () => {
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
-
-  const [ chainValue, setChainValue ] = React.useState<Array<string> | undefined>(
-    [ getQueryParamString(router.query['chain-slug']) ?? multichainConfig()?.chains[0]?.slug ].filter(Boolean),
-  );
-
-  const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    setChainValue(value);
-    router.push({
-      query: {
-        ...router.query,
-        'chain-slug': value[0],
-      },
-    }, undefined, { shallow: true });
-  }, [ router ]);
+  const chainSelect = useRoutedChainSelect();
 
   const tabs = [
     {
@@ -36,26 +23,28 @@ const LatestTxs = () => {
       component: <LatestTxsCrossChain/>,
     },
     {
-      id: 'local_txs',
+      id: 'txs_local',
       title: 'Local',
-      component: chainValue ? <LatestTxsLocal key={ chainValue[0] } chainSlug={ chainValue[0] }/> : null,
+      component: chainSelect.value ? <LatestTxsLocal key={ chainSelect.value[0] } chainSlug={ chainSelect.value[0] }/> : null,
     },
   ];
 
-  const rightSlot = tab === 'local_txs' ? (
+  const leftSlot = <Heading level="3">Latest transactions</Heading>;
+
+  const rightSlot = tab === 'txs_local' ? (
     <ChainSelect
       loading={ false }
-      value={ chainValue }
-      onValueChange={ handleChainValueChange }
-      w="fit-content"
+      value={ chainSelect.value }
+      onValueChange={ chainSelect.onValueChange }
     />
   ) : null;
 
   return (
-    <Box as="section" mt={ 8 }>
-      <Heading level="3" mb={ 6 }>Latest transactions</Heading>
+    <Box as="section" my={ 8 }>
       <RoutedTabs
         tabs={ tabs }
+        leftSlot={ leftSlot }
+        leftSlotProps={{ mr: 6 }}
         rightSlot={ rightSlot }
       />
     </Box>

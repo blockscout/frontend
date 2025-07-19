@@ -32,7 +32,7 @@ const Link = chakra((props: LinkProps) => {
 type IconProps = Pick<EntityProps, 'protocol'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
-  const icon = <EntityBase.Icon { ...props } name={ props.name ?? 'ENS_slim' }/>;
+  const icon = <EntityBase.Icon { ...props } name={ 'name' in props ? props.name : 'ENS_slim' }/>;
 
   if (props.protocol) {
     const styles = getIconProps(props.variant);
@@ -91,10 +91,9 @@ const Icon = (props: IconProps) => {
         interactive
       >
         <Image
+          { ...styles }
           src={ props.protocol.icon_url }
-          boxSize={ styles.boxSize }
           borderRadius="sm"
-          mr={ 2 }
           flexShrink={ 0 }
           alt={ `${ props.protocol.title } protocol icon` }
           fallback={ icon }

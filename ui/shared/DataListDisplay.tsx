@@ -16,6 +16,7 @@ type Props = {
   emptyText?: React.ReactNode;
   actionBar?: React.ReactNode;
   showActionBarIfEmpty?: boolean;
+  showActionBarIfError?: boolean;
   children: React.ReactNode;
   className?: string;
   filterProps?: FilterProps;
@@ -23,6 +24,15 @@ type Props = {
 
 const DataListDisplay = (props: Props) => {
   if (props.isError) {
+    if (props.showActionBarIfError) {
+      return (
+        <Box className={ props.className }>
+          { props.actionBar }
+          <DataFetchAlert/>
+        </Box>
+      );
+    }
+
     return <DataFetchAlert className={ props.className }/>;
   }
 

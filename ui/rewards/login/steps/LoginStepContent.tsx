@@ -118,7 +118,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
         src="/static/merits/merits_program.png"
         alt="Merits program"
         mb={ 3 }
-        fallback={ <Skeleton loading w="full" h="120px" mb={ 3 }/> }
+        fallback={ <Skeleton loading w="full" h="120px"/> }
       />
       <Box mb={ 6 }>
         Merits are awarded for a variety of different Blockscout activities. Connect a wallet to get started.

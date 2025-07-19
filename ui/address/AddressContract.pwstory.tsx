@@ -11,7 +11,10 @@ const AddressContractPwStory = () => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
   const addressQuery = useApiQuery('general:address', { pathParams: { hash } });
-  const { tabs } = useContractTabs(addressQuery.data, false);
+  const { tabs } = useContractTabs({
+    data: addressQuery.data,
+    isPlaceholderData: false,
+  });
   return <AddressContract tabs={ tabs } shouldRender={ true } isLoading={ false }/>;
 };
 

@@ -12,6 +12,8 @@ import { FilterInput } from '../components/filters/FilterInput';
 import { CloseButton } from './close-button';
 import { Skeleton } from './skeleton';
 
+export type ViewMode = 'default' | 'compact';
+
 export interface SelectOption<Value extends string = string> {
   label: string;
   renderLabel?: () => React.ReactNode;
@@ -118,13 +120,14 @@ interface SelectValueTextProps extends Omit<ChakraSelect.ValueTextProps, 'childr
   required?: boolean;
   invalid?: boolean;
   errorText?: string;
+  mode?: ViewMode;
 }
 
 export const SelectValueText = React.forwardRef<
   HTMLSpanElement,
   SelectValueTextProps
 >(function SelectValueText(props, ref) {
-  const { children, size, required, invalid, errorText, ...rest } = props;
+  const { children, size, required, invalid, errorText, mode, ...rest } = props;
   const context = useSelectContext();
 
   const content = (() => {
@@ -156,13 +159,15 @@ export const SelectValueText = React.forwardRef<
           { label }
           <Flex display="inline-flex" alignItems="center" flexWrap="nowrap" gap={ 1 }>
             { item.icon }
-            <span style={{
-              WebkitLineClamp: 1,
-              WebkitBoxOrient: 'vertical',
-              display: '-webkit-box',
-            }}>
-              { item.renderLabel ? item.renderLabel() : context.collection.stringifyItem(item) }
-            </span>
+            { mode !== 'compact' && (
+              <span style={{
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: 'vertical',
+                display: '-webkit-box',
+              }}>
+                { item.renderLabel ? item.renderLabel() : context.collection.stringifyItem(item) }
+              </span>
+            ) }
           </Flex>
         </>
       );
@@ -236,10 +241,11 @@ export interface SelectProps extends SelectRootProps {
   loading?: boolean;
   errorText?: string;
   contentProps?: SelectContentProps;
+  mode?: ViewMode;
 }
 
 export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
-  const { collection, placeholder, portalled = true, loading, errorText, contentProps, ...rest } = props;
+  const { collection, placeholder, portalled = true, loading, errorText, contentProps, mode, ...rest } = props;
   return (
     <SelectRoot
       ref={ ref }
@@ -253,6 +259,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
           required={ props.required }
           invalid={ props.invalid }
           errorText={ errorText }
+          mode={ mode }
         />
       </SelectControl>
       <SelectContent portalled={ portalled } { ...contentProps }>
@@ -272,10 +279,11 @@ export interface SelectAsyncProps extends Omit<SelectProps, 'collection'> {
   loading?: boolean;
   loadOptions: (input: string, currentValue: Array<string>) => Promise<ListCollection<SelectOption>>;
   extraControls?: React.ReactNode;
+  mode?: ViewMode;
 }
 
 export const SelectAsync = React.forwardRef<HTMLDivElement, SelectAsyncProps>((props, ref) => {
-  const { placeholder, portalled = true, loading, loadOptions, extraControls, onValueChange, errorText, ...rest } = props;
+  const { placeholder, portalled = true, loading, loadOptions, extraControls, onValueChange, errorText, mode, ...rest } = props;
 
   const [ collection, setCollection ] = React.useState<ListCollection<SelectOption>>(createListCollection<SelectOption>({ items: [] }));
   const [ inputValue, setInputValue ] = React.useState('');
@@ -310,6 +318,7 @@ export const SelectAsync = React.forwardRef<HTMLDivElement, SelectAsyncProps>((p
           required={ props.required }
           invalid={ props.invalid }
           errorText={ errorText }
+          mode={ mode }
         />
       </SelectControl>
       <SelectContent portalled={ portalled }>

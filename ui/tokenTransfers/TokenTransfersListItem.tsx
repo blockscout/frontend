@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { ChainConfig } from 'types/multichain';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
@@ -18,9 +19,10 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 type Props = {
   item: TokenTransfer;
   isLoading: boolean;
+  chainData?: ChainConfig;
 };
 
-const TokenTransfersListItem = ({ item, isLoading }: Props) => {
+const TokenTransfersListItem = ({ item, isLoading, chainData }: Props) => {
 
   const { valueStr } = item.total && 'value' in item.total && item.total.value !== null ? getCurrencyValue({
     value: item.total.value,
@@ -34,7 +36,7 @@ const TokenTransfersListItem = ({ item, isLoading }: Props) => {
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TxEntity hash={ item.transaction_hash } isLoading={ isLoading } truncation="constant_long" noIcon/>
+        <TxEntity hash={ item.transaction_hash } isLoading={ isLoading } truncation="constant_long" noIcon={ !chainData } chain={ chainData }/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>

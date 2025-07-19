@@ -6,6 +6,7 @@ import {
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
+import type { ChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
@@ -32,9 +33,10 @@ type Props = {
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
   animation?: string;
+  chainData?: ChainConfig;
 };
 
-const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement, animation }: Props) => {
+const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement, animation, chainData }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   return (
@@ -61,9 +63,8 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           hash={ tx.hash }
           truncation="constant_long"
           fontWeight="700"
-          icon={{
-            name: tx.transaction_types.includes('blob_transaction') ? 'blob' : undefined,
-          }}
+          icon={ tx.transaction_types.includes('blob_transaction') ? { name: 'blob' } : {} }
+          chain={ chainData }
         />
         <TimeWithTooltip
           timestamp={ tx.timestamp }

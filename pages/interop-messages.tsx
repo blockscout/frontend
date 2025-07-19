@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { interopMessages as getServerSideProps } from 'nextjs/getServerSideProps';
+export { interopMessages as getServerSideProps } from 'nextjs/getServerSideProps/main';

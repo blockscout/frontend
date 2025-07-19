@@ -1,15 +1,21 @@
-import type { HTMLChakraProps } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import type { ImageProps } from 'toolkit/chakra/image';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 
-const feature = config.features.rollup;
+interface Props extends ImageProps {
+  chainConfig?: typeof config;
+  variant?: 'outline' | 'filled';
+}
 
-const RollupStageBadge = (props: HTMLChakraProps<'div'>) => {
-  if (!feature.isEnabled || config.chain.isTestnet) {
+const RollupStageBadge = ({ chainConfig = config, variant = 'outline', ...props }: Props) => {
+
+  const feature = chainConfig.features.rollup;
+
+  if (!feature.isEnabled || chainConfig.chain.isTestnet) {
     return null;
   }
 
@@ -25,10 +31,18 @@ const RollupStageBadge = (props: HTMLChakraProps<'div'>) => {
         </>
       );
 
+      const src = (() => {
+        if (variant === 'filled') {
+          return feature.stageIndex === '1' ? '/static/labels/stage-1-filled.svg' : '/static/labels/stage-2-filled.svg';
+        }
+
+        return feature.stageIndex === '1' ? '/static/labels/stage-1.svg' : '/static/labels/stage-2.svg';
+      })();
+
       return (
         <Tooltip content={ tooltipContent } interactive>
           <Image
-            src={ feature.stageIndex === '1' ? '/static/labels/stage-1.svg' : '/static/labels/stage-2.svg' }
+            src={ src }
             h="14px"
             w="42px"
             { ...props }
