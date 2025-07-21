@@ -1,29 +1,69 @@
-import { renderHook } from '@testing-library/react';
+import { useQuery } from '@tanstack/react-query';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import { renderHook } from 'jest/lib';
+import useApiFetch from 'lib/api/useApiFetch';
 
 import useQuickSearchQuery from './useQuickSearchQuery';
 import useSearchWithClusters from './useSearchWithClusters';
 
-type MockQuickSearchQuery = ReturnType<typeof useQuickSearchQuery>;
-type MockApiQuery = ReturnType<typeof useApiQuery>;
+jest.mock('@tanstack/react-query', () => ({
+  useQuery: jest.fn(),
+}));
 
-jest.mock('lib/api/useApiQuery');
+const mockUseQuery = useQuery as jest.MockedFunction<typeof useQuery>;
+
+type MockQuickSearchQuery = ReturnType<typeof useQuickSearchQuery>;
+type MockApiQuery = ReturnType<typeof useApiFetch>;
+
+jest.mock('lib/api/useApiFetch', () => jest.fn());
+const mockUseApiFetch = useApiFetch as jest.MockedFunction<typeof useApiFetch>;
 jest.mock('./useQuickSearchQuery');
 jest.mock('lib/hooks/useDebounce', () => (value: unknown) => value);
 
-const mockUseApiQuery = useApiQuery as jest.MockedFunction<typeof useApiQuery>;
 const mockUseQuickSearchQuery = useQuickSearchQuery as jest.MockedFunction<typeof useQuickSearchQuery>;
 
 jest.mock('configs/app', () => ({
   features: {
-    clusters: {
-      isEnabled: true,
-    },
-    rollbar: {
-      isEnabled: false,
-    },
+    clusters: { isEnabled: true },
+    rollbar: { isEnabled: false },
   },
+  UI: {
+    homepage: {
+      heroBanner: null,
+      charts: [],
+      stats: [],
+    },
+    fonts: {
+      heading: null,
+      body: null,
+    },
+    navigation: {
+      logo: { 'default': null, dark: null },
+      icon: { 'default': null, dark: null },
+      highlightedRoutes: [],
+      otherLinks: [],
+      featuredNetworks: null,
+      layout: 'vertical',
+    },
+    footer: {
+      links: null,
+      frontendVersion: null,
+      frontendCommit: null,
+    },
+    views: {},
+    indexingAlert: { blocks: { isHidden: false }, intTxs: { isHidden: false } },
+    maintenanceAlert: { message: null },
+    explorers: { items: [] },
+    ides: { items: [] },
+    hasContractAuditReports: false,
+    colorTheme: { 'default': null },
+    maxContentWidth: true,
+  },
+  app: {},
+  chain: {},
+  apis: {},
+  services: {},
+  meta: {},
 }));
 
 describe('useSearchWithClusters', () => {
@@ -46,11 +86,36 @@ describe('useSearchWithClusters', () => {
       },
     } as unknown as MockQuickSearchQuery);
 
-    mockUseApiQuery.mockReturnValue({
+    mockUseApiFetch.mockReturnValue({
       data: null,
       isError: false,
       isLoading: false,
     } as unknown as MockApiQuery);
+
+    mockUseQuery.mockReturnValue({
+      data: [],
+      isError: false,
+      isLoading: false,
+      isFetching: false,
+      error: null,
+      isPending: false,
+      isLoadingError: false,
+      isRefetchError: false,
+      isSuccess: true,
+      isStale: false,
+      status: 'success',
+      fetchStatus: 'idle',
+      refetch: jest.fn(),
+      failureCount: 0,
+      failureReason: null,
+      errorUpdateCount: 0,
+      isFetched: true,
+      isFetchedAfterMount: true,
+      isPlaceholderData: false,
+      isRefetching: false,
+      isInitialLoading: false,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
   });
 
   describe('cluster search pattern matching', () => {
@@ -65,15 +130,11 @@ describe('useSearchWithClusters', () => {
 
       renderHook(() => useSearchWithClusters());
 
-      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-        queryParams: {
-          input: JSON.stringify({ name: 'test-cluster' }),
-        },
-        queryOptions: {
-          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'test-cluster' ],
-          enabled: true,
-          select: expect.any(Function),
-        },
+      expect(mockUseQuery).toHaveBeenCalledWith({
+        queryKey: [ 'clusters:get_cluster_by_name', { input: 'test-cluster' } ],
+        queryFn: expect.any(Function),
+        enabled: true,
+        select: expect.any(Function),
       });
     });
 
@@ -88,15 +149,11 @@ describe('useSearchWithClusters', () => {
 
       renderHook(() => useSearchWithClusters());
 
-      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-        queryParams: {
-          input: JSON.stringify({ name: 'campnetwork/lol' }),
-        },
-        queryOptions: {
-          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'campnetwork/lol' ],
-          enabled: true,
-          select: expect.any(Function),
-        },
+      expect(mockUseQuery).toHaveBeenCalledWith({
+        queryKey: [ 'clusters:get_cluster_by_name', { input: 'campnetwork/lol' } ],
+        queryFn: expect.any(Function),
+        enabled: true,
+        select: expect.any(Function),
       });
     });
 
@@ -111,15 +168,11 @@ describe('useSearchWithClusters', () => {
 
       renderHook(() => useSearchWithClusters());
 
-      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-        queryParams: {
-          input: JSON.stringify({ name: '' }),
-        },
-        queryOptions: {
-          queryKey: [ 'clusters:get_cluster_by_name', 'search', '' ],
-          enabled: false,
-          select: expect.any(Function),
-        },
+      expect(mockUseQuery).toHaveBeenCalledWith({
+        queryKey: [ 'clusters:get_cluster_by_name', { input: '' } ],
+        queryFn: expect.any(Function),
+        enabled: false,
+        select: expect.any(Function),
       });
     });
 
@@ -134,15 +187,11 @@ describe('useSearchWithClusters', () => {
 
       renderHook(() => useSearchWithClusters());
 
-      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-        queryParams: {
-          input: JSON.stringify({ name: 'my-cluster' }),
-        },
-        queryOptions: {
-          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'my-cluster' ],
-          enabled: true,
-          select: expect.any(Function),
-        },
+      expect(mockUseQuery).toHaveBeenCalledWith({
+        queryKey: [ 'clusters:get_cluster_by_name', { input: 'my-cluster' } ],
+        queryFn: expect.any(Function),
+        enabled: true,
+        select: expect.any(Function),
       });
     });
 
@@ -157,15 +206,11 @@ describe('useSearchWithClusters', () => {
 
       renderHook(() => useSearchWithClusters());
 
-      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-        queryParams: {
-          input: JSON.stringify({ name: 'test-cluster-123' }),
-        },
-        queryOptions: {
-          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'test-cluster-123' ],
-          enabled: true,
-          select: expect.any(Function),
-        },
+      expect(mockUseQuery).toHaveBeenCalledWith({
+        queryKey: [ 'clusters:get_cluster_by_name', { input: 'test-cluster-123' } ],
+        queryFn: expect.any(Function),
+        enabled: true,
+        select: expect.any(Function),
       });
     });
 
@@ -191,15 +236,11 @@ describe('useSearchWithClusters', () => {
 
         renderHook(() => useSearchWithClusters());
 
-        expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-          queryParams: {
-            input: JSON.stringify({ name: expected }),
-          },
-          queryOptions: {
-            queryKey: [ 'clusters:get_cluster_by_name', 'search', expected ],
-            enabled: true,
-            select: expect.any(Function),
-          },
+        expect(mockUseQuery).toHaveBeenCalledWith({
+          queryKey: [ 'clusters:get_cluster_by_name', { input: expected } ],
+          queryFn: expect.any(Function),
+          enabled: true,
+          select: expect.any(Function),
         });
 
         jest.clearAllMocks();
@@ -217,15 +258,11 @@ describe('useSearchWithClusters', () => {
 
       renderHook(() => useSearchWithClusters());
 
-      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-        queryParams: {
-          input: JSON.stringify({ name: 'org/team/project' }),
-        },
-        queryOptions: {
-          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'org/team/project' ],
-          enabled: true,
-          select: expect.any(Function),
-        },
+      expect(mockUseQuery).toHaveBeenCalledWith({
+        queryKey: [ 'clusters:get_cluster_by_name', { input: 'org/team/project' } ],
+        queryFn: expect.any(Function),
+        enabled: true,
+        select: expect.any(Function),
       });
     });
 
@@ -240,15 +277,11 @@ describe('useSearchWithClusters', () => {
 
       renderHook(() => useSearchWithClusters());
 
-      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-        queryParams: {
-          input: JSON.stringify({ name: 'campnetwork/lol' }),
-        },
-        queryOptions: {
-          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'campnetwork/lol' ],
-          enabled: true,
-          select: expect.any(Function),
-        },
+      expect(mockUseQuery).toHaveBeenCalledWith({
+        queryKey: [ 'clusters:get_cluster_by_name', { input: 'campnetwork/lol' } ],
+        queryFn: expect.any(Function),
+        enabled: true,
+        select: expect.any(Function),
       });
 
       jest.clearAllMocks();
@@ -263,15 +296,11 @@ describe('useSearchWithClusters', () => {
 
       renderHook(() => useSearchWithClusters());
 
-      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-        queryParams: {
-          input: JSON.stringify({ name: 'campnetwork/lol' }),
-        },
-        queryOptions: {
-          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'campnetwork/lol' ],
-          enabled: true,
-          select: expect.any(Function),
-        },
+      expect(mockUseQuery).toHaveBeenCalledWith({
+        queryKey: [ 'clusters:get_cluster_by_name', { input: 'campnetwork/lol' } ],
+        queryFn: expect.any(Function),
+        enabled: true,
+        select: expect.any(Function),
       });
     });
   });
@@ -304,11 +333,30 @@ describe('useSearchWithClusters', () => {
         },
       ];
 
-      mockUseApiQuery.mockReturnValue({
+      mockUseQuery.mockReturnValue({
         data: transformedData,
         isError: false,
         isLoading: false,
-      } as unknown as MockApiQuery);
+        error: null,
+        isPending: false,
+        isLoadingError: false,
+        isRefetchError: false,
+        isSuccess: true,
+        isStale: false,
+        status: 'success',
+        fetchStatus: 'idle',
+        refetch: jest.fn(),
+        failureCount: 0,
+        failureReason: null,
+        errorUpdateCount: 0,
+        isFetched: true,
+        isFetchedAfterMount: true,
+        isPlaceholderData: false,
+        isRefetching: false,
+        isInitialLoading: false,
+        isFetching: false,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
@@ -342,11 +390,30 @@ describe('useSearchWithClusters', () => {
         },
       ];
 
-      mockUseApiQuery.mockReturnValue({
+      mockUseQuery.mockReturnValue({
         data: transformedData,
         isError: false,
         isLoading: false,
-      } as unknown as MockApiQuery);
+        error: null,
+        isPending: false,
+        isLoadingError: false,
+        isRefetchError: false,
+        isSuccess: true,
+        isStale: false,
+        status: 'success',
+        fetchStatus: 'idle',
+        refetch: jest.fn(),
+        failureCount: 0,
+        failureReason: null,
+        errorUpdateCount: 0,
+        isFetched: true,
+        isFetchedAfterMount: true,
+        isPlaceholderData: false,
+        isRefetching: false,
+        isInitialLoading: false,
+        isFetching: false,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
@@ -380,11 +447,30 @@ describe('useSearchWithClusters', () => {
         },
       ];
 
-      mockUseApiQuery.mockReturnValue({
+      mockUseQuery.mockReturnValue({
         data: transformedData,
         isError: false,
         isLoading: false,
-      } as unknown as MockApiQuery);
+        error: null,
+        isPending: false,
+        isLoadingError: false,
+        isRefetchError: false,
+        isSuccess: true,
+        isStale: false,
+        status: 'success',
+        fetchStatus: 'idle',
+        refetch: jest.fn(),
+        failureCount: 0,
+        failureReason: null,
+        errorUpdateCount: 0,
+        isFetched: true,
+        isFetchedAfterMount: true,
+        isPlaceholderData: false,
+        isRefetching: false,
+        isInitialLoading: false,
+        isFetching: false,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
@@ -403,16 +489,35 @@ describe('useSearchWithClusters', () => {
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
 
-      mockUseApiQuery.mockReturnValue({
+      mockUseQuery.mockReturnValue({
         data: [],
         isError: true,
         isLoading: false,
-      } as unknown as MockApiQuery);
+        error: new Error('API Error'),
+        isPending: false,
+        isLoadingError: false,
+        isRefetchError: false,
+        isSuccess: false,
+        isStale: false,
+        status: 'error',
+        fetchStatus: 'idle',
+        refetch: jest.fn(),
+        failureCount: 1,
+        failureReason: null,
+        errorUpdateCount: 0,
+        isFetched: true,
+        isFetchedAfterMount: true,
+        isPlaceholderData: false,
+        isRefetching: false,
+        isInitialLoading: false,
+        isFetching: false,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
       expect(result.current.query.data).toEqual([]);
-      expect(result.current.query.isError).toBe(false);
+      expect(result.current.query.isError).toBe(true);
     });
 
     it('should return empty results when cluster API returns no data', () => {
@@ -424,11 +529,30 @@ describe('useSearchWithClusters', () => {
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
 
-      mockUseApiQuery.mockReturnValue({
+      mockUseQuery.mockReturnValue({
         data: [],
         isError: false,
         isLoading: false,
-      } as unknown as MockApiQuery);
+        error: null,
+        isPending: false,
+        isLoadingError: false,
+        isRefetchError: false,
+        isSuccess: true,
+        isStale: false,
+        status: 'success',
+        fetchStatus: 'idle',
+        refetch: jest.fn(),
+        failureCount: 0,
+        failureReason: null,
+        errorUpdateCount: 0,
+        isFetched: true,
+        isFetchedAfterMount: true,
+        isPlaceholderData: false,
+        isRefetching: false,
+        isInitialLoading: false,
+        isFetching: false,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
@@ -516,15 +640,11 @@ describe('useSearchWithClusters', () => {
 
       renderHook(() => useSearchWithClusters());
 
-      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-        queryParams: {
-          input: JSON.stringify({ name: '' }),
-        },
-        queryOptions: {
-          queryKey: [ 'clusters:get_cluster_by_name', 'search', '' ],
-          enabled: false,
-          select: expect.any(Function),
-        },
+      expect(mockUseQuery).toHaveBeenCalledWith({
+        queryKey: [ 'clusters:get_cluster_by_name', { input: '' } ],
+        queryFn: expect.any(Function),
+        enabled: false,
+        select: expect.any(Function),
       });
     });
 
@@ -539,15 +659,11 @@ describe('useSearchWithClusters', () => {
 
       renderHook(() => useSearchWithClusters());
 
-      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-        queryParams: {
-          input: JSON.stringify({ name: '' }),
-        },
-        queryOptions: {
-          queryKey: [ 'clusters:get_cluster_by_name', 'search', '' ],
-          enabled: false,
-          select: expect.any(Function),
-        },
+      expect(mockUseQuery).toHaveBeenCalledWith({
+        queryKey: [ 'clusters:get_cluster_by_name', { input: '' } ],
+        queryFn: expect.any(Function),
+        enabled: false,
+        select: expect.any(Function),
       });
     });
 
@@ -578,11 +694,30 @@ describe('useSearchWithClusters', () => {
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
 
-      mockUseApiQuery.mockReturnValue({
+      mockUseQuery.mockReturnValue({
         data: [],
         isError: false,
         isLoading: true,
-      } as unknown as MockApiQuery);
+        error: null,
+        isPending: false,
+        isLoadingError: false,
+        isRefetchError: false,
+        isSuccess: true,
+        isStale: false,
+        status: 'success',
+        fetchStatus: 'idle',
+        refetch: jest.fn(),
+        failureCount: 0,
+        failureReason: null,
+        errorUpdateCount: 0,
+        isFetched: true,
+        isFetchedAfterMount: true,
+        isPlaceholderData: false,
+        isRefetching: false,
+        isInitialLoading: false,
+        isFetching: false,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
@@ -602,15 +737,11 @@ describe('useSearchWithClusters', () => {
 
       renderHook(() => useSearchWithClusters());
 
-      expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_cluster_by_name', {
-        queryParams: {
-          input: JSON.stringify({ name: 'final-cluster' }),
-        },
-        queryOptions: {
-          queryKey: [ 'clusters:get_cluster_by_name', 'search', 'final-cluster' ],
-          enabled: true,
-          select: expect.any(Function),
-        },
+      expect(mockUseQuery).toHaveBeenCalledWith({
+        queryKey: [ 'clusters:get_cluster_by_name', { input: 'final-cluster' } ],
+        queryFn: expect.any(Function),
+        enabled: true,
+        select: expect.any(Function),
       });
     });
 
