@@ -23,7 +23,7 @@ const LatestTransactions = () => {
     },
   });
 
-  const { num, alertText } = useNewTxsSocket({ type: 'txs_home', isLoading: isPlaceholderData });
+  const { num, showErrorAlert } = useNewTxsSocket({ type: 'txs_home', isLoading: isPlaceholderData });
 
   if (isError) {
     return <Text mt={ 4 }>No data. Please reload the page.</Text>;
@@ -33,7 +33,7 @@ const LatestTransactions = () => {
     const txsUrl = route({ pathname: '/txs' });
     return (
       <>
-        <SocketNewItemsNotice borderBottomRadius={ 0 } url={ txsUrl } num={ num } alert={ alertText } isLoading={ isPlaceholderData }/>
+        <SocketNewItemsNotice borderBottomRadius={ 0 } url={ txsUrl } num={ num } showErrorAlert={ showErrorAlert } isLoading={ isPlaceholderData }/>
         <Box mb={ 3 } display={{ base: 'block', lg: 'none' }}>
           { data.slice(0, txsCount).map(((tx, index) => (
             <LatestTxsItemMobile

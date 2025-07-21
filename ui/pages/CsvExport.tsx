@@ -29,39 +29,39 @@ interface ExportTypeEntity {
 const EXPORT_TYPES: Record<CsvExportParams['type'], ExportTypeEntity> = {
   transactions: {
     text: 'transactions',
-    resource: 'general:csv_export_txs',
+    resource: 'general:address_csv_export_txs',
     fileNameTemplate: 'transactions',
     filterType: 'address',
     filterValues: AddressFromToFilterValues,
   },
   'internal-transactions': {
     text: 'internal transactions',
-    resource: 'general:csv_export_internal_txs',
+    resource: 'general:address_csv_export_internal_txs',
     fileNameTemplate: 'internal_transactions',
     filterType: 'address',
     filterValues: AddressFromToFilterValues,
   },
   'token-transfers': {
     text: 'token transfers',
-    resource: 'general:csv_export_token_transfers',
+    resource: 'general:address_csv_export_token_transfers',
     fileNameTemplate: 'token_transfers',
     filterType: 'address',
     filterValues: AddressFromToFilterValues,
   },
   logs: {
     text: 'logs',
-    resource: 'general:csv_export_logs',
+    resource: 'general:address_csv_export_logs',
     fileNameTemplate: 'logs',
     filterType: 'topic',
   },
   holders: {
     text: 'holders',
-    resource: 'general:csv_export_token_holders',
+    resource: 'general:token_csv_export_holders',
     fileNameTemplate: 'holders',
   },
   'epoch-rewards': {
     text: 'epoch rewards',
-    resource: 'general:csv_export_epoch_rewards',
+    resource: 'general:address_csv_export_celo_election_rewards',
     fileNameTemplate: 'epoch_rewards',
   },
 };

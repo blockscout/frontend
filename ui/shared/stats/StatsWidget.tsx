@@ -28,10 +28,10 @@ export type Props = {
   icon?: IconName;
 };
 
-const Container = ({ href, children }: { href?: Route; children: React.JSX.Element }) => {
+const Container = ({ href, children, className }: { href?: Route; children: React.JSX.Element; className?: string }) => {
   if (href) {
     return (
-      <Link href={ route(href) } variant="plain">
+      <Link href={ route(href) } variant="plain" className={ className }>
         { children }
       </Link>
     );
@@ -56,9 +56,9 @@ const StatsWidget = ({
   href,
 }: Props) => {
   return (
-    <Container href={ !isLoading ? href : undefined }>
+    <Container href={ !isLoading ? href : undefined } className={ href ? className : undefined }>
       <Flex
-        className={ className }
+        className={ href ? undefined : className }
         alignItems="center"
         bgColor={ isLoading ? {
           _light: 'blackAlpha.50',

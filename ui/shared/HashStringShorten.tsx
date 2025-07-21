@@ -9,11 +9,12 @@ interface Props {
   noTooltip?: boolean;
   tooltipInteractive?: boolean;
   type?: 'long' | 'short';
+  maxSymbols?: number;
   as?: React.ElementType;
 }
 
-const HashStringShorten = ({ hash, noTooltip, as = 'span', type, tooltipInteractive }: Props) => {
-  const charNumber = type === 'long' ? 16 : 8;
+const HashStringShorten = ({ hash, noTooltip, as = 'span', type, tooltipInteractive, maxSymbols }: Props) => {
+  const charNumber = maxSymbols ?? (type === 'long' ? 16 : 8);
   if (hash.length <= charNumber) {
     return <chakra.span fontFamily="var(--kda-typography-family-monospace-font)" as={ as }>{ hash }</chakra.span>;
   }

@@ -3,10 +3,11 @@ import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import { toBech32Address } from 'lib/address/bech32';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { useSettingsContext } from 'lib/contexts/settings';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -24,7 +25,10 @@ const getDisplayedAddress = (address: AddressProp, altHash?: string) => {
 };
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } });
+  const defaultHref = route(
+    { pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } },
+    props.chain ? { chain: props.chain } : undefined,
+  );
 
   return (
     <EntityBase.Link
@@ -43,7 +47,10 @@ const Icon = (props: IconProps) => {
     return null;
   }
 
-  const marginRight = props.marginRight ?? (props.shield ? '18px' : '8px');
+  const shield = props.shield ?? (props.chain ? { src: props.chain.config.UI.navigation.icon.default } : undefined);
+  const hintPostfix: string = props.hintPostfix ?? (props.chain ? ` on ${ props.chain.config.chain.name } (Chain ID: ${ props.chain.config.chain.id })` : '');
+
+  const marginRight = props.marginRight ?? (shield ? '18px' : '8px');
   const styles = {
     ...getIconProps(props.variant),
     marginRight,
@@ -60,6 +67,7 @@ const Icon = (props: IconProps) => {
       return (
         <EntityBase.Icon
           { ...props }
+          shield={ shield }
           name="brands/safe"
         />
       );
@@ -68,11 +76,12 @@ const Icon = (props: IconProps) => {
     const isProxy = Boolean(props.address.implementations?.length);
     const isVerified = isProxy ? props.address.is_verified && props.address.implementations?.every(({ name }) => Boolean(name)) : props.address.is_verified;
     const contractIconName: EntityBase.IconBaseProps['name'] = props.address.is_verified ? 'contracts/verified' : 'contracts/regular';
-    const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract') + (props.hintPostfix ?? '');
+    const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract') + hintPostfix;
 
     return (
       <EntityBase.Icon
         { ...props }
+        shield={ shield }
         name={ isProxy ? 'contracts/proxy' : contractIconName }
         color={ isVerified ? 'green.500' : undefined }
         borderRadius={ 0 }
@@ -83,7 +92,11 @@ const Icon = (props: IconProps) => {
 
   const label = (() => {
     if (isDelegatedAddress) {
-      return (props.address.is_verified ? 'EOA + verified code' : 'EOA + code') + (props.hintPostfix ?? '');
+      return (props.address.is_verified ? 'EOA + verified code' : 'EOA + code') + hintPostfix;
+    }
+
+    if (props.chain) {
+      return 'Address' + hintPostfix;
     }
 
     return props.hint;
@@ -94,14 +107,14 @@ const Icon = (props: IconProps) => {
       content={ label }
       disabled={ !label }
       interactive={ props.tooltipInteractive }
-      positioning={ props.shield ? { offset: { mainAxis: 8 } } : undefined }
+      positioning={ shield ? { offset: { mainAxis: 8 } } : undefined }
     >
       <Flex marginRight={ styles.marginRight } position="relative">
         <AddressIdenticon
           size={ props.variant === 'heading' ? 30 : 20 }
           hash={ getDisplayedAddress(props.address) }
         />
-        { props.shield && <EntityBase.IconShield { ...props.shield }/> }
+        { shield && <EntityBase.IconShield { ...shield }/> }
         { isDelegatedAddress && <AddressIconDelegated isVerified={ Boolean(props.address.is_verified) }/> }
       </Flex>
     </Tooltip>
@@ -184,7 +197,10 @@ const AddressEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
   const highlightContext = useAddressHighlightContext(props.noHighlight);
   const settingsContext = useSettingsContext();
+  const multichainContext = useMultichainContext();
+
   const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
+  const chain = props.chain ?? multichainContext?.chain;
 
   // inside highlight context all tooltips should be interactive
   // because non-interactive ones will not pass 'onMouseLeave' event to the parent component
@@ -202,8 +218,8 @@ const AddressEntity = (props: EntityProps) => {
       position="relative"
       zIndex={ 0 }
     >
-      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
+      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) } chain={ chain }/>
+      { props.noLink ? content : <Link { ...partsProps.link } chain={ chain }>{ content }</Link> }
       <Copy { ...partsProps.copy } altHash={ altHash } tooltipInteractive={ Boolean(highlightContext) }/>
     </Container>
   );

@@ -8,6 +8,7 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -17,7 +18,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
 import BlockDetails from 'ui/block/BlockDetails';
-import BlockEpochRewards from 'ui/block/BlockEpochRewards';
 import BlockInternalTxs from 'ui/block/BlockInternalTxs';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import useBlockBlobTxsQuery from 'ui/block/useBlockBlobTxsQuery';
@@ -47,6 +47,7 @@ const BlockPageContent = () => {
   const appProps = useAppContext();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
   const tab = getQueryParamString(router.query.tab);
+  const { chain } = useMultichainContext() || {};
 
   const blockQuery = useBlockQuery({ heightOrHash });
   const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
@@ -110,12 +111,7 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-    blockQuery.data?.celo?.is_epoch_block ? {
-      id: 'epoch_rewards',
-      title: 'Epoch rewards',
-      component: <BlockEpochRewards heightOrHash={ heightOrHash }/>,
-    } : null,
-  ].filter(Boolean)), [ blockBlobTxsQuery, blockInternalTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination, heightOrHash ]);
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockInternalTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination ]);
 
   let pagination;
   if (tab === 'txs') {
@@ -151,15 +147,17 @@ const BlockPageContent = () => {
   }
 
   const title = (() => {
+    const chainText = chain ? ` on ${ chain.config.chain.name }` : '';
+
     switch (blockQuery.data?.type) {
       case 'reorg':
-        return `Reorged block #${ blockQuery.data?.height }`;
+        return `Reorged block #${ blockQuery.data?.height }${ chainText }`;
 
       case 'uncle':
-        return `Uncle block #${ blockQuery.data?.height }`;
+        return `Uncle block #${ blockQuery.data?.height }${ chainText }`;
 
       default:
-        return `Block #${ blockQuery.data?.height }`;
+        return `Block #${ blockQuery.data?.height }${ chainText }`;
     }
   })();
 

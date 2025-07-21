@@ -95,6 +95,7 @@
 	| "graphQL"
 	| "heart_filled"
 	| "heart_outline"
+	| "hourglass_slim"
 	| "hourglass"
 	| "info_filled"
 	| "info"

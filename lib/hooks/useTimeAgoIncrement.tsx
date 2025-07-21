@@ -76,6 +76,8 @@ export default function useTimeAgoIncrement(ts: string | number | null = 0, isEn
         timeouts.push(endTimeoutId);
       };
 
+      setValue(dayjs(ts).fromNow());
+
       isEnabled && startIncrement();
 
       !isEnabled && setValue(dayjs(ts).fromNow());

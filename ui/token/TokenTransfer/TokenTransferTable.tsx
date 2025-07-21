@@ -15,7 +15,7 @@ interface Props {
   data: Array<TokenTransfer>;
   top: number;
   showSocketInfo: boolean;
-  socketInfoAlert?: string;
+  showSocketErrorAlert?: boolean;
   socketInfoNum?: number;
   tokenId?: string;
   isLoading?: boolean;
@@ -23,7 +23,7 @@ interface Props {
   instance?: TokenInstance;
 }
 
-const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socketInfoNum, tokenId, isLoading, token, instance }: Props) => {
+const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, socketInfoNum, tokenId, isLoading, token, instance }: Props) => {
 
   const tokenType = token.type;
 
@@ -51,7 +51,7 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
         <TableBody>
           { showSocketInfo && (
             <SocketNewItemsNotice.Desktop
-              alert={ socketInfoAlert }
+              showErrorAlert={ showSocketErrorAlert }
               num={ socketInfoNum }
               type="token_transfer"
               isLoading={ isLoading }

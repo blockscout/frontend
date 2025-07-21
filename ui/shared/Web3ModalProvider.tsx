@@ -4,7 +4,7 @@ import React from 'react';
 import { WagmiProvider } from 'wagmi';
 
 import config from 'configs/app';
-import { currentChain, parentChain } from 'lib/web3/chains';
+import { currentChain, parentChain, clusterChains } from 'lib/web3/chains';
 import wagmiConfig from 'lib/web3/wagmiConfig';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import colors from 'toolkit/theme/foundations/colors';
@@ -19,9 +19,11 @@ const init = () => {
       return;
     }
 
+    const networks = [ currentChain, parentChain, ...(clusterChains ?? []) ].filter(Boolean) as [AppKitNetwork, ...Array<AppKitNetwork>];
+
     createAppKit({
       adapters: [ wagmiConfig.adapter ],
-      networks: [ currentChain, parentChain ].filter(Boolean) as [AppKitNetwork, ...Array<AppKitNetwork>],
+      networks,
       metadata: {
         name: `${ config.chain.name } explorer`,
         description: `${ config.chain.name } explorer`,

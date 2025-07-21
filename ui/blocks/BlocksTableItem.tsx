@@ -41,8 +41,8 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
     <TableRow animation={ animation }>
       <TableCell >
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
-          { data.celo?.is_epoch_block && (
-            <Tooltip content={ `Finalized epoch #${ data.celo.epoch_number }` }>
+          { data.celo?.l1_era_finalized_epoch_number && (
+            <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` }>
               <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
             </Tooltip>
           ) }

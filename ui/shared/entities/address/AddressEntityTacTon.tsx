@@ -27,7 +27,7 @@ const AddressEntityTacTon = (props: Props) => {
           pathname: '/address/[hash]',
           query: {
             ...props.query,
-            hash: props.address.hash,
+            hash: encodeURIComponent(props.address.hash),
           },
         });
       case tac.BlockchainType.TAC:

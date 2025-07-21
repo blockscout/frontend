@@ -23,6 +23,8 @@ export default function fetchFactory(
       cookie,
       ...pick(_req.headers, [
         'x-csrf-token',
+        'recaptcha-v2-response',
+        'user-agent',
         'Authorization', // the old value, just in case
         'authorization', // Node.js automatically lowercases headers
         // feature flags

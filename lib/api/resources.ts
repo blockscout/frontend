@@ -10,6 +10,8 @@ import { GENERAL_API_RESOURCES } from './services/general';
 import type { GeneralApiResourceName, GeneralApiResourcePayload, GeneralApiPaginationFilters, GeneralApiPaginationSorting } from './services/general';
 import type { MetadataApiResourceName, MetadataApiResourcePayload } from './services/metadata';
 import { METADATA_API_RESOURCES } from './services/metadata';
+import type { MultichainApiResourceName, MultichainApiResourcePayload } from './services/multichain';
+import { MULTICHAIN_API_RESOURCES } from './services/multichain';
 import type { RewardsApiResourceName, RewardsApiResourcePayload } from './services/rewards';
 import { REWARDS_API_RESOURCES } from './services/rewards';
 import type { StatsApiResourceName, StatsApiResourcePayload } from './services/stats';
@@ -30,6 +32,7 @@ export const RESOURCES = {
   contractInfo: CONTRACT_INFO_API_RESOURCES,
   general: GENERAL_API_RESOURCES,
   metadata: METADATA_API_RESOURCES,
+  multichain: MULTICHAIN_API_RESOURCES,
   rewards: REWARDS_API_RESOURCES,
   stats: STATS_API_RESOURCES,
   tac: TAC_OPERATION_LIFECYCLE_API_RESOURCES,
@@ -51,6 +54,7 @@ R extends BensApiResourceName ? BensApiResourcePayload<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiResourcePayload<R> :
 R extends GeneralApiResourceName ? GeneralApiResourcePayload<R> :
 R extends MetadataApiResourceName ? MetadataApiResourcePayload<R> :
+R extends MultichainApiResourceName ? MultichainApiResourcePayload<R> :
 R extends RewardsApiResourceName ? RewardsApiResourcePayload<R> :
 R extends StatsApiResourceName ? StatsApiResourcePayload<R> :
 R extends TacOperationLifecycleApiResourceName ? TacOperationLifecycleApiResourcePayload<R> :

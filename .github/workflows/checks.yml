@@ -45,6 +45,10 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
 
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
+
       - name: Run ESLint
         run: echo "skip lint:eslint for now" 
 
@@ -76,6 +80,10 @@ jobs:
       - name: Install project dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
 
       - name: Install package dependencies
         run: |
@@ -136,6 +144,10 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
 
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
+
       - name: Install script dependencies
         run: cd ./deploy/tools/envs-validator && yarn --frozen-lockfile
 
@@ -175,6 +187,10 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
 
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
+
       - name: Run Jest
         run: yarn test:jest ${{ github.event_name == 'pull_request' && '--changedSince=origin/main' || '' }} --passWithNoTests
 
@@ -206,6 +222,10 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
 
       - name: Install script dependencies 
         run: cd ./deploy/tools/affected-tests && yarn --frozen-lockfile
@@ -263,6 +283,10 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
 
       - name: Download affected tests list
         if: ${{ needs.pw_affected_tests.result == 'success' }}

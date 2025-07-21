@@ -12,18 +12,30 @@ import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 import AppErrorIcon from '../AppErrorIcon';
 import AppErrorTitle from '../AppErrorTitle';
 
-const AppErrorTooManyRequests = () => {
+interface Props {
+  bypassOptions?: string;
+}
+
+const AppErrorTooManyRequests = ({ bypassOptions }: Props) => {
   const fetch = useFetch();
   const recaptcha = useReCaptcha();
 
   const handleSubmit = React.useCallback(async() => {
     try {
       const token = await recaptcha.executeAsync();
+
+      if (!token) {
+        throw new Error('ReCaptcha is not solved');
+      }
+
       const url = buildUrl('general:api_v2_key');
 
       await fetch(url, {
         method: 'POST',
         body: { recaptcha_response: token },
+        headers: {
+          'recaptcha-v2-response': token,
+        },
         credentials: 'include',
       }, {
         resource: 'general:api_v2_key',
@@ -52,7 +64,7 @@ const AppErrorTooManyRequests = () => {
         You have exceeded the request rate for a given time period. Please reduce the number of requests and try again soon.
       </Text>
       <ReCaptcha { ...recaptcha }/>
-      <Button onClick={ handleSubmit } disabled={ recaptcha.isInitError } mt={ 8 }>Try again</Button>
+      { bypassOptions !== 'no_bypass' && <Button onClick={ handleSubmit } disabled={ recaptcha.isInitError } mt={ 8 }>Try again</Button> }
     </>
   );
 };

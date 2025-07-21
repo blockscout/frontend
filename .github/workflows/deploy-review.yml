@@ -27,12 +27,14 @@ on:
             - neon_devnet
             - optimism
             - optimism_sepolia
+            - optimism_superchain
             - polygon
             - rari_testnet
             - rootstock
             - shibarium
             - scroll_sepolia
             - stability
+            - tac
             - tac_turin
             - zkevm
             - zilliqa_prototestnet

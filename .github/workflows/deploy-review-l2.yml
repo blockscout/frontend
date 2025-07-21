@@ -25,6 +25,7 @@ on:
             - neon_devnet
             - optimism
             - optimism_sepolia
+            - optimism_superchain
             - polygon
             - rootstock
             - scroll_sepolia

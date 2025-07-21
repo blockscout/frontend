@@ -49,6 +49,10 @@ export const GENERAL_API_TOKEN_RESOURCES = {
     filterFields: [ 'q' as const, 'chain_ids' as const ],
     paginated: true,
   },
+  token_csv_export_holders: {
+    path: '/api/v2/tokens/:hash/holders/csv',
+    pathParams: [ 'hash' as const ],
+  },
 
   // TOKEN INSTANCE
   token_instance: {
