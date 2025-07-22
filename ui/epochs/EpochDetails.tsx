@@ -89,7 +89,7 @@ const EpochDetails = ({ data, isLoading }: Props) => {
         >
           Community fund
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue allowWrap>
+        <DetailedInfo.ItemValue multiRow>
           { data.distribution?.community_transfer ? (
             <TokenTransferSnippet
               data={ data.distribution.community_transfer }
@@ -106,7 +106,7 @@ const EpochDetails = ({ data, isLoading }: Props) => {
         >
           Carbon offset fund
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue allowWrap>
+        <DetailedInfo.ItemValue multiRow>
           { data.distribution?.carbon_offsetting_transfer ? (
             <TokenTransferSnippet
               data={ data.distribution.carbon_offsetting_transfer }

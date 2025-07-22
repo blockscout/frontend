@@ -187,7 +187,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
             >
               Net worth
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue allowWrap>
+            <DetailedInfo.ItemValue multiRow>
               <AddressNetWorth addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ isLoading }/>
             </DetailedInfo.ItemValue>
           </>
@@ -244,7 +244,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
             >
               Gas used
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue allowWrap>
+            <DetailedInfo.ItemValue multiRow>
               { addressQuery.data ? (
                 <AddressCounterItem
                   prop="gas_usage_count"

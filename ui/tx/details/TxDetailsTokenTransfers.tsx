@@ -44,7 +44,7 @@ const TxDetailsTokenTransfers = ({ data, txHash, isOverflow }: Props) => {
             >
               { title }
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue position="relative" allowWrap>
+            <DetailedInfo.ItemValue position="relative" multiRow>
               <Flex
                 flexDirection="column"
                 alignItems="flex-start"

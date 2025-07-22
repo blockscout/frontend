@@ -143,7 +143,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         >
           L1 gas price
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue allowWrap>
+        <DetailedInfo.ItemValue multiRow>
           <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
           <Text color="text.secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
         </DetailedInfo.ItemValue>
@@ -153,7 +153,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         >
           L2 fair gas price
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue allowWrap>
+        <DetailedInfo.ItemValue multiRow>
           <Text mr={ 1 }>{ BigNumber(data.l2_fair_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
           <Text color="text.secondary">({ BigNumber(data.l2_fair_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
         </DetailedInfo.ItemValue>

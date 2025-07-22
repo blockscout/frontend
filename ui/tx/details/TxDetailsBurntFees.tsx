@@ -40,7 +40,7 @@ const TxDetailsBurntFees = ({ data, isLoading }: Props) => {
       >
         Burnt fees
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue allowWrap>
+      <DetailedInfo.ItemValue multiRow>
         <CurrencyValue
           startElement={ <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isLoading } mr={{ base: 0, lg: 1 }}/> }
           value={ value.toString() }

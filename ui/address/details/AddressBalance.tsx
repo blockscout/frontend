@@ -73,7 +73,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
       >
         Balance
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue allowWrap>
+      <DetailedInfo.ItemValue multiRow>
         <CurrencyValue
           value={ data.coin_balance || '0' }
           exchangeRate={ data.exchange_rate }
