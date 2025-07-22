@@ -1,7 +1,5 @@
 import type CspDev from 'csp-dev';
 
-import { getFeaturePayload } from 'configs/app/features/types';
-
 import config from 'configs/app';
 
 import { KEY_WORDS } from '../utils';
@@ -45,7 +43,6 @@ export function app(): CspDev.DirectiveDescriptor {
 
       // chain RPC server
       ...config.chain.rpcUrls,
-      ...(getFeaturePayload(config.features.rollup)?.parentChain?.rpcUrls ?? []),
       'https://infragrid.v.network', // RPC providers
 
       // github (spec for api-docs page)

@@ -80,6 +80,7 @@
     "airtable": "^0.12.2",
     "bignumber.js": "^9.1.0",
     "blo": "^1.1.1",
+    "brotli-dec-wasm": "2.3.0",
     "chakra-react-select": "^4.4.3",
     "crypto-js": "^4.2.0",
     "d3": "^7.6.1",

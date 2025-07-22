@@ -12,6 +12,7 @@ export { mixpanel } from './mixpanel';
 export { monaco } from './monaco';
 export { multichain } from './multichain';
 export { rollbar } from './rollbar';
+export { rollup } from './rollup';
 export { safe } from './safe';
 export { usernameApi } from './usernameApi';
 export { walletConnect } from './walletConnect';

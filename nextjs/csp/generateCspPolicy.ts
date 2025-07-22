@@ -17,6 +17,7 @@ function generateCspPolicy() {
     descriptors.monaco(),
     descriptors.multichain(),
     descriptors.rollbar(),
+    descriptors.rollup(),
     descriptors.safe(),
     descriptors.usernameApi(),
     descriptors.walletConnect(),
