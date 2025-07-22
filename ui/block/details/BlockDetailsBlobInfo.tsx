@@ -68,7 +68,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             Blob burnt fees
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue allowWrap>
-            <IconSvg name="flame" boxSize={ 5 } color="gray.500" mr={ 2 }/>
+            <IconSvg name="flame" boxSize={ 5 } color="gray.500" mr={{ base: 1, lg: 2 }}/>
             <chakra.span mr={ 4 }>
               { burntBlobFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </chakra.span>
