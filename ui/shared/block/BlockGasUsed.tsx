@@ -40,7 +40,7 @@ const BlockGasUsed = ({ className, gasUsed, gasLimit, gasTarget, isLoading }: Pr
       </Tooltip>
       { gasTarget && (
         <>
-          <TextSeparator mx={ 1 }/>
+          <TextSeparator/>
           <GasUsedToTargetRatio value={ gasTarget } isLoading={ isLoading }/>
         </>
       ) }

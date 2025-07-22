@@ -391,7 +391,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue allowWrap>
             <Flex alignItems="center" maxW="100%">
-              <DetailedInfoTimestamp timestamp={ data.timestamp } gap={{ base: 1, lg: 3 }} isLoading={ isLoading }/>
+              <DetailedInfoTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
             </Flex>
             { data.confirmation_duration && (
               <Flex alignItems="center">

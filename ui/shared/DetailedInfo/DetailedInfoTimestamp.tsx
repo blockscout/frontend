@@ -1,4 +1,3 @@
-import type { BoxProps } from '@chakra-ui/react';
 import React from 'react';
 
 import dayjs from 'lib/date/dayjs';
@@ -13,18 +12,16 @@ type Props = {
   timestamp: string | number;
   isLoading?: boolean;
   noIcon?: boolean;
-  // TODO @tom2drum unify gaps
-  gap?: BoxProps['mx'];
 };
 
-const DetailedInfoTimestamp = ({ timestamp, isLoading, noIcon, gap }: Props) => {
+const DetailedInfoTimestamp = ({ timestamp, isLoading, noIcon }: Props) => {
   return (
     <>
       { !noIcon && <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isLoading } mr={ 2 }/> }
       <Skeleton loading={ isLoading }>
         { dayjs(timestamp).fromNow() }
       </Skeleton>
-      <TextSeparator mx={ gap ?? 3 }/>
+      <TextSeparator mx={ 2 }/>
       <TruncatedValue
         value={ dayjs(timestamp).format('llll') }
         isLoading={ isLoading }
