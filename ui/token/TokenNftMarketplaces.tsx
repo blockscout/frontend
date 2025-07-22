@@ -55,7 +55,7 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
       <DetailedInfo.ItemValue
         py={ appActionData ? '1px' : '6px' }
       >
-        <Skeleton loading={ isLoading } display="flex" columnGap={ 3 } flexWrap="wrap" alignItems="center">
+        <Skeleton loading={ isLoading } display="flex" flexWrap="wrap" alignItems="center">
           { items.map((item) => {
             return (
               <Tooltip content={ `View on ${ item.name }` } key={ item.name }>
@@ -72,7 +72,7 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
           }) }
           { appActionData && (
             <>
-              <TextSeparator mx={ 0 }/>
+              <TextSeparator/>
               <AppActionButton data={ appActionData } height="30px" source={ source }/>
             </>
           ) }

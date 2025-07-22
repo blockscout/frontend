@@ -106,7 +106,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         { data.confirmation_transaction.timestamp ?
-          <DetailedInfoTimestamp timestamp={ data.confirmation_transaction.timestamp }isLoading={ isPlaceholderData }/> :
+          <DetailedInfoTimestamp timestamp={ data.confirmation_transaction.timestamp } isLoading={ isPlaceholderData }/> :
           <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton>
         }
       </DetailedInfo.ItemValue>
@@ -147,7 +147,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         { data.commitment_transaction.timestamp ?
-          <DetailedInfoTimestamp timestamp={ data.commitment_transaction.timestamp }isLoading={ isPlaceholderData }/> :
+          <DetailedInfoTimestamp timestamp={ data.commitment_transaction.timestamp } isLoading={ isPlaceholderData }/> :
           <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton>
         }
       </DetailedInfo.ItemValue>
