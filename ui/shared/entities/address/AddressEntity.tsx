@@ -48,7 +48,7 @@ const Icon = (props: IconProps) => {
   const shield = props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined);
   const hintPostfix: string = props.hintPostfix ?? (props.chain ? ` on ${ props.chain.config.chain.name } (Chain ID: ${ props.chain.config.chain.id })` : '');
 
-  const styles = getIconProps(props.variant, Boolean(shield));
+  const styles = getIconProps(props, Boolean(shield));
 
   if (props.isLoading) {
     return <Skeleton { ...styles } loading borderRadius="full" flexShrink={ 0 }/>;

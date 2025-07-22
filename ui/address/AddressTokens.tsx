@@ -101,7 +101,8 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
       <HStack gap={ 3 }>
         { isNftTab && (hasNftData || hasActiveFilters) &&
           <AddressNftDisplayTypeRadio value={ nftDisplayType } onChange={ onDisplayTypeChange }/> }
-        { isNftTab && (hasNftData || hasActiveFilters) && <AddressNftTypeFilter value={ nftTokenTypes } onChange={ onTokenTypesChange }/> }
+        { isNftTab && (hasNftData || hasActiveFilters) && !(isMobile && pagination.isVisible) &&
+          <AddressNftTypeFilter value={ nftTokenTypes } onChange={ onTokenTypesChange }/> }
       </HStack>
       { pagination.isVisible && !isMobile && <Pagination { ...pagination }/> }
     </>

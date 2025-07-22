@@ -127,7 +127,7 @@ test.describe('mobile', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('nfts', async({ render, mockAssetResponse }) => {
+  test('nfts', async({ render, mockAssetResponse, page }) => {
     await mockAssetResponse(tokenInstance.base.image_url as string, './playwright/mocks/image_s.jpg');
 
     const hooksConfig = {
@@ -145,6 +145,8 @@ test.describe('mobile', () => {
     );
 
     await component.locator('button').filter({ hasText: 'List' }).click();
+    await page.mouse.move(0, 0);
+    await page.mouse.click(0, 0);
 
     await expect(component).toHaveScreenshot();
   });

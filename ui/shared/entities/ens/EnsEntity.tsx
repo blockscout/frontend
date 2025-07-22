@@ -35,7 +35,7 @@ const Icon = (props: IconProps) => {
   const icon = <EntityBase.Icon { ...props } name={ 'name' in props ? props.name : 'ENS_slim' }/>;
 
   if (props.protocol) {
-    const styles = getIconProps(props.variant);
+    const styles = getIconProps(props);
 
     if (props.isLoading) {
       return <Skeleton loading boxSize={ styles.boxSize } borderRadius="sm" mr={ 2 }/>;

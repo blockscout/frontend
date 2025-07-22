@@ -1,20 +1,22 @@
 import type { TMultichainContext } from 'lib/contexts/multichain';
 
-import type { EntityBaseProps } from './components';
+import type { IconBaseProps, EntityBaseProps } from './components';
 
-export function getIconProps(variant: EntityBaseProps['variant'] = 'content', withShield: boolean = false) {
+export function getIconProps(props: IconBaseProps, withShield: boolean = false) {
+  const variant = props.variant ?? 'content';
+
   switch (variant) {
     case 'content':
     case 'subheading': {
       return {
-        boxSize: '20px', // for tables, lists, regular content and page subheadings
-        marginRight: withShield ? '18px' : '8px',
+        boxSize: props.boxSize ?? '20px', // for tables, lists, regular content and page subheadings
+        marginRight: props.marginRight ?? props.mr ?? (withShield ? '18px' : '8px'),
       };
     }
     case 'heading': {
       return {
-        boxSize: '30px', // for page headings
-        marginRight: withShield ? '20px' : '8px',
+        boxSize: props.boxSize ?? '30px', // for page headings
+        marginRight: props.marginRight ?? props.mr ?? (withShield ? '20px' : '8px'),
       };
     }
   }

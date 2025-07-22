@@ -25,7 +25,7 @@ const Icon = (props: IconProps) => {
   }
 
   if (props.instance) {
-    const styles = getIconProps(props.variant ?? 'heading');
+    const styles = getIconProps({ ...props, variant: props.variant ?? 'heading' });
     const fallback = (
       <EntityBase.Icon
         { ...props }

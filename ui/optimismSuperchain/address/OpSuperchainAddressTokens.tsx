@@ -72,7 +72,8 @@ const OpSuperchainAddressTokens = () => {
       return (
         <>
           <HStack gap={ 2 }>
-            { (hasData || hasActiveFilters) && !isMobile && <AddressNftTypeFilter value={ nftTokenTypes } onChange={ onTokenTypesChange }/> }
+            { (hasData || hasActiveFilters) && !(isMobile && query.pagination.isVisible) &&
+              <AddressNftTypeFilter value={ nftTokenTypes } onChange={ onTokenTypesChange }/> }
             { (hasData || hasActiveFilters) && isMobile &&
                 <AddressNftDisplayTypeRadio value={ nftDisplayType } onChange={ onDisplayTypeChange } ml={{ base: 0, lg: 6 }}/> }
             { chainSelect }

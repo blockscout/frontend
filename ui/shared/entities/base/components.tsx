@@ -109,7 +109,7 @@ const Icon = (props: IconBaseProps) => {
     return null;
   }
 
-  const styles = getIconProps(variant, Boolean(shield));
+  const styles = getIconProps(props, Boolean(shield));
 
   const iconElement = (() => {
     const commonProps = {
