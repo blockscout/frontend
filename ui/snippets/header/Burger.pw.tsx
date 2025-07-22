@@ -80,6 +80,8 @@ authTest.describe('auth', () => {
 
 const promoBannerTest = (type: 'text' | 'image') => {
   test.describe(`with promo banner (${ type })`, () => {
+    const darkModeRule = type === 'text' ? '+@dark-mode' : '';
+
     test.beforeEach(async({ mockEnvs, mockAssetResponse }) => {
       await mockEnvs(type === 'text' ? ENVS_MAP.navigationPromoBannerText : ENVS_MAP.navigationPromoBannerImage);
       await mockAssetResponse('http://localhost:3000/image.svg', './playwright/mocks/image_svg.svg');
@@ -87,7 +89,7 @@ const promoBannerTest = (type: 'text' | 'image') => {
       await mockAssetResponse('http://localhost:3000/image_md.jpg', './playwright/mocks/image_md.jpg');
     });
 
-    test(`${ type === 'text' ? '+@dark-mode' : '' }`, async({ render, page }) => { // eslint-disable-line playwright/no-conditional-in-test
+    test(`${ darkModeRule }`, async({ render, page }) => {
       const component = await render(<Burger/>);
       await component.getByRole('button', { name: 'Menu button' }).click();
       await expect(page).toHaveScreenshot();

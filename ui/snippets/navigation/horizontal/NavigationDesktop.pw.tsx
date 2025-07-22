@@ -67,16 +67,11 @@ test('with groped items', async({ render, mockEnvs, page }) => {
 const promoBannerTest = (type: 'text' | 'image') => {
   test.describe(`with promo banner (${ type })`, () => {
     let component: Locator;
+    const darkModeRule = type === 'text' ? '+@dark-mode' : '';
+    const imageAltText = type === 'text' ? 'Promo banner icon' : 'Promo banner small';
 
-    test.beforeEach(async({ render, mockEnvs, mockAssetResponse, mockApiResponse }) => {
-      await mockEnvs([
-        ...ENVS_MAP.userOps,
-        ...ENVS_MAP.nameService,
-        ...ENVS_MAP.rewardsService,
-        ...(type === 'text' ? ENVS_MAP.navigationPromoBannerText : ENVS_MAP.navigationPromoBannerImage),
-      ]);
-      await mockApiResponse('general:user_info', profileMock.withEmailAndWallet);
-      await mockApiResponse('rewards:user_balances', rewardsBalanceMock.base);
+    test.beforeEach(async({ render, mockEnvs, mockAssetResponse }) => {
+      await mockEnvs(type === 'text' ? ENVS_MAP.navigationPromoBannerText : ENVS_MAP.navigationPromoBannerImage);
       await mockAssetResponse('http://localhost:3000/image.svg', './playwright/mocks/image_svg.svg');
       await mockAssetResponse('http://localhost:3000/image_s.jpg', './playwright/mocks/image_s.jpg');
       await mockAssetResponse('http://localhost:3000/image_md.jpg', './playwright/mocks/image_md.jpg');
@@ -84,12 +79,12 @@ const promoBannerTest = (type: 'text' | 'image') => {
       component = await render(<NavigationDesktop/>);
     });
 
-    test(`${ type === 'text' ? '+@dark-mode' : '' }`, async() => { // eslint-disable-line playwright/no-conditional-in-test
+    test(`${ darkModeRule }`, async() => {
       await expect(component).toHaveScreenshot();
     });
 
     test('with tooltip', async({ page }) => {
-      await page.locator('.navigation-promo-banner').hover();
+      await page.getByAltText(imageAltText).hover();
       await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 450 } });
     });
   });

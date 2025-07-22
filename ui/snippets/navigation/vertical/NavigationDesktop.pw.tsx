@@ -260,6 +260,8 @@ test.describe('with highlighted routes', () => {
 const promoBannerTest = (type: 'text' | 'image') => {
   test.describe(`with promo banner (${ type })`, () => {
     let component: Locator;
+    const darkModeRule = type === 'text' ? '+@dark-mode' : '';
+    const imageAltText = type === 'text' ? 'Promo banner icon' : 'Promo banner small';
 
     test.beforeEach(async({ render, mockEnvs, mockAssetResponse }) => {
       await mockEnvs(type === 'text' ? ENVS_MAP.navigationPromoBannerText : ENVS_MAP.navigationPromoBannerImage);
@@ -276,19 +278,19 @@ const promoBannerTest = (type: 'text' | 'image') => {
       );
     });
 
-    test(`${ type === 'text' ? '+@dark-mode' : '' }`, async() => { // eslint-disable-line playwright/no-conditional-in-test
+    test(`${ darkModeRule }`, async() => {
       await expect(component).toHaveScreenshot();
     });
 
     test('with tooltip', async({ page }) => {
-      await page.locator('.navigation-promo-banner').hover();
+      await page.getByAltText(imageAltText).hover();
       await expect(component).toHaveScreenshot();
     });
 
     test.describe('xl screen', () => {
       test.use({ viewport: pwConfig.viewport.xl });
 
-      test(`${ type === 'text' ? '+@dark-mode' : '' }`, async() => { // eslint-disable-line playwright/no-conditional-in-test
+      test(`${ darkModeRule }`, async() => {
         await expect(component).toHaveScreenshot();
       });
     });
