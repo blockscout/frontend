@@ -44,7 +44,7 @@ const Icon = (props: IconProps) => {
         allowedTypes={ ICON_MEDIA_TYPES }
         borderRadius="sm"
         flexShrink={ 0 }
-        mr={ 2 }
+        marginRight={ 2 }
         fallback={ fallback }
       />
     );

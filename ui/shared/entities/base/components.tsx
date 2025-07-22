@@ -21,6 +21,7 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 import { getContentProps, getIconProps } from './utils';
 
 export type Truncation = 'constant' | 'constant_long' | 'dynamic' | 'tail' | 'none';
+export type Variant = 'content' | 'heading' | 'subheading';
 
 export interface EntityBaseProps {
   className?: string;
@@ -38,7 +39,7 @@ export interface EntityBaseProps {
   target?: React.HTMLAttributeAnchorTarget;
   truncation?: Truncation;
   truncationMaxSymbols?: number;
-  variant?: 'content' | 'heading' | 'subheading';
+  variant?: Variant;
   linkVariant?: LinkProps['variant'];
   chain?: ChainConfig;
 }
@@ -112,7 +113,7 @@ const Icon = (props: IconBaseProps) => {
 
   const iconElement = (() => {
     const commonProps = {
-      ...styles,
+      marginRight: props.marginRight ?? props.mr ?? styles.marginRight,
       boxSize: boxSize ?? styles.boxSize,
       borderRadius: borderRadius ?? 'base',
       flexShrink: 0,
@@ -156,20 +157,21 @@ const Icon = (props: IconBaseProps) => {
   return (
     <Box position="relative" display="inline-flex" alignItems="center" flexShrink={ 0 }>
       { iconElementWithHint }
-      <IconShield isLoading={ isLoading } { ...shield }/>
+      <IconShield isLoading={ isLoading } variant={ variant } { ...shield }/>
     </Box>
   );
 };
 
-type IconShieldProps = (ImageProps | IconSvgProps) & { isLoading?: boolean };
+type IconShieldProps = (ImageProps | IconSvgProps) & { isLoading?: boolean; variant?: Variant };
 
 const IconShield = (props: IconShieldProps) => {
+  const { variant, ...rest } = props;
 
   const styles = {
     position: 'absolute',
-    top: '6px',
-    left: '12px',
-    boxSize: '18px',
+    top: variant === 'heading' ? '12px' : '6px',
+    left: variant === 'heading' ? '17px' : '12px',
+    boxSize: variant === 'heading' ? '22px' : '18px',
     borderRadius: 'full',
     borderWidth: '1px',
     borderStyle: 'solid',
@@ -180,11 +182,11 @@ const IconShield = (props: IconShieldProps) => {
     className: 'entity__shield',
   };
 
-  if ('src' in props) {
-    return props.isLoading ? <Skeleton loading { ...styles }/> : <Image { ...styles } { ...props }/>;
+  if ('src' in rest) {
+    return rest.isLoading ? <Skeleton loading { ...styles }/> : <Image { ...styles } { ...rest }/>;
   }
 
-  const svgProps = props as IconSvgProps;
+  const svgProps = rest as IconSvgProps;
 
   return <IconSvg { ...styles } { ...svgProps }/>;
 };

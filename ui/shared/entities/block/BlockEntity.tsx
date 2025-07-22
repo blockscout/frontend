@@ -4,6 +4,7 @@ import React from 'react';
 import { route } from 'nextjs/routes';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
+import getChainTooltipText from 'lib/multichain/getChainTooltipText';
 import getIconUrl from 'lib/multichain/getIconUrl';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
@@ -34,6 +35,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
       { ...props }
       name={ 'name' in props ? props.name : 'block_slim' }
       shield={ props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined) }
+      hint={ props.chain ? getChainTooltipText(props.chain, 'Block on ') : undefined }
     />
   );
 };

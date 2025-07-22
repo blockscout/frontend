@@ -27,10 +27,10 @@ import useBlockInternalTxsQuery from 'ui/block/useBlockInternalTxsQuery';
 import useBlockQuery from 'ui/block/useBlockQuery';
 import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
 import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -163,9 +163,12 @@ const BlockPageContent = () => {
     }
   })();
 
+  const beforeTitleElement = multichainContext?.chain ? (
+    <BlockEntity.Icon variant="heading" chain={ multichainContext.chain }/>
+  ) : null;
+
   const titleSecondRow = (
     <>
-      { multichainContext?.chain && <ChainIcon data={ multichainContext.chain } withTooltip mr={ 2 }/> }
       { !config.UI.views.block.hiddenFields?.miner && blockQuery.data?.miner && (
         <Skeleton
           loading={ blockQuery.isPlaceholderData }
@@ -195,6 +198,7 @@ const BlockPageContent = () => {
       <PageTitle
         title={ title }
         backLink={ backLink }
+        beforeTitle={ beforeTitleElement }
         contentAfter={ <BlockCeloEpochTag blockQuery={ blockQuery }/> }
         secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }

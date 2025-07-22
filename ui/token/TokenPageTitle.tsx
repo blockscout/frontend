@@ -127,7 +127,9 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
           address={{ ...addressQuery.data, name: '' }}
           isLoading={ isLoading }
           variant="subheading"
-          chain={ multichainContext?.chain }
+          icon={ multichainContext?.chain ? {
+            shield: { name: 'pie_chart', isLoading },
+          } : undefined }
         />
       ) }
       { !isLoading && tokenQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
@@ -151,6 +153,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
             token={ tokenQuery.data }
             isLoading={ tokenQuery.isPlaceholderData }
             variant="heading"
+            chain={ multichainContext?.chain }
           />
         ) : null }
         contentAfter={ contentAfter }

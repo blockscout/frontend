@@ -14,7 +14,7 @@ export function getIconProps(variant: EntityBaseProps['variant'] = 'content', wi
     case 'heading': {
       return {
         boxSize: '30px', // for page headings
-        marginRight: withShield ? '18px' : '8px',
+        marginRight: withShield ? '20px' : '8px',
       };
     }
   }
