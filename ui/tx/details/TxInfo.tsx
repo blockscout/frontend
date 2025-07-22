@@ -162,7 +162,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       >
         Transaction hash
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
+      <DetailedInfo.ItemValue allowWrap={ config.features.externalTxs.isEnabled && externalTxsQuery.data && externalTxsQuery.data.length > 0 }>
         <Flex flexWrap="nowrap" alignItems="center" overflow="hidden">
           { data.status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
           <Skeleton loading={ isLoading } overflow="hidden">
@@ -278,7 +278,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Revert reason
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
+          <DetailedInfo.ItemValue flexWrap="wrap" mt={{ base: '5px', lg: '4px' }}>
             <TxRevertReason { ...data.revert_reason }/>
           </DetailedInfo.ItemValue>
         </>

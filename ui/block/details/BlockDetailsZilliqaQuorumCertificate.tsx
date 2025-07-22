@@ -42,7 +42,7 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
       >
         { data.nested_quorum_certificates ? 'Aggregate quorum certificate' : 'Quorum certificate' }
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue rowGap={ 0 }>
+      <DetailedInfo.ItemValue flexWrap="wrap">
         <Grid
           textStyle="sm"
           gridTemplateColumns="min-content 1fr"

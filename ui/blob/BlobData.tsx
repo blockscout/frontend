@@ -89,7 +89,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
     switch (format[0]) {
       case 'Image': {
         if (!guessedType?.mime?.startsWith('image/')) {
-          return <RawDataSnippet data="Not an image" showCopy={ false } isLoading={ isLoading }/>;
+          return <RawDataSnippet data="Not an image" showCopy={ false } isLoading={ isLoading } w="100%"/>;
         }
 
         const bytes = hexToBytes(data);
@@ -101,11 +101,11 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
         return <BlobDataImage src={ imgSrc }/>;
       }
       case 'UTF-8':
-        return <RawDataSnippet data={ hexToUtf8(data) } showCopy={ false } isLoading={ isLoading } contentProps={{ wordBreak: 'break-word' }}/>;
+        return <RawDataSnippet data={ hexToUtf8(data) } showCopy={ false } isLoading={ isLoading } contentProps={{ wordBreak: 'break-word' }} w="100%"/>;
       case 'Base64':
-        return <RawDataSnippet data={ hexToBase64(data) } showCopy={ false } isLoading={ isLoading }/>;
+        return <RawDataSnippet data={ hexToBase64(data) } showCopy={ false } isLoading={ isLoading } w="100%"/>;
       case 'Raw':
-        return <RawDataSnippet data={ data } showCopy={ false } isLoading={ isLoading }/>;
+        return <RawDataSnippet data={ data } showCopy={ false } isLoading={ isLoading } w="100%"/>;
       default:
         return <span/>;
     }
