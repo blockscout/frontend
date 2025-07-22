@@ -68,7 +68,7 @@ const BlockDetailsBaseFeeCelo = ({ data }: Props) => {
       <DetailedInfo.ItemLabel hint={ totalFeeLabel }>
         Base fee total
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue allowWrap flexDirection="column" alignItems="flex-start">
+      <DetailedInfo.ItemValue multiRow flexDirection="column" alignItems="flex-start">
         <Flex columnGap={ 2 }>
           { totalBaseFee }
           <TokenEntity token={ data.token } noCopy onlySymbol/>

@@ -37,7 +37,7 @@ const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
         hint="Expiration timeout for the data blob"
       >
         Timeout
-      </DetailedInfo.ItemLabel><DetailedInfo.ItemValue allowWrap>
+      </DetailedInfo.ItemLabel><DetailedInfo.ItemValue multiRow>
         { dayjs(data.timeout) < dayjs() ?
           <DetailsTimestamp timestamp={ data.timeout }/> :
           (

@@ -162,7 +162,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       >
         Transaction hash
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue allowWrap={ config.features.externalTxs.isEnabled && externalTxsQuery.data && externalTxsQuery.data.length > 0 }>
+      <DetailedInfo.ItemValue multiRow={ config.features.externalTxs.isEnabled && externalTxsQuery.data && externalTxsQuery.data.length > 0 }>
         <Flex flexWrap="nowrap" alignItems="center" overflow="hidden">
           { data.status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
           <Skeleton loading={ isLoading } overflow="hidden">
@@ -304,7 +304,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       >
         Block
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue allowWrap={ Boolean(data.scroll?.l2_block_status) }>
+      <DetailedInfo.ItemValue multiRow={ Boolean(data.scroll?.l2_block_status) }>
         { data.block_number === null ?
           <Text>Pending</Text> : (
             <BlockEntity
@@ -389,7 +389,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Timestamp
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue allowWrap>
+          <DetailedInfo.ItemValue multiRow>
             <Flex alignItems="center" maxW="100%">
               <DetailedInfoTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
             </Flex>
@@ -644,7 +644,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Transaction fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue allowWrap>
+          <DetailedInfo.ItemValue multiRow>
             <TxFee
               tx={ data }
               isLoading={ isLoading }
@@ -771,7 +771,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             { `Gas fees (${ currencyUnits.gwei })` }
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue allowWrap>
+          <DetailedInfo.ItemValue multiRow>
             { data.base_fee_per_gas && (
               <Skeleton loading={ isLoading }>
                 <span>Base: </span>
@@ -822,7 +822,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               >
                 L1 gas price
               </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue allowWrap>
+              <DetailedInfo.ItemValue multiRow>
                 <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
                 <Text color="text.secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
               </DetailedInfo.ItemValue>
@@ -838,7 +838,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               >
                 L1 fee
               </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue allowWrap>
+              <DetailedInfo.ItemValue multiRow>
                 <CurrencyValue
                   value={ data.l1_fee }
                   currency={ currencyUnits.ether }

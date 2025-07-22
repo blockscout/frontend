@@ -30,7 +30,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
       >
         Commit tx hash
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue allowWrap >
+      <DetailedInfo.ItemValue multiRow >
         { data.commit_transaction_hash ? (
           <>
             <TxEntityL1
@@ -54,7 +54,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
       >
         Prove tx hash
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue allowWrap>
+      <DetailedInfo.ItemValue multiRow>
         { data.prove_transaction_hash ? (
           <>
             <TxEntityL1
@@ -78,7 +78,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
       >
         Execute tx hash
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue allowWrap>
+      <DetailedInfo.ItemValue multiRow>
         { data.execute_transaction_hash ? (
           <>
             <TxEntityL1

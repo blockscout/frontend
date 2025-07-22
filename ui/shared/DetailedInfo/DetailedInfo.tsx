@@ -55,10 +55,10 @@ export const ItemLabel = ({ hint, children, isLoading, id, hasScroll, ...rest }:
 
 interface ItemValueProps extends GridItemProps {
   children: React.ReactNode;
-  allowWrap?: boolean;
+  multiRow?: boolean;
 }
 
-export const ItemValue = ({ children, allowWrap = false, ...rest }: ItemValueProps) => {
+export const ItemValue = ({ children, multiRow = false, ...rest }: ItemValueProps) => {
   return (
     <GridItem
       display="flex"
@@ -66,7 +66,7 @@ export const ItemValue = ({ children, allowWrap = false, ...rest }: ItemValuePro
       pl={{ base: 6, lg: 0 }}
       minH={ ITEM_VALUE_LINE_HEIGHT }
       whiteSpace="nowrap"
-      { ...(allowWrap ? {
+      { ...(multiRow ? {
         flexWrap: 'wrap',
         lineHeight: ITEM_VALUE_LINE_HEIGHT,
       } : {}) }

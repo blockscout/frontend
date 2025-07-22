@@ -16,7 +16,7 @@ const TxDetailsOther = ({ nonce, type, position, queueIndex }: Props) => {
       >
         Other
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue allowWrap>
+      <DetailedInfo.ItemValue multiRow>
         {
           [
             typeof type === 'number' && (
