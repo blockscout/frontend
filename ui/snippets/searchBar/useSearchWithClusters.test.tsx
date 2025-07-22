@@ -1,3 +1,4 @@
+import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
 import { renderHook } from 'jest/lib';
@@ -21,6 +22,33 @@ jest.mock('./useQuickSearchQuery');
 jest.mock('lib/hooks/useDebounce', () => (value: unknown) => value);
 
 const mockUseQuickSearchQuery = useQuickSearchQuery as jest.MockedFunction<typeof useQuickSearchQuery>;
+
+const defaultUseQueryResult: Partial<UseQueryResult> = {
+  data: [],
+  isError: false,
+  isLoading: false,
+  isFetching: false,
+  error: null,
+  isPending: false,
+  isLoadingError: false,
+  isRefetchError: false,
+  isSuccess: true,
+  isStale: false,
+  status: 'success',
+  fetchStatus: 'idle',
+  refetch: jest.fn(),
+  failureCount: 0,
+  failureReason: null,
+  errorUpdateCount: 0,
+  isFetched: true,
+  isFetchedAfterMount: true,
+  isPlaceholderData: false,
+  isRefetching: false,
+  isInitialLoading: false,
+  dataUpdatedAt: Date.now(),
+  errorUpdatedAt: 0,
+  isPaused: false,
+};
 
 jest.mock('configs/app', () => ({
   features: {
@@ -93,29 +121,8 @@ describe('useSearchWithClusters', () => {
     } as unknown as MockApiQuery);
 
     mockUseQuery.mockReturnValue({
-      data: [],
-      isError: false,
-      isLoading: false,
-      isFetching: false,
-      error: null,
-      isPending: false,
-      isLoadingError: false,
-      isRefetchError: false,
-      isSuccess: true,
-      isStale: false,
-      status: 'success',
-      fetchStatus: 'idle',
-      refetch: jest.fn(),
-      failureCount: 0,
-      failureReason: null,
-      errorUpdateCount: 0,
-      isFetched: true,
-      isFetchedAfterMount: true,
-      isPlaceholderData: false,
-      isRefetching: false,
-      isInitialLoading: false,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
+      ...defaultUseQueryResult,
+    } as UseQueryResult);
   });
 
   describe('cluster search pattern matching', () => {
@@ -334,29 +341,9 @@ describe('useSearchWithClusters', () => {
       ];
 
       mockUseQuery.mockReturnValue({
+        ...defaultUseQueryResult,
         data: transformedData,
-        isError: false,
-        isLoading: false,
-        error: null,
-        isPending: false,
-        isLoadingError: false,
-        isRefetchError: false,
-        isSuccess: true,
-        isStale: false,
-        status: 'success',
-        fetchStatus: 'idle',
-        refetch: jest.fn(),
-        failureCount: 0,
-        failureReason: null,
-        errorUpdateCount: 0,
-        isFetched: true,
-        isFetchedAfterMount: true,
-        isPlaceholderData: false,
-        isRefetching: false,
-        isInitialLoading: false,
-        isFetching: false,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
+      } as UseQueryResult);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
@@ -391,29 +378,9 @@ describe('useSearchWithClusters', () => {
       ];
 
       mockUseQuery.mockReturnValue({
+        ...defaultUseQueryResult,
         data: transformedData,
-        isError: false,
-        isLoading: false,
-        error: null,
-        isPending: false,
-        isLoadingError: false,
-        isRefetchError: false,
-        isSuccess: true,
-        isStale: false,
-        status: 'success',
-        fetchStatus: 'idle',
-        refetch: jest.fn(),
-        failureCount: 0,
-        failureReason: null,
-        errorUpdateCount: 0,
-        isFetched: true,
-        isFetchedAfterMount: true,
-        isPlaceholderData: false,
-        isRefetching: false,
-        isInitialLoading: false,
-        isFetching: false,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
+      } as UseQueryResult);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
@@ -448,29 +415,9 @@ describe('useSearchWithClusters', () => {
       ];
 
       mockUseQuery.mockReturnValue({
+        ...defaultUseQueryResult,
         data: transformedData,
-        isError: false,
-        isLoading: false,
-        error: null,
-        isPending: false,
-        isLoadingError: false,
-        isRefetchError: false,
-        isSuccess: true,
-        isStale: false,
-        status: 'success',
-        fetchStatus: 'idle',
-        refetch: jest.fn(),
-        failureCount: 0,
-        failureReason: null,
-        errorUpdateCount: 0,
-        isFetched: true,
-        isFetchedAfterMount: true,
-        isPlaceholderData: false,
-        isRefetching: false,
-        isInitialLoading: false,
-        isFetching: false,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
+      } as UseQueryResult);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
@@ -490,29 +437,14 @@ describe('useSearchWithClusters', () => {
       } as unknown as MockQuickSearchQuery);
 
       mockUseQuery.mockReturnValue({
+        ...defaultUseQueryResult,
         data: [],
         isError: true,
-        isLoading: false,
         error: new Error('API Error'),
-        isPending: false,
-        isLoadingError: false,
-        isRefetchError: false,
         isSuccess: false,
-        isStale: false,
         status: 'error',
-        fetchStatus: 'idle',
-        refetch: jest.fn(),
         failureCount: 1,
-        failureReason: null,
-        errorUpdateCount: 0,
-        isFetched: true,
-        isFetchedAfterMount: true,
-        isPlaceholderData: false,
-        isRefetching: false,
-        isInitialLoading: false,
-        isFetching: false,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
+      } as unknown as UseQueryResult);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
@@ -530,29 +462,9 @@ describe('useSearchWithClusters', () => {
       } as unknown as MockQuickSearchQuery);
 
       mockUseQuery.mockReturnValue({
+        ...defaultUseQueryResult,
         data: [],
-        isError: false,
-        isLoading: false,
-        error: null,
-        isPending: false,
-        isLoadingError: false,
-        isRefetchError: false,
-        isSuccess: true,
-        isStale: false,
-        status: 'success',
-        fetchStatus: 'idle',
-        refetch: jest.fn(),
-        failureCount: 0,
-        failureReason: null,
-        errorUpdateCount: 0,
-        isFetched: true,
-        isFetchedAfterMount: true,
-        isPlaceholderData: false,
-        isRefetching: false,
-        isInitialLoading: false,
-        isFetching: false,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
+      } as UseQueryResult);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
@@ -695,29 +607,9 @@ describe('useSearchWithClusters', () => {
       } as unknown as MockQuickSearchQuery);
 
       mockUseQuery.mockReturnValue({
-        data: [],
-        isError: false,
+        ...defaultUseQueryResult,
         isLoading: true,
-        error: null,
-        isPending: false,
-        isLoadingError: false,
-        isRefetchError: false,
-        isSuccess: true,
-        isStale: false,
-        status: 'success',
-        fetchStatus: 'idle',
-        refetch: jest.fn(),
-        failureCount: 0,
-        failureReason: null,
-        errorUpdateCount: 0,
-        isFetched: true,
-        isFetchedAfterMount: true,
-        isPlaceholderData: false,
-        isRefetching: false,
-        isInitialLoading: false,
-        isFetching: false,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
+      } as unknown as UseQueryResult);
 
       const { result } = renderHook(() => useSearchWithClusters());
 
