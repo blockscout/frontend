@@ -113,7 +113,7 @@ const Icon = (props: IconBaseProps) => {
 
   const iconElement = (() => {
     const commonProps = {
-      marginRight: props.marginRight ?? props.mr ?? styles.marginRight,
+      marginRight: styles.marginRight,
       boxSize: boxSize ?? styles.boxSize,
       borderRadius: borderRadius ?? 'base',
       flexShrink: 0,
@@ -169,9 +169,9 @@ const IconShield = (props: IconShieldProps) => {
 
   const styles = {
     position: 'absolute',
-    top: variant === 'heading' ? '12px' : '6px',
-    left: variant === 'heading' ? '17px' : '12px',
-    boxSize: variant === 'heading' ? '22px' : '18px',
+    top: variant === 'heading' ? '14px' : '6px',
+    left: variant === 'heading' ? '18px' : '12px',
+    boxSize: '18px',
     borderRadius: 'full',
     borderWidth: '1px',
     borderStyle: 'solid',

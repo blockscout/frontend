@@ -13,7 +13,7 @@ import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTex
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
-import { distributeEntityProps } from '../base/utils';
+import { distributeEntityProps, getIconProps } from '../base/utils';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'token'>;
 
@@ -41,7 +41,7 @@ const Icon = (props: IconProps) => {
   }
 
   const styles = {
-    marginRight: props.marginRight ?? (props.chain ? '18px' : 2),
+    ...getIconProps(props, Boolean(props.shield ?? props.chain)),
     borderRadius: props.token.type === 'ERC-20' ? 'full' : 'base',
   };
 

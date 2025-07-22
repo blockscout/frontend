@@ -16,7 +16,7 @@ export function getIconProps(props: IconBaseProps, withShield: boolean = false) 
     case 'heading': {
       return {
         boxSize: props.boxSize ?? '30px', // for page headings
-        marginRight: props.marginRight ?? props.mr ?? (withShield ? '20px' : '8px'),
+        marginRight: props.marginRight ?? props.mr ?? (withShield ? '14px' : '8px'),
       };
     }
   }

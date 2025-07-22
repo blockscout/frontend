@@ -7,7 +7,7 @@ import * as tokenMock from 'mocks/tokens/tokenInfo';
 import { stableHover } from 'playwright/helpers/stableHover';
 import { test, expect } from 'playwright/lib';
 
-import TokenEntity from './TokenEntity';
+import TokenEntity, { Icon } from './TokenEntity';
 
 const variants = [ 'subheading', 'content' ] as const;
 
@@ -25,7 +25,45 @@ test.describe('variant', () => {
 
       await expect(component).toHaveScreenshot();
     });
+
+    test(`${ variant } with chain data`, async({ render, mockAssetResponse }) => {
+      const LOGO_URL = 'https://example.com/logo.png';
+      const chainLogoUrl = getIconUrl(opSuperchainMock.chainDataA);
+      await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
+      await mockAssetResponse(chainLogoUrl, './playwright/mocks/image_svg.svg');
+
+      const component = await render(
+        <TokenEntity
+          token={{
+            type: 'ERC-20',
+            name: 'This token is the best token ever',
+            symbol: 'DUCK DUCK DUCK',
+            address_hash: tokenMock.tokenInfo.address_hash,
+            icon_url: LOGO_URL,
+          }}
+          chain={ opSuperchainMock.chainDataA }
+        />,
+      );
+
+      await expect(component).toHaveScreenshot();
+    });
   });
+});
+
+test('icon in heading variant', async({ render, mockAssetResponse }) => {
+  const chainLogoUrl = getIconUrl(opSuperchainMock.chainDataA);
+  await mockAssetResponse(tokenMock.tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(chainLogoUrl, './playwright/mocks/image_svg.svg');
+
+  const component = await render(
+    <Icon
+      token={ tokenMock.tokenInfo }
+      variant="heading"
+      chain={ opSuperchainMock.chainDataA }
+    />,
+  );
+
+  await expect(component).toHaveScreenshot();
 });
 
 test('with logo, long name and symbol', async({ page, render }) => {
@@ -81,28 +119,6 @@ test('customization', async({ render }) => {
         borderColor="blue.700"
       />
     </Box>,
-  );
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('with chain data', async({ render, mockAssetResponse }) => {
-  const LOGO_URL = 'https://example.com/logo.png';
-  const chainLogoUrl = getIconUrl(opSuperchainMock.chainDataA);
-  await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
-  await mockAssetResponse(chainLogoUrl, './playwright/mocks/image_svg.svg');
-
-  const component = await render(
-    <TokenEntity
-      token={{
-        type: 'ERC-20',
-        name: 'This token is the best token ever',
-        symbol: 'DUCK DUCK DUCK',
-        address_hash: tokenMock.tokenInfo.address_hash,
-        icon_url: LOGO_URL,
-      }}
-      chain={ opSuperchainMock.chainDataA }
-    />,
   );
 
   await expect(component).toHaveScreenshot();
