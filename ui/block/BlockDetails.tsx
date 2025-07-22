@@ -634,12 +634,13 @@ const BlockDetails = ({ query }: Props) => {
             >
               Difficulty
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue overflow="hidden">
-              <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
+            <DetailedInfo.ItemValue>
+              <Box overflow="hidden">
+                <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
+              </Box>
             </DetailedInfo.ItemValue>
           </>
         ) }
-
         { data.total_difficulty && (
           <>
             <DetailedInfo.ItemLabel
@@ -647,8 +648,10 @@ const BlockDetails = ({ query }: Props) => {
             >
               Total difficulty
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue overflow="hidden">
-              <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
+            <DetailedInfo.ItemValue>
+              <Box overflow="hidden">
+                <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
+              </Box>
             </DetailedInfo.ItemValue>
           </>
         ) }
