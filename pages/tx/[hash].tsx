@@ -5,7 +5,15 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const Transaction = dynamic(() => import('ui/pages/Transaction'), { ssr: false });
+import config from 'configs/app';
+
+const Transaction = dynamic(() => {
+  if (config.features.opSuperchain.isEnabled) {
+    return import('ui/optimismSuperchain/tx/OpSuperchainTx');
+  }
+
+  return import('ui/pages/Transaction');
+}, { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (

@@ -55,7 +55,7 @@ const LatestTxsLocal = ({ chainSlug }: Props) => {
           stickyHeader={ false }
         />
         <Link
-          href={ route({ pathname: '/txs' }, chainData ? { chain: chainData } : undefined) }
+          href={ route({ pathname: '/txs', query: { 'chain-slug': chainSlug, tab: 'txs_local' } }) }
           w="full"
           justifyContent="center"
           textStyle="sm"

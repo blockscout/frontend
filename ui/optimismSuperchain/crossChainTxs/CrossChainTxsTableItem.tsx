@@ -4,6 +4,8 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TransactionType } from 'types/api/transaction';
 
+import { route } from 'nextjs-routes';
+
 import multichainConfig from 'configs/multichain';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { Badge } from 'toolkit/chakra/badge';
@@ -46,7 +48,9 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation, currencySymbol, cu
     <TableRow animation={ animation }>
       <TableCell>
         <VStack alignItems="start" gap={ 0 }>
-          <Link fontWeight="700" minH="30px" loading={ isLoading }>{ item.nonce }</Link>
+          <Link fontWeight="700" minH="30px" loading={ isLoading } href={ route({ pathname: '/tx/[hash]', query: { hash: String(item.nonce) } }) }>
+            { item.nonce }
+          </Link>
           <TimeWithTooltip
             timestamp={ item.timestamp }
             isLoading={ isLoading }

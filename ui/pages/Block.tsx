@@ -164,7 +164,7 @@ const BlockPageContent = () => {
   })();
 
   const beforeTitleElement = multichainContext?.chain ? (
-    <BlockEntity.Icon variant="heading" chain={ multichainContext.chain }/>
+    <BlockEntity.Icon variant="heading" chain={ multichainContext.chain } isLoading={ blockQuery.isPlaceholderData }/>
   ) : null;
 
   const titleSecondRow = (

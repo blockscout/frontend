@@ -14,7 +14,7 @@ import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 
 const OpSuperchainAddressInternalTxs = () => {
-  const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({ enabled: true });
+  const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({ enabled: true, isMultichain: true });
   const { data, isPlaceholderData, isError, pagination } = query;
 
   const content = data?.items ? (
@@ -59,6 +59,7 @@ const OpSuperchainAddressInternalTxs = () => {
       filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: Boolean(filterValue) }}
       emptyText="There are no internal transactions for this address."
       showActionBarIfEmpty
+      showActionBarIfError
       actionBar={ actionBar }
     >
       { content }
