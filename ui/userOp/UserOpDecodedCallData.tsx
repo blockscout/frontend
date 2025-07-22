@@ -1,7 +1,9 @@
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { UserOp } from 'types/api/userOps';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 
@@ -12,7 +14,7 @@ interface Props {
 }
 
 const UserOpDecodedCallData = ({ data }: Props) => {
-
+  const isMobile = useIsMobile();
   const [ callData, setCallData ] = React.useState(data.decoded_execute_call_data || data.decoded_call_data);
 
   const handleSwitchChange = React.useCallback((isChecked: boolean) => {
@@ -39,7 +41,10 @@ const UserOpDecodedCallData = ({ data }: Props) => {
       <DetailedInfo.ItemLabel
         hint={ labelText }
       >
-        { labelText }
+        <Flex alignItems="center" justifyContent="space-between">
+          { labelText }
+          { isMobile && toggler }
+        </Flex>
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue
         flexDir={{ base: 'column', lg: 'row' }}
@@ -47,7 +52,7 @@ const UserOpDecodedCallData = ({ data }: Props) => {
         flexWrap="wrap"
         mt={{ base: '5px', lg: '4px' }}
       >
-        <LogDecodedInputData data={ callData } rightSlot={ toggler }/>
+        <LogDecodedInputData data={ callData } rightSlot={ !isMobile && toggler }/>
       </DetailedInfo.ItemValue>
     </>
   );
