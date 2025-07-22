@@ -512,7 +512,7 @@ const BlockDetails = ({ query }: Props) => {
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-            <Skeleton loading={ isPlaceholderData } ml={ 2 }>
+            <Skeleton loading={ isPlaceholderData } ml={{ base: 1, lg: 2 }}>
               { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </Skeleton>
             { !txFees.isEqualTo(ZERO) && (
