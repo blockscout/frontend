@@ -37,19 +37,22 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
     },
   });
 
+  const sendCodeFetchFactory = React.useCallback((email: string) => (recaptchaToken?: string) => {
+    return apiFetch('general:auth_send_otp', {
+      fetchParams: {
+        method: 'POST',
+        body: { email, recaptcha_response: recaptchaToken },
+        headers: {
+          ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
+        },
+      },
+    });
+  }, [ apiFetch ]);
+
   const onFormSubmit: SubmitHandler<EmailFormFields> = React.useCallback(async(formData) => {
     try {
-      const token = await recaptcha.executeAsync();
+      await recaptcha.fetchProtectedResource(sendCodeFetchFactory(formData.email));
 
-      await apiFetch('general:auth_send_otp', {
-        fetchParams: {
-          method: 'POST',
-          body: {
-            email: formData.email,
-            recaptcha_response: token,
-          },
-        },
-      });
       if (isAuth) {
         mixpanelConfig?.account_link_info.source !== 'Profile' && mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
           Source: mixpanelConfig?.account_link_info.source ?? 'Profile dropdown',
@@ -69,7 +72,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         description: getErrorObjPayload<{ message: string }>(error)?.message || getErrorMessage(error) || 'Something went wrong',
       });
     }
-  }, [ recaptcha, apiFetch, isAuth, onSubmit, mixpanelConfig?.account_link_info.source ]);
+  }, [ recaptcha, sendCodeFetchFactory, isAuth, onSubmit, mixpanelConfig?.account_link_info.source ]);
 
   return (
     <FormProvider { ...formApi }>

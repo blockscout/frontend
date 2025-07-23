@@ -39,32 +39,39 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   const { handleSubmit, formState } = formApi;
   const recaptcha = useReCaptcha();
 
-  const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
-    try {
-      const token = await recaptcha.executeAsync();
-
-      if (!token) {
-        throw new Error('ReCaptcha is not solved');
-      }
-
+  const apiFetchFactory = React.useCallback((data: FormFields) => {
+    return async(recaptchaToken?: string) => {
       const url = buildUrl(resource, { hash } as never, {
         address_id: hash,
         from_period: exportType !== 'holders' ? dayjs(data.from).toISOString() : null,
         to_period: exportType !== 'holders' ? dayjs(data.to).toISOString() : null,
         filter_type: filterType,
         filter_value: filterValue,
-        recaptcha_response: token,
+        recaptcha_response: recaptchaToken,
       });
 
       const response = await fetch(url, {
         headers: {
           'content-type': 'application/octet-stream',
+          ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
         },
       });
 
       if (!response.ok) {
-        throw new Error();
+        throw new Error(response.statusText, {
+          cause: {
+            status: response.status,
+          },
+        });
       }
+
+      return response;
+    };
+  }, [ resource, hash, exportType, filterType, filterValue ]);
+
+  const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
+    try {
+      const response = await recaptcha.fetchProtectedResource<Response>(apiFetchFactory(data));
 
       const blob = await response.blob();
       const fileName = exportType === 'holders' ?
@@ -80,7 +87,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
       });
     }
 
-  }, [ recaptcha, resource, hash, exportType, filterType, filterValue, fileNameTemplate ]);
+  }, [ recaptcha, apiFetchFactory, exportType, fileNameTemplate, hash, filterType, filterValue ]);
 
   if (!config.services.reCaptchaV2.siteKey) {
     return (

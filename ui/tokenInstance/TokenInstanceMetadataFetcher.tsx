@@ -45,16 +45,22 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
     });
   }, [ setStatus ]);
 
-  const initializeUpdate = React.useCallback(async(tokenProp?: string) => {
-    try {
-      const token = tokenProp || await recaptcha.executeAsync();
-      await apiFetch<'general:token_instance_refresh_metadata', unknown, unknown>('general:token_instance_refresh_metadata', {
-        pathParams: { hash, id },
-        fetchParams: {
-          method: 'PATCH',
-          body: { recaptcha_response: token },
+  const apiFetchFactory = React.useCallback(async(recaptchaToken?: string) => {
+    return apiFetch<'general:token_instance_refresh_metadata', unknown, unknown>('general:token_instance_refresh_metadata', {
+      pathParams: { hash, id },
+      fetchParams: {
+        method: 'PATCH',
+        body: { recaptcha_response: recaptchaToken },
+        headers: {
+          ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
         },
-      });
+      },
+    });
+  }, [ apiFetch, hash, id ]);
+
+  const initializeUpdate = React.useCallback(async() => {
+    try {
+      await recaptcha.fetchProtectedResource(apiFetchFactory);
       setStatus?.('WAITING_FOR_RESPONSE');
       toaster.loading({
         id: TOAST_ID,
@@ -72,7 +78,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       setStatus?.('ERROR');
     }
 
-  }, [ apiFetch, handleRefreshError, hash, id, recaptcha, setStatus ]);
+  }, [ apiFetchFactory, handleRefreshError, recaptcha, setStatus ]);
 
   const handleModalClose = React.useCallback(({ open }: { open: boolean }) => {
     if (!open) {

@@ -25,13 +25,14 @@ on:
             - neon_devnet
             - optimism
             - optimism_sepolia
+            - optimism_superchain
             - polygon
             - rootstock
             - scroll_sepolia
             - shibarium
             - stability
             - zkevm 
-            - zilliqa_prototestnet
+            - zilliqa
             - zksync
             - zora
 

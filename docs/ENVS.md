@@ -47,7 +47,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Mixpanel analytics](#mixpanel-analytics)
   - [GrowthBook feature flagging and A/B testing](#growthbook-feature-flagging-and-ab-testing)
   - [GraphQL API documentation](#graphql-api-documentation)
-  - [REST API documentation](#rest-api-documentation)
+  - [API documentation](#api-documentation)
   - [Marketplace](#marketplace)
   - [Solidity to UML diagrams](#solidity-to-uml-diagrams)
   - [Blockchain statistics](#blockchain-statistics)
@@ -76,6 +76,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Save on gas with GasHawk](#save-on-gas-with-gashawk)
   - [Rewards service API](#rewards-service-api)
   - [DEX pools](#dex-pools)
+  - [Address 3rd party widgets](#address-3rd-party-widgets)
 - [3rd party services configuration](#external-services-configuration)
 
 &nbsp;
@@ -162,7 +163,6 @@ _Note_ Here, all values are arrays of up to two strings. The first string repres
 | NEXT_PUBLIC_NETWORK_ICON_DARK | `string` | Network icon for dark color mode; if not provided, **inverted** regular icon will be used instead | - | - | `https://placekitten.com/60/60` | v1.0.x+ |
 | NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) or file content string representation. It contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` \| `[{'title':'Astar(EVM)','url':'https://astar.blockscout.com/','group':'Mainnets','icon':'https://example.com/astar.svg'}]` | v1.0.x+ |
 | NEXT_PUBLIC_OTHER_LINKS | `Array<{url: string; text: string}>` | List of links for the "Other" navigation menu | - | - | `[{'url':'https://blockscout.com','text':'Blockscout'}]` | v1.0.x+ |
-| NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS | `Array<LinkId>` | List of external links hidden in the navigation. Supported ids are `eth_rpc_api`, `rpc_api` | - | - | `['eth_rpc_api']` | v1.16.0+ |
 | NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES | `Array<string>` | List of menu item routes that should have a lightning label | - | - | `['/accounts']` | v1.31.0+ |
 | NEXT_PUBLIC_NAVIGATION_LAYOUT | `vertical \| horizontal` | Navigation menu layout type | - | `vertical` | `horizontal` | v1.32.0+ |
 
@@ -192,7 +192,7 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | title | `string` | Title of link group | Required | - | `Company` |
-| links | `Array<{'text':string;'url':string;'iconUrl'?:[string,string]}>` | An array contains a list of links in the column. Each link can optionally have an `icon_url` property, which should include an array of two external image URLs for light and dark themes, respectively. If only one URL is provided, it will be used for both color schemes. We expect the icons to be square, with a minimum size of 40px by 40px or in SVG format. | Required | - | `[{'text':'Homepage','url':'https://www.blockscout.com'}]` |
+| links | `Array<{'text':string;'url':string;'iconUrl'?:[string,string]}>` | An array contains a list of links in the column. Each link can optionally have an `iconUrl` property, which should include an array of two external image URLs for light and dark themes, respectively. If only one URL is provided, it will be used for both color schemes. We expect the icons to be square, with a minimum size of 40px by 40px or in SVG format. | Required | - | `[{'text':'Homepage','url':'https://www.blockscout.com'}]` |
 
 &nbsp;
 
@@ -459,6 +459,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_HAS_USER_OPS | `boolean` | Set to true to show user operations related data and pages | - | - | `true` | v1.23.0+ |
+| NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST | `boolean` | The user operations indexer API host; pass to show API documentation for the service | - | - | `true` | v2.3.0+ |
 
 &nbsp;
 
@@ -526,23 +527,13 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 &nbsp;
 
-### GraphQL API documentation
-
-This feature is **always enabled**, but you can disable it by passing `none` value to `NEXT_PUBLIC_GRAPHIQL_TRANSACTION` variable.
+### API documentation
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_GRAPHIQL_TRANSACTION | `string` | Txn hash for default query at GraphQl playground page. Pass `none` to disable the feature. | - | - | `0x4a0ed8ddf751a7cb5297f827699117b0f6d21a0b2907594d300dc9fed75c7e62` | v1.0.x+ |
-
-&nbsp;
-
-### REST API documentation
-
-This feature is **always enabled**, but you can disable it by passing `none` value to `NEXT_PUBLIC_API_SPEC_URL` variable.
-
-| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
-| --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_API_SPEC_URL | `string` | Spec to be displayed on `/api-docs` page. Pass `none` to disable the feature. | - | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` | v1.0.x+ |
+| NEXT_PUBLIC_API_DOCS_TABS | `Array<TabId>` | Controls which tabs appear on the API documentation page. Possible values for `TabId` are `rest_api`, `eth_rpc_api`, `rpc_api`, and `graphql_api`. **Note** that this variable has a default value, so the feature is enabled by default. Pass an empty array to disable it. | - | `['rest_api','eth_rpc_api','rpc_api','graphql_api']` | `[]` | v2.3.x+ |
+| NEXT_PUBLIC_API_SPEC_URL | `string` | Spec of Blockscout core API to be displayed on the page. | - | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` | v1.0.x+ |
+| NEXT_PUBLIC_GRAPHIQL_TRANSACTION | `string` | Txn hash for default query at GraphQl API. | - | - | `0x4a0ed8ddf751a7cb5297f827699117b0f6d21a0b2907594d300dc9fed75c7e62` | v1.0.x+ |
 
 &nbsp;
 
@@ -914,6 +905,30 @@ This feature enables Blockscout Merits program. It requires that the [My account
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_DEX_POOLS_ENABLED | `boolean` | Set to true to enable the feature | Required | - | `true` | v1.37.0+ |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` | v1.0.x+ |
+
+&nbsp;
+
+### Address 3rd party widgets
+
+This feature allows to display widgets on the address page with data from 3rd party services.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS | `Array<string>` | Array of widget ids to be displayed | - | - | `['widget-1', 'widget-2']` | v2.2.0+ |
+| NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains mapping of widget names to their configuration. See [below](#address-3rd-party-widget-configuration-properties) list of available properties for a widget. | - | - | `https://example.com/address_3rd_party_widgets_config.json` | v2.2.0+ |
+
+#### Address 3rd party widget configuration properties
+
+| Property | Type | Description | Compulsoriness | Example value |
+| --- | --- | --- | --- | --- |
+| name | `string` | Displayed name of the widget | Required | - | `'Widget'` |
+| url | `string` | Link URL for widget card. Can contain `{address}`, `{addressLowercase}` and `{chainId}` variables | Required | - | `'https://example.com/widget/{address}?chainId={chainId}'` |
+| icon | `string` | Widget icon URL | Required | - | `'https://example.com/icon.svg'` |
+| title | `string` | Title of displayed data | Required | - | `'Multichain balance'` |
+| hint | `string` | Hint for displayed data | - | - | `'Widget hint'` |
+| valuePath | `string` | Path to the field in the API response that contains the value to be displayed | Required | - | `'result.balance'` |
+| pages | `Array<'eoa' \| 'contract' \| 'token'>` | List of pages where the widget should be displayed | Required | - | `['eoa']` |
+| chainIds | `Record<string, string>` | Mapping of chain IDs to custom values that will be used in `url` template | - | - | `{'1': 'eth', '10': 'op'}` |
 
 &nbsp;
 

@@ -25,7 +25,7 @@ const ValidatorsTableItem = ({ data, isLoading }: Props) => {
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block" wordBreak="break-all">
           { BigNumber(data.balance).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
         </Skeleton>
       </TableCell>

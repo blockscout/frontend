@@ -9,6 +9,7 @@ import type { PaginationParams } from './types';
 
 import type { Route } from 'nextjs-routes';
 
+import multichainConfig from 'configs/multichain';
 import getResourceParams from 'lib/api/getResourceParams';
 import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'lib/api/resources';
 import { SORTING_FIELDS } from 'lib/api/resources';
@@ -51,12 +52,23 @@ function getNextPageParams<R extends PaginatedResourceName>(data: ResourcePayloa
   return data.next_page_params;
 }
 
+function getChainValue(queryParam: string | Array<string> | undefined) {
+  const config = multichainConfig();
+  if (!config) {
+    return undefined;
+  }
+
+  return [ getQueryParamString(queryParam) || config.chains[0].slug ];
+}
+
 export type QueryWithPagesResult<Resource extends PaginatedResourceName> =
 UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
 {
   onFilterChange: <R extends PaginatedResourceName = Resource>(filters: PaginationFilters<R>) => void;
   onSortingChange: (sorting?: PaginationSorting<Resource>) => void;
   pagination: PaginationParams;
+  chainValue: Array<string> | undefined;
+  onChainValueChange: ({ value }: { value: Array<string> }) => void;
 };
 
 export default function useQueryWithPages<Resource extends PaginatedResourceName>({
@@ -75,6 +87,9 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     [page]: getPaginationParamsFromQuery(router.query.next_page_params),
   });
   const [ hasPages, setHasPages ] = React.useState(page > 1);
+  const [ chainValue, setChainValue ] = React.useState<Array<string> | undefined>(
+    getChainValue(router.query['chain-slug']),
+  );
 
   const isMounted = React.useRef(false);
   const queryParams = { ...pageParams[page], ...filters, ...sorting };
@@ -90,6 +105,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       staleTime: page === 1 ? 0 : Infinity,
       ...options,
     },
+    chainSlug: chainValue?.[0],
   });
   const { data } = queryResult;
   const nextPageParams = getNextPageParams(data);
@@ -134,15 +150,19 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
   }, [ router, page, pageParams, scrollToTop, queryClient, resourceName ]);
 
-  const resetPage = useCallback(() => {
+  const resetPage = useCallback(({ chainValue }: { chainValue?: Array<string> } = {}) => {
     queryClient.removeQueries({ queryKey: [ resourceName ] });
 
     scrollToTop();
     const nextRouterQuery = omit(router.query, [ 'next_page_params', 'page' ]);
+    if (chainValue) {
+      nextRouterQuery['chain-slug'] = chainValue[0];
+    }
     router.push({ pathname: router.pathname, query: nextRouterQuery }, undefined, { shallow: true }).then(() => {
       queryClient.removeQueries({ queryKey: [ resourceName ] });
       setPage(1);
       setPageParams(INITIAL_PAGE_PARAMS);
+      chainValue && setChainValue(chainValue);
       window.setTimeout(() => {
         // FIXME after router is updated we still have inactive queries for previously visited page (e.g third), where we came from
         // so have to remove it but with some delay :)
@@ -204,6 +224,20 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     });
   }, [ router, scrollToTop ]);
 
+  const onChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
+    if (page !== 1) {
+      resetPage({ chainValue: value });
+    } else {
+      const nextPageQuery = {
+        ...router.query,
+        'chain-slug': value[0],
+      };
+
+      setChainValue(value);
+      router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
+    }
+  }, [ page, resetPage, router ]);
+
   const hasNextPage = nextPageParams ? Object.keys(nextPageParams).length > 0 : false;
 
   const pagination = {
@@ -245,5 +279,5 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     setHasPages(pageFromQuery > 1);
   }, [ router.query ]);
 
-  return { ...queryResult, pagination, onFilterChange, onSortingChange };
+  return { ...queryResult, pagination, onFilterChange, onSortingChange, chainValue, onChainValueChange };
 }
