@@ -80,6 +80,7 @@ const promoBannerTest = (type: 'text' | 'image') => {
       await mockAssetResponse('http://localhost:3000/image_md.jpg', './playwright/mocks/image_md.jpg');
 
       component = await render(<NavigationDesktop/>);
+      await component.waitFor({ state: 'visible' });
     });
 
     test(`${ darkModeRule }`, async() => {

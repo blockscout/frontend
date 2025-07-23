@@ -276,6 +276,8 @@ const promoBannerTest = (type: 'text' | 'image') => {
         </Flex>,
         { hooksConfig },
       );
+
+      await component.waitFor({ state: 'visible' });
     });
 
     test(`${ darkModeRule }`, async() => {
