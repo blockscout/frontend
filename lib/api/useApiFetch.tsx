@@ -36,7 +36,6 @@ export default function useApiFetch() {
     { pathParams, queryParams, fetchParams, logError, chain }: Params<R> = {},
   ) => {
     const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
-
     const { api, apiName, resource } = getResourceParams(resourceName, chain);
     const url = buildUrl(resourceName, pathParams, queryParams, undefined, chain);
     const withBody = isBodyAllowed(fetchParams?.method);
