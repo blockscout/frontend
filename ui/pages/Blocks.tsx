@@ -15,8 +15,6 @@ import Flashblocks from 'ui/blocks/Flashblocks';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-const rollupFeature = config.features.rollup;
-
 const TAB_LIST_PROPS = {
   marginBottom: 0,
   pt: 6,
@@ -80,7 +78,7 @@ const BlocksPageContent = () => {
     { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
     { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
     { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ unclesQuery }/> },
-    rollupFeature.isEnabled && rollupFeature.flashblocks && { id: 'flashblocks', title: 'Flashblocks', component: <Flashblocks/> },
+    config.features.flashblocks.isEnabled && { id: 'flashblocks', title: 'Flashblocks', component: <Flashblocks/> },
   ].filter(Boolean);
 
   return (

@@ -770,6 +770,19 @@ const address3rdPartyWidgetsConfigSchema = yup
       }),
   });
 
+const flashblocksSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_FLASHBLOCKS_RPC_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: yup
+      .string()
+      .when('NEXT_PUBLIC_FLASHBLOCKS_RPC_URL', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema.test(urlTest).required(),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL cannot not be used without NEXT_PUBLIC_FLASHBLOCKS_RPC_URL'),
+      }),
+  });
+
 const schema = yup
   .object()
   .noUnknown(true, (params) => {
@@ -1168,6 +1181,7 @@ const schema = yup
   .concat(tacSchema)
   .concat(address3rdPartyWidgetsConfigSchema)
   .concat(addressMetadataSchema)
-  .concat(userOpsSchema);
+  .concat(userOpsSchema)
+  .concat(flashblocksSchema);
 
 export default schema;

@@ -45,10 +45,6 @@ const config: Feature<{
       celeniumUrl: string | undefined;
     };
   };
-  flashblocks: {
-    rpcUrl: string;
-    socketUrl: string;
-  } | undefined;
 }> = (() => {
   if (type && parentChain) {
     return Object.freeze({
@@ -68,11 +64,6 @@ const config: Feature<{
           namespace: type === 'arbitrum' ? getEnvValue('NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE') : undefined,
           celeniumUrl: getEnvValue('NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL'),
         },
-      },
-      // TODO @tom2drum add env variables
-      flashblocks: {
-        rpcUrl: 'https://mainnet-preconf.base.org',
-        socketUrl: 'wss://mainnet.flashblocks.base.org/ws',
       },
     });
   }

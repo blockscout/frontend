@@ -7,7 +7,7 @@ import config from 'configs/app';
 import formatFlashblockItem from './formatFlashblockItem';
 import parseSocketEventData from './parseSocketEventData';
 
-const rollupFeature = config.features.rollup;
+const flashblocksFeature = config.features.flashblocks;
 
 const MAX_FLASHBLOCKS_COUNT = 50;
 
@@ -25,11 +25,11 @@ export default function useFlashblocksSocketData() {
   const [ status, setStatus ] = React.useState<Status>('initial');
 
   const connect = React.useCallback(() => {
-    if (!rollupFeature.isEnabled || !rollupFeature.flashblocks) {
+    if (!flashblocksFeature.isEnabled) {
       return;
     }
 
-    websocketRef.current = new WebSocket(rollupFeature.flashblocks.socketUrl);
+    websocketRef.current = new WebSocket(flashblocksFeature.socketUrl);
 
     websocketRef.current.onmessage = async(event) => {
       const newFlashBlock = await parseSocketEventData(event);

@@ -1,6 +1,7 @@
 export { ad } from './ad';
 export { app } from './app';
 export { cloudFlare } from './cloudFlare';
+export { flashblocks } from './flashblocks';
 export { gasHawk } from './gasHawk';
 export { googleAnalytics } from './googleAnalytics';
 export { googleFonts } from './googleFonts';

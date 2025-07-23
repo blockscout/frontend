@@ -12,7 +12,6 @@ export function rollup(): CspDev.DirectiveDescriptor {
   return {
     'connect-src': [
       ...(rollupFeature.parentChain.rpcUrls ?? []),
-      ...(rollupFeature.flashblocks ? [ rollupFeature.flashblocks.rpcUrl, rollupFeature.flashblocks.socketUrl ] : []),
     ],
   };
 }
