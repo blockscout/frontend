@@ -71,7 +71,10 @@ const promoBannerTest = (type: 'text' | 'image') => {
     const imageAltText = type === 'text' ? 'Promo banner icon' : 'Promo banner small';
 
     test.beforeEach(async({ render, mockEnvs, mockAssetResponse }) => {
-      await mockEnvs(type === 'text' ? ENVS_MAP.navigationPromoBannerText : ENVS_MAP.navigationPromoBannerImage);
+      await mockEnvs([
+        [ 'NEXT_PUBLIC_NAVIGATION_LAYOUT', 'horizontal' ],
+        ...(type === 'text' ? ENVS_MAP.navigationPromoBannerText : ENVS_MAP.navigationPromoBannerImage),
+      ]);
       await mockAssetResponse('http://localhost:3000/image.svg', './playwright/mocks/image_svg.svg');
       await mockAssetResponse('http://localhost:3000/image_s.jpg', './playwright/mocks/image_s.jpg');
       await mockAssetResponse('http://localhost:3000/image_md.jpg', './playwright/mocks/image_md.jpg');
