@@ -89,7 +89,7 @@ const SearchBarInput = (
 
   const endElement = (
     <>
-      <ClearButton onClick={ onClear } visible={ Boolean(value?.length) } mx={ 2 }/>
+      <ClearButton onClick={ onClear } visible={ Boolean(value?.length) } mx={ 2 } color="input.placeholder"/>
       { !isMobile && (
         <Center
           boxSize="20px"
@@ -125,13 +125,18 @@ const SearchBarInput = (
       >
         <Input
           size="md"
-          placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
+          placeholder="Search by address / txn hash / block / token..."
           value={ value }
           onChange={ handleChange }
           onFocus={ handleFocus }
           border={ isHeroBanner ? 'none' : '2px solid' }
-          borderColor={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' }}
+          borderColor="input.border"
           color={{ _light: 'black', _dark: 'white' }}
+          _placeholder={{
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+          }}
           _hover={{ borderColor: 'input.border.hover' }}
           _focusWithin={{ _placeholder: { color: 'gray.300' }, borderColor: 'input.border.focus', _hover: { borderColor: 'input.border.focus' } }}
         />
