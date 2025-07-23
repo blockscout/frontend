@@ -50,7 +50,6 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/epochs/[number]", { "number": string }>
     | StaticRoute<"/epochs">
     | StaticRoute<"/gas-tracker">
-    | StaticRoute<"/graphiql">
     | StaticRoute<"/">
     | StaticRoute<"/internal-txs">
     | StaticRoute<"/interop-messages">

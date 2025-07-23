@@ -37,7 +37,7 @@ on:
             - tac
             - tac_turin
             - zkevm
-            - zilliqa_prototestnet
+            - zilliqa
             - zksync
             - zora
 

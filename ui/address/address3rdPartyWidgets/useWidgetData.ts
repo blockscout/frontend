@@ -12,6 +12,9 @@ const formatValue = (value: unknown): string | undefined => {
 
   const num = Number(value);
   if (!isNaN(num)) {
+    if (num === -1) {
+      return '0';
+    }
     return num.toLocaleString();
   }
 
@@ -32,6 +35,7 @@ export default function useWidgetData(name: string, valuePath: string | undefine
         }
       },
       enabled: !isLoading && Boolean(valuePath),
+      refetchOnMount: false,
     },
   });
 
