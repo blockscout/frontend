@@ -166,7 +166,7 @@ _Note_ Here, all values are arrays of up to two strings. The first string repres
 | NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS | `Array<LinkId>` | List of external links hidden in the navigation. Supported ids are `eth_rpc_api`, `rpc_api` | - | - | `['eth_rpc_api']` | v1.16.0+ |
 | NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES | `Array<string>` | List of menu item routes that should have a lightning label | - | - | `['/accounts']` | v1.31.0+ |
 | NEXT_PUBLIC_NAVIGATION_LAYOUT | `vertical \| horizontal` | Navigation menu layout type | - | `vertical` | `horizontal` | v1.32.0+ |
-| NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG | `{'img_url': string, 'text': string, 'bg_color': {'light': string, 'dark': string}, 'text_color': {'light': string, 'dark': string}, 'link_url': string} \| {'img_url': {'small': string, 'large': string}, 'link_url': string}` | Configuration of promo banner in the navigation menu | - | - | `{'img_url': 'https://example.com/promo.svg', 'text': 'Promo text', 'bg_color': {'light': 'rgb(250, 245, 255)', 'dark': 'rgb(68, 51, 122)'}, 'text_color': {'light': 'rgb(107, 70, 193)', 'dark': 'rgb(233, 216, 253)'}, 'link_url': 'https://example.com'}` | v2.3.0+ |
+| NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG | `string` | Configuration of promo banner in the navigation menu. See [below](#navigation-promo-banner-configuration-properties) list of available properties for particular banner type | - | - | `{'img_url': 'https://example.com/promo.svg', 'text': 'Promo text', 'bg_color': {'light': 'rgb(250, 245, 255)', 'dark': 'rgb(68, 51, 122)'}, 'text_color': {'light': 'rgb(107, 70, 193)', 'dark': 'rgb(233, 216, 253)'}, 'link_url': 'https://example.com'}` | v2.3.0+ |
 
 #### Featured network configuration properties
 
@@ -178,6 +178,25 @@ _Note_ Here, all values are arrays of up to two strings. The first string repres
 | icon | `string` | Network icon; if not provided, the common placeholder will be shown; *Note* that icon size should be at least 60px by 60px | - | - | `https://placekitten.com/60/60` |
 | isActive | `boolean` | Pass `true` if item should be shown as active in the menu | - | - | `true` |
 | invertIconInDarkMode | `boolean` | Pass `true` if icon colors should be inverted in dark mode | - | - | `true` |
+
+#### Navigation promo banner configuration properties
+
+##### Text promo banner:
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| img_url | `string` | Displayed icon url. The recommended minimum image size is 60x60 pixels (1:1 aspect ratio). | Required | - | `https://example.com/promo.svg` |
+| text | `string` | Displayed text | Required | - | `Promo text` |
+| bg_color | `{'light': string, 'dark': string}` | Background color | Required | - | `{'light': 'rgb(250, 245, 255)', 'dark': 'rgb(68, 51, 122)'}` |
+| text_color | `{'light': string, 'dark': string}` | Text color | Required | - | `{'light': 'rgb(107, 70, 193)', 'dark': 'rgb(233, 216, 253)'}` |
+| link_url | `string` | Redirect link url | Required | - | `https://example.com` |
+
+##### Image promo banner:
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| img_url | `{'small': string, 'large': string}` | Displayed image urls. Small image is used in the collapsed navigation menu and in horizontal navigation, large image is used in the expanded navigation menu and in tooltip. The recommended minimum image sizes are 120x120 pixels (1:1 aspect ratio) for small image and 500x250 pixels (2:1 aspect ratio) for large image. | Required | - | `{'small': 'https://example.com/promo-sm.svg', 'large': 'https://example.com/promo-lg.svg'}` |
+| link_url | `string` | Redirect link url | Required | - | `https://example.com` |
 
 &nbsp;
 
