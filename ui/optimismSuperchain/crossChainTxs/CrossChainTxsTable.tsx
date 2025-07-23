@@ -30,7 +30,7 @@ const CrossChainTxsTable = ({ items, isLoading, socketType, stickyHeader = true,
       <TableRoot minW="1150px" tableLayout="auto">
         <TableHeaderComponent top={ stickyHeader ? top : undefined }>
           <TableRow>
-            <TableColumnHeader>
+            <TableColumnHeader minW="180px">
               Message
               <TimeFormatToggle/>
             </TableColumnHeader>

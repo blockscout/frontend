@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Heading } from 'toolkit/chakra/heading';
@@ -12,6 +13,7 @@ import LatestTxsCrossChain from './LatestTxsCrossChain';
 import LatestTxsLocal from './LatestTxsLocal';
 
 const LatestTxs = () => {
+  const isMobile = useIsMobile();
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
   const chainSelect = useRoutedChainSelect();
@@ -29,7 +31,7 @@ const LatestTxs = () => {
     },
   ];
 
-  const leftSlot = <Heading level="3">Latest transactions</Heading>;
+  const heading = <Heading level="3" mb={{ base: 3, lg: 0 }}>Latest transactions</Heading>;
 
   const rightSlot = tab === 'txs_local' ? (
     <ChainSelect
@@ -41,11 +43,13 @@ const LatestTxs = () => {
 
   return (
     <Box as="section" my={ 8 }>
+      { isMobile && heading }
       <RoutedTabs
         tabs={ tabs }
-        leftSlot={ leftSlot }
+        leftSlot={ !isMobile ? heading : null }
         leftSlotProps={{ mr: 6 }}
         rightSlot={ rightSlot }
+        rightSlotProps={{ ml: { base: 'auto', lg: 6 } }}
       />
     </Box>
   );

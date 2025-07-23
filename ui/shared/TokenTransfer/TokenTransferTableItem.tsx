@@ -52,7 +52,7 @@ const TokenTransferTableItem = ({
     <TableRow alignItems="top">
       { showTxInfo && txHash && (
         <TableCell>
-          <Box my="3px">
+          <Box my="3px" textAlign="center">
             <TxAdditionalInfo hash={ txHash } isLoading={ isLoading }/>
           </Box>
         </TableCell>

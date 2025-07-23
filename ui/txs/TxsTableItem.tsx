@@ -36,7 +36,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
 
   return (
     <TableRow key={ tx.hash } animation={ animation }>
-      <TableCell pl={ 4 }>
+      <TableCell textAlign="center">
         <TxAdditionalInfo tx={ tx } isLoading={ isLoading }/>
       </TableCell>
       { chainData && (

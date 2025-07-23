@@ -41,8 +41,8 @@ const TokenTransferTable = ({
       <TableRoot minW="950px">
         <TableHeaderSticky top={ top }>
           <TableRow>
-            { showTxInfo && <TableColumnHeader width="44px"></TableColumnHeader> }
-            { chainData && <TableColumnHeader width="38px"/> }
+            { showTxInfo && <TableColumnHeader width="48px"></TableColumnHeader> }
+            { chainData && <TableColumnHeader width={ showTxInfo ? '32px' : '38px' }/> }
             <TableColumnHeader width="230px">Token</TableColumnHeader>
             <TableColumnHeader width="160px">Token ID</TableColumnHeader>
             { showTxInfo && (

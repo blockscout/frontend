@@ -1,4 +1,3 @@
-import { noop } from 'es-toolkit';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
@@ -49,7 +48,6 @@ const LatestTxsLocal = ({ chainSlug }: Props) => {
           isPlaceholderData={ query.isPlaceholderData }
           isError={ query.isError }
           pagination={ PAGINATION_PARAMS }
-          setSorting={ noop }
           sort="default"
           socketType="txs_home"
           stickyHeader={ false }

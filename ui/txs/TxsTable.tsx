@@ -19,7 +19,7 @@ import TxsTableItem from './TxsTableItem';
 type Props = {
   txs: Array<Transaction>;
   sort: TransactionsSortingValue;
-  onSortToggle: (field: TransactionsSortingField) => void;
+  onSortToggle?: (field: TransactionsSortingField) => void;
   top: number;
   showBlockInfo: boolean;
   socketType?: TxsSocketType;
@@ -61,8 +61,8 @@ const TxsTable = ({
       <TableRoot minWidth="1000px">
         <TableHeaderComponent top={ stickyHeader ? top : undefined }>
           <TableRow>
-            <TableColumnHeader width="54px"></TableColumnHeader>
-            { chainData && <TableColumnHeader width="38px"></TableColumnHeader> }
+            <TableColumnHeader width="48px"></TableColumnHeader>
+            { chainData && <TableColumnHeader width="32px"></TableColumnHeader> }
             <TableColumnHeader width="180px">
               Txn hash
               <TimeFormatToggle/>
@@ -70,38 +70,50 @@ const TxsTable = ({
             <TableColumnHeader width="160px">Type</TableColumnHeader>
             <TableColumnHeader width="20%">Method</TableColumnHeader>
             { showBlockInfo && (
-              <TableColumnHeaderSortable
-                width="18%"
-                sortField="block_number"
-                sortValue={ sort }
-                onSortToggle={ onSortToggle }
-              >
-                Block
-              </TableColumnHeaderSortable>
+              onSortToggle ? (
+                <TableColumnHeaderSortable
+                  width="18%"
+                  sortField="block_number"
+                  sortValue={ sort }
+                  onSortToggle={ onSortToggle }
+                >
+                  Block
+                </TableColumnHeaderSortable>
+              ) : (
+                <TableColumnHeader width="18%">Block</TableColumnHeader>
+              )
             ) }
             <TableColumnHeader width="224px">From/To</TableColumnHeader>
             { !config.UI.views.tx.hiddenFields?.value && (
-              <TableColumnHeaderSortable
-                width="20%"
-                isNumeric
-                sortField="value"
-                sortValue={ sort }
-                onSortToggle={ onSortToggle }
-              >
-                { `Value ${ currencyUnits.ether }` }
-              </TableColumnHeaderSortable>
+              onSortToggle ? (
+                <TableColumnHeaderSortable
+                  width="20%"
+                  isNumeric
+                  sortField="value"
+                  sortValue={ sort }
+                  onSortToggle={ onSortToggle }
+                >
+                  { `Value ${ currencyUnits.ether }` }
+                </TableColumnHeaderSortable>
+              ) : (
+                <TableColumnHeader width="20%" isNumeric>Value</TableColumnHeader>
+              )
             ) }
             { !config.UI.views.tx.hiddenFields?.tx_fee && (
-              <TableColumnHeaderSortable
-                width="20%"
-                isNumeric
-                pr={ 5 }
-                sortField="fee"
-                sortValue={ sort }
-                onSortToggle={ onSortToggle }
-              >
-                { `Fee${ feeCurrency }` }
-              </TableColumnHeaderSortable>
+              onSortToggle ? (
+                <TableColumnHeaderSortable
+                  width="20%"
+                  isNumeric
+                  pr={ 5 }
+                  sortField="fee"
+                  sortValue={ sort }
+                  onSortToggle={ onSortToggle }
+                >
+                  { `Fee${ feeCurrency }` }
+                </TableColumnHeaderSortable>
+              ) : (
+                <TableColumnHeader width="20%" isNumeric pr={ 5 }>Fee</TableColumnHeader>
+              )
             ) }
           </TableRow>
         </TableHeaderComponent>
