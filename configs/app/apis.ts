@@ -167,6 +167,17 @@ const visualizeApi = (() => {
   });
 })();
 
+const zetachainApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  return Object.freeze({
+    endpoint: apiHost,
+  });
+})();
+
 export type Apis = {
   general: ApiPropsFull;
 } & Partial<Record<Exclude<ApiName, 'general'>, ApiPropsBase>>;
@@ -183,6 +194,7 @@ const apis: Apis = Object.freeze({
   tac: tacApi,
   userOps: userOpsApi,
   visualize: visualizeApi,
+  zetachain: zetachainApi,
 });
 
 export default apis;

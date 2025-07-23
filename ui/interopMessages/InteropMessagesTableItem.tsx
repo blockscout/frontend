@@ -6,7 +6,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
+import AddressEntityWithExternalChain from 'ui/shared/entities/address/AddressEntityWithExternalChain';
 import InteropMessageStatus from 'ui/shared/statusTag/InteropMessageStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
@@ -44,10 +44,10 @@ const InteropMessagesTableItem = ({ item, isLoading }: Props) => {
       </TableCell>
       <TableCell>
         { item.init_chain !== undefined ? (
-          <AddressEntityInterop
+          <AddressEntityWithExternalChain
             address={{ hash: item.target_address_hash }}
             isLoading={ isLoading } truncation="constant"
-            chain={ item.init_chain }
+            externalChain={ item.init_chain }
             w="min-content"
           />
         ) :
@@ -62,11 +62,11 @@ const InteropMessagesTableItem = ({ item, isLoading }: Props) => {
       </TableCell>
       <TableCell>
         { item.relay_chain !== undefined ? (
-          <AddressEntityInterop
+          <AddressEntityWithExternalChain
             address={{ hash: item.target_address_hash }}
             isLoading={ isLoading }
             truncation="constant"
-            chain={ item.relay_chain }
+            externalChain={ item.relay_chain }
             w="min-content"
           />
         ) :

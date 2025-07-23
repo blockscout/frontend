@@ -1,7 +1,7 @@
 import { Box, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainInfo } from 'types/api/interop';
+import type { ChainInfo } from 'types/client/chainInfo';
 
 import { route } from 'nextjs-routes';
 
@@ -11,8 +11,9 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import { distributeEntityProps } from '../base/utils';
 import * as AddressEntity from './AddressEntity';
-interface Props extends Omit<AddressEntity.EntityProps, 'chain'> {
-  chain: ChainInfo | null;
+
+interface Props extends AddressEntity.EntityProps {
+  externalChain?: ChainInfo | null;
 }
 
 const IconStub = () => {
@@ -40,10 +41,10 @@ const IconStub = () => {
   );
 };
 
-const AddressEntryInterop = ({ chain, ...props }: Props) => {
+const AddressEntityWithExternalChain = ({ externalChain, ...props }: Props) => {
   const partsProps = distributeEntityProps(props);
 
-  const href = chain?.instance_url ? chain.instance_url.replace(/\/$/, '') + route({
+  const href = externalChain?.instance_url ? externalChain.instance_url.replace(/\/$/, '') + route({
     pathname: '/address/[hash]',
     query: {
       ...props.query,
@@ -55,13 +56,13 @@ const AddressEntryInterop = ({ chain, ...props }: Props) => {
     <Box position="relative">
       <AddressEntity.Icon { ...partsProps.icon }/>
       { !props.isLoading && (
-        chain?.chain_logo ? (
+        externalChain?.chain_logo ? (
           <Image
             position="absolute"
             bottom="-3px"
             right="4px"
-            src={ chain.chain_logo }
-            alt={ chain.chain_name || 'external chain logo' }
+            src={ externalChain.chain_logo }
+            alt={ externalChain.chain_name || 'external chain logo' }
             width="14px"
             height="14px"
             borderRadius="base"
@@ -75,12 +76,12 @@ const AddressEntryInterop = ({ chain, ...props }: Props) => {
 
   return (
     <AddressEntity.Container className={ props.className }>
-      { chain && (
-        <Tooltip content={ `Address on ${ chain.chain_name ? chain.chain_name : 'external chain' } (chain id ${ chain.chain_id })` }>
+      { externalChain && (
+        <Tooltip content={ `Address on ${ externalChain.chain_name ? externalChain.chain_name : 'external chain' } (chain id ${ externalChain.chain_id })` }>
           { addressIcon }
         </Tooltip>
       ) }
-      { !chain && addressIcon }
+      { !externalChain && addressIcon }
       { href ? (
         <AddressEntity.Link { ...partsProps.link } href={ href } isExternal>
           <AddressEntity.Content { ...partsProps.content }/>
@@ -93,4 +94,4 @@ const AddressEntryInterop = ({ chain, ...props }: Props) => {
   );
 };
 
-export default chakra(AddressEntryInterop);
+export default chakra(AddressEntityWithExternalChain);
