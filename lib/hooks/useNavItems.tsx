@@ -118,6 +118,12 @@ export default function useNavItems(): ReturnType {
       icon: 'MUD_menu',
       isActive: pathname === '/mud-worlds',
     } : null;
+    const clustersLookup: NavItem | null = config.features.clusters.isEnabled ? {
+      text: 'Clusters lookup',
+      nextRoute: { pathname: '/clusters' as const },
+      icon: 'clusters',
+      isActive: pathname === '/clusters' || pathname === '/clusters/[name]',
+    } : null;
     const epochs = config.features.celo.isEnabled ? {
       text: 'Epochs',
       nextRoute: { pathname: '/epochs' as const },
@@ -161,6 +167,7 @@ export default function useNavItems(): ReturnType {
           validators,
           verifiedContracts,
           ensLookup,
+          clustersLookup,
         ].filter(Boolean),
       ];
     } else if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
@@ -177,6 +184,7 @@ export default function useNavItems(): ReturnType {
           topAccounts,
           verifiedContracts,
           ensLookup,
+          clustersLookup,
         ].filter(Boolean),
       ];
     } else if (rollupFeature.isEnabled && rollupFeature.type === 'zkSync') {
@@ -193,6 +201,7 @@ export default function useNavItems(): ReturnType {
           validators,
           verifiedContracts,
           ensLookup,
+          clustersLookup,
         ].filter(Boolean),
       ];
     } else {
@@ -207,6 +216,7 @@ export default function useNavItems(): ReturnType {
         validators,
         verifiedContracts,
         ensLookup,
+        clustersLookup,
         config.features.beaconChain.isEnabled && {
           text: 'Withdrawals',
           nextRoute: { pathname: '/withdrawals' as const },
