@@ -388,6 +388,8 @@
               "stability_testnet",
               "tac",
               "tac_turin",
+              "zetachain",
+              "zetachain_testnet",
               "zkevm",
               "zilliqa",
               "zksync",
