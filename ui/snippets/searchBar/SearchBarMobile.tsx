@@ -18,6 +18,7 @@ import {
   DrawerFooter,
 } from 'toolkit/chakra/drawer';
 import { Link } from 'toolkit/chakra/link';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 import SearchBarInput from 'ui/snippets/searchBar/SearchBarInput';
 
@@ -36,22 +37,25 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
   const voidFn = React.useCallback(() => {}, []);
   const router = useRouter();
 
+  const { open, onOpen, onClose, onOpenChange } = useDisclosure();
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query } = useQuickSearchQuery();
   const recentSearchKeywords = getRecentSearchKeywords();
 
   const onTriggerClick = React.useCallback((event: React.MouseEvent) => {
+    onOpen();
     event.preventDefault();
     event.stopPropagation();
-  }, []);
+  }, [ onOpen ]);
 
   const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    onClose();
     mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
       'Search query': searchTerm,
       'Source page type': mixpanel.getPageType(router.pathname),
       'Result URL': event.currentTarget.href,
     });
     saveToRecentKeywords(searchTerm);
-  }, [ router.pathname, searchTerm ]);
+  }, [ router.pathname, searchTerm, onClose ]);
 
   const handleClear = React.useCallback(() => {
     handleSearchTermChange('');
@@ -90,11 +94,11 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
   }
 
   return (
-    <DrawerRoot placement="bottom">
+    <DrawerRoot placement="bottom" open={ open } onOpenChange={ onOpenChange } unmountOnExit={ false }>
       <DrawerTrigger asChild>
         { trigger }
       </DrawerTrigger>
-      <DrawerContent h="95vh" overflowY="hidden">
+      <DrawerContent h="75vh" overflowY="hidden">
         <DrawerHeader>
           <DrawerTitle>Search</DrawerTitle>
           <DrawerCloseTrigger/>
@@ -130,22 +134,24 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
             ) }
           </Box>
         </DrawerBody>
-        <DrawerFooter
-          borderTop="1px solid"
-          borderColor="border.divider"
-          bg="background.primary"
-          pt={ 3 }
-          px={ 5 }
-          pb={ 5 }
-          justifyContent="center"
-        >
-          <Link
-            href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }
-            textStyle="sm"
+        { (query.data && query.data?.length > 0) && (
+          <DrawerFooter
+            borderTop="1px solid"
+            borderColor="border.divider"
+            bg="background.primary"
+            pt={ 3 }
+            px={ 5 }
+            pb={ 5 }
+            justifyContent="center"
           >
-            View all results
-          </Link>
-        </DrawerFooter>
+            <Link
+              href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }
+              textStyle="sm"
+            >
+              View all results
+            </Link>
+          </DrawerFooter>
+        ) }
       </DrawerContent>
     </DrawerRoot>
   );
