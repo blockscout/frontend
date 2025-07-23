@@ -43,7 +43,7 @@ const NavigationDesktop = () => {
           </Flex>
         </chakra.nav>
         <Flex gap={ 2 }>
-          <NavigationPromoBanner isHorizontalNavigation/>
+          <NavigationPromoBanner/>
           { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
           {
             (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||

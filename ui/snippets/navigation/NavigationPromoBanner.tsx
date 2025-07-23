@@ -1,12 +1,10 @@
-import { HStack, Text, Flex, Box, useBreakpointValue } from '@chakra-ui/react';
-import React, { useCallback, useMemo, useState } from 'react';
+import { HStack, Text, Flex, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { keccak256, stringToBytes } from 'viem';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
-import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -14,26 +12,33 @@ import useNavLinkStyleProps from './useNavLinkStyleProps';
 
 const PROMO_BANNER_CLOSED_HASH_KEY = 'nav-promo-banner-closed-hash';
 const promoBanner = config.UI.navigation.promoBanner;
+const isHorizontalNavigation = config.UI.navigation.layout === 'horizontal';
 
 type Props = {
   isCollapsed?: boolean;
-  isHorizontalNavigation?: boolean;
 };
 
-const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) => {
+const NavigationPromoBanner = ({ isCollapsed }: Props) => {
   const navLinkStyleProps = useNavLinkStyleProps({ isCollapsed, isExpanded: isCollapsed === false });
   const isMobile = useIsMobile();
   const isXLScreen = useBreakpointValue({ base: false, xl: true });
-  const themeBgColor = useColorModeValue('white', 'black');
 
-  const [ promoBannerClosedHash, setPromoBannerClosedHash ] = useState(window.localStorage.getItem(PROMO_BANNER_CLOSED_HASH_KEY) || '');
-  const promoBannerHash = keccak256(stringToBytes(JSON.stringify(promoBanner)));
-  const isShown = promoBannerHash !== promoBannerClosedHash;
+  const [ isShown, setIsShown ] = useState(false);
+  const [ promoBannerHash, setPromoBannerHash ] = useState('');
+
+  useEffect(() => {
+    try {
+      const promoBannerClosedHash = window.localStorage.getItem(PROMO_BANNER_CLOSED_HASH_KEY);
+      const promoBannerHash = keccak256(stringToBytes(JSON.stringify(promoBanner)));
+      setIsShown(promoBannerHash !== promoBannerClosedHash);
+      setPromoBannerHash(promoBannerHash);
+    } catch {}
+  }, []);
 
   const handleClose = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     localStorage.setItem(PROMO_BANNER_CLOSED_HASH_KEY, promoBannerHash);
-    setPromoBannerClosedHash(promoBannerHash);
+    setIsShown(false);
   }, [ promoBannerHash ]);
 
   const getContent = useCallback((isHorizontalNavigation?: boolean, isCollapsed?: boolean) => {
@@ -49,13 +54,12 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
         minW={ isHorizontalNavigation ? 'auto' : 'full' }
         maxW={ isHorizontalNavigation ? 'auto' : 'full' }
         w={ isHorizontalNavigation ? 'auto' : '180px' }
-        gap={ 0 }
+        gap={ 2 }
         overflow="hidden"
         whiteSpace="nowrap"
         py={ isHorizontalNavigation ? 1.5 : '9px' }
         px={ isHorizontalNavigation ? 1.5 : { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
         bgColor={{ _light: promoBanner.bg_color.light, _dark: promoBanner.bg_color.dark }}
-        borderRadius="base"
       >
         <Image
           src={ promoBanner.img_url }
@@ -66,7 +70,6 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
           <Text
             { ...navLinkStyleProps.textProps }
             fontWeight="medium"
-            ml={ 2 }
             color={{ _light: promoBanner.text_color.light, _dark: promoBanner.text_color.dark }}
             opacity={{ base: '1', lg: isExpanded ? '1' : '0', xl: isCollapsed ? '0' : '1' }}
             overflow="hidden"
@@ -86,8 +89,8 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
           boxSize={ isHorizontalNavigation ? '32px' : '60px' }
           borderRadius={ isHorizontalNavigation ? 'sm' : 'base' }
           position={ isHorizontalNavigation ? undefined : 'absolute' }
-          top="calc(50% - 30px)"
-          left="calc(50% - 30px)"
+          top={ isHorizontalNavigation ? undefined : 'calc(50% - 30px)' }
+          left={ isHorizontalNavigation ? undefined : 'calc(50% - 30px)' }
           opacity={ isHorizontalNavigation ? 1 : { base: 0, lg: isExpanded ? 0 : 1, xl: isCollapsed ? 1 : 0 } }
           transitionProperty="opacity"
           transitionDuration="normal"
@@ -110,14 +113,14 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
     );
   }, [ navLinkStyleProps ]);
 
-  const content = useMemo(() => getContent(isHorizontalNavigation, isCollapsed), [ isHorizontalNavigation, getContent, isCollapsed ]);
+  const content = useMemo(() => getContent(isHorizontalNavigation, isCollapsed), [ getContent, isCollapsed ]);
 
   const tooltipContent = useMemo(() => {
     if (isMobile || (!isHorizontalNavigation && (isCollapsed === false || (isCollapsed === undefined && isXLScreen)))) {
       return undefined;
     }
     return getContent(false, false);
-  }, [ getContent, isMobile, isHorizontalNavigation, isCollapsed, isXLScreen ]);
+  }, [ getContent, isMobile, isCollapsed, isXLScreen ]);
 
   if (!promoBanner || !isShown) {
     return null;
@@ -125,20 +128,19 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
 
   return (
     <Flex flex={ 1 } mt={ isHorizontalNavigation ? 0 : 3 } pointerEvents="none">
-      <Link
-        href={ promoBanner.link_url }
-        external
-        noIcon
-        _hover={{ opacity: 0.8 }}
-        mt="auto"
-        minW={ isHorizontalNavigation ? 'auto' : '60px' }
-        position={ isHorizontalNavigation ? undefined : 'sticky' }
-        bottom={{ base: 0, lg: 6 }}
-        pointerEvents="auto"
-        py={ 0 }
-        w="full"
-        overflow="hidden"
+      <chakra.a
         className="navigation-promo-banner"
+        href={ promoBanner.link_url }
+        target="_blank"
+        rel="noopener noreferrer"
+        pointerEvents="auto"
+        w="full"
+        minW={ isHorizontalNavigation ? 'auto' : '60px' }
+        mt="auto"
+        position={ isHorizontalNavigation ? undefined : 'sticky' }
+        bottom={ isHorizontalNavigation ? undefined : { base: 0, lg: 6 } }
+        overflow="hidden"
+        _hover={{ opacity: 0.8 }}
       >
         <Tooltip
           content={ tooltipContent }
@@ -151,11 +153,10 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
             p: 0,
             borderRadius: 'base',
             bgColor: 'transparent',
-            boxShadow: isHorizontalNavigation ? `0px 15px 50px ${ 'text' in promoBanner ? '-12px' : '0px' } rgba(0, 0, 0, 0.25)` : undefined,
+            boxShadow: isHorizontalNavigation ? '2xl' : 'none',
             cursor: 'default',
           }}
           interactive
-          variant="navigation"
         >
           <Box w="full" position="relative">
             { content }
@@ -164,7 +165,7 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
               name="close"
               boxSize={ 3 }
               color={{ _light: 'gray.300', _dark: 'gray.600' }}
-              bgColor={ themeBgColor }
+              bgColor="global.body.bg"
               borderBottomLeftRadius="sm"
               position="absolute"
               top="0"
@@ -178,7 +179,7 @@ const NavigationPromoBanner = ({ isCollapsed, isHorizontalNavigation }: Props) =
             />
           </Box>
         </Tooltip>
-      </Link>
+      </chakra.a>
     </Flex>
   );
 };
