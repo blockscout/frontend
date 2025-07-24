@@ -3,8 +3,9 @@ import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import NftMedia from 'ui/shared/nft/NftMedia';
 
@@ -24,12 +25,12 @@ const Icon = (props: IconProps) => {
   }
 
   if (props.instance) {
-    const styles = getIconProps(props.variant ?? 'heading');
+    const styles = getIconProps({ ...props, variant: props.variant ?? 'heading' });
     const fallback = (
       <EntityBase.Icon
         { ...props }
         variant={ props.variant ?? 'heading' }
-        name={ props.name ?? 'nft_shield' }
+        name={ 'name' in props ? props.name : 'nft_shield' }
         marginRight={ 0 }
       />
     );
@@ -43,7 +44,7 @@ const Icon = (props: IconProps) => {
         allowedTypes={ ICON_MEDIA_TYPES }
         borderRadius="sm"
         flexShrink={ 0 }
-        mr={ 2 }
+        marginRight={ 2 }
         fallback={ fallback }
       />
     );
@@ -53,7 +54,7 @@ const Icon = (props: IconProps) => {
     <EntityBase.Icon
       { ...props }
       variant="heading"
-      name={ props.name ?? 'nft_shield' }
+      name={ 'name' in props ? props.name : 'nft_shield' }
     />
   );
 };
@@ -61,7 +62,10 @@ const Icon = (props: IconProps) => {
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash' | 'id'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: props.hash, id: props.id } });
+  const defaultHref = route(
+    { pathname: '/token/[hash]/instance/[id]', query: { hash: props.hash, id: props.id } },
+    props.chain ? { chain: props.chain } : undefined,
+  );
 
   return (
     <EntityBase.Link
@@ -92,7 +96,8 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 }
 
 const NftEntity = (props: EntityProps) => {
-  const partsProps = distributeEntityProps(props);
+  const multichainContext = useMultichainContext();
+  const partsProps = distributeEntityProps(props, multichainContext);
 
   const content = <Content { ...partsProps.content }/>;
 

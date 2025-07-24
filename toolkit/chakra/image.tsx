@@ -27,10 +27,16 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(
     }, [ onLoad ]);
 
     if (!src && fallback) {
+      if (React.isValidElement(fallback)) {
+        return React.cloneElement(fallback, rest);
+      }
       return fallback;
     }
 
     if (error) {
+      if (React.isValidElement(fallback)) {
+        return React.cloneElement(fallback, rest);
+      }
       return fallback;
     }
 

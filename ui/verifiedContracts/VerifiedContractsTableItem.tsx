@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
+import type { ChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import formatLanguageName from 'lib/contracts/formatLanguageName';
@@ -10,6 +11,7 @@ import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -19,9 +21,10 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 interface Props {
   data: VerifiedContract;
   isLoading?: boolean;
+  chainData?: ChainConfig;
 }
 
-const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
+const VerifiedContractsTableItem = ({ data, isLoading, chainData }: Props) => {
   const balance = data.coin_balance && data.coin_balance !== '0' ?
     BigNumber(data.coin_balance).div(10 ** config.chain.currency.decimals).dp(6).toFormat() :
     '0';
@@ -37,6 +40,11 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
 
   return (
     <TableRow>
+      { chainData && (
+        <TableCell>
+          <ChainIcon data={ chainData } isLoading={ isLoading } mt={ 1 }/>
+        </TableCell>
+      ) }
       <TableCell>
         <Flex alignItems="center" mt={ 1 }>
           <AddressEntity

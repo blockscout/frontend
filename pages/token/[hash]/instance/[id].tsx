@@ -2,8 +2,8 @@ import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
-import type { Props } from 'nextjs/getServerSideProps';
-import * as gSSP from 'nextjs/getServerSideProps';
+import type { Props } from 'nextjs/getServerSideProps/handlers';
+import * as gSSP from 'nextjs/getServerSideProps/main';
 import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';

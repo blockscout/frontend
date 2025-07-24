@@ -37,7 +37,7 @@ const RewardsDashboardInfoCard = ({ title, description, imageSrc, imageWidth, im
         alt={ title }
         w={ imageWidth }
         h={ imageHeight }
-        fallback={ <Skeleton loading w={ imageWidth } h={ imageHeight }/> }
+        fallback={ <Skeleton loading/> }
       />
       <Link
         external

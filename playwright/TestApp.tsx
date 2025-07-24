@@ -3,9 +3,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { http } from 'viem';
 import { WagmiProvider, createConfig } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
 
-import type { Props as PageProps } from 'nextjs/getServerSideProps';
+import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
@@ -47,8 +48,8 @@ const defaultMarketplaceContext = {
   setIsAutoConnectDisabled: () => {},
 };
 
-const wagmiConfig = currentChain ? createConfig({
-  chains: [ currentChain ],
+const wagmiConfig = createConfig({
+  chains: [ currentChain ?? mainnet ],
   connectors: [
     mock({
       accounts: [
@@ -57,9 +58,9 @@ const wagmiConfig = currentChain ? createConfig({
     }),
   ],
   transports: {
-    [currentChain.id]: http(),
+    [currentChain?.id ?? mainnet.id]: http(),
   },
-}) : undefined;
+});
 
 const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketplaceContext = defaultMarketplaceContext }: Props) => {
   const [ queryClient ] = React.useState(() => new QueryClient({

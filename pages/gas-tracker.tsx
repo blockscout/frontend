@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { gasTracker as getServerSideProps } from 'nextjs/getServerSideProps';
+export { gasTracker as getServerSideProps } from 'nextjs/getServerSideProps/main';

@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { ChainConfig } from 'types/multichain';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
@@ -21,6 +22,7 @@ type Props = TokenTransfer & {
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
+  chainData?: ChainConfig;
 };
 
 const TokenTransferListItem = ({
@@ -35,6 +37,7 @@ const TokenTransferListItem = ({
   timestamp,
   enableTimeIncrement,
   isLoading,
+  chainData,
 }: Props) => {
   const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
@@ -76,6 +79,7 @@ const TokenTransferListItem = ({
             hash={ txHash }
             truncation="constant_long"
             fontWeight="700"
+            chain={ chainData }
           />
           <TimeWithTooltip
             timestamp={ timestamp }

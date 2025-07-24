@@ -4,7 +4,8 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TxsSocketType } from 'ui/txs/socket/types';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import getCurrencySymbol from 'lib/multichain/getCurrencySymbol';
+import { TableBody, TableColumnHeader, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import TxsSocketNotice from 'ui/txs/socket/TxsSocketNotice';
 
@@ -14,30 +15,33 @@ interface Props {
   items: Array<multichain.InteropMessage>;
   isLoading: boolean;
   socketType?: TxsSocketType;
+  stickyHeader?: boolean;
+  top?: number;
+  currentAddress?: string;
 }
 
-const CrossChainTxsTable = ({ items, isLoading, socketType }: Props) => {
+const CrossChainTxsTable = ({ items, isLoading, socketType, stickyHeader = true, top, currentAddress }: Props) => {
+  const TableHeaderComponent = stickyHeader ? TableHeaderSticky : TableHeader;
+
+  const currencySymbol = getCurrencySymbol();
 
   return (
     <AddressHighlightProvider>
-      <TableRoot minW="1150px">
-        <TableHeaderSticky top={ 68 }>
+      <TableRoot minW="1150px" tableLayout="auto">
+        <TableHeaderComponent top={ stickyHeader ? top : undefined }>
           <TableRow>
-            <TableColumnHeader width="52px"/>
-            <TableColumnHeader w="180px">
+            <TableColumnHeader minW="180px">
               Message
               <TimeFormatToggle/>
             </TableColumnHeader>
-            <TableColumnHeader w="130px">Type</TableColumnHeader>
-            <TableColumnHeader w="130px">Method</TableColumnHeader>
-            <TableColumnHeader w="25%">Source tx</TableColumnHeader>
-            <TableColumnHeader w="25%">Destination tx</TableColumnHeader>
-            <TableColumnHeader w="25%">Sender</TableColumnHeader>
-            <TableColumnHeader w="32px"/>
-            <TableColumnHeader w="25%">Target</TableColumnHeader>
-            <TableColumnHeader w="130px">Value</TableColumnHeader>
+            <TableColumnHeader>Type</TableColumnHeader>
+            <TableColumnHeader>Method</TableColumnHeader>
+            <TableColumnHeader>Source tx</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap">Destination tx</TableColumnHeader>
+            <TableColumnHeader>Sender / Target</TableColumnHeader>
+            <TableColumnHeader isNumeric>Value</TableColumnHeader>
           </TableRow>
-        </TableHeaderSticky>
+        </TableHeaderComponent>
         <TableBody>
           { socketType && <TxsSocketNotice type={ socketType } place="table" isLoading={ isLoading }/> }
           { items.map((item, index) => (
@@ -45,6 +49,8 @@ const CrossChainTxsTable = ({ items, isLoading, socketType }: Props) => {
               key={ String(item.nonce) + (isLoading ? index : '') }
               item={ item }
               isLoading={ isLoading }
+              currencySymbol={ currencySymbol }
+              currentAddress={ currentAddress }
             />
           )) }
         </TableBody>

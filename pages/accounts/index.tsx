@@ -4,7 +4,15 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const Accounts = dynamic(() => import('ui/pages/Accounts'), { ssr: false });
+import config from 'configs/app';
+
+const Accounts = dynamic(() => {
+  if (config.features.opSuperchain.isEnabled) {
+    return import('ui/optimismSuperchain/accounts/OpSuperchainAccounts');
+  }
+
+  return import('ui/pages/Accounts');
+}, { ssr: false });
 
 const Page: NextPage = () => {
   return (
@@ -16,4 +24,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { accounts as getServerSideProps } from 'nextjs/getServerSideProps';
+export { accounts as getServerSideProps } from 'nextjs/getServerSideProps/main';

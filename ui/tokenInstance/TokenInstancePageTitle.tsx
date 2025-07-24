@@ -4,6 +4,7 @@ import React from 'react';
 import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import { useAppContext } from 'lib/contexts/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
@@ -23,6 +24,7 @@ interface Props {
 
 const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => {
   const appProps = useAppContext();
+  const multichainContext = useMultichainContext();
 
   const title = (() => {
     if (typeof instance?.metadata?.name === 'string') {
@@ -99,6 +101,7 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
           variant="subheading"
           w="auto"
           maxW="700px"
+          chain={ multichainContext?.chain }
         />
       ) }
       { !isLoading && token && <AddressAddToWallet token={ token } tokenId={ instance?.id } variant="button"/> }

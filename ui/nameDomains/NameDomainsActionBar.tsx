@@ -108,7 +108,7 @@ const NameDomainsActionBar = ({
                         borderRadius="sm"
                         mr={ 2 }
                         alt={ `${ protocol.title } protocol icon` }
-                        fallback={ <IconSvg name="ENS_slim" boxSize={ 5 } mr={ 2 }/> }
+                        fallback={ <IconSvg name="ENS_slim"/> }
                       />
                       <span>{ protocol.short_name }</span>
                       <chakra.span color="text.secondary" whiteSpace="pre"> { topLevelDomains }</chakra.span>
