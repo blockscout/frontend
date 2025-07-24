@@ -113,7 +113,7 @@ const SearchBarInput = (
       onBlur={ onBlur }
       onClick={ onFormClick }
       w="100%"
-      backgroundColor={{ _light: 'white', _dark: 'black' }}
+      backgroundColor={ isHeroBanner ? { _light: 'white', _dark: 'black' } : 'transparent' }
       borderRadius="base"
       position="relative"
       zIndex={ isSuggestOpen ? 'modal' : 'auto' }
@@ -124,7 +124,7 @@ const SearchBarInput = (
         endElement={ endElement }
       >
         <Input
-          size="md"
+          size={{ base: isHeroBanner ? 'md' : 'sm', lg: 'md' }}
           placeholder="Search by address / txn hash / block / token..."
           value={ value }
           onChange={ handleChange }
@@ -132,6 +132,7 @@ const SearchBarInput = (
           border={ isHeroBanner ? 'none' : '2px solid' }
           borderColor="input.border"
           color={{ _light: 'black', _dark: 'white' }}
+          backgroundColor="input.bg"
           _placeholder={{
             textOverflow: 'ellipsis',
             overflow: 'hidden',
