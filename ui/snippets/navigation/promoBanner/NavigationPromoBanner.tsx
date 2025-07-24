@@ -48,7 +48,6 @@ const NavigationPromoBanner = ({ isCollapsed }: Props) => {
   return (
     <Flex flex={ 1 } mt={ isHorizontalNavigation ? 0 : 3 } pointerEvents="none">
       <chakra.a
-        className="navigation-promo-banner"
         href={ promoBanner.link_url }
         target="_blank"
         rel="noopener noreferrer"
@@ -59,7 +58,12 @@ const NavigationPromoBanner = ({ isCollapsed }: Props) => {
         position={ isHorizontalNavigation ? undefined : 'sticky' }
         bottom={ isHorizontalNavigation ? undefined : { base: 0, lg: 6 } }
         overflow="hidden"
-        _hover={{ opacity: 0.8 }}
+        _hover={{
+          opacity: 0.8,
+          _icon: {
+            display: 'block',
+          },
+        }}
       >
         <Tooltip
           content={ !isTooltipDisabled && (
@@ -98,11 +102,6 @@ const NavigationPromoBanner = ({ isCollapsed }: Props) => {
               top="0"
               right="0"
               display="none"
-              css={{
-                '.navigation-promo-banner:hover &': {
-                  display: 'block',
-                },
-              }}
             />
           </Box>
         </Tooltip>
