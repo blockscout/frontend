@@ -42,10 +42,11 @@ const OpSuperchainAddressTokenTransfers = () => {
 
   const hash = getQueryParamString(router.query.hash);
   const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS[number] | undefined;
+  const isLocalTab = tab === 'token_transfers_local';
 
   const transfersQueryLocal = useAddressTokenTransfersQuery({
     currentAddress: hash,
-    enabled: tab === 'token_transfers_local',
+    enabled: isLocalTab,
     isMultichain: true,
   });
 
@@ -55,12 +56,12 @@ const OpSuperchainAddressTokenTransfers = () => {
   const countersQueryLocal = useAddressCountersQuery({
     hash,
     isLoading: transfersQueryLocal.query.isPlaceholderData,
-    isEnabled: tab === 'token_transfers_local',
+    isEnabled: isLocalTab,
     chainSlug,
   });
 
   const countersText = (() => {
-    if (tab === 'token_transfers_local') {
+    if (isLocalTab) {
       return (
         <ListCounterText
           key={ chainSlug }
@@ -75,7 +76,7 @@ const OpSuperchainAddressTokenTransfers = () => {
   })();
 
   const rightSlot = (() => {
-    if (tab === 'token_transfers_local') {
+    if (isLocalTab) {
       const chainSelect = (
         <ChainSelect
           loading={ transfersQueryLocal.query.pagination.isLoading }
