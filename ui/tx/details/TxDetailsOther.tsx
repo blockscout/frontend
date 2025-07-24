@@ -16,33 +16,33 @@ const TxDetailsOther = ({ nonce, type, position, queueIndex }: Props) => {
       >
         Other
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
+      <DetailedInfo.ItemValue multiRow>
         {
           [
             typeof type === 'number' && (
               <Box key="type">
-                <Text as="span" fontWeight="500">Txn type: </Text>
-                <Text fontWeight="600" as="span">{ type }</Text>
-                { type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color="text.secondary">(EIP-1559)</Text> }
-                { type === 3 && <Text fontWeight="400" as="span" ml={ 1 } color="text.secondary">(EIP-4844)</Text> }
-                { type === 4 && <Text fontWeight="400" as="span" ml={ 1 } color="text.secondary">(EIP-7702)</Text> }
+                <span>Txn type: </span>
+                <span>{ type }</span>
+                { type === 2 && <Text as="span" ml={ 1 } color="text.secondary">(EIP-1559)</Text> }
+                { type === 3 && <Text as="span" ml={ 1 } color="text.secondary">(EIP-4844)</Text> }
+                { type === 4 && <Text as="span" ml={ 1 } color="text.secondary">(EIP-7702)</Text> }
               </Box>
             ),
             queueIndex !== undefined ? (
               <Box key="queueIndex">
-                <Text as="span" fontWeight="500">Queue index: </Text>
-                <Text fontWeight="600" as="span">{ queueIndex }</Text>
+                <span>Queue index: </span>
+                <span>{ queueIndex }</span>
               </Box>
             ) : (
               <Box key="nonce">
-                <Text as="span" fontWeight="500">Nonce: </Text>
-                <Text fontWeight="600" as="span">{ nonce }</Text>
+                <span>Nonce: </span>
+                <span>{ nonce }</span>
               </Box>
             ),
             position !== null && position !== undefined && (
               <Box key="position">
-                <Text as="span" fontWeight="500">Position: </Text>
-                <Text fontWeight="600" as="span">{ position }</Text>
+                <span>Position: </span>
+                <span>{ position }</span>
               </Box>
             ),
           ]

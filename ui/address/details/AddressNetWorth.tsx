@@ -49,8 +49,8 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
 
     multichainItems = (
       <>
-        <TextSeparator mx={ 0 } color="gray.500"/>
-        <Flex alignItems="center" gap={ 2 }>
+        <TextSeparator/>
+        <Flex alignItems="center" columnGap={ 2 }>
           <Text>Multichain</Text>
           { providers.map((item) => (
             <AddressMultichainButton
@@ -68,7 +68,7 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
   }
 
   return (
-    <Skeleton display="flex" alignItems="center" flexWrap="wrap" loading={ isLoading && !(addressData?.has_tokens && isPending) } gap={ 2 }>
+    <Skeleton display="flex" alignItems="center" flexWrap="wrap" loading={ isLoading && !(addressData?.has_tokens && isPending) }>
       <Text>
         { (isError || !addressData?.exchange_rate) ? 'N/A' : `${ prefix }$${ totalUsd.toFormat(2) }` }
       </Text>

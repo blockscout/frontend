@@ -73,8 +73,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
       >
         Balance
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue alignSelf="flex-start" flexWrap="nowrap">
-        <NativeTokenIcon boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
+      <DetailedInfo.ItemValue multiRow>
         <CurrencyValue
           value={ data.coin_balance || '0' }
           exchangeRate={ data.exchange_rate }
@@ -83,7 +82,10 @@ const AddressBalance = ({ data, isLoading }: Props) => {
           accuracyUsd={ 2 }
           accuracy={ 8 }
           flexWrap="wrap"
+          alignItems="center"
+          rowGap={ 0 }
           isLoading={ isLoading }
+          startElement={ <NativeTokenIcon boxSize={ 5 } isLoading={ isLoading }/> }
         />
       </DetailedInfo.ItemValue>
     </>

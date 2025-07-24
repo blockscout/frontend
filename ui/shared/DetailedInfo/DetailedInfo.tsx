@@ -6,12 +6,15 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
 import * as ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 
+export const ITEM_VALUE_LINE_HEIGHT = { base: '30px', lg: '32px' };
+
 export const Container = (props: GridProps) => {
   return (
     <Grid
       columnGap={ 8 }
-      rowGap={{ base: 1, lg: 3 }}
-      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}
+      rowGap={{ base: 0, lg: 3 }}
+      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}
+      textStyle={{ base: 'sm', lg: 'md' }}
       { ...props }
     />
   );
@@ -35,14 +38,13 @@ export const ItemLabel = ({ hint, children, isLoading, id, hasScroll, ...rest }:
   return (
     <GridItem
       id={ id }
-      py={ 1 }
-      textStyle="md"
+      minH={ ITEM_VALUE_LINE_HEIGHT }
       _notFirst={{ mt: { base: 3, lg: 0 } }}
       { ...rest }
     >
-      <Flex columnGap={ 2 } alignItems="flex-start">
-        { hint && <Hint label={ hint } isLoading={ isLoading } my="2px"/> }
-        <Skeleton loading={ isLoading } fontWeight={{ base: 700, lg: 500 }}>
+      <Flex columnGap={{ base: 1, lg: 2 }} alignItems="flex-start" w="100%">
+        { hint && <Hint label={ hint } isLoading={ isLoading } my={{ base: '5px', lg: '6px' }}/> }
+        <Skeleton loading={ isLoading } fontWeight={{ base: 700, lg: 500 }} py={{ base: '5px', lg: '4px' }} flexGrow={ 1 }>
           { children }
           { hasScroll && <ItemLabelScrollText/> }
         </Skeleton>
@@ -53,19 +55,21 @@ export const ItemLabel = ({ hint, children, isLoading, id, hasScroll, ...rest }:
 
 interface ItemValueProps extends GridItemProps {
   children: React.ReactNode;
+  multiRow?: boolean;
 }
 
-export const ItemValue = ({ children, ...rest }: ItemValueProps) => {
+export const ItemValue = ({ children, multiRow = false, ...rest }: ItemValueProps) => {
   return (
     <GridItem
       display="flex"
       alignItems="center"
-      flexWrap="wrap"
-      rowGap={ 3 }
-      pl={{ base: 7, lg: 0 }}
-      py={ 1 }
-      textStyle="md"
+      pl={{ base: 6, lg: 0 }}
+      minH={ ITEM_VALUE_LINE_HEIGHT }
       whiteSpace="nowrap"
+      { ...(multiRow ? {
+        flexWrap: 'wrap',
+        lineHeight: ITEM_VALUE_LINE_HEIGHT,
+      } : {}) }
       { ...rest }
     >
       { children }

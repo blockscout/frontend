@@ -1,4 +1,4 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Blob } from 'types/api/blobs';
@@ -19,9 +19,7 @@ interface Props {
 
 const BlobInfo = ({ data, isLoading }: Props) => {
   return (
-    <Grid
-      columnGap={ 8 }
-      rowGap={ 3 }
+    <DetailedInfo.Container
       templateColumns={{ base: 'minmax(0, 1fr)', lg: '216px minmax(728px, auto)' }}
     >
       { !data.blob_data && (
@@ -82,8 +80,6 @@ const BlobInfo = ({ data, isLoading }: Props) => {
         </>
       ) }
 
-      { data.blob_data && <DetailedInfo.ItemDivider/> }
-
       { data.transaction_hashes[0] && (
         <>
           <DetailedInfo.ItemLabel
@@ -101,12 +97,9 @@ const BlobInfo = ({ data, isLoading }: Props) => {
       <DetailedInfoSponsoredItem isLoading={ isLoading }/>
 
       { data.blob_data && (
-        <>
-          <DetailedInfo.ItemDivider/>
-          <BlobData data={ data.blob_data } hash={ data.hash } isLoading={ isLoading }/>
-        </>
+        <BlobData data={ data.blob_data } hash={ data.hash } isLoading={ isLoading }/>
       ) }
-    </Grid>
+    </DetailedInfo.Container>
   );
 };
 

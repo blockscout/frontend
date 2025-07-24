@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text } from '@chakra-ui/react';
+import { GridItem, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
@@ -61,11 +61,8 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
   const txNum = data.l2_transactions_count + data.l1_transactions_count;
 
   return (
-    <Grid
-      columnGap={ 8 }
-      rowGap={{ base: 3, lg: 3 }}
+    <DetailedInfo.Container
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
-      overflow="hidden"
     >
       <DetailedInfo.ItemLabel
         hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on Ethereum."
@@ -146,7 +143,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         >
           L1 gas price
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue>
+        <DetailedInfo.ItemValue multiRow>
           <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
           <Text color="text.secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
         </DetailedInfo.ItemValue>
@@ -156,12 +153,12 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         >
           L2 fair gas price
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue>
+        <DetailedInfo.ItemValue multiRow>
           <Text mr={ 1 }>{ BigNumber(data.l2_fair_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
           <Text color="text.secondary">({ BigNumber(data.l2_fair_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
         </DetailedInfo.ItemValue>
       </CollapsibleDetails>
-    </Grid>
+    </DetailedInfo.Container>
   );
 };
 
