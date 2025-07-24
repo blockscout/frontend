@@ -2,10 +2,9 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { generateListStub } from 'stubs/utils';
 import { VALIDATORS_ZILLIQA_ITEM } from 'stubs/validators';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -14,9 +13,6 @@ import ValidatorsList from 'ui/validators/zilliqa/ValidatorsList';
 import ValidatorsTable from 'ui/validators/zilliqa/ValidatorsTable';
 
 const ValidatorsZilliqa = () => {
-
-  const isMobile = useIsMobile();
-
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
     resourceName: 'general:validators_zilliqa',
     options: {
@@ -29,7 +25,7 @@ const ValidatorsZilliqa = () => {
     },
   });
 
-  const actionBar = (!isMobile || pagination.isVisible) ? (
+  const actionBar = pagination.isVisible ? (
     <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
@@ -41,7 +37,7 @@ const ValidatorsZilliqa = () => {
         <ValidatorsList data={ data.items } isLoading={ isPlaceholderData }/>
       </Box>
       <Box hideBelow="lg">
-        <ValidatorsTable data={ data.items } isLoading={ isPlaceholderData }/>
+        <ValidatorsTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
       </Box>
     </>
   ) : null;
