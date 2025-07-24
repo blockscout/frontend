@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -29,8 +28,6 @@ import useQuickSearchQuery from './useQuickSearchQuery';
 type Props = {
   isHeroBanner?: boolean;
 };
-
-const SCROLL_CONTAINER_ID = 'search_bar_drawer_content';
 
 const SearchBarMobile = ({ isHeroBanner }: Props) => {
   const inputRef = React.useRef<HTMLFormElement>(null);
@@ -94,7 +91,7 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
   }
 
   return (
-    <DrawerRoot placement="bottom" open={ open } onOpenChange={ onOpenChange } unmountOnExit={ false }>
+    <DrawerRoot placement="bottom" open={ open } onOpenChange={ onOpenChange } unmountOnExit={ false } lazyMount={ true }>
       <DrawerTrigger asChild>
         { trigger }
       </DrawerTrigger>
@@ -103,7 +100,7 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
           <DrawerTitle>Search</DrawerTitle>
           <DrawerCloseTrigger/>
         </DrawerHeader>
-        <DrawerBody py={ 0 }>
+        <DrawerBody overflow="hidden" display="flex" flexDirection="column">
           <SearchBarInput
             ref={ inputRef }
             onChange={ handleSearchTermChange }
@@ -114,25 +111,19 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
             onClear={ handleClear }
             onFormClick={ onTriggerClick }
             value={ searchTerm }
+            mt={ -5 }
+            mb={ 5 }
           />
-          <Box
-            w="100%"
-            h="calc(100% - 56px)"
-            overflowY="auto"
-            id={ SCROLL_CONTAINER_ID }
-          >
-            { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
-              <SearchBarRecentKeywords onClick={ handleSearchTermChange }/>
-            ) }
-            { searchTerm.trim().length > 0 && (
-              <SearchBarSuggest
-                query={ query }
-                searchTerm={ debouncedSearchTerm }
-                onItemClick={ handleItemClick }
-                containerId={ SCROLL_CONTAINER_ID }
-              />
-            ) }
-          </Box>
+          { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
+            <SearchBarRecentKeywords onClick={ handleSearchTermChange }/>
+          ) }
+          { searchTerm.trim().length > 0 && (
+            <SearchBarSuggest
+              query={ query }
+              searchTerm={ debouncedSearchTerm }
+              onItemClick={ handleItemClick }
+            />
+          ) }
         </DrawerBody>
         { (query.data && query.data?.length > 0) && (
           <DrawerFooter
