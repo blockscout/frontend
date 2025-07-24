@@ -63,7 +63,7 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
         </Grid>
         { data.nested_quorum_certificates && data.nested_quorum_certificates.length > 0 && (
           <>
-            <Separator mt={ 2 } w="100%"/>
+            <Separator mt={ 2 } w="100%" borderColor="border.divider"/>
             <AccordionRoot
               multiple
               w="100%"
@@ -85,7 +85,7 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
                   { data.nested_quorum_certificates?.map((item, index) => (
                     <Grid
                       key={ index }
-                      gridTemplateColumns="90px 1fr"
+                      gridTemplateColumns="90px minmax(0, 1fr)"
                       columnGap={ 3 }
                       rowGap={ 2 }
                       bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
@@ -96,12 +96,12 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
                       <GridItem>View</GridItem>
                       <GridItem>{ item.view }</GridItem>
                       <GridItem>Signature</GridItem>
-                      <GridItem whiteSpace="pre-wrap" wordBreak="break-word" display="flex" alignItems="flex-start" columnGap={ 3 }>
+                      <GridItem whiteSpace="pre-wrap" wordBreak="break-word" display="flex" alignItems="flex-start">
                         { item.signature }
                         <CopyToClipboard text={ item.signature }/>
                       </GridItem>
                       <GridItem>Signers</GridItem>
-                      <GridItem >{ formatSigners(item.signers) }</GridItem>
+                      <GridItem whiteSpace="pre-wrap">{ formatSigners(item.signers) }</GridItem>
                       <GridItem whiteSpace="pre-wrap">Proposed by validator</GridItem>
                       <GridItem >{ item.proposed_by_validator_index }</GridItem>
                     </Grid>
