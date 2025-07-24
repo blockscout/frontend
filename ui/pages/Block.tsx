@@ -7,7 +7,6 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
@@ -44,7 +43,6 @@ const TABS_HEIGHT = 88;
 const BlockPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
-  const appProps = useAppContext();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
   const tab = getQueryParamString(router.query.tab);
   const { chain } = useMultichainContext() || {};
@@ -122,19 +120,6 @@ const BlockPageContent = () => {
     pagination = blockInternalTxsQuery.pagination;
   }
 
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/blocks');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to blocks list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
-
   throwOnAbsentParamError(heightOrHash);
 
   if (blockQuery.isError) {
@@ -191,7 +176,6 @@ const BlockPageContent = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         title={ title }
-        backLink={ backLink }
         contentAfter={ <BlockCeloEpochTag blockQuery={ blockQuery }/> }
         secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }
