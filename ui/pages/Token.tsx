@@ -26,7 +26,6 @@ import Address3rdPartyWidgets from 'ui/address/Address3rdPartyWidgets';
 import useAddress3rdPartyWidgets from 'ui/address/address3rdPartyWidgets/useAddress3rdPartyWidgets';
 import AddressContract from 'ui/address/AddressContract';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
-import useContractTabs from 'ui/address/contract/useContractTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
@@ -171,11 +170,6 @@ const TokenPageContent = () => {
     addressQuery.isPlaceholderData ||
     (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData);
 
-  const contractTabs = useContractTabs({
-    data: addressQuery.data,
-    isPlaceholderData: addressQuery.isPlaceholderData,
-  });
-
   const tabs: Array<TabItemRegular> = [
     hasInventoryTab ? {
       id: 'inventory',
@@ -206,7 +200,7 @@ const TokenPageContent = () => {
 
         return 'Contract';
       },
-      component: <AddressContract tabs={ contractTabs.tabs } isLoading={ contractTabs.isLoading } shouldRender={ !isLoading }/>,
+      component: <AddressContract addressData={ addressQuery.data } isLoading={ isLoading }/>,
       subTabs: CONTRACT_TAB_IDS,
     } : undefined,
     (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) ? {

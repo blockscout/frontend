@@ -42,10 +42,6 @@ const AdaptiveTabs = (props: Props) => {
     }
   }, [ defaultValue ]);
 
-  if (tabs.length === 1 && !leftSlot && !rightSlot) {
-    return <div>{ tabs[0].component }</div>;
-  }
-
   return (
     <TabsRoot
       position="relative"

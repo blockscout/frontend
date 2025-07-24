@@ -38,7 +38,6 @@ import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
-import useContractTabs from 'ui/address/contract/useContractTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
@@ -171,12 +170,6 @@ const AddressPageContent = () => {
 
   const xStarQuery = useFetchXStarScore({ hash });
 
-  const contractTabs = useContractTabs({
-    data: addressQuery.data,
-    isPlaceholderData: addressQuery.isPlaceholderData,
-    hasMudTab: Boolean(config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0),
-  });
-
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
       {
@@ -202,9 +195,9 @@ const AddressPageContent = () => {
         },
         component: (
           <AddressContract
-            tabs={ contractTabs.tabs }
-            shouldRender={ !isTabsLoading }
-            isLoading={ contractTabs.isLoading }
+            addressData={ addressQuery.data }
+            isLoading={ isTabsLoading }
+            hasMudTab={ Boolean(config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0) }
           />
         ),
         subTabs: CONTRACT_TAB_IDS,
@@ -308,7 +301,6 @@ const AddressPageContent = () => {
   }, [
     addressQuery,
     countersQuery,
-    contractTabs,
     addressTabsCountersQuery.data,
     userOpsAccountQuery.data,
     isTabsLoading,

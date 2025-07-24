@@ -32,7 +32,7 @@ on:
             - shibarium
             - stability
             - zkevm 
-            - zilliqa_prototestnet
+            - zilliqa
             - zksync
             - zora
 

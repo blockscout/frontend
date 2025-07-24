@@ -31,12 +31,10 @@ const OpSuperchainAddressContract = ({ addressHash }: Props) => {
   });
 
   const contractTabs = useContractTabs({
-    data: addressQuery.data,
-    isPlaceholderData: addressQuery.isPlaceholderData,
+    addressData: addressQuery.data,
+    isEnabled: !addressQuery.isPlaceholderData,
     hasMudTab: false,
     chainSlug: chainSelect.value?.[0],
-    // TODO @tom2drum remove this props
-    isQueryEnabled: true,
   });
 
   const leftSlot = (
