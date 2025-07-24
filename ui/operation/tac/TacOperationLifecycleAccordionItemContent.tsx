@@ -23,7 +23,7 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
       borderColor="border.divider"
     >
       <Grid
-        gridTemplateColumns="112px 1fr"
+        gridTemplateColumns="112px minmax(0, 1fr)"
         alignItems="flex-start"
         columnGap={ 3 }
         rowGap={ 1 }
@@ -48,7 +48,6 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
             </GridItem>
             <GridItem
               display="inline-flex"
-              flexWrap="wrap"
               alignItems="center"
               py="6px"
             >
