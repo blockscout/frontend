@@ -943,6 +943,7 @@ const schema = yup
       .json()
       .of(yup.string<AddressViewId>().oneOf(ADDRESS_VIEWS_IDS)),
     NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_VIEWS_CONTRACT_DECODED_BYTECODE_ENABLED: yup.boolean(),
     NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS: yup
       .mixed()
       .test(
