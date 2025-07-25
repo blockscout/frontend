@@ -3,22 +3,21 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import { Button } from 'toolkit/chakra/button';
+import type { LinkProps } from 'toolkit/chakra/link';
 import { Link } from 'toolkit/chakra/link';
 
-interface Props {
+interface Props extends LinkProps {
   isLoading: boolean;
   addressHash: string;
-  isPartiallyVerified: boolean;
 }
 
-const ContractDetailsVerificationButton = ({ isLoading, addressHash, isPartiallyVerified }: Props) => {
+const ContractDetailsVerificationButton = ({ isLoading, addressHash, ...rest }: Props) => {
   return (
     <Link
       href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash } }) }
-      mr={ isPartiallyVerified ? 0 : 3 }
-      ml={ isPartiallyVerified ? 0 : 'auto' }
       flexShrink={ 0 }
       asChild
+      { ...rest }
     >
       <Button
         size="sm"

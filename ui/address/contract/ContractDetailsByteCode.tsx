@@ -7,6 +7,7 @@ import type { SmartContract } from 'types/api/contract';
 import { Alert } from 'toolkit/chakra/alert';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
+import ContractDetailsDeployedByteCode from './ContractDetailsDeployedByteCode';
 import ContractDetailsVerificationButton from './ContractDetailsVerificationButton';
 
 interface Props {
@@ -17,14 +18,6 @@ interface Props {
 
 const ContractDetailsByteCode = ({ data, isLoading, addressData }: Props) => {
   const canBeVerified = ![ 'selfdestructed', 'failed' ].includes(data.creation_status || '') && !data?.is_verified && addressData.proxy_type !== 'eip7702';
-
-  const verificationButton = (
-    <ContractDetailsVerificationButton
-      isLoading={ isLoading }
-      addressHash={ addressData.hash }
-      isPartiallyVerified={ Boolean(data?.is_partially_verified) }
-    />
-  );
 
   const creationStatusText = (() => {
     switch (data.creation_status) {
@@ -43,7 +36,14 @@ const ContractDetailsByteCode = ({ data, isLoading, addressData }: Props) => {
         <RawDataSnippet
           data={ data.creation_bytecode }
           title="Contract creation code"
-          rightSlot={ canBeVerified ? verificationButton : null }
+          rightSlot={ canBeVerified ? (
+            <ContractDetailsVerificationButton
+              isLoading={ isLoading }
+              addressHash={ addressData.hash }
+              ml="auto"
+              mr={ 3 }
+            />
+          ) : null }
           beforeSlot={ creationStatusText ? (
             <Alert status="info" whiteSpace="pre-wrap" showIcon mb={ 3 }>
               { creationStatusText }
@@ -54,12 +54,11 @@ const ContractDetailsByteCode = ({ data, isLoading, addressData }: Props) => {
         />
       ) }
       { data?.deployed_bytecode && (
-        <RawDataSnippet
-          data={ data.deployed_bytecode }
-          title="Deployed bytecode"
-          rightSlot={ !data?.creation_bytecode && canBeVerified ? verificationButton : null }
-          textareaMaxHeight="300px"
+        <ContractDetailsDeployedByteCode
+          bytecode={ data.deployed_bytecode }
           isLoading={ isLoading }
+          addressData={ addressData }
+          showVerificationButton={ !data?.creation_bytecode && canBeVerified }
         />
       ) }
     </Flex>
