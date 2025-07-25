@@ -37,7 +37,6 @@ const ContractSecurityAudits = ({ addressHash }: Props) => {
 
   return (
     <>
-      <Button variant="outline" size="sm" onClick={ modalProps.onOpen }>Submit audit</Button>
       { data?.items && data.items.length > 0 && (
         <Box position="relative">
           <ContainerWithScrollY
@@ -45,7 +44,7 @@ const ContractSecurityAudits = ({ addressHash }: Props) => {
             rowGap={ 1 }
             w="100%"
             maxH="80px"
-            mt={ 2 }
+            mb={ 2 }
           >
             { data.items.map(item => (
               <Link external href={ item.audit_report_url } key={ item.audit_company_name + item.audit_publish_date } loading={ isPlaceholderData }>
@@ -55,6 +54,7 @@ const ContractSecurityAudits = ({ addressHash }: Props) => {
           </ContainerWithScrollY>
         </Box>
       ) }
+      <Button variant="outline" size="sm" onClick={ modalProps.onOpen }>Submit audit</Button>
       <FormModal<SmartContractSecurityAuditSubmission>
         open={ modalProps.open }
         onOpenChange={ modalProps.onOpenChange }
