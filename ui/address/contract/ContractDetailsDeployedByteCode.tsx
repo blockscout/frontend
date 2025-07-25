@@ -38,7 +38,7 @@ const ContractDetailsDeployedByteCode = ({ bytecode, isLoading: isLoadingProp, a
 
   React.useEffect(() => {
     if (!isLoadingProp) {
-      if (config.UI.views.address.decodedBytecodeEnabled) {
+      if (config.UI.views.address.decodedBytecodeEnabled && !addressData.is_verified) {
         const decodedBytecode = hexToUtf8(bytecode);
         const isScillaSourceCode = decodedBytecode.includes('scilla_version 0');
         if (isScillaSourceCode) {
@@ -49,7 +49,7 @@ const ContractDetailsDeployedByteCode = ({ bytecode, isLoading: isLoadingProp, a
     }
 
     setIsLoading(isLoadingProp);
-  }, [ isLoadingProp, bytecode ]);
+  }, [ isLoadingProp, bytecode, addressData.is_verified ]);
 
   const handleSelectValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setSelectedDataType(value as Array<DataType>);
