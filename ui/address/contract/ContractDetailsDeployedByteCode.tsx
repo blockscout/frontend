@@ -39,7 +39,12 @@ const ContractDetailsDeployedByteCode = ({ bytecode, isLoading: isLoadingProp, a
   React.useEffect(() => {
     if (!isLoadingProp) {
       if (config.UI.views.address.decodedBytecodeEnabled && !addressData.is_verified) {
-        const decodedBytecode = hexToUtf8(bytecode);
+        // we don't want to decode the whole bytecode here
+        // the "scilla_version" should appear somewhere in the beginning of the bytecode
+        // but there could be some comments of arbitrary length before it
+        // adjust the value if needed
+        const SYMBOLS_TO_CHECK = 500;
+        const decodedBytecode = hexToUtf8(bytecode.slice(0, SYMBOLS_TO_CHECK * 2 + 2));
         const isScillaSourceCode = decodedBytecode.includes('scilla_version 0');
         if (isScillaSourceCode) {
           setShowSelect(true);
