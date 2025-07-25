@@ -246,7 +246,7 @@ const SearchResultsPageContent = () => {
 
   return (
     <>
-      <HeaderMobile renderSearchBar={ renderSearchBar }/>
+      <HeaderMobile/>
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn>
