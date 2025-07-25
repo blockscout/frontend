@@ -634,6 +634,7 @@ const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
         address: yup.string(),
         token: yup.string(),
         block: yup.string(),
+        blob: yup.string(),
       }),
   });
 
