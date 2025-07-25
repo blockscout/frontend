@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -17,7 +16,6 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 const EpochPageContent = () => {
   const isMobile = useIsMobile();
-  const appProps = useAppContext();
   const router = useRouter();
   const number = getQueryParamString(router.query.number);
 
@@ -33,19 +31,6 @@ const EpochPageContent = () => {
   throwOnResourceLoadError(epochQuery);
 
   const isLoading = epochQuery.isPlaceholderData;
-
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/epochs');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to epochs list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
 
   const titleContentAfter = (() => {
     switch (epochQuery.data?.type) {
@@ -97,7 +82,6 @@ const EpochPageContent = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         title={ `Epoch #${ number }` }
-        backLink={ backLink }
         contentAfter={ titleContentAfter }
         secondRow={ titleSecondRow }
         isLoading={ isLoading }

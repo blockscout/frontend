@@ -4,7 +4,6 @@ import React from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -20,7 +19,6 @@ import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const ZkEvmL2TxnBatch = () => {
   const router = useRouter();
-  const appProps = useAppContext();
   const number = getQueryParamString(router.query.number);
   const tab = getQueryParamString(router.query.tab);
 
@@ -50,26 +48,10 @@ const ZkEvmL2TxnBatch = () => {
     { id: 'txs', title: 'Transactions', component: <TxsWithFrontendSorting query={ batchTxsQuery }/> },
   ].filter(Boolean)), [ batchQuery, batchTxsQuery ]);
 
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/zkevm_l2_txn_batches');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to txn batches list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
-
   return (
     <>
       <TextAd mb={ 6 }/>
-      <PageTitle
-        title={ `Txn batch #${ number }` }
-        backLink={ backLink }
-      />
+      <PageTitle title={ `Txn batch #${ number }` }/>
       <RoutedTabs
         tabs={ tabs }
         isLoading={ batchQuery.isPlaceholderData }

@@ -7,7 +7,6 @@ import type { Log } from 'types/api/log';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -24,7 +23,6 @@ import UserOpSubHeading from 'ui/userOp/UserOpSubHeading';
 
 const UserOp = () => {
   const router = useRouter();
-  const appProps = useAppContext();
   const hash = getQueryParamString(router.query.hash);
 
   const userOpQuery = useApiQuery('general:user_op', {
@@ -80,19 +78,6 @@ const UserOp = () => {
     { id: 'raw', title: 'Raw', component: <UserOpRaw rawData={ userOpQuery.data?.raw } isLoading={ userOpQuery.isPlaceholderData }/> },
   ]), [ userOpQuery, txQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
 
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/ops');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to user operations list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
-
   throwOnAbsentParamError(hash);
   throwOnResourceLoadError(userOpQuery);
 
@@ -103,7 +88,6 @@ const UserOp = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         title="User operation details"
-        backLink={ backLink }
         secondRow={ titleSecondRow }
       />
       <RoutedTabs tabs={ tabs } isLoading={ userOpQuery.isPlaceholderData }/>
