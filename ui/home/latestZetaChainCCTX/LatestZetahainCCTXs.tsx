@@ -24,7 +24,7 @@ const LatestZetahainCCTXs = () => {
   const txsCount = isMobile ? 3 : 8;
   const { data, isPlaceholderData, isError } = useApiQuery('zetachain:transactions', {
     queryOptions: {
-      placeholderData: { cctxs: Array(txsCount).fill(zetaChainCCTX) },
+      placeholderData: { items: Array(txsCount).fill(zetaChainCCTX) },
     },
     queryParams: {
       limit: txsCount,
@@ -44,7 +44,7 @@ const LatestZetahainCCTXs = () => {
       <>
         { /* <SocketNewItemsNotice borderBottomRadius={ 0 } url={ txsUrl } num={ num } showErrorAlert={ showErrorAlert } isLoading={ isPlaceholderData }/> */ }
         <Box mb={ 3 } display={{ base: 'block', lg: 'none' }}>
-          { data.cctxs.slice(0, txsCount).map(((tx, index) => (
+          { data.items.slice(0, txsCount).map(((tx, index) => (
             <LatestZetaChainCCTXItem
               key={ tx.index + (isPlaceholderData ? index : '') }
               tx={ tx }
@@ -54,7 +54,7 @@ const LatestZetahainCCTXs = () => {
         </Box>
         <AddressHighlightProvider>
           <Box mb={ 3 } display={{ base: 'none', lg: 'block' }}>
-            { data.cctxs.slice(0, txsCount).map(((tx, index) => (
+            { data.items.slice(0, txsCount).map(((tx, index) => (
               <LatestZetaChainCCTXItem
                 key={ tx.index + (isPlaceholderData ? index : '') }
                 tx={ tx }
