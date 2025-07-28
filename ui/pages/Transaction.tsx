@@ -68,7 +68,8 @@ const TransactionPageContent = () => {
         undefined,
       { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
       { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
-      { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
+      config.features.rawTrace.isEnabled ?
+        { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> } : undefined,
       txQuery.data?.authorization_list?.length ?
         { id: 'authorizations', title: 'Authorizations', component: <TxAuthorizations txQuery={ txQuery }/> } :
         undefined,

@@ -26,6 +26,7 @@ export { default as multichainButton } from './multichainButton';
 export { default as nameService } from './nameService';
 export { default as pools } from './pools';
 export { default as publicTagsSubmission } from './publicTagsSubmission';
+export { default as rawTrace } from './rawTrace';
 export { default as restApiDocs } from './restApiDocs';
 export { default as rewards } from './rewards';
 export { default as rollbar } from './rollbar';
