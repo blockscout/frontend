@@ -93,7 +93,7 @@ const AddressMudTables = ({ isQueryEnabled = true }: Props) => {
       emptyText="There are no tables for this address."
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find tables that match your filter query.`,
-        hasActiveFilters: Boolean(searchTerm),
+        hasActiveFilters: Boolean(debouncedSearchTerm),
       }}
       actionBar={ actionBar }
     >
