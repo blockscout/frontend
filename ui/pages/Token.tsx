@@ -247,13 +247,14 @@ const TokenPageContent = () => {
     return (
       <>
         { (tab === 'token_transfers' || tab === '') && (
-          <TokenAdvancedFilterLink token={ tokenQuery.data }/>
+          <TokenAdvancedFilterLink token={ tokenQuery.data } ml={ 6 }/>
         ) }
         { tab === 'holders' && (
           <AddressCsvExportLink
             address={ hashString }
             params={{ type: 'holders' }}
             isLoading={ pagination?.isLoading }
+            ml={ 6 }
           />
         ) }
         { pagination?.isVisible && <Pagination { ...pagination }/> }

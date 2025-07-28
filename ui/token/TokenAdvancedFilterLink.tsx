@@ -7,15 +7,16 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
+import type { LinkProps } from 'toolkit/chakra/link';
 import { Link } from 'toolkit/chakra/link';
 import IconSvg from 'ui/shared/IconSvg';
 
-interface Props {
+interface Props extends LinkProps {
   isLoading?: boolean;
   token?: TokenInfo;
 }
 
-const TokenAdvancedFilterLink = ({ isLoading, token }: Props) => {
+const TokenAdvancedFilterLink = ({ isLoading, token, ...rest }: Props) => {
   const isInitialLoading = useIsInitialLoading(isLoading);
 
   if (!token || !config.features.advancedFilter.isEnabled) {
@@ -34,6 +35,7 @@ const TokenAdvancedFilterLink = ({ isLoading, token }: Props) => {
       loading={ isInitialLoading }
       minW={ 8 }
       justifyContent="center"
+      { ...rest }
     >
       <IconSvg name="filter" boxSize={ 6 }/>
       <chakra.span ml={ 1 } hideBelow="lg">Advanced filter</chakra.span>
