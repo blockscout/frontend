@@ -54,12 +54,12 @@ export const recipe = defineSlotRecipe({
     },
     header: {
       flex: 0,
-      px: '5',
-      pt: '5',
-      pb: '3',
+      px: '6',
+      pt: '6',
+      pb: '4',
     },
     body: {
-      p: '5',
+      p: '6',
       flex: '1',
       overflow: 'auto',
     },
@@ -68,7 +68,7 @@ export const recipe = defineSlotRecipe({
       alignItems: 'center',
       justifyContent: 'flex-end',
       gap: '3',
-      px: '5',
+      px: '6',
       pt: '2',
       pb: '4',
     },
@@ -146,6 +146,17 @@ export const recipe = defineSlotRecipe({
       bottom: {
         positioner: {
           alignItems: 'flex-end',
+        },
+        header: {
+          px: '5',
+          pt: '5',
+          pb: '3',
+        },
+        body: {
+          p: '5',
+        },
+        footer: {
+          px: '5',
         },
         content: {
           maxW: '100%',
