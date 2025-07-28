@@ -16,8 +16,7 @@ const ZetaChainCCTXValue = ({ tx, isLoading }: { tx: ZetaChainCCTX; isLoading?: 
   switch (tx.coin_type) {
     case 'ERC20':
       unit = tx.token_symbol || 'Unnamed token';
-      // replace with decimals from token info
-      amount = getCurrencyValue({ value: tx.amount, decimals: '18' }).valueStr;
+      amount = getCurrencyValue({ value: tx.amount, decimals: tx.decimals }).valueStr;
       break;
     case 'ZETA':
       unit = config.chain.currency.symbol || config.chain.currency.name || '';

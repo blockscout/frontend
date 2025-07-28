@@ -1,5 +1,5 @@
 export type ZetaChainCCTXListResponse = {
-  cctxs: Array<ZetaChainCCTX>;
+  items: Array<ZetaChainCCTX>;
 };
 
 export type ZetaChainCCTX = {
@@ -16,6 +16,7 @@ export type ZetaChainCCTX = {
   target_chain_id: string;
   token_symbol?: string;
   asset?: string;
+  decimals?: string | null;
 };
 
 export type ZetaChainCCTXStatus = 'PENDING_OUTBOUND' | 'PENDING_INBOUND' | 'OUTBOUND_MINED' | 'PENDING_REVERT' | 'ABORTED' | 'REVERTED';
