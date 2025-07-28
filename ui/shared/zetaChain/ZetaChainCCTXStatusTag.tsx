@@ -4,7 +4,13 @@ import type { ZetaChainCCTXStatusReduced } from 'types/api/zetaChain';
 
 import StatusTag, { type StatusTagType } from 'ui/shared/statusTag/StatusTag';
 
-const ZetaChainCCTXStatusTag = ({ status, isLoading }: { status: ZetaChainCCTXStatusReduced; isLoading?: boolean }) => {
+type Props = {
+  status: ZetaChainCCTXStatusReduced;
+  isLoading?: boolean;
+  type?: 'reduced' | 'full';
+};
+
+const ZetaChainCCTXStatusTag = ({ status, isLoading, type = 'reduced' }: Props) => {
   let statusTagType: StatusTagType;
   switch (status) {
     case 'SUCCESS':
@@ -16,6 +22,22 @@ const ZetaChainCCTXStatusTag = ({ status, isLoading }: { status: ZetaChainCCTXSt
     case 'FAILED':
       statusTagType = 'error';
       break;
+  }
+
+  if (type === 'full') {
+    let text: string;
+    switch (status) {
+      case 'SUCCESS':
+        text = 'Success';
+        break;
+      case 'PENDING':
+        text = 'Pending';
+        break;
+      case 'FAILED':
+        text = 'Failed';
+        break;
+    }
+    return <StatusTag type={ statusTagType } text={ text } size="sm" loading={ isLoading }/>;
   }
 
   return <StatusTag type={ statusTagType } size="sm" loading={ isLoading }/>;

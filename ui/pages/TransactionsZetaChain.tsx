@@ -24,6 +24,7 @@ import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import TxsStats from 'ui/txs/TxsStats';
 import TxsWatchlist from 'ui/txs/TxsWatchlist';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
+import ZetaChainCCTXsTab from 'ui/txs/zetaChain/ZetaChainCCTXsTab';
 import ZetaChainEvmTransactions from 'ui/txs/zetaChain/ZetaChainEvmTransactions';
 
 const TAB_LIST_PROPS = {
@@ -35,6 +36,7 @@ const TAB_LIST_PROPS = {
 const TABS_HEIGHT = 88;
 
 const ZETACHAIN_TABS = [ 'zetachain_validated', 'zetachain_pending' ];
+const CROSS_CHAIN_TABS = [ 'cctx_pending', 'cctx_validated' ];
 
 const TransactionsZetaChain = () => {
   const router = useRouter();
@@ -68,46 +70,6 @@ const TransactionsZetaChain = () => {
 
   const isAuth = useIsAuth();
 
-  const tabs: Array<TabItemRegular> = [
-    {
-      id: 'cross_chain',
-      title: 'Cross chain',
-      component:
-      <>
-      </>
-    },
-    {
-      id: 'zetachain',
-      title: 'ZetaChain EVM',
-      component: (
-        <ZetaChainEvmTransactions/>
-      ),
-      subTabs: ZETACHAIN_TABS,
-    },
-    config.features.dataAvailability.isEnabled && {
-      id: 'blob_txs',
-      title: 'Blob txns',
-      component: (
-        <>
-          <TxsStats/>
-          <TxsWithFrontendSorting
-            query={ txsWithBlobsQuery }
-            top={ TABS_HEIGHT }
-          />
-        </>
-      ),
-    },
-    isAuth ? {
-      id: 'watchlist',
-      title: 'Watch list',
-      component: (
-        <>
-          <TxsStats/>
-          <TxsWatchlist query={ txsWatchlistQuery }/>
-        </>
-      ),
-    } : undefined,
-  ].filter(Boolean);
 
   const pagination = (() => {
     switch (tab) {
@@ -117,12 +79,12 @@ const TransactionsZetaChain = () => {
     }
   })();
 
-  const rightSlot = (() => {
+  const topRow = (() => {
     if (isMobile) {
       return null;
     }
 
-    if (tab === 'cross_chain' || tab === 'zetachain' || ZETACHAIN_TABS.includes(tab)) {
+    if (tab !== 'blob_txs' && tab !== 'watchlist') {
       return null;
     }
 
@@ -150,6 +112,47 @@ const TransactionsZetaChain = () => {
     );
   })();
 
+
+  const tabs: Array<TabItemRegular> = [
+    {
+      id: 'cross_chain',
+      title: 'Cross chain',
+      component: <ZetaChainCCTXsTab/>,
+      subTabs: CROSS_CHAIN_TABS,
+    },
+    {
+      id: 'zetachain',
+      title: 'ZetaChain EVM',
+      component: <ZetaChainEvmTransactions/>,
+      subTabs: ZETACHAIN_TABS,
+    },
+    config.features.dataAvailability.isEnabled && {
+      id: 'blob_txs',
+      title: 'Blob txns',
+      component: (
+        <>
+          <TxsStats/>
+          { topRow }
+          <TxsWithFrontendSorting
+            query={ txsWithBlobsQuery }
+            top={ TABS_HEIGHT }
+          />
+        </>
+      ),
+    },
+    isAuth ? {
+      id: 'watchlist',
+      title: 'Watch list',
+      component: (
+        <>
+          <TxsStats/>
+          { topRow }
+          <TxsWatchlist query={ txsWatchlistQuery }/>
+        </>
+      ),
+    } : undefined,
+  ].filter(Boolean);
+
   return (
     <>
       <PageTitle
@@ -159,7 +162,6 @@ const TransactionsZetaChain = () => {
       <RoutedTabs
         tabs={ tabs }
         listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ rightSlot }
         stickyEnabled={ !isMobile }
       />
     </>
