@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { ChainInfo } from 'types/zetaChainCCTXChainInfo';
+import type { ChainInfo } from 'types/client/chainInfo';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
