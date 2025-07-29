@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceAppWithSecurityReport, AppRating } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
@@ -29,10 +29,9 @@ import FavoriteIcon from './FavoriteIcon';
 import MarketplaceAppGraphLinks from './MarketplaceAppGraphLinks';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 import Rating from './Rating/Rating';
-import type { RateFunction } from './Rating/useRatings';
 
 const feature = config.features.marketplace;
-const isRatingEnabled = feature.isEnabled && feature.rating;
+const isRatingEnabled = feature.isEnabled && 'api' in feature;
 
 type Props = {
   onClose: () => void;
@@ -40,11 +39,6 @@ type Props = {
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'App modal') => void;
   data: MarketplaceAppWithSecurityReport;
   showContractList: (id: string, type: ContractListTypes, hasPreviousStep: boolean) => void;
-  userRating?: AppRating;
-  rateApp: RateFunction;
-  isRatingSending: boolean;
-  isRatingLoading: boolean;
-  canRate: boolean | undefined;
   graphLinks?: Array<{ title: string; url: string }>;
 };
 
@@ -54,11 +48,6 @@ const MarketplaceAppModal = ({
   onFavoriteClick,
   data,
   showContractList: showContractListProp,
-  userRating,
-  rateApp,
-  isRatingSending,
-  isRatingLoading,
-  canRate,
   graphLinks,
 }: Props) => {
   const {
@@ -78,6 +67,8 @@ const MarketplaceAppModal = ({
     categories,
     securityReport,
     rating,
+    ratingsTotalCount,
+    userRating,
     internalWallet,
   } = data;
 
@@ -189,12 +180,9 @@ const MarketplaceAppModal = ({
               <Rating
                 appId={ id }
                 rating={ rating }
+                ratingsTotalCount={ ratingsTotalCount }
                 userRating={ userRating }
-                rate={ rateApp }
-                isSending={ isRatingSending }
-                isLoading={ isRatingLoading }
                 fullView
-                canRate={ canRate }
                 source="App modal"
                 popoverContentProps={{ zIndex: 'modal' }}
               />

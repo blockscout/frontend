@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { MarketplaceAppWithSecurityReport, AppRating } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
@@ -9,6 +9,7 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import useSecurityReports from './useSecurityReports';
 import type { SortValue } from './utils';
@@ -55,10 +56,10 @@ export default function useMarketplaceApps(
   selectedCategoryId: string = MarketplaceCategory.ALL,
   favoriteApps: Array<string> | undefined = undefined,
   isFavoriteAppsLoaded: boolean = false,
-  ratings: Record<string, AppRating> | undefined = undefined,
 ) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
+  const profileQuery = useProfileQuery();
 
   const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
 
@@ -75,7 +76,7 @@ export default function useMarketplaceApps(
   }, [ isFavoriteAppsLoaded, favoriteApps ]);
 
   const {
-    isPlaceholderData: isAppsPlaceholderData, isError, error, data,
+    isPlaceholderData: isAppsPlaceholderData, isError, error, data, refetch,
   } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
     queryKey: [ 'marketplace-dapps', snapshotFavoriteApps ],
     queryFn: async() => {
@@ -93,15 +94,18 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
+  React.useEffect(() => {
+    refetch();
+  }, [ profileQuery.data, refetch ]);
+
   const isPlaceholderData = isAppsPlaceholderData || isSecurityReportsPlaceholderData;
 
   const appsWithSecurityReportsAndRating = React.useMemo(() =>
     data?.map((app) => ({
       ...app,
       securityReport: securityReports?.[app.id],
-      rating: ratings?.[app.id],
     })),
-  [ data, securityReports, ratings ]);
+  [ data, securityReports ]);
 
   const displayedApps = React.useMemo(() => {
     if (isPlaceholderData) {
@@ -115,10 +119,10 @@ export default function useMarketplaceApps(
           return (b.securityReport?.overallInfo.securityScore || 0) - (a.securityReport?.overallInfo.securityScore || 0);
         }
         if (sorting === 'rating_score') {
-          return (b.rating?.value || 0) - (a.rating?.value || 0);
+          return (b.rating || 0) - (a.rating || 0);
         }
         if (sorting === 'rating_count') {
-          return (b.rating?.count || 0) - (a.rating?.count || 0);
+          return Number(b.ratingsTotalCount || 0) - Number(a.ratingsTotalCount || 0);
         }
         return 0;
       }) || [];
@@ -131,6 +135,7 @@ export default function useMarketplaceApps(
     isError,
     isPlaceholderData,
     setSorting,
+    refetch,
   }), [
     data,
     displayedApps,
@@ -138,5 +143,6 @@ export default function useMarketplaceApps(
     isError,
     isPlaceholderData,
     setSorting,
+    refetch,
   ]);
 }

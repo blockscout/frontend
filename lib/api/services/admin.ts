@@ -23,6 +23,10 @@ export const ADMIN_API_RESOURCES = {
     path: '/api/v1/chains/:chainId/marketplace/dapps/:dappId',
     pathParams: [ 'chainId' as const, 'dappId' as const ],
   },
+  marketplace_rate_dapp: {
+    path: '/api/v1/chains/:chainId/marketplace/dapps/:dappId/ratings',
+    pathParams: [ 'chainId' as const, 'dappId' as const ],
+  },
 } satisfies Record<string, ApiResource>;
 
 export type AdminApiResourceName = `admin:${ keyof typeof ADMIN_API_RESOURCES }`;

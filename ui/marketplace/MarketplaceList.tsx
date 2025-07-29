@@ -3,14 +3,13 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, ContractListTypes } from 'types/client/marketplace';
 
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import * as mixpanel from 'lib/mixpanel/index';
 
 import EmptySearchResult from './EmptySearchResult';
 import MarketplaceAppCard from './MarketplaceAppCard';
-import type { RateFunction } from './Rating/useRatings';
 
 type Props = {
   apps: Array<MarketplaceAppWithSecurityReport>;
@@ -21,18 +20,12 @@ type Props = {
   selectedCategoryId?: string;
   onAppClick: (event: MouseEvent, id: string) => void;
   showContractList: (id: string, type: ContractListTypes) => void;
-  userRatings: Record<string, AppRating>;
-  rateApp: RateFunction;
-  isRatingSending: boolean;
-  isRatingLoading: boolean;
-  canRate: boolean | undefined;
   graphLinksQuery: UseQueryResult<Record<string, Array<{ title: string; url: string }>>, unknown>;
 };
 
 const MarketplaceList = ({
   apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId,
-  onAppClick, showContractList, userRatings, rateApp, isRatingSending, isRatingLoading, canRate,
-  graphLinksQuery,
+  onAppClick, showContractList, graphLinksQuery,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(apps, !isLoading, 16);
 
@@ -75,11 +68,8 @@ const MarketplaceList = ({
             securityReport={ app.securityReport }
             showContractList={ showContractList }
             rating={ app.rating }
-            userRating={ userRatings[app.id] }
-            rateApp={ rateApp }
-            isRatingSending={ isRatingSending }
-            isRatingLoading={ isRatingLoading }
-            canRate={ canRate }
+            ratingsTotalCount={ app.ratingsTotalCount }
+            userRating={ app.userRating }
             graphLinks={ graphLinksQuery.data?.[app.id] }
           />
         )) }

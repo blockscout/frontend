@@ -77,11 +77,6 @@ const Marketplace = () => {
     contractListModalType,
     hasPreviousStep,
     setSorting,
-    userRatings,
-    rateApp,
-    isRatingSending,
-    isRatingLoading,
-    canRate,
   } = useMarketplace();
 
   const isMobile = useIsMobile();
@@ -249,11 +244,6 @@ const Marketplace = () => {
         selectedCategoryId={ selectedCategoryId }
         onAppClick={ handleAppClick }
         showContractList={ showContractList }
-        userRatings={ userRatings }
-        rateApp={ rateApp }
-        isRatingSending={ isRatingSending }
-        isRatingLoading={ isRatingLoading }
-        canRate={ canRate }
         graphLinksQuery={ graphLinksQuery }
       />
 
@@ -264,11 +254,6 @@ const Marketplace = () => {
           onFavoriteClick={ onFavoriteClick }
           data={ selectedApp }
           showContractList={ showContractList }
-          userRating={ userRatings[selectedApp.id] }
-          rateApp={ rateApp }
-          isRatingSending={ isRatingSending }
-          isRatingLoading={ isRatingLoading }
-          canRate={ canRate }
           graphLinks={ graphLinksQuery.data?.[selectedApp.id] }
         />
       ) }

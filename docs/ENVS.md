@@ -552,8 +552,6 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | NEXT_PUBLIC_MARKETPLACE_FEATURED_APP | `string` | ID of the featured application to be displayed on the banner on the Marketplace page | - | - | `uniswap` | v1.29.0+ |
 | NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL | `string` | URL of the banner HTML content | - | - | `https://example.com/banner` | v1.29.0+ |
 | NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL | `string` | URL of the page the banner leads to | - | - | `https://example.com` | v1.29.0+ |
-| NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY | `string` | Airtable API key | - | - | - | v1.33.0+ |
-| NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID | `string` | Airtable base ID with dapp ratings | - | - | - | v1.33.0+ |
 | NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL | `string` | URL of the file (`.json` format only) which contains the list of The Graph links to be displayed on the Marketplace page | - | - | `https://example.com/graph_links.json` | v1.36.0+ |
 
 #### Marketplace app configuration properties

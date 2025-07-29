@@ -103,6 +103,9 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     discord: yup.string().test(urlTest),
     internalWallet: yup.boolean(),
     priority: yup.number(),
+    rating: yup.number(),
+    ratingsTotalCount: yup.string(),
+    userRating: yup.number(),
   });
 
 const issueSeverityDistributionSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['overallInfo']['issueSeverityDistribution']> = yup
@@ -237,22 +240,6 @@ const marketplaceSchema = yup
         then: (schema) => schema.test(urlTest),
         // eslint-disable-next-line max-len
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY: yup
-      .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema,
-        // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID: yup
-      .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema,
-        // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: yup
       .string()

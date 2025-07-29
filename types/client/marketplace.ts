@@ -11,6 +11,9 @@ export type MarketplaceAppPreview = {
   url: string;
   internalWallet?: boolean;
   priority?: number;
+  rating?: number;
+  ratingsTotalCount?: string;
+  userRating?: number;
 };
 
 export type MarketplaceAppSocialInfo = {
@@ -26,15 +29,8 @@ export type MarketplaceAppOverview = MarketplaceAppPreview & MarketplaceAppSocia
   site?: string;
 };
 
-export type AppRating = {
-  recordId: string;
-  value: number | undefined;
-  count?: number;
-};
-
 export type MarketplaceAppWithSecurityReport = MarketplaceAppOverview & {
   securityReport?: MarketplaceAppSecurityReport;
-  rating?: AppRating;
 };
 
 export enum MarketplaceCategory {
