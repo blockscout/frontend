@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react';
+import { Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ZetaChainCCTX } from 'types/api/zetaChain';
@@ -8,7 +8,7 @@ import getCurrencyValue from 'lib/getCurrencyValue';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
-const ZetaChainCCTXValue = ({ tx, isLoading }: { tx: ZetaChainCCTX; isLoading?: boolean }) => {
+const ZetaChainCCTXValue = ({ tx, isLoading, className }: { tx: ZetaChainCCTX; isLoading?: boolean; className?: string }) => {
   const { data: chainsConfig } = useZetaChainConfig();
   const sourceChain = chainsConfig?.find((chain) => chain.chain_id.toString() === tx.source_chain_id);
   let unit: string;
@@ -32,11 +32,11 @@ const ZetaChainCCTXValue = ({ tx, isLoading }: { tx: ZetaChainCCTX; isLoading?: 
   }
 
   return (
-    <Skeleton loading={ isLoading } display="flex" justifyContent="end" gap={ 2 } overflow="hidden">
+    <Skeleton loading={ isLoading } display="flex" gap={ 2 } overflow="hidden" className={ className }>
       <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ amount }</Text>
-      <Text color="text.secondary" minW="70px" w="70px" overflow="hidden" textOverflow="ellipsis">{ unit }</Text>
+      <Text color="text.secondary" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">{ unit }</Text>
     </Skeleton>
   );
 };
 
-export default React.memo(ZetaChainCCTXValue);
+export default React.memo(chakra(ZetaChainCCTXValue));
