@@ -1,6 +1,6 @@
-import type { ZetaChainCCTX } from 'types/api/zetaChain';
+import type { ZetaChainCCTX, ZetaChainCCTXResponse } from 'types/api/zetaChain';
 
-export const zetaChainCCTX: ZetaChainCCTX = {
+export const zetaChainCCTXItem: ZetaChainCCTX = {
   index: '0xaea405aa63353312727dcc471e3242d3b8de0a181d6e35fe905fff4084bd3cc1',
   status: 'PENDING_OUTBOUND',
   status_reduced: 'PENDING',
@@ -14,4 +14,83 @@ export const zetaChainCCTX: ZetaChainCCTX = {
   asset: '0x1234567890123456789012345678901234567890',
   coin_type: 'ERC20',
   token_symbol: 'USDT.ARBSEP',
+};
+
+export const zetaChainCCTX: ZetaChainCCTXResponse = {
+  creator: '',
+  index: '0x1c1e7410d7dfefe6173cc11efa47221e85587d3831c69108121198e0b2a86657',
+  zeta_fees: '0',
+  relayed_message: '',
+  cctx_status: {
+    status: 'OUTBOUND_MINED',
+    status_message: '',
+    error_message: '',
+    last_update_timestamp: '1693058607',
+    is_abort_refunded: false,
+    created_timestamp: '0',
+    error_message_revert: '',
+    error_message_abort: '',
+  },
+  inbound_params: {
+    sender: '0x44D1F1f9289DBA1Cf5824bd667184cEBE020aA1c',
+    sender_chain_id: '7001',
+    tx_origin: '0xcf558D29999C119425d28bF1c07ba97FfF39e387',
+    coin_type: 'GAS',
+    asset: '',
+    amount: '434880247204065094',
+    observed_hash: '0x0001150419abd8d8383fae702f3a8415e57c96e78c9815756d15e1f1f5c0f466',
+    observed_external_height: '1345648',
+    ballot_index: '0x1c1e7410d7dfefe6173cc11efa47221e85587d3831c69108121198e0b2a86657',
+    finalized_zeta_height: '0',
+    tx_finalization_status: 'NOT_FINALIZED',
+    is_cross_chain_call: false,
+    status: 'SUCCESS',
+    confirmation_mode: 'SAFE',
+  },
+  outbound_params: [
+    {
+      receiver: '0xcf558D29999C119425d28bF1c07ba97FfF39e387',
+      receiver_chain_id: '97',
+      coin_type: 'GAS',
+      amount: '434880247204065094',
+      tss_nonce: '62305',
+      gas_limit: '21000',
+      gas_price: '4000000000',
+      gas_priority_fee: '',
+      hash: '0xe209ab8ee452d5ee3bc98e5035d33eb4d3f314880f8c956be2c0f78a26bfc37d',
+      ballot_index: '0x9c5cc2a0ad2abba365105f1414ea261153634a5882bede9a883e0bb4f982cc55',
+      observed_external_height: '32787262',
+      gas_used: '0',
+      effective_gas_price: '0',
+      effective_gas_limit: '0',
+      tss_pubkey: '',
+      tx_finalization_status: 'NOT_FINALIZED',
+      call_options: {
+        gas_limit: '0',
+        is_arbitrary_call: false,
+      },
+      confirmation_mode: 'SAFE',
+    },
+  ],
+  protocol_contract_version: 'V1',
+  revert_options: {
+    revert_address: '',
+    call_on_revert: false,
+    abort_address: '',
+    revert_message: '',
+    revert_gas_limit: '0',
+  },
+  related_cctxs: [
+    {
+      index: '0x0001150419abd8d8383fae702f3a8415e57c96e78c9815756d15e1f1f5c0f466',
+      depth: 0,
+      source_chain_id: '5',
+      status: 'OUTBOUND_MINED',
+      inbound_amount: '100000000000000000',
+      inbound_coin_type: 'GAS',
+      outbound_params: [
+        { amount: '0', chain_id: '7001', coin_type: 'GAS' },
+      ],
+    },
+  ],
 };
