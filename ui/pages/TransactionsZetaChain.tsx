@@ -1,5 +1,4 @@
 import { Flex } from '@chakra-ui/react';
-import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -8,10 +7,8 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { zetaChainCCTX } from 'mocks/zetaChain/zetaChainCCTX';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
@@ -70,7 +67,6 @@ const TransactionsZetaChain = () => {
 
   const isAuth = useIsAuth();
 
-
   const pagination = (() => {
     switch (tab) {
       case 'watchlist': return txsWatchlistQuery.pagination;
@@ -111,7 +107,6 @@ const TransactionsZetaChain = () => {
       </Flex>
     );
   })();
-
 
   const tabs: Array<TabItemRegular> = [
     {

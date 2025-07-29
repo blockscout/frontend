@@ -5,6 +5,7 @@ export const ZETA_CHAIN_API_RESOURCES = {
   transactions: {
     path: '/api/v1/CctxInfo\\:list',
     filterFields: [ 'limit' as const, 'offset' as const, 'status' as const ],
+    paginated: true,
   },
 } satisfies Record<string, ApiResource>;
 

@@ -1,5 +1,10 @@
 export type ZetaChainCCTXListResponse = {
   items: Array<ZetaChainCCTX>;
+  next_page_params: {
+    page_index: number;
+    offset: number;
+    direction: 'ASC' | 'DESC';
+  } | null;
 };
 
 export type ZetaChainCCTX = {

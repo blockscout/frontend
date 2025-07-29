@@ -12,8 +12,6 @@ import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
 
 type Props = {
   tx: ZetaChainCCTX;
-  showBlockInfo: boolean;
-  currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
   animation?: string;
@@ -47,7 +45,7 @@ const ZetaChainCCTxsTableItem = ({ tx, enableTimeIncrement, isLoading, animation
         <ZetaChainAddressFromTo tx={ tx } isLoading={ isLoading }/>
       </TableCell>
       <TableCell>
-        <ZetaChainCCTXValue tx={ tx } isLoading={ isLoading }/>
+        <ZetaChainCCTXValue tx={ tx } isLoading={ isLoading } justifyContent="end"/>
       </TableCell>
     </TableRow>
   );

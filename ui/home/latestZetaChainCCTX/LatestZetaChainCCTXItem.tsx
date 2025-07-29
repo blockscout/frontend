@@ -17,7 +17,7 @@ type Props = {
 const LatestZetaChainCCTXItem = ({ tx, isLoading }: Props) => {
   return (
     <Grid
-      gridTemplateColumns="18px 140px 80px 350px auto"
+      gridTemplateColumns="18px 120px 80px 330px auto"
       gridGap={ 3 }
       width="100%"
       minW="740px"
@@ -25,13 +25,13 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading }: Props) => {
       borderColor="border.divider"
       alignItems="center"
       p={ 4 }
-      display={{ base: 'none', lg: 'grid' }}
+      fontSize="sm"
     >
       <ZetaChainCCTXStatusTag status={ tx.status_reduced } isLoading={ isLoading }/>
       <TxEntity hash={ tx.index } isLoading={ isLoading } truncation="constant" fontWeight={ 600 }/>
       <TimeWithTooltip color="text.secondary" timestamp={ Number(tx.last_update_timestamp) * 1000 } isLoading={ isLoading } timeFormat="relative"/>
       <ZetaChainAddressFromTo tx={ tx } isLoading={ isLoading }/>
-      <ZetaChainCCTXValue tx={ tx } isLoading={ isLoading }/>
+      <ZetaChainCCTXValue tx={ tx } isLoading={ isLoading } justifyContent="end"/>
     </Grid>
   );
 };
