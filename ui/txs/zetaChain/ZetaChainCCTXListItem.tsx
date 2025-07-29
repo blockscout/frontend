@@ -8,7 +8,7 @@ import dayjs from 'lib/date/dayjs';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { unknownAddress } from 'ui/shared/address/utils';
 import AddressEntityWithExternalChain from 'ui/shared/entities/address/AddressEntityWithExternalChain';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
 import TextSeparator from 'ui/shared/TextSeparator';
 import ZetaChainCCTXStatusTag from 'ui/shared/zetaChain/ZetaChainCCTXStatusTag';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
@@ -39,7 +39,7 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading }: Props) => {
       gap={ 2 }
     >
       <ZetaChainCCTXStatusTag status={ tx.status_reduced } isLoading={ isLoading } type="full"/>
-      <TxEntity hash={ tx.index } isLoading={ isLoading } truncation="constant_long" fontWeight={ 600 }/>
+      <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } truncation="constant_long" fontWeight={ 600 }/>
       <Flex color="text.secondary" gap={ 2 } justifyContent="start">
         { dayjs(Number(tx.created_timestamp) * 1000).fromNow() }
         <TextSeparator color={ separatorColor } mx={ 0 }/>
