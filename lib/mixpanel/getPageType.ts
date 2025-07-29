@@ -66,6 +66,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/chain/[chain-slug]/tx/[hash]': 'Chain transaction details',
   '/operations': 'Operations',
   '/operation/[id]': 'Operation details',
+  '/cc/tx/[hash]': 'Cross-chain transaction details',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',
