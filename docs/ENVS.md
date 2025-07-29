@@ -536,6 +536,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN | `string` | Project token for [Mixpanel](https://mixpanel.com/) analytics service | true | - | `<your-secret>` | v1.1.0+ |
+| NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES | `string` | Pass a JSON-like string that represents a subset of the [Mixpanel SDK configuration](https://docs.mixpanel.com/docs/tracking-methods/sdks/javascript#library-configuration) to override the project's default properties. | - | - | `{"record_sessions_percent": 0.5}` | v2.3.0+ |
 
 &nbsp;
 
