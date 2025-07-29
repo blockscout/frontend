@@ -1,4 +1,4 @@
-export interface ChainInfo {
+export interface ZetaChainCCTXChainInfo {
   chain_id: number;
   chain_name: string | null;
   chain_logo: string | null;
