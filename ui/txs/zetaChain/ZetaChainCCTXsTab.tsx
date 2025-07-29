@@ -7,7 +7,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { zetaChainCCTX } from 'mocks/zetaChain/zetaChainCCTX';
+import { zetaChainCCTXItem } from 'mocks/zetaChain/zetaChainCCTX';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -31,8 +31,8 @@ const ZetaChainEvmTransactions = () => {
       direction: 'DESC',
     },
     options: {
-      placeholderData: { items: Array(50).fill(zetaChainCCTX), next_page_params: { page_index: 0, offset: 0, direction: 'DESC' } },
-      enabled: !tab || tab === 'cross_chain' || tab === 'cctx_validated',
+      placeholderData: { items: Array(50).fill(zetaChainCCTXItem), next_page_params: { page_index: 0, offset: 0, direction: 'DESC' } },
+      enabled: !tab || tab === 'cross_chain' || tab === 'cctx_mined',
     },
   });
 
@@ -45,7 +45,7 @@ const ZetaChainEvmTransactions = () => {
       direction: 'DESC',
     },
     options: {
-      placeholderData: { items: Array(50).fill(zetaChainCCTX), next_page_params: { page_index: 0, offset: 0, direction: 'DESC' } },
+      placeholderData: { items: Array(50).fill(zetaChainCCTXItem), next_page_params: { page_index: 0, offset: 0, direction: 'DESC' } },
       enabled: tab === 'cctx_pending',
     },
   });
@@ -54,7 +54,7 @@ const ZetaChainEvmTransactions = () => {
 
   const tabs: Array<TabItemRegular> = [
     {
-      id: 'cctx_validated',
+      id: 'cctx_mined',
       title: verifiedTitle,
       component:
         <ZetaChainCCTxs
