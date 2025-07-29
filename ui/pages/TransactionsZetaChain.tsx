@@ -33,7 +33,7 @@ const TAB_LIST_PROPS = {
 const TABS_HEIGHT = 88;
 
 const ZETACHAIN_TABS = [ 'zetachain_validated', 'zetachain_pending' ];
-const CROSS_CHAIN_TABS = [ 'cctx_pending', 'cctx_validated' ];
+const CROSS_CHAIN_TABS = [ 'cctx_pending', 'cctx_mined' ];
 
 const TransactionsZetaChain = () => {
   const router = useRouter();

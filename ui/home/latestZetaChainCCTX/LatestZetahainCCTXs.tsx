@@ -6,7 +6,7 @@ import { route } from 'nextjs-routes';
 import useApiQuery from 'lib/api/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { zetaChainCCTX } from 'mocks/zetaChain/zetaChainCCTX';
+import { zetaChainCCTXItem } from 'mocks/zetaChain/zetaChainCCTX';
 import { Link } from 'toolkit/chakra/link';
 import ZetaChainCCTXListItem from 'ui/txs/zetaChain/ZetaChainCCTXListItem';
 
@@ -17,7 +17,7 @@ const LatestZetahainCCTXs = () => {
   const txsCount = isMobile ? 3 : 8;
   const { data, isPlaceholderData, isError } = useApiQuery('zetachain:transactions', {
     queryOptions: {
-      placeholderData: { items: Array(txsCount).fill(zetaChainCCTX), next_page_params: { page_index: 0, offset: 0, direction: 'DESC' } },
+      placeholderData: { items: Array(txsCount).fill(zetaChainCCTXItem), next_page_params: { page_index: 0, offset: 0, direction: 'DESC' } },
     },
     queryParams: {
       limit: txsCount,

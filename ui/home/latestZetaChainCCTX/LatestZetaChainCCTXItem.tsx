@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { ZetaChainCCTX } from 'types/api/zetaChain';
 
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import ZetaChainAddressFromTo from 'ui/shared/zetaChain/ZetaChainAddressFromTo';
 import ZetaChainCCTXStatusTag from 'ui/shared/zetaChain/ZetaChainCCTXStatusTag';
@@ -28,7 +28,7 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading }: Props) => {
       fontSize="sm"
     >
       <ZetaChainCCTXStatusTag status={ tx.status_reduced } isLoading={ isLoading }/>
-      <TxEntity hash={ tx.index } isLoading={ isLoading } truncation="constant" fontWeight={ 600 }/>
+      <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } truncation="constant" fontWeight={ 600 }/>
       <TimeWithTooltip color="text.secondary" timestamp={ Number(tx.last_update_timestamp) * 1000 } isLoading={ isLoading } timeFormat="relative"/>
       <ZetaChainAddressFromTo tx={ tx } isLoading={ isLoading }/>
       <ZetaChainCCTXValue tx={ tx } isLoading={ isLoading } justifyContent="end"/>

@@ -4,7 +4,7 @@ import React from 'react';
 import type { ZetaChainCCTX } from 'types/api/zetaChain';
 
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import ZetaChainAddressFromTo from 'ui/shared/zetaChain/ZetaChainAddressFromTo';
 import ZetaChainCCTXStatusTag from 'ui/shared/zetaChain/ZetaChainCCTXStatusTag';
@@ -22,7 +22,7 @@ const ZetaChainCCTxsTableItem = ({ tx, enableTimeIncrement, isLoading, animation
     <TableRow key={ tx.index } animation={ animation }>
       <TableCell pr={ 4 }>
         <HStack alignItems="start" lineHeight="24px">
-          <TxEntity
+          <TxEntityZetaChainCC
             hash={ tx.index }
             isLoading={ isLoading }
             fontWeight="bold"
