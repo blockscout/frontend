@@ -53,8 +53,8 @@ const InteropMessagesListItem = ({ item, isLoading }: Props) => {
             type={ item.init_chain !== undefined ? 'in' : 'out' }
           />
           { item.relay_chain !== undefined ? (
-            <AddressEntityInterop
-              chain={ item.relay_chain }
+            <AddressEntityWithExternalChain
+              externalChain={ item.relay_chain }
               address={{ hash: item.target }}
               isLoading={ isLoading }
               truncation="constant"

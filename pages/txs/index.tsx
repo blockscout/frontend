@@ -1,9 +1,10 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
-import config from 'configs/app';
 
 import PageNextJs from 'nextjs/PageNextJs';
+
+import config from 'configs/app';
 
 const zetachainFeature = config.features.zetachain;
 
