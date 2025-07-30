@@ -194,8 +194,8 @@ const MarketplaceAppModal = ({
             marginTop={{ base: 6, md: 3 }}
           >
             <Flex flexWrap="wrap" gap={ 6 }>
-              <Flex width={{ base: '100%', md: 'auto' }}>
-                <Link href={ external ? url : route({ pathname: '/apps/[id]', query: { id: data.id } }) } external={ external } noIcon mr={ 2 }>
+              <Flex width={{ base: '100%', md: 'auto' }} gap={ 2 }>
+                <Link href={ external ? url : route({ pathname: '/apps/[id]', query: { id: data.id } }) } external={ external } noIcon>
                   <Button size="sm">
                     Launch app
                   </Button>
@@ -217,7 +217,6 @@ const MarketplaceAppModal = ({
                   type="share"
                   variant="icon_secondary"
                   size="md"
-                  borderRadius="none"
                   ml={ 0 }
                   boxSize={ 8 }
                 />

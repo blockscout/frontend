@@ -164,18 +164,19 @@ const MarketplaceAppCard = ({
             alignItems="center"
             justifyContent="space-between"
             marginTop="auto"
+            h="30px"
           >
             <Link
               textStyle="sm"
               fontWeight="500"
-              paddingRight={{ md: 2 }}
+              paddingRight={ 3 }
               h="full"
               href="#"
               onClick={ handleInfoClick }
             >
               Info
             </Link>
-            <Flex alignItems="center" gap={ 1 }>
+            <Flex alignItems="center" gap={ 3 }>
               <Rating
                 appId={ id }
                 rating={ rating }
@@ -184,25 +185,27 @@ const MarketplaceAppCard = ({
                 isLoading={ isLoading }
                 source="Discovery"
               />
-              <IconButton
-                aria-label="Mark as favorite"
-                title="Mark as favorite"
-                variant="icon_secondary"
-                size="md"
-                onClick={ handleFavoriteClick }
-                selected={ isFavorite }
-              >
-                <FavoriteIcon isFavorite={ isFavorite }/>
-              </IconButton>
-              <CopyToClipboard
-                text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
-                type="share"
-                variant="icon_secondary"
-                size="md"
-                borderRadius="none"
-                ml={ 0 }
-                boxSize={ 8 }
-              />
+              <Flex gap={ 2 }>
+                <IconButton
+                  aria-label="Mark as favorite"
+                  title="Mark as favorite"
+                  variant="icon_secondary"
+                  size="md"
+                  onClick={ handleFavoriteClick }
+                  selected={ isFavorite }
+                >
+                  <FavoriteIcon isFavorite={ isFavorite }/>
+                </IconButton>
+                <CopyToClipboard
+                  text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
+                  type="share"
+                  variant="icon_secondary"
+                  size="md"
+                  borderRadius="none"
+                  ml={ 0 }
+                  boxSize={ 8 }
+                />
+              </Flex>
             </Flex>
           </Flex>
         ) }
