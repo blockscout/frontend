@@ -104,7 +104,7 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     internalWallet: yup.boolean(),
     priority: yup.number(),
     rating: yup.number(),
-    ratingsTotalCount: yup.string(),
+    ratingsTotalCount: yup.number(),
     userRating: yup.number(),
   });
 

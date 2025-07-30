@@ -122,7 +122,7 @@ export default function useMarketplaceApps(
           return (b.rating || 0) - (a.rating || 0);
         }
         if (sorting === 'rating_count') {
-          return Number(b.ratingsTotalCount || 0) - Number(a.ratingsTotalCount || 0);
+          return (b.ratingsTotalCount || 0) - (a.ratingsTotalCount || 0);
         }
         return 0;
       }) || [];

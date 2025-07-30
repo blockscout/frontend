@@ -18,7 +18,7 @@ const isEnabled = feature.isEnabled && 'api' in feature;
 type Props = {
   appId: string;
   rating?: number;
-  ratingsTotalCount?: string;
+  ratingsTotalCount?: number;
   userRating?: number;
   isLoading?: boolean;
   fullView?: boolean;
@@ -47,7 +47,7 @@ const MarketplaceRating = ({
         <>
           <Rating value={ Math.floor(rating || 0) } readOnly key={ rating }/>
           <Text fontSize="md" ml={ 2 }>{ rating || null }</Text>
-          { ratingsTotalCount !== '0' && <Text color="text.secondary" textStyle="md" ml={ 1 }>({ ratingsTotalCount })</Text> }
+          { ratingsTotalCount && <Text color="text.secondary" textStyle="md" ml={ 1 }>({ ratingsTotalCount })</Text> }
         </>
       ) }
       <PopoverRoot positioning={{ placement: 'bottom' }}>

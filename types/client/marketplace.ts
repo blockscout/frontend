@@ -12,7 +12,7 @@ export type MarketplaceAppPreview = {
   internalWallet?: boolean;
   priority?: number;
   rating?: number;
-  ratingsTotalCount?: string;
+  ratingsTotalCount?: number;
   userRating?: number;
 };
 

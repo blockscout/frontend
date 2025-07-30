@@ -11,7 +11,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends ButtonProps {
   rating?: number;
-  count?: string;
+  count?: number;
   fullView?: boolean;
   canRate: boolean;
 };
