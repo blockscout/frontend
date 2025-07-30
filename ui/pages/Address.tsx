@@ -11,7 +11,6 @@ import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery
 import useAddressMetadataInitUpdate from 'lib/address/useAddressMetadataInitUpdate';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAddressClusters } from 'lib/clusters/useAddressClusters';
-import { useAppContext } from 'lib/contexts/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
@@ -41,7 +40,6 @@ import AddressTxs from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import AddressClusters from 'ui/address/clusters/AddressClusters';
-import useContractTabs from 'ui/address/contract/useContractTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
