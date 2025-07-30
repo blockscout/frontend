@@ -8,7 +8,6 @@ import type { StatsIntervalIds } from 'types/client/stats';
 import { StatsIntervalId } from 'types/client/stats';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
@@ -83,20 +82,6 @@ const Chart = () => {
 
   const isMobile = useIsMobile();
   const isInBrowser = isBrowser();
-
-  const appProps = useAppContext();
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/stats');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to charts list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
 
   const onIntervalChange = React.useCallback((interval: StatsIntervalIds) => {
     setIntervalState(interval);
@@ -183,7 +168,6 @@ const Chart = () => {
         title={ info?.title || lineQuery.data?.info?.title || '' }
         mb={ 3 }
         isLoading={ isInfoLoading }
-        backLink={ backLink }
         secondRow={ info?.description || lineQuery.data?.info?.description }
         withTextAd
       />

@@ -72,7 +72,7 @@ const Footer = () => {
       icon: 'donate' as const,
       iconSize: '20px',
       text: 'Donate',
-      url: 'https://github.com/sponsors/blockscout',
+      url: 'https://eth.blockscout.com/address/0xfB4aF6A8592041E9BcE186E5aC4BDbd2B137aD11',
     },
   ];
 
