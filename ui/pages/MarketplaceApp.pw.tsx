@@ -17,17 +17,15 @@ const hooksConfig = {
   },
 };
 
-const MARKETPLACE_CONFIG_URL = 'http://localhost:4000/marketplace-config.json';
 const MARKETPLACE_SECURITY_REPORTS_URL = 'http://localhost:4000/marketplace-security-reports.json';
 
-const testFn = async({ render, mockConfigResponse, mockAssetResponse, mockEnvs, mockRpcResponse }: TestFnArgs) => {
+const testFn = async({ render, mockConfigResponse, mockAssetResponse, mockEnvs, mockRpcResponse, mockApiResponse }: TestFnArgs) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
-    [ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL ],
     [ 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, appsMock);
   await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL, securityReportsMock);
+  await mockApiResponse('admin:marketplace_dapp', appsMock[0], { pathParams: { chainId: config.chain.id, dappId: appsMock[0].id } });
   await mockAssetResponse(appsMock[0].url, './mocks/apps/app.html');
   await mockRpcResponse({
     Method: 'eth_chainId',
