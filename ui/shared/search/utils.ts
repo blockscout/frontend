@@ -1,4 +1,4 @@
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 import type { SearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
@@ -8,11 +8,11 @@ export type Category = ApiCategory | 'app';
 
 export type ItemsCategoriesMap =
 Record<ApiCategory, Array<SearchResultItem>> &
-Record<'app', Array<MarketplaceAppOverview>>;
+Record<'app', Array<MarketplaceApp>>;
 
 export type SearchResultAppItem = {
   type: 'app';
-  app: MarketplaceAppOverview;
+  app: MarketplaceApp;
 };
 
 export const searchCategories: Array<{ id: Category; title: string }> = [

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 
-export const MARKETPLACE_APP: MarketplaceAppOverview = {
+export const MARKETPLACE_APP: MarketplaceApp = {
   author: 'StubApp Inc.',
   id: 'stub-app',
   title: 'My cool app name',

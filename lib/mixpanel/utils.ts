@@ -125,12 +125,9 @@ Type extends EventTypes.PAGE_WIDGET ? (
   {
     Type: 'Tokens dropdown' | 'Tokens show all (icon)' | 'Add to watchlist' | 'Address actions (more button)';
   } | {
-    Type: 'Favorite app' | 'More button' | 'Security score' | 'Total contracts' | 'Verified contracts' | 'Analyzed contracts';
+    Type: 'Favorite app' | 'More button';
     Info: string;
-    Source: 'Discovery view' | 'Security view' | 'App modal' | 'App page' | 'Security score popup' | 'Banner';
-  } | {
-    Type: 'Security score';
-    Source: 'Analyzed contracts popup';
+    Source: 'Discovery view' | 'App modal' | 'App page' | 'Banner';
   } | {
     Type: 'Action button';
     Info: string;

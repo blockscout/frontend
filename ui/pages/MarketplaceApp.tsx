@@ -4,7 +4,7 @@ import { DappscoutIframeProvider, useDappscoutIframe } from 'dappscout-iframe';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
 
@@ -23,7 +23,6 @@ import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';
 import useAutoConnectWallet from '../marketplace/useAutoConnectWallet';
 import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';
-import useSecurityReports from '../marketplace/useSecurityReports';
 import { getAppUrl } from '../marketplace/utils';
 
 const feature = config.features.marketplace;
@@ -37,7 +36,7 @@ const IFRAME_ALLOW_ATTRIBUTE = 'clipboard-read; clipboard-write;';
 
 type Props = {
   address: string | undefined;
-  data: MarketplaceAppOverview | undefined;
+  data: MarketplaceApp | undefined;
   isPending: boolean;
   appUrl?: string;
 };
@@ -101,7 +100,7 @@ const MarketplaceAppContent = ({ address, data, isPending, appUrl }: Props) => {
   );
 };
 
-const MarketplaceApp = () => {
+export default function MarketplaceApp() {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
   const router = useRouter();
@@ -110,19 +109,17 @@ const MarketplaceApp = () => {
   const profileQuery = useProfileQuery();
   useAutoConnectWallet();
 
-  const { data: securityReports, isLoading: isSecurityReportsLoading } = useSecurityReports();
-
-  const query = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
+  const query = useQuery<unknown, ResourceError<unknown>, MarketplaceApp>({
     queryKey: [ 'marketplace-dapps', id ],
     queryFn: async() => {
       if (!feature.isEnabled) {
         return null;
       } else if ('configUrl' in feature) {
-        const result = await fetch<Array<MarketplaceAppOverview>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
+        const result = await fetch<Array<MarketplaceApp>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
         if (!Array.isArray(result)) {
           throw result;
         }
-        const item = result.find((app: MarketplaceAppOverview) => app.id === id);
+        const item = result.find((app: MarketplaceApp) => app.id === id);
         if (!item) {
           throw { status: 404 };
         }
@@ -160,8 +157,7 @@ const MarketplaceApp = () => {
       <MarketplaceAppTopBar
         appId={ id }
         data={ data }
-        isLoading={ isPending || isSecurityReportsLoading }
-        securityReport={ securityReports?.[id] }
+        isLoading={ isPending }
       />
       <DappscoutIframeProvider
         address={ address }
@@ -176,5 +172,3 @@ const MarketplaceApp = () => {
     </Flex>
   );
 };
-
-export default MarketplaceApp;

@@ -4,7 +4,6 @@ import { numberToHex } from 'viem';
 
 import config from 'configs/app';
 import { apps as appsMock } from 'mocks/apps/apps';
-import { securityReports as securityReportsMock } from 'mocks/apps/securityReports';
 import type { TestFnArgs } from 'playwright/lib';
 import { test, expect, devices } from 'playwright/lib';
 
@@ -17,14 +16,10 @@ const hooksConfig = {
   },
 };
 
-const MARKETPLACE_SECURITY_REPORTS_URL = 'http://localhost:4000/marketplace-security-reports.json';
-
-const testFn = async({ render, mockConfigResponse, mockAssetResponse, mockEnvs, mockRpcResponse, mockApiResponse }: TestFnArgs) => {
+const testFn = async({ render, mockAssetResponse, mockEnvs, mockRpcResponse, mockApiResponse }: TestFnArgs) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
-    [ 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL, securityReportsMock);
   await mockApiResponse('admin:marketplace_dapp', appsMock[0], { pathParams: { chainId: config.chain.id, dappId: appsMock[0].id } });
   await mockAssetResponse(appsMock[0].url, './mocks/apps/app.html');
   await mockRpcResponse({

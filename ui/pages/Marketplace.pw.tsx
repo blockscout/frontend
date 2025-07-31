@@ -3,19 +3,14 @@ import React from 'react';
 
 import config from 'configs/app';
 import { apps as appsMock } from 'mocks/apps/apps';
-import { securityReports as securityReportsMock } from 'mocks/apps/securityReports';
 import { test, expect, devices } from 'playwright/lib';
 
 import Marketplace from './Marketplace';
 
-const MARKETPLACE_SECURITY_REPORTS_URL = 'https://localhost:4000/marketplace-security-reports.json';
-
-test.beforeEach(async({ mockConfigResponse, mockEnvs, mockAssetResponse, mockApiResponse }) => {
+test.beforeEach(async({ mockEnvs, mockAssetResponse, mockApiResponse }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
-    [ 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL, securityReportsMock);
   await mockApiResponse('admin:marketplace_dapps', appsMock, { pathParams: { chainId: config.chain.id } });
   await Promise.all(appsMock.map(app => mockAssetResponse(app.logo, './playwright/mocks/image_s.jpg')));
 });

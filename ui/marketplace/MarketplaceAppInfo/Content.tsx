@@ -1,14 +1,14 @@
 import { Flex, Text, Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 
 import SocialLink from './SocialLink';
 import type { Props as SocialLinkProps } from './SocialLink';
 import WebsiteLink from './WebsiteLink';
 
 interface Props {
-  data: MarketplaceAppOverview | undefined;
+  data: MarketplaceApp | undefined;
 }
 
 const SOCIAL_LINKS: Array<Omit<SocialLinkProps, 'href'>> = [

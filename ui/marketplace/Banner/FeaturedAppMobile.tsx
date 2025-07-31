@@ -2,7 +2,7 @@ import { Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React from 'react';
 
-import type { MarketplaceAppPreview } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { IconButton } from 'toolkit/chakra/icon-button';
@@ -14,7 +14,7 @@ import FavoriteIcon from '../FavoriteIcon';
 import MarketplaceAppCardLink from '../MarketplaceAppCardLink';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 
-interface Props extends MarketplaceAppPreview {
+interface Props extends MarketplaceApp {
   onInfoClick: (event: MouseEvent) => void;
   isFavorite: boolean;
   onFavoriteClick: () => void;
