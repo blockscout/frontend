@@ -31,8 +31,8 @@ const FlashblocksListItem = ({ data }: Props) => {
         <Text fontWeight={ 500 }>Txn</Text>
         { data.transactions_count > 0 ? (
           <Link href={ route({
-            pathname: '/block/[height_or_hash]/flashblock/[id]',
-            query: { height_or_hash: String(data.block_number), id: String(data.index), tab: 'txs' },
+            pathname: '/block/[height_or_hash]',
+            query: { height_or_hash: String(data.block_number), tab: 'txs' },
           }) }>
             { data.transactions_count }
           </Link>
