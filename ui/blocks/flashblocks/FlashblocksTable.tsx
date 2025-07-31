@@ -25,9 +25,6 @@ const FlashblocksTable = ({ items, newItemsNum, showAlertError, onAlertLinkClick
           <TableColumnHeader width="50%">
             Txn
           </TableColumnHeader>
-          <TableColumnHeader width="50%">
-            Size
-          </TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

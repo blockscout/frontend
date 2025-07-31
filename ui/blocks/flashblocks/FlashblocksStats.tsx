@@ -28,11 +28,15 @@ const FlashblocksStats = ({ itemsNum, txsNum, initialTs }: Props) => {
       />
       <StatsWidget
         label="TPS"
-        value={ timeElapsed ? Number(txsNum / (timeElapsed / SECOND)).toLocaleString(undefined, { maximumFractionDigits: 0 }) : '-' }
+        value={ timeElapsed && txsNum > 0 ? Number(txsNum / (timeElapsed / SECOND)).toLocaleString(undefined, { maximumFractionDigits: 0 }) : '-' }
       />
       <StatsWidget
         label="Flashblock time"
-        value={ timeElapsed ? Number(timeElapsed / itemsNum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ms' : '-' }
+        value={
+          timeElapsed && itemsNum > 0 ?
+            Number(timeElapsed / itemsNum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ms' :
+            '-'
+        }
       />
     </Box>
   );

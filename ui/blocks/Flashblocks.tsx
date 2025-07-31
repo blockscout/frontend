@@ -11,6 +11,7 @@ import useFlashblocksSocketData from './flashblocks/useFlashblocksSocketData';
 
 const Flashblocks = () => {
 
+  const [ isRealTime, setIsRealTime ] = React.useState(true);
   const { items, itemsNum, newItemsNum, txsNum, pause, resume, initialTs, status } = useFlashblocksSocketData();
 
   const handleFormatChange = React.useCallback(({ checked }: { checked: boolean }) => {
@@ -19,9 +20,12 @@ const Flashblocks = () => {
     } else {
       pause();
     }
+    setIsRealTime(checked);
   }, [ pause, resume ]);
 
-  const handleAlertLinkClick = React.useCallback(() => {}, []);
+  const handleAlertLinkClick = React.useCallback(() => {
+    handleFormatChange({ checked: true });
+  }, [ handleFormatChange ]);
 
   const showAlertError = status === 'error' || status === 'disconnected';
 
@@ -29,7 +33,7 @@ const Flashblocks = () => {
     <Box>
       <FlashblocksStats itemsNum={ itemsNum } txsNum={ txsNum } initialTs={ initialTs }/>
       <HStack gap={ 2 } mb={ 4 }>
-        <Switch size="md" flexDirection="row-reverse" onCheckedChange={ handleFormatChange } defaultChecked={ true }>
+        <Switch size="md" flexDirection="row-reverse" onCheckedChange={ handleFormatChange } checked={ isRealTime }>
           Real-time feed
         </Switch>
         <Hint label="Real-time flashblocks show the latest flashblocks with real-time updates in the chronological order. "/>
