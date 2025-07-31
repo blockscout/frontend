@@ -1,9 +1,6 @@
 import React from 'react';
 
-import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
-
 import { apps as appsMock } from 'mocks/apps/apps';
-import { securityReports as securityReportsMock } from 'mocks/apps/securityReports';
 import type { TestFnArgs } from 'playwright/lib';
 import { test, expect, devices } from 'playwright/lib';
 
@@ -13,10 +10,7 @@ const props = {
   onClose: () => {},
   onFavoriteClick: () => {},
   showContractList: () => {},
-  data: {
-    ...appsMock[0],
-    securityReport: securityReportsMock[0].chainsData['1'],
-  } as MarketplaceAppWithSecurityReport,
+  data: appsMock[0],
   isFavorite: false,
   userRating: undefined,
   rateApp: () => {},

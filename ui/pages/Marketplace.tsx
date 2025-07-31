@@ -15,7 +15,6 @@ import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'toolkit/chakra/men
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import Banner from 'ui/marketplace/Banner';
-import ContractListModal from 'ui/marketplace/ContractListModal';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
@@ -73,9 +72,6 @@ const Marketplace = () => {
     showDisclaimer,
     appsTotal,
     isCategoriesPlaceholderData,
-    showContractList,
-    contractListModalType,
-    hasPreviousStep,
     setSorting,
   } = useMarketplace();
 
@@ -129,13 +125,6 @@ const Marketplace = () => {
       showDisclaimer(id);
     }
   }, [ showDisclaimer ]);
-
-  const handleGoBackInContractListModal = React.useCallback(() => {
-    clearSelectedAppId();
-    if (selectedApp) {
-      showAppInfo(selectedApp.id);
-    }
-  }, [ clearSelectedAppId, showAppInfo, selectedApp ]);
 
   const handleSortChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setSorting(value[0] as SortValue);
@@ -243,7 +232,6 @@ const Marketplace = () => {
         isLoading={ isPlaceholderData }
         selectedCategoryId={ selectedCategoryId }
         onAppClick={ handleAppClick }
-        showContractList={ showContractList }
         graphLinksQuery={ graphLinksQuery }
       />
 
@@ -253,7 +241,6 @@ const Marketplace = () => {
           isFavorite={ favoriteApps.includes(selectedApp.id) }
           onFavoriteClick={ onFavoriteClick }
           data={ selectedApp }
-          showContractList={ showContractList }
           graphLinks={ graphLinksQuery.data?.[selectedApp.id] }
         />
       ) }
@@ -263,15 +250,6 @@ const Marketplace = () => {
           isOpen={ isDisclaimerModalOpen }
           onClose={ clearSelectedAppId }
           appId={ selectedApp.id }
-        />
-      ) }
-
-      { (selectedApp && contractListModalType) && (
-        <ContractListModal
-          type={ contractListModalType }
-          contracts={ selectedApp?.securityReport?.contractsData }
-          onClose={ clearSelectedAppId }
-          onBack={ hasPreviousStep ? handleGoBackInContractListModal : undefined }
         />
       ) }
     </>
