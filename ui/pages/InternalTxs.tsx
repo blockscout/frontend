@@ -98,7 +98,7 @@ const InternalTxs = () => {
         emptyText="There are no internal transactions."
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find any internal transaction that matches your query.`,
-          hasActiveFilters: Boolean(searchTerm),
+          hasActiveFilters: Boolean(debouncedSearchTerm),
         }}
         actionBar={ actionBar }
       >
