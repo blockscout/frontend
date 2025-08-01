@@ -591,7 +591,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | url | `string` | URL of the app which will be launched in the iframe. | Required | `'https://foo.app/launch'` |
 | description | `string` | Displayed only in the modal dialog with additional info about the app. | Required | `'The best app'` |
 | site | `string` | Displayed site link | - | `'https://blockscout.com'` |
-| twitter | `string` | Displayed twitter link | - | `'https://twitter.com/blockscoutcom'` |
+| twitter | `string` | Displayed twitter link | - | `'https://x.com/blockscoutcom'` |
 | telegram | `string`  | Displayed telegram link | - | `'https://t.me/poa_network'` |
 | github | `string` | Displayed github link | - | `'https://github.com/blockscout'` |
 | internalWallet | `boolean` | `true` means that the application can automatically connect to the Blockscout wallet. | - | `true` |
