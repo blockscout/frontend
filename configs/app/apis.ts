@@ -100,26 +100,6 @@ const rewardsApi = (() => {
     endpoint: apiHost,
   });
 })();
-
-const multichainApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST');
-  if (!apiHost) {
-    return;
-  }
-
-  try {
-    const url = new URL(apiHost);
-
-    return Object.freeze({
-      endpoint: apiHost,
-      socketEndpoint: `wss://${ url.host }`,
-    });
-  } catch (error) {
-    return;
-  }
-
-})();
-
 const statsApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_STATS_API_HOST');
   if (!apiHost) {
@@ -166,6 +146,35 @@ const visualizeApi = (() => {
   });
 })();
 
+const clustersApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_CLUSTERS_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  return Object.freeze({
+    endpoint: apiHost,
+  });
+})();
+
+const multichainApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  try {
+    const url = new URL(apiHost);
+
+    return Object.freeze({
+      endpoint: apiHost,
+      socketEndpoint: `wss://${ url.host }`,
+    });
+  } catch (error) {
+    return;
+  }
+})();
+
 export type Apis = {
   general: ApiPropsFull;
 } & Partial<Record<Exclude<ApiName, 'general'>, ApiPropsBase>>;
@@ -174,6 +183,7 @@ const apis: Apis = Object.freeze({
   general: generalApi,
   admin: adminApi,
   bens: bensApi,
+  clusters: clustersApi,
   contractInfo: contractInfoApi,
   metadata: metadataApi,
   multichain: multichainApi,

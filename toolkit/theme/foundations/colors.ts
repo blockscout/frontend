@@ -157,6 +157,7 @@ const colors = {
   medium: { value: '#231F20' },
   reddit: { value: '#FF4500' },
   celo: { value: '#FCFF52' },
+  clusters: { value: '#DE6061' },
 };
 
 export default colors;

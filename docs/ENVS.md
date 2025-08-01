@@ -56,6 +56,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Verified tokens info](#verified-tokens-info)
   - [Name service integration](#name-service-integration)
   - [Metadata service integration](#metadata-service-integration)
+  - [Clusters Universal Name Service](#clusters-universal-name-service)
   - [Public tag submission](#public-tag-submission)
   - [Data availability](#data-availability)
   - [Bridged tokens](#bridged-tokens)
@@ -670,6 +671,17 @@ This feature allows name tags and other public tags for addresses.
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_METADATA_SERVICE_API_HOST | `string` | Metadata Service API endpoint url | Required | - | `https://metadata.services.blockscout.com` | v1.30.0+ |
 | NEXT_PUBLIC_METADATA_ADDRESS_TAGS_UPDATE_ENABLED | `boolean` | Enables requests to the Metadata Service to schedule an update for address tags after the user visits the address page in the app. | - | `true` | `false` | v2.2.0+ |
+
+&nbsp;
+
+### Clusters Universal Name Service
+
+This feature integrates Clusters.xyz universal naming service, enabling users to look up and track cross-chain identities through human-readable names like "vitalik/" or "uniswap/". Unlike traditional domain services that work on single chains, clusters span multiple blockchains - one cluster name can represent addresses on Ethereum, Base, Optimism, and other networks. This integration adds cluster lookup pages (/clusters/[name]), a clusters directory (/clusters), search functionality in the main search bar, and displays cluster profile information and images throughout the explorer.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_CLUSTERS_API_HOST | `string` | Clusters.xyz API endpoint for fetching cluster data, directory listings, and cross-chain address mappings | Required | - | `https://example.com/clusters-api` | v2.2.0+ |
+| NEXT_PUBLIC_CLUSTERS_CDN_URL | `string` | CDN base URL for serving cluster profile images and avatars displayed in search results and cluster pages | - | `https://cdn.clusters.xyz` | `https://your-cdn.example.com` | v2.2.0+ |
 
 &nbsp;
 
