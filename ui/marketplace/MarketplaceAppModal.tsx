@@ -334,7 +334,7 @@ const MarketplaceAppModal = ({
               >
                 <IconSvg
                   name={ icon }
-                  color="text.secondary"
+                  color="icon.secondary"
                   boxSize={ 5 }
                 />
               </Link>

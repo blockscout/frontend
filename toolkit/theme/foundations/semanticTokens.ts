@@ -6,10 +6,19 @@ const heroBannerButton = config.UI.homepage.heroBanner?.button;
 
 const semanticTokens: ThemingConfig['semanticTokens'] = {
   colors: {
+    hover: {
+      // TODO @tom2drum replace usage of link.primary.hover
+      DEFAULT: { value: { _light: '{colors.theme.hover._light}', _dark: '{colors.theme.hover._dark}' } },
+    },
     button: {
+      solid: {
+        bg: {
+          DEFAULT: { value: { _light: '{colors.theme.button.primary._light}', _dark: '{colors.theme.button.primary._dark}' } },
+        },
+      },
       outline: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.600}' } },
+          DEFAULT: { value: { _light: '{colors.theme.button.primary._light}', _dark: '{colors.theme.button.primary._dark}' } },
         },
       },
       subtle: {
@@ -80,14 +89,14 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         bg: {
           DEFAULT: {
             value: {
-              _light: heroBannerButton?._default?.background?.[0] || '{colors.blue.600}',
-              _dark: heroBannerButton?._default?.background?.[1] || heroBannerButton?._default?.background?.[0] || '{colors.blue.600}',
+              _light: heroBannerButton?._default?.background?.[0] || '{colors.theme.button.primary._light}',
+              _dark: heroBannerButton?._default?.background?.[1] || heroBannerButton?._default?.background?.[0] || '{colors.theme.button.primary._dark}',
             },
           },
           hover: {
             value: {
-              _light: heroBannerButton?._hover?.background?.[0] || '{colors.blue.400}',
-              _dark: heroBannerButton?._hover?.background?.[1] || heroBannerButton?._hover?.background?.[0] || '{colors.blue.400}',
+              _light: heroBannerButton?._hover?.background?.[0] || '{colors.hover}',
+              _dark: heroBannerButton?._hover?.background?.[1] || heroBannerButton?._hover?.background?.[0] || '{colors.hover}',
             },
           },
           selected: {
@@ -126,8 +135,8 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     link: {
       primary: {
-        DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
-        hover: { value: { _light: '{colors.blue.400}' } },
+        DEFAULT: { value: { _light: '{colors.theme.link.primary._light}', _dark: '{colors.theme.link.primary._dark}' } },
+        hover: { value: '{colors.hover}' },
       },
       secondary: {
         DEFAULT: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
@@ -433,9 +442,12 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
     },
     text: {
-      primary: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
-      secondary: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
+      primary: { value: { _light: '{colors.theme.text.primary._light}', _dark: '{colors.theme.text.primary._dark}' } },
+      secondary: { value: { _light: '{colors.theme.text.secondary._light}', _dark: '{colors.theme.text.secondary._dark}' } },
       error: { value: '{colors.red.500}' },
+    },
+    bg: {
+      primary: { value: { _light: '{colors.theme.bg.primary._light}', _dark: '{colors.theme.bg.primary._dark}' } },
     },
     border: {
       divider: { value: { _light: '{colors.blackAlpha.100}', _dark: '{colors.whiteAlpha.100}' } },
@@ -445,6 +457,8 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       backTo: { value: '{colors.gray.400}' },
       externalLink: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
       info: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
+      //
+      secondary: { value: '{colors.text.secondary}' },
     },
     address: {
       highlighted: {
@@ -454,7 +468,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     global: {
       body: {
-        bg: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
+        bg: { value: '{colors.bg.primary}' },
         fg: { value: '{colors.text.primary}' },
       },
       mark: {

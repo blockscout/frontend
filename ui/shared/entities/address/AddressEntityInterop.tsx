@@ -34,7 +34,7 @@ const IconStub = () => {
         name="networks/icon-placeholder"
         width="10px"
         height="10px"
-        color="text.secondary"
+        color="icon.secondary"
       />
     </Flex>
   );

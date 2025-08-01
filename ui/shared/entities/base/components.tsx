@@ -117,7 +117,7 @@ const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRig
       borderRadius={ borderRadius ?? 'base' }
       display="block"
       mr={ marginRight ?? (shield ? '18px' : '8px') }
-      color={ color ?? { _light: 'gray.500', _dark: 'gray.400' } }
+      color={ color ?? 'icon.secondary' }
       minW={ 0 }
       flexShrink={ 0 }
     />

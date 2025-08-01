@@ -197,7 +197,7 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, isNov
   return (
     <Skeleton loading={ isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
       <Tooltip content="Transaction summary">
-        <IconSvg name="lightning" boxSize={ 5 } color="text.secondary" mr={ 1 } verticalAlign="text-top"/>
+        <IconSvg name="lightning" boxSize={ 5 } color="icon.secondary" mr={ 1 } verticalAlign="text-top"/>
       </Tooltip>
       { chunks.map((chunk, index) => {
         let content = null;
