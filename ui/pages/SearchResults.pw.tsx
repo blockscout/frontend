@@ -9,8 +9,42 @@ import { test, expect } from 'playwright/lib';
 import SearchResults from './SearchResults';
 
 async function resetScroll(page: Page) {
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  // Scroll to top and ensure we stay there
   await page.evaluate(() => window.scrollTo(0, 0));
+
+  // Wait for sticky headers to be in their default (hidden) state
+  // Check for ActionBar - it should not be visible when at top
+  await page.waitForFunction(() => {
+    const actionBar = document.querySelector('[data-testid="action-bar"]') ||
+                     document.querySelector('[class*="ActionBar"]') ||
+                     document.querySelector('[class*="action-bar"]');
+    if (actionBar) {
+      const rect = actionBar.getBoundingClientRect();
+      // ActionBar should be in its default position (not sticky) when at top
+      return rect.top > 0;
+    }
+    return true; // If no ActionBar found, consider it "hidden"
+  }, { timeout: 500 });
+
+  // Check for TableHeaderSticky - it should not be stuck when at top
+  await page.waitForFunction(() => {
+    const stickyHeaders = document.querySelectorAll('[class*="TableHeaderSticky"]');
+    if (stickyHeaders.length > 0) {
+      return Array.from(stickyHeaders).every(header => {
+        const rect = header.getBoundingClientRect();
+        // Sticky headers should be in their default position when at top
+        return rect.top > 0;
+      });
+    }
+    return true; // If no sticky headers found, consider them "hidden"
+  }, { timeout: 500 });
+
+  // Double-check we're at the top
+  await page.evaluate(() => {
+    if (window.scrollY !== 0) {
+      window.scrollTo(0, 0);
+    }
+  });
 }
 
 test.describe('search by name', () => {

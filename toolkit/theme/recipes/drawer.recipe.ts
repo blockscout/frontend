@@ -73,8 +73,9 @@ export const recipe = defineSlotRecipe({
       pb: '4',
     },
     title: {
-      textStyle: 'lg',
-      fontWeight: 'semibold',
+      textStyle: 'heading.md',
+      lineHeight: '32px',
+      fontWeight: '500',
     },
     description: {
       color: 'fg.muted',
@@ -146,10 +147,22 @@ export const recipe = defineSlotRecipe({
         positioner: {
           alignItems: 'flex-end',
         },
+        header: {
+          px: '5',
+          pt: '5',
+          pb: '3',
+        },
+        body: {
+          p: '5',
+        },
+        footer: {
+          px: '5',
+        },
         content: {
           maxW: '100%',
           _open: { animationName: 'slide-from-bottom-full, fade-in' },
           _closed: { animationName: 'slide-to-bottom-full, fade-out' },
+          borderTopRadius: 'base',
         },
       },
     },
