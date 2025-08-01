@@ -12,7 +12,6 @@ export function marketplace(): CspDev.DirectiveDescriptor {
   return {
     'connect-src': [
       'api' in feature ? feature.api.endpoint : '',
-      feature.rating ? 'https://api.airtable.com' : '',
     ],
 
     'frame-src': [

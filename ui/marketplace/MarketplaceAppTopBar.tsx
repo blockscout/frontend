@@ -21,7 +21,6 @@ import AppSecurityReport from './AppSecurityReport';
 import ContractListModal from './ContractListModal';
 import MarketplaceAppInfo from './MarketplaceAppInfo';
 import Rating from './Rating/Rating';
-import useRatings from './Rating/useRatings';
 
 type Props = {
   appId: string;
@@ -34,8 +33,6 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
   const [ contractListType, setContractListType ] = React.useState<ContractListTypes>();
   const appProps = useAppContext();
   const isMobile = useIsMobile();
-
-  const { ratings, userRatings, rateApp, isRatingSending, isRatingLoading, canRate } = useRatings();
 
   const goBackUrl = React.useMemo(() => {
     if (appProps.referrer && appProps.referrer.includes('/apps') && !appProps.referrer.includes('/apps/')) {
@@ -88,12 +85,10 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
         ) }
         <Rating
           appId={ appId }
-          rating={ ratings[appId] }
-          userRating={ userRatings[appId] }
-          rate={ rateApp }
-          isSending={ isRatingSending }
-          isLoading={ isRatingLoading }
-          canRate={ canRate }
+          rating={ data?.rating }
+          ratingsTotalCount={ data?.ratingsTotalCount }
+          userRating={ data?.userRating }
+          isLoading={ isLoading }
           source="App page"
         />
         { !isMobile && (

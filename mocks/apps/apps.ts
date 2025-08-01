@@ -14,6 +14,8 @@ export const apps = [
     github: [ 'https://github.com/hop-protocol/hop', 'https://github.com/hop-protocol/hop-ui' ],
     discord: 'https://discord.gg/hopprotocol',
     twitter: 'https://twitter.com/HopProtocol',
+    rating: 4.3,
+    ratingsTotalCount: 15,
   },
   {
     author: 'Blockscout',

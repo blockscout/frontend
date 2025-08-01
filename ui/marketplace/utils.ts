@@ -11,8 +11,8 @@ export type SortValue = 'default' | 'rating_score' | 'rating_count' | 'security_
 
 export const SORT_OPTIONS: Array<SelectOption<SortValue>> = [
   { label: 'Default', value: 'default' },
-  (feature.isEnabled && feature.rating) && { label: 'Top rated', value: 'rating_score' },
-  (feature.isEnabled && feature.rating) && { label: 'Most rated', value: 'rating_count' },
+  (feature.isEnabled && 'api' in feature) && { label: 'Top rated', value: 'rating_score' },
+  (feature.isEnabled && 'api' in feature) && { label: 'Most rated', value: 'rating_count' },
   (feature.isEnabled && feature.securityReportsUrl) && { label: 'Security score', value: 'security_score' },
 ].filter(Boolean) as Array<SelectOption<SortValue>>;
 

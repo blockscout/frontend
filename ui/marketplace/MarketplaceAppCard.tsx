@@ -2,7 +2,7 @@ import { chakra, Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, ContractListTypes } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
@@ -19,7 +19,6 @@ import MarketplaceAppCardLink from './MarketplaceAppCardLink';
 import MarketplaceAppGraphLinks from './MarketplaceAppGraphLinks';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 import Rating from './Rating/Rating';
-import type { RateFunction } from './Rating/useRatings';
 
 interface Props extends MarketplaceAppWithSecurityReport {
   onInfoClick: (id: string) => void;
@@ -29,11 +28,6 @@ interface Props extends MarketplaceAppWithSecurityReport {
   onAppClick: (event: MouseEvent, id: string) => void;
   className?: string;
   showContractList: (id: string, type: ContractListTypes) => void;
-  userRating?: AppRating;
-  rateApp: RateFunction;
-  isRatingSending: boolean;
-  isRatingLoading: boolean;
-  canRate: boolean | undefined;
   graphLinks?: Array<{ title: string; url: string }>;
 }
 
@@ -56,11 +50,8 @@ const MarketplaceAppCard = ({
   className,
   showContractList,
   rating,
+  ratingsTotalCount,
   userRating,
-  rateApp,
-  isRatingSending,
-  isRatingLoading,
-  canRate,
   graphLinks,
 }: Props) => {
   const isMobile = useIsMobile();
@@ -173,46 +164,48 @@ const MarketplaceAppCard = ({
             alignItems="center"
             justifyContent="space-between"
             marginTop="auto"
+            h="30px"
           >
             <Link
               textStyle="sm"
               fontWeight="500"
-              paddingRight={{ md: 2 }}
+              paddingRight={ 3 }
+              h="full"
               href="#"
               onClick={ handleInfoClick }
             >
-              More info
+              Info
             </Link>
-            <Flex alignItems="center" gap={ 1 }>
+            <Flex alignItems="center" gap={ 3 }>
               <Rating
                 appId={ id }
                 rating={ rating }
+                ratingsTotalCount={ ratingsTotalCount }
                 userRating={ userRating }
-                rate={ rateApp }
-                isSending={ isRatingSending }
-                isLoading={ isRatingLoading }
-                canRate={ canRate }
+                isLoading={ isLoading }
                 source="Discovery"
               />
-              <IconButton
-                aria-label="Mark as favorite"
-                title="Mark as favorite"
-                variant="icon_secondary"
-                size="md"
-                onClick={ handleFavoriteClick }
-                selected={ isFavorite }
-              >
-                <FavoriteIcon isFavorite={ isFavorite }/>
-              </IconButton>
-              <CopyToClipboard
-                text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
-                type="share"
-                variant="icon_secondary"
-                size="md"
-                borderRadius="none"
-                ml={ 0 }
-                boxSize={ 8 }
-              />
+              <Flex gap={ 2 }>
+                <IconButton
+                  aria-label="Mark as favorite"
+                  title="Mark as favorite"
+                  variant="icon_secondary"
+                  size="md"
+                  onClick={ handleFavoriteClick }
+                  selected={ isFavorite }
+                >
+                  <FavoriteIcon isFavorite={ isFavorite }/>
+                </IconButton>
+                <CopyToClipboard
+                  text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
+                  type="share"
+                  variant="icon_secondary"
+                  size="md"
+                  borderRadius="none"
+                  ml={ 0 }
+                  boxSize={ 8 }
+                />
+              </Flex>
             </Flex>
           </Flex>
         ) }

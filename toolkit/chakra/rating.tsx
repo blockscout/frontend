@@ -7,15 +7,15 @@ import StarOutlineIcon from 'icons/star_outline.svg';
 export interface RatingProps extends Omit<RatingGroup.RootProviderProps, 'value'> {
   count?: number;
   label?: string | Array<string>;
-  defaultValue?: number;
+  value?: number;
   onValueChange?: ({ value }: { value: number }) => void;
   readOnly?: boolean;
 }
 
 export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
   function Rating(props, ref) {
-    const { count = 5, label: labelProp, defaultValue, onValueChange, readOnly, ...rest } = props;
-    const store = useRatingGroup({ count, defaultValue, onValueChange, readOnly });
+    const { count = 5, label: labelProp, value, onValueChange, readOnly, ...rest } = props;
+    const store = useRatingGroup({ count, value, onValueChange, readOnly });
 
     const highlightedIndex = store.hovering && !readOnly ? store.hoveredValue : store.value;
     const label = Array.isArray(labelProp) ? labelProp[highlightedIndex - 1] : labelProp;
@@ -31,7 +31,7 @@ export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
 
             return (
               <RatingGroup.Item key={ index } index={ index + 1 }>
-                <RatingGroup.ItemIndicator icon={ icon }/>
+                <RatingGroup.ItemIndicator icon={ icon } cursor={ readOnly ? 'default' : 'pointer' }/>
               </RatingGroup.Item>
             );
           }) }
