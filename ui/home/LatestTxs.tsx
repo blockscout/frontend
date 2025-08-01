@@ -3,6 +3,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -13,6 +14,8 @@ import useNewTxsSocket from 'ui/txs/socket/useTxsSocketTypeAll';
 
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemMobile from './LatestTxsItemMobile';
+
+const zetachainFeature = config.features.zetachain;
 
 const LatestTransactions = () => {
   const isMobile = useIsMobile();
@@ -30,7 +33,7 @@ const LatestTransactions = () => {
   }
 
   if (data) {
-    const txsUrl = route({ pathname: '/txs' });
+    const txsUrl = route({ pathname: `/txs`, query: zetachainFeature.isEnabled ? { tab: 'evm' } : undefined });
     return (
       <>
         <SocketNewItemsNotice borderBottomRadius={ 0 } url={ txsUrl } num={ num } showErrorAlert={ showErrorAlert } isLoading={ isPlaceholderData }/>
