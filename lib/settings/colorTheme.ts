@@ -1,5 +1,8 @@
+import { get } from 'es-toolkit/compat';
+
 import type { ColorThemeId } from 'types/settings';
 
+import config from 'configs/app';
 import type { ColorMode } from 'toolkit/chakra/color-mode';
 
 export interface ColorTheme {
@@ -9,6 +12,25 @@ export interface ColorTheme {
   hex: string;
   sampleBg: string;
 }
+
+export function getThemeHexWithOverrides(colorThemeId: ColorThemeId) {
+  const defaultHex = COLOR_THEMES.find((theme) => theme.id === colorThemeId)?.hex;
+
+  if (!defaultHex) {
+    return;
+  }
+
+  const overrides = config.UI.colorTheme.overrides;
+  if (colorThemeId === 'light') {
+    return (get(overrides, 'bg.primary._light.value') as string | undefined) || defaultHex;
+  }
+
+  if (colorThemeId === 'dark') {
+    return (get(overrides, 'bg.primary._dark.value') as string | undefined) || defaultHex;
+  }
+
+  return defaultHex;
+};
 
 export const COLOR_THEMES: Array<ColorTheme> = [
   {

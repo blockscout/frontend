@@ -1,6 +1,7 @@
 import { defaultsDeep } from 'es-toolkit/compat';
 
-import megaEthTheme from './mega-eth.json';
+// import megaEthTheme from './mega-eth.json';
+import config from 'configs/app';
 
 const DEFAULT_THEME_COLORS = {
   bg: {
@@ -214,7 +215,7 @@ const colors = {
   celo: { value: '#FCFF52' },
 
   // CUSTOMIZATION COLORS
-  theme: defaultsDeep(megaEthTheme, DEFAULT_THEME_COLORS),
+  theme: defaultsDeep(config.UI.colorTheme.overrides, DEFAULT_THEME_COLORS),
 };
 
 export default colors;

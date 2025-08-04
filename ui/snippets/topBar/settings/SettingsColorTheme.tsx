@@ -2,7 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
-import { COLOR_THEMES } from 'lib/settings/colorTheme';
+import { COLOR_THEMES, getThemeHexWithOverrides } from 'lib/settings/colorTheme';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 
 import SettingsSample from './SettingsSample';
@@ -16,8 +16,8 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
 
   const [ activeHex, setActiveHex ] = React.useState<string>();
 
-  const setTheme = React.useCallback((hex: string) => {
-    const nextTheme = COLOR_THEMES.find((theme) => theme.hex === hex);
+  const setTheme = React.useCallback((hexWithOverrides: string) => {
+    const nextTheme = COLOR_THEMES.find((theme) => getThemeHexWithOverrides(theme.id) === hexWithOverrides);
 
     if (!nextTheme) {
       return;
@@ -26,9 +26,9 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     setColorMode(nextTheme.colorMode);
 
     const varName = nextTheme.colorMode === 'light' ? '--chakra-colors-white' : '--chakra-colors-black';
-    window.document.documentElement.style.setProperty(varName, hex);
+    window.document.documentElement.style.setProperty(varName, hexWithOverrides);
 
-    cookies.set(cookies.NAMES.COLOR_MODE_HEX, hex);
+    cookies.set(cookies.NAMES.COLOR_MODE_HEX, hexWithOverrides);
     cookies.set(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);
     window.localStorage.setItem(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);
   }, [ setColorMode ]);
@@ -45,8 +45,8 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     })();
 
     const colorModeThemes = COLOR_THEMES.filter(theme => theme.colorMode === nextColorMode);
-    const fallbackHex = colorModeThemes[colorModeThemes.length - 1].hex;
-    const cookieHex = cookies.get(cookies.NAMES.COLOR_MODE_HEX) ?? fallbackHex;
+    const fallbackHex = getThemeHexWithOverrides(colorModeThemes[colorModeThemes.length - 1].id);
+    const cookieHex = window.decodeURIComponent(cookies.get(cookies.NAMES.COLOR_MODE_HEX) ?? fallbackHex ?? '');
     setTheme(cookieHex);
     setActiveHex(cookieHex);
   // should run only on mount
@@ -67,23 +67,31 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     onSelect?.();
   }, [ setTheme, onSelect ]);
 
-  const activeTheme = COLOR_THEMES.find((theme) => theme.hex === activeHex);
+  const activeTheme = COLOR_THEMES.find((theme) => getThemeHexWithOverrides(theme.id) === activeHex);
 
   return (
     <div>
       <Box fontWeight={ 600 }>Color theme</Box>
       <Box color="text.secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
       <Flex>
-        { COLOR_THEMES.map((theme) => (
-          <SettingsSample
-            key={ theme.label }
-            label={ theme.label }
-            value={ theme.hex }
-            bg={ theme.sampleBg }
-            isActive={ theme.hex === activeHex }
-            onClick={ handleSelect }
-          />
-        )) }
+        { COLOR_THEMES.map((theme) => {
+          const value = getThemeHexWithOverrides(theme.id);
+
+          if (!value) {
+            return null;
+          }
+
+          return (
+            <SettingsSample
+              key={ theme.label }
+              label={ theme.label }
+              value={ value }
+              bg={ theme.sampleBg }
+              isActive={ value === activeHex }
+              onClick={ handleSelect }
+            />
+          );
+        }) }
       </Flex>
     </div>
   );
