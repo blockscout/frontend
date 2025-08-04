@@ -3,7 +3,7 @@ import React from 'react';
 import * as interopMock from 'mocks/interop/interop';
 import { test, expect } from 'playwright/lib';
 
-import TxEntityInterop from './TxEntityInterop';
+import TxEntityInterop from './TxEntityWithExternalChain';
 
 const hash = '0x376db52955d5bce114d0ccea2dcf22289b4eae1b86bcae5a59bb5fdbfef48899';
 
