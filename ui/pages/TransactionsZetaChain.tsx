@@ -24,14 +24,6 @@ import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 import ZetaChainCCTXsTab from 'ui/txs/zetaChain/ZetaChainCCTXsTab';
 import ZetaChainEvmTransactions from 'ui/txs/zetaChain/ZetaChainEvmTransactions';
 
-const TAB_LIST_PROPS = {
-  marginBottom: 0,
-  pt: 6,
-  pb: 6,
-  marginTop: -5,
-};
-const TABS_HEIGHT = 88;
-
 const ZETACHAIN_TABS = [ 'zetachain_validated', 'zetachain_pending' ];
 const CROSS_CHAIN_TABS = [ 'cctx_pending', 'cctx_mined' ];
 
@@ -128,10 +120,7 @@ const TransactionsZetaChain = () => {
         <>
           <TxsStats/>
           { topRow }
-          <TxsWithFrontendSorting
-            query={ txsWithBlobsQuery }
-            top={ TABS_HEIGHT }
-          />
+          <TxsWithFrontendSorting query={ txsWithBlobsQuery }/>
         </>
       ),
     },
@@ -154,11 +143,7 @@ const TransactionsZetaChain = () => {
         title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } transactions` : 'Transactions' }
         withTextAd
       />
-      <RoutedTabs
-        tabs={ tabs }
-        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        stickyEnabled={ !isMobile }
-      />
+      <RoutedTabs tabs={ tabs }/>
     </>
   );
 };

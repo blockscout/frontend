@@ -11,10 +11,15 @@ import { zetaChainCCTXItem } from 'mocks/zetaChain/zetaChainCCTX';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import TxsStats from 'ui/txs/TxsStats';
 
 import ZetaChainCCTxs from './ZetaChainCCTxs';
 
+const TAB_LIST_PROPS = {
+  marginBottom: 0,
+  pt: 6,
+  pb: 6,
+  marginTop: -5,
+};
 const TABS_HEIGHT = 88;
 
 const ZetaChainEvmTransactions = () => {
@@ -62,7 +67,7 @@ const ZetaChainEvmTransactions = () => {
           items={ cctxsValidatedQuery.data?.items }
           isPlaceholderData={ cctxsValidatedQuery.isPlaceholderData }
           isError={ cctxsValidatedQuery.isError }
-          top={ TABS_HEIGHT }
+          top={ cctxsValidatedQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
         /> },
     {
       id: 'cctx_pending',
@@ -73,7 +78,7 @@ const ZetaChainEvmTransactions = () => {
           items={ cctxsPendingQuery.data?.items }
           isPlaceholderData={ cctxsPendingQuery.isPlaceholderData }
           isError={ cctxsPendingQuery.isError }
-          top={ TABS_HEIGHT }
+          top={ cctxsPendingQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
         />
       ),
     },
@@ -88,12 +93,14 @@ const ZetaChainEvmTransactions = () => {
 
   return (
     <>
-      <TxsStats/>
+      { /* <TxsStats/> */ }
       <RoutedTabs
         tabs={ tabs }
         variant="secondary"
         size="sm"
+        stickyEnabled={ !isMobile }
         rightSlot={ (isMobile || !pagination.isVisible) ? null : <Pagination my={ 1 } { ...pagination }/> }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
       />
     </>
   );
