@@ -7,7 +7,7 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import ZetaChainAddressFromTo from 'ui/shared/zetaChain/ZetaChainAddressFromTo';
-import ZetaChainCCTXStatusTag from 'ui/shared/zetaChain/ZetaChainCCTXStatusTag';
+import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
 
 type Props = {
@@ -31,7 +31,7 @@ const ZetaChainCCTxsTableItem = ({ tx, enableTimeIncrement, isLoading, animation
             truncation="constant"
           />
           <TimeWithTooltip
-            timestamp={ Number(tx.created_timestamp) * 1000 }
+            timestamp={ Number(tx.last_update_timestamp) * 1000 }
             enableIncrement={ enableTimeIncrement }
             isLoading={ isLoading }
             color="text.secondary"
@@ -39,13 +39,19 @@ const ZetaChainCCTxsTableItem = ({ tx, enableTimeIncrement, isLoading, animation
         </HStack>
       </TableCell>
       <TableCell>
-        <ZetaChainCCTXStatusTag status={ tx.status_reduced } type="full" isLoading={ isLoading }/>
+        <ZetaChainCCTXReducedStatus status={ tx.status_reduced } type="full" isLoading={ isLoading }/>
       </TableCell>
       <TableCell colSpan={ 2 }>
         <ZetaChainAddressFromTo tx={ tx } isLoading={ isLoading }/>
       </TableCell>
       <TableCell>
-        <ZetaChainCCTXValue tx={ tx } isLoading={ isLoading } justifyContent="end"/>
+        <ZetaChainCCTXValue
+          coinType={ tx.coin_type }
+          tokenSymbol={ tx.token_symbol }
+          amount={ tx.amount }
+          decimals={ tx.decimals }
+          isLoading={ isLoading }
+        />
       </TableCell>
     </TableRow>
   );

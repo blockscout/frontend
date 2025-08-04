@@ -3,16 +3,13 @@ import React from 'react';
 
 import type { ZetaChainCCTX } from 'types/api/zetaChain';
 
-import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
-import { unknownAddress } from 'ui/shared/address/utils';
-import AddressEntityWithExternalChain from 'ui/shared/entities/address/AddressEntityWithExternalChain';
 import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
 import TextSeparator from 'ui/shared/TextSeparator';
-import ZetaChainCCTXStatusTag from 'ui/shared/zetaChain/ZetaChainCCTXStatusTag';
+import ZetaChainAddressEntity from 'ui/shared/zetaChain/ZetaChainAddressEntity';
+import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
-import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
 type Props = {
   tx: ZetaChainCCTX;
@@ -20,13 +17,6 @@ type Props = {
 };
 
 const LatestZetaChainCCTXItem = ({ tx, isLoading }: Props) => {
-  const { data: chainsConfig } = useZetaChainConfig();
-
-  const senderChain = tx.source_chain_id === config.chain.id ? undefined :
-    (chainsConfig?.find((chain) => chain.chain_id.toString() === tx.source_chain_id) || null);
-  const receiverChain = tx.target_chain_id === config.chain.id ? undefined :
-    (chainsConfig?.find((chain) => chain.chain_id.toString() === tx.target_chain_id) || null);
-
   const separatorColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
   return (
     <VStack
@@ -38,30 +28,36 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading }: Props) => {
       alignItems="start"
       gap={ 2 }
     >
-      <ZetaChainCCTXStatusTag status={ tx.status_reduced } isLoading={ isLoading } type="full"/>
+      <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading } type="full"/>
       <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } truncation="constant_long" fontWeight={ 600 }/>
       <Flex color="text.secondary" gap={ 2 } justifyContent="start">
-        { dayjs(Number(tx.created_timestamp) * 1000).fromNow() }
+        { dayjs(Number(tx.last_update_timestamp) * 1000).fromNow() }
         <TextSeparator color={ separatorColor } mx={ 0 }/>
-        { dayjs(Number(tx.created_timestamp) * 1000).format('llll') }
+        { dayjs(Number(tx.last_update_timestamp) * 1000).format('llll') }
       </Flex>
       <Grid gridTemplateColumns="100px 1fr" gap={ 2 }>
         <Text>Sender</Text>
-        <AddressEntityWithExternalChain
-          address={{ ...unknownAddress, hash: tx.sender_address }}
-          externalChain={ senderChain }
+        <ZetaChainAddressEntity
+          hash={ tx.sender_address }
+          chainId={ tx.source_chain_id.toString() }
           isLoading={ isLoading }
           truncation="constant"
         />
         <Text>Receiver</Text>
-        <AddressEntityWithExternalChain
-          address={{ ...unknownAddress, hash: tx.receiver_address }}
-          externalChain={ receiverChain }
+        <ZetaChainAddressEntity
+          hash={ tx.receiver_address }
+          chainId={ tx.target_chain_id.toString() }
           isLoading={ isLoading }
           truncation="constant"
         />
         <Text>Asset</Text>
-        <ZetaChainCCTXValue tx={ tx } isLoading={ isLoading }/>
+        <ZetaChainCCTXValue
+          coinType={ tx.coin_type }
+          tokenSymbol={ tx.token_symbol }
+          amount={ tx.amount }
+          decimals={ tx.decimals }
+          isLoading={ isLoading }
+        />
       </Grid>
     </VStack>
   );

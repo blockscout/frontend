@@ -6,7 +6,7 @@ import type { ZetaChainCCTX } from 'types/api/zetaChain';
 import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import ZetaChainAddressFromTo from 'ui/shared/zetaChain/ZetaChainAddressFromTo';
-import ZetaChainCCTXStatusTag from 'ui/shared/zetaChain/ZetaChainCCTXStatusTag';
+import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
 
 type Props = {
@@ -27,11 +27,17 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading }: Props) => {
       p={ 4 }
       fontSize="sm"
     >
-      <ZetaChainCCTXStatusTag status={ tx.status_reduced } isLoading={ isLoading }/>
+      <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading }/>
       <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } truncation="constant" fontWeight={ 600 }/>
       <TimeWithTooltip color="text.secondary" timestamp={ Number(tx.last_update_timestamp) * 1000 } isLoading={ isLoading } timeFormat="relative"/>
       <ZetaChainAddressFromTo tx={ tx } isLoading={ isLoading }/>
-      <ZetaChainCCTXValue tx={ tx } isLoading={ isLoading } justifyContent="end"/>
+      <ZetaChainCCTXValue
+        coinType={ tx.coin_type }
+        tokenSymbol={ tx.token_symbol }
+        amount={ tx.amount }
+        decimals={ tx.decimals }
+        isLoading={ isLoading }
+      />
     </Grid>
   );
 };

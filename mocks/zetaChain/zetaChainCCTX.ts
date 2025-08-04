@@ -5,8 +5,8 @@ export const zetaChainCCTXItem: ZetaChainCCTX = {
   status: 'PENDING_OUTBOUND',
   status_reduced: 'PENDING',
   amount: '185354164223052',
-  source_chain_id: '7001',
-  target_chain_id: '11155111',
+  source_chain_id: 7001,
+  target_chain_id: 11155111,
   created_timestamp: '1753181402',
   last_update_timestamp: '1753181402',
   sender_address: '0xbE8b5d82DDE00677cCdb9dc22071CF635d459223',
@@ -20,7 +20,13 @@ export const zetaChainCCTX: ZetaChainCCTXResponse = {
   creator: '',
   index: '0x1c1e7410d7dfefe6173cc11efa47221e85587d3831c69108121198e0b2a86657',
   zeta_fees: '0',
-  relayed_message: '',
+  relayed_message: '0x0000000000000000000000000000000000000000000000000000000000000000',
+  cctx_status_reduced: 'SUCCESS',
+  token_symbol: 'USDT.ARBSEP',
+  token_name: 'USDT.ARBSEP',
+  zrc20_contract_address: '0x1234567890123456789012345678901234567890',
+  icon_url: 'https://example.com/icon.png',
+  decimals: 6,
   cctx_status: {
     status: 'OUTBOUND_MINED',
     status_message: '',
@@ -30,6 +36,7 @@ export const zetaChainCCTX: ZetaChainCCTXResponse = {
     created_timestamp: '0',
     error_message_revert: '',
     error_message_abort: '',
+    status_reduced: 'SUCCESS',
   },
   inbound_params: {
     sender: '0x44D1F1f9289DBA1Cf5824bd667184cEBE020aA1c',
@@ -50,7 +57,7 @@ export const zetaChainCCTX: ZetaChainCCTXResponse = {
   outbound_params: [
     {
       receiver: '0xcf558D29999C119425d28bF1c07ba97FfF39e387',
-      receiver_chain_id: '97',
+      receiver_chain_id: 97,
       coin_type: 'GAS',
       amount: '434880247204065094',
       tss_nonce: '62305',
@@ -84,13 +91,14 @@ export const zetaChainCCTX: ZetaChainCCTXResponse = {
     {
       index: '0x0001150419abd8d8383fae702f3a8415e57c96e78c9815756d15e1f1f5c0f466',
       depth: 0,
-      source_chain_id: '5',
+      source_chain_id: 5,
       status: 'OUTBOUND_MINED',
       inbound_amount: '100000000000000000',
       inbound_coin_type: 'GAS',
       outbound_params: [
-        { amount: '0', chain_id: '7001', coin_type: 'GAS' },
+        { amount: '0', chain_id: 7001, coin_type: 'GAS' },
       ],
+      status_reduced: 'SUCCESS',
     },
   ],
 };

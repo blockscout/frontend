@@ -1,46 +1,29 @@
 import React from 'react';
 
-import type { ZetaChainCCTXStatusReduced } from 'types/api/zetaChain';
+import type { ZetaChainCCTXStatus } from 'types/api/zetaChain';
 
-import StatusTag, { type StatusTagType } from 'ui/shared/statusTag/StatusTag';
+import { Tag } from 'toolkit/chakra/tag';
 
 type Props = {
-  status: ZetaChainCCTXStatusReduced;
+  status: ZetaChainCCTXStatus;
   isLoading?: boolean;
-  type?: 'reduced' | 'full';
 };
 
-const ZetaChainCCTXStatusTag = ({ status, isLoading, type = 'reduced' }: Props) => {
-  let statusTagType: StatusTagType;
-  switch (status) {
-    case 'SUCCESS':
-      statusTagType = 'ok';
-      break;
-    case 'PENDING':
-      statusTagType = 'pending';
-      break;
-    case 'FAILED':
-      statusTagType = 'error';
-      break;
-  }
-
-  if (type === 'full') {
-    let text: string;
-    switch (status) {
-      case 'SUCCESS':
-        text = 'Success';
-        break;
-      case 'PENDING':
-        text = 'Pending';
-        break;
-      case 'FAILED':
-        text = 'Failed';
-        break;
-    }
-    return <StatusTag type={ statusTagType } text={ text } size="sm" loading={ isLoading }/>;
-  }
-
-  return <StatusTag type={ statusTagType } size="sm" loading={ isLoading }/>;
+const TagText: Record<ZetaChainCCTXStatus, string> = {
+  PENDING_OUTBOUND: 'Pending outbound',
+  PENDING_INBOUND: 'Pending inbound',
+  OUTBOUND_MINED: 'Outbound mined',
+  PENDING_REVERT: 'Pending revert',
+  ABORTED: 'Aborted',
+  REVERTED: 'Reverted',
 };
 
-export default ZetaChainCCTXStatusTag;
+const ZetaChainCCTXStatusTag = ({ status, isLoading }: Props) => {
+  return (
+    <Tag loading={ isLoading }>
+      { TagText[status] }
+    </Tag>
+  );
+};
+
+export default React.memo(ZetaChainCCTXStatusTag);

@@ -4,7 +4,7 @@ import type { ChainInfo } from 'types/api/interop';
 
 import type { EntityProps } from 'ui/shared/entities/tx/TxEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxEntityInterop from 'ui/shared/entities/tx/TxEntityInterop';
+import TxEntityInterop from 'ui/shared/entities/tx/TxEntityWithExternalChain';
 
 type Props = {
   init_transaction_hash?: string | null;
