@@ -99,6 +99,15 @@ export interface FormFieldsAddDelegation extends FormFieldsBase {
   validator_id: Option;
 }
 
+export interface FormFieldsBalanceChecker extends FormFieldsBase {
+  cryptocurrency: Option;
+  account_address: string;
+  filter_type: 'date' | 'block';
+  date_snapshot: string;
+  block_number: string;
+  erc20_address: string;
+}
+
 export type FormFields =
   FormFieldsFlattenSourceCode |
   FormFieldsStandardInput |
@@ -109,4 +118,5 @@ export type FormFields =
   FormFieldsVyperMultiPartFile |
   FormFieldsVyperStandardInput |
   FormFieldsStylusGitHubRepo |
-  FormFieldsAddDelegation;
+  FormFieldsAddDelegation |
+  FormFieldsBalanceChecker;

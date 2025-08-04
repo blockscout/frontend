@@ -187,6 +187,12 @@ export default function useNavItems(): ReturnType {
         validators,
         epochs,
         staking,
+        {
+          text: 'Balance Checker',
+          nextRoute: { pathname: '/account-balance-checker' as const },
+          icon: 'token' as const,
+          isActive: pathname === '/account-balance-checker',
+        },
         verifiedContracts,
         ensLookup,
         config.features.beaconChain.isEnabled && {

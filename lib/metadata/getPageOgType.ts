@@ -4,6 +4,7 @@ type OGPageType = 'Homepage' | 'Root page' | 'Regular page';
 
 const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/': 'Homepage',
+  '/account-balance-checker': 'Regular page',
   '/txs': 'Root page',
   '/epochs': 'Root page',
   '/epoch/[id]': 'Regular page',

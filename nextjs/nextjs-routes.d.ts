@@ -13,6 +13,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/account/tag-address">
     | StaticRoute<"/account/verified-addresses">
     | StaticRoute<"/account/watchlist">
+    | StaticRoute<"/account-balance-checker">
     | StaticRoute<"/accounts">
     | DynamicRoute<"/accounts/label/[slug]", { "slug": string }>
     | StaticRoute<"/add-delegation">

@@ -46,11 +46,11 @@ function getNextPageParams<R extends PaginatedResources>(data: ResourcePayload<R
   if (!data || typeof data !== 'object' || data === null || Array.isArray(data)) {
     return;
   }
-  if (!('next_page_params' in data)) {
+  if (!(data && typeof data === 'object' && 'next_page_params' in data)) {
     return;
   }
 
-  return data.next_page_params;
+  return (data as { next_page_params: unknown }).next_page_params;
 }
 
 export type QueryWithPagesResult<Resource extends PaginatedResources> =
