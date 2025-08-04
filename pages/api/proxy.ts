@@ -5,15 +5,32 @@ import fetchFactory from 'nextjs/utils/fetchProxy';
 
 import appConfig from 'configs/app';
 
+// Define an allow-list of permitted endpoints
+const ALLOWED_ENDPOINTS = [
+  appConfig.apis.general.endpoint,
+  // Add other allowed endpoints here, e.g.:
+  // "https://api.example.com",
+];
+
 const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
   if (!nextReq.url) {
     nextRes.status(500).json({ error: 'no url provided' });
     return;
   }
 
+  // Validate x-endpoint header against allow-list
+  let baseEndpoint = appConfig.apis.general.endpoint;
+  const requestedEndpoint = nextReq.headers['x-endpoint']?.toString();
+  if (requestedEndpoint && ALLOWED_ENDPOINTS.includes(requestedEndpoint)) {
+    baseEndpoint = requestedEndpoint;
+  } else if (requestedEndpoint) {
+    nextRes.status(400).json({ error: 'Invalid endpoint' });
+    return;
+  }
+
   const url = new URL(
     nextReq.url.replace(/^\/node-api\/proxy/, ''),
-    nextReq.headers['x-endpoint']?.toString() || appConfig.apis.general.endpoint,
+    baseEndpoint,
   );
   const apiRes = await fetchFactory(nextReq)(
     url.toString(),
