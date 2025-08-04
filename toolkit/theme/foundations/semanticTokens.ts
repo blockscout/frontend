@@ -271,7 +271,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       border: {
         DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
         hover: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.500}' } },
-        focus: { value: '{colors.blue.400}' },
+        focus: { value: '{colors.hover}' },
         filled: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
         readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
         error: { value: '{colors.red.500}' },

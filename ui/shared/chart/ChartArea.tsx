@@ -18,11 +18,9 @@ interface Props extends React.SVGProps<SVGPathElement> {
 const ChartArea = ({ id, xScale, yScale, color, data, noAnimation, ...props }: Props) => {
   const ref = React.useRef(null);
 
-  const gradientColorId = `${ id || 'gradient' }-${ color }-color`;
-  const gradientStopColor = useToken('colors', useColorModeValue('whiteAlpha.200', 'blackAlpha.100'));
   const defaultGradient = {
-    startColor: useToken('colors', useColorModeValue('blue.100', 'blue.400')),
-    stopColor: useToken('colors', useColorModeValue('rgba(190, 227, 248, 0)', 'rgba(66, 153, 225, 0)')), // blue.100 - blue.400 with 0 opacity
+    startColor: useToken('colors', useColorModeValue('theme.graph.gradient.start._light', 'theme.graph.gradient.start._dark')),
+    stopColor: useToken('colors', useColorModeValue('theme.graph.gradient.stop._light', 'theme.graph.gradient.stop._dark')),
   };
 
   React.useEffect(() => {
@@ -51,26 +49,17 @@ const ChartArea = ({ id, xScale, yScale, color, data, noAnimation, ...props }: P
       <path
         ref={ ref }
         d={ d }
-        fill={ color ? `url(#${ gradientColorId })` : 'url(#gradient-chart-area-default)' }
+        fill="url(#gradient-chart-area-default)"
         opacity={ 0 }
         data-name={ id || 'gradient-chart-area' }
         { ...props }
       />
-      { color ? (
-        <defs>
-          <linearGradient id={ `${ gradientColorId }` } x1="0%" x2="0%" y1="0%" y2="100%">
-            <stop offset="0%" stopColor={ color }/>
-            <stop offset="100%" stopColor={ gradientStopColor[0] }/>
-          </linearGradient>
-        </defs>
-      ) : (
-        <defs>
-          <linearGradient id="gradient-chart-area-default" x1="0%" x2="0%" y1="0%" y2="100%">
-            <stop offset="0%" stopColor={ defaultGradient.startColor[0] }/>
-            <stop offset="100%" stopColor={ defaultGradient.stopColor[0] }/>
-          </linearGradient>
-        </defs>
-      ) }
+      <defs>
+        <linearGradient id="gradient-chart-area-default" x1="0%" x2="0%" y1="0%" y2="100%">
+          <stop offset="0%" stopColor={ defaultGradient.startColor[0] }/>
+          <stop offset="100%" stopColor={ defaultGradient.stopColor[0] }/>
+        </linearGradient>
+      </defs>
     </>
   );
 };

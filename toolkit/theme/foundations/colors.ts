@@ -1,35 +1,55 @@
-const MEGA_ETH_THEME: Record<string, unknown> = {
+import { defaultsDeep } from 'es-toolkit/compat';
+
+import megaEthTheme from './mega-eth.json';
+
+const DEFAULT_THEME_COLORS = {
   bg: {
     primary: {
-      _light: { value: '#FEFDFD' },
-      _dark: { value: '#19191A' },
+      _light: { value: '{colors.white}' },
+      _dark: { value: '{colors.black}' },
     },
   },
   text: {
     primary: {
-      _light: { value: 'rgba(16, 17, 18, 0.80)' },
-      _dark: { value: '#DED9D9' },
+      _light: { value: '{colors.blackAlpha.800}' },
+      _dark: { value: '{colors.whiteAlpha.800}' },
     },
     secondary: {
-      _light: { value: '#696767' },
-      _dark: { value: '#696767' },
+      _light: { value: '{colors.gray.500}' },
+      _dark: { value: '{colors.gray.400}' },
     },
   },
   button: {
     primary: {
-      _light: { value: '#696767' },
-      _dark: { value: '#696767' },
+      _light: { value: '{colors.blue.600}' },
+      _dark: { value: '{colors.blue.600}' },
     },
   },
   link: {
     primary: {
-      _light: { value: '#39926C' },
-      _dark: { value: '#39926C' },
+      _light: { value: '{colors.blue.600}' },
+      _dark: { value: '{colors.blue.300}' },
     },
   },
   hover: {
-    _light: { value: '#68C89E' },
-    _dark: { value: '#68C89E' },
+    _light: { value: '{colors.blue.400}' },
+    _dark: { value: '{colors.blue.400}' },
+  },
+  graph: {
+    line: {
+      _light: { value: '{colors.blue.200}' },
+      _dark: { value: '{colors.blue.200}' },
+    },
+    gradient: {
+      start: {
+        _light: { value: 'rgba(144, 205, 244, 0.3)' }, // blue.200 with opacity 0.3
+        _dark: { value: 'rgba(144, 205, 244, 0.3)' }, // blue.200 with opacity 0.3
+      },
+      stop: {
+        _light: { value: 'rgba(144, 205, 244, 0)' }, // blue.200 with opacity 0
+        _dark: { value: 'rgba(144, 205, 244, 0)' }, // blue.200 with opacity 0
+      },
+    },
   },
 };
 
@@ -194,41 +214,7 @@ const colors = {
   celo: { value: '#FCFF52' },
 
   // CUSTOMIZATION COLORS
-  theme: {
-    bg: {
-      primary: {
-        _light: { value: '{colors.white}' },
-        _dark: { value: '{colors.black}' },
-      },
-    },
-    text: {
-      primary: {
-        _light: { value: '{colors.blackAlpha.800}' },
-        _dark: { value: '{colors.whiteAlpha.800}' },
-      },
-      secondary: {
-        _light: { value: '{colors.gray.500}' },
-        _dark: { value: '{colors.gray.400}' },
-      },
-    },
-    button: {
-      primary: {
-        _light: { value: '{colors.blue.600}' },
-        _dark: { value: '{colors.blue.600}' },
-      },
-    },
-    link: {
-      primary: {
-        _light: { value: '{colors.blue.600}' },
-        _dark: { value: '{colors.blue.300}' },
-      },
-    },
-    hover: {
-      _light: { value: '{colors.blue.400}' },
-      _dark: { value: '{colors.blue.400}' },
-    },
-    ...MEGA_ETH_THEME,
-  },
+  theme: defaultsDeep(megaEthTheme, DEFAULT_THEME_COLORS),
 };
 
 export default colors;
