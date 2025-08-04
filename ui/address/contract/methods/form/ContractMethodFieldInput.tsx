@@ -207,6 +207,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
               { ...inputProps }
               { ...(error ? { 'data-invalid': true } : {}) }
               onPaste={ handlePaste }
+              disabled={ isDisabled }
               asChild
             >
               <NumericFormat

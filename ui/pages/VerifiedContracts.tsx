@@ -152,7 +152,7 @@ const VerifiedContracts = () => {
         emptyText="There are no verified contracts."
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find any contract that matches your query.`,
-          hasActiveFilters: Boolean(searchTerm || type),
+          hasActiveFilters: Boolean(debouncedSearchTerm || type),
         }}
         actionBar={ actionBar }
       >

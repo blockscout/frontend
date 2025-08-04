@@ -12,6 +12,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
+import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
@@ -126,23 +127,14 @@ const VerifiedAddresses = () => {
     );
   })();
 
-  const backLink = React.useMemo(() => {
-    if (!selectedAddress) {
-      return;
-    }
-
-    return {
-      label: 'Back to my verified addresses',
-      onClick: handleGoBack,
-    };
-  }, [ handleGoBack, selectedAddress ]);
-
   if (selectedAddress) {
     const addressInfo = addressesQuery.data?.verifiedAddresses.find(({ contractAddress }) => contractAddress.toLowerCase() === selectedAddress.toLowerCase());
     const tokenName = addressInfo ? `${ addressInfo.metadata.tokenName } (${ addressInfo.metadata.tokenSymbol })` : '';
+    const beforeTitle = <BackToButton onClick={ handleGoBack } hint="Back to my verified addresses" mr={ 3 }/>;
+
     return (
       <>
-        <PageTitle title="Token info application form" backLink={ backLink }/>
+        <PageTitle title="Token info application form" beforeTitle={ beforeTitle }/>
         <TokenInfoForm
           address={ selectedAddress }
           tokenName={ tokenName }

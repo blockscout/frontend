@@ -166,6 +166,7 @@ _Note_ Here, all values are arrays of up to two strings. The first string repres
 | NEXT_PUBLIC_OTHER_LINKS | `Array<{url: string; text: string}>` | List of links for the "Other" navigation menu | - | - | `[{'url':'https://blockscout.com','text':'Blockscout'}]` | v1.0.x+ |
 | NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES | `Array<string>` | List of menu item routes that should have a lightning label | - | - | `['/accounts']` | v1.31.0+ |
 | NEXT_PUBLIC_NAVIGATION_LAYOUT | `vertical \| horizontal` | Navigation menu layout type | - | `vertical` | `horizontal` | v1.32.0+ |
+| NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG | `string` | Configuration of promo banner in the navigation menu. See [below](#navigation-promo-banner-configuration-properties) list of available properties for particular banner type | - | - | `{'img_url': 'https://example.com/promo.svg', 'text': 'Promo text', 'bg_color': {'light': 'rgb(250, 245, 255)', 'dark': 'rgb(68, 51, 122)'}, 'text_color': {'light': 'rgb(107, 70, 193)', 'dark': 'rgb(233, 216, 253)'}, 'link_url': 'https://example.com'}` | v2.3.0+ |
 
 #### Featured network configuration properties
 
@@ -177,6 +178,25 @@ _Note_ Here, all values are arrays of up to two strings. The first string repres
 | icon | `string` | Network icon; if not provided, the common placeholder will be shown; *Note* that icon size should be at least 60px by 60px | - | - | `https://placekitten.com/60/60` |
 | isActive | `boolean` | Pass `true` if item should be shown as active in the menu | - | - | `true` |
 | invertIconInDarkMode | `boolean` | Pass `true` if icon colors should be inverted in dark mode | - | - | `true` |
+
+#### Navigation promo banner configuration properties
+
+##### Text promo banner:
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| img_url | `string` | Displayed icon url. The recommended minimum image size is 60x60 pixels (1:1 aspect ratio). | Required | - | `https://example.com/promo.svg` |
+| text | `string` | Displayed text | Required | - | `Promo text` |
+| bg_color | `{'light': string, 'dark': string}` | Background color | Required | - | `{'light': 'rgb(250, 245, 255)', 'dark': 'rgb(68, 51, 122)'}` |
+| text_color | `{'light': string, 'dark': string}` | Text color | Required | - | `{'light': 'rgb(107, 70, 193)', 'dark': 'rgb(233, 216, 253)'}` |
+| link_url | `string` | Redirect link url | Required | - | `https://example.com` |
+
+##### Image promo banner:
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| img_url | `{'small': string, 'large': string}` | Displayed image urls. Small image is used in the collapsed navigation menu and in horizontal navigation, large image is used in the expanded navigation menu and in tooltip. The recommended minimum image sizes are 120x120 pixels (1:1 aspect ratio) for small image and 500x250 pixels (2:1 aspect ratio) for large image. | Required | - | `{'small': 'https://example.com/promo-sm.svg', 'large': 'https://example.com/promo-lg.svg'}` |
+| link_url | `string` | Redirect link url | Required | - | `https://example.com` |
 
 &nbsp;
 
@@ -193,7 +213,7 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | title | `string` | Title of link group | Required | - | `Company` |
-| links | `Array<{'text':string;'url':string;'iconUrl'?:[string,string]}>` | An array contains a list of links in the column. Each link can optionally have an `icon_url` property, which should include an array of two external image URLs for light and dark themes, respectively. If only one URL is provided, it will be used for both color schemes. We expect the icons to be square, with a minimum size of 40px by 40px or in SVG format. | Required | - | `[{'text':'Homepage','url':'https://www.blockscout.com'}]` |
+| links | `Array<{'text':string;'url':string;'iconUrl'?:[string,string]}>` | An array contains a list of links in the column. Each link can optionally have an `iconUrl` property, which should include an array of two external image URLs for light and dark themes, respectively. If only one URL is provided, it will be used for both color schemes. We expect the icons to be square, with a minimum size of 40px by 40px or in SVG format. | Required | - | `[{'text':'Homepage','url':'https://www.blockscout.com'}]` |
 
 &nbsp;
 
@@ -254,6 +274,7 @@ Settings for meta tags, OG tags and SEO
 | NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED | `boolean` | Set to `true` if SolidityScan reports are supported | - | - | `true` | v1.19.0+ |
 | NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS | `Array<'solidity-hardhat' \| 'solidity-foundry'>` | Pass an array of additional methods from which users can choose while verifying a smart contract. Both methods are available by default, pass `'none'` string to disable them all. | - | - | `['solidity-hardhat']` | v1.33.0+ |
 | NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS | `Array<'solidity' \| 'vyper' \| 'yul' \| 'scilla'>` | Pass an array of contract languages that will be displayed as options in the filter on the verified contract page. | - | `['solidity','vyper','yul']` | `['solidity','vyper','yul','scilla']` | v1.37.0+ |
+| NEXT_PUBLIC_VIEWS_CONTRACT_DECODED_BYTECODE_ENABLED | `boolean` | If set to true, the deployed bytecode for unverified contracts will be parsed on the client side to retrieve the source code. If successful, the source code will be displayed in the snippet along with the content type selector. This feature works only for Scilla contracts.  | - | - | `true` | v2.3.0+ |
 
 ##### Address views list
 | Id | Description |
@@ -336,7 +357,7 @@ Settings for meta tags, OG tags and SEO
 | logo | `string` | URL to explorer logo file. Should be at least 40x40. | - | - | `'https://foo.app/icon.png'` |
 | title | `string` | Displayed name of the explorer | Required | - | `Anyblock` |
 | baseUrl | `string` | Base url of the explorer | Required | - | `https://explorer.anyblock.tools` |
-| paths | `Record<'tx' \| 'block' \| 'address' \| 'token', string>` | Map of explorer entities and their paths. Path can be a template with `:id` or `:id_lowercase` param, or a string (see note below) | Required | - | `{'tx':'/ethereum/poa/core/tx'}` |
+| paths | `Record<'tx' \| 'block' \| 'address' \| 'token' \| 'blob', string>` | Map of explorer entities and their paths. Path can be a template with `:id` or `:id_lowercase` param, or a string (see note below) | Required | - | `{'tx':'/ethereum/poa/core/tx'}` |
 
 *Note* If a path template contains `:id` or `:id_lowercase`, it will be replaced with the entity-id in its original case or lowercased respectively. If neither parameter is present, the entity-id will be appended to the end of the path in lowercase. For example, with baseUrl `https://explorer.anyblock.tools`:
 - Path `{'tx':'/ethereum/poa/core/tx/:id/details'}` and entity-id `0x123...AbC` results in `https://explorer.anyblock.tools/ethereum/poa/core/tx/0x123...AbC/details`

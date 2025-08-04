@@ -22,7 +22,7 @@ import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, Marketpla
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
 import type { ApiDocsTabId } from '../../../types/views/apiDocs';
 import { API_DOCS_TABS } from '../../../types/views/apiDocs';
-import type { NavItemExternal, NavigationLayout } from '../../../types/client/navigation';
+import type { NavItemExternal, NavigationLayout, NavigationPromoBannerConfig } from '../../../types/client/navigation';
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
 import type { BridgedTokenChain, TokenBridge } from '../../../types/client/token';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from '../../../types/client/txInterpretation';
@@ -634,6 +634,7 @@ const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
         address: yup.string(),
         token: yup.string(),
         block: yup.string(),
+        blob: yup.string(),
       }),
   });
 
@@ -919,6 +920,36 @@ const schema = yup
       .json()
       .of(yup.string()),
     NEXT_PUBLIC_NAVIGATION_LAYOUT: yup.string<NavigationLayout>().oneOf([ 'horizontal', 'vertical' ]),
+    NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG, it should be either object with img_url, text, bg_color, text_color, link_url or object with img_url and link_url', (data) => {
+        const isUndefined = data === undefined;
+        const jsonSchema = yup.object<NavigationPromoBannerConfig>().transform(replaceQuotes).json();
+
+        const valueSchema1 = jsonSchema.shape({
+          img_url: yup.string().required(),
+          text: yup.string().required(),
+          bg_color: yup.object().shape({
+            light: yup.string().required(),
+            dark: yup.string().required(),
+          }).required(),
+          text_color: yup.object().shape({
+            light: yup.string().required(),
+            dark: yup.string().required(),
+          }).required(),
+          link_url: yup.string().required(),
+        });
+
+        const valueSchema2 = jsonSchema.shape({
+          img_url: yup.object().shape({
+            small: yup.string().required(),
+            large: yup.string().required(),
+          }).required(),
+          link_url: yup.string().required(),
+        });
+
+        return isUndefined || valueSchema1.isValidSync(data) || valueSchema2.isValidSync(data);
+      }),
     NEXT_PUBLIC_NETWORK_LOGO: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_LOGO_DARK: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_ICON: yup.string().test(urlTest),
@@ -956,6 +987,7 @@ const schema = yup
       .json()
       .of(yup.string<AddressViewId>().oneOf(ADDRESS_VIEWS_IDS)),
     NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_VIEWS_CONTRACT_DECODED_BYTECODE_ENABLED: yup.boolean(),
     NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS: yup
       .mixed()
       .test(

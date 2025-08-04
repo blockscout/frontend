@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
-import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -31,7 +30,6 @@ const TABS_HEIGHT = 80;
 
 const OptimisticL2TxnBatch = () => {
   const router = useRouter();
-  const appProps = useAppContext();
   const number = getQueryParamString(router.query.number);
   const height = getQueryParamString(router.query.height);
   const commitment = getQueryParamString(router.query.commitment);
@@ -92,25 +90,11 @@ const OptimisticL2TxnBatch = () => {
     },
   ].filter(Boolean)), [ batchQuery, batchTxsQuery, batchBlocksQuery, hasPagination ]);
 
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.endsWith('/batches');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to txn batches list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
-
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
         title={ `Batch #${ batchQuery.data?.number }` }
-        backLink={ backLink }
         isLoading={ batchQuery.isPlaceholderData }
       />
       <RoutedTabs

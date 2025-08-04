@@ -4,7 +4,6 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getPoolLinks from 'lib/pools/getPoolLinks';
 import { getPoolTitle } from 'lib/pools/getPoolTitle';
@@ -28,7 +27,6 @@ import VerifyWith from 'ui/shared/VerifyWith';
 
 const Pool = () => {
   const router = useRouter();
-  const appProps = useAppContext();
   const hash = getQueryParamString(router.query.hash);
 
   const { data, isPlaceholderData, isError, error } = useApiQuery('contractInfo:pool', {
@@ -119,26 +117,12 @@ const Pool = () => {
     </Flex>
   );
 
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/pools');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to pools list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
-
   const poolTitle = data ? getPoolTitle(data) : '';
 
   return (
     <>
       <PageTitle
         title={ poolTitle }
-        backLink={ backLink }
         beforeTitle={ data ? (
           <PoolEntity.Icon
             pool={ data }
