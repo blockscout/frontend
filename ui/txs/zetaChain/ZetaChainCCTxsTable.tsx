@@ -42,9 +42,9 @@ const TxsTable = ({
             <TableColumnHeader width="105px">
               Status
             </TableColumnHeader>
-            <TableColumnHeader width="180px">Sender</TableColumnHeader>
-            <TableColumnHeader width="145px">Receiver</TableColumnHeader>
-            <TableColumnHeader width="100%">Value</TableColumnHeader>
+            <TableColumnHeader width="200px">Sender</TableColumnHeader>
+            <TableColumnHeader width="165px">Receiver</TableColumnHeader>
+            <TableColumnHeader width="100%" isNumeric>Value</TableColumnHeader>
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
