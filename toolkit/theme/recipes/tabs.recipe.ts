@@ -166,6 +166,7 @@ export const recipe = defineSlotRecipe({
           borderRadius: 'base',
           _selected: {
             bg: 'tabs.secondary.bg.selected',
+            color: 'tabs.secondary.fg.selected',
             borderColor: 'transparent',
             _hover: {
               borderColor: 'transparent',
@@ -194,9 +195,15 @@ export const recipe = defineSlotRecipe({
             _hover: {
               color: 'tabs.segmented.fg.selected',
             },
+            '& + *': {
+              borderLeftWidth: '0',
+            },
           },
-          _notFirst: {
-            borderLeftWidth: '0',
+          _notLast: {
+            borderRightWidth: '0',
+            _selected: {
+              borderRightWidth: '2px',
+            },
           },
           _first: {
             borderTopLeftRadius: 'base',

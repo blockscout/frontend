@@ -58,7 +58,7 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
           showArrow={ false }
           disabled={ isMobile || isCollapsed === false || (isCollapsed === undefined && isXLScreen) }
           positioning={{ placement: 'right', offset: { crossAxis: 0, mainAxis: 20 } }}
-          variant="navigation"
+          variant="popover"
           contentProps={{
             color: isInternalLink && item.isActive ? 'link.navigation.fg.selected' : 'link.navigation.fg.hover',
           }}

@@ -46,10 +46,12 @@ const TabsShowcase = () => {
                 <TabsTrigger value="tab1">First tab</TabsTrigger>
                 <TabsTrigger value="tab2">Second tab</TabsTrigger>
                 <TabsTrigger value="tab3">Third tab</TabsTrigger>
+                <TabsTrigger value="tab4">Fourth tab</TabsTrigger>
               </TabsList>
               <TabsContent value="tab1">First tab content</TabsContent>
               <TabsContent value="tab2">Second tab content</TabsContent>
               <TabsContent value="tab3">Third tab content</TabsContent>
+              <TabsContent value="tab4">Fourth tab content</TabsContent>
             </TabsRoot>
           </Sample>
         </SamplesStack>

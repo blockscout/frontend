@@ -36,6 +36,16 @@ const DEFAULT_THEME_COLORS = {
     _light: { value: '{colors.blue.400}' },
     _dark: { value: '{colors.blue.400}' },
   },
+  selected: {
+    text: {
+      _light: { value: '{colors.blue.700}' },
+      _dark: { value: '{colors.gray.50}' },
+    },
+    bg: {
+      _light: { value: '{colors.blue.50}' },
+      _dark: { value: '{colors.whiteAlpha.100}' },
+    },
+  },
   graph: {
     line: {
       _light: { value: '{colors.blue.200}' },
@@ -49,6 +59,40 @@ const DEFAULT_THEME_COLORS = {
       stop: {
         _light: { value: 'rgba(144, 205, 244, 0)' }, // blue.200 with opacity 0
         _dark: { value: 'rgba(144, 205, 244, 0)' }, // blue.200 with opacity 0
+      },
+    },
+  },
+  navigation: {
+    bg: {
+      selected: {
+        _light: { value: '{colors.blue.50}' },
+        _dark: { value: '{colors.gray.800}' },
+      },
+    },
+    text: {
+      selected: {
+        _light: { value: '{colors.blue.700}' },
+        _dark: { value: '{colors.gray.50}' },
+      },
+    },
+  },
+  stats: {
+    bg: {
+      _light: { value: '{colors.gray.50}' },
+      _dark: { value: '{colors.whiteAlpha.100}' },
+    },
+  },
+  topbar: {
+    bg: {
+      _light: { value: '{colors.gray.50}' },
+      _dark: { value: '{colors.whiteAlpha.100}' },
+    },
+  },
+  tabs: {
+    text: {
+      primary: {
+        _light: { value: '{colors.blue.700}' },
+        _dark: { value: '{colors.blue.100}' },
       },
     },
   },
