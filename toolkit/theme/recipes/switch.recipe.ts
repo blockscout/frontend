@@ -85,9 +85,9 @@ export const recipe = defineSlotRecipe({
           bg: 'switch.primary.bg',
           focusVisibleRing: 'outside',
           _checked: {
-            bg: 'switch.primary.bg.checked',
+            bg: 'selected.option.bg',
             _hover: {
-              bg: 'switch.primary.bg.hover',
+              bg: 'hover',
             },
           },
         },

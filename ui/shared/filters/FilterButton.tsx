@@ -20,7 +20,7 @@ const FilterButton = ({ isLoading, appliedFiltersNum, ...rest }: Props, ref: Rea
     <Circle
       className="AppliedFiltersNum"
       size={ 5 }
-      bg="selected.text"
+      bg="selected.control.text"
       color={{ _light: 'white', _dark: 'black' }}
       _groupHover={{
         bg: 'hover',

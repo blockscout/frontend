@@ -75,7 +75,7 @@ export const recipe = defineSlotRecipe({
       subtle: {
         item: {
           _highlighted: {
-            bg: 'selected.bg',
+            bg: 'selected.control.bg',
           },
         },
       },

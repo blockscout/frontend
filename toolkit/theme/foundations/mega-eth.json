@@ -27,6 +27,44 @@
             }
         }
     },
+    "hover": {
+        "_light": {
+            "value": "rgba(104, 200, 158)"
+        },
+        "_dark": {
+            "value": "rgba(104, 200, 158)"
+        }
+    },
+    "selected": {
+        "control": {
+            "text": {
+                "_light": {
+                    "value": "rgba(25, 25, 26)"
+                },
+                "_dark": {
+                    "value": "rgba(247, 250, 252)"
+                }
+            },
+            "bg": {
+                "_light": {
+                    "value": "rgba(242, 239, 239)"
+                },
+                "_dark": {
+                    "value": "rgba(255, 255, 255, 0.06)"
+                }
+            }
+        },
+        "option": {
+            "bg": {
+                "_light": {
+                    "value": "rgba(84, 75, 75)"
+                },
+                "_dark": {
+                    "value": "rgba(87, 87, 87)"
+                }
+            }
+        }
+    },
     "button": {
         "primary": {
             "_light": {
@@ -44,32 +82,6 @@
             },
             "_dark": {
                 "value": "rgba(57, 146, 108)"
-            }
-        }
-    },
-    "hover": {
-        "_light": {
-            "value": "rgba(104, 200, 158)"
-        },
-        "_dark": {
-            "value": "rgba(104, 200, 158)"
-        }
-    },
-    "selected": {
-        "text": {
-            "_light": {
-                "value": "rgba(25, 25, 26)"
-            },
-            "_dark": {
-                "value": "rgba(247, 250, 252)"
-            }
-        },
-        "bg": {
-            "_light": {
-                "value": "rgba(242, 239, 239)"
-            },
-            "_dark": {
-                "value": "rgba(255, 255, 255, 0.06)"
             }
         }
     },

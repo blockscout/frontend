@@ -126,7 +126,7 @@ export const recipe = defineSlotRecipe({
             opacity: 0.76,
           },
           _selected: {
-            bgColor: 'tag.root.select.bg.selected',
+            bgColor: 'selected.option.bg',
             color: 'whiteAlpha.800',
             _hover: {
               color: 'whiteAlpha.800',

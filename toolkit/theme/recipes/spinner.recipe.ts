@@ -3,7 +3,7 @@ import { defineRecipe } from '@chakra-ui/react';
 export const recipe = defineRecipe({
   base: {
     display: 'inline-block',
-    borderColor: 'blue.500',
+    borderColor: 'selected.option.bg',
     borderStyle: 'solid',
     borderWidth: '2px',
     borderRadius: 'full',

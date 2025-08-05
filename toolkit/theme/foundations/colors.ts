@@ -20,6 +20,28 @@ const DEFAULT_THEME_COLORS = {
       _dark: { value: '{colors.gray.400}' },
     },
   },
+  hover: {
+    _light: { value: '{colors.blue.400}' },
+    _dark: { value: '{colors.blue.400}' },
+  },
+  selected: {
+    control: {
+      text: {
+        _light: { value: '{colors.blue.700}' },
+        _dark: { value: '{colors.gray.50}' },
+      },
+      bg: {
+        _light: { value: '{colors.blue.50}' },
+        _dark: { value: '{colors.whiteAlpha.100}' },
+      },
+    },
+    option: {
+      bg: {
+        _light: { value: '{colors.blue.500}' },
+        _dark: { value: '{colors.blue.500}' },
+      },
+    },
+  },
   button: {
     primary: {
       _light: { value: '{colors.blue.600}' },
@@ -30,20 +52,6 @@ const DEFAULT_THEME_COLORS = {
     primary: {
       _light: { value: '{colors.blue.600}' },
       _dark: { value: '{colors.blue.300}' },
-    },
-  },
-  hover: {
-    _light: { value: '{colors.blue.400}' },
-    _dark: { value: '{colors.blue.400}' },
-  },
-  selected: {
-    text: {
-      _light: { value: '{colors.blue.700}' },
-      _dark: { value: '{colors.gray.50}' },
-    },
-    bg: {
-      _light: { value: '{colors.blue.50}' },
-      _dark: { value: '{colors.whiteAlpha.100}' },
     },
   },
   graph: {

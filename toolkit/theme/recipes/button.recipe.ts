@@ -65,7 +65,7 @@ export const recipe = defineRecipe({
         _loading: {
           opacity: 1,
           '& .chakra-spinner': {
-            borderColor: 'blue.500',
+            borderColor: 'selected.option.bg',
             borderBottomColor: 'spinner.track',
             borderInlineStartColor: 'spinner.track',
           },
@@ -80,11 +80,11 @@ export const recipe = defineRecipe({
         // When any items (filters) are selected in the popover, the button should change its background and text color.
         // The last CSS selector is for redefining styles for the TabList component.
         _selected: {
-          bg: 'selected.bg',
-          color: 'selected.text',
+          bg: 'selected.control.bg',
+          color: 'selected.control.text',
           borderColor: 'transparent',
           _hover: {
-            bg: 'selected.bg',
+            bg: 'selected.control.bg',
             color: 'hover',
             borderColor: 'transparent',
           },
@@ -107,7 +107,7 @@ export const recipe = defineRecipe({
         _loading: {
           opacity: 1,
           '& .chakra-spinner': {
-            borderColor: 'blue.500',
+            borderColor: 'selected.option.bg',
             borderBottomColor: 'spinner.track',
             borderInlineStartColor: 'spinner.track',
           },
@@ -169,7 +169,7 @@ export const recipe = defineRecipe({
       segmented: {
         bg: 'transparent',
         color: 'button.segmented.fg',
-        borderColor: 'button.segmented.border',
+        borderColor: 'selected.control.bg',
         borderWidth: '2px',
         borderStyle: 'solid',
         borderRadius: 'none',
@@ -177,15 +177,21 @@ export const recipe = defineRecipe({
           color: 'hover',
         },
         _selected: {
-          bg: 'selected.bg',
-          color: 'selected.text',
+          bg: 'selected.control.bg',
+          color: 'selected.control.text',
           _hover: {
-            bg: 'selected.bg',
-            color: 'selected.text',
+            bg: 'selected.control.bg',
+            color: 'selected.control.text',
+          },
+          '& + *': {
+            borderLeftWidth: '0',
           },
         },
-        _notFirst: {
-          borderLeftWidth: '0',
+        _notLast: {
+          borderRightWidth: '0',
+          _selected: {
+            borderRightWidth: '2px',
+          },
         },
         _first: {
           borderTopLeftRadius: 'base',
@@ -239,10 +245,10 @@ export const recipe = defineRecipe({
           color: 'hover',
         },
         _selected: {
-          bg: 'selected.bg',
-          color: 'selected.text',
+          bg: 'selected.control.bg',
+          color: 'selected.control.text',
           _hover: {
-            bg: 'selected.bg',
+            bg: 'selected.control.bg',
             color: 'hover',
           },
           _expanded: {
@@ -265,12 +271,12 @@ export const recipe = defineRecipe({
           borderColor: 'hover',
         },
         _selected: {
-          bg: 'selected.bg',
-          color: 'selected.text',
+          bg: 'selected.control.bg',
+          color: 'selected.control.text',
           borderColor: 'transparent',
           _hover: {
-            bg: 'selected.bg',
-            color: 'selected.text',
+            bg: 'selected.control.bg',
+            color: 'selected.control.text',
             borderColor: 'transparent',
           },
         },
