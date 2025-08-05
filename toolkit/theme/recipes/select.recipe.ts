@@ -92,7 +92,7 @@ export const recipe = defineSlotRecipe({
         opacity: 'control.disabled',
       },
       _highlighted: {
-        bg: 'select.item.bg.highlighted',
+        bg: 'selected.bg',
       },
     },
     control: {

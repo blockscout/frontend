@@ -135,10 +135,10 @@ export const recipe = defineSlotRecipe({
           color: 'tabs.solid.fg',
           bg: 'transparent',
           _selected: {
-            bg: 'tabs.solid.bg.selected',
-            color: 'tabs.solid.fg.selected',
+            bg: 'selected.bg',
+            color: 'selected.text',
             _hover: {
-              color: 'tabs.solid.fg.selected',
+              color: 'selected.text',
             },
           },
           _hover: {
@@ -165,8 +165,8 @@ export const recipe = defineSlotRecipe({
           borderColor: 'tabs.secondary.border',
           borderRadius: 'base',
           _selected: {
-            bg: 'tabs.secondary.bg.selected',
-            color: 'tabs.secondary.fg.selected',
+            bg: 'selected.bg',
+            color: 'selected.text',
             borderColor: 'transparent',
             _hover: {
               borderColor: 'transparent',
@@ -184,16 +184,16 @@ export const recipe = defineSlotRecipe({
           bg: 'transparent',
           borderWidth: '2px',
           borderStyle: 'solid',
-          borderColor: 'tabs.segmented.border',
+          borderColor: 'selected.bg',
           _hover: {
             color: 'hover',
           },
           _selected: {
-            color: 'tabs.segmented.fg.selected',
-            bg: 'tabs.segmented.border',
-            borderColor: 'tabs.segmented.border',
+            color: 'selected.text',
+            bg: 'selected.bg',
+            borderColor: 'selected.bg',
             _hover: {
-              color: 'tabs.segmented.fg.selected',
+              color: 'selected.text',
             },
             '& + *': {
               borderLeftWidth: '0',

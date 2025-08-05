@@ -6,14 +6,61 @@ const heroBannerButton = config.UI.homepage.heroBanner?.button;
 
 const semanticTokens: ThemingConfig['semanticTokens'] = {
   colors: {
+    // COMMON STATES
     hover: {
       DEFAULT: { value: { _light: '{colors.theme.hover._light}', _dark: '{colors.theme.hover._dark}' } },
     },
     selected: {
-      // TODO @tom2drum replace usage of selected elements
       bg: { value: { _light: '{colors.theme.selected.bg._light}', _dark: '{colors.theme.selected.bg._dark}' } },
       text: { value: { _light: '{colors.theme.selected.text._light}', _dark: '{colors.theme.selected.text._dark}' } },
     },
+
+    // GLOBAL
+    global: {
+      body: {
+        bg: { value: '{colors.bg.primary}' },
+        fg: { value: '{colors.text.primary}' },
+      },
+      mark: {
+        bg: { value: { _light: '{colors.green.100}', _dark: '{colors.green.800}' } },
+      },
+      scrollbar: {
+        thumb: { value: { _light: '{colors.blackAlpha.300}', _dark: '{colors.whiteAlpha.300}' } },
+      },
+    },
+
+    // FOUNDATIONS
+    heading: {
+      DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+    },
+    text: {
+      primary: { value: { _light: '{colors.theme.text.primary._light}', _dark: '{colors.theme.text.primary._dark}' } },
+      secondary: { value: { _light: '{colors.theme.text.secondary._light}', _dark: '{colors.theme.text.secondary._dark}' } },
+      error: { value: '{colors.red.500}' },
+    },
+    bg: {
+      primary: { value: { _light: '{colors.theme.bg.primary._light}', _dark: '{colors.theme.bg.primary._dark}' } },
+    },
+    border: {
+      divider: { value: { _light: '{colors.blackAlpha.100}', _dark: '{colors.whiteAlpha.100}' } },
+      error: { value: '{colors.red.500}' },
+    },
+    icon: {
+      backTo: { value: '{colors.gray.400}' },
+      externalLink: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
+      info: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
+      secondary: { value: '{colors.text.secondary}' },
+    },
+
+    // ELEMENTS
+    address: {
+      highlighted: {
+        bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.blue.900}' } },
+        border: { value: { _light: '{colors.blue.200}', _dark: '{colors.blue.600}' } },
+      },
+    },
+
+    // COMPONENTS
     button: {
       solid: {
         bg: {
@@ -36,10 +83,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       dropdown: {
         fg: {
           DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
-          selected: { value: '{colors.selected.text}' },
-        },
-        bg: {
-          selected: { value: '{colors.selected.bg}' },
         },
         border: {
           DEFAULT: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.600}' } },
@@ -62,28 +105,16 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       segmented: {
         fg: {
           DEFAULT: { value: '{colors.text.primary}' },
-          selected: { value: '{colors.selected.text}' },
-        },
-        border: {
-          DEFAULT: { value: '{colors.selected.bg}' },
         },
       },
       icon_secondary: {
         fg: {
           DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
-          selected: { value: '{colors.selected.text}' },
-        },
-        bg: {
-          selected: { value: '{colors.selected.bg}' },
         },
       },
       pagination: {
         fg: {
           DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.gray.50}' } },
-          selected: { value: '{colors.selected.text}' },
-        },
-        bg: {
-          selected: { value: '{colors.selected.bg}' },
         },
         border: {
           DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.whiteAlpha.100}' } },
@@ -195,19 +226,11 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       solid: {
         fg: {
           DEFAULT: { value: { _light: '{colors.theme.tabs.text.primary._light}', _dark: '{colors.theme.tabs.text.primary._dark}' } },
-          selected: { value: '{colors.selected.text}' },
-        },
-        bg: {
-          selected: { value: '{colors.selected.bg}' },
         },
       },
       secondary: {
         fg: {
           DEFAULT: { value: '{colors.text.primary}' },
-          selected: { value: '{colors.selected.text}' },
-        },
-        bg: {
-          selected: { value: '{colors.selected.bg}' },
         },
         border: {
           DEFAULT: { value: { _light: '{colors.gray.300}', _dark: '{colors.gray.600}' } },
@@ -216,10 +239,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       segmented: {
         fg: {
           DEFAULT: { value: '{colors.text.primary}' },
-          selected: { value: '{colors.selected.text}' },
-        },
-        border: {
-          DEFAULT: { value: '{colors.selected.bg}' },
         },
       },
     },
@@ -305,11 +324,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
         },
       },
-      item: {
-        bg: {
-          highlighted: { value: '{colors.selected.bg}' },
-        },
-      },
       indicator: {
         fg: {
           DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
@@ -319,13 +333,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         fg: {
           DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
           error: { value: '{colors.red.500}' },
-        },
-      },
-    },
-    menu: {
-      item: {
-        bg: {
-          highlighted: { value: '{colors.selected.bg}' },
         },
       },
     },
@@ -435,46 +442,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     rating: {
       DEFAULT: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.700}' } },
       highlighted: { value: '{colors.yellow.400}' },
-    },
-    heading: {
-      DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
-    },
-    text: {
-      primary: { value: { _light: '{colors.theme.text.primary._light}', _dark: '{colors.theme.text.primary._dark}' } },
-      secondary: { value: { _light: '{colors.theme.text.secondary._light}', _dark: '{colors.theme.text.secondary._dark}' } },
-      error: { value: '{colors.red.500}' },
-    },
-    bg: {
-      primary: { value: { _light: '{colors.theme.bg.primary._light}', _dark: '{colors.theme.bg.primary._dark}' } },
-    },
-    border: {
-      divider: { value: { _light: '{colors.blackAlpha.100}', _dark: '{colors.whiteAlpha.100}' } },
-      error: { value: '{colors.red.500}' },
-    },
-    icon: {
-      backTo: { value: '{colors.gray.400}' },
-      externalLink: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
-      info: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
-      //
-      secondary: { value: '{colors.text.secondary}' },
-    },
-    address: {
-      highlighted: {
-        bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.blue.900}' } },
-        border: { value: { _light: '{colors.blue.200}', _dark: '{colors.blue.600}' } },
-      },
-    },
-    global: {
-      body: {
-        bg: { value: '{colors.bg.primary}' },
-        fg: { value: '{colors.text.primary}' },
-      },
-      mark: {
-        bg: { value: { _light: '{colors.green.100}', _dark: '{colors.green.800}' } },
-      },
-      scrollbar: {
-        thumb: { value: { _light: '{colors.blackAlpha.300}', _dark: '{colors.whiteAlpha.300}' } },
-      },
     },
   },
   shadows: {

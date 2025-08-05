@@ -80,11 +80,11 @@ export const recipe = defineRecipe({
         // When any items (filters) are selected in the popover, the button should change its background and text color.
         // The last CSS selector is for redefining styles for the TabList component.
         _selected: {
-          bg: 'button.dropdown.bg.selected',
-          color: 'button.dropdown.fg.selected',
+          bg: 'selected.bg',
+          color: 'selected.text',
           borderColor: 'transparent',
           _hover: {
-            bg: 'button.dropdown.bg.selected',
+            bg: 'selected.bg',
             color: 'hover',
             borderColor: 'transparent',
           },
@@ -177,11 +177,11 @@ export const recipe = defineRecipe({
           color: 'hover',
         },
         _selected: {
-          bg: 'button.segmented.border',
-          color: 'button.segmented.fg.selected',
+          bg: 'selected.bg',
+          color: 'selected.text',
           _hover: {
-            bg: 'button.segmented.border',
-            color: 'button.segmented.fg.selected',
+            bg: 'selected.bg',
+            color: 'selected.text',
           },
         },
         _notFirst: {
@@ -239,10 +239,10 @@ export const recipe = defineRecipe({
           color: 'hover',
         },
         _selected: {
-          bg: 'button.icon_secondary.bg.selected',
-          color: 'button.icon_secondary.fg.selected',
+          bg: 'selected.bg',
+          color: 'selected.text',
           _hover: {
-            bg: 'button.icon_secondary.bg.selected',
+            bg: 'selected.bg',
             color: 'hover',
           },
           _expanded: {
@@ -265,12 +265,12 @@ export const recipe = defineRecipe({
           borderColor: 'hover',
         },
         _selected: {
-          bg: 'button.pagination.bg.selected',
-          color: 'button.pagination.fg.selected',
+          bg: 'selected.bg',
+          color: 'selected.text',
           borderColor: 'transparent',
           _hover: {
-            bg: 'button.pagination.bg.selected',
-            color: 'button.pagination.fg.selected',
+            bg: 'selected.bg',
+            color: 'selected.text',
             borderColor: 'transparent',
           },
         },
