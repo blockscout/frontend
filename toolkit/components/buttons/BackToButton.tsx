@@ -20,7 +20,7 @@ export const BackToButton = ({ href, hint, boxSize = 6, ...rest }: BackToButtonP
       <Icon
         transform="rotate(180deg)"
         color="icon.backTo"
-        _hover={{ color: 'link.primary.hover' }}
+        _hover={{ color: 'hover' }}
         boxSize={ boxSize }
       >
         <ArrowIcon/>

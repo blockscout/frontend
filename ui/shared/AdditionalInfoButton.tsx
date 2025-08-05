@@ -16,10 +16,10 @@ const AdditionalInfoButton = (props: Props, ref: React.ForwardedRef<HTMLButtonEl
     <IconButton
       ref={ ref }
       color="icon.info"
-      _hover={{ color: 'link.primary.hover' }}
+      _hover={{ color: 'hover' }}
       _open={{
         bgColor: { _light: 'blue.50', _dark: 'gray.600' },
-        color: 'link.primary.hover',
+        color: 'hover',
       }}
       borderRadius="base"
       aria-label="Transaction info"

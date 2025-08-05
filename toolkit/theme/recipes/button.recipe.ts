@@ -17,7 +17,7 @@ export const recipe = defineRecipe({
         bg: 'button.solid.bg',
         color: 'white',
         _hover: {
-          bg: 'link.primary.hover',
+          bg: 'hover',
         },
         _loading: {
           opacity: 1,
@@ -28,7 +28,7 @@ export const recipe = defineRecipe({
           },
         },
         _expanded: {
-          bg: 'link.primary.hover',
+          bg: 'hover',
         },
       },
       outline: {
@@ -39,8 +39,8 @@ export const recipe = defineRecipe({
         borderColor: 'button.outline.fg',
         _hover: {
           bg: 'transparent',
-          color: 'link.primary.hover',
-          borderColor: 'link.primary.hover',
+          color: 'hover',
+          borderColor: 'hover',
         },
         _loading: {
           opacity: 1,
@@ -59,8 +59,8 @@ export const recipe = defineRecipe({
         borderColor: 'button.dropdown.border',
         _hover: {
           bg: 'transparent',
-          color: 'link.primary.hover',
-          borderColor: 'link.primary.hover',
+          color: 'hover',
+          borderColor: 'hover',
         },
         _loading: {
           opacity: 1,
@@ -73,8 +73,8 @@ export const recipe = defineRecipe({
         // When the dropdown is open, the button should be active
         _expanded: {
           bg: 'transparent',
-          color: 'link.primary.hover',
-          borderColor: 'link.primary.hover',
+          color: 'hover',
+          borderColor: 'hover',
         },
         // We have a special state for this button variant that serves as a popover trigger.
         // When any items (filters) are selected in the popover, the button should change its background and text color.
@@ -85,11 +85,11 @@ export const recipe = defineRecipe({
           borderColor: 'transparent',
           _hover: {
             bg: 'button.dropdown.bg.selected',
-            color: 'link.primary.hover',
+            color: 'hover',
             borderColor: 'transparent',
           },
           _expanded: {
-            color: 'link.primary.hover',
+            color: 'hover',
           },
         },
       },
@@ -101,8 +101,8 @@ export const recipe = defineRecipe({
         borderStyle: 'solid',
         _hover: {
           bg: 'transparent',
-          color: 'link.primary.hover',
-          borderColor: 'link.primary.hover',
+          color: 'hover',
+          borderColor: 'hover',
         },
         _loading: {
           opacity: 1,
@@ -119,10 +119,10 @@ export const recipe = defineRecipe({
           borderWidth: '0px',
           _hover: {
             bg: 'button.header.bg.selected',
-            color: 'link.primary.hover',
+            color: 'hover',
           },
           _expanded: {
-            color: 'link.primary.hover',
+            color: 'hover',
           },
           _highlighted: {
             bg: 'button.header.bg.highlighted',
@@ -130,11 +130,11 @@ export const recipe = defineRecipe({
             borderColor: 'transparent',
             borderWidth: '0px',
             _expanded: {
-              color: 'link.primary.hover',
+              color: 'hover',
             },
             _hover: {
               bg: 'button.header.bg.highlighted',
-              color: 'link.primary.hover',
+              color: 'hover',
             },
           },
         },
@@ -159,10 +159,10 @@ export const recipe = defineRecipe({
           color: 'button.hero.fg.selected',
           _hover: {
             bg: 'button.hero.bg.selected',
-            color: 'link.primary.hover',
+            color: 'hover',
           },
           _expanded: {
-            color: 'link.primary.hover',
+            color: 'hover',
           },
         },
       },
@@ -174,7 +174,7 @@ export const recipe = defineRecipe({
         borderStyle: 'solid',
         borderRadius: 'none',
         _hover: {
-          color: 'link.primary.hover',
+          color: 'hover',
         },
         _selected: {
           bg: 'button.segmented.border',
@@ -209,7 +209,7 @@ export const recipe = defineRecipe({
         color: 'button.subtle.fg',
         _hover: {
           bg: 'button.subtle.bg',
-          color: 'link.primary.hover',
+          color: 'hover',
         },
         _disabled: {
           bg: 'button.subtle.bg',
@@ -236,21 +236,21 @@ export const recipe = defineRecipe({
         color: 'button.icon_secondary.fg',
         border: 'none',
         _hover: {
-          color: 'link.primary.hover',
+          color: 'hover',
         },
         _selected: {
           bg: 'button.icon_secondary.bg.selected',
           color: 'button.icon_secondary.fg.selected',
           _hover: {
             bg: 'button.icon_secondary.bg.selected',
-            color: 'link.primary.hover',
+            color: 'hover',
           },
           _expanded: {
-            color: 'link.primary.hover',
+            color: 'hover',
           },
         },
         _expanded: {
-          color: 'link.primary.hover',
+          color: 'hover',
         },
       },
       pagination: {
@@ -261,8 +261,8 @@ export const recipe = defineRecipe({
         borderColor: 'button.pagination.border',
         _hover: {
           bg: 'transparent',
-          color: 'link.primary.hover',
-          borderColor: 'link.primary.hover',
+          color: 'hover',
+          borderColor: 'hover',
         },
         _selected: {
           bg: 'button.pagination.bg.selected',

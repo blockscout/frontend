@@ -32,7 +32,7 @@ export const recipe = defineSlotRecipe({
       focusVisibleRing: 'inside',
       focusRingWidth: '2px',
       _hover: {
-        color: 'link.primary.hover',
+        color: 'hover',
       },
     },
     startElement: {

@@ -28,7 +28,7 @@ export const Hint = React.memo(({ label, tooltipProps, isLoading, boxSize = 5, .
         loadingSkeleton={ isLoading }
         borderRadius="sm"
         color="icon.info"
-        _hover={{ color: 'link.primary.hover' }}
+        _hover={{ color: 'hover' }}
         { ...rest }
       >
         <Icon boxSize={ boxSize }>

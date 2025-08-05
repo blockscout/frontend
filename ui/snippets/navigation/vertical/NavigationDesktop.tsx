@@ -107,7 +107,7 @@ const NavigationDesktop = () => {
         name="arrows/east-mini"
         width={ 6 }
         height={ 6 }
-        _hover={{ color: 'link.primary.hover' }}
+        _hover={{ color: 'hover' }}
         borderRadius="base"
         bgColor={{ base: 'white', _dark: 'black' }}
         color={{ base: 'blackAlpha.400', _dark: 'whiteAlpha.400' }}

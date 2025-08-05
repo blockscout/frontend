@@ -50,7 +50,7 @@ export const recipe = defineSlotRecipe({
       boxSize: '5',
       color: 'inherit',
       _open: {
-        color: 'link.primary.hover',
+        color: 'hover',
       },
     },
     content: {
@@ -134,11 +134,11 @@ export const recipe = defineSlotRecipe({
           color: 'select.trigger.outline.fg',
           borderColor: 'input.border.filled',
           _expanded: {
-            color: 'link.primary.hover',
-            borderColor: 'link.primary.hover',
+            color: 'hover',
+            borderColor: 'hover',
             _hover: {
-              color: 'link.primary.hover',
-              borderColor: 'link.primary.hover',
+              color: 'hover',
+              borderColor: 'hover',
             },
           },
           _hover: {
@@ -167,11 +167,11 @@ export const recipe = defineSlotRecipe({
               borderColor: 'input.border.error',
             },
             _expanded: {
-              color: 'link.primary.hover',
-              borderColor: 'link.primary.hover',
+              color: 'hover',
+              borderColor: 'hover',
               _hover: {
-                color: 'link.primary.hover',
-                borderColor: 'link.primary.hover',
+                color: 'hover',
+                borderColor: 'hover',
               },
             },
           },

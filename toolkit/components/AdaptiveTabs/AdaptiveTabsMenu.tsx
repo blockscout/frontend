@@ -28,7 +28,7 @@ const AdaptiveTabsMenu = ({ tabs, tabsCut, isActive, ...props }: Props, ref: Rea
           variant="plain"
           color="tabs.solid.fg"
           _hover={{
-            color: 'link.primary.hover',
+            color: 'hover',
           }}
           _expanded={{
             color: 'tabs.solid.fg.selected',

@@ -23,10 +23,10 @@ const FilterButton = ({ isLoading, appliedFiltersNum, ...rest }: Props, ref: Rea
       bg="selected.text"
       color={{ _light: 'white', _dark: 'black' }}
       _groupHover={{
-        bg: 'link.primary.hover',
+        bg: 'hover',
       }}
       _groupExpanded={{
-        bg: 'link.primary.hover',
+        bg: 'hover',
       }}
     >
       { appliedFiltersNum }

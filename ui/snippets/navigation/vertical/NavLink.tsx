@@ -49,7 +49,7 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
         onClick={ onClick }
         _hover={{
           [`& *:not(.${ LIGHTNING_LABEL_CLASS_NAME }, .${ LIGHTNING_LABEL_CLASS_NAME } *)`]: {
-            color: isDisabled ? 'inherit' : 'link.primary.hover',
+            color: isDisabled ? 'inherit' : 'link.navigation.fg.hover',
           },
         }}
       >

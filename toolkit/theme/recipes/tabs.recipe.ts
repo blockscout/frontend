@@ -142,7 +142,7 @@ export const recipe = defineSlotRecipe({
             },
           },
           _hover: {
-            color: 'link.primary.hover',
+            color: 'hover',
           },
         },
       },
@@ -173,8 +173,8 @@ export const recipe = defineSlotRecipe({
             },
           },
           _hover: {
-            color: 'link.primary.hover',
-            borderColor: 'link.primary.hover',
+            color: 'hover',
+            borderColor: 'hover',
           },
         },
       },
@@ -186,7 +186,7 @@ export const recipe = defineSlotRecipe({
           borderStyle: 'solid',
           borderColor: 'tabs.segmented.border',
           _hover: {
-            color: 'link.primary.hover',
+            color: 'hover',
           },
           _selected: {
             color: 'tabs.segmented.fg.selected',

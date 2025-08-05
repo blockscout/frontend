@@ -66,7 +66,7 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
       fontWeight={ 500 }
       _hover={{
         bgColor: { _light: 'white', _dark: 'black' },
-        color: isSelected ? 'text.secondary' : 'link.primary.hover',
+        color: isSelected ? 'text.secondary' : 'hover',
         zIndex: 1,
       }}
     >

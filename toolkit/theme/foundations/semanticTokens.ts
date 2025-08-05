@@ -7,7 +7,6 @@ const heroBannerButton = config.UI.homepage.heroBanner?.button;
 const semanticTokens: ThemingConfig['semanticTokens'] = {
   colors: {
     hover: {
-      // TODO @tom2drum replace usage of link.primary.hover
       DEFAULT: { value: { _light: '{colors.theme.hover._light}', _dark: '{colors.theme.hover._dark}' } },
     },
     selected: {
@@ -157,8 +156,8 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         fg: {
           DEFAULT: { value: { _light: '{colors.gray.600}', _dark: '{colors.gray.400}' } },
           selected: { value: { _light: '{colors.theme.navigation.text.selected._light}', _dark: '{colors.theme.navigation.text.selected._dark}' } },
-          hover: { value: { _light: '{colors.link.primary.hover}' } },
-          active: { value: { _light: '{colors.link.primary.hover}' } },
+          hover: { value: { _light: '{colors.hover}' } },
+          active: { value: { _light: '{colors.hover}' } },
         },
         bg: {
           selected: { value: { _light: '{colors.theme.navigation.bg.selected._light}', _dark: '{colors.theme.navigation.bg.selected._dark}' } },

@@ -102,14 +102,14 @@ const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) =
           <Text
             textStyle="xs"
             color="text.secondary"
-            _groupHover={{ color: 'link.primary.hover' }}
+            _groupHover={{ color: 'hover' }}
           >
             { config.name }
           </Text>
           <IconSvg
             name="link_external"
             boxSize={ 3 }
-            color="link.primary.hover"
+            color="hover"
             display="none"
             _groupHover={{ display: 'block' }}
           />
