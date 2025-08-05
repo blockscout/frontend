@@ -1,5 +1,3 @@
-import { get } from 'es-toolkit/compat';
-
 import type { ColorThemeId } from 'types/settings';
 
 import config from 'configs/app';
@@ -13,6 +11,22 @@ export interface ColorTheme {
   sampleBg: string;
 }
 
+const getNestedValue = (obj: Record<string, unknown>, property: string) => {
+  const keys = property.split('.');
+  let current = obj;
+  for (const key of keys) {
+    const value = current[key];
+    if (value === undefined) {
+      return undefined;
+    }
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      current = value as Record<string, unknown>;
+    } else {
+      return value;
+    }
+  }
+};
+
 export function getThemeHexWithOverrides(colorThemeId: ColorThemeId) {
   const defaultHex = COLOR_THEMES.find((theme) => theme.id === colorThemeId)?.hex;
 
@@ -22,11 +36,13 @@ export function getThemeHexWithOverrides(colorThemeId: ColorThemeId) {
 
   const overrides = config.UI.colorTheme.overrides;
   if (colorThemeId === 'light') {
-    return (get(overrides, 'bg.primary._light.value') as string | undefined) || defaultHex;
+    const value = getNestedValue(overrides, 'bg.primary._light.value');
+    return typeof value === 'string' ? value : defaultHex;
   }
 
   if (colorThemeId === 'dark') {
-    return (get(overrides, 'bg.primary._dark.value') as string | undefined) || defaultHex;
+    const value = getNestedValue(overrides, 'bg.primary._dark.value');
+    return typeof value === 'string' ? value : defaultHex;
   }
 
   return defaultHex;
