@@ -604,6 +604,9 @@ const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
       _hover: heroBannerButtonStateSchema,
       _selected: heroBannerButtonStateSchema,
     }),
+    search: yup.object({
+      border_width: yup.array().max(2).of(yup.string()),
+    }),
   });
 
 const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
