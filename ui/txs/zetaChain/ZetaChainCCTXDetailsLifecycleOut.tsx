@@ -34,7 +34,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ tx, txStatus, isLoading, isLast }: P
   if (txStatus === 'OUTBOUND_MINED') {
     content = (
       <>
-        <Text color="text.secondary" fontWeight="medium">Transferred</Text>
+        <Text color="text.secondary" fontWeight="medium">Transaction</Text>
         { chainTo?.chain_id.toString() !== config.chain.id ? (
           <TxEntityWithExternalChain chain={ chainTo } hash={ tx.hash } noIcon noCopy={ false }/>
         ) : (
