@@ -4,16 +4,14 @@ import { getEnvValue } from '../utils';
 
 const title = 'Flashblocks';
 
-const rpcUrl = getEnvValue('NEXT_PUBLIC_FLASHBLOCKS_RPC_URL');
 const socketUrl = getEnvValue('NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL');
 
-const config: Feature<{ rpcUrl: string; socketUrl: string }> = (() => {
+const config: Feature<{ socketUrl: string }> = (() => {
 
-  if (rpcUrl && socketUrl) {
+  if (socketUrl) {
     return Object.freeze({
       title,
       isEnabled: true,
-      rpcUrl,
       socketUrl,
     });
   }

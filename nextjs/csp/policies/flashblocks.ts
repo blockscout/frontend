@@ -11,7 +11,6 @@ export function flashblocks(): CspDev.DirectiveDescriptor {
 
   return {
     'connect-src': [
-      flashblocksFeature.rpcUrl,
       flashblocksFeature.socketUrl,
     ],
   };

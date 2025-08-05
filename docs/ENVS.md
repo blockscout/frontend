@@ -932,11 +932,10 @@ This feature enables Blockscout Merits program. It requires that the [My account
 
 ### Flashblocks
 
-This feature allows users to view [Flashblocks](https://docs.base.org/base-chain/flashblocks/apps)-related content in the explorer, including the Flashblocks list and the detailed information page for each Flashblock. It currently supports only Base chains.
+This feature allows users to view [Flashblocks](https://docs.base.org/base-chain/flashblocks/apps)-related content in the explorer, including the Flashblocks real-time feed. It currently supports only Base chains.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_FLASHBLOCKS_RPC_URL | `string` | Public Flashblock-aware RPC endpoint | Required | - | `https://mainnet-preconf.base.org` | v2.3.0+ |
 | NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL | `string` | Public WebSocket endpoint to stream Flashblocks data | Required | - | `wss://mainnet.flashblocks.base.org/ws` | v2.3.0+ |
 
 &nbsp;
