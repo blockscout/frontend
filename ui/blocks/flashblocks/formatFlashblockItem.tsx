@@ -17,5 +17,6 @@ export default function formatFlashblockItem(item: FlashblockItemApi): Flashbloc
     block_number: number,
     index: item.index,
     transactions_count: item.diff.transactions.length,
+    gas_used: Number(item.diff.gas_used),
   };
 }

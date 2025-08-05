@@ -22,8 +22,11 @@ const FlashblocksTable = ({ items, newItemsNum, showAlertError, onAlertLinkClick
           <TableColumnHeader width="50%">
             Block
           </TableColumnHeader>
-          <TableColumnHeader width="50%">
+          <TableColumnHeader width="20%" isNumeric>
             Txn
+          </TableColumnHeader>
+          <TableColumnHeader width="30%" isNumeric>
+            Gas used
           </TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>

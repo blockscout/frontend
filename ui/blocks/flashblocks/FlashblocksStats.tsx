@@ -18,13 +18,12 @@ const FlashblocksStats = ({ itemsNum, txsNum, initialTs }: Props) => {
     <Box
       display="grid"
       gridTemplateColumns={{ base: '1fr', lg: `repeat(3, calc(${ 100 / 3 }% - 9px))` }}
-      rowGap={ 3 }
-      columnGap={ 3 }
+      gap={{ base: 1, lg: 3 }}
       mb={ 6 }
     >
       <StatsWidget
-        label="Flashblocks"
-        value={ Number(itemsNum).toLocaleString() }
+        label="Flashblocks (sec)"
+        value={ timeElapsed ? Number(itemsNum / (timeElapsed / SECOND)).toLocaleString(undefined, { maximumFractionDigits: 0 }) : '-' }
       />
       <StatsWidget
         label="TPS"
@@ -34,7 +33,7 @@ const FlashblocksStats = ({ itemsNum, txsNum, initialTs }: Props) => {
         label="Flashblock time"
         value={
           timeElapsed && itemsNum > 0 ?
-            Number(timeElapsed / itemsNum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ms' :
+            Number(timeElapsed / itemsNum).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' ms' :
             '-'
         }
       />

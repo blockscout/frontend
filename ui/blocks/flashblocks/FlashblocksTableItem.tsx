@@ -7,6 +7,7 @@ import { route } from 'nextjs-routes';
 
 import { Link } from 'toolkit/chakra/link';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+import FlashblockEntity from 'ui/shared/entities/flashblock/FlashblockEntity';
 
 interface Props {
   data: FlashblockItem;
@@ -17,19 +18,16 @@ const FlashblocksTableItem = ({ data }: Props) => {
     <TableRow>
       <TableCell>
         { data.block_number ? (
-          <Link
-            href={ route({
-              pathname: '/block/[height_or_hash]',
-              query: { height_or_hash: String(data.block_number) },
-            }) }
-          >
-            { data.block_number } #{ data.index }
-          </Link>
+          <FlashblockEntity
+            number={ data.block_number }
+            index={ data.index }
+            noIcon
+          />
         ) : (
           <Text color="text.secondary">N/A</Text>
         ) }
       </TableCell>
-      <TableCell>
+      <TableCell isNumeric>
         { data.transactions_count > 0 ? (
           <Link href={ route({
             pathname: '/block/[height_or_hash]',
@@ -40,6 +38,9 @@ const FlashblocksTableItem = ({ data }: Props) => {
         ) : (
           <Text color="text.secondary">{ data.transactions_count }</Text>
         ) }
+      </TableCell>
+      <TableCell isNumeric>
+        { data.gas_used.toLocaleString() }
       </TableCell>
     </TableRow>
   );

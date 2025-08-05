@@ -6,6 +6,7 @@ import type { FlashblockItem } from 'types/client/flashblocks';
 import { route } from 'nextjs-routes';
 
 import { Link } from 'toolkit/chakra/link';
+import FlashblockEntity from 'ui/shared/entities/flashblock/FlashblockEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props {
@@ -17,14 +18,11 @@ const FlashblocksListItem = ({ data }: Props) => {
     <ListItemMobile rowGap={ 3 }>
       <Flex justifyContent="space-between" w="100%">
         { data.block_number ? (
-          <Link
-            href={ route({
-              pathname: '/block/[height_or_hash]',
-              query: { height_or_hash: String(data.block_number) },
-            }) }
-          >
-            { data.block_number } #{ data.index }
-          </Link>
+          <FlashblockEntity
+            number={ data.block_number }
+            index={ data.index }
+            fontWeight={ 600 }
+          />
         ) : <Text color="text.secondary">N/A</Text> }
       </Flex>
       <Flex columnGap={ 2 }>
@@ -39,6 +37,10 @@ const FlashblocksListItem = ({ data }: Props) => {
         ) :
           <Text color="text.secondary">{ data.transactions_count }</Text>
         }
+      </Flex>
+      <Flex columnGap={ 2 }>
+        <Text fontWeight={ 500 }>Gas used</Text>
+        <Text color="text.secondary">{ data.gas_used.toLocaleString() }</Text>
       </Flex>
     </ListItemMobile>
   );

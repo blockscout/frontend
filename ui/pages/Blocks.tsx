@@ -76,9 +76,9 @@ const BlocksPageContent = () => {
 
   const tabs: Array<TabItemRegular> = [
     { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
+    config.features.flashblocks.isEnabled && { id: 'flashblocks', title: 'Flashblocks', component: <Flashblocks/> },
     { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
     { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ unclesQuery }/> },
-    config.features.flashblocks.isEnabled && { id: 'flashblocks', title: 'Flashblocks', component: <Flashblocks/> },
   ].filter(Boolean);
 
   return (
