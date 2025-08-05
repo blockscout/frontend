@@ -6,7 +6,7 @@ export const recipe = defineSlotRecipe({
   base: {
     root: {
       display: 'inline-flex',
-      gap: '2.5',
+      gap: '2',
       alignItems: 'center',
       position: 'relative',
       verticalAlign: 'middle',
@@ -20,8 +20,9 @@ export const recipe = defineSlotRecipe({
     label: {
       userSelect: 'none',
       fontWeight: '400',
+      color: 'text.primary',
       _disabled: {
-        opacity: '0.5',
+        opacity: 'control.disabled',
       },
     },
 
@@ -52,7 +53,7 @@ export const recipe = defineSlotRecipe({
       width: 'var(--switch-width)',
       height: 'var(--switch-height)',
       _disabled: {
-        opacity: '0.5',
+        opacity: 'control.disabled',
         cursor: 'not-allowed',
       },
       _invalid: {
@@ -103,6 +104,19 @@ export const recipe = defineSlotRecipe({
       },
     },
 
+    direction: {
+      rtl: {
+        root: {
+          flexDirection: 'row-reverse',
+        },
+      },
+      ltr: {
+        root: {
+          flexDirection: 'row',
+        },
+      },
+    },
+
     size: {
       sm: {
         root: {
@@ -139,6 +153,7 @@ export const recipe = defineSlotRecipe({
 
   defaultVariants: {
     variant: 'primary',
+    direction: 'ltr',
     size: 'md',
   },
 });

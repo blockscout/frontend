@@ -14,7 +14,7 @@ const UserWalletAutoConnectAlert = () => {
     >
       <IconSvg
         name="integration/partial"
-        color="text"
+        color="text.primary"
         boxSize={ 5 }
         flexShrink={ 0 }
         mr={ 2 }

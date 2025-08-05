@@ -59,7 +59,7 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
       as="li"
       borderRadius="base"
       cursor="pointer"
-      color={ isSelected ? 'text.secondary' : 'link' }
+      color={ isSelected ? 'text.secondary' : 'link.primary' }
       bgColor={ isSelected ? { _light: 'white', _dark: 'black' } : undefined }
       onClick={ handleClick }
       fontSize="xs"
@@ -73,7 +73,7 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
       { icon }
       <Box display={{ base: 'none', lg: 'block' }}>
         <span>{ title }</span>
-        <Flex alignItems="center" color="text">
+        <Flex alignItems="center" color="text.primary">
           { valueContent }
           { valueDiffContent }
         </Flex>

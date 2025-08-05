@@ -246,8 +246,8 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       primary: {
         bg: {
           DEFAULT: { value: { _light: '{colors.gray.300}', _dark: '{colors.whiteAlpha.400}' } },
-          checked: { value: { _light: '{colors.blue.500}', _dark: '{colors.blue.300}' } },
-          hover: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.400}' } },
+          checked: { value: { _light: '{colors.blue.500}', _dark: '{colors.blue.500}' } },
+          hover: { value: '{colors.hover}' },
         },
       },
     },
