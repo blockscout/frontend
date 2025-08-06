@@ -98,6 +98,9 @@ export type ZetaChainCCTXStatus = 'PENDING_OUTBOUND' | 'PENDING_INBOUND' | 'OUTB
 
 export type ZetaChainCCTXStatusReduced = 'SUCCESS' | 'PENDING' | 'FAILED';
 
+// API filter values (capitalized for API endpoint)
+export type ZetaChainCCTXStatusReducedFilter = 'Success' | 'Pending' | 'Failed';
+
 export type ZetaChainCCTXCoinType = 'ZETA' | 'GAS' | 'ERC20' | 'CMD' | 'NO_ASSET_CALL';
 
 export type ZetaChainCCTXFinalizationStatus = 'FINALIZED' | 'NOT_FINALIZED';
@@ -128,4 +131,32 @@ export type ZetaChainCCTXOutboundParams = {
     is_arbitrary_call: boolean;
   };
   confirmation_mode: ZetaChainCCTXConfirmationMode;
+};
+
+// Filter types for ZetaChain CCTX
+export type ZetaChainCCTXFilterParams = {
+  start_timestamp?: string;
+  end_timestamp?: string;
+  status_reduced?: Array<ZetaChainCCTXStatusReducedFilter>;
+  sender_address?: Array<string>;
+  receiver_address?: Array<string>;
+  token_symbol?: Array<string>;
+};
+
+export const ZETA_CHAIN_CCTX_FILTER_AGES = [ '1h', '24h', '7d', '1m', '3m', '6m' ] as const;
+export type ZetaChainCCTXFilterAge = typeof ZETA_CHAIN_CCTX_FILTER_AGES[number];
+
+// Token types for ZetaChain
+export type ZetaChainTokensResponse = {
+  tokens: Array<ZetaChainTokenInfo>;
+};
+
+export type ZetaChainTokenInfo = {
+  foreign_chain_id: number;
+  decimals: number;
+  name: string;
+  symbol: string;
+  zrc20_contract_address: string;
+  icon_url: string | null;
+  coin_type: string;
 };
