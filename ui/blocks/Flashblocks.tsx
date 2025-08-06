@@ -11,6 +11,7 @@ import useFlashblocksSocketData from './flashblocks/useFlashblocksSocketData';
 
 const Flashblocks = () => {
 
+  const manualModeRef = React.useRef(false);
   const [ isRealTime, setIsRealTime ] = React.useState(true);
   const { items, itemsNum, newItemsNum, txsNum, pause, resume, initialTs, status } = useFlashblocksSocketData();
 
@@ -21,11 +22,26 @@ const Flashblocks = () => {
       pause();
     }
     setIsRealTime(checked);
+    manualModeRef.current = !checked;
   }, [ pause, resume ]);
 
   const handleAlertLinkClick = React.useCallback(() => {
     handleFormatChange({ checked: true });
   }, [ handleFormatChange ]);
+
+  const handleMouseEnter = React.useCallback(() => {
+    if (isRealTime && status === 'connected' && !manualModeRef.current) {
+      pause();
+      setIsRealTime(false);
+    }
+  }, [ isRealTime, pause, status ]);
+
+  const handleMouseLeave = React.useCallback(() => {
+    if (!isRealTime && status === 'connected' && !manualModeRef.current) {
+      resume();
+      setIsRealTime(true);
+    }
+  }, [ isRealTime, resume, status ]);
 
   const showAlertError = status === 'error' || status === 'disconnected';
 
@@ -38,7 +54,7 @@ const Flashblocks = () => {
         </Switch>
         <Hint label="Real-time flashblocks show the latest flashblocks with real-time updates in the chronological order. "/>
       </HStack>
-      <Box hideBelow="lg">
+      <Box hideBelow="lg" onMouseEnter={ handleMouseEnter } onMouseLeave={ handleMouseLeave }>
         <FlashblocksTable
           items={ items }
           newItemsNum={ newItemsNum }
