@@ -25,7 +25,7 @@ type Props = {
 };
 
 const DateInput = ({ value, onChange, placeholder, max }: { value: string; onChange: (value: string) => void; placeholder: string; max: string }) => {
-  const [ tempValue, setTempValue ] = React.useState(value ? dayjs(Number(value) * 1000).format('YYYY-MM-DD') : '');
+  const [ tempValue, setTempValue ] = React.useState(value || '');
 
   // reset
   React.useEffect(() => {
@@ -54,8 +54,8 @@ const DateInput = ({ value, onChange, placeholder, max }: { value: string; onCha
 
 const ZetaChainAgeFilter = ({ value = defaultValue, handleFilterChange }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<AgeFromToValue>({
-    from: value.from || '',
-    to: value.to || '',
+    from: value.from ? dayjs(Number(value.from) * 1000).format('YYYY-MM-DD') : '',
+    to: value.to ? dayjs(Number(value.to) * 1000).format('YYYY-MM-DD') : '',
   });
 
   const handleFromChange = React.useCallback((newValue: string) => {
@@ -74,17 +74,37 @@ const ZetaChainAgeFilter = ({ value = defaultValue, handleFilterChange }: Props)
       handleFilterChange(FILTER_PARAM_TO, undefined);
       return;
     }
-    const from = dayjs(currentValue.from || undefined).startOf('day').unix().toString();
+
+    // Convert date strings to timestamps
+    const from = currentValue.from ? dayjs(currentValue.from).startOf('day').unix().toString() : undefined;
+    const to = currentValue.to ? dayjs(currentValue.to).endOf('day').unix().toString() : undefined;
+
     handleFilterChange(FILTER_PARAM_FROM, from);
-    const to = dayjs(currentValue.to || undefined).endOf('day').unix().toString();
     handleFilterChange(FILTER_PARAM_TO, to);
   }, [ handleFilterChange, currentValue ]);
+
+  // Check if the current values differ from the original values
+  const isTouched = React.useMemo(() => {
+    // If both current values are empty and both original values are empty, not touched
+    if (!currentValue.from && !currentValue.to && !value.from && !value.to) {
+      return false;
+    }
+
+    // Convert original timestamps to date strings for comparison
+    const originalValueAsDates = {
+      from: value.from ? dayjs(Number(value.from) * 1000).format('YYYY-MM-DD') : '',
+      to: value.to ? dayjs(Number(value.to) * 1000).format('YYYY-MM-DD') : '',
+    };
+
+    // Compare the date strings directly
+    return !isEqual(currentValue, originalValueAsDates);
+  }, [ currentValue, value ]);
 
   return (
     <TableColumnFilter
       title="Set last duration"
       isFilled={ Boolean(currentValue.from || currentValue.to) }
-      isTouched={ !isEqual(currentValue, value) }
+      isTouched={ isTouched }
       onFilter={ onFilter }
       onReset={ onReset }
       hasReset

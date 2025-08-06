@@ -62,7 +62,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
       <DetailedInfo.ItemValue>
         <ZetaChainAddressEntity
           hash={ data.inbound_params.sender }
-          chainId={ data.inbound_params.sender_chain_id }
+          chainId={ data.inbound_params.sender_chain_id.toString() }
           isLoading={ isLoading }
         />
       </DetailedInfo.ItemValue>
@@ -186,10 +186,10 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
               <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg="global.body.bg" zIndex={ 1 } color="text.secondary"/>
               <ZetaChainCCTXDetailsLifecycleIn
                 key={ data.index }
-                tx={ data.inbound_params }
+                tx={ data }
                 isLoading={ isLoading }
               />
-              { data.outbound_params.map((tx, index) => (
+              { data.outbound_params.map((param, index) => (
                 <>
                   <Flex
                     h="100%"
@@ -200,8 +200,8 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
                     <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg="global.body.bg" zIndex={ 1 } color="text.secondary"/>
                   </Flex>
                   <ZetaChainCCTXDetailsLifecycleOut
-                    tx={ tx }
-                    txStatus={ data.cctx_status.status }
+                    outboundParam={ param }
+                    tx={ data }
                     isLoading={ isLoading }
                     isLast={ index === data.outbound_params.length - 1 }
                   />

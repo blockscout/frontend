@@ -43,7 +43,7 @@ export type ZetaChainCCTXResponse = {
   };
   inbound_params: {
     sender: string;
-    sender_chain_id: string;
+    sender_chain_id: number;
     tx_origin: string;
     coin_type: ZetaChainCCTXCoinType;
     asset: string;
