@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ZetaChainCCTX } from 'types/api/zetaChain';
+import type { ZetaChainCCTX, ZetaChainCCTXFilterParams } from 'types/api/zetaChain';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -13,12 +13,14 @@ import ZetaChainCCTxsListItem from './ZetaChainCCTXListItem';
 import ZetaChainCCTxsTable from './ZetaChainCCTxsTable';
 
 type Props = {
-
   pagination: PaginationParams;
   top?: number;
   items?: Array<ZetaChainCCTX>;
   isPlaceholderData: boolean;
   isError: boolean;
+  filters?: ZetaChainCCTXFilterParams;
+  onFilterChange: <T extends keyof ZetaChainCCTXFilterParams>(field: T, val: ZetaChainCCTXFilterParams[T]) => void;
+  showStatusFilter?: boolean;
 };
 
 const ZetaChainCCTxs = ({
@@ -27,6 +29,9 @@ const ZetaChainCCTxs = ({
   items,
   isPlaceholderData,
   isError,
+  filters = {},
+  onFilterChange,
+  showStatusFilter = true,
 }: Props) => {
   const isMobile = useIsMobile();
 
@@ -46,6 +51,10 @@ const ZetaChainCCTxs = ({
           txs={ items ?? [] }
           top={ top || 0 }
           isLoading={ isPlaceholderData }
+          filters={ filters }
+          onFilterChange={ onFilterChange }
+          isPlaceholderData={ isPlaceholderData }
+          showStatusFilter={ showStatusFilter }
         />
       </Box>
     </>

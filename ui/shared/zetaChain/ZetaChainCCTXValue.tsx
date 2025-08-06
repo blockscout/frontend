@@ -14,23 +14,24 @@ type Props = {
   decimals?: string | null;
   isLoading?: boolean;
   className?: string;
+  accuracy?: number;
 };
 
-const ZetaChainCCTXValue = ({ coinType, tokenSymbol, amount, decimals, isLoading, className }: Props) => {
+const ZetaChainCCTXValue = ({ coinType, tokenSymbol, amount, decimals, isLoading, className, accuracy = 8 }: Props) => {
   let unit: string;
   let value: string | undefined;
   switch (coinType) {
     case 'ERC20':
       unit = tokenSymbol || 'Unnamed token';
-      value = getCurrencyValue({ value: amount, decimals: decimals || '18' }).valueStr;
+      value = getCurrencyValue({ value: amount, decimals: decimals || '18', accuracy }).valueStr;
       break;
     case 'ZETA':
       unit = config.chain.currency.symbol || config.chain.currency.name || '';
-      value = getCurrencyValue({ value: amount, decimals: config.chain.currency.decimals.toString() || '18' }).valueStr;
+      value = getCurrencyValue({ value: amount, decimals: config.chain.currency.decimals.toString() || '18', accuracy }).valueStr;
       break;
     case 'GAS':
       unit = tokenSymbol || 'Unnamed token';
-      value = getCurrencyValue({ value: amount, decimals: decimals || '18' }).valueStr;
+      value = getCurrencyValue({ value: amount, decimals: decimals || '18', accuracy }).valueStr;
       break;
     default:
       unit = '-';

@@ -1,0 +1,109 @@
+import React from 'react';
+
+import type { TokenType } from 'types/api/token';
+import type { ZetaChainCCTXFilterParams } from 'types/api/zetaChain';
+
+import TableColumnFilterWrapper from 'ui/shared/filters/TableColumnFilterWrapper';
+
+import ZetaChainAgeFilter from './ZetaChainAgeFilter';
+import ZetaChainAssetFilter from './ZetaChainAssetFilter';
+import ZetaChainReceiverFilter from './ZetaChainReceiverFilter';
+import ZetaChainSenderFilter from './ZetaChainSenderFilter';
+import ZetaChainStatusFilter from './ZetaChainStatusFilter';
+
+type ColumnId = 'age' | 'status' | 'sender' | 'receiver' | 'asset';
+
+type Props = {
+  filters: ZetaChainCCTXFilterParams;
+  column: ColumnId;
+  columnName: string;
+  handleFilterChange: <T extends keyof ZetaChainCCTXFilterParams>(field: T, val: ZetaChainCCTXFilterParams[T]) => void;
+  isLoading?: boolean;
+};
+
+const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChange, isLoading }: Props) => {
+  const commonProps = { columnName, handleFilterChange, isLoading };
+
+  switch (column) {
+    case 'age': {
+      const value = { from: filters.start_timestamp || '', to: filters.end_timestamp || '' };
+      return (
+        <TableColumnFilterWrapper
+          columnName="Age"
+          isLoading={ isLoading }
+          selected={ Boolean(value.from || value.to) }
+          w="382px"
+        >
+          <ZetaChainAgeFilter { ...commonProps } value={ value }/>
+        </TableColumnFilterWrapper>
+      );
+    }
+    case 'status': {
+      const value = filters.status_reduced;
+      return (
+        <TableColumnFilterWrapper
+          columnName="Status"
+          isLoading={ isLoading }
+          selected={ Boolean(value && value.length) }
+          w="200px"
+        >
+          <ZetaChainStatusFilter { ...commonProps } value={ value }/>
+        </TableColumnFilterWrapper>
+      );
+    }
+    case 'sender': {
+      const value = filters.sender_address;
+      return (
+        <TableColumnFilterWrapper
+          columnName="Sender"
+          isLoading={ isLoading }
+          selected={ Boolean(value && value.length) }
+          w="480px"
+        >
+          <ZetaChainSenderFilter { ...commonProps } value={ value }/>
+        </TableColumnFilterWrapper>
+      );
+    }
+    case 'receiver': {
+      const value = filters.receiver_address;
+      return (
+        <TableColumnFilterWrapper
+          columnName="Receiver"
+          isLoading={ isLoading }
+          selected={ Boolean(value && value.length) }
+          w="480px"
+        >
+          <ZetaChainReceiverFilter { ...commonProps } value={ value }/>
+        </TableColumnFilterWrapper>
+      );
+    }
+    case 'asset': {
+      const value = filters.token_symbol ? filters.token_symbol.map(symbol => ({
+        address_hash: '',
+        symbol: symbol,
+        name: symbol,
+        decimals: '18',
+        total_supply: '0',
+        icon_url: null,
+        type: 'ERC-20' as TokenType,
+        holders_count: null,
+        exchange_rate: null,
+        circulating_market_cap: null,
+      })) : [];
+      return (
+        <TableColumnFilterWrapper
+          columnName="Asset"
+          isLoading={ isLoading }
+          selected={ Boolean(value && value.length) }
+          w="350px"
+        >
+          <ZetaChainAssetFilter { ...commonProps } value={ value }/>
+        </TableColumnFilterWrapper>
+      );
+    }
+    default:
+      return null;
+  }
+};
+
+export default ZetaChainFilterByColumn;

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
+import type { ZetaChainCCTXFilterParams } from 'types/api/zetaChain';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
@@ -12,6 +13,7 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
+import ZetaChainFilterTags from './filters/ZetaChainFilterTags';
 import ZetaChainCCTxs from './ZetaChainCCTxs';
 
 const TAB_LIST_PROPS = {
@@ -27,6 +29,28 @@ const ZetaChainEvmTransactions = () => {
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
 
+  const [ filters, setFilters ] = React.useState<ZetaChainCCTXFilterParams>({});
+
+  const handleFilterChange = React.useCallback(<T extends keyof ZetaChainCCTXFilterParams>(field: T, val: ZetaChainCCTXFilterParams[T]) => {
+    setFilters(prevState => {
+      const newState = { ...prevState };
+      newState[field] = val;
+      return newState;
+    });
+  }, []);
+
+  const onClearFilter = React.useCallback((key: keyof ZetaChainCCTXFilterParams) => () => {
+    setFilters(prevState => {
+      const newState = { ...prevState };
+      delete newState[key];
+      return newState;
+    });
+  }, []);
+
+  const clearAllFilters = React.useCallback(() => {
+    setFilters({});
+  }, []);
+
   const cctxsValidatedQuery = useQueryWithPages({
     resourceName: 'zetachain:transactions',
     queryParams: {
@@ -34,10 +58,11 @@ const ZetaChainEvmTransactions = () => {
       offset: 0,
       status_reduced: [ 'Success', 'Failed' ],
       direction: 'DESC',
+      ...filters,
     },
     options: {
       placeholderData: { items: Array(50).fill(zetaChainCCTXItem), next_page_params: { page_index: 0, offset: 0, direction: 'DESC' } },
-      enabled: !tab || tab === 'cross_chain' || tab === 'cctx_mined',
+      enabled: !tab || tab === 'cctx' || tab === 'cctx_mined',
     },
   });
 
@@ -48,6 +73,7 @@ const ZetaChainEvmTransactions = () => {
       offset: 0,
       status_reduced: 'Pending',
       direction: 'DESC',
+      ...filters,
     },
     options: {
       placeholderData: { items: Array(50).fill(zetaChainCCTXItem), next_page_params: { page_index: 0, offset: 0, direction: 'DESC' } },
@@ -68,17 +94,23 @@ const ZetaChainEvmTransactions = () => {
           isPlaceholderData={ cctxsValidatedQuery.isPlaceholderData }
           isError={ cctxsValidatedQuery.isError }
           top={ cctxsValidatedQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
+          filters={ filters }
+          onFilterChange={ handleFilterChange }
+          showStatusFilter={ true }
         /> },
     {
       id: 'cctx_pending',
       title: 'Pending',
       component: (
         <ZetaChainCCTxs
-          pagination={ cctxsValidatedQuery.pagination }
+          pagination={ cctxsPendingQuery.pagination }
           items={ cctxsPendingQuery.data?.items }
           isPlaceholderData={ cctxsPendingQuery.isPlaceholderData }
           isError={ cctxsPendingQuery.isError }
           top={ cctxsPendingQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
+          filters={ filters }
+          onFilterChange={ handleFilterChange }
+          showStatusFilter={ false }
         />
       ),
     },
@@ -94,6 +126,11 @@ const ZetaChainEvmTransactions = () => {
   return (
     <>
       { /* <TxsStats/> */ }
+      <ZetaChainFilterTags
+        filters={ filters }
+        onClearFilter={ onClearFilter }
+        onClearAll={ clearAllFilters }
+      />
       <RoutedTabs
         tabs={ tabs }
         variant="secondary"
