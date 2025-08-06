@@ -5,7 +5,6 @@ import { KEY_WORDS } from '../utils';
 export function monaco(): CspDev.DirectiveDescriptor {
   return {
     'script-src': [
-      "'unsafe-inline'",
       KEY_WORDS.BLOB,
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/loader.js',
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/editor/editor.main.js',
