@@ -40,7 +40,7 @@ export const zetaChainCCTX: ZetaChainCCTXResponse = {
   },
   inbound_params: {
     sender: '0x44D1F1f9289DBA1Cf5824bd667184cEBE020aA1c',
-    sender_chain_id: '7001',
+    sender_chain_id: 7001,
     tx_origin: '0xcf558D29999C119425d28bF1c07ba97FfF39e387',
     coin_type: 'GAS',
     asset: '',
