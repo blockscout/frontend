@@ -32,8 +32,8 @@ type Props = {
 const DateInput = ({ value, onChange, placeholder, max }: { value: string; onChange: (value: string) => void; placeholder: string; max: string }) => {
   const [ tempValue, setTempValue ] = React.useState(value ? dayjs(value).format('YYYY-MM-DD') : '');
 
+  // reset
   React.useEffect(() => {
-    // reset
     if (!value) {
       setTempValue('');
     }

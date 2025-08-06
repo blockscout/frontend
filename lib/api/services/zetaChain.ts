@@ -1,15 +1,27 @@
 import type { ApiResource } from '../types';
-import type { ZetaChainCCTXListResponse, ZetaChainCCTXResponse } from 'types/api/zetaChain';
+import type { ZetaChainCCTXListResponse, ZetaChainCCTXResponse, ZetaChainTokensResponse } from 'types/api/zetaChain';
 
 export const ZETA_CHAIN_API_RESOURCES = {
   transactions: {
     path: '/api/v1/CctxInfo\\:list',
-    filterFields: [ 'limit' as const, 'offset' as const, 'status' as const ],
+    filterFields: [
+      'limit' as const,
+      'offset' as const,
+      'status_reduced' as const,
+      'start_timestamp' as const,
+      'end_timestamp' as const,
+      'sender_address' as const,
+      'receiver_address' as const,
+      'token_symbol' as const,
+    ],
     paginated: true,
   },
   transaction: {
     path: '/api/v1/CctxInfo\\:get',
     filterFields: [ 'cctx_id' as const ],
+  },
+  tokens: {
+    path: '/api/v1/TokenInfo\\:list',
   },
 } satisfies Record<string, ApiResource>;
 
@@ -19,5 +31,6 @@ export type ZetaChainApiResourceName = `zetachain:${ keyof typeof ZETA_CHAIN_API
 export type ZetaChainApiResourcePayload<R extends ZetaChainApiResourceName> =
 R extends 'zetachain:transactions' ? ZetaChainCCTXListResponse :
 R extends 'zetachain:transaction' ? ZetaChainCCTXResponse :
+R extends 'zetachain:tokens' ? ZetaChainTokensResponse :
 never;
 /* eslint-enable @stylistic/indent */

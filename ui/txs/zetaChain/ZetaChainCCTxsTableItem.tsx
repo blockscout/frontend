@@ -44,13 +44,14 @@ const ZetaChainCCTxsTableItem = ({ tx, enableTimeIncrement, isLoading, animation
       <TableCell colSpan={ 2 }>
         <ZetaChainAddressFromTo tx={ tx } isLoading={ isLoading }/>
       </TableCell>
-      <TableCell>
+      <TableCell isNumeric>
         <ZetaChainCCTXValue
           coinType={ tx.coin_type }
           tokenSymbol={ tx.token_symbol }
           amount={ tx.amount }
           decimals={ tx.decimals }
           isLoading={ isLoading }
+          justifyContent="flex-end"
         />
       </TableCell>
     </TableRow>
