@@ -172,7 +172,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         hover: { value: '{colors.hover}' },
       },
       secondary: {
-        DEFAULT: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
+        DEFAULT: { value: '{colors.text.secondary}' },
       },
       underlaid: {
         bg: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },

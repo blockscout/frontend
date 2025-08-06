@@ -14,7 +14,7 @@ type Props = {
 const TokenBalancesItem = ({ name, icon, value, valueSecondary, isLoading }: Props) => {
 
   return (
-    <Box px="12px" py="10px" bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }} borderRadius="base">
+    <Box px="12px" py="10px" bgColor={{ _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' }} borderRadius="base">
       <Text color="text.secondary" textStyle="xs" fontWeight={ 500 } mb={ 1 }>{ name }</Text>
       <Flex alignItems="center">
         { icon }
