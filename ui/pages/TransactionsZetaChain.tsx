@@ -102,7 +102,7 @@ const TransactionsZetaChain = () => {
 
   const tabs: Array<TabItemRegular> = [
     {
-      id: 'cross_chain',
+      id: 'cctx',
       title: 'Cross chain',
       component: <ZetaChainCCTXsTab/>,
       subTabs: CROSS_CHAIN_TABS,
