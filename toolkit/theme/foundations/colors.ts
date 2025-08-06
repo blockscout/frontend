@@ -42,6 +42,16 @@ const DEFAULT_THEME_COLORS = {
       },
     },
   },
+  icon: {
+    primary: {
+      _light: { value: '{colors.gray.500}' },
+      _dark: { value: '{colors.gray.400}' },
+    },
+    secondary: {
+      _light: { value: '{colors.gray.400}' },
+      _dark: { value: '{colors.gray.500}' },
+    },
+  },
   button: {
     primary: {
       _light: { value: '{colors.blue.600}' },

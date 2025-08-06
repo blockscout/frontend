@@ -110,7 +110,7 @@ const Stats = () => {
           boxSize={ 5 }
           flexShrink={ 0 }
           cursor="pointer"
-          color="icon.info"
+          color="icon.secondary"
           _hover={{ color: 'hover' }}
         />
       </GasInfoTooltip>

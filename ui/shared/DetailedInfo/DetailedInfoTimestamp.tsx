@@ -16,7 +16,7 @@ type Props = {
 const DetailedInfoTimestamp = ({ timestamp, isLoading, noIcon, gap }: Props) => {
   return (
     <>
-      { !noIcon && <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isLoading } mr={ 2 }/> }
+      { !noIcon && <IconSvg name="clock" boxSize={ 5 } color="icon.primary" isLoading={ isLoading } mr={ 2 }/> }
       <Skeleton loading={ isLoading }>
         { dayjs(timestamp).fromNow() }
       </Skeleton>

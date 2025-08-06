@@ -239,7 +239,7 @@ export const recipe = defineRecipe({
       },
       icon_secondary: {
         bg: 'transparent',
-        color: 'button.icon_secondary.fg',
+        color: 'icon.secondary',
         border: 'none',
         _hover: {
           color: 'hover',

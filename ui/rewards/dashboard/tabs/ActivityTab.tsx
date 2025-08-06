@@ -242,7 +242,7 @@ export default function ActivityTab() {
             order={{ base: 3, md: 'auto' }}
             px={{ base: 1.5, md: 0 }}
           >
-            <IconSvg name="status/warning" boxSize={ 6 } color="gray.500"/>
+            <IconSvg name="status/warning" boxSize={ 6 } color="icon.primary"/>
             <Text textStyle="sm">
               <chakra.span fontWeight="600">Your current Merit count is not final!</chakra.span><br/>
               Merits are calculated based on the activity of all users and may increase or decrease by the end of the weekly period.

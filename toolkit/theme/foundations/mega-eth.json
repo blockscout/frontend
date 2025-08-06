@@ -20,10 +20,10 @@
         },
         "secondary": {
             "_light": {
-                "value": "rgba(105, 103, 103)"
+                "value": "rgba(138, 136, 136)"
             },
             "_dark": {
-                "value": "rgba(105, 103, 103)"
+                "value": "rgba(133, 133, 133)"
             }
         }
     },
@@ -65,13 +65,31 @@
             }
         }
     },
+    "icon": {
+        "primary": {
+            "_light": {
+                "value": "rgba(138, 136, 136)"
+            },
+            "_dark": {
+                "value": "rgba(133, 133, 133)"
+            }
+        },
+        "secondary": {
+            "_light": {
+                "value": "rgba(176, 176, 176)"
+            },
+            "_dark": {
+                "value": "rgba(105, 103, 103)"
+            }
+        }
+    },
     "button": {
         "primary": {
             "_light": {
                 "value": "rgba(105, 103, 103)"
             },
             "_dark": {
-                "value": "rgba(105, 103, 103)"
+                "value": "rgba(133, 133, 133)"
             }
         }
     },

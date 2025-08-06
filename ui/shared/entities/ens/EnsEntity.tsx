@@ -65,7 +65,7 @@ const Icon = (props: IconProps) => {
             alignItems="center"
             external
           >
-            <IconSvg name="docs" boxSize={ 5 } color="icon.secondary" mr={ 2 }/>
+            <IconSvg name="docs" boxSize={ 5 } color="icon.primary" mr={ 2 }/>
             <span>Documentation</span>
           </LinkToolkit>
         ) }

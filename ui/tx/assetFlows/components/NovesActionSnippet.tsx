@@ -75,7 +75,7 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
             name="lightning"
             height="5"
             width="5"
-            color="icon.secondary"
+            color="icon.primary"
           />
           <Text fontWeight="700" >
             { item.action.label }

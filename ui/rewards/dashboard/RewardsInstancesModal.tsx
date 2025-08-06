@@ -60,7 +60,7 @@ const RewardsInstancesModal = ({ isOpen, onClose, items }: Props) => {
                       <IconSvg
                         name="networks/icon-placeholder"
                         boxSize={ 5 }
-                        color="icon.secondary"
+                        color="icon.primary"
                       />
                     ) }
                   />

@@ -27,7 +27,7 @@ const AddressFromToIcon = ({ isLoading, type, className }: Props) => {
       bgColor: { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' },
     },
     unspecified: {
-      color: 'icon.secondary',
+      color: 'icon.primary',
       bgColor: 'transparent',
     },
   };

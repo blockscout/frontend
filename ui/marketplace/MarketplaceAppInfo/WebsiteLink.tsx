@@ -23,7 +23,7 @@ const WebsiteLink = ({ url }: Props) => {
       columnGap={ 1 }
       mt={ 3 }
     >
-      <IconSvg name="link" boxSize={ 5 } color="icon.secondary"/>
+      <IconSvg name="link" boxSize={ 5 } color="icon.primary"/>
       <span>{ makePrettyLink(url)?.domain }</span>
     </Link>
   );
