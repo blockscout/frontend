@@ -117,6 +117,7 @@ const DEFAULT_THEME_COLORS = {
 };
 
 const colors = {
+  // BASE COLORS
   green: {
     '50': { value: '#F0FFF4' },
     '100': { value: '#C6F6D5' },
@@ -263,6 +264,7 @@ const colors = {
     '800': { value: 'RGBA(16, 17, 18, 0.80)' },
     '900': { value: 'RGBA(16, 17, 18, 0.92)' },
   },
+
   // BRAND COLORS
   github: { value: '#171923' },
   telegram: { value: '#2775CA' },
@@ -276,7 +278,7 @@ const colors = {
   reddit: { value: '#FF4500' },
   celo: { value: '#FCFF52' },
 
-  // CUSTOMIZATION COLORS
+  // THEME COLORS
   theme: defaultsDeep(config.UI.colorTheme.overrides, DEFAULT_THEME_COLORS),
 };
 
