@@ -92,6 +92,7 @@ const TransactionPageContent = () => {
 
   const txTags: Array<TEntityTag> = data?.transaction_tag ?
     [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 1 } ] : [];
+
   if (rollupFeature.isEnabled && rollupFeature.interopEnabled && data?.op_interop) {
     if (data.op_interop.init_chain !== undefined) {
       txTags.push({ slug: 'relay_tx', name: 'Relay tx', tagType: 'custom' as const, ordinal: 0 });
@@ -99,6 +100,11 @@ const TransactionPageContent = () => {
     if (data.op_interop.relay_chain !== undefined) {
       txTags.push({ slug: 'init_tx', name: 'Source tx', tagType: 'custom' as const, ordinal: 0 });
     }
+  }
+
+  const protocolTags = data?.to?.metadata?.tags?.filter(tag => tag.tagType === 'protocol');
+  if (protocolTags && protocolTags.length > 0) {
+    txTags.push(...protocolTags);
   }
 
   const tags = (
