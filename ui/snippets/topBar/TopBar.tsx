@@ -13,7 +13,7 @@ const TopBar = () => {
   const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
 
   return (
-    <Box bgColor={ bgColor } position="sticky" left={ 0 } width="100vw">
+    <Box bgColor={ bgColor } position="sticky" left={ 0 } width="calc(100vw - var(--scrollbar-width))">
       <Flex
         py={ 2 }
         px={{ base: 3, lg: 6 }}
