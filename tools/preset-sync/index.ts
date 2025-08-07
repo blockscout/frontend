@@ -15,6 +15,7 @@ const PRESETS = {
   garnet: 'https://explorer.garnetchain.com',
   gnosis: 'https://gnosis.blockscout.com',
   immutable: 'https://explorer.immutable.com',
+  mega_eth: 'https://eth.blockscout.com', // FIXME: change host when instance is ready
   mekong: 'https://mekong.blockscout.com',
   neon_devnet: 'https://neon-devnet.blockscout.com',
   optimism: 'https://optimism.blockscout.com',

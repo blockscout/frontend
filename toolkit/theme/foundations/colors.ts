@@ -1,6 +1,5 @@
 import { defaultsDeep } from 'es-toolkit/compat';
 
-// import megaEthTheme from './mega-eth.json';
 import config from 'configs/app';
 
 const DEFAULT_THEME_COLORS = {
