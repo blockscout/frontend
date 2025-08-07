@@ -63,6 +63,7 @@ const AddressEntityWithExternalChain = ({ externalChain, ...props }: Props) => {
             right="4px"
             src={ externalChain.chain_logo }
             alt={ externalChain.chain_name || 'external chain logo' }
+            fallback={ <IconStub/> }
             width="14px"
             height="14px"
             borderRadius="base"
