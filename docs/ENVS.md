@@ -445,7 +445,7 @@ This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_ADVAN
 
 ### Banner ads
 
-This feature is **enabled by default** with the `slise` ads provider. To switch it off pass `NEXT_PUBLIC_AD_BANNER_PROVIDER=none`.
+Ads are enabled by default on all self-hosted instances. If you would like to disable ads, you can do so using the [Autoscout hosted service](https://docs.blockscout.com/using-blockscout/autoscout).
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -458,7 +458,7 @@ This feature is **enabled by default** with the `slise` ads provider. To switch 
 
 ### Text ads
 
-This feature is **enabled by default** with the `coinzilla` ads provider. To switch it off pass `NEXT_PUBLIC_AD_TEXT_PROVIDER=none`.
+Ads are enabled by default on all self-hosted instances. If you would like to disable ads, you can do so using the [Autoscout hosted service](https://docs.blockscout.com/using-blockscout/autoscout).
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
