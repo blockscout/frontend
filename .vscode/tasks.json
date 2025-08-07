@@ -372,6 +372,7 @@
               "eth_goerli",
               "eth_sepolia",
               "filecoin",
+              "mega_eth",
               "mekong",
               "neon_devnet",
               "optimism",

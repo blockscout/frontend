@@ -45,7 +45,7 @@ const NameDomainDetails = ({ query }: Props) => {
               Registration date
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
-              <IconSvg name="clock" boxSize={ 5 } color="gray.500" verticalAlign="middle" isLoading={ isLoading } mr={ 2 }/>
+              <IconSvg name="clock" boxSize={ 5 } color="icon.primary" verticalAlign="middle" isLoading={ isLoading } mr={ 2 }/>
               <Skeleton loading={ isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="20px">
                 { dayjs(query.data.registration_date).format('llll') }
               </Skeleton>
@@ -63,7 +63,7 @@ const NameDomainDetails = ({ query }: Props) => {
               Expiration date
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
-              <IconSvg name="clock" boxSize={ 5 } color="gray.500" verticalAlign="middle" isLoading={ isLoading } mr={ 2 } mt="-2px"/>
+              <IconSvg name="clock" boxSize={ 5 } color="icon.primary" verticalAlign="middle" isLoading={ isLoading } mr={ 2 } mt="-2px"/>
               { hasExpired && (
                 <>
                   <Skeleton loading={ isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="24px">

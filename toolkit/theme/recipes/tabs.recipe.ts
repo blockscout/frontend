@@ -135,14 +135,14 @@ export const recipe = defineSlotRecipe({
           color: 'tabs.solid.fg',
           bg: 'transparent',
           _selected: {
-            bg: 'tabs.solid.bg.selected',
-            color: 'tabs.solid.fg.selected',
+            bg: 'selected.control.bg',
+            color: 'selected.control.text',
             _hover: {
-              color: 'tabs.solid.fg.selected',
+              color: 'selected.control.text',
             },
           },
           _hover: {
-            color: 'link.primary.hover',
+            color: 'hover',
           },
         },
       },
@@ -165,15 +165,16 @@ export const recipe = defineSlotRecipe({
           borderColor: 'tabs.secondary.border',
           borderRadius: 'base',
           _selected: {
-            bg: 'tabs.secondary.bg.selected',
+            bg: 'selected.control.bg',
+            color: 'selected.control.text',
             borderColor: 'transparent',
             _hover: {
               borderColor: 'transparent',
             },
           },
           _hover: {
-            color: 'link.primary.hover',
-            borderColor: 'link.primary.hover',
+            color: 'hover',
+            borderColor: 'hover',
           },
         },
       },
@@ -183,20 +184,26 @@ export const recipe = defineSlotRecipe({
           bg: 'transparent',
           borderWidth: '2px',
           borderStyle: 'solid',
-          borderColor: 'tabs.segmented.border',
+          borderColor: 'selected.control.bg',
           _hover: {
-            color: 'link.primary.hover',
+            color: 'hover',
           },
           _selected: {
-            color: 'tabs.segmented.fg.selected',
-            bg: 'tabs.segmented.border',
-            borderColor: 'tabs.segmented.border',
+            color: 'selected.control.text',
+            bg: 'selected.control.bg',
+            borderColor: 'selected.control.bg',
             _hover: {
-              color: 'tabs.segmented.fg.selected',
+              color: 'selected.control.text',
+            },
+            '& + *': {
+              borderLeftWidth: '0',
             },
           },
-          _notFirst: {
-            borderLeftWidth: '0',
+          _notLast: {
+            borderRightWidth: '0',
+            _selected: {
+              borderRightWidth: '2px',
+            },
           },
           _first: {
             borderTopLeftRadius: 'base',

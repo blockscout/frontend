@@ -54,7 +54,7 @@ const NetworkMenuLink = ({ title, icon, isActive: isActiveProp, isMobile, url, i
         borderRadius="base"
         color={ isActive ? { base: 'blackAlpha.900', _dark: 'whiteAlpha.900' } : { base: 'gray.600', _dark: 'gray.400' } }
         bgColor={ isActive ? { base: 'blue.50', _dark: 'whiteAlpha.100' } : 'transparent' }
-        _hover={{ color: isActive ? { base: 'blackAlpha.900', _dark: 'whiteAlpha.900' } : 'link.primary.hover' }}
+        _hover={{ color: isActive ? { base: 'blackAlpha.900', _dark: 'whiteAlpha.900' } : 'hover' }}
       >
         { iconEl }
         <Text

@@ -18,7 +18,7 @@ export const recipe = defineSlotRecipe({
       stroke: 'var(--track-color)',
     },
     circleRange: {
-      stroke: 'blue.500',
+      stroke: 'selected.option.bg',
       transitionProperty: 'stroke-dasharray',
       transitionDuration: '0.6s',
       _indeterminate: {

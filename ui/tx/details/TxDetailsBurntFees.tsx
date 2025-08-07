@@ -41,7 +41,7 @@ const TxDetailsBurntFees = ({ data, isLoading }: Props) => {
         Burnt fees
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
+        <IconSvg name="flame" boxSize={ 5 } color="icon.primary" isLoading={ isLoading }/>
         <CurrencyValue
           value={ value.toString() }
           currency={ currencyUnits.ether }

@@ -19,11 +19,6 @@ const TooltipShowcase = () => {
               <Utilization value={ 0.5 }/>
             </Tooltip>
           </Sample>
-          <Sample label="variant: navigation">
-            <Tooltip content="Tooltip content" variant="navigation">
-              <span>Default</span>
-            </Tooltip>
-          </Sample>
           <Sample label="variant: popover">
             <Tooltip content="Tooltip content" variant="popover">
               <span>Default</span>

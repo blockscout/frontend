@@ -102,14 +102,14 @@ const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) =
           <Text
             textStyle="xs"
             color="text.secondary"
-            _groupHover={{ color: 'blue.400' }}
+            _groupHover={{ color: 'hover' }}
           >
             { config.name }
           </Text>
           <IconSvg
             name="link_external"
             boxSize={ 3 }
-            color="blue.400"
+            color="hover"
             display="none"
             _groupHover={{ display: 'block' }}
           />
@@ -123,10 +123,10 @@ const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) =
       <Flex
         flexDirection="column"
         p={ 3 }
-        bgColor={ isLoading ? 'transparent' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } }
+        bgColor={ isLoading ? 'transparent' : { _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' } }
         borderRadius="md"
         border="1px solid"
-        borderColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } : 'transparent' }
+        borderColor={ isLoading ? { _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' } : 'transparent' }
         _groupHover={{
           borderColor: isLoading ? 'default' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' },
           scale: 1.02,

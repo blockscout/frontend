@@ -20,7 +20,7 @@ export const recipe = defineRecipe({
         color: 'link.secondary',
         _hover: {
           textDecoration: 'none',
-          color: 'link.primary.hover',
+          color: 'hover',
         },
       },
       subtle: {
@@ -46,7 +46,7 @@ export const recipe = defineRecipe({
       menu: {
         color: 'link.menu',
         _hover: {
-          color: 'link.primary.hover',
+          color: 'hover',
           textDecoration: 'none',
         },
       },

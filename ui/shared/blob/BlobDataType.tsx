@@ -45,7 +45,7 @@ const BlobDataType = ({ data, isLoading }: Props) => {
 
   return (
     <Flex alignItems="center" columnGap={ 2 }>
-      <IconSvg name={ iconName } boxSize={ 5 } color={{ _light: 'gray.500', _dark: 'gray.400' }} isLoading={ isLoading }/>
+      <IconSvg name={ iconName } boxSize={ 5 } color="icon.primary" isLoading={ isLoading }/>
       <Skeleton loading={ isLoading }>{ label }</Skeleton>
     </Flex>
   );

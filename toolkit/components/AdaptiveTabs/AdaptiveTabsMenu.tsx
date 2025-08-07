@@ -28,15 +28,16 @@ const AdaptiveTabsMenu = ({ tabs, tabsCut, isActive, ...props }: Props, ref: Rea
           variant="plain"
           color="tabs.solid.fg"
           _hover={{
-            color: 'link.primary.hover',
+            color: 'hover',
           }}
           _expanded={{
-            color: 'tabs.solid.fg.selected',
-            bg: 'tabs.solid.bg.selected',
+            color: 'selected.control.text',
+            bg: 'selected.control.bg',
           }}
           ref={ ref }
           expanded={ isActive }
           px="18px"
+          aria-label="Open tabs menu"
           { ...props }
         >
           <Icon boxSize={ 5 }><DotsIcon/></Icon>
@@ -56,9 +57,9 @@ const AdaptiveTabsMenu = ({ tabs, tabsCut, isActive, ...props }: Props, ref: Rea
                   py="5px"
                   borderRadius="none"
                   fontWeight="normal"
-                  color="initial"
+                  color="tabs.solid.fg"
                   _hover={{
-                    bg: 'tabs.solid.bg.selected',
+                    bg: 'selected.control.bg',
                   }}
                 >
                   { typeof tab.title === 'function' ? tab.title() : tab.title }

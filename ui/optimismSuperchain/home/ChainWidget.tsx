@@ -45,7 +45,7 @@ const ChainWidget = ({ data }: Props) => {
           p={ 1 }
           color="gray.500"
           _hover={{
-            color: 'link.primary.hover',
+            color: 'hover',
           }}
           bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
           borderRadius="base"
