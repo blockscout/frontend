@@ -9,7 +9,7 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
+import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import type { SortValue } from './utils';
 
@@ -58,7 +58,7 @@ export default function useMarketplaceApps(
 ) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
-  const profileQuery = useProfileQuery();
+  const isAuth = useIsAuth();
 
   const [ sorting, setSorting ] = React.useState<SortValue>();
   // Set the value only 1 time to avoid unnecessary useQuery calls and re-rendering of all applications
@@ -91,9 +91,14 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
+  const prevIsAuth = React.useRef(isAuth);
+
   React.useEffect(() => {
-    refetch();
-  }, [ profileQuery.data, refetch ]);
+    if (prevIsAuth.current !== isAuth) {
+      refetch();
+      prevIsAuth.current = isAuth;
+    }
+  }, [ isAuth, refetch ]);
 
   const displayedApps = React.useMemo(() => {
     if (isPlaceholderData) {

@@ -45,7 +45,7 @@ const MarketplaceRating = ({
     >
       { fullView && (
         <>
-          <Rating value={ Math.floor(rating || 0) } readOnly key={ rating }/>
+          <Rating defaultValue={ Math.floor(rating || 0) } readOnly key={ rating }/>
           <Text fontSize="md" ml={ 2 }>{ rating || null }</Text>
           { ratingsTotalCount && <Text color="text.secondary" textStyle="md" ml={ 1 }>({ ratingsTotalCount })</Text> }
         </>

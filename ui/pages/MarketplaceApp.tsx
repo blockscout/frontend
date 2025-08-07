@@ -18,7 +18,7 @@ import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import ContentLoader from 'ui/shared/ContentLoader';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
+import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';
 import useAutoConnectWallet from '../marketplace/useAutoConnectWallet';
@@ -106,7 +106,7 @@ export default function MarketplaceApp() {
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
   const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet(id);
-  const profileQuery = useProfileQuery();
+  const isAuth = useIsAuth();
   useAutoConnectWallet();
 
   const query = useQuery<unknown, ResourceError<unknown>, MarketplaceApp>({
@@ -134,7 +134,7 @@ export default function MarketplaceApp() {
 
   React.useEffect(() => {
     refetch();
-  }, [ profileQuery.data, refetch ]);
+  }, [ isAuth, refetch ]);
 
   const { setIsAutoConnectDisabled } = useMarketplaceContext();
 
