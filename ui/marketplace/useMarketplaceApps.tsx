@@ -9,7 +9,7 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
+import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import useSecurityReports from './useSecurityReports';
 import type { SortValue } from './utils';
@@ -59,7 +59,7 @@ export default function useMarketplaceApps(
 ) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
-  const profileQuery = useProfileQuery();
+  const isAuth = useIsAuth();
 
   const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
 
@@ -96,7 +96,7 @@ export default function useMarketplaceApps(
 
   React.useEffect(() => {
     refetch();
-  }, [ profileQuery.data, refetch ]);
+  }, [ isAuth, refetch ]);
 
   const isPlaceholderData = isAppsPlaceholderData || isSecurityReportsPlaceholderData;
 
