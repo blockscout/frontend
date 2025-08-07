@@ -774,7 +774,7 @@ const address3rdPartyWidgetsConfigSchema = yup
 const flashblocksSchema = yup
   .object()
   .shape({
-    NEXT_PUBLIC_FLASHBLOCKS_RPC_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: yup.string().test(urlTest),
   });
 
 const schema = yup
