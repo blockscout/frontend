@@ -140,6 +140,8 @@ export type ZetaChainCCTXFilterParams = {
   status_reduced?: Array<ZetaChainCCTXStatusReducedFilter>;
   sender_address?: Array<string>;
   receiver_address?: Array<string>;
+  source_chain_id?: Array<string>;
+  target_chain_id?: Array<string>;
   token_symbol?: Array<string>;
 };
 
