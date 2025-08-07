@@ -78,7 +78,7 @@ export default function useMarketplaceApps(
   const {
     isPlaceholderData: isAppsPlaceholderData, isError, error, data, refetch,
   } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
-    queryKey: [ 'marketplace-dapps', snapshotFavoriteApps ],
+    queryKey: [ 'marketplace-dapps' ],
     queryFn: async() => {
       if (!feature.isEnabled) {
         return [];
@@ -94,13 +94,8 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
-  const prevIsAuth = React.useRef(isAuth);
-
   React.useEffect(() => {
-    if (prevIsAuth.current !== isAuth) {
-      refetch();
-      prevIsAuth.current = isAuth;
-    }
+    refetch();
   }, [ isAuth, refetch ]);
 
   const isPlaceholderData = isAppsPlaceholderData || isSecurityReportsPlaceholderData;
