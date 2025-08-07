@@ -8,6 +8,7 @@ import shortenString from 'lib/shortenString';
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
 import IconSvg from 'ui/shared/IconSvg';
+import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
 type Props = {
   filters: ZetaChainCCTXFilterParams;
@@ -16,6 +17,8 @@ type Props = {
 };
 
 const ZetaChainFilterTags = ({ filters, onClearFilter, onClearAll }: Props) => {
+  const { data: chains = [] } = useZetaChainConfig();
+
   const filterTags: Array<{ key: keyof ZetaChainCCTXFilterParams; name: string; value: string }> = [];
 
   // Age filter
@@ -47,12 +50,38 @@ const ZetaChainFilterTags = ({ filters, onClearFilter, onClearAll }: Props) => {
     });
   }
 
+  // Sender chain filter
+  if (filters.source_chain_id && filters.source_chain_id.length > 0) {
+    const chainNames = filters.source_chain_id.map(chainId => {
+      const chain = chains.find(c => c.chain_id.toString() === chainId);
+      return chain?.chain_name || `Chain ${ chainId }`;
+    });
+    filterTags.push({
+      key: 'source_chain_id',
+      name: 'Sender Chain',
+      value: chainNames.join(', '),
+    });
+  }
+
   // Receiver filter
   if (filters.receiver_address && filters.receiver_address.length > 0) {
     filterTags.push({
       key: 'receiver_address',
       name: 'Receiver',
       value: filters.receiver_address.map(address => shortenString(address, 8)).join(', '),
+    });
+  }
+
+  // Receiver chain filter
+  if (filters.target_chain_id && filters.target_chain_id.length > 0) {
+    const chainNames = filters.target_chain_id.map(chainId => {
+      const chain = chains.find(c => c.chain_id.toString() === chainId);
+      return chain?.chain_name || `Chain ${ chainId }`;
+    });
+    filterTags.push({
+      key: 'target_chain_id',
+      name: 'Receiver Chain',
+      value: chainNames.join(', '),
     });
   }
 

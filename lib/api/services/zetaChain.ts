@@ -12,6 +12,8 @@ export const ZETA_CHAIN_API_RESOURCES = {
       'end_timestamp' as const,
       'sender_address' as const,
       'receiver_address' as const,
+      'source_chain_id' as const,
+      'target_chain_id' as const,
       'token_symbol' as const,
     ],
     paginated: true,
