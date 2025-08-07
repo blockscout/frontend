@@ -53,27 +53,29 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
     }
     case 'sender': {
       const value = filters.sender_address;
+      const chainValue = filters.source_chain_id;
       return (
         <TableColumnFilterWrapper
           columnName="Sender"
           isLoading={ isLoading }
-          selected={ Boolean(value && value.length) }
+          selected={ Boolean(value && value.length) || Boolean(chainValue && chainValue.length) }
           w="480px"
         >
-          <ZetaChainSenderFilter { ...commonProps } value={ value }/>
+          <ZetaChainSenderFilter { ...commonProps } value={ value } chainValue={ chainValue }/>
         </TableColumnFilterWrapper>
       );
     }
     case 'receiver': {
       const value = filters.receiver_address;
+      const chainValue = filters.target_chain_id;
       return (
         <TableColumnFilterWrapper
           columnName="Receiver"
           isLoading={ isLoading }
-          selected={ Boolean(value && value.length) }
+          selected={ Boolean(value && value.length) || Boolean(chainValue && chainValue.length) }
           w="480px"
         >
-          <ZetaChainReceiverFilter { ...commonProps } value={ value }/>
+          <ZetaChainReceiverFilter { ...commonProps } value={ value } chainValue={ chainValue }/>
         </TableColumnFilterWrapper>
       );
     }
