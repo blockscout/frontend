@@ -18,7 +18,7 @@ import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
 import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
-import type { MarketplaceApp } from '../../../types/client/marketplace';
+import type { MarketplaceAppBase, MarketplaceAppSocialInfo } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
 import type { ApiDocsTabId } from '../../../types/views/apiDocs';
 import { API_DOCS_TABS } from '../../../types/views/apiDocs';
@@ -80,7 +80,7 @@ const getYupValidationErrorMessage = (error: unknown) =>
     error.errors.join(', ') :
     '';
 
-const marketplaceAppSchema: yup.ObjectSchema<MarketplaceApp> = yup
+const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppBase & MarketplaceAppSocialInfo> = yup
   .object({
     id: yup.string().required(),
     external: yup.boolean(),
@@ -103,9 +103,6 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceApp> = yup
     discord: yup.string().test(urlTest),
     internalWallet: yup.boolean(),
     priority: yup.number(),
-    rating: yup.number(),
-    ratingsTotalCount: yup.number(),
-    userRating: yup.number(),
   });
 
 const marketplaceSchema = yup

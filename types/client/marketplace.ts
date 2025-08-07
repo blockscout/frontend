@@ -1,4 +1,4 @@
-type MarketplaceAppBase = {
+export type MarketplaceAppBase = {
   id: string;
   author: string;
   site?: string;
@@ -12,6 +12,9 @@ type MarketplaceAppBase = {
   url: string;
   internalWallet?: boolean;
   priority?: number;
+};
+
+export type MarketplaceAppRating = {
   rating?: number;
   ratingsTotalCount?: number;
   userRating?: number;
@@ -24,7 +27,7 @@ export type MarketplaceAppSocialInfo = {
   discord?: string;
 };
 
-export type MarketplaceApp = MarketplaceAppBase & MarketplaceAppSocialInfo;
+export type MarketplaceApp = MarketplaceAppBase & MarketplaceAppSocialInfo & MarketplaceAppRating;
 
 export enum MarketplaceCategory {
   ALL = 'All',
