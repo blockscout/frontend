@@ -2,7 +2,7 @@ import { Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceAppPreview } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
 
@@ -19,7 +19,7 @@ import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 import FeaturedAppMobile from './FeaturedAppMobile';
 
 type FeaturedAppProps = {
-  app: MarketplaceAppPreview;
+  app: MarketplaceApp;
   isFavorite: boolean;
   isLoading: boolean;
   onInfoClick: (id: string) => void;

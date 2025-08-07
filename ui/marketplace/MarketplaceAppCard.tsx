@@ -2,9 +2,8 @@ import { chakra, Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceAppWithSecurityReport, ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Image } from 'toolkit/chakra/image';
@@ -13,21 +12,19 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
-import AppSecurityReport from './AppSecurityReport';
 import FavoriteIcon from './FavoriteIcon';
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
 import MarketplaceAppGraphLinks from './MarketplaceAppGraphLinks';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 import Rating from './Rating/Rating';
 
-interface Props extends MarketplaceAppWithSecurityReport {
+interface Props extends MarketplaceApp {
   onInfoClick: (id: string) => void;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   isLoading: boolean;
   onAppClick: (event: MouseEvent, id: string) => void;
   className?: string;
-  showContractList: (id: string, type: ContractListTypes) => void;
   graphLinks?: Array<{ title: string; url: string }>;
 }
 
@@ -46,15 +43,12 @@ const MarketplaceAppCard = ({
   isLoading,
   internalWallet,
   onAppClick,
-  securityReport,
   className,
-  showContractList,
   rating,
   ratingsTotalCount,
   userRating,
   graphLinks,
 }: Props) => {
-  const isMobile = useIsMobile();
   const categoriesLabel = categories.join(', ');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
@@ -208,26 +202,6 @@ const MarketplaceAppCard = ({
               </Flex>
             </Flex>
           </Flex>
-        ) }
-
-        { securityReport && (
-          <AppSecurityReport
-            id={ id }
-            securityReport={ securityReport }
-            showContractList={ showContractList }
-            isLoading={ isLoading }
-            source="Discovery view"
-            popoverPlacement={ isMobile ? 'bottom-end' : 'left' }
-            triggerWrapperProps={{
-              position: 'absolute',
-              right: { base: 3, md: 5 },
-              top: { base: '10px', md: 5 },
-            }}
-            buttonProps={{
-              border: 0,
-              padding: 0,
-            }}
-          />
         ) }
       </Flex>
     </LinkBox>

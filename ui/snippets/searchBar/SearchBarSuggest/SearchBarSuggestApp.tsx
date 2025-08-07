@@ -2,7 +2,7 @@ import { Flex, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
 
@@ -13,7 +13,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 interface Props {
-  data: MarketplaceAppOverview;
+  data: MarketplaceApp;
   isMobile: boolean | undefined;
   searchTerm: string;
   onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
