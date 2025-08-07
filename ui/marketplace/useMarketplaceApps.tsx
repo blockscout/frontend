@@ -94,8 +94,13 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
+  const prevIsAuth = React.useRef(isAuth);
+
   React.useEffect(() => {
-    refetch();
+    if (prevIsAuth.current !== isAuth) {
+      refetch();
+      prevIsAuth.current = isAuth;
+    }
   }, [ isAuth, refetch ]);
 
   const isPlaceholderData = isAppsPlaceholderData || isSecurityReportsPlaceholderData;
