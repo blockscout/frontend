@@ -78,7 +78,7 @@ const PopoverContent = ({ appId, userRating, source }: Props) => {
         </Text>
       </Flex>
       <Rating
-        value={ ratingValue }
+        defaultValue={ ratingValue }
         onValueChange={ handleValueChange }
         label={ ratingDescriptions }
         h="32px"
