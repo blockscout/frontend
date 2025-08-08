@@ -33,7 +33,10 @@ const DateInput = ({ value, onChange, placeholder, max }: { value: string; onCha
   const [ tempValue, setTempValue ] = React.useState(value ? dayjs(value).format('YYYY-MM-DD') : '');
 
   React.useEffect(() => {
-    setTempValue(value ? dayjs(value).format('YYYY-MM-DD') : '');
+    // reset
+    if (!value) {
+      setTempValue('');
+    }
   }, [ value ]);
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
