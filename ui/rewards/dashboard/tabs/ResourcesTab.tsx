@@ -38,7 +38,7 @@ export default function ResourcesTab() {
         imageWidth="180px"
         imageHeight="86px"
         linkText="Check offers"
-        linkHref={ `https://merits.blockscout.com/?tab=redeem&utm_source=${ config.chain.id }&utm_medium=redeem` }
+        linkHref={ `https://merits.blockscout.com/?tab=spend&utm_source=${ config.chain.id }&utm_medium=spend` }
       />
     </Grid>
   );
