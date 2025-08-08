@@ -27,10 +27,8 @@ function formatUrl(tpl: string, ctx: Record<string, string>) {
   return tpl.replace(/\{\s*(\w+)\s*\}/g, (_, key) => ctx[key] ?? '');
 }
 
-const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) => {
-  const { data, isLoading: isDataLoading } = useWidgetData(name, config?.valuePath, address, props.isLoading);
-
-  const isLoading = props.isLoading || isDataLoading;
+const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) => {
+  const { data, isLoading: isDataLoading } = useWidgetData(name, config?.valuePath, address, isLoading);
 
   const handleClick = useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.ADDRESS_WIDGET, { Name: name });
@@ -61,27 +59,29 @@ const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) =
   ) : (
     <>
       <LinkOverlay href={ url } external onClick={ handleClick }/>
-      { data ? (
-        <Text
-          textStyle="heading.xl"
-          color={ integer === '0' && !decimal ? 'text.secondary' : 'text.primary' }
-          textOverflow="ellipsis"
-          whiteSpace="nowrap"
-          overflow="hidden"
-        >
-          { integer }
-          { decimal && (
-            <>
-              .
-              <chakra.span color="text.secondary">
-                { decimal }
-              </chakra.span>
-            </>
-          ) }
-        </Text>
-      ) : (
-        <Text textStyle="heading.xl" color="gray.500" opacity={ 0.2 }>{ ndash }</Text>
-      ) }
+      <Skeleton loading={ isDataLoading } minW="88px" alignSelf="flex-start">
+        { data ? (
+          <Text
+            textStyle="heading.xl"
+            color={ integer === '0' && !decimal ? 'text.secondary' : 'text.primary' }
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+            overflow="hidden"
+          >
+            { integer }
+            { decimal && (
+              <>
+                .
+                <chakra.span color="text.secondary">
+                  { decimal }
+                </chakra.span>
+              </>
+            ) }
+          </Text>
+        ) : (
+          <Text textStyle="heading.xl" color="gray.500" opacity={ 0.2 }>{ ndash }</Text>
+        ) }
+      </Skeleton>
       <Flex alignItems="center" gap={ 1 } mt={ 1 }>
         <Text textStyle="sm">{ config.title }</Text>
         { config.hint && (
