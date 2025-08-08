@@ -18,7 +18,7 @@ import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
 import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
-import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
+import type { MarketplaceAppBase, MarketplaceAppSocialInfo } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
 import type { ApiDocsTabId } from '../../../types/views/apiDocs';
 import { API_DOCS_TABS } from '../../../types/views/apiDocs';
@@ -80,7 +80,7 @@ const getYupValidationErrorMessage = (error: unknown) =>
     error.errors.join(', ') :
     '';
 
-const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
+const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppBase & MarketplaceAppSocialInfo> = yup
   .object({
     id: yup.string().required(),
     external: yup.boolean(),
@@ -103,65 +103,6 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     discord: yup.string().test(urlTest),
     internalWallet: yup.boolean(),
     priority: yup.number(),
-  });
-
-const issueSeverityDistributionSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['overallInfo']['issueSeverityDistribution']> = yup
-  .object({
-    critical: yup.number().required(),
-    gas: yup.number().required(),
-    high: yup.number().required(),
-    informational: yup.number().required(),
-    low: yup.number().required(),
-    medium: yup.number().required(),
-  });
-
-const solidityscanReportSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['contractsData'][number]['solidityScanReport']> = yup
-  .object({
-    contractname: yup.string().required(),
-    scan_status: yup.string().required(),
-    scan_summary: yup
-      .object({
-        issue_severity_distribution: issueSeverityDistributionSchema.required(),
-        lines_analyzed_count: yup.number().required(),
-        scan_time_taken: yup.number().required(),
-        score: yup.string().required(),
-        score_v2: yup.string().required(),
-        threat_score: yup.string().required(),
-      })
-      .required(),
-    scanner_reference_url: yup.string().test(urlTest).required(),
-  });
-
-const contractDataSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['contractsData'][number]> = yup
-  .object({
-    address: yup.string().required(),
-    isVerified: yup.boolean().required(),
-    solidityScanReport: solidityscanReportSchema.nullable().notRequired(),
-  });
-
-const chainsDataSchema = yup.lazy((objValue) => {
-  let schema = yup.object();
-  Object.keys(objValue).forEach((key) => {
-    schema = schema.shape({
-      [key]: yup.object({
-        overallInfo: yup.object({
-          verifiedNumber: yup.number().required(),
-          totalContractsNumber: yup.number().required(),
-          solidityScanContractsNumber: yup.number().required(),
-          securityScore: yup.number().required(),
-          issueSeverityDistribution: issueSeverityDistributionSchema.required(),
-        }).required(),
-        contractsData: yup.array().of(contractDataSchema).required(),
-      }),
-    });
-  });
-  return schema;
-});
-
-const securityReportSchema: yup.ObjectSchema<MarketplaceAppSecurityReportRaw> = yup
-  .object({
-    appName: yup.string().required(),
-    chainsData: chainsDataSchema,
   });
 
 const marketplaceSchema = yup
@@ -204,16 +145,6 @@ const marketplaceSchema = yup
         // eslint-disable-next-line max-len
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
-    NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL: yup
-      .array()
-      .json()
-      .of(securityReportSchema)
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema,
-        // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
     NEXT_PUBLIC_MARKETPLACE_FEATURED_APP: yup
       .string()
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
@@ -237,22 +168,6 @@ const marketplaceSchema = yup
         then: (schema) => schema.test(urlTest),
         // eslint-disable-next-line max-len
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY: yup
-      .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema,
-        // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID: yup
-      .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema,
-        // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: yup
       .string()
