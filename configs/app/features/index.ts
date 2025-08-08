@@ -17,6 +17,7 @@ export { default as easterEggBadge } from './easterEggBadge';
 export { default as easterEggPuzzleBadge } from './easterEggPuzzleBadge';
 export { default as externalTxs } from './externalTxs';
 export { default as faultProofSystem } from './faultProofSystem';
+export { default as flashblocks } from './flashblocks';
 export { default as gasTracker } from './gasTracker';
 export { default as getGasButton } from './getGasButton';
 export { default as googleAnalytics } from './googleAnalytics';

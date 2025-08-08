@@ -1,6 +1,7 @@
 export { ad } from './ad';
 export { app } from './app';
 export { cloudFlare } from './cloudFlare';
+export { flashblocks } from './flashblocks';
 export { gasHawk } from './gasHawk';
 export { googleAnalytics } from './googleAnalytics';
 export { googleFonts } from './googleFonts';
@@ -12,6 +13,7 @@ export { mixpanel } from './mixpanel';
 export { monaco } from './monaco';
 export { multichain } from './multichain';
 export { rollbar } from './rollbar';
+export { rollup } from './rollup';
 export { safe } from './safe';
 export { usernameApi } from './usernameApi';
 export { walletConnect } from './walletConnect';

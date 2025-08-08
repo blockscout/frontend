@@ -14,7 +14,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 
 interface Props {
-  pagination: PaginationParams;
+  pagination: PaginationParams | null;
 }
 
 const BlocksTabSlot = ({ pagination }: Props) => {
@@ -40,7 +40,7 @@ const BlocksTabSlot = ({ pagination }: Props) => {
         <IconSvg name="hourglass_slim" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
       </Link>
-      <Pagination my={ 1 } { ...pagination }/>
+      { pagination && <Pagination my={ 1 } { ...pagination }/> }
     </Flex>
   );
 };
