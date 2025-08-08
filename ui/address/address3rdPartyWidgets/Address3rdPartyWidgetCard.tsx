@@ -131,8 +131,9 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
           borderColor: isLoading ? 'default' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' },
           scale: 1.02,
         }}
-        transition="all 0.2s ease-in-out"
+        transition="scale 0.2s ease-in-out, border-color 0.2s ease-in-out"
         scale={ 1 }
+        willChange="transform" // fixes issue with scale animation in Safari
         cursor={ isLoading ? 'default' : 'pointer' }
       >
         { content }
