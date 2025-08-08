@@ -30,11 +30,11 @@ const TopBar = () => {
             </>
           ) }
           <Settings/>
-          { Boolean(config.UI.navigation.featuredNetworks) && (
-            <Box display={{ base: 'none', lg: 'flex' }} alignItems="center">
+          { Boolean(config.UI.featuredNetworks.items) && (
+            <>
               <Separator mx={ 3 } height={ 4 } orientation="vertical"/>
               <NetworkMenu/>
-            </Box>
+            </>
           ) }
         </Flex>
       </Flex>

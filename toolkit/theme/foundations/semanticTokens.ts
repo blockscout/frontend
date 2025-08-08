@@ -208,11 +208,10 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       },
       segmented: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
-          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
+          DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
         },
         border: {
-          DEFAULT: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
+          DEFAULT: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
         },
       },
     },
