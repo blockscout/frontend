@@ -131,11 +131,8 @@ const AddressPageContent = () => {
     addressEnsDomainsQuery.data?.items.find((domain) => domain.name === addressQuery.data?.ens_domain_name) :
     undefined;
 
-  const address3rdPartyWidgets = useAddress3rdPartyWidgets(
-    addressQuery.data?.is_contract ? 'contract' : 'eoa',
-    addressQuery.isPlaceholderData,
-    areQueriesEnabled,
-  );
+  const addressType = addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'contract' : 'eoa';
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets(addressType, addressQuery.isPlaceholderData, areQueriesEnabled);
 
   const isLoading = addressQuery.isPlaceholderData;
   const isTabsLoading =
@@ -288,7 +285,7 @@ const AddressPageContent = () => {
         count: address3rdPartyWidgets.items.length,
         component: (
           <Address3rdPartyWidgets
-            addressType={ addressQuery.data?.is_contract ? 'contract' : 'eoa' }
+            addressType={ addressType }
             isLoading={ addressQuery.isPlaceholderData }
             shouldRender={ !isTabsLoading }
             isQueryEnabled={ areQueriesEnabled }
@@ -306,6 +303,7 @@ const AddressPageContent = () => {
     areQueriesEnabled,
     mudTablesCountQuery.data,
     address3rdPartyWidgets,
+    addressType,
   ]);
 
   const usernameApiTag = userPropfileApiQuery.data?.user_profile?.username;
