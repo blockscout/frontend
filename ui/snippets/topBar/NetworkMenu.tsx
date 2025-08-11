@@ -6,7 +6,7 @@ import { PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
-import NetworkMenuContentDesktop from 'ui/snippets/networkMenu/NetworkMenuContentDesktop';
+import NetworkMenuContent from 'ui/snippets/networkMenu/NetworkMenuContent';
 import useNetworkMenu from 'ui/snippets/networkMenu/useNetworkMenu';
 
 const NetworkMenu = () => {
@@ -47,7 +47,7 @@ const NetworkMenu = () => {
           </PopoverTrigger>
         </Flex>
       </Tooltip>
-      <NetworkMenuContentDesktop items={ menu.data } tabs={ menu.availableTabs }/>
+      <NetworkMenuContent items={ menu.data } tabs={ menu.availableTabs }/>
     </PopoverRoot>
   );
 };

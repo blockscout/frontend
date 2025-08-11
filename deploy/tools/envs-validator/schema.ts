@@ -811,6 +811,13 @@ const schema = yup
       .array()
       .json()
       .of(featuredNetworkSchema),
+    NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK: yup
+      .string()
+      .when('NEXT_PUBLIC_FEATURED_NETWORKS', {
+        is: (value: Array<unknown> | undefined) => value && value.length > 0,
+        then: (schema) => schema.test(urlTest),
+        otherwise: (schema) => schema.max(-1,  'NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK can only be set when NEXT_PUBLIC_FEATURED_NETWORKS is configured'),
+      }),
     NEXT_PUBLIC_OTHER_LINKS: yup
       .array()
       .transform(replaceQuotes)
