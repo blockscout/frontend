@@ -9,6 +9,8 @@
   },
   "scripts": {
     "dev": "./tools/scripts/dev.sh",
+    "watch": "./tools/scripts/dev.sh",
+    "lint:tsc:watch": "tsc -p ./tsconfig.json --watch",
     "dev:preset": "./tools/scripts/dev.preset.sh",
     "dev:preset:sync": "tsc -p ./tools/preset-sync/tsconfig.json && node ./tools/preset-sync/index.js",
     "build": "next build",
@@ -88,6 +90,7 @@
     "dom-to-image": "^2.6.0",
     "es-toolkit": "1.31.0",
     "focus-visible": "^5.2.0",
+    "fs": "^0.0.1-security",
     "gradient-avatar": "git+https://github.com/blockscout/gradient-avatar.git",
     "graphiql": "^4.1.2",
     "graphql": "^16.8.1",

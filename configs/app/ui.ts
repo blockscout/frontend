@@ -42,15 +42,21 @@ const navigationPromoBanner = (() => {
   return envValue || undefined;
 })();
 
+// Prefer local static logos, but allow env-based overrides when provided
+const networkLogoDefault = getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO') || '/static/logo.svg';
+const networkLogoDark = getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO_DARK') || '/static/logo_dark.svg';
+const networkIconDefault = getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON') || networkLogoDefault;
+const networkIconDark = getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON_DARK') || networkLogoDark || networkIconDefault;
+
 const UI = Object.freeze({
   navigation: {
     logo: {
-      'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO'),
-      dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO_DARK'),
+      'default': networkLogoDefault,
+      dark: networkLogoDark,
     },
     icon: {
-      'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON'),
-      dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON_DARK'),
+      'default': networkIconDefault,
+      dark: networkIconDark,
     },
     highlightedRoutes,
     otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue('NEXT_PUBLIC_OTHER_LINKS')) || [],

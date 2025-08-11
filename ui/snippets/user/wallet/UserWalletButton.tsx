@@ -39,7 +39,7 @@ const UserWalletButton = ({ size, variant, isPending, isAutoConnectDisabled, add
 
   return (
     <Tooltip
-      content="Connect your wallet to Blockscout for full-featured access"
+      content="Connect your wallet to Nexchain for full-featured access"
       disabled={ isMobile || Boolean(address) }
       openDelay={ 500 }
       disableOnMobile

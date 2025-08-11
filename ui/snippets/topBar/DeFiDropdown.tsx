@@ -39,7 +39,7 @@ const DeFiDropdown = () => {
       <PopoverTrigger>
         <Button size="2xs" gap={ 0 }>
           <chakra.span display={{ base: 'none', lg: 'inline' }} whiteSpace="pre-wrap">
-            Blockscout{ space }
+            Nexchain{ space }
           </chakra.span>
           DeFi
           <IconSvg name="arrows/east-mini" boxSize={ 4 } ml={ 1 } transform="rotate(-90deg)"/>

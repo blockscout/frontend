@@ -25,8 +25,8 @@ export type Props = {
   chartRef: React.RefObject<HTMLDivElement | null>;
   chartUrl?: string;
   resolution?: Resolution;
-  zoomRange?: [ Date, Date ];
-  handleZoom: (range: [ Date, Date ]) => void;
+  zoomRange?: [Date, Date];
+  handleZoom: (range: [Date, Date]) => void;
   handleZoomReset: () => void;
 };
 
@@ -75,7 +75,7 @@ const ChartMenu = ({
           })
           .then((dataUrl) => {
             const link = document.createElement('a');
-            link.download = `${ title } (Blockscout chart).png`;
+            link.download = `${ title } (Nexchain chart).png`;
             link.href = dataUrl;
             link.click();
             link.remove();
@@ -93,7 +93,7 @@ const ChartMenu = ({
         dayjs(item.date).format('YYYY-MM-DD'), String(item.value),
       ]);
 
-      saveAsCSV(headerRows, dataRows, `${ title } (Blockscout stats)`);
+      saveAsCSV(headerRows, dataRows, `${ title } (Nexchain stats)`);
     }
   }, [ items, title ]);
 
@@ -112,7 +112,7 @@ const ChartMenu = ({
         text: description,
         url: chartUrl,
       });
-    } catch (error) {}
+    } catch (error) { }
   }, [ title, description, chartUrl ]);
 
   return (

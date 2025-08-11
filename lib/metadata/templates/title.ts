@@ -93,7 +93,7 @@ const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
 
 export function make(pathname: Route['pathname'], isEnriched = false) {
   const template = (isEnriched ? TEMPLATE_MAP_ENHANCED[pathname] : undefined) ?? TEMPLATE_MAP[pathname];
-  const postfix = config.meta.promoteBlockscoutInTitle ? ' | Blockscout' : '';
+  const postfix = config.meta.promoteBlockscoutInTitle ? ' | Nexchain' : '';
 
   return (template + postfix).trim();
 }

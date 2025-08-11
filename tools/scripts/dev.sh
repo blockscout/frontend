@@ -16,7 +16,7 @@ dotenv \
 source ./deploy/scripts/build_sprite.sh
 echo ""
 
-# generate envs.js file and run the app
+# generate envs.js file and run the app (Webpack)
 dotenv \
   -v NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD) \
   -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
@@ -26,5 +26,5 @@ dotenv \
   -e .env.local \
   -e .env.development \
   -e .env \
-  -- bash -c './deploy/scripts/make_envs_script.sh && next dev --turbopack -p $NEXT_PUBLIC_APP_PORT' |
+  -- bash -lc './deploy/scripts/make_envs_script.sh && next dev -p $NEXT_PUBLIC_APP_PORT' |
 pino-pretty
