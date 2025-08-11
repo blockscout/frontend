@@ -395,6 +395,25 @@ const userOpsSchema = yup
       }),
   });
 
+const mixpanelSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
+    NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES: yup
+      .object()
+      .transform(replaceQuotes)
+      .json()
+      .when('NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES can only be used if NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN is set to a non-empty string',
+          value => value === undefined,
+        ),
+      }),
+  });
+
 const adButlerConfigSchema = yup
   .object<AdButlerConfig>()
   .transform(replaceQuotes)
@@ -1103,7 +1122,6 @@ const schema = yup
     NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(),
     NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY: yup.string(), // DEPRECATED
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
-    NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
     NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: yup.string(),
 
@@ -1119,6 +1137,7 @@ const schema = yup
   .concat(bridgedTokensSchema)
   .concat(sentrySchema)
   .concat(apiDocsScheme)
+  .concat(mixpanelSchema)
   .concat(tacSchema)
   .concat(address3rdPartyWidgetsConfigSchema)
   .concat(addressMetadataSchema)
