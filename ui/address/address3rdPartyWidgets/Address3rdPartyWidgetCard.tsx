@@ -1,4 +1,4 @@
-import { Flex, Text, chakra, Separator } from '@chakra-ui/react';
+import { Flex, Text, chakra, Separator, Box } from '@chakra-ui/react';
 import { useCallback } from 'react';
 
 import type { Address3rdPartyWidget } from 'types/views/address';
@@ -119,25 +119,31 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
   );
 
   return (
-    <LinkBox className="group">
-      <Flex
-        flexDirection="column"
-        p={ 3 }
-        bgColor={ isLoading ? 'transparent' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } }
+    <LinkBox
+      as={ Flex }
+      className="group"
+      flexDirection="column"
+      p={ 3 }
+      cursor={ isLoading ? 'default' : 'pointer' }
+      position="relative"
+    >
+      <Box
+        aria-hidden
+        position="absolute"
+        inset={ 0 }
         borderRadius="md"
         border="1px solid"
         borderColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } : 'transparent' }
+        bgColor={ isLoading ? 'transparent' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } }
+        transform="scale(1)"
+        transition="transform 0.2s ease-in-out, border-color 0.2s ease-in-out"
+        zIndex={ 0 }
         _groupHover={{
-          borderColor: isLoading ? 'default' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' },
-          scale: 1.02,
+          transform: 'scale(1.02)',
+          borderColor: { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' },
         }}
-        transition="scale 0.2s ease-in-out, border-color 0.2s ease-in-out"
-        scale={ 1 }
-        willChange="transform" // fixes issue with scale animation in Safari
-        cursor={ isLoading ? 'default' : 'pointer' }
-      >
-        { content }
-      </Flex>
+      />
+      { content }
     </LinkBox>
   );
 };
