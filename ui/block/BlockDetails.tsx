@@ -224,17 +224,21 @@ const BlockDetails = ({ query }: Props) => {
         </>
       ) }
 
-      <DetailedInfo.ItemLabel
-        hint="Size of the block in bytes"
-        isLoading={ isPlaceholderData }
-      >
-        Size
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <Skeleton loading={ isPlaceholderData }>
-          { data.size.toLocaleString() }
-        </Skeleton>
-      </DetailedInfo.ItemValue>
+      { data.size && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Size of the block in bytes"
+            isLoading={ isPlaceholderData }
+          >
+            Size
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Skeleton loading={ isPlaceholderData }>
+              { data.size.toLocaleString() }
+            </Skeleton>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
       <DetailedInfo.ItemLabel
         hint="Date & time at which block was produced."
@@ -623,14 +627,18 @@ const BlockDetails = ({ query }: Props) => {
           </>
         ) }
 
-        <DetailedInfo.ItemLabel
-          hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time` }
-        >
-          Difficulty
-        </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue overflow="hidden">
-          <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
-        </DetailedInfo.ItemValue>
+        { data.difficulty && (
+          <>
+            <DetailedInfo.ItemLabel
+              hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time` }
+            >
+              Difficulty
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue overflow="hidden">
+              <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
+            </DetailedInfo.ItemValue>
+          </>
+        ) }
 
         { data.total_difficulty && (
           <>
