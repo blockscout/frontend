@@ -15,27 +15,27 @@ export type SearchResultAppItem = {
   app: MarketplaceApp;
 };
 
-export const searchCategories: Array<{ id: Category; title: string }> = [
-  { id: 'app', title: 'DApps' },
-  { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)` },
-  { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)` },
-  { id: 'address', title: 'Addresses' },
-  { id: 'public_tag', title: 'Public tags' },
-  { id: 'transaction', title: 'Transactions' },
-  { id: 'block', title: 'Blocks' },
-  { id: 'tac_operation', title: 'Operations' },
+export const searchCategories: Array<{ id: Category; title: string; tabTitle: string }> = [
+  { id: 'app', title: 'DApps', tabTitle: 'DApps' },
+  { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)`, tabTitle: 'Tokens' },
+  { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)`, tabTitle: 'NFTs' },
+  { id: 'address', title: 'Addresses', tabTitle: 'Addresses' },
+  { id: 'public_tag', title: 'Public tags', tabTitle: 'Public tags' },
+  { id: 'transaction', title: 'Transactions', tabTitle: 'Transactions' },
+  { id: 'block', title: 'Blocks', tabTitle: 'Blocks' },
+  { id: 'tac_operation', title: 'Operations', tabTitle: 'Operations' },
 ];
 
 if (config.features.userOps.isEnabled) {
-  searchCategories.push({ id: 'user_operation', title: 'User operations' });
+  searchCategories.push({ id: 'user_operation', title: 'User operations', tabTitle: 'User ops' });
 }
 
 if (config.features.dataAvailability.isEnabled) {
-  searchCategories.push({ id: 'blob', title: 'Blobs' });
+  searchCategories.push({ id: 'blob', title: 'Blobs', tabTitle: 'Blobs' });
 }
 
 if (config.features.nameService.isEnabled) {
-  searchCategories.unshift({ id: 'domain', title: 'Names' });
+  searchCategories.unshift({ id: 'domain', title: 'Names', tabTitle: 'Names' });
 }
 
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {
