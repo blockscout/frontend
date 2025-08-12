@@ -14,6 +14,17 @@ import ContractSourceCode from './ContractSourceCode';
 import type { CONTRACT_DETAILS_TAB_IDS } from './utils';
 // import wabtInit from './utils/libwabt';
 
+function isEVM(bytecode: string) {
+  if (!bytecode || bytecode.length < 4) return false;
+
+  try {
+    const contract = new Contract(hexToUint8Array(bytecode));
+    return contract.opcodes() && contract.opcodes().length > 5;
+  } catch {
+    return false;
+  }
+}
+
 interface Tab {
   id: typeof CONTRACT_DETAILS_TAB_IDS[number];
   title: string;
@@ -53,8 +64,8 @@ const useOpcodesOrWat = ({ bytecode, evmVersion }: {
       try {
         if (!bytecode) return;
 
-        if (evmVersion) {
-          const contract = new Contract(bytecode);
+        if (evmVersion || isEVM(bytecode)) {
+          const contract = new Contract(hexToUint8Array(bytecode));
           const opcodes = contract.opcodes()
             .map(opcode => opcode.mnemonic + ' ' + (opcode.data ? opcode.hexData() : ''))
             .join('\n');
@@ -103,7 +114,7 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         isPartiallyVerified={ Boolean(data?.is_partially_verified) }
       />
     );
-    const opcodeBtnTitle = data?.evm_version ? 'Show Opcodes' : 'Show Wat';
+    const opcodeBtnTitle = data?.evm_version || isEVM(data?.deployed_bytecode || '') ? 'Show Opcodes' : 'Show Wat';
     const toggleButton = () => setShowOpCode(!showOpCode);
 
     const switchToOpCodeButton = (
