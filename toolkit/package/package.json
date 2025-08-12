@@ -1,6 +1,6 @@
 {
   "name": "@blockscout/ui-toolkit",
-  "version": "0.0.1-alpha.4",
+  "version": "2.2.0-alpha",
   "description": "A comprehensive collection of reusable Chakra UI components and theme system for Blockscout's projects",
   "type": "module",
   "main": "./dist/index.js",

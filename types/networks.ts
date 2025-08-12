@@ -21,6 +21,7 @@ export interface NetworkExplorer {
     address?: string;
     token?: string;
     block?: string;
+    blob?: string;
   };
 }
 

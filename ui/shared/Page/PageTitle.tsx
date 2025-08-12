@@ -1,23 +1,17 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import * as mixpanel from 'lib/mixpanel/index';
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import TextAd from 'ui/shared/ad/TextAd';
-
-type BackLinkProp = { label: string; url: string } | { label: string; onClick: () => void };
 
 type Props = {
   title: string;
   className?: string;
-  backLink?: BackLinkProp;
   beforeTitle?: React.ReactNode;
   afterTitle?: React.ReactNode;
   contentAfter?: React.ReactNode;
@@ -28,15 +22,13 @@ type Props = {
 
 const TEXT_MAX_LINES = 1;
 
-const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading = false, afterTitle, beforeTitle, secondRow }: Props) => {
+const PageTitle = ({ title, contentAfter, withTextAd, className, isLoading = false, afterTitle, beforeTitle, secondRow }: Props) => {
   const tooltip = useDisclosure();
   const isMobile = useIsMobile();
-  const router = useRouter();
   const [ isTextTruncated, setIsTextTruncated ] = React.useState(false);
 
   const headingRef = React.useRef<HTMLHeadingElement>(null);
   const textRef = React.useRef<HTMLSpanElement>(null);
-  const pageType = mixpanel.getPageType(router.pathname);
 
   const updatedTruncateState = React.useCallback(() => {
     if (!headingRef.current || !textRef.current) {
@@ -75,11 +67,6 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
     }
   }, [ tooltip ]);
 
-  const handleBackToClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Back to', Source: pageType });
-    backLink && 'onClick' in backLink && backLink.onClick();
-  }, [ backLink, pageType ]);
-
   return (
     <Flex className={ className } flexDir="column" rowGap={ 3 } mb={ 6 }>
       <Flex
@@ -90,15 +77,6 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         alignItems="center"
       >
         <Flex h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }} maxW="100%" alignItems="center">
-          { backLink && (
-            <BackToButton
-              hint={ backLink.label }
-              href={ 'url' in backLink ? backLink.url : undefined }
-              onClick={ handleBackToClick }
-              loadingSkeleton={ isLoading }
-              mr={ 3 }
-            />
-          ) }
           { beforeTitle }
           <Skeleton
             loading={ isLoading }

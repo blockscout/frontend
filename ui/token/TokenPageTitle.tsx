@@ -10,7 +10,6 @@ import config from 'configs/app';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
@@ -37,7 +36,6 @@ interface Props {
 }
 
 const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
-  const appProps = useAppContext();
   const addressHash = !tokenQuery.isPlaceholderData ? (tokenQuery.data?.address_hash || '') : '';
 
   const verifiedInfoQuery = useApiQuery('contractInfo:token_verified_info', {
@@ -53,19 +51,6 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
     (config.features.verifiedTokens.isEnabled && verifiedInfoQuery.isPending);
 
   const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ tokenQuery.data.symbol })` : '';
-
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/tokens');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to tokens list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
 
   const [ bridgedTokenTagBgColor ] = useToken('colors', 'blue.500');
   const [ bridgedTokenTagTextColor ] = useToken('colors', 'white');
@@ -142,7 +127,6 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
       <PageTitle
         title={ `${ tokenQuery.data?.name || 'Unnamed token' }${ tokenSymbolText }` }
         isLoading={ tokenQuery.isPlaceholderData }
-        backLink={ backLink }
         beforeTitle={ tokenQuery.data ? (
           <TokenEntity.Icon
             token={ tokenQuery.data }

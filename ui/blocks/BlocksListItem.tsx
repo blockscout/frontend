@@ -38,7 +38,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.transaction_fees || 0);
-  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas);
+  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas || null);
 
   return (
     <ListItemMobile rowGap={ 3 } key={ String(data.height) } animation={ animation }>
@@ -51,8 +51,8 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
             noIcon
             fontWeight={ 600 }
           />
-          { data.celo?.is_epoch_block && (
-            <Tooltip content={ `Finalized epoch #${ data.celo.epoch_number }` } disabled={ isLoading }>
+          { data.celo?.l1_era_finalized_epoch_number && (
+            <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` } disabled={ isLoading }>
               <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
             </Tooltip>
           ) }
@@ -66,12 +66,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
           display="inline-block"
         />
       </Flex>
-      <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Size</Text>
-        <Skeleton loading={ isLoading } display="inline-block" color="text.secondary">
-          <span>{ data.size.toLocaleString() } bytes</span>
-        </Skeleton>
-      </Flex>
+      { data.size && (
+        <Flex columnGap={ 2 }>
+          <Text fontWeight={ 500 }>Size</Text>
+          <Skeleton loading={ isLoading } display="inline-block" color="text.secondary">
+            <span>{ data.size?.toLocaleString() } bytes</span>
+          </Skeleton>
+        </Flex>
+      ) }
       { !config.UI.views.block.hiddenFields?.miner && (
         <Flex columnGap={ 2 } w="100%">
           <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>

@@ -1,8 +1,10 @@
 import type { EntityTag } from './types';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
-export function getTagLinkParams(data: EntityTag): { type: 'external' | 'internal'; href: string } | undefined {
+import type { TMultichainContext } from 'lib/contexts/multichain';
+
+export function getTagLinkParams(data: EntityTag, multichainContext?: TMultichainContext | null): { type: 'external' | 'internal'; href: string } | undefined {
   if (data.meta?.warpcastHandle) {
     return {
       type: 'external',
@@ -20,7 +22,7 @@ export function getTagLinkParams(data: EntityTag): { type: 'external' | 'interna
   if (data.tagType === 'generic' || data.tagType === 'protocol') {
     return {
       type: 'internal',
-      href: route({ pathname: '/accounts/label/[slug]', query: { slug: data.slug, tagType: data.tagType, tagName: data.name } }),
+      href: route({ pathname: '/accounts/label/[slug]', query: { slug: data.slug, tagType: data.tagType, tagName: data.name } }, multichainContext),
     };
   }
 }

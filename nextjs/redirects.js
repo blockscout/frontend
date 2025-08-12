@@ -1,4 +1,4 @@
-const oldUrls = [
+const OLD_UI_URLS = [
   // ACCOUNT
   {
     source: '/account/tag_address',
@@ -266,9 +266,95 @@ const oldUrls = [
   },
 ];
 
+const ETHERSCAN_URLS = [
+  {
+    source: '/txsAA',
+    destination: '/ops',
+  },
+  {
+    source: '/txs',
+    has: [
+      { type: 'query', key: 'block' },
+    ],
+    destination: '/block/:block?tab=txs',
+  },
+  {
+    source: '/txsInternal',
+    has: [
+      { type: 'query', key: 'block' },
+    ],
+    destination: '/block/:block?tab=internal_txs',
+  },
+  {
+    source: '/txsInternal',
+    destination: '/internal-txs',
+  },
+  {
+    source: '/blocks_forked',
+    destination: '/blocks?tab=reorgs',
+  },
+  {
+    source: '/contractsVerified',
+    destination: '/verified-contracts',
+  },
+  {
+    source: '/verifyContract',
+    has: [
+      { type: 'query', key: 'a' },
+    ],
+    destination: '/address/:a/contract-verification',
+  },
+  {
+    source: '/verifyContract',
+    destination: '/contract-verification',
+  },
+  {
+    source: '/tokentxns',
+    destination: '/token-transfers',
+  },
+  {
+    source: '/nft/:hash/:id',
+    destination: '/token/:hash/instance/:id',
+  },
+  {
+    source: '/charts',
+    destination: '/stats',
+  },
+  {
+    source: '/nft-latest-mints',
+    destination: '/advanced-filter?transaction_types=ERC-1155%2CERC-721&methods=0xa0712d68&methods_names=mint',
+  },
+  {
+    source: '/nft-transfers',
+    destination: '/advanced-filter?transaction_types=ERC-1155%2CERC-721',
+  },
+  {
+    source: '/name-lookup-search',
+    destination: '/name-domains',
+  },
+  {
+    source: '/txsExit',
+    destination: '/withdrawals',
+  },
+  {
+    source: '/txsEnqueued',
+    destination: '/deposits',
+  },
+];
+
+const DEPRECATED_ROUTES = [
+  {
+    source: '/graphiql',
+    destination: '/api-docs?tab=graphql_api',
+    permanent: false,
+  },
+];
+
 async function redirects() {
   return [
-    ...oldUrls.map((item) => ({ ...item, permanent: false })),
+    ...OLD_UI_URLS.map((item) => ({ ...item, permanent: false })),
+    ...ETHERSCAN_URLS.map((item) => ({ ...item, permanent: true })),
+    ...DEPRECATED_ROUTES,
   ];
 }
 

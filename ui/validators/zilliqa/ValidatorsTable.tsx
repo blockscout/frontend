@@ -4,23 +4,23 @@ import type { ValidatorsZilliqaItem } from 'types/api/validators';
 
 import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import ValidatorsTableItem from './ValidatorsTableItem';
 
 interface Props {
   data: Array<ValidatorsZilliqaItem>;
   isLoading?: boolean;
+  top?: number;
 }
 
-const ValidatorsTable = ({ data, isLoading }: Props) => {
+const ValidatorsTable = ({ data, isLoading, top }: Props) => {
   return (
     <TableRoot>
-      <TableHeaderSticky top={ ACTION_BAR_HEIGHT_DESKTOP }>
+      <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader width="50%">BLS public key</TableColumnHeader>
-          <TableColumnHeader width="25%">Index</TableColumnHeader>
-          <TableColumnHeader width="25%" isNumeric>
+          <TableColumnHeader width="15%">Index</TableColumnHeader>
+          <TableColumnHeader width="35%" isNumeric>
             Staked { config.chain.currency.symbol }
           </TableColumnHeader>
         </TableRow>

@@ -35,14 +35,14 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.transaction_fees || 0);
-  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas);
+  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas || null);
 
   return (
     <TableRow animation={ animation }>
       <TableCell >
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
-          { data.celo?.is_epoch_block && (
-            <Tooltip content={ `Finalized epoch #${ data.celo.epoch_number }` }>
+          { data.celo?.l1_era_finalized_epoch_number && (
+            <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` }>
               <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
             </Tooltip>
           ) }
@@ -69,7 +69,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation }: Pr
       </TableCell>
       <TableCell >
         <Skeleton loading={ isLoading } display="inline-block">
-          { data.size.toLocaleString() }
+          { data.size?.toLocaleString() || 'N/A' }
         </Skeleton>
       </TableCell>
       { !config.UI.views.block.hiddenFields?.miner && (

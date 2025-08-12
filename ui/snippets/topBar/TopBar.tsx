@@ -3,7 +3,6 @@ import React from 'react';
 
 import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
-import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
 import DeFiDropdown from './DeFiDropdown';
 import NetworkMenu from './NetworkMenu';
@@ -14,16 +13,16 @@ const TopBar = () => {
   const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
 
   return (
-    <Box bgColor={ bgColor }>
+    // not ideal if scrollbar is visible, but better than having a horizontal scroll
+    <Box bgColor={ bgColor } position="sticky" left={ 0 } width="100%" maxWidth="100vw">
       <Flex
         py={ 2 }
         px={{ base: 3, lg: 6 }}
-        maxW={ `${ CONTENT_MAX_WIDTH }px` }
         m="0 auto"
         justifyContent="space-between"
         alignItems="center"
       >
-        <TopBarStats/>
+        { !config.features.opSuperchain.isEnabled ? <TopBarStats/> : <div/> }
         <Flex alignItems="center">
           { config.features.deFiDropdown.isEnabled && (
             <>
@@ -32,11 +31,11 @@ const TopBar = () => {
             </>
           ) }
           <Settings/>
-          { Boolean(config.UI.navigation.featuredNetworks) && (
-            <Box display={{ base: 'none', lg: 'flex' }} alignItems="center">
+          { Boolean(config.UI.featuredNetworks.items) && (
+            <>
               <Separator mx={ 3 } height={ 4 } orientation="vertical"/>
               <NetworkMenu/>
-            </Box>
+            </>
           ) }
         </Flex>
       </Flex>

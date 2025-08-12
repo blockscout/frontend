@@ -5,6 +5,7 @@ import { usePublicClient } from 'wagmi';
 import type { FormSubmitResult, MethodCallStrategy, SmartContractMethod } from './types';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useAccount from 'lib/web3/useAccount';
 
 import { getNativeCoinValue } from './utils';
@@ -17,7 +18,9 @@ interface Params {
 }
 
 export default function useCallMethodPublicClient(): (params: Params) => Promise<FormSubmitResult> {
-  const publicClient = usePublicClient({ chainId: Number(config.chain.id) });
+  const multichainContext = useMultichainContext();
+  const chainId = Number((multichainContext?.chain.config ?? config).chain.id);
+  const publicClient = usePublicClient({ chainId });
   const { address: account } = useAccount();
 
   return React.useCallback(async({ args, item, addressHash, strategy }) => {

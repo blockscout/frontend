@@ -26,10 +26,11 @@ const PRESETS = {
   scroll_sepolia: 'https://scroll-sepolia.blockscout.com',
   shibarium: 'https://www.shibariumscan.io',
   stability_testnet: 'https://stability-testnet.blockscout.com',
+  tac: 'https://explorer.tac.build',
   tac_turin: 'https://tac-turin.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
-  zilliqa_prototestnet: 'https://zilliqa-prototestnet.blockscout.com',
+  zilliqa: 'https://zilliqa.blockscout.com',
   zora: 'https://explorer.zora.energy',
   // main === staging
   main: 'https://eth-sepolia.k8s-dev.blockscout.com',
