@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
-import { ADVANCED_FILTER_TYPES, ADVANCED_FILTER_AGES } from 'types/api/advancedFilter';
+import { ADVANCED_FILTER_TYPES, ADVANCED_FILTER_AGES, ADVANCED_FILTER_ADDRESS_RELATION } from 'types/api/advancedFilter';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
@@ -47,6 +47,7 @@ const AdvancedFilter = () => {
 
   const [ filters, setFilters ] = React.useState<AdvancedFilterParams>(() => {
     const age = getFilterValueFromQuery(ADVANCED_FILTER_AGES, router.query.age);
+    const addressRelation = getFilterValueFromQuery(ADVANCED_FILTER_ADDRESS_RELATION, router.query.address_relation);
     return {
       transaction_types: getFilterValuesFromQuery(ADVANCED_FILTER_TYPES, router.query.transaction_types),
       methods: getValuesArrayFromQuery(router.query.methods),
@@ -56,6 +57,7 @@ const AdvancedFilter = () => {
       age,
       age_to: age ? dayjs().toISOString() : getQueryParamString(router.query.age_to),
       age_from: age ? dayjs((dayjs().valueOf() - getDurationFromAge(age))).toISOString() : getQueryParamString(router.query.age_from),
+      address_relation: addressRelation,
       token_contract_address_hashes_to_exclude: getValuesArrayFromQuery(router.query.token_contract_address_hashes_to_exclude),
       token_contract_symbols_to_exclude: getValuesArrayFromQuery(router.query.token_contract_symbols_to_exclude),
       token_contract_address_hashes_to_include: getValuesArrayFromQuery(router.query.token_contract_address_hashes_to_include),
