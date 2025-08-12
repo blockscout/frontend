@@ -78,7 +78,7 @@ const TopBarStats = () => {
           </Skeleton>
         </Flex>
       ) }
-      { data?.coin_price && config.features.gasTracker.isEnabled && <TextSeparator color="border.divider"/> }
+      { data?.coin_price && config.features.gasTracker.isEnabled && <TextSeparator/> }
       { data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled && (
         <>
           <Skeleton loading={ isPlaceholderData } display={{ base: 'none', lg: 'inline-flex' }} whiteSpace="pre-wrap">

@@ -30,7 +30,7 @@ const ContainerWithScrollY = ({ gradientHeight, children, onScrollVisibilityChan
       _after={ hasScroll ? {
         position: 'absolute',
         content: '""',
-        bottom: 1,
+        bottom: 0,
         left: 0,
         right: '20px',
         height: `${ gradientHeight }px`,

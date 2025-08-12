@@ -384,7 +384,7 @@ const BlockDetails = ({ query }: Props) => {
           >
             Block reward
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue columnGap={ 1 }>
+          <DetailedInfo.ItemValue columnGap={ 1 } multiRow>
             <Skeleton loading={ isPlaceholderData }>
               { totalReward.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </Skeleton>
@@ -512,7 +512,7 @@ const BlockDetails = ({ query }: Props) => {
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-            <Skeleton loading={ isPlaceholderData } ml={ 2 }>
+            <Skeleton loading={ isPlaceholderData } ml={{ base: 1, lg: 2 }}>
               { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </Skeleton>
             { !txFees.isEqualTo(ZERO) && (
@@ -634,12 +634,13 @@ const BlockDetails = ({ query }: Props) => {
             >
               Difficulty
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue overflow="hidden">
-              <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
+            <DetailedInfo.ItemValue>
+              <Box overflow="hidden">
+                <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
+              </Box>
             </DetailedInfo.ItemValue>
           </>
         ) }
-
         { data.total_difficulty && (
           <>
             <DetailedInfo.ItemLabel
@@ -647,8 +648,10 @@ const BlockDetails = ({ query }: Props) => {
             >
               Total difficulty
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue overflow="hidden">
-              <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
+            <DetailedInfo.ItemValue>
+              <Box overflow="hidden">
+                <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
+              </Box>
             </DetailedInfo.ItemValue>
           </>
         ) }
@@ -689,7 +692,7 @@ const BlockDetails = ({ query }: Props) => {
           </>
         ) }
 
-        { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
+        { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && data.arbitrum.send_count && (
           <>
             <DetailedInfo.ItemLabel
               hint="The cumulative number of L2 to L1 transactions as of this block"
