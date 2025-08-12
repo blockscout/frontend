@@ -1,5 +1,6 @@
 import { Alert, Button, Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import { Contract } from 'sevm';
 import wabtInit from 'wabt';
 
 import type { SmartContract } from 'types/api/contract';
@@ -41,13 +42,25 @@ function hexToUint8Array(hex: string): Uint8Array {
 
 // 0x0061736d
 
-const useOpcodesOrWat = ({ bytecode }: { bytecode: string | undefined | null }) => {
+const useOpcodesOrWat = ({ bytecode, evmVersion }: {
+  bytecode: string | undefined | null;
+  evmVersion: string | null | undefined;
+}) => {
   const [ opcodes, setOpcodes ] = useState<string>('');
 
   useEffect(() => {
     async function disassemble() {
       try {
         if (!bytecode) return;
+
+        if (evmVersion) {
+          const contract = new Contract(bytecode);
+          const opcodes = contract.opcodes()
+            .map(opcode => opcode.mnemonic + ' ' + (opcode.data ? opcode.hexData() : ''))
+            .join('\n');
+          setOpcodes(opcodes);
+          return;
+        }
 
         const wabt = await wabtInit();
         const buffer = hexToUint8Array(bytecode);
@@ -67,7 +80,7 @@ const useOpcodesOrWat = ({ bytecode }: { bytecode: string | undefined | null }) 
     }
 
     disassemble();
-  }, [ bytecode ]);
+  }, [ bytecode, evmVersion ]);
 
   return {
     opcodes,
@@ -78,7 +91,7 @@ const useOpcodesOrWat = ({ bytecode }: { bytecode: string | undefined | null }) 
 export default function useContractDetailsTabs({ data, isLoading, addressHash, sourceAddress }: Props): Array<Tab> {
   const [ showOpCode, setShowOpCode ] = useState(false);
 
-  const { opcodes } = useOpcodesOrWat({ bytecode: data?.creation_bytecode });
+  const { opcodes } = useOpcodesOrWat({ bytecode: data?.creation_bytecode, evmVersion: data?.evm_version });
 
   const canBeVerified = !data?.is_self_destructed && !data?.is_verified && data?.proxy_type !== 'eip7702';
 
@@ -90,6 +103,7 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         isPartiallyVerified={ Boolean(data?.is_partially_verified) }
       />
     );
+    const opcodeBtnTitle = data?.evm_version ? 'Show Opcodes' : 'Show Wat';
     const toggleButton = () => setShowOpCode(!showOpCode);
 
     const switchToOpCodeButton = (
@@ -103,7 +117,7 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         // eslint-disable-next-line react/jsx-no-bind
         onClick={ toggleButton }
       >
-        { showOpCode ? 'Show ByteCode' : 'Show Wat' }
+        { showOpCode ? 'Show ByteCode' : opcodeBtnTitle }
       </Button>
     );
 
