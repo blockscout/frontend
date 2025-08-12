@@ -8,9 +8,30 @@ import { test, expect } from 'playwright/lib';
 
 import SearchResults from './SearchResults';
 
+// Might not be the best solution but simply scrolling to the top doesn't work
 async function resetScroll(page: Page) {
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await page.evaluate(() => window.scrollTo(0, 0));
+
+  // Wait for any sticky elements to be in their default (non-sticky) state
+  await page.waitForFunction(() => {
+    // Check for any sticky positioned elements
+    const stickyElements = document.querySelectorAll('div[style*="position: sticky"], thead[style*="position: sticky"]');
+    if (stickyElements.length > 0) {
+      return Array.from(stickyElements).every(element => {
+        const rect = element.getBoundingClientRect();
+        // Sticky elements should be in their default position when at top
+        return rect.top > 0;
+      });
+    }
+    return true; // If no sticky elements found, consider them "hidden"
+  }, { timeout: 200 });
+
+  // Double-check we're at the top
+  await page.evaluate(() => {
+    if (window.scrollY !== 0) {
+      window.scrollTo(0, 0);
+    }
+  });
 }
 
 test.describe('search by name', () => {
