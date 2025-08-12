@@ -20,29 +20,35 @@ const ExportCSV = ({ filters }: Props) => {
   const recaptcha = useReCaptcha();
   const [ isLoading, setIsLoading ] = React.useState(false);
 
+  const apiFetchFactory = React.useCallback(async(recaptchaToken?: string) => {
+    const url = buildUrl('general:advanced_filter_csv', undefined, {
+      ...filters,
+      recaptcha_response: recaptchaToken,
+    });
+
+    const response = await fetch(url, {
+      headers: {
+        'content-type': 'application/octet-stream',
+        ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(response.statusText, {
+        cause: {
+          status: response.status,
+        },
+      });
+    }
+
+    return response;
+  }, [ filters ]);
+
   const handleExportCSV = React.useCallback(async() => {
     try {
       setIsLoading(true);
-      const token = await recaptcha.executeAsync();
 
-      if (!token) {
-        throw new Error('ReCaptcha is not solved');
-      }
-
-      const url = buildUrl('general:advanced_filter_csv', undefined, {
-        ...filters,
-        recaptcha_response: token,
-      });
-
-      const response = await fetch(url, {
-        headers: {
-          'content-type': 'application/octet-stream',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error();
-      }
+      const response = await recaptcha.fetchProtectedResource(apiFetchFactory);
 
       const blob = await response.blob();
       const fileName = `export-filtered-txs-${ dayjs().format('YYYY-MM-DD-HH-mm-ss') }.csv`;
@@ -56,7 +62,7 @@ const ExportCSV = ({ filters }: Props) => {
     } finally {
       setIsLoading(false);
     }
-  }, [ filters, recaptcha ]);
+  }, [ apiFetchFactory, recaptcha ]);
 
   if (!config.services.reCaptchaV2.siteKey) {
     return null;

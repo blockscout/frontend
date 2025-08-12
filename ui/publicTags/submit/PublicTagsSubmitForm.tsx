@@ -124,11 +124,11 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
               required
               placeholder={
                 isMobile ?
-                  'Confirm the connection between addresses and tags.' :
-                  'Provide a comment to confirm the connection between addresses and tags.'
+                  'Confirm the connection between addresses and tags' :
+                  'Provide a comment to confirm the connection between addresses and tags (max 500 characters)'
               }
               maxH="160px"
-              rules={{ maxLength: 80 }}
+              rules={{ maxLength: 500 }}
               asComponent="Textarea"
               size="2xl"
             />

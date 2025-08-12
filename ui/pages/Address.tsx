@@ -8,18 +8,22 @@ import type { EntityTag } from 'ui/shared/EntityTags/types';
 import config from 'configs/app';
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
+import useAddressMetadataInitUpdate from 'lib/address/useAddressMetadataInitUpdate';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import Address3rdPartyWidgets from 'ui/address/Address3rdPartyWidgets';
+import useAddress3rdPartyWidgets from 'ui/address/address3rdPartyWidgets/useAddress3rdPartyWidgets';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -34,13 +38,13 @@ import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
-import useContractTabs from 'ui/address/contract/useContractTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
+import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
 import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import useCheckAddressFormat from 'ui/address/utils/useCheckAddressFormat';
 import useCheckDomainNameParam from 'ui/address/utils/useCheckDomainNameParam';
@@ -65,12 +69,15 @@ const xScoreFeature = config.features.xStarScore;
 
 const AddressPageContent = () => {
   const router = useRouter();
-  const appProps = useAppContext();
+  const { chain } = useMultichainContext() || {};
 
   const hash = getQueryParamString(router.query.hash);
 
   const checkDomainName = useCheckDomainNameParam(hash);
   const checkAddressFormat = useCheckAddressFormat(hash);
+
+  useEtherscanRedirects();
+
   const areQueriesEnabled = !checkDomainName && !checkAddressFormat;
   const addressQuery = useAddressQuery({ hash, isEnabled: areQueriesEnabled });
 
@@ -80,6 +87,11 @@ const AddressPageContent = () => {
       enabled: areQueriesEnabled && Boolean(hash),
       placeholderData: ADDRESS_TABS_COUNTERS,
     },
+  });
+
+  const countersQuery = useAddressCountersQuery({
+    hash,
+    addressQuery,
   });
 
   const userOpsAccountQuery = useApiQuery('general:user_ops_account', {
@@ -119,10 +131,17 @@ const AddressPageContent = () => {
     addressEnsDomainsQuery.data?.items.find((domain) => domain.name === addressQuery.data?.ens_domain_name) :
     undefined;
 
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets(
+    addressQuery.data?.is_contract ? 'contract' : 'eoa',
+    addressQuery.isPlaceholderData,
+    areQueriesEnabled,
+  );
+
   const isLoading = addressQuery.isPlaceholderData;
   const isTabsLoading =
     isLoading ||
     addressTabsCountersQuery.isPlaceholderData ||
+    (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData) ||
     (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
     (config.features.mudFramework.isEnabled && mudTablesCountQuery.isPlaceholderData);
 
@@ -140,22 +159,22 @@ const AddressPageContent = () => {
     handler: handleFetchedBytecodeMessage,
   });
 
+  useAddressMetadataInitUpdate({
+    address: hash,
+    counters: countersQuery.data,
+    isEnabled: !countersQuery.isPlaceholderData && !countersQuery.isDegradedData,
+  });
+
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
 
   const xStarQuery = useFetchXStarScore({ hash });
-
-  const contractTabs = useContractTabs(
-    addressQuery.data,
-    config.features.mudFramework.isEnabled ? (mudTablesCountQuery.isPlaceholderData || addressQuery.isPlaceholderData) : addressQuery.isPlaceholderData,
-    Boolean(config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0),
-  );
 
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
       {
         id: 'index',
         title: 'Details',
-        component: <AddressDetails addressQuery={ addressQuery } isLoading={ isTabsLoading }/>,
+        component: <AddressDetails addressQuery={ addressQuery } countersQuery={ countersQuery } isLoading={ isTabsLoading }/>,
       },
       addressQuery.data?.is_contract ? {
         id: 'contract',
@@ -175,9 +194,9 @@ const AddressPageContent = () => {
         },
         component: (
           <AddressContract
-            tabs={ contractTabs.tabs }
-            shouldRender={ !isTabsLoading }
-            isLoading={ contractTabs.isLoading }
+            addressData={ addressQuery.data }
+            isLoading={ isTabsLoading }
+            hasMudTab={ Boolean(config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0) }
           />
         ),
         subTabs: CONTRACT_TAB_IDS,
@@ -263,15 +282,30 @@ const AddressPageContent = () => {
           component: <AddressLogs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
+      (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) ? {
+        id: 'widgets',
+        title: 'Widgets',
+        count: address3rdPartyWidgets.items.length,
+        component: (
+          <Address3rdPartyWidgets
+            addressType={ addressQuery.data?.is_contract ? 'contract' : 'eoa' }
+            isLoading={ addressQuery.isPlaceholderData }
+            shouldRender={ !isTabsLoading }
+            isQueryEnabled={ areQueriesEnabled }
+            showAll
+          />
+        ),
+      } : undefined,
     ].filter(Boolean);
   }, [
     addressQuery,
-    contractTabs,
+    countersQuery,
     addressTabsCountersQuery.data,
     userOpsAccountQuery.data,
     isTabsLoading,
     areQueriesEnabled,
     mudTablesCountQuery.data,
+    address3rdPartyWidgets,
   ]);
 
   const usernameApiTag = userPropfileApiQuery.data?.user_profile?.username;
@@ -350,24 +384,6 @@ const AddressPageContent = () => {
     />
   );
 
-  const backLink = React.useMemo(() => {
-    if (appProps.referrer && appProps.referrer.includes('/accounts')) {
-      return {
-        label: 'Back to top accounts list',
-        url: appProps.referrer,
-      };
-    }
-
-    if (appProps.referrer && appProps.referrer.includes('/mud-worlds')) {
-      return {
-        label: 'Back to MUD worlds list',
-        url: appProps.referrer,
-      };
-    }
-
-    return;
-  }, [ appProps.referrer ]);
-
   // API always returns hash in check-summed format except for addresses that are not in the database
   // In this case it returns 404 with empty payload, so we calculate check-summed hash on the client
   const checkSummedHash = React.useMemo(() => {
@@ -419,12 +435,13 @@ const AddressPageContent = () => {
     </Flex>
   );
 
+  const chainText = chain ? ` on ${ chain.config.chain.name }` : '';
+
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details` }
-        backLink={ backLink }
+        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details${ chainText }` }
         contentAfter={ titleContentAfter }
         secondRow={ titleSecondRow }
         isLoading={ isLoading }

@@ -41,10 +41,10 @@ interface Props {
   source?: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
   isAuth?: boolean;
   loginToRewards?: boolean;
-  executeRecaptchaAsync: () => Promise<string | null>;
+  fetchProtectedResource: <T>(fetcher: (token?: string) => Promise<T>, token?: string) => Promise<T>;
 }
 
-function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, loginToRewards, executeRecaptchaAsync }: Props) {
+function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, loginToRewards, fetchProtectedResource }: Props) {
   const [ isPending, setIsPending ] = React.useState(false);
   const isConnectingWalletRef = React.useRef(false);
 
@@ -96,24 +96,26 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
     }
   }, [ apiFetch, loginToRewards ]);
 
+  const authFetchFactory = React.useCallback((message: string, signature: string) => (recaptchaToken?: string) => {
+    const authResource = isAuth ? 'general:auth_link_address' : 'general:auth_siwe_verify';
+    return apiFetch<typeof authResource, UserInfo, unknown>(authResource, {
+      fetchParams: {
+        method: 'POST',
+        body: { message, signature, recaptcha_response: recaptchaToken },
+        headers: {
+          ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
+        },
+      },
+    });
+  }, [ apiFetch, isAuth ]);
+
   const proceedToAuth = React.useCallback(async(address: string) => {
     try {
       await switchChainAsync({ chainId: Number(config.chain.id) });
       const siweMessage = await getSiweMessage(address);
       const signature = await signMessageAsync({ message: siweMessage.message });
-      const recaptchaToken = await executeRecaptchaAsync();
 
-      if (!recaptchaToken) {
-        throw new Error('ReCaptcha is not solved');
-      }
-
-      const authResource = isAuth ? 'general:auth_link_address' : 'general:auth_siwe_verify';
-      const authResponse = await apiFetch<typeof authResource, UserInfo, unknown>(authResource, {
-        fetchParams: {
-          method: 'POST',
-          body: { message: siweMessage.message, signature, recaptcha_response: recaptchaToken },
-        },
-      });
+      const authResponse = await fetchProtectedResource(authFetchFactory(siweMessage.message, signature));
 
       const rewardsLoginResponse = siweMessage.type === 'shared' ?
         await apiFetch('rewards:login', {
@@ -143,7 +145,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
     } finally {
       setIsPending(false);
     }
-  }, [ getSiweMessage, switchChainAsync, signMessageAsync, executeRecaptchaAsync, isAuth, apiFetch, onSuccess, onError ]);
+  }, [ switchChainAsync, getSiweMessage, signMessageAsync, fetchProtectedResource, authFetchFactory, apiFetch, onSuccess, onError ]);
 
   const start = React.useCallback(() => {
     setIsPending(true);

@@ -17,7 +17,7 @@ import * as TxEntity from './TxEntity';
 type Props = {
   chain: ChainInfo | null;
   hash?: string | null;
-} & Omit<TxEntity.EntityProps, 'hash'>;
+} & Omit<TxEntity.EntityProps, 'hash' | 'chain'>;
 
 const IconStub = ({ isLoading }: { isLoading?: boolean }) => {
   return (

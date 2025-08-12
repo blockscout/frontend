@@ -38,8 +38,10 @@ export const Toaster = () => {
               ) : null }
               <Stack gap="0" flex="1" maxWidth="100%">
                 { toast.title && <Toast.Title>{ toast.title }</Toast.Title> }
-                { toast.description && (
-                  <Toast.Description>{ toast.description }</Toast.Description>
+                { (toast.meta?.renderDescription || toast.description) && (
+                  <Toast.Description>
+                    { toast.meta?.renderDescription?.() || toast.description }
+                  </Toast.Description>
                 ) }
               </Stack>
               { toast.action && (

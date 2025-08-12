@@ -27,6 +27,8 @@ export default function useMixpanelInit() {
 
     const mixpanelConfig: Partial<Config> = {
       debug: Boolean(debugFlagQuery.current || debugFlagCookie),
+      persistence: 'localStorage',
+      ...feature.configOverrides,
     };
     const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
 

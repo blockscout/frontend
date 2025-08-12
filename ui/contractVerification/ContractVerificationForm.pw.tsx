@@ -87,7 +87,7 @@ test('flatten source code method +@dark-mode +@mobile', async({ render, page }) 
   await page.getByRole('option', { name: 'Solidity (Single file)' }).click();
 
   await page.getByText(/add contract libraries/i).click();
-  await page.locator('button[aria-label="add"]').click();
+  await page.locator('button[aria-label="Add item"]').click();
 
   await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });

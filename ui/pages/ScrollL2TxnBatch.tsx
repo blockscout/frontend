@@ -4,7 +4,6 @@ import React from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -32,7 +31,6 @@ const TABS_HEIGHT = 80;
 
 const ScrollL2TxnBatch = () => {
   const router = useRouter();
-  const appProps = useAppContext();
   const number = getQueryParamString(router.query.number);
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
@@ -99,25 +97,11 @@ const ScrollL2TxnBatch = () => {
     },
   ].filter(Boolean)), [ batchQuery, batchTxsQuery, batchBlocksQuery, hasPagination ]);
 
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.endsWith('/batches');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to txn batches list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
-
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
         title={ `Txn batch #${ number }` }
-        backLink={ backLink }
       />
       <RoutedTabs
         tabs={ tabs }

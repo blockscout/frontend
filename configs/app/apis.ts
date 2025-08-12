@@ -7,6 +7,7 @@ import { getEnvValue } from './utils';
 export interface ApiPropsBase {
   endpoint: string;
   basePath?: string;
+  socketEndpoint?: string;
 }
 
 export interface ApiPropsFull extends ApiPropsBase {
@@ -100,6 +101,25 @@ const rewardsApi = (() => {
   });
 })();
 
+const multichainApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  try {
+    const url = new URL(apiHost);
+
+    return Object.freeze({
+      endpoint: apiHost,
+      socketEndpoint: `wss://${ url.host }`,
+    });
+  } catch (error) {
+    return;
+  }
+
+})();
+
 const statsApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_STATS_API_HOST');
   if (!apiHost) {
@@ -123,6 +143,17 @@ const tacApi = (() => {
   });
 })();
 
+const userOpsApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  return Object.freeze({
+    endpoint: apiHost,
+  });
+})();
+
 const visualizeApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_VISUALIZE_API_HOST');
   if (!apiHost) {
@@ -135,7 +166,7 @@ const visualizeApi = (() => {
   });
 })();
 
-type Apis = {
+export type Apis = {
   general: ApiPropsFull;
 } & Partial<Record<Exclude<ApiName, 'general'>, ApiPropsBase>>;
 
@@ -145,9 +176,11 @@ const apis: Apis = Object.freeze({
   bens: bensApi,
   contractInfo: contractInfoApi,
   metadata: metadataApi,
+  multichain: multichainApi,
   rewards: rewardsApi,
   stats: statsApi,
   tac: tacApi,
+  userOps: userOpsApi,
   visualize: visualizeApi,
 });
 

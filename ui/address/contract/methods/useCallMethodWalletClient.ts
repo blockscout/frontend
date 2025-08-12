@@ -5,6 +5,7 @@ import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 
 import { getNativeCoinValue } from './utils';
@@ -16,7 +17,10 @@ interface Params {
 }
 
 export default function useCallMethodWalletClient(): (params: Params) => Promise<FormSubmitResult> {
-  const { data: walletClient } = useWalletClient();
+  const multichainContext = useMultichainContext();
+  const chainConfig = (multichainContext?.chain.config ?? config).chain;
+
+  const { data: walletClient } = useWalletClient({ chainId: Number(chainConfig.id) });
   const { isConnected, chainId, address: account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
@@ -30,8 +34,8 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       throw new Error('Wallet Client is not defined');
     }
 
-    if (chainId && String(chainId) !== config.chain.id) {
-      await switchChainAsync({ chainId: Number(config.chain.id) });
+    if (chainId && String(chainId) !== chainConfig.id) {
+      await switchChainAsync({ chainId: Number(chainConfig.id) });
     }
 
     const address = getAddress(addressHash);
@@ -81,5 +85,5 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     }
 
     return { source: 'wallet_client', data: { hash } };
-  }, [ chainId, isConnected, switchChainAsync, walletClient, account, trackTransaction, trackTransactionConfirm ]);
+  }, [ chainId, chainConfig, isConnected, switchChainAsync, walletClient, account, trackTransaction, trackTransactionConfirm ]);
 }

@@ -1,19 +1,16 @@
 import { Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { Channel } from 'phoenix';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
 import type { Address } from 'types/api/address';
 import type { AddressImplementation } from 'types/api/addressParams';
 import type { SmartContract } from 'types/api/contract';
 
 import type { ResourceError } from 'lib/api/resources';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import useSocketMessage from 'lib/socket/useSocketMessage';
 import * as stubs from 'stubs/contract';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -36,8 +33,6 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
   const router = useRouter();
   const sourceAddress = getQueryParamString(router.query.source_address);
 
-  const queryClient = useQueryClient();
-
   const sourceItems: Array<AddressImplementation> = React.useMemo(() => {
     const currentAddressDefaultName = addressData?.proxy_type === 'eip7702' ? 'Current address' : 'Current contract';
     const currentAddressItem = { address_hash: addressData.hash, name: addressData?.name || currentAddressDefaultName };
@@ -56,29 +51,14 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
   const contractQuery = useApiQuery('general:contract', {
     pathParams: { hash: selectedItem?.address_hash },
     queryOptions: {
-      enabled: Boolean(selectedItem?.address_hash && !mainContractQuery.isPlaceholderData),
+      enabled: Boolean(selectedItem?.address_hash && !mainContractQuery.isPlaceholderData && selectedItem.address_hash !== addressData.hash),
       refetchOnMount: false,
       placeholderData: addressData?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
   });
-  const { data, isPlaceholderData, isError } = contractQuery;
+  const { data, isPlaceholderData, isError } = selectedItem.address_hash !== addressData.hash ? contractQuery : mainContractQuery;
 
   const tabs = useContractDetailsTabs({ data, isLoading: isPlaceholderData, addressData, sourceAddress: selectedItem.address_hash });
-
-  const handleContractWasVerifiedMessage: SocketMessage.SmartContractWasVerified['handler'] = React.useCallback(() => {
-    queryClient.refetchQueries({
-      queryKey: getResourceKey('general:address', { pathParams: { hash: addressData.hash } }),
-    });
-    queryClient.refetchQueries({
-      queryKey: getResourceKey('general:contract', { pathParams: { hash: addressData.hash } }),
-    });
-  }, [ addressData.hash, queryClient ]);
-
-  useSocketMessage({
-    channel,
-    event: 'smart_contract_was_verified',
-    handler: handleContractWasVerifiedMessage,
-  });
 
   if (isError) {
     return <DataFetchAlert/>;
