@@ -102,7 +102,7 @@ const ChartWidget = ({
     >
       <Flex columnGap={ 6 } mb={ 2 } alignItems="flex-start">
         { href ? (
-          <Link href={ route(href) } variant="plain">
+          <Link href={ route(href) }>
             { chartHeader }
           </Link>
         ) : chartHeader }
