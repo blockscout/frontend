@@ -39,7 +39,7 @@ const ZetaChainCCTXValue = ({ coinType, tokenSymbol, amount, decimals, isLoading
   }
 
   return (
-    <Skeleton loading={ isLoading } display="flex" gap={ 2 } overflow="hidden" className={ className }>
+    <Skeleton loading={ isLoading } display="flex" gap={ 1 } overflow="hidden" className={ className }>
       <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ value }</Text>
       <Text color="text.secondary" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">{ unit }</Text>
     </Skeleton>
