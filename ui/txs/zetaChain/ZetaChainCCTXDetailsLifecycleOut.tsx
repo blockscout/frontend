@@ -8,6 +8,7 @@ import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityWithExternalChain from 'ui/shared/entities/tx/TxEntityWithExternalChain';
+import IconSvg from 'ui/shared/IconSvg';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 import ZetaChainAddressEntity from 'ui/shared/zetaChain/ZetaChainAddressEntity';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
@@ -18,9 +19,10 @@ type Props = {
   tx: ZetaChainCCTXResponse;
   isLoading: boolean;
   isLast: boolean;
+  hasTxAfter: boolean;
 };
 
-const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast }: Props) => {
+const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast, hasTxAfter }: Props) => {
   const { data: chainsConfig } = useZetaChainConfig();
   const chainTo = chainsConfig?.find((chain) => chain.chain_id === outboundParam.receiver_chain_id);
 
@@ -189,21 +191,31 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
           />
         </>
       );
-      text = `Revert to ${ chainTo?.chain_name || 'Unknown chain' } failed`;
-      color = 'text.error';
+      text = `Abort executed`;
+      color = 'text.success';
     }
   }
 
   return (
-    <Skeleton loading={ isLoading } key={ outboundParam.hash } w="100%">
-      { /* color is incorrect, idk where to get the right one */ }
-      <Flex color={ color } maxH="20px" alignItems="center" mb={ 2.5 }>
-        { text }
+    <>
+      <Flex
+        h="100%"
+        w="100%"
+        bg={ (isLast && !hasTxAfter) ? 'global.body.bg' : 'transparent' }
+        zIndex={ 1 }
+      >
+        <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg="global.body.bg" zIndex={ 1 } color={ color }/>
       </Flex>
-      <Grid templateColumns="100px 1fr" rowGap={ 4 } columnGap={ 3 } bg="alert.bg.info" py={ 3 } px={ 4 } borderRadius="md">
-        { content }
-      </Grid>
-    </Skeleton>
+      <Skeleton loading={ isLoading } key={ outboundParam.hash } w="100%">
+        { /* color is incorrect, idk where to get the right one */ }
+        <Flex color={ color } maxH="20px" alignItems="center" mb={ 2.5 }>
+          { text }
+        </Flex>
+        <Grid templateColumns="100px 1fr" rowGap={ 4 } columnGap={ 3 } bg="alert.bg.info" py={ 3 } px={ 4 } borderRadius="md">
+          { content }
+        </Grid>
+      </Skeleton>
+    </>
   );
 };
 

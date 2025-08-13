@@ -88,7 +88,7 @@ const AddressEntityWithExternalChain = ({ externalChain, ...props }: Props) => {
           <AddressEntity.Content { ...partsProps.content }/>
         </AddressEntity.Link>
       ) : (
-        <Box>
+        <Box overflow="hidden">
           <AddressEntity.Content { ...partsProps.content }/>
         </Box>
       ) }

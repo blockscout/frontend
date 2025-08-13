@@ -84,7 +84,7 @@ const TxEntityWithExternalChain = ({ chain, hash, ...props }: Props) => {
               <TxEntity.Content { ...partsProps.content } hash={ hash }/>
             </TxEntity.Link>
           ) : (
-            <Box>
+            <Box overflow="hidden">
               <TxEntity.Content { ...partsProps.content } hash={ hash }/>
             </Box>
           ) }
