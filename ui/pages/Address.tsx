@@ -27,6 +27,7 @@ import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
+import AddressDeposits from 'ui/address/AddressDeposits';
 import AddressDetails from 'ui/address/AddressDetails';
 import AddressEpochRewards from 'ui/address/AddressEpochRewards';
 import AddressInternalTxs from 'ui/address/AddressInternalTxs';
@@ -222,6 +223,15 @@ const AddressPageContent = () => {
           title: 'User operations',
           count: userOpsAccountQuery.data?.total_ops,
           component: <AddressUserOps shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        } :
+        undefined,
+      // config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.deposits_count ?
+      config.features.beaconChain.isEnabled ?
+        {
+          id: 'deposits',
+          title: 'Deposits',
+          // count: addressTabsCountersQuery.data?.deposits_count,
+          component: <AddressDeposits shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
       config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.withdrawals_count ?
