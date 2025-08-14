@@ -5,7 +5,7 @@ import type { DepositsItem } from 'types/api/deposits';
 
 import StatusTag from '../statusTag/StatusTag';
 
-const BeaconChainDepositStatusTag = ({ status }: { status: DepositsItem['status'] }) => {
+const BeaconChainDepositStatusTag = ({ status, isLoading }: { status: DepositsItem['status']; isLoading: boolean }) => {
   const statusValue = (() => {
     switch (status) {
       case 'pending':
@@ -19,7 +19,7 @@ const BeaconChainDepositStatusTag = ({ status }: { status: DepositsItem['status'
     }
   })();
 
-  return <StatusTag type={ statusValue } text={ capitalize(status) }/>;
+  return <StatusTag type={ statusValue } text={ capitalize(status) } loading={ isLoading }/>;
 };
 
 export default BeaconChainDepositStatusTag;

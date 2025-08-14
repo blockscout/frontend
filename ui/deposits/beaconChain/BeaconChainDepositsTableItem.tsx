@@ -2,8 +2,8 @@ import React from 'react';
 
 import type { DepositsItem } from 'types/api/deposits';
 
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+import BeaconChainDepositSignature from 'ui/shared/beacon/BeaconChainDepositSignature';
 import BeaconChainDepositStatusTag from 'ui/shared/beacon/BeaconChainDepositStatusTag';
 import BeaconChainValidatorLink from 'ui/shared/beacon/BeaconChainValidatorLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -67,12 +67,10 @@ const BeaconChainDepositsTableItem = ({ item, view, isLoading }: Props) => {
         <BeaconChainValidatorLink pubkey={ item.pubkey } isLoading={ isLoading }/>
       </TableCell>
       <TableCell verticalAlign="middle" maxW="200px" overflow="hidden">
-        <Skeleton loading={ isLoading } display="inline-block" maxW="100%" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-          { item.signature }
-        </Skeleton>
+        <BeaconChainDepositSignature signature={ item.signature } isLoading={ Boolean(isLoading) }/>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <BeaconChainDepositStatusTag status={ item.status }/>
+        <BeaconChainDepositStatusTag status={ item.status } isLoading={ Boolean(isLoading) }/>
       </TableCell>
     </TableRow>
   );

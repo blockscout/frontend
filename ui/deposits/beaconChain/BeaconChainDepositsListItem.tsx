@@ -4,7 +4,7 @@ import type { DepositsItem } from 'types/api/deposits';
 
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
-import { Skeleton } from 'toolkit/chakra/skeleton';
+import BeaconChainDepositSignature from 'ui/shared/beacon/BeaconChainDepositSignature';
 import BeaconChainDepositStatusTag from 'ui/shared/beacon/BeaconChainDepositStatusTag';
 import BeaconChainValidatorLink from 'ui/shared/beacon/BeaconChainValidatorLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -82,14 +82,12 @@ const BeaconChainDepositsListItem = ({ item, isLoading, view }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Signature</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading } display="inline-block" textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
-          { item.signature }
-        </Skeleton>
+        <BeaconChainDepositSignature signature={ item.signature } isLoading={ Boolean(isLoading) }/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <BeaconChainDepositStatusTag status={ item.status }/>
+        <BeaconChainDepositStatusTag status={ item.status } isLoading={ Boolean(isLoading) }/>
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>

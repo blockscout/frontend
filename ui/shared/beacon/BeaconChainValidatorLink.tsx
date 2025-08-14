@@ -1,9 +1,10 @@
-import { Grid } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import { Link, LinkExternalIcon } from 'toolkit/chakra/link';
+import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 const feature = config.features.beaconChain;
@@ -17,8 +18,7 @@ const BeaconChainValidatorLink = ({ pubkey, isLoading }: { pubkey: string; isLoa
 
   if (!feature.validatorUrlTemplate) {
     content = (
-      <Skeleton
-        loading={ isLoading }
+      <Text
         display="inline-block"
         textOverflow="ellipsis"
         overflow="hidden"
@@ -26,30 +26,32 @@ const BeaconChainValidatorLink = ({ pubkey, isLoading }: { pubkey: string; isLoa
         maxW="100%"
       >
         { pubkey }
-      </Skeleton>
+      </Text>
     );
   } else {
     content = (
-      <>
-        <Link
-          href={ feature.validatorUrlTemplate.replace('{pk}', pubkey) }
-          external
-          loading={ isLoading }
-          textOverflow="ellipsis"
-          overflow="hidden"
-          whiteSpace="nowrap"
-          maxW="100%"
-          display="inline-block"
-          noIcon
-        >
-          { pubkey }
-        </Link>
-        <LinkExternalIcon/>
-      </>
+      <Link
+        href={ feature.validatorUrlTemplate.replace('{pk}', pubkey) }
+        external
+        loading={ isLoading }
+        overflow="hidden"
+        display="grid"
+        gridTemplateColumns="auto 20px"
+      >
+        <TruncatedTextTooltip label={ pubkey }>
+          <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ pubkey }</Text>
+        </TruncatedTextTooltip>
+      </Link>
     );
   }
   return (
-    <Grid overflow="hidden" templateColumns={ feature.validatorUrlTemplate ? 'auto 20px 24px' : 'auto 24px' } alignItems="center">
+    <Skeleton
+      display="grid"
+      overflow="hidden"
+      gridTemplateColumns="auto 24px"
+      alignItems="center"
+      loading={ isLoading }
+    >
       { content }
       <CopyToClipboard
         text={ pubkey }
@@ -57,7 +59,7 @@ const BeaconChainValidatorLink = ({ pubkey, isLoading }: { pubkey: string; isLoa
         isLoading={ isLoading }
         ml={ 1 }
       />
-    </Grid>
+    </Skeleton>
   );
 };
 
