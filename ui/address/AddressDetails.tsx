@@ -43,7 +43,8 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
 
   const addressHash = getQueryParamString(router.query.hash);
 
-  const address3rdPartyWidgets = useAddress3rdPartyWidgets(addressQuery.data?.is_contract ? 'contract' : 'eoa', addressQuery.isPlaceholderData);
+  const addressType = addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'contract' : 'eoa';
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets(addressType, addressQuery.isPlaceholderData);
 
   const error404Data = React.useMemo(() => ({
     hash: addressHash || '',
@@ -317,7 +318,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
               <Address3rdPartyWidgets
-                addressType={ data.is_contract ? 'contract' : 'eoa' }
+                addressType={ addressType }
                 isLoading={ addressQuery.isPlaceholderData }
               />
             </DetailedInfo.ItemValue>
