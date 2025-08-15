@@ -1,8 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-// import type { AddressWithdrawalsItem } from 'types/api/address';
-// import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { DepositsItem } from 'types/api/deposits';
 
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';

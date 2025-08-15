@@ -225,12 +225,11 @@ const AddressPageContent = () => {
           component: <AddressUserOps shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
-      // config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.deposits_count ?
-      config.features.beaconChain.isEnabled ?
+      config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.beacon_deposits_count ?
         {
           id: 'deposits',
           title: 'Deposits',
-          // count: addressTabsCountersQuery.data?.deposits_count,
+          count: addressTabsCountersQuery.data?.beacon_deposits_count,
           component: <AddressDeposits shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,

@@ -105,8 +105,7 @@ const BlockPageContent = () => {
           <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false }/>
         ),
       } : null,
-    // config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.deposits_count) ?
-    config.features.beaconChain.isEnabled ?
+    config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.beacon_deposits_count) ?
       {
         id: 'deposits',
         title: 'Deposits',

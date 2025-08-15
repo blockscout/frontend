@@ -133,8 +133,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     onChainValueChange: () => {},
   };
 
-  // const query = isRpcQuery ? rpcQueryWithPages : apiQuery;
-  const query = rpcQueryWithPages;
+  const query = isRpcQuery ? rpcQueryWithPages : apiQuery;
 
   return {
     ...query,
