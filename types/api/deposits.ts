@@ -7,7 +7,7 @@ export type DepositsResponse = {
   next_page_params: {
     index: number;
     items_count: number;
-  };
+  } | null;
 };
 
 export type DepositsItem = {

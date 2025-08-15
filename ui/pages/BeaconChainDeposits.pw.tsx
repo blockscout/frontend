@@ -1,16 +1,28 @@
 import React from 'react';
 
-import { data as withdrawalsData } from 'mocks/withdrawals/withdrawals';
+import { data as depositsData } from 'mocks/deposits/deposits';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
-import { test, expect } from 'playwright/lib';
+import { test, expect, devices } from 'playwright/lib';
 
-import BeaconChainWithdrawals from './BeaconChainWithdrawals';
+import BeaconChainDeposits from './BeaconChainDeposits';
 
-test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
+test('base view', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.beaconChain);
   await mockTextAd();
-  await mockApiResponse('general:withdrawals', withdrawalsData);
-  await mockApiResponse('general:withdrawals_counters', { withdrawals_count: '111111', withdrawals_sum: '1010101010110101001101010' });
-  const component = await render(<BeaconChainWithdrawals/>);
+  await mockApiResponse('general:deposits', depositsData);
+  await mockApiResponse('general:deposits_counters', { deposits_count: '111111' });
+  const component = await render(<BeaconChainDeposits/>);
   await expect(component).toHaveScreenshot();
+});
+
+test.describe('mobile', () => {
+  test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+  test('base view', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
+    await mockEnvs(ENVS_MAP.beaconChain);
+    await mockTextAd();
+    await mockApiResponse('general:deposits', depositsData);
+    await mockApiResponse('general:deposits_counters', { deposits_count: '111111' });
+    const component = await render(<BeaconChainDeposits/>);
+    await expect(component).toHaveScreenshot();
+  });
 });
