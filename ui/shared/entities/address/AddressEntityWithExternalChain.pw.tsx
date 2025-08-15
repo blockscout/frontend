@@ -1,21 +1,19 @@
 import React from 'react';
 
+import * as addressMock from 'mocks/address/address';
 import * as interopMock from 'mocks/interop/interop';
 import { test, expect } from 'playwright/lib';
 
-import TxEntityWithExternalChain from './TxEntityWithExternalChain';
+import AddressEntityWithExternalChain from './AddressEntityWithExternalChain';
 
-const hash = '0x376db52955d5bce114d0ccea2dcf22289b4eae1b86bcae5a59bb5fdbfef48899';
-
-test.use({ viewport: { width: 180, height: 30 } });
+test.use({ viewport: { width: 180, height: 140 } });
 
 test('with chain icon', async({ render, mockAssetResponse }) => {
   await mockAssetResponse('https://example.com/logo.png', './playwright/mocks/image_svg.svg');
-
   const component = await render(
-    <TxEntityWithExternalChain
-      hash={ hash }
-      chain={ interopMock.chain }
+    <AddressEntityWithExternalChain
+      address={ addressMock.withoutName }
+      externalChain={ interopMock.chain }
     />,
   );
 
@@ -24,9 +22,9 @@ test('with chain icon', async({ render, mockAssetResponse }) => {
 
 test('with chain icon stub +@dark-mode', async({ render }) => {
   const component = await render(
-    <TxEntityWithExternalChain
-      hash={ hash }
-      chain={{ ...interopMock.chain, chain_logo: null }}
+    <AddressEntityWithExternalChain
+      address={ addressMock.withoutName }
+      externalChain={{ ...interopMock.chain, chain_logo: null }}
     />,
   );
 
