@@ -122,11 +122,11 @@ export const GENERAL_API_ADDRESS_RESOURCES = {
     paginated: true,
   },
   address_xstar_score: {
-    path: '/api/v2/proxy/3dparty/xname/addresses/:hash',
+    path: '/api/v2/proxy/3rdparty/xname/addresses/:hash',
     pathParams: [ 'hash' as const ],
   },
   address_3rd_party_info: {
-    path: '/api/v2/proxy/3dparty/:name',
+    path: '/api/v2/proxy/3rdparty/:name',
     pathParams: [ 'name' as const ],
     filterFields: [ 'address' as const, 'chain_id' as const ],
   },
