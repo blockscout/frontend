@@ -5,8 +5,11 @@ import config from 'configs/app';
 const DEFAULT_THEME_COLORS = {
   bg: {
     primary: {
-      _light: { value: '{colors.white}' },
-      _dark: { value: '{colors.black}' },
+      // for some reason links to colors.white and colors.black variables are not working here
+      // so we use hex values instead
+      // but it is not the case for other colors
+      _light: { value: '#FFFFFF' }, // colors.white
+      _dark: { value: '#101112' }, // colors.black
     },
   },
   text: {
