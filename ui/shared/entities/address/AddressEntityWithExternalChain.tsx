@@ -67,6 +67,9 @@ const AddressEntityWithExternalChain = ({ externalChain, ...props }: Props) => {
             width="14px"
             height="14px"
             borderRadius="base"
+            border="1px solid"
+            borderColor="global.body.bg"
+            backgroundColor="global.body.bg"
           />
         ) : (
           <IconStub/>
