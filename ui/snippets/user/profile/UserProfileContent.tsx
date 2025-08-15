@@ -90,7 +90,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
         borderColor="border.divider"
         borderWidth="1px"
         borderRadius="base"
-        color={{ _light: 'gray.500', _dark: 'gray.300' }}
+        color="text.secondary"
       >
         { config.features.blockchainInteraction.isEnabled && (
           <Flex p={ 2 } borderColor="border.divider" borderBottomWidth="1px">

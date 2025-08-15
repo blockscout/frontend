@@ -25,7 +25,7 @@ const TxAssetFlowsListItem = (props: Props) => {
             name="lightning"
             height="5"
             width="5"
-            color="text.secondary"
+            color="icon.primary"
           />
 
           <Text textStyle="sm" fontWeight="medium">

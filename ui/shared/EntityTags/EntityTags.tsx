@@ -47,7 +47,7 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
           { metaSuitesPlaceholder }
           <PopoverRoot>
             <PopoverTrigger>
-              <Badge loading={ isLoading } cursor="pointer" as="button" _hover={{ color: 'link.primary.hover' }}>
+              <Badge loading={ isLoading } cursor="pointer" as="button" _hover={{ color: 'hover' }}>
                 +{ tags.length - visibleNum }
               </Badge>
             </PopoverTrigger>

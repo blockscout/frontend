@@ -29,4 +29,7 @@ export interface HeroBannerConfig {
     _hover?: HeroBannerButtonState;
     _selected?: HeroBannerButtonState;
   };
+  search?: {
+    border_width?: Array<string | undefined>;
+  };
 }

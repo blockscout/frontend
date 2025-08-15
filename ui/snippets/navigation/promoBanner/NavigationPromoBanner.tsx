@@ -96,7 +96,7 @@ const NavigationPromoBanner = ({ isCollapsed }: Props) => {
               name="close"
               boxSize={ 3 }
               color={{ _light: 'gray.300', _dark: 'gray.600' }}
-              bgColor="global.body.bg"
+              bgColor="bg.primary"
               borderBottomLeftRadius="sm"
               position="absolute"
               top="0"

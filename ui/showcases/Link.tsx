@@ -39,7 +39,7 @@ const LinkShowcase = () => {
   return (
     <Container value="link">
 
-      <Section>
+      <Section title="variants">
         <SectionHeader>Variants</SectionHeader>
         <SamplesStack>
           <Sample label="variant: primary">
@@ -71,7 +71,7 @@ const LinkShowcase = () => {
         </SamplesStack>
       </Section>
 
-      <Section>
+      <Section title="loading">
         <SectionHeader>Loading</SectionHeader>
         <SamplesStack>
           <Sample label="loading: true, variant: primary">

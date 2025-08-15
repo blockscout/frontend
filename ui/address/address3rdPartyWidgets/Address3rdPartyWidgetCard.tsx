@@ -102,14 +102,14 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
           <Text
             textStyle="xs"
             color="text.secondary"
-            _groupHover={{ color: 'blue.400' }}
+            _groupHover={{ color: 'hover' }}
           >
             { config.name }
           </Text>
           <IconSvg
             name="link_external"
             boxSize={ 3 }
-            color="blue.400"
+            color="hover"
             display="none"
             _groupHover={{ display: 'block' }}
           />
@@ -126,6 +126,7 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
       p={ 3 }
       cursor={ isLoading ? 'default' : 'pointer' }
       position="relative"
+      zIndex={ 0 }
     >
       <Box
         aria-hidden
@@ -133,11 +134,11 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
         inset={ 0 }
         borderRadius="md"
         border="1px solid"
-        borderColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } : 'transparent' }
-        bgColor={ isLoading ? 'transparent' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } }
+        borderColor={ isLoading ? { _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' } : 'transparent' }
+        bgColor={ isLoading ? 'transparent' : { _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' } }
         transform="scale(1)"
         transition="transform 0.2s ease-in-out, border-color 0.2s ease-in-out"
-        zIndex={ 0 }
+        zIndex={ -1 }
         _groupHover={{
           transform: 'scale(1.02)',
           borderColor: { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' },

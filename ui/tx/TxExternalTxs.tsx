@@ -49,7 +49,7 @@ const TxExternalTxs: React.FC<Props> = ({ data }) => {
       contentProps={{ w: { base: '300px', lg: '460px' } }}
     >
       <Link
-        _hover={{ textDecoration: 'none', color: 'link.primary.hover' }}
+        _hover={{ textDecoration: 'none', color: 'hover' }}
         display="inline-flex"
         alignItems="center"
         gap={ 2 }
