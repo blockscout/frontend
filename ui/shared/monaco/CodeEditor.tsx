@@ -21,6 +21,7 @@ import CodeEditorTabs from './CodeEditorTabs';
 import addExternalLibraryWarningDecoration from './utils/addExternalLibraryWarningDecoration';
 import addFileImportDecorations from './utils/addFileImportDecorations';
 import addMainContractCodeDecoration from './utils/addMainContractCodeDecoration';
+import { defGeas, configGeas } from './utils/defGeas';
 import { defScilla, configScilla } from './utils/defScilla';
 import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
 import * as themes from './utils/themes';
@@ -75,6 +76,8 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
         return 'scilla';
       case 'stylus_rust':
         return 'rust';
+      case 'geas':
+        return 'geas';
       default:
         return 'javascript';
     }
@@ -96,6 +99,12 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
       monaco.languages.register({ id: editorLanguage });
       monaco.languages.setMonarchTokensProvider(editorLanguage, defScilla);
       monaco.languages.setLanguageConfiguration(editorLanguage, configScilla);
+    }
+
+    if (editorLanguage === 'geas') {
+      monaco.languages.register({ id: editorLanguage });
+      monaco.languages.setMonarchTokensProvider(editorLanguage, defGeas);
+      monaco.languages.setLanguageConfiguration(editorLanguage, configGeas);
     }
 
     const loadedModels = monaco.editor.getModels();
