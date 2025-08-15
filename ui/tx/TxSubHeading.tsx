@@ -78,6 +78,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           fontSize="lg"
           mr={{ base: 0, lg: 2 }}
           isNoves
+          chainData={ multichainContext?.chain }
         />
       );
     } else if (hasInternalInterpretation) {
@@ -89,6 +90,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
             addressDataMap={ addressDataMap }
             fontSize="lg"
             mr={ hasViewAllInterpretationsLink ? 3 : 0 }
+            chainData={ multichainContext?.chain }
           />
           { hasViewAllInterpretationsLink &&
           <Link href={ `#${ TX_ACTIONS_BLOCK_ID }` }>View all</Link> }
@@ -117,10 +119,11 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           isLoading={ txQuery.isPlaceholderData }
           fontSize="lg"
           mr={{ base: 0, lg: 2 }}
+          chainData={ multichainContext?.chain }
         />
       );
     } else {
-      return <TxEntity hash={ hash } noLink noCopy={ false } variant="subheading" mr={{ base: 0, lg: 2 }}/>;
+      return <TxEntity hash={ hash } noLink noCopy={ false } variant="subheading" mr={{ base: 0, lg: 2 }} chain={ multichainContext?.chain }/>;
     }
   })();
 

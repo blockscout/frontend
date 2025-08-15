@@ -4,8 +4,10 @@ import React from 'react';
 import type { TxsSocketType } from './socket/types';
 import type { Transaction } from 'types/api/transaction';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
+import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 
 import TxsSocketNotice from './socket/TxsSocketNotice';
 import TxsListItem from './TxsListItem';
@@ -26,6 +28,8 @@ const TxsList = (props: Props) => {
     idFn: (item) => item.hash,
     enabled: !props.isLoading,
   });
+  const multichainContext = useMultichainContext();
+  const chainData = getChainDataForList(multichainContext);
 
   return (
     <Box>
@@ -39,6 +43,7 @@ const TxsList = (props: Props) => {
           enableTimeIncrement={ props.enableTimeIncrement }
           isLoading={ props.isLoading }
           animation={ initialList.getAnimationProp(tx) }
+          chainData={ chainData }
         />
       )) }
       <Box ref={ cutRef } h={ 0 }/>

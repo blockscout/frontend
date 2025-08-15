@@ -41,4 +41,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { deposits as getServerSideProps } from 'nextjs/getServerSideProps';
+export { deposits as getServerSideProps } from 'nextjs/getServerSideProps/main';

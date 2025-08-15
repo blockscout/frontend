@@ -41,7 +41,7 @@ export default function useApiFetch() {
     const url = buildUrl(resourceName, pathParams, queryParams, undefined, chain);
     const withBody = isBodyAllowed(fetchParams?.method);
     const headers = pickBy({
-      'x-endpoint': api.endpoint && apiName !== 'general' && isNeedProxy() ? api.endpoint : undefined,
+      'x-endpoint': isNeedProxy() ? api.endpoint : undefined,
       Authorization: [ 'admin', 'contractInfo' ].includes(apiName) ? apiToken : undefined,
       'x-csrf-token': withBody && csrfToken ? csrfToken : undefined,
       ...resource.headers,

@@ -10,7 +10,6 @@ import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import useAddressMetadataInitUpdate from 'lib/address/useAddressMetadataInitUpdate';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
@@ -69,7 +68,6 @@ const xScoreFeature = config.features.xStarScore;
 
 const AddressPageContent = () => {
   const router = useRouter();
-  const { chain } = useMultichainContext() || {};
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -91,7 +89,8 @@ const AddressPageContent = () => {
 
   const countersQuery = useAddressCountersQuery({
     hash,
-    addressQuery,
+    isLoading: addressQuery.isPlaceholderData,
+    isDegradedData: addressQuery.isDegradedData,
   });
 
   const userOpsAccountQuery = useApiQuery('general:user_ops_account', {
@@ -433,13 +432,11 @@ const AddressPageContent = () => {
     </Flex>
   );
 
-  const chainText = chain ? ` on ${ chain.config.chain.name }` : '';
-
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details${ chainText }` }
+        title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details` }
         contentAfter={ titleContentAfter }
         secondRow={ titleSecondRow }
         isLoading={ isLoading }

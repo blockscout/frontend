@@ -6,7 +6,6 @@ import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
@@ -37,7 +36,6 @@ const tacFeature = config.features.tac;
 
 const TransactionPageContent = () => {
   const router = useRouter();
-  const { chain } = useMultichainContext() || {};
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -126,7 +124,7 @@ const TransactionPageContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ chain ? `Transaction details on ${ chain.config.chain.name }` : 'Transaction details' }
+        title="Transaction details"
         contentAfter={ tags }
         secondRow={ titleSecondRow }
       />

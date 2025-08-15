@@ -30,7 +30,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      name={ props.name ?? 'flashblock' }
+      name={ 'name' in props ? props.name : 'flashblock' }
     />
   );
 };

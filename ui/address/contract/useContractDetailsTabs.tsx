@@ -21,12 +21,16 @@ interface Props {
   data: SmartContract | undefined;
   isLoading: boolean;
   addressData: Address;
-  sourceAddress: string;
+  sourceAddress: string | undefined;
 }
 
 export default function useContractDetailsTabs({ data, isLoading, addressData, sourceAddress }: Props): Array<Tab> {
 
   return React.useMemo(() => {
+
+    if (!sourceAddress) {
+      return [];
+    }
 
     return [
       (data?.constructor_args || data?.source_code) ? {

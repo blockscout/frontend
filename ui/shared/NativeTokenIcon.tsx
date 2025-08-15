@@ -35,7 +35,7 @@ const NativeTokenIcon = ({ isLoading, className, type }: Props) => {
       borderRadius="base"
       src={ src || undefined }
       alt={ `${ config.chain.currency.symbol } logo` }
-      fallback={ <TokenLogoPlaceholder borderRadius="base" className={ className }/> }
+      fallback={ <TokenLogoPlaceholder/> }
     />
   );
 };

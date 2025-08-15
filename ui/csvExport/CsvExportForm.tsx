@@ -9,6 +9,7 @@ import type { CsvExportParams } from 'types/client/address';
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import type { ResourceName } from 'lib/api/resources';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
 import { Alert } from 'toolkit/chakra/alert';
@@ -38,6 +39,9 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   });
   const { handleSubmit, formState } = formApi;
   const recaptcha = useReCaptcha();
+  const multichainContext = useMultichainContext();
+
+  const chainConfig = multichainContext?.chain.config || config;
 
   const apiFetchFactory = React.useCallback((data: FormFields) => {
     return async(recaptchaToken?: string) => {
@@ -48,7 +52,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         filter_type: filterType,
         filter_value: filterValue,
         recaptcha_response: recaptchaToken,
-      });
+      }, undefined, multichainContext?.chain);
 
       const response = await fetch(url, {
         headers: {
@@ -67,17 +71,18 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
 
       return response;
     };
-  }, [ resource, hash, exportType, filterType, filterValue ]);
+  }, [ resource, hash, exportType, filterType, filterValue, multichainContext?.chain ]);
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     try {
       const response = await recaptcha.fetchProtectedResource<Response>(apiFetchFactory(data));
+      const chainText = multichainContext?.chain ? `${ multichainContext.chain.slug.replace(/-/g, '_') }_` : '';
 
       const blob = await response.blob();
       const fileName = exportType === 'holders' ?
-        `${ fileNameTemplate }_${ hash }.csv` :
+        `${ chainText }${ fileNameTemplate }_${ hash }.csv` :
         // eslint-disable-next-line max-len
-        `${ fileNameTemplate }_${ hash }_${ data.from }_${ data.to }${ filterType && filterValue ? '_with_filter_type_' + filterType + '_value_' + filterValue : '' }.csv`;
+        `${ chainText }${ fileNameTemplate }_${ hash }_${ data.from }_${ data.to }${ filterType && filterValue ? '_with_filter_type_' + filterType + '_value_' + filterValue : '' }.csv`;
       downloadBlob(blob, fileName);
 
     } catch (error) {
@@ -87,9 +92,9 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
       });
     }
 
-  }, [ recaptcha, apiFetchFactory, exportType, fileNameTemplate, hash, filterType, filterValue ]);
+  }, [ recaptcha, apiFetchFactory, multichainContext?.chain, exportType, fileNameTemplate, hash, filterType, filterValue ]);
 
-  if (!config.services.reCaptchaV2.siteKey) {
+  if (!chainConfig.services.reCaptchaV2.siteKey) {
     return (
       <Alert status="error">
         CSV export is not available at the moment since reCaptcha is not configured for this application.

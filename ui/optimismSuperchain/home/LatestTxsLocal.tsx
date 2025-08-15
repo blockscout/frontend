@@ -1,7 +1,8 @@
-import { noop } from 'es-toolkit';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
+
+import { route } from 'nextjs/routes';
 
 import multichainConfig from 'configs/multichain';
 import getSocketUrl from 'lib/api/getSocketUrl';
@@ -9,6 +10,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import { SocketProvider } from 'lib/socket/context';
 import { TX } from 'stubs/tx';
+import { Link } from 'toolkit/chakra/link';
 import TxsContent from 'ui/txs/TxsContent';
 
 const PAGINATION_PARAMS: PaginationParams = {
@@ -46,10 +48,19 @@ const LatestTxsLocal = ({ chainSlug }: Props) => {
           isPlaceholderData={ query.isPlaceholderData }
           isError={ query.isError }
           pagination={ PAGINATION_PARAMS }
-          setSorting={ noop }
           sort="default"
           socketType="txs_home"
+          stickyHeader={ false }
         />
+        <Link
+          href={ route({ pathname: '/txs', query: { 'chain-slug': chainSlug, tab: 'txs_local' } }) }
+          w="full"
+          justifyContent="center"
+          textStyle="sm"
+          mt={ 3 }
+        >
+          View all transactions
+        </Link>
       </SocketProvider>
     </MultichainProvider>
   );
