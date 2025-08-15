@@ -12,7 +12,7 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-// import AddressCsvExportLink from './AddressCsvExportLink';
+import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressEpochRewardsListItem from './epochRewards/AddressEpochRewardsListItem';
 
 type Props = {
@@ -68,21 +68,22 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
     </>
   ) : null;
 
-  const actionBar = rewardsQuery.pagination.isVisible ? (
+  const actionBar = (
     <ActionBar mt={ -6 }>
-      { /* <AddressCsvExportLink
+      <AddressCsvExportLink
         address={ hash }
         isLoading={ rewardsQuery.pagination.isLoading }
         params={{ type: 'epoch-rewards' }}
         ml={{ lg: 'auto' }}
-      /> */ }
-      <Pagination
-        ml="auto"
-        // ml={{ base: 0, lg: 8 }}
-        { ...rewardsQuery.pagination }
       />
+      { rewardsQuery.pagination.isVisible && (
+        <Pagination
+          ml={{ base: 0, lg: 8 }}
+          { ...rewardsQuery.pagination }
+        />
+      ) }
     </ActionBar>
-  ) : null;
+  );
 
   return (
     <DataListDisplay

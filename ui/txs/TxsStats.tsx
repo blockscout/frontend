@@ -69,7 +69,7 @@ const TxsStats = () => {
     pendingTxns,
     txFeeSum24h,
     txFeeAvg,
-  ].filter(Boolean).length;
+  ].filter(item => item !== null && item !== undefined).length;
 
   return (
     <Box

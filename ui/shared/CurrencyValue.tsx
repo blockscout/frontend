@@ -13,9 +13,10 @@ interface Props {
   accuracyUsd?: number;
   decimals?: string | null;
   isLoading?: boolean;
+  startElement?: React.ReactNode;
 }
 
-const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className, accuracy, accuracyUsd, isLoading }: Props) => {
+const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className, accuracy, accuracyUsd, isLoading, startElement }: Props) => {
   if (isLoading) {
     return (
       <Skeleton className={ className } loading display="inline-block">0.00 ($0.00)</Skeleton>
@@ -33,6 +34,7 @@ const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className
 
   return (
     <chakra.span className={ className } display="inline-flex" rowGap={ 3 } columnGap={ 1 }>
+      { startElement }
       <chakra.span display="inline-block">
         { valueResult }{ currency ? ` ${ currency }` : '' }
       </chakra.span>

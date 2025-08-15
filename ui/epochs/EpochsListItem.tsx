@@ -42,7 +42,7 @@ const EpochsListItem = ({ item, isLoading }: Props) => {
       </HStack>
       { item.timestamp && (
         <HStack minH="30px" gap={ 0 } color="text.secondary" fontWeight={ 400 }>
-          <DetailedInfoTimestamp timestamp={ item.timestamp } isLoading={ isLoading } noIcon gap={ 1 }/>
+          <DetailedInfoTimestamp timestamp={ item.timestamp } isLoading={ isLoading } noIcon/>
         </HStack>
       ) }
       <HStack minH="30px">

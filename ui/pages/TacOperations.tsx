@@ -97,7 +97,7 @@ const TacOperations = () => {
         emptyText="There are no operations."
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find any operation that matches your query.`,
-          hasActiveFilters: Boolean(searchTerm),
+          hasActiveFilters: Boolean(debouncedSearchTerm),
         }}
         actionBar={ actionBar }
       >

@@ -1,4 +1,4 @@
-import { createListCollection, Flex, GridItem } from '@chakra-ui/react';
+import { createListCollection, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import * as blobUtils from 'lib/blob';
@@ -13,6 +13,7 @@ import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import BlobDataImage from './BlobDataImage';
@@ -88,7 +89,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
     switch (format[0]) {
       case 'Image': {
         if (!guessedType?.mime?.startsWith('image/')) {
-          return <RawDataSnippet data="Not an image" showCopy={ false } isLoading={ isLoading }/>;
+          return <RawDataSnippet data="Not an image" showCopy={ false } isLoading={ isLoading } w="100%"/>;
         }
 
         const bytes = hexToBytes(data);
@@ -100,44 +101,48 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
         return <BlobDataImage src={ imgSrc }/>;
       }
       case 'UTF-8':
-        return <RawDataSnippet data={ hexToUtf8(data) } showCopy={ false } isLoading={ isLoading } contentProps={{ wordBreak: 'break-word' }}/>;
+        return <RawDataSnippet data={ hexToUtf8(data) } showCopy={ false } isLoading={ isLoading } contentProps={{ wordBreak: 'break-word' }} w="100%"/>;
       case 'Base64':
-        return <RawDataSnippet data={ hexToBase64(data) } showCopy={ false } isLoading={ isLoading }/>;
+        return <RawDataSnippet data={ hexToBase64(data) } showCopy={ false } isLoading={ isLoading } w="100%"/>;
       case 'Raw':
-        return <RawDataSnippet data={ data } showCopy={ false } isLoading={ isLoading }/>;
+        return <RawDataSnippet data={ data } showCopy={ false } isLoading={ isLoading } w="100%"/>;
       default:
         return <span/>;
     }
   })();
 
   return (
-    <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 2 }}>
-      <Flex alignItems="center" mb={ 3 }>
-        <Skeleton fontWeight={{ base: 700, lg: 500 }} loading={ isLoading }>
-          Blob data
-        </Skeleton>
-        <Select
-          collection={ collection }
-          placeholder="Select type"
-          value={ format }
-          onValueChange={ handleFormatChange }
-          ml={ 5 }
-          w="100px"
-          loading={ isLoading }
-        />
-        <Skeleton ml="auto" mr={ 3 } loading={ isLoading }>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={ handleDownloadButtonClick }
-          >
-            Download
-          </Button>
-        </Skeleton>
-        <CopyToClipboard text={ data } isLoading={ isLoading }/>
-      </Flex>
-      { content }
-    </GridItem>
+    <>
+      <DetailedInfo.ItemLabel
+        hint="Blob data"
+        isLoading={ isLoading }
+      >
+        Blob data
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue flexWrap="wrap">
+        <Flex alignItems="center" w="100%" mb={{ base: 1, lg: 3 }} mt={{ base: 1, lg: 0 }}>
+          <Select
+            collection={ collection }
+            placeholder="Select type"
+            value={ format }
+            onValueChange={ handleFormatChange }
+            w="100px"
+            loading={ isLoading }
+          />
+          <Skeleton ml="auto" mr={ 2 } loading={ isLoading }>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={ handleDownloadButtonClick }
+            >
+              Download
+            </Button>
+          </Skeleton>
+          <CopyToClipboard text={ data } isLoading={ isLoading }/>
+        </Flex>
+        { content }
+      </DetailedInfo.ItemValue>
+    </>
   );
 };
 

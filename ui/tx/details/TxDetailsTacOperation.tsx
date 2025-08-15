@@ -40,14 +40,15 @@ const TxDetailsTacOperation = ({ tacOperations, isLoading, txHash }: Props) => {
           ];
 
           return (
-            <HStack key={ tacOperation.operation_id } gap={ 3 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+            <HStack key={ tacOperation.operation_id } rowGap={ 0 } columnGap={ 3 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
               <OperationEntity
                 id={ tacOperation.operation_id }
                 type={ tacOperation.type }
                 isLoading={ isLoading }
+                my={{ base: '5px', lg: 0 }}
               />
               { tags.length > 0 && (
-                <HStack flexShrink={ 0 } flexWrap="wrap">
+                <HStack flexShrink={ 0 } flexWrap="wrap" my={{ base: '3px', lg: 0 }}>
                   <TacOperationStatus status={ tacOperation.type } isLoading={ isLoading }/>
                   { tags.map((tag) => <Tag key={ tag } loading={ isLoading } flexShrink={ 0 }>{ tag }</Tag>) }
                 </HStack>
