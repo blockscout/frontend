@@ -1,3 +1,4 @@
+import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -35,7 +36,7 @@ import {
   WEI_VAR_NAME,
 } from './utils';
 
-type Props = {
+interface Props extends BoxProps {
   summary?: TxInterpretationSummary;
   isLoading?: boolean;
   addressDataMap?: Record<string, AddressParam>;
@@ -176,7 +177,7 @@ const TxInterpretationElementByType = (
   }
 };
 
-const TxInterpretation = ({ summary, isLoading, addressDataMap, className, isNoves }: Props) => {
+const TxInterpretation = ({ summary, isLoading, addressDataMap, className, isNoves, ...rest }: Props) => {
   const novesLogoUrl = useColorModeValue('/static/noves-logo.svg', '/static/noves-logo-dark.svg');
   if (!summary) {
     return null;
@@ -195,7 +196,7 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, isNov
   const chunks = getStringChunks(intermediateResult);
 
   return (
-    <Skeleton loading={ isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
+    <Skeleton loading={ isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" { ...rest }>
       <Tooltip content="Transaction summary">
         <IconSvg name="lightning" boxSize={ 5 } color="text.secondary" mr={ 1 } verticalAlign="text-top"/>
       </Tooltip>

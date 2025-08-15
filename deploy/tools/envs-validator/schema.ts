@@ -395,6 +395,25 @@ const userOpsSchema = yup
       }),
   });
 
+const mixpanelSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
+    NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES: yup
+      .object()
+      .transform(replaceQuotes)
+      .json()
+      .when('NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES can only be used if NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN is set to a non-empty string',
+          value => value === undefined,
+        ),
+      }),
+  });
+
 const adButlerConfigSchema = yup
   .object<AdButlerConfig>()
   .transform(replaceQuotes)
@@ -686,6 +705,12 @@ const address3rdPartyWidgetsConfigSchema = yup
       }),
   });
 
+const flashblocksSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: yup.string().test(urlTest),
+  });
+
 const schema = yup
   .object()
   .noUnknown(true, (params) => {
@@ -811,6 +836,13 @@ const schema = yup
       .array()
       .json()
       .of(featuredNetworkSchema),
+    NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK: yup
+      .string()
+      .when('NEXT_PUBLIC_FEATURED_NETWORKS', {
+        is: (value: Array<unknown> | undefined) => value && value.length > 0,
+        then: (schema) => schema.test(urlTest),
+        otherwise: (schema) => schema.max(-1,  'NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK can only be set when NEXT_PUBLIC_FEATURED_NETWORKS is configured'),
+      }),
     NEXT_PUBLIC_OTHER_LINKS: yup
       .array()
       .transform(replaceQuotes)
@@ -1096,7 +1128,6 @@ const schema = yup
     NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(),
     NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY: yup.string(), // DEPRECATED
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
-    NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
     NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: yup.string(),
 
@@ -1112,9 +1143,11 @@ const schema = yup
   .concat(bridgedTokensSchema)
   .concat(sentrySchema)
   .concat(apiDocsScheme)
+  .concat(mixpanelSchema)
   .concat(tacSchema)
   .concat(address3rdPartyWidgetsConfigSchema)
   .concat(addressMetadataSchema)
-  .concat(userOpsSchema);
+  .concat(userOpsSchema)
+  .concat(flashblocksSchema);
 
 export default schema;
