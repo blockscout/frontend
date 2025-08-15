@@ -9,12 +9,15 @@ import HeroBanner from 'ui/home/HeroBanner';
 
 import ChainWidget from './ChainWidget';
 import LatestTxs from './LatestTxs';
+import Stats from './Stats';
 
-const HomeOpSuperchain = () => {
+const OpSuperchainHome = () => {
   return (
     <Box as="main">
       <HeroBanner/>
-      <HStack mt={ 3 } gap={ 6 }>
+      <Stats/>
+      <LatestTxs/>
+      <HStack mt={ 3 } gap={ 3 } flexWrap="wrap" alignItems="stretch">
         { multichainConfig()?.chains.map(chain => {
           return (
             <MultichainProvider key={ chain.slug } chainSlug={ chain.slug }>
@@ -25,9 +28,8 @@ const HomeOpSuperchain = () => {
           );
         }) }
       </HStack>
-      <LatestTxs/>
     </Box>
   );
 };
 
-export default React.memo(HomeOpSuperchain);
+export default React.memo(OpSuperchainHome);

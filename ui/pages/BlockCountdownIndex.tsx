@@ -2,12 +2,17 @@ import { chakra, Box, Center } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { routeParams } from 'nextjs/routes';
+
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { Heading } from 'toolkit/chakra/heading';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 
 const BlockCountdownIndex = () => {
   const router = useRouter();
+  const multichainContext = useMultichainContext();
 
   const handleFormSubmit = React.useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -15,18 +20,31 @@ const BlockCountdownIndex = () => {
     const formData = new FormData(event.target as HTMLFormElement);
     const searchTerm = formData.get('search_term');
     if (typeof searchTerm === 'string' && searchTerm) {
-      router.push({ pathname: '/block/countdown/[height]', query: { height: searchTerm } }, undefined, { shallow: true });
+      const url = routeParams({ pathname: '/block/countdown/[height]', query: { height: searchTerm } }, multichainContext);
+      router.push(url, undefined, { shallow: true });
     }
-  }, [ router ]);
+  }, [ router, multichainContext ]);
 
   return (
     <Center h="100%" justifyContent={{ base: 'flex-start', lg: 'center' }} flexDir="column" textAlign="center" pt={{ base: 8, lg: 0 }}>
-      <IconSvg
-        name="block_countdown"
-        color={{ _light: 'gray.300', _dark: 'gray.600' }}
-        w={{ base: '160px', lg: '240px' }}
-        h={{ base: '123px', lg: '184px' }}
-      />
+      <Box position="relative">
+        <IconSvg
+          name="block_countdown"
+          color={{ _light: 'gray.300', _dark: 'gray.600' }}
+          w={{ base: '160px', lg: '240px' }}
+          h={{ base: '123px', lg: '184px' }}
+        />
+        { multichainContext?.chain && (
+          <ChainIcon
+            data={ multichainContext.chain }
+            position="absolute"
+            bottom={{ base: '15px', lg: '22px' }}
+            left={{ base: '105px', lg: '150px' }}
+            boxSize={{ lg: '60px' }}
+            bgColor="bg.primary"
+          />
+        ) }
+      </Box>
       <Heading
         level="1"
         mt={{ base: 3, lg: 6 }}

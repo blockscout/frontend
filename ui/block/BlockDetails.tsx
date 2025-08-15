@@ -511,7 +511,7 @@ const BlockDetails = ({ query }: Props) => {
             Burnt fees
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
+            <IconSvg name="flame" boxSize={ 5 } color="icon.primary" isLoading={ isPlaceholderData }/>
             <Skeleton loading={ isPlaceholderData } ml={{ base: 1, lg: 2 }}>
               { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </Skeleton>

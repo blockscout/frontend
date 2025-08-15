@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import type { Props } from 'nextjs/getServerSideProps';
+import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import config from 'configs/app';
@@ -27,4 +27,4 @@ const Page: NextPage<Props> = (props) => {
 
 export default Page;
 
-export { validatorDetails as getServerSideProps } from 'nextjs/getServerSideProps';
+export { validatorDetails as getServerSideProps } from 'nextjs/getServerSideProps/main';

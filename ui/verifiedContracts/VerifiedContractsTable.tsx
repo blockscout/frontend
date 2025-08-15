@@ -3,6 +3,8 @@ import React from 'react';
 import type { VerifiedContract } from 'types/api/contracts';
 import type { VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'types/api/verifiedContracts';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
+import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -20,6 +22,9 @@ interface Props {
 }
 
 const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) => {
+  const multichainContext = useMultichainContext();
+  const chainData = getChainDataForList(multichainContext);
+
   const onSortToggle = React.useCallback((field: VerifiedContractsSortingField) => {
     const value = getNextSortValue<VerifiedContractsSortingField, VerifiedContractsSortingValue>(SORT_SEQUENCE, field)(sort);
     setSorting({ value: [ value ] });
@@ -29,6 +34,7 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
     <TableRoot minW="1100px">
       <TableHeaderSticky top={ ACTION_BAR_HEIGHT_DESKTOP }>
         <TableRow>
+          { chainData && <TableColumnHeader width="38px"/> }
           <TableColumnHeader width="50%">Contract</TableColumnHeader>
           <TableColumnHeaderSortable
             width="130px"
@@ -64,7 +70,9 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
           <VerifiedContractsTableItem
             key={ item.address.hash + (isLoading ? index : '') }
             data={ item }
-            isLoading={ isLoading }/>
+            isLoading={ isLoading }
+            chainData={ chainData }
+          />
         )) }
       </TableBody>
     </TableRoot>

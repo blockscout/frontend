@@ -113,6 +113,7 @@ const multichainApi = (() => {
     return Object.freeze({
       endpoint: apiHost,
       socketEndpoint: `wss://${ url.host }`,
+      basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_BASE_PATH') || ''),
     });
   } catch (error) {
     return;

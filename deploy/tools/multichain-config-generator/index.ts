@@ -6,13 +6,19 @@ import { Worker } from 'node:worker_threads';
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
 
-const EXPLORER_URLS = [
-  'https://optimism-interop-alpha-0.blockscout.com',
-  'https://optimism-interop-alpha-1.blockscout.com',
-];
+// const EXPLORER_URLS = [
+//   'https://optimism.blockscout.com',
+//   'https://base.blockscout.com',
+//   'https://arbitrum.blockscout.com',
+//   'https://unichain.blockscout.com',
+//   'https://explorer.redstone.xyz',
+//   'https://matchscan.io'
+//   // 'https://optimism-interop-alpha-0.blockscout.com',
+//   // 'https://optimism-interop-alpha-1.blockscout.com',
+// ];
 
-function getSlug(url: string) {
-  return new URL(url).hostname.replace('.blockscout.com', '').replace('.k8s-dev', '');
+function getSlug(chainName: string) {
+  return chainName.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
 }
 
 async function computeChainConfig(url: string): Promise<unknown> {
@@ -41,6 +47,22 @@ async function computeChainConfig(url: string): Promise<unknown> {
   });
 }
 
+async function getExplorerUrls() {
+  try {
+    const basePath = (process.env.NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_BASE_PATH ?? '') + '/chains';
+    const url = new URL(basePath, process.env.NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST);
+
+    const response = await fetch(url.toString());
+    const data = await response.json();
+
+    console.log(`💡 Found ${ data.items.length } chains in cluster.`);
+
+    return data.items.map((item: { explorer_url: string }) => item.explorer_url);
+  } catch (error) {
+    return [];
+  }
+}
+
 async function run() {
   try {
     if (!process.env.NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST) {
@@ -49,12 +71,20 @@ async function run() {
     }
 
     console.log('🌀 Generating multichain config...');
-    const configs = await Promise.all(EXPLORER_URLS.map(computeChainConfig));
+
+    const explorerUrls = await getExplorerUrls();
+
+    if (!explorerUrls.length) {
+      throw new Error('No chains found in the cluster.');
+    }
+
+    const configs = await Promise.all(explorerUrls.map(computeChainConfig));
 
     const config = {
       chains: configs.map((config, index) => {
+        const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ index + 1 }`;
         return {
-          slug: getSlug(EXPLORER_URLS[index]),
+          slug: getSlug(chainName),
           config,
         };
       }),

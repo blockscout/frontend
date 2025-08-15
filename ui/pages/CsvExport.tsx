@@ -7,11 +7,13 @@ import type { CsvExportParams } from 'types/client/address';
 
 import type { ResourceName } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'toolkit/utils/htmlEntities';
 import CsvExportForm from 'ui/csvExport/CsvExportForm';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import ContentLoader from 'ui/shared/ContentLoader';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -70,6 +72,7 @@ const isCorrectExportType = (type: string): type is CsvExportParams['type'] => O
 const CsvExport = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
+  const multichainContext = useMultichainContext();
 
   const addressHash = router.query.address?.toString() || '';
   const exportTypeParam = router.query.type?.toString() || '';
@@ -143,6 +146,14 @@ const CsvExport = () => {
       return null;
     }
 
+    const chainInfo = multichainContext?.chain ? (
+      <Flex display="inline-flex" alignItems="center" columnGap={ 2 }>
+        <span>on</span>
+        <ChainIcon data={ multichainContext.chain }/>
+        <span>{ multichainContext.chain.config.chain.name }</span>
+      </Flex>
+    ) : null;
+
     const limit = (configQuery.data?.limit || 10_000).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' });
 
     if (exportTypeParam === 'holders' && tokenQuery.data) {
@@ -157,6 +168,7 @@ const CsvExport = () => {
             noCopy
             noSymbol
           />
+          { chainInfo }
           <span> to CSV file. </span>
           <span>Exports are limited to the top { limit } holders by amount held.</span>
         </Flex>
@@ -176,8 +188,9 @@ const CsvExport = () => {
           noCopy
         />
         <span>{ nbsp }</span>
-        { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue }) </span> }
-        <span>to CSV file. </span>
+        { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue })</span> }
+        { chainInfo }
+        <span> to CSV file. </span>
         <span>Exports are limited to the last { limit } { exportType.text }.</span>
       </Flex>
     );

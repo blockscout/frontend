@@ -3,8 +3,9 @@ import React from 'react';
 
 import type { TokenInfo, TokenInstance } from 'types/api/token';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -17,6 +18,7 @@ type Props = { item: TokenInstance; token: TokenInfo; isLoading: boolean };
 const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
 
   const isMobile = useIsMobile();
+  const multichainContext = useMultichainContext();
 
   const mediaElement = (
     <NftMedia
@@ -28,7 +30,7 @@ const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
     />
   );
 
-  const url = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address_hash, id: item.id } });
+  const url = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address_hash, id: item.id } }, multichainContext);
 
   return (
     <Box

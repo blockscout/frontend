@@ -1,28 +1,13 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
-import { AddressFromToFilterValues } from 'types/api/address';
-import type { AddressFromToFilter, AddressTokenTransferResponse } from 'types/api/address';
-import type { TokenType } from 'types/api/token';
-import type { TokenTransfer } from 'types/api/tokenTransfer';
-
-import { getResourceKey } from 'lib/api/useApiQuery';
-import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
-import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
-import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
-import { getTokenTransfersStub } from 'stubs/token';
 import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
@@ -30,34 +15,8 @@ import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 
 import AddressAdvancedFilterLink from './AddressAdvancedFilterLink';
 import AddressCsvExportLink from './AddressCsvExportLink';
-
-type Filters = {
-  type: Array<TokenType>;
-  filter: AddressFromToFilter | undefined;
-};
-
-const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPE_IDS);
-const getAddressFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
-
-const OVERLOAD_COUNT = 75;
-
-const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: string) => {
-  if (filters.filter) {
-    if (filters.filter === 'from' && tokenTransfer.from.hash !== address) {
-      return false;
-    }
-    if (filters.filter === 'to' && tokenTransfer.to.hash !== address) {
-      return false;
-    }
-  }
-  if (filters.type && filters.type.length) {
-    if (!tokenTransfer.token || !filters.type.includes(tokenTransfer.token.type)) {
-      return false;
-    }
-  }
-
-  return true;
-};
+import useAddressTokenTransfersQuery from './useAddressTokenTransfersQuery';
+import useAddressTokenTransfersSocket from './useAddressTokenTransfersSocket';
 
 type Props = {
   shouldRender?: boolean;
@@ -66,110 +25,21 @@ type Props = {
   overloadCount?: number;
 };
 
-const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = true, isQueryEnabled = true }: Props) => {
+const AddressTokenTransfers = ({ overloadCount, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const isMounted = useIsMounted();
 
   const currentAddress = getQueryParamString(router.query.hash);
 
-  const [ showSocketAlert, setShowSocketAlert ] = React.useState(false);
-  const [ newItemsCount, setNewItemsCount ] = React.useState(0);
+  const { query, filters, onTypeFilterChange, onAddressFilterChange } = useAddressTokenTransfersQuery({ currentAddress, enabled: isQueryEnabled });
+  const { data, isPlaceholderData, isError, pagination } = query;
 
-  const [ filters, setFilters ] = React.useState<Filters>(
-    {
-      type: getTokenFilterValue(router.query.type) || [],
-      filter: getAddressFilterValue(router.query.filter),
-    },
-  );
-
-  const { isError, isPlaceholderData, data, pagination, onFilterChange } = useQueryWithPages({
-    resourceName: 'general:address_token_transfers',
-    pathParams: { hash: currentAddress },
+  const { showSocketAlert, newItemsCount } = useAddressTokenTransfersSocket({
     filters,
-    options: {
-      enabled: isQueryEnabled,
-      placeholderData: getTokenTransfersStub(undefined, {
-        block_number: 7793535,
-        index: 46,
-        items_count: 50,
-      }),
-    },
-  });
-
-  const handleTypeFilterChange = React.useCallback((nextValue: Array<TokenType>) => {
-    onFilterChange({ ...filters, type: nextValue });
-    setFilters((prevState) => ({ ...prevState, type: nextValue }));
-  }, [ filters, onFilterChange ]);
-
-  const handleAddressFilterChange = React.useCallback((nextValue: string) => {
-    const filterVal = getAddressFilterValue(nextValue);
-    onFilterChange({ ...filters, filter: filterVal });
-    setFilters((prevState) => ({ ...prevState, filter: filterVal }));
-  }, [ filters, onFilterChange ]);
-
-  const handleNewSocketMessage: SocketMessage.AddressTokenTransfer['handler'] = (payload) => {
-    setShowSocketAlert(false);
-
-    const newItems: Array<TokenTransfer> = [];
-    let newCount = 0;
-
-    payload.token_transfers.forEach(transfer => {
-      if (data?.items && data.items.length + newItems.length >= overloadCount) {
-        if (matchFilters(filters, transfer, currentAddress)) {
-          newCount++;
-        }
-      } else {
-        if (matchFilters(filters, transfer, currentAddress)) {
-          newItems.push(transfer);
-        }
-      }
-    });
-
-    if (newCount > 0) {
-      setNewItemsCount(prev => prev + newCount);
-    }
-
-    if (newItems.length > 0) {
-      queryClient.setQueryData(
-        getResourceKey('general:address_token_transfers', { pathParams: { hash: currentAddress }, queryParams: { ...filters } }),
-        (prevData: AddressTokenTransferResponse | undefined) => {
-          if (!prevData) {
-            return;
-          }
-
-          return {
-            ...prevData,
-            items: [
-              ...newItems,
-              ...prevData.items,
-            ],
-          };
-        },
-      );
-    }
-
-  };
-
-  const handleSocketClose = React.useCallback(() => {
-    setShowSocketAlert(true);
-  }, []);
-
-  const handleSocketError = React.useCallback(() => {
-    setShowSocketAlert(true);
-  }, []);
-
-  const channel = useSocketChannel({
-    topic: `addresses:${ currentAddress.toLowerCase() }`,
-    onSocketClose: handleSocketClose,
-    onSocketError: handleSocketError,
-    isDisabled: pagination.page !== 1,
-  });
-
-  useSocketMessage({
-    channel,
-    event: 'token_transfer',
-    handler: handleNewSocketMessage,
+    addressHash: currentAddress,
+    data,
+    overloadCount,
+    enabled: isQueryEnabled && pagination.page === 1,
   });
 
   if (!isMounted || !shouldRender) {
@@ -218,10 +88,10 @@ const AddressTokenTransfers = ({ overloadCount = OVERLOAD_COUNT, shouldRender = 
     <ActionBar mt={ -6 }>
       <TokenTransferFilter
         defaultTypeFilters={ filters.type }
-        onTypeFilterChange={ handleTypeFilterChange }
+        onTypeFilterChange={ onTypeFilterChange }
         appliedFiltersNum={ numActiveFilters }
         withAddressFilter
-        onAddressFilterChange={ handleAddressFilterChange }
+        onAddressFilterChange={ onAddressFilterChange }
         defaultAddressFilter={ filters.filter }
         isLoading={ isPlaceholderData }
       />

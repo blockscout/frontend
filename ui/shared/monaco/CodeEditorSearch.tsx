@@ -136,7 +136,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
     borderRadius: '3px',
     borderWidth: '1px',
     borderColor: 'transparent',
-    color: 'global.body.fg',
+    color: 'text.primary',
   };
 
   const searchResultNum = (() => {
