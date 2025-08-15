@@ -79,7 +79,7 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
             ) }
           </Text>
         ) : (
-          <Text textStyle="heading.xl" color="gray.500" opacity={ 0.2 }>{ ndash }</Text>
+          <Text textStyle="heading.xl" color="text.secondary" opacity={ 0.2 }>{ ndash }</Text>
         ) }
       </Skeleton>
       <Flex alignItems="center" gap={ 1 } mt={ 1 }>
