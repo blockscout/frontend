@@ -91,11 +91,11 @@ const TransactionPageContent = () => {
   const txTags: Array<TEntityTag> = data?.transaction_tag ?
     [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 1 } ] : [];
 
-  if (rollupFeature.isEnabled && rollupFeature.interopEnabled && data?.op_interop) {
-    if (data.op_interop.init_chain !== undefined) {
+  if (rollupFeature.isEnabled && rollupFeature.interopEnabled && data?.op_interop_messages && data.op_interop_messages.length > 0) {
+    if (data.op_interop_messages.some(message => message.init_chain !== undefined)) {
       txTags.push({ slug: 'relay_tx', name: 'Relay tx', tagType: 'custom' as const, ordinal: 0 });
     }
-    if (data.op_interop.relay_chain !== undefined) {
+    if (data.op_interop_messages.some(message => message.relay_chain !== undefined)) {
       txTags.push({ slug: 'init_tx', name: 'Source tx', tagType: 'custom' as const, ordinal: 0 });
     }
   }

@@ -20,7 +20,7 @@ export const GENERAL_API_CONTRACT_RESOURCES = {
     pathParams: [ 'hash' as const, 'method' as const ],
   },
   contract_solidity_scan_report: {
-    path: '/api/v2/proxy/3dparty/solidityscan/smart-contracts/:hash/report',
+    path: '/api/v2/proxy/3rdparty/solidityscan/smart-contracts/:hash/report',
     pathParams: [ 'hash' as const ],
   },
   contract_security_audits: {

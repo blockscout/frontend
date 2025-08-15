@@ -116,17 +116,17 @@ export const GENERAL_API_MISC_RESOURCES = {
 
   // NOVES-FI
   noves_transaction: {
-    path: '/api/v2/proxy/3dparty/noves-fi/transactions/:hash',
+    path: '/api/v2/proxy/3rdparty/noves-fi/transactions/:hash',
     pathParams: [ 'hash' as const ],
   },
   noves_address_history: {
-    path: '/api/v2/proxy/3dparty/noves-fi/addresses/:address/transactions',
+    path: '/api/v2/proxy/3rdparty/noves-fi/addresses/:address/transactions',
     pathParams: [ 'address' as const ],
     filterFields: [],
     paginated: true,
   },
   noves_describe_txs: {
-    path: '/api/v2/proxy/3dparty/noves-fi/transaction-descriptions',
+    path: '/api/v2/proxy/3rdparty/noves-fi/transaction-descriptions',
   },
 
   // USER OPS

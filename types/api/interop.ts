@@ -14,9 +14,9 @@ export interface InteropMessage {
   payload: string;
   relay_chain?: ChainInfo | null;
   relay_transaction_hash: string | null;
-  sender: string;
+  sender_address_hash: string;
   status: MessageStatus;
-  target: string;
+  target_address_hash: string;
   timestamp: string;
 }
 

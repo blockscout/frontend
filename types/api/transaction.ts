@@ -109,7 +109,7 @@ export type Transaction = {
   // EIP-7702
   authorization_list?: Array<TxAuthorization>;
   // Interop
-  op_interop?: InteropTransactionInfo;
+  op_interop_messages?: Array<InteropTransactionInfo>;
 };
 
 type ArbitrumTransactionData = {
@@ -226,7 +226,7 @@ export interface InteropTransactionInfo {
   relay_chain?: ChainInfo | null;
   init_transaction_hash?: string;
   relay_transaction_hash?: string;
-  sender: string;
+  sender_address_hash: string;
   status: MessageStatus;
-  target: string;
+  target_address_hash: string;
 }
