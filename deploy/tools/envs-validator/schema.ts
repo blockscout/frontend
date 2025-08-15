@@ -705,6 +705,12 @@ const address3rdPartyWidgetsConfigSchema = yup
       }),
   });
 
+const flashblocksSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: yup.string().test(urlTest),
+  });
+
 const schema = yup
   .object()
   .noUnknown(true, (params) => {
@@ -1141,6 +1147,7 @@ const schema = yup
   .concat(tacSchema)
   .concat(address3rdPartyWidgetsConfigSchema)
   .concat(addressMetadataSchema)
-  .concat(userOpsSchema);
+  .concat(userOpsSchema)
+  .concat(flashblocksSchema);
 
 export default schema;

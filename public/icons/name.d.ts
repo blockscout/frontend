@@ -73,6 +73,7 @@
 	| "files/yul"
 	| "filter"
 	| "flame"
+	| "flashblock"
 	| "games"
 	| "gas_xl"
 	| "gas"
