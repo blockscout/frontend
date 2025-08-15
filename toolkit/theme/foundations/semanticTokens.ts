@@ -435,6 +435,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       primary: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
       secondary: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
       error: { value: '{colors.red.500}' },
+      success: { value: { _light: '{colors.green.500}', _dark: '{colors.green.200}' } },
     },
     border: {
       divider: { value: { _light: '{colors.blackAlpha.100}', _dark: '{colors.whiteAlpha.100}' } },

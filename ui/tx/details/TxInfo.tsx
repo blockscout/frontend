@@ -36,7 +36,7 @@ import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
+import AddressEntityWithExternalChain from 'ui/shared/entities/address/AddressEntityWithExternalChain';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
@@ -508,8 +508,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue flexWrap="nowrap">
             { data.op_interop?.relay_chain !== undefined ? (
-              <AddressEntityInterop
-                chain={ data.op_interop.relay_chain }
+              <AddressEntityWithExternalChain
+                externalChain={ data.op_interop.relay_chain }
                 address={{ hash: data.op_interop.target }}
                 isLoading={ isLoading }
                 truncation="dynamic"
@@ -531,8 +531,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue flexWrap="nowrap">
             { data.op_interop?.relay_chain !== undefined ? (
-              <AddressEntityInterop
-                chain={ data.op_interop.relay_chain }
+              <AddressEntityWithExternalChain
+                externalChain={ data.op_interop.relay_chain }
                 address={{ hash: data.op_interop.target }}
                 isLoading={ isLoading }
                 truncation="dynamic"
