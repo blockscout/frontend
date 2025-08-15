@@ -190,7 +190,7 @@ export const recipe = defineSlotRecipe({
           _selected: {
             color: 'tabs.segmented.fg.selected',
             bg: 'tabs.segmented.border',
-            borderColor: 'tabs.segmented.border',
+            borderColor: 'transparent',
             _hover: {
               color: 'tabs.segmented.fg.selected',
             },

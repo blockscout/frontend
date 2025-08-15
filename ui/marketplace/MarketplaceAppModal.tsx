@@ -1,14 +1,11 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceAppWithSecurityReport, AppRating } from 'types/client/marketplace';
-import { ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import * as mixpanel from 'lib/mixpanel/index';
 import { Badge } from 'toolkit/chakra/badge';
 import { Button } from 'toolkit/chakra/button';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
@@ -24,27 +21,19 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
-import AppSecurityReport from './AppSecurityReport';
 import FavoriteIcon from './FavoriteIcon';
 import MarketplaceAppGraphLinks from './MarketplaceAppGraphLinks';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 import Rating from './Rating/Rating';
-import type { RateFunction } from './Rating/useRatings';
 
 const feature = config.features.marketplace;
-const isRatingEnabled = feature.isEnabled && feature.rating;
+const isRatingEnabled = feature.isEnabled && 'api' in feature;
 
 type Props = {
   onClose: () => void;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'App modal') => void;
-  data: MarketplaceAppWithSecurityReport;
-  showContractList: (id: string, type: ContractListTypes, hasPreviousStep: boolean) => void;
-  userRating?: AppRating;
-  rateApp: RateFunction;
-  isRatingSending: boolean;
-  isRatingLoading: boolean;
-  canRate: boolean | undefined;
+  data: MarketplaceApp;
   graphLinks?: Array<{ title: string; url: string }>;
 };
 
@@ -53,12 +42,6 @@ const MarketplaceAppModal = ({
   isFavorite,
   onFavoriteClick,
   data,
-  showContractList: showContractListProp,
-  userRating,
-  rateApp,
-  isRatingSending,
-  isRatingLoading,
-  canRate,
   graphLinks,
 }: Props) => {
   const {
@@ -76,8 +59,9 @@ const MarketplaceAppModal = ({
     logo,
     logoDarkMode,
     categories,
-    securityReport,
     rating,
+    ratingsTotalCount,
+    userRating,
     internalWallet,
   } = data;
 
@@ -114,20 +98,6 @@ const MarketplaceAppModal = ({
     onFavoriteClick(id, isFavorite, 'App modal');
   }, [ onFavoriteClick, id, isFavorite ]);
 
-  const showContractList = useCallback((id: string, type: ContractListTypes) => {
-    onClose();
-    // FIXME: This is a workaround to avoid the dialog closing before the modal is opened
-    window.setTimeout(() => {
-      showContractListProp(id, type, true);
-    }, 100);
-  }, [ showContractListProp, onClose ]);
-
-  const showAllContracts = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Total contracts', Info: id, Source: 'App modal' });
-    showContractList(id, ContractListTypes.ALL);
-  }, [ showContractList, id ]);
-
-  const isMobile = useIsMobile();
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
 
   return (
@@ -189,12 +159,9 @@ const MarketplaceAppModal = ({
               <Rating
                 appId={ id }
                 rating={ rating }
+                ratingsTotalCount={ ratingsTotalCount }
                 userRating={ userRating }
-                rate={ rateApp }
-                isSending={ isRatingSending }
-                isLoading={ isRatingLoading }
                 fullView
-                canRate={ canRate }
                 source="App modal"
                 popoverContentProps={{ zIndex: 'modal' }}
               />
@@ -206,8 +173,8 @@ const MarketplaceAppModal = ({
             marginTop={{ base: 6, md: 3 }}
           >
             <Flex flexWrap="wrap" gap={ 6 }>
-              <Flex width={{ base: '100%', md: 'auto' }}>
-                <Link href={ external ? url : route({ pathname: '/apps/[id]', query: { id: data.id } }) } external={ external } noIcon mr={ 2 }>
+              <Flex width={{ base: '100%', md: 'auto' }} gap={ 2 }>
+                <Link href={ external ? url : route({ pathname: '/apps/[id]', query: { id: data.id } }) } external={ external } noIcon>
                   <Button size="sm">
                     Launch app
                   </Button>
@@ -229,7 +196,6 @@ const MarketplaceAppModal = ({
                   type="share"
                   variant="icon_secondary"
                   size="md"
-                  borderRadius="none"
                   ml={ 0 }
                   boxSize={ 8 }
                 />
@@ -239,37 +205,6 @@ const MarketplaceAppModal = ({
         </Box>
 
         <DialogBody mb={ 6 }>
-          { securityReport && (
-            <Flex
-              direction={{ base: 'column', md: 'row' }}
-              justifyContent={{ base: 'flex-start', md: 'space-between' }}
-              gap={ 3 }
-              fontSize="sm"
-              mb={ 6 }
-            >
-              <Flex alignItems="center" gap={ 2 } flexWrap="wrap">
-                <IconSvg name="contracts/verified_many" boxSize={ 5 } color="green.500"/>
-                <Text>Verified contracts</Text>
-                <Text fontWeight="500">
-                  { securityReport?.overallInfo.verifiedNumber ?? 0 } of { securityReport?.overallInfo.totalContractsNumber ?? 0 }
-                </Text>
-                <Link onClick={ showAllContracts } ml={ 1 }>
-                  View all contracts
-                </Link>
-              </Flex>
-              <Flex alignItems="center" gap={ 2 }>
-                <Text>Security level</Text>
-                <AppSecurityReport
-                  id={ id }
-                  securityReport={ securityReport }
-                  showContractList={ showContractList }
-                  source="App modal"
-                  popoverPlacement={ isMobile ? 'bottom-start' : 'left' }
-                  popoverContentProps={{ zIndex: 'modal' }}
-                />
-              </Flex>
-            </Flex>
-          ) }
           <Text>{ description }</Text>
         </DialogBody>
 

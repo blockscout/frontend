@@ -44,11 +44,11 @@ const TxDetailsTokenTransfers = ({ data, txHash, isOverflow }: Props) => {
             >
               { title }
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue position="relative">
+            <DetailedInfo.ItemValue position="relative" multiRow>
               <Flex
                 flexDirection="column"
                 alignItems="flex-start"
-                rowGap={ 5 }
+                rowGap={ 1 }
                 w="100%"
                 overflow="hidden"
               >

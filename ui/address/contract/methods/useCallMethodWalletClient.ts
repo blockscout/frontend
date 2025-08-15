@@ -41,11 +41,19 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     const address = getAddress(addressHash);
     const activityResponse = await trackTransaction(account ?? '', address);
 
+    // for payable methods we add additional input for native coin value
+    const inputs = 'inputs' in item ? item.inputs : [];
+    const _args = args.slice(0, inputs.length);
+    const value = getNativeCoinValue(args[inputs.length]);
+
     if (item.type === 'receive' || item.type === 'fallback') {
-      const value = getNativeCoinValue(args[0]);
+      // if the fallback method acts as a read method, it can only have one input of type bytes
+      // so we pass the input value as data without encoding it
+      const data = typeof _args[0] === 'string' && _args[0].startsWith('0x') ? _args[0] as `0x${ string }` : undefined;
       const hash = await walletClient.sendTransaction({
         to: address,
         value,
+        ...(data ? { data } : {}),
       });
 
       if (activityResponse?.token) {
@@ -60,9 +68,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     if (!methodName) {
       throw new Error('Method name is not defined');
     }
-
-    const _args = args.slice(0, item.inputs.length);
-    const value = getNativeCoinValue(args[item.inputs.length]);
 
     const hash = await walletClient.writeContract({
       args: _args,

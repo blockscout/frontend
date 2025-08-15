@@ -1,4 +1,3 @@
-import { Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -56,11 +55,8 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
   const blocksCount = data.end_block_number - data.start_block_number + 1;
 
   return (
-    <Grid
-      columnGap={ 8 }
-      rowGap={{ base: 3, lg: 3 }}
+    <DetailedInfo.Container
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
-      overflow="hidden"
     >
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
@@ -110,7 +106,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         { data.confirmation_transaction.timestamp ?
-          <DetailedInfoTimestamp timestamp={ data.confirmation_transaction.timestamp }isLoading={ isPlaceholderData }/> :
+          <DetailedInfoTimestamp timestamp={ data.confirmation_transaction.timestamp } isLoading={ isPlaceholderData }/> :
           <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton>
         }
       </DetailedInfo.ItemValue>
@@ -151,7 +147,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         { data.commitment_transaction.timestamp ?
-          <DetailedInfoTimestamp timestamp={ data.commitment_transaction.timestamp }isLoading={ isPlaceholderData }/> :
+          <DetailedInfoTimestamp timestamp={ data.commitment_transaction.timestamp } isLoading={ isPlaceholderData }/> :
           <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton>
         }
       </DetailedInfo.ItemValue>
@@ -162,7 +158,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       >
         Committed transaction hash
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
+      <DetailedInfo.ItemValue alignSelf="flex-start">
         <TxEntityL1
           isLoading={ isPlaceholderData }
           hash={ data.commitment_transaction.hash }
@@ -189,7 +185,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       >
         Finalized transaction hash
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
+      <DetailedInfo.ItemValue alignSelf="flex-start">
         { data.confirmation_transaction.hash ? (
           <TxEntityL1
             isLoading={ isPlaceholderData }
@@ -213,7 +209,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
           />
         ) : <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton> }
       </DetailedInfo.ItemValue>
-    </Grid>
+    </DetailedInfo.Container>
   );
 };
 

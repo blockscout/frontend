@@ -45,6 +45,7 @@ export default function useInternalTxsQuery({ isMultichain }: Props = {}) {
   return React.useMemo(() => ({
     query,
     searchTerm,
+    debouncedSearchTerm,
     onSearchTermChange,
-  }), [ query, searchTerm, onSearchTermChange ]);
+  }), [ query, searchTerm, debouncedSearchTerm, onSearchTermChange ]);
 }

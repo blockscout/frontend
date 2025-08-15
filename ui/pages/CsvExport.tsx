@@ -7,7 +7,6 @@ import type { CsvExportParams } from 'types/client/address';
 
 import type { ResourceName } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
@@ -72,7 +71,6 @@ const isCorrectExportType = (type: string): type is CsvExportParams['type'] => O
 
 const CsvExport = () => {
   const router = useRouter();
-  const appProps = useAppContext();
   const isMobile = useIsMobile();
   const multichainContext = useMultichainContext();
 
@@ -103,19 +101,6 @@ const CsvExport = () => {
   });
 
   const isLoading = addressQuery.isPending || configQuery.isPending || (exportTypeParam === 'holders' && tokenQuery.isPending);
-
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/address');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to address',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
 
   throwOnAbsentParamError(addressHash);
   throwOnAbsentParamError(exportType);
@@ -213,10 +198,7 @@ const CsvExport = () => {
 
   return (
     <>
-      <PageTitle
-        title="Export data to CSV file"
-        backLink={ backLink }
-      />
+      <PageTitle title="Export data to CSV file"/>
       { description }
       { content }
     </>

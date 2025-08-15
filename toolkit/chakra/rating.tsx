@@ -31,7 +31,7 @@ export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
 
             return (
               <RatingGroup.Item key={ index } index={ index + 1 }>
-                <RatingGroup.ItemIndicator icon={ icon }/>
+                <RatingGroup.ItemIndicator icon={ icon } cursor={ readOnly ? 'default' : 'pointer' }/>
               </RatingGroup.Item>
             );
           }) }

@@ -4,15 +4,15 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
+import type { LinkProps } from 'toolkit/chakra/link';
 import { Link } from 'toolkit/chakra/link';
 
-interface Props {
+interface Props extends LinkProps {
   isLoading: boolean;
   addressHash: string;
-  isPartiallyVerified: boolean;
 }
 
-const ContractDetailsVerificationButton = ({ isLoading, addressHash, isPartiallyVerified }: Props) => {
+const ContractDetailsVerificationButton = ({ isLoading, addressHash, ...rest }: Props) => {
 
   const href = config.features.opSuperchain.isEnabled ?
   // TODO @tom2drum adjust URL to Vera
@@ -23,10 +23,9 @@ const ContractDetailsVerificationButton = ({ isLoading, addressHash, isPartially
     <Link
       href={ href }
       target={ config.features.opSuperchain.isEnabled ? '_blank' : undefined }
-      mr={ isPartiallyVerified ? 0 : 3 }
-      ml={ isPartiallyVerified ? 0 : 'auto' }
       flexShrink={ 0 }
       asChild
+      { ...rest }
     >
       <Button
         size="sm"

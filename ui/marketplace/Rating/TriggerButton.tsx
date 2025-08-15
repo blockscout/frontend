@@ -13,15 +13,12 @@ interface Props extends ButtonProps {
   rating?: number;
   count?: number;
   fullView?: boolean;
-  canRate: boolean | undefined;
+  canRate: boolean;
 };
 
-const getTooltipText = (canRate: boolean | undefined) => {
-  if (canRate === undefined) {
-    return <>Please connect your wallet to Blockscout to rate this DApp.<br/>Only wallets with 5+ transactions are eligible</>;
-  }
+const getTooltipText = (canRate: boolean) => {
   if (!canRate) {
-    return <>Brand new wallets cannot leave ratings.<br/>Please connect a wallet with 5 or more transactions on this chain</>;
+    return <>Please log in to Blockscout to rate this DApp.</>;
   }
   return <>Ratings come from verified users.<br/>Click here to rate!</>;
 };
@@ -31,7 +28,6 @@ const TriggerButton = (
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const onFocusCapture = usePreventFocusAfterModalClosing();
-
   const isMobile = useIsMobile();
 
   return (

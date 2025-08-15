@@ -72,9 +72,10 @@ export default function useVerifiedContractsQuery({ isMultichain }: Props = {}) 
     query,
     type,
     searchTerm,
+    debouncedSearchTerm,
     sort,
     onSearchTermChange,
     onTypeChange,
     onSortChange,
-  }), [ query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange ]);
+  }), [ query, type, searchTerm, debouncedSearchTerm, sort, onSearchTermChange, onTypeChange, onSortChange ]);
 }

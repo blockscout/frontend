@@ -6,7 +6,6 @@ import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
@@ -37,7 +36,6 @@ const tacFeature = config.features.tac;
 
 const TransactionPageContent = () => {
   const router = useRouter();
-  const appProps = useAppContext();
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -92,6 +90,7 @@ const TransactionPageContent = () => {
 
   const txTags: Array<TEntityTag> = data?.transaction_tag ?
     [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 1 } ] : [];
+
   if (rollupFeature.isEnabled && rollupFeature.interopEnabled && data?.op_interop) {
     if (data.op_interop.init_chain !== undefined) {
       txTags.push({ slug: 'relay_tx', name: 'Relay tx', tagType: 'custom' as const, ordinal: 0 });
@@ -101,25 +100,17 @@ const TransactionPageContent = () => {
     }
   }
 
+  const protocolTags = data?.to?.metadata?.tags?.filter(tag => tag.tagType === 'protocol');
+  if (protocolTags && protocolTags.length > 0) {
+    txTags.push(...protocolTags);
+  }
+
   const tags = (
     <EntityTags
       isLoading={ isPlaceholderData || (tacFeature.isEnabled && tacOperationQuery.isPlaceholderData) }
       tags={ txTags }
     />
   );
-
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/txs');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to transactions list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
 
   const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.transaction_tag) } txQuery={ txQuery }/>;
 
@@ -134,7 +125,6 @@ const TransactionPageContent = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         title="Transaction details"
-        backLink={ backLink }
         contentAfter={ tags }
         secondRow={ titleSecondRow }
       />

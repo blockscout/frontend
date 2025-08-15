@@ -1,4 +1,4 @@
-import { Flex, Grid } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -21,7 +21,7 @@ interface Props {
 
 const ValidatorDetails = ({ data, isLoading }: Props) => {
   return (
-    <Grid columnGap={ 8 } rowGap={ 3 } templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
+    <DetailedInfo.Container>
       <DetailedInfo.ItemLabel
         hint="Index of the staker in the committee"
         isLoading={ isLoading }
@@ -113,7 +113,7 @@ const ValidatorDetails = ({ data, isLoading }: Props) => {
       </DetailedInfo.ItemValue>
 
       <DetailedInfoSponsoredItem isLoading={ isLoading }/>
-    </Grid>
+    </DetailedInfo.Container>
   );
 };
 

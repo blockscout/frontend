@@ -10,7 +10,6 @@ import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import useAddressMetadataInitUpdate from 'lib/address/useAddressMetadataInitUpdate';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
@@ -69,7 +68,6 @@ const xScoreFeature = config.features.xStarScore;
 
 const AddressPageContent = () => {
   const router = useRouter();
-  const appProps = useAppContext();
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -132,11 +130,8 @@ const AddressPageContent = () => {
     addressEnsDomainsQuery.data?.items.find((domain) => domain.name === addressQuery.data?.ens_domain_name) :
     undefined;
 
-  const address3rdPartyWidgets = useAddress3rdPartyWidgets(
-    addressQuery.data?.is_contract ? 'contract' : 'eoa',
-    addressQuery.isPlaceholderData,
-    areQueriesEnabled,
-  );
+  const addressType = addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'contract' : 'eoa';
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets(addressType, addressQuery.isPlaceholderData, areQueriesEnabled);
 
   const isLoading = addressQuery.isPlaceholderData;
   const isTabsLoading =
@@ -289,7 +284,7 @@ const AddressPageContent = () => {
         count: address3rdPartyWidgets.items.length,
         component: (
           <Address3rdPartyWidgets
-            addressType={ addressQuery.data?.is_contract ? 'contract' : 'eoa' }
+            addressType={ addressType }
             isLoading={ addressQuery.isPlaceholderData }
             shouldRender={ !isTabsLoading }
             isQueryEnabled={ areQueriesEnabled }
@@ -307,6 +302,7 @@ const AddressPageContent = () => {
     areQueriesEnabled,
     mudTablesCountQuery.data,
     address3rdPartyWidgets,
+    addressType,
   ]);
 
   const usernameApiTag = userPropfileApiQuery.data?.user_profile?.username;
@@ -385,24 +381,6 @@ const AddressPageContent = () => {
     />
   );
 
-  const backLink = React.useMemo(() => {
-    if (appProps.referrer && appProps.referrer.includes('/accounts')) {
-      return {
-        label: 'Back to top accounts list',
-        url: appProps.referrer,
-      };
-    }
-
-    if (appProps.referrer && appProps.referrer.includes('/mud-worlds')) {
-      return {
-        label: 'Back to MUD worlds list',
-        url: appProps.referrer,
-      };
-    }
-
-    return;
-  }, [ appProps.referrer ]);
-
   // API always returns hash in check-summed format except for addresses that are not in the database
   // In this case it returns 404 with empty payload, so we calculate check-summed hash on the client
   const checkSummedHash = React.useMemo(() => {
@@ -459,7 +437,6 @@ const AddressPageContent = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         title={ `${ addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'Contract' : 'Address' } details` }
-        backLink={ backLink }
         contentAfter={ titleContentAfter }
         secondRow={ titleSecondRow }
         isLoading={ isLoading }

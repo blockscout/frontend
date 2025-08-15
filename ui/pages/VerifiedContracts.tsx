@@ -24,7 +24,7 @@ const sortCollection = createListCollection({
 const VerifiedContracts = () => {
   const isMobile = useIsMobile();
 
-  const { query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery();
+  const { query, type, searchTerm, debouncedSearchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery();
   const { isError, isPlaceholderData, data, pagination } = query;
 
   const typeFilter = (
@@ -98,7 +98,7 @@ const VerifiedContracts = () => {
         emptyText="There are no verified contracts."
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find any contract that matches your query.`,
-          hasActiveFilters: Boolean(searchTerm || type),
+          hasActiveFilters: Boolean(debouncedSearchTerm || type),
         }}
         actionBar={ actionBar }
       >

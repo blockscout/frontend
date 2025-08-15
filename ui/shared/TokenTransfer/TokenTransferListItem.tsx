@@ -101,7 +101,7 @@ const TokenTransferListItem = ({
       { valueStr && (
         <Flex columnGap={ 2 } w="100%">
           <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink={ 0 }>Value</Skeleton>
-          <Skeleton loading={ isLoading } color="text.secondary">
+          <Skeleton loading={ isLoading } color="text.secondary" wordBreak="break-all" overflow="hidden">
             <span>{ valueStr }</span>
             { usd && <span> (${ usd })</span> }
           </Skeleton>

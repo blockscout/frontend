@@ -38,7 +38,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation, chai
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.transaction_fees || 0);
-  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas);
+  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas || null);
 
   return (
     <TableRow animation={ animation }>
@@ -77,7 +77,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation, chai
       </TableCell>
       <TableCell >
         <Skeleton loading={ isLoading } display="inline-block">
-          { data.size.toLocaleString() }
+          { data.size?.toLocaleString() || 'N/A' }
         </Skeleton>
       </TableCell>
       { !config.UI.views.block.hiddenFields?.miner && (

@@ -53,7 +53,7 @@ const TokenTransfers = () => {
   return (
     <>
       <PageTitle
-        title="Token Transfers"
+        title="Token transfers"
         withTextAd
       />
       <DataListDisplay

@@ -1,3 +1,4 @@
+import type { StackProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -14,9 +15,10 @@ export interface Props {
   isLoading?: boolean;
   rightSlot?: React.ReactNode;
   className?: string;
+  itemProps?: StackProps;
 }
 
-const VerificationSteps = ({ currentStep, currentStepPending, steps, isLoading, rightSlot, className }: Props) => {
+const VerificationSteps = ({ currentStep, currentStepPending, steps, isLoading, rightSlot, className, itemProps }: Props) => {
   const currentStepIndex = steps.findIndex((step) => {
     const label = typeof step === 'string' ? step : step.label;
     return label === currentStep;
@@ -27,7 +29,7 @@ const VerificationSteps = ({ currentStep, currentStepPending, steps, isLoading, 
       className={ className }
       loading={ isLoading }
       display="flex"
-      gap={ 2 }
+      columnGap={ 2 }
       alignItems="center"
       flexWrap="wrap"
     >
@@ -39,6 +41,7 @@ const VerificationSteps = ({ currentStep, currentStepPending, steps, isLoading, 
           isPassed={ index <= currentStepIndex }
           isPending={ index === currentStepIndex && currentStepPending }
           noIcon={ typeof step !== 'string' && index === currentStepIndex }
+          { ...itemProps }
         />
       )) }
       { rightSlot }

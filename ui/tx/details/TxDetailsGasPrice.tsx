@@ -51,7 +51,7 @@ const TxDetailsGasPrice = ({ gasPrice, gasToken, isLoading }: Props) => {
       >
         Gas price
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
+      <DetailedInfo.ItemValue multiRow>
         { content }
       </DetailedInfo.ItemValue>
     </>

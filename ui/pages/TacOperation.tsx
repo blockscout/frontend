@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TAC_OPERATION_DETAILS } from 'stubs/operations';
@@ -13,7 +12,6 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import TacOperationTag from 'ui/shared/TacOperationTag';
 
 const TacOperation = () => {
-  const appProps = useAppContext();
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
 
@@ -25,19 +23,6 @@ const TacOperation = () => {
   });
 
   throwOnResourceLoadError(query);
-
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.endsWith('/operations');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to operations list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
 
   const titleContentAfter = query.data ? (
     <TacOperationTag type={ query.data.type } loading={ query.isPlaceholderData }/>
@@ -52,7 +37,6 @@ const TacOperation = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         title="Operation details"
-        backLink={ backLink }
         contentAfter={ titleContentAfter }
         isLoading={ query.isPlaceholderData }
         secondRow={ titleSecondRow }

@@ -1,3 +1,4 @@
+import type { BoxProps } from '@chakra-ui/react';
 import { Box, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -38,7 +39,7 @@ import {
   WEI_VAR_NAME,
 } from './utils';
 
-type Props = {
+interface Props extends BoxProps {
   summary?: TxInterpretationSummary;
   isLoading?: boolean;
   addressDataMap?: Record<string, AddressParam>;
@@ -180,7 +181,7 @@ const TxInterpretationElementByType = (
   }
 };
 
-const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chainData, isNoves }: Props) => {
+const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chainData, isNoves, ...rest }: Props) => {
   const novesLogoUrl = useColorModeValue('/static/noves-logo.svg', '/static/noves-logo-dark.svg');
   if (!summary) {
     return null;
@@ -201,7 +202,7 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chain
   const tooltipContent = 'Transaction summary' + (chainData ? `\n${ getChainTooltipText(chainData) }` : '');
 
   return (
-    <Skeleton loading={ isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
+    <Skeleton loading={ isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" { ...rest }>
       <Tooltip content={ tooltipContent } contentProps={{ whiteSpace: 'pre-wrap' }}>
         <Box display="inline-flex" position="relative" mr={ chainData ? '14px' : 1 } verticalAlign="text-top">
           <IconSvg name="lightning" boxSize={ 5 } color="text.secondary"/>

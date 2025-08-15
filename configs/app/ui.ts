@@ -1,5 +1,5 @@
 import type { ContractCodeIde } from 'types/client/contract';
-import { type NavItemExternal, type NavigationLayout } from 'types/client/navigation';
+import { type NavItemExternal, type NavigationLayout, type NavigationPromoBannerConfig } from 'types/client/navigation';
 import { HOME_STATS_WIDGET_IDS, type ChainIndicatorId, type HeroBannerConfig, type HomeStatsWidgetId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
 import type { ColorThemeId } from 'types/settings';
@@ -37,6 +37,11 @@ const defaultColorTheme = (() => {
   return COLOR_THEMES.find((theme) => theme.id === envValue) as ColorTheme | undefined;
 })();
 
+const navigationPromoBanner = (() => {
+  const envValue = parseEnvJson<NavigationPromoBannerConfig>(getEnvValue('NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG'));
+  return envValue || undefined;
+})();
+
 const UI = Object.freeze({
   navigation: {
     logo: {
@@ -49,8 +54,12 @@ const UI = Object.freeze({
     },
     highlightedRoutes,
     otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue('NEXT_PUBLIC_OTHER_LINKS')) || [],
-    featuredNetworks: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS'),
     layout: (getEnvValue('NEXT_PUBLIC_NAVIGATION_LAYOUT') || 'vertical') as NavigationLayout,
+    promoBanner: navigationPromoBanner,
+  },
+  featuredNetworks: {
+    items: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS'),
+    allLink: getEnvValue('NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK'),
   },
   footer: {
     links: getExternalAssetFilePath('NEXT_PUBLIC_FOOTER_LINKS'),
