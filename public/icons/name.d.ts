@@ -82,6 +82,7 @@
 	| "globe"
 	| "heart_filled"
 	| "heart_outline"
+	| "hexagon"
 	| "hourglass_slim"
 	| "hourglass"
 	| "info_filled"
