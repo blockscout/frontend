@@ -53,6 +53,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   userOps: [
     [ 'NEXT_PUBLIC_HAS_USER_OPS', 'true' ],
+    [ 'NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST', 'http://localhost:3110' ],
   ],
   hasContractAuditReports: [
     [ 'NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS', 'true' ],
@@ -111,5 +112,11 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   celo: [
     [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
+  ],
+  navigationPromoBannerText: [
+    [ 'NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG', '{"img_url": "http://localhost:3000/image.svg", "text": "Try the DUCK!", "bg_color": {"light": "rgb(150, 211, 255)", "dark": "rgb(68, 51, 122)"}, "text_color": {"light": "rgb(69, 69, 69)", "dark": "rgb(233, 216, 253)"}, "link_url": "https://example.com"}' ],
+  ],
+  navigationPromoBannerImage: [
+    [ 'NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG', '{"img_url": {"small": "http://localhost:3000/image_s.jpg", "large": "http://localhost:3000/image_md.jpg"}, "link_url": "https://example.com"}' ],
   ],
 };

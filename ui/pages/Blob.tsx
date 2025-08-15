@@ -10,6 +10,7 @@ import TextAd from 'ui/shared/ad/TextAd';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
+import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const BlobPageContent = () => {
@@ -41,7 +42,14 @@ const BlobPageContent = () => {
   })();
 
   const titleSecondRow = (
-    <BlobEntity hash={ hash } noLink variant="subheading"/>
+    <>
+      <BlobEntity hash={ hash } noLink variant="subheading"/>
+      <NetworkExplorers
+        type="blob"
+        pathParam={ hash }
+        ml={{ base: 3, lg: 'auto' }}
+      />
+    </>
   );
 
   return (

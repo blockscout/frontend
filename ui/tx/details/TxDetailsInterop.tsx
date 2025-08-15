@@ -91,7 +91,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
         >
           Interop source tx
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue>
+        <DetailedInfo.ItemValue flexWrap="wrap" mt={{ lg: 1 }}>
           <InteropMessageSourceTx { ...data } isLoading={ isLoading }/>
           <CollapsibleDetails variant="secondary" noScroll ml={ 3 }>
             { details }
@@ -110,7 +110,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
         >
           Interop relay tx
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue>
+        <DetailedInfo.ItemValue flexWrap="wrap" mt={{ lg: 1 }}>
           <InteropMessageDestinationTx { ...data } isLoading={ isLoading }/>
           <CollapsibleDetails variant="secondary" noScroll ml={ 3 }>
             { details }

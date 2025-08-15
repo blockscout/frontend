@@ -35,7 +35,9 @@ SocketMessage.AddressTxsPending |
 SocketMessage.AddressTokenTransfer |
 SocketMessage.AddressChangedBytecode |
 SocketMessage.AddressFetchedBytecode |
+SocketMessage.EthBytecodeDbLookupStarted |
 SocketMessage.SmartContractWasVerified |
+SocketMessage.SmartContractWasNotVerified |
 SocketMessage.TokenTransfers |
 SocketMessage.TokenTotalSupply |
 SocketMessage.TokenInstanceMetadataFetched |
@@ -76,7 +78,9 @@ export namespace SocketMessage {
   export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfers: Array<TokenTransfer> }>;
   export type AddressChangedBytecode = SocketMessageParamsGeneric<'changed_bytecode', Record<string, never>>;
   export type AddressFetchedBytecode = SocketMessageParamsGeneric<'fetched_bytecode', { fetched_bytecode: string }>;
+  export type EthBytecodeDbLookupStarted = SocketMessageParamsGeneric<'eth_bytecode_db_lookup_started', Record<string, never>>;
   export type SmartContractWasVerified = SocketMessageParamsGeneric<'smart_contract_was_verified', Record<string, never>>;
+  export type SmartContractWasNotVerified = SocketMessageParamsGeneric<'smart_contract_was_not_verified', Record<string, never>>;
   export type TokenTransfers = SocketMessageParamsGeneric<'token_transfer', { token_transfer: number }>;
   export type TokenTotalSupply = SocketMessageParamsGeneric<'total_supply', { total_supply: number }>;
   export type TokenInstanceMetadataFetched = SocketMessageParamsGeneric<'fetched_token_instance_metadata', TokenInstanceMetadataSocketMessage>;

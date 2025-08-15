@@ -20,7 +20,7 @@ export const recipe = defineSlotRecipe({
       borderRadius: 'base',
       userSelect: 'none',
       textAlign: 'start',
-      fontWeight: 'semibold',
+      fontWeight: 'medium',
       cursor: 'pointer',
       focusVisibleRing: 'none',
       _disabled: {

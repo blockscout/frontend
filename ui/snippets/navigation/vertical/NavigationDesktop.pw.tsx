@@ -256,3 +256,48 @@ test.describe('with highlighted routes', () => {
     });
   });
 });
+
+const promoBannerTest = (type: 'text' | 'image') => {
+  test.describe(`with promo banner (${ type })`, () => {
+    let component: Locator;
+    const darkModeRule = type === 'text' ? '+@dark-mode' : '';
+    const imageAltText = type === 'text' ? 'Promo banner icon' : 'Promo banner small';
+
+    test.beforeEach(async({ render, mockEnvs, mockAssetResponse }) => {
+      await mockEnvs(type === 'text' ? ENVS_MAP.navigationPromoBannerText : ENVS_MAP.navigationPromoBannerImage);
+      await mockAssetResponse('http://localhost:3000/image.svg', './playwright/mocks/image_svg.svg');
+      await mockAssetResponse('http://localhost:3000/image_s.jpg', './playwright/mocks/image_s.jpg');
+      await mockAssetResponse('http://localhost:3000/image_md.jpg', './playwright/mocks/image_md.jpg');
+
+      component = await render(
+        <Flex w="100%" minH="100vh" alignItems="stretch">
+          <NavigationDesktop/>
+          <Box bgColor="lightpink" w="100%"/>
+        </Flex>,
+        { hooksConfig },
+      );
+
+      await component.waitFor({ state: 'visible' });
+    });
+
+    test(`${ darkModeRule }`, async() => {
+      await expect(component).toHaveScreenshot();
+    });
+
+    test('with tooltip', async({ page }) => {
+      await page.getByAltText(imageAltText).hover();
+      await expect(component).toHaveScreenshot();
+    });
+
+    test.describe('xl screen', () => {
+      test.use({ viewport: pwConfig.viewport.xl });
+
+      test(`${ darkModeRule }`, async() => {
+        await expect(component).toHaveScreenshot();
+      });
+    });
+  });
+};
+
+promoBannerTest('text');
+promoBannerTest('image');

@@ -1,4 +1,4 @@
-import { Box, Grid, chakra } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CeloEpochDetails } from 'types/api/epochs';
@@ -49,7 +49,7 @@ const EpochDetails = ({ data, isLoading }: Props) => {
 
   return (
     <>
-      <Grid columnGap={ 8 } rowGap={ 3 } templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
+      <DetailedInfo.Container>
         <DetailedInfo.ItemLabel
           hint="Current status of the epoch"
           isLoading={ isLoading }
@@ -89,7 +89,7 @@ const EpochDetails = ({ data, isLoading }: Props) => {
         >
           Community fund
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue>
+        <DetailedInfo.ItemValue multiRow>
           { data.distribution?.community_transfer ? (
             <TokenTransferSnippet
               data={ data.distribution.community_transfer }
@@ -106,7 +106,7 @@ const EpochDetails = ({ data, isLoading }: Props) => {
         >
           Carbon offset fund
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue>
+        <DetailedInfo.ItemValue multiRow>
           { data.distribution?.carbon_offsetting_transfer ? (
             <TokenTransferSnippet
               data={ data.distribution.carbon_offsetting_transfer }
@@ -123,7 +123,7 @@ const EpochDetails = ({ data, isLoading }: Props) => {
         >
           Total fund rewards
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue flexWrap="nowrap" gap={ 2 }>
+        <DetailedInfo.ItemValue gap={ 2 }>
           { totalFunRewards ? (
             <>
               <Skeleton loading={ isLoading }>
@@ -143,7 +143,7 @@ const EpochDetails = ({ data, isLoading }: Props) => {
             <Box color="text.secondary">N/A</Box>
           ) }
         </DetailedInfo.ItemValue>
-      </Grid>
+      </DetailedInfo.Container>
       <EpochElectionRewards data={ data } isLoading={ isLoading }/>
     </>
   );

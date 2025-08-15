@@ -55,7 +55,6 @@ const ContractDetailsAlerts = ({ data, isLoading, addressData, channel }: Props)
               <ContractDetailsVerificationButton
                 isLoading={ isLoading }
                 addressHash={ addressData.hash }
-                isPartiallyVerified
               />
             ) : null
           }

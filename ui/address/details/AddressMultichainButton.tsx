@@ -20,7 +20,16 @@ type Props = {
 
 const AddressMultichainButton = ({ item, addressHash, onClick, hasSingleProvider }: Props) => {
 
-  const buttonIcon = <Image src={ item.logoUrl } alt={ item.name } boxSize={ 5 } mr={ hasSingleProvider ? 2 : 0 } borderRadius="4px" overflow="hidden"/>;
+  const buttonIcon = (
+    <Image
+      src={ item.logoUrl }
+      alt={ item.name }
+      boxSize={ 5 }
+      mr={ hasSingleProvider ? { base: 1, lg: 2 } : 0 }
+      borderRadius="4px"
+      overflow="hidden"
+    />
+  );
 
   const buttonContent = hasSingleProvider ? (
     <>

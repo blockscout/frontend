@@ -85,6 +85,7 @@ const config = Object.freeze({
   solidityscanEnabled: getEnvValue('NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED') === 'true',
   extraVerificationMethods,
   languageFilters,
+  decodedBytecodeEnabled: getEnvValue('NEXT_PUBLIC_VIEWS_CONTRACT_DECODED_BYTECODE_ENABLED') === 'true',
 });
 
 export default config;

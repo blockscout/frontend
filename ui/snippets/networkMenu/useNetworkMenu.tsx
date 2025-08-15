@@ -16,8 +16,8 @@ export default function useNetworkMenu() {
   const fetch = useFetch();
   const { isPending, data } = useQuery<unknown, ResourceError<unknown>, Array<FeaturedNetwork>>({
     queryKey: [ 'featured-network' ],
-    queryFn: async() => fetch(config.UI.navigation.featuredNetworks || '', undefined, { resource: 'featured-network' }),
-    enabled: Boolean(config.UI.navigation.featuredNetworks) && open,
+    queryFn: async() => fetch(config.UI.featuredNetworks.items || '', undefined, { resource: 'featured-network' }),
+    enabled: Boolean(config.UI.featuredNetworks.items) && open,
     staleTime: Infinity,
   });
 

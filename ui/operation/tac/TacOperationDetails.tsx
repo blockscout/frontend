@@ -1,4 +1,3 @@
-import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
@@ -21,9 +20,7 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
   const statusHistory = data.status_history.filter((item) => item.is_exist).sort(sortStatusHistory);
 
   return (
-    <Grid
-      columnGap={ 8 }
-      rowGap={ 3 }
+    <DetailedInfo.Container
       templateColumns={{ base: 'minmax(0, 1fr)', lg: '210px minmax(728px, auto)' }}
     >
       { data?.sender && (
@@ -76,12 +73,12 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
           >
             Lifecycle
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
+          <DetailedInfo.ItemValue mt={ 1 }>
             <TacOperationLifecycleAccordion data={ statusHistory } isLoading={ isLoading } type={ data.type }/>
           </DetailedInfo.ItemValue>
         </>
       ) }
-    </Grid>
+    </DetailedInfo.Container>
   );
 };
 

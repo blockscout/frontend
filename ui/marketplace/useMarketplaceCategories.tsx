@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
@@ -11,7 +11,7 @@ import { CATEGORIES } from 'stubs/marketplace';
 const feature = config.features.marketplace;
 const categoriesUrl = (feature.isEnabled && feature.categoriesUrl) || '';
 
-export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverview> | undefined, isAppsPlaceholderData: boolean) {
+export default function useMarketplaceCategories(apps: Array<MarketplaceApp> | undefined, isAppsPlaceholderData: boolean) {
   const apiFetch = useApiFetch();
 
   const { isPlaceholderData, data } = useQuery<unknown, ResourceError<unknown>, Array<string>>({

@@ -25,11 +25,6 @@ const DefaultView = () => {
     icon_url: 'https://example.com/logo.png',
   };
 
-  const backLink = {
-    label: 'Back to tokens list',
-    url: 'https://localhost:3000/tokens',
-  };
-
   const contentAfter = (
     <>
       <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
@@ -61,7 +56,6 @@ const DefaultView = () => {
           variant="heading"
         />
       ) }
-      backLink={ backLink }
       contentAfter={ contentAfter }
       secondRow={ secondRow }
     />

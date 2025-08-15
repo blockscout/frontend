@@ -23,15 +23,15 @@ export interface Block {
   transactions_count: number;
   internal_transactions_count: number;
   miner: AddressParam;
-  size: number;
+  size?: number;
   hash: string;
   parent_hash: string;
-  difficulty: string;
-  total_difficulty: string | null;
+  difficulty?: string;
+  total_difficulty?: string | null;
   gas_used: string | null;
   gas_limit: string;
   nonce: string;
-  base_fee_per_gas: string | null;
+  base_fee_per_gas?: string | null;
   burnt_fees: string | null;
   priority_fee: string | null;
   extra_data: string | null;
@@ -78,7 +78,7 @@ type ArbitrumBlockData = {
   confirmation_transaction: ArbitrumL2TxData;
   delayed_messages: number;
   l1_block_number: number;
-  send_count: number;
+  send_count: number | null;
   send_root: string;
   status: ArbitrumBatchStatus;
 };

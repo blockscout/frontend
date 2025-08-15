@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOCK } from 'stubs/block';
@@ -10,6 +11,7 @@ import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import BlocksTabSlot from 'ui/blocks/BlocksTabSlot';
+import Flashblocks from 'ui/blocks/Flashblocks';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
@@ -66,14 +68,18 @@ const BlocksPageContent = () => {
     if (tab === 'uncles') {
       return unclesQuery.pagination;
     }
+    if (tab === 'flashblocks') {
+      return null;;
+    }
     return blocksQuery.pagination;
   })();
 
   const tabs: Array<TabItemRegular> = [
     { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
+    config.features.flashblocks.isEnabled && { id: 'flashblocks', title: 'Flashblocks', component: <Flashblocks/> },
     { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
     { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ unclesQuery }/> },
-  ];
+  ].filter(Boolean);
 
   return (
     <>
@@ -82,7 +88,7 @@ const BlocksPageContent = () => {
         tabs={ tabs }
         listProps={ isMobile ? undefined : TAB_LIST_PROPS }
         rightSlot={ <BlocksTabSlot pagination={ pagination }/> }
-        stickyEnabled={ !isMobile }
+        stickyEnabled={ !isMobile && tab !== 'flashblocks' }
       />
     </>
   );
