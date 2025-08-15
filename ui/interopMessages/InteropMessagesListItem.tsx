@@ -41,12 +41,12 @@ const InteropMessagesListItem = ({ item, isLoading }: Props) => {
           { item.init_chain !== undefined ? (
             <AddressEntityInterop
               chain={ item.init_chain }
-              address={{ hash: item.sender }}
+              address={{ hash: item.sender_address_hash }}
               isLoading={ isLoading }
               truncation="constant"
             />
           ) : (
-            <AddressEntity address={{ hash: item.sender }} isLoading={ isLoading } truncation="constant"/>
+            <AddressEntity address={{ hash: item.sender_address_hash }} isLoading={ isLoading } truncation="constant"/>
           ) }
           <AddressFromToIcon
             isLoading={ isLoading }
@@ -55,12 +55,12 @@ const InteropMessagesListItem = ({ item, isLoading }: Props) => {
           { item.relay_chain !== undefined ? (
             <AddressEntityInterop
               chain={ item.relay_chain }
-              address={{ hash: item.target }}
+              address={{ hash: item.target_address_hash }}
               isLoading={ isLoading }
               truncation="constant"
             />
           ) : (
-            <AddressEntity address={{ hash: item.target }} isLoading={ isLoading } truncation="constant"/>
+            <AddressEntity address={{ hash: item.target_address_hash }} isLoading={ isLoading } truncation="constant"/>
           ) }
         </Flex>
       </Flex>
