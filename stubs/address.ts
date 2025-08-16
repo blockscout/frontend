@@ -55,6 +55,7 @@ export const ADDRESS_TABS_COUNTERS: AddressTabsCounters = {
   transactions_count: 10,
   validations_count: 10,
   withdrawals_count: 10,
+  beacon_deposits_count: 10,
 };
 
 export const TOP_ADDRESS: AddressesItem = {

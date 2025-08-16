@@ -68,6 +68,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   beaconChain: [
     [ 'NEXT_PUBLIC_HAS_BEACON_CHAIN', 'true' ],
+    [ 'NEXT_PUBLIC_BEACON_CHAIN_VALIDATOR_URL_TEMPLATE', 'https://beaconcha.in/validator/{pk}' ],
   ],
   txInterpretation: [
     [ 'NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER', 'blockscout' ],

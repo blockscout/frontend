@@ -208,6 +208,12 @@ export default function useNavItems(): ReturnType {
         verifiedContracts,
         ensLookup,
         config.features.beaconChain.isEnabled && {
+          text: 'Deposits',
+          nextRoute: { pathname: '/deposits' as const },
+          icon: 'arrows/south-east',
+          isActive: pathname === '/deposits',
+        },
+        config.features.beaconChain.isEnabled && {
           text: 'Withdrawals',
           nextRoute: { pathname: '/withdrawals' as const },
           icon: 'arrows/north-east',

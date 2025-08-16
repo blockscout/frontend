@@ -8,4 +8,5 @@ export const base: AddressTabsCounters = {
   transactions_count: 51,
   validations_count: 42,
   withdrawals_count: 11,
+  beacon_deposits_count: 10,
 };

@@ -6,6 +6,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import config from 'configs/app';
 const rollupFeature = config.features.rollup;
+const beaconChainFeature = config.features.beaconChain;
 
 const Deposits = dynamic(() => {
   if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
@@ -26,6 +27,10 @@ const Deposits = dynamic(() => {
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'scroll') {
     return import('ui/pages/ScrollL2Deposits');
+  }
+
+  if (beaconChainFeature.isEnabled) {
+    return import('ui/pages/BeaconChainDeposits');
   }
 
   throw new Error('Deposits feature is not enabled.');
