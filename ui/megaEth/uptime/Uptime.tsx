@@ -7,8 +7,6 @@ import UptimeStats from './UptimeStats';
 import UptimeStatus from './UptimeStatus';
 import useUptimeSocketData from './useUptimeSocketData';
 
-// TODO @tom2drum fix chart zoom
-
 const Uptime = () => {
 
   const { realtimeData, historyData, status, onReconnect } = useUptimeSocketData();

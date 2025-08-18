@@ -5,7 +5,7 @@ import React from 'react';
 import type { UptimeHistoryFull } from 'types/api/megaEth';
 
 import { Heading } from 'toolkit/chakra/heading';
-import { SECOND } from 'toolkit/utils/consts';
+import { DAY, HOUR, SECOND } from 'toolkit/utils/consts';
 import ChartWidget from 'ui/shared/chart/ChartWidget';
 import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 
@@ -18,6 +18,17 @@ const INTERVALS = [
 type IntervalId = (typeof INTERVALS)[number]['id'];
 
 const TIME_FORMAT = '%e %b %Y, %H:%M:%S';
+
+const filterByInterval = (interval: IntervalId, now: number) => ({ date }: { date: Date }) => {
+  switch (interval) {
+    case '3h':
+      return date.getTime() > now - 3 * HOUR;
+    case '24h':
+      return date.getTime() > now - 24 * HOUR;
+    case '7d':
+      return date.getTime() > now - 7 * DAY;
+  }
+};
 
 interface Props {
   historyData: UptimeHistoryFull | null;
@@ -41,12 +52,14 @@ const UptimeCharts = ({ historyData }: Props) => {
           return historyData.historical_tps_24h;
       }
     })();
+    const now = Date.now();
 
-    return data.map(({ value, timestamp }) => {
-      const date = new Date(timestamp * SECOND);
-
-      return { date, value, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
-    });
+    return data
+      .map(({ value, timestamp }) => {
+        const date = new Date(timestamp * SECOND);
+        return { date, value, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
+      })
+      .filter(filterByInterval(interval, now));
   }, [ historyData, interval ]);
 
   const gasItems = React.useMemo(() => {
@@ -65,11 +78,14 @@ const UptimeCharts = ({ historyData }: Props) => {
       }
     })();
 
-    return data.map(({ value, timestamp }) => {
-      const date = new Date(timestamp * SECOND);
+    const now = Date.now();
 
-      return { date, value, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
-    });
+    return data
+      .map(({ value, timestamp }) => {
+        const date = new Date(timestamp * SECOND);
+        return { date, value: value / 1_000_000, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
+      })
+      .filter(filterByInterval(interval, now));
   }, [ historyData, interval ]);
 
   const blockIntervalItems = React.useMemo(() => {
@@ -88,11 +104,14 @@ const UptimeCharts = ({ historyData }: Props) => {
       }
     })();
 
-    return data.map(({ value, timestamp }) => {
-      const date = new Date(timestamp * SECOND);
+    const now = Date.now();
 
-      return { date, value, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
-    });
+    return data
+      .map(({ value, timestamp }) => {
+        const date = new Date(timestamp * SECOND);
+        return { date, value, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
+      })
+      .filter(filterByInterval(interval, now));
   }, [ historyData, interval ]);
 
   const handleIntervalChange = React.useCallback((newInterval: IntervalId) => {
@@ -123,7 +142,7 @@ const UptimeCharts = ({ historyData }: Props) => {
         </GridItem>
         <GridItem minH={{ base: '220px', lg: '320px' }}>
           <ChartWidget
-            title="MGas / s"
+            title="MGas/s"
             items={ gasItems }
             isLoading={ false }
             isError={ false }

@@ -55,11 +55,12 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
   const handleSelect = React.useCallback((x0: number, x1: number) => {
     const startDate = scale.invert(x0);
     const endDate = scale.invert(x1);
+    const xStep = dayjs(data[0].items[1].date).diff(dayjs(data[0].items[0].date));
 
-    if (Math.abs(dayjs(startDate).diff(endDate, 'day')) > SELECTION_THRESHOLD) {
+    if (Math.abs(dayjs(startDate).diff(endDate)) > SELECTION_THRESHOLD * xStep) {
       onSelect([ dayjs.min(dayjs(startDate), dayjs(endDate)).toDate(), dayjs.max(dayjs(startDate), dayjs(endDate)).toDate() ]);
     }
-  }, [ onSelect, scale ]);
+  }, [ onSelect, scale, data ]);
 
   const cleanUp = React.useCallback(() => {
     isActive.current = false;
