@@ -931,7 +931,7 @@ This feature allows users to view [Flashblocks](https://docs.base.org/base-chain
 
 &nbsp;
 
-### Address 3rd party widgets
+### ZetaChain
 
 This feature enables cross-chain transactions pages and views on zetaChain instances
 
@@ -939,6 +939,8 @@ This feature enables cross-chain transactions pages and views on zetaChain insta
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST | `string` | ZetaChain cross-chain transactions service API endpoint url | - | - | `https://zetachain-cctx.services.blockscout.com` | v2.3.0+ |
 | NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains chains info for the supported chains. | - | - | `https://example.com/zetachain_chains_config.json` | v2.3.0+ |
+| NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE | `string` | URL template to redirect cosmos tx search. | - | - | `https://example.com/cosmos/tx/{hash}` | v2.3.0+ |
+| NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE | `string` URL template to redirect cosmos address search. | - | - | `https://example.com/cosmos/address/{hash}` | v2.3.0+ |
 
 #### Address 3rd party widget configuration properties
 

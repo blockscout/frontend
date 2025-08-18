@@ -34,7 +34,7 @@ import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 const SearchResultsPageContent = () => {
   const router = useRouter();
   const withRedirectCheck = getQueryParamString(router.query.redirect) === 'true';
-  const { query, redirectCheckQuery, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery(withRedirectCheck);
+  const { query, redirectCheckQuery, searchTerm, debouncedSearchTerm, handleSearchTermChange, zetaChainCCTXQuery } = useSearchQuery(withRedirectCheck);
   const { data, isError, isPlaceholderData, pagination } = query;
   const [ showContent, setShowContent ] = React.useState(!withRedirectCheck);
 
@@ -130,11 +130,25 @@ const SearchResultsPageContent = () => {
 
     return [
       ...(pagination.page === 1 && !isLoading ? marketplaceApps.displayedApps.map((item) => ({ type: 'app' as const, app: item })) : []),
+      ...(
+        config.features.zetachain.isEnabled &&
+        pagination.page === 1 &&
+        !isLoading &&
+        zetaChainCCTXQuery.data ?
+          zetaChainCCTXQuery.data.items.map((item) => ({ type: 'zetaChainCCTX' as const, cctx: item })) : []),
       futureBlockItem,
       ...apiData,
     ].filter(Boolean);
-
-  }, [ data?.items, data?.next_page_params, isPlaceholderData, pagination.page, debouncedSearchTerm, marketplaceApps.displayedApps, isLoading ]);
+  }, [
+    data?.items,
+    data?.next_page_params,
+    isPlaceholderData,
+    pagination.page,
+    debouncedSearchTerm,
+    marketplaceApps.displayedApps,
+    isLoading,
+    zetaChainCCTXQuery.data,
+  ]);
 
   const content = (() => {
     if (isError) {

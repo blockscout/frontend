@@ -653,6 +653,28 @@ const zetaChainSchema = yup
           value => value === undefined,
         ),
       }),
+    NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE: yup
+      .string()
+      .when('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE: yup
+      .string()
+      .when('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
+          value => value === undefined,
+        ),
+      }),
   })
   .test('zetachain-api-host-dependency', 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', function(value) {
     const hasApiHost = Boolean(value?.NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST);
