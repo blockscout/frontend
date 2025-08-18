@@ -5,7 +5,9 @@ import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { SearchResultItem } from 'types/api/search';
+import type { ZetaChainCCTXListResponse } from 'types/api/zetaChain';
 
+import type { CosmosHashType } from 'lib/address/cosmos';
 import type { ResourceError } from 'lib/api/resources';
 import { useSettingsContext } from 'lib/contexts/settings';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -19,16 +21,20 @@ import { getItemCategory, searchCategories } from 'ui/shared/search/utils';
 
 import SearchBarSuggestApp from './SearchBarSuggestApp';
 import SearchBarSuggestBlockCountdown from './SearchBarSuggestBlockCountdown';
+import SearchBarSuggestCosmosNotice from './SearchBarSuggestCosmosNotice';
 import SearchBarSuggestItem from './SearchBarSuggestItem';
+import SearchBarSuggestZetaChainCCTX from './SearchBarSuggestZetaChainCCTX';
 
 interface Props {
   query: UseQueryResult<Array<SearchResultItem>, ResourceError<unknown>>;
+  zetaChainCCTXQuery: UseQueryResult<ZetaChainCCTXListResponse, ResourceError<unknown>>;
+  cosmosHashType: CosmosHashType;
   searchTerm: string;
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   containerId: string;
 }
 
-const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props) => {
+const SearchBarSuggest = ({ query, zetaChainCCTXQuery, cosmosHashType, searchTerm, onItemClick, containerId }: Props) => {
   const isMobile = useIsMobile();
 
   const marketplaceApps = useMarketplaceApps(searchTerm);
@@ -41,7 +47,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
 
   const handleScroll = React.useCallback(() => {
     const container = document.getElementById(containerId);
-    if (!container || !query.data?.length) {
+    if (!container || (!query.data?.length && !zetaChainCCTXQuery.data?.items.length)) {
       return;
     }
     const topLimit = container.getBoundingClientRect().y + (tabsRef.current?.clientHeight || 0) + 24;
@@ -63,7 +69,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
         break;
       }
     }
-  }, [ containerId, query.data ]);
+  }, [ containerId, query.data, zetaChainCCTXQuery.data ]);
 
   React.useEffect(() => {
     const container = document.getElementById(containerId);
@@ -79,7 +85,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
   }, [ containerId, handleScroll ]);
 
   const itemsGroups = React.useMemo(() => {
-    if (!query.data && !marketplaceApps.displayedApps) {
+    if (!query.data && !zetaChainCCTXQuery.data?.items.length && !marketplaceApps.displayedApps) {
       return {};
     }
 
@@ -100,6 +106,10 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       map.app = marketplaceApps.displayedApps;
     }
 
+    if (zetaChainCCTXQuery.data?.items.length) {
+      map.zetaChainCCTX = zetaChainCCTXQuery.data.items;
+    }
+
     if (Object.keys(map).length > 0 && !map.block && regexp.BLOCK_HEIGHT.test(searchTerm)) {
       map['block'] = [ {
         type: 'block',
@@ -111,7 +121,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     }
 
     return map;
-  }, [ query.data, marketplaceApps.displayedApps, searchTerm ]);
+  }, [ query.data, marketplaceApps.displayedApps, searchTerm, zetaChainCCTXQuery.data?.items ]);
 
   React.useEffect(() => {
     categoriesRefs.current = Array(Object.keys(itemsGroups).length).fill('').map((_, i) => categoriesRefs.current[i] || React.createRef());
@@ -130,7 +140,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
   }, [ containerId ]);
 
   const content = (() => {
-    if (query.isPending || marketplaceApps.isPlaceholderData) {
+    if (query.isPending || marketplaceApps.isPlaceholderData || zetaChainCCTXQuery.isPending) {
       return <ContentLoader text="We are searching, please wait... " fontSize="sm"/>;
     }
 
@@ -140,7 +150,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
 
     const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
 
-    if (resultCategories.length === 0) {
+    if (resultCategories.length === 0 && !cosmosHashType) {
       if (regexp.BLOCK_HEIGHT.test(searchTerm)) {
         return <SearchBarSuggestBlockCountdown blockHeight={ searchTerm } onClick={ onItemClick }/>;
       }
@@ -187,7 +197,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
               >
                 { cat.title }
               </Text>
-              { cat.id !== 'app' && itemsGroups[cat.id]?.map((item, index) => (
+              { cat.id !== 'app' && cat.id !== 'zetaChainCCTX' && itemsGroups[cat.id]?.map((item, index) => (
                 <SearchBarSuggestItem
                   key={ index }
                   data={ item }
@@ -200,9 +210,13 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
               { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) =>
                 <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
               ) }
+              { cat.id === 'zetaChainCCTX' && itemsGroups[cat.id]?.map((item, index) =>
+                <SearchBarSuggestZetaChainCCTX key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
+              ) }
             </Element>
           );
         }) }
+        { cosmosHashType && <SearchBarSuggestCosmosNotice cosmosHash={ searchTerm } type={ cosmosHashType }/> }
       </>
     );
   })();

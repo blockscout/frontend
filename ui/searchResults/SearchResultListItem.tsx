@@ -216,6 +216,27 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
         );
       }
 
+      case 'zetaChainCCTX': {
+        return (
+          <TxEntity.Container>
+            <IconSvg name="interop" boxSize={ 6 } marginRight={ 1 } color="text.secondary"/>
+            <TxEntity.Link
+              isLoading={ isLoading }
+              hash={ data.cctx.index }
+              href={ route({ pathname: '/cc/tx/[hash]', query: { hash: data.cctx.index } }) }
+              onClick={ handleLinkClick }
+            >
+              <TxEntity.Content
+                asProp={ data.cctx.index === searchTerm ? 'mark' : 'span' }
+                hash={ data.cctx.index }
+                textStyle="sm"
+                fontWeight={ 700 }
+              />
+            </TxEntity.Link>
+          </TxEntity.Container>
+        );
+      }
+
       case 'tac_operation': {
         return (
           <OperationEntity.Container>
@@ -347,6 +368,11 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'transaction': {
         return (
           <Text color="text.secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+        );
+      }
+      case 'zetaChainCCTX': {
+        return (
+          <Text color="text.secondary">{ dayjs(Number(data.cctx.last_update_timestamp) * 1000).format('llll') }</Text>
         );
       }
       case 'tac_operation': {
