@@ -14,6 +14,7 @@ function generateCspPolicy() {
     descriptors.growthBook(),
     descriptors.helia(),
     descriptors.marketplace(),
+    descriptors.megaEth(),
     descriptors.mixpanel(),
     descriptors.monaco(),
     descriptors.multichain(),

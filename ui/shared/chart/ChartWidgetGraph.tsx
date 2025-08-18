@@ -42,7 +42,7 @@ const ChartWidgetGraph = ({
 }: Props) => {
   const isMobile = useIsMobile();
   const [ color ] = useToken('colors', 'blue.200');
-  const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
+  const chartId = `chart-${ title.replace(/[^\w\s]/g, '').split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
 
   const overlayRef = React.useRef<SVGRectElement>(null);
 
@@ -52,8 +52,8 @@ const ChartWidgetGraph = ({
     items
       .filter((item) => item.date >= range[0] && item.date <= range[1])
       .map((item) => ({
-        ...item,
         dateLabel: getDateLabel(item.date, item.date_to, resolution),
+        ...item,
       })),
   [ items, range, resolution ]);
 
