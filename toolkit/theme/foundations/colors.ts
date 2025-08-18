@@ -68,7 +68,7 @@ const DEFAULT_THEME_COLORS = {
   },
   graph: {
     line: {
-      _light: { value: '{colors.blue.200}' },
+      _light: { value: '{colors.blue.500}' },
       _dark: { value: '{colors.blue.200}' },
     },
     gradient: {
