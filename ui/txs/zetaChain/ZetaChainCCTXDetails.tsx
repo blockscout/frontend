@@ -78,7 +78,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
         <ZetaChainAddressEntity
           key={ data.outbound_params[0].receiver }
           hash={ data.outbound_params[0].receiver }
-          chainId={ data.outbound_params[0].receiver_chain_id.toString() }
+          chainId={ data.outbound_params[0].receiver_chain_id?.toString() }
           isLoading={ isLoading }
         />
       </DetailedInfo.ItemValue>
@@ -159,7 +159,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
           <ZetaChainCCTXStatusTag status={ data.cctx_status.status } isLoading={ isLoading }/>
         </Flex>
         { data.cctx_status.error_message && (
-          <CollapsibleDetails variant="secondary" ml={ 2 }>
+          <CollapsibleDetails ml={ 2 }>
             <RawDataSnippet data={ data.cctx_status.error_message } minW="100%"/>
           </CollapsibleDetails>
         ) }
@@ -287,7 +287,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
               <Text fontWeight="medium" color="text.secondary">Abort address</Text>
               <ZetaChainAddressEntity
                 hash={ data.revert_options.abort_address }
-                chainId={ data.outbound_params[0].receiver_chain_id.toString() }
+                chainId={ data.outbound_params[0].receiver_chain_id?.toString() }
                 isLoading={ isLoading }
               />
               <Text fontWeight="medium" color="text.secondary">Call</Text>
@@ -295,7 +295,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
               <Text fontWeight="medium" color="text.secondary">Revert address</Text>
               <ZetaChainAddressEntity
                 hash={ data.revert_options.revert_address }
-                chainId={ data.outbound_params[1].receiver_chain_id.toString() }
+                chainId={ data.outbound_params[1]?.receiver_chain_id?.toString() }
                 isLoading={ isLoading }
               />
               <Text fontWeight="medium" color="text.secondary">Message</Text>

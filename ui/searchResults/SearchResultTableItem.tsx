@@ -326,6 +326,34 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
         );
       }
 
+      case 'zetaChainCCTX': {
+        return (
+          <>
+            <TableCell colSpan={ 2 } fontSize="sm">
+              <TxEntity.Container>
+                <IconSvg name="interop" boxSize={ 6 } marginRight={ 1 } color="text.secondary"/>
+                <TxEntity.Link
+                  isLoading={ isLoading }
+                  hash={ data.cctx.index }
+                  href={ route({ pathname: '/cc/tx/[hash]', query: { hash: data.cctx.index } }) }
+                  onClick={ handleLinkClick }
+                >
+                  <TxEntity.Content
+                    asProp={ data.cctx.index === searchTerm ? 'mark' : 'span' }
+                    hash={ data.cctx.index }
+                    textStyle="sm"
+                    fontWeight={ 700 }
+                  />
+                </TxEntity.Link>
+              </TxEntity.Container>
+            </TableCell>
+            <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
+              <Text color="text.secondary">{ dayjs(Number(data.cctx.last_update_timestamp) * 1000).format('llll') }</Text>
+            </TableCell>
+          </>
+        );
+      }
+
       case 'tac_operation': {
         return (
           <>

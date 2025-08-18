@@ -111,7 +111,7 @@ export type ZetaChainCCTXInboundStatus = 'SUCCESS' | 'INSUFFICIENT_DEPOSITOR_FEE
 
 export type ZetaChainCCTXOutboundParams = {
   receiver: string;
-  receiver_chain_id: number;
+  receiver_chain_id?: number;
   coin_type: ZetaChainCCTXCoinType;
   amount: string;
   tss_nonce: string;
@@ -143,6 +143,7 @@ export type ZetaChainCCTXFilterParams = {
   source_chain_id?: Array<string>;
   target_chain_id?: Array<string>;
   token_symbol?: Array<string>;
+  hash?: string;
 };
 
 export const ZETA_CHAIN_CCTX_FILTER_AGES = [ '1h', '24h', '7d', '1m', '3m', '6m' ] as const;

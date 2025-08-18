@@ -50,7 +50,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
         <Text color="text.secondary" fontWeight="medium">Receiver</Text>
         <ZetaChainAddressEntity
           hash={ outboundParam.receiver }
-          chainId={ outboundParam.receiver_chain_id.toString() }
+          chainId={ outboundParam.receiver_chain_id?.toString() }
           isLoading={ isLoading }
           truncation="constant"
         />
@@ -90,7 +90,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
           <Text color="text.secondary" fontWeight="medium">Reverting to</Text>
           <ZetaChainAddressEntity
             hash={ outboundParam.receiver }
-            chainId={ outboundParam.receiver_chain_id.toString() }
+            chainId={ outboundParam.receiver_chain_id?.toString() }
             isLoading={ isLoading }
             truncation="constant"
           />
@@ -105,7 +105,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
         <Text color="text.secondary" fontWeight="medium">Destination</Text>
         <ZetaChainAddressEntity
           hash={ outboundParam.receiver }
-          chainId={ outboundParam.receiver_chain_id.toString() }
+          chainId={ outboundParam.receiver_chain_id?.toString() }
           isLoading={ isLoading }
           truncation="constant"
         />
@@ -137,7 +137,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
           <Text color="text.secondary" fontWeight="medium">Origin</Text>
           <ZetaChainAddressEntity
             hash={ outboundParam.receiver }
-            chainId={ outboundParam.receiver_chain_id.toString() }
+            chainId={ outboundParam.receiver_chain_id?.toString() }
             isLoading={ isLoading }
             truncation="constant"
           />
@@ -171,7 +171,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
           <Text color="text.secondary" fontWeight="medium">Receiver</Text>
           <ZetaChainAddressEntity
             hash={ outboundParam.receiver }
-            chainId={ outboundParam.receiver_chain_id.toString() }
+            chainId={ outboundParam.receiver_chain_id?.toString() }
             isLoading={ isLoading }
             truncation="constant"
           />
@@ -185,7 +185,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
           <Text color="text.secondary" fontWeight="medium">Sender</Text>
           <ZetaChainAddressEntity
             hash={ outboundParam.receiver }
-            chainId={ outboundParam.receiver_chain_id.toString() }
+            chainId={ outboundParam.receiver_chain_id?.toString() }
             isLoading={ isLoading }
             truncation="constant"
           />
