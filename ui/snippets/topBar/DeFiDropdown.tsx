@@ -22,7 +22,7 @@ const DeFiDropdown = () => {
   const source = getPageType(router.pathname);
 
   const handleClick = React.useCallback((content: string) => {
-    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: content, Source: source });
+    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: `DeFi button: ${ content }`, Source: source });
   }, [ source ]);
 
   if (!feature.isEnabled) {
@@ -56,7 +56,6 @@ const DeFiDropdown = () => {
       </PopoverContent>
     </PopoverRoot>
   ) : (
-
     <Link
       href={
         items[0].dappId ?
