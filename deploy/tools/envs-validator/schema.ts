@@ -369,7 +369,7 @@ const celoSchema = yup
 const megaEthSchema = yup
   .object()
   .shape({
-    NEXT_PUBLIC_MEGA_ETH_SOCKET_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS: yup.string().test(urlTest),
   });
 
 const apiDocsScheme = yup

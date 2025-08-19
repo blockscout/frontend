@@ -4,14 +4,16 @@ import { getEnvValue } from '../utils';
 
 const title = 'MegaETH chain';
 
-const config: Feature<{ socketUrl: string }> = (() => {
-  const socketUrl = getEnvValue('NEXT_PUBLIC_MEGA_ETH_SOCKET_URL');
+const config: Feature<{ socketUrl: { metrics: string } }> = (() => {
+  const socketUrlMetrics = getEnvValue('NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS');
 
-  if (socketUrl) {
+  if (socketUrlMetrics) {
     return Object.freeze({
       title,
       isEnabled: true,
-      socketUrl,
+      socketUrl: {
+        metrics: socketUrlMetrics,
+      },
     });
   }
 

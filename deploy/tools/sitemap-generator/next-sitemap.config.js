@@ -157,7 +157,7 @@ module.exports = {
         }
         break;
       case '/uptime':
-        if (!process.env.NEXT_PUBLIC_MEGA_ETH_SOCKET_URL) {
+        if (!process.env.NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS) {
           return null;
         }
         break;

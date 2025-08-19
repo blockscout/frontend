@@ -19,7 +19,7 @@ export default function useUptimeSocketData() {
       return;
     }
 
-    websocketRef.current = new WebSocket(megaEthFeature.socketUrl);
+    websocketRef.current = new WebSocket(megaEthFeature.socketUrl.metrics);
 
     websocketRef.current.onmessage = async(event) => {
       try {

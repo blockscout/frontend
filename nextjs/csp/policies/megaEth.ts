@@ -11,7 +11,7 @@ export function megaEth(): CspDev.DirectiveDescriptor {
 
   return {
     'connect-src': [
-      feature.socketUrl,
+      feature.socketUrl.metrics,
     ],
   };
 }
