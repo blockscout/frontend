@@ -38,6 +38,9 @@ export interface AxisConfig {
   ticks?: number;
   nice?: boolean;
   noLabel?: boolean;
+  scale?: {
+    min?: number;
+  };
 }
 
 export interface AxesConfig {

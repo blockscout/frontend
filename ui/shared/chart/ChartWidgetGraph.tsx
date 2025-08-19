@@ -1,9 +1,10 @@
 import { useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
+import { defaultsDeep } from 'es-toolkit/compat';
 import React from 'react';
 
 import { Resolution } from '@blockscout/stats-types';
-import type { ChartMargin, TimeChartData, TimeChartItem } from 'ui/shared/chart/types';
+import type { AxesConfig, ChartMargin, TimeChartData, TimeChartItem } from 'ui/shared/chart/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
@@ -26,6 +27,7 @@ interface Props {
   margin?: ChartMargin;
   noAnimation?: boolean;
   resolution?: Resolution;
+  axesConfig?: AxesConfig;
 }
 
 const DEFAULT_CHART_MARGIN = { bottom: 20, left: 10, right: 20, top: 10 };
@@ -40,6 +42,7 @@ const ChartWidgetGraph = ({
   noAnimation,
   resolution,
   zoomRange,
+  axesConfig: axesConfigProps,
 }: Props) => {
   const isMobile = useIsMobile();
   const [ color ] = useToken('colors', useColorModeValue('theme.graph.line._light', 'theme.graph.line._dark'));
@@ -62,7 +65,7 @@ const ChartWidgetGraph = ({
 
   const margin: ChartMargin = React.useMemo(() => ({ ...DEFAULT_CHART_MARGIN, ...marginProps }), [ marginProps ]);
   const axesConfig = React.useMemo(() => {
-    return {
+    return defaultsDeep(axesConfigProps, {
       x: {
         ticks: isEnlarged && !isMobile ? 8 : 4,
       },
@@ -70,8 +73,8 @@ const ChartWidgetGraph = ({
         ticks: isEnlarged ? 6 : 3,
         nice: true,
       },
-    };
-  }, [ isEnlarged, isMobile ]);
+    });
+  }, [ axesConfigProps, isEnlarged, isMobile ]);
 
   const {
     ref,

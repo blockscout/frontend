@@ -19,6 +19,14 @@ type IntervalId = (typeof INTERVALS)[number]['id'];
 
 const TIME_FORMAT = '%e %b %Y, %H:%M:%S';
 
+const AXES_CONFIG = {
+  y: {
+    scale: {
+      min: 0,
+    },
+  },
+};
+
 const filterByInterval = (interval: IntervalId, now: number) => ({ date }: { date: Date }) => {
   switch (interval) {
     case '3h':
@@ -138,6 +146,7 @@ const UptimeCharts = ({ historyData }: Props) => {
             items={ tpsItems }
             isLoading={ false }
             isError={ false }
+            axesConfig={ AXES_CONFIG }
           />
         </GridItem>
         <GridItem minH={{ base: '220px', lg: '320px' }}>
@@ -146,6 +155,7 @@ const UptimeCharts = ({ historyData }: Props) => {
             items={ gasItems }
             isLoading={ false }
             isError={ false }
+            axesConfig={ AXES_CONFIG }
           />
         </GridItem>
         <GridItem minH={{ base: '220px', lg: '320px' }}>
@@ -154,6 +164,7 @@ const UptimeCharts = ({ historyData }: Props) => {
             items={ blockIntervalItems }
             isLoading={ false }
             isError={ false }
+            axesConfig={ AXES_CONFIG }
           />
         </GridItem>
       </Grid>

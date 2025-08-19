@@ -66,10 +66,10 @@ function getAxisParamsY(data: Data, config?: AxisConfig) {
   const max = d3.max(data, ({ items }) => d3.max(items, ({ value }) => value)) ?? 0;
   const scale = config?.nice ?
     d3.scaleLinear()
-      .domain([ min, max ])
+      .domain([ config?.scale?.min ?? min, max ])
       .nice(config?.ticks ?? DEFAULT_TICKS_NUM) :
     d3.scaleLinear()
-      .domain([ min, max ]);
+      .domain([ config?.scale?.min ?? min, max ]);
 
   const ticks = scale.ticks(config?.ticks ?? DEFAULT_TICKS_NUM);
   const labelFormatParams = getYLabelFormatParams(ticks);
