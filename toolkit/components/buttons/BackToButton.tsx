@@ -16,11 +16,9 @@ export interface BackToButtonProps extends IconButtonProps {
 export const BackToButton = ({ href, hint, boxSize = 6, ...rest }: BackToButtonProps) => {
 
   const button = (
-    <IconButton { ...rest } boxSize={ boxSize }>
+    <IconButton { ...rest } boxSize={ boxSize } variant="icon_secondary">
       <Icon
         transform="rotate(180deg)"
-        color="icon.backTo"
-        _hover={{ color: 'link.primary.hover' }}
         boxSize={ boxSize }
       >
         <ArrowIcon/>

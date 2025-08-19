@@ -17,7 +17,7 @@ const PublicTagsSubmitFieldTagIconPreview = ({ url, isInvalid, children }: Props
       borderWidth="2px"
       borderColor={ url ? borderColorActive : 'input.border' }
       borderRadius="base"
-      backgroundColor="global.body.bg"
+      backgroundColor="bg.primary"
     >
       { children }
     </Center>

@@ -41,7 +41,7 @@ const SolidityScanReportItem = ({ item, vulnerabilities, vulnerabilitiesCount }:
       <Box w={ 3 } h={ 3 } bg={ item.color } borderRadius="6px" mr={ 2 }></Box>
       <Flex justifyContent="space-between" mr={ 3 }>
         <Text>{ item.name }</Text>
-        <Text color={ vulnerability > 0 ? 'text' : { _light: 'gray.400', _dark: 'gray.500' } }>{ vulnerabilities[item.id] }</Text>
+        <Text color={ vulnerability > 0 ? 'text.primary' : 'text.secondary' }>{ vulnerabilities[item.id] }</Text>
       </Flex>
       <Box bg={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }} h="10px" borderRadius="8px">
         <Box bg={ item.color } w={ `${ vulnerability / vulnerabilitiesCount * 100 }%` } h="10px" borderRadius="8px"/>

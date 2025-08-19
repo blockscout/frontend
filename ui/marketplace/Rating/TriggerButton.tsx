@@ -54,13 +54,13 @@ const TriggerButton = (
             { !fullView && (
               <IconSvg
                 name={ rating ? 'star_filled' : 'star_outline' }
-                color={ rating ? 'yellow.400' : 'gray.400' }
+                color={ rating ? 'yellow.400' : 'icon.secondary' }
                 boxSize={ 5 }
                 mr={ 1 }
               />
             ) }
             { (rating && !fullView) ? (
-              <chakra.span color={{ _light: 'blackAlpha.800', _dark: 'whiteAlpha.800' }} transition="inherit" display="inline-flex">
+              <chakra.span color="text.primary" transition="inherit" display="inline-flex">
                 { rating }
                 <Text color="text.secondary" ml={ 1 }>({ count })</Text>
               </chakra.span>

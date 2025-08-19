@@ -27,7 +27,7 @@ jobs:
       vaultRole: ci-dev
     secrets: inherit
   cleanup_docker_image:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_docker.yaml@master
+    uses: blockscout/actions/.github/workflows/cleanup_docker.yaml@main
     with:
       dockerImage: review-$GITHUB_REF_NAME_SLUG
     secrets: inherit

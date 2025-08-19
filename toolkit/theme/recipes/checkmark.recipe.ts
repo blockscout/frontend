@@ -54,12 +54,12 @@ export const recipe = defineRecipe({
           },
         },
         '&:is([data-state=checked], [data-state=indeterminate])': {
-          bg: 'blue.500',
+          bg: 'selected.option.bg',
           color: 'white',
-          borderColor: 'blue.500',
+          borderColor: 'selected.option.bg',
           _hover: {
-            bg: 'blue.400',
-            borderColor: 'blue.400',
+            bg: 'hover',
+            borderColor: 'hover',
           },
         },
       },

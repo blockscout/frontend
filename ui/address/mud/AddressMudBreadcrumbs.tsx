@@ -48,7 +48,7 @@ const BreadcrumbItem = ({ text, href, isLast }: BreadcrumbItemProps) => {
         >
           { text }
         </Box>
-        <CopyToClipboard text={ currentUrl } type="link" mx={ 0 } color="text.secondary"/>
+        <CopyToClipboard text={ currentUrl } type="link" mx={ 0 } color="icon.secondary"/>
       </Grid>
     );
   }
@@ -86,7 +86,7 @@ const AddressMudBreadcrumbs = (props: TableViewProps | RecordViewProps) => {
       width="fit-content"
       fontSize="sm"
     >
-      <IconSvg name="MUD" boxSize={ 5 } color={ addressQuery.data?.is_verified ? 'green.500' : 'text.secondary' }/>
+      <IconSvg name="MUD" boxSize={ 5 } color={ addressQuery.data?.is_verified ? 'green.500' : 'icon.primary' }/>
       <BreadcrumbItem
         text="MUD World"
         href={ route({ pathname: '/address/[hash]', query: queryParams }) }

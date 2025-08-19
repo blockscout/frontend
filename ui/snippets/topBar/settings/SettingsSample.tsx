@@ -43,7 +43,7 @@ const SettingsSample = ({ label, value, bg, onClick, isActive }: Props) => {
           }}
           _hover={{
             _before: {
-              borderColor: isActive ? activeBorderColor : 'link.primary.hover',
+              borderColor: isActive ? activeBorderColor : 'hover',
             },
           }}
           data-value={ value }

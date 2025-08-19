@@ -33,8 +33,7 @@ const AddressAccountHistoryListItem = (props: Props) => {
               name="lightning"
               height="5"
               width="5"
-              color="gray.500"
-              _dark={{ color: 'gray.400' }}
+              color="icon.primary"
             />
 
             <Text fontSize="sm" fontWeight={ 500 }>

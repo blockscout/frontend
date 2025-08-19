@@ -183,7 +183,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           <>
             <TableCell>
               <Flex alignItems="center">
-                <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="gray.500"/>
+                <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="icon.primary"/>
                 <Link
                   href={ route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) }
                   fontWeight={ 700 }

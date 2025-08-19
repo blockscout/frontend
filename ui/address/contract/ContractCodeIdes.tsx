@@ -3,7 +3,6 @@ import React from 'react';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
-import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverRoot, PopoverTrigger, PopoverContent, PopoverBody } from 'toolkit/chakra/popover';
@@ -19,7 +18,6 @@ interface Props {
 
 const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
   const { open, onOpenChange } = useDisclosure();
-  const defaultIconColor = useColorModeValue('gray.600', 'gray.500');
 
   const ideLinks = React.useMemo(() => {
     return config.UI.ides.items
@@ -27,7 +25,7 @@ const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
         const url = decodeURIComponent(ide.url.replace('{hash}', hash).replace('{domain}', config.app.host || ''));
         const icon = 'icon_url' in ide ?
           <Image boxSize={ 5 } mr={ 2 } src={ ide.icon_url } alt={ `${ ide.title } icon` }/> :
-          <IconSvg name="ABI_slim" boxSize={ 5 } color={ defaultIconColor } mr={ 2 }/>;
+          <IconSvg name="ABI_slim" boxSize={ 5 } color="icon.primary" mr={ 2 }/>;
 
         return (
           <Link external key={ ide.title } href={ url } display="inline-flex" alignItems="center">
@@ -36,7 +34,7 @@ const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
           </Link>
         );
       });
-  }, [ defaultIconColor, hash ]);
+  }, [ hash ]);
 
   if (isLoading) {
     return <Skeleton loading h={ 8 } w="92px" borderRadius="base"/>;

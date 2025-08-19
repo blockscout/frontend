@@ -1,4 +1,125 @@
+import { defaultsDeep } from 'es-toolkit/compat';
+
+import config from 'configs/app';
+
+const DEFAULT_THEME_COLORS = {
+  bg: {
+    primary: {
+      // for some reason links to colors.white and colors.black variables are not working here
+      // so we use hex values instead
+      // but it is not the case for other colors
+      _light: { value: '#FFFFFF' }, // colors.white
+      _dark: { value: '#101112' }, // colors.black
+    },
+  },
+  text: {
+    primary: {
+      _light: { value: '{colors.blackAlpha.800}' },
+      _dark: { value: '{colors.whiteAlpha.800}' },
+    },
+    secondary: {
+      _light: { value: '{colors.gray.500}' },
+      _dark: { value: '{colors.gray.400}' },
+    },
+  },
+  hover: {
+    _light: { value: '{colors.blue.400}' },
+    _dark: { value: '{colors.blue.400}' },
+  },
+  selected: {
+    control: {
+      text: {
+        _light: { value: '{colors.blue.700}' },
+        _dark: { value: '{colors.gray.50}' },
+      },
+      bg: {
+        _light: { value: '{colors.blue.50}' },
+        _dark: { value: '{colors.whiteAlpha.100}' },
+      },
+    },
+    option: {
+      bg: {
+        _light: { value: '{colors.blue.500}' },
+        _dark: { value: '{colors.blue.500}' },
+      },
+    },
+  },
+  icon: {
+    primary: {
+      _light: { value: '{colors.gray.500}' },
+      _dark: { value: '{colors.gray.400}' },
+    },
+    secondary: {
+      _light: { value: '{colors.gray.400}' },
+      _dark: { value: '{colors.gray.500}' },
+    },
+  },
+  button: {
+    primary: {
+      _light: { value: '{colors.blue.600}' },
+      _dark: { value: '{colors.blue.600}' },
+    },
+  },
+  link: {
+    primary: {
+      _light: { value: '{colors.blue.600}' },
+      _dark: { value: '{colors.blue.300}' },
+    },
+  },
+  graph: {
+    line: {
+      _light: { value: '{colors.blue.500}' },
+      _dark: { value: '{colors.blue.200}' },
+    },
+    gradient: {
+      start: {
+        _light: { value: 'rgba(144, 205, 244, 0.3)' }, // blue.200 with opacity 0.3
+        _dark: { value: 'rgba(144, 205, 244, 0.3)' }, // blue.200 with opacity 0.3
+      },
+      stop: {
+        _light: { value: 'rgba(144, 205, 244, 0)' }, // blue.200 with opacity 0
+        _dark: { value: 'rgba(144, 205, 244, 0)' }, // blue.200 with opacity 0
+      },
+    },
+  },
+  navigation: {
+    bg: {
+      selected: {
+        _light: { value: '{colors.blue.50}' },
+        _dark: { value: '{colors.gray.800}' },
+      },
+    },
+    text: {
+      selected: {
+        _light: { value: '{colors.blue.700}' },
+        _dark: { value: '{colors.gray.50}' },
+      },
+    },
+  },
+  stats: {
+    bg: {
+      _light: { value: '{colors.gray.50}' },
+      _dark: { value: '{colors.whiteAlpha.100}' },
+    },
+  },
+  topbar: {
+    bg: {
+      _light: { value: '{colors.gray.50}' },
+      _dark: { value: '{colors.whiteAlpha.100}' },
+    },
+  },
+  tabs: {
+    text: {
+      primary: {
+        _light: { value: '{colors.blue.700}' },
+        _dark: { value: '{colors.blue.100}' },
+      },
+    },
+  },
+};
+
 const colors = {
+  // BASE COLORS
   green: {
     '50': { value: '#F0FFF4' },
     '100': { value: '#C6F6D5' },
@@ -145,6 +266,7 @@ const colors = {
     '800': { value: 'RGBA(16, 17, 18, 0.80)' },
     '900': { value: 'RGBA(16, 17, 18, 0.92)' },
   },
+
   // BRAND COLORS
   github: { value: '#171923' },
   telegram: { value: '#2775CA' },
@@ -157,6 +279,9 @@ const colors = {
   medium: { value: '#231F20' },
   reddit: { value: '#FF4500' },
   celo: { value: '#FCFF52' },
+
+  // THEME COLORS
+  theme: defaultsDeep(config.UI.colorTheme.overrides, DEFAULT_THEME_COLORS),
 };
 
 export default colors;
