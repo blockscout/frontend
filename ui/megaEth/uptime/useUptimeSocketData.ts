@@ -54,10 +54,14 @@ export default function useUptimeSocketData() {
     websocketRef.current.onopen = () => {
       setStatus('connected');
     };
-    websocketRef.current.onerror = () => {
+    websocketRef.current.onerror = (error) => {
+      // eslint-disable-next-line no-console
+      console.error(error);
       setStatus('error');
     };
-    websocketRef.current.onclose = () => {
+    websocketRef.current.onclose = (event) => {
+      // eslint-disable-next-line no-console
+      console.error('WebSocket closed', event);
       setStatus('disconnected');
     };
   }, []);
@@ -70,7 +74,7 @@ export default function useUptimeSocketData() {
     connect();
 
     return () => {
-      websocketRef.current?.close();
+      websocketRef.current?.close(4000, 'Component unmounted');
     };
   }, [ connect ]);
 
