@@ -54,7 +54,7 @@ const NetworkMenuLink = ({ title, icon, isActive: isActiveProp, isMobile, url, i
         cursor="pointer"
         pointerEvents={ isActive ? 'none' : 'initial' }
         borderRadius="base"
-        _hover={{ color: isActive ? 'text.primary' : 'link.primary.hover' }}
+        _hover={{ color: isActive ? 'text.primary' : 'hover' }}
       >
         { iconEl }
         <Text

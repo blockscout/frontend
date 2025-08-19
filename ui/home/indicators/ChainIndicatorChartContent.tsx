@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TimeChartData } from 'ui/shared/chart/types';
 
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import ChartArea from 'ui/shared/chart/ChartArea';
 import ChartLine from 'ui/shared/chart/ChartLine';
 import ChartOverlay from 'ui/shared/chart/ChartOverlay';
@@ -18,7 +19,7 @@ const CHART_MARGIN = { bottom: 5, left: 10, right: 10, top: 5 };
 
 const ChainIndicatorChartContent = ({ data }: Props) => {
   const overlayRef = React.useRef<SVGRectElement>(null);
-  const lineColor = useToken('colors', 'blue.500');
+  const lineColor = useToken('colors', useColorModeValue('theme.graph.line._light', 'theme.graph.line._dark'));
 
   const axesConfig = React.useMemo(() => {
     return {

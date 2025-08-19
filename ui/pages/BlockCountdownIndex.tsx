@@ -41,7 +41,7 @@ const BlockCountdownIndex = () => {
             bottom={{ base: '15px', lg: '22px' }}
             left={{ base: '105px', lg: '150px' }}
             boxSize={{ lg: '60px' }}
-            bgColor="global.body.bg"
+            bgColor="bg.primary"
           />
         ) }
       </Box>

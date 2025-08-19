@@ -22,6 +22,7 @@ on:
             - eth_goerli
             - filecoin
             - immutable
+            - mega_eth
             - neon_devnet
             - optimism
             - optimism_sepolia

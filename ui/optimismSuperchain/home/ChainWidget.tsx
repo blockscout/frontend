@@ -50,9 +50,9 @@ const ChainWidget = ({ data }: Props) => {
             <Link
               onClick={ handleAddToWalletClick }
               p={ 1.5 }
-              color="button.icon_secondary.fg"
+              color="icon.secondary"
               _hover={{
-                color: 'link.primary.hover',
+                color: 'hover',
               }}
               bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}
               borderRadius="base"
@@ -64,9 +64,9 @@ const ChainWidget = ({ data }: Props) => {
             <Link
               href={ data.config.app.baseUrl }
               target="_blank"
-              color="button.icon_secondary.fg"
+              color="icon.secondary"
               _hover={{
-                color: 'link.primary.hover',
+                color: 'hover',
               }}
               bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}
               borderRadius="base"

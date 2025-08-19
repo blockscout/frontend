@@ -205,7 +205,7 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chain
     <Skeleton loading={ isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" { ...rest }>
       <Tooltip content={ tooltipContent } contentProps={{ whiteSpace: 'pre-wrap' }}>
         <Box display="inline-flex" position="relative" mr={ chainData ? '14px' : 1 } verticalAlign="text-top">
-          <IconSvg name="lightning" boxSize={ 5 } color="text.secondary"/>
+          <IconSvg name="lightning" boxSize={ 5 } color="icon.primary"/>
           { chainData && (
             <ChainIcon
               data={ chainData }
@@ -216,8 +216,8 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chain
               borderRadius="full"
               borderWidth="1px"
               borderStyle="solid"
-              borderColor="global.body.bg"
-              backgroundColor="global.body.bg"
+              borderColor="bg.primary"
+              backgroundColor="bg.primary"
             />
           ) }
         </Box>

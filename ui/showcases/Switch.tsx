@@ -22,7 +22,32 @@ const SwitchShowcase = () => {
             </Switch>
           </Sample>
           <Sample label="size: lg">
-            <Switch size="lg">
+            <Switch size="lg" defaultChecked>
+              Show duck
+            </Switch>
+          </Sample>
+        </SamplesStack>
+      </Section>
+      <Section>
+        <SectionHeader>Disabled</SectionHeader>
+        <SamplesStack>
+          <Sample label="disabled: true">
+            <Switch disabled>
+              Show duck
+            </Switch>
+          </Sample>
+        </SamplesStack>
+      </Section>
+      <Section>
+        <SectionHeader>Direction</SectionHeader>
+        <SamplesStack>
+          <Sample label="direction: rtl">
+            <Switch size="sm" direction="rtl">
+              Show duck
+            </Switch>
+          </Sample>
+          <Sample label="direction: ltr">
+            <Switch size="md" direction="ltr">
               Show duck
             </Switch>
           </Sample>

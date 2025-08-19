@@ -133,7 +133,7 @@ const Icon = (props: IconBaseProps) => {
     return (
       <IconSvg
         display="block"
-        color={ color ?? { _light: 'gray.500', _dark: 'gray.400' } }
+        color={ color ?? 'icon.primary' }
         { ...commonProps }
         { ...svgProps }
       />
@@ -177,8 +177,8 @@ const IconShield = (props: IconShieldProps) => {
     borderStyle: 'solid',
     // The colors can be changed on hover, if address is highlighted
     // Because the highlighted styles are described as CSS classes, we must do the same for the shield border color.
-    // borderColor: 'global.body.bg',
-    // backgroundColor: 'global.body.bg',
+    // borderColor: 'bg.primary',
+    // backgroundColor: 'bg.primary',
     className: 'entity__shield',
   };
 

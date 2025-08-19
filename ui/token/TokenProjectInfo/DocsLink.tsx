@@ -16,7 +16,7 @@ const DocsLink = ({ href }: Props) => {
       alignItems="center"
       columnGap={ 1 }
     >
-      <IconSvg name="docs" boxSize={ 6 } color="text.secondary"/>
+      <IconSvg name="docs" boxSize={ 6 } color="icon.primary"/>
       <span>Documentation</span>
     </Link>
   );

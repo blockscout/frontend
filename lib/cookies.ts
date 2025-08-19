@@ -9,7 +9,7 @@ export enum NAMES {
   REWARDS_REFERRAL_CODE = 'rewards_ref_code',
   TXS_SORT = 'txs_sort',
   COLOR_MODE = 'chakra-ui-color-mode',
-  COLOR_MODE_HEX = 'chakra-ui-color-mode-hex',
+  COLOR_THEME = 'chakra-ui-color-theme',
   ADDRESS_IDENTICON_TYPE = 'address_identicon_type',
   ADDRESS_FORMAT = 'address_format',
   TIME_FORMAT = 'time_format',

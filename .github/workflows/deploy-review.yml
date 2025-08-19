@@ -23,6 +23,7 @@ on:
             - filecoin
             - immutable
             - main
+            - mega_eth
             - mekong
             - neon_devnet
             - optimism

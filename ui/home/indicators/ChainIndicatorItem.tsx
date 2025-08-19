@@ -59,21 +59,21 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
       as="li"
       borderRadius="base"
       cursor="pointer"
-      color={ isSelected ? { _light: 'gray.500', _dark: 'gray.400' } : 'link' }
+      color={ isSelected ? 'text.secondary' : 'link.primary' }
       bgColor={ isSelected ? { _light: 'white', _dark: 'black' } : undefined }
       onClick={ handleClick }
       fontSize="xs"
       fontWeight={ 500 }
       _hover={{
         bgColor: { _light: 'white', _dark: 'black' },
-        color: isSelected ? { _light: 'gray.500', _dark: 'gray.400' } : 'link.primary.hover',
+        color: isSelected ? 'text.secondary' : 'hover',
         zIndex: 1,
       }}
     >
       { icon }
       <Box display={{ base: 'none', lg: 'block' }}>
         <span>{ title }</span>
-        <Flex alignItems="center" color="text">
+        <Flex alignItems="center" color="text.primary">
           { valueContent }
           { valueDiffContent }
         </Flex>
