@@ -93,19 +93,19 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
         const [ x ] = d3.pointer(event, anchorEl);
         isActive.current = true;
         startX.current = x;
-      })
+      }, { passive: true })
       .on('mousemove.selectionX', (event: MouseEvent) => {
         if (isActive.current) {
           const [ x ] = d3.pointer(event, anchorEl);
           startX.current && drawSelection(startX.current, x);
           endX.current = x;
         }
-      })
+      }, { passive: true })
       .on('mouseup.selectionX', handelMouseUp)
       .on('touchstart.selectionX', (event: TouchEvent) => {
         const pointers = d3.pointers(event, anchorEl);
         isActive.current = pointers.length === 2;
-      })
+      }, { passive: true })
       .on('touchmove.selectionX', (event: TouchEvent) => {
         if (isActive.current) {
           const pointers = d3.pointers(event, anchorEl);
@@ -117,8 +117,8 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
             endX.current = pointers[1][0];
           }
         }
-      })
-      .on('touchend.selectionX', handelMouseUp);
+      }, { passive: true })
+      .on('touchend.selectionX', handelMouseUp, { passive: true });
 
     d3.select('body').on('mouseup.selectionX', function(event) {
       const isOutside = startX.current !== undefined && event.target !== anchorD3.node();

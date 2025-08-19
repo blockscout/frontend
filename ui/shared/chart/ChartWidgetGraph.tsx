@@ -42,7 +42,7 @@ const ChartWidgetGraph = ({
 }: Props) => {
   const isMobile = useIsMobile();
   const [ color ] = useToken('colors', 'blue.200');
-  const chartId = `chart-${ title.replace(/[^\w\s]/g, '').split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
+  const chartId = `chart-${ title.replace(/[^\w\s]/g, '').split(' ').join('_') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
 
   const overlayRef = React.useRef<SVGRectElement>(null);
 

@@ -25,7 +25,7 @@ test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, mockEnvs
   const component = await render(<GasTracker/>);
   await page.waitForResponse(chartApiUrl);
   await page.waitForFunction(() => {
-    return document.querySelector('path[data-name="chart-Averagegasprice-small"]')?.getAttribute('opacity') === '1';
+    return document.querySelector('path[data-name="chart-Average_gas_price-small"]')?.getAttribute('opacity') === '1';
   });
   await expect(component).toHaveScreenshot();
 });
