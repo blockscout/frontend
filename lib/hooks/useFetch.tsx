@@ -56,6 +56,7 @@ export default function useFetch() {
           statusText: response.statusText,
           rateLimits: {
             bypassOptions: response.headers.get('bypass-429-option'),
+            reset: response.headers.get('x-ratelimit-reset'),
           },
         };
 

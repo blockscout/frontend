@@ -80,7 +80,12 @@ const AppError = ({ error, className }: Props) => {
       case 429: {
         const rateLimits = getErrorProp(error, 'rateLimits');
         const bypassOptions = typeof rateLimits === 'object' && rateLimits && 'bypassOptions' in rateLimits ? rateLimits.bypassOptions : undefined;
-        return <AppErrorTooManyRequests bypassOptions={ typeof bypassOptions === 'string' ? bypassOptions : undefined }/>;
+        const reset = typeof rateLimits === 'object' && rateLimits && 'reset' in rateLimits ? rateLimits.reset : undefined;
+        return (
+          <AppErrorTooManyRequests
+            bypassOptions={ typeof bypassOptions === 'string' ? bypassOptions : undefined }
+            reset={ typeof reset === 'string' ? reset : undefined }/>
+        );
       }
 
       default: {
