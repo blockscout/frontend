@@ -66,7 +66,7 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, showErrorA
   const content = !isLoading ? (
     <Alert
       className={ className }
-      status="warning_table"
+      status={ showErrorAlert || !num ? 'warning_table' : 'info' }
       px={ 4 }
       py="6px"
       fontSize="sm"
