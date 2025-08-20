@@ -173,9 +173,16 @@ const zetachainApi = (() => {
     return;
   }
 
-  return Object.freeze({
-    endpoint: apiHost,
-  });
+  try {
+    const url = new URL(apiHost);
+
+    return Object.freeze({
+      endpoint: apiHost,
+      socketEndpoint: `wss://${ url.host }/socket`,
+    });
+  } catch (error) {
+    return;
+  }
 })();
 
 export type Apis = {

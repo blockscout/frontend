@@ -22,6 +22,7 @@ function generateCspPolicy() {
     descriptors.safe(),
     descriptors.usernameApi(),
     descriptors.walletConnect(),
+    descriptors.zetachain(),
   );
 
   return makePolicyString(policyDescriptor);
