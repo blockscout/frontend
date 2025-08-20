@@ -7,6 +7,7 @@ import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ZetaChainFilterByColumn from './filters/ZetaChainFilterByColumn';
@@ -21,6 +22,9 @@ type Props = {
   onFilterChange: <T extends keyof ZetaChainCCTXFilterParams>(field: T, val: ZetaChainCCTXFilterParams[T]) => void;
   isPlaceholderData?: boolean;
   showStatusFilter?: boolean;
+  showSocketInfo?: boolean;
+  showSocketErrorAlert?: boolean;
+  socketInfoNum?: number;
 };
 
 const ZetaChainCCTxsTable = ({
@@ -32,6 +36,9 @@ const ZetaChainCCTxsTable = ({
   onFilterChange,
   isPlaceholderData,
   showStatusFilter = true,
+  showSocketInfo = false,
+  showSocketErrorAlert = false,
+  socketInfoNum = 0,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
   const initialList = useInitialList({
@@ -113,6 +120,14 @@ const ZetaChainCCTxsTable = ({
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
+          { showSocketInfo && (
+            <SocketNewItemsNotice.Desktop
+              showErrorAlert={ showSocketErrorAlert }
+              num={ socketInfoNum }
+              type="cross_chain_transaction"
+              isLoading={ isLoading }
+            />
+          ) }
           { txs.slice(0, renderedItemsNum).map((item, index) => (
             <ZetaChainCCTxsTableItem
               key={ item.index + (isLoading ? index : '') }

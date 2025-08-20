@@ -11,7 +11,7 @@ interface InjectedProps {
 }
 
 interface Props {
-  type?: 'transaction' | 'token_transfer' | 'deposit' | 'block' | 'flashblock';
+  type?: 'transaction' | 'token_transfer' | 'deposit' | 'block' | 'flashblock' | 'cross_chain_transaction';
   children?: (props: InjectedProps) => React.JSX.Element;
   className?: string;
   url?: string;
@@ -46,6 +46,9 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, showErrorA
       case 'flashblock':
         name = 'flashblock';
         break;
+      case 'cross_chain_transaction':
+        name = 'cross chain transaction';
+        break;
       default:
         name = 'transaction';
         break;
@@ -53,6 +56,15 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, showErrorA
 
     if (!num) {
       return `scanning new ${ name }s...`;
+    }
+
+    if (type === 'cross_chain_transaction') {
+      return (
+        <>
+          <Link href={ url } onClick={ !url ? handleLinkClick : undefined }>More { name }s available</Link>
+          <Text whiteSpace="pre"> have come in</Text>
+        </>
+      );
     }
 
     return (

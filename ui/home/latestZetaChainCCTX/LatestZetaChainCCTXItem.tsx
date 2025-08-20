@@ -12,9 +12,10 @@ import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
 type Props = {
   tx: ZetaChainCCTX;
   isLoading?: boolean;
+  animation?: string;
 };
 
-const LatestZetaChainCCTXItem = ({ tx, isLoading }: Props) => {
+const LatestZetaChainCCTXItem = ({ tx, isLoading, animation }: Props) => {
   return (
     <Grid
       gridTemplateColumns="18px 120px 80px 330px auto"
@@ -26,6 +27,7 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading }: Props) => {
       alignItems="center"
       p={ 4 }
       fontSize="sm"
+      animation={ animation }
     >
       <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading }/>
       <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } truncation="constant" fontWeight={ 600 }/>

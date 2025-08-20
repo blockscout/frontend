@@ -14,9 +14,10 @@ import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
 type Props = {
   tx: ZetaChainCCTX;
   isLoading?: boolean;
+  animation?: string;
 };
 
-const LatestZetaChainCCTXItem = ({ tx, isLoading }: Props) => {
+const LatestZetaChainCCTXItem = ({ tx, isLoading, animation }: Props) => {
   const separatorColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
   return (
     <VStack
@@ -27,6 +28,7 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading }: Props) => {
       fontSize="sm"
       alignItems="start"
       gap={ 2 }
+      animation={ animation }
     >
       <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading } type="full"/>
       <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } truncation="constant_long" fontWeight={ 600 }/>
