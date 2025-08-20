@@ -130,6 +130,7 @@ const ZetaChainCCTxs = ({
     isDisabled: hasFilters, // Disable when filters are applied
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
+    socketName: 'zetachain',
   });
 
   useSocketMessage({
