@@ -1,6 +1,7 @@
 import React from 'react';
 
 import config from 'configs/app';
+import { SocketProvider } from 'lib/socket/context';
 import { Heading } from 'toolkit/chakra/heading';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import LatestOptimisticDeposits from 'ui/home/latestDeposits/LatestOptimisticDeposits';
@@ -18,7 +19,15 @@ const TransactionsHome = () => {
   const isAuth = useAuth();
   if ((rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'arbitrum')) || isAuth || zetachainFeature.isEnabled) {
     const tabs = [
-      zetachainFeature.isEnabled && { id: 'cctx', title: 'Cross-chain', component: <LatestZetaChainCCTXs/> },
+      zetachainFeature.isEnabled && {
+        id: 'cctx',
+        title: 'Cross-chain',
+        component: (
+          <SocketProvider url={ config.apis.zetachain?.socketEndpoint } name="zetachain">
+            <LatestZetaChainCCTXs/>
+          </SocketProvider>
+        ),
+      },
       { id: 'txn', title: zetachainFeature.isEnabled ? 'ZetaChain EVM' : 'Latest txn', component: <LatestTxs/> },
       rollupFeature.isEnabled && rollupFeature.type === 'optimistic' &&
         { id: 'deposits', title: 'Deposits (L1→L2 txn)', component: <LatestOptimisticDeposits/> },

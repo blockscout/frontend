@@ -9,6 +9,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { SocketProvider } from 'lib/socket/context';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
@@ -104,7 +105,11 @@ const TransactionsZetaChain = () => {
     {
       id: 'cctx',
       title: 'Cross chain',
-      component: <ZetaChainCCTXsTab/>,
+      component: (
+        <SocketProvider url={ config.apis.zetachain?.socketEndpoint } name="zetachain">
+          <ZetaChainCCTXsTab/>
+        </SocketProvider>
+      ),
       subTabs: CROSS_CHAIN_TABS,
     },
     {

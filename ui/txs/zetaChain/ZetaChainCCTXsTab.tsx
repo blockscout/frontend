@@ -97,6 +97,7 @@ const ZetaChainEvmTransactions = () => {
           filters={ filters }
           onFilterChange={ handleFilterChange }
           showStatusFilter={ true }
+          type="mined"
         /> },
     {
       id: 'cctx_pending',
@@ -111,6 +112,7 @@ const ZetaChainEvmTransactions = () => {
           filters={ filters }
           onFilterChange={ handleFilterChange }
           showStatusFilter={ false }
+          type="pending"
         />
       ),
     },
