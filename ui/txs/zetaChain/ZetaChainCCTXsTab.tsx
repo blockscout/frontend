@@ -3,8 +3,11 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { ZetaChainCCTXFilterParams } from 'types/api/zetaChain';
+import { ADVANCED_FILTER_AGES, type AdvancedFilterAge } from 'types/api/advancedFilter';
+import { ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS, type ZetaChainCCTXFilterParams, type ZetaChainCCTXStatusReducedFilter } from 'types/api/zetaChain';
 
+import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
+import getValuesArrayFromQuery from 'lib/getValuesArrayFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -29,36 +32,29 @@ const ZetaChainEvmTransactions = () => {
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
 
-  const [ filters, setFilters ] = React.useState<ZetaChainCCTXFilterParams>({});
-
-  const handleFilterChange = React.useCallback(<T extends keyof ZetaChainCCTXFilterParams>(field: T, val: ZetaChainCCTXFilterParams[T]) => {
-    setFilters(prevState => {
-      const newState = { ...prevState };
-      newState[field] = val;
-      return newState;
-    });
-  }, []);
-
-  const onClearFilter = React.useCallback((key: keyof ZetaChainCCTXFilterParams) => () => {
-    setFilters(prevState => {
-      const newState = { ...prevState };
-      delete newState[key];
-      return newState;
-    });
-  }, []);
-
-  const clearAllFilters = React.useCallback(() => {
-    setFilters({});
-  }, []);
+  const [ filters, setFilters ] = React.useState<ZetaChainCCTXFilterParams>(() => {
+    const age = getFilterValueFromQuery<AdvancedFilterAge>(ADVANCED_FILTER_AGES, router.query.age);
+    return {
+      start_timestamp: getQueryParamString(router.query.start_timestamp),
+      end_timestamp: getQueryParamString(router.query.end_timestamp),
+      age,
+      status_reduced: getFilterValueFromQuery<ZetaChainCCTXStatusReducedFilter>(ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS, router.query.status_reduced),
+      sender_address: getValuesArrayFromQuery(router.query.sender_address),
+      receiver_address: getValuesArrayFromQuery(router.query.receiver_address),
+      source_chain_id: getValuesArrayFromQuery(router.query.source_chain_id),
+      target_chain_id: getValuesArrayFromQuery(router.query.target_chain_id),
+      token_symbol: getValuesArrayFromQuery(router.query.token_symbol),
+    };
+  });
 
   const cctxsValidatedQuery = useQueryWithPages({
     resourceName: 'zetachain:transactions',
     queryParams: {
+      ...filters,
       limit: 50,
       offset: 0,
-      status_reduced: [ 'Success', 'Failed' ],
+      status_reduced: filters.status_reduced ?? [ 'Success', 'Failed' ],
       direction: 'DESC',
-      ...filters,
     },
     options: {
       placeholderData: { items: Array(50).fill(zetaChainCCTXItem), next_page_params: { page_index: 0, offset: 0, direction: 'DESC' } },
@@ -69,17 +65,46 @@ const ZetaChainEvmTransactions = () => {
   const cctxsPendingQuery = useQueryWithPages({
     resourceName: 'zetachain:transactions',
     queryParams: {
+      ...filters,
       limit: 50,
       offset: 0,
-      status_reduced: 'Pending',
+      status_reduced: filters.status_reduced ?? [ 'Pending' ],
       direction: 'DESC',
-      ...filters,
     },
     options: {
       placeholderData: { items: Array(50).fill(zetaChainCCTXItem), next_page_params: { page_index: 0, offset: 0, direction: 'DESC' } },
       enabled: tab === 'cctx_pending',
     },
   });
+
+  const query = tab === 'cctx_mined' ? cctxsValidatedQuery : cctxsPendingQuery;
+
+  const handleFilterChange = React.useCallback(<T extends keyof ZetaChainCCTXFilterParams>(field: T, val: ZetaChainCCTXFilterParams[T]) => {
+    setFilters(prevState => {
+      const newState = { ...prevState };
+      newState[field] = val;
+      query.onFilterChange(newState);
+      return newState;
+    });
+  }, [ query ]);
+
+  const onClearFilter = React.useCallback((key: keyof ZetaChainCCTXFilterParams) => () => {
+    setFilters(prevState => {
+      const newState = { ...prevState };
+      if (key === 'age') {
+        delete newState.start_timestamp;
+        delete newState.end_timestamp;
+      }
+      delete newState[key];
+      query.onFilterChange(newState);
+      return newState;
+    });
+  }, [ query ]);
+
+  const clearAllFilters = React.useCallback(() => {
+    setFilters({});
+    query.onFilterChange({});
+  }, [ query ]);
 
   const verifiedTitle = capitalize(getNetworkValidationActionText());
 
@@ -120,7 +145,7 @@ const ZetaChainEvmTransactions = () => {
 
   const pagination = (() => {
     switch (tab) {
-      case 'zetachain_pending': return cctxsPendingQuery.pagination;
+      case 'cctx_pending': return cctxsPendingQuery.pagination;
       default: return cctxsValidatedQuery.pagination;
     }
   })();

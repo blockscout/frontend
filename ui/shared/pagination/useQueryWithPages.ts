@@ -237,7 +237,15 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     }
   }, [ page, resetPage, router ]);
 
-  const hasNextPage = nextPageParams ? Object.keys(nextPageParams).length > 0 : false;
+  let hasNextPage = false;
+  if (nextPageParams) {
+    // ¯\_(ツ)_/¯
+    if (resourceName === 'zetachain:transactions' && 'limit' in nextPageParams) {
+      hasNextPage = Boolean(nextPageParams.limit && nextPageParams.limit > 0);
+    } else {
+      hasNextPage = Object.keys(nextPageParams).length > 0;
+    }
+  }
 
   const pagination = {
     page,

@@ -1,5 +1,5 @@
 import type { ApiResource } from '../types';
-import type { ZetaChainCCTXListResponse, ZetaChainCCTXResponse, ZetaChainTokensResponse } from 'types/api/zetaChain';
+import type { ZetaChainCCTXFilterParams, ZetaChainCCTXListResponse, ZetaChainCCTXResponse, ZetaChainTokensResponse } from 'types/api/zetaChain';
 
 export const ZETA_CHAIN_API_RESOURCES = {
   transactions: {
@@ -35,5 +35,11 @@ export type ZetaChainApiResourcePayload<R extends ZetaChainApiResourceName> =
 R extends 'zetachain:transactions' ? ZetaChainCCTXListResponse :
 R extends 'zetachain:transaction' ? ZetaChainCCTXResponse :
 R extends 'zetachain:tokens' ? ZetaChainTokensResponse :
+never;
+/* eslint-enable @stylistic/indent */
+
+/* eslint-disable @stylistic/indent */
+export type ZetaChainApiPaginationFilters<R extends ZetaChainApiResourceName> =
+R extends 'zetachain:transactions' ? ZetaChainCCTXFilterParams :
 never;
 /* eslint-enable @stylistic/indent */

@@ -1,5 +1,7 @@
+import { castArray } from 'es-toolkit/compat';
 import React from 'react';
 
+import type { AdvancedFilterAge } from 'types/api/advancedFilter';
 import type { TokenType } from 'types/api/token';
 import type { ZetaChainCCTXFilterParams } from 'types/api/zetaChain';
 
@@ -26,12 +28,12 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
 
   switch (column) {
     case 'age': {
-      const value = { from: filters.start_timestamp || '', to: filters.end_timestamp || '' };
+      const value = { age: (filters.age || '') as AdvancedFilterAge | '', from: filters.start_timestamp || '', to: filters.end_timestamp || '' };
       return (
         <TableColumnFilterWrapper
           columnName="Age"
           isLoading={ isLoading }
-          selected={ Boolean(value.from || value.to) }
+          selected={ Boolean(value.age || value.from || value.to) }
           w="382px"
         >
           <ZetaChainAgeFilter { ...commonProps } value={ value }/>
@@ -39,7 +41,7 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
       );
     }
     case 'status': {
-      const value = filters.status_reduced;
+      const value = filters.status_reduced ? castArray(filters.status_reduced) : [];
       return (
         <TableColumnFilterWrapper
           columnName="Status"
@@ -52,8 +54,8 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
       );
     }
     case 'sender': {
-      const value = filters.sender_address;
-      const chainValue = filters.source_chain_id;
+      const value = filters.sender_address ? castArray(filters.sender_address) : [];
+      const chainValue = filters.source_chain_id ? castArray(filters.source_chain_id) : [];
       return (
         <TableColumnFilterWrapper
           columnName="Sender"
@@ -66,8 +68,8 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
       );
     }
     case 'receiver': {
-      const value = filters.receiver_address;
-      const chainValue = filters.target_chain_id;
+      const value = filters.receiver_address ? castArray(filters.receiver_address) : [];
+      const chainValue = filters.target_chain_id ? castArray(filters.target_chain_id) : [];
       return (
         <TableColumnFilterWrapper
           columnName="Receiver"
@@ -80,7 +82,7 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
       );
     }
     case 'asset': {
-      const value = filters.token_symbol ? filters.token_symbol.map(symbol => ({
+      const value = filters.token_symbol ? castArray(filters.token_symbol).map(symbol => ({
         address_hash: '',
         symbol: symbol,
         name: symbol,
