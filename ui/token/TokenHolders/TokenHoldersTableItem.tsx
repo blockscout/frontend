@@ -6,6 +6,7 @@ import type { TokenHolder, TokenInfo } from 'types/api/token';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 type Props = {
@@ -29,9 +30,7 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
       </TableCell>
       { (token.type === 'ERC-1155' || token.type === 'ERC-404') && 'token_id' in holder && (
         <TableCell verticalAlign="middle">
-          <Skeleton loading={ isLoading } display="inline-block">
-            { 'token_id' in holder && holder.token_id }
-          </Skeleton>
+          <TruncatedValue value={ holder.token_id } isLoading={ isLoading } w="100%"/>
         </TableCell>
       ) }
       <TableCell verticalAlign="middle" isNumeric>

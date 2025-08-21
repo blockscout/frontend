@@ -14,14 +14,17 @@ interface Props {
 const TokenHoldersList = ({ data, token, isLoading }: Props) => {
   return (
     <Box>
-      { data.map((item, index) => (
-        <TokenHoldersListItem
-          key={ item.address.hash + (isLoading ? index : '') }
-          token={ token }
-          holder={ item }
-          isLoading={ isLoading }
-        />
-      )) }
+      { data.map((item, index) => {
+        const tokenId = 'token_id' in item ? item.token_id : null;
+        return (
+          <TokenHoldersListItem
+            key={ item.address.hash + tokenId + (isLoading ? index : '') }
+            token={ token }
+            holder={ item }
+            isLoading={ isLoading }
+          />
+        );
+      }) }
     </Box>
   );
 };
