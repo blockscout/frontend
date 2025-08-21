@@ -3,6 +3,7 @@ import React from 'react';
 import type { UptimeHistoryFull, UptimeRealTimeData, UptimeSocketData } from 'types/api/megaEth';
 
 import config from 'configs/app';
+import { SECOND } from 'toolkit/utils/consts';
 
 const megaEthFeature = config.features.megaEth;
 
@@ -10,6 +11,7 @@ export type Status = 'initial' | 'connected' | 'disconnected' | 'error';
 
 export default function useUptimeSocketData() {
   const websocketRef = React.useRef<WebSocket | null>(null);
+  const heartbeatRef = React.useRef<number | undefined>(undefined);
   const [ status, setStatus ] = React.useState<Status>('initial');
   const [ realtimeData, setRealtimeData ] = React.useState<UptimeRealTimeData | null>(null);
   const [ historyData, setHistoryData ] = React.useState<UptimeHistoryFull | null>(null);
@@ -53,6 +55,12 @@ export default function useUptimeSocketData() {
 
     websocketRef.current.onopen = () => {
       setStatus('connected');
+
+      heartbeatRef.current = window.setInterval(() => {
+        if (websocketRef.current?.readyState === WebSocket.OPEN) {
+          websocketRef.current?.send('ping');
+        }
+      }, 10 * SECOND);
     };
     websocketRef.current.onerror = (error) => {
       // eslint-disable-next-line no-console
@@ -75,6 +83,7 @@ export default function useUptimeSocketData() {
 
     return () => {
       websocketRef.current?.close(4000, 'Component unmounted');
+      window.clearInterval(heartbeatRef.current);
     };
   }, [ connect ]);
 
