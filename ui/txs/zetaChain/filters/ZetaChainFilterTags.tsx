@@ -1,4 +1,5 @@
 import { Flex, HStack, Text } from '@chakra-ui/react';
+import { castArray } from 'es-toolkit/compat';
 import React from 'react';
 
 import type { ZetaChainCCTXFilterParams } from 'types/api/zetaChain';
@@ -22,37 +23,54 @@ const ZetaChainFilterTags = ({ filters, onClearFilter, onClearAll }: Props) => {
   const filterTags: Array<{ key: keyof ZetaChainCCTXFilterParams; name: string; value: string }> = [];
 
   // Age filter
-  if (filters.start_timestamp || filters.end_timestamp) {
-    const from = filters.start_timestamp ? dayjs(Number(filters.start_timestamp) * 1000).format('MMM DD, YYYY') : '';
-    const to = filters.end_timestamp ? dayjs(Number(filters.end_timestamp) * 1000).format('MMM DD, YYYY') : '';
+  if (filters.age) {
     filterTags.push({
-      key: 'start_timestamp',
+      key: 'age',
       name: 'Age',
-      value: `${ from } - ${ to }`,
+      value: filters.age,
     });
+  } else {
+    if (filters.start_timestamp) {
+      filterTags.push({
+        key: 'start_timestamp',
+        name: 'Date from',
+        value: dayjs(Number(filters.start_timestamp) * 1000).format('MMM DD, YYYY'),
+      });
+    }
+
+    if (filters.end_timestamp) {
+      filterTags.push({
+        key: 'end_timestamp',
+        name: 'Date to',
+        value: dayjs(Number(filters.end_timestamp) * 1000).format('MMM DD, YYYY'),
+      });
+    }
   }
 
   // Status filter
-  if (filters.status_reduced && filters.status_reduced.length > 0) {
+  const statusReduced = filters.status_reduced ? castArray(filters.status_reduced) : [];
+  if (statusReduced.length > 0) {
     filterTags.push({
       key: 'status_reduced',
       name: 'Status',
-      value: filters.status_reduced.join(', '),
+      value: statusReduced.join(', '),
     });
   }
 
   // Sender filter
-  if (filters.sender_address && filters.sender_address.length > 0) {
+  const senderAddresses = filters.sender_address ? castArray(filters.sender_address) : [];
+  if (senderAddresses.length > 0) {
     filterTags.push({
       key: 'sender_address',
       name: 'Sender',
-      value: filters.sender_address.map(address => shortenString(address, 8)).join(', '),
+      value: senderAddresses.map(address => shortenString(address, 8)).join(', '),
     });
   }
 
   // Sender chain filter
-  if (filters.source_chain_id && filters.source_chain_id.length > 0) {
-    const chainNames = filters.source_chain_id.map(chainId => {
+  const sourceChainIds = filters.source_chain_id ? castArray(filters.source_chain_id) : [];
+  if (sourceChainIds.length > 0) {
+    const chainNames = sourceChainIds.map(chainId => {
       const chain = chains.find(c => c.chain_id.toString() === chainId);
       return chain?.chain_name || `Chain ${ chainId }`;
     });
@@ -64,17 +82,19 @@ const ZetaChainFilterTags = ({ filters, onClearFilter, onClearAll }: Props) => {
   }
 
   // Receiver filter
-  if (filters.receiver_address && filters.receiver_address.length > 0) {
+  const receiverAddresses = filters.receiver_address ? castArray(filters.receiver_address) : [];
+  if (receiverAddresses.length > 0) {
     filterTags.push({
       key: 'receiver_address',
       name: 'Receiver',
-      value: filters.receiver_address.map(address => shortenString(address, 8)).join(', '),
+      value: receiverAddresses.map(address => shortenString(address, 8)).join(', '),
     });
   }
 
   // Receiver chain filter
-  if (filters.target_chain_id && filters.target_chain_id.length > 0) {
-    const chainNames = filters.target_chain_id.map(chainId => {
+  const targetChainIds = filters.target_chain_id ? castArray(filters.target_chain_id) : [];
+  if (targetChainIds.length > 0) {
+    const chainNames = targetChainIds.map(chainId => {
       const chain = chains.find(c => c.chain_id.toString() === chainId);
       return chain?.chain_name || `Chain ${ chainId }`;
     });
@@ -86,11 +106,12 @@ const ZetaChainFilterTags = ({ filters, onClearFilter, onClearAll }: Props) => {
   }
 
   // Asset filter
-  if (filters.token_symbol) {
+  const tokenSymbols = filters.token_symbol ? castArray(filters.token_symbol) : [];
+  if (tokenSymbols.length > 0) {
     filterTags.push({
       key: 'token_symbol',
       name: 'Asset',
-      value: filters.token_symbol.join(', '),
+      value: tokenSymbols.join(', '),
     });
   }
 
@@ -99,15 +120,17 @@ const ZetaChainFilterTags = ({ filters, onClearFilter, onClearAll }: Props) => {
   }
 
   return (
-    <Flex alignItems="center" gap={ 2 } mb={ 6 }>
-      <Text fontSize="lg" lineHeight="24px" w="100px">Filtered by:</Text>
-      <HStack gap={ 2 } flexWrap="wrap">
-        { filterTags.map(t => (
-          <Tag key={ t.name } variant="filter" onClose={ onClearFilter(t.key) } closable label={ t.name }>
-            { t.value }
-          </Tag>
-        )) }
-      </HStack>
+    <Flex justifyContent="space-between" alignItems="center" mb={ 6 }>
+      <Flex alignItems="center" gap={ 2 }>
+        <Text fontSize="lg" lineHeight="24px" w="100px">Filtered by:</Text>
+        <HStack gap={ 2 } flexWrap="wrap">
+          { filterTags.map(t => (
+            <Tag key={ t.name } variant="filter" onClose={ onClearFilter(t.key) } closable label={ t.name }>
+              { t.value }
+            </Tag>
+          )) }
+        </HStack>
+      </Flex>
       { filterTags.length !== 0 && (
         <Link onClick={ onClearAll } display="flex" alignItems="center" justifyContent="end" gap={ 2 } fontSize="sm" w="150px">
           <IconSvg name="repeat" boxSize={ 5 }/>

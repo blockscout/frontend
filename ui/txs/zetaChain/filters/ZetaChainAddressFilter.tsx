@@ -6,6 +6,7 @@ import React from 'react';
 import type { ZetaChainCCTXFilterParams } from 'types/api/zetaChain';
 import type { ChainInfo } from 'types/client/chainInfo';
 
+import { Image } from 'toolkit/chakra/image';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import { Select } from 'toolkit/chakra/select';
@@ -13,6 +14,7 @@ import type { SelectOption } from 'toolkit/chakra/select';
 import AddButton from 'toolkit/components/buttons/AddButton';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
+import IconSvg from 'ui/shared/IconSvg';
 import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
 type Props = {
@@ -70,6 +72,16 @@ const ChainSelect = ({ selectedChains, onChainChange, chains, isLoading }: Chain
       ...chains.map(chain => ({
         value: chain.chain_id.toString(),
         label: chain.chain_name || `Chain ${ chain.chain_id }`,
+        renderLabel: () => (
+          <Flex alignItems="center" gap={ 2 }>
+            { chain.chain_logo ? (
+              <Image src={ chain.chain_logo } boxSize={ 5 } borderRadius="base" alt={ chain.chain_name || 'chain logo' }/>
+            ) : (
+              <IconSvg name="networks/icon-placeholder" boxSize={ 5 } color="text.secondary"/>
+            ) }
+            <span>{ chain.chain_name || `Chain ${ chain.chain_id }` }</span>
+          </Flex>
+        ),
       })),
     ];
     return createListCollection<SelectOption>({ items: options });

@@ -30,7 +30,7 @@ export default function useQuickSearchQuery() {
       offset: 0,
       direction: 'DESC',
     },
-    queryOptions: { enabled: config.features.zetachain.isEnabled },
+    queryOptions: { enabled: debouncedSearchTerm.trim().length > 0 && config.features.zetachain.isEnabled },
   });
 
   return React.useMemo(() => ({
