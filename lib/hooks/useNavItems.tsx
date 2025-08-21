@@ -45,15 +45,15 @@ export default function useNavItems(): ReturnType {
       icon: 'transactions',
       isActive:
         // sorry, but this is how it was designed
-        (pathname === '/txs' && (!config.features.zetachain.isEnabled || (query.tab && !query.tab.includes('cctx')))) ||
+        (pathname === '/txs' && (!config.features.zetachain.isEnabled || !query.tab || !query.tab.includes('cctx'))) ||
         pathname === '/tx/[hash]' ||
         pathname === '/chain/[chain-slug]/tx/[hash]',
     };
     const cctxs: NavItem | null = config.features.zetachain.isEnabled ? {
       text: 'Cross-chain transactions',
-      nextRoute: { pathname: '/txs' as const },
+      nextRoute: { pathname: '/txs' as const, query: { tab: 'cctx' } },
       icon: 'interop',
-      isActive: pathname === '/cc/tx/[hash]' || (pathname === '/txs' && (!query.tab || query.tab.includes('cctx'))),
+      isActive: pathname === '/cc/tx/[hash]' || (pathname === '/txs' && query.tab?.includes('cctx')),
     } : null;
     const operations: NavItem | null = config.features.tac.isEnabled ? {
       text: 'Operations',

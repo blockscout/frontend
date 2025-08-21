@@ -114,7 +114,7 @@ const LatestZetahainCCTXs = () => {
   }
 
   if (data) {
-    const txsUrl = route({ pathname: '/txs' });
+    const cctxsUrl = route({ pathname: '/txs', query: { tab: 'cctx' } });
     return (
       <>
         <SocketNewItemsNotice
@@ -144,7 +144,7 @@ const LatestZetahainCCTXs = () => {
           </Box>
         </AddressHighlightProvider>
         <Flex justifyContent="center">
-          <Link textStyle="sm" href={ txsUrl }>View all cross chain transactions</Link>
+          <Link textStyle="sm" href={ cctxsUrl }>View all cross chain transactions</Link>
         </Flex>
       </>
     );

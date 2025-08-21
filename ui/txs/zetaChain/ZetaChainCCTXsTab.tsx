@@ -62,7 +62,7 @@ const ZetaChainEvmTransactions = () => {
     },
     options: {
       placeholderData: { items: Array(50).fill(zetaChainCCTXItem), next_page_params: { page_index: 0, offset: 0, direction: 'DESC' } },
-      enabled: !tab || tab === 'cctx' || tab === 'cctx_mined',
+      enabled: tab === 'cctx' || tab === 'cctx_mined',
     },
   });
 

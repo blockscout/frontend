@@ -9,13 +9,14 @@ import useActiveTabFromQuery from './useActiveTabFromQuery';
 
 interface Props extends AdaptiveTabsProps {
   preservedParams?: Array<string>;
+  defaultTabId?: string;
 }
 
 const RoutedTabs = (props: Props) => {
   const { tabs, onValueChange, preservedParams, ...rest } = props;
 
   const router = useRouter();
-  const activeTab = useActiveTabFromQuery(props.tabs);
+  const activeTab = useActiveTabFromQuery(props.tabs, props.defaultTabId);
   const tabsRef = React.useRef<HTMLDivElement>(null);
 
   const handleValueChange = React.useCallback(({ value }: { value: string }) => {
