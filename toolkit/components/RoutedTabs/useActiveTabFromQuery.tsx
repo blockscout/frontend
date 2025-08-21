@@ -4,11 +4,15 @@ import type { TabItem } from '../AdaptiveTabs/types';
 
 import { castToString } from '../../utils/guards';
 
-export default function useActiveTabFromQuery(tabs: Array<TabItem>) {
+export default function useActiveTabFromQuery(tabs: Array<TabItem>, defaultTabId?: string) {
   const router = useRouter();
   const tabFromQuery = castToString(router.query.tab);
 
   if (!tabFromQuery) {
+    if (defaultTabId) {
+      return tabs.find((tab) => tab.id === defaultTabId);
+    }
+
     return;
   }
 

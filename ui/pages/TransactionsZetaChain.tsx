@@ -1,4 +1,3 @@
-import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -14,6 +13,7 @@ import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import ActionBar from 'ui/shared/ActionBar';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -60,6 +60,7 @@ const TransactionsZetaChain = () => {
 
   const isAuth = useIsAuth();
 
+  // for cctxs and evm txs we show pagination with the secondary tabs
   const pagination = (() => {
     switch (tab) {
       case 'watchlist': return txsWatchlistQuery.pagination;
@@ -84,7 +85,12 @@ const TransactionsZetaChain = () => {
     }
 
     return (
-      <Flex alignItems="center" gap={ 6 }>
+      <ActionBar
+        mt={ -6 }
+        display={{ base: pagination?.isVisible ? 'flex' : 'none', lg: 'flex' }}
+        justifyContent="end"
+        gap={ 6 }
+      >
         { isAdvancedFilterEnabled && (
           <Link
             href={ route({ pathname: '/advanced-filter' }) }
@@ -96,8 +102,8 @@ const TransactionsZetaChain = () => {
             Advanced filter
           </Link>
         ) }
-        { pagination?.isVisible && <Pagination my={ 1 } { ...pagination }/> }
-      </Flex>
+        { pagination?.isVisible && <Pagination { ...pagination }/> }
+      </ActionBar>
     );
   })();
 
@@ -148,7 +154,7 @@ const TransactionsZetaChain = () => {
         title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } transactions` : 'Transactions' }
         withTextAd
       />
-      <RoutedTabs tabs={ tabs }/>
+      <RoutedTabs tabs={ tabs } defaultTabId="zetachain"/>
     </>
   );
 };

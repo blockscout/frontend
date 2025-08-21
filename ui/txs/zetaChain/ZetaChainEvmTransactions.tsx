@@ -39,7 +39,7 @@ const ZetaChainEvmTransactions = () => {
     resourceName: 'general:txs_validated',
     filters: { filter: 'validated' },
     options: {
-      enabled: tab === 'zetachain' || tab === 'zetachain_validated',
+      enabled: !tab || tab === 'zetachain' || tab === 'zetachain_validated',
       placeholderData: generateListStub<'general:txs_validated'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
