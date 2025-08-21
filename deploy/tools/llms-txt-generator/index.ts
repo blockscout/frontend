@@ -2,6 +2,7 @@ import config from 'configs/app';
 import { writeFileSync } from 'node:fs';
 import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import dedent from 'dedent';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
@@ -20,219 +21,443 @@ function run() {
         const rollupFeature = config.features.rollup;
         const parentChainUrl = rollupFeature.isEnabled ? rollupFeature.parentChain.baseUrl : undefined;
 
-        const GENERAL_COUNTERS_TEMPLATE = statsApiUrl ? `### General Counters
+        const MCP_SERVER_URL = 'https://mcp.blockscout.com';
 
-\`\`\`bash
-curl --request GET --url '${statsApiUrl}/api/v1/counters'
-\`\`\`` : '{blank}';
+        const GENERAL_COUNTERS_TEMPLATE = statsApiUrl ? `
+            ### General Counters
 
-        const USER_OPS_TEMPLATE = config.features.userOps.isEnabled ? `<!-- START:Account-Abstraction -->
-### Account Abstraction info
+            \`\`\`bash
+            curl --request GET --url '${statsApiUrl}/api/v1/counters'
+            \`\`\`
+        ` : '{blank}';
 
-\`\`\`bash
-curl --request GET --url '${generalApiUrl}/api/v2/proxy/account-abstraction/accounts/{account_address}'
-\`\`\`
+        const USER_OPS_TEMPLATE = config.features.userOps.isEnabled ? `
+            <!-- START:Account-Abstraction -->
+            ### Account Abstraction info
 
-### User Operations by Address
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/proxy/account-abstraction/accounts/{account_address}'
+            \`\`\`
 
-\`\`\`bash
-curl --request GET --url '${generalApiUrl}/api/v2/proxy/account-abstraction/operations?sender={account_address}'
-\`\`\`
+            ### User Operations by Address
 
-### User Operations by Transaction
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/proxy/account-abstraction/operations?sender={account_address}'
+            \`\`\`
 
-\`\`\`bash
-curl --request GET --url '${generalApiUrl}/api/v2/proxy/account-abstraction/operations?transaction_hash={transaction_hash}'
-\`\`\`
+            ### User Operations by Transaction
 
-### User Operation Details
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/proxy/account-abstraction/operations?transaction_hash={transaction_hash}'
+            \`\`\`
 
-\`\`\`bash
-curl --request GET --url '${generalApiUrl}/api/v2/proxy/account-abstraction/operations/{user_operation_hash}'
-\`\`\`
-<!-- END:Account-Abstraction -->` : '{blank}';
+            ### User Operation Details
 
-        const MAIN_TEMPLATE = `# Blockscout - ${ chainName }
-    
-<!-- START:Blockscout-Common-Intro -->
-Blockscout is a human-friendly blockchain explorer for EVM-compatible networks. It lets users browse blocks, transactions, addresses, tokens (ERC-20/721/1155), logs, contract ABIs, and decoded contract interactions. While the site is primarily designed for people, all rendered information is backed by API endpoints that machines can consume. Large Language Models should prefer the LLM-ready endpoints listed below to retrieve precise, structured data.
-<!-- END:Blockscout-Common-Intro -->
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/proxy/account-abstraction/operations/{user_operation_hash}'
+            \`\`\`
+            <!-- END:Account-Abstraction -->
+        ` : '{blank}';
 
-<!-- START:Blockscout-Instance-Info -->
-Chain name: ${ chainName }
-Chain ID: ${ chainId }
-${ parentChainUrl ? `Settlement layer Blockscout URL: ${ parentChainUrl }` : '{blank}' }
-<!-- END:Blockscout-Instance-Info -->
+        const BEACON_CHAIN_TEMPLATE = config.features.beaconChain.isEnabled ? `
+            ### Withdrawals by Address
 
-<!-- START:General-LLM-Ready-Blockchain-Data -->
-## General LLM-ready Data
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/withdrawals'
+            \`\`\`
 
-The links below lead to the REST API of the Blockscout MCP server, they are considered as LLM-ready. More detail: https://github.com/blockscout/mcp-server/blob/main/API.md
+            ### Withdrawals by Block
 
-<!-- START:General-Data-Blocks -->
-### Specific Block Info
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/blocks/{block_number}/withdrawals'
+            \`\`\`
+        ` : undefined;
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/get_block_info?chain_id=${ chainId }&number_or_hash={block_number_or_hash}&include_transactions=false'
-\`\`\`
-<!-- END:General-Data-Blocks -->
+        const ARBITRUM_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' ? `
+            ### Latest Committed Batch Number
 
-<!-- START:General-Data-Transactions -->
-### Specific Transaction Info
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/main-page/arbitrum/batches/latest-number'
+            \`\`\`
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/get_transaction_info?chain_id=${ chainId }&transaction_hash={transaction_hash}'
-\`\`\`
+            ### Batch Info
+                            
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/arbitrum/batches/{batch_number}'
+            \`\`\`
+                            
+            ### Blocks By Batch
+                            
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/blocks/arbitrum-batch/{batch_number}'
+            \`\`\`
+                            
+            ### Get L1→L2 messages
+                            
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/arbitrum/messages/to-rollup'
+            \`\`\`
+                            
+            ### Get L2→L1 messages
+                            
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/arbitrum/messages/from-rollup'
+            \`\`\`
+                            
+            ### L2→L1 messages by transaction:
+                            
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/arbitrum/messages/withdrawals/{transactions_hash}'
+            \`\`\`
+        ` : undefined;
 
-### Get Transaction Logs
+        const OPTIMISM_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'optimistic' ? `
+            ### Latest Committed Batch Number (top of)
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/optimism/batches'
+            \`\`\`
+                
+            ### Batch Info
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/optimism/batches/{batch_number}'
+            \`\`\`
+                
+            ### Blocks By Batch (TODO: not needed if the batch returns blocks range)
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/blocks/optimism-batch/{batch_number}'
+            \`\`\`
+                
+            ### Dispute Games
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/optimism/games'
+            \`\`\`
+                
+            ### Get L1→L2 messages
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/optimism/deposits'
+            \`\`\`
+                
+            ### Get L2→L1 messages
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/optimism/withdrawals'
+            \`\`\`
+        ` : undefined;
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/get_transaction_logs?chain_id=${ chainId }&transaction_hash={transaction_hash}'
-\`\`\`
+        const CELO_CHAIN_TEMPLATE = config.features.celo.isEnabled ? `
+            ### Latest Finalized Epoch (top of)
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/celo/epochs'
+            \`\`\`
+                
+            ### Get Epoch Information
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/celo/epochs/{epoch_number}'
+            \`\`\`
+                
+            ### Validator Group Reward by Epoch
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/celo/epochs/{epoch_number}/election-rewards/group'
+            \`\`\`
+                
+            ### Validator Rewards by Epoch
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/celo/epochs/{epoch_number}/election-rewards/validator'
+            \`\`\`
+                
+            ### Voting Rewards by Epoch
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/celo/epochs/{epoch_number}/election-rewards/voter'
+            \`\`\`
+        ` : undefined;
 
-### Transaction Summary
+        const ZKSYNC_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'zkSync' ? `
+            ### Latest Committed Batch Number
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/main-page/zksync/batches/latest-number'
+            \`\`\`
+                
+            ### Batch info
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/zksync/batches/{batch_number}'
+            \`\`\`
+        ` : undefined;
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/transaction_summary?chain_id=${ chainId }&transaction_hash={transaction_hash}'
-\`\`\`
-<!-- END:General-Data-Transactions -->
+        const ZKEVM_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? `
+            ### Latest Committed Batch Number (top of)
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/zkevm/batches/confirmed'
+            \`\`\`
+                
+            ### Batch Info
 
-<!-- START:General-Data-Addresses -->
-### Specific Account info
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/zkevm/batches/{batch_number}'
+            \`\`\`
+                
+            ### Deposits
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/zkevm/deposits'
+            \`\`\`
+                
+            ### Withdrawals
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/zkevm/withdrawals'
+            \`\`\`
+        ` : undefined;
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/get_address_info?chain_id=${ chainId }&address={account_address}'
-\`\`\`
+        const TAC_CHAIN_TEMPLATE = config.features.tac.isEnabled && config.apis.tac ? `
+            ### TAC Operations:
+                
+            \`\`\`bash
+            curl --request GET --url '${config.apis.tac.endpoint }/api/v1/tac/operations'
+            \`\`\`
+                
+            ### TAC Operation Info:
+                
+            \`\`\`bash
+            curl --request GET --url '${config.apis.tac.endpoint }/api/v1/tac/operations/{operation_id}'
+            \`\`\`
+        ` : undefined;
 
-### Get Address by ENS name
+        const REDSTONE_CHAIN_TEMPLATE = config.features.mudFramework.isEnabled ? `
+            ### MUD Worlds
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/mud/worlds'
+            \`\`\`
+                
+            ### MUD World Tables
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/mud/worlds/{contract_address}/tables'
+            \`\`\`
+                
+            ### MUD World Table Records
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records'
+            \`\`\`
+                
+            ### MUD World Table Record
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records/{record_id}'
+            \`\`\`
+        ` : undefined;
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/get_address_by_ens_name?name={ens_name}'
-\`\`\`
+        const CHAIN_SPECIFIC_DATA = [
+            BEACON_CHAIN_TEMPLATE,
+            ARBITRUM_CHAIN_TEMPLATE,
+            OPTIMISM_CHAIN_TEMPLATE,
+            CELO_CHAIN_TEMPLATE,
+            ZKSYNC_CHAIN_TEMPLATE,
+            ZKEVM_CHAIN_TEMPLATE,
+            TAC_CHAIN_TEMPLATE,
+            REDSTONE_CHAIN_TEMPLATE
+        ].filter(Boolean);
 
-### Get Transactions By Address
+        const CHAIN_SPECIFIC_TEMPLATE = CHAIN_SPECIFIC_DATA.length > 0 ? `
+            <!-- START:Chain-Specific-Data -->
+            ## Chain-Specific Data
+            ${ CHAIN_SPECIFIC_DATA.join('\n') }
+            <!-- END:Chain-Specific--Data -->
+        ` : '{blank}';
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/get_transactions_by_address?chain_id=${ chainId }&address={account_address}&age_from={YYYY-MM-DDTHH:MM:SS.00Z}&age_to={YYYY-MM-DDTHH:MM:SS.00Z}&methods={4_bytes_method_signature_optional}'
-\`\`\`
+        const MAIN_TEMPLATE = dedent`
+            # Blockscout - ${ chainName }
 
-### Get Token Transfers by Address
+            <!-- START:Blockscout-Common-Intro -->
+            Blockscout is a human-friendly blockchain explorer for EVM-compatible networks. It lets users browse blocks, transactions, addresses, tokens (ERC-20/721/1155), logs, contract ABIs, and decoded contract interactions. While the site is primarily designed for people, all rendered information is backed by API endpoints that machines can consume. Large Language Models should prefer the LLM-ready endpoints listed below to retrieve precise, structured data.
+            <!-- END:Blockscout-Common-Intro -->
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/get_token_transfers_by_address?chain_id=${ chainId }&address={account_address}&age_from={YYYY-MM-DDTHH:MM:SS.00Z}&age_to={YYYY-MM-DDTHH:MM:SS.00Z}&token={token_contract_address_optional}'
-\`\`\`
-<!-- END:General-Data-Addresses -->
+            <!-- START:Blockscout-Instance-Info -->
+            Chain name: ${ chainName }
+            Chain ID: ${ chainId }
+            ${ parentChainUrl ? `Settlement layer Blockscout URL: ${ parentChainUrl }` : '{blank}' }
+            <!-- END:Blockscout-Instance-Info -->
 
-<!-- START:General-Data-Tokens -->
-### Get ERC20 Tokens By Address
+            <!-- START:General-LLM-Ready-Blockchain-Data -->
+            ## General LLM-ready Data
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/get_tokens_by_address?chain_id=${ chainId }&address={account_address}'
-\`\`\`
+            The links below lead to the REST API of the Blockscout MCP server, they are considered as LLM-ready. More detail: https://github.com/blockscout/mcp-server/blob/main/API.md
 
-### Get NFT Tokens By Address
+            <!-- START:General-Data-Blocks -->
+            ### Specific Block Info
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/nft_tokens_by_address?chain_id=${ chainId }&address={account_address}'
-\`\`\`
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_block_info?chain_id=${ chainId }&number_or_hash={block_number_or_hash}&include_transactions=false'
+            \`\`\`
+            <!-- END:General-Data-Blocks -->
 
-### Lookup Token By Symbol
+            <!-- START:General-Data-Transactions -->
+            ### Specific Transaction Info
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/lookup_token_by_symbol?chain_id=${ chainId }&symbol={token_symbol}'
-\`\`\`
-<!-- END:General-Data-Tokens -->
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_transaction_info?chain_id=${ chainId }&transaction_hash={transaction_hash}'
+            \`\`\`
 
-<!-- START:General-Data-Contracts -->
-### Get Contract ABI
+            ### Get Transaction Logs
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/get_contract_abi?chain_id=${ chainId }&address={contract_address}'
-\`\`\`
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_transaction_logs?chain_id=${ chainId }&transaction_hash={transaction_hash}'
+            \`\`\`
 
-### Read Contract Data
+            ### Transaction Summary
 
-\`\`\`bash
-curl --request GET --url 'https://mcp.blockscout.com/v1/read_contract?chain_id=${ chainId }&address={contract_address}&abi={string_encoded_function_abi}&function_name={function_name}&args={string_encoded_arguments_list}'
-\`\`\`
-<!-- END:General-Data-Contracts -->
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/transaction_summary?chain_id=${ chainId }&transaction_hash={transaction_hash}'
+            \`\`\`
+            <!-- END:General-Data-Transactions -->
 
-<!-- END:General-LLM-Ready-Blockchain-Data -->
+            <!-- START:General-Data-Addresses -->
+            ### Specific Account info
 
-<!-- START:Miscellaneous-Blockchain-Data -->
-## Miscellaneous Blockchain Data
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_address_info?chain_id=${ chainId }&address={account_address}'
+            \`\`\`
 
-<!-- START:Stats -->
-${GENERAL_COUNTERS_TEMPLATE}
+            ### Get Address by ENS name
 
-### Gas Tracker
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_address_by_ens_name?name={ens_name}'
+            \`\`\`
 
-\`\`\`bash
-curl --request GET --url '${generalApiUrl}/api/v2/stats'
-\`\`\`
-<!-- END:Stats -->
+            ### Get Transactions By Address
 
-<!-- START:Addresses -->
-### Coin Balance History by Address
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_transactions_by_address?chain_id=${ chainId }&address={account_address}&age_from={YYYY-MM-DDTHH:MM:SS.00Z}&age_to={YYYY-MM-DDTHH:MM:SS.00Z}&methods={4_bytes_method_signature_optional}'
+            \`\`\`
 
-\`\`\`bash
-curl --request GET --url '${generalApiUrl}/api/v2/addresses/{account_address}/coin-balance-history-by-day'
-curl --request GET --url '${generalApiUrl}/api/v2/addresses/{account_address}/coin-balance-history'
-\`\`\`
+            ### Get Token Transfers by Address
 
-### Logs Emitted by Address
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_token_transfers_by_address?chain_id=${ chainId }&address={account_address}&age_from={YYYY-MM-DDTHH:MM:SS.00Z}&age_to={YYYY-MM-DDTHH:MM:SS.00Z}&token={token_contract_address_optional}'
+            \`\`\`
+            <!-- END:General-Data-Addresses -->
 
-\`\`\`bash
-curl --request GET --url '${generalApiUrl}/api/v2/addresses/{account_address}/logs'
-\`\`\`
+            <!-- START:General-Data-Tokens -->
+            ### Get ERC20 Tokens By Address
 
-### Blocks Validated by Address
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_tokens_by_address?chain_id=${ chainId }&address={account_address}'
+            \`\`\`
 
-\`\`\`bash
-curl --request GET --url '${generalApiUrl}/api/v2/addresses/{account_address}/blocks-validated'
-\`\`\`
-<!-- END:Addresses -->
+            ### Get NFT Tokens By Address
 
-${USER_OPS_TEMPLATE}
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/nft_tokens_by_address?chain_id=${ chainId }&address={account_address}'
+            \`\`\`
 
-<!-- START:Tokens -->
-### Holders By Token Address
+            ### Lookup Token By Symbol
 
-\`\`\`bash
-curl --request GET --url '${generalApiUrl}/api/v2/tokens/{token_contract_address}/holders'
-\`\`\`
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/lookup_token_by_symbol?chain_id=${ chainId }&symbol={token_symbol}'
+            \`\`\`
+            <!-- END:General-Data-Tokens -->
 
-### NFT Inventory By Token Address
+            <!-- START:General-Data-Contracts -->
+            ### Get Contract ABI
 
-\`\`\`bash
-curl --request GET --url '${generalApiUrl}/api/v2/tokens/{token_contract_address}/instances'
-\`\`\`
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_contract_abi?chain_id=${ chainId }&address={contract_address}'
+            \`\`\`
 
-### NFT Instance Info
+            ### Read Contract Data
 
-\`\`\`bash
-curl --request GET --url '${generalApiUrl}/api/v2/tokens/{token_contract_address}/instances/{instance_id}'
-curl --request GET --url '${generalApiUrl}/api/v2/tokens/{token_contract_address}/instances/{instance_id}/transfers'
-\`\`\`
-<!-- END:Tokens -->
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/read_contract?chain_id=${ chainId }&address={contract_address}&abi={string_encoded_function_abi}&function_name={function_name}&args={string_encoded_arguments_list}'
+            \`\`\`
+            <!-- END:General-Data-Contracts -->
 
-<!-- END:Miscellaneous-Blockchain-Data -->
+            <!-- END:General-LLM-Ready-Blockchain-Data -->
 
-<!-- START:Additional-Info -->
-## Additional Info
+            <!-- START:Miscellaneous-Blockchain-Data -->
+            ## Miscellaneous Blockchain Data
 
-**Recommendation**: For programmatic access and LLM workflows, prefer the MCP Server endpoints (HTTP, not SSE).
+            <!-- START:Stats -->
+            ${ GENERAL_COUNTERS_TEMPLATE }
+            ### Gas Tracker
 
-- MCP landing: [https://mcp.blockscout.com](https://mcp.blockscout.com)
-- MCP server root: [https://mcp.blockscout.com/mcp/](https://mcp.blockscout.com/mcp/)
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/stats'
+            \`\`\`
+            <!-- END:Stats -->
 
-### Other Blockscout instances (lookup by chain id or name):
+            <!-- START:Addresses -->
+            ### Coin Balance History by Address
 
-\`\`\`bash
-curl --request GET --url 'https://chains.blockscout.com/api/chains'
-\`\`\`
-<!-- END:Additional-Info -->
-`;
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/coin-balance-history-by-day'
+            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/coin-balance-history'
+            \`\`\`
+
+            ### Logs Emitted by Address
+
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/logs'
+            \`\`\`
+
+            ### Blocks Validated by Address
+
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/blocks-validated'
+            \`\`\`
+            <!-- END:Addresses -->
+            ${USER_OPS_TEMPLATE}
+            <!-- START:Tokens -->
+            ### Holders By Token Address
+
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/tokens/{token_contract_address}/holders'
+            \`\`\`
+
+            ### NFT Inventory By Token Address
+
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/tokens/{token_contract_address}/instances'
+            \`\`\`
+
+            ### NFT Instance Info
+
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/tokens/{token_contract_address}/instances/{instance_id}'
+            curl --request GET --url '${ generalApiUrl }/api/v2/tokens/{token_contract_address}/instances/{instance_id}/transfers'
+            \`\`\`
+            <!-- END:Tokens -->
+
+            <!-- END:Miscellaneous-Blockchain-Data -->
+            ${ CHAIN_SPECIFIC_TEMPLATE }
+            <!-- START:Additional-Info -->
+            ## Additional Info
+
+            **Recommendation**: For programmatic access and LLM workflows, prefer the MCP Server endpoints (HTTP, not SSE).
+
+            - MCP landing: [${ MCP_SERVER_URL }](${ MCP_SERVER_URL })
+            - MCP server root: [${ MCP_SERVER_URL }/mcp/](${ MCP_SERVER_URL }/mcp/)
+
+            ### Other Blockscout instances (lookup by chain id or name):
+
+            \`\`\`bash
+            curl --request GET --url 'https://chains.blockscout.com/api/chains'
+            \`\`\`
+            <!-- END:Additional-Info -->
+        `;
 
         const content = MAIN_TEMPLATE.replace('{blank}\n', '');
         writeFileSync(outputFile, content);

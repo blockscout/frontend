@@ -9,7 +9,9 @@
     "generate": "node dist/index.js",
     "generate:dev": "dotenv -e ../../../configs/envs/.env.eth -- node dist/index.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "dedent": "1.6.0"
+  },
   "devDependencies": {
     "@types/node": "22.12.0",
     "dotenv-cli": "10.0.0",
