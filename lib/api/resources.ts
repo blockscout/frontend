@@ -27,7 +27,7 @@ import type { IsPaginated } from './services/utils';
 import { VISUALIZE_API_RESOURCES } from './services/visualize';
 import type { VisualizeApiResourceName, VisualizeApiResourcePayload } from './services/visualize';
 import { ZETA_CHAIN_API_RESOURCES } from './services/zetaChain';
-import type { ZetaChainApiResourceName, ZetaChainApiResourcePayload } from './services/zetaChain';
+import type { ZetaChainApiPaginationFilters, ZetaChainApiResourceName, ZetaChainApiResourcePayload } from './services/zetaChain';
 
 export const RESOURCES = {
   admin: ADMIN_API_RESOURCES,
@@ -97,6 +97,7 @@ R extends GeneralApiResourceName ? GeneralApiPaginationFilters<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiPaginationFilters<R> :
 R extends MultichainApiResourceName ? MultichainApiPaginationFilters<R> :
 R extends TacOperationLifecycleApiResourceName ? TacOperationLifecycleApiPaginationFilters<R> :
+R extends ZetaChainApiResourceName ? ZetaChainApiPaginationFilters<R> :
 never;
 /* eslint-enable @stylistic/indent */
 

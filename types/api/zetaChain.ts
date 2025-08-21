@@ -1,9 +1,12 @@
+import type { AdvancedFilterAge } from './advancedFilter';
+
 export type ZetaChainCCTXListResponse = {
   items: Array<ZetaChainCCTX>;
   next_page_params: {
     page_index: number;
     offset: number;
     direction: 'ASC' | 'DESC';
+    limit?: number;
   } | null;
 };
 
@@ -99,7 +102,8 @@ export type ZetaChainCCTXStatus = 'PENDING_OUTBOUND' | 'PENDING_INBOUND' | 'OUTB
 export type ZetaChainCCTXStatusReduced = 'SUCCESS' | 'PENDING' | 'FAILED';
 
 // API filter values (capitalized for API endpoint)
-export type ZetaChainCCTXStatusReducedFilter = 'Success' | 'Pending' | 'Failed';
+export const ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS = [ 'Success', 'Pending', 'Failed' ] as const;
+export type ZetaChainCCTXStatusReducedFilter = typeof ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS[number];
 
 export type ZetaChainCCTXCoinType = 'ZETA' | 'GAS' | 'ERC20' | 'CMD' | 'NO_ASSET_CALL';
 
@@ -137,17 +141,15 @@ export type ZetaChainCCTXOutboundParams = {
 export type ZetaChainCCTXFilterParams = {
   start_timestamp?: string;
   end_timestamp?: string;
-  status_reduced?: Array<ZetaChainCCTXStatusReducedFilter>;
-  sender_address?: Array<string>;
-  receiver_address?: Array<string>;
-  source_chain_id?: Array<string>;
-  target_chain_id?: Array<string>;
-  token_symbol?: Array<string>;
+  age?: AdvancedFilterAge | ''; /* frontend only */
+  status_reduced?: Array<ZetaChainCCTXStatusReducedFilter> | ZetaChainCCTXStatusReducedFilter;
+  sender_address?: Array<string> | string;
+  receiver_address?: Array<string> | string;
+  source_chain_id?: Array<string> | string;
+  target_chain_id?: Array<string> | string;
+  token_symbol?: Array<string> | string;
   hash?: string;
 };
-
-export const ZETA_CHAIN_CCTX_FILTER_AGES = [ '1h', '24h', '7d', '1m', '3m', '6m' ] as const;
-export type ZetaChainCCTXFilterAge = typeof ZETA_CHAIN_CCTX_FILTER_AGES[number];
 
 // Token types for ZetaChain
 export type ZetaChainTokensResponse = {
