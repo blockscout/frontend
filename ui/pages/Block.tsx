@@ -18,10 +18,12 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
+import BlockDeposits from 'ui/block/BlockDeposits';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockInternalTxs from 'ui/block/BlockInternalTxs';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import useBlockBlobTxsQuery from 'ui/block/useBlockBlobTxsQuery';
+import useBlockDepositsQuery from 'ui/block/useBlockDepositsQuery';
 import useBlockInternalTxsQuery from 'ui/block/useBlockInternalTxsQuery';
 import useBlockQuery from 'ui/block/useBlockQuery';
 import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
@@ -53,12 +55,14 @@ const BlockPageContent = () => {
   const blockQuery = useBlockQuery({ heightOrHash });
   const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
   const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
+  const blockDepositsQuery = useBlockDepositsQuery({ heightOrHash, blockQuery, tab });
   const blockBlobTxsQuery = useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab });
   const blockInternalTxsQuery = useBlockInternalTxsQuery({ heightOrHash, blockQuery, tab });
 
   const hasPagination = !isMobile && (
     (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
     (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible) ||
+    (tab === 'deposits' && blockDepositsQuery.pagination.isVisible) ||
     (tab === 'internal_txs' && blockInternalTxsQuery.pagination.isVisible)
   );
 
@@ -101,6 +105,17 @@ const BlockPageContent = () => {
           <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false }/>
         ),
       } : null,
+    config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.beacon_deposits_count) ?
+      {
+        id: 'deposits',
+        title: 'Deposits',
+        component: (
+          <>
+            { blockDepositsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockDepositsQuery.isPlaceholderData } mb={ 6 }/> }
+            <BlockDeposits blockDepositsQuery={ blockDepositsQuery }/>
+          </>
+        ),
+      } : null,
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
       {
         id: 'withdrawals',
@@ -112,13 +127,15 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-  ].filter(Boolean)), [ blockBlobTxsQuery, blockInternalTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination ]);
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockDepositsQuery, blockInternalTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination ]);
 
   let pagination;
   if (tab === 'txs') {
     pagination = blockTxsQuery.pagination;
   } else if (tab === 'withdrawals') {
     pagination = blockWithdrawalsQuery.pagination;
+  } else if (tab === 'deposits') {
+    pagination = blockDepositsQuery.pagination;
   } else if (tab === 'internal_txs') {
     pagination = blockInternalTxsQuery.pagination;
   }
