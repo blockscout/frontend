@@ -61,28 +61,22 @@ const ZetaChainCCTxs = ({
       queryParams: {
         limit: 50,
         offset: 0,
-        status_reduced: type === 'pending' ? 'Pending' : [ 'Success', 'Failed' ],
+        status_reduced: type === 'pending' ? [ 'Pending' ] : [ 'Success', 'Failed' ],
         direction: 'DESC',
       },
     });
 
+    const filteredPayload = type === 'pending' ?
+      payload.filter(tx => tx.status_reduced === 'PENDING') :
+      payload.filter(tx => tx.status_reduced === 'SUCCESS' || tx.status_reduced === 'FAILED');
+
     queryClient.setQueryData(currentQueryKey, (prevData: ZetaChainCCTXListResponse | undefined) => {
       if (!prevData) {
-        // Filter payload based on type
-        const filteredPayload = type === 'pending' ?
-          payload.filter(tx => tx.status_reduced === 'PENDING') :
-          payload.filter(tx => tx.status_reduced === 'SUCCESS' || tx.status_reduced === 'FAILED');
-
         return {
           items: filteredPayload,
           next_page_params: null,
         };
       }
-
-      // Filter payload based on type
-      const filteredPayload = type === 'pending' ?
-        payload.filter(tx => tx.status_reduced === 'PENDING') :
-        payload.filter(tx => tx.status_reduced === 'SUCCESS' || tx.status_reduced === 'FAILED');
 
       if (filteredPayload.length === 0) {
         return prevData; // No relevant transactions to add
@@ -124,7 +118,8 @@ const ZetaChainCCTxs = ({
   }, []);
 
   // Socket channel for CCTX updates
-  const hasFilters = Object.keys(filters).length > 0;
+  const hasFilters = Object.values(filters).some(value => value !== undefined && value !== '');
+
   const channel = useSocketChannel({
     topic: 'cctxs:new_cctxs',
     isDisabled: hasFilters, // Disable when filters are applied
@@ -142,7 +137,7 @@ const ZetaChainCCTxs = ({
   const content = (
     <>
       <Box hideFrom="lg">
-        { pagination.page === 1 && Object.keys(filters).length === 0 && (
+        { pagination.page === 1 && !hasFilters && (
           <SocketNewItemsNotice.Mobile
             showErrorAlert={ showSocketErrorAlert }
             type="cross_chain_transaction"
@@ -168,7 +163,7 @@ const ZetaChainCCTxs = ({
           onFilterChange={ onFilterChange }
           isPlaceholderData={ isPlaceholderData }
           showStatusFilter={ showStatusFilter }
-          showSocketInfo={ pagination.page === 1 && Object.keys(filters).length === 0 }
+          showSocketInfo={ pagination.page === 1 && !hasFilters }
           showSocketErrorAlert={ showSocketErrorAlert }
           socketInfoNum={ showOverloadNotice ? 1 : 0 }
         />
