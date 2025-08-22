@@ -16,6 +16,7 @@ export const ZETA_CHAIN_API_RESOURCES = {
       'target_chain_id' as const,
       'token_symbol' as const,
       'hash' as const,
+      'age' as const, // frontend only
     ],
     paginated: true,
   },

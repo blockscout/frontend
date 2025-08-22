@@ -1,4 +1,4 @@
-import { capitalize } from 'es-toolkit/compat';
+import { capitalize, omit } from 'es-toolkit/compat';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -6,6 +6,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import { ADVANCED_FILTER_AGES, type AdvancedFilterAge } from 'types/api/advancedFilter';
 import { ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS, type ZetaChainCCTXFilterParams, type ZetaChainCCTXStatusReducedFilter } from 'types/api/zetaChain';
 
+import dayjs from 'lib/date/dayjs';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getValuesArrayFromQuery from 'lib/getValuesArrayFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -13,6 +14,7 @@ import getNetworkValidationActionText from 'lib/networks/getNetworkValidationAct
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { zetaChainCCTXItem } from 'mocks/zetaChain/zetaChainCCTX';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import { getDurationFromAge } from 'ui/advancedFilter/lib';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
@@ -34,9 +36,11 @@ const ZetaChainEvmTransactions = () => {
 
   const [ filters, setFilters ] = React.useState<ZetaChainCCTXFilterParams>(() => {
     const age = getFilterValueFromQuery<AdvancedFilterAge>(ADVANCED_FILTER_AGES, router.query.age);
+    const startTimestampFromQuery = getQueryParamString(router.query.start_timestamp) ? getQueryParamString(router.query.start_timestamp) : undefined;
+    const endTimestampFromQuery = getQueryParamString(router.query.end_timestamp) ? getQueryParamString(router.query.end_timestamp) : undefined;
     return {
-      start_timestamp: getQueryParamString(router.query.start_timestamp),
-      end_timestamp: getQueryParamString(router.query.end_timestamp),
+      end_timestamp: age ? dayjs().unix().toString() : endTimestampFromQuery,
+      start_timestamp: age ? dayjs((dayjs().valueOf() - getDurationFromAge(age))).unix().toString() : startTimestampFromQuery,
       age,
       status_reduced: getFilterValueFromQuery<ZetaChainCCTXStatusReducedFilter>(ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS, router.query.status_reduced),
       sender_address: getValuesArrayFromQuery(router.query.sender_address),
@@ -83,23 +87,21 @@ const ZetaChainEvmTransactions = () => {
     setFilters(prevState => {
       const newState = { ...prevState };
       newState[field] = val;
-      query.onFilterChange(newState);
+      query.onFilterChange(newState.age ? omit(newState, [ 'start_timestamp', 'end_timestamp' ]) : newState);
+
       return newState;
     });
   }, [ query ]);
 
   const onClearFilter = React.useCallback((key: keyof ZetaChainCCTXFilterParams) => () => {
-    setFilters(prevState => {
-      const newState = { ...prevState };
-      if (key === 'age') {
-        delete newState.start_timestamp;
-        delete newState.end_timestamp;
-      }
-      delete newState[key];
-      query.onFilterChange(newState);
-      return newState;
-    });
-  }, [ query ]);
+    if (key === 'age') {
+      handleFilterChange('start_timestamp', undefined);
+      handleFilterChange('end_timestamp', undefined);
+    }
+    handleFilterChange(key, undefined);
+  },
+  [ handleFilterChange ],
+  );
 
   const clearAllFilters = React.useCallback(() => {
     setFilters({});
