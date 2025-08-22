@@ -67,7 +67,6 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
         </Button>
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" ml={ 3 } borderRadius="base">
-        { '>' }
         <Button
           size="sm"
           px="24px"
@@ -80,7 +79,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
           isDisabled={ !hasNextPage || isLoading }
           onClick={ onNextPageClick }
         >
-          { '<' }
+          { '>' }
         </Button>
       </Skeleton>
       { /* not implemented yet */ }
