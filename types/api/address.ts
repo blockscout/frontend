@@ -201,6 +201,7 @@ export type AddressTabsCounters = {
   transactions_count: number | null;
   validations_count: number | null;
   withdrawals_count: number | null;
+  beacon_deposits_count: number | null;
   celo_election_rewards_count?: number | null;
 };
 
