@@ -1,6 +1,8 @@
 import React from 'react';
 
+import config from 'configs/app';
 import { isBech32Address, fromBech32Address } from 'lib/address/bech32';
+import { checkCosmosHash } from 'lib/address/cosmos';
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 
@@ -21,11 +23,23 @@ export default function useQuickSearchQuery() {
     queryOptions: { enabled: Boolean(debouncedSearchTerm) },
   });
 
+  const zetaChainCCTXQuery = useApiQuery('zetachain:transactions', {
+    queryParams: {
+      hash: debouncedSearchTerm,
+      limit: 10,
+      offset: 0,
+      direction: 'DESC',
+    },
+    queryOptions: { enabled: debouncedSearchTerm.trim().length > 0 && config.features.zetachain.isEnabled },
+  });
+
   return React.useMemo(() => ({
     searchTerm,
     debouncedSearchTerm,
     handleSearchTermChange: setSearchTerm,
     query,
     redirectCheckQuery,
-  }), [ debouncedSearchTerm, query, redirectCheckQuery, searchTerm ]);
+    cosmosHashType: checkCosmosHash(debouncedSearchTerm),
+    zetaChainCCTXQuery,
+  }), [ debouncedSearchTerm, query, redirectCheckQuery, searchTerm, zetaChainCCTXQuery ]);
 }

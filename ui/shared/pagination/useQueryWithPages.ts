@@ -21,6 +21,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 export interface Params<Resource extends PaginatedResourceName> {
   resourceName: Resource;
   options?: UseApiQueryParams<Resource>['queryOptions'];
+  queryParams?: UseApiQueryParams<Resource>['queryParams'];
   pathParams?: UseApiQueryParams<Resource>['pathParams'];
   filters?: PaginationFilters<Resource>;
   sorting?: PaginationSorting<Resource>;
@@ -70,6 +71,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   sorting,
   options,
   pathParams,
+  queryParams: queryParamsFromProps,
   scrollRef,
   isMultichain,
 }: Params<Resource>): QueryWithPagesResult<Resource> {
@@ -89,7 +91,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   );
 
   const isMounted = React.useRef(false);
-  const queryParams = { ...pageParams[page], ...filters, ...sorting };
+  const queryParams = { ...pageParams[page], ...filters, ...sorting, ...queryParamsFromProps };
 
   const scrollToTop = useCallback(() => {
     scrollRef?.current ? scrollRef.current.scrollIntoView(true) : animateScroll.scrollToTop({ duration: 0 });
@@ -235,7 +237,15 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     }
   }, [ page, resetPage, router ]);
 
-  const hasNextPage = nextPageParams ? Object.keys(nextPageParams).length > 0 : false;
+  let hasNextPage = false;
+  if (nextPageParams) {
+    // ¯\_(ツ)_/¯
+    if (resourceName === 'zetachain:transactions' && 'limit' in nextPageParams) {
+      hasNextPage = Boolean(nextPageParams.limit && nextPageParams.limit > 0);
+    } else {
+      hasNextPage = Object.keys(nextPageParams).length > 0;
+    }
+  }
 
   const pagination = {
     page,
