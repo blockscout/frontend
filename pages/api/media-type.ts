@@ -11,6 +11,26 @@ export default async function mediaTypeHandler(req: NextApiRequest, res: NextApi
   try {
     const url = getQueryParamString(req.query.url);
 
+    // SSRF protection: Only allow URLs from trusted hostnames
+    const allowedHostnames = [
+      'example.com',
+      'cdn.example.com',
+      // Add other trusted hostnames as needed
+    ];
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(url);
+    } catch (e) {
+      httpLogger.logger.error({ message: 'Invalid URL', url });
+      res.status(400).json({ type: undefined, error: 'Invalid URL' });
+      return;
+    }
+    if (!allowedHostnames.includes(parsedUrl.hostname)) {
+      httpLogger.logger.error({ message: 'Disallowed hostname', url, hostname: parsedUrl.hostname });
+      res.status(403).json({ type: undefined, error: 'Disallowed hostname' });
+      return;
+    }
+
     const end = metrics?.apiRequestDuration.startTimer();
     const response = await nodeFetch(url, { method: 'HEAD' });
     const duration = end?.({ route: '/media-type', code: response.status });
