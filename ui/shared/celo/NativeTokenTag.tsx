@@ -10,6 +10,11 @@ const feature = config.features.celo;
 interface Props extends TagProps {}
 
 const NativeTokenTag = (props: Props) => {
+
+  const handleLinkClick = React.useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.stopPropagation();
+  }, []);
+
   if (!feature.isEnabled || !feature.nativeTokenAddress) {
     return null;
   }
@@ -17,7 +22,7 @@ const NativeTokenTag = (props: Props) => {
   const tooltipContent = (
     <>
       <span>This ERC-20 token represents the native CELO balance for this address and isn’t counted twice. </span>
-      <Link href="https://docs.celo.org/what-is-celo/using-celo/protocol/celo-token" external>
+      <Link href="https://docs.celo.org/what-is-celo/using-celo/protocol/celo-token" external onClick={ handleLinkClick }>
         Learn more
       </Link>
     </>
