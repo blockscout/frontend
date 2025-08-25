@@ -112,6 +112,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   celo: [
     [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_CELO_NATIVE_TOKEN_ADDRESS', '0x471EcE3750Da237f93B8E339c536989b8978a438' ],
   ],
   opSuperchain: [
     [ 'NEXT_PUBLIC_OP_SUPERCHAIN_ENABLED', 'true' ],
