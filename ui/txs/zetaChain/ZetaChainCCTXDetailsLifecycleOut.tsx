@@ -211,7 +211,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
         <Flex color={ color } maxH="20px" alignItems="center" mb={ 2.5 }>
           { text }
         </Flex>
-        <Grid templateColumns="100px 1fr" rowGap={ 4 } columnGap={ 3 } bg="alert.bg.info" py={ 3 } px={ 4 } borderRadius="md">
+        <Grid templateColumns="100px 1fr" rowGap={ 4 } columnGap={ 3 } bg="alert.bg.info" py={ 3 } px={ 4 } borderBottomRadius="md">
           { content }
         </Grid>
       </Skeleton>

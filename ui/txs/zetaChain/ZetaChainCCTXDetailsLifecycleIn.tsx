@@ -30,7 +30,7 @@ const ZetaChainCCTXDetailsLifecycleIn = ({ tx, isLoading }: Props) => {
         <Flex color={ inboundParams.status === 'SUCCESS' ? 'text.success' : 'text.error' } maxH="20px" mb={ 2.5 } alignItems="center">
           { `Sender tx from ${ chainFrom?.chain_name || 'unknown chain' }` }
         </Flex>
-        <Grid templateColumns="100px 1fr" rowGap={ 4 } columnGap={ 3 } bg="alert.bg.info" py={ 3 } px={ 4 } borderRadius="md" overflow="hidden">
+        <Grid templateColumns="100px 1fr" rowGap={ 4 } columnGap={ 3 } bg="alert.bg.info" py={ 3 } px={ 4 } borderBottomRadius="md" overflow="hidden">
           <Text color="text.secondary" fontWeight="medium">Transaction</Text>
           { chainFrom?.chain_id.toString() !== config.chain.id ? (
             <TxEntityWithExternalChain chain={ chainFrom } hash={ inboundParams.observed_hash } noIcon noCopy={ false }/>
