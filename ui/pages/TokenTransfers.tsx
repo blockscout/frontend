@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TokenType } from 'types/api/token';
 
+import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
@@ -61,6 +62,10 @@ const TokenTransfers = () => {
         itemsNum={ query.data?.items.length }
         emptyText="There are no token transfers."
         actionBar={ actionBar }
+        filterProps={{
+          hasActiveFilters: Boolean(typeFilter.length),
+          emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,
+        }}
       >
         { content }
       </DataListDisplay>

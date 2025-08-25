@@ -8,7 +8,7 @@ import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 import type * as metadata from 'lib/metadata';
 
-import detectBotRequest from '../utils/detectBotRequest';
+import { isLikelyHumanBrowser, isKnownBotRequest } from '../utils/checkRealBrowser';
 
 const adBannerFeature = config.features.adsBanner;
 
@@ -45,28 +45,30 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   }
 
   const isTrackingDisabled = process.env.DISABLE_TRACKING === 'true';
-  const isBot = Boolean(detectBotRequest(req));
 
-  if (!isTrackingDisabled && !isBot) {
+  if (!isTrackingDisabled) {
+    const isRealUser = isLikelyHumanBrowser(req) && !isKnownBotRequest(req);
+    if (isRealUser) {
     // log pageview
-    const hostname = req.headers.host;
-    const timestamp = new Date().toISOString();
-    const chainId = process.env.NEXT_PUBLIC_NETWORK_ID;
-    const chainName = process.env.NEXT_PUBLIC_NETWORK_NAME;
-    const publicRPC = process.env.NEXT_PUBLIC_NETWORK_RPC_URL;
+      const hostname = req.headers.host;
+      const timestamp = new Date().toISOString();
+      const chainId = process.env.NEXT_PUBLIC_NETWORK_ID;
+      const chainName = process.env.NEXT_PUBLIC_NETWORK_NAME;
+      const publicRPC = process.env.NEXT_PUBLIC_NETWORK_RPC_URL;
 
-    fetch('https://monitor.blockscout.com/count', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        hostname,
-        timestamp,
-        chainId,
-        chainName,
-        publicRPC,
-        uuid,
-      }),
-    });
+      fetch('https://monitor.blockscout.com/count', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          hostname,
+          timestamp,
+          chainId,
+          chainName,
+          publicRPC,
+          uuid,
+        }),
+      });
+    }
   }
 
   return {

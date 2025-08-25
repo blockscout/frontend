@@ -26,9 +26,14 @@ export const REST_API_SECTIONS = [
       url: feature.coreApiSwaggerUrl,
       requestInterceptor: (req: SwaggerRequest) => {
         const DEFAULT_SERVER = 'blockscout.com/poa/core';
+        const DEFAULT_SERVER_NEW = 'eth.blockscout.com';
 
         if (!req.loadSpec) {
-          const newUrl = new URL(req.url.replace(DEFAULT_SERVER, config.apis.general.host));
+          const newUrl = new URL(
+            req.url
+              .replace(DEFAULT_SERVER, config.apis.general.host)
+              .replace(DEFAULT_SERVER_NEW, config.apis.general.host),
+          );
 
           newUrl.protocol = config.apis.general.protocol + ':';
 

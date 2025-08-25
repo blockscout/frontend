@@ -22,7 +22,7 @@ const TxDetails = ({ txQuery, tacOperationQuery }: Props) => {
 
   return (
     <>
-      <TestnetWarning mb={ 6 } isLoading={ txQuery.isPlaceholderData }/>
+      <TestnetWarning mb={{ base: 3, lg: 6 }} isLoading={ txQuery.isPlaceholderData }/>
       <TxInfo
         data={ txQuery.data }
         tacOperations={ tacOperationQuery?.data?.items }

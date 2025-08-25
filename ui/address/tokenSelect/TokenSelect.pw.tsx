@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as addressMock from 'mocks/address/address';
 import * as tokensMock from 'mocks/address/tokens';
-import { tokenInfoERC20a } from 'mocks/tokens/tokenInfo';
+import { tokenInfoERC20c, tokenInfoERC20a } from 'mocks/tokens/tokenInfo';
 import { test, expect, devices } from 'playwright/lib';
 import MockAddressPage from 'ui/address/testUtils/MockAddressPage';
 
@@ -113,6 +113,25 @@ test('long values', async({ render, page, mockApiResponse }) => {
     items: [ tokensMock.erc1155LongId ], next_page_params: null,
   }, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' }, times: 1 });
   await mockApiResponse('general:address_tokens', tokensMock.erc404List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' }, times: 1 });
+
+  await render(
+    <MockAddressPage>
+      <Flex>
+        <TokenSelect/>
+      </Flex>
+    </MockAddressPage>,
+    { hooksConfig },
+  );
+  await page.getByRole('button', { name: /select/i }).click();
+
+  await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
+});
+
+test('native token', async({ render, mockEnvs, page }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_CELO_NATIVE_TOKEN_ADDRESS', tokenInfoERC20c.address_hash ],
+  ]);
 
   await render(
     <MockAddressPage>

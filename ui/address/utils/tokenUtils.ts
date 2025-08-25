@@ -3,8 +3,14 @@ import BigNumber from 'bignumber.js';
 import type { AddressTokenBalance } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 
+import config from 'configs/app';
 import sumBnReducer from 'lib/bigint/sumBnReducer';
 import { ZERO } from 'toolkit/utils/consts';
+
+const celoFeature = config.features.celo;
+
+const isNativeToken = (token: TokenEnhancedData) =>
+  celoFeature.isEnabled && token.token.address_hash.toLowerCase() === celoFeature.nativeTokenAddress?.toLowerCase();
 
 export type TokenEnhancedData = AddressTokenBalance & {
   usd?: BigNumber ;
@@ -94,7 +100,7 @@ export const calculateUsdValue = (data: AddressTokenBalance): TokenEnhancedData 
 
 export const getTokensTotalInfo = (data: TokenSelectData) => {
   const usd = Object.values(data)
-    .map(({ items }) => items.reduce(usdValueReducer, ZERO))
+    .map(({ items }) => items.filter((item) => !isNativeToken(item)).reduce(usdValueReducer, ZERO))
     .reduce(sumBnReducer, ZERO);
 
   const num = Object.values(data)

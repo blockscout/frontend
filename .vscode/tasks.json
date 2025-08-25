@@ -364,6 +364,7 @@
               "arbitrum_sepolia",
               "base",
               "blackfort_testnet",
+              "celo",
               "celo_alfajores",
               "garnet",
               "gnosis",

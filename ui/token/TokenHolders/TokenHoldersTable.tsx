@@ -24,9 +24,12 @@ const TokenHoldersTable = ({ data, token, top, isLoading }: Props) => {
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { data.map((item, index) => (
-          <TokenHoldersTableItem key={ item.address.hash + (isLoading ? index : '') } holder={ item } token={ token } isLoading={ isLoading }/>
-        )) }
+        { data.map((item, index) => {
+          const tokenId = 'token_id' in item ? item.token_id : null;
+          return (
+            <TokenHoldersTableItem key={ item.address.hash + tokenId + (isLoading ? index : '') } holder={ item } token={ token } isLoading={ isLoading }/>
+          );
+        }) }
       </TableBody>
     </TableRoot>
   );
