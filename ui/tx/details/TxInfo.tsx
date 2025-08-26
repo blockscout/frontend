@@ -5,6 +5,7 @@ import {
   Spinner,
   Flex,
   chakra,
+  VStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -133,7 +134,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
     </Tooltip>
   ) : null;
 
-  const hasInterop = rollupFeature.isEnabled && rollupFeature.interopEnabled && data.op_interop;
+  const hasInterop = rollupFeature.isEnabled && rollupFeature.interopEnabled && data.op_interop_messages && data.op_interop_messages.length > 0;
 
   return (
     <DetailedInfo.Container>
@@ -154,7 +155,9 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
 
       { tacOperations && tacOperations.length > 0 && <TxDetailsTacOperation tacOperations={ tacOperations } isLoading={ isLoading } txHash={ data.hash }/> }
 
-      <TxDetailsInterop data={ data.op_interop } isLoading={ isLoading }/>
+      { data.op_interop_messages ? data.op_interop_messages.map((message) => (
+        <TxDetailsInterop key={ message.nonce } data={ message } isLoading={ isLoading }/>
+      )) : null }
 
       <DetailedInfo.ItemLabel
         hint="Unique character string (TxID) assigned to every verified transaction"
@@ -498,7 +501,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
 
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
 
-      { hasInterop && data.op_interop?.target && (
+      { hasInterop && data.op_interop_messages?.some(message => message.target_address_hash) && (
         <>
           <DetailedInfo.ItemLabel
             isLoading={ isLoading }
@@ -506,40 +509,24 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Interop target
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue flexWrap="nowrap">
-            { data.op_interop?.relay_chain !== undefined ? (
-              <AddressEntityInterop
-                chain={ data.op_interop.relay_chain }
-                address={{ hash: data.op_interop.target }}
-                isLoading={ isLoading }
-                truncation="dynamic"
-              />
-            ) : (
-              <AddressEntity address={{ hash: data.op_interop.target }} isLoading={ isLoading } truncation="dynamic"/>
-            ) }
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
-
-      { hasInterop && data.op_interop?.target && (
-        <>
-          <DetailedInfo.ItemLabel
-            isLoading={ isLoading }
-            hint="The target address where this cross-chain transaction is executed"
-          >
-            Interop target
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue flexWrap="nowrap">
-            { data.op_interop?.relay_chain !== undefined ? (
-              <AddressEntityInterop
-                chain={ data.op_interop.relay_chain }
-                address={{ hash: data.op_interop.target }}
-                isLoading={ isLoading }
-                truncation="dynamic"
-              />
-            ) : (
-              <AddressEntity address={{ hash: data.op_interop.target }} isLoading={ isLoading } truncation="dynamic"/>
-            ) }
+          <DetailedInfo.ItemValue>
+            <VStack gap={ 2 } w="100%" overflow="hidden" alignItems="flex-start">
+              { data.op_interop_messages
+                .filter((message) => message.target_address_hash)
+                .map((message) => {
+                  return message.relay_chain !== undefined ? (
+                    <AddressEntityInterop
+                      chain={ message.relay_chain }
+                      address={{ hash: message.target_address_hash }}
+                      isLoading={ isLoading }
+                      truncation="dynamic"
+                      w="100%"
+                    />
+                  ) : (
+                    <AddressEntity address={{ hash: message.target_address_hash }} isLoading={ isLoading } truncation="dynamic" w="100%"/>
+                  );
+                }) }
+            </VStack>
           </DetailedInfo.ItemValue>
         </>
       ) }

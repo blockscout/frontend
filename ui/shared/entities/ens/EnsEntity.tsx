@@ -32,10 +32,10 @@ const Link = chakra((props: LinkProps) => {
 type IconProps = Pick<EntityProps, 'protocol'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
-  const icon = <EntityBase.Icon { ...props } name={ props.name ?? 'ENS_slim' }/>;
+  const icon = <EntityBase.Icon { ...props } name={ 'name' in props ? props.name : 'ENS_slim' }/>;
 
   if (props.protocol) {
-    const styles = getIconProps(props.variant);
+    const styles = getIconProps(props);
 
     if (props.isLoading) {
       return <Skeleton loading boxSize={ styles.boxSize } borderRadius="sm" mr={ 2 }/>;
@@ -65,7 +65,7 @@ const Icon = (props: IconProps) => {
             alignItems="center"
             external
           >
-            <IconSvg name="docs" boxSize={ 5 } color="text.secondary" mr={ 2 }/>
+            <IconSvg name="docs" boxSize={ 5 } color="icon.primary" mr={ 2 }/>
             <span>Documentation</span>
           </LinkToolkit>
         ) }
@@ -91,10 +91,9 @@ const Icon = (props: IconProps) => {
         interactive
       >
         <Image
+          { ...styles }
           src={ props.protocol.icon_url }
-          boxSize={ styles.boxSize }
           borderRadius="sm"
-          mr={ 2 }
           flexShrink={ 0 }
           alt={ `${ props.protocol.title } protocol icon` }
           fallback={ icon }

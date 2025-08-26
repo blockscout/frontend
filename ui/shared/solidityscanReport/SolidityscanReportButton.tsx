@@ -34,8 +34,8 @@ const SolidityscanReportButton = ({ score, isLoading, ...rest }: Props) => {
             flexShrink={ 0 }
             columnGap={ 1 }
             disabled={ isLoading }
-            _hover={{ color: 'link.primary.hover' }}
-            _expanded={{ color: 'link.primary.hover' }}
+            _hover={{ color: 'hover' }}
+            _expanded={{ color: 'hover' }}
             _disabled={{
               opacity: 1,
               _hover: { color: colorLoading },

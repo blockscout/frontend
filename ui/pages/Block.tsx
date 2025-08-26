@@ -6,6 +6,8 @@ import React from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
+import { routeParams } from 'nextjs/routes';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
@@ -16,10 +18,12 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
+import BlockDeposits from 'ui/block/BlockDeposits';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockInternalTxs from 'ui/block/BlockInternalTxs';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import useBlockBlobTxsQuery from 'ui/block/useBlockBlobTxsQuery';
+import useBlockDepositsQuery from 'ui/block/useBlockDepositsQuery';
 import useBlockInternalTxsQuery from 'ui/block/useBlockInternalTxsQuery';
 import useBlockQuery from 'ui/block/useBlockQuery';
 import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
@@ -27,6 +31,7 @@ import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -45,17 +50,19 @@ const BlockPageContent = () => {
   const isMobile = useIsMobile();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
   const tab = getQueryParamString(router.query.tab);
-  const { chain } = useMultichainContext() || {};
+  const multichainContext = useMultichainContext();
 
   const blockQuery = useBlockQuery({ heightOrHash });
   const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
   const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
+  const blockDepositsQuery = useBlockDepositsQuery({ heightOrHash, blockQuery, tab });
   const blockBlobTxsQuery = useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab });
   const blockInternalTxsQuery = useBlockInternalTxsQuery({ heightOrHash, blockQuery, tab });
 
   const hasPagination = !isMobile && (
     (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
     (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible) ||
+    (tab === 'deposits' && blockDepositsQuery.pagination.isVisible) ||
     (tab === 'internal_txs' && blockInternalTxsQuery.pagination.isVisible)
   );
 
@@ -98,6 +105,17 @@ const BlockPageContent = () => {
           <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false }/>
         ),
       } : null,
+    config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.beacon_deposits_count) ?
+      {
+        id: 'deposits',
+        title: 'Deposits',
+        component: (
+          <>
+            { blockDepositsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockDepositsQuery.isPlaceholderData } mb={ 6 }/> }
+            <BlockDeposits blockDepositsQuery={ blockDepositsQuery }/>
+          </>
+        ),
+      } : null,
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
       {
         id: 'withdrawals',
@@ -109,13 +127,15 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-  ].filter(Boolean)), [ blockBlobTxsQuery, blockInternalTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination ]);
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockDepositsQuery, blockInternalTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination ]);
 
   let pagination;
   if (tab === 'txs') {
     pagination = blockTxsQuery.pagination;
   } else if (tab === 'withdrawals') {
     pagination = blockWithdrawalsQuery.pagination;
+  } else if (tab === 'deposits') {
+    pagination = blockDepositsQuery.pagination;
   } else if (tab === 'internal_txs') {
     pagination = blockInternalTxsQuery.pagination;
   }
@@ -124,7 +144,8 @@ const BlockPageContent = () => {
 
   if (blockQuery.isError) {
     if (!blockQuery.isDegradedData && blockQuery.error.status === 404 && !heightOrHash.startsWith('0x')) {
-      router.push({ pathname: '/block/countdown/[height]', query: { height: heightOrHash } });
+      const url = routeParams({ pathname: '/block/countdown/[height]', query: { height: heightOrHash } }, multichainContext);
+      router.push(url, undefined, { shallow: true });
       return null;
     } else {
       throwOnResourceLoadError(blockQuery);
@@ -132,19 +153,21 @@ const BlockPageContent = () => {
   }
 
   const title = (() => {
-    const chainText = chain ? ` on ${ chain.config.chain.name }` : '';
-
     switch (blockQuery.data?.type) {
       case 'reorg':
-        return `Reorged block #${ blockQuery.data?.height }${ chainText }`;
+        return `Reorged block #${ blockQuery.data?.height }`;
 
       case 'uncle':
-        return `Uncle block #${ blockQuery.data?.height }${ chainText }`;
+        return `Uncle block #${ blockQuery.data?.height }`;
 
       default:
-        return `Block #${ blockQuery.data?.height }${ chainText }`;
+        return `Block #${ blockQuery.data?.height }`;
     }
   })();
+
+  const beforeTitleElement = multichainContext?.chain ? (
+    <BlockEntity.Icon variant="heading" chain={ multichainContext.chain } isLoading={ blockQuery.isPlaceholderData }/>
+  ) : null;
 
   const titleSecondRow = (
     <>
@@ -176,6 +199,7 @@ const BlockPageContent = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         title={ title }
+        beforeTitle={ beforeTitleElement }
         contentAfter={ <BlockCeloEpochTag blockQuery={ blockQuery }/> }
         secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }

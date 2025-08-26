@@ -32,7 +32,7 @@ const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: Item
       { isBurning ? (
         <>
           <AddressEntity address={ addressFrom } truncation="constant"/>
-          <IconSvg name="flame" boxSize={ 5 } color="gray.500"/>
+          <IconSvg name="flame" boxSize={ 5 } color="icon.primary"/>
           <Box color="text.secondary">burnt</Box>
         </>
       ) : <AddressFromTo from={ addressFrom } to={ address }/> }

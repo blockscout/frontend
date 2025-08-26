@@ -36,13 +36,13 @@ export default function useNavItems(): ReturnType {
       text: 'Blocks',
       nextRoute: { pathname: '/blocks' as const },
       icon: 'block',
-      isActive: pathname === '/blocks' || pathname === '/block/[height_or_hash]',
+      isActive: pathname === '/blocks' || pathname === '/block/[height_or_hash]' || pathname === '/chain/[chain-slug]/block/[height_or_hash]',
     };
     const txs: NavItem | null = {
       text: 'Transactions',
       nextRoute: { pathname: '/txs' as const },
       icon: 'transactions',
-      isActive: pathname === '/txs' || pathname === '/tx/[hash]',
+      isActive: pathname === '/txs' || pathname === '/tx/[hash]' || pathname === '/chain/[chain-slug]/tx/[hash]',
     };
     const operations: NavItem | null = config.features.tac.isEnabled ? {
       text: 'Operations',
@@ -60,7 +60,7 @@ export default function useNavItems(): ReturnType {
       text: 'User operations',
       nextRoute: { pathname: '/ops' as const },
       icon: 'user_op',
-      isActive: pathname === '/ops' || pathname === '/op/[hash]',
+      isActive: pathname === '/ops' || pathname === '/op/[hash]' || pathname === '/chain/[chain-slug]/op/[hash]',
     } : null;
 
     const verifiedContracts: NavItem | null =
@@ -208,6 +208,12 @@ export default function useNavItems(): ReturnType {
         verifiedContracts,
         ensLookup,
         config.features.beaconChain.isEnabled && {
+          text: 'Deposits',
+          nextRoute: { pathname: '/deposits' as const },
+          icon: 'arrows/south-east',
+          isActive: pathname === '/deposits',
+        },
+        config.features.beaconChain.isEnabled && {
           text: 'Withdrawals',
           nextRoute: { pathname: '/withdrawals' as const },
           icon: 'arrows/north-east',
@@ -245,7 +251,11 @@ export default function useNavItems(): ReturnType {
     } : null;
 
     const otherNavItems: Array<NavItem> | Array<Array<NavItem>> = [
-      {
+      config.features.opSuperchain.isEnabled ? {
+        text: 'Verify contract',
+        // TODO @tom2drum adjust URL to Vera
+        url: 'https://vera.blockscout.com',
+      } : {
         text: 'Verify contract',
         nextRoute: { pathname: '/contract-verification' as const },
         isActive: pathname.startsWith('/contract-verification'),

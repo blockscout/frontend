@@ -3,6 +3,8 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { useMultichainContext } from 'lib/contexts/multichain';
+import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
@@ -31,13 +33,16 @@ const TokenTransferTable = ({
   socketInfoNum,
   isLoading,
 }: Props) => {
+  const multichainContext = useMultichainContext();
+  const chainData = getChainDataForList(multichainContext);
 
   return (
     <AddressHighlightProvider>
       <TableRoot minW="950px">
         <TableHeaderSticky top={ top }>
           <TableRow>
-            { showTxInfo && <TableColumnHeader width="44px"></TableColumnHeader> }
+            { showTxInfo && <TableColumnHeader width="48px"></TableColumnHeader> }
+            { chainData && <TableColumnHeader width={ showTxInfo ? '32px' : '38px' }/> }
             <TableColumnHeader width="230px">Token</TableColumnHeader>
             <TableColumnHeader width="160px">Token ID</TableColumnHeader>
             { showTxInfo && (
@@ -67,6 +72,7 @@ const TokenTransferTable = ({
               showTxInfo={ showTxInfo }
               enableTimeIncrement={ enableTimeIncrement }
               isLoading={ isLoading }
+              chainData={ chainData }
             />
           )) }
         </TableBody>

@@ -1,6 +1,5 @@
 import React from 'react';
-
-import type { SmartContractMethod } from './types';
+import type { Abi } from 'viem';
 
 import * as addressMock from 'mocks/address/address';
 import * as methodsMock from 'mocks/contract/methods';
@@ -41,7 +40,7 @@ test('all methods +@dark-mode', async({ render }) => {
     },
   };
 
-  const abi: Array<SmartContractMethod> = [ ...methodsMock.read, ...methodsMock.write ];
+  const abi: Abi = [ ...methodsMock.read, ...methodsMock.write ] as Abi;
   const component = await render(<ContractMethodsRegular abi={ abi }/>, { hooksConfig });
   await component.getByText(/expand all/i).click();
   await expect(component.getByText('HTTP request failed')).toBeVisible();
@@ -61,7 +60,7 @@ test.describe('all methods', () => {
       },
     };
 
-    const abi: Array<SmartContractMethod> = [ ...methodsMock.read, ...methodsMock.write ];
+    const abi: Abi = [ ...methodsMock.read, ...methodsMock.write ] as Abi;
     const component = await render(<ContractMethodsRegular abi={ abi }/>, { hooksConfig });
     await component.getByText(/expand all/i).click();
     // await expect(component.getByText('HTTP request failed')).toBeVisible();

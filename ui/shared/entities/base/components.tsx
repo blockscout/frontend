@@ -14,13 +14,14 @@ import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import type { IconName, Props as IconSvgProps } from 'ui/shared/IconSvg';
+import type { Props as IconSvgProps } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import { getContentProps, getIconProps } from './utils';
 
 export type Truncation = 'constant' | 'constant_long' | 'dynamic' | 'tail' | 'none';
+export type Variant = 'content' | 'heading' | 'subheading';
 
 export interface EntityBaseProps {
   className?: string;
@@ -38,7 +39,7 @@ export interface EntityBaseProps {
   target?: React.HTMLAttributeAnchorTarget;
   truncation?: Truncation;
   truncationMaxSymbols?: number;
-  variant?: 'content' | 'heading' | 'subheading';
+  variant?: Variant;
   linkVariant?: LinkProps['variant'];
   chain?: ChainConfig;
 }
@@ -92,36 +93,53 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, v
   );
 });
 
-interface EntityIconProps extends Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> {
-  name?: IconName;
+type EntityIconProps = (ImageProps | IconSvgProps) & Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> & {
   shield?: IconShieldProps;
   hint?: string;
   hintPostfix?: string;
   tooltipInteractive?: boolean;
-}
+};
 
-export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant' | 'chain'>, EntityIconProps {}
+export type IconBaseProps = Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant' | 'chain'> & EntityIconProps;
 
-const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRight, boxSize, shield, hint, tooltipInteractive }: IconBaseProps) => {
-  if (noIcon || !name) {
+const Icon = (props: IconBaseProps) => {
+  const { isLoading, noIcon, variant, color, borderRadius, marginRight, boxSize, shield, hint, tooltipInteractive, ...rest } = props;
+
+  if (noIcon) {
     return null;
   }
 
-  const styles = getIconProps(variant);
+  const styles = getIconProps(props, Boolean(shield));
 
-  const iconElement = (
-    <IconSvg
-      name={ name }
-      boxSize={ boxSize ?? styles.boxSize }
-      isLoading={ isLoading }
-      borderRadius={ borderRadius ?? 'base' }
-      display="block"
-      mr={ marginRight ?? (shield ? '18px' : '8px') }
-      color={ color ?? { _light: 'gray.500', _dark: 'gray.400' } }
-      minW={ 0 }
-      flexShrink={ 0 }
-    />
-  );
+  const iconElement = (() => {
+    const commonProps = {
+      marginRight: styles.marginRight,
+      boxSize: boxSize ?? styles.boxSize,
+      borderRadius: borderRadius ?? 'base',
+      flexShrink: 0,
+      minW: 0,
+    };
+
+    if (isLoading) {
+      return <Skeleton loading { ...commonProps }/>;
+    }
+
+    if ('src' in props) {
+      return <Image { ...commonProps } { ...rest }/>;
+    }
+
+    const svgProps = rest as IconSvgProps;
+
+    return (
+      <IconSvg
+        display="block"
+        color={ color ?? 'icon.primary' }
+        { ...commonProps }
+        { ...svgProps }
+      />
+    );
+  })();
+
   const iconElementWithHint = hint ? (
     <Tooltip
       content={ hint }
@@ -137,37 +155,38 @@ const Icon = ({ isLoading, noIcon, variant, name, color, borderRadius, marginRig
   }
 
   return (
-    <Box position="relative">
+    <Box position="relative" display="inline-flex" alignItems="center" flexShrink={ 0 }>
       { iconElementWithHint }
-      <IconShield isLoading={ isLoading } { ...shield }/>
+      <IconShield isLoading={ isLoading } variant={ variant } { ...shield }/>
     </Box>
   );
 };
 
-type IconShieldProps = (ImageProps | IconSvgProps) & { isLoading?: boolean };
+type IconShieldProps = (ImageProps | IconSvgProps) & { isLoading?: boolean; variant?: Variant };
 
 const IconShield = (props: IconShieldProps) => {
+  const { variant, ...rest } = props;
 
   const styles = {
     position: 'absolute',
-    top: '6px',
-    left: '12px',
+    top: variant === 'heading' ? '14px' : '6px',
+    left: variant === 'heading' ? '18px' : '12px',
     boxSize: '18px',
     borderRadius: 'full',
     borderWidth: '1px',
     borderStyle: 'solid',
     // The colors can be changed on hover, if address is highlighted
     // Because the highlighted styles are described as CSS classes, we must do the same for the shield border color.
-    // borderColor: 'global.body.bg',
-    // backgroundColor: 'global.body.bg',
+    // borderColor: 'bg.primary',
+    // backgroundColor: 'bg.primary',
     className: 'entity__shield',
   };
 
-  if ('src' in props) {
-    return props.isLoading ? <Skeleton loading { ...styles }/> : <Image { ...styles } { ...props }/>;
+  if ('src' in rest) {
+    return rest.isLoading ? <Skeleton loading { ...styles }/> : <Image { ...styles } { ...rest }/>;
   }
 
-  const svgProps = props as IconSvgProps;
+  const svgProps = rest as IconSvgProps;
 
   return <IconSvg { ...styles } { ...svgProps }/>;
 };

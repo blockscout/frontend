@@ -1,7 +1,7 @@
 const styles = {
   '.entity__shield': {
-    bgColor: 'global.body.bg',
-    borderColor: 'global.body.bg',
+    bgColor: 'bg.primary',
+    borderColor: 'bg.primary',
   },
 };
 

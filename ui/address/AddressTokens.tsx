@@ -1,34 +1,26 @@
-import { Box, chakra, HStack } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { NFTTokenType } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
-import * as cookies from 'lib/cookies';
-import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
-import { ADDRESS_TOKEN_BALANCE_ERC_20, ADDRESS_NFT_1155, ADDRESS_COLLECTION } from 'stubs/address';
+import { ADDRESS_TOKEN_BALANCE_ERC_20 } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
-import { Button, ButtonGroupRadio } from 'toolkit/chakra/button';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
-import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import AddressCollections from './tokens/AddressCollections';
+import AddressNftDisplayTypeRadio from './tokens/AddressNftDisplayTypeRadio';
 import AddressNFTs from './tokens/AddressNFTs';
+import AddressNftTypeFilter from './tokens/AddressNftTypeFilter';
 import ERC20Tokens from './tokens/ERC20Tokens';
 import TokenBalances from './tokens/TokenBalances';
-
-type TNftDisplayType = 'collection' | 'list';
+import useAddressNftQuery from './tokens/useAddressNftQuery';
 
 const TAB_LIST_PROPS = {
   mt: 1,
@@ -39,9 +31,6 @@ const TAB_LIST_PROPS = {
 const TAB_LIST_PROPS_MOBILE = {
   my: 8,
 };
-
-const getTokenFilterValue: (type: string | Array<string> | undefined) => Array<NFTTokenType> | undefined =
-(getFilterValuesFromQuery<NFTTokenType>).bind(null, NFT_TOKEN_TYPE_IDS);
 
 type Props = {
   shouldRender?: boolean;
@@ -54,10 +43,6 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const isMounted = useIsMounted();
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
-
-  const displayTypeCookie = cookies.get(cookies.NAMES.ADDRESS_NFT_DISPLAY_TYPE, useAppContext().cookies);
-  const [ nftDisplayType, setNftDisplayType ] = React.useState<TNftDisplayType>(displayTypeCookie === 'list' ? 'list' : 'collection');
-  const [ tokenTypes, setTokenTypes ] = React.useState<Array<NFTTokenType> | undefined>(getTokenFilterValue(router.query.type) || []);
 
   const tab = getQueryParamString(router.query.tab);
   const hash = getQueryParamString(router.query.hash);
@@ -74,50 +59,17 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
     },
   });
 
-  const collectionsQuery = useQueryWithPages({
-    resourceName: 'general:address_collections',
-    pathParams: { hash },
+  const { nftsQuery, collectionsQuery, displayType: nftDisplayType, tokenTypes: nftTokenTypes, onDisplayTypeChange, onTokenTypesChange } = useAddressNftQuery({
     scrollRef,
-    options: {
-      enabled: isQueryEnabled && tab === 'tokens_nfts' && nftDisplayType === 'collection',
-      placeholderData: generateListStub<'general:address_collections'>(ADDRESS_COLLECTION, 10, { next_page_params: null }),
-    },
-    filters: { type: tokenTypes },
+    enabled: isQueryEnabled && tab === 'tokens_nfts',
+    addressHash: hash,
   });
-
-  const nftsQuery = useQueryWithPages({
-    resourceName: 'general:address_nfts',
-    pathParams: { hash },
-    scrollRef,
-    options: {
-      enabled: isQueryEnabled && tab === 'tokens_nfts' && nftDisplayType === 'list',
-      placeholderData: generateListStub<'general:address_nfts'>(ADDRESS_NFT_1155, 10, { next_page_params: null }),
-    },
-    filters: { type: tokenTypes },
-  });
-
-  const handleNFTsDisplayTypeChange = React.useCallback((val: string) => {
-    cookies.set(cookies.NAMES.ADDRESS_NFT_DISPLAY_TYPE, val);
-    setNftDisplayType(val as TNftDisplayType);
-  }, []);
-
-  const handleTokenTypesChange = React.useCallback((value: Array<NFTTokenType>) => {
-    nftsQuery.onFilterChange({ type: value });
-    collectionsQuery.onFilterChange({ type: value });
-    setTokenTypes(value);
-  }, [ nftsQuery, collectionsQuery ]);
 
   if (!isMounted || !shouldRender) {
     return null;
   }
 
-  const nftTypeFilter = (
-    <PopoverFilter contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>
-      <TokenTypeFilter<NFTTokenType> nftOnly onChange={ handleTokenTypesChange } defaultValue={ tokenTypes }/>
-    </PopoverFilter>
-  );
-
-  const hasActiveFilters = Boolean(tokenTypes?.length);
+  const hasActiveFilters = Boolean(nftTokenTypes?.length);
 
   const tabs = [
     { id: 'tokens_erc20', title: `${ config.chain.tokenStandard }-20`, component: <ERC20Tokens tokensQuery={ erc20Query }/> },
@@ -125,27 +77,10 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
       id: 'tokens_nfts',
       title: 'NFTs',
       component: nftDisplayType === 'list' ?
-        <AddressNFTs tokensQuery={ nftsQuery } hasActiveFilters={ hasActiveFilters }/> :
-        <AddressCollections collectionsQuery={ collectionsQuery } address={ hash } hasActiveFilters={ hasActiveFilters }/>,
+        <AddressNFTs tokensQuery={ nftsQuery } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/> :
+        <AddressCollections collectionsQuery={ collectionsQuery } address={ hash } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/>,
     },
   ];
-
-  const nftDisplayTypeRadio = (
-    <ButtonGroupRadio
-      defaultValue={ nftDisplayType }
-      onChange={ handleNFTsDisplayTypeChange }
-      equalWidth
-    >
-      <Button value="collection" size="sm" px={ 3 }>
-        <IconSvg name="collection" boxSize={ 5 }/>
-        <chakra.span hideBelow="lg">By collection</chakra.span>
-      </Button>
-      <Button value="list" size="sm" px={ 3 }>
-        <IconSvg name="apps" boxSize={ 5 }/>
-        <chakra.span hideBelow="lg">List</chakra.span>
-      </Button>
-    </ButtonGroupRadio>
-  );
 
   let pagination: PaginationParams | undefined;
 
@@ -164,8 +99,10 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const rightSlot = (
     <>
       <HStack gap={ 3 }>
-        { isNftTab && (hasNftData || hasActiveFilters) && nftDisplayTypeRadio }
-        { isNftTab && (hasNftData || hasActiveFilters) && nftTypeFilter }
+        { isNftTab && (hasNftData || hasActiveFilters) &&
+          <AddressNftDisplayTypeRadio value={ nftDisplayType } onChange={ onDisplayTypeChange }/> }
+        { isNftTab && (hasNftData || hasActiveFilters) && !(isMobile && pagination.isVisible) &&
+          <AddressNftTypeFilter value={ nftTokenTypes } onChange={ onTokenTypesChange }/> }
       </HStack>
       { pagination.isVisible && !isMobile && <Pagination { ...pagination }/> }
     </>

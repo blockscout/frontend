@@ -52,7 +52,7 @@ const TokenTransferTableItem = ({
             enableIncrement
             isLoading={ isLoading }
             display="inline-block"
-            color="gray.500"
+            color="text.secondary"
             fontWeight="400"
           />
         </Flex>

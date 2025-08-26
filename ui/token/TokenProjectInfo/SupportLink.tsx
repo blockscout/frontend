@@ -19,7 +19,7 @@ const SupportLink = ({ url }: Props) => {
       alignItems="center"
       columnGap={ 1 }
     >
-      <IconSvg name={ isEmail ? 'email' : 'link' } boxSize={ 6 } color="text.secondary"/>
+      <IconSvg name={ isEmail ? 'email' : 'link' } boxSize={ 6 } color="icon.primary"/>
       <span>{ url }</span>
     </Link>
   );

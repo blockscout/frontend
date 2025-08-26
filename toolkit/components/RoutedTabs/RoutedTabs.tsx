@@ -7,10 +7,12 @@ import AdaptiveTabs from '../AdaptiveTabs/AdaptiveTabs';
 import { getTabValue } from '../AdaptiveTabs/utils';
 import useActiveTabFromQuery from './useActiveTabFromQuery';
 
-interface Props extends AdaptiveTabsProps {}
+interface Props extends AdaptiveTabsProps {
+  preservedParams?: Array<string>;
+}
 
 const RoutedTabs = (props: Props) => {
-  const { tabs, onValueChange, ...rest } = props;
+  const { tabs, onValueChange, preservedParams, ...rest } = props;
 
   const router = useRouter();
   const activeTab = useActiveTabFromQuery(props.tabs);
@@ -23,7 +25,13 @@ const RoutedTabs = (props: Props) => {
       return;
     }
 
-    const queryForPathname = pickBy(router.query, (_, key) => router.pathname.includes(`[${ key }]`));
+    const queryForPathname = pickBy(router.query, (_, key) => {
+      if (preservedParams?.includes(String(key))) {
+        return true;
+      }
+
+      return router.pathname.includes(`[${ key }]`);
+    });
     router.push(
       { pathname: router.pathname, query: { ...queryForPathname, tab: value } },
       undefined,
@@ -31,7 +39,7 @@ const RoutedTabs = (props: Props) => {
     );
 
     onValueChange?.({ value });
-  }, [ tabs, router, onValueChange ]);
+  }, [ tabs, router, onValueChange, preservedParams ]);
 
   React.useEffect(() => {
     if (router.query.scroll_to_tabs) {

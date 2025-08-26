@@ -33,13 +33,9 @@ const SettingsScamTokens = () => {
         id="scam-tokens"
         checked={ isChecked }
         onChange={ handleChange }
-        size="md"
-        flexDirection="row-reverse"
+        direction="rtl"
         justifyContent="space-between"
         w="100%"
-        gap={ 2 }
-        fontWeight="400"
-        color="text.secondary"
       >
         Hide scam tokens
       </Switch>

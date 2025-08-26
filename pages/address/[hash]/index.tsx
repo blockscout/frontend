@@ -2,15 +2,15 @@ import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
-import type { Props } from 'nextjs/getServerSideProps';
-import * as gSSP from 'nextjs/getServerSideProps';
+import type { Props } from 'nextjs/getServerSideProps/handlers';
+import * as gSSP from 'nextjs/getServerSideProps/main';
 import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import AddressOpSuperchain from 'ui/optimismSuperchain/address/AddressOpSuperchain';
+import OpSuperchainAddress from 'ui/optimismSuperchain/address/OpSuperchainAddress';
 import Address from 'ui/pages/Address';
 
 const pathname: Route['pathname'] = '/address/[hash]';
@@ -18,7 +18,7 @@ const pathname: Route['pathname'] = '/address/[hash]';
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      { config.features.opSuperchain.isEnabled ? <AddressOpSuperchain/> : <Address/> }
+      { config.features.opSuperchain.isEnabled ? <OpSuperchainAddress/> : <Address/> }
     </PageNextJs>
   );
 };

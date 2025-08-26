@@ -25,4 +25,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { txnWithdrawals as getServerSideProps } from 'nextjs/getServerSideProps';
+export { txnWithdrawals as getServerSideProps } from 'nextjs/getServerSideProps/main';

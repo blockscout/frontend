@@ -58,7 +58,7 @@ const StatsWidget = ({
       <Flex
         className={ href ? undefined : className }
         alignItems="center"
-        bgColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } : { _light: 'gray.50', _dark: 'whiteAlpha.100' } }
+        bgColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } : { _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' } }
         p={ 3 }
         borderRadius="base"
         justifyContent="space-between"
@@ -113,7 +113,7 @@ const StatsWidget = ({
         </Box>
         { typeof hint === 'string' ? (
           <Skeleton loading={ isLoading } alignSelf="center" borderRadius="base">
-            <Hint label={ hint } boxSize={ 6 } color={{ _light: 'gray.600', _dark: 'gray.400' }}/>
+            <Hint label={ hint } boxSize={ 5 } color="icon.secondary"/>
           </Skeleton>
         ) : hint }
       </Flex>

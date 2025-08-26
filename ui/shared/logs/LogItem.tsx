@@ -2,6 +2,7 @@ import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Log } from 'types/api/log';
+import type { ChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
@@ -23,6 +24,7 @@ type Props = Log & {
   type: 'address' | 'transaction';
   isLoading?: boolean;
   defaultDataType?: DataType;
+  chainData?: ChainConfig;
 };
 
 const RowHeader = ({ children, isLoading }: { children: React.ReactNode; isLoading?: boolean }) => (
@@ -31,7 +33,7 @@ const RowHeader = ({ children, isLoading }: { children: React.ReactNode; isLoadi
   </GridItem>
 );
 
-const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash: txHash, isLoading, defaultDataType }: Props) => {
+const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash: txHash, isLoading, defaultDataType, chainData }: Props) => {
 
   const hasTxInfo = type === 'address' && txHash;
 
@@ -64,6 +66,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash
             isLoading={ isLoading }
             mr={{ base: 9, lg: 4 }}
             w="100%"
+            chain={ chainData }
           />
         ) : (
           <AddressEntity

@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { verifiedAddresses as getServerSideProps } from 'nextjs/getServerSideProps';
+export { verifiedAddresses as getServerSideProps } from 'nextjs/getServerSideProps/main';

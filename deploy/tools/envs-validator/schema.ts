@@ -193,6 +193,13 @@ const beaconChainSchema = yup
           'NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL cannot not be used if NEXT_PUBLIC_HAS_BEACON_CHAIN is not set to "true"',
         ),
       }),
+    NEXT_PUBLIC_BEACON_CHAIN_VALIDATOR_URL_TEMPLATE: yup
+      .string()
+      .when('NEXT_PUBLIC_HAS_BEACON_CHAIN', {
+        is: (value: boolean) => value,
+        then: (schema) => schema,
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_BEACON_CHAIN_VALIDATOR_URL_TEMPLATE cannot not be used if NEXT_PUBLIC_HAS_BEACON_CHAIN is not set to "true"'),
+      }),
   });
 
 const tacSchema = yup
@@ -538,6 +545,9 @@ const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
       _hover: heroBannerButtonStateSchema,
       _selected: heroBannerButtonStateSchema,
     }),
+    search: yup.object({
+      border_width: yup.array().max(2).of(yup.string()),
+    }),
   });
 
 const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
@@ -703,6 +713,12 @@ const address3rdPartyWidgetsConfigSchema = yup
         then: (schema) => schema,
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS cannot not be used if NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL is not provided'),
       }),
+  });
+
+const flashblocksSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: yup.string().test(urlTest),
   });
 
 const schema = yup
@@ -971,6 +987,7 @@ const schema = yup
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
     NEXT_PUBLIC_COLOR_THEME_DEFAULT: yup.string().oneOf(COLOR_THEME_IDS),
+    NEXT_PUBLIC_COLOR_THEME_OVERRIDES: yup.object().transform(replaceQuotes).json(),
     NEXT_PUBLIC_FONT_FAMILY_HEADING: yup
       .mixed()
       .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_FONT_FAMILY_HEADING', (data) => {
@@ -1141,6 +1158,7 @@ const schema = yup
   .concat(tacSchema)
   .concat(address3rdPartyWidgetsConfigSchema)
   .concat(addressMetadataSchema)
-  .concat(userOpsSchema);
+  .concat(userOpsSchema)
+  .concat(flashblocksSchema);
 
 export default schema;

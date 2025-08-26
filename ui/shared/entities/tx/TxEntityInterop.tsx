@@ -36,7 +36,7 @@ const IconStub = ({ isLoading }: { isLoading?: boolean }) => {
         name="networks/icon-placeholder"
         width="16px"
         height="16px"
-        color="text.secondary"
+        color="icon.primary"
         display="block"
       />
     </Skeleton>

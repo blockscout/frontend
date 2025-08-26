@@ -2,7 +2,6 @@ import { Flex, Separator, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import { useColorModeValue } from 'toolkit/chakra/color-mode';
 
 import DeFiDropdown from './DeFiDropdown';
 import NetworkMenu from './NetworkMenu';
@@ -10,11 +9,9 @@ import Settings from './settings/Settings';
 import TopBarStats from './TopBarStats';
 
 const TopBar = () => {
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
-
   return (
     // not ideal if scrollbar is visible, but better than having a horizontal scroll
-    <Box bgColor={ bgColor } position="sticky" left={ 0 } width="100%" maxWidth="100vw">
+    <Box bgColor={{ _light: 'theme.topbar.bg._light', _dark: 'theme.topbar.bg._dark' }} position="sticky" left={ 0 } width="100%" maxWidth="100vw">
       <Flex
         py={ 2 }
         px={{ base: 3, lg: 6 }}

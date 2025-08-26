@@ -3,6 +3,8 @@ import React from 'react';
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { useMultichainContext } from 'lib/contexts/multichain';
+import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
@@ -18,11 +20,15 @@ interface Props {
 }
 
 const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo = true }: Props) => {
+  const multichainContext = useMultichainContext();
+  const chainData = getChainDataForList(multichainContext);
+
   return (
     <AddressHighlightProvider>
       <TableRoot minW="900px">
         <TableHeaderSticky top={ top ?? 68 }>
           <TableRow>
+            { chainData && <TableColumnHeader width="38px"></TableColumnHeader> }
             <TableColumnHeader width="280px">
               Parent txn hash
               <TimeFormatToggle/>
@@ -43,6 +49,7 @@ const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo 
               currentAddress={ currentAddress }
               isLoading={ isLoading }
               showBlockInfo={ showBlockInfo }
+              chainData={ chainData }
             />
           )) }
         </TableBody>

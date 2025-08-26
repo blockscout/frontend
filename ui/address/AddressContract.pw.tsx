@@ -1,4 +1,5 @@
 import React from 'react';
+import type { Abi } from 'viem';
 
 import * as addressMock from 'mocks/address/address';
 import * as contractInfoMock from 'mocks/contract/info';
@@ -16,7 +17,7 @@ test.describe('ABI functionality', () => {
     await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash } });
     await mockApiResponse(
       'general:contract',
-      { ...contractInfoMock.verified, abi: [ ...contractMethodsMock.read, ...contractMethodsMock.write ] },
+      { ...contractInfoMock.verified, abi: [ ...contractMethodsMock.read, ...contractMethodsMock.write ] as Abi },
       { pathParams: { hash } },
     );
   });

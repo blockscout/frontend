@@ -14,7 +14,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 
 interface Props {
-  pagination: PaginationParams;
+  pagination: PaginationParams | null;
 }
 
 const BlocksTabSlot = ({ pagination }: Props) => {
@@ -31,7 +31,7 @@ const BlocksTabSlot = ({ pagination }: Props) => {
           <Text as="span" fontSize="sm">
             Network utilization (last 50 blocks):{ nbsp }
           </Text>
-          <Skeleton display="inline-block" fontSize="sm" color="blue.400" fontWeight={ 600 } loading={ statsQuery.isPlaceholderData }>
+          <Skeleton display="inline-block" fontSize="sm" color="blue.500" fontWeight={ 600 } loading={ statsQuery.isPlaceholderData }>
             <span>{ statsQuery.data.network_utilization_percentage.toFixed(2) }%</span>
           </Skeleton>
         </Box>
@@ -40,7 +40,7 @@ const BlocksTabSlot = ({ pagination }: Props) => {
         <IconSvg name="hourglass_slim" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
       </Link>
-      <Pagination my={ 1 } { ...pagination }/>
+      { pagination && <Pagination my={ 1 } { ...pagination }/> }
     </Flex>
   );
 };
