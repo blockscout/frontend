@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import React from 'react';
 
 import type { UptimeHistoryFull } from 'types/api/megaEth';
+import type { TimeChartItem } from 'ui/shared/chart/types';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { DAY, HOUR, SECOND } from 'toolkit/utils/consts';
@@ -38,6 +39,31 @@ const filterByInterval = (interval: IntervalId, now: number) => ({ date }: { dat
   }
 };
 
+const smoothData = (data: Array<TimeChartItem>, windowSize: number): Array<TimeChartItem> => {
+  const result: Array<TimeChartItem> = [];
+  const halfWindow = Math.floor(windowSize / 2);
+
+  for (let i = 0; i < data.length; i++) {
+    const windowStart = Math.max(0, i - halfWindow);
+    const windowEnd = Math.min(data.length, i + halfWindow + 1);
+    const windowValues = data.slice(windowStart, windowEnd);
+
+    const validValues = windowValues.filter((point) => point.value !== null);
+    const average = validValues.length > 0 ?
+      validValues.reduce((sum, point) => sum + (point.value || 0), 0) / validValues.length :
+      null;
+
+    const value = average || data[i].value || 0;
+
+    result.push({
+      date: data[i].date,
+      value,
+      dateLabel: data[i].dateLabel,
+    });
+  }
+  return result;
+};
+
 interface Props {
   historyData: UptimeHistoryFull | null;
 }
@@ -62,12 +88,14 @@ const UptimeCharts = ({ historyData }: Props) => {
     })();
     const now = Date.now();
 
-    return data
+    const formattedData = data
       .map(({ value, timestamp }) => {
         const date = new Date(timestamp * SECOND);
         return { date, value, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
       })
       .filter(filterByInterval(interval, now));
+
+    return smoothData(formattedData, 7);
   }, [ historyData, interval ]);
 
   const gasItems = React.useMemo(() => {
@@ -88,12 +116,14 @@ const UptimeCharts = ({ historyData }: Props) => {
 
     const now = Date.now();
 
-    return data
+    const formattedData = data
       .map(({ value, timestamp }) => {
         const date = new Date(timestamp * SECOND);
         return { date, value: value / 1_000_000, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
       })
       .filter(filterByInterval(interval, now));
+
+    return smoothData(formattedData, 7);
   }, [ historyData, interval ]);
 
   const blockIntervalItems = React.useMemo(() => {
@@ -114,12 +144,14 @@ const UptimeCharts = ({ historyData }: Props) => {
 
     const now = Date.now();
 
-    return data
+    const formattedData = data
       .map(({ value, timestamp }) => {
         const date = new Date(timestamp * SECOND);
         return { date, value, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
       })
       .filter(filterByInterval(interval, now));
+
+    return smoothData(formattedData, 7);
   }, [ historyData, interval ]);
 
   const handleIntervalChange = React.useCallback((newInterval: IntervalId) => {
