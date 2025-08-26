@@ -48,7 +48,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
       <Text color="text.secondary">Sender</Text>
       { data.init_chain !== undefined ? (
         <AddressEntityInterop
-          externalChain={ data.init_chain }
+          chain={ data.init_chain }
           address={{ hash: data.sender_address_hash }}
           isLoading={ isLoading }
           truncation="constant"
@@ -59,7 +59,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
       <Text color="text.secondary">Target</Text>
       { data.relay_chain !== undefined ? (
         <AddressEntityInterop
-          externalChain={ data.relay_chain }
+          chain={ data.relay_chain }
           address={{ hash: data.target_address_hash }}
           isLoading={ isLoading }
           truncation="constant"

@@ -516,7 +516,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                 .map((message) => {
                   return message.relay_chain !== undefined ? (
                     <AddressEntityInterop
-                      externalChain={ message.relay_chain }
+                      chain={ message.relay_chain }
                       address={{ hash: message.target_address_hash }}
                       isLoading={ isLoading }
                       truncation="dynamic"
