@@ -5,7 +5,7 @@ import type { InteropMessage } from 'types/api/interop';
 
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import AddressEntityWithExternalChain from 'ui/shared/entities/address/AddressEntityWithExternalChain';
+import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import InteropMessageStatus from 'ui/shared/statusTag/InteropMessageStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
@@ -39,7 +39,7 @@ const InteropMessagesListItem = ({ item, isLoading }: Props) => {
         </Grid>
         <Flex gap={ 2 } justifyContent="space-between" mt={ 2 }>
           { item.init_chain !== undefined ? (
-            <AddressEntityWithExternalChain
+            <AddressEntityInterop
               externalChain={ item.init_chain }
               address={{ hash: item.sender_address_hash }}
               isLoading={ isLoading }
@@ -53,7 +53,7 @@ const InteropMessagesListItem = ({ item, isLoading }: Props) => {
             type={ item.init_chain !== undefined ? 'in' : 'out' }
           />
           { item.relay_chain !== undefined ? (
-            <AddressEntityWithExternalChain
+            <AddressEntityInterop
               externalChain={ item.relay_chain }
               address={{ hash: item.target_address_hash }}
               isLoading={ isLoading }

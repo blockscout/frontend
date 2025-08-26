@@ -633,6 +633,8 @@ const zetaChainCCTXConfigSchema: yup.ObjectSchema<ChainInfo> = yup.object({
   chain_name: yup.string().required(),
   chain_logo: yup.string(),
   instance_url: yup.string(),
+  address_url_template: yup.string(),
+  tx_url_template: yup.string(),
 });
 
 const zetaChainSchema = yup

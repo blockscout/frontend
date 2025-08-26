@@ -5,4 +5,6 @@ export type ChainInfo = {
   chain_name: string | null;
   chain_logo?: string | null;
   instance_url?: string;
+  address_url_template?: string;
+  tx_url_template?: string;
 };

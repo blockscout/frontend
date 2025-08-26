@@ -10,7 +10,7 @@ import InteropMessageSourceTx from 'ui/interopMessages/InteropMessageSourceTx';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import AddressEntityWithExternalChain from 'ui/shared/entities/address/AddressEntityWithExternalChain';
+import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
 import InteropMessageStatus from 'ui/shared/statusTag/InteropMessageStatus';
 
 const rollupFeature = config.features.rollup;
@@ -47,7 +47,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
       </Box>
       <Text color="text.secondary">Sender</Text>
       { data.init_chain !== undefined ? (
-        <AddressEntityWithExternalChain
+        <AddressEntityInterop
           externalChain={ data.init_chain }
           address={{ hash: data.sender_address_hash }}
           isLoading={ isLoading }
@@ -58,7 +58,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
       ) }
       <Text color="text.secondary">Target</Text>
       { data.relay_chain !== undefined ? (
-        <AddressEntityWithExternalChain
+        <AddressEntityInterop
           externalChain={ data.relay_chain }
           address={{ hash: data.target_address_hash }}
           isLoading={ isLoading }

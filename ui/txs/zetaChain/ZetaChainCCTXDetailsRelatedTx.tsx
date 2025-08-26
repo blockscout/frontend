@@ -5,7 +5,7 @@ import type { ZetaChainRelatedCCTX } from 'types/api/zetaChain';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ChainIconWithTooltip from 'ui/shared/ChainIconWithTooltip';
-import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
+import CCTxEntityZetaChain from 'ui/shared/entities/tx/CCTxEntityZetaChain';
 import IconSvg from 'ui/shared/IconSvg';
 import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
 import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
@@ -44,7 +44,7 @@ const ZetaChainCCTXDetailsRelatedTx = ({ tx, isLoading }: Props) => {
       <IconSvg name="arrows/east" boxSize={ 5 } color="text.secondary"/>
       { chainsTo.map((chain, index) => <ChainIconWithTooltip key={ index } chain={ chain }/>) }
       <Box>CCTX</Box>
-      <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } noIcon truncation="constant" noCopy={ false }/>
+      <CCTxEntityZetaChain hash={ tx.index } isLoading={ isLoading } noIcon truncation="constant" noCopy={ false }/>
       <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading } type="full"/>
     </Skeleton>
   );

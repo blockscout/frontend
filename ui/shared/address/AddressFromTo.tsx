@@ -2,13 +2,11 @@ import type { ConditionalValue } from '@chakra-ui/react';
 import { Flex, Grid, chakra, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainInfo } from 'types/client/chainInfo';
-
 import type { EntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
 
-import AddressEntityWithExternalChain from '../entities/address/AddressEntityWithExternalChain';
+import AddressEntityZetaChain from '../entities/address/AddressEntityZetaChain';
 import AddressFromToIcon from './AddressFromToIcon';
 import { getTxCourseType } from './utils';
 
@@ -16,9 +14,7 @@ type Mode = 'compact' | 'long';
 
 interface Props {
   from: { hash: string };
-  chainFrom?: ChainInfo | null;
   to: { hash: string } | null;
-  chainTo?: ChainInfo | null;
   current?: string;
   mode?: Mode | ConditionalValue<Mode>;
   className?: string;
@@ -27,13 +23,15 @@ interface Props {
   tokenSymbol?: string;
   truncation?: EntityProps['truncation'];
   noIcon?: boolean;
+  zetaChainFromChainId?: string;
+  zetaChainToChainId?: string;
 }
 
 const AddressFromTo = ({
   from,
-  chainFrom,
+  zetaChainFromChainId,
   to,
-  chainTo,
+  zetaChainToChainId,
   current,
   mode: modeProp,
   className, isLoading, tokenHash = '', tokenSymbol = '', noIcon }: Props) => {
@@ -46,8 +44,8 @@ const AddressFromTo = ({
   ) ?? 'long';
 
   const EntityFrom = (() => {
-    if (chainFrom !== undefined) {
-      return AddressEntityWithExternalChain;
+    if (zetaChainFromChainId !== undefined) {
+      return AddressEntityZetaChain;
     }
     if (tokenHash && tokenSymbol) {
       return AddressEntityWithTokenFilter;
@@ -56,8 +54,8 @@ const AddressFromTo = ({
   })();
 
   const EntityTo = (() => {
-    if (chainTo !== undefined) {
-      return AddressEntityWithExternalChain;
+    if (zetaChainToChainId !== undefined) {
+      return AddressEntityZetaChain;
     }
     if (tokenHash && tokenSymbol) {
       return AddressEntityWithTokenFilter;
@@ -88,7 +86,7 @@ const AddressFromTo = ({
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
-            externalChain={ chainFrom }
+            chainId={ zetaChainFromChainId }
           />
         </Flex>
         { to && (
@@ -104,7 +102,7 @@ const AddressFromTo = ({
             maxW="calc(100% - 28px)"
             w="min-content"
             ml="28px"
-            externalChain={ chainTo }
+            chainId={ zetaChainToChainId }
           />
         ) }
       </Flex>
@@ -125,7 +123,7 @@ const AddressFromTo = ({
         tokenSymbol={ tokenSymbol }
         truncation="constant"
         mr={ isOutgoing ? 4 : 2 }
-        externalChain={ chainFrom }
+        chainId={ zetaChainFromChainId }
       />
       <AddressFromToIcon
         isLoading={ isLoading }
@@ -142,7 +140,7 @@ const AddressFromTo = ({
           tokenSymbol={ tokenSymbol }
           truncation="constant"
           ml={ 3 }
-          externalChain={ chainTo }
+          chainId={ zetaChainToChainId }
         />
       ) }
     </Grid>

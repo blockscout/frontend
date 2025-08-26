@@ -43,7 +43,7 @@ const IconStub = ({ isLoading }: { isLoading?: boolean }) => {
   );
 };
 
-const TxEntityWithExternalChain = ({ chain, hash, ...props }: Props) => {
+const TxEntityInterop = ({ chain, hash, ...props }: Props) => {
   const partsProps = distributeEntityProps(props);
 
   const href = (chain?.instance_url && hash) ? stripTrailingSlash(chain.instance_url) + route({
@@ -98,4 +98,4 @@ const TxEntityWithExternalChain = ({ chain, hash, ...props }: Props) => {
   );
 };
 
-export default chakra(TxEntityWithExternalChain);
+export default chakra(TxEntityInterop);

@@ -37,7 +37,7 @@ import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import AddressEntityWithExternalChain from 'ui/shared/entities/address/AddressEntityWithExternalChain';
+import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
@@ -515,7 +515,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                 .filter((message) => message.target_address_hash)
                 .map((message) => {
                   return message.relay_chain !== undefined ? (
-                    <AddressEntityWithExternalChain
+                    <AddressEntityInterop
                       externalChain={ message.relay_chain }
                       address={{ hash: message.target_address_hash }}
                       isLoading={ isLoading }
