@@ -20,6 +20,8 @@ function run() {
 
         const rollupFeature = config.features.rollup;
         const parentChainUrl = rollupFeature.isEnabled ? rollupFeature.parentChain.baseUrl : undefined;
+        
+        const validatorsFeature = config.features.validators;
 
         const MCP_SERVER_URL = 'https://mcp.blockscout.com';
 
@@ -60,6 +62,18 @@ function run() {
         ` : '{blank}';
 
         const BEACON_CHAIN_TEMPLATE = config.features.beaconChain.isEnabled ? `
+            ### Deposits by Address
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/beacon/deposits'
+            \`\`\`
+                
+            ### Deposits by Block
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/block/{block_number}/beacon/deposits'
+            \`\`\`
+
             ### Withdrawals by Address
 
             \`\`\`bash
@@ -261,6 +275,74 @@ function run() {
             \`\`\`
         ` : undefined;
 
+        const SCROLL_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'scroll' ? `
+            ### Latest Committed Batch Number (top of)
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/scroll/batches'
+            \`\`\`
+                
+            ### Batch Info
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/scroll/batches/{batch_number}'
+            \`\`\`
+                
+            ### Blocks By Batch
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/blocks/scroll-batch/{batch_number}'
+            \`\`\`
+                
+            ### Deposits (L1→L2)
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/scroll/deposits'
+            \`\`\`
+                
+            ### Withdrawals (L2→L1)
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/scroll/withdrawals'
+            \`\`\`
+        ` : undefined;
+
+        const SHIBARIUM_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'shibarium' ? `
+            ### Deposits (L1→L2)
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/shibarium/deposits'
+            \`\`\`
+                
+            ### Withdrawals (L2→L1)
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/shibarium/withdrawals'
+            \`\`\`
+        ` : undefined;
+
+        const ZILLIQA_CHAIN_TEMPLATE = validatorsFeature.isEnabled && validatorsFeature.chainType === 'zilliqa' ? `
+            ### Validators list:
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/validators/zilliqa'
+            \`\`\`
+                
+            ### Validator Info:
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/validators/zilliqa/{validator_public_key}'
+            \`\`\`
+        ` : undefined;
+
+        const STABILITY_CHAIN_TEMPLATE = validatorsFeature.isEnabled && validatorsFeature.chainType === 'stability' ? `
+            ### Validators list:
+                
+            \`\`\`bash
+            curl --request GET --url '${ generalApiUrl }/api/v2/validators/stability'
+            \`\`\`
+        ` : undefined;
+
         const CHAIN_SPECIFIC_DATA = [
             BEACON_CHAIN_TEMPLATE,
             ARBITRUM_CHAIN_TEMPLATE,
@@ -269,7 +351,11 @@ function run() {
             ZKSYNC_CHAIN_TEMPLATE,
             ZKEVM_CHAIN_TEMPLATE,
             TAC_CHAIN_TEMPLATE,
-            REDSTONE_CHAIN_TEMPLATE
+            REDSTONE_CHAIN_TEMPLATE,
+            SCROLL_CHAIN_TEMPLATE,
+            ZILLIQA_CHAIN_TEMPLATE,
+            STABILITY_CHAIN_TEMPLATE,
+            SHIBARIUM_CHAIN_TEMPLATE
         ].filter(Boolean);
 
         const CHAIN_SPECIFIC_TEMPLATE = CHAIN_SPECIFIC_DATA.length > 0 ? `
