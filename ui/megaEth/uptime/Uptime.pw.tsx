@@ -3,7 +3,7 @@ import React from 'react';
 import config from 'configs/app';
 import { test, expect } from 'playwright/lib';
 import { port as socketPort } from 'playwright/utils/socket';
-import { SECOND } from 'toolkit/utils/consts';
+import { MINUTE, SECOND } from 'toolkit/utils/consts';
 
 import Uptime from './Uptime';
 
@@ -23,29 +23,29 @@ const REALTIME_DATA = {
 const HISTORY_FULL_DATA = {
   data: {
     historical_gas_per_second_3h: [
-      { timestamp: (Date.now() - 5 * SECOND) / SECOND, value: 78093010 },
-      { timestamp: (Date.now() - 4 * SECOND) / SECOND, value: 120212720 },
-      { timestamp: (Date.now() - 3 * SECOND) / SECOND, value: 49049412 },
-      { timestamp: (Date.now() - 2 * SECOND) / SECOND, value: 70900270 },
-      { timestamp: (Date.now() - SECOND) / SECOND, value: 97225784 },
+      { timestamp: (Date.now() - 5 * MINUTE) / SECOND, value: 78093010 },
+      { timestamp: (Date.now() - 4 * MINUTE) / SECOND, value: 120212720 },
+      { timestamp: (Date.now() - 3 * MINUTE) / SECOND, value: 49049412 },
+      { timestamp: (Date.now() - 2 * MINUTE) / SECOND, value: 70900270 },
+      { timestamp: (Date.now() - MINUTE) / SECOND, value: 97225784 },
     ],
     historical_gas_per_second_24h: [],
     historical_gas_per_second_7d: [],
     historical_tps_3h: [
-      { timestamp: (Date.now() - 5 * SECOND) / SECOND, value: 196 },
-      { timestamp: (Date.now() - 4 * SECOND) / SECOND, value: 203.2 },
-      { timestamp: (Date.now() - 3 * SECOND) / SECOND, value: 197.6 },
-      { timestamp: (Date.now() - 2 * SECOND) / SECOND, value: 215.4 },
-      { timestamp: (Date.now() - SECOND) / SECOND, value: 218.2 },
+      { timestamp: (Date.now() - 5 * MINUTE) / SECOND, value: 196 },
+      { timestamp: (Date.now() - 4 * MINUTE) / SECOND, value: 203.2 },
+      { timestamp: (Date.now() - 3 * MINUTE) / SECOND, value: 197.6 },
+      { timestamp: (Date.now() - 2 * MINUTE) / SECOND, value: 215.4 },
+      { timestamp: (Date.now() - MINUTE) / SECOND, value: 218.2 },
     ],
     historical_tps_24h: [],
     historical_tps_7d: [],
     historical_mini_block_interval_3h: [
-      { timestamp: (Date.now() - 5 * SECOND) / SECOND, value: 10.537408 },
-      { timestamp: (Date.now() - 4 * SECOND) / SECOND, value: 10.593221 },
-      { timestamp: (Date.now() - 3 * SECOND) / SECOND, value: 10.537408 },
-      { timestamp: (Date.now() - 2 * SECOND) / SECOND, value: 10.593221 },
-      { timestamp: (Date.now() - SECOND) / SECOND, value: 10.570825 },
+      { timestamp: (Date.now() - 5 * MINUTE) / SECOND, value: 10.537408 },
+      { timestamp: (Date.now() - 4 * MINUTE) / SECOND, value: 10.593221 },
+      { timestamp: (Date.now() - 3 * MINUTE) / SECOND, value: 10.537408 },
+      { timestamp: (Date.now() - 2 * MINUTE) / SECOND, value: 10.593221 },
+      { timestamp: (Date.now() - MINUTE) / SECOND, value: 10.570825 },
     ],
     historical_mini_block_interval_24h: [],
     historical_mini_block_interval_7d: [],

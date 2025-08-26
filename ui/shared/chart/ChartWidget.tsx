@@ -1,7 +1,7 @@
 import { chakra, Flex } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 
-import type { AxesConfig, TimeChartItem } from './types';
+import type { AxesConfigFn, TimeChartItem } from './types';
 
 import { route, type Route } from 'nextjs-routes';
 
@@ -27,7 +27,7 @@ export type Props = {
   emptyText?: string;
   noAnimation?: boolean;
   href?: Route;
-  axesConfig?: AxesConfig;
+  axesConfig?: AxesConfigFn;
 };
 
 const ChartWidget = ({

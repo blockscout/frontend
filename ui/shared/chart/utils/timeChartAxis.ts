@@ -54,7 +54,7 @@ const tickFormatterX = (axis: d3.Axis<d3.NumberValue>) => (d: d3.AxisDomain) => 
   } else if (span > 2 * DAY) {
     format = d3.timeFormat('%d %b');
   } else {
-    format = d3.timeFormat('%d %b %H:%M');
+    format = d3.timeFormat('%H:%M');
   }
 
   return format(d as Date);

@@ -4,7 +4,7 @@ import { defaultsDeep } from 'es-toolkit/compat';
 import React from 'react';
 
 import { Resolution } from '@blockscout/stats-types';
-import type { AxesConfig, ChartMargin, TimeChartData, TimeChartItem } from 'ui/shared/chart/types';
+import type { AxesConfigFn, ChartMargin, TimeChartData, TimeChartItem } from 'ui/shared/chart/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
@@ -27,7 +27,7 @@ interface Props {
   margin?: ChartMargin;
   noAnimation?: boolean;
   resolution?: Resolution;
-  axesConfig?: AxesConfig;
+  axesConfig?: AxesConfigFn;
 }
 
 const DEFAULT_CHART_MARGIN = { bottom: 20, left: 10, right: 20, top: 10 };
@@ -65,7 +65,7 @@ const ChartWidgetGraph = ({
 
   const margin: ChartMargin = React.useMemo(() => ({ ...DEFAULT_CHART_MARGIN, ...marginProps }), [ marginProps ]);
   const axesConfig = React.useMemo(() => {
-    return defaultsDeep(axesConfigProps, {
+    return defaultsDeep(axesConfigProps?.({ isEnlarged, isMobile }), {
       x: {
         ticks: isEnlarged && !isMobile ? 8 : 4,
       },

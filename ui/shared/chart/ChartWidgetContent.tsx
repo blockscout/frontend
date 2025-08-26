@@ -1,7 +1,7 @@
 import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AxesConfig, TimeChartItem } from './types';
+import type { AxesConfigFn, TimeChartItem } from './types';
 import type { Resolution } from '@blockscout/stats-types';
 
 import { Link } from 'toolkit/chakra/link';
@@ -23,7 +23,7 @@ export type Props = {
   isEnlarged?: boolean;
   noAnimation?: boolean;
   resolution?: Resolution;
-  axesConfig?: AxesConfig;
+  axesConfig?: AxesConfigFn;
 };
 
 const ChartWidgetContent = ({

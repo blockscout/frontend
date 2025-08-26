@@ -2,8 +2,8 @@ import { Box, Flex, Grid, GridItem } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
-import type { UptimeHistoryFull } from 'types/api/megaEth';
-import type { TimeChartItem } from 'ui/shared/chart/types';
+import type { UptimeHistoryFull, UptimeHistoryItem } from 'types/api/megaEth';
+import type { AxesConfigFn } from 'ui/shared/chart/types';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { DAY, HOUR, SECOND } from 'toolkit/utils/consts';
@@ -20,13 +20,20 @@ type IntervalId = (typeof INTERVALS)[number]['id'];
 
 const TIME_FORMAT = '%e %b %Y, %H:%M:%S';
 
-const AXES_CONFIG = {
+const AXES_CONFIG_BASE: AxesConfigFn = ({ isEnlarged, isMobile }) => ({
   y: {
-    scale: {
-      min: 0,
-    },
+    scale: { min: 0 },
   },
-};
+  x: {
+    ticks: isEnlarged && !isMobile ? 8 : 5,
+  },
+});
+
+const AXES_CONFIG_LONG: AxesConfigFn = () => ({
+  y: {
+    scale: { min: 0 },
+  },
+});
 
 const filterByInterval = (interval: IntervalId, now: number) => ({ date }: { date: Date }) => {
   switch (interval) {
@@ -39,8 +46,9 @@ const filterByInterval = (interval: IntervalId, now: number) => ({ date }: { dat
   }
 };
 
-const smoothData = (data: Array<TimeChartItem>, windowSize: number): Array<TimeChartItem> => {
-  const result: Array<TimeChartItem> = [];
+// Algorithm provided by MegaETH team
+const smoothData = (data: Array<UptimeHistoryItem>, windowSize: number): Array<UptimeHistoryItem> => {
+  const result: Array<UptimeHistoryItem> = [];
   const halfWindow = Math.floor(windowSize / 2);
 
   for (let i = 0; i < data.length; i++) {
@@ -55,11 +63,7 @@ const smoothData = (data: Array<TimeChartItem>, windowSize: number): Array<TimeC
 
     const value = average || data[i].value || 0;
 
-    result.push({
-      date: data[i].date,
-      value,
-      dateLabel: data[i].dateLabel,
-    });
+    result.push({ ...data[i], value });
   }
   return result;
 };
@@ -70,6 +74,16 @@ interface Props {
 
 const UptimeCharts = ({ historyData }: Props) => {
   const [ interval, setInterval ] = React.useState<IntervalId>('3h');
+
+  const axesConfig = React.useMemo(() => {
+    switch (interval) {
+      case '3h':
+      case '24h':
+        return AXES_CONFIG_BASE;
+      case '7d':
+        return AXES_CONFIG_LONG;
+    }
+  }, [ interval ]);
 
   const tpsItems = React.useMemo(() => {
     if (!historyData) {
@@ -88,14 +102,13 @@ const UptimeCharts = ({ historyData }: Props) => {
     })();
     const now = Date.now();
 
-    const formattedData = data
+    const smoothedData = smoothData(data, 7);
+    return smoothedData
       .map(({ value, timestamp }) => {
         const date = new Date(timestamp * SECOND);
-        return { date, value, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
+        return { date, value: Number(value.toFixed(0)), dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
       })
       .filter(filterByInterval(interval, now));
-
-    return smoothData(formattedData, 7);
   }, [ historyData, interval ]);
 
   const gasItems = React.useMemo(() => {
@@ -116,14 +129,14 @@ const UptimeCharts = ({ historyData }: Props) => {
 
     const now = Date.now();
 
-    const formattedData = data
+    const smoothedData = smoothData(data, 7);
+
+    return smoothedData
       .map(({ value, timestamp }) => {
         const date = new Date(timestamp * SECOND);
-        return { date, value: value / 1_000_000, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
+        return { date, value: Number((value / 1_000_000).toFixed(2)), dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
       })
       .filter(filterByInterval(interval, now));
-
-    return smoothData(formattedData, 7);
   }, [ historyData, interval ]);
 
   const blockIntervalItems = React.useMemo(() => {
@@ -144,14 +157,14 @@ const UptimeCharts = ({ historyData }: Props) => {
 
     const now = Date.now();
 
-    const formattedData = data
+    const smoothedData = smoothData(data, 7);
+
+    return smoothedData
       .map(({ value, timestamp }) => {
         const date = new Date(timestamp * SECOND);
-        return { date, value, dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
+        return { date, value: Number(value.toFixed(1)), dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
       })
       .filter(filterByInterval(interval, now));
-
-    return smoothData(formattedData, 7);
   }, [ historyData, interval ]);
 
   const handleIntervalChange = React.useCallback((newInterval: IntervalId) => {
@@ -178,7 +191,7 @@ const UptimeCharts = ({ historyData }: Props) => {
             items={ tpsItems }
             isLoading={ false }
             isError={ false }
-            axesConfig={ AXES_CONFIG }
+            axesConfig={ axesConfig }
           />
         </GridItem>
         <GridItem minH={{ base: '220px', lg: '320px' }}>
@@ -187,7 +200,7 @@ const UptimeCharts = ({ historyData }: Props) => {
             items={ gasItems }
             isLoading={ false }
             isError={ false }
-            axesConfig={ AXES_CONFIG }
+            axesConfig={ axesConfig }
           />
         </GridItem>
         <GridItem minH={{ base: '220px', lg: '320px' }}>
@@ -196,7 +209,7 @@ const UptimeCharts = ({ historyData }: Props) => {
             items={ blockIntervalItems }
             isLoading={ false }
             isError={ false }
-            axesConfig={ AXES_CONFIG }
+            axesConfig={ axesConfig }
           />
         </GridItem>
       </Grid>
