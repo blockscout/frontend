@@ -169,7 +169,9 @@ export const metatag2: SearchResultMetadataTag = {
   metadata: {
     name: 'utko',
     slug: 'utko',
-    meta: {},
+    meta: {
+      cex_deposit: 'true',
+    },
     tagType: 'name',
     ordinal: 1,
   },

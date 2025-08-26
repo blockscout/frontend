@@ -36,6 +36,7 @@ export interface AddressMetadataTagApi extends Omit<AddressMetadataTag, 'meta'> 
     alertBgColor?: string;
     alertTextColor?: string;
     alertStatus?: string;
+    cex_deposit?: string;
   } | null;
 }
 

@@ -6,19 +6,23 @@ import highlightText from 'lib/highlightText';
 import type { TagProps } from 'toolkit/chakra/tag';
 import { Tag } from 'toolkit/chakra/tag';
 import EntityTagIcon from 'ui/shared/EntityTags/EntityTagIcon';
+import { getTagName } from 'ui/shared/EntityTags/utils';
 
 interface Props extends TagProps {
   metadata: AddressMetadataTagApi;
   searchTerm: string;
+  addressHash?: string;
 }
 
-const SearchResultEntityTag = ({ metadata, searchTerm, ...rest }: Props) => {
+const SearchResultEntityTag = ({ metadata, searchTerm, addressHash, ...rest }: Props) => {
+  const name = getTagName(metadata, addressHash);
+
   return (
     <Tag
       { ...rest }
       startElement={ <EntityTagIcon data={ metadata } ignoreColor/> }
     >
-      <span dangerouslySetInnerHTML={{ __html: highlightText(metadata.name, searchTerm) }}/>
+      <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
     </Tag>
   );
 };

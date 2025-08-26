@@ -31,6 +31,7 @@ export default function parseMetaPayload(meta: AddressMetadataTag['meta']): Addr
       'alertBgColor',
       'alertTextColor',
       'alertStatus',
+      'cex_deposit',
     ];
 
     for (const stringField of stringFields) {

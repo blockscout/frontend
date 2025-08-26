@@ -12,6 +12,7 @@ import getIconUrl from 'lib/multichain/getIconUrl';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
+import { getTagName } from 'ui/shared/EntityTags/utils';
 import type { IconName } from 'ui/shared/IconSvg';
 
 import { distributeEntityProps, getContentProps, getIconProps } from '../base/utils';
@@ -119,7 +120,14 @@ export type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<Enti
 
 const Content = chakra((props: ContentProps) => {
   const displayedAddress = getDisplayedAddress(props.address, props.altHash);
-  const nameTag = props.address.metadata?.tags.find(tag => tag.tagType === 'name')?.name;
+  const nameTag = (() => {
+    const tagData = props.address.metadata?.tags.find(tag => tag.tagType === 'name');
+    if (!tagData || !tagData.name) {
+      return;
+    }
+
+    return getTagName(tagData, props.address.hash);
+  })();
   const nameText = nameTag || props.address.ens_domain_name || props.address.name;
 
   const isProxy = props.address.implementations && props.address.implementations.length > 0 && props.address.proxy_type !== 'eip7702';
