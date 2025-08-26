@@ -40,7 +40,7 @@ const InteropMessagesListItem = ({ item, isLoading }: Props) => {
         <Flex gap={ 2 } justifyContent="space-between" mt={ 2 }>
           { item.init_chain !== undefined ? (
             <AddressEntityInterop
-              externalChain={ item.init_chain }
+              chain={ item.init_chain }
               address={{ hash: item.sender_address_hash }}
               isLoading={ isLoading }
               truncation="constant"
@@ -54,7 +54,7 @@ const InteropMessagesListItem = ({ item, isLoading }: Props) => {
           />
           { item.relay_chain !== undefined ? (
             <AddressEntityInterop
-              externalChain={ item.relay_chain }
+              chain={ item.relay_chain }
               address={{ hash: item.target_address_hash }}
               isLoading={ isLoading }
               truncation="constant"

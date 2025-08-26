@@ -47,7 +47,7 @@ const InteropMessagesTableItem = ({ item, isLoading }: Props) => {
           <AddressEntityInterop
             address={{ hash: item.target_address_hash }}
             isLoading={ isLoading } truncation="constant"
-            externalChain={ item.init_chain }
+            chain={ item.init_chain }
             w="min-content"
           />
         ) :
@@ -66,7 +66,7 @@ const InteropMessagesTableItem = ({ item, isLoading }: Props) => {
             address={{ hash: item.target_address_hash }}
             isLoading={ isLoading }
             truncation="constant"
-            externalChain={ item.relay_chain }
+            chain={ item.relay_chain }
             w="min-content"
           />
         ) :

@@ -1,7 +1,7 @@
 import { Box, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainInfo } from 'types/client/chainInfo';
+import type { ChainInfo } from 'types/api/interop';
 
 import { route } from 'nextjs-routes';
 
@@ -12,8 +12,8 @@ import IconSvg from 'ui/shared/IconSvg';
 import { distributeEntityProps } from '../base/utils';
 import * as AddressEntity from './AddressEntity';
 
-interface Props extends AddressEntity.EntityProps {
-  externalChain?: ChainInfo | null;
+interface Props extends Omit<AddressEntity.EntityProps, 'chain'> {
+  chain: ChainInfo | null;
 }
 
 const IconStub = () => {
@@ -41,10 +41,10 @@ const IconStub = () => {
   );
 };
 
-const AddressEntityInterop = ({ externalChain, ...props }: Props) => {
+const AddressEntityInterop = ({ chain, ...props }: Props) => {
   const partsProps = distributeEntityProps(props);
 
-  const href = externalChain?.instance_url ? externalChain.instance_url.replace(/\/$/, '') + route({
+  const href = chain?.instance_url ? chain.instance_url.replace(/\/$/, '') + route({
     pathname: '/address/[hash]',
     query: {
       ...props.query,
@@ -56,20 +56,17 @@ const AddressEntityInterop = ({ externalChain, ...props }: Props) => {
     <Box position="relative">
       <AddressEntity.Icon { ...partsProps.icon }/>
       { !props.isLoading && (
-        externalChain?.chain_logo ? (
+        chain?.chain_logo ? (
           <Image
             position="absolute"
             bottom="-3px"
             right="4px"
-            src={ externalChain.chain_logo }
-            alt={ externalChain.chain_name || 'external chain logo' }
+            src={ chain.chain_logo }
+            alt={ chain.chain_name || 'external chain logo' }
             fallback={ <IconStub/> }
             width="14px"
             height="14px"
             borderRadius="base"
-            border="1px solid"
-            borderColor="global.body.bg"
-            backgroundColor="global.body.bg"
           />
         ) : (
           <IconStub/>
@@ -80,12 +77,12 @@ const AddressEntityInterop = ({ externalChain, ...props }: Props) => {
 
   return (
     <AddressEntity.Container className={ props.className }>
-      { externalChain && (
-        <Tooltip content={ `Address on ${ externalChain.chain_name ? externalChain.chain_name : 'external chain' } (chain id ${ externalChain.chain_id })` }>
+      { chain && (
+        <Tooltip content={ `Address on ${ chain.chain_name ? chain.chain_name : 'external chain' } (chain id ${ chain.chain_id })` }>
           { addressIcon }
         </Tooltip>
       ) }
-      { !externalChain && addressIcon }
+      { !chain && addressIcon }
       { href ? (
         <AddressEntity.Link { ...partsProps.link } href={ href } isExternal>
           <AddressEntity.Content { ...partsProps.content }/>

@@ -7,6 +7,7 @@ import { scroller, Element } from 'react-scroll';
 import type { SearchResultItem } from 'types/api/search';
 import type { ZetaChainCCTXListResponse } from 'types/api/zetaChain';
 
+import config from 'configs/app';
 import type { CosmosHashType } from 'lib/address/cosmos';
 import type { ResourceError } from 'lib/api/resources';
 import { useSettingsContext } from 'lib/contexts/settings';
@@ -140,7 +141,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, cosmosHashType, searchTer
   }, [ containerId ]);
 
   const content = (() => {
-    if (query.isPending || marketplaceApps.isPlaceholderData || zetaChainCCTXQuery.isPending) {
+    if (query.isPending || marketplaceApps.isPlaceholderData || (config.features.zetachain.isEnabled && zetaChainCCTXQuery.isPending)) {
       return <ContentLoader text="We are searching, please wait... " fontSize="sm"/>;
     }
 
