@@ -14,10 +14,10 @@ type Props = {
   hint?: string | React.ReactNode;
   isLoading?: boolean;
   bottomText?: string;
-  bottomTextIsLoading?: boolean;
+  isBottomTextLoading?: boolean;
 };
 
-const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomText, bottomTextIsLoading }: Props) => (
+const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomText, isBottomTextLoading }: Props) => (
   <Flex key={ label } flexDirection="column" alignItems="center" gap={{ base: 1, md: 2 }}>
     { label && (
       <Flex alignItems="center" gap={ 1 }>
@@ -41,7 +41,7 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomT
       </Heading>
     </Skeleton>
     { bottomText && (
-      <Skeleton loading={ bottomTextIsLoading || isLoading } minW="100px">
+      <Skeleton loading={ isBottomTextLoading || isLoading } minW="100px">
         <Text textStyle={{ base: 'xs', md: 'sm' }} color="text.secondary">
           { bottomText }
         </Text>

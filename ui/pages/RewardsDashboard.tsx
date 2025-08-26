@@ -125,7 +125,7 @@ const RewardsDashboard = () => {
                 'N/A' }
               isLoading={ dailyRewardQuery.isPending }
               bottomText={ nextAchievementText }
-              bottomTextIsLoading={ isBadgesLoading }
+              isBottomTextLoading={ isBadgesLoading }
             />
           </RewardsDashboardCard>
         </Flex>
