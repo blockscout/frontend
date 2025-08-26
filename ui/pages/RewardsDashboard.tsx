@@ -12,7 +12,7 @@ import { apos } from 'toolkit/utils/htmlEntities';
 import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton';
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
-import RewardsStreakModal from 'ui/rewards/dashboard/RewardsStreakModal';
+import RewardsStreakModal from 'ui/rewards/dashboard/streakModal/RewardsStreakModal';
 import ActivityTab from 'ui/rewards/dashboard/tabs/ActivityTab';
 import ReferralsTab from 'ui/rewards/dashboard/tabs/ReferralsTab';
 import ResourcesTab from 'ui/rewards/dashboard/tabs/ResourcesTab';
@@ -23,7 +23,7 @@ import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInval
 
 const RewardsDashboard = () => {
   const { balancesQuery, apiToken, referralsQuery, rewardsConfigQuery, dailyRewardQuery, isInitialized } = useRewardsContext();
-  const { daysToNextAchievement, isLoading: isBadgesLoading, badgesQuery } = useStreakBadges();
+  const { nextAchievementText, isLoading: isBadgesLoading, badgesQuery } = useStreakBadges();
   const streakModal = useDisclosure();
 
   const [ isError, setIsError ] = useState(false);
@@ -124,9 +124,7 @@ const RewardsDashboard = () => {
                 `${ dailyRewardQuery.data?.streak } day${ Number(dailyRewardQuery.data?.streak) === 1 ? '' : 's' }` :
                 'N/A' }
               isLoading={ dailyRewardQuery.isPending }
-              bottomText={ Boolean(daysToNextAchievement) || isBadgesLoading ?
-                `Next achievement in ${ daysToNextAchievement ?? 0 } day${ daysToNextAchievement === 1 ? '' : 's' }` :
-                undefined }
+              bottomText={ nextAchievementText }
               bottomTextIsLoading={ isBadgesLoading }
             />
           </RewardsDashboardCard>

@@ -41,7 +41,7 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomT
       </Heading>
     </Skeleton>
     { bottomText && (
-      <Skeleton loading={ bottomTextIsLoading ?? isLoading }>
+      <Skeleton loading={ bottomTextIsLoading || isLoading } minW="100px">
         <Text textStyle={{ base: 'xs', md: 'sm' }} color="text.secondary">
           { bottomText }
         </Text>

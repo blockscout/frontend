@@ -1573,10 +1573,10 @@
   resolved "https://registry.yarnpkg.com/@blockscout/multichain-aggregator-types/-/multichain-aggregator-types-1.6.0-alpha.0.tgz#13e26516af2568daecaee9c1e43066baa4050838"
   integrity sha512-7M8WvkOrRwPzE+ZItEVl0Fq27OerVnaNy+CY//WNfQF7x4bZNY1fTlvi6gTAQUiAv7mbkVAJj22XwfKENascMw==
 
-"@blockscout/points-types@1.4.0-alpha":
-  version "1.4.0-alpha"
-  resolved "https://registry.yarnpkg.com/@blockscout/points-types/-/points-types-1.4.0-alpha.tgz#1b8394814fd86ae484f3a52b1eedf274f79a5667"
-  integrity sha512-643u5ymyqdFD1Fh1vE/MaXqsz1De744BaoTBEY1c5a71dxZ8NiqY5DWKec6H2EnZVVVRX+DTPN3tjnmQCoosmg==
+"@blockscout/points-types@1.4.0-alpha.1":
+  version "1.4.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@blockscout/points-types/-/points-types-1.4.0-alpha.1.tgz#326885fcdda7c478440e4737efdfe105a29565fb"
+  integrity sha512-DaN42ulieCLjoKyDqVc5jCuho/A8g1k7OUpOMnVgc7k8D1esSlCg+LclJ7vrcigdUXsJ5cx2nlCkySKUOfr4mA==
 
 "@blockscout/stats-types@^2.9.0":
   version "2.9.0"
