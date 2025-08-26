@@ -172,12 +172,12 @@ export default function useNavItems(): ReturnType {
         group,
       ],
     ];
-    const credentialsNavItems: Array<NavItem> | Array<Array<NavItem>> = [
-      [
-        issuance,
-        verification,
-      ],
-    ];
+    // const credentialsNavItems: Array<NavItem> | Array<Array<NavItem>> = [
+    //   [
+    //     issuance,
+    //     verification,
+    //   ],
+    // ];
 
     const mocaStakingNavItems: Array<NavItem> | Array<Array<NavItem>> = [
       [
@@ -339,12 +339,12 @@ export default function useNavItems(): ReturnType {
         isActive: storageNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: storageNavItems,
       },
-      {
-        text: 'Credentials',
-        icon: 'navitems/icon_credentials_new',
-        isActive: credentialsNavItems.flat().some(item => isInternalItem(item) && item.isActive),
-        subItems: credentialsNavItems,
-      },
+      // {
+      //   text: 'Credentials',
+      //   icon: 'navitems/icon_credentials_new',
+      //   isActive: credentialsNavItems.flat().some(item => isInternalItem(item) && item.isActive),
+      //   subItems: credentialsNavItems,
+      // },
       // {
       //   text: 'MOCA Staking',
       //   icon: 'navitems/moca-staking',
