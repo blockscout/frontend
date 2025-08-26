@@ -5,9 +5,9 @@ import type { ZetaChainCCTX } from 'types/api/zetaChain';
 
 import dayjs from 'lib/date/dayjs';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
-import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
+import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
+import CCTxEntityZetaChain from 'ui/shared/entities/tx/CCTxEntityZetaChain';
 import TextSeparator from 'ui/shared/TextSeparator';
-import ZetaChainAddressEntity from 'ui/shared/zetaChain/ZetaChainAddressEntity';
 import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
 
@@ -31,7 +31,7 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading, animation }: Props) => {
       animation={ animation }
     >
       <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading } type="full"/>
-      <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } truncation="constant_long" fontWeight={ 600 }/>
+      <CCTxEntityZetaChain hash={ tx.index } isLoading={ isLoading } truncation="constant_long" fontWeight={ 600 }/>
       <Flex color="text.secondary" gap={ 2 } justifyContent="start">
         { dayjs(Number(tx.last_update_timestamp) * 1000).fromNow() }
         <TextSeparator color={ separatorColor } mx={ 0 }/>
@@ -39,15 +39,15 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading, animation }: Props) => {
       </Flex>
       <Grid gridTemplateColumns="100px 1fr" gap={ 2 }>
         <Text>Sender</Text>
-        <ZetaChainAddressEntity
-          hash={ tx.sender_address }
+        <AddressEntityZetaChain
+          address={{ hash: tx.sender_address }}
           chainId={ tx.source_chain_id.toString() }
           isLoading={ isLoading }
           truncation="constant"
         />
         <Text>Receiver</Text>
-        <ZetaChainAddressEntity
-          hash={ tx.receiver_address }
+        <AddressEntityZetaChain
+          address={{ hash: tx.receiver_address }}
           chainId={ tx.target_chain_id.toString() }
           isLoading={ isLoading }
           truncation="constant"

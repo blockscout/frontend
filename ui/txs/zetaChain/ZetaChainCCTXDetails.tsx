@@ -13,10 +13,10 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
+import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
-import ZetaChainAddressEntity from 'ui/shared/zetaChain/ZetaChainAddressEntity';
 import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
 import ZetaChainCCTXStatusTag from 'ui/shared/zetaChain/ZetaChainCCTXStatusTag';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
@@ -62,8 +62,8 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
         Sender
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <ZetaChainAddressEntity
-          hash={ data.inbound_params.sender }
+        <AddressEntityZetaChain
+          address={{ hash: data.inbound_params.sender }}
           chainId={ data.inbound_params.sender_chain_id.toString() }
           isLoading={ isLoading }
         />
@@ -75,9 +75,9 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
         Receiver
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <ZetaChainAddressEntity
+        <AddressEntityZetaChain
           key={ data.outbound_params[0].receiver }
-          hash={ data.outbound_params[0].receiver }
+          address={{ hash: data.outbound_params[0].receiver }}
           chainId={ data.outbound_params[0].receiver_chain_id?.toString() }
           isLoading={ isLoading }
         />
@@ -285,16 +285,16 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
               borderRadius="md"
             >
               <Text fontWeight="medium" color="text.secondary">Abort address</Text>
-              <ZetaChainAddressEntity
-                hash={ data.revert_options.abort_address }
+              <AddressEntityZetaChain
+                address={{ hash: data.revert_options.abort_address }}
                 chainId={ data.outbound_params[0].receiver_chain_id?.toString() }
                 isLoading={ isLoading }
               />
               <Text fontWeight="medium" color="text.secondary">Call</Text>
               <Text>{ data.revert_options.call_on_revert.toString() }</Text>
               <Text fontWeight="medium" color="text.secondary">Revert address</Text>
-              <ZetaChainAddressEntity
-                hash={ data.revert_options.revert_address }
+              <AddressEntityZetaChain
+                address={{ hash: data.revert_options.revert_address }}
                 chainId={ data.outbound_params[1]?.receiver_chain_id?.toString() }
                 isLoading={ isLoading }
               />

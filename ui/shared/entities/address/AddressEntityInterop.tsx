@@ -41,7 +41,7 @@ const IconStub = () => {
   );
 };
 
-const AddressEntityWithExternalChain = ({ externalChain, ...props }: Props) => {
+const AddressEntityInterop = ({ externalChain, ...props }: Props) => {
   const partsProps = distributeEntityProps(props);
 
   const href = externalChain?.instance_url ? externalChain.instance_url.replace(/\/$/, '') + route({
@@ -100,4 +100,4 @@ const AddressEntityWithExternalChain = ({ externalChain, ...props }: Props) => {
   );
 };
 
-export default chakra(AddressEntityWithExternalChain);
+export default chakra(AddressEntityInterop);

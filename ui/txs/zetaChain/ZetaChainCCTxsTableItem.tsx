@@ -4,9 +4,9 @@ import React from 'react';
 import type { ZetaChainCCTX } from 'types/api/zetaChain';
 
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import CCTxEntityZetaChain from 'ui/shared/entities/tx/CCTxEntityZetaChain';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import ZetaChainAddressFromTo from 'ui/shared/zetaChain/ZetaChainAddressFromTo';
 import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
 
@@ -22,7 +22,7 @@ const ZetaChainCCTxsTableItem = ({ tx, enableTimeIncrement, isLoading, animation
     <TableRow key={ tx.index } animation={ animation }>
       <TableCell pr={ 4 }>
         <HStack alignItems="start" lineHeight="24px">
-          <TxEntityZetaChainCC
+          <CCTxEntityZetaChain
             hash={ tx.index }
             isLoading={ isLoading }
             fontWeight="bold"
@@ -42,7 +42,13 @@ const ZetaChainCCTxsTableItem = ({ tx, enableTimeIncrement, isLoading, animation
         <ZetaChainCCTXReducedStatus status={ tx.status_reduced } type="full" isLoading={ isLoading }/>
       </TableCell>
       <TableCell colSpan={ 2 }>
-        <ZetaChainAddressFromTo tx={ tx } isLoading={ isLoading }/>
+        <AddressFromTo
+          from={{ hash: tx.sender_address }}
+          to={{ hash: tx.receiver_address }}
+          isLoading={ isLoading }
+          zetaChainFromChainId={ tx.source_chain_id.toString() }
+          zetaChainToChainId={ tx.target_chain_id.toString() }
+        />
       </TableCell>
       <TableCell isNumeric>
         <ZetaChainCCTXValue

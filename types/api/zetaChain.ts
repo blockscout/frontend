@@ -14,7 +14,7 @@ export type ZetaChainCCTX = {
   index: string;
   amount: string;
   coin_type: ZetaChainCCTXCoinType;
-  created_timestamp: string;
+  created_timestamp?: string;
   last_update_timestamp: string;
   receiver_address: string;
   sender_address: string;
@@ -40,7 +40,7 @@ export type ZetaChainCCTXResponse = {
     error_message: string;
     last_update_timestamp: string;
     is_abort_refunded: boolean;
-    created_timestamp: string;
+    created_timestamp?: string;
     error_message_revert: string;
     error_message_abort: string;
   };
@@ -72,6 +72,10 @@ export type ZetaChainCCTXResponse = {
   related_cctxs: Array<ZetaChainRelatedCCTX>;
   token_symbol?: string;
   token_name?: string;
+  token_decimals?: number;
+  token_zrc20_contract_address?: string;
+  token_icon_url?: string | null;
+  created_timestamp?: string;
   zrc20_contract_address?: string;
   icon_url?: string | null;
   decimals?: number;
@@ -89,9 +93,14 @@ export type ZetaChainRelatedCCTX = {
     amount: string;
     chain_id: number;
     coin_type: ZetaChainCCTXCoinType;
+    gas_used?: string;
   }>;
   token_symbol?: string;
   token_name?: string;
+  token_decimals?: number;
+  token_zrc20_contract_address?: string;
+  token_icon_url?: string | null;
+  created_timestamp?: string;
   zrc20_contract_address?: string;
   icon_url?: string | null;
   decimals?: number;
@@ -107,7 +116,7 @@ export type ZetaChainCCTXStatusReducedFilter = typeof ZETA_CHAIN_CCTX_STATUS_RED
 
 export type ZetaChainCCTXCoinType = 'ZETA' | 'GAS' | 'ERC20' | 'CMD' | 'NO_ASSET_CALL';
 
-export type ZetaChainCCTXFinalizationStatus = 'FINALIZED' | 'NOT_FINALIZED';
+export type ZetaChainCCTXFinalizationStatus = 'EXECUTED' | 'NOT_FINALIZED';
 
 export type ZetaChainCCTXConfirmationMode = 'SAFE' | 'FAST';
 
