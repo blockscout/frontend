@@ -76,8 +76,8 @@ R extends 'rewards:login' ? rewards.AuthLoginResponse :
 R extends 'rewards:user_balances' ? rewards.GetUserBalancesResponse :
 R extends 'rewards:user_daily_check' ? rewards.DailyRewardCheckResponse :
 R extends 'rewards:user_daily_claim' ? rewards.DailyRewardClaimResponse :
- R extends 'rewards:user_referrals' ? rewards.GetReferralDataResponse :
- R extends 'rewards:user_badges' ? rewards.GetAvailableBadgesResponse :
+R extends 'rewards:user_referrals' ? rewards.GetReferralDataResponse :
+R extends 'rewards:user_badges' ? rewards.GetAvailableBadgesResponse :
 R extends 'rewards:user_check_activity_pass' ? rewards.CheckActivityPassResponse :
 R extends 'rewards:user_activity' ? rewards.GetActivityRewardsResponse :
 R extends 'rewards:user_activity_track_tx' ? rewards.PreSubmitTransactionResponse :
