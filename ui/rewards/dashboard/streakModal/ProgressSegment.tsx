@@ -7,9 +7,13 @@ type Props = {
   prevTarget: number;
   currentStreak: number;
   isFirst: boolean;
+  isFilled: boolean;
 };
 
-export default function ProgressSegment({ target, prevTarget, currentStreak, isFirst }: Props) {
+export default function ProgressSegment({ target, prevTarget, currentStreak, isFirst, isFilled }: Props) {
+  if (isFilled) {
+    currentStreak = target;
+  }
   const isDone = currentStreak >= target;
   const progress = Math.min(Math.max(currentStreak, prevTarget), target);
 

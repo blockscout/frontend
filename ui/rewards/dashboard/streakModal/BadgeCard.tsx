@@ -46,6 +46,13 @@ export default function BadgeCard({ badge, currentStreak, index }: Props) {
           h="32px"
         >
           { (() => {
+            if (badge.is_minted) {
+              return (
+                <Text textStyle="xs" color="green.500">
+                  Minted
+                </Text>
+              );
+            }
             if (badge.is_whitelisted) {
               return (
                 <Link
@@ -55,13 +62,6 @@ export default function BadgeCard({ badge, currentStreak, index }: Props) {
                 >
                   Mint a badge
                 </Link>
-              );
-            }
-            if (badge.is_minted) {
-              return (
-                <Text textStyle="xs" color="green.500">
-                  Minted
-                </Text>
               );
             }
             return (

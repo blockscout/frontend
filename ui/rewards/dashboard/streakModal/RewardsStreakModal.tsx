@@ -52,6 +52,7 @@ const RewardsStreakModal = ({ isOpen, onClose, currentStreak, badges }: Props) =
                       prevTarget={ i > 0 ? Number(badges[i - 1]?.requirements?.streak || 0) : 0 }
                       currentStreak={ currentStreak }
                       isFirst={ i === 0 }
+                      isFilled={ badge.is_whitelisted || badge.is_minted }
                     />
                   )) }
                 </Flex>
