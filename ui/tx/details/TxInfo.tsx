@@ -141,9 +141,9 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
 
       { config.features.metasuites.isEnabled && (
         <>
-          <Box display="none" id="meta-suites__tx-info-label" data-status={ data.status } data-ready={ !isLoading }/>
-          <Box display="none" id="meta-suites__tx-info-value"/>
-          <DetailedInfo.ItemDivider display="none" id="meta-suites__details-info-item-divider"/>
+          <Box display="none" as="p" id="meta-suites__tx-info-label" data-status={ data.status } data-ready={ !isLoading }/>
+          <Box display="none" as="p" id="meta-suites__tx-info-value"/>
+          <DetailedInfo.ItemDivider display="none" as="p" id="meta-suites__details-info-item-divider"/>
         </>
       ) }
 

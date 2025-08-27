@@ -7,6 +7,7 @@ const PRESETS = {
   arbitrum_sepolia: 'https://arbitrum-sepolia.blockscout.com',
   base: 'https://base.blockscout.com',
   blackfort_testnet: 'https://blackfort-testnet.blockscout.com',
+  celo: 'https://celo.blockscout.com',
   celo_alfajores: 'https://celo-alfajores.blockscout.com',
   eth: 'https://eth.blockscout.com',
   eth_goerli: 'https://eth-goerli.blockscout.com',

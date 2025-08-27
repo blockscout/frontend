@@ -793,6 +793,7 @@ For blockchains that use the Celo platform. _Note_, that once the Celo mainnet b
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CELO_ENABLED | `boolean` | Indicates that it is a Celo-based chain. | - | - | `true` | v1.37.0+ |
+| NEXT_PUBLIC_CELO_NATIVE_TOKEN_ADDRESS | `string` | The address of the CELO ERC-20 token. Used to exclude its balance from the net worth value of user tokens. | - | - | `0x471EcE3750Da237f93B8E339c536989b8978a438` | v2.3.0+ |
 
 &nbsp;
 
