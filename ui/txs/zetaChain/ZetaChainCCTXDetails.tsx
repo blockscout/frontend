@@ -5,6 +5,7 @@ import type { ZetaChainCCTXResponse } from 'types/api/zetaChain';
 
 import useApiQuery from 'lib/api/useApiQuery';
 // import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import base64ToHex from 'lib/base64ToHex';
 import { currencyUnits } from 'lib/units';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
@@ -266,7 +267,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
           ) }
         </Grid>
       </DetailedInfo.ItemValue>
-      { data.revert_options && data.revert_options.call_on_revert && (
+      { data.revert_options && (
         <>
           <DetailedInfo.ItemLabel
             hint="Configuration for handling transaction failures"
@@ -291,7 +292,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
                 isLoading={ isLoading }
               />
               <Text fontWeight="medium" color="text.secondary">Call</Text>
-              <Text>{ data.revert_options.call_on_revert.toString() }</Text>
+              <Skeleton loading={ isLoading }>{ data.revert_options.call_on_revert.toString() }</Skeleton>
               <Text fontWeight="medium" color="text.secondary">Revert address</Text>
               <AddressEntityZetaChain
                 address={{ hash: data.revert_options.revert_address }}
@@ -299,16 +300,18 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
                 isLoading={ isLoading }
               />
               <Text fontWeight="medium" color="text.secondary">Message</Text>
-              <Text
-                wordBreak="break-all"
-                overflowWrap="break-word"
-                whiteSpace="pre-wrap"
-                maxW="100%"
-              >
-                { data.revert_options.revert_message }
-              </Text>
+              <Skeleton loading={ isLoading }>
+                <Text
+                  wordBreak="break-all"
+                  overflowWrap="break-word"
+                  whiteSpace="pre-wrap"
+                  maxW="100%"
+                >
+                  { base64ToHex(data.revert_options.revert_message) }
+                </Text>
+              </Skeleton>
               <Text fontWeight="medium" color="text.secondary">Gas limit</Text>
-              <Text>{ Number(data.revert_options.revert_gas_limit).toLocaleString() }</Text>
+              <Skeleton loading={ isLoading }>{ Number(data.revert_options.revert_gas_limit).toLocaleString() }</Skeleton>
             </Grid>
           </DetailedInfo.ItemValue>
         </>
