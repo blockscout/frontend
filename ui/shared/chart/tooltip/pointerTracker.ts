@@ -40,14 +40,14 @@ export function trackPointer(event: PointerEvent, { start, move, out, end }: Poi
 
       // disable current tracker when entering multi touch mode
       touches.length > 1 && untrack(sourceEvent);
-    })
+    }, { passive: true })
     .on(`pointerup.${ id } pointercancel.${ id } lostpointercapture.${ id }`, (sourceEvent: PointerEvent) => {
       if (sourceEvent.pointerId !== id) {
         return;
       }
 
       untrack(sourceEvent);
-    })
+    }, { passive: true })
     .on(`pointermove.${ id }`, (sourceEvent) => {
       if (sourceEvent.pointerId !== id) {
         return;
@@ -56,7 +56,7 @@ export function trackPointer(event: PointerEvent, { start, move, out, end }: Poi
       tracker.prev = tracker.point;
       tracker.point = d3.pointer(sourceEvent, target);
       move?.(tracker);
-    })
+    }, { passive: true })
     .on(`pointerout.${ id }`, (e) => {
       if (e.pointerId !== id) {
         return;
@@ -64,7 +64,7 @@ export function trackPointer(event: PointerEvent, { start, move, out, end }: Poi
       tracker.sourceEvent = e;
       tracker.point = null;
       out?.(tracker);
-    });
+    }, { passive: true });
 
   start?.(tracker);
 

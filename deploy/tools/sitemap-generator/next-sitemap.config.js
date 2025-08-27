@@ -156,6 +156,11 @@ module.exports = {
           return null;
         }
         break;
+      case '/uptime':
+        if (!process.env.NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS) {
+          return null;
+        }
+        break;
       case '/validators':
         if (!process.env.NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE) {
           return null;

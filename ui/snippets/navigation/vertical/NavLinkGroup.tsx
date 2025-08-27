@@ -83,6 +83,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
             <Text
               { ...styleProps.textProps }
               ml={ 3 }
+              whiteSpace="nowrap"
             >
               { item.text }
             </Text>

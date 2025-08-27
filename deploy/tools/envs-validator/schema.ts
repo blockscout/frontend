@@ -383,6 +383,12 @@ const celoSchema = yup
       }),
   });
 
+const megaEthSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS: yup.string().test(urlTest),
+  });
+
 const apiDocsScheme = yup
   .object()
   .shape({
@@ -1166,6 +1172,7 @@ const schema = yup
   .concat(apiDocsScheme)
   .concat(mixpanelSchema)
   .concat(tacSchema)
+  .concat(megaEthSchema)
   .concat(address3rdPartyWidgetsConfigSchema)
   .concat(addressMetadataSchema)
   .concat(userOpsSchema)
