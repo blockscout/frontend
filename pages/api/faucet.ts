@@ -76,10 +76,11 @@ export default async function faucetHandler(
 
     res.status(200).json({ hash: txReceipt.hash });
   } catch (error: any) {
+    httpLogger.logger.error(error);
     requestLock.delete(user.id);
 
     const msg = formatErrorMessage(error);
-    httpLogger.logger.error({ message: msg });
+    // httpLogger.logger.error({ message: msg });
 
     // Reset nonce when Transaction Failure
     if (msg?.includes('nonce')) {
