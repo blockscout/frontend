@@ -152,10 +152,10 @@ const RewardsDashboard = () => {
       </Flex>
       { !isBadgesLoading && !dailyRewardQuery.isPending && (
         <RewardsStreakModal
-          isOpen={ streakModal.open }
-          onClose={ streakModal.onClose }
+          open={ streakModal.open }
+          onOpenChange={ streakModal.onOpenChange }
           currentStreak={ Number(dailyRewardQuery.data?.streak || 0) }
-          badges={ badgesQuery.data?.items ?? [] }
+          badges={ badgesQuery.data?.items }
         />
       ) }
     </>

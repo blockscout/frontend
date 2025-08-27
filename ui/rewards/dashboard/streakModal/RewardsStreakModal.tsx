@@ -10,25 +10,24 @@ import BadgeCard from './BadgeCard';
 import ProgressSegment from './ProgressSegment';
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   currentStreak: number;
-  badges: GetAvailableBadgesResponse['items'];
+  badges?: GetAvailableBadgesResponse['items'];
 };
 
-const RewardsStreakModal = ({ isOpen, onClose, currentStreak, badges }: Props) => {
-  const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
-    if (!open) onClose();
-  }, [ onClose ]);
+const EMPTY_ARRAY: GetAvailableBadgesResponse['items'] = [];
+
+const RewardsStreakModal = ({ open, onOpenChange, currentStreak, badges = EMPTY_ARRAY }: Props) => {
 
   return (
-    <DialogRoot open={ isOpen } onOpenChange={ handleOpenChange } size={{ lgDown: 'full', lg: 'md' }}>
+    <DialogRoot open={ open } onOpenChange={ onOpenChange } size={{ lgDown: 'full', lg: 'md' }}>
       <DialogContent>
-        <DialogHeader mb={ 3 }>Streak progress</DialogHeader>
+        <DialogHeader>Streak progress</DialogHeader>
         <DialogBody>
           <Flex direction="column" gap={ 6 }>
-            <Flex direction="column" gap={ 3 }>
-              <Text textStyle="md">
+            <Flex direction="column" gap={{ base: 6, lg: 3 }}>
+              <Text textStyle={{ base: 'sm', lg: 'md' }}>
                 Build your streak day by day and unlock exclusive badges as a reward for staying consistent.
               </Text>
               <Flex
@@ -45,21 +44,25 @@ const RewardsStreakModal = ({ isOpen, onClose, currentStreak, badges }: Props) =
                   <Text textStyle="xs" color="text.secondary">Day streak</Text>
                 </Flex>
                 <Flex flex={ 1 }>
-                  { badges.map((badge, i) => (
-                    <ProgressSegment
-                      key={ i }
-                      target={ Number(badge.requirements?.streak || 0) }
-                      prevTarget={ i > 0 ? Number(badges[i - 1]?.requirements?.streak || 0) : 0 }
-                      currentStreak={ currentStreak }
-                      isFirst={ i === 0 }
-                      isFilled={ badge.is_whitelisted || badge.is_minted }
-                    />
-                  )) }
+                  { badges.map((badge, i) => {
+                    const target = Number(badge.requirements?.streak || 0);
+                    const prevTarget = i > 0 ? Number(badges[i - 1]?.requirements?.streak || 0) : 0;
+                    const value = (badge.is_whitelisted || badge.is_minted) ? target : currentStreak;
+                    return (
+                      <ProgressSegment
+                        key={ i }
+                        value={ value }
+                        target={ target }
+                        prevTarget={ prevTarget }
+                        isFirst={ i === 0 }
+                      />
+                    );
+                  }) }
                 </Flex>
               </Flex>
             </Flex>
 
-            <Flex direction="column" gap={ 3 }>
+            <Flex direction="column" gap={ 2 }>
               <Heading level="3">Rewards</Heading>
               <Flex direction={{ base: 'column', md: 'row' }} gap={{ base: 2, md: 6 }} justifyContent="space-between">
                 { badges.map((badge, i) => (
@@ -74,7 +77,7 @@ const RewardsStreakModal = ({ isOpen, onClose, currentStreak, badges }: Props) =
                       <Separator
                         display={{ base: 'none', md: 'block' }}
                         orientation="vertical"
-                        borderColor={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.100' }}
+                        borderColor="border.divider"
                       />
                     ) }
                   </>

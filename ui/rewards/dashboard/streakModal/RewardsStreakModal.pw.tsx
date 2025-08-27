@@ -8,14 +8,14 @@ import { test, expect, devices } from 'playwright/lib';
 
 import RewardsStreakModal from './RewardsStreakModal';
 
-const onClose = () => {};
+const onOpenChange = () => {};
 
 const testFn = (streak: number, badges: GetAvailableBadgesResponse['items']) =>
   async({ render, page }: TestFnArgs) => {
     await render(
       <RewardsStreakModal
-        isOpen
-        onClose={ onClose }
+        open
+        onOpenChange={ onOpenChange }
         currentStreak={ streak }
         badges={ badges }
       />,

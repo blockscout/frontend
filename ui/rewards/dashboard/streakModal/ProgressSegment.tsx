@@ -1,21 +1,18 @@
 import { Flex, Text, Progress } from '@chakra-ui/react';
+import { clamp } from 'es-toolkit';
 
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
+  value: number;
   target: number;
   prevTarget: number;
-  currentStreak: number;
   isFirst: boolean;
-  isFilled: boolean;
 };
 
-export default function ProgressSegment({ target, prevTarget, currentStreak, isFirst, isFilled }: Props) {
-  if (isFilled) {
-    currentStreak = target;
-  }
-  const isDone = currentStreak >= target;
-  const progress = Math.min(Math.max(currentStreak, prevTarget), target);
+export default function ProgressSegment({ value, target, prevTarget, isFirst }: Props) {
+  const isDone = value >= target;
+  const progress = clamp(value, prevTarget, target);
 
   return (
     <Flex gap={ 0 } flex={ 1 } minW="0">
@@ -58,7 +55,7 @@ export default function ProgressSegment({ target, prevTarget, currentStreak, isF
             { isDone ? (
               <IconSvg name="check" boxSize={ 5 } color="white"/>
             ) : (
-              <IconSvg name="hexagon" boxSize={ 4 } color={{ _light: 'gray.400', _dark: 'whiteAlpha.500' }}/>
+              <IconSvg name="hexagon" boxSize={ 4 } color="icon.secondary"/>
             ) }
           </Flex>
         </Flex>
