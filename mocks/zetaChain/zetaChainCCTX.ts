@@ -80,13 +80,6 @@ export const zetaChainCCTX: ZetaChainCCTXResponse = {
     },
   ],
   protocol_contract_version: 'V1',
-  revert_options: {
-    revert_address: '',
-    call_on_revert: false,
-    abort_address: '',
-    revert_message: '',
-    revert_gas_limit: '0',
-  },
   related_cctxs: [
     {
       index: '0x0001150419abd8d8383fae702f3a8415e57c96e78c9815756d15e1f1f5c0f466',
@@ -196,7 +189,8 @@ export const zetaChainCCTXFailed: ZetaChainCCTXResponse = {
     revert_address: '0x0000000000000000000000000000000000000000',
     call_on_revert: false,
     abort_address: '0x0000000000000000000000000000000000000000',
-    revert_message: '',
+    // eslint-disable-next-line max-len
+    revert_message: 'QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBRUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBWUFBQUFBQUFBQUFBQUFBQUFGQjFQS05KWTJ5b2N5ZGk2TXp3VjlPWm1KR2dBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUNob2RIUndjem92TDJGd2FTNWxlR0Z0Y0d4bExtTnZiUzl0WlhSaFpHRjBZUzh2TVM1cWMyOXVBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQ==',
     revert_gas_limit: '0',
   },
   related_cctxs: [
