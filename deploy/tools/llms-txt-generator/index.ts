@@ -469,6 +469,18 @@ function run() {
             \`\`\`bash
             curl --request GET --url '${ MCP_SERVER_URL }/v1/read_contract?chain_id=${ chainId }&address={contract_address}&abi={string_encoded_function_abi}&function_name={function_name}&args={string_encoded_arguments_list}'
             \`\`\`
+            
+            ### Get Source Files Tree of Verified Contract
+            
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/inspect_contract_code?chain_id=${ chainId }&address={contract_address}'
+            \`\`\`
+            
+            ### Inspect Specific Source File of Verified Contract
+            
+            \`\`\`bash
+            curl --request GET --url '${ MCP_SERVER_URL }/v1/inspect_contract_code?chain_id=${ chainId }&address={contract_address}&file_name={file_name}'
+            \`\`\`
             <!-- END:General-Data-Contracts -->
 
             <!-- END:General-LLM-Ready-Blockchain-Data -->
