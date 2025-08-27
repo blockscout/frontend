@@ -62,7 +62,7 @@ export type ZetaChainCCTXResponse = {
   };
   outbound_params: Array<ZetaChainCCTXOutboundParams>;
   protocol_contract_version: string;
-  revert_options: {
+  revert_options?: {
     revert_address: string;
     call_on_revert: boolean;
     abort_address: string;

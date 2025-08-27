@@ -4,6 +4,7 @@ import React from 'react';
 import type { ZetaChainCCTXResponse } from 'types/api/zetaChain';
 
 import config from 'configs/app';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -23,10 +24,11 @@ const ZetaChainCCTXDetailsLifecycleIn = ({ tx, isLoading }: Props) => {
   const inboundParams = tx.inbound_params;
   const chainFromId = inboundParams.sender_chain_id.toString();
   const chainFrom = chainsConfig?.find((chain) => chain.chain_id.toString() === chainFromId);
+  const bgColor = useColorModeValue('white', 'black');
 
   return (
     <>
-      <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg="global.body.bg" zIndex={ 1 } color="text.success"/>
+      <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg={ bgColor } zIndex={ 1 } color="text.success"/>
       <Skeleton loading={ isLoading }>
         <Flex color={ inboundParams.status === 'SUCCESS' ? 'text.success' : 'text.error' } maxH="20px" mb={ 2.5 } alignItems="center">
           { `Sender tx from ${ chainFrom?.chain_name || 'unknown chain' }` }

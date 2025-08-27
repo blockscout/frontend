@@ -20,6 +20,7 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import ZetaChainFilterTags from './filters/ZetaChainFilterTags';
 import ZetaChainCCTxs from './ZetaChainCCTxs';
+import ZetaChainCCTXsStats from './ZetaChainCCTXsStats';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -154,7 +155,7 @@ const ZetaChainEvmTransactions = () => {
 
   return (
     <>
-      { /* <TxsStats/> */ }
+      <ZetaChainCCTXsStats/>
       <ZetaChainFilterTags
         filters={ filters }
         onClearFilter={ onClearFilter }

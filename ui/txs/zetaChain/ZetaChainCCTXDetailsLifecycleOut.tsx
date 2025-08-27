@@ -5,6 +5,7 @@ import React from 'react';
 import type { ZetaChainCCTXOutboundParams, ZetaChainCCTXResponse } from 'types/api/zetaChain';
 
 import config from 'configs/app';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -28,6 +29,8 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
   const chainTo = chainsConfig?.find((chain) => chain.chain_id.toString() === chainToId);
 
   const gasDecimals = config.chain.currency.decimals;
+
+  const bgColor = useColorModeValue('white', 'black');
 
   if (tx.cctx_status.status === 'PENDING_INBOUND') {
     return null;
@@ -202,10 +205,10 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
       <Flex
         h="100%"
         w="100%"
-        bg={ (isLast && !hasTxAfter) ? 'global.body.bg' : 'transparent' }
+        bg={ (isLast && !hasTxAfter) ? bgColor : 'transparent' }
         zIndex={ 1 }
       >
-        <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg="global.body.bg" zIndex={ 1 } color={ color }/>
+        <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg={ bgColor } zIndex={ 1 } color={ color }/>
       </Flex>
       <Skeleton loading={ isLoading } key={ outboundParam.hash } w="100%">
         { /* color is incorrect, idk where to get the right one */ }

@@ -4,11 +4,11 @@ import React from 'react';
 import type { ZetaChainCCTXResponse } from 'types/api/zetaChain';
 
 import useApiQuery from 'lib/api/useApiQuery';
-// import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import base64ToHex from 'lib/base64ToHex';
 import { currencyUnits } from 'lib/units';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -37,6 +37,8 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
       placeholderData: HOMEPAGE_STATS,
     },
   });
+
+  const bgColor = useColorModeValue('white', 'black');
 
   if (!data) {
     return null;
@@ -215,7 +217,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
         <Grid templateColumns="20px 1fr" rowGap={ 6 } columnGap={ 2 } w="100%">
           { transactionsBefore.length > 0 && (
             <>
-              <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg="global.body.bg" zIndex={ 1 } color="text.secondary"/>
+              <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg={ bgColor } zIndex={ 1 } color="text.secondary"/>
               <VStack gap={ 2 } alignItems="flex-start">
                 { transactionsBefore.map((tx) => (
                   <ZetaChainCCTXDetailsRelatedTx
@@ -249,10 +251,10 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
               <Flex
                 h="100%"
                 w="100%"
-                bg="global.body.bg"
+                bg={ bgColor }
                 zIndex={ 1 }
               >
-                <IconSvg name="interop_slim" boxSize={ 5 } bg="global.body.bg" zIndex={ 1 } color="text.secondary"/>
+                <IconSvg name="interop_slim" boxSize={ 5 } bg={ bgColor } zIndex={ 1 } color="text.secondary"/>
               </Flex>
               <VStack gap={ 2 } alignItems="flex-start">
                 { transactionsAfter.map((tx) => (
@@ -299,17 +301,21 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
                 chainId={ data.outbound_params[1]?.receiver_chain_id?.toString() }
                 isLoading={ isLoading }
               />
-              <Text fontWeight="medium" color="text.secondary">Message</Text>
-              <Skeleton loading={ isLoading }>
-                <Text
-                  wordBreak="break-all"
-                  overflowWrap="break-word"
-                  whiteSpace="pre-wrap"
-                  maxW="100%"
-                >
-                  { base64ToHex(data.revert_options.revert_message) }
-                </Text>
-              </Skeleton>
+              { data.revert_options.revert_message && (
+                <>
+                  <Text fontWeight="medium" color="text.secondary">Message</Text>
+                  <Skeleton loading={ isLoading }>
+                    <Text
+                      wordBreak="break-all"
+                      overflowWrap="break-word"
+                      whiteSpace="pre-wrap"
+                      maxW="100%"
+                    >
+                      { base64ToHex(data.revert_options.revert_message) }
+                    </Text>
+                  </Skeleton>
+                </>
+              ) }
               <Text fontWeight="medium" color="text.secondary">Gas limit</Text>
               <Skeleton loading={ isLoading }>{ Number(data.revert_options.revert_gas_limit).toLocaleString() }</Skeleton>
             </Grid>
