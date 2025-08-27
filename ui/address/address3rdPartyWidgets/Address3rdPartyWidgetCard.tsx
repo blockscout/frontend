@@ -1,4 +1,4 @@
-import { Flex, Text, chakra, Separator, Box } from '@chakra-ui/react';
+import { Flex, Text, chakra, Separator } from '@chakra-ui/react';
 import { useCallback } from 'react';
 
 import type { Address3rdPartyWidget } from 'types/views/address';
@@ -125,25 +125,15 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
       flexDirection="column"
       p={ 3 }
       cursor={ isLoading ? 'default' : 'pointer' }
-      position="relative"
-      zIndex={ 0 }
+      borderRadius="md"
+      border="1px solid"
+      borderColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' } : 'transparent' }
+      bgColor={ isLoading ? 'transparent' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' } }
+      transition="border-color 0.2s ease-in-out"
+      _hover={ isLoading ? {} : {
+        borderColor: { _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' },
+      } }
     >
-      <Box
-        aria-hidden
-        position="absolute"
-        inset={ 0 }
-        borderRadius="md"
-        border="1px solid"
-        borderColor={ isLoading ? { _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' } : 'transparent' }
-        bgColor={ isLoading ? 'transparent' : { _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' } }
-        transform="scale(1)"
-        transition="transform 0.2s ease-in-out, border-color 0.2s ease-in-out"
-        zIndex={ -1 }
-        _groupHover={{
-          transform: 'scale(1.02)',
-          borderColor: { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' },
-        }}
-      />
       { content }
     </LinkBox>
   );

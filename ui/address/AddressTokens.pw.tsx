@@ -5,6 +5,7 @@ import type { AddressTokensResponse } from 'types/api/address';
 
 import * as addressMock from 'mocks/address/address';
 import * as tokensMock from 'mocks/address/tokens';
+import * as tokenInfo from 'mocks/tokens/tokenInfo';
 import * as tokenInstance from 'mocks/tokens/tokenInstance';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect, devices } from 'playwright/lib';
@@ -267,4 +268,26 @@ test.describe('update balances via socket', () => {
 
     await expect(component).toHaveScreenshot();
   });
+});
+
+test('native token', async({ render, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_CELO_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
+  ]);
+  const hooksConfig = {
+    router: {
+      query: { hash: ADDRESS_HASH, tab: 'tokens_erc20' },
+      isReady: true,
+    },
+  };
+
+  const component = await render(
+    <Box pt={{ base: '134px', lg: 6 }}>
+      <AddressTokens/>
+    </Box>,
+    { hooksConfig },
+  );
+
+  await expect(component).toHaveScreenshot();
 });
