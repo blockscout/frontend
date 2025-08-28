@@ -31,30 +31,30 @@ export default function BadgeCard({ badge, currentStreak, index }: Props) {
   const progress = Math.min(currentStreak, target);
 
   return (
-    <Flex direction={{ base: 'row', md: 'column' }} alignItems="center" gap={ 3 } flex={ 1 }>
+    <Flex direction={{ base: 'row', lg: 'column' }} alignItems="center" gap={ 3 } flex={ 1 }>
       <Flex
-        p={{ base: 2.5, md: 4 }}
+        p={{ base: 2.5, lg: 4 }}
         borderRadius="lg"
         bgColor={ isUnlocked ? BADGE_BG_COLORS[index] : { _light: 'gray.50', _dark: 'whiteAlpha.100' } }
         alignItems="center"
         justifyContent="center"
-        w={{ base: '92px', md: 'full' }}
+        w={{ base: '92px', lg: 'full' }}
         flexShrink={ 0 }
       >
         <Image
           src={ isUnlocked ? BADGES[index] : GHOST_BADGES[index] }
           alt="Streak badge"
-          h={{ base: '54px', md: '82px' }}
+          h={{ base: '54px', lg: '82px' }}
         />
       </Flex>
-      <Flex direction="column" gap={ 3 } w="full" alignItems={{ base: 'flex-start', md: 'center' }}>
+      <Flex direction="column" gap={ 3 } w="full" alignItems={{ base: 'flex-start', lg: 'center' }}>
         <Text textStyle="sm">{ target } Day streak</Text>
         <Flex
           w="full"
           alignItems="center"
-          justifyContent={{ base: 'flex-start', md: 'center' }}
+          justifyContent={{ base: 'flex-start', lg: 'center' }}
           gap={ 2 }
-          px={{ base: 0, md: 2 }}
+          px={{ base: 0, lg: 2 }}
           h="32px"
         >
           { (() => {

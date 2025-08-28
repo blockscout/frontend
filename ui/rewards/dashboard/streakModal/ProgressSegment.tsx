@@ -15,8 +15,8 @@ export default function ProgressSegment({ value, target, prevTarget, isFirst }: 
   const progress = clamp(value, prevTarget, target);
 
   return (
-    <Flex gap={ 0 } flex={ 1 } minW="0">
-      <Flex flex={ 1 } alignItems="center" h="40px" mx={ -2.5 }>
+    <Flex gap={ 0 } flex={{ base: isFirst ? 0.7 : 1, lg: 1 }} minW="0">
+      <Flex flex={ 1 } alignItems="center" h={{ base: '32px', lg: '40px' }} mx={ -2.5 }>
         <Progress.Root
           value={ progress }
           min={ prevTarget }
@@ -42,7 +42,7 @@ export default function ProgressSegment({ value, target, prevTarget, isFirst }: 
         flexShrink={ 0 }
         w="60px"
       >
-        <Flex h="40px" alignItems="center">
+        <Flex h={{ base: '32px', lg: '40px' }} alignItems="center">
           <Flex
             w="40px"
             h="32px"

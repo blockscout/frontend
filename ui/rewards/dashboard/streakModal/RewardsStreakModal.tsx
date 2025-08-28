@@ -31,19 +31,19 @@ const RewardsStreakModal = ({ open, onOpenChange, currentStreak, badges = EMPTY_
                 Build your streak day by day and unlock exclusive badges as a reward for staying consistent.
               </Text>
               <Flex
-                direction={{ base: 'column', md: 'row' }}
-                gap={{ base: 4, md: 10 }}
+                direction={{ base: 'column', lg: 'row' }}
+                gap={{ base: 3, lg: 10 }}
                 bgColor={{ _light: 'gray.50', _dark: 'whiteAlpha.100' }}
-                p={{ base: 4, md: 8 }}
-                pl={ 5 }
+                p={{ base: 4, lg: 8 }}
+                pl={{ base: 4, lg: 5 }}
                 borderRadius="lg"
                 justifyContent="space-between"
               >
-                <Flex direction="column" alignItems="center" gap={ 2 }>
+                <Flex direction="column" alignItems="center" gap={{ base: 1, lg: 2 }}>
                   <Heading level="1">{ currentStreak }</Heading>
                   <Text textStyle="xs" color="text.secondary">Day streak</Text>
                 </Flex>
-                <Flex flex={ 1 }>
+                <Flex flex={ 1 } pl={{ base: 2, lg: 0 }}>
                   { badges.map((badge, i) => {
                     const target = Number(badge.requirements?.streak || 0);
                     const prevTarget = i > 0 ? Number(badges[i - 1]?.requirements?.streak || 0) : 0;
@@ -64,7 +64,7 @@ const RewardsStreakModal = ({ open, onOpenChange, currentStreak, badges = EMPTY_
 
             <Flex direction="column" gap={ 2 }>
               <Heading level="3">Rewards</Heading>
-              <Flex direction={{ base: 'column', md: 'row' }} gap={{ base: 2, md: 6 }} justifyContent="space-between">
+              <Flex direction={{ base: 'column', lg: 'row' }} gap={{ base: 2, lg: 6 }} justifyContent="space-between">
                 { badges.map((badge, i) => (
                   <>
                     <BadgeCard
@@ -75,7 +75,7 @@ const RewardsStreakModal = ({ open, onOpenChange, currentStreak, badges = EMPTY_
                     />
                     { i < badges.length - 1 && (
                       <Separator
-                        display={{ base: 'none', md: 'block' }}
+                        display={{ base: 'none', lg: 'block' }}
                         orientation="vertical"
                         borderColor="border.divider"
                       />
