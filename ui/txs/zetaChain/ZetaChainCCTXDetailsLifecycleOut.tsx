@@ -8,6 +8,7 @@ import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
+import CCTxEntityZetaChain from 'ui/shared/entities/tx/CCTxEntityZetaChain';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityZetaChainExternal from 'ui/shared/entities/tx/TxEntityZetaChainExternal';
 import IconSvg from 'ui/shared/IconSvg';
@@ -40,15 +41,33 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
   let text: string = '';
   let color: string = '';
 
+  const isCCTX = tx.related_cctxs.some((cctx) => cctx.index === outboundParam.hash);
+
+  const transactionOrCCTX = isCCTX ? (
+    <>
+      <Text color="text.secondary" fontWeight="medium">CCTX</Text>
+      <CCTxEntityZetaChain
+        hash={ outboundParam.hash }
+        isLoading={ isLoading }
+        noIcon
+        noCopy={ false }
+      />
+    </>
+  ) : (
+    <>
+      <Text color="text.secondary" fontWeight="medium">Transaction</Text>
+      { chainToId !== config.chain.id ? (
+        <TxEntityZetaChainExternal chainId={ chainToId } hash={ outboundParam.hash } noIcon noCopy={ false }/>
+      ) : (
+        <TxEntity hash={ outboundParam.hash } noIcon noCopy={ false }/>
+      ) }
+    </>
+  );
+
   if (tx.cctx_status.status === 'OUTBOUND_MINED') {
     content = (
       <>
-        <Text color="text.secondary" fontWeight="medium">Transaction</Text>
-        { chainToId !== config.chain.id ? (
-          <TxEntityZetaChainExternal chainId={ chainToId } hash={ outboundParam.hash } noIcon noCopy={ false }/>
-        ) : (
-          <TxEntity hash={ outboundParam.hash } noIcon noCopy={ false }/>
-        ) }
+        { transactionOrCCTX }
         <Text color="text.secondary" fontWeight="medium">Status</Text>
         <StatusTag type="ok" text="Success"/>
         <Text color="text.secondary" fontWeight="medium">Receiver</Text>
@@ -76,12 +95,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
     if (!isLast) {
       content = (
         <>
-          <Text color="text.secondary" fontWeight="medium">Transaction</Text>
-          { chainToId !== config.chain.id ? (
-            <TxEntityZetaChainExternal chainId={ chainToId } hash={ outboundParam.hash } noIcon noCopy={ false }/>
-          ) : (
-            <TxEntity hash={ outboundParam.hash } noIcon noCopy={ false }/>
-          ) }
+          { transactionOrCCTX }
           <Text color="text.secondary" fontWeight="medium">Status</Text>
           <StatusTag type="error" text="Failed"/>
         </>
@@ -123,12 +137,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
     if (!isLast) {
       content = (
         <>
-          <Text color="text.secondary" fontWeight="medium">Transaction</Text>
-          { chainToId !== config.chain.id ? (
-            <TxEntityZetaChainExternal chainId={ chainToId } hash={ outboundParam.hash } noIcon noCopy={ false }/>
-          ) : (
-            <TxEntity hash={ outboundParam.hash } noIcon noCopy={ false }/>
-          ) }
+          { transactionOrCCTX }
           <Text color="text.secondary" fontWeight="medium">Status</Text>
           <StatusTag type="error" text="Failed"/>
         </>
@@ -146,11 +155,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
             truncation="constant"
           />
           <Text color="text.secondary" fontWeight="medium">Transaction</Text>
-          { chainToId !== config.chain.id ? (
-            <TxEntityZetaChainExternal chainId={ chainToId } hash={ outboundParam.hash } noIcon noCopy={ false }/>
-          ) : (
-            <TxEntity hash={ outboundParam.hash } noIcon noCopy={ false }/>
-          ) }
+          { transactionOrCCTX }
           <Text color="text.secondary" fontWeight="medium">Status</Text>
           <StatusTag type="ok" text="Success"/>
           <Text color="text.secondary" fontWeight="medium">Transferred</Text>
@@ -210,7 +215,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
       >
         <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg={ bgColor } zIndex={ 1 } color={ color }/>
       </Flex>
-      <Skeleton loading={ isLoading } key={ outboundParam.hash } w="100%">
+      <Skeleton loading={ isLoading } w="100%">
         { /* color is incorrect, idk where to get the right one */ }
         <Flex color={ color } maxH="20px" alignItems="center" mb={ 2.5 }>
           { text }
