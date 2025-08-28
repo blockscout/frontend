@@ -974,6 +974,9 @@ This feature allows to display widgets on the address page with data from 3rd pa
 | chain_name | `string` | Displayed name of the chain | Required | - | `'Sepolia Testnet'` |
 | chain_logo | `string` | Chain logo URL. Image should be at least 40x40 px  | - | - | `'https://example.com/logo.svg'` |
 | instance_url | `string` | Base URL of the blockscout explorer for the chain | - | - | `'https://eth-sepolia.blockscout.com/'` |
+| address_url_template | `string` | Address url template on external explorer. `{hash}` will be replaced with the address hash | - | - | `'https://external.explorer.com/address/{hash}'` |
+| tx_url_template | `string` | Transaction url template on external explorer. `{hash}` will be replaced with the transaction hash | - | - | `'https://external.explorer.com/tx/{hash}'` |
+
 
 &nbsp;
 
