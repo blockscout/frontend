@@ -85,7 +85,7 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab }: Props) =
     return null;
   }
 
-  const rightSlot = autoVerificationStatus ?
+  const rightSlot = autoVerificationStatus && !contractTabs.isPartiallyVerified ?
     <ContractAutoVerificationStatus status={ autoVerificationStatus } mode={ isMobile && contractTabs.tabs.length > 1 ? 'tooltip' : 'inline' }/> :
     null;
 

@@ -26,6 +26,7 @@ interface ContractTab {
 interface ReturnType {
   tabs: Array<ContractTab>;
   isLoading: boolean;
+  isPartiallyVerified?: boolean;
 }
 
 interface Props {
@@ -73,6 +74,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
           },
         ],
         isLoading: false,
+        isPartiallyVerified: false,
       };
     }
 
@@ -114,6 +116,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
         },
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,
+      isPartiallyVerified: !contractQuery.isPlaceholderData ? contractQuery.data?.is_partially_verified || undefined : undefined,
     };
   }, [
     addressData,

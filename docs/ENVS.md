@@ -491,7 +491,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_HAS_USER_OPS | `boolean` | Set to true to show user operations related data and pages | - | - | `true` | v1.23.0+ |
-| NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST | `boolean` | The user operations indexer API host; pass to show API documentation for the service | - | - | `true` | v2.3.0+ |
+| NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST | `string` | The user operations indexer API host; pass to show API documentation for the service | - | - | `https://user-ops-indexer-base-mainnet.k8s-prod-2.blockscout.com` | v2.3.0+ |
 
 &nbsp;
 
