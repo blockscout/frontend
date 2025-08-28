@@ -26,7 +26,6 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   arbitrumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'arbitrum' ],
     [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
-    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME', 'DuckChain' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE', '0x1234' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL', 'https://mocha.celenium.io/blob' ],
   ],

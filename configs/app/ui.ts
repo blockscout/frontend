@@ -70,11 +70,6 @@ const UI = Object.freeze({
     charts: parseEnvJson<Array<ChainIndicatorId>>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_CHARTS')) || [],
     stats: homePageStats,
     heroBanner: parseEnvJson<HeroBannerConfig>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG')),
-    // !!! DEPRECATED !!!
-    plate: {
-      background: getEnvValue('NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND'),
-      textColor: getEnvValue('NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR'),
-    },
   },
   views,
   indexingAlert: {
