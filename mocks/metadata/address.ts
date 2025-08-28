@@ -15,7 +15,7 @@ export const cexDepositTag: AddressMetadataTagApi = {
   ordinal: 42,
   slug: 'duck-deposit-address',
   meta: {
-    cex_deposit: 'true',
+    cexDeposit: 'true',
   },
 };
 

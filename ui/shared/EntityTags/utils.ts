@@ -28,7 +28,7 @@ export function getTagLinkParams(data: EntityTag, multichainContext?: TMultichai
 }
 
 export function getTagName(data: EntityTag, addressHash?: string) {
-  if (data.tagType === 'name' && data.meta?.cex_deposit === 'true' && addressHash) {
+  if (data.tagType === 'name' && data.meta?.cexDeposit === 'true' && addressHash) {
     return `${ data.name } (${ addressHash.slice(0, 2 + 5) })`;
   }
 
