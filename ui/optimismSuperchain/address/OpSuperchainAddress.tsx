@@ -124,6 +124,7 @@ const OpSuperchainAddress = () => {
     <EntityTags
       tags={ tags }
       isLoading={ isLoading }
+      addressHash={ checkSummedHash }
     />
   );
 

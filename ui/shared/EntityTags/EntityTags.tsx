@@ -13,10 +13,11 @@ import EntityTag from './EntityTag';
 interface Props {
   className?: string;
   tags: Array<TEntityTag>;
+  addressHash?: string;
   isLoading?: boolean;
 }
 
-const EntityTags = ({ tags, className, isLoading }: Props) => {
+const EntityTags = ({ tags, addressHash, className, isLoading }: Props) => {
   const isMobile = useIsMobile();
   const visibleNum = isMobile ? 2 : 3;
 
@@ -43,7 +44,15 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
     if (tags.length > visibleNum) {
       return (
         <>
-          { tags.slice(0, visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } maxW={ tagMaxW }/>) }
+          { tags.slice(0, visibleNum).map((tag) => (
+            <EntityTag
+              key={ tag.slug }
+              data={ tag }
+              addressHash={ addressHash }
+              isLoading={ isLoading }
+              maxW={ tagMaxW }
+            />
+          )) }
           { metaSuitesPlaceholder }
           <PopoverRoot>
             <PopoverTrigger>
@@ -54,7 +63,7 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
             <PopoverContent maxW="300px" w="fit-content">
               <PopoverBody>
                 <Flex columnGap={ 2 } rowGap={ 2 } flexWrap="wrap">
-                  { tags.slice(visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag }/>) }
+                  { tags.slice(visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag } addressHash={ addressHash }/>) }
                 </Flex>
               </PopoverBody>
             </PopoverContent>
@@ -65,7 +74,7 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
 
     return (
       <>
-        { tags.map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } maxW={ tagMaxW }/>) }
+        { tags.map((tag) => <EntityTag key={ tag.slug } data={ tag } addressHash={ addressHash } isLoading={ isLoading } maxW={ tagMaxW }/>) }
         { metaSuitesPlaceholder }
       </>
     );

@@ -11,15 +11,16 @@ import { Tag } from 'toolkit/chakra/tag';
 
 import EntityTagIcon from './EntityTagIcon';
 import EntityTagTooltip from './EntityTagTooltip';
-import { getTagLinkParams } from './utils';
+import { getTagName, getTagLinkParams } from './utils';
 
 interface Props extends HTMLChakraProps<'span'> {
   data: TEntityTag;
+  addressHash?: string;
   isLoading?: boolean;
   noLink?: boolean;
 }
 
-const EntityTag = ({ data, isLoading, noLink, ...rest }: Props) => {
+const EntityTag = ({ data, addressHash, isLoading, noLink, ...rest }: Props) => {
   const multichainContext = useMultichainContext();
 
   const linkParams = !noLink ? getTagLinkParams(data, multichainContext) : undefined;
@@ -47,7 +48,7 @@ const EntityTag = ({ data, isLoading, noLink, ...rest }: Props) => {
       return `@${ data.meta.warpcastHandle }`;
     }
 
-    return data.name;
+    return getTagName(data, addressHash);
   })();
 
   return (

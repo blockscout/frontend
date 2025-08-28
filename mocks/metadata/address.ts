@@ -9,6 +9,16 @@ export const nameTag: AddressMetadataTagApi = {
   meta: null,
 };
 
+export const cexDepositTag: AddressMetadataTagApi = {
+  name: 'Duck deposit address',
+  tagType: 'name',
+  ordinal: 42,
+  slug: 'duck-deposit-address',
+  meta: {
+    cexDeposit: 'true',
+  },
+};
+
 export const customNameTag: AddressMetadataTagApi = {
   slug: 'unicorn-uproar',
   name: 'Unicorn Uproar',
