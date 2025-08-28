@@ -34,7 +34,7 @@ const LatestWatchlistTxs = () => {
     const txsUrl = route({ pathname: '/txs', query: { tab: 'watchlist' } });
     return (
       <>
-        <Box mb={ 3 } display={{ base: 'block', lg: 'none' }}>
+        <Box mb={ 3 } display={{ base: 'block', lg: 'none' }} textStyle="sm">
           { data.slice(0, txsCount).map(((tx, index) => (
             <LatestTxsItemMobile
               key={ tx.hash + (isPlaceholderData ? index : '') }
@@ -43,7 +43,7 @@ const LatestWatchlistTxs = () => {
             />
           ))) }
         </Box>
-        <Box mb={ 4 } display={{ base: 'none', lg: 'block' }}>
+        <Box mb={ 4 } display={{ base: 'none', lg: 'block' }} textStyle="sm">
           { data.slice(0, txsCount).map(((tx, index) => (
             <LatestTxsItem
               key={ tx.hash + (isPlaceholderData ? index : '') }
