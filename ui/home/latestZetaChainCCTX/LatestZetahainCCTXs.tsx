@@ -49,12 +49,6 @@ const LatestZetahainCCTXs = () => {
     socketName: 'zetachain',
   });
 
-  // const statusUpdateChannel = useSocketChannel({
-  //   topic: 'cctxs:status_update',
-  //   isDisabled: Boolean(isPlaceholderData),
-  //   socketName: 'zetachain',
-  // });
-
   const handleNewCCTXMessage: SocketMessage.NewZetaChainCCTXs['handler'] = React.useCallback((payload) => {
     queryClient.setQueryData(
       getResourceKey('zetachain:transactions', {
@@ -92,22 +86,11 @@ const LatestZetahainCCTXs = () => {
     );
   }, [ queryClient ]);
 
-  // const handleStatusUpdateMessage: SocketMessage.ZetaChainCCTXStatusUpdate['handler'] = React.useCallback((payload) => {
-  //   // eslint-disable-next-line no-console
-  //   console.log('Status update payload:', payload);
-  // }, []);
-
   useSocketMessage({
     channel,
     event: 'new_cctxs',
     handler: handleNewCCTXMessage,
   });
-
-  // useSocketMessage({
-  //   channel: statusUpdateChannel,
-  //   event: 'status_update',
-  //   handler: handleStatusUpdateMessage,
-  // });
 
   if (isError) {
     return <Text mt={ 4 }>No data. Please reload the page.</Text>;
