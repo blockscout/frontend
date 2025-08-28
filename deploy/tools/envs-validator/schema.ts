@@ -297,17 +297,6 @@ const rollupSchema = yup
           value => value === undefined,
         ),
       }),
-    NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME: yup
-      .string()
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: 'arbitrum',
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' ',
-          value => value === undefined,
-        ),
-      }),
     NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS: yup
       .boolean()
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
@@ -465,51 +454,10 @@ const adsBannerSchema = yup
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: adButlerConfigSchema,
   });
 
-// DEPRECATED
-const sentrySchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_SENTRY_DSN: yup.string().test(urlTest),
-    SENTRY_CSP_REPORT_URI: yup
-      .string()
-      .when('NEXT_PUBLIC_SENTRY_DSN', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema.test(urlTest),
-        otherwise: (schema) => schema.max(-1, 'SENTRY_CSP_REPORT_URI cannot not be used without NEXT_PUBLIC_SENTRY_DSN'),
-      }),
-    NEXT_PUBLIC_SENTRY_ENABLE_TRACING: yup
-      .boolean()
-      .when('NEXT_PUBLIC_SENTRY_DSN', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-      }),
-  });
-
 const accountSchema = yup
   .object()
   .shape({
     NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: yup.boolean(),
-    NEXT_PUBLIC_AUTH0_CLIENT_ID: yup
-      .string()
-      .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
-        is: (value: boolean) => value,
-        then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_AUTH0_CLIENT_ID cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'),
-      }),
-    NEXT_PUBLIC_AUTH_URL: yup
-      .string()
-      .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
-        is: (value: boolean) => value,
-        then: (schema) => schema.test(urlTest),
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_AUTH_URL cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'),
-      }),
-    NEXT_PUBLIC_LOGOUT_URL: yup
-      .string()
-      .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
-        is: (value: boolean) => value,
-        then: (schema) => schema.test(urlTest),
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_LOGOUT_URL cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'),
-      }),
   });
 
 const featuredNetworkSchema: yup.ObjectSchema<FeaturedNetwork> = yup
@@ -831,8 +779,6 @@ const schema = yup
           return true;
         }
       ),
-    NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
-    NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG: yup
       .mixed()
       .test(
@@ -1147,7 +1093,6 @@ const schema = yup
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),
     NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(),
-    NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY: yup.string(), // DEPRECATED
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
     NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: yup.string(),
@@ -1162,7 +1107,6 @@ const schema = yup
   .concat(celoSchema)
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
-  .concat(sentrySchema)
   .concat(apiDocsScheme)
   .concat(mixpanelSchema)
   .concat(tacSchema)
