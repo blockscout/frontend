@@ -24,11 +24,11 @@ import ZetaChainCCTXsStats from './ZetaChainCCTXsStats';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
-  pt: 6,
-  pb: 6,
-  marginTop: -5,
+  pt: 3,
+  pb: 3,
+  marginTop: -2,
 };
-const TABS_HEIGHT = 88;
+const TABS_HEIGHT = 64;
 
 const ZetaChainEvmTransactions = () => {
   const router = useRouter();
