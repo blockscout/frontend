@@ -7,11 +7,11 @@ import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import AddressEpochRewardsTableItem from './AddressEpochRewardsTableItem';
 
- type Props = {
-   items: Array<AddressEpochRewardsItem>;
-   isLoading?: boolean;
-   top: number;
- };
+type Props = {
+  items: Array<AddressEpochRewardsItem>;
+  isLoading?: boolean;
+  top: number;
+};
 
 const AddressEpochRewardsTable = ({ items, isLoading, top }: Props) => {
   return (

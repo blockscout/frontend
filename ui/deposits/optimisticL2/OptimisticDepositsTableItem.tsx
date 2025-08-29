@@ -14,7 +14,7 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
- type Props = { item: OptimisticL2DepositsItem; isLoading?: boolean };
+type Props = { item: OptimisticL2DepositsItem; isLoading?: boolean };
 
 const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
 

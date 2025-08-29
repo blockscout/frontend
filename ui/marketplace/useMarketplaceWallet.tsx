@@ -15,8 +15,8 @@ type SendTransactionArgs = {
 
 export type SignTypedDataArgs<
   TTypedData extends
-  | TypedData
-  | {
+  | TypedData |
+  {
     [key: string]: unknown;
   } = TypedData,
   TPrimaryType extends string = string,
