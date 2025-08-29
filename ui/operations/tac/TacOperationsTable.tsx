@@ -8,10 +8,10 @@ import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import TacOperationsTableItem from './TacOperationsTableItem';
 
- type Props = {
-   items: Array<tac.OperationBriefDetails>;
-   isLoading?: boolean;
- };
+type Props = {
+  items: Array<tac.OperationBriefDetails>;
+  isLoading?: boolean;
+};
 
 const TacOperationsTable = ({ items, isLoading }: Props) => {
   return (

@@ -14,7 +14,7 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
- type Props = { item: ZkEvmL2DepositsItem; isLoading?: boolean };
+type Props = { item: ZkEvmL2DepositsItem; isLoading?: boolean };
 
 const ZkEvmL2DepositsTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkEvm') {

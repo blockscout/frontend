@@ -10,13 +10,13 @@ import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import UserOpsTableItem from './UserOpsTableItem';
 
- type Props = {
-   items: Array<UserOpsItem>;
-   isLoading?: boolean;
-   top: number;
-   showTx: boolean;
-   showSender: boolean;
- };
+type Props = {
+  items: Array<UserOpsItem>;
+  isLoading?: boolean;
+  top: number;
+  showTx: boolean;
+  showSender: boolean;
+};
 
 const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
   const multichainContext = useMultichainContext();

@@ -13,11 +13,11 @@ const feature = config.features.rewards;
 const LAST_EXPLORE_TIME_KEY = 'rewards_activity_last_explore_time';
 
 type RewardsActivityEndpoint =
-  | 'rewards:user_activity_track_tx'
-  | 'rewards:user_activity_track_tx_confirm'
-  | 'rewards:user_activity_track_contract'
-  | 'rewards:user_activity_track_contract_confirm'
-  | 'rewards:user_activity_track_usage';
+  'rewards:user_activity_track_tx' |
+  'rewards:user_activity_track_tx_confirm' |
+  'rewards:user_activity_track_contract' |
+  'rewards:user_activity_track_contract_confirm' |
+  'rewards:user_activity_track_usage';
 
 export default function useRewardsActivity() {
   const { apiToken } = useRewardsContext();

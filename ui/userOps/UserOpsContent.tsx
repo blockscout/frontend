@@ -9,11 +9,11 @@ import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPage
 import UserOpsListItem from 'ui/userOps/UserOpsListItem';
 import UserOpsTable from 'ui/userOps/UserOpsTable';
 
- type Props = {
-   query: QueryWithPagesResult<'general:user_ops'>;
-   showTx?: boolean;
-   showSender?: boolean;
- };
+type Props = {
+  query: QueryWithPagesResult<'general:user_ops'>;
+  showTx?: boolean;
+  showSender?: boolean;
+};
 
 const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
 

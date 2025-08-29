@@ -8,11 +8,11 @@ import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ScrollL2DepositsTableItem from './ScrollL2DepositsTableItem';
 
- type Props = {
-   items: Array<ScrollL2MessageItem>;
-   top: number;
-   isLoading?: boolean;
- };
+type Props = {
+  items: Array<ScrollL2MessageItem>;
+  top: number;
+  isLoading?: boolean;
+};
 
 const ScrollL2DepositsTable = ({ items, top, isLoading }: Props) => {
   return (

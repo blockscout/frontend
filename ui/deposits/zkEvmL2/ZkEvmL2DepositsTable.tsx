@@ -7,11 +7,11 @@ import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ZkEvmL2DepositsTableItem from './ZkEvmL2DepositsTableItem';
 
- type Props = {
-   items: Array<ZkEvmL2DepositsItem>;
-   top: number;
-   isLoading?: boolean;
- };
+type Props = {
+  items: Array<ZkEvmL2DepositsItem>;
+  top: number;
+  isLoading?: boolean;
+};
 
 const ZkEvmL2DepositsTable = ({ items, top, isLoading }: Props) => {
   return (

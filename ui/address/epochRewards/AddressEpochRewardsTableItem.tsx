@@ -14,10 +14,10 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
- type Props = {
-   item: AddressEpochRewardsItem;
-   isLoading?: boolean;
- };
+type Props = {
+  item: AddressEpochRewardsItem;
+  isLoading?: boolean;
+};
 
 const AddressEpochRewardsTableItem = ({ item, isLoading }: Props) => {
   const { valueStr } = getCurrencyValue({ value: item.amount, decimals: item.token.decimals });
