@@ -154,7 +154,6 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
             isLoading={ isLoading }
             truncation="constant"
           />
-          <Text color="text.secondary" fontWeight="medium">Transaction</Text>
           { transactionOrCCTX }
           <Text color="text.secondary" fontWeight="medium">Status</Text>
           <StatusTag type="ok" text="Success"/>
