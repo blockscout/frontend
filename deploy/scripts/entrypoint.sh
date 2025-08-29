@@ -70,6 +70,9 @@ node ./deploy/tools/multichain-config-generator/dist/index.js
 # Generate sitemap.xml and robots.txt files
 ./sitemap_generator.sh
 
+# Generate llms.txt file
+node ./deploy/tools/llms-txt-generator/dist/index.js
+
 # Print list of enabled features
 node ./feature-reporter.js
 
