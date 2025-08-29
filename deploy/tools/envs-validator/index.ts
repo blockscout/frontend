@@ -42,6 +42,7 @@ async function validateEnvs(appEnvs: Record<string, string>) {
       'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL',
       'NEXT_PUBLIC_FOOTER_LINKS',
       'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL',
+      'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL',
     ];
 
     for await (const envName of envsWithJsonConfig) {

@@ -33,6 +33,8 @@ on:
             - scroll_sepolia
             - shibarium
             - stability
+            - zetachain
+            - zetachain_testnet
             - zkevm 
             - zilliqa
             - zksync

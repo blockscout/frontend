@@ -6,6 +6,7 @@ import type { EntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
 
+import AddressEntityZetaChain from '../entities/address/AddressEntityZetaChain';
 import AddressFromToIcon from './AddressFromToIcon';
 import { getTxCourseType } from './utils';
 
@@ -22,9 +23,18 @@ interface Props {
   tokenSymbol?: string;
   truncation?: EntityProps['truncation'];
   noIcon?: boolean;
+  zetaChainFromChainId?: string;
+  zetaChainToChainId?: string;
 }
 
-const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', tokenSymbol = '', noIcon }: Props) => {
+const AddressFromTo = ({
+  from,
+  zetaChainFromChainId,
+  to,
+  zetaChainToChainId,
+  current,
+  mode: modeProp,
+  className, isLoading, tokenHash = '', tokenSymbol = '', noIcon }: Props) => {
   const mode = useBreakpointValue(
     {
       base: (typeof modeProp === 'object' && 'base' in modeProp ? modeProp.base : modeProp),
@@ -33,7 +43,26 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
     },
   ) ?? 'long';
 
-  const Entity = tokenHash && tokenSymbol ? AddressEntityWithTokenFilter : AddressEntity;
+  const EntityFrom = (() => {
+    if (zetaChainFromChainId !== undefined) {
+      return AddressEntityZetaChain;
+    }
+    if (tokenHash && tokenSymbol) {
+      return AddressEntityWithTokenFilter;
+    }
+    return AddressEntity;
+  })();
+
+  const EntityTo = (() => {
+    if (zetaChainToChainId !== undefined) {
+      return AddressEntityZetaChain;
+    }
+    if (tokenHash && tokenSymbol) {
+      return AddressEntityWithTokenFilter;
+    }
+    return AddressEntity;
+  })();
+
   const isOutgoing = current ? current.toLowerCase() === from.hash.toLowerCase() : false;
   const isIncoming = current ? current.toLowerCase() === to?.hash?.toLowerCase() : false;
 
@@ -46,7 +75,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             type={ getTxCourseType(from.hash, to?.hash, current) }
             transform="rotate(90deg)"
           />
-          <Entity
+          <EntityFrom
             address={ from }
             isLoading={ isLoading }
             noLink={ isOutgoing }
@@ -57,10 +86,11 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
+            chainId={ zetaChainFromChainId }
           />
         </Flex>
         { to && (
-          <Entity
+          <EntityTo
             address={ to }
             isLoading={ isLoading }
             noLink={ isIncoming }
@@ -72,6 +102,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             maxW="calc(100% - 28px)"
             w="min-content"
             ml="28px"
+            chainId={ zetaChainToChainId }
           />
         ) }
       </Flex>
@@ -82,7 +113,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
 
   return (
     <Grid className={ className } alignItems="center" gridTemplateColumns={ `minmax(auto, min-content) ${ iconSize }px minmax(auto, min-content)` }>
-      <Entity
+      <EntityFrom
         address={ from }
         isLoading={ isLoading }
         noLink={ isOutgoing }
@@ -92,13 +123,14 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         tokenSymbol={ tokenSymbol }
         truncation="constant"
         mr={ isOutgoing ? 4 : 2 }
+        chainId={ zetaChainFromChainId }
       />
       <AddressFromToIcon
         isLoading={ isLoading }
         type={ getTxCourseType(from.hash, to?.hash, current) }
       />
       { to && (
-        <Entity
+        <EntityTo
           address={ to }
           isLoading={ isLoading }
           noLink={ isIncoming }
@@ -108,6 +140,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           tokenSymbol={ tokenSymbol }
           truncation="constant"
           ml={ 3 }
+          chainId={ zetaChainToChainId }
         />
       ) }
     </Grid>

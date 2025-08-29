@@ -11,10 +11,15 @@ const Transactions = dynamic(() => {
     return import('ui/optimismSuperchain/txs/OpSuperchainTxs');
   }
 
+  if (config.features.zetachain.isEnabled) {
+    return import('ui/pages/TransactionsZetaChain');
+  }
+
   return import('ui/pages/Transactions');
 }, { ssr: false });
 
 const Page: NextPage = () => {
+
   return (
     <PageNextJs pathname="/txs">
       <Transactions/>

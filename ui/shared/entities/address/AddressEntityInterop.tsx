@@ -11,6 +11,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import { distributeEntityProps } from '../base/utils';
 import * as AddressEntity from './AddressEntity';
+
 interface Props extends Omit<AddressEntity.EntityProps, 'chain'> {
   chain: ChainInfo | null;
 }
@@ -40,7 +41,7 @@ const IconStub = () => {
   );
 };
 
-const AddressEntryInterop = ({ chain, ...props }: Props) => {
+const AddressEntityInterop = ({ chain, ...props }: Props) => {
   const partsProps = distributeEntityProps(props);
 
   const href = chain?.instance_url ? chain.instance_url.replace(/\/$/, '') + route({
@@ -62,6 +63,7 @@ const AddressEntryInterop = ({ chain, ...props }: Props) => {
             right="4px"
             src={ chain.chain_logo }
             alt={ chain.chain_name || 'external chain logo' }
+            fallback={ <IconStub/> }
             width="14px"
             height="14px"
             borderRadius="base"
@@ -86,11 +88,13 @@ const AddressEntryInterop = ({ chain, ...props }: Props) => {
           <AddressEntity.Content { ...partsProps.content }/>
         </AddressEntity.Link>
       ) : (
-        <AddressEntity.Content { ...partsProps.content }/>
+        <Box overflow="hidden">
+          <AddressEntity.Content { ...partsProps.content }/>
+        </Box>
       ) }
       <AddressEntity.Copy { ...partsProps.copy }/>
     </AddressEntity.Container>
   );
 };
 
-export default chakra(AddressEntryInterop);
+export default chakra(AddressEntityInterop);
